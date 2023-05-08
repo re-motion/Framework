@@ -52,7 +52,12 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
 
     public SecurityClient CreateSecurityClient ()
     {
-      return new SecurityClient(_mockSecurityProvider.Object, _mockPermissionReflector.Object, _stubPrincipalProvider.Object, _mockFunctionalSecurityStrategy.Object, _mockMemberResolver.Object);
+      return new SecurityClient(
+          _mockSecurityProvider.Object,
+          _mockPermissionReflector.Object,
+          _stubPrincipalProvider.Object,
+          _mockFunctionalSecurityStrategy.Object,
+          _mockMemberResolver.Object);
     }
 
     public SecurableObject SecurableObject

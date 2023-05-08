@@ -110,9 +110,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     public void MixinOverridingInheritedClassMethod ()
     {
       ClassWithInheritedMethod cwim = ObjectFactory.Create<ClassWithInheritedMethod>(ParamList.Empty);
-      Assert.That(cwim.InvokeInheritedMethods(), Is.EqualTo("MixinOverridingInheritedMethod.ProtectedInheritedMethod-BaseClassWithInheritedMethod.ProtectedInheritedMethod-"
-                                                               + "MixinOverridingInheritedMethod.ProtectedInternalInheritedMethod-BaseClassWithInheritedMethod.ProtectedInternalInheritedMethod-"
-                                                               + "MixinOverridingInheritedMethod.PublicInheritedMethod-BaseClassWithInheritedMethod.PublicInheritedMethod"));
+      Assert.That(
+          cwim.InvokeInheritedMethods(),
+          Is.EqualTo(
+              "MixinOverridingInheritedMethod.ProtectedInheritedMethod-BaseClassWithInheritedMethod.ProtectedInheritedMethod-"
+              + "MixinOverridingInheritedMethod.ProtectedInternalInheritedMethod-BaseClassWithInheritedMethod.ProtectedInternalInheritedMethod-"
+              + "MixinOverridingInheritedMethod.PublicInheritedMethod-BaseClassWithInheritedMethod.PublicInheritedMethod"));
     }
 
     [Test]
@@ -138,7 +141,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     public void AlphabeticOrdering ()
     {
       ClassWithMixinsAcceptingAlphabeticOrdering instance = ObjectFactory.Create<ClassWithMixinsAcceptingAlphabeticOrdering>(ParamList.Empty);
-      Assert.That(instance.ToString(), Is.EqualTo("MixinAcceptingAlphabeticOrdering1.ToString-MixinAcceptingAlphabeticOrdering2.ToString-ClassWithMixinsAcceptingAlphabeticOrdering.ToString"));
+      Assert.That(
+          instance.ToString(),
+          Is.EqualTo("MixinAcceptingAlphabeticOrdering1.ToString-MixinAcceptingAlphabeticOrdering2.ToString-ClassWithMixinsAcceptingAlphabeticOrdering.ToString"));
     }
 
     [Test]

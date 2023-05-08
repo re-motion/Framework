@@ -55,8 +55,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Initialize();
 
       var editModeController = new Mock<IEditModeController>();
-      editModeController.Setup(mock => mock.RenderTitleCellMarkers(Html.Writer, Column, 0)).Callback(
-          (HtmlTextWriter writer, BocColumnDefinition column, int columnIndex) => writer.Write(string.Empty));
+      editModeController
+          .Setup(mock => mock.RenderTitleCellMarkers(Html.Writer, Column, 0))
+          .Callback((HtmlTextWriter writer, BocColumnDefinition column, int columnIndex) => writer.Write(string.Empty));
 
       List.Setup(mock => mock.EditModeController).Returns(editModeController.Object);
 
@@ -99,7 +100,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderTitleCellNoSorting ()
     {
-      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.Default,
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
       var renderingContext = CreateRenderingContext();
       renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments(cellID: "TheColumnID"));
 
@@ -126,7 +131,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Column.ColumnTitle = WebString.CreateFromText("Multiline\nColumnTitle");
 
-      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.Default,
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
       var renderingContext = CreateRenderingContext();
       renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments());
 
@@ -140,7 +149,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderSortableTitleCellWithHiddenTitleText ()
     {
-      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.Default,
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
       var renderingContext = CreateRenderingContext();
       renderingContext.ColumnDefinition.ShowColumnTitle = false;
 
@@ -165,7 +178,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderNonSortableTitleCellWithHiddenTitleText ()
     {
-      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.Default,
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
       var renderingContext = CreateRenderingContext();
       renderingContext.ColumnDefinition.ShowColumnTitle = false;
       renderingContext.ColumnDefinition.IsSortable = false;
@@ -275,7 +292,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void TestDiagnosticMetadataRenderingWithTitleIsEmpty ()
     {
-      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.WithDiagnosticMetadata,
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
       Column.ColumnTitle = WebString.Empty;
       var renderingContext = CreateRenderingContext();
 
@@ -290,7 +311,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void TestDiagnosticMetadataRenderingWithColumnIsRowHeader ()
     {
-      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.WithDiagnosticMetadata,
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
       var renderingContext = CreateRenderingContext();
 
       renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments(isRowHeader: true));
@@ -306,7 +331,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
         string iconFilename,
         string iconAltText)
     {
-      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.Default,
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
       var renderingContext = CreateRenderingContext();
       renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments(sortDirection, sortIndex));
 

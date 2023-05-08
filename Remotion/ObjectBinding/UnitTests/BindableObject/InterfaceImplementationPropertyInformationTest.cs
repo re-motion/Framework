@@ -147,10 +147,12 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var instance = new ClassWithReferenceType<SimpleReferenceType>();
       var value = new SimpleReferenceType();
 
-      _declarationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns(
-          MethodInfoAdapter.Create(typeof(IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetSetMethod(true)));
-      _implementationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns(
-          MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetSetMethod(true)));
+      _declarationPropertyInformationStub
+          .Setup(stub => stub.GetSetMethod(true))
+          .Returns(MethodInfoAdapter.Create(typeof(IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetSetMethod(true)));
+      _implementationPropertyInformationStub
+          .Setup(stub => stub.GetSetMethod(true))
+          .Returns(MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetSetMethod(true)));
 
       _interfaceImplementationPropertyInformation.SetValue(instance, value, null);
       Assert.That(instance.ImplicitInterfaceScalar, Is.SameAs(value));
@@ -162,9 +164,12 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var instance = new ClassWithReferenceType<SimpleReferenceType>();
       var value = new SimpleReferenceType();
 
-      _declarationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns((IMethodInformation)null);
-      _implementationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns(
-          MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetSetMethod(true)));
+      _declarationPropertyInformationStub
+          .Setup(stub => stub.GetSetMethod(true))
+          .Returns((IMethodInformation)null);
+      _implementationPropertyInformationStub
+          .Setup(stub => stub.GetSetMethod(true))
+          .Returns(MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetSetMethod(true)));
 
       _interfaceImplementationPropertyInformation.SetValue(instance, value, null);
       Assert.That(instance.ImplicitInterfaceScalar, Is.SameAs(value));
@@ -176,9 +181,12 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var instance = new ClassWithReferenceType<SimpleReferenceType>();
       var value = new SimpleReferenceType();
 
-      _declarationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns((IMethodInformation)null);
-      _implementationPropertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns(
-          MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("Item", new[] { typeof(int) }).GetSetMethod(true)));
+      _declarationPropertyInformationStub
+          .Setup(stub => stub.GetSetMethod(true))
+          .Returns((IMethodInformation)null);
+      _implementationPropertyInformationStub
+          .Setup(stub => stub.GetSetMethod(true))
+          .Returns(MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("Item", new[] { typeof(int) }).GetSetMethod(true)));
 
       _interfaceImplementationPropertyInformation.SetValue(instance, value, new object[] { 0 });
       Assert.That(instance[0], Is.SameAs(value));
@@ -191,10 +199,12 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var value = new SimpleReferenceType();
       instance.ImplicitInterfaceScalar = value;
 
-      _declarationPropertyInformationStub.Setup(stub => stub.GetGetMethod(true)).Returns(
-          MethodInfoAdapter.Create(typeof(IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetGetMethod(true)));
-      _implementationPropertyInformationStub.Setup(stub => stub.GetGetMethod(true)).Returns(
-          MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetGetMethod(true)));
+      _declarationPropertyInformationStub
+          .Setup(stub => stub.GetGetMethod(true))
+          .Returns(MethodInfoAdapter.Create(typeof(IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetGetMethod(true)));
+      _implementationPropertyInformationStub
+          .Setup(stub => stub.GetGetMethod(true))
+          .Returns(MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetGetMethod(true)));
 
       Assert.That(_interfaceImplementationPropertyInformation.GetValue(instance, null), Is.SameAs(value));
     }
@@ -206,9 +216,12 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var value = new SimpleReferenceType();
       instance.ImplicitInterfaceScalar = value;
 
-      _declarationPropertyInformationStub.Setup(stub => stub.GetGetMethod(true)).Returns((IMethodInformation)null);
-      _implementationPropertyInformationStub.Setup(stub => stub.GetGetMethod(true)).Returns(
-          MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetGetMethod(true)));
+      _declarationPropertyInformationStub
+          .Setup(stub => stub.GetGetMethod(true))
+          .Returns((IMethodInformation)null);
+      _implementationPropertyInformationStub
+          .Setup(stub => stub.GetGetMethod(true))
+          .Returns(MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceScalar").GetGetMethod(true)));
 
       Assert.That(_interfaceImplementationPropertyInformation.GetValue(instance, null), Is.SameAs(value));
     }

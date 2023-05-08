@@ -91,7 +91,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new VerifiableSequence(), setMethodInformation, TestAccessTypes.First);
       _testHelper.ExpectObjectSecurityStrategyHasAccess(new VerifiableSequence(), securableObject, TestAccessTypes.First, true);
 
-      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".NonPublicRelationPropertyWithCustomPermission");
+      var endPointDefinition =
+          securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".NonPublicRelationPropertyWithCustomPermission");
 
       _extension.RelationChanging(_testHelper.Transaction, securableObject, endPointDefinition, null, null);
 
@@ -108,7 +109,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(new VerifiableSequence(), setMethodInformation, TestAccessTypes.First);
       _testHelper.ExpectObjectSecurityStrategyHasAccess(new VerifiableSequence(), securableObject, TestAccessTypes.First, false);
 
-      var endPointDefinition = securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".NonPublicRelationPropertyWithCustomPermission");
+      var endPointDefinition =
+          securableObject.ID.ClassDefinition.GetRelationEndPointDefinition(typeof(SecurableObject).FullName + ".NonPublicRelationPropertyWithCustomPermission");
       Assert.That(
           () => _extension.RelationChanging(_testHelper.Transaction, securableObject, endPointDefinition, null, null),
           Throws.InstanceOf<PermissionDeniedException>());

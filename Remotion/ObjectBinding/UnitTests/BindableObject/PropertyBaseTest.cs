@@ -602,10 +602,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
                   new Mock<IExtensibleEnumGlobalizationService>().Object)));
       property.SetReflectedClass(_bindableObjectClass);
 
-      mockMemberInformationGlobalizationService.Setup(_ => _.TryGetPropertyDisplayName(
-              propertyInfo,
-              It.Is<ITypeInformation>(c => c.ConvertToRuntimeType() == _bindableObjectClass.TargetType),
-              out outValue))
+      mockMemberInformationGlobalizationService
+          .Setup(_ => _.TryGetPropertyDisplayName(propertyInfo, It.Is<ITypeInformation>(c => c.ConvertToRuntimeType() == _bindableObjectClass.TargetType), out outValue))
           .Returns(true)
           .Verifiable();
 

@@ -16,6 +16,7 @@
 // 
 using System;
 
+// @formatter:off
 namespace Remotion.Reflection
 {
   public partial interface IFuncInvoker<TResult>

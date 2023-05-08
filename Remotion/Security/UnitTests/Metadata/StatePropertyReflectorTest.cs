@@ -116,7 +116,8 @@ namespace Remotion.Security.UnitTests.Metadata
           () => new StatePropertyReflector().GetMetadata(typeof(PaperFile).GetProperty("SimpleEnum"), _cache),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "The type of the property 'SimpleEnum' in type 'Remotion.Security.UnitTests.TestDomain.File' does not have the Remotion.Security.SecurityStateAttribute applied.", "property"));
+                  "The type of the property 'SimpleEnum' in type 'Remotion.Security.UnitTests.TestDomain.File' does not have the Remotion.Security.SecurityStateAttribute applied.",
+                  "property"));
     }
   }
 }

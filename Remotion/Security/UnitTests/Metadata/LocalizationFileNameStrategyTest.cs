@@ -60,8 +60,10 @@ namespace Remotion.Security.UnitTests.Metadata
 
       Assert.That(localizationFileNames, Is.Not.Null);
       Assert.That(localizationFileNames.Length, Is.EqualTo(2));
-      Assert.That(localizationFileNames, Has.Member(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.de.xml")));
-      Assert.That(localizationFileNames, Has.Member(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.en.xml")));
+      Assert.That(localizationFileNames,
+          Has.Member(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.de.xml")));
+      Assert.That(localizationFileNames,
+          Has.Member(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.en.xml")));
     }
 
     [Test]
@@ -74,8 +76,10 @@ namespace Remotion.Security.UnitTests.Metadata
 
       Assert.That(localizationFileNames, Is.Not.Null);
       Assert.That(localizationFileNames.Length, Is.EqualTo(2));
-      Assert.That(localizationFileNames, Has.Member(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.de.xml")));
-      Assert.That(localizationFileNames, Has.Member(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.xml")));
+      Assert.That(localizationFileNames,
+          Has.Member(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.de.xml")));
+      Assert.That(localizationFileNames,
+          Has.Member(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.xml")));
     }
 
     [Test]

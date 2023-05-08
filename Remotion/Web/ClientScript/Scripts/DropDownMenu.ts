@@ -116,7 +116,6 @@ class DropDownMenu
   private static _statusPopupDelay: number = 200;
   private static _statusPopupRepositionTimer: Nullable<number> = null;
   private static _blurTimer: Nullable<number> = null;
-  private static _updateFocus: boolean = true;
   private static _ignoreHoverMouseEvents: boolean = false;
   private static _lastPositionInformation: Nullable<string> = null;
 
@@ -257,7 +256,7 @@ class DropDownMenu
     }
     if (DropDownMenu._currentMenu !== context)
     {
-      DropDownMenu.ClosePopUp(!DropDownMenu._updateFocus);
+      DropDownMenu.ClosePopUp(false);
     }
     if (DropDownMenu._currentMenu == null)
     {
@@ -356,7 +355,7 @@ class DropDownMenu
     else
       statusPopup.setAttribute ('aria-labelledby', menuButton.id);
     DropDownMenu._currentStatusPopup = statusPopup;
-    document.getElementById (menuID)!.closest ('div, td, th, body, span.bocListEditableCell > span.control')!.append (statusPopup);
+    document.getElementById (menuID)!.closest ('div, td, th, body')!.append (statusPopup);
 
     const positioningDetails = this.CalculatePositioningDetails(titleDivFunc(), evt);
     DropDownMenu.ApplyPosition (statusPopup, positioningDetails, titleDivFunc(), false);
@@ -424,7 +423,7 @@ class DropDownMenu
     div.appendChild(ul);
 
     const menuButton = document.getElementById (menuID)!;
-    menuButton.closest ('div, td, th, body, span.bocListEditableCell > span.control')!.append (div);
+    menuButton.closest ('div, td, th, body')!.append (div);
 
     ul.addEventListener ('mouseleave', function ()
     {
@@ -487,7 +486,7 @@ class DropDownMenu
     }
     else
     {
-      DropDownMenu.ClosePopUp(DropDownMenu._updateFocus);
+      DropDownMenu.ClosePopUp(true);
     }
   }
 
@@ -685,7 +684,7 @@ class DropDownMenu
       menuButton.removeEventListener ('blur', DropDownMenu.BlurHandler);
       menuButton.setAttribute('aria-expanded', 'false');
       menuButton.removeAttribute('aria-controls');
-      if (updateFocus === DropDownMenu._updateFocus)
+      if (updateFocus)
         menuButton.focus();
       menuPopup.parentElement!.removeChild(menuPopup);
     }
@@ -841,7 +840,7 @@ class DropDownMenu
       return false;
 
     DropDownMenu._itemClicked = true;
-    DropDownMenu.ClosePopUp(DropDownMenu._updateFocus);
+    DropDownMenu.ClosePopUp(true);
     try
     {
       eval(this.getAttribute('javascript')!);
@@ -869,7 +868,7 @@ class DropDownMenu
     switch (keyboardEvent.keyCode)
     {
       case 9: // tab
-        DropDownMenu.ClosePopUp(DropDownMenu._updateFocus);
+        DropDownMenu.ClosePopUp(true);
         return;
       case 13: //enter
       case 32: //space
@@ -883,13 +882,13 @@ class DropDownMenu
         }
         else
         {
-          DropDownMenu.ClosePopUp(DropDownMenu._updateFocus);
+          DropDownMenu.ClosePopUp(true);
         }
         return;
       case 27: //escape
         keyboardEvent.preventDefault();
         keyboardEvent.stopPropagation();
-        DropDownMenu.ClosePopUp(DropDownMenu._updateFocus);
+        DropDownMenu.ClosePopUp(true);
         return;
       case 38: // up arrow
       case 40: // down arrow
@@ -925,7 +924,7 @@ class DropDownMenu
     switch (event.keyCode)
     {
       case 9: // tab
-        DropDownMenu.ClosePopUp(DropDownMenu._updateFocus);
+        DropDownMenu.ClosePopUp(true);
         return;
       case 13: //enter
       case 32: //space
@@ -940,7 +939,7 @@ class DropDownMenu
       case 27: //escape
         event.preventDefault();
         event.stopPropagation();
-        DropDownMenu.ClosePopUp(DropDownMenu._updateFocus);
+        DropDownMenu.ClosePopUp(true);
         break;
       case 40: // down arrow
         event.preventDefault();
@@ -1058,7 +1057,7 @@ class DropDownMenu
     if (DropDownMenu._blurTimer !== null)
       clearTimeout (DropDownMenu._blurTimer);
 
-    DropDownMenu._blurTimer = setTimeout (function () { DropDownMenu.ClosePopUp (!DropDownMenu._updateFocus); }, 50);
+    DropDownMenu._blurTimer = setTimeout (function () { DropDownMenu.ClosePopUp (false); }, 50);
   }
 
   private static CalculatePositioningDetails (referenceElement: HTMLElement, evt: Nullable<MouseEvent>): DropDownMenuPositioningDetails

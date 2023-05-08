@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
@@ -23,6 +24,7 @@ using Remotion.Context;
 namespace Remotion.UnitTests.Context.SafeContextTests
 {
   [TestFixture]
+  [SuppressMessage("Usage", "RMCORE0001: Use Safecontext instead of typical API")]
   public partial class SafeContextTaskTest : SafeContextTestBase
   {
     [Test]

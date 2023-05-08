@@ -320,7 +320,14 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
 
       var nodes = element.SelectNodes($"//*[contains(concat(' ',normalize-space(@class),' '),' {className} ')]")!;
 
-      AssertGreaterThan(nodes.Count, index, "Node {0} has only {1} nested elements with a class matching '{2}' - index {3} out of range.", element.Name, nodes.Count, className, index);
+      AssertGreaterThan(
+          nodes.Count,
+          index,
+          "Node {0} has only {1} nested elements with a class matching '{2}' - index {3} out of range.",
+          element.Name,
+          nodes.Count,
+          className,
+          index);
 
       return nodes[index]!;
     }

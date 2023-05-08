@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     }
 
     public static ISetup<IDomainObjectMockEventReceiver> SetupRelationChanging (
-        this ISetupConditionResult<IDomainObjectMockEventReceiver> fluent,
+        this MockWrapper<IDomainObjectMockEventReceiver> fluent,
         DomainObject sender,
         IRelationEndPointDefinition relationEndPointDefinition,
         DomainObject oldRelatedObject,
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     }
 
     public static ISetup<IDomainObjectMockEventReceiver> SetupRelationChanged (
-        this ISetupConditionResult<IDomainObjectMockEventReceiver> fluent,
+        this MockWrapper<IDomainObjectMockEventReceiver> fluent,
         DomainObject sender,
         IRelationEndPointDefinition relationEndPointDefinition,
         DomainObject oldRelatedObject,
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     }
 
     public static ISetup<IDomainObjectMockEventReceiver> SetupPropertyChanging (
-        this ISetupConditionResult<IDomainObjectMockEventReceiver> fluent,
+        this MockWrapper<IDomainObjectMockEventReceiver> fluent,
         DomainObject sender,
         PropertyDefinition propertyDefinition,
         object oldValue,
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     }
 
     public static ISetup<IDomainObjectMockEventReceiver> SetupPropertyChanged (
-        this ISetupConditionResult<IDomainObjectMockEventReceiver> fluent,
+        this MockWrapper<IDomainObjectMockEventReceiver> fluent,
         DomainObject sender,
         PropertyDefinition propertyDefinition,
         object oldValue,

@@ -347,7 +347,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     }
 
     [Test]
-    public void TryApplyingCurrentStateAsInitialValue_WithOneToOneRelationChangedTwice_SkipsObjectsWithOriginalVirtualSideValueMissingInDataSet_ReturnsOnlySuccessfullyUpdatedDomainObjects ()
+    public void
+        TryApplyingCurrentStateAsInitialValue_WithOneToOneRelationChangedTwice_SkipsObjectsWithOriginalVirtualSideValueMissingInDataSet_ReturnsOnlySuccessfullyUpdatedDomainObjects ()
     {
       var order = (Order)LifetimeService.NewObject(_clientTransaction, typeof(Order), ParamList.Empty);
       order.OrderNumber = 14;
@@ -385,7 +386,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     }
 
     [Test]
-    public void TryApplyingCurrentStateAsInitialValue_WithOneToOneRelationChangedTwice_SkipsObjectsWithCurrentVirtualSideValueMissingInDataSet_ReturnsOnlySuccessfullyUpdatedDomainObjects ()
+    public void
+        TryApplyingCurrentStateAsInitialValue_WithOneToOneRelationChangedTwice_SkipsObjectsWithCurrentVirtualSideValueMissingInDataSet_ReturnsOnlySuccessfullyUpdatedDomainObjects ()
     {
       var order = (Order)LifetimeService.NewObject(_clientTransaction, typeof(Order), ParamList.Empty);
       order.OrderNumber = 14;
@@ -423,7 +425,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     }
 
     [Test]
-    public void TryApplyingCurrentStateAsInitialValue_WithOneToOneRelationChangedTwice_SkipsObjectsWithVirtualSideValueMissingInDataSet_ReturnsOnlySuccessfullyUpdatedDomainObjects ()
+    public void
+        TryApplyingCurrentStateAsInitialValue_WithOneToOneRelationChangedTwice_SkipsObjectsWithVirtualSideValueMissingInDataSet_ReturnsOnlySuccessfullyUpdatedDomainObjects ()
     {
       var order = (Order)LifetimeService.NewObject(_clientTransaction, typeof(Order), ParamList.Empty);
       order.OrderNumber = 14;
@@ -463,7 +466,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
 
 
     [Test]
-    public void TryApplyingCurrentStateAsInitialValue_WithDomainObjectCollectionRelationChangedTwice_SkipsObjectsWithOriginalVirtualSideValueMissingInDataSet_ReturnsOnlySuccessfullyUpdatedDomainObjects ()
+    public void
+        TryApplyingCurrentStateAsInitialValue_WithDomainObjectCollectionRelationChangedTwice_SkipsObjectsWithOriginalVirtualSideValueMissingInDataSet_ReturnsOnlySuccessfullyUpdatedDomainObjects ()
     {
       var order = (Order)LifetimeService.NewObject(_clientTransaction, typeof(Order), ParamList.Empty);
       order.OrderNumber = 14;
@@ -525,7 +529,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     }
 
     [Test]
-    public void TryApplyingCurrentStateAsInitialValue_WithDomainObjectCollectionRelationChangedTwice_SkipsObjectsWithCurrentVirtualSideValueMissingInDataSet_ReturnsOnlySuccessfullyUpdatedDomainObjects ()
+    public void
+        TryApplyingCurrentStateAsInitialValue_WithDomainObjectCollectionRelationChangedTwice_SkipsObjectsWithCurrentVirtualSideValueMissingInDataSet_ReturnsOnlySuccessfullyUpdatedDomainObjects ()
     {
       var order = (Order)LifetimeService.NewObject(_clientTransaction, typeof(Order), ParamList.Empty);
       order.OrderNumber = 14;
@@ -587,7 +592,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     }
 
     [Test]
-    public void TryApplyingCurrentStateAsInitialValue_WithDomainObjectCollectionRelationChangedTwice_SkipsObjectsWithVirtualSideValueMissingInDataSet_ReturnsOnlySuccessfullyUpdatedDomainObjects ()
+    public void
+        TryApplyingCurrentStateAsInitialValue_WithDomainObjectCollectionRelationChangedTwice_SkipsObjectsWithVirtualSideValueMissingInDataSet_ReturnsOnlySuccessfullyUpdatedDomainObjects ()
     {
       var order = (Order)LifetimeService.NewObject(_clientTransaction, typeof(Order), ParamList.Empty);
       order.OrderNumber = 14;

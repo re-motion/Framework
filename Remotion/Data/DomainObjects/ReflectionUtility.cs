@@ -106,7 +106,11 @@ namespace Remotion.Data.DomainObjects
         throw new InvalidOperationException(String.Format("The code base of assembly '{0}' is not set.", assemblyNameWithoutShadowCopy.Name));
       var codeBaseUri = new Uri(escapedCodeBase);
       if (!codeBaseUri.IsFile)
-        throw new InvalidOperationException(String.Format("The code base '{0}' of assembly '{1}' is not a local path.", codeBaseUri.OriginalString, assemblyNameWithoutShadowCopy.Name));
+      {
+        throw new InvalidOperationException(
+            string.Format("The code base '{0}' of assembly '{1}' is not a local path.", codeBaseUri.OriginalString, assemblyNameWithoutShadowCopy.Name));
+      }
+
       return Path.GetDirectoryName(codeBaseUri.LocalPath)!;
     }
 

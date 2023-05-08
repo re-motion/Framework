@@ -226,7 +226,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     [Test]
     public void OverrideAlsoWorksForGenericsOpenOpen ()
     {
-      ClassContext ctx = new DeclarativeConfigurationBuilder(null).AddType(typeof(DerivedWithOpenOverridingOpen)).BuildConfiguration().GetContext(typeof(DerivedWithOpenOverridingOpen));
+      ClassContext ctx = new DeclarativeConfigurationBuilder(null)
+          .AddType(typeof(DerivedWithOpenOverridingOpen))
+          .BuildConfiguration()
+          .GetContext(typeof(DerivedWithOpenOverridingOpen));
       Assert.That(ctx.Mixins.ContainsKey(typeof(DerivedGenericMixin<,>)), Is.True);
       Assert.That(ctx.Mixins.ContainsKey(typeof(BaseGenericMixin<,>)), Is.False);
       Assert.That(ctx.Mixins.Count, Is.EqualTo(1));
@@ -235,7 +238,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     [Test]
     public void OverrideAlsoWorksForGenericsOpenClosed ()
     {
-      ClassContext ctx = new DeclarativeConfigurationBuilder(null).AddType(typeof(DerivedWithOpenOverridingClosed)).BuildConfiguration().GetContext(typeof(DerivedWithOpenOverridingClosed));
+      ClassContext ctx = new DeclarativeConfigurationBuilder(null)
+          .AddType(typeof(DerivedWithOpenOverridingClosed))
+          .BuildConfiguration()
+          .GetContext(typeof(DerivedWithOpenOverridingClosed));
       Assert.That(ctx.Mixins.ContainsKey(typeof(DerivedGenericMixin<,>)), Is.True);
       Assert.That(ctx.Mixins.ContainsKey(typeof(BaseGenericMixin<BaseWithClosedGeneric, object>)), Is.False);
       Assert.That(ctx.Mixins.Count, Is.EqualTo(1));
@@ -244,7 +250,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     [Test]
     public void OverrideAlsoWorksForGenericsClosedOpen ()
     {
-      ClassContext ctx = new DeclarativeConfigurationBuilder(null).AddType(typeof(DerivedWithClosedOverridingOpen)).BuildConfiguration().GetContext(typeof(DerivedWithClosedOverridingOpen));
+      ClassContext ctx = new DeclarativeConfigurationBuilder(null)
+          .AddType(typeof(DerivedWithClosedOverridingOpen))
+          .BuildConfiguration()
+          .GetContext(typeof(DerivedWithClosedOverridingOpen));
       Assert.That(ctx.Mixins.ContainsKey(typeof(DerivedGenericMixin<object, object>)), Is.True);
       Assert.That(ctx.Mixins.ContainsKey(typeof(BaseGenericMixin<,>)), Is.False);
       Assert.That(ctx.Mixins.Count, Is.EqualTo(1));
@@ -253,7 +262,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     [Test]
     public void OverrideAlsoWorksForGenericsClosedClosed ()
     {
-      ClassContext ctx = new DeclarativeConfigurationBuilder(null).AddType(typeof(DerivedWithClosedOverridingClosed)).BuildConfiguration().GetContext(typeof(DerivedWithClosedOverridingClosed));
+      ClassContext ctx = new DeclarativeConfigurationBuilder(null)
+          .AddType(typeof(DerivedWithClosedOverridingClosed))
+          .BuildConfiguration()
+          .GetContext(typeof(DerivedWithClosedOverridingClosed));
       Assert.That(ctx.Mixins.ContainsKey(typeof(DerivedGenericMixin<object, object>)), Is.True);
       Assert.That(ctx.Mixins.ContainsKey(typeof(BaseGenericMixin<BaseWithClosedGeneric, object>)), Is.False);
       Assert.That(ctx.Mixins.Count, Is.EqualTo(1));
@@ -262,7 +274,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     [Test]
     public void OverrideAlsoWorksForGenericsRealClosedOpen ()
     {
-      ClassContext ctx = new DeclarativeConfigurationBuilder(null).AddType(typeof(DerivedWithRealClosedOverridingOpen)).BuildConfiguration().GetContext(typeof(DerivedWithRealClosedOverridingOpen));
+      ClassContext ctx = new DeclarativeConfigurationBuilder(null)
+          .AddType(typeof(DerivedWithRealClosedOverridingOpen))
+          .BuildConfiguration()
+          .GetContext(typeof(DerivedWithRealClosedOverridingOpen));
       Assert.That(ctx.Mixins.ContainsKey(typeof(DerivedClosedMixin)), Is.True);
       Assert.That(ctx.Mixins.ContainsKey(typeof(BaseGenericMixin<,>)), Is.False);
       Assert.That(ctx.Mixins.Count, Is.EqualTo(1));
@@ -271,7 +286,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     [Test]
     public void OverrideAlsoWorksForGenericsRealClosedClosed ()
     {
-      ClassContext ctx = new DeclarativeConfigurationBuilder(null).AddType(typeof(DerivedWithRealClosedOverridingClosed)).BuildConfiguration().GetContext(typeof(DerivedWithRealClosedOverridingClosed));
+      ClassContext ctx = new DeclarativeConfigurationBuilder(null)
+          .AddType(typeof(DerivedWithRealClosedOverridingClosed))
+          .BuildConfiguration()
+          .GetContext(typeof(DerivedWithRealClosedOverridingClosed));
       Assert.That(ctx.Mixins.ContainsKey(typeof(DerivedClosedMixin)), Is.True);
       Assert.That(ctx.Mixins.ContainsKey(typeof(BaseGenericMixin<BaseWithClosedGeneric, object>)), Is.False);
       Assert.That(ctx.Mixins.Count, Is.EqualTo(1));

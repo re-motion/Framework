@@ -79,7 +79,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <param name="relationEndPointDefinition">The relation endpoint definition of the relation that has been read.</param>
     /// <param name="relatedObject">The related object that is returned to the reader.</param>
     /// <param name="valueAccess">An indicator whether the current or original values have been read.</param>
-    void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess);
+    void RelationRead (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        DomainObject? relatedObject,
+        ValueAccess valueAccess);
 
     /// <summary>
     /// Indicates that a collection-value relation has been read.
@@ -93,7 +98,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     ///   an unloaded collection end-point.
     /// </param>
     /// <param name="valueAccess">An indicator whether the current or original values have been read.</param>
-    void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, IReadOnlyCollectionData<DomainObject> relatedObjects, ValueAccess valueAccess);
+    void RelationRead (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        IReadOnlyCollectionData<DomainObject> relatedObjects,
+        ValueAccess valueAccess);
 
     /// <summary>
     /// Indicates that a relation is about to change. 

@@ -109,7 +109,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
           IBusinessObjectDataSourceControl? dataSource = control as IBusinessObjectDataSourceControl;
           if (dataSource == null)
-            throw new HttpException(string.Format("The control with the id '{0}' referenced by the DataSourceControl property of '{1}' does not identify a control of type '{2}'.", _dataSourceControl, _control.ID, typeof(IBusinessObjectDataSourceControl)));
+          {
+            throw new HttpException(
+                string.Format(
+                    "The control with the id '{0}' referenced by the DataSourceControl property of '{1}' does not identify a control of type '{2}'.",
+                    _dataSourceControl,
+                    _control.ID,
+                    typeof(IBusinessObjectDataSourceControl)));
+          }
 
           SetDataSource(dataSource);
         }

@@ -221,11 +221,8 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
 
     private void ExpectHasAccessOnObjectSecurityStrategy (bool expectedResult, Enum accessType)
     {
-      _objectSecurityStrategyMock.Setup(
-          _ => _.HasAccess(
-              _securityProviderStub.Object,
-              _principalStub.Object,
-              new[] { AccessType.Get(accessType) }))
+      _objectSecurityStrategyMock
+          .Setup(_ => _.HasAccess(_securityProviderStub.Object, _principalStub.Object, new[] { AccessType.Get(accessType) }))
           .Returns(expectedResult)
           .Verifiable();
     }

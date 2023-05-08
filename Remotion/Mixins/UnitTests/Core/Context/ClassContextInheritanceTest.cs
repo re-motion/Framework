@@ -48,7 +48,11 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     public void ExistingMixin_OverridesInherited ()
     {
       ClassContext baseContext = new ClassContextBuilder(typeof(string)).AddMixin<DateTime>().WithDependency<int>().BuildClassContext();
-      ClassContext inheritor = new ClassContextBuilder(typeof(double)).AddMixin<DateTime>().WithDependency<decimal>().BuildClassContext().InheritFrom(new[] { baseContext }); // ignores inherited DateTime because DateTime already exists
+      ClassContext inheritor = new ClassContextBuilder(typeof(double))
+          .AddMixin<DateTime>()
+          .WithDependency<decimal>()
+          .BuildClassContext()
+          .InheritFrom(new[] { baseContext }); // ignores inherited DateTime because DateTime already exists
 
       Assert.That(inheritor.Mixins.Count, Is.EqualTo(1));
       Assert.That(inheritor.Mixins.ContainsKey(typeof(DateTime)), Is.True);
@@ -61,7 +65,11 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     {
       ClassContext baseContext = new ClassContextBuilder(typeof(string)).AddMixin<NullTarget>().WithDependency<int>().BuildClassContext();
 
-      ClassContext inheritor = new ClassContextBuilder(typeof(double)).AddMixin<DerivedNullTarget>().WithDependency<decimal>().BuildClassContext().InheritFrom(new[] { baseContext }); // ignores inherited NullTarget because DerivedNullTarget already exists
+      ClassContext inheritor = new ClassContextBuilder(typeof(double))
+          .AddMixin<DerivedNullTarget>()
+          .WithDependency<decimal>()
+          .BuildClassContext()
+          .InheritFrom(new[] { baseContext }); // ignores inherited NullTarget because DerivedNullTarget already exists
 
       Assert.That(inheritor.Mixins.Count, Is.EqualTo(1));
       Assert.That(inheritor.Mixins.ContainsKey(typeof(NullTarget)), Is.False);
@@ -97,7 +105,11 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     {
       ClassContext baseContext = new ClassContextBuilder(typeof(string)).AddMixin(typeof(GenericMixinWithVirtualMethod<>)).WithDependency<int>().BuildClassContext();
 
-      ClassContext inheritor = new ClassContextBuilder(typeof(double)).AddMixin<GenericMixinWithVirtualMethod<object>>().WithDependency<decimal>().BuildClassContext().InheritFrom(new[] { baseContext });
+      ClassContext inheritor = new ClassContextBuilder(typeof(double))
+          .AddMixin<GenericMixinWithVirtualMethod<object>>()
+          .WithDependency<decimal>()
+          .BuildClassContext()
+          .InheritFrom(new[] { baseContext });
 
       Assert.That(inheritor.Mixins.Count, Is.EqualTo(1));
       Assert.That(inheritor.Mixins.ContainsKey(typeof(GenericMixinWithVirtualMethod<>)), Is.False);
@@ -111,7 +123,11 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     {
       ClassContext baseContext = new ClassContextBuilder(typeof(string)).AddMixin(typeof(GenericMixinWithVirtualMethod<>)).WithDependency<int>().BuildClassContext();
 
-      ClassContext inheritor = new ClassContextBuilder(typeof(double)).AddMixin<DerivedGenericMixin<object>>().WithDependency<decimal>().BuildClassContext().InheritFrom(new[] { baseContext });
+      ClassContext inheritor = new ClassContextBuilder(typeof(double))
+          .AddMixin<DerivedGenericMixin<object>>()
+          .WithDependency<decimal>()
+          .BuildClassContext()
+          .InheritFrom(new[] { baseContext });
 
       Assert.That(inheritor.Mixins.Count, Is.EqualTo(1));
       Assert.That(inheritor.Mixins.ContainsKey(typeof(GenericMixinWithVirtualMethod<>)), Is.False);
@@ -137,7 +153,11 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     {
       ClassContext baseContext = new ClassContextBuilder(typeof(string)).AddMixin<DerivedGenericMixin<object>>().WithDependency<int>().BuildClassContext();
       Assert.That(
-          () => new ClassContextBuilder(typeof(double)).AddMixin(typeof(GenericMixinWithVirtualMethod<>)).WithDependency<decimal>().BuildClassContext().InheritFrom(new[] { baseContext }),
+          () => new ClassContextBuilder(typeof(double))
+              .AddMixin(typeof(GenericMixinWithVirtualMethod<>))
+              .WithDependency<decimal>()
+              .BuildClassContext()
+              .InheritFrom(new[] { baseContext }),
           Throws.InstanceOf<ConfigurationException>());
     }
 
@@ -146,7 +166,11 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     {
       ClassContext baseContext = new ClassContextBuilder(typeof(string)).AddMixin(typeof(DerivedGenericMixin<>)).WithDependency<int>().BuildClassContext();
       Assert.That(
-          () => new ClassContextBuilder(typeof(double)).AddMixin(typeof(GenericMixinWithVirtualMethod<>)).WithDependency<decimal>().BuildClassContext().InheritFrom(new[] { baseContext }),
+          () => new ClassContextBuilder(typeof(double))
+              .AddMixin(typeof(GenericMixinWithVirtualMethod<>))
+              .WithDependency<decimal>()
+              .BuildClassContext()
+              .InheritFrom(new[] { baseContext }),
           Throws.InstanceOf<ConfigurationException>()
               .With.Message.Matches(
                   "The class System.Double inherits the mixin "

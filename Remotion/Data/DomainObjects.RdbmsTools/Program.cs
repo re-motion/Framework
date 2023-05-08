@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
 
       try
       {
-        RdbmsToolsRunner rdbmsToolsRunner = RdbmsToolsRunner.Create(rdbmsToolsParameters);
+        RdbmsToolsRunner rdbmsToolsRunner = new RdbmsToolsRunner(rdbmsToolsParameters);
         rdbmsToolsRunner.Run();
       }
       catch (Exception e)

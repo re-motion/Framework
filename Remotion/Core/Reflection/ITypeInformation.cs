@@ -47,15 +47,18 @@ namespace Remotion.Reflection
     /// Gets the assembly-qualified name of the type, which includes the name of the assembly from which the type was loaded.
     /// </summary>
     /// <returns>
-    /// The assembly-qualified name of the type, which includes the name of the assembly from which the type was loaded, or <see langword="null"/> if the current instance represents a generic type parameter.
+    /// The assembly-qualified name of the type, which includes the name of the assembly from which the type was loaded,
+    /// or <see langword="null"/> if the current instance represents a generic type parameter.
     /// </returns>
     [CanBeNull]string? AssemblyQualifiedName { get; }
 
     /// <summary>
-    /// Gets the <see cref="System.Reflection.Assembly"/> in which the type is declared. For generic types, gets the <see cref="System.Reflection.Assembly"/> in which the generic type is defined.
+    /// Gets the <see cref="System.Reflection.Assembly"/> in which the type is declared. For generic types,
+    /// gets the <see cref="System.Reflection.Assembly"/> in which the generic type is defined.
     /// </summary>
     /// <returns>
-    /// An <see cref="System.Reflection.Assembly"/> instance that describes the assembly containing the current type. For generic types, the instance describes the assembly that contains the generic type definition, not the assembly that creates and uses a particular constructed type.
+    /// An <see cref="System.Reflection.Assembly"/> instance that describes the assembly containing the current type.
+    /// For generic types, the instance describes the assembly that contains the generic type definition, not the assembly that creates and uses a particular constructed type.
     /// </returns>
     [CanBeNull]Assembly? Assembly { get; }
 
@@ -163,7 +166,9 @@ namespace Remotion.Reflection
     /// <returns>
     /// A <see cref="ITypeInformation"/> object representing the underlying type argument for the <see cref="Nullable{T}"/>.
     /// </returns>
-    /// <exception cref="InvalidOperationException">The current type is not an instantiation of <see cref="Nullable{T}"/>. That is, <see cref="IsNullableValueType"/> returns <see langword="false"/>.</exception>
+    /// <exception cref="InvalidOperationException">
+    /// The current type is not an instantiation of <see cref="Nullable{T}"/>. That is, <see cref="IsNullableValueType"/> returns <see langword="false"/>.
+    /// </exception>
     [NotNull]ITypeInformation GetUnderlyingTypeOfNullableValueType ();
 
     /// <summary>
@@ -281,7 +286,8 @@ namespace Remotion.Reflection
     /// Gets a value indicating whether the current type object has type parameters that have not been replaced by specific types.
     /// </summary>
     /// <returns>
-    /// <see langword="true"/> if the type object is itself a generic type parameter or has type parameters for which specific types have not been supplied; otherwise, <see langword="false"/>.
+    /// <see langword="true"/> if the type object is itself a generic type parameter or has type parameters for which specific types have not been supplied;
+    /// otherwise, <see langword="false"/>.
     /// </returns>
     bool ContainsGenericParameters { get; }
 
@@ -308,7 +314,9 @@ namespace Remotion.Reflection
     /// <returns>
     /// The position of a type parameter in the type parameter list of the generic type or method that defines the parameter. Position numbers begin at 0.
     /// </returns>
-    /// <exception cref="InvalidOperationException">The current type does not represent a type parameter. That is, <see cref="IsGenericParameter"/> returns <see langword="false"/>.</exception>
+    /// <exception cref="InvalidOperationException">
+    /// The current type does not represent a type parameter. That is, <see cref="IsGenericParameter"/> returns <see langword="false"/>.
+    /// </exception>
     int GenericParameterPosition { get; }
 
     /// <summary>
@@ -317,7 +325,9 @@ namespace Remotion.Reflection
     /// <returns>
     /// An array of <see cref="ITypeInformation"/> objects that represent the constraints on the current generic type parameter.
     /// </returns>
-    /// <exception cref="InvalidOperationException">The current type object is not a generic type parameter. That is, the <see cref="IsGenericParameter"/> property returns <see langword="false"/>.</exception>
+    /// <exception cref="InvalidOperationException">
+    /// The current type object is not a generic type parameter. That is, the <see cref="IsGenericParameter"/> property returns <see langword="false"/>.
+    /// </exception>
     [NotNull]ITypeInformation[] GetGenericParameterConstraints ();
 
     /// <summary>
@@ -326,7 +336,9 @@ namespace Remotion.Reflection
     /// <returns>
     /// A bitwise combination of <see cref="GenericParameterAttributes"/> values that describes the covariance and special constraints of the current generic type parameter.
     /// </returns>
-    /// <exception cref="InvalidOperationException">The current type object is not a generic type parameter. That is, the <see cref="IsGenericParameter"/> property returns <see langword="false"/>.</exception>
+    /// <exception cref="InvalidOperationException">
+    /// The current type object is not a generic type parameter. That is, the <see cref="IsGenericParameter"/> property returns <see langword="false"/>.
+    /// </exception>
     /// <exception cref="NotSupportedException">The invoked method is not supported in the base class.</exception>
     GenericParameterAttributes GenericParameterAttributes { get; }
 

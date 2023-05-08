@@ -18,7 +18,6 @@ using System;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.IntegrationTests.TestDomain.MetaValidation;
-using Remotion.Validation.MetaValidation;
 
 namespace Remotion.Validation.IntegrationTests
 {
@@ -60,22 +59,28 @@ namespace Remotion.Validation.IntegrationTests
     [Test]
     public void BuildValidator_FuncPropertyMetaValidationRule ()
     {
-      Assert.That(() => ValidationBuilder.BuildValidator<MetaValidationTestClass4>(), Throws.TypeOf<ValidationConfigurationException>().And.Message.EqualTo(
-        "'LengthSystemPropertyMetaValidationRule' failed for member 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.MetaValidationTestClass4.Property1'.\r\n"
-        + "----------\r\n"
-        + "Invalid length validator count!"
-        ));
+      Assert.That(
+          () => ValidationBuilder.BuildValidator<MetaValidationTestClass4>(),
+          Throws.TypeOf<ValidationConfigurationException>()
+              .And.Message.EqualTo(
+                  "'LengthSystemPropertyMetaValidationRule' failed for member 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.MetaValidationTestClass4.Property1'.\r\n"
+                  + "----------\r\n"
+                  + "Invalid length validator count!"
+                  ));
     }
 
     [Test]
     public void BuildValidator_ExpressionPropertyMetaValidationRule ()
     {
-      Assert.That(() => ValidationBuilder.BuildValidator<MetaValidationTestClass5>(), Throws.TypeOf<ValidationConfigurationException>().And.Message.EqualTo(
-        "'LengthSystemPropertyMetaValidationRule' failed for member 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.MetaValidationTestClass5.Property1'.\r\n"
-        + "----------\r\n"
-        + "Meta validation rule 'lengthRules => (lengthRules.Count() <= 2)' failed for validator 'Remotion.Validation.Validators.LengthValidator' "
-        + "on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.MetaValidationTestClass5.Property1'."
-        ));
+      Assert.That(
+          () => ValidationBuilder.BuildValidator<MetaValidationTestClass5>(),
+          Throws.TypeOf<ValidationConfigurationException>()
+              .And.Message.EqualTo(
+                  "'LengthSystemPropertyMetaValidationRule' failed for member 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.MetaValidationTestClass5.Property1'.\r\n"
+                  + "----------\r\n"
+                  + "Meta validation rule 'lengthRules => (lengthRules.Count() <= 2)' failed for validator 'Remotion.Validation.Validators.LengthValidator' "
+                  + "on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.MetaValidationTestClass5.Property1'."
+                  ));
     }
 
     [Test]
@@ -83,10 +88,13 @@ namespace Remotion.Validation.IntegrationTests
     {
       Assert.That(
           () => ValidationBuilder.BuildValidator<BaseMetaValidationTestClass1>(),
-          Throws.TypeOf<ValidationConfigurationException>().And.Message.EqualTo(
-              "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property3'.\r\n"
-              + "----------\r\n"
-              + "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property4'."));
+          Throws.TypeOf<ValidationConfigurationException>()
+              .And.Message.EqualTo(
+                  "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' "
+                  + "on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property3'.\r\n"
+                  + "----------\r\n"
+                  + "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' "
+                  + "on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property4'."));
     }
 
     [Test]
@@ -94,12 +102,15 @@ namespace Remotion.Validation.IntegrationTests
     {
       Assert.That(
           () => ValidationBuilder.BuildValidator<DerivedMetaValidationTestClass1>(),
-          Throws.TypeOf<ValidationConfigurationException>().And.Message.EqualTo(
-              "'LengthSystemPropertyMetaValidationRule' failed for member 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property1'.\r\n"
-              + "----------\r\n"
-              + "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property4'.\r\n"
-              + "----------\r\n"
-              + "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property5'."));
+          Throws.TypeOf<ValidationConfigurationException>()
+              .And.Message.EqualTo(
+                  "'LengthSystemPropertyMetaValidationRule' failed for member 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property1'.\r\n"
+                  + "----------\r\n"
+                  + "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' "
+                  + "on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property4'.\r\n"
+                  + "----------\r\n"
+                  + "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' "
+                  + "on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property5'."));
     }
 
     [Test]
@@ -107,10 +118,13 @@ namespace Remotion.Validation.IntegrationTests
     {
       Assert.That(
           () => ValidationBuilder.BuildValidator<DerivedMetaValidationTestClass2>(),
-          Throws.TypeOf<ValidationConfigurationException>().And.Message.EqualTo(
-              "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property3'.\r\n"
-              + "----------\r\n"
-              + "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property4'."));
+          Throws.TypeOf<ValidationConfigurationException>()
+              .And.Message.EqualTo(
+                  "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' "
+                  + "on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property3'.\r\n"
+                  + "----------\r\n"
+                  + "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' "
+                  + "on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property4'."));
     }
 
     [Test]
@@ -120,7 +134,8 @@ namespace Remotion.Validation.IntegrationTests
           () => ValidationBuilder.BuildValidator<MetaValidationTestClass6>(),
           Throws.TypeOf<ValidationConfigurationException>()
               .And.Message.EqualTo(
-                  "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IObjectValidator' on type 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.MetaValidationTestClass6'."));
+                  "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IObjectValidator' "
+                  + "on type 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.MetaValidationTestClass6'."));
     }
 
     [Test]

@@ -176,6 +176,12 @@
   box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
 }
 
+span.bocAutoCompleteReferenceValue.readOnly span.content input + span
+{
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
 span.bocAutoCompleteReferenceValue.readOnly span.content input + span:empty
 {
   /* Ensures that the keyboard focus of empty readonly values surrounds the entires width of the span. */
@@ -201,4 +207,5 @@ span.bocAutoCompleteReferenceValue.readOnly span.content input + span:empty::bef
   grid-area: optionsMenu;
   /* by not using gap on the parent element, we don't need to adjust the grid-template when the optionsMenu is not rendered. */
   margin-left: var(--remotion-themed-spacing);
+  align-self: baseline;
 }

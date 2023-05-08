@@ -88,13 +88,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     }
 
     [Test]
-    [TestCase(DbType.AnsiString, 100, TestName = "GetStorageType_ForPropertyDefinition_WithStorageTypeLength_AndAnsiString_ReturnsOriginalStorageTypeInformation")]
-    [TestCase(DbType.AnsiStringFixedLength, 100, TestName = "GetStorageType_ForPropertyDefinition_WithStorageTypeLength_AndAnsiStringFixedLength_ReturnsOriginalStorageTypeInformation")]
-    [TestCase(DbType.String, 100, TestName = "GetStorageType_ForPropertyDefinition_WithStorageTypeLength_AndString_ReturnsOriginalStorageTypeInformation")]
-    [TestCase(DbType.StringFixedLength, 100, TestName = "GetStorageType_ForPropertyDefinition_WithStorageTypeLength_AndStringFixedLength_ReturnsOriginalStorageTypeInformation")]
-    [TestCase(DbType.Int32, null, TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndOtherDbType_ReturnsOriginalStorageTypeInformation")]
-    [TestCase(DbType.AnsiStringFixedLength, null, TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndAnsiStringFixedLength_ReturnsOriginalStorageTypeInformation")]
-    [TestCase(DbType.StringFixedLength, null, TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndStringFixedLength_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(
+        DbType.AnsiString,
+        100,
+        TestName = "GetStorageType_ForPropertyDefinition_WithStorageTypeLength_AndAnsiString_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(
+        DbType.AnsiStringFixedLength,
+        100,
+        TestName = "GetStorageType_ForPropertyDefinition_WithStorageTypeLength_AndAnsiStringFixedLength_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(
+        DbType.String,
+        100,
+        TestName = "GetStorageType_ForPropertyDefinition_WithStorageTypeLength_AndString_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(
+        DbType.StringFixedLength,
+        100,
+        TestName = "GetStorageType_ForPropertyDefinition_WithStorageTypeLength_AndStringFixedLength_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(
+        DbType.Int32,
+        null,
+        TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndOtherDbType_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(
+        DbType.AnsiStringFixedLength,
+        null,
+        TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndAnsiStringFixedLength_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(
+        DbType.StringFixedLength,
+        null,
+        TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndStringFixedLength_ReturnsOriginalStorageTypeInformation")]
     public void GetStorageType_ForPropertyDefinition_ReturnsOriginalStorageTypeInformation (
         DbType storageDbType,
         int? storageTypeLength)
@@ -184,14 +205,46 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     }
 
     [Test]
-    [TestCase(DbType.AnsiString, 100, "value", TestName = "GetStorageType_FoValue_WithStorageTypeLength_AndAnsiString_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
-    [TestCase(DbType.AnsiStringFixedLength, 100, "value", TestName = "GetStorageType_FoValue_WithStorageTypeLength_AndAnsiStringFixedLength_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
-    [TestCase(DbType.String, 100, "value", TestName = "GetStorageType_ForValue_WithStorageTypeLength_AndString_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
-    [TestCase(DbType.StringFixedLength, 100, "value", TestName = "GetStorageType_ForValue_WithStorageTypeLength_AndStringFixedLength_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
-    [TestCase(DbType.Int32, null, 5, TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndOtherDbType_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
-    [TestCase(DbType.Int32, null, null, TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndOtherDbType_AndValueNull_ReturnsOriginalStorageTypeInformation")]
-    [TestCase(DbType.AnsiStringFixedLength, null, null, TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndAnsiStringFixedLength_AndValueNull_ReturnsOriginalStorageTypeInformation")]
-    [TestCase(DbType.StringFixedLength, null, null, TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndStringFixedLength_AndValueNull_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(
+        DbType.AnsiString,
+        100,
+        "value",
+        TestName = "GetStorageType_FoValue_WithStorageTypeLength_AndAnsiString_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(
+        DbType.AnsiStringFixedLength,
+        100,
+        "value",
+        TestName = "GetStorageType_FoValue_WithStorageTypeLength_AndAnsiStringFixedLength_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(
+        DbType.String,
+        100,
+        "value",
+        TestName = "GetStorageType_ForValue_WithStorageTypeLength_AndString_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(
+        DbType.StringFixedLength,
+        100,
+        "value",
+        TestName = "GetStorageType_ForValue_WithStorageTypeLength_AndStringFixedLength_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(
+        DbType.Int32,
+        null,
+        5,
+        TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndOtherDbType_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(
+        DbType.Int32,
+        null,
+        null,
+        TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndOtherDbType_AndValueNull_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(
+        DbType.AnsiStringFixedLength,
+        null,
+        null,
+        TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndAnsiStringFixedLength_AndValueNull_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(
+        DbType.StringFixedLength,
+        null,
+        null,
+        TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndStringFixedLength_AndValueNull_ReturnsOriginalStorageTypeInformation")]
     public void GetStorageType_ForValue_ReturnsOriginalStorageTypeInformation (
         DbType storageDbType,
         int? storageTypeLength,

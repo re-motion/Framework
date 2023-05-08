@@ -41,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     /// <summary>
     /// First Chrome version supported by <see cref="ChromeBinariesProvider"/>.
     /// </summary>
-    private static readonly Version s_minimumSupportedChromeVersion = new Version(102, 0);
+    private static readonly Version s_minimumSupportedChromeVersion = new Version(106, 0);
 
     /// <summary>
     /// Returns the <see cref="ChromeExecutable"/> that contains the installed Chrome browser location, the corresponding ChromeDriver location,
@@ -62,12 +62,20 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     private string GetInstalledChromePath ()
     {
       //Even 64 bit Chrome is installed in the 32bit location
-      var defaultStableChromePath = Path.Combine(Get32BitProgramFilesPath(), "Google", "Chrome", "Application", c_chromeExecutableName);
+      var x86StableChromePath = Path.Combine(Get32BitProgramFilesPath(), "Google", "Chrome", "Application", c_chromeExecutableName);
 
-      if (File.Exists(defaultStableChromePath))
-        return defaultStableChromePath;
+      if (File.Exists(x86StableChromePath))
+        return x86StableChromePath;
 
-      throw new InvalidOperationException($"No stable Chrome version could be found at '{defaultStableChromePath}'.");
+      if (!Environment.Is64BitOperatingSystem)
+        throw new InvalidOperationException($"No stable Chrome version could be found at '{x86StableChromePath}'.");
+
+      var x64StableChromePath = Path.Combine(Get64BitProgramFilesPath(), "Google", "Chrome", "Application", c_chromeExecutableName);
+
+      if (File.Exists(x64StableChromePath))
+        return x64StableChromePath;
+
+      throw new InvalidOperationException($"No stable Chrome version could be found at '{x64StableChromePath}' or at '{x86StableChromePath}'.");
     }
 
     private string Get32BitProgramFilesPath ()
@@ -77,6 +85,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
           : Environment.SpecialFolder.ProgramFiles;
 
       return Environment.GetFolderPath(programFiles32BitFolder);
+    }
+
+    private string Get64BitProgramFilesPath ()
+    {
+      return Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
     }
 
     /// <summary>

@@ -98,23 +98,44 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     {
     }
 
-    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess)
+    public void RelationRead (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        DomainObject? relatedObject,
+        ValueAccess valueAccess)
     {
     }
 
-    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, IReadOnlyCollectionData<DomainObject> relatedObjects, ValueAccess valueAccess)
+    public void RelationRead (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        IReadOnlyCollectionData<DomainObject> relatedObjects,
+        ValueAccess valueAccess)
     {
     }
 
-    public void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
+    public void RelationChanging (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject)
     {
     }
 
-    public void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinitiont, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
+    public void RelationChanged (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinitiont,
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject)
     {
     }
 
-    public QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult) where T : DomainObject
+    public QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult)
+        where T : DomainObject
     {
       return queryResult;
     }
@@ -138,7 +159,6 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     public void RolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
     }
-
 
     #endregion
 
@@ -202,11 +222,14 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     public void QueryExecuted (Guid connectionID, Guid queryID, TimeSpan durationOfQueryExecution)
     {
-      _appenderProxy.CommandDurationAndRowCount(_clientTransactionID, durationOfQueryExecution.Milliseconds, null);
+      _appenderProxy.CommandDurationAndRowCount(_clientTransactionID, (int)durationOfQueryExecution.TotalMilliseconds, null);
     }
 
     public void QueryExecuting (
-        Guid connectionID, Guid queryID, string commandText, IDictionary<string, object?> parameters)
+        Guid connectionID,
+        Guid queryID,
+        string commandText,
+        IDictionary<string, object?> parameters)
     {
       ArgumentUtility.CheckNotNullOrEmpty("commandText", commandText);
       ArgumentUtility.CheckNotNull("parameters", parameters);

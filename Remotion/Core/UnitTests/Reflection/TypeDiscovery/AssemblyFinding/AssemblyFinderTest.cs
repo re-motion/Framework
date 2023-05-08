@@ -20,9 +20,11 @@ using System.Linq;
 using System.Reflection;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
+#if !NETFRAMEWORK
+using Remotion.Development.UnitTesting.IsolatedCodeRunner;
+#endif
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 {
@@ -83,23 +85,35 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     }
 
     [Test]
-#if !NETFRAMEWORK
-    [Ignore("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains; RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
-#endif
     public void FindAssemblies_FindsReferencedAssemblies_Transitive ()
     {
       const string buildOutputDirectory = "Reflection.AssemblyFinderTest.FindAssemblies_FindsReferencedAssemblies_Transitive";
       string sourceDirectoryRoot = Path.Combine(TestContext.CurrentContext.TestDirectory, @"Reflection\TypeDiscovery\AssemblyFinding\TestAssemblies\AssemblyFinderTest");
 
-      Action<object[]> testAction = delegate (object[] args)
+      using (var outputManager = new AssemblyCompilerBuildOutputManager(buildOutputDirectory, true, sourceDirectoryRoot))
       {
-        var outputManagerWithoutClosure = (AssemblyCompilerBuildOutputManager)args[0];
-
         // dependency chain: mixinSamples -> remotion -> log4net
         var log4NetAssembly = typeof(log4net.LogManager).Assembly;
         var remotionAssembly = typeof(AssemblyFinder).Assembly;
-        var referencingAssembly = CompileReferencingAssembly(outputManagerWithoutClosure, remotionAssembly);
+        var referencingAssemblyFullPath = CompileReferencingAssembly(outputManager, remotionAssembly);
+#if NETFRAMEWORK
+        var referencingAssembly = Assembly.ReflectionOnlyLoad(File.ReadAllBytes(referencingAssemblyFullPath));
+        Test(log4NetAssembly, remotionAssembly, referencingAssembly);
+#else
+        var isolatedCodeRunner = new IsolatedCodeRunner(TestMain);
+        isolatedCodeRunner.Run(referencingAssemblyFullPath);
 
+        static void TestMain (string[] args)
+        {
+          var log4NetAssembly = typeof(log4net.LogManager).Assembly;
+          var remotionAssembly = typeof(AssemblyFinder).Assembly;
+          Test(log4NetAssembly, remotionAssembly, Assembly.LoadFile(args[0]));
+        }
+#endif
+      }
+
+      static void Test (Assembly log4NetAssembly, Assembly remotionAssembly, Assembly referencingAssembly)
+      {
         var loaderMock = new Mock<IAssemblyLoader>();
         loaderMock
             .Setup(mock => mock.TryLoadAssembly(ArgReferenceMatchesDefinition(remotionAssembly), referencingAssembly.FullName))
@@ -113,20 +127,15 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
             .Verifiable();
 
         var rootAssemblyFinderStub = new Mock<IRootAssemblyFinder>();
-        rootAssemblyFinderStub.Setup(stub => stub.FindRootAssemblies()).Returns(
-            new[] { new RootAssembly(referencingAssembly, true) });
+        rootAssemblyFinderStub
+            .Setup(stub => stub.FindRootAssemblies())
+            .Returns(new[] { new RootAssembly(referencingAssembly, true) });
 
         var finder = new AssemblyFinder(rootAssemblyFinderStub.Object, loaderMock.Object);
         var result = finder.FindAssemblies();
 
         loaderMock.Verify();
         Assert.That(result, Is.EquivalentTo(new[] { referencingAssembly, remotionAssembly, log4NetAssembly }));
-      };
-
-      // Run test action in separate AppDomain
-      using (var outputManager = new AssemblyCompilerBuildOutputManager(buildOutputDirectory, true, sourceDirectoryRoot))
-      {
-        AppDomainRunner.Run(testAction, outputManager);
       }
     }
 
@@ -214,11 +223,10 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
           .Any();
     }
 
-    private static Assembly CompileReferencingAssembly (AssemblyCompilerBuildOutputManager outputManager, Assembly remotionAssembly)
+    private static string CompileReferencingAssembly (AssemblyCompilerBuildOutputManager outputManager, Assembly remotionAssembly)
     {
-      var referencingAssemblyRelativePath = outputManager.CompileInSeparateAppDomain("RemotionCoreReferencingAssembly.dll", remotionAssembly.Location);
-      var referencingAssemblyFullPath = Path.GetFullPath(referencingAssemblyRelativePath);
-      return Assembly.LoadFile(referencingAssemblyFullPath);
+      var referencingAssemblyRelativePath = outputManager.Compile("RemotionCoreReferencingAssembly.dll", remotionAssembly.Location);
+      return Path.GetFullPath(referencingAssemblyRelativePath);
     }
   }
 }

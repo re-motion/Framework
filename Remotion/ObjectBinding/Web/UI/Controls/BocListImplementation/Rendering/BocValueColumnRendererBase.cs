@@ -23,7 +23,6 @@ using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
-using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
@@ -35,7 +34,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   public abstract class BocValueColumnRendererBase<TBocColumnDefinition> : BocCommandEnabledColumnRendererBase<TBocColumnDefinition>
       where TBocColumnDefinition: BocValueColumnDefinition
   {
-    protected BocValueColumnRendererBase (IResourceUrlFactory resourceUrlFactory, IRenderingFeatures renderingFeatures, BocListCssClassDefinition cssClasses, IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
+    protected BocValueColumnRendererBase (
+        IResourceUrlFactory resourceUrlFactory,
+        IRenderingFeatures renderingFeatures,
+        BocListCssClassDefinition cssClasses,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(resourceUrlFactory, renderingFeatures, cssClasses, fallbackNavigationUrlProvider)
     {
     }
@@ -59,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (!showEditModeControl)
         valueColumnText = PlainTextString.CreateFromText(renderingContext.ColumnDefinition.GetStringValue(businessObject));
 
-      bool enforceWidth = RenderCropSpanBeginTag(renderingContext, showEditModeControl, valueColumnText);
+      bool enforceWidth = RenderCropDivBeginTag(renderingContext, showEditModeControl, valueColumnText);
       bool isCommandEnabled = RenderBeginTag(renderingContext, originalRowIndex, businessObject, valueColumnText);
 
       if (!hasEditModeControl)
@@ -75,7 +78,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         RenderValueColumnCellText(renderingContext, valueColumnText!);
 
       RenderEndTag(renderingContext, isCommandEnabled);
-      RenderCropSpanEndTag(renderingContext, enforceWidth);
+      RenderCropDivEndTag(renderingContext, enforceWidth);
     }
 
     protected abstract void RenderCellDataForEditMode (
@@ -116,7 +119,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <param name="showEditModeControl">Specifies if the cell contains edit mode controls.</param>
     /// <param name="spanTitle">Specifies the text to be written to the 'title' attribute.</param>
     /// <returns><see langword="true"/> if the crop span begin tag has been rendered, <see langword="false"/> otherwise.</returns>
-    private bool RenderCropSpanBeginTag (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, bool showEditModeControl, PlainTextString spanTitle)
+    private bool RenderCropDivBeginTag (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, bool showEditModeControl, PlainTextString spanTitle)
     {
       bool enforceWidth =
           renderingContext.ColumnDefinition.EnforceWidth
@@ -132,17 +135,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.AddStyleAttribute("white-space", "nowrap");
         renderingContext.Writer.AddStyleAttribute("display", "block");
         spanTitle.AddAttributeTo(renderingContext.Writer, HtmlTextWriterAttribute.Title);
-        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
       }
       return enforceWidth;
     }
 
     /// <summary>
-    /// Renders the end tag to the crop span element if a begin tag has been rendered.
+    /// Renders the end tag to the crop div element if a begin tag has been rendered.
     /// </summary>
     /// <param name="renderingContext">The <see cref="BocColumnRenderingContext{BocColumnDefinition}"/>.</param>
     /// <param name="enforceWidth">Specifies if a corresponding begin tag has been rendered.</param>
-    private void RenderCropSpanEndTag (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, bool enforceWidth)
+    private void RenderCropDivEndTag (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, bool enforceWidth)
     {
       if (enforceWidth)
         renderingContext.Writer.RenderEndTag();
@@ -158,7 +161,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (!isCommandEnabled)
       {
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.Content);
-        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
       }
       return isCommandEnabled;
     }

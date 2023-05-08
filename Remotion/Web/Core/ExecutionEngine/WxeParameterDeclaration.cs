@@ -108,7 +108,7 @@ public class WxeParameterDeclaration
   private void SetParameter (string parameterName, object? value, NameObjectCollection variables)
   {
     if (value != null && _type != null && ! _type.IsAssignableFrom(value.GetType()))
-      throw new ApplicationException("Parameter '" + parameterName + "' has unexpected type " + value.GetType().GetFullNameSafe() + " (" + _type.GetFullNameSafe() + " was expected).");
+      throw new ApplicationException($"Parameter '{parameterName}' has unexpected type {value.GetType().GetFullNameSafe()} ({_type.GetFullNameSafe()} was expected).");
     variables[parameterName] = value;
   }
 

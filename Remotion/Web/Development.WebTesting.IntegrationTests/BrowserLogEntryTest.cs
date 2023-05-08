@@ -30,8 +30,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void BrowserLogEntry_ShouldWrapSeleniumLogEntry ()
     {
-      if (!Helper.BrowserConfiguration.IsChrome())
-        Assert.Ignore("Getting the browser log entries is currently only supported by Chrome.");
+      if (Helper.BrowserConfiguration.IsFirefox())
+        Assert.Ignore("Getting the browser log entries is not supported by Firefox.");
 
       var home = Start();
 

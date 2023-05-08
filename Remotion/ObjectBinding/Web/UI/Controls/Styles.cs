@@ -21,7 +21,6 @@ using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
-using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -400,14 +399,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private static readonly string s_scriptFileKey = typeof(TextBoxStyle).GetFullNameChecked() + "_Script";
 
     private int? _rows;
+    private PlainTextString _placeholder;
     private BocTextBoxMode _textMode;
     private readonly BocTextBoxMode _defaultTextMode = BocTextBoxMode.SingleLine;
     private bool? _wrap;
+    private string _autoComplete;
 
     public TextBoxStyle (BocTextBoxMode defaultTextMode)
     {
       _defaultTextMode = defaultTextMode;
       _textMode = _defaultTextMode;
+      _autoComplete = string.Empty;
     }
 
     public TextBoxStyle ()
@@ -424,6 +426,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       if (_wrap != null)
         textBox.Wrap = _wrap.Value;
+
+      if (!_placeholder.IsEmpty)
+        textBox.Attributes.Add("placeholder", _placeholder.GetValue());
+
+      if (!string.IsNullOrEmpty(_autoComplete))
+        textBox.Attributes.Add("autocomplete", _autoComplete);
 
       if (_textMode == BocTextBoxMode.MultiLine
           && MaxLength != null
@@ -467,6 +475,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         Rows = ts.Rows;
         TextMode = ts.TextMode;
         Wrap = ts.Wrap;
+        Placeholder = ts.Placeholder;
+        AutoComplete = ts.AutoComplete;
       }
     }
 
@@ -478,6 +488,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _rows; }
       set { _rows = value; }
+    }
+
+    [Description("The placeholder value of the textbox.")]
+    [Category("Data")]
+    [DefaultValue(typeof(string), "")]
+    [NotifyParentProperty(true)]
+    public PlainTextString Placeholder
+    {
+      get { return _placeholder; }
+      set { _placeholder = value; }
+    }
+
+    ///  <summary>
+    /// Defines the autocomplete behaviour of the textbox.
+    /// Standard values are provided in <see cref="BocTextValueAutoCompleteAttribute"/>.
+    /// </summary>
+    [Description("The autocomplete behaviour of the textbox.")]
+    [Category("Behavior")]
+    [DefaultValue(typeof(string), "")]
+    [NotifyParentProperty(true)]
+    public string AutoComplete
+    {
+      get { return _autoComplete; }
+      set { _autoComplete = StringUtility.NullToEmpty(value); }
     }
 
     [Description("The behavior mode of the textbox.")]

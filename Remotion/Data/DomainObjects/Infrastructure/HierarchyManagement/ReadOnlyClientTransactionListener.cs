@@ -107,22 +107,41 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       // Allowed
     }
 
-    public virtual void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
+    public virtual void PropertyValueRead (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        PropertyDefinition propertyDefinition,
+        object? value,
+        ValueAccess valueAccess)
     {
       // Handled by Begin event
     }
 
-    public virtual void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
+    public virtual void PropertyValueChanging (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        PropertyDefinition propertyDefinition,
+        object? oldValue,
+        object? newValue)
     {
       EnsureWriteable(clientTransaction, "PropertyValueChanging");
     }
 
-    public virtual void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
+    public virtual void PropertyValueChanged (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        PropertyDefinition propertyDefinition,
+        object? oldValue,
+        object? newValue)
     {
       // Handled by Begin event
     }
 
-    public virtual void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess)
+    public virtual void RelationReading (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        ValueAccess valueAccess)
     {
       // Allowed
     }
@@ -167,7 +186,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       // Handled by Begin event
     }
 
-    public QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult) where T: DomainObject
+    public QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult)
+        where T : DomainObject
     {
       // Allowed
       return queryResult;

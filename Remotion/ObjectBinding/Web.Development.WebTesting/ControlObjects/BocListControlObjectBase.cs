@@ -480,7 +480,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     private WebTestException CreateWebTestExceptionForUnableToNavigateToPage (string pageWhichCantBeNavigatedTo, string currentPageAsString)
     {
-      return AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change page number to the {0} page, as the list is already on the {1} page.", pageWhichCantBeNavigatedTo, currentPageAsString);
+      return AssertionExceptionUtility.CreateExpectationException(
+          Driver,
+          "Unable to change page number to the {0} page, as the list is already on the {1} page.",
+          pageWhichCantBeNavigatedTo,
+          currentPageAsString);
     }
 
     private WebTestException CreateWebTestExceptionForIndexOutOfRange (int pageNumberToBeNavigated)

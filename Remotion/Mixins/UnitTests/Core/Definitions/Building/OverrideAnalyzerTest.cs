@@ -38,7 +38,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       Assert.That(targetClass.HasOverriddenMembers(), Is.True);
 
       MethodInfo baseMethod1 = typeof(BaseType1).GetMethod("VirtualMethod", new Type[0]);
-      MethodInfo baseMethod2 = typeof(BaseType1).GetMethod("VirtualMethod", new[] {typeof(string)});
+      MethodInfo baseMethod2 = typeof(BaseType1).GetMethod("VirtualMethod", new[] { typeof(string) });
       MethodInfo mixinMethod1 = typeof(BT1Mixin1).GetMethod("VirtualMethod", new Type[0]);
 
       MethodDefinition overridden = targetClass.Methods[baseMethod1];
@@ -68,7 +68,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       MixinDefinition mixin2 = targetClass.Mixins[typeof(BT1Mixin2)];
 
       PropertyInfo baseProperty1 = typeof(BaseType1).GetProperty("VirtualProperty");
-      PropertyInfo baseProperty2 = typeof(BaseType1).GetProperty("Item", new[] {typeof(string)});
+      PropertyInfo baseProperty2 = typeof(BaseType1).GetProperty("Item", new[] { typeof(string) });
       PropertyInfo mixinProperty1 = typeof(BT1Mixin1).GetProperty("VirtualProperty");
 
       PropertyDefinition overridden = targetClass.Properties[baseProperty1];
@@ -220,7 +220,10 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void ThrowsOnTargetClassOverridingMultipleMixinMethods ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<ClassOverridingMixinMembers>().Clear().AddMixins(typeof(MixinWithAbstractMembers), typeof(MixinWithSingleAbstractMethod2)).EnterScope())
+      var configuration = MixinConfiguration.BuildFromActive()
+          .ForClass<ClassOverridingMixinMembers>().Clear()
+          .AddMixins(typeof(MixinWithAbstractMembers), typeof(MixinWithSingleAbstractMethod2));
+      using (configuration.EnterScope())
       {
         Assert.That(
             () => DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassOverridingMixinMembers)),
@@ -236,7 +239,10 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void TargetClassOverridingSpecificMixinMethod ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<ClassOverridingSpecificMixinMember>().Clear().AddMixins(typeof(MixinWithVirtualMethod), typeof(MixinWithVirtualMethod2)).EnterScope())
+      var configuration = MixinConfiguration.BuildFromActive()
+          .ForClass<ClassOverridingSpecificMixinMember>().Clear()
+          .AddMixins(typeof(MixinWithVirtualMethod), typeof(MixinWithVirtualMethod2));
+      using (configuration.EnterScope())
       {
         TargetClassDefinition definition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassOverridingSpecificMixinMember));
         MethodDefinition method = definition.Methods[typeof(ClassOverridingSpecificMixinMember).GetMethod("VirtualMethod")];
@@ -262,7 +268,10 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void TargetClassOverridingSpecificGenericMethod ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<ClassOverridingSpecificGenericMixinMember>().Clear().AddMixins(typeof(GenericMixinWithVirtualMethod<>), typeof(GenericMixinWithVirtualMethod2<>)).EnterScope())
+      var configuration = MixinConfiguration.BuildFromActive()
+          .ForClass<ClassOverridingSpecificGenericMixinMember>().Clear()
+          .AddMixins(typeof(GenericMixinWithVirtualMethod<>), typeof(GenericMixinWithVirtualMethod2<>));
+      using (configuration.EnterScope())
       {
         TargetClassDefinition definition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassOverridingSpecificGenericMixinMember));
         MethodDefinition method = definition.Methods[typeof(ClassOverridingSpecificGenericMixinMember).GetMethod("VirtualMethod")];
@@ -274,22 +283,32 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     public void OverridingProtectedInheritedClassMethod ()
     {
       TargetClassDefinition targetClass = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassWithInheritedMethod));
-      MethodDefinition inheritedMethod = targetClass.Methods[typeof(BaseClassWithInheritedMethod).GetMethod("ProtectedInheritedMethod",
-                                                                                                              BindingFlags.NonPublic | BindingFlags.Instance)];
+      MethodDefinition inheritedMethod = targetClass.Methods[typeof(BaseClassWithInheritedMethod)
+          .GetMethod("ProtectedInheritedMethod", BindingFlags.NonPublic | BindingFlags.Instance)];
+
       Assert.That(inheritedMethod, Is.Not.Null);
       Assert.That(inheritedMethod.Overrides.Count, Is.EqualTo(1));
-      Assert.That(inheritedMethod.Overrides[0], Is.SameAs(targetClass.Mixins[typeof(MixinOverridingInheritedMethod)].Methods[typeof(MixinOverridingInheritedMethod).GetMethod("ProtectedInheritedMethod")]));
+      Assert.That(
+          inheritedMethod.Overrides[0],
+          Is.SameAs(
+              targetClass.Mixins[typeof(MixinOverridingInheritedMethod)]
+                  .Methods[typeof(MixinOverridingInheritedMethod).GetMethod("ProtectedInheritedMethod")]));
     }
 
     [Test]
     public void OverridingProtectedInternalInheritedClassMethod ()
     {
       TargetClassDefinition targetClass = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassWithInheritedMethod));
-      MethodDefinition inheritedMethod = targetClass.Methods[typeof(BaseClassWithInheritedMethod).GetMethod("ProtectedInternalInheritedMethod",
-                                                                                                              BindingFlags.NonPublic | BindingFlags.Instance)];
+      MethodDefinition inheritedMethod = targetClass.Methods[typeof(BaseClassWithInheritedMethod).GetMethod(
+          "ProtectedInternalInheritedMethod",
+          BindingFlags.NonPublic | BindingFlags.Instance)];
       Assert.That(inheritedMethod, Is.Not.Null);
       Assert.That(inheritedMethod.Overrides.Count, Is.EqualTo(1));
-      Assert.That(inheritedMethod.Overrides[0], Is.SameAs(targetClass.Mixins[typeof(MixinOverridingInheritedMethod)].Methods[typeof(MixinOverridingInheritedMethod).GetMethod("ProtectedInternalInheritedMethod")]));
+      Assert.That(
+          inheritedMethod.Overrides[0],
+          Is.SameAs(
+              targetClass.Mixins[typeof(MixinOverridingInheritedMethod)]
+                  .Methods[typeof(MixinOverridingInheritedMethod).GetMethod("ProtectedInternalInheritedMethod")]));
     }
 
     [Test]
@@ -299,7 +318,11 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       MethodDefinition inheritedMethod = targetClass.Methods[typeof(BaseClassWithInheritedMethod).GetMethod("PublicInheritedMethod")];
       Assert.That(inheritedMethod, Is.Not.Null);
       Assert.That(inheritedMethod.Overrides.Count, Is.EqualTo(1));
-      Assert.That(inheritedMethod.Overrides[0], Is.SameAs(targetClass.Mixins[typeof(MixinOverridingInheritedMethod)].Methods[typeof(MixinOverridingInheritedMethod).GetMethod("PublicInheritedMethod")]));
+      Assert.That(
+          inheritedMethod.Overrides[0],
+          Is.SameAs(
+              targetClass.Mixins[typeof(MixinOverridingInheritedMethod)]
+                  .Methods[typeof(MixinOverridingInheritedMethod).GetMethod("PublicInheritedMethod")]));
     }
 
     [Test]
@@ -309,8 +332,11 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       MethodDefinition inheritedMethod = targetClass.Methods[typeof(ClassOverridingInheritedMixinMethod).GetMethod("ProtectedInheritedMethod")];
       Assert.That(inheritedMethod, Is.Not.Null);
       Assert.That(inheritedMethod.Base, Is.Not.Null);
-      Assert.That(inheritedMethod.Base, Is.SameAs(targetClass.Mixins[typeof(MixinWithInheritedMethod)].Methods[
-          typeof(BaseMixinWithInheritedMethod).GetMethod("ProtectedInheritedMethod", BindingFlags.NonPublic | BindingFlags.Instance)]));
+      Assert.That(
+          inheritedMethod.Base,
+          Is.SameAs(
+              targetClass.Mixins[typeof(MixinWithInheritedMethod)]
+                  .Methods[typeof(BaseMixinWithInheritedMethod).GetMethod("ProtectedInheritedMethod", BindingFlags.NonPublic | BindingFlags.Instance)]));
     }
 
     [Test]
@@ -320,8 +346,11 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       MethodDefinition inheritedMethod = targetClass.Methods[typeof(ClassOverridingInheritedMixinMethod).GetMethod("ProtectedInternalInheritedMethod")];
       Assert.That(inheritedMethod, Is.Not.Null);
       Assert.That(inheritedMethod.Base, Is.Not.Null);
-      Assert.That(inheritedMethod.Base, Is.SameAs(targetClass.Mixins[typeof(MixinWithInheritedMethod)].Methods[
-          typeof(BaseMixinWithInheritedMethod).GetMethod("ProtectedInternalInheritedMethod", BindingFlags.NonPublic | BindingFlags.Instance)]));
+      Assert.That(
+          inheritedMethod.Base,
+          Is.SameAs(
+              targetClass.Mixins[typeof(MixinWithInheritedMethod)]
+                  .Methods[typeof(BaseMixinWithInheritedMethod).GetMethod("ProtectedInternalInheritedMethod", BindingFlags.NonPublic | BindingFlags.Instance)]));
     }
 
     [Test]
@@ -331,7 +360,9 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       MethodDefinition inheritedMethod = targetClass.Methods[typeof(ClassOverridingInheritedMixinMethod).GetMethod("PublicInheritedMethod")];
       Assert.That(inheritedMethod, Is.Not.Null);
       Assert.That(inheritedMethod.Base, Is.Not.Null);
-      Assert.That(inheritedMethod.Base, Is.SameAs(targetClass.Mixins[typeof(MixinWithInheritedMethod)].Methods[typeof(BaseMixinWithInheritedMethod).GetMethod("PublicInheritedMethod")]));
+      Assert.That(
+          inheritedMethod.Base,
+          Is.SameAs(targetClass.Mixins[typeof(MixinWithInheritedMethod)].Methods[typeof(BaseMixinWithInheritedMethod).GetMethod("PublicInheritedMethod")]));
     }
   }
 }

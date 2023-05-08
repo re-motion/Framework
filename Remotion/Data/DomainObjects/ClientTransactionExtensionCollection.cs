@@ -297,7 +297,12 @@ namespace Remotion.Data.DomainObjects
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess)
+    public void RelationRead (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        DomainObject? relatedObject,
+        ValueAccess valueAccess)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
       ArgumentUtility.DebugCheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
@@ -307,7 +312,12 @@ namespace Remotion.Data.DomainObjects
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, IReadOnlyCollectionData<DomainObject> relatedObjects, ValueAccess valueAccess)
+    public void RelationRead (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        IReadOnlyCollectionData<DomainObject> relatedObjects,
+        ValueAccess valueAccess)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
       ArgumentUtility.DebugCheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
@@ -318,7 +328,12 @@ namespace Remotion.Data.DomainObjects
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
+    public void RelationChanging (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
       ArgumentUtility.DebugCheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
@@ -328,7 +343,12 @@ namespace Remotion.Data.DomainObjects
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
+    public void RelationChanged (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
       ArgumentUtility.DebugCheckNotNull("relationEndPointDefinition", relationEndPointDefinition);

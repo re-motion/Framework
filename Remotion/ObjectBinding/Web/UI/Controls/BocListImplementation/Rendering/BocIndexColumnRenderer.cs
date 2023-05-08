@@ -79,7 +79,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderEndTag();
     }
 
-    [Obsolete("RM-7053: Only intended for ARIA-role workaround. May be removed in future releases without warning once there is infrastructure option for specifying the table type.")]
+    [Obsolete(
+        "RM-7053: Only intended for ARIA-role workaround. May be removed in future releases without warning once there is infrastructure option for specifying the table type.")]
     protected virtual string GetAriaRoleForTableDataElement ()
     {
       return HtmlRoleAttributeValue.Cell;
@@ -126,7 +127,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private void RenderRowIndex (BocListRenderingContext renderingContext, int index, string selectorControlID)
     {
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.Content);
-      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
       int renderedIndex = index + 1;
       if (renderingContext.Control.IndexOffset != null)
         renderedIndex += renderingContext.Control.IndexOffset.Value;

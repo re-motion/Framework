@@ -80,6 +80,9 @@ $licenses = @{
   "https://raw.githubusercontent.com/moq/moq4/master/License.txt"=@{
     url=$null
     license="3-Clause BSD License"};
+  "https://github.com/rubicon-oss/Moq.VerifiableSequence/blob/main/LICENSE.md"=@{
+    url=$null
+    license="3-Clause BSD License"};
 
   "CoreForms.Web"=@{
     url=$null
@@ -111,9 +114,6 @@ $licenses = @{
   "Microsoft.TypeScript.MSBuild"=@{
     url=$null
     license="Closed source, Microsoft Corporation"};
-    
-    
-    
 }
 
 $global:packageIds = New-Object System.Collections.Generic.List[System.Object]
@@ -324,7 +324,7 @@ $output += "|
 "
 
 $output += "| JetBrains Annotations (Source Code) "
-$output += "| 2017.2 "
+$output += "| 2022.1 "
 $output += "| [MIT License](https://raw.githubusercontent.com/JetBrains/ExternalAnnotations/master/LICENSE.md) "
 $output += "| This software (assemblies 'Remotion' and 'Remotion.*') embeds code based on 'JetBrains Annotations'. <br> Copyright (c) 2016 JetBrains http://www.jetbrains.com <br> Original software available via ReSharper -> Options -> Code Annotations -> Copy to Clipboard. "
 $output += "|
@@ -362,6 +362,20 @@ $output += "| [axe-core](https://github.com/dequelabs/axe-core) (Source Code) "
 $output += "| 3.3.4 "
 $output += "| [Mozilla Public License 2.0](https://github.com/dequelabs/axe-core/blob/develop/LICENSE) "
 $output += "| This software (assembly 'Remotion.Web.Development.WebTesting') embeds code based on 'axe-core'. <br> Copyright (c) 2021 Deque Systems, Inc. <br> https://github.com/dequelabs/axe-core "
+$output += "|
+"
+
+$output += "| [.NET Reference Source](https://github.com/microsoft/referencesource) (Source Code) "
+$output += "| 4.8 "
+$output += "| [MIT License](https://github.com/microsoft/referencesource/blob/master/LICENSE.txt) "
+$output += "| This software (assemblies in the 'CoreForms.Web' family) embeds code based on the '.NET Reference Source'. <br> Copyright (c) Microsoft Corporation <br> https://github.com/microsoft/referencesource "
+$output += "|
+"
+
+$output += "| [RoslynCodeDomProvider](https://github.com/aspnet/RoslynCodeDomProvider) (Source Code) "
+$output += "| adapted from commit: 213c6bdf00e7f56557024e3b2b1287f8529c7155 "
+$output += "| [MIT License](https://github.com/aspnet/RoslynCodeDomProvider/blob/main/LICENSE.txt) "
+$output += "| This software (assembly 'Remotion.Development.UnitTesting.Compilation') embeds code based on the 'RoslynCodeDomProvider'. <br> Copyright (c) Microsoft Corporation <br> https://github.com/aspnet/RoslynCodeDomProvider "
 $output += "|
 "
 

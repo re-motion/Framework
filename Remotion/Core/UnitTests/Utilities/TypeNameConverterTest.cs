@@ -69,7 +69,9 @@ namespace Remotion.UnitTests.Utilities
       Type destinationType = typeof(string);
 
       Assert.That(_converter.ConvertTo(null, null, null, destinationType), Is.EqualTo(""));
-      Assert.That((string)_converter.ConvertTo(null, null, typeof(TypeNameConverterTest), destinationType), Is.EqualTo("Remotion.UnitTests.Utilities.TypeNameConverterTest, Remotion.UnitTests"));
+      Assert.That(
+          (string)_converter.ConvertTo(null, null, typeof(TypeNameConverterTest), destinationType),
+          Is.EqualTo("Remotion.UnitTests.Utilities.TypeNameConverterTest, Remotion.UnitTests"));
     }
 
     [Test]

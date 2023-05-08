@@ -17,8 +17,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Remotion.FunctionalProgramming;
 using Remotion.Logging;
 using Remotion.Utilities;
 
@@ -42,23 +42,49 @@ namespace Remotion.Reflection.TypeDiscovery
         var classes = new List<KeyValuePair<Type, Type>>();
         var interfaces = new List<KeyValuePair<Type, Type>>();
 
-        foreach (var type in types.Select(CheckTypeIsNormalized))
+        var typesToProcess = new Queue<Type>();
+        var enqueuedTypes = new HashSet<Type>();
+        foreach (var type in types)
         {
-          classes.AddRange(
-              type.CreateSequence(t => t.BaseType)
-                  .Where(t => !t.IsInterface)
-                  .Select(GetNormalizedType)
-                  .Distinct(MemberInfoEqualityComparer<Type>.Instance)
-                  .Select(baseType => new KeyValuePair<Type, Type>(baseType, type)));
+          CheckTypeIsNormalized(type);
+          if (enqueuedTypes.Add(type))
+            typesToProcess.Enqueue(type);
+        }
 
-          interfaces.AddRange(
-              type.GetInterfaces()
-                  .Select(GetNormalizedType)
-                  .Distinct(MemberInfoEqualityComparer<Type>.Instance)
-                  .Select(interfaceType => new KeyValuePair<Type, Type>(interfaceType, type)));
+        var processedInterfaces = new HashSet<Type>();
+        while (typesToProcess.Count > 0)
+        {
+          var type = typesToProcess.Dequeue();
+
+          if (type.BaseType != null)
+          {
+            var normalizedBaseType = GetNormalizedType(type.BaseType);
+            if (enqueuedTypes.Add(normalizedBaseType))
+              typesToProcess.Enqueue(normalizedBaseType);
+
+            var nextBaseType = normalizedBaseType;
+            do
+            {
+              classes.Add(new KeyValuePair<Type, Type>(nextBaseType, type));
+              nextBaseType = GetNormalizedType(nextBaseType.BaseType);
+            } while (nextBaseType != null);
+          }
+
+          processedInterfaces.Clear();
+          foreach (var interfaceType in type.GetInterfaces())
+          {
+            var normalizedInterfaceType = GetNormalizedType(interfaceType);
+            if (enqueuedTypes.Add(normalizedInterfaceType))
+              typesToProcess.Enqueue(normalizedInterfaceType);
+
+            if (processedInterfaces.Add(normalizedInterfaceType))
+              interfaces.Add(new KeyValuePair<Type, Type>(normalizedInterfaceType, type));
+          }
 
           if (type.IsInterface)
             interfaces.Add(new KeyValuePair<Type, Type>(type, type));
+          else
+            classes.Add(new KeyValuePair<Type, Type>(type, type));
         }
 
         var classCache = classes.ToLookup(kvp => kvp.Key, kvp => kvp.Value, MemberInfoEqualityComparer<Type>.Instance);
@@ -67,7 +93,7 @@ namespace Remotion.Reflection.TypeDiscovery
         return new BaseTypeCache(classCache, interfaceCache);
       }
 
-      static Type CheckTypeIsNormalized (Type type)
+      static void CheckTypeIsNormalized (Type type)
       {
         if (type.IsConstructedGenericType)
         {
@@ -77,12 +103,13 @@ namespace Remotion.Reflection.TypeDiscovery
                   type.GetFullNameSafe()),
               "types");
         }
-
-        return type;
       }
 
-      static Type GetNormalizedType (Type type)
+      [return: NotNullIfNotNull("type")]
+      static Type? GetNormalizedType (Type? type)
       {
+        if (type == null)
+          return null;
         if (type.IsConstructedGenericType)
           return type.GetGenericTypeDefinition();
         return type;

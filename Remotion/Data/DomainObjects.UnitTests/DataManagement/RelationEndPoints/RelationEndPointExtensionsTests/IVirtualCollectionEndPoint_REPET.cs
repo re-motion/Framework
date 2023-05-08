@@ -87,7 +87,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "The opposite end point 'null/Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews' is of type "
-                  + "'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.NullVirtualCollectionEndPoint', not of type 'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.IObjectEndPoint'."));
+                  + "'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.NullVirtualCollectionEndPoint', "
+                  + "not of type 'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.IObjectEndPoint'."));
     }
   }
 }

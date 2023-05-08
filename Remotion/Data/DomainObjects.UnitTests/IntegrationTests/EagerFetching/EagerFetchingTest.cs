@@ -291,7 +291,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
       var ordersFetchQuery = QueryFactory.CreateCollectionQuery(
           "test fetch",
           TestDomainStorageProviderDefinition,
-          "SELECT DISTINCT o2.* FROM [Order] o LEFT OUTER JOIN OrderItem oi ON o.ID = oi.OrderID LEFT OUTER JOIN [Order] o2 ON o2.ID = oi.OrderID WHERE " + originalOrderWhereCondition,
+          "SELECT DISTINCT o2.* "
+          + "FROM [Order] o "
+          + "LEFT OUTER JOIN OrderItem oi ON o.ID = oi.OrderID "
+          + "LEFT OUTER JOIN [Order] o2 ON o2.ID = oi.OrderID "
+          + "WHERE " + originalOrderWhereCondition,
           new QueryParameterCollection(),
           typeof(DomainObjectCollection));
       orderItemsFetchQuery.EagerFetchQueries.Add(relationEndPointDefinition, ordersFetchQuery);

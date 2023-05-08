@@ -37,7 +37,9 @@ public class DomainObjectCollectionChangeEventArgs : EventArgs
   /// <summary>
   /// Initializes a new instance of the <b>DomainObjectCollectionChangingEventArgs</b> class.
   /// </summary>
-  /// <param name="domainObject">The <see cref="Remotion.Data.DomainObjects.DomainObject"/> that is being added or removed to the collection. Must not be <see langword="null"/>.</param>
+  /// <param name="domainObject">
+  /// The <see cref="Remotion.Data.DomainObjects.DomainObject"/> that is being added or removed to the collection. Must not be <see langword="null"/>.
+  /// </param>
   /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/>.</exception>
   public DomainObjectCollectionChangeEventArgs (DomainObject domainObject)
   {

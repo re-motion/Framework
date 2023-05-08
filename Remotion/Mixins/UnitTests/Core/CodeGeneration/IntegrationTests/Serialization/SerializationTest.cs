@@ -88,7 +88,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
 
         Assert.That(Mixin.Get<MixinOverridingClassMethod>(deserialiedInstance).Next, Is.Not.Null);
         Assert.That(
-                      ((MixinOverridingClassMethod.IRequirements)Mixin.Get<MixinOverridingClassMethod>(deserialiedInstance).Next).OverridableMethod(84), Is.EqualTo("OverridableBaseType.OverridableMethod(84)"));
+            ((MixinOverridingClassMethod.IRequirements)Mixin.Get<MixinOverridingClassMethod>(deserialiedInstance).Next).OverridableMethod(84),
+            Is.EqualTo("OverridableBaseType.OverridableMethod(84)"));
       }
     }
 

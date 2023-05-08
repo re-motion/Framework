@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel;
 
+// @formatter:off
 namespace Remotion
 {
   /// <summary>

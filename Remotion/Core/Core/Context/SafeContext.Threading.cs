@@ -37,19 +37,22 @@ namespace Remotion.Context
       public static Timer NewTimer (TimerCallback callback, object state, TimeSpan dueTime, TimeSpan period) => NewTimer(Instance, callback, state, dueTime, period);
 
       /// <inheritdoc cref="M:System.Threading.Timer.#ctor(System.Threading.TimerCallback,System.Object,System.TimeSpan,System.TimeSpan)" />
-      public static Timer NewTimer (ISafeContextStorageProvider provider, TimerCallback callback, object state, TimeSpan dueTime, TimeSpan period) => new(CreateWrapper(provider, callback), state, dueTime, period);
+      public static Timer NewTimer (ISafeContextStorageProvider provider, TimerCallback callback, object state, TimeSpan dueTime, TimeSpan period) =>
+          new(CreateWrapper(provider, callback), state, dueTime, period);
 
       /// <inheritdoc cref="M:System.Threading.Timer.#ctor(System.Threading.TimerCallback,System.Object,System.Int32,System.Int32)" />
       public static Timer NewTimer (TimerCallback callback, object state, int dueTime, int period) => NewTimer(Instance, callback, state, dueTime, period);
 
       /// <inheritdoc cref="M:System.Threading.Timer.#ctor(System.Threading.TimerCallback,System.Object,System.Int32,System.Int32)" />
-      public static Timer NewTimer (ISafeContextStorageProvider provider, TimerCallback callback, object state, int dueTime, int period) => new(CreateWrapper(provider, callback), state, dueTime, period);
+      public static Timer NewTimer (ISafeContextStorageProvider provider, TimerCallback callback, object state, int dueTime, int period) =>
+          new(CreateWrapper(provider, callback), state, dueTime, period);
 
       /// <inheritdoc cref="M:System.Threading.Timer.#ctor(System.Threading.TimerCallback,System.Object,System.Int64,System.Int64)" />
       public static Timer NewTimer (TimerCallback callback, object state, long dueTime, long period) => NewTimer(Instance, callback, state, dueTime, period);
 
       /// <inheritdoc cref="M:System.Threading.Timer.#ctor(System.Threading.TimerCallback,System.Object,System.Int64,System.Int64)" />
-      public static Timer NewTimer (ISafeContextStorageProvider provider, TimerCallback callback, object state, long dueTime, long period) => new(CreateWrapper(provider, callback), state, dueTime, period);
+      public static Timer NewTimer (ISafeContextStorageProvider provider, TimerCallback callback, object state, long dueTime, long period) =>
+          new(CreateWrapper(provider, callback), state, dueTime, period);
 
       // Ignore uint not being CLS compliant
 #pragma warning disable CS3001
@@ -58,7 +61,8 @@ namespace Remotion.Context
       public static Timer NewTimer (TimerCallback callback, object state, uint dueTime, uint period) => NewTimer(Instance, callback, state, dueTime, period);
 
       /// <inheritdoc cref="M:System.Threading.Timer.#ctor(System.Threading.TimerCallback,System.Object,System.UInt32,System.UInt32)" />
-      public static Timer NewTimer (ISafeContextStorageProvider provider, TimerCallback callback, object state, uint dueTime, uint period) => new(CreateWrapper(provider, callback), state, dueTime, period);
+      public static Timer NewTimer (ISafeContextStorageProvider provider, TimerCallback callback, object state, uint dueTime, uint period) =>
+          new(CreateWrapper(provider, callback), state, dueTime, period);
 
 #pragma warning restore CS3001
 

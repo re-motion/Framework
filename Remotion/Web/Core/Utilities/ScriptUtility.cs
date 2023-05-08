@@ -148,26 +148,5 @@ namespace Remotion.Web.Utilities
         control.Page!.ClientScript.RegisterClientScriptBlock(control, typeof(ScriptUtility), key, "StyleUtility.AddBrowserSwitch();");
       }
     }
-
-    public void RegisterElementForBorderSpans (IControl control, string cssSelectorForBorderSpanTarget)
-    {
-      ArgumentUtility.CheckNotNull("control", control);
-      ArgumentUtility.CheckNotNullOrEmpty("cssSelectorForBorderSpanTarget", cssSelectorForBorderSpanTarget);
-
-      string key = "BorderSpans_" + cssSelectorForBorderSpanTarget;
-      string script = string.Format("StyleUtility.CreateBorderSpans ('{0}');", cssSelectorForBorderSpanTarget);
-      control.Page!.ClientScript.RegisterStartupScriptBlock(control, typeof(ScriptUtility), key, script);
-    }
-
-    public void RegisterResizeOnElement (IControl control, string cssSelector, string eventHandler)
-    {
-      ArgumentUtility.CheckNotNull("control", control);
-      ArgumentUtility.CheckNotNullOrEmpty("cssSelector", cssSelector);
-      ArgumentUtility.CheckNotNullOrEmpty("eventHandler", eventHandler);
-
-      string key = control.ClientID + "_ResizeEventHandler";
-      string script = string.Format("PageUtility.Instance.RegisterResizeHandler({0}, {1});", cssSelector, eventHandler);
-      control.Page!.ClientScript.RegisterStartupScriptBlock(control, typeof(ScriptUtility), key, script);
-    }
   }
 }

@@ -88,28 +88,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     }
 
     /// <summary>
-    /// Renders a custom title cell that includes information about bound property paths of <see cref="BocCustomColumnDefinition"/>.
+    /// Adds attributes to a title cell that include information about bound property paths of <see cref="BocCustomColumnDefinition"/>.
     /// </summary>
-    protected override void RenderTitleCell (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
+    protected override void AddAttributesToRenderForTitleCell (BocCellAttributeRenderingContext<BocCustomColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
     {
+      base.AddAttributesToRenderForTitleCell(renderingContext, in arguments);
+
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {
         var boundPropertyPath = renderingContext.ColumnDefinition.PropertyPathIdentifier;
 
         if (!string.IsNullOrEmpty(boundPropertyPath))
         {
-          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "true");
-          renderingContext.Writer.AddAttribute(
+          renderingContext.AddAttributeToRender(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "true");
+          renderingContext.AddAttributeToRender(
               DiagnosticMetadataAttributesForObjectBinding.BoundPropertyPaths,
               boundPropertyPath);
         }
         else
         {
-          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "false");
+          renderingContext.AddAttributeToRender(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "false");
         }
       }
-
-      base.RenderTitleCell(renderingContext, arguments);
     }
 
     private void RenderCustomCellInnerControls (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext, int originalRowIndex,
@@ -148,7 +148,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       string onClick = renderingContext.Control.HasClientScript ? c_onCommandClickScript : string.Empty;
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
-      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
     }
 
     private void RenderClickWrapperEndTag (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext)

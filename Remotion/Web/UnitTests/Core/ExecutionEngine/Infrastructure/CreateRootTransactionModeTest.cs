@@ -57,13 +57,16 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       WxeContextFactory wxeContextFactory = new WxeContextFactory();
       WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
 
-      stepMock.Setup(mock => mock.Execute(context)).Callback(
-          (WxeContext context) =>
-          {
-            TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy(childFunction, context);
-            Assert.That(strategy, Is.InstanceOf(typeof(RootTransactionStrategy)));
-            Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(((TestFunction2)parentFunction).TransactionStrategy));
-          }).Verifiable();
+      stepMock
+          .Setup(mock => mock.Execute(context))
+          .Callback(
+              (WxeContext context) =>
+              {
+                TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy(childFunction, context);
+                Assert.That(strategy, Is.InstanceOf(typeof(RootTransactionStrategy)));
+                Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(((TestFunction2)parentFunction).TransactionStrategy));
+              })
+          .Verifiable();
 
       parentFunction.Execute(context);
     }

@@ -55,8 +55,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
 
       Menu = new Mock<DropDownMenu>(List.Object);
-      Menu.Setup(menuMock => menuMock.RenderControl(Html.Writer)).Callback(
-          (HtmlTextWriter writer) => writer.Write("mocked dropdown menu"));
+      Menu
+          .Setup(menuMock => menuMock.RenderControl(Html.Writer))
+          .Callback((HtmlTextWriter writer) => writer.Write("mocked dropdown menu"));
 
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(List.Object.DataSource, List.Object.Property, "Args");
       _renderingContext = new BocColumnRenderingContext<BocDropDownMenuColumnDefinition>(

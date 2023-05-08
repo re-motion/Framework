@@ -143,7 +143,10 @@ namespace Remotion.Mixins.UnitTests.Core
       ArgumentUtility.CheckNotNull("definition", definition);
 
       var attributeDefinitionFake = CreateAttributeDefinition(definition);
-      var suppressedAttributeIntroduction = new SuppressedAttributeIntroductionDefinition(new Mock<IAttributeIntroductionTarget>().Object, attributeDefinitionFake, attributeDefinitionFake);
+      var suppressedAttributeIntroduction = new SuppressedAttributeIntroductionDefinition(
+          new Mock<IAttributeIntroductionTarget>().Object,
+          attributeDefinitionFake,
+          attributeDefinitionFake);
       PrivateInvoke.InvokeNonPublicMethod(definition.SuppressedAttributeIntroductions, "Add", suppressedAttributeIntroduction);
       return suppressedAttributeIntroduction;
     }

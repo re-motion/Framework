@@ -27,28 +27,11 @@ namespace Remotion.Web.Utilities
  public interface IScriptUtility
   {
     /// <summary>
-    /// Registers the include files required for the calls to <see cref="RegisterElementForBorderSpans"/>
-    /// and <see cref="RegisterResizeOnElement"/>. Call this method during or before the pre-render phase of the page life cycle.
+    /// Registers the client side scripts for the current theme.
+    /// Call this method during or before the pre-render phase of the page life cycle.
     /// </summary>
     /// <param name="control">The <see cref="IControl"/> for which the include file is registered.</param>
     /// <param name="htmlHeadAppender">The <see cref="HtmlHeadAppender"/> to use for registering the include file.</param>
     void RegisterJavaScriptInclude (IControl control, HtmlHeadAppender htmlHeadAppender);
-
-    /// <summary>
-    /// Registers this control for javascript-generated border elements.
-    /// Call <see cref="RegisterJavaScriptInclude"/> before calling this method.
-    /// </summary>
-    /// <param name="control">The <see cref="IControl"/> for which the border-elements are registered.</param>
-    /// <param name="cssSelectorForBorderSpanTarget">>The element-selector as a css selector.</param>
-    void RegisterElementForBorderSpans (IControl control, string cssSelectorForBorderSpanTarget);
-
-    /// <summary>
-    /// Registers the <paramref name="eventHandler"/> for the element identified by the <paramref name="cssSelector"/>. 
-    /// Call <see cref="RegisterJavaScriptInclude"/> before calling this method.
-    /// </summary>
-    /// <param name="control">The <see cref="IControl"/> for which the <paramref name="eventHandler"/> is registered.</param>
-    /// <param name="cssSelector">The element-selector as a css selector.</param>
-    /// <param name="eventHandler">The eventhandler, with the following signatur: <c>function (element)</c>.</param>
-    void RegisterResizeOnElement (IControl control, string cssSelector, string eventHandler);
   }
 }

@@ -171,7 +171,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see cref="ReferenceProperty"/>.
     /// </summary>
     /// <param name="interim"> Specifies whether this is the final saving, or an interim saving. </param>
-    /// <returns><see langword="true"/> if the value was saved into the bound <see cref="IBusinessObjectDataSource"/>.<see cref="IBusinessObjectDataSource.BusinessObject"/>.</returns>
+    /// <returns>
+    ///   <see langword="true"/> if the value was saved into the bound <see cref="IBusinessObjectDataSource"/>.<see cref="IBusinessObjectDataSource.BusinessObject"/>.
+    /// </returns>
     public override bool SaveValue (bool interim) // inherited from control interface
     {
       // Validate to keep things consistent, i.e. all validators have executed during the save-operation.

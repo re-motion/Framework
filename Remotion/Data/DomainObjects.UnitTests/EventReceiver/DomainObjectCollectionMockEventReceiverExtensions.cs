@@ -1,6 +1,5 @@
 using System;
 using Moq;
-using Moq.Language;
 using Moq.Language.Flow;
 
 namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
@@ -17,7 +16,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     }
 
     public static ISetup<IDomainObjectCollectionMockEventReceiver> SetupAdding (
-        this ISetupConditionResult<IDomainObjectCollectionMockEventReceiver> fluent,
+        this MockWrapper<IDomainObjectCollectionMockEventReceiver> fluent,
         DomainObjectCollection sender,
         DomainObject domainObject)
     {
@@ -35,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     }
 
     public static ISetup<IDomainObjectCollectionMockEventReceiver> SetupAdded (
-        this ISetupConditionResult<IDomainObjectCollectionMockEventReceiver> fluent,
+        this MockWrapper<IDomainObjectCollectionMockEventReceiver> fluent,
         DomainObjectCollection sender,
         DomainObject domainObject)
     {
@@ -53,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     }
 
     public static ISetup<IDomainObjectCollectionMockEventReceiver> SetupRemoving (
-        this ISetupConditionResult<IDomainObjectCollectionMockEventReceiver> fluent,
+        this MockWrapper<IDomainObjectCollectionMockEventReceiver> fluent,
         DomainObjectCollection sender,
         DomainObject domainObject)
     {
@@ -71,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     }
 
     public static ISetup<IDomainObjectCollectionMockEventReceiver> SetupRemoved (
-        this ISetupConditionResult<IDomainObjectCollectionMockEventReceiver> fluent,
+        this MockWrapper<IDomainObjectCollectionMockEventReceiver> fluent,
         DomainObjectCollection sender,
         DomainObject domainObject)
     {

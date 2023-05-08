@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       base.Render(renderingContext);
     }
 
-    protected override TextBox GetTextBox (BocRenderingContext<IBocTextValue> renderingContext)
+    protected sealed override TextBox GetTextBox (BocRenderingContext<IBocTextValue> renderingContext)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 

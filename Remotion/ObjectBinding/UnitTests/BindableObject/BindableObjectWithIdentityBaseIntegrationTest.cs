@@ -96,7 +96,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var instance = new ClassDerivedFromBindableObjectWithIdentityBaseOverridingMixinMethod();
       Assert.That(instance.BusinessObjectClass, Is.InstanceOf(typeof(BindableObjectClass)));
       Assert.That(((BindableObjectClass)instance.BusinessObjectClass).TargetType, Is.SameAs(typeof(ClassDerivedFromBindableObjectWithIdentityBaseOverridingMixinMethod)));
-      Assert.That(((BindableObjectClass)instance.BusinessObjectClass).ConcreteType, Is.SameAs(TypeFactory.GetConcreteType(typeof(ClassDerivedFromBindableObjectWithIdentityBaseOverridingMixinMethod))));
+      Assert.That(
+          ((BindableObjectClass)instance.BusinessObjectClass).ConcreteType,
+          Is.SameAs(TypeFactory.GetConcreteType(typeof(ClassDerivedFromBindableObjectWithIdentityBaseOverridingMixinMethod))));
     }
   }
 }

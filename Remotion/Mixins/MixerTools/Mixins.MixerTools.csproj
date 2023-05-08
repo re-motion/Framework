@@ -6,7 +6,6 @@
   </PropertyGroup>
   <Import Project="..\..\..\Build\Shared.build.props" />
   <PropertyGroup>
-    <TargetFrameworks>net48</TargetFrameworks>
     <AssemblyTitle>re-motion Mixins Mixer Tools Console</AssemblyTitle>
     <Description>Command line tool for pre-generating concrete mixed types.</Description>
     <AssemblyName>TypeMixer</AssemblyName>

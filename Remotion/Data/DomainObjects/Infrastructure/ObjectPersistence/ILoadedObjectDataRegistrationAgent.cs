@@ -27,7 +27,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   {
     IEnumerable<ILoadedObjectData> RegisterIfRequired (IEnumerable<ILoadedObjectData> loadedObjects, bool throwOnNotFound);
 
-    IEnumerable<ILoadedObjectData> BeginRegisterIfRequired (IEnumerable<ILoadedObjectData> loadedObjects, bool throwOnNotFound, LoadedObjectDataPendingRegistrationCollector pendingLoadedObjectDataCollector);
+    IEnumerable<ILoadedObjectData> BeginRegisterIfRequired (
+        IEnumerable<ILoadedObjectData> loadedObjects,
+        bool throwOnNotFound,
+        LoadedObjectDataPendingRegistrationCollector pendingLoadedObjectDataCollector);
+
     void EndRegisterIfRequired (LoadedObjectDataPendingRegistrationCollector pendingLoadedObjectDataCollector);
   }
 }

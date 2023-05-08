@@ -105,7 +105,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       return new SerializedObjectIDStoragePropertyDefinition(unifiedSerializedIDProperty);
     }
 
-    public ForeignKeyConstraintDefinition CreateForeignKeyConstraint (Func<IEnumerable<ColumnDefinition>, string> nameProvider, EntityNameDefinition referencedTableName, ObjectIDStoragePropertyDefinition referencedObjectIDProperty)
+    public ForeignKeyConstraintDefinition CreateForeignKeyConstraint (
+        Func<IEnumerable<ColumnDefinition>, string> nameProvider,
+        EntityNameDefinition referencedTableName,
+        ObjectIDStoragePropertyDefinition referencedObjectIDProperty)
     {
       ArgumentUtility.CheckNotNull("nameProvider", nameProvider);
       ArgumentUtility.CheckNotNull("referencedTableName", referencedTableName);

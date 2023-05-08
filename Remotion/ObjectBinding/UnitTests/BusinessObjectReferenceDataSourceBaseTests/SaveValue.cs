@@ -78,7 +78,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     public void ClearsHasBusinessObjectCreated ()
     {
       _referencePropertyStub.Setup(stub => stub.SupportsDefaultValue).Returns(true);
-      _referencePropertyStub.Setup(stub => stub.CreateDefaultValue(_referencedDataSourceStub.Object.BusinessObject))
+      _referencePropertyStub
+          .Setup(stub => stub.CreateDefaultValue(_referencedDataSourceStub.Object.BusinessObject))
           .Returns(new Mock<IBusinessObject>().Object);
 
       var referenceDataSource = new TestableBusinessObjectReferenceDataSource(_referencedDataSourceStub.Object, _referencePropertyStub.Object);
@@ -125,7 +126,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     public void ReferencedDataSourceBusinessObjectNull_ClearsHasBusinessObjectCreated ()
     {
       _referencePropertyStub.Setup(stub => stub.SupportsDefaultValue).Returns(true);
-      _referencePropertyStub.Setup(stub => stub.CreateDefaultValue(_referencedDataSourceStub.Object.BusinessObject))
+      _referencePropertyStub
+          .Setup(stub => stub.CreateDefaultValue(_referencedDataSourceStub.Object.BusinessObject))
           .Returns(new Mock<IBusinessObject>().Object);
 
       var referenceDataSource = new TestableBusinessObjectReferenceDataSource(_referencedDataSourceStub.Object, _referencePropertyStub.Object);
@@ -143,7 +145,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
     public void HasBusinessObjectChangedFalse_DoesNotSaveValueIntoBoundObject_AndReturnsTrue ()
     {
       var referenceDataSource = new TestableBusinessObjectReferenceDataSource(_referencedDataSourceStub.Object, _referencePropertyStub.Object);
-      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).Setup(stub => stub.GetProperty(_referencePropertyStub.Object))
+      Mock.Get(_referencedDataSourceStub.Object.BusinessObject)
+          .Setup(stub => stub.GetProperty(_referencePropertyStub.Object))
           .Returns(new Mock<IBusinessObject>().Object);
       referenceDataSource.LoadValue(false);
       Assert.That(referenceDataSource.HasBusinessObjectChanged, Is.False);
@@ -232,7 +235,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       var expectedValue = new Mock<IBusinessObject>();
       bool isControlSaved = false;
 
-      Mock.Get(_referencedDataSourceStub.Object.BusinessObject).Setup(stub => stub.SetProperty(_referencePropertyStub.Object, expectedValue.Object))
+      Mock.Get(_referencedDataSourceStub.Object.BusinessObject)
+          .Setup(stub => stub.SetProperty(_referencePropertyStub.Object, expectedValue.Object))
 // ReSharper disable AccessToModifiedClosure
           .Callback((IBusinessObjectProperty property, object value) => Assert.That(isControlSaved, Is.True));
 // ReSharper restore AccessToModifiedClosure
@@ -645,7 +649,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       var referencedObject = new Mock<IBusinessObject>();
 
       _readOnlyReferencePropertyStub.Setup(stub => stub.SupportsDefaultValue).Returns(true);
-      _readOnlyReferencePropertyStub.Setup(stub => stub.IsDefaultValue(It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObjectProperty[]>())).Returns(true);
+      _readOnlyReferencePropertyStub
+          .Setup(stub => stub.IsDefaultValue(It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObjectProperty[]>()))
+          .Returns(true);
       _readOnlyReferencePropertyStub.Setup(stub => stub.SupportsDelete).Returns(true);
       _readOnlyReferencePropertyStub.Setup(stub => stub.Identifier).Returns("TestProperty");
       Mock.Get(_referencedDataSourceStub.Object.BusinessObject).Setup(stub => stub.GetProperty(_readOnlyReferencePropertyStub.Object)).Returns(referencedObject.Object);

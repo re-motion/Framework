@@ -262,9 +262,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// When the operation completes, the objects that have the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsChanged"/>,
     /// <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsDeleted"/>, or <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsUnchanged"/> flag set,
     /// are updated to have the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNotLoadedYet"/> flag set instead. Objects that have the
-    ///<see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNew"/> flag set, are changed to have the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag
-    /// set (this state is propagated over within the whole transaction hierarchy). Objects with the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/>
-    /// or and <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNotLoadedYet"/> flag set, remain the same.
+    ///<see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNew"/> flag set, are changed to have the
+    /// <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag set (this state is propagated over within the whole transaction hierarchy). ,
+    /// Objects with the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/>
+    /// or the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNotLoadedYet"/> flag set, remain the same.
     /// </para>
     /// <para>
     /// When the operation completes, all virtual relation end-points will no longer be complete, and they will be reloaded on access. All changes,

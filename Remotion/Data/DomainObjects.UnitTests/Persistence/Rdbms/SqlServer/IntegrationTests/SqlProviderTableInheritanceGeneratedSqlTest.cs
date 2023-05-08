@@ -59,7 +59,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           "SELECT [ID], [ClassID], [Timestamp], [CreatedBy], [CreatedAt], [ClientID], [FirstName], [LastName], [DateOfBirth], [Photo], "
           + "[CustomerType], [CustomerSince], [RegionID] FROM [TableInheritance_Person] "
           + "WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
-          Tuple.Create("@ID", DbType.Xml, (object)"<L><I>084010c4-82e5-4b0d-ae9f-a953303c03a4</I><I>623016f9-b525-4cae-a2bd-d4a6155b2f33</I><I>21e9bea1-3026-430a-a01e-e9b6a39928a8</I></L>"));
+          Tuple.Create(
+              "@ID",
+              DbType.Xml,
+              (object)"<L><I>084010c4-82e5-4b0d-ae9f-a953303c03a4</I><I>623016f9-b525-4cae-a2bd-d4a6155b2f33</I><I>21e9bea1-3026-430a-a01e-e9b6a39928a8</I></L>"));
       _testHelper.ExpectExecuteReader(
           sequence,
           CommandBehavior.SingleResult,
@@ -90,7 +93,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           "SELECT [ID], [ClassID], [Timestamp], [CreatedBy], [CreatedAt], [ClientID], [FirstName], [LastName], [DateOfBirth], [Photo], "
           + "[CustomerType], [CustomerSince], [RegionID] FROM [TableInheritance_Person] "
           + "WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
-          Tuple.Create("@ID", DbType.Xml, (object)"<L><I>623016f9-b525-4cae-a2bd-d4a6155b2f33</I><I>084010c4-82e5-4b0d-ae9f-a953303c03a4</I><I>21e9bea1-3026-430a-a01e-e9b6a39928a8</I></L>"));
+          Tuple.Create(
+              "@ID",
+              DbType.Xml,
+              (object)"<L><I>623016f9-b525-4cae-a2bd-d4a6155b2f33</I><I>084010c4-82e5-4b0d-ae9f-a953303c03a4</I><I>21e9bea1-3026-430a-a01e-e9b6a39928a8</I></L>"));
       _testHelper.ExpectExecuteReader(
           sequence,
           CommandBehavior.SingleResult,

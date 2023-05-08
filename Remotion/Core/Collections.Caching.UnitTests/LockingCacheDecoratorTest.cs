@@ -220,11 +220,11 @@ namespace Remotion.Collections.Caching.UnitTests
 
       GC.Collect();
       GC.WaitForFullGCComplete();
-
+#pragma warning disable RMCORE0001
       var threads = new Thread[threadCount];
       for (int i = 0; i < threadCount; i++)
         threads[i] = new Thread(threadStart);
-
+#pragma warning restore RMCORE0001
       for (int i = 0; i < threadCount; i++)
         threads[i].Start(stopwatches[i]);
 

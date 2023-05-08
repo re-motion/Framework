@@ -106,43 +106,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     void IBocColumnRenderer.RenderTitleCell (BocColumnRenderingContext renderingContext, in BocTitleCellRenderArguments arguments)
     {
-      RenderTitleCell(new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext), arguments);
-    }
-
-    protected virtual void RenderTitleCell (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
-    {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
       if (arguments.CellID == null)
         throw new ArgumentException("arguments.CellID is null", "arguments");
 
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, arguments.CellID);
+      RenderTitleCell(new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext), arguments);
+    }
 
-      string cssClassTitleCell = CssClasses.TitleCell;
-      if (!string.IsNullOrEmpty(renderingContext.ColumnDefinition.CssClass))
-        cssClassTitleCell += " " + renderingContext.ColumnDefinition.CssClass;
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClassTitleCell);
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.ColumnHeader);
-      if (_renderingFeatures.EnableDiagnosticMetadata)
-      {
-        var columnItemID = renderingContext.ColumnDefinition.ItemID;
-        if (!string.IsNullOrEmpty(columnItemID))
-          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.ItemID, columnItemID);
+    private void RenderTitleCell (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
+    {
+      var bocCellAttributeRenderingContext = new BocCellAttributeRenderingContext<TBocColumnDefinition>(renderingContext);
+      AddAttributesToRenderForTitleCell(bocCellAttributeRenderingContext, in arguments);
 
-        var columnTitle = renderingContext.ColumnDefinition.ColumnTitleDisplayValue;
-        HtmlUtility.ExtractPlainText(columnTitle).AddAttributeTo(renderingContext.Writer, DiagnosticMetadataAttributes.Content);
-
-        var oneBasedCellIndex = renderingContext.VisibleColumnIndex + 1;
-        renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, oneBasedCellIndex.ToString());
-
-        renderingContext.Writer.AddAttribute(
-            DiagnosticMetadataAttributesForObjectBinding.BocListColumnHasContentAttribute,
-            HasContentAttribute.ToString().ToLower());
-
-        renderingContext.Writer.AddAttribute(
-            DiagnosticMetadataAttributesForObjectBinding.BocListColumnIsRowHeader,
-            arguments.IsRowHeader.ToString().ToLower());
-      }
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Th);
 
       RenderTitleCellMarkers(renderingContext);
@@ -155,12 +131,54 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderEndTag();
     }
 
+    /// <remarks>
+    /// This is a template method. Deriving classes can implement <see cref="AddAttributesToRenderForTitleCell"/> to add attributes to
+    /// table title cell (&lt;th&gt;) element.
+    /// </remarks>
+    protected virtual void AddAttributesToRenderForTitleCell (BocCellAttributeRenderingContext<TBocColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
+    {
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+
+      if (arguments.CellID == null)
+        throw new ArgumentException("arguments.CellID is null", "arguments");
+
+      renderingContext.AddAttributeToRender(HtmlTextWriterAttribute.Id, arguments.CellID);
+
+      string cssClassTitleCell = CssClasses.TitleCell;
+      if (!string.IsNullOrEmpty(renderingContext.ColumnDefinition.CssClass))
+        cssClassTitleCell += " " + renderingContext.ColumnDefinition.CssClass;
+      renderingContext.AddAttributeToRender(HtmlTextWriterAttribute.Class, cssClassTitleCell);
+      renderingContext.AddAttributeToRender(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.ColumnHeader);
+      if (_renderingFeatures.EnableDiagnosticMetadata)
+      {
+        var columnItemID = renderingContext.ColumnDefinition.ItemID;
+        if (!string.IsNullOrEmpty(columnItemID))
+          renderingContext.AddAttributeToRender(DiagnosticMetadataAttributes.ItemID, columnItemID);
+
+        var columnTitle = HtmlUtility.ExtractPlainText(renderingContext.ColumnDefinition.ColumnTitleDisplayValue);
+        renderingContext.AddAttributeToRender(DiagnosticMetadataAttributes.Content, columnTitle);
+
+        var oneBasedCellIndex = renderingContext.VisibleColumnIndex + 1;
+        renderingContext.AddAttributeToRender(DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, oneBasedCellIndex.ToString());
+
+        renderingContext.AddAttributeToRender(
+            DiagnosticMetadataAttributesForObjectBinding.BocListColumnHasContentAttribute,
+            HasContentAttribute.ToString().ToLower());
+
+        renderingContext.AddAttributeToRender(
+            DiagnosticMetadataAttributesForObjectBinding.BocListColumnIsRowHeader,
+            arguments.IsRowHeader.ToString().ToLower());
+      }
+    }
+
     void IBocColumnRenderer.RenderDataColumnDeclaration (BocColumnRenderingContext renderingContext, bool isTextXml)
     {
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+
       RenderDataColumnDeclaration(new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext), isTextXml);
     }
 
-    protected virtual void RenderDataColumnDeclaration (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, bool isTextXml)
+    private void RenderDataColumnDeclaration (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, bool isTextXml)
     {
       renderingContext.Writer.WriteBeginTag("col");
       if (!renderingContext.ColumnDefinition.Width.IsEmpty)
@@ -292,6 +310,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     void IBocColumnRenderer.RenderDataCell (BocColumnRenderingContext renderingContext, in BocDataCellRenderArguments arguments)
     {
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+
       RenderDataCell(new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext), arguments);
     }
 
@@ -301,13 +321,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </summary>
     /// <param name="renderingContext">The <see cref="BocColumnRenderingContext{BocColumnDefinition}"/>.</param>
     /// <param name="arguments">The cell-specific rendering arguments.</param>
+    private void RenderDataCell (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
+    {
+      var bocCellAttributeRenderingContext = new BocCellAttributeRenderingContext<TBocColumnDefinition>(renderingContext);
+      AddAttributesToRenderForDataCell(bocCellAttributeRenderingContext, in arguments);
+
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
+
+      RenderCellContents(renderingContext, arguments);
+
+      renderingContext.Writer.RenderEndTag();
+    }
+
     /// <remarks>
-    /// This is a template method. Deriving classes must implement <see cref="RenderCellContents"/> to provide the contents of
-    /// the table cell (&lt;td&gt;) element.
+    /// This is a template method. Deriving classes can implement <see cref="AddAttributesToRenderForDataCell"/> to add attributes to
+    /// a table cell (&lt;td&gt;) element.
     /// </remarks>
-    protected virtual void RenderDataCell (
-        BocColumnRenderingContext<TBocColumnDefinition> renderingContext,
-        in BocDataCellRenderArguments arguments)
+    protected virtual void AddAttributesToRenderForDataCell (BocCellAttributeRenderingContext<TBocColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
@@ -315,10 +345,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       if (!string.IsNullOrEmpty(renderingContext.ColumnDefinition.CssClass))
         cssClassTableCell += " " + renderingContext.ColumnDefinition.CssClass;
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClassTableCell);
+      renderingContext.AddAttributeToRender(HtmlTextWriterAttribute.Class, cssClassTableCell);
 
       if (arguments.IsRowHeader)
-        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, arguments.CellID);
+        renderingContext.AddAttributeToRender(HtmlTextWriterAttribute.Id, arguments.CellID);
 
       // Rendering the header IDs is problematic for split tables and doesn't help with columns to the left of the header column.
       // Therefor, the header IDs are simply not rendered in the first place.
@@ -336,17 +366,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 #pragma warning restore CS0618 // Type or member is obsolete
       }
 
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, ariaRoleForTableDataElement);
+      renderingContext.AddAttributeToRender(HtmlTextWriterAttribute2.Role, ariaRoleForTableDataElement);
       if (_renderingFeatures.EnableDiagnosticMetadata)
         AddDiagnosticMetadataAttributes(renderingContext);
-      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
-
-      RenderCellContents(renderingContext, arguments);
-
-      renderingContext.Writer.RenderEndTag();
     }
 
-    [Obsolete("RM-7053: Only intended for ARIA-role workaround. May be removed in future releases without warning once there is infrastructure option for specifying the table type.")]
+    [Obsolete(
+        "RM-7053: Only intended for ARIA-role workaround. May be removed in future releases without warning once there is infrastructure option for specifying the table type.")]
     protected virtual string GetAriaRoleForTableDataElement ()
     {
       return HtmlRoleAttributeValue.Cell;
@@ -358,10 +384,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// attribute.
     /// </summary>
     /// <param name="renderingContext">The <see cref="BocColumnRenderingContext{BocCOlumnDefinition}"/>.</param>
-    protected virtual void AddDiagnosticMetadataAttributes (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
+    protected virtual void AddDiagnosticMetadataAttributes (BocCellAttributeRenderingContext<TBocColumnDefinition> renderingContext)
     {
       var oneBasedCellIndex = renderingContext.VisibleColumnIndex + 1;
-      renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, oneBasedCellIndex.ToString());
+      renderingContext.AddAttributeToRender(DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, oneBasedCellIndex.ToString());
     }
 
     /// <summary>

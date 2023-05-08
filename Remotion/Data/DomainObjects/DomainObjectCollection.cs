@@ -332,8 +332,13 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Determines whether an item is in the <see cref="DomainObjectCollection"/>.
     /// </summary>
-    /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>. Must not be <see langword="null"/>.</param>
-    /// <returns><see langword="true"/> if the <see cref="DomainObject"/> with the <paramref name="id"/> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
+    /// <param name="id">
+    /// The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>. Must not be <see langword="null"/>.
+    /// </param>
+    /// <returns>
+    /// <see langword="true"/> if the <see cref="DomainObject"/> with the <paramref name="id"/> is found in the <see cref="DomainObjectCollection"/>;
+    /// otherwise, <see langword="false"/>;
+    /// </returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/></exception>
     public bool Contains (ObjectID id)
     {
@@ -495,7 +500,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns>True if the collection contained the given object when the method was called; false otherwise.
     /// </returns>
     /// <remarks>
-    ///   If <see cref="Remove(Remotion.Data.DomainObjects.DomainObject)"/> is called with an object that is not in the collection, no exception is thrown, and no events are raised. 
+    /// If <see cref="Remove(Remotion.Data.DomainObjects.DomainObject)"/> is called with an object that is not in the collection, no exception is thrown, and no events are raised. 
     /// </remarks>
     /// <param name="domainObject">The <see cref="DomainObject"/> to remove. Must not be <see langword="null"/>.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/>.</exception>
@@ -681,11 +686,12 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// The method is invoked immediately before the <see cref="DomainObject"/> holding this collection is deleted if the <see cref="DomainObjectCollection" /> represents a one-to-many relation.
+    /// The method is invoked immediately before the <see cref="DomainObject"/> holding this collection is deleted,
+    /// if the <see cref="DomainObjectCollection" /> represents a one-to-many relation.
     /// </summary>
     /// <remarks>
-    /// During the delete process of a <see cref="DomainObject"/> all <see cref="DomainObject"/>s are removed from the <see cref="DomainObjectCollection" /> without notifying other objects.
-    /// Before all <see cref="DomainObject"/>s will be removed the <see cref="OnDeleting"/> method is invoked.
+    /// During the delete process of a <see cref="DomainObject"/> all <see cref="DomainObject"/>s are removed from the <see cref="DomainObjectCollection" />
+    /// without notifying other objects. Before all <see cref="DomainObject"/>s will be removed, the <see cref="OnDeleting"/> method is invoked.
     /// To clear any internal state or to unsubscribe from events whenever the <see cref="DomainObject"/> holding this collection is deleted 
     /// use the <see cref="OnDeleted"/> method, because the operation could be cancelled after the <see cref="OnDeleting"/> method has been called.<br/><br/>
     /// <note type="inotes">Inheritors overriding this method must not throw an exception from the override.</note>
@@ -697,10 +703,12 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// The method is invoked after the <see cref="DomainObject"/> holding this collection is deleted if the <see cref="DomainObjectCollection" /> represents a one-to-many relation.
+    /// The method is invoked after the <see cref="DomainObject"/> holding this collection is deleted,
+    /// if the <see cref="DomainObjectCollection" /> represents a one-to-many relation.
     /// </summary>
     /// <remarks>
-    /// During the delete process of a <see cref="DomainObject"/> all <see cref="DomainObject"/>s are removed from the <see cref="DomainObjectCollection" /> without notifying other objects.
+    /// During the delete process of a <see cref="DomainObject"/>,
+    /// all <see cref="DomainObject"/>s are removed from the <see cref="DomainObjectCollection" /> without notifying other objects.
     /// After all <see cref="DomainObject"/>s have been removed the <see cref="OnDeleted"/> method is invoked 
     /// to allow derived collections to adjust their internal state or to unsubscribe from events of contained <see cref="DomainObject"/>s.<br/><br/>
     /// <note type="inotes">Inheritors overriding this method must not throw an exception from the override.</note>

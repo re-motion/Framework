@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Web;
 using CommonServiceLocator;
 using Remotion.Development.Web.ResourceHosting;
@@ -46,15 +47,19 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       const string configuration = "Release";
 #endif
 
+      var fileExtensionHandlerMapping = new List<FileExtensionHandlerMapping>(FileExtensionHandlerMapping.Default);
+      fileExtensionHandlerMapping.Add(new FileExtensionHandlerMapping("html", ResourceVirtualPathProvider.StaticFileHandler));
+
       _resourceVirtualPathProvider = new ResourceVirtualPathProvider(
           new[]
           {
               new ResourcePathMapping("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
               new ResourcePathMapping("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
               new ResourcePathMapping("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
-              new ResourcePathMapping("Remotion.Web/UI", @"..\..\Web\Core\res\UI")
+              new ResourcePathMapping("Remotion.Web/UI", @"..\..\Web\Core\res\UI"),
+              new ResourcePathMapping("Remotion.Web.Development.WebTesting.TestSite.Shared", @"..\..\Web\Development.WebTesting.TestSite.Shared")
           },
-          FileExtensionHandlerMapping.Default);
+          fileExtensionHandlerMapping.ToArray());
       _resourceVirtualPathProvider.Register();
     }
 

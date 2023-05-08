@@ -26,15 +26,16 @@ using Remotion.Validation.RuleCollectors;
 
 namespace Remotion.Validation.Providers
 {
-  using ValidationRulesResult = Tuple<IAddingPropertyValidationRuleCollector, IAddingPropertyValidationRuleCollector, PropertyMetaValidationRuleCollector, RemovingPropertyValidationRuleCollector>;
+  using ValidationRulesResult =
+      Tuple<IAddingPropertyValidationRuleCollector, IAddingPropertyValidationRuleCollector, PropertyMetaValidationRuleCollector, RemovingPropertyValidationRuleCollector>;
 
   /// <summary>
   /// Base class for <see cref="IValidationRuleCollectorProvider"/> implementations which use property annotations to define the constraints. 
   /// </summary>
   public abstract class AttributeBasedValidationRuleCollectorProviderBase : IValidationRuleCollectorProvider
   {
-    private static readonly ConcurrentDictionary<(Type ValidatedType, Type PropertyType), Func<IAttributesBasedValidationPropertyRuleReflector, ValidationRulesResult>> s_cachedDelegatesForSetValidationRulesForProperty =
-        new ConcurrentDictionary<(Type, Type), Func<IAttributesBasedValidationPropertyRuleReflector, ValidationRulesResult>>();
+    private static readonly ConcurrentDictionary<(Type ValidatedType, Type PropertyType), Func<IAttributesBasedValidationPropertyRuleReflector, ValidationRulesResult>>
+        s_cachedDelegatesForSetValidationRulesForProperty = new();
 
     protected AttributeBasedValidationRuleCollectorProviderBase ()
     {
@@ -111,7 +112,7 @@ namespace Remotion.Validation.Providers
         Func<object, object> propertyFunc,
         Type collectorType)
     {
-      IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector = new AddingPropertyValidationRuleCollector<TValidatedType, TProperty>(property, propertyFunc, collectorType);
+      var addingPropertyValidationRuleCollector = new AddingPropertyValidationRuleCollector<TValidatedType, TProperty>(property, propertyFunc, collectorType);
 
       addingPropertyValidationRuleCollector.SetRemovable();
       foreach (var validator in propertyRuleReflector.GetRemovablePropertyValidators())
@@ -126,7 +127,7 @@ namespace Remotion.Validation.Providers
         Func<object, object> propertyFunc,
         Type collectorType)
     {
-      IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector = new AddingPropertyValidationRuleCollector<TValidatedType, TProperty>(property, propertyFunc, collectorType);
+      var addingPropertyValidationRuleCollector = new AddingPropertyValidationRuleCollector<TValidatedType, TProperty>(property, propertyFunc, collectorType);
 
       foreach (var validator in propertyRuleReflector.GetNonRemovablePropertyValidators())
         addingPropertyValidationRuleCollector.RegisterValidator(_ => validator);

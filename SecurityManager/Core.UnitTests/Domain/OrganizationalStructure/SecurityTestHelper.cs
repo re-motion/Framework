@@ -47,10 +47,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     private ISecurityProvider CreateSecurityProviderStub (Type securableClassType, ISecurityPrincipal principal, Enum[] returnedAccessTypes)
     {
       var securityProviderStub = new Mock<ISecurityProvider>();
-      securityProviderStub.Setup(
-          stub => stub.GetAccess(
-                      It.Is<ISecurityContext>(sc => TypeUtility.GetType(sc.Class, true) == securableClassType),
-                      principal))
+      securityProviderStub
+          .Setup(stub => stub.GetAccess(It.Is<ISecurityContext>(sc => TypeUtility.GetType(sc.Class, true) == securableClassType), principal))
           .Returns(returnedAccessTypes.Select(accessType => AccessType.Get(accessType)).ToArray());
 
       return securityProviderStub.Object;

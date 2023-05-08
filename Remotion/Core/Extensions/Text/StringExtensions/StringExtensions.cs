@@ -22,7 +22,8 @@ namespace Remotion.Text.StringExtensions
 {
   public static class StringExtensions
   {
-    private static readonly Dictionary<char, string> _escapeStringMapping = new Dictionary<char, string> { { '"', "\\\"" }, { '\n', "\\n" }, { '\r', "\\r" }, { '\t', "\\t" }, { '\\', "\\\\" }, { '\b', "\\b" }, { '\v', "\\v" }, { '\f', "\\f" } };
+    private static readonly Dictionary<char, string> _escapeStringMapping =
+        new() { { '"', "\\\"" }, { '\n', "\\n" }, { '\r', "\\r" }, { '\t', "\\t" }, { '\\', "\\\\" }, { '\b', "\\b" }, { '\v', "\\v" }, { '\f', "\\f" } };
 
     /// <summary>
     /// Returns the substring of the passed string starting at the first character and 

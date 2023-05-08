@@ -72,7 +72,11 @@ namespace Remotion.Validation.Validators
         throw new ArgumentOutOfRangeException("maxDecimalPlaces", maxDecimalPlaces, "Value must not be negative.");
 
       if ((maxIntegerPlaces + maxDecimalPlaces) > c_systemDecimalMaxPrecision)
-        throw new ArgumentException(message:$"The sum of {nameof(maxIntegerPlaces)} ({maxIntegerPlaces}) and {nameof(maxDecimalPlaces)} ({maxDecimalPlaces}) must not be greater than {c_systemDecimalMaxPrecision}.");
+      {
+        throw new ArgumentException(
+            message:
+            $"The sum of {nameof(maxIntegerPlaces)} ({maxIntegerPlaces}) and {nameof(maxDecimalPlaces)} ({maxDecimalPlaces}) must not be greater than {c_systemDecimalMaxPrecision}.");
+      }
 
       MaxIntegerPlaces = maxIntegerPlaces;
       MaxDecimalPlaces = maxDecimalPlaces;

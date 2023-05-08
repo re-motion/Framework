@@ -32,14 +32,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   public class BocCommandColumnRenderer : BocCommandEnabledColumnRendererBase<BocCommandColumnDefinition>, IBocCommandColumnRenderer
   {
     /// <summary>
-    /// Contructs a renderer bound to a <see cref="BocList"/> to render, an <see cref="HtmlTextWriter"/> to render to, and a
+    /// Constructs a renderer bound to a <see cref="BocList"/> to render, an <see cref="HtmlTextWriter"/> to render to, and a
     /// <see cref="BocCommandColumnDefinition"/> column for which to render cells.
     /// </summary>
     /// <remarks>
     /// This class should not be instantiated directly by clients. Instead, a <see cref="BocRowRenderer"/> should use a
     /// factory to obtain instances of this class.
     /// </remarks>
-    public BocCommandColumnRenderer (IResourceUrlFactory resourceUrlFactory, IRenderingFeatures renderingFeatures, BocListCssClassDefinition cssClasses, IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
+    public BocCommandColumnRenderer (
+        IResourceUrlFactory resourceUrlFactory,
+        IRenderingFeatures renderingFeatures,
+        BocListCssClassDefinition cssClasses,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(resourceUrlFactory, renderingFeatures, cssClasses, fallbackNavigationUrlProvider)
     {
     }
@@ -94,7 +98,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (!isCommandEnabled)
       {
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.Content);
-        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
       }
       return isCommandEnabled;
     }

@@ -235,7 +235,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (column.HasDiagnosticMetadata)
       {
         var cssSelector = string.Format(
-            ".bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[{0}='{1}'] span[{2}={3}]",
+            ".bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[{0}='{1}'] *[{2}={3}]",
             DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex,
             column.Index,
             DiagnosticMetadataAttributesForObjectBinding.BocListCellContents,
@@ -262,12 +262,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (column.HasDiagnosticMetadata)
       {
         var cssSelector = string.Format(
-            ".bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[{0}='{1}'] span[{2}*={3}]",
+            ".bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[{0}='{1}'] *[{2}*={3}]",
             DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex,
             column.Index,
             DiagnosticMetadataAttributesForObjectBinding.BocListCellContents,
             DomSelectorUtility.CreateMatchValueForCssSelector(containsCellText));
-        var cellScope = Scope.FindCss(cssSelector).FindXPath(string.Format("(ancestor::th[@{0}][1]|ancestor::td[@{0}][1])", DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex));
+        var cellScope = Scope
+            .FindCss(cssSelector)
+            .FindXPath(string.Format("(ancestor::th[@{0}][1]|ancestor::td[@{0}][1])", DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex));
         return CreateCellControlObject(GetHtmlID(), cellScope);
       }
       else

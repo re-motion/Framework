@@ -258,7 +258,10 @@ public class IdentifierGenerator: ICloneable
   public string GetUniqueIdentifier (object uniqueObject, string name)
   {
     if (_isTemplate)
-      throw new InvalidOperationException("This instance of IdentifierGenerator is a template. Use the Clone method to create a new IdentifierGenerator that can be used to create unique identifieres.");
+    {
+      throw new InvalidOperationException(
+          "This instance of IdentifierGenerator is a template. Use the Clone method to create a new IdentifierGenerator that can be used to create unique identifiers.");
+    }
 
     if (_uniqueIdentifiers == null)
     {

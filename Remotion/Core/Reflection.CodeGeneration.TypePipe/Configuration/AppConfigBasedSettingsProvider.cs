@@ -27,7 +27,8 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.Configuration
   /// <code>
   /// &lt;configuration&gt;
   ///   &lt;configSections&gt;
-  ///     &lt;section name="remotion.reflection.codeGeneration.typePipe" type="Remotion.Reflection.CodeGeneration.TypePipe.Configuration.TypePipeConfigurationSection, Remotion.Reflection.CodeGeneration.TypePipe"/&gt;
+  ///     &lt;section name="remotion.reflection.codeGeneration.typePipe"
+  ///                 type="Remotion.Reflection.CodeGeneration.TypePipe.Configuration.TypePipeConfigurationSection, Remotion.Reflection.CodeGeneration.TypePipe"/&gt;
   ///     &lt;!-- ... --&gt;
   ///   &lt;/configSections&gt;
   ///   

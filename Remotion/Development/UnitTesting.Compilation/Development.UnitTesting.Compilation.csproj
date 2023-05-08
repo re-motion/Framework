@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectType>Library</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>re-motion Development Library for code compilation</AssemblyTitle>
+    <Description>Library for supporting compilation scenarios in Unit Tests.</Description>
+    <AssemblyName>Remotion.Development.UnitTesting.Compilation</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.CodeDom" Version="7.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="build\*.*" Pack="true" PackagePath="build\%(Filename)%(Extension);buildTransitive\%(Filename)%(Extension)" />
+    <None Include="ThirdPartyNotice.txt" Pack="true" PackagePath="ThirdPartyNotice.txt" />
+    <None Include="..\..\license\LGPLv2.1.txt" Pack="true" PackagePath="LICENSE.txt" Visible="false" />
+  </ItemGroup>
+  <Import Project="..\..\..\Build\Shared.build.targets" />
+</Project>

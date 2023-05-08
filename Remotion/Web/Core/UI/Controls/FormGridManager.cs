@@ -264,7 +264,9 @@ namespace Remotion.Web.UI.Controls
         //  Not found, append to form grid instead of inserting at position of related form grid row
         if (relatedRow == null)
         {
-          s_log.Warn("Could not find control '" + relatedRowID + "' inside FormGrid (HtmlTable) '" + _table.ID + "' in naming container '" + _table.NamingContainer.GetType().GetFullNameSafe() + "' on page '" + _table.Page!.ToString() + "'.");
+          s_log.Warn(
+              $"Could not find control '{relatedRowID}' inside FormGrid (HtmlTable) '{_table.ID}' "
+              + $"in naming container '{_table.NamingContainer.GetType().GetFullNameSafe()}' on page '{_table.Page!}'.");
 
           //  append html table rows
           for (int i = 0; i < newFormGridRow.HtmlTableRows.Count; i++)
@@ -420,7 +422,13 @@ namespace Remotion.Web.UI.Controls
         FormGridRow formGridRow = ArgumentUtility.CheckType<FormGridRow>("value", value);
 
         if (formGridRow.HtmlTableRows[0].Parent != _ownerFormGrid.Table)
-          throw new InvalidOperationException("The FormGridRow that attempted to be inserted at position " + index + " contains HtmlTableRows belonging to the table '" + formGridRow.HtmlTableRows[0].Parent!.ID + "', but the FormGrid encapsulates the table '" +_ownerFormGrid.Table.ID + "'."); // TODO RM-8118: not null assertion
+        {
+          // TODO RM-8118: not null assertion
+          throw new InvalidOperationException(
+              $"The FormGridRow that attempted to be inserted at position {index} contains HtmlTableRows belonging to the table '{formGridRow.HtmlTableRows[0].Parent!.ID}',"
+              + $" but the FormGrid encapsulates the table '{_ownerFormGrid.Table.ID}'.");
+        }
+
         formGridRow._formGrid = _ownerFormGrid;
         base.OnInsert(index, value);
       }
@@ -606,7 +614,13 @@ namespace Remotion.Web.UI.Controls
             && rowIndex < 0)
         {
           string? tableID = _formGrid.Table.ID;
-          throw new ArgumentOutOfRangeException("rowIndex", rowIndex, string.Format("Error while formatting HtmlTable '{0}': The rowIndex exceeds the number of rows in the row-group being formatted. Rows in the row-group:", tableID, _htmlTableRows.Count));
+          throw new ArgumentOutOfRangeException(
+              "rowIndex",
+              rowIndex,
+              string.Format(
+                  "Error while formatting HtmlTable '{0}': The rowIndex exceeds the number of rows in the row-group being formatted. Rows in the row-group: {1}",
+                  tableID,
+                  _htmlTableRows.Count));
         }
 
         if (   cellIndex >= _htmlTableRows[rowIndex].Cells.Count
@@ -614,7 +628,10 @@ namespace Remotion.Web.UI.Controls
         {
           string? tableID = _formGrid.Table.ID;
           int htmlRowIndex = _formGrid.Table.Controls.IndexOf(_htmlTableRows[rowIndex]);
-          throw new ArgumentOutOfRangeException("cellIndex", cellIndex, string.Format("Error while formatting HtmlTable '{0}', row {1}: The row has no cell at index {2}.", tableID, htmlRowIndex, cellIndex));
+          throw new ArgumentOutOfRangeException(
+              "cellIndex",
+              cellIndex,
+              string.Format("Error while formatting HtmlTable '{0}', row {1}: The row has no cell at index {2}.", tableID, htmlRowIndex, cellIndex));
         }
       }
 
@@ -1145,14 +1162,15 @@ namespace Remotion.Web.UI.Controls
           {
             // TODO RM-8118: not null assertion
             //  Not supported format
-            s_log.Warn("FormGridManager '" + UniqueID + "' on page '" + Page!.ToString() + "' received a resource with an invalid key '" + key + "'. Required format: 'tableUniqueID:controlUniqueID:property'.");
+            s_log.Warn(
+                $"FormGridManager '{UniqueID}' on page '{Page!}' received a resource with an invalid key '{key}'. Required format: 'tableUniqueID:controlUniqueID:property'.");
           }
         }
         else
         {
           // TODO RM-8118: not null assertion
           //  Invalid form grid
-          s_log.Warn("FormGrid '" + tableID + "' is not managed by FormGridManager '" + UniqueID + "' on page '" + Page!.ToString() + "'.");
+          s_log.Warn($"FormGrid '{tableID}' is not managed by FormGridManager '{UniqueID}' on page '{Page!}'.");
         }
       }
 
@@ -1209,8 +1227,10 @@ namespace Remotion.Web.UI.Controls
           }
           else
           {
+            // TODO RM-8118: not null assertion
             //  Invalid control
-            s_log.Warn("FormGrid '" + tableID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page!.ToString() + "' does not contain a control with UniqueID '" + controlID + "'."); // TODO RM-8118: not null assertion
+            s_log.Warn(
+                $"FormGrid '{tableID}' in naming container '{NamingContainer.GetType().GetFullNameSafe()}' on page '{Page!}' does not contain a control with UniqueID '{controlID}'.");
           }
         }
       }

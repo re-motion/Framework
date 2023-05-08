@@ -59,10 +59,19 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// <summary>
   /// Initializes a new instance of the <b>QueryDefinition</b> class.
   /// </summary>
-  /// <param name="queryID">The <paramref name="queryID"/> to be associated with this <b>QueryDefinition</b>. Must not be <see langword="null"/>.</param>
-  /// <param name="storageProviderDefinition">The <see cref="StorageProviderDefinition"/> used for executing instances of this <b>QueryDefinition</b>. Must not be <see langword="null"/>.</param>
-  /// <param name="statement">The <paramref name="statement"/> of the <b>QueryDefinition</b>. The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> specified through <paramref name="storageProviderDefinition"/> must understand the syntax of the <paramref name="statement"/>. Must not be <see langword="null"/>.</param>
-  /// <param name="queryType">One of the <see cref="QueryType"/> enumeration constants.</param>
+  /// <param name="queryID">
+  /// The <paramref name="queryID"/> to be associated with this <b>QueryDefinition</b>. Must not be <see langword="null"/>.
+  /// </param>
+  /// <param name="storageProviderDefinition">
+  /// The <see cref="StorageProviderDefinition"/> used for executing instances of this <b>QueryDefinition</b>. Must not be <see langword="null"/>.
+  /// </param>
+  /// <param name="statement">
+  /// The <paramref name="statement"/> of the <b>QueryDefinition</b>. The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>
+  /// specified through <paramref name="storageProviderDefinition"/> must understand the syntax of the <paramref name="statement"/>. Must not be <see langword="null"/>.
+  /// </param>
+  /// <param name="queryType">
+  /// One of the <see cref="QueryType"/> enumeration constants.
+  /// </param>
   /// <exception cref="System.ArgumentNullException">
   ///   <paramref name="queryID"/> is <see langword="null"/>.<br /> -or- <br />
   ///   <paramref name="storageProviderDefinition"/> is <see langword="null"/>.<br /> -or- <br />
@@ -81,11 +90,21 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// <summary>
   /// Initializes a new instance of the <b>QueryDefinition</b> class.
   /// </summary>
-  /// <param name="queryID">The <paramref name="queryID"/> to be associated with this <b>QueryDefinition</b>. Must not be <see langword="null"/>.</param>
-  /// <param name="storageProviderDefinition">The <see cref="StorageProviderDefinition"/> used for executing instances of this <b>QueryDefinition</b>. Must not be <see langword="null"/>.</param>
-  /// <param name="statement">The <paramref name="statement"/> of the <b>QueryDefinition</b>. The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> specified through <paramref name="storageProviderDefinition"/> must understand the syntax of the <paramref name="statement"/>. Must not be <see langword="null"/>.</param>
-  /// <param name="queryType">One of the <see cref="QueryType"/> enumeration constants.</param>
-  /// <param name="collectionType">If <paramref name="queryType"/> specifies a collection to be returned, <paramref name="collectionType"/> specifies the type of the collection. If <paramref name="queryType"/> is <see langword="null"/>, <see cref="DomainObjectCollection"/> is used.</param>
+  /// <param name="queryID">
+  /// The <paramref name="queryID"/> to be associated with this <b>QueryDefinition</b>. Must not be <see langword="null"/>.
+  /// </param>
+  /// <param name="storageProviderDefinition">
+  /// The <see cref="StorageProviderDefinition"/> used for executing instances of this <b>QueryDefinition</b>. Must not be <see langword="null"/>.
+  /// </param>
+  /// <param name="statement">
+  /// The <paramref name="statement"/> of the <b>QueryDefinition</b>. The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>
+  /// specified through <paramref name="storageProviderDefinition"/> must understand the syntax of the <paramref name="statement"/>. Must not be <see langword="null"/>.
+  /// </param>
+  /// <param name="queryType">
+  /// One of the <see cref="QueryType"/> enumeration constants.</param>
+  /// <param name="collectionType">If <paramref name="queryType"/> specifies a collection to be returned, <paramref name="collectionType"/> specifies the type of the collection.
+  /// If <paramref name="queryType"/> is <see langword="null"/>, <see cref="DomainObjectCollection"/> is used.
+  /// </param>
   /// <exception cref="System.ArgumentNullException">
   ///   <paramref name="queryID"/> is <see langword="null"/>.<br /> -or- <br />
   ///   <paramref name="storageProviderDefinition"/> is <see langword="null"/>.<br /> -or- <br />
@@ -176,7 +195,8 @@ public class QueryDefinition : ISerializable, IObjectReference
   }
 
   /// <summary>
-  /// Gets the statement-text of the <b>QueryDefinition</b>. The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> specified through <see cref="StorageProviderDefinition"/> must understand the syntax of the <b>Statement</b>.
+  /// Gets the statement-text of the <b>QueryDefinition</b>. The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>
+  /// specified through <see cref="StorageProviderDefinition"/> must understand the syntax of the <b>Statement</b>.
   /// </summary>
   public string Statement
   {
@@ -192,7 +212,8 @@ public class QueryDefinition : ISerializable, IObjectReference
   }
 
   /// <summary>
-  /// If <see cref="QueryType"/> specifies a collection to be returned, <b>CollectionType</b> specifies the type of the collection. The default is <see cref="DomainObjectCollection"/>. 
+  /// If <see cref="QueryType"/> specifies a collection to be returned, <b>CollectionType</b> specifies the type of the collection.
+  /// The default is <see cref="DomainObjectCollection"/>. 
   /// </summary>
   public Type? CollectionType
   {

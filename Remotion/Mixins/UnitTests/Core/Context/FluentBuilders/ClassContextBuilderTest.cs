@@ -211,7 +211,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var origin = MixinContextOriginObjectMother.Create();
 
-      _classBuilderMock.Setup(mock => mock.AddMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
+      _classBuilderMock
+          .Setup(mock => mock.AddMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
           .CallBase()
           .Verifiable();
       _classBuilderMock.Setup(mock => mock.AddMixin(typeof(BT2Mixin1), origin)).Returns(_mixinBuilderMock.Object).Verifiable();
@@ -230,7 +231,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
 
-      _classBuilderMock.Setup(mock => mock.AddMixins(expectedOrigin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2))).Returns(_classBuilderMock.Object).Verifiable();
+      _classBuilderMock
+          .Setup(mock => mock.AddMixins(expectedOrigin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
+          .Returns(_classBuilderMock.Object)
+          .Verifiable();
 
       var result = _classBuilderMock.Object.AddMixins(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2));
       _classBuilderMock.Verify();
@@ -243,7 +247,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var origin = MixinContextOriginObjectMother.Create();
 
-      _classBuilderMock.Setup(mock => mock.AddMixins<BT2Mixin1, BT3Mixin1>(origin))
+      _classBuilderMock
+          .Setup(mock => mock.AddMixins<BT2Mixin1, BT3Mixin1>(origin))
            .CallBase()
            .Verifiable();
       _classBuilderMock.Setup(mock => mock.AddMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1))).Returns(_classBuilderMock.Object).Verifiable();
@@ -317,7 +322,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
 
-      _classBuilderMock.Setup(mock => mock.AddOrderedMixins(expectedOrigin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2))).Returns(_classBuilderMock.Object).Verifiable();
+      _classBuilderMock
+          .Setup(mock => mock.AddOrderedMixins(expectedOrigin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
+          .Returns(_classBuilderMock.Object)
+          .Verifiable();
 
       var result = _classBuilderMock.Object.AddOrderedMixins(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2));
 
@@ -508,7 +516,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var origin = MixinContextOriginObjectMother.Create();
 
-      _classBuilderMock.Setup(mock => mock.EnsureMixins<BT2Mixin1, BT3Mixin1>(origin))
+      _classBuilderMock
+          .Setup(mock => mock.EnsureMixins<BT2Mixin1, BT3Mixin1>(origin))
            .CallBase()
            .Verifiable();
       _classBuilderMock.Setup(mock => mock.EnsureMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1))).Returns(_classBuilderMock.Object).Verifiable();
@@ -534,7 +543,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var origin = MixinContextOriginObjectMother.Create();
 
-      _classBuilderMock.Setup(mock => mock.EnsureMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(origin))
+      _classBuilderMock
+          .Setup(mock => mock.EnsureMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>(origin))
           .CallBase()
           .Verifiable();
       _classBuilderMock.Setup(mock => mock.EnsureMixins(origin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2))).Returns(_classBuilderMock.Object).Verifiable();
@@ -586,7 +596,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     [Test]
     public void AddComposedInterfaces_NonGeneric ()
     {
-      _classBuilderMock.Setup(mock => mock.AddComposedInterfaces(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
+      _classBuilderMock
+          .Setup(mock => mock.AddComposedInterfaces(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
           .CallBase()
           .Verifiable();
       _classBuilderMock.Setup(mock => mock.AddComposedInterface(typeof(BT2Mixin1))).Returns(_classBuilderMock.Object).Verifiable();
@@ -600,9 +611,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     [Test]
     public void AddComposedInterfaces_Generic2 ()
     {
-      _classBuilderMock.Setup(mock => mock.AddComposedInterfaces<BT2Mixin1, BT3Mixin1>())
-           .CallBase()
-           .Verifiable();
+      _classBuilderMock
+          .Setup(mock => mock.AddComposedInterfaces<BT2Mixin1, BT3Mixin1>())
+          .CallBase()
+          .Verifiable();
       _classBuilderMock.Setup(mock => mock.AddComposedInterfaces(typeof(BT2Mixin1), typeof(BT3Mixin1))).Returns(_classBuilderMock.Object).Verifiable();
 
       Assert.That(_classBuilderMock.Object.AddComposedInterfaces<BT2Mixin1, BT3Mixin1>(), Is.SameAs(_classBuilderMock.Object));
@@ -612,7 +624,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     [Test]
     public void AddComposedInterfaces_Generic3 ()
     {
-      _classBuilderMock.Setup(mock => mock.AddComposedInterfaces<BT2Mixin1, BT3Mixin1, BT3Mixin2>())
+      _classBuilderMock
+          .Setup(mock => mock.AddComposedInterfaces<BT2Mixin1, BT3Mixin1, BT3Mixin2>())
           .CallBase()
           .Verifiable();
       _classBuilderMock.Setup(mock => mock.AddComposedInterfaces(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2))).Returns(_classBuilderMock.Object).Verifiable();
@@ -655,7 +668,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     [Test]
     public void SuppressMixins_NonGeneric ()
     {
-      _classBuilderMock.Setup(mock => mock.SuppressMixins(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
+      _classBuilderMock
+          .Setup(mock => mock.SuppressMixins(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
           .CallBase()
           .Verifiable();
       _classBuilderMock.Setup(mock => mock.SuppressMixin(typeof(BT2Mixin1))).Returns(_classBuilderMock.Object).Verifiable();
@@ -669,7 +683,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     [Test]
     public void SuppressMixins_Generic2 ()
     {
-      _classBuilderMock.Setup(mock => mock.SuppressMixins<BT2Mixin1, BT3Mixin1>())
+      _classBuilderMock
+          .Setup(mock => mock.SuppressMixins<BT2Mixin1, BT3Mixin1>())
            .CallBase()
            .Verifiable();
       _classBuilderMock.Setup(mock => mock.SuppressMixins(typeof(BT2Mixin1), typeof(BT3Mixin1))).Returns(_classBuilderMock.Object).Verifiable();
@@ -681,7 +696,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     [Test]
     public void SuppressMixins_Generic3 ()
     {
-      _classBuilderMock.Setup(mock => mock.SuppressMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>())
+      _classBuilderMock
+          .Setup(mock => mock.SuppressMixins<BT2Mixin1, BT3Mixin1, BT3Mixin2>())
           .CallBase()
           .Verifiable();
       _classBuilderMock.Setup(mock => mock.SuppressMixins(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2))).Returns(_classBuilderMock.Object).Verifiable();

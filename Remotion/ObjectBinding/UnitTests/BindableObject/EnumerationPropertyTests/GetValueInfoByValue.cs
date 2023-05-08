@@ -113,7 +113,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
               mockEnumerationGlobalizationService.Object,
               new Mock<IExtensibleEnumGlobalizationService>().Object));
 
-      mockEnumerationGlobalizationService.Setup(_ => _.TryGetEnumerationValueDisplayName(TestEnum.Value1, out outValue))
+      mockEnumerationGlobalizationService
+          .Setup(_ => _.TryGetEnumerationValueDisplayName(TestEnum.Value1, out outValue))
           .Returns(true)
           .Verifiable();
 

@@ -328,7 +328,10 @@ namespace Remotion.UnitTests.Utilities
     public void GetAbbreviatedTypeName_WithGenericAbbreviatedClosedNestedGenericType ()
     {
       string name = TypeUtility.GetAbbreviatedTypeName(typeof(NestedGenericType<NestedGenericType<TestAttribute>>), false);
-      Assert.That(name, Is.EqualTo("Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1[Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1[[NUnit.Framework.TestAttribute, nunit.framework]]]"));
+      Assert.That(
+          name,
+          Is.EqualTo(
+              "Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1[Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1[[NUnit.Framework.TestAttribute, nunit.framework]]]"));
     }
 
 
@@ -357,7 +360,10 @@ namespace Remotion.UnitTests.Utilities
     public void GetAbbreviatedTypeName_WithClosedNestedGenericNestedGenericType ()
     {
       string name = TypeUtility.GetAbbreviatedTypeName(typeof(NestedGenericType<TestAttribute>.NestedGenericNestedGenericType<TestCaseData>), false);
-      Assert.That(name, Is.EqualTo("Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1+NestedGenericNestedGenericType`1[[NUnit.Framework.TestAttribute, nunit.framework], [NUnit.Framework.TestCaseData, nunit.framework]]"));
+      Assert.That(
+          name,
+          Is.EqualTo(
+              "Remotion.UnitTests::Utilities.TypeUtilityTests+NestedGenericType`1+NestedGenericNestedGenericType`1[[NUnit.Framework.TestAttribute, nunit.framework], [NUnit.Framework.TestCaseData, nunit.framework]]"));
     }
 
     private void AssertTransformation (string abbreviatedName, string fullName)

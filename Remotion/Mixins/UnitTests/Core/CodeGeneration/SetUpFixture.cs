@@ -116,7 +116,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
         Assert.Fail("Error when saving assemblies: {0}", ex);
       }
 
-#if !NO_PEVERIFY
+#if ENABLE_PEVERIFY
       s_assemblyTrackingCodeManager.PeVerifySavedAssemblies();
 #endif
 

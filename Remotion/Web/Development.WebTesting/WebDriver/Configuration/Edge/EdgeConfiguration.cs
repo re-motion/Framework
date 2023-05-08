@@ -102,7 +102,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
       var userDirectory = CreateUnusedUserDirectoryPath();
       var edgeOptions = new ExtendedEdgeOptions
                           {
-                              UseChromium = true,
                               BinaryLocation = BrowserBinaryPath,
                               UserDirectory = userDirectory
                           };
@@ -125,7 +124,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
       var knownCapabilityNames = (Dictionary<string, string>)s_knownCapabilityNamesField.Value.GetValue(edgeOptions)!;
       knownCapabilityNames.Remove("w3c");
 
-      edgeOptions.AddAdditionalCapability("w3c", false);
+      edgeOptions.AddAdditionalOption("w3c", false);
     }
 
     private string CreateUnusedUserDirectoryPath ()

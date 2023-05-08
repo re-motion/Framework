@@ -25,7 +25,9 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
     {
       base.OnLoad(e);
 
-      var updatePanelTestFormUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl(typeof(UpdatePanelSutForm), TestResourceType.Root, "MultiplePostbackCatching/UpdatePanelTestForm.aspx").GetUrl();
+      var updatePanelTestFormUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>()
+          .CreateResourceUrl(typeof(UpdatePanelSutForm), TestResourceType.Root, "MultiplePostbackCatching/UpdatePanelTestForm.aspx")
+          .GetUrl();
       TestSuiteGenerator.GenerateTestCases(this, TestSuiteTable.Rows, updatePanelTestFormUrl, "UpdatePanel");
     }
   }

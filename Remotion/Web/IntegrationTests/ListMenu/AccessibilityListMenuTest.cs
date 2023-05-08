@@ -16,7 +16,6 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Web.Development.WebTesting.Accessibility;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests;
@@ -34,10 +33,8 @@ namespace Remotion.Web.IntegrationTests.ListMenu
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
       var result = analyzer.Analyze(listMenu);
-      // TODO RM-7342 remove ignore once issue is resolved
-      var violations = result.Violations.IgnoreByRuleIDAndXPath(AccessibilityRuleID.LinkName, "/a[@id='body_MyListMenu_MenuItem_4_Command']");
 
-      Assert.That(violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]

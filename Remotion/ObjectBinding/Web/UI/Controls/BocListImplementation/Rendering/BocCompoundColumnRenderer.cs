@@ -70,11 +70,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     }
 
     /// <summary>
-    /// Renders a custom title cell that includes information about bound property paths of <see cref="BocCompoundColumnDefinition"/>.
+    /// Adds attributes to a title cell that include information about bound property paths of <see cref="BocCompoundColumnDefinition"/>.
     /// </summary>
-    protected override void RenderTitleCell (BocColumnRenderingContext<BocCompoundColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
+    protected override void AddAttributesToRenderForTitleCell (BocCellAttributeRenderingContext<BocCompoundColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      base.AddAttributesToRenderForTitleCell(renderingContext, in arguments);
 
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {
@@ -83,18 +83,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
         if (!string.IsNullOrEmpty(joinedBoundPropertyPaths))
         {
-          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "true");
-          renderingContext.Writer.AddAttribute(
+          renderingContext.AddAttributeToRender(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "true");
+          renderingContext.AddAttributeToRender(
               DiagnosticMetadataAttributesForObjectBinding.BoundPropertyPaths,
               joinedBoundPropertyPaths);
         }
         else
         {
-          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "false");
+          renderingContext.AddAttributeToRender(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "false");
         }
       }
-
-      base.RenderTitleCell(renderingContext, arguments);
     }
   }
 }

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
 using System.Web;
 using System.Xml;
 using Moq;
@@ -51,11 +50,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Initialize();
 
       TextValue = new Mock<IBocMultilineTextValue>();
-      TextValue.Setup(mock => mock.Text).Returns(
-          BocTextValueRendererTestBase<IBocTextValue>.c_firstLineText + Environment.NewLine
-          + BocTextValueRendererTestBase<IBocTextValue>.c_secondLineText);
-      TextValue.Setup(mock => mock.Value).Returns(
-          new[] { BocTextValueRendererTestBase<IBocTextValue>.c_firstLineText, BocTextValueRendererTestBase<IBocTextValue>.c_secondLineText });
+      TextValue
+          .Setup(mock => mock.Text)
+          .Returns(BocTextValueRendererTestBase<IBocTextValue>.c_firstLineText + Environment.NewLine + BocTextValueRendererTestBase<IBocTextValue>.c_secondLineText);
+      TextValue
+          .Setup(mock => mock.Value)
+          .Returns(new[] { BocTextValueRendererTestBase<IBocTextValue>.c_firstLineText, BocTextValueRendererTestBase<IBocTextValue>.c_secondLineText });
 
       TextValue.Setup(stub => stub.ClientID).Returns("MyTextValue");
       TextValue.Setup(stub => stub.ControlType).Returns("BocMultilineTextValue");
@@ -92,6 +92,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     public void RenderMultiLineEditableWithStyle ()
     {
       RenderMultiLineEditable(false, true, false, false, false);
+    }
+
+    [Test]
+    public void RenderMultiLineEditableWithStyleAndEmptyAutoComplete ()
+    {
+      RenderMultiLineEditable(false, true, false, false, false, autoComplete: string.Empty);
+    }
+
+    [Test]
+    public void RenderMultiLineEditableWithStyleAndTypicalAutoComplete ()
+    {
+      RenderMultiLineEditable(false, true, false, false, false, autoComplete: "on");
     }
 
     [Test]
@@ -161,6 +173,24 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     }
 
     [Test]
+    public void RenderMultilineEnabledWithStyleAndStandardPlaceholder ()
+    {
+      RenderMultiLineEditable(false, true, false, false, false, PlainTextString.CreateFromText("Great placeholder"));
+    }
+
+    [Test]
+    public void RenderMultilineEnabledWithStyleAndEncodedPlaceholder ()
+    {
+      RenderMultiLineEditable(false, true, false, false, false, PlainTextString.CreateFromText("P. \"The Great\" Holder"));
+    }
+
+    [Test]
+    public void RenderMultilineEnabledWithStyleAndEmptyPlaceholder ()
+    {
+      RenderMultiLineEditable(false, true, false, false, false, PlainTextString.Empty);
+    }
+
+    [Test]
     public void TestDiagnosticMetadataRenderingWithAutoPostBack ()
     {
       _renderer = new BocMultilineTextValueRenderer(
@@ -190,9 +220,19 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertAttribute(span, DiagnosticMetadataAttributes.TriggersPostBack, "false");
     }
 
-    private XmlNode RenderMultiLineEditable (bool isDisabled, bool withStyle, bool withCssClass, bool inStandardProperties, bool autoPostBack)
+    private XmlNode RenderMultiLineEditable (
+        bool isDisabled,
+        bool withStyle,
+        bool withCssClass,
+        bool inStandardProperties,
+        bool autoPostBack,
+        PlainTextString? placeholder = null,
+        string autoComplete = null)
     {
       SetStyle(withStyle, withCssClass, inStandardProperties, autoPostBack);
+      if (placeholder.HasValue)
+        TextValue.Object.TextBoxStyle.Placeholder = placeholder.Value;
+      TextValue.Object.TextBoxStyle.AutoComplete = autoComplete;
 
       TextValue.Setup(mock => mock.Enabled).Returns(!isDisabled);
 
@@ -224,6 +264,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       CheckTextAreaStyle(textarea, false, withStyle);
       Html.AssertTextNode(textarea, TextValue.Object.Text, 0);
       Html.AssertChildElementCount(textarea, 0);
+
+      if (placeholder.HasValue && !placeholder.Value.IsEmpty)
+        Html.AssertAttribute(textarea, "placeholder", placeholder);
+      else
+        Html.AssertNoAttribute(textarea, "placeholder");
+
+      if (string.IsNullOrEmpty(autoComplete))
+        Html.AssertNoAttribute(textarea, "autocomplete");
+      else
+        Html.AssertAttribute(textarea, "autocomplete", autoComplete);
 
       var validationErrors = Html.GetAssertedChildElement(content, "fake", 1);
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyTextValue_ValidationErrors");

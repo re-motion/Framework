@@ -75,7 +75,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       controlMock.Setup(c => c.AreOptionalValidatorsEnabled).Returns(true).Verifiable();
 
       var resourceManagerMock = new Mock<IResourceManager>();
-      resourceManagerMock.Setup(r => r.TryGetString(It.IsAny<string>(), out outValue))
+      resourceManagerMock
+          .Setup(r => r.TryGetString(It.IsAny<string>(), out outValue))
           .Returns(true)
           .Verifiable();
 

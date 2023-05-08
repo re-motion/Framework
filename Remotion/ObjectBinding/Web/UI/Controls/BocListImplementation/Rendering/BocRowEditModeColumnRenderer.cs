@@ -76,11 +76,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.Write(c_whiteSpace);
     }
 
-    protected override void AddDiagnosticMetadataAttributes (BocColumnRenderingContext<BocRowEditModeColumnDefinition> renderingContext)
+    protected override void AddDiagnosticMetadataAttributes (BocCellAttributeRenderingContext<BocRowEditModeColumnDefinition> renderingContext)
     {
       base.AddDiagnosticMetadataAttributes(renderingContext);
 
-      renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListWellKnownEditCell, "true");
+      renderingContext.AddAttributeToRender(DiagnosticMetadataAttributesForObjectBinding.BocListWellKnownEditCell, "true");
     }
 
     private void RenderEditableRowCellContents (

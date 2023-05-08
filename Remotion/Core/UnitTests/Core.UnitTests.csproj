@@ -18,15 +18,23 @@
     <Content Include="@(TestAssembly)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Development\UnitTesting.Compilation\Development.UnitTesting.Compilation.csproj" />
     <ProjectReference Include="..\Reflection\Core.Reflection.csproj" />
     <ProjectReference Include="..\Tools\Core.Tools.csproj" />
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
     <ProjectReference Include="..\Core\Core.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.3.1" GeneratePathProperty="true" ExcludeAssets="all" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="Reflection\TestDomain\ContextAwareTypeUtilityTest\app.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
+    <ProjectReference Include="..\..\Development\UnitTesting.IsolatedCodeRunner\Development.UnitTesting.IsolatedCodeRunner.csproj" />
+  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
+  <Import Project="..\..\Development\UnitTesting.Compilation\build\Remotion.Development.UnitTesting.Compilation.targets" />
 </Project>

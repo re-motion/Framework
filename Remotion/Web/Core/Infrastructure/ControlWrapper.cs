@@ -147,7 +147,8 @@ namespace Remotion.Web.Infrastructure
     /// Gets a collection of <see cref="T:System.Web.UI.ExpressionBinding"/> objects.
     /// </summary>
     /// <returns>
-    /// An <see cref="T:System.Web.UI.ExpressionBindingCollection"/> containing <see cref="T:System.Web.UI.ExpressionBinding"/> objects that represent the properties and expressions for a control.
+    /// An <see cref="T:System.Web.UI.ExpressionBindingCollection"/> containing <see cref="T:System.Web.UI.ExpressionBinding"/> objects
+    /// that represent the properties and expressions for a control.
     /// </returns>
     ExpressionBindingCollection IExpressionsAccessor.Expressions
     {
@@ -334,7 +335,8 @@ namespace Remotion.Web.Infrastructure
     }
 
     /// <summary>
-    /// Gets a reference to the server control's naming container, which creates a unique namespace for differentiating between server controls with the same <see cref="P:System.Web.UI.Control.ID"/> property value.
+    /// Gets a reference to the server control's naming container, which creates a unique namespace for differentiating between server controls
+    /// with the same <see cref="P:System.Web.UI.Control.ID"/> property value.
     /// </summary>
     /// <returns>
     /// The server control's naming container.
@@ -403,7 +405,8 @@ namespace Remotion.Web.Infrastructure
     }
 
     /// <summary>
-    /// Gets or sets the application-relative virtual directory of the <see cref="T:System.Web.UI.Page"/> or <see cref="T:System.Web.UI.UserControl"/> object that contains this control.
+    /// Gets or sets the application-relative virtual directory of the <see cref="T:System.Web.UI.Page"/>
+    /// or <see cref="T:System.Web.UI.UserControl"/> object that contains this control.
     /// </summary>
     /// <returns>
     /// The application-relative virtual directory of the page or user control that contains this control.

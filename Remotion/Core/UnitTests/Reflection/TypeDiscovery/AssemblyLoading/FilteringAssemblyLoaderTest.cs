@@ -26,6 +26,7 @@ using log4net.Config;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.Compilation;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
 
@@ -77,10 +78,12 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       Assembly referenceAssembly = typeof(FilteringAssemblyLoaderTest).Assembly;
       string path = new Uri(referenceAssembly.GetName(copiedName: false).CodeBase).LocalPath;
 
-      _filterMock.Setup(_ => _.ShouldConsiderAssembly(It.Is<AssemblyName>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
+      _filterMock
+          .Setup(_ => _.ShouldConsiderAssembly(It.Is<AssemblyName>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
           .Returns(true)
           .Verifiable();
-      _filterMock.Setup(_ => _.ShouldIncludeAssembly(It.Is<Assembly>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
+      _filterMock
+          .Setup(_ => _.ShouldIncludeAssembly(It.Is<Assembly>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
           .Returns(true)
           .Verifiable();
 
@@ -95,10 +98,12 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       Assembly referenceAssembly = typeof(FilteringAssemblyLoaderTest).Assembly;
       string path = new Uri(referenceAssembly.GetName(copiedName: false).CodeBase).LocalPath;
 
-      _filterMock.Setup(_ => _.ShouldConsiderAssembly(It.Is<AssemblyName>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
+      _filterMock
+          .Setup(_ => _.ShouldConsiderAssembly(It.Is<AssemblyName>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
           .Returns(true)
           .Verifiable();
-      _filterMock.Setup(_ => _.ShouldIncludeAssembly(It.Is<Assembly>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
+      _filterMock
+          .Setup(_ => _.ShouldIncludeAssembly(It.Is<Assembly>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
           .Returns(false)
           .Verifiable();
 
@@ -113,7 +118,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       Assembly referenceAssembly = typeof(FilteringAssemblyLoaderTest).Assembly;
       string path = new Uri(referenceAssembly.GetName(copiedName: false).CodeBase).LocalPath;
 
-      _filterMock.Setup(_ => _.ShouldConsiderAssembly(It.Is<AssemblyName>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
+      _filterMock
+          .Setup(_ => _.ShouldConsiderAssembly(It.Is<AssemblyName>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
           .Returns(false)
           .Verifiable();
 
@@ -156,7 +162,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     // will be unlocked when the process exits and we can delete it after the test has run.
     [Test]
 #if !NETFRAMEWORK
-    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("This test only works in .NET Framework")]
 #endif
     public void TryLoadAssembly_WithFileLoadException ()
     {
@@ -205,7 +211,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("This test only works in .NET Framework")]
 #endif
     public void TryLoadAssembly_WithFileLoadException_AndShadowCopying ()
     {
@@ -373,6 +379,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       var compiler = new AssemblyCompiler(
           sourceDirectory,
           Path.Combine(targetDirectory, outputAssemblyName),
+          typeof(Console).Assembly.Location,
           typeof(FilteringAssemblyLoader).Assembly.Location,
           typeof(Remotion.Logging.LogManager).Assembly.Location);
 

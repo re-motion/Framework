@@ -1172,7 +1172,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
             this.element.style.position = 'fixed';
             LayoutUtility.Hide(this.element);
 
-            this.input.closest('div, td, th, body, span.bocListEditableCell > span.control')!.appendChild(this.element);
+            this.input.closest('div, td, th, body')!.appendChild(this.element);
 
             this.options.combobox.setAttribute('aria-owns', this.options.selectListID);
             const isAria11 = this.options.combobox !== this.input;
@@ -1615,9 +1615,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
             this.element.style.position = 'fixed';
 
             LayoutUtility.Hide(this.element);
-
-            this.input.closest('div, td, th, body, span.bocListEditableCell > span.control')!.appendChild(this.element);
-
+            this.input.closest('div, td, th, body')!.appendChild(this.element);
 
             if (this.options.combobox.getAttribute('aria-labelledby') !== null) {
                 this.element.setAttribute("aria-labelledby", this.options.combobox.getAttribute('aria-labelledby')!);
@@ -1764,9 +1762,12 @@ namespace Remotion.BocAutoCompleteReferenceValue
         const position = calculateSpaceAround(reference);
 
         const isVisibe = LayoutUtility.IsVisible(popUp);
+        let scrollbarGutterValueBackup: string  = "";
         if (!isVisibe)
         {
             popUp.style.width = 'auto'; // clear the width before showing the popUp, otherwise, the popUp expands to 100%
+            scrollbarGutterValueBackup = popUp.style.getPropertyValue("scrollbar-gutter");
+            popUp.style.setProperty("scrollbar-gutter", "stable")
             LayoutUtility.Show(popUp); // provide initial dimensions to popUp
         }
 
@@ -1774,11 +1775,20 @@ namespace Remotion.BocAutoCompleteReferenceValue
         let contentHeight = Math.max(0, Math.max(...(Array.from(popUpDiv.children) as HTMLElement[]).map(function (el) { return el.offsetHeight + el.offsetTop; })));
 
         let contentWidth = parseInt(popUp.dataset['popUpContentWidth']!, 10);
+        let scrollbarWidth = parseInt(popUp.dataset['popUpScrollbarWidth']!, 10);
         if (!isVisibe)
         {
+            const totalWidthWithScrollbar = LayoutUtility.GetOuterWidth(popUp);
+
+            popUp.style.setProperty("scrollbar-gutter", scrollbarGutterValueBackup);
             const htmlPopUpDiv = popUpDiv as HTMLElement;
-            contentWidth = Math.max(0, htmlPopUpDiv.offsetLeft + htmlPopUpDiv.offsetWidth);
+            const width = LayoutUtility.GetOuterWidth(popUp);
+            contentWidth = Math.max(0, width);
+
+            scrollbarWidth = totalWidthWithScrollbar - width;
+
             popUp.dataset['popUpContentWidth'] = '' + contentWidth;
+            popUp.dataset['popUpScrollbarWidth'] = '' + scrollbarWidth;
         }
 
         if (!isVisibe)
@@ -1815,11 +1825,16 @@ namespace Remotion.BocAutoCompleteReferenceValue
             maxHeight = '';
         }
 
-        const availableWidth = position.left + LayoutUtility.GetOuterWidth(reference);
-        const minWidth = LayoutUtility.GetOuterWidth(reference);
-        const maxWidth = Math.min (isNaN (options.maxWidth) ? LayoutUtility.GetOuterWidth(reference) : options.maxWidth, availableWidth);
-        const requiredWidth = contentWidth + 30;
-        const elementWidth = Math.max (Math.min (requiredWidth, maxWidth), minWidth);
+        const referenceWidth = LayoutUtility.GetOuterWidth(reference);
+        const marginLeft = 30;
+        const availableWidth = position.left + referenceWidth - marginLeft;
+        const isScrollbarRequired = requiredHeight >= maxHeightSafe;
+        // js rounding errors sometimes create linebreaks
+        // therefore we add a single pixel for the field to always be wide enough:
+        const requiredWidth = contentWidth + 1 + (isScrollbarRequired ? scrollbarWidth : 0);
+        const maxWidth = Math.min (isNaN (options.maxWidth) ? referenceWidth : options.maxWidth, availableWidth);
+        const maxAllowedWidth = Math.min(requiredWidth, maxWidth)
+        const elementWidth = Math.max(referenceWidth, maxAllowedWidth)
 
         const rightPosition = position.right;
 

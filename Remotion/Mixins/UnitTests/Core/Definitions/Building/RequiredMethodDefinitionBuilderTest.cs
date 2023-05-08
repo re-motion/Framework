@@ -86,7 +86,10 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void RequiredTargetCallMethodsInterfaceImplementedOnMixin ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass(typeof(ClassFulfillingNoMemberRequirements)).Clear().AddMixins(typeof(MixinRequiringAllMembersTargetCall), typeof(MixinFulfillingAllMemberRequirements)).EnterScope())
+      var configuration = MixinConfiguration.BuildFromActive()
+          .ForClass(typeof(ClassFulfillingNoMemberRequirements)).Clear()
+          .AddMixins(typeof(MixinRequiringAllMembersTargetCall), typeof(MixinFulfillingAllMemberRequirements));
+      using (configuration.EnterScope())
       {
         TargetClassDefinition TargetClassDefinition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassFulfillingNoMemberRequirements));
         MixinDefinition mixin = TargetClassDefinition.Mixins[typeof(MixinRequiringAllMembersTargetCall)];
@@ -105,7 +108,10 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void RequiredNextCallMethodsInterfaceImplementedOnMixin ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass(typeof(ClassFulfillingNoMemberRequirements)).Clear().AddMixins(typeof(MixinRequiringAllMembersNextCall), typeof(MixinFulfillingAllMemberRequirements)).EnterScope())
+      var configuration = MixinConfiguration.BuildFromActive()
+          .ForClass(typeof(ClassFulfillingNoMemberRequirements)).Clear()
+          .AddMixins(typeof(MixinRequiringAllMembersNextCall), typeof(MixinFulfillingAllMemberRequirements));
+      using (configuration.EnterScope())
       {
         TargetClassDefinition TargetClassDefinition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassFulfillingNoMemberRequirements));
         MixinDefinition mixin = TargetClassDefinition.Mixins[typeof(MixinRequiringAllMembersNextCall)];
@@ -232,10 +238,11 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void ThrowsIfDerivedRequiredInterfaceIsNotFullyImplemented ()
     {
-      using (MixinConfiguration
-          .BuildFromActive()
-          .ForClass<NullTarget>().Clear().AddMixin<NullMixin>().AddComposedInterface<IDerivedSimpleInterface>()
-          .EnterScope())
+      var configuration = MixinConfiguration.BuildFromActive()
+          .ForClass<NullTarget>().Clear()
+          .AddMixin<NullMixin>()
+          .AddComposedInterface<IDerivedSimpleInterface>();
+      using (configuration.EnterScope())
       {
         Assert.That(
             () => DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(NullTarget)),
@@ -263,7 +270,10 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [Test]
     public void WorksIfExplicitlyImplemented ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingAllMemberRequirementsExplicitly>().Clear().AddMixins(typeof(MixinRequiringAllMembersTargetCall)).EnterScope())
+      var configuration = MixinConfiguration.BuildFromActive()
+          .ForClass<ClassFulfillingAllMemberRequirementsExplicitly>().Clear()
+          .AddMixins(typeof(MixinRequiringAllMembersTargetCall));
+      using (configuration.EnterScope())
       {
         TargetClassDefinition definition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassFulfillingAllMemberRequirementsExplicitly));
         RequiredTargetCallTypeDefinition requirement = definition.RequiredTargetCallTypes[typeof(IMixinRequiringAllMembersRequirements)];

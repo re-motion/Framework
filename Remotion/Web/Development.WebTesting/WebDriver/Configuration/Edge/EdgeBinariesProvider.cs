@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
     private const string c_edgeExecutableName = "msedge.exe";
     private const string c_zipFileName = "msedgedriver.zip";
 
-    private static readonly Version s_minimumSupportedEdgeVersion = new Version(102, 0);
+    private static readonly Version s_minimumSupportedEdgeVersion = new Version(106, 0);
 
     /// <summary>
     /// Returns the <see cref="EdgeExecutable"/> that contains the installed Edge browser location, the corresponding msedgedriver location,
@@ -54,12 +54,20 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
 
     private string GetInstalledEdgePath ()
     {
-      var defaultBetaEdgePath = Path.Combine(Get32BitProgramFilesPath(), "Microsoft", "Edge", "Application", c_edgeExecutableName);
+      var x86EdgePath = Path.Combine(Get32BitProgramFilesPath(), "Microsoft", "Edge", "Application", c_edgeExecutableName);
 
-      if (File.Exists(defaultBetaEdgePath))
-        return defaultBetaEdgePath;
+      if (File.Exists(x86EdgePath))
+        return x86EdgePath;
 
-      throw new InvalidOperationException($"No beta Edge version could be found at '{defaultBetaEdgePath}'.");
+      if (!Environment.Is64BitOperatingSystem)
+        throw new InvalidOperationException($"No stable Edge version could be found at '{x86EdgePath}'.");
+
+      var x64EdgePath = Path.Combine(Get64BitProgramFilesPath(), "Microsoft", "Edge", "Application", c_edgeExecutableName);
+
+      if (File.Exists(x64EdgePath))
+        return x64EdgePath;
+
+      throw new InvalidOperationException($"No stable Edge version could be found at '{x64EdgePath}' or at '{x86EdgePath}'.");
     }
 
     private string Get32BitProgramFilesPath ()
@@ -69,6 +77,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
           : Environment.SpecialFolder.ProgramFiles;
 
       return Environment.GetFolderPath(programFiles32BitFolder);
+    }
+
+    private string Get64BitProgramFilesPath ()
+    {
+      return Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
     }
 
     /// <summary>

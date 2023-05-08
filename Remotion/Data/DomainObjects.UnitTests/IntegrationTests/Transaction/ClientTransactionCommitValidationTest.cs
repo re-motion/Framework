@@ -179,12 +179,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         Assert.That(
             () => TestableClientTransaction.Commit(),
-            Throws.TypeOf<PropertyValueTooLongException>().With.Message.EqualTo(
+            Throws.TypeOf<PropertyValueTooLongException>()
+                .With.Message.EqualTo(
                     string.Format(
-                        "Value for property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty' of domain object '{0}' is too long. Maximum number of characters: 100.",
+                        "Value for property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty' of domain object '{0}' is too long. "
+                        + "Maximum number of characters: 100.",
                         newObject.ID))
-                .And.Property<PropertyValueTooLongException>(ex => ex.PropertyName).EqualTo(
-                    "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty")
+                .And.Property<PropertyValueTooLongException>(ex => ex.PropertyName)
+                .EqualTo("Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty")
                 .And.Property<PropertyValueTooLongException>(ex => ex.DomainObject).SameAs(newObject));
       }
     }
@@ -199,12 +201,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         Assert.That(
             () => TestableClientTransaction.Commit(),
-            Throws.TypeOf<PropertyValueTooLongException>().With.Message.EqualTo(
+            Throws.TypeOf<PropertyValueTooLongException>()
+                .With.Message.EqualTo(
                     string.Format(
-                        "Value for property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.TransactionOnlyBinaryProperty' of domain object '{0}' is too large. Maximum size: 1000000.",
+                        "Value for property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.TransactionOnlyBinaryProperty' of domain object '{0}' is too large. "
+                        + "Maximum size: 1000000.",
                         newObject.ID))
-                .And.Property<PropertyValueTooLongException>(ex => ex.PropertyName).EqualTo(
-                    "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.TransactionOnlyBinaryProperty")
+                .And.Property<PropertyValueTooLongException>(ex => ex.PropertyName)
+                .EqualTo("Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.TransactionOnlyBinaryProperty")
                 .And.Property<PropertyValueTooLongException>(ex => ex.DomainObject).SameAs(newObject));
       }
     }

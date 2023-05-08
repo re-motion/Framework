@@ -221,7 +221,9 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       var expectedContextWithParent = _classContextBuilderWithParent.BuildClassContext(new[] { _parentContextWithBuilder });
       var expectedContextWithIndirectParent = _classContextBuilderWithIndirectParent.BuildClassContext(new[] { _parentContextWithBuilder });
       var expectedContextWithoutParent = _classContextBuilderWithoutParent.BuildClassContext(new ClassContext[0]);
-      Assert.That(result.ToArray(), Is.EquivalentTo(new[] { _parentContextWithoutBuilder, expectedContextWithParent, expectedContextWithIndirectParent, expectedContextWithoutParent }));
+      Assert.That(
+          result.ToArray(),
+          Is.EquivalentTo(new[] { _parentContextWithoutBuilder, expectedContextWithParent, expectedContextWithIndirectParent, expectedContextWithoutParent }));
     }
   }
 }

@@ -56,12 +56,42 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       ChangeState[] expectedStates =
       {
           new ObjectDeletionState(_product, "1. Deleting of product"),
-          new RelationChangeState(_productReview1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product", _product, null, "2. Relation changing of productReview1"),
-          new RelationChangeState(_productReview2, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product", _product, null, "3. Relation changing of productReview2"),
-          new RelationChangeState(_productReview3, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product", _product, null, "4. Relation changing of productReview2"),
-          new RelationChangeState(_productReview3, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product", null, null, "5. Relation changed of productReview2"),
-          new RelationChangeState(_productReview2, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product", null, null, "6. Relation changed of productReview2"),
-          new RelationChangeState(_productReview1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product", null, null, "7. Relation changed of productReview1"),
+          new RelationChangeState(
+              _productReview1,
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product",
+              _product,
+              null,
+              "2. Relation changing of productReview1"),
+          new RelationChangeState(
+              _productReview2,
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product",
+              _product,
+              null,
+              "3. Relation changing of productReview2"),
+          new RelationChangeState(
+              _productReview3,
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product",
+              _product,
+              null,
+              "4. Relation changing of productReview2"),
+          new RelationChangeState(
+              _productReview3,
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product",
+              null,
+              null,
+              "5. Relation changed of productReview2"),
+          new RelationChangeState(
+              _productReview2,
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product",
+              null,
+              null,
+              "6. Relation changed of productReview2"),
+          new RelationChangeState(
+              _productReview1,
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product",
+              null,
+              null,
+              "7. Relation changed of productReview1"),
           new ObjectDeletionState(_product, "8. Deleted of product")
       };
 

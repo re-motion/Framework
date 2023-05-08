@@ -123,7 +123,10 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     public void WebApplicationRootAttribute_Required ()
     {
       const string configurationWithoutWebApplicationRoot =
-          @"<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0"" browser=""Chrome"" searchTimeout=""00:00:43"" retryInterval=""00:00:00.042"" />";
+          @"<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0"" "
+          + @"browser=""Chrome"" "
+          + @"searchTimeout=""00:00:43"" "
+          + @"retryInterval=""00:00:00.042"" />";
       Assert.That(
           () => DeserializeSection(configurationWithoutWebApplicationRoot),
           Throws.InstanceOf<ConfigurationErrorsException>().With.Message.EqualTo("Required attribute 'webApplicationRoot' not found."));
@@ -133,7 +136,11 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     public void MissingHostingProperty_FailingXmlSchemaValidation ()
     {
       const string failingSchemaValidation =
-          @"<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0"" browser=""Chrome"" searchTimeout=""00:00:43"" retryInterval=""00:00:00.042"" webApplicationRoot=""http://some.url:1337/"" />";
+          @"<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0"" "
+          + @"browser=""Chrome"" "
+          + @"searchTimeout=""00:00:43"" "
+          + @"retryInterval=""00:00:00.042"" "
+          + @"webApplicationRoot=""http://some.url:1337/"" />";
       Assert.That(
           () => DeserializeSection(failingSchemaValidation),
           Throws.InstanceOf<XmlSchemaValidationException>());
@@ -143,7 +150,14 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     public void WithoutBrowserConfigurationElements_NoException ()
     {
       const string configurationWithoutChromiumConfigurationElements =
-          @"<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0"" browser=""Chrome"" searchTimeout=""00:00:43"" retryInterval=""00:00:00.042"" webApplicationRoot=""http://some.url:1337/""><hosting name=""IisExpress"" type=""IisExpress"" port=""60042""/><testSiteLayout rootPath="".\Some\Path""/></remotion.webTesting>";
+          @"<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0"" "
+          + @"browser=""Chrome"" "
+          + @"searchTimeout=""00:00:43"" "
+          + @"retryInterval=""00:00:00.042"" "
+          + @"webApplicationRoot=""http://some.url:1337/"">"
+          + @"<hosting name=""IisExpress"" type=""IisExpress"" port=""60042""/>"
+          + @"<testSiteLayout rootPath="".\Some\Path""/>"
+          + @"</remotion.webTesting>";
       Assert.That(
           () => DeserializeSection(configurationWithoutChromiumConfigurationElements),
           Throws.Nothing);
@@ -153,7 +167,13 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     public void WithoutChromeConfigurationElement_NoException ()
     {
       const string configurationWithoutChromeConfigurationElement =
-          @"<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0"" browser=""Chrome"" searchTimeout=""00:00:43"" retryInterval=""00:00:00.042"" webApplicationRoot=""http://some.url:1337/""><hosting name=""IisExpress"" type=""IisExpress"" port=""60042""/><testSiteLayout rootPath="".\Some\Path""/><edge /></remotion.webTesting>";
+          @"<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0"" "
+          + @"browser=""Chrome"" "
+          + @"searchTimeout=""00:00:43"" "
+          + @"retryInterval=""00:00:00.042"" webApplicationRoot=""http://some.url:1337/"">"
+          + @"<hosting name=""IisExpress"" type=""IisExpress"" port=""60042""/><testSiteLayout rootPath="".\Some\Path""/>"
+          + @"<edge />"
+          + @"</remotion.webTesting>";
       Assert.That(
           () => DeserializeSection(configurationWithoutChromeConfigurationElement),
           Throws.Nothing);
@@ -163,7 +183,14 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     public void WithoutEdgeConfigurationElement_NoException ()
     {
       const string configurationWithoutEdgeConfigurationElement =
-          @"<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0"" browser=""Chrome"" searchTimeout=""00:00:43"" retryInterval=""00:00:00.042"" webApplicationRoot=""http://some.url:1337/""><hosting name=""IisExpress"" type=""IisExpress"" port=""60042""/><testSiteLayout rootPath="".\Some\Path""/><chrome /></remotion.webTesting>";
+          @"<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0"" "
+          + @"browser=""Chrome"" "
+          + @"searchTimeout=""00:00:43"" "
+          + @"retryInterval=""00:00:00.042"" "
+          + @"webApplicationRoot=""http://some.url:1337/"">"
+          + @"<hosting name=""IisExpress"" type=""IisExpress"" port=""60042""/><testSiteLayout rootPath="".\Some\Path""/>"
+          + @"<chrome />"
+          + @"</remotion.webTesting>";
       Assert.That(
           () => DeserializeSection(configurationWithoutEdgeConfigurationElement),
           Throws.Nothing);

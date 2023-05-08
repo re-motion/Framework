@@ -9,7 +9,8 @@ namespace Remotion.Web.Test
   {
     public static void Main (string[] args)
     {
-      Console.WriteLine(Environment.CurrentDirectory);
+      LegacyAspNetInitialization.License = "I hereby confirm that I use CoreForms only for trial purposes and have read and accept the CoreForms Trial License.";
+
       var legacyAspNetInitializationOptions = new LegacyAspNetInitializationOptions("/", Environment.CurrentDirectory);
       LegacyAspNetInitialization.Initialize(legacyAspNetInitializationOptions);
 

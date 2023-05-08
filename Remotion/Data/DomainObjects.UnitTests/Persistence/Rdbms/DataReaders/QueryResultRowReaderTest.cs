@@ -75,7 +75,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     {
       _dataReaderStrictMock
           .SetupSequence(mock => mock.Read())
-          .Returns(true).Returns(true)
+          .Returns(true)
+          .Returns(true)
           .Returns(true)
           .Returns(false);
 

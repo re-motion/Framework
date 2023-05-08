@@ -56,8 +56,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     public void ThisCallToDuckInterface ()
     {
       BaseTypeWithDuckTargetCallMixin duckTargetCall = ObjectFactory.Create<BaseTypeWithDuckTargetCallMixin>(ParamList.Empty);
-      Assert.That(Mixin.Get<DuckTargetCallMixin>(duckTargetCall).CallMethodsOnThis(), Is.EqualTo("DuckTargetCallMixin.CallMethodsOnThis-DuckTargetCallMixin.MethodImplementedOnBase-BaseTypeWithDuckTargetCallMixin.ProtectedMethodImplementedOnBase"));
+      Assert.That(
+          Mixin.Get<DuckTargetCallMixin>(duckTargetCall).CallMethodsOnThis(),
+          Is.EqualTo("DuckTargetCallMixin.CallMethodsOnThis-DuckTargetCallMixin.MethodImplementedOnBase-BaseTypeWithDuckTargetCallMixin.ProtectedMethodImplementedOnBase"));
     }
-
   }
 }

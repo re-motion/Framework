@@ -47,7 +47,7 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
 
       var assemblyName = new AssemblyName("Remotion.Reflection.CodeGeneration.MethodWrapperEmitterTests.Generated.Unsigned");
       var moduleName = assemblyName + ".dll";
-#if NETFRAMEWORK && !NO_PEVERIFY
+#if NETFRAMEWORK && ENABLE_PEVERIFY
       s_assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(
                 assemblyName,
                 AssemblyBuilderAccess.RunAndSave,
@@ -65,7 +65,7 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     public virtual void OneTimeTearDown ()
     {
       Console.WriteLine("Tearing down MethodWrapperEmitterTests");
-#if NETFRAMEWORK && !NO_PEVERIFY
+#if NETFRAMEWORK && ENABLE_PEVERIFY
 
       s_assemblyBuilder.Save(s_moduleBuilder.ScopeName);
       var path = s_moduleBuilder.FullyQualifiedName;

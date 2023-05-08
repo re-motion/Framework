@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.Compilation;
 using Remotion.Utilities;
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
@@ -73,20 +74,16 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
         Directory.Delete(generatedDirectory, true);
     }
 
-    public string CompileInSeparateAppDomain (string outputAssemblyFileName, params string[] referencedAssemblies)
+    public string Compile (string outputAssemblyFileName, params string[] referencedAssemblies)
     {
       var outputAssemblyPath = Path.Combine(_buildOutputDirectory, outputAssemblyFileName);
       var allReferencedAssemblies = _alwaysReferencedAssemblies.Concat(referencedAssemblies).ToArray();
       var fullSourceDirectory = Path.Combine(_sourceDirectoryRoot, Path.GetFileNameWithoutExtension(outputAssemblyFileName));
       var assemblyCompiler = new AssemblyCompiler(fullSourceDirectory, outputAssemblyPath, allReferencedAssemblies);
 
-#if NETFRAMEWORK
-      assemblyCompiler.CompileInSeparateAppDomain();
+      assemblyCompiler.Compile();
       _generatedAssemblyPaths.Add(outputAssemblyPath);
       return outputAssemblyPath;
-#else
-      throw new PlatformNotSupportedException("Compiling in a separate assembly is not supported in .NET 5.");
-#endif
     }
 
     public string RenameGeneratedAssembly (string oldFileName, string newFileName)

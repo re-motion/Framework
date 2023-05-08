@@ -101,15 +101,19 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 
       var sequence = new VerifiableSequence();
       _pageMock.InVerifiableSequence(sequence).Setup(mock => mock.WxeHandler).Returns(_wxeHandler).Verifiable();
-      _pageStep.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Callback(
-          (WxeContext context) =>
-          {
-            var executionState = (PreProcessingSubFunctionState)((IExecutionStateContext)_pageStep.Object).ExecutionState;
-            Assert.That(executionState.Parameters.SubFunction, Is.SameAs(_subFunction.Object));
-            Assert.That(executionState.Parameters.PermaUrlOptions, Is.SameAs(permaUrlOptions));
-            Assert.That(executionState.RepostOptions, Is.SameAs(repostOptions));
-            Assert.That(PrivateInvoke.GetNonPublicField(_pageStep.Object, "_wxeHandler"), Is.SameAs(_wxeHandler));
-          }).Verifiable();
+      _pageStep
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Execute(_wxeContext))
+          .Callback(
+              (WxeContext context) =>
+              {
+                var executionState = (PreProcessingSubFunctionState)((IExecutionStateContext)_pageStep.Object).ExecutionState;
+                Assert.That(executionState.Parameters.SubFunction, Is.SameAs(_subFunction.Object));
+                Assert.That(executionState.Parameters.PermaUrlOptions, Is.SameAs(permaUrlOptions));
+                Assert.That(executionState.RepostOptions, Is.SameAs(repostOptions));
+                Assert.That(PrivateInvoke.GetNonPublicField(_pageStep.Object, "_wxeHandler"), Is.SameAs(_wxeHandler));
+              })
+          .Verifiable();
 
       _pageStep.Object.ExecuteFunction(new PreProcessingSubFunctionStateParameters(_pageMock.Object, _subFunction.Object, permaUrlOptions), repostOptions);
 
@@ -205,15 +209,19 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 
       var sequence = new VerifiableSequence();
       _pageMock.InVerifiableSequence(sequence).Setup(mock => mock.WxeHandler).Returns(_wxeHandler).Verifiable();
-      _pageStep.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Callback(
-          (WxeContext context) =>
-          {
-            var executionState = (PreProcessingSubFunctionState_WithRedirect)((IExecutionStateContext)_pageStep.Object).ExecutionState;
-            Assert.That(executionState.Parameters.SubFunction, Is.SameAs(_subFunction.Object));
-            Assert.That(executionState.Parameters.PermaUrlOptions, Is.SameAs(permaUrlOptions));
-            Assert.That(executionState.ReturnOptions, Is.SameAs(returnOptions));
-            Assert.That(PrivateInvoke.GetNonPublicField(_pageStep.Object, "_wxeHandler"), Is.SameAs(_wxeHandler));
-          }).Verifiable();
+      _pageStep
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Execute(_wxeContext))
+          .Callback(
+              (WxeContext context) =>
+              {
+                var executionState = (PreProcessingSubFunctionState_WithRedirect)((IExecutionStateContext)_pageStep.Object).ExecutionState;
+                Assert.That(executionState.Parameters.SubFunction, Is.SameAs(_subFunction.Object));
+                Assert.That(executionState.Parameters.PermaUrlOptions, Is.SameAs(permaUrlOptions));
+                Assert.That(executionState.ReturnOptions, Is.SameAs(returnOptions));
+                Assert.That(PrivateInvoke.GetNonPublicField(_pageStep.Object, "_wxeHandler"), Is.SameAs(_wxeHandler));
+              })
+          .Verifiable();
 
       _pageStep.Object.ExecuteFunctionExternalByRedirect(
           new PreProcessingSubFunctionStateParameters(_pageMock.Object, _subFunction.Object, permaUrlOptions), returnOptions);

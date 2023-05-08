@@ -206,11 +206,13 @@ namespace Remotion.SecurityManager.UnitTests
         using (subTransaction.EnterNonDiscardingScope())
         {
           var aclHandle = CreateAccessControlListHandle();
-          _mockAclFinder.Setup(_ => _.Find(_context))
+          _mockAclFinder
+              .Setup(_ => _.Find(_context))
               .Callback((ISecurityContext context) => Assert.That(SecurityFreeSection.IsActive, Is.True))
               .Returns(aclHandle)
               .Verifiable();
-          _mockTokenBuilder.Setup(_ => _.CreateToken(_principalStub.Object, _context))
+          _mockTokenBuilder
+              .Setup(_ => _.CreateToken(_principalStub.Object, _context))
               .Callback((ISecurityPrincipal principal, ISecurityContext context) => Assert.That(SecurityFreeSection.IsActive, Is.True))
               .Returns(token)
               .Verifiable();

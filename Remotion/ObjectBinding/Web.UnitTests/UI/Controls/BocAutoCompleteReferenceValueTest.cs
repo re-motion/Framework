@@ -35,7 +35,6 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Val
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Web.Services;
 using Remotion.Web.UI;
-using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -88,7 +87,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _dataSource = new StubDataSource(((IBusinessObject)_businessObject).BusinessObjectClass);
       _dataSource.BusinessObject = (IBusinessObject)_businessObject;
 
-      ((IBusinessObject)_businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IGetObjectService>(new GetObjectService((IBusinessObjectWithIdentity)TypeWithReference.Create()));
+      ((IBusinessObject)_businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IGetObjectService>(new GetObjectService(TypeWithReference.Create()));
       ((IBusinessObject)_businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IBusinessObjectWebUIService>(new ReflectionBusinessObjectWebUIService());
     }
 
@@ -300,7 +299,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       PrivateInvoke.SetNonPublicField(_control, "_hasBeenRenderedInPreviousLifecycle", true);
       Mock.Get((Page)_control.Page).As<ISmartPage>().Setup(stub => stub.GetPostBackCollection()).Returns(postbackCollection);
 
-      _webServiceFactoryStub.Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/ControlService.asmx"))
+      _webServiceFactoryStub
+          .Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/ControlService.asmx"))
           .Returns(new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/ControlService.asmx";
@@ -327,7 +327,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       PrivateInvoke.SetNonPublicField(_control, "_hasBeenRenderedInPreviousLifecycle", true);
       Mock.Get((Page)_control.Page).As<ISmartPage>().Setup(stub => stub.GetPostBackCollection()).Returns(postbackCollection);
 
-      _webServiceFactoryStub.Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/ControlService.asmx"))
+      _webServiceFactoryStub
+          .Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/ControlService.asmx"))
           .Returns(new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/ControlService.asmx";
@@ -351,7 +352,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       PrivateInvoke.SetNonPublicField(_control, "_hasBeenRenderedInPreviousLifecycle", true);
       Mock.Get((Page)_control.Page).As<ISmartPage>().Setup(stub => stub.GetPostBackCollection()).Returns(postbackCollection);
 
-      _webServiceFactoryStub.Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/SearchService.asmx"))
+      _webServiceFactoryStub
+          .Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/SearchService.asmx"))
           .Returns(new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/SearchService.asmx";

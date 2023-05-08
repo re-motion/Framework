@@ -135,7 +135,9 @@ namespace Remotion.Data.DomainObjects.Mapping
       return this;
     }
 
-    [Obsolete("Contains (...) method was ambiguous between GetPropertyDefinitions() and MyPropertyDefinitions. Use GetPropertyDefinitions().Contains (...) instead. (Version: 3.0.0)", true)]
+    [Obsolete(
+        "Contains (...) method was ambiguous between GetPropertyDefinitions() and MyPropertyDefinitions. Use GetPropertyDefinitions().Contains (...) instead. (Version: 3.0.0)",
+        true)]
     public bool Contains (PropertyDefinition propertyDefinition)
     {
       throw new NotSupportedException("Use GetPropertyDefinitions().Contains (...) instead. (Version: 3.0.0)");
@@ -544,7 +546,10 @@ namespace Remotion.Data.DomainObjects.Mapping
       else
       {
         var throwingDelegate =
-            (Func<IDomainObjectHandle<DomainObject>>)(() => { throw new InvalidOperationException("Handles cannot be created when the ClassType does not derive from DomainObject."); });
+            (Func<IDomainObjectHandle<DomainObject>>)(() =>
+            {
+              throw new InvalidOperationException("Handles cannot be created when the ClassType does not derive from DomainObject.");
+            });
         body = Expression.Invoke(Expression.Constant(throwingDelegate));
       }
 

@@ -61,8 +61,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
         [NotNull] params StatefulAccessControlListData[] statefulAcls)
         where TClass : ISecurableObject
     {
-      _securityContextRepositoryStub.Setup(_ => _.GetClass(TypeUtility.GetPartialAssemblyQualifiedName(typeof(TClass))))
-                                    .Returns(new SecurableClassDefinitionData(null, statelessAcl, statefulAcls));
+      _securityContextRepositoryStub
+          .Setup(_ => _.GetClass(TypeUtility.GetPartialAssemblyQualifiedName(typeof(TClass))))
+          .Returns(new SecurableClassDefinitionData(null, statelessAcl, statefulAcls));
     }
 
     protected void StubClassDefinition<TClass, TBaseClass> (
@@ -71,24 +72,24 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
         where TClass : TBaseClass
         where TBaseClass : ISecurableObject
     {
-      _securityContextRepositoryStub.Setup(_ => _.GetClass(TypeUtility.GetPartialAssemblyQualifiedName(typeof(TClass))))
-                                    .Returns(
-                                        new SecurableClassDefinitionData(
-                                            TypeUtility.GetPartialAssemblyQualifiedName(typeof(TBaseClass)),
-                                            statelessAcl,
-                                            statefulAcls));
+      _securityContextRepositoryStub
+          .Setup(_ => _.GetClass(TypeUtility.GetPartialAssemblyQualifiedName(typeof(TClass))))
+          .Returns(new SecurableClassDefinitionData(TypeUtility.GetPartialAssemblyQualifiedName(typeof(TBaseClass)), statelessAcl, statefulAcls));
     }
 
     protected void StubGetStatePropertyValues ()
     {
-      _securityContextRepositoryStub.Setup(_ => _.GetStatePropertyValues(s_orderStatePropertyHandle))
-                                    .Returns(new[] { OrderState_Delivered.Value, OrderState_Received.Value });
+      _securityContextRepositoryStub
+          .Setup(_ => _.GetStatePropertyValues(s_orderStatePropertyHandle))
+          .Returns(new[] { OrderState_Delivered.Value, OrderState_Received.Value });
 
-      _securityContextRepositoryStub.Setup(_ => _.GetStatePropertyValues(s_paymentStatePropertyHandle))
-                                    .Returns(new[] { PaymentState_None.Value, PaymentState_Paid.Value });
+      _securityContextRepositoryStub
+          .Setup(_ => _.GetStatePropertyValues(s_paymentStatePropertyHandle))
+          .Returns(new[] { PaymentState_None.Value, PaymentState_Paid.Value });
 
-      _securityContextRepositoryStub.Setup(_ => _.GetStatePropertyValues(s_deliveryPropertyHandle))
-                                    .Returns(new[] { Delivery_Post.Value, Delivery_Dhl.Value });
+      _securityContextRepositoryStub
+          .Setup(_ => _.GetStatePropertyValues(s_deliveryPropertyHandle))
+          .Returns(new[] { Delivery_Post.Value, Delivery_Dhl.Value });
     }
 
     protected IDomainObjectHandle<StatelessAccessControlList> CreateStatelessAcl ()

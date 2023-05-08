@@ -73,7 +73,8 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.Infrastructure
       var accessTypeStatisticsMock = new Mock<AccessTypeStatistics>(MockBehavior.Strict);
       accessTypeStatisticsMock.Setup(x => x.IsInAccessTypesContributingAces(userRoleAclAce.Ace)).Returns(true).Verifiable();
 
-      aclExpansionEntryCreatorMock.Setup(x => x.GetAccessTypes(userRoleAclAce))
+      aclExpansionEntryCreatorMock
+          .Setup(x => x.GetAccessTypes(userRoleAclAce))
           .Returns(new AclExpansionEntryCreator_GetAccessTypesResult(accessInformation, aclProbe, accessTypeStatisticsMock.Object))
           .Verifiable();
 

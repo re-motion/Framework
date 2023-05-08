@@ -48,13 +48,13 @@ namespace Remotion.Validation.UnitTests.Providers
     [Test]
     public void GetValidationRuleCollectors ()
     {
-      _validationRuleCollectorReflectorMock.Setup(mock => mock.GetCollectorsForType(typeof(Customer)))
+      _validationRuleCollectorReflectorMock
+          .Setup(mock => mock.GetCollectorsForType(typeof(Customer)))
           .Returns(new[] { typeof(CustomerValidationRuleCollector1), typeof(CustomerValidationRuleCollector2) })
           .Verifiable();
-      _validationRuleCollectorReflectorMock.Setup(mock => mock.GetCollectorsForType(typeof(Person)))
-          .Returns(
-              new[]
-              { typeof(PersonValidationRuleCollector1), typeof(PersonValidationRuleCollector2) })
+      _validationRuleCollectorReflectorMock
+          .Setup(mock => mock.GetCollectorsForType(typeof(Person)))
+          .Returns(new[] { typeof(PersonValidationRuleCollector1), typeof(PersonValidationRuleCollector2) })
           .Verifiable();
 
       var result = _provider.GetValidationRuleCollectors(new[] { typeof(Customer), typeof(Person) }).SelectMany(g => g).ToArray();

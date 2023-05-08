@@ -99,11 +99,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     }
 
     /// <summary>
-    /// Renders a custom title cell that includes information about bound property paths of <see cref="BocSimpleColumnDefinition"/>.
+    /// Adds attributes to a title cell that include information about bound property paths of <see cref="BocSimpleColumnDefinition"/>.
     /// </summary>
-    protected override void RenderTitleCell (BocColumnRenderingContext<BocSimpleColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
+    protected override void AddAttributesToRenderForTitleCell (BocCellAttributeRenderingContext<BocSimpleColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      base.AddAttributesToRenderForTitleCell(renderingContext, in arguments);
 
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {
@@ -111,18 +111,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
         if (!string.IsNullOrEmpty(boundPropertyPath))
         {
-          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "true");
-          renderingContext.Writer.AddAttribute(
+          renderingContext.AddAttributeToRender(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "true");
+          renderingContext.AddAttributeToRender(
               DiagnosticMetadataAttributesForObjectBinding.BoundPropertyPaths,
               boundPropertyPath);
         }
         else
         {
-          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "false");
+          renderingContext.AddAttributeToRender(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "false");
         }
       }
-
-      base.RenderTitleCell(renderingContext, arguments);
     }
 
     private void RenderEditModeControl (
@@ -139,7 +137,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, contentString);
       }
 
-      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span); // Begin span
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div); // Begin Div
 
       editableRow.RenderSimpleColumnCellEditModeControl(
           renderingContext.Writer,
@@ -148,7 +146,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           renderingContext.ColumnIndex,
           arguments.HeaderIDs);
 
-      renderingContext.Writer.RenderEndTag(); // End span
+      renderingContext.Writer.RenderEndTag(); // End Div
     }
   }
 }

@@ -97,7 +97,14 @@ namespace Remotion.Security.UnitTests.Metadata
       LocalizingMetadataConverter converter = new LocalizingMetadataConverter(_localizationConverter.Object, cultures);
       string filename = "metadata.xml";
       MetadataCache cache = new MetadataCache();
-      EnumValueInfo abstractRoleInfo = AddAbstractRoleInfo(cache, TestAbstractRoles.Developer, "6aba5c1a-cf54-4a12-9523-204fe0b56fd5", "Developer", "Remotion.Security.UnitTests.Core.SampleDomain.TestAbstractRoles", 0);
+      EnumValueInfo abstractRoleInfo =
+          AddAbstractRoleInfo(
+              cache,
+              TestAbstractRoles.Developer,
+              "6aba5c1a-cf54-4a12-9523-204fe0b56fd5",
+              "Developer",
+              "Remotion.Security.UnitTests.Core.SampleDomain.TestAbstractRoles",
+              0);
 
       LocalizedName expectedGermanName = CreateLocalizedName(abstractRoleInfo);
       _localizationConverter.Setup(_ => _.ConvertAndSave(new LocalizedName[] { expectedGermanName }, cultures[0], filename)).Verifiable();
@@ -117,7 +124,14 @@ namespace Remotion.Security.UnitTests.Metadata
       LocalizingMetadataConverter converter = new LocalizingMetadataConverter(_localizationConverter.Object, cultures);
       string filename = "metadata.xml";
       MetadataCache cache = new MetadataCache();
-      EnumValueInfo accessTypeInfo = AddAccessTypeInfo(cache, TestAccessTypes.First, "31ba143f-bef0-442b-a6dd-3b36a390e639", "First", "Remotion.Security.UnitTests.Core.SampleDomain.TestAccessTypes", 1);
+      EnumValueInfo accessTypeInfo =
+          AddAccessTypeInfo(
+              cache,
+              TestAccessTypes.First,
+              "31ba143f-bef0-442b-a6dd-3b36a390e639",
+              "First",
+              "Remotion.Security.UnitTests.Core.SampleDomain.TestAccessTypes",
+              1);
 
       LocalizedName expectedGermanName = CreateLocalizedName(accessTypeInfo);
       _localizationConverter.Setup(_ => _.ConvertAndSave(new LocalizedName[] { expectedGermanName }, cultures[0], filename)).Verifiable();
