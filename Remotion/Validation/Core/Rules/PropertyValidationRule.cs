@@ -85,5 +85,10 @@ namespace Remotion.Validation.Rules
 
       return Condition(instanceToValidate);
     }
+
+    public override string ToString ()
+    {
+      return $"PropertyValidationRule ({Property.DeclaringType?.GetFullNameSafe()}#{Property.Name})";
+    }
   }
 }
