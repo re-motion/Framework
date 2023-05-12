@@ -27,29 +27,30 @@ namespace Remotion.Validation.UnitTests.Rules
           "42 is not a number",
           "Localized validation message: 42 is not a number.");
 
-      var validatorMock1 = new Mock<IObjectValidator>();
-      validatorMock1.Setup(_ => _.Validate(It.IsAny<ObjectValidatorContext>()))
+      var validator1Mock = new Mock<IObjectValidator>();
+      validator1Mock
+          .Setup(_ => _.Validate(It.IsAny<ObjectValidatorContext>()))
           .Returns(new[] { failure1 })
           .Verifiable();
 
-      var validatorMock2 = new Mock<IObjectValidator>();
-      validatorMock2.Setup(_ => _.Validate(It.IsAny<ObjectValidatorContext>()))
+      var validator2Mock = new Mock<IObjectValidator>();
+      validator2Mock
+          .Setup(_ => _.Validate(It.IsAny<ObjectValidatorContext>()))
           .Returns(new[] { failure2 })
           .Verifiable();
 
-      var rule = new ObjectValidationRule<int>(condition, new[] { validatorMock1.Object, validatorMock2.Object });
+      var rule = new ObjectValidationRule<int>(condition, new[] { validator1Mock.Object, validator2Mock.Object });
 
       var result = rule.Validate(context);
       Assert.That(result, Is.EquivalentTo(new[] { failure1, failure2 }));
+      validator2Mock.Verify();
+      validator1Mock.Verify();
     }
 
     [Test]
     public void Validate_TryToValidateNull_ReturnsEmpty ()
     {
-      bool condition (object o)
-      {
-        return o != null;
-      }
+      Func<object, bool> condition = _ => true;
 
       var context = new ValidationContext(null);
       var rule = new ObjectValidationRule<object>(condition, new List<IObjectValidator>());
@@ -63,6 +64,7 @@ namespace Remotion.Validation.UnitTests.Rules
     public void Validate_WithNullCondition_ReturnsEmpty ()
     {
       Func<object, bool> condition = null;
+
       var context = new ValidationContext(new object());
       var rule = new ObjectValidationRule<object>(condition, new List<IObjectValidator>());
 
@@ -75,6 +77,7 @@ namespace Remotion.Validation.UnitTests.Rules
     public void Validate_WithUnfulfilledCondition_ReturnsEmpty ()
     {
       Func<int, bool> condition = i => i > 0;
+
       var context = new ValidationContext(-1);
       var rule = new ObjectValidationRule<int>(condition, new List<IObjectValidator>());
 
@@ -86,7 +89,8 @@ namespace Remotion.Validation.UnitTests.Rules
     [Test]
     public void IsActive_TryToValidateNull_ReturnsFalse ()
     {
-      Func<object, bool> condition = o => true;
+      Func<object, bool> condition = _ => true;
+
       var context = new ValidationContext(null);
       var rule = new ObjectValidationRule<object>(condition, new List<IObjectValidator>());
 
@@ -111,8 +115,8 @@ namespace Remotion.Validation.UnitTests.Rules
     [Test]
     public void IsActive_ReturnsValueFromCondition ()
     {
-      Func<object, bool> alwaysTrueCondition = o => true;
-      Func<object, bool> alwaysFalseCondition = o => false;
+      Func<object, bool> alwaysTrueCondition = _ => true;
+      Func<object, bool> alwaysFalseCondition = _ => false;
 
       var context = new ValidationContext(new object());
       var trueRule = new ObjectValidationRule<object>(alwaysTrueCondition, new List<IObjectValidator>());
