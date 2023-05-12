@@ -14,7 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
+using System.Globalization;
 using NUnit.Framework;
+using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
@@ -22,21 +25,42 @@ namespace Remotion.Validation.UnitTests.Implementation
   public class InvariantValidationMessageTest
   {
     [Test]
-    [Ignore("RM-5906")]
-    public void Format_UsesSuppliedFormatProviderInsteadOfCurrentCulture ()
+    [SetCulture("en-US")]
+    [SetUICulture("de-CH")]
+    public void Format_WithFormatProvider_UsesSuppliedFormatProviderInsteadOfCurrentCulture ()
     {
+      var validationMessage = new InvariantValidationMessage("{0} : {1}");
+      var culture = CultureInfo.GetCultureInfo("fr-FR");
+      var formatProvider = CultureInfo.GetCultureInfo("de-AT");
+      var parameters = new object[] { 3123.312, new DateTime(2023, 05, 15) };
+
+      var result = validationMessage.Format(culture, formatProvider, parameters);
+
+      Assert.That(result, Is.EqualTo("3123,312 : 15.05.2023 00:00:00"));
     }
 
     [Test]
-    [Ignore("RM-5906")]
-    public void Format_UsesSuppliedCultureInsteadOfCurrentUICulture ()
+    [SetCulture("it-IT")]
+    [SetUICulture("de-CH")]
+    public void Format_WithNullAsFormatProvider_UsesInvariantCulture ()
     {
+      var validationMessage = new InvariantValidationMessage("{0} : {1}");
+      var culture = CultureInfo.GetCultureInfo("fr-FR");
+      var parameters = new object[] { 3123.312, new DateTime(2023, 05, 15) };
+
+      var result = validationMessage.Format(culture, null, parameters);
+
+      Assert.That(result, Is.EqualTo("3123.312 : 05/15/2023 00:00:00"));
     }
 
     [Test]
-    [Ignore("RM-5906")]
-    public void ToString_Override ()
+    public void ToString_ReturnsRawValidationMessage ()
     {
+      var validationMessage = new InvariantValidationMessage("test {0} message");
+
+      var result = validationMessage.ToString();
+
+      Assert.That(result, Is.EqualTo("test {0} message"));
     }
   }
 }
