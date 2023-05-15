@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -146,12 +147,14 @@ namespace Remotion.Web.Development.WebTesting
       HttpStatusCode statusCode = default;
       Assertion.DebugAssert(statusCode != HttpStatusCode.OK);
 
+      WebResponse? lastResponse = null;
+      string? lastResponseText = null;
       while (true)
       {
 #pragma warning disable SYSLIB0014
         var webRequest = (HttpWebRequest)HttpWebRequest.Create(webApplicationRoot); // TODO RM-8492: Replace with HttpClient
 #pragma warning restore SYSLIB0014
-        webRequest.Method = WebRequestMethods.Http.Head;
+        webRequest.Method = WebRequestMethods.Http.Get;
         webRequest.AllowAutoRedirect = true;
         webRequest.Host = webApplicationRoot.GetComponents(UriComponents.Host | UriComponents.Port, UriFormat.UriEscaped);
         webRequest.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
@@ -160,11 +163,19 @@ namespace Remotion.Web.Development.WebTesting
         if (remainingTimeout <= 0)
         {
           s_log.Warn($"Checking the web application root '{webApplicationRoot}' timed out (HTTP status code: '{statusCode}').");
+
+          // Embed the response text as inner exception
+          var innerException = lastResponseText != null
+              ? new Exception($"Last response text:{Environment.NewLine}{lastResponseText}")
+              : null;
+
           throw new WebException(
               $"Checking the web application root '{webApplicationRoot}' did not return '{HttpStatusCode.OK}' "
               + $"in the defined {nameof(applicationPingTimeout)} ({applicationPingTimeout}). "
               + $"Last received HTTP status code was: '{statusCode}'.",
-              WebExceptionStatus.Timeout);
+              innerException,
+              WebExceptionStatus.Timeout,
+              lastResponse);
         }
 
         try
@@ -177,12 +188,27 @@ namespace Remotion.Web.Development.WebTesting
         }
         catch (WebException ex)
         {
+          lastResponse = ex.Response;
           if (ex.Response is HttpWebResponse httpWebResponse)
             statusCode = httpWebResponse.StatusCode;
 
           s_log.Warn(
               $"Checking the web application root '{webApplicationRoot}' failed with WebException: '{ex.Message}' (HTTP status code: '{statusCode}'). "
               + $"Retrying until {nameof(applicationPingTimeout)} ({applicationPingTimeout}) is reached.");
+
+          try
+          {
+            if (ex.Response != null)
+            {
+              using var responseStream = ex.Response.GetResponseStream();
+              using var reader = new StreamReader(responseStream);
+              lastResponseText = reader.ReadToEnd();
+            }
+          }
+          catch (Exception)
+          {
+            // Ignore errors caused by reading the failed request
+          }
         }
 
         Thread.Sleep(TimeSpan.FromMilliseconds(500));
