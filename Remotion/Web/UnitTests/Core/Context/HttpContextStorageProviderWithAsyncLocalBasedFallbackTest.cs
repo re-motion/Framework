@@ -126,7 +126,7 @@ namespace Remotion.Web.UnitTests.Core.Context
       var t = new Thread(
           () =>
           {
-            threadResult = (int)_provider.GetData("test");
+            threadResult = (int?)_provider.GetData("test");
           });
       t.Start();
       t.Join();
