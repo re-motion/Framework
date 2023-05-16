@@ -218,5 +218,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     [BinaryProperty(IsNullable = false, MaximumLength = 1000000)]
     [StorageClassTransaction]
     public abstract byte[] TransactionOnlyBinaryProperty { get; set; }
+
+    public void PopulateMandatoryProperties ()
+    {
+      ExtensibleEnumProperty = Color.Values.Red();
+      StringProperty = "String";
+      StringPropertyWithoutMaxLength = "StringWithoutLengthLimit";
+      BinaryProperty = new byte[] { 08, 15 };
+      TransactionOnlyStringProperty = "TransactionOnly";
+      TransactionOnlyBinaryProperty = new byte[] { 47, 11 };
+      DateTimeProperty = new DateTime(2012, 12, 12);
+      DateProperty = new DateTime(2012, 12, 12);
+    }
   }
 }

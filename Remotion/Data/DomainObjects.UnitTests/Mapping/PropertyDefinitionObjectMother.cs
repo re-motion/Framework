@@ -19,6 +19,7 @@ using System.Reflection;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
@@ -83,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         int? maxLength,
         StorageClass storageClass)
     {
-      Type declaringType = classDefinition.ClassType;
+      var declaringType = classDefinition.ClassType;
 
       var propertyInformationStub = new Mock<IPropertyInformation>();
       propertyInformationStub.Setup(stub => stub.Name).Returns(propertyName + "FakeProperty");
@@ -91,7 +92,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       propertyInformationStub.Setup(stub => stub.DeclaringType).Returns(TypeAdapter.Create(declaringType));
       propertyInformationStub.Setup(stub => stub.GetOriginalDeclaringType()).Returns(TypeAdapter.Create(declaringType));
 
-      return CreateForPropertyInformation(classDefinition, propertyName, isObjectID, isNullable, maxLength, storageClass, propertyInformationStub.Object);
+      var defaultValue = isNullable ? null : propertyType.GetDefaultValue();
+
+      IPropertyInformation propertyInformation = propertyInformationStub.Object;
+      return CreateForPropertyInformation(classDefinition, propertyName, isObjectID, isNullable, maxLength, storageClass, propertyInformation, defaultValue);
     }
 
     public static PropertyDefinition CreateForFakePropertyInfo_ObjectID ()
@@ -125,6 +129,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var isObjectID = ReflectionUtility.IsDomainObject(propertyInfo.PropertyType);
 
+      IPropertyInformation propertyInformation = PropertyInfoAdapter.Create(propertyInfo);
       return CreateForPropertyInformation(
           classDefinition,
           fullPropertyName,
@@ -132,7 +137,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           true,
           null,
           StorageClass.Persistent,
-          PropertyInfoAdapter.Create(propertyInfo));
+          propertyInformation,
+          null);
     }
 
     public static PropertyDefinition CreateForPropertyInformation (
@@ -147,7 +153,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           false,
           null,
           StorageClass.Persistent,
-          propertyInformation);
+          propertyInformation,
+          propertyInformation.PropertyType.GetDefaultValue());
     }
 
     public static PropertyDefinition CreateForPropertyInformation (
@@ -162,7 +169,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           false,
           null,
           storageClass,
-          propertyInformation);
+          propertyInformation,
+          propertyInformation.PropertyType.GetDefaultValue());
     }
 
     private static PropertyDefinition CreateForPropertyInformation (
@@ -172,7 +180,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         bool isNullable,
         int? maxLength,
         StorageClass storageClass,
-        IPropertyInformation propertyInformation)
+        IPropertyInformation propertyInformation,
+        object defaultValue)
     {
       var propertyDefinition = new PropertyDefinition(
           classDefinition,
@@ -181,7 +190,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           isObjectID,
           isNullable,
           maxLength,
-          storageClass);
+          storageClass,
+          defaultValue);
       return propertyDefinition;
     }
 

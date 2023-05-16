@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Security.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransactionExtensionTests
@@ -33,7 +34,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
           false,
           false,
           null,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          propertyInfo.PropertyType.GetDefaultValue());
     }
   }
 }

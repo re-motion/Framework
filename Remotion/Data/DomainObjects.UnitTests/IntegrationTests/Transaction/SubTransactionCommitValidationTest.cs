@@ -103,6 +103,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (subTransaction.EnterDiscardingScope())
       {
         newOrderTicket = OrderTicket.NewObject();
+        newOrderTicket.FileName = @"C:\temp\newOrder.tkt";
         Assert.That(() => subTransaction.Commit(), Throws.Nothing);
       }
 
@@ -123,6 +124,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (subTransaction.EnterDiscardingScope())
       {
         newIndustrialSector = IndustrialSector.NewObject();
+        newIndustrialSector.Name = "Sector";
         Assert.That(() => subTransaction.Commit(), Throws.Nothing);
       }
 

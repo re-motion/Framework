@@ -89,6 +89,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
           DomainObjectIDs.ClassWithAllDataTypes2);
       var extensionMock = new Mock<IClientTransactionExtension>(MockBehavior.Strict);
 
+      // initialize mandatory transaction-only properties, which are null after loading the object
+      foreach (var transportedObject in transportedObjects.TransportedObjects)
+        InitializeTransactionOnlyProperties(transportedObject);
+
       extensionMock
           .Setup(
               mock => mock.Committing(
@@ -137,12 +141,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 
       TransportedDomainObjects transportedObjects = Transport(transporter);
 
+      // initialize mandatory transaction-only properties, which are null after loading the object
+      foreach (var transportedObject in transportedObjects.TransportedObjects)
+        InitializeTransactionOnlyProperties(transportedObject);
+
       var expectedObjects = new List<DomainObject>();
       using (transportedObjects.DataTransaction.EnterNonDiscardingScope())
       {
         expectedObjects.Add(DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>());
         expectedObjects.Add(DomainObjectIDs.ClassWithAllDataTypes2.GetObject<ClassWithAllDataTypes>());
       }
+
+      // initialize mandatory transaction-only properties, which are null after loading the object
+      foreach (var transportedObject in transportedObjects.TransportedObjects)
+        InitializeTransactionOnlyProperties(transportedObject);
 
       var filteredObjects = new List<DomainObject>();
       transportedObjects.FinishTransport(
@@ -160,6 +172,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       TransportedDomainObjects transportedObjects = TransportAndDeleteObjects(
           DomainObjectIDs.ClassWithAllDataTypes1,
           DomainObjectIDs.ClassWithAllDataTypes2);
+
+      // initialize mandatory transaction-only properties, which are null after loading the object
+      foreach (var transportedObject in transportedObjects.TransportedObjects)
+        InitializeTransactionOnlyProperties(transportedObject);
 
       transportedObjects.FinishTransport();
 
@@ -179,6 +195,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       TransportedDomainObjects transportedObjects = TransportAndDeleteObjects(
           DomainObjectIDs.ClassWithAllDataTypes1,
           DomainObjectIDs.ClassWithAllDataTypes2);
+
+      // initialize mandatory transaction-only properties, which are null after loading the object
+      foreach (var transportedObject in transportedObjects.TransportedObjects)
+        InitializeTransactionOnlyProperties(transportedObject);
 
       transportedObjects.FinishTransport(transportedObject =>
           {
@@ -211,6 +231,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
           42,
           DomainObjectIDs.ClassWithAllDataTypes1,
           DomainObjectIDs.ClassWithAllDataTypes2);
+
+      // initialize mandatory transaction-only properties, which are null after loading the object
+      foreach (var transportedObject in transportedObjects.TransportedObjects)
+        InitializeTransactionOnlyProperties(transportedObject);
 
       transportedObjects.FinishTransport(transportedObject =>
       {
@@ -248,6 +272,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
           DomainObjectIDs.ClassWithAllDataTypes2);
 
       var transaction = transportedObjects.DataTransaction;
+
+      // initialize mandatory transaction-only properties, which are null after loading the object
+      foreach (var transportedObject in transportedObjects.TransportedObjects)
+        InitializeTransactionOnlyProperties(transportedObject);
+
       transportedObjects.FinishTransport();
 
       Assert.That(transaction.IsDiscarded, Is.True);
@@ -313,6 +342,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
             foreach (var id in objectsToLoadAndDelete)
             {
               var domainObject = LifetimeService.GetObject(ClientTransaction.Current, id, false);
+
+              InitializeTransactionOnlyProperties(domainObject);
+
               var properties = new PropertyIndexer(domainObject);
               properties[propertyName].SetValueWithoutTypeCheck(newValue);
             }
@@ -343,6 +375,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
         stream.Seek(0, SeekOrigin.Begin);
 
         return DomainObjectTransporter.LoadTransportData(stream);
+      }
+    }
+
+    private static void InitializeTransactionOnlyProperties (DomainObject domainObject)
+    {
+      if (domainObject is ClassWithAllDataTypes objectWithAllDataTypes)
+      {
+        objectWithAllDataTypes.TransactionOnlyStringProperty = "TransactionOnly";
+        objectWithAllDataTypes.TransactionOnlyBinaryProperty = new byte[] { 08, 15 };
       }
     }
   }

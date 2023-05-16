@@ -125,11 +125,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     public void UnloadData_Computer_WithUnsynchronizedOppositeEndPoint ()
     {
       var computer1 = DomainObjectIDs.Computer1.GetObject<Computer>();
+
       var employee = computer1.Employee;
       employee.EnsureDataAvailable();
 
       var unsynchronizedComputerID =
-          RelationInconcsistenciesTestHelper.CreateObjectAndSetRelationInOtherTransaction<Computer, Employee>(employee.ID, (ot, o) => ot.Employee = o);
+          RelationInconcsistenciesTestHelper.CreateAndInitializeObjectAndSetRelationInOtherTransaction<Computer, Employee>(employee.ID, (ot, o) =>
+          {
+            ot.SerialNumber = "12345";
+            ot.Employee = o;
+          });
       var unsynchronizedComputer = unsynchronizedComputerID.GetObject<Computer>();
 
       Assert.That(computer1.State.IsUnchanged, Is.True);
@@ -293,7 +298,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     {
       var order1 = DomainObjectIDs.Order1.GetObject<Order>();
       var orderItems = order1.OrderItems;
+
       var newOrderItem = OrderItem.NewObject();
+      newOrderItem.Product = "Product";
+
       orderItems.Add(newOrderItem);
 
       TestableClientTransaction.Commit();
@@ -392,6 +400,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       {
         var computerInOtherTx = computer1.ID.GetObject<Computer>();
         computerInOtherTx.Employee = Employee.NewObject();
+        computerInOtherTx.Employee.Name = "Employee";
+
         newEmployeeID = computerInOtherTx.Employee.ID;
         ClientTransaction.Current.Commit();
       }

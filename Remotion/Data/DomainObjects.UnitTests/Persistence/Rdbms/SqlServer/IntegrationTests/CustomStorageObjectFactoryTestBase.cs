@@ -57,6 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           new ReflectionBasedMemberInformationNameResolver(),
           new PropertyMetadataReflector(),
           new DomainModelConstraintProvider(),
+          new PropertyDefaultValueProvider(),
           new SortExpressionDefinitionProvider(),
           SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>());
       _storageObjectFactory = CreateSqlStorageObjectFactory();
