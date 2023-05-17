@@ -14,8 +14,8 @@ namespace Remotion.Validation.UnitTests.Rules
     [Test]
     public void Validate_ReturnsValidationFailures ()
     {
-      Func<int, bool> condition = i => true;
-      var context = new ValidationContext(1);
+      Func<object, bool> condition = i => true;
+      var context = new ValidationContext(new object());
 
       var failure1 = new ObjectValidationFailure(
           15,
@@ -39,7 +39,7 @@ namespace Remotion.Validation.UnitTests.Rules
           .Returns(new[] { failure2 })
           .Verifiable();
 
-      var rule = new ObjectValidationRule<int>(condition, new[] { validator1Mock.Object, validator2Mock.Object });
+      var rule = new ObjectValidationRule<object>(condition, new[] { validator1Mock.Object, validator2Mock.Object });
 
       var result = rule.Validate(context);
       Assert.That(result, Is.EquivalentTo(new[] { failure1, failure2 }));
