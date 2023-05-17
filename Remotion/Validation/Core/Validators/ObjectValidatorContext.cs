@@ -32,7 +32,7 @@ namespace Remotion.Validation.Validators
     {
       ArgumentUtility.CheckNotNull("parentContext", parentContext);
       ArgumentUtility.CheckNotNull("instance", instance);
-      if (!instance.Equals(parentContext.InstanceToValidate))
+      if (parentContext.InstanceToValidate != instance)
         throw new ArgumentException("parentContext.Instance does not match instance parameter.", "instance");
 
       ParentContext = parentContext;
