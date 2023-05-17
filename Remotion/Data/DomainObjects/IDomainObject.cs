@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects
     ClientTransaction RootTransaction { get; }
 
     /// <summary>
-    /// Gets a <see cref="DomainObjectTransactionContextIndexer"/> object that can be used to select an <see cref="IDomainObjectTransactionContext"/>
+    /// Gets a <see cref="DomainObjectTransactionContextIndexer"/> object that can be used to select an <see cref="DomainObjectTransactionContext"/>
     /// for a specific <see cref="DomainObjects.ClientTransaction"/>. 
     /// To obtain the default context, use <see cref="DomainObjectExtensions.GetDefaultTransactionContext"/>.
     /// </summary>

@@ -81,15 +81,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       IDomainObject domainObject = DomainObjectMother.CreateFakeObject<Order>();
 
-      var actualTransactionContext = (DomainObjectTransactionContext)domainObject.GetDefaultTransactionContext();
+      var actualTransactionContext = domainObject.GetDefaultTransactionContext();
 
       var expectedTransactionContext =
-          (DomainObjectTransactionContext)domainObject.TransactionContext[domainObject.RootTransaction.ActiveTransaction];
+          domainObject.TransactionContext[domainObject.RootTransaction.ActiveTransaction];
 
       Assert.That(actualTransactionContext.ClientTransaction, Is.EqualTo(expectedTransactionContext.ClientTransaction));
       Assert.That(actualTransactionContext.DomainObject, Is.EqualTo(expectedTransactionContext.DomainObject));
-      Assert.That(actualTransactionContext, Is.Not.EqualTo(expectedTransactionContext), "DomainObjectTransactionContext cannot be compared by reference at the moment.");
-
+      Assert.That(actualTransactionContext, Is.EqualTo(expectedTransactionContext));
     }
 
     [Test]
