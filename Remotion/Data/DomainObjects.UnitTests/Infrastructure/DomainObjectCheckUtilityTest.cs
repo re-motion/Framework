@@ -109,6 +109,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       DomainObjectCheckUtility.DebugCheckIfRightTransaction(order, subTransaction);
     }
 
+#if !DEBUG
+    [Ignore("Skipped unless DEBUG build")]
+#endif
     [Test]
     public void DebugCheckIfRightTransaction_Fails ()
     {
