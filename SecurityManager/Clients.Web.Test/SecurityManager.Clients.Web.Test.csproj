@@ -208,7 +208,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50371</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:60400/fx-develop/SecurityManager.Clients.Web.Test/</IISUrl>
+          <IISUrl>http://localhost:60400/fx-4.x/SecurityManager.Clients.Web.Test/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
