@@ -15,35 +15,100 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Globalization;
+using Moq;
 using NUnit.Framework;
+using Remotion.Globalization;
 
 namespace Remotion.Validation.Globalization.UnitTests
 {
   [TestFixture]
   public class ResourceManagerBasedValidationMessageTest
   {
-    [Test]
-    [Ignore("RM-5906")]
-    public void Format ()
+    [ResourceIdentifiers]
+    private enum TestResourceIdentifiers
     {
+      One,
+      Two,
     }
 
     [Test]
-    [Ignore("RM-5906")]
+    [SetCulture("it-IT")]
+    [SetUICulture("fr-FR")]
     public void Format_UsesSuppliedFormatProviderInsteadOfCurrentCulture ()
     {
+      var value = "{0:C}";
+      CultureInfo actualCulture = null;
+
+      var resourceManagerMock = new Mock<IResourceManager>();
+      resourceManagerMock.Setup(_ => _.TryGetString("Remotion.Validation.Globalization.UnitTests.ResourceManagerBasedValidationMessageTest.One", out value))
+          .Callback(() =>
+          {
+            actualCulture = CultureInfo.CurrentUICulture;
+          })
+          .Returns(true);
+
+      var validationMessage = new ResourceManagerBasedValidationMessage(resourceManagerMock.Object, TestResourceIdentifiers.One);
+      var expectedCulture = CultureInfo.GetCultureInfo("en-US");
+      var formatProvider = CultureInfo.GetCultureInfo("de-AT");
+      var parameters = new object[] { 3123.31};
+
+      var result = validationMessage.Format(expectedCulture, formatProvider, parameters);
+
+      Assert.That(result, Is.EqualTo("€ 3.123,31"));
+      Assert.That(actualCulture, Is.EqualTo(expectedCulture));
     }
 
     [Test]
-    [Ignore("RM-5906")]
+    [SetCulture("it-IT")]
+    [SetUICulture("fr-FR")]
     public void Format_UsesSuppliedCultureInsteadOfCurrentUICulture ()
     {
+      var value = "{0:C}";
+      CultureInfo actualCulture = null;
+
+      var resourceManagerMock = new Mock<IResourceManager>();
+      resourceManagerMock.Setup(_ => _.TryGetString("Remotion.Validation.Globalization.UnitTests.ResourceManagerBasedValidationMessageTest.One", out value))
+          .Callback(() =>
+          {
+            actualCulture = CultureInfo.CurrentUICulture;
+          })
+          .Returns(true);
+
+      var validationMessage = new ResourceManagerBasedValidationMessage(resourceManagerMock.Object, TestResourceIdentifiers.One);
+      var expectedCulture = CultureInfo.GetCultureInfo("en-US");
+      var parameters = new object[] { 3123.31};
+
+      var result = validationMessage.Format(expectedCulture, null, parameters);
+
+      Assert.That(result, Is.EqualTo("¤3,123.31"));
+      Assert.That(actualCulture, Is.EqualTo(expectedCulture));
     }
 
+    [SetCulture("it-IT")]
+    [SetUICulture("fr-FR")]
     [Test]
-    [Ignore("RM-5906")]
-    public void ToString_Override ()
+    public void ToString_ReturnsValueOfResource ()
     {
+      string value = "Expected Value";
+      CultureInfo actualCulture = null;
+
+      var resourceManagerMock = new Mock<IResourceManager>();
+      resourceManagerMock
+          .Setup(_ => _.TryGetString("Remotion.Validation.Globalization.UnitTests.ResourceManagerBasedValidationMessageTest.Two", out value))
+          .Callback(() =>
+          {
+            actualCulture = CultureInfo.CurrentUICulture;
+          })
+          .Returns(true);
+
+      var validationMessage  = new ResourceManagerBasedValidationMessage(resourceManagerMock.Object, TestResourceIdentifiers.Two);
+      var expectedCulture = CultureInfo.GetCultureInfo("fr-FR");
+
+      var result = validationMessage.ToString();
+
+      Assert.That(result, Is.EqualTo("Expected Value"));
+      Assert.That(actualCulture, Is.EqualTo(expectedCulture));
     }
   }
 }
