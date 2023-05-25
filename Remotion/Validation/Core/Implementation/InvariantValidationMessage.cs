@@ -36,7 +36,7 @@ namespace Remotion.Validation.Implementation
       ArgumentUtility.CheckNotNull("culture", culture);
       ArgumentUtility.CheckNotNull("parameters", parameters);
 
-      return string.Format(formatProvider, _validationMessage, parameters);
+      return string.Format(formatProvider ?? CultureInfo.InvariantCulture, _validationMessage, parameters);
     }
 
     public override string ToString ()
