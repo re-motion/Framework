@@ -15,7 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Globalization;
+using System.Threading;
 using NUnit.Framework;
+using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
@@ -23,21 +26,65 @@ namespace Remotion.Validation.UnitTests.Implementation
   public class DelegateBasedValidationMessageTest
   {
     [Test]
-    [Ignore("RM-5906")]
-    public void Format_UsesSuppliedFormatProviderInsteadOfCurrentCulture ()
+    [SetCulture("en-US")]
+    public void Format_WithFormatProvider_UsesSuppliedFormatProviderInsteadOfCurrentCulture ()
     {
+      Func<string> validationMessageProvider = () => "{0} : {1:F}";
+      var validationMessage = new DelegateBasedValidationMessage(validationMessageProvider);
+      var culture = CultureInfo.GetCultureInfo("en-US");
+      var formatProvider = CultureInfo.GetCultureInfo("de-AT");
+      var parameters = new object[] { 3123.312, new DateTime(2023, 05, 15) };
+
+      var result = validationMessage.Format(culture, formatProvider, parameters);
+
+      Assert.That(result, Is.EqualTo("3123,312 : Montag, 15. Mai 2023 00:00:00"));
     }
 
     [Test]
-    [Ignore("RM-5906")]
+    [SetCulture("it-IT")]
+    public void Format_WithNullAsFormatProvider_UsesInvariantCulture ()
+    {
+      Func<string> validationMessageProvider = () => "{0} : {1:F}";
+      var validationMessage = new DelegateBasedValidationMessage(validationMessageProvider);
+      var culture = CultureInfo.GetCultureInfo("fr-FR");
+      var parameters = new object[] { 3123.312, new DateTime(2023, 05, 15) };
+
+      var result = validationMessage.Format(culture, null, parameters);
+
+      Assert.That(result, Is.EqualTo("3123.312 : Monday, 15 May 2023 00:00:00"));
+    }
+
+    [Test]
+    [SetCulture("it-IT")]
+    [SetUICulture("en-US")]
     public void Format_UsesSuppliedCultureInsteadOfCurrentUICulture ()
     {
+      CultureInfo actualCulture = null;
+      Func<string> validationMessageProvider = () =>
+      {
+        actualCulture = Thread.CurrentThread.CurrentUICulture;
+        return "";
+      };
+
+      var validationMessage = new DelegateBasedValidationMessage(validationMessageProvider);
+      var culture = CultureInfo.GetCultureInfo("fr-FR");
+      var formatProvider = CultureInfo.GetCultureInfo("de-AT");
+
+      var result = validationMessage.Format(culture, formatProvider);
+
+      Assert.That(result, Is.Empty);
+      Assert.That(actualCulture, Is.EqualTo(CultureInfo.GetCultureInfo("fr-FR")));
     }
 
     [Test]
-    [Ignore("RM-5906")]
-    public void ToString_Override ()
+    public void ToString_ReturnsRawValidationMessage ()
     {
+      Func<string> validationMessageProvider = () => "test {0} message";
+      var validationMessage = new DelegateBasedValidationMessage(validationMessageProvider);
+
+      var result = validationMessage.ToString();
+
+      Assert.That(result, Is.EqualTo("test {0} message"));
     }
   }
 }
