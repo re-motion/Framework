@@ -36,6 +36,7 @@
     <td colSpan=2>
       <ros:TestBocList id=ChildrenList runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="4" indexoffset="100" RowMenuDisplay="Manual" ShowEmptyListMessage="True" Index="InitialOrder" Selection="Multiple" Width="100%" Height="15em" ControlServicePath="BocListWebService.asmx" ControlServiceArguments="ControlServiceArgs">
         <fixedcolumns>
+          <remotion:BocValidationErrorIndicatorColumnDefinition/>
           <remotion:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit" ColumnTitle="Edit" ShowColumnTitle="False"></remotion:BocRowEditModeColumnDefinition>
           <remotion:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
             <persistedcommand>

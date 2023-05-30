@@ -192,6 +192,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private void RenderDataColumnDeclaration (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, bool isTextXml)
     {
       renderingContext.Writer.WriteBeginTag("col");
+
+      var cssClassForDataColumnDefinition = GetAdditionalCssClassForDataColumnDeclaration(renderingContext);
+      if (!string.IsNullOrEmpty(cssClassForDataColumnDefinition))
+      {
+        renderingContext.Writer.Write(" ");
+        renderingContext.Writer.WriteAttribute("class", cssClassForDataColumnDefinition);
+      }
+
       if (!renderingContext.ColumnDefinition.Width.IsEmpty)
       {
         renderingContext.Writer.Write(" style=\"");
@@ -208,6 +216,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.Write(" />");
       else
         renderingContext.Writer.Write(">");
+    }
+
+    /// <summary>
+    /// Returns additional css class that are added to a rendered data column declaration.
+    /// </summary>
+    protected virtual string GetAdditionalCssClassForDataColumnDeclaration (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
+    {
+      return string.Empty;
     }
 
     private void RenderTitleCellMarkers (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
@@ -356,9 +372,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       if (!string.IsNullOrEmpty(renderingContext.ColumnDefinition.CssClass))
         cssClassTableCell += " " + renderingContext.ColumnDefinition.CssClass;
-      var additionalCssClassForTitleCell = GetAdditionalCssClassForDataCell(renderingContext, in arguments);
-      if (!string.IsNullOrEmpty(additionalCssClassForTitleCell))
-        cssClassTableCell += " " + additionalCssClassForTitleCell;
+      var additionalCssClassForDataCell = GetAdditionalCssClassForDataCell(renderingContext, in arguments);
+      if (!string.IsNullOrEmpty(additionalCssClassForDataCell))
+        cssClassTableCell += " " + additionalCssClassForDataCell;
       renderingContext.AddAttributeToRender(HtmlTextWriterAttribute.Class, cssClassTableCell);
 
       if (arguments.IsRowHeader)

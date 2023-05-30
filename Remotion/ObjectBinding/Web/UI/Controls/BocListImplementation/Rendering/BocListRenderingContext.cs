@@ -29,7 +29,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   {
     private readonly BusinessObjectWebServiceContext _businessObjectWebServiceContext;
     private readonly BocColumnRenderer[] _columnRenderers;
-
     private readonly BocListColumnIndexProvider _columnIndexProvider;
 
     public BocListRenderingContext (
@@ -45,7 +44,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       _businessObjectWebServiceContext = businessObjectWebServiceContext;
       _columnRenderers = columnRenderers;
-
       _columnIndexProvider = new BocListColumnIndexProvider(columnRenderers);
     }
 

@@ -14,11 +14,14 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
     <ProjectReference Include="..\..\Development\Web\Development.Web.csproj" />
+    <ProjectReference Include="..\..\Validation\Core\Validation.Core.csproj" />
     <ProjectReference Include="..\..\Web\Core\Web.Core.csproj" />
     <ProjectReference Include="..\..\Web\Development.WebTesting.TestSite.Infrastructure\Web.Development.WebTesting.TestSite.Infrastructure.csproj" />
     <ProjectReference Include="..\Core\ObjectBinding.Core.csproj" />
     <ProjectReference Include="..\Sample\ObjectBinding.Sample.csproj" />
+    <ProjectReference Include="..\Validation\ObjectBinding.Validation.csproj" />
     <ProjectReference Include="..\Web\ObjectBinding.Web.csproj" />
   </ItemGroup>
   <ItemGroup>

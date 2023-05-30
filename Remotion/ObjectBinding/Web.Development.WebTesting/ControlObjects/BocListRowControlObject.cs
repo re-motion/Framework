@@ -100,6 +100,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return GetCell().WithIndex(oneBasedIndex);
     }
 
+    /// <summary>
+    /// Gets any validation errors assigned to the row.
+    /// </summary>
+    public BocListValidationError[] GetValidationErrors ()
+    {
+      return _impl.GetValidationErrors();
+    }
+
     /// <inheritdoc/>
     BocListCellControlObject IFluentControlObjectWithCells<BocListCellControlObject>.WithColumnItemID (string columnItemID)
     {

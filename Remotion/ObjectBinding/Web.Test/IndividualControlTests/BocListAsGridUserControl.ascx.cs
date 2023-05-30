@@ -18,14 +18,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
+using Remotion.Reflection;
 using Remotion.Utilities;
+using Remotion.Validation.Results;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
@@ -49,8 +53,10 @@ public class BocListAsGridUserControl : BaseUserControl
   protected BocTextValue LastNameField;
   protected TestBocList ChildrenList;
   protected TestBocList EmptyList;
+  protected WebButton ChildrenAddValidationErrorsButton;
   protected CheckBox ChildrenListEventCheckBox;
   protected Label ChildrenListEventArgsLabel;
+  protected Label UnhandledValidationErrorsLabel;
   protected FormGridManager FormGridManager;
   protected BindableObjectDataSourceControl EmptyDataSourceControl;
   protected HtmlTable FormGrid;
@@ -96,6 +102,8 @@ public class BocListAsGridUserControl : BaseUserControl
 
     ChildrenList.EditModeControlFactory = new AllRequiredEditableRowControlFactory();
     ChildrenList.DisableEditModeValidationMessages = true;
+
+    ChildrenAddValidationErrorsButton.Click += ChildrenAddValidationErrorsButtonClick;
   }
 
   public override IBusinessObjectDataSourceControl DataSource
@@ -288,6 +296,182 @@ public class BocListAsGridUserControl : BaseUserControl
     foreach (var obj in selectedBusinessObjects)
       ChildrenList.ValueAsList.Remove((Person)obj);
     ChildrenList.SynchronizeRows();
+  }
+
+  private void ChildrenAddValidationErrorsButtonClick (object sender, EventArgs e)
+  {
+    var person = (Person)CurrentObject.BusinessObject;
+
+    var firstJob = person.Jobs.First();
+    var lastJob = person.Jobs.Last();
+    var jobsProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.Jobs));
+    var jobTitleProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Job _) => _.Title));
+    var jobStartDateProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Job _) => _.StartDate));
+    var jobEndDateProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Job _) => _.EndDate));
+
+    var firstChild = person.Children.OrderBy(e => e.LastName).First();
+    var lastChild = person.Children.OrderBy(e => e.LastName).Last();
+    var childrenProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.Children));
+    var personPartnerProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.Partner));
+    var personFirstNameProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.FirstName));
+    var personLastNameProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.LastName));
+    var personFullNameProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.DisplayName));
+
+    var firstNameProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.FirstName));
+
+    var validationResult = BusinessObjectValidationResult.Create(
+        new ValidationResult(
+            new ValidationFailure[]
+            {
+                // Jobs property failures
+                new PropertyValidationFailure(
+                    person,
+                    jobsProperty,
+                    person.Jobs,
+                    "Bad jobs",
+                    "Localized bad jobs"),
+                // First job failure (visible)
+                new ObjectValidationFailure(
+                    firstJob,
+                    "Bad first job",
+                    "Localized bad first job"),
+                new PropertyValidationFailure(
+                    firstJob,
+                    jobTitleProperty,
+                    firstJob.Title,
+                    "Bad first job.Title",
+                    "Localized bad first job.Title"),new ObjectValidationFailure(
+                    firstJob,
+                    new[]
+                    {
+                      new ValidatedProperty(firstJob, jobStartDateProperty),
+                    },
+                    "Bad first job date",
+                    "Localized bad first job dates"),
+                new ObjectValidationFailure(
+                    firstJob,
+                    new[]
+                    {
+                        new ValidatedProperty(firstJob, jobStartDateProperty),
+                        new ValidatedProperty(firstJob, jobEndDateProperty)
+                    },
+                    "Bad first job dates",
+                    "Localized bad first job dates"),
+                // Last job failure (invisible)
+                new ObjectValidationFailure(
+                    lastJob,
+                    "Bad last job",
+                    "Localized bad last job"),
+                new PropertyValidationFailure(
+                    lastJob,
+                    jobTitleProperty,
+                    lastJob.Title,
+                    "Bad last job.Title",
+                    "Localized bad last job.Title"),
+                new ObjectValidationFailure(
+                    lastJob,
+                    new[]
+                    {
+                        new ValidatedProperty(lastJob, jobStartDateProperty),
+                    },
+                    "Bad last job date",
+                    "Localized bad last job dates"),
+                new ObjectValidationFailure(
+                    lastJob,
+                    new[]
+                    {
+                        new ValidatedProperty(lastJob, jobStartDateProperty),
+                        new ValidatedProperty(lastJob, jobEndDateProperty)
+                    },
+                    "Bad last job dates",
+                    "Localized bad last job dates"),
+                // Children property failures
+                new PropertyValidationFailure(
+                    person,
+                    childrenProperty,
+                    person.Children,
+                    "Bad children",
+                    "Localized bad children"),
+                // First child failure (visible)
+                new ObjectValidationFailure(
+                    firstChild,
+                    "Bad first child",
+                    "Localized bad first child"),
+                new PropertyValidationFailure(
+                    firstChild,
+                    personPartnerProperty,
+                    firstChild.Partner,
+                    "Bad first child.Partner",
+                    "Localized bad first child.Partner"),
+                new ObjectValidationFailure(
+                    firstChild,
+                    new[]
+                    {
+                        new ValidatedProperty(firstChild, personLastNameProperty),
+                    },
+                    "Bad first child name",
+                    "Localized bad first child names"),
+                new ObjectValidationFailure(
+                    firstChild,
+                    new[]
+                    {
+                        new ValidatedProperty(firstChild, personLastNameProperty),
+                        new ValidatedProperty(firstChild, personFullNameProperty)
+                    },
+                    "Bad first child names",
+                    "Localized bad first child names"),
+                // Last child failure (invisible)
+                new ObjectValidationFailure(
+                    lastChild,
+                    "Bad last child",
+                    "Localized bad last child"),
+                new PropertyValidationFailure(
+                    lastChild,
+                    personPartnerProperty,
+                    lastChild.Partner,
+                    "Bad last child.Partner",
+                    "Localized bad last child.Partner"),
+                new ObjectValidationFailure(
+                    lastChild,
+                    new[]
+                    {
+                        new ValidatedProperty(lastChild, personLastNameProperty),
+                    },
+                    "Bad last child name",
+                    "Localized bad last child name"),
+                new ObjectValidationFailure(
+                    lastChild,
+                    new[]
+                    {
+                        new ValidatedProperty(lastChild, personLastNameProperty),
+                        new ValidatedProperty(lastChild, personFullNameProperty)
+                    },
+                    "Bad last child names",
+                    "Localized bad last child names"),
+            }));
+
+    PrepareValidation();
+    FormGridManager.PrepareValidation();
+    DataSourceValidationResultDispatchingValidator.DispatchValidationFailures(validationResult);
+    DataSourceValidationResultDispatchingValidator.Validate();
+
+    UnhandledValidationErrorsLabel.Text = string.Join(
+        Environment.NewLine,
+        validationResult.GetUnhandledValidationFailures().Select(FormatValidationFailure));
+
+    static string FormatValidationFailure (ValidationFailure failure)
+    {
+      return failure switch
+      {
+        PropertyValidationFailure propertyValidationFailure => $"Unhandled property validation failure '{propertyValidationFailure.ErrorMessage}'"
+                                                               + $" for property '{propertyValidationFailure.ValidatedProperty.Name}'"
+                                                               + $" on object '{propertyValidationFailure.ValidatedObject}'.",
+        ObjectValidationFailure objectValidationFailure => $"Unhandled object validation failure '{objectValidationFailure.ErrorMessage}'"
+                                                           + $" for properties '{string.Join(", ", objectValidationFailure.ValidatedProperties.Select(e => e.Property.Name))}'"
+                                                           + $" on object '{objectValidationFailure.ValidatedObject}'.",
+        _ => $"Unhandled property validation failure '{failure.ErrorMessage}' on object '{failure.ValidatedObject}'."
+      };
+    }
   }
 
   private void ChildrenList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)

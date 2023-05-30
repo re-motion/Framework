@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
@@ -138,6 +139,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       var cellScope = Scope.FindTagWithAttribute("td", DiagnosticMetadataAttributesForObjectBinding.BocListWellKnownRowDropDownMenuCell, "true");
       var rowDropDownMenuScope = cellScope.FindCss("span.DropDownMenuContainer");
       return new DropDownMenuControlObject(Context.CloneForControl(rowDropDownMenuScope));
+    }
+
+    /// <summary>
+    /// Gets any validation errors assigned to the row.
+    /// </summary>
+    public BocListValidationError[] GetValidationErrors ()
+    {
+      return Scope.FindAllCss(".bocListDataCellValidationFailureIndicator ul li")
+          .Select(BocListValidationError.Parse)
+          .ToArray();
     }
 
     /// <summary>

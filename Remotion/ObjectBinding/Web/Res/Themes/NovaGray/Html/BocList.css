@@ -599,6 +599,11 @@ div.bocListEditableCell .control
   display: block;
 }
 
+.bocListDataColumnDeclarationValidationFailureIndicator
+{
+  width: 2.5em;
+}
+
 div.bocListEditableCell .validationErrorMarker + .control
 {
   padding-left: 16px;
