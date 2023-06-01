@@ -67,6 +67,7 @@ namespace Remotion.ObjectBinding.Sample
       writer.AddAttribute(HtmlTextWriterAttribute.Href, SafeServiceLocator.Current.GetInstance<IFallbackNavigationUrlProvider>().GetURL());
       string onClickEvent = GetPostBackClientEvent("async");
       writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClickEvent);
+      writer.AddAttribute(HtmlTextWriterAttribute.Id, $"async_{arguments.ColumnIndex}_{arguments.ListIndex}");
       writer.RenderBeginTag(HtmlTextWriterTag.A);
       writer.Write("async");
       writer.RenderEndTag();
@@ -75,6 +76,7 @@ namespace Remotion.ObjectBinding.Sample
       writer.AddAttribute(HtmlTextWriterAttribute.Href, SafeServiceLocator.Current.GetInstance<IFallbackNavigationUrlProvider>().GetURL());
       onClickEvent = GetPostBackClientEvent("sync");
       writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClickEvent);
+      writer.AddAttribute(HtmlTextWriterAttribute.Id, $"sync_{arguments.ColumnIndex}_{arguments.ListIndex}");
       writer.RenderBeginTag(HtmlTextWriterTag.A);
       writer.Write("sync");
       writer.RenderEndTag();
