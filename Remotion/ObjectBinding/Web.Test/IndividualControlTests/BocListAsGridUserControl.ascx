@@ -54,7 +54,7 @@
 <remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
 </remotion:BocCompoundColumnDefinition>
-<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" Width="7em" ColumnTitle="Partner">
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" Width="7em" ColumnTitle="Partner" EditModeControlType="Remotion.ObjectBinding.Web::UI.Controls.BocAutoCompleteReferenceValue">
 <persistedcommand>
 <remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>

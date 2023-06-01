@@ -411,6 +411,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                             return;
                         }
                     } else if (event.keyCode == KEY.TAB) {
+
                         // allow default, i.e. support TAB-based navigation.
                         return;
                     } else /* ESC */ {

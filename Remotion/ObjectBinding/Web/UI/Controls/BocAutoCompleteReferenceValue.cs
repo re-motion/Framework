@@ -140,6 +140,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       _textBoxStyle = new SingleRowTextBoxStyle();
       _businessObjectWebServiceContextFromPreviousLifeCycle = BusinessObjectWebServiceContext.Create(null, null, null);
+      ControlServicePath = "BocAutoCompleteReferenceValueWebService.asmx";
+      _textBoxStyle.AutoPostBack = true;
     }
 
     // methods and properties
