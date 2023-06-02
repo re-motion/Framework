@@ -24,7 +24,7 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.MetaValidation.Rules.Custom
 {
-  public class RemotionMaxLengthPropertyMetaValidationRule : PropertyMetaValidationRuleBase<LengthValidator>
+  public class RemotionMaxLengthPropertyMetaValidationRule : PropertyMetaValidationRuleBase<IMaximumLengthValidator>
   {
     private readonly int _maxLength;
     private readonly PropertyInfo _propertyInfo;
@@ -42,7 +42,7 @@ namespace Remotion.Validation.MetaValidation.Rules.Custom
       get { return _maxLength; }
     }
 
-    public override IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<LengthValidator> validationRules)
+    public override IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<IMaximumLengthValidator> validationRules)
     {
       var rules = validationRules.ToArray();
 

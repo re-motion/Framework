@@ -26,31 +26,29 @@ using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Validators
 {
-  public class LengthValidator : ILengthValidator
+  public class LengthValidator : IMinimumLengthValidator, IMaximumLengthValidator
   {
     public int Min { get; }
 
-    public int? Max { get; }
+    public int Max { get; }
+
     public string ErrorMessage { get; }
+
     public ValidationMessage ValidationMessage { get; }
 
     public LengthValidator (int min, int max, [NotNull] ValidationMessage validationMessage)
-        : this(min, max, $"The value must have between {min} and {max} characters.", validationMessage)
     {
-    }
-
-    protected LengthValidator (int min, int? max, [NotNull] string errorMessage, [NotNull] ValidationMessage validationMessage)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty("errorMessage", errorMessage);
       ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
+
       if (min < 0)
         throw new ArgumentOutOfRangeException("min", "Value cannot be less than zero.");
-      if (max != null && max < min)
+
+      if (max < min)
         throw new ArgumentOutOfRangeException("max", "Max should be larger than min.");
 
       Max = max;
       Min = min;
-      ErrorMessage = errorMessage;
+      ErrorMessage = $"The value must have between {min} and {max} characters.";
       ValidationMessage = validationMessage;
     }
 
@@ -65,18 +63,16 @@ namespace Remotion.Validation.Validators
     private bool IsValid (PropertyValidatorContext context)
     {
       var propertyValue = context.PropertyValue;
-      if (propertyValue == null)
+
+      if (propertyValue is not string stringValue)
         return true;
 
-      if (!(propertyValue is string stringValue))
-        return true;
-
-      return stringValue.Length >= Min && (Max == null || !(stringValue.Length > Max));
+      return stringValue.Length >= Min && stringValue.Length <= Max;
     }
 
     private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
     {
-      string localizedValidationMessage = ValidationMessage.Format(
+      var localizedValidationMessage = ValidationMessage.Format(
           CultureInfo.CurrentUICulture,
           (IFormatProvider)CultureInfo.CurrentCulture,
           Min,

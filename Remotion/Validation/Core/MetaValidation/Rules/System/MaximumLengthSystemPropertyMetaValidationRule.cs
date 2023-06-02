@@ -24,26 +24,23 @@ using Remotion.Validation.Validators;
 namespace Remotion.Validation.MetaValidation.Rules.System
 {
   /// <summary>
-  /// Implements the <see cref="IPropertyMetaValidationRule"/> interface to verify that there no more than a single (distinct) minimum 
-  /// and a single (distinct) maximum length constraint applied to each property.
+  /// Implements the <see cref="IPropertyMetaValidationRule"/> interface to verify that there is no more than a single (distinct) maximum
+  /// length constraint applied to each property.
   /// </summary>
-  public class LengthSystemPropertyMetaValidationRule : SystemPropertyMetaValidationRuleBase<LengthValidator>
+  public class MaximumLengthSystemPropertyMetaValidationRule : SystemPropertyMetaValidationRuleBase<IMaximumLengthValidator>
   {
-    public LengthSystemPropertyMetaValidationRule (IPropertyInformation propertyInfo)
+    public MaximumLengthSystemPropertyMetaValidationRule (IPropertyInformation propertyInfo)
         : base(propertyInfo)
     {
     }
 
-    public override IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<LengthValidator> validationRules)
+    public override IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<IMaximumLengthValidator> validationRules)
     {
       ArgumentUtility.CheckNotNull("validationRules", validationRules);
 
       var rules = validationRules.ToArray();
 
-      yield return
-          GetValidationResult(
-              rules.Select(r => r.Min).Where(min => min > 0).Distinct().Count() <= 1
-              && rules.Select(r => r.Max).Where(max => max != null).Distinct().Count() <= 1);
+      yield return GetValidationResult(rules.Select(r => r.Max).Distinct().Count() <= 1);
     }
   }
 }

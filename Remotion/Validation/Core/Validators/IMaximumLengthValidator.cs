@@ -18,10 +18,8 @@ using System;
 
 namespace Remotion.Validation.Validators
 {
-  public interface ILengthValidator : IPropertyValidator
+  public interface IMaximumLengthValidator : IPropertyValidator
   {
-    int Min { get; }
-
-    int? Max { get; }
+    int Max { get; }
   }
 }

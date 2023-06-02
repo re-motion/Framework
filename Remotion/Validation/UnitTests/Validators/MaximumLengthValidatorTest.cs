@@ -73,7 +73,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValueIsStringWithLengthGreaterThanMaxLength_ReturnsSingleValidationFailure ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext("some string");
-      var validator = new MaximumLengthValidator("some string".Length - 1, new InvariantValidationMessage("Custom validation message: '{0}', '{1}'."));
+      var validator = new MaximumLengthValidator("some string".Length - 1, new InvariantValidationMessage("Custom validation message: '{0}'."));
 
       var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
@@ -82,7 +82,7 @@ namespace Remotion.Validation.UnitTests.Validators
       Assert.That(validationFailures[0].ValidatedProperty, Is.EqualTo(propertyValidatorContext.Property));
       Assert.That(validationFailures[0].ValidatedPropertyValue, Is.EqualTo(propertyValidatorContext.PropertyValue));
       Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must have at most 10 characters."));
-      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '0', '10'."));
+      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '10'."));
     }
   }
 }

@@ -199,7 +199,7 @@ namespace Remotion.Validation.UnitTests
     }
 
     [Test]
-    public void MinLength_ForString_ReturnsLengthValidator ()
+    public void MinLength_ForString_ReturnsMinimumLengthValidator ()
     {
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
@@ -211,15 +211,14 @@ namespace Remotion.Validation.UnitTests
 
       addingPropertyValidationRuleBuilderStub.Object.MinLength(17);
 
-      Assert.That(createdValidator, Is.InstanceOf<LengthValidator>());
-      var lengthValidator = (LengthValidator)createdValidator;
-      Assert.That(lengthValidator.Min, Is.EqualTo(17));
-      Assert.That(lengthValidator.Max, Is.Null);
-      Assert.That(lengthValidator.ValidationMessage, Is.SameAs(validationMessage));
+      Assert.That(createdValidator, Is.InstanceOf<MinimumLengthValidator>());
+      var minimumLengthValidator = (MinimumLengthValidator)createdValidator;
+      Assert.That(minimumLengthValidator.Min, Is.EqualTo(17));
+      Assert.That(minimumLengthValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
-    public void MaxLength_ForString_ReturnsLengthValidator ()
+    public void MaxLength_ForString_ReturnsMaximumLengthValidator ()
     {
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
@@ -231,15 +230,14 @@ namespace Remotion.Validation.UnitTests
 
       addingPropertyValidationRuleBuilderStub.Object.MaxLength(42);
 
-      Assert.That(createdValidator, Is.InstanceOf<LengthValidator>());
-      var lengthValidator = (LengthValidator)createdValidator;
-      Assert.That(lengthValidator.Min, Is.EqualTo(0));
-      Assert.That(lengthValidator.Max, Is.EqualTo(42));
-      Assert.That(lengthValidator.ValidationMessage, Is.SameAs(validationMessage));
+      Assert.That(createdValidator, Is.InstanceOf<MaximumLengthValidator>());
+      var maximumLengthValidator = (MaximumLengthValidator)createdValidator;
+      Assert.That(maximumLengthValidator.Max, Is.EqualTo(42));
+      Assert.That(maximumLengthValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
-    public void ExactLength_ForString_ReturnsLengthValidator ()
+    public void ExactLength_ForString_ReturnsExactLengthValidator ()
     {
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
@@ -251,11 +249,10 @@ namespace Remotion.Validation.UnitTests
 
       addingPropertyValidationRuleBuilderStub.Object.ExactLength(23);
 
-      Assert.That(createdValidator, Is.InstanceOf<LengthValidator>());
-      var lengthValidator = (LengthValidator)createdValidator;
-      Assert.That(lengthValidator.Min, Is.EqualTo(23));
-      Assert.That(lengthValidator.Max, Is.EqualTo(23));
-      Assert.That(lengthValidator.ValidationMessage, Is.SameAs(validationMessage));
+      Assert.That(createdValidator, Is.InstanceOf<ExactLengthValidator>());
+      var exactLengthValidator = (ExactLengthValidator)createdValidator;
+      Assert.That(exactLengthValidator.Length, Is.EqualTo(23));
+      Assert.That(exactLengthValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]

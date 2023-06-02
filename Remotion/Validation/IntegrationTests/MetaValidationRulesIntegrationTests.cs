@@ -63,10 +63,14 @@ namespace Remotion.Validation.IntegrationTests
           () => ValidationBuilder.BuildValidator<MetaValidationTestClass4>(),
           Throws.TypeOf<ValidationConfigurationException>()
               .And.Message.EqualTo(
-                  "'LengthSystemPropertyMetaValidationRule' failed for member 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.MetaValidationTestClass4.Property1'.\r\n"
+                  "'MinimumLengthSystemPropertyMetaValidationRule' "
+                  + "failed for member 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.MetaValidationTestClass4.Property1'.\r\n"
+                  + "----------\r\n"
+                  + "'MaximumLengthSystemPropertyMetaValidationRule' "
+                  + "failed for member 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.MetaValidationTestClass4.Property1'.\r\n"
                   + "----------\r\n"
                   + "Invalid length validator count!"
-                  ));
+              ));
     }
 
     [Test]
@@ -76,7 +80,11 @@ namespace Remotion.Validation.IntegrationTests
           () => ValidationBuilder.BuildValidator<MetaValidationTestClass5>(),
           Throws.TypeOf<ValidationConfigurationException>()
               .And.Message.EqualTo(
-                  "'LengthSystemPropertyMetaValidationRule' failed for member 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.MetaValidationTestClass5.Property1'.\r\n"
+                  "'MinimumLengthSystemPropertyMetaValidationRule' "
+                  + "failed for member 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.MetaValidationTestClass5.Property1'.\r\n"
+                  + "----------\r\n"
+                  + "'MaximumLengthSystemPropertyMetaValidationRule' "
+                  + "failed for member 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.MetaValidationTestClass5.Property1'.\r\n"
                   + "----------\r\n"
                   + "Meta validation rule 'lengthRules => (lengthRules.Count() <= 2)' failed for validator 'Remotion.Validation.Validators.LengthValidator' "
                   + "on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.MetaValidationTestClass5.Property1'."
@@ -104,7 +112,8 @@ namespace Remotion.Validation.IntegrationTests
           () => ValidationBuilder.BuildValidator<DerivedMetaValidationTestClass1>(),
           Throws.TypeOf<ValidationConfigurationException>()
               .And.Message.EqualTo(
-                  "'LengthSystemPropertyMetaValidationRule' failed for member 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property1'.\r\n"
+                  "'MaximumLengthSystemPropertyMetaValidationRule' "
+                  + "failed for member 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property1'.\r\n"
                   + "----------\r\n"
                   + "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' "
                   + "on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property4'.\r\n"
