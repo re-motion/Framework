@@ -83,7 +83,7 @@ namespace Remotion.Validation.RuleCollectors
         Assertion.IsNotNull(
             validationMessage,
             string.Format(
-                "The {0} did not return a result for {1} applied to property '{2}' on type '{3}'.",
+                "The {0} did not return a result for '{1}' applied to property '{2}' on type '{3}'.",
                 nameof(IValidationMessageFactory),
                 validator.GetType().Name,
                 Property.Name,
@@ -110,7 +110,7 @@ namespace Remotion.Validation.RuleCollectors
       {
         throw new ArgumentException(
             $"The type '{typeof(TValidatedTypeForCondition).GetFullNameSafe()}' of the predicate "
-            + $"does not match the type '{typeof(TValidatedType).GetFullNameSafe()}' of the validation rule.");
+            + $"does not match the type '{typeof(TValidatedType).GetFullNameSafe()}' of the validation rule.", "predicate");
       }
 
       Condition = (Func<TValidatedType, bool>)(object)predicate;
