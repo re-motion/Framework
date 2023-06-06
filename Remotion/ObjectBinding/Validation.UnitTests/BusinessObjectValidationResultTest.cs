@@ -225,6 +225,117 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
     }
 
     [Test]
+    public void GetValidationFailuresForBusinessObject_ReturnsMatchingValidationFailures ()
+    {
+      var person = new Person();
+      person.FirstName = null;
+      person.LastName = "";
+      person.PhoneNumber = null;
+      ((ICustomer)person).CustomerNumber = "";
+
+      var validationResult = _personValidator.Validate(person);
+      Assert.That(validationResult.IsValid, Is.False);
+      Assert.That(validationResult.Errors.Count, Is.EqualTo(4));
+      Assert.That(
+          validationResult.Errors.OfType<PropertyValidationFailure>().Select(f => f.ValidatedProperty).Distinct().Count(),
+          Is.EqualTo(4));
+
+      var businessObjectValidationResult = BusinessObjectValidationResult.Create(validationResult);
+
+      var businessObjectValidationFailures =
+          businessObjectValidationResult.GetUnhandledValidationFailures(person, false, false).ToArray();
+
+      var firstNamePropertyFailures = businessObjectValidationFailures.Single(f => f.ValidatedProperty == _firstNameBusinessObjectProperty);
+      Assert.That(firstNamePropertyFailures.ValidatedObject, Is.SameAs(person));
+      Assert.That(firstNamePropertyFailures.ValidatedProperty, Is.SameAs(_firstNameBusinessObjectProperty));
+      Assert.That(firstNamePropertyFailures.ErrorMessage, Is.EqualTo("NotNullValidator: Validation error."));
+
+      var lastNamePropertyFailures = businessObjectValidationFailures.Single(f => f.ValidatedProperty == _lastNameBusinessObjectProperty);
+      Assert.That(lastNamePropertyFailures.ValidatedObject, Is.SameAs(person));
+      Assert.That(lastNamePropertyFailures.ValidatedProperty, Is.SameAs(_lastNameBusinessObjectProperty));
+      Assert.That(lastNamePropertyFailures.ErrorMessage, Is.EqualTo("NotEmptyOrWhitespaceValidator: Validation error."));
+
+      var phoneNumberValidationFailures = businessObjectValidationFailures.Single(f => f.ValidatedProperty == _phoneNumberBusinessObjectProperty);
+      Assert.That(phoneNumberValidationFailures.ValidatedObject, Is.SameAs(person));
+      Assert.That(phoneNumberValidationFailures.ValidatedProperty, Is.SameAs(_phoneNumberBusinessObjectProperty));
+      Assert.That(phoneNumberValidationFailures.ErrorMessage, Is.EqualTo("NotNullValidator: Validation error."));
+
+      var customerNumberValidationFailures = businessObjectValidationFailures.Single(f => f.ValidatedProperty == _customerNumberBusinessObjectProperty);
+      Assert.That(customerNumberValidationFailures.ValidatedObject, Is.SameAs(person));
+      Assert.That(customerNumberValidationFailures.ValidatedProperty, Is.SameAs(_customerNumberBusinessObjectProperty));
+      Assert.That(customerNumberValidationFailures.ErrorMessage, Is.EqualTo("NotEmptyOrWhitespaceValidator: Validation error."));
+    }
+
+    [Test]
+    public void GetValidationFailuresForBusinessObject_WithPartiallyHandledAndMarkAsHandledTrueOrFalse_ReturnsMatchingValidationFailuresOnEachCall ()
+    {
+      var person = new Person();
+      person.FirstName = null;
+      person.LastName = "";
+      person.PhoneNumber = null;
+      ((ICustomer)person).CustomerNumber = "";
+
+      var validationResult = _personValidator.Validate(person);
+      Assert.That(validationResult.IsValid, Is.False);
+      Assert.That(validationResult.Errors.Count, Is.EqualTo(4));
+      Assert.That(
+          validationResult.Errors.OfType<PropertyValidationFailure>().Select(f => f.ValidatedProperty).Distinct().Count(),
+          Is.EqualTo(4));
+
+      var businessObjectValidationResult = BusinessObjectValidationResult.Create(validationResult);
+
+      var businessObjectValidationFailures =
+          businessObjectValidationResult.GetUnhandledValidationFailures(person, true, markAsHandled: false).ToArray();
+      Assert.That(businessObjectValidationFailures.Length, Is.EqualTo(4));
+      Assert.That(businessObjectValidationFailures[0].ValidatedObject, Is.SameAs(person));
+      Assert.That(
+          businessObjectValidationResult.GetUnhandledValidationFailures(person, true, markAsHandled: false),
+          Is.EquivalentTo(businessObjectValidationFailures));
+      Assert.That(
+          businessObjectValidationResult.GetUnhandledValidationFailures(person, true, markAsHandled: false),
+          Is.EquivalentTo(businessObjectValidationFailures));
+      Assert.That(
+          businessObjectValidationResult.GetUnhandledValidationFailures(person, true, markAsHandled: true),
+          Is.EquivalentTo(businessObjectValidationFailures));
+      Assert.That(
+          businessObjectValidationResult.GetUnhandledValidationFailures(person, true, markAsHandled: true),
+          Is.Empty);
+    }
+
+    [Test]
+    public void GetValidationFailuresForBusinessObject_WithoutPartiallyHandledAndMarkAsHandledTrueOrFalse_ReturnsOnlyUnmarkedValidationFailures ()
+    {
+      var person = new Person();
+      person.FirstName = null;
+      person.LastName = "";
+      person.PhoneNumber = null;
+      ((ICustomer)person).CustomerNumber = "";
+
+      var validationResult = _personValidator.Validate(person);
+      Assert.That(validationResult.IsValid, Is.False);
+      Assert.That(validationResult.Errors.Count, Is.EqualTo(4));
+      Assert.That(
+          validationResult.Errors.OfType<PropertyValidationFailure>().Select(f => f.ValidatedProperty).Distinct().Count(),
+          Is.EqualTo(4));
+
+      var businessObjectValidationResult = BusinessObjectValidationResult.Create(validationResult);
+
+      var businessObjectValidationFailures =
+          businessObjectValidationResult.GetUnhandledValidationFailures(person, false, markAsHandled: false).ToArray();
+      Assert.That(businessObjectValidationFailures.Length, Is.EqualTo(4));
+      Assert.That(businessObjectValidationFailures[0].ValidatedObject, Is.SameAs(person));
+      Assert.That(
+          businessObjectValidationResult.GetUnhandledValidationFailures(person, false, markAsHandled: true),
+          Is.EquivalentTo(businessObjectValidationFailures));
+      Assert.That(
+          businessObjectValidationResult.GetUnhandledValidationFailures(person, false, markAsHandled: false),
+          Is.Empty);
+      Assert.That(
+          businessObjectValidationResult.GetUnhandledValidationFailures(person, false, markAsHandled: true),
+          Is.Empty);
+    }
+
+    [Test]
     public void GetUnhandledValidationFailures_ForBusinessObject_ReturnsFilteredResult ()
     {
       var person1 = new Person();

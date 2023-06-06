@@ -28,8 +28,9 @@ namespace Remotion.ObjectBinding.Validation
         [NotNull] IBusinessObjectProperty businessObjectProperty,
         bool markAsHandled);
 
-    IReadOnlyCollection<UnhandledBusinessObjectValidationFailure> GetUnhandledValidationFailures (
+    IReadOnlyCollection<BusinessObjectValidationFailure> GetUnhandledValidationFailures (
         [NotNull] IBusinessObject businessObject,
-        bool includePartiallyHandledFailures = false);
+        bool includePartiallyHandledFailures = false,
+        bool markAsHandled = false);
   }
 }

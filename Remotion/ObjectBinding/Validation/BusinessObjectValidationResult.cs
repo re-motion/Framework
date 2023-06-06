@@ -169,27 +169,34 @@ namespace Remotion.ObjectBinding.Validation
         result.Add(businessObjectValidationFailure);
 
         if (markAsHandled)
-        {
-          _unhandledValidationFailures.Remove((businessObjectValidationFailure, validationFailure));
-          _handledValidationFailures.Add(validationFailure);
-        }
+          MoveFailureToHandled(businessObjectValidationFailure, validationFailure);
       }
 
       return result;
     }
 
-    public IReadOnlyCollection<UnhandledBusinessObjectValidationFailure> GetUnhandledValidationFailures (
-        IBusinessObject businessObject,
-        bool includePartiallyHandledFailures = false)
+    public IReadOnlyCollection<BusinessObjectValidationFailure> GetUnhandledValidationFailures (
+        [NotNull] IBusinessObject businessObject,
+        bool includePartiallyHandledFailures = false,
+        bool markAsHandled = false)
     {
-      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
 
-      return _unhandledValidationFailures
+      var validationFailures = _unhandledValidationFailures
           .Where(f => Equals(f.BusinessObjectValidationFailure.ValidatedObject, businessObject))
           .Where(f => includePartiallyHandledFailures || !_handledValidationFailures.Contains(f.ValidationFailure))
-          .Select(f => f.BusinessObjectValidationFailure)
-          .Select(f => new UnhandledBusinessObjectValidationFailure(f.ErrorMessage, f.ValidatedProperty))
           .ToArray();
+
+      var result = new List<BusinessObjectValidationFailure>();
+      foreach (var (businessObjectValidationFailure, validationFailure) in validationFailures)
+      {
+        result.Add(businessObjectValidationFailure);
+
+        if (markAsHandled)
+          MoveFailureToHandled(businessObjectValidationFailure, validationFailure);
+      }
+
+      return result;
     }
 
     public IReadOnlyCollection<ValidationFailure> GetUnhandledValidationFailures (bool includePartiallyHandledFailures = false)
@@ -199,6 +206,12 @@ namespace Remotion.ObjectBinding.Validation
           .Select(f => f.ValidationFailure)
           .Distinct()
           .ToArray();
+    }
+
+    private void MoveFailureToHandled (BusinessObjectValidationFailure businessObjectValidationFailure, ValidationFailure validationFailure)
+    {
+      _unhandledValidationFailures.Remove((businessObjectValidationFailure, validationFailure));
+      _handledValidationFailures.Add(validationFailure);
     }
   }
 }

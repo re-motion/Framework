@@ -220,9 +220,12 @@
   <asp:button id="ChildrenListSetPageButton" runat="server" Text="Set Page to 1st"></asp:button>
   <asp:button id="ChildrenListAddRowButton" runat="server" Text="Add"></asp:button>
   <asp:button id="ChildrenListRemoveRowsButton" runat="server" Text="Remove Selected"></asp:button>
+  <asp:button id="ChildrenAddValidationErrorsButton" runat="server" Text="Add validation errors"></asp:button>
 </p>
 <p>
   <asp:checkbox id=ChildrenListEventCheckBox runat="server" Text="ChildrenList Event raised" enableviewstate="False" Enabled="False"></asp:checkbox>
+  <br>
+  <asp:Label id="UnhandledValidationErrorsLabel" runat="server" ForeColor="Red" style="white-space: pre"></asp:Label>
 </p>
 <p>
   <asp:label id=ChildrenListEventArgsLabel runat="server" enableviewstate="False"></asp:label>
