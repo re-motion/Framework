@@ -72,11 +72,14 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void GetPropertyValidator_WithValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
       var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty("LastName"));
-      Assert.Throws<InvalidOperationException>(() => _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object));
+      _validationMessageFactoryStub
+          .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<LengthValidator>(), propertyInformation))
+          .Returns((ValidationMessage)null);
+
+      Assert.That(() => _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object), Throws.InvalidOperationException);
     }
   }
 }
