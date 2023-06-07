@@ -26,6 +26,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -286,10 +287,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Creates the list of validators required for the current binding and property settings. </summary>
     /// <remarks> Override <see cref="CreateValidators(bool)"/> to define the validators for this control.</remarks>
-    public IEnumerable<BaseValidator> CreateValidators ()
-    {
-      return CreateValidators(IsReadOnly);
-    }
+    public sealed override IEnumerable<BaseValidator> CreateValidators () => CreateValidators(IsReadOnly);
 
     /// <summary> Creates the list of validators required for the current binding and property settings. </summary>
     /// <param name="isReadOnly">
