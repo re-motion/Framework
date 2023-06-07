@@ -7,6 +7,8 @@ using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
+using Remotion.Validation.Globalization.UnitTests.TestDomain;
+using Remotion.Validation.Globalization.UnitTests.TestHelpers;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
 
@@ -41,9 +43,10 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.Not.Null);
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
-      //TODO RM-5906: for all tests Assert.That (((ResourceManagerBasedValidationMessage) validationMessage).ResourceIdentifier, Is.EqualTo (...));
-
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter the value \"{0}\"."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustBeEqualValidationMessage));
     }
 
     [Test]
@@ -57,6 +60,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter 1 character."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustHaveExactLengthOfOneValidationMessage));
     }
 
     [Test]
@@ -70,6 +76,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter exactly {0} characters."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustHaveExactLengthValidationMessage));
     }
 
     [Test]
@@ -83,6 +92,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value between \"{0}\" and \"{1}\"."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustMatchExclusiveRangeValidationMessage));
     }
 
     [Test]
@@ -96,6 +108,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value greater than or equal to \"{0}\"."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustBeGreaterThanOrEqualValidationMessage));
     }
 
     [Test]
@@ -109,6 +124,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value greater than \"{0}\"."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustBeGreaterThanValidationMessage));
     }
 
     [Test]
@@ -122,6 +140,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value from \"{0}\" to \"{1}\"."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustMatchInclusiveRangeValidationMessage));
     }
 
     [Test]
@@ -135,6 +156,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter at least {0} and no more than {1} characters."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustMatchMinAndMaxLengthValidationMessage));
     }
 
     [Test]
@@ -148,6 +172,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value less than or equal to \"{0}\"."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustBeLessThanOrEqualValidationMessage));
     }
 
     [Test]
@@ -161,6 +188,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value less than \"{0}\"."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustBeLessThanValidationMessage));
     }
 
     [Test]
@@ -174,6 +204,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter no more than 1 character."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustHaveMaximumLengthOfOneValidationMessage));
     }
 
     [Test]
@@ -187,6 +220,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter no more than {1} characters."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustHaveMaximumLengthValidationMessage));
     }
 
     [Test]
@@ -200,6 +236,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter at least 1 character."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustHaveMinimumLengthOfOneValidationMessage));
     }
 
     [Test]
@@ -213,6 +252,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter at least {0} characters."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustHaveMinimumLengthValidationMessage));
     }
 
     [Test]
@@ -226,6 +268,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeEmptyBinaryValidationMessage));
     }
 
     [Test]
@@ -239,6 +284,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Add an entry."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeEmptyCollectionValidationMessage));
     }
 
     [Test]
@@ -252,6 +300,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Add an entry."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeEmptyCollectionValidationMessage));
     }
 
     [Test]
@@ -265,6 +316,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Add an entry."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeEmptyCollectionValidationMessage));
     }
 
     [Test]
@@ -278,6 +332,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter at least one visible character."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeEmptyOrWhitespaceValidationMessage));
     }
 
     [Test]
@@ -291,6 +348,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter at least one visible character."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeEmptyOrWhitespaceValidationMessage));
     }
 
     [Test]
@@ -304,6 +364,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a valid value."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeEqualValidationMessage));
     }
 
     [Test]
@@ -317,6 +380,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Select an entry."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullReferenceValidationMessage));
     }
 
     [Test]
@@ -330,6 +396,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Select an entry."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullReferenceValidationMessage));
     }
 
     [Test]
@@ -343,6 +412,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullStringValidationMessage));
     }
 
     [Test]
@@ -356,6 +428,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullStringValidationMessage));
     }
 
     [Test]
@@ -369,6 +444,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullStringValidationMessage));
     }
 
     [Test]
@@ -382,6 +460,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Add an entry."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullCollectionValidationMessage));
     }
 
     [Test]
@@ -395,6 +476,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter an integer."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullIntegerValidationMessage));
     }
 
     [Test]
@@ -408,6 +492,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter an integer."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullIntegerValidationMessage));
     }
 
     [Test]
@@ -421,6 +508,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter an integer."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullIntegerValidationMessage));
     }
 
     [Test]
@@ -434,6 +524,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter an integer."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullIntegerValidationMessage));
     }
 
     [Test]
@@ -447,6 +540,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter an integer."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullIntegerValidationMessage));
     }
 
     [Test]
@@ -460,6 +556,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter an integer."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullIntegerValidationMessage));
     }
 
     [Test]
@@ -473,6 +572,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter an integer."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullIntegerValidationMessage));
     }
 
     [Test]
@@ -486,6 +588,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter an integer."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullIntegerValidationMessage));
     }
 
     [Test]
@@ -499,6 +604,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter an integer."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullIntegerValidationMessage));
     }
 
     [Test]
@@ -512,6 +620,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter an integer."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullIntegerValidationMessage));
     }
 
     [Test]
@@ -525,6 +636,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter an integer."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullIntegerValidationMessage));
     }
 
     [Test]
@@ -538,6 +652,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter an integer."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullIntegerValidationMessage));
     }
 
     [Test]
@@ -551,6 +668,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter an integer."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullIntegerValidationMessage));
     }
 
     [Test]
@@ -564,6 +684,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter an integer."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullIntegerValidationMessage));
     }
 
     [Test]
@@ -577,6 +700,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a number."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullDecimalValidationMessage));
     }
 
     [Test]
@@ -590,6 +716,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a number."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullDecimalValidationMessage));
     }
 
     [Test]
@@ -603,6 +732,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a number."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullDecimalValidationMessage));
     }
 
     [Test]
@@ -616,6 +748,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a number."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullDecimalValidationMessage));
     }
 
     [Test]
@@ -629,6 +764,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a number."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullDecimalValidationMessage));
     }
 
     [Test]
@@ -642,6 +780,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a number."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullDecimalValidationMessage));
     }
 
     [Test]
@@ -655,6 +796,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a date and time."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullDateTimeValidationMessage));
     }
 
     [Test]
@@ -668,6 +812,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a date and time."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullDateTimeValidationMessage));
     }
 
     [Test]
@@ -681,6 +828,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Select an entry."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullEnumValidationMessage));
     }
 
     [Test]
@@ -694,6 +844,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Select an entry."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotBeNullEnumValidationMessage));
     }
 
     [Test]
@@ -707,6 +860,9 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value that meets the specified condition."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustMatchPredicateValidationMessage));
     }
 
     [Test]
@@ -721,6 +877,9 @@ namespace Remotion.Validation.Globalization.UnitTests
 
       var localizedValidationMessageString = validationMessage.ToString();
       Assert.That(localizedValidationMessageString, Is.EqualTo("Enter a value in the correct format."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustMatchRegularExpressionValidationMessage));
     }
 
     [Test]
@@ -734,18 +893,18 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
       Assert.That(validationMessage.ToString(), Does.StartWith("Enter a number with no more than {0} integer digits and {1} decimal places."));
+      Assert.That(
+          ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
+          Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustNotExceedDecimalConstraintsValidationMessage));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void CreateValidationMessageForObjectValidator_NoLocalizationsAvailableForObjectValidators_ReturnsNull ()
     {
-    }
+      var validator = new StubObjectValidator();
+      var validationMessage = _factory.CreateValidationMessageForObjectValidator(validator, TypeAdapter.Create(typeof(Customer)));
 
-    [Test]
-    [Ignore("TODO RM-5906")]
-    public void CreateValidationMessageForObjectValidator_WithLocalizedType_ReturnsLocalizedValidationMessage ()
-    {
+      Assert.That(validationMessage, Is.Null);
     }
   }
 }
