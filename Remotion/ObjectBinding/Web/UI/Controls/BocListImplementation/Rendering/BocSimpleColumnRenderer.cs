@@ -129,7 +129,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       var businessObject = arguments.BusinessObject;
 
       if (renderingContext.Control.HasClientScript)
-        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, OnCommandClickScript);
 
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {

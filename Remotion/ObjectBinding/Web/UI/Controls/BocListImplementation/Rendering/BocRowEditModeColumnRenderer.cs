@@ -163,7 +163,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       c.ItemID = commandItemID;
       c.OwnerControl = renderingContext.Control;
 
-      c.RenderBegin(renderingContext.Writer, RenderingFeatures, postBackEvent, new string[0], c_onCommandClickScript, null);
+      c.RenderBegin(renderingContext.Writer, RenderingFeatures, postBackEvent, new string[0], OnCommandClickScript, null);
 
       bool hasIcon = icon.HasRenderingInformation;
       bool hasText = !text.IsEmpty;

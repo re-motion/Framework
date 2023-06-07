@@ -146,7 +146,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     private void RenderClickWrapperBeginTag (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext)
     {
-      string onClick = renderingContext.Control.HasClientScript ? c_onCommandClickScript : string.Empty;
+      string onClick = renderingContext.Control.HasClientScript ? OnCommandClickScript : string.Empty;
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
     }
@@ -189,7 +189,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         int originalRowIndex,
         IReadOnlyCollection<string> headerIDs)
     {
-      string onClick = renderingContext.Control.HasClientScript ? c_onCommandClickScript : string.Empty;
+      string onClick = renderingContext.Control.HasClientScript ? OnCommandClickScript : string.Empty;
       BocCustomCellRenderArguments arguments = new BocCustomCellRenderArguments(
           renderingContext.Control,
           businessObject,

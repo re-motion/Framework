@@ -517,7 +517,7 @@ public class BocListUserControl : BaseUserControl
                         new ValidatedProperty(firstChild, personLastNameProperty),
                     },
                     "Bad first child name",
-                    "Localized bad first child names"),
+                    "Localized bad first child name"),
                 new ObjectValidationFailure(
                     firstChild,
                     new[]
@@ -554,7 +554,7 @@ public class BocListUserControl : BaseUserControl
                         new ValidatedProperty(lastChild, personFullNameProperty)
                     },
                     "Bad last child names",
-                    "Localized bad last child names"),
+                    "Localized bad last child names is a very long message so yeah about that"),
             }));
 
     ((SmartPage)Page).PrepareValidation();

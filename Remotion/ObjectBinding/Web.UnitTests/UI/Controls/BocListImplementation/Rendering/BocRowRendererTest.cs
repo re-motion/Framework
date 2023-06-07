@@ -15,14 +15,19 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
+using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI.Controls.Rendering;
@@ -35,6 +40,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     private BocListCssClassDefinition _bocListCssClassDefinition;
     private BocColumnRenderer[] _columnRenderers;
     private StubLabelReferenceRenderer _stubLabelReferenceRenderer;
+    private StubValidationSummaryRenderer _stubValidationSummaryRenderer;
 
     [SetUp]
     public void SetUp ()
@@ -60,6 +66,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
       _stubLabelReferenceRenderer = new StubLabelReferenceRenderer();
+      _stubValidationSummaryRenderer = new StubValidationSummaryRenderer();
     }
 
     [Test]
@@ -69,7 +76,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
           new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
-          RenderingFeatures.Default);
+          RenderingFeatures.Default,
+          _stubValidationSummaryRenderer);
       renderer.RenderTitlesRow(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
@@ -91,7 +99,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
           new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
-          RenderingFeatures.Default);
+          RenderingFeatures.Default,
+          _stubValidationSummaryRenderer);
       renderer.RenderTitlesRow(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
@@ -117,7 +126,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
           new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
-          RenderingFeatures.Default);
+          RenderingFeatures.Default,
+          _stubValidationSummaryRenderer);
       renderer.RenderTitlesRow(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
@@ -137,7 +147,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
           new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
-          RenderingFeatures.Default);
+          RenderingFeatures.Default,
+          _stubValidationSummaryRenderer);
       renderer.RenderDataRow(
           CreateRenderingContext(),
           new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
@@ -161,7 +172,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
           new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
-          RenderingFeatures.Default);
+          RenderingFeatures.Default,
+          _stubValidationSummaryRenderer);
       var columnRenderers = new[]
                              {
                                  CreateBocColumnRenderer(3, isRowHeader: false),
@@ -234,7 +246,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
           new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
-          RenderingFeatures.Default);
+          RenderingFeatures.Default,
+          _stubValidationSummaryRenderer);
       var columnRenderers = new[]
                             {
                                 new BocColumnRenderer(
@@ -275,7 +288,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
           new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
-          RenderingFeatures.Default);
+          RenderingFeatures.Default,
+          _stubValidationSummaryRenderer);
       var columnRenderers = new[]
                             {
                                 new BocColumnRenderer(
@@ -316,7 +330,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
           new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
-          RenderingFeatures.Default);
+          RenderingFeatures.Default,
+          _stubValidationSummaryRenderer);
       var columnRenderers = new[]
                             {
                                 new BocColumnRenderer(
@@ -359,7 +374,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
           new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
-          RenderingFeatures.Default);
+          RenderingFeatures.Default,
+          _stubValidationSummaryRenderer);
       renderer.RenderDataRow(
           CreateRenderingContext(),
           new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, true),
@@ -387,7 +403,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
           new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
-          RenderingFeatures.Default);
+          RenderingFeatures.Default,
+          _stubValidationSummaryRenderer);
       renderer.RenderEmptyListDataRow(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
@@ -407,7 +424,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
           new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
-          RenderingFeatures.Default);
+          RenderingFeatures.Default,
+          _stubValidationSummaryRenderer);
       renderer.RenderEmptyListDataRow(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
@@ -422,7 +440,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition),
           new BocSelectorColumnRenderer(RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
-          RenderingFeatures.WithDiagnosticMetadata);
+          RenderingFeatures.WithDiagnosticMetadata,
+          _stubValidationSummaryRenderer);
       renderer.RenderDataRow(
           CreateRenderingContext(),
           new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
@@ -433,6 +452,73 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var tr = Html.GetAssertedChildElement(document, "tr", 0);
       Html.AssertAttribute(tr, DiagnosticMetadataAttributes.ItemID, ((IBusinessObjectWithIdentity)BusinessObject).UniqueIdentifier);
       Html.AssertAttribute(tr, DiagnosticMetadataAttributesForObjectBinding.BocListRowIndex, 1.ToString());
+    }
+
+    [Test]
+    public void RenderValidationRow ()
+    {
+      var validationSummaryRendererStub = new StubValidationSummaryRenderer();
+      BocListValidationSummaryRenderArguments? args = null;
+      BocListRenderingContext ctx = null;
+      validationSummaryRendererStub.Callback = (BocRenderingContext<IBocList> context, in BocListValidationSummaryRenderArguments arguments) =>
+      {
+        ctx = context as BocListRenderingContext;
+        args = arguments;
+      };
+
+      var validationFailureRepository = new BocListValidationFailureRepository();
+      validationFailureRepository.AddValidationFailuresForDataRow(BusinessObject, new []{BusinessObjectValidationFailure.Create("Big error")});
+
+      List.Setup(_ => _.ValidationFailureRepository).Returns(validationFailureRepository);
+
+      IBocRowRenderer renderer = new BocRowRenderer(
+          _bocListCssClassDefinition,
+          new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
+          RenderingFeatures.Default,
+          validationSummaryRendererStub);
+      var columnRenderers = new[]
+                            {
+                                new BocColumnRenderer(
+                                    new StubColumnRenderer(new FakeResourceUrlFactory()),
+                                    new StubColumnDefinition(),
+                                    columnIndex: 0,
+                                    visibleColumnIndex: 5,
+                                    isRowHeader: true,
+                                    showIcon: false,
+                                    SortingDirection.None,
+                                    orderIndex: -1)
+                            };
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
+      Html.Writer.RenderBeginTag("root");
+      renderer.RenderDataRow(
+          new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, columnRenderers),
+          new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
+          17);
+
+      Html.Writer.RenderEndTag();
+
+      var document = Html.GetResultDocument();
+
+      var root = Html.GetAssertedChildElement(document, "root", 0);
+
+      var trRow = Html.GetAssertedChildElement(root, "tr", 0);
+      trRow.AssertAttributeValueContains("class", "hasValidationRow");
+
+      var trValidationRow = Html.GetAssertedChildElement(root, "tr", 1);
+      trValidationRow.AssertAttributeValueContains("class", "bocListValidationRow");
+
+      var td = Html.GetAssertedChildElement(trValidationRow, "td", 0);
+      td.AssertAttributeValueEquals("colspan", "6");
+
+      var outerDiv = Html.GetAssertedChildElement(td, "div", 0);
+
+      var innerDiv = Html.GetAssertedChildElement(outerDiv, "div", 0);
+
+      var validationSummary = Html.GetAssertedChildElement(innerDiv, "validation-summary", 0);
+
+      Assert.That(args.Value.ValidationFailures.Single().Failure.ErrorMessage, Is.EqualTo("Big error"));
+      Assert.That(ctx.ColumnRenderers, Is.EqualTo(columnRenderers));
     }
 
     private BocListRenderingContext CreateRenderingContext ()

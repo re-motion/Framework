@@ -8,6 +8,7 @@ div.bocList
   --boclist-tabledata-border: var(--remotion-themed-border-width) solid var(--color-standard-separator);
   --boclist-menublock-minimum-width: 10em;
   --boclist-menublock-maximum-width: auto;
+  --boclist-validationrow-minimum-width: 20em;
 }
 
 /*region root*/
@@ -246,7 +247,7 @@ div.bocList table.bocListTable tr.bocListDataRow.selected td.bocListDataCell
   background-color: var(--color-highlight);
 }
 
-div.bocList table.bocListTable td.bocListDataCell
+div.bocList table.bocListTable tr:not(.hasValidationRow) td.bocListDataCell
 {
   border-bottom: var(--boclist-tabledata-border);
 }
@@ -360,6 +361,54 @@ div.bocList div.bocListTableBlock div.bocListNavigator a:not([href]) img
 {
   filter: opacity(0.5);
 }
+/*endregion*/
+
+/*region bocListValidationRow*/
+div.bocList div.bocListTableBlock tr.bocListValidationRow
+{
+  border-bottom: var(--boclist-tabledata-border);
+  color: var(--color-validationerror-text);
+}
+
+div.bocList table.bocListTable tr.bocListValidationRow.selected td
+{
+  background-color: var(--color-highlight);
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow td ul
+{
+  margin: var(--remotion-themed-spacing) 0;
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow div
+{
+  width: var(--boclist-validationrow-minimum-width);
+  position: sticky;
+  left: 0;
+  overflow-x: auto;
+  scrollbar-width: var(--remotion-themed-scrollbar-style);
+  scrollbar-color: var(--remotion-themed-scrollbar-color);
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow div::-webkit-scrollbar
+{
+  background: var(--remotion-themed-scrollbar-color-track);
+  width: var(--remotion-themed-scrollbar-width);
+  height: var(--remotion-themed-scrollbar-width);
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow div::-webkit-scrollbar-thumb
+{
+   background: var(--remotion-themed-scrollbar-color-thumb);
+   border-radius: var(--remotion-themed-scrollbar-border-radius);
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow div div
+{
+  inline-size: fit-content;
+  min-inline-size: calc(var(--boclist-validationrow-minimum-width) * 1.25);
+}
+
 /*endregion*/
 
 /*region bocListMenuBlock*/
