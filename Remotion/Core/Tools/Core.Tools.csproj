@@ -13,8 +13,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.Core.csproj" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-windows'">
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
-  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
