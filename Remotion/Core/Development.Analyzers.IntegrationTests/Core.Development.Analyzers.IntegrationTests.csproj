@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <ProjectType>Test</ProjectType>
-    <UseWebForms>true</UseWebForms>
     <UseNetOnly>true</UseNetOnly>
   </PropertyGroup>
 
