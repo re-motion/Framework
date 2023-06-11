@@ -98,7 +98,7 @@ namespace Remotion.Mixins.MixerTools
     public IReadOnlyCollection<string>? GeneratedFiles
     {
       // TODO RM-7818: Getter should return an empty array or throw if Execute was not called.
-      get { return _generatedFiles; }
+      get { return _generatedFiles?.AsReadOnly(); }
     }
 
     public void PrepareOutputDirectory ()
@@ -170,7 +170,7 @@ namespace Remotion.Mixins.MixerTools
 
     private void Save (IPipeline pipeline)
     {
-      _generatedFiles = pipeline.CodeManager.FlushCodeToDisk().AsReadOnly();
+      _generatedFiles = pipeline.CodeManager.FlushCodeToDisk();
 
       foreach (var generatedFile in _generatedFiles)
         s_log.InfoFormat("Generated assembly file '{0}'.", generatedFile);
