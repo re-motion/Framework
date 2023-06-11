@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
             {
               var assembly = context.LoadFromAssemblyPath(newAssemblyPath);
               Assert.That(Path.GetDirectoryName(assembly.Location), Is.EqualTo(directoryPath));
-              Assert.That(ReflectionUtility.GetAssemblyDirectory(assembly), Is.EqualTo(Path.TrimEndingDirectorySeparator(AppContext.BaseDirectory)));
+              Assert.That(ReflectionUtility.GetAssemblyDirectory(assembly), Is.EqualTo(Path.TrimEndingDirectorySeparator(directoryPath)));
             });
 #endif
       }
@@ -100,6 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void GetAssemblyPath_FromNonPersistentAssembly ()
     {
+#if NETFRAMEWORK
       var assemblyMock = new Mock<FakeAssembly>(MockBehavior.Strict);
       AssemblyName fakeAssemblyName = new AssemblyName();
       fakeAssemblyName.Name = "FakeAssembly";
@@ -109,8 +110,19 @@ namespace Remotion.Data.DomainObjects.UnitTests
           () => ReflectionUtility.GetAssemblyDirectory(assemblyMock.Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo("The code base of assembly 'FakeAssembly' is not set."));
+#else
+      var assemblyMock = new Mock<FakeAssembly>(MockBehavior.Strict);
+      assemblyMock.Setup(_ => _.Location).Returns("");
+      assemblyMock.Setup(_=>_.FullName).Returns("FakeAssembly");
+
+      Assert.That(
+          () => ReflectionUtility.GetAssemblyDirectory(assemblyMock.Object),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("Assembly 'FakeAssembly' does not have a location. It was likely loaded from a byte array."));
+#endif
     }
 
+#if NETFRAMEWORK
     [Test]
     public void GetAssemblyPath_FromNonLocalUri ()
     {
@@ -125,6 +137,17 @@ namespace Remotion.Data.DomainObjects.UnitTests
           Throws.InvalidOperationException
               .With.Message.EqualTo("The code base 'http://server/File.ext' of assembly 'FakeAssembly' is not a local path."));
     }
+#endif
+
+#if !NETFRAMEWORK
+    [Test]
+    public void GetAssemblyPath_FromUncPath ()
+    {
+      var assemblyMock = new Mock<FakeAssembly>(MockBehavior.Strict);
+      assemblyMock.Setup(_ => _.Location).Returns(@"\\server\share\directory\assembly.dll");
+      Assert.That(() => ReflectionUtility.GetAssemblyDirectory(assemblyMock.Object), Is.EqualTo(@"\\server\share\directory"));
+    }
+#endif
 
     [Test]
     public void GetDomainObjectAssemblyDirectory ()
