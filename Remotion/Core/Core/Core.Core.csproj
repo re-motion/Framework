@@ -29,6 +29,9 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-windows'">
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0-windows'">
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
+  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
   <ItemGroup>
     <None Include="..\Development.Analyzers\bin\$(Configuration)\netstandard2.0\Remotion.Development.Analyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
