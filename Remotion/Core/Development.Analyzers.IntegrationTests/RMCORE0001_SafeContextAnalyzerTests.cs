@@ -7,6 +7,9 @@ using Analyzer = Core.Development.Analyzers.RMCORE0001_SafeContextAnalyzer;
 
 namespace Remotion.Core.Development.Analyzers.IntegrationTests
 {
+#if NET7_0
+  [Ignore("MSBuild Tools v4.7.0 or higher are required for testing Roslyn Analyzers in .NET 7.")]
+#endif  
   [TestFixture]
   public class RMCORE0001_SafeContextAnalyzerTests
   {
