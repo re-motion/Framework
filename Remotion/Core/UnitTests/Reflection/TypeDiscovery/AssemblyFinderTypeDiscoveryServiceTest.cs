@@ -88,6 +88,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
       assemblies.Add(typeof(System.ComponentModel.TypeConverter).Assembly);
       assemblies.Add(typeof(System.Configuration.Provider.ProviderBase).Assembly);
       assemblies.Add(typeof(System.Diagnostics.TraceListener).Assembly);
+      assemblies.Add(typeof(System.Text.RegularExpressions.Regex).Assembly);
       assemblies.Add(typeof(System.Xml.XmlNode).Assembly);
       var expectedTypes = new HashSet<Type>(assemblies.SelectMany(a => a.GetTypes()));
 
@@ -122,6 +123,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
       assemblies.Add(typeof(System.ComponentModel.TypeConverter).Assembly);
       assemblies.Add(typeof(System.Configuration.Provider.ProviderBase).Assembly);
       assemblies.Add(typeof(System.Diagnostics.TraceListener).Assembly);
+      assemblies.Add(typeof(System.Text.RegularExpressions.Regex).Assembly);
       assemblies.Add(typeof(System.Xml.XmlNode).Assembly);
       var expectedTypes = new HashSet<Type>(assemblies.SelectMany(a => a.GetTypes()));
 
