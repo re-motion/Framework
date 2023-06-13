@@ -99,7 +99,7 @@ namespace Remotion.Validation.UnitTests.Merging
       _removingPropertyValidationRuleCollector2.RegisterValidator(typeof(NotNullValidator), _validationRuleCollectorStub1.Object.GetType(), null);
 
       _removingPropertyValidationRuleCollector3 = RemovingPropertyValidationRuleCollector.Create(_firstNameExpression, typeof(CustomerValidationRuleCollector1));
-      _removingPropertyValidationRuleCollector3.RegisterValidator(typeof(NotNullValidator), typeof(string), null); //Unknown collector type!
+      _removingPropertyValidationRuleCollector3.RegisterValidator(typeof(NotNullValidator), _validationRuleCollectorStub1.Object.GetType(), null);
 
       _removingPropertyValidationRuleCollector4 = RemovingPropertyValidationRuleCollector.Create(_lastNameExpression, typeof(CustomerValidationRuleCollector1));
       _removingPropertyValidationRuleCollector4.RegisterValidator(typeof(MaximumLengthValidator), null, null);
