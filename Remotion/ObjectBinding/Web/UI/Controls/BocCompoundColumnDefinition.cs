@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
 using Remotion.ServiceLocation;
@@ -137,6 +138,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           _propertyPathBindings
               .Cast<PropertyPathBinding>()
               .Select(b => b.GetPropertyPath().CreateComparer()));
+    }
+
+    protected override IValidationFailureMatcher GetValidationFailureMatcher ()
+    {
+      return new CompoundBusinessObjectPropertyPathBasedValidationFailureMatcher(
+          _propertyPathBindings
+              .Cast<PropertyPathBinding>()
+              .Select(b => b.GetPropertyPath()));
     }
   }
 }
