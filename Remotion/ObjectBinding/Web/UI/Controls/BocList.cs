@@ -32,12 +32,14 @@ using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -188,6 +190,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       Interim,
       Complete
     }
+
+    /// <summary>
+    /// Gets the <see cref="ValidationFailureRepository"/> containing all <see cref="BusinessObjectValidationFailure"/>s belonging to this <see cref="BocList"/>.
+    /// </summary>
+    public IBocListValidationFailureRepository ValidationFailureRepository { get; } = new BocListValidationFailureRepository();
 
     // static members
     private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof(IBusinessObjectReferenceProperty) };

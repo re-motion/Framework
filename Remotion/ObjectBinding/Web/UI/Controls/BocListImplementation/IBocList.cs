@@ -24,6 +24,7 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
@@ -185,6 +186,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     int? PageSize { get; }
     int CurrentPageIndex { get; }
     string GetCurrentPageControlName ();
+
+    /// <summary>
+    /// Gets the <see cref="ValidationFailureRepository"/> belonging to this <see cref="BocList"/>.
+    /// </summary>
+    IBocListValidationFailureRepository ValidationFailureRepository { get; }
 
     /// <summary>
     /// Gets the list of validation errors for this control.
