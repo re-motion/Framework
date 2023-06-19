@@ -371,7 +371,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(List.Object.DataSource, List.Object.Property, "Args");
 
       return new BocColumnRenderingContext<BocSimpleColumnDefinition>(
-          new BocColumnRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, Column, 0, 6));
+          new BocColumnRenderingContext(
+              HttpContext,
+              Html.Writer,
+              List.Object,
+              businessObjectWebServiceContext,
+              Column,
+              ColumnIndexProvider.Object,
+              0,
+              6));
     }
   }
 }

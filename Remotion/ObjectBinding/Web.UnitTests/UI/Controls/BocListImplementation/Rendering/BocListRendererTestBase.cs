@@ -39,6 +39,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
   public abstract class BocListRendererTestBase : RendererTestBase
   {
     protected Mock<IBocList> List { get; set; }
+    protected Mock<IBocListColumnIndexProvider> ColumnIndexProvider { get; set; }
     protected IBusinessObject BusinessObject { get; set; }
     protected BocListDataRowRenderEventArgs EventArgs { get; set; }
 
@@ -133,6 +134,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var bocListValidationFailureRepository = new BocListValidationFailureRepository();
       List.Setup(_ => _.ValidationFailureRepository).Returns(bocListValidationFailureRepository);
+
+      ColumnIndexProvider = new Mock<IBocListColumnIndexProvider>();
     }
 
     protected BocTitleCellRenderArguments CreateBocTitleCellRenderArguments (
