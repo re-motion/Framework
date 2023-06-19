@@ -147,6 +147,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       string cssClassTitleCell = CssClasses.TitleCell;
       if (!string.IsNullOrEmpty(renderingContext.ColumnDefinition.CssClass))
         cssClassTitleCell += " " + renderingContext.ColumnDefinition.CssClass;
+      var additionalCssClassForTitleCell = GetAdditionalCssClassForTitleCell(renderingContext, in arguments);
+      if (!string.IsNullOrEmpty(additionalCssClassForTitleCell))
+        cssClassTitleCell += " " + additionalCssClassForTitleCell;
       renderingContext.AddAttributeToRender(HtmlTextWriterAttribute.Class, cssClassTitleCell);
       renderingContext.AddAttributeToRender(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.ColumnHeader);
       if (_renderingFeatures.EnableDiagnosticMetadata)
@@ -169,6 +172,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
             DiagnosticMetadataAttributesForObjectBinding.BocListColumnIsRowHeader,
             arguments.IsRowHeader.ToString().ToLower());
       }
+    }
+
+    /// <summary>
+    /// Returns additional css class that are added to a rendered title cell.
+    /// </summary>
+    protected virtual string GetAdditionalCssClassForTitleCell (BocCellAttributeRenderingContext<TBocColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
+    {
+      return string.Empty;
     }
 
     void IBocColumnRenderer.RenderDataColumnDeclaration (BocColumnRenderingContext renderingContext, bool isTextXml)
@@ -345,6 +356,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       if (!string.IsNullOrEmpty(renderingContext.ColumnDefinition.CssClass))
         cssClassTableCell += " " + renderingContext.ColumnDefinition.CssClass;
+      var additionalCssClassForTitleCell = GetAdditionalCssClassForDataCell(renderingContext, in arguments);
+      if (!string.IsNullOrEmpty(additionalCssClassForTitleCell))
+        cssClassTableCell += " " + additionalCssClassForTitleCell;
       renderingContext.AddAttributeToRender(HtmlTextWriterAttribute.Class, cssClassTableCell);
 
       if (arguments.IsRowHeader)
@@ -369,6 +383,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.AddAttributeToRender(HtmlTextWriterAttribute2.Role, ariaRoleForTableDataElement);
       if (_renderingFeatures.EnableDiagnosticMetadata)
         AddDiagnosticMetadataAttributes(renderingContext);
+    }
+
+    /// <summary>
+    /// Returns additional css class that are added to a rendered data cell.
+    /// </summary>
+    protected virtual string GetAdditionalCssClassForDataCell (BocCellAttributeRenderingContext<TBocColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
+    {
+      return string.Empty;
     }
 
     [Obsolete(
