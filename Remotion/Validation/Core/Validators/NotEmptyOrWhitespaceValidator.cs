@@ -46,6 +46,8 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
     {
+      ArgumentUtility.CheckNotNull("context", context);
+
       if (IsValid(context))
         return Enumerable.Empty<PropertyValidationFailure>();
 
