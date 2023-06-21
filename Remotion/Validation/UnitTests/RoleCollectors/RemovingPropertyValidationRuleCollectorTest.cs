@@ -145,19 +145,34 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void RegisterValidator_ValidatorTypeDoesNotImplementIPropertyValidator_ThrowsArgumentException ()
     {
+      Assert.That(
+          () => _removingPropertyValidationRuleCollector.RegisterValidator(typeof(Customer), typeof(CustomerValidationRuleCollector1), null),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Parameter 'validatorType' is a 'Remotion.Validation.UnitTests.TestDomain.Customer', "
+                  + "which cannot be assigned to type 'Remotion.Validation.Validators.IPropertyValidator'.",
+                  "validatorType"));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void RegisterValidator_CollectorTypeDoesNotImplementIValidationRuleCollector_ThrowsArgumentException ()
     {
+      Assert.That(
+          () => _removingPropertyValidationRuleCollector.RegisterValidator(
+              typeof(StubPropertyValidator),
+              typeof(Customer),
+              null),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Parameter 'collectorTypeToRemoveFrom' is a 'Remotion.Validation.UnitTests.TestDomain.Customer', "
+                  + "which cannot be assigned to type 'Remotion.Validation.IValidationRuleCollector'.",
+                  "collectorTypeToRemoveFrom"));
     }
 
     [Test]
-    public void To_String ()
+    public void ToString_Overridden ()
     {
       var result = _removingPropertyValidationRuleCollector.ToString();
 
