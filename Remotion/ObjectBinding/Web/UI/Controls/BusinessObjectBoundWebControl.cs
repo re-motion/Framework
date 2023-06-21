@@ -432,10 +432,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return false; }
     }
 
-    IEnumerable<BaseValidator> ISmartControl.CreateValidators ()
-    {
-      return Enumerable.Empty<BaseValidator>();
-    }
+    /// <inheritdoc cref="ISmartControl.CreateValidators"/>
+    public virtual IEnumerable<BaseValidator> CreateValidators () => Enumerable.Empty<BaseValidator>();
 
     public new IPage? Page
     {
