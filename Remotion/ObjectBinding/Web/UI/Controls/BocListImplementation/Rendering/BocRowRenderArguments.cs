@@ -26,9 +26,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <summary>Gets the zero-based index of the row as rendered by the <see cref="BocList"/>.</summary>
     public int RowIndex { get; }
 
-    public BocRowRenderArguments (int rowIndex)
+    /// <summary>
+    /// Gets an array indicating what columns in the <see cref="BocList"/> have validation failures.
+    /// Array indices mirror <see cref="BocListRenderingContext"/>.<see cref="BocListRenderingContext.ColumnRenderers"/>.
+    /// </summary>
+    public bool[] ColumnsWithValidationFailures { get; }
+
+    public BocRowRenderArguments (int rowIndex, bool[] columnsWithValidationFailures)
     {
+      ArgumentUtility.CheckNotNull(nameof(columnsWithValidationFailures), columnsWithValidationFailures);
+
       RowIndex = rowIndex;
+      ColumnsWithValidationFailures = columnsWithValidationFailures;
     }
   }
 }

@@ -152,7 +152,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       renderer.RenderDataRow(
           CreateRenderingContext(),
           new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
-          new BocRowRenderArguments(0));
+          new BocRowRenderArguments(0, new bool[_columnRenderers.Length]));
 
       var document = Html.GetResultDocument();
 
@@ -188,7 +188,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       renderer.RenderDataRow(
           new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, columnRenderers),
           new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
-          new BocRowRenderArguments(17));
+          new BocRowRenderArguments(17, new bool[columnRenderers.Length]));
 
       var document = Html.GetResultDocument();
 
@@ -264,7 +264,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       renderer.RenderDataRow(
           new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, columnRenderers),
           new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
-          new BocRowRenderArguments(17));
+          new BocRowRenderArguments(17, new bool[_columnRenderers.Length]));
 
       var document = Html.GetResultDocument();
 
@@ -306,7 +306,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       renderer.RenderDataRow(
           new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, columnRenderers),
           new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
-          new BocRowRenderArguments(17));
+          new BocRowRenderArguments(17, new bool[_columnRenderers.Length]));
 
       var document = Html.GetResultDocument();
 
@@ -348,7 +348,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       renderer.RenderDataRow(
           new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, columnRenderers),
           new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
-          new BocRowRenderArguments(17));
+          new BocRowRenderArguments(17, new bool[_columnRenderers.Length]));
 
       var document = Html.GetResultDocument();
 
@@ -379,7 +379,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       renderer.RenderDataRow(
           CreateRenderingContext(),
           new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, true),
-          new BocRowRenderArguments(0));
+          new BocRowRenderArguments(0, new bool[_columnRenderers.Length]));
 
       var document = Html.GetResultDocument();
 
@@ -445,7 +445,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       renderer.RenderDataRow(
           CreateRenderingContext(),
           new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
-          new BocRowRenderArguments(0));
+          new BocRowRenderArguments(0, new bool[_columnRenderers.Length]));
 
       var document = Html.GetResultDocument();
 
@@ -494,7 +494,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       renderer.RenderDataRow(
           new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, columnRenderers),
           new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
-          17);
+          new BocRowRenderArguments(17, new bool[_columnRenderers.Length]));
 
       Html.Writer.RenderEndTag();
 

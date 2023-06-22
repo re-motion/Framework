@@ -183,7 +183,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       GetIndexColumnRenderer().RenderDataCell(renderingContext, originalRowIndex: originalRowIndex, absoluteRowIndex: absoluteRowIndex, headerIDs: dataCellIDsForIndexColumn);
       GetSelectorColumnRenderer().RenderDataCell(renderingContext, rowRenderingContext, headerIDs: dataCellIDsForSelectorColumn);
 
-      RenderDataCells(renderingContext, rowIndex, dataRowRenderEventArgs);
+      RenderDataCells(renderingContext, in arguments, dataRowRenderEventArgs);
 
       renderingContext.Writer.RenderEndTag();
 
@@ -249,8 +249,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderEndTag(); //Tr
     }
 
-    private void RenderDataCells (BocListRenderingContext renderingContext, int rowIndex, BocListDataRowRenderEventArgs dataRowRenderEventArgs)
+    private void RenderDataCells (BocListRenderingContext renderingContext, in BocRowRenderArguments arguments, BocListDataRowRenderEventArgs dataRowRenderEventArgs)
     {
+      var rowIndex = arguments.RowIndex;
       var renderInformation = renderingContext.ColumnRenderers
           .Select(r => (ColumnRenderer: r, DataCellID: r.IsRowHeader ? GetDataCellID(renderingContext, columnIndex: r.VisibleColumnIndex, rowIndex: rowIndex) : null))
           .ToArray();
@@ -286,6 +287,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
             rowIndex: rowIndex,
             cellID: dataCellID,
             headerIDs: headerIDs,
+            columnsWithValidationFailures: arguments.ColumnsWithValidationFailures,
             dataRowRenderEventArgs);
       }
     }

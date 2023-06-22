@@ -161,6 +161,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       RequiredFieldTitle,
       /// <summary>The tool tip text for the validation icon.</summary>
       ValidationErrorInfoTitle,
+      /// <summary>The text for validation information in a cell.</summary>
+      ValidationErrorInfoCell,
       /// <summary> The alternate text for the sort ascending button. </summary>
       SortAscendingAlternateText,
       /// <summary> The alternate text for the sort descending button. </summary>

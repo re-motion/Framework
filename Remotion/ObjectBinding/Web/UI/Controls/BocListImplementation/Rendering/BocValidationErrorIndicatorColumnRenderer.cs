@@ -30,7 +30,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   public class BocValidationErrorIndicatorColumnRenderer : BocColumnRendererBase<BocValidationErrorIndicatorColumnDefinition>, IBocValidationErrorIndicatorColumnRenderer
   {
     private const string c_nonBreakingSpace = "&nbsp;";
-    private const string c_validationIndicatorIcon = "sprite.svg#ValidationError";
 
     private readonly IInfrastructureResourceUrlFactory _infrastructureResourceUrlFactory;
     private readonly IBocListValidationSummaryRenderer _validationSummaryRenderer;
