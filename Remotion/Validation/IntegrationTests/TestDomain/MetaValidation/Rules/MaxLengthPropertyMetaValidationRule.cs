@@ -22,9 +22,9 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.Rules
 {
-  public class MaxLengthPropertyMetaValidationRule : PropertyMetaValidationRuleBase<LengthValidator>
+  public class MaxLengthPropertyMetaValidationRule : PropertyMetaValidationRuleBase<IMaximumLengthValidator>
   {
-    public override IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<LengthValidator> validationRules)
+    public override IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<IMaximumLengthValidator> validationRules)
     {
       var invalidValidators = validationRules.Where(lengthValidator => lengthValidator.Max > 50).ToArray();
       if (invalidValidators.Any())

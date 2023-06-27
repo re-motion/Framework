@@ -22,7 +22,7 @@ namespace Remotion.ObjectBinding.Sample.ValidationCollectors
   {
     public JobValidationRuleCollector ()
     {
-      AddRule(p => p.Title).Length(0, 10);
+      AddRule(p => p.Title).MaxLength(10);
 
     }
   }

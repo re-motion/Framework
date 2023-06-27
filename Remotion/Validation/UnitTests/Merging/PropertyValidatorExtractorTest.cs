@@ -36,7 +36,7 @@ namespace Remotion.Validation.UnitTests.Merging
     private StubPropertyValidator _stubPropertyValidator1;
     private NotEmptyOrWhitespaceValidator _stubPropertyValidator2;
     private NotEqualValidator _stubPropertyValidator3;
-    private LengthValidator _stubPropertyValidator4;
+    private MaximumLengthValidator _stubPropertyValidator4;
     private StubPropertyValidator _stubPropertyValidator5;
     private Mock<ILogContext> _logContextMock;
     private Mock<IRemovingPropertyValidationRuleCollector> _removingPropertyValidationRuleCollectorStub1;
@@ -59,15 +59,15 @@ namespace Remotion.Validation.UnitTests.Merging
       _stubPropertyValidator1 = new StubPropertyValidator(); //not extracted
       _stubPropertyValidator2 = new NotEmptyOrWhitespaceValidator(new InvariantValidationMessage("Fake Message")); //extracted
       _stubPropertyValidator3 = new NotEqualValidator("gfsf", new InvariantValidationMessage("Fake Message")); //extracted
-      _stubPropertyValidator4 = new LengthValidator(0, 10, new InvariantValidationMessage("Fake Message")); //not extracted
+      _stubPropertyValidator4 = new MaximumLengthValidator(10, new InvariantValidationMessage("Fake Message")); //not extracted
       _stubPropertyValidator5 = new StubPropertyValidator(); //extracted
 
       var registration1 = new { ValidatorType = typeof(NotEmptyOrWhitespaceValidator), CollectorTypeToRemoveFrom = (Type)null };
       var registration2 = new { ValidatorType = typeof(NotEqualValidator), CollectorTypeToRemoveFrom = typeof(CustomerValidationRuleCollector1) };
       var registration3 = new { ValidatorType = typeof(NotNullValidator), CollectorTypeToRemoveFrom = (Type)null };
-      var registration4 = new { ValidatorType = typeof(LengthValidator), CollectorTypeToRemoveFrom = typeof(CustomerValidationRuleCollector2) };
+      var registration4 = new { ValidatorType = typeof(MaximumLengthValidator), CollectorTypeToRemoveFrom = typeof(CustomerValidationRuleCollector2) };
       var registration5 = new { ValidatorType = typeof(NotEqualValidator), CollectorTypeToRemoveFrom = typeof(CustomerValidationRuleCollector2) };
-      var registration6 = new { ValidatorType = typeof(LengthValidator), CollectorTypeToRemoveFrom = (Type)null };
+      var registration6 = new { ValidatorType = typeof(MaximumLengthValidator), CollectorTypeToRemoveFrom = (Type)null };
 
       _removingPropertyValidationRuleCollectorStub1 = new Mock<IRemovingPropertyValidationRuleCollector>();
       _removingPropertyValidationRuleCollectorStub1.Setup(stub => stub.Property).Returns(PropertyInfoAdapter.Create(typeof(Customer).GetProperty("LastName")));

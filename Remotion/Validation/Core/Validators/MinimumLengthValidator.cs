@@ -38,8 +38,8 @@ namespace Remotion.Validation.Validators
     {
       ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
 
-      if (min < 0)
-        throw new ArgumentOutOfRangeException("min", "Value must not be less than zero.");
+      if (min <= 0)
+        throw new ArgumentOutOfRangeException("min", "Value must be be greater than zero.");
 
       Min = min;
       ErrorMessage = $"The value must have at least {min} characters.";

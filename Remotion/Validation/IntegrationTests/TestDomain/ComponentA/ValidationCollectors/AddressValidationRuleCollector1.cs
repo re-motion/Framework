@@ -29,7 +29,7 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationC
 
       AddRule(a => a.PostalCode).NotNull();
 
-      AddRule(a => a.Street).Length(0, 25);
+      AddRule(a => a.Street).MaxLength(25);
 
       bool IsCountryEqualToDeutschland (Address o) => o.Country == "Deutschland";
 

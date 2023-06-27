@@ -42,8 +42,8 @@ namespace Remotion.Validation.Validators
     {
       ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
 
-      if (length < 0)
-        throw new ArgumentOutOfRangeException("length", "Value must not be less than zero.");
+      if (length <= 0)
+        throw new ArgumentOutOfRangeException("length", "Value must be be greater than zero.");
 
       Length = length;
       ErrorMessage = $"The value must have exactly {length} characters.";

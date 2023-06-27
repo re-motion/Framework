@@ -53,7 +53,7 @@ namespace Remotion.Validation.IntegrationTests
     {
       Assert.That(
           () => ValidationBuilder.BuildValidator<MetaValidationTestClass3>(),
-          Throws.TypeOf<ValidationConfigurationException>().And.Message.EqualTo("MaxLength-Constraints greater 50 not allowed for validator 'LengthValidator'!"));
+          Throws.TypeOf<ValidationConfigurationException>().And.Message.EqualTo("MaxLength-Constraints greater 50 not allowed for validator 'MaximumLengthValidator'!"));
     }
 
     [Test]
