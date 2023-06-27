@@ -62,17 +62,16 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValueStringShorterThanComparisonValue_ReturnsSingleValidationError ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext("short");
-      var validator = new MinimumLengthValidator("short".Length + 1, new InvariantValidationMessage("Custom validation message: '{0}', '{1}'."));
+      var validator = new MinimumLengthValidator("short".Length + 1, new InvariantValidationMessage("Custom validation message: '{0}'."));
 
       var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
-      // TODO RM-5906: Fix ErrorMessage not displaying a max value.
       Assert.That(validationFailures.Length, Is.EqualTo(1));
       Assert.That(validationFailures[0].ValidatedObject, Is.EqualTo(propertyValidatorContext.Instance));
       Assert.That(validationFailures[0].ValidatedProperty, Is.EqualTo(propertyValidatorContext.Property));
       Assert.That(validationFailures[0].ValidatedPropertyValue, Is.EqualTo(propertyValidatorContext.PropertyValue));
       Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must have at least 6 characters."));
-      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '6', ''."));
+      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '6'."));
     }
 
     [Test]

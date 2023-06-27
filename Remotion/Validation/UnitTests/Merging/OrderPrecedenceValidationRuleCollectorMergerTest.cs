@@ -48,7 +48,7 @@ namespace Remotion.Validation.UnitTests.Merging
     private IRemovingPropertyValidationRuleCollector _removingPropertyValidationRuleCollector3;
     private MaximumLengthValidator _maximumLengthValidator;
     private IAddingPropertyValidationRuleCollector _addingPropertyValidationRuleCollector2;
-    private LengthValidator _minimumLengthValidator;
+    private MinimumLengthValidator _minimumLengthValidator;
     private IAddingPropertyValidationRuleCollector _addingPropertyValidationRuleCollector3;
     private Mock<IValidationRuleCollector> _validationRuleCollectorStub3;
     private IRemovingPropertyValidationRuleCollector _removingPropertyValidationRuleCollector4;

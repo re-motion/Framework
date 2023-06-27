@@ -23,7 +23,8 @@ using Remotion.Validation.MetaValidation.Rules.System;
 namespace Remotion.Validation.MetaValidation
 {
   /// <summary>
-  /// Default implementation of the <see cref="ISystemPropertyMetaValidationRuleProvider"/> interface. Provides a <see cref="LengthSystemPropertyMetaValidationRule"/>.
+  /// Default implementation of the <see cref="ISystemPropertyMetaValidationRuleProvider"/> interface. Provides a <see cref="MinimumLengthSystemPropertyMetaValidationRule"/> and
+  /// a <see cref="MaximumLengthSystemPropertyMetaValidationRule"/>.
   /// </summary>
   public class DefaultSystemPropertyMetaValidationRuleProvider : ISystemPropertyMetaValidationRuleProvider
   {
@@ -43,7 +44,8 @@ namespace Remotion.Validation.MetaValidation
 
     public IEnumerable<IPropertyMetaValidationRule> GetSystemPropertyMetaValidationRules ()
     {
-      yield return new LengthSystemPropertyMetaValidationRule(_propertyInformation);
+      yield return new MinimumLengthSystemPropertyMetaValidationRule(_propertyInformation);
+      yield return new MaximumLengthSystemPropertyMetaValidationRule(_propertyInformation);
     }
   }
 }

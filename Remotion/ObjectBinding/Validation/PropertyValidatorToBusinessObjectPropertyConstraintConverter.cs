@@ -40,8 +40,8 @@ namespace Remotion.ObjectBinding.Validation
     {
       ArgumentUtility.CheckNotNull("propertyValidator", propertyValidator);
 
-      if (propertyValidator is ILengthValidator lengthValidator && lengthValidator.Max.HasValue)
-        yield return new BusinessObjectPropertyValueLengthConstraint(lengthValidator.Max.Value);
+      if (propertyValidator is IMaximumLengthValidator lengthValidator)
+        yield return new BusinessObjectPropertyValueLengthConstraint(lengthValidator.Max);
 
       if (propertyValidator is IRequiredValidator)
         yield return new BusinessObjectPropertyValueRequiredConstraint();
