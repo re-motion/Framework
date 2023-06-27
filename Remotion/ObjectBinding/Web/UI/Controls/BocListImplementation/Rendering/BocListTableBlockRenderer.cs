@@ -193,7 +193,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         var rowRenderingContexts = renderingContext.Control.GetRowsToRender();
         for (int index = 0; index < rowRenderingContexts.Length; index++)
         {
-          RowRenderer.RenderDataRow(renderingContext, rowRenderingContexts[index], index);
+          var arguments = new BocRowRenderArguments(index);
+          RowRenderer.RenderDataRow(renderingContext, rowRenderingContexts[index], in arguments);
         }
       }
 
