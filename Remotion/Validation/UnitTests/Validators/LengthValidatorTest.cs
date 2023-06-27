@@ -55,7 +55,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValueNull_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(null);
-      var validator = new LengthValidator(0, 0, new InvariantValidationMessage("Fake Message"));
+      var validator = new LengthValidator(0, 1, new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 
@@ -66,7 +66,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValueNonString_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(new object());
-      var validator = new LengthValidator(0, 0, new InvariantValidationMessage("Fake Message"));
+      var validator = new LengthValidator(0, 1, new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 
