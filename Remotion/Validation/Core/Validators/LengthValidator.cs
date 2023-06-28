@@ -43,7 +43,7 @@ namespace Remotion.Validation.Validators
       if (min < 0)
         throw new ArgumentOutOfRangeException("min", "Value cannot be less than zero.");
 
-      if (max < min)
+      if (max <= min)
         throw new ArgumentOutOfRangeException("max", "Max should be larger than min.");
 
       Max = max;
