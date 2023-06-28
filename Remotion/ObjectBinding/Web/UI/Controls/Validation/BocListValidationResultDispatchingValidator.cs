@@ -16,17 +16,22 @@
 // 
 using System;
 using System.Linq;
+using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
+using Remotion.Globalization;
 using Remotion.ObjectBinding.Validation;
 using Remotion.Utilities;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 {
   public sealed class BocListValidationResultDispatchingValidator : BaseValidator, IBusinessObjectBoundEditableWebControlValidationResultDispatcher
   {
+    private BusinessObjectValidationFailure[] _validationFailuresForBusinessObjectPropertyOfBocList = Array.Empty<BusinessObjectValidationFailure>();
+
     public BocListValidationResultDispatchingValidator ()
     {
     }
@@ -44,6 +49,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
       if (dispatchToValidationFailureRepository)
         DispatchToValidationFailureRepository(validationResult, bocListControl);
+
+      //TODO-RM-5906: this call could be optimized away and replaced by an explicit call to Validate() from an external source.
+      //              Possibly, we could also tweak this to only track if validate has been called before, and if so, we set the validator invalid.
+      //              If it wasn't called before, we don't do anything, someone will call validate for us anyway.
+      Validate();
     }
 
     private void DispatchToValidationResultDispatchers (IBusinessObjectValidationResult validationResult, BocList bocListControl)
@@ -102,8 +112,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     protected override bool EvaluateIsValid ()
     {
-      // TODO RM-6056: Shows a validation error if IBusinessObjectValidationResult returned messages for this control.
-      return true;
+      var sb = new StringBuilder();
+
+      var bocList = GetControlToValidate();
+      var validationFailureRepository = bocList.ValidationFailureRepository;
+
+      foreach (var validationFailure in validationFailureRepository.GetUnhandledValidationFailuresForBocList(true))
+      {
+        sb.AppendLine(validationFailure.Failure.ErrorMessage);
+      }
+
+      var rowObjects = bocList.Value ?? Array.Empty<IBusinessObject>();
+      var hasRowsWithValidationFailures = rowObjects.Any(r => validationFailureRepository.HasValidationFailuresForDataRow(r));
+
+      if (hasRowsWithValidationFailures)
+      {
+        sb.Append("### BocList has validation failures.");
+      }
+
+      ErrorMessage = sb.ToString();
+
+      return _validationFailuresForBusinessObjectPropertyOfBocList.Length == 0 && hasRowsWithValidationFailures;
     }
 
     protected override bool ControlPropertiesValid ()
