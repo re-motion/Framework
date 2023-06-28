@@ -3,6 +3,7 @@
   <Import Project="$(MSBuildThisFileDirectory)Library.props" />
 
   <PropertyGroup>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <IsPackable>False</IsPackable>
   </PropertyGroup>
 
