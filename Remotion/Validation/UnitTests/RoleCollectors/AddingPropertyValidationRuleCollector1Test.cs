@@ -147,7 +147,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
 
       Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory = _ => new NotNullValidator(new InvariantValidationMessage("expectedMessage"));
 
-      (_addingPropertyValidationRuleCollector).RegisterValidator(validatorFactory);
+      _addingPropertyValidationRuleCollector.RegisterValidator(validatorFactory);
       var result = ((IAddingPropertyValidationRuleCollector)_addingPropertyValidationRuleCollector).CreateValidationRule(validationMessageFactoryStub.Object);
 
       var propertyValidators = ((IPropertyValidationRule)result).Validators.Cast<NotNullValidator>().ToArray();

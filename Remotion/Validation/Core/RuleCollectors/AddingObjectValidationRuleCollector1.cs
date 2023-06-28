@@ -95,7 +95,7 @@ namespace Remotion.Validation.RuleCollectors
       {
         throw new ArgumentException(
             $"The type '{typeof(TValidatedTypeForCondition).GetFullNameSafe()}' of the predicate "
-            + $"does not match the type '{typeof(TValidatedType).GetFullNameSafe()}' of the validation rule.");
+            + $"does not match the type '{typeof(TValidatedType).GetFullNameSafe()}' of the validation rule.", "predicate");
       }
 
       Condition = (Func<TValidatedType, bool>)(object)predicate;

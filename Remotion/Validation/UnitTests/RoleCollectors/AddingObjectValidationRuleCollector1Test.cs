@@ -18,9 +18,12 @@ using System;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
+using Remotion.Development.NUnit.UnitTesting;
+using Remotion.Reflection;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.RuleCollectors;
+using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestDomain.Validators;
@@ -32,11 +35,12 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
   [TestFixture]
   public class AddingObjectValidationRuleCollector1Test
   {
-    private IAddingObjectValidationRuleCollector _addingObjectValidationRuleCollector;
+    private AddingObjectValidationRuleCollector<Customer> _addingObjectValidationRuleCollector;
     private Mock<IObjectValidatorExtractor> _objectValidatorExtractorMock;
     private IObjectValidator _stubObjectValidator1;
     private Mock<IObjectValidator> _stubObjectValidator2;
     private IObjectValidator _stubObjectValidator3;
+    private ITypeInformation _validatedType;
 
     [SetUp]
     public void SetUp ()
@@ -46,54 +50,159 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
       _stubObjectValidator1 = new StubObjectValidator();
       _stubObjectValidator2 = new Mock<IObjectValidator>();
       _stubObjectValidator3 = new FakeCustomerValidator();
+      _validatedType = TypeAdapter.Create(typeof(Customer));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void Initialization_CollectorTypeDoesNotImplementIValidationRuleCollector_ThrowsArgumentException ()
     {
+      Assert.That(
+          () => new AddingObjectValidationRuleCollector<Customer>(typeof(Customer)),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Parameter 'collectorType' is a 'Remotion.Validation.UnitTests.TestDomain.Customer', "
+                  + "which cannot be assigned to type 'Remotion.Validation.IValidationRuleCollector'.",
+                  "collectorType"));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void CreateValidationRule_InitializesDeferredInitializationValidationMessages ()
     {
+      var validationMessageFactoryStub = new Mock<IValidationMessageFactory>();
+      validationMessageFactoryStub
+          .Setup(e => e.CreateValidationMessageForObjectValidator(It.IsAny<IObjectValidator>(), _validatedType))
+          .Returns(new InvariantValidationMessage("expectedMessage"));
+
+      Func<ObjectValidationRuleInitializationParameters, IObjectValidator> validatorFactory = param => new FakeObjectValidator(param.ValidationMessage);
+
+      _addingObjectValidationRuleCollector.RegisterValidator(validatorFactory);
+      var result = ((IAddingObjectValidationRuleCollector)_addingObjectValidationRuleCollector).CreateValidationRule(validationMessageFactoryStub.Object);
+
+      var fakeObjectValidators = ((ObjectValidationRule<Customer>)result).Validators.Cast<FakeObjectValidator>().ToArray();
+      Assert.That(fakeObjectValidators.Length, Is.EqualTo(1));
+      Assert.That(fakeObjectValidators[0].ValidationMessage.ToString(), Is.EqualTo("expectedMessage"));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void CreateValidationRule_WhenCalledTwice_InitializesDeferredInitializationValidationMessagesOnlyForNewlyRegisteredValidators ()
     {
+      var validationMessageFactoryStub1 = new Mock<IValidationMessageFactory>();
+      validationMessageFactoryStub1
+          .Setup(e => e.CreateValidationMessageForObjectValidator(It.IsAny<IObjectValidator>(), _validatedType))
+          .Returns(new InvariantValidationMessage("expectedMessage1"));
+
+      var validationMessageFactoryStub2 = new Mock<IValidationMessageFactory>();
+      validationMessageFactoryStub2
+          .Setup(e => e.CreateValidationMessageForObjectValidator(It.IsAny<IObjectValidator>(), _validatedType))
+          .Returns(new InvariantValidationMessage("expectedMessage2"));
+
+      Func<ObjectValidationRuleInitializationParameters, IObjectValidator> validatorFactory = param => new FakeObjectValidator(param.ValidationMessage);
+
+      _addingObjectValidationRuleCollector.RegisterValidator(validatorFactory);
+      var result1 = ((IAddingObjectValidationRuleCollector)_addingObjectValidationRuleCollector).CreateValidationRule(validationMessageFactoryStub1.Object);
+
+      var fakeObjectValidators1 = ((ObjectValidationRule<Customer>)result1).Validators.Cast<FakeObjectValidator>().ToArray();
+      Assert.That(fakeObjectValidators1.Length, Is.EqualTo(1));
+      Assert.That(fakeObjectValidators1[0].ValidationMessage.ToString(), Is.EqualTo("expectedMessage1"));
+
+      _addingObjectValidationRuleCollector.RegisterValidator(validatorFactory);
+      var result2 = ((IAddingObjectValidationRuleCollector)_addingObjectValidationRuleCollector).CreateValidationRule(validationMessageFactoryStub2.Object);
+
+      var fakeObjectValidators2 = ((ObjectValidationRule<Customer>)result2).Validators.Cast<FakeObjectValidator>().ToArray();
+      Assert.That(fakeObjectValidators2.Length, Is.EqualTo(2));
+      Assert.That(fakeObjectValidators2[0].ValidationMessage.ToString(), Is.EqualTo("expectedMessage1"));
+      Assert.That(fakeObjectValidators2[1].ValidationMessage.ToString(), Is.EqualTo("expectedMessage2"));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void CreateValidationRule_IgnoresValidationMessagesForValidatorsWithoutADeferredInitializationValidationMessage ()
     {
+      var validationMessageFactoryStub = new Mock<IValidationMessageFactory>();
+      validationMessageFactoryStub
+          .Setup(e => e.CreateValidationMessageForObjectValidator(It.IsAny<IObjectValidator>(), _validatedType))
+          .Returns(new InvariantValidationMessage("unexpectedMessage"));
+
+      Func<ObjectValidationRuleInitializationParameters, IObjectValidator> validatorFactory = _ => new FakeObjectValidator(new InvariantValidationMessage("expectedMessage"));
+
+      (_addingObjectValidationRuleCollector).RegisterValidator(validatorFactory);
+      var result = ((IAddingObjectValidationRuleCollector)_addingObjectValidationRuleCollector).CreateValidationRule(validationMessageFactoryStub.Object);
+
+      var fakeObjectValidators = ((ObjectValidationRule<Customer>)result).Validators.Cast<FakeObjectValidator>().ToArray();
+      Assert.That(fakeObjectValidators.Length, Is.EqualTo(1));
+      Assert.That(fakeObjectValidators[0].ValidationMessage.ToString(), Is.EqualTo("expectedMessage"));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void CreateValidationRule_WithValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
+      var validationMessageFactoryStub = new Mock<IValidationMessageFactory>();
+      validationMessageFactoryStub
+          .Setup(_ => _.CreateValidationMessageForObjectValidator(It.IsAny<IObjectValidator>(), _validatedType))
+          .Returns((ValidationMessage)null);
+
+      Func<ObjectValidationRuleInitializationParameters, IObjectValidator> validatorFactory = param => new FakeObjectValidator(param.ValidationMessage);
+
+      _addingObjectValidationRuleCollector.RegisterValidator(validatorFactory);
+
+      Assert.That(
+          () => ((IAddingObjectValidationRuleCollector)_addingObjectValidationRuleCollector).CreateValidationRule(validationMessageFactoryStub.Object),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "The IValidationMessageFactory did not return a result for 'FakeObjectValidator' applied to "
+                  + "type 'Remotion.Validation.UnitTests.TestDomain.Customer'."));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void CreateValidationRule_WithConditionNotNull_InitializesConditionForCreatedObjectValidationRule ()
     {
+      var validationMessageFactoryStub = new Mock<IValidationMessageFactory>();
+      validationMessageFactoryStub
+          .Setup(e => e.CreateValidationMessageForObjectValidator(It.IsAny<IObjectValidator>(), _validatedType))
+          .Returns(new InvariantValidationMessage("expectedMessage"));
+
+      Func<ObjectValidationRuleInitializationParameters, IObjectValidator> validatorFactory = param => new FakeObjectValidator(param.ValidationMessage);
+      Func<Customer, bool> predicate = _ => true;
+
+      _addingObjectValidationRuleCollector.RegisterValidator(validatorFactory);
+      _addingObjectValidationRuleCollector.SetCondition(predicate);
+
+      var result = ((IAddingObjectValidationRuleCollector)_addingObjectValidationRuleCollector).CreateValidationRule(validationMessageFactoryStub.Object);
+
+      Assert.That(((ObjectValidationRule<Customer>)result).Condition, Is.SameAs(predicate));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void SetCondition ()
     {
+      Func<Customer, bool> predicate = _ => true;
+      _addingObjectValidationRuleCollector.SetCondition(predicate);
+
+      Assert.That(_addingObjectValidationRuleCollector.Condition, Is.SameAs(predicate));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
+    public void SetCondition_WithInvalidTypeOfPredicate_ThrowsArgumentException ()
+    {
+      Func<Person, bool> predicate = _ => true;
+
+      Assert.That(
+          () => _addingObjectValidationRuleCollector.SetCondition(predicate),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "The type 'Remotion.Validation.UnitTests.TestDomain.Person' of the predicate does not match the "
+                  + "type 'Remotion.Validation.UnitTests.TestDomain.Customer' of the validation rule.", "predicate"));
+    }
+
+    [Test]
     public void SetCondition_Twice_UsesNewCondition ()
     {
+      Func<Customer, bool> predicateOne = _ => true;
+      Func<Customer, bool> predicateTwo = _ => false;
+
+      _addingObjectValidationRuleCollector.SetCondition(predicateOne);
+      _addingObjectValidationRuleCollector.SetCondition(predicateTwo);
+
+      Assert.That(_addingObjectValidationRuleCollector.Condition, Is.SameAs(predicateTwo));
     }
 
     [Test]
