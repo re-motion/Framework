@@ -26,6 +26,7 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Web;
 using Remotion.Web.Infrastructure;
@@ -129,6 +130,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           .Returns(GlobalizationService.GetResourceManager(typeof(ObjectBinding.Web.UI.Controls.BocList.ResourceIdentifier)));
 
       List.Setup(stub => stub.ResolveClientUrl(It.IsAny<string>())).Returns((string url) => url.TrimStart('~'));
+
+      var bocListValidationFailureRepository = new BocListValidationFailureRepository();
+      List.Setup(_ => _.ValidationFailureRepository).Returns(bocListValidationFailureRepository);
     }
 
     protected BocTitleCellRenderArguments CreateBocTitleCellRenderArguments (
