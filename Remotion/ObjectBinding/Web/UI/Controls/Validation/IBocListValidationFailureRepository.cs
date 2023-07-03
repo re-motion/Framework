@@ -25,6 +25,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
   /// </summary>
   public interface IBocListValidationFailureRepository
   {
+    /// <summary> Raised when <see cref="BusinessObjectValidationFailure"/>s are added to the repository. </summary>
+    /// <remarks>
+    ///   Register for this event to execute code that syncs its validation errors to this <see cref="IBocListValidationFailureRepository"/>.
+    /// </remarks>
+    public event EventHandler? ValidationFailureAdded;
+
     /// <summary>
     /// Adds <see cref="BusinessObjectValidationFailure"/>s that belong to the <see cref="BocList"/> as a whole.
     /// </summary>

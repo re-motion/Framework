@@ -14,6 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Web.UI;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -23,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <summary>
   /// A column definition for displaying a validation error indicator for a row.
   /// </summary>
-  public class BocValidationErrorIndicatorColumnDefinition : BocColumnDefinition
+  public class BocValidationErrorIndicatorColumnDefinition : BocColumnDefinition, IBocSortableColumnDefinition
   {
     public BocValidationErrorIndicatorColumnDefinition ()
     {
@@ -39,5 +44,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <inheritdoc />
     protected override string DisplayedTypeName => "ValidationErrorIndicatorColumnDefinition";
+
+    /// <summary> Gets or sets a flag that determines whether to enable sorting for this column. </summary>
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("A flag determining whether to enable sorting for this column.")]
+    [DefaultValue(true)]
+    [NotifyParentProperty(true)]
+    public bool IsSortable { get; set; } = true;
+
+    public IComparer<BocListRow> CreateCellValueComparer ()
+    {
+      Assertion.IsTrue(OwnerControl is IBocList);
+      var validationFailureRepository = ((IBocList)OwnerControl).ValidationFailureRepository;
+
+      return new BocListRowWithValidationFailureComparer(validationFailureRepository);
+    }
   }
 }
