@@ -53,6 +53,8 @@ public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
   protected Label DisabledUnboundPartnerFieldValueLabel;
   protected BocAutoCompleteReferenceValue DisabledUnboundReadOnlyPartnerField;
   protected Label DisabledUnboundReadOnlyPartnerFieldValueLabel;
+  protected BocAutoCompleteReferenceValue FatherField;
+  protected Label FatherFieldValueLabel;
   protected Label PartnerFieldSelectionChangedLabel;
   protected Label PartnerFieldMenuClickEventArgsLabel;
   protected WebButton PartnerTestSetNullButton;
@@ -230,6 +232,7 @@ public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
     SetDebugLabel(DisabledReadOnlyPartnerField, DisabledReadOnlyPartnerFieldValueLabel);
     SetDebugLabel(DisabledUnboundPartnerField, DisabledUnboundPartnerFieldValueLabel);
     SetDebugLabel(DisabledUnboundReadOnlyPartnerField, DisabledUnboundReadOnlyPartnerFieldValueLabel);
+    SetDebugLabel(FatherField, FatherFieldValueLabel);
   }
 
   private void SetDebugLabel (IBusinessObjectBoundWebControl control, Label label)
