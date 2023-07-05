@@ -212,6 +212,7 @@ namespace Remotion.Data.DomainObjects
         this[i].ObjectsLoaded(clientTransaction, loadedDomainObjects);
     }
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
       ArgumentUtility.DebugCheckNotNull("unloadedDomainObjects", unloadedDomainObjects);
@@ -220,6 +221,7 @@ namespace Remotion.Data.DomainObjects
         this[i].ObjectsUnloading(clientTransaction, unloadedDomainObjects);
     }
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
       ArgumentUtility.DebugCheckNotNull("unloadedDomainObjects", unloadedDomainObjects);
