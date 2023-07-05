@@ -105,6 +105,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return "bocListDataRow"; }
     }
 
+    /// <summary> Gets the CSS-Class applied to a validation row in the <see cref="BocList"/>. </summary>
+    /// <remarks> Class: <c>bocListValidationRow</c> </remarks>
+    public virtual string ValidationRow
+    {
+      get { return "bocListValidationRow"; }
+    }
+
     /// <summary> Gets the CSS-Class additionally applied to the <see cref="BocList"/>'s selected data rows. </summary>
     /// <remarks> Class: <c>selected</c> </remarks>
     public string DataRowSelected
@@ -259,6 +266,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public string HasNavigator
     {
       get { return "hasNavigator"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to BocListRows which have a BocListValidationRow associated with it. </summary>
+    public string HasValidationRow
+    {
+      get { return "hasValidationRow"; }
     }
 
     public virtual string MenuBlock

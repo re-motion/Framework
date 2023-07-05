@@ -102,6 +102,47 @@ div.bocListNavigator a[href]:active img
   filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
 }
 
+div.bocList div.bocListTableBlock tr.bocListValidationRow.even
+{
+  background-color: #F0F0F0;
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow.odd
+{
+  background-color: White;
+}
+
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow
+{
+  border-bottom: 1px solid #C8C8C8;
+  border-top: none;
+  color: Red;
+}
+
+div.bocList table.bocListTable tr.bocListValidationRow.selected td
+{
+  background-color: #C5E0FC;
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow td ul
+{
+  margin: 1em 0;
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow div
+{
+  position: sticky;
+  left: 0;
+  overflow-x: auto;
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow div div
+{
+  inline-size: fit-content;
+  min-inline-size: 20em;
+}
+
 div.bocListListMenuContainer
 {
   width: 100%;

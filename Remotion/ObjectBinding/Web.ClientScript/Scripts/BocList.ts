@@ -51,7 +51,7 @@ class BocList_RowBlock
 {
   public Row: HTMLElement;
   public SelectorControl: HTMLInputElement;
-
+  public ValidationRow: Nullable<HTMLElement>
   constructor(row: HTMLElement, selectorControl: HTMLInputElement)
   {
     if (row.nodeName !== 'TR')
@@ -59,6 +59,9 @@ class BocList_RowBlock
 
     this.Row = row;
     this.SelectorControl = selectorControl
+    this.ValidationRow = this.Row.classList.contains("hasValidationRow")
+        ? this.Row.nextSibling as HTMLElement
+        : null;
   }
 }
 
@@ -177,6 +180,13 @@ class BocList
         selectedRows.OnSelectionChanged (bocList, false);
       }
     });
+
+    if (row.classList.contains("hasValidationRow"))
+    {
+      let validationRow = row.nextSibling as HTMLElement;
+
+      validationRow.addEventListener('click', () => row.dispatchEvent(new Event("click")));
+    }
   
     selectorControl.addEventListener('click', function (evt)
     {
@@ -201,7 +211,7 @@ class BocList
     }
   }
 
-  //  Event handler for a table row in the BocList. 
+  //  Event handler for a table row in the BocList.
   //  Selects/unselects a row/all rows depending on its selection state,
   //      whether CTRL has been pressed and if _bocList_isSelectorControlClick is true.
   //  Aborts the execution if _bocList_isCommandClick or _bocList_isSelectorControlClick is true.
@@ -288,8 +298,10 @@ class BocList
     // Select currentRow
     rowBlock.SelectorControl.checked = true;
     if (isRowHighlightingEnabled)
+    {
       rowBlock.Row.classList.add(BocList.TrClassNameSelected);
-
+      rowBlock.ValidationRow?.classList.add(BocList.TrClassNameSelected);
+    }
     BocList.SetSelectAllRowsSelectorOnDemand (selectedRows);
   }
 
@@ -328,7 +340,10 @@ class BocList
     // Unselect currentRow
     rowBlock.SelectorControl.checked = false;
     if (isRowHighlightingEnabled)
+    {
       rowBlock.Row.classList.remove(BocList.TrClassNameSelected);
+      rowBlock.ValidationRow?.classList.remove(BocList.TrClassNameSelected);
+    }
 
     BocList.ClearSelectAllRowsSelector (selectedRows);
   }
@@ -503,12 +518,27 @@ class BocList
     {
       if (!PageUtility.Instance.IsInDom (scrollableContainer))
         return;
-  
+
       BocList.FixHeaderSize(scrollableContainer);
       BocList.FixHeaderPosition(tableContainer, scrollableContainer);
+      BocList.FixValidationErrorOverflowSize(scrollableContainer);
       setTimeout(resizeHandler, resizeInterval);
     };
     resizeHandler();
+  }
+
+  private static FixValidationErrorOverflowSize(scrollableContainer: HTMLElement)
+  {
+    // Sets the width of the validation error field to be as wide as the visible part of the bocList.
+    // This enables sticky behaviour while still allowing for a scrollbar if required.
+
+    const width = LayoutUtility.GetWidth(scrollableContainer);
+
+    const overflowContainer: Nullable<HTMLElement> = scrollableContainer.querySelector('div.bocListTableBlock tr.bocListValidationRow div');
+    if (overflowContainer)
+    {
+      overflowContainer.style.width = "calc(" + width.toString() + "px - var(--remotion-themed-scrollbar-width))";
+    }
   }
 
   private static CreateFakeTableHead(tableContainer: HTMLElement, scrollableContainer: HTMLElement, bocList: HTMLElement): void
