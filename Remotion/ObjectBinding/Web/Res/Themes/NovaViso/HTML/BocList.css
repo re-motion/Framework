@@ -471,7 +471,7 @@ div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable .
   margin-right: calc(-1 * (var(--single-whitespace-width) + var(--remotion-themed-spacing)));
 }
 
-div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable div.bocListEditableCell .validationErrorMarker > img
+div.bocList .validationErrorMarker > img
 {
   height: var(--remotion-themed-img-width);
   width: var(--remotion-themed-img-width);
@@ -520,6 +520,12 @@ div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable d
 /*endregion*/
 
 /*region Validation layout*/
+.bocListDataColumnDeclarationValidationFailureIndicator
+{
+  /* Exact space that an icon + padding + border from container elements take up to prevent layout changes when a validation icon is displayed */
+  width: calc(var(--remotion-themed-img-width) + 3 * var(--remotion-themed-spacing) + 2 * var(--remotion-themed-border-width));
+}
+
 div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable div.bocListEditableCell
 {
   display: grid;

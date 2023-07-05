@@ -161,6 +161,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return "bocListDataCellRowSelector"; }
     }
 
+    /// <summary> Gets the CSS-Class applied to the cell in the <see cref="BocList"/>'s data column declaration that represents the validation failure indicator column. </summary>
+    /// <remarks> Class: <c>bocListDataColumnDeclarationValidationFailureIndicator</c> </remarks>
+    public virtual string DataColumnDeclarationValidationFailureIndicator
+    {
+      get { return "bocListDataColumnDeclarationValidationFailureIndicator"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to the cell in the <see cref="BocList"/>'s title row that contains the validation failure indicator header. </summary>
+    /// <remarks> Class: <c>bocListTitleCellValidationFailureIndicator</c> </remarks>
+    public virtual string TitleCellValidationFailureIndicator
+    {
+      get { return "bocListTitleCellValidationFailureIndicator"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to the cell in the <see cref="BocList"/>'s data rows that contains the validation failure indicator. </summary>
+    /// <remarks> Class: <c>bocListDataCellValidationFailureIndicator</c> </remarks>
+    public virtual string DataCellValidationFailureIndicator
+    {
+      get { return "bocListDataCellValidationFailureIndicator"; }
+    }
+
     /// <summary> Gets the CSS-Class applied to the content if there is no anchor element. </summary>
     /// <remarks> Class: <c>bocListDataCellContent</c> </remarks>
     public virtual string Content
@@ -201,6 +222,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public virtual string AvailableViewsListLabel
     {
       get { return "bocListAvailableViewsListLabel"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s validation error marker icons. </summary>
+    /// <remarks> Class: <c>validationErrorMarker</c> </remarks>
+    public virtual string ValidationErrorMarker
+    {
+      get { return "validationErrorMarker"; }
     }
 
     public string ListMenuContainer

@@ -53,6 +53,8 @@ public class BocReferenceValueUserControl : BaseUserControl
   protected Label DisabledUnboundPartnerFieldValueLabel;
   protected BocReferenceValue DisabledUnboundReadOnlyPartnerField;
   protected Label DisabledUnboundReadOnlyPartnerFieldValueLabel;
+  protected BocReferenceValue FatherField;
+  protected Label FatherFieldValueLabel;
   protected Label PartnerFieldSelectionChangedLabel;
   protected Label PartnerFieldMenuClickEventArgsLabel;
   protected WebButton PartnerTestSetNullButton;
@@ -230,6 +232,7 @@ public class BocReferenceValueUserControl : BaseUserControl
     SetDebugLabel(DisabledReadOnlyPartnerField, DisabledReadOnlyPartnerFieldValueLabel);
     SetDebugLabel(DisabledUnboundPartnerField, DisabledUnboundPartnerFieldValueLabel);
     SetDebugLabel(DisabledUnboundReadOnlyPartnerField, DisabledUnboundReadOnlyPartnerFieldValueLabel);
+    SetDebugLabel(FatherField, FatherFieldValueLabel);
   }
 
   private void SetDebugLabel (IBusinessObjectBoundWebControl control, Label label)

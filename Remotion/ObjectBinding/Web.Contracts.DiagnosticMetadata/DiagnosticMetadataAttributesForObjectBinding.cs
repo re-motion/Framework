@@ -30,6 +30,8 @@ namespace Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata
     public static readonly string HasPropertyPaths = "data-has-propertypaths";
     public static readonly string BoundPropertyPaths = "data-bound-propertypaths";
     public static readonly string NullIdentifier = "data-null-identifier";
+    public static readonly string ValidationFailureSourceBusinessObject = "data-validation-failure-business-object";
+    public static readonly string ValidationFailureSourceProperty = "data-validation-failure-property";
 
     public static readonly string BocBooleanValueIsTriState = "data-bocbooleanvalue-is-tristate";
 
@@ -56,5 +58,7 @@ namespace Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata
     public static readonly string BocListWellKnownEditCell = "data-boclist-wellknown-cell-edit";
     public static readonly string BocListWellKnownRowDropDownMenuCell = "data-boclist-wellknown-cell-dropdownmenu";
     public static readonly string BocListWellKnownSelectAllControl = "data-boclist-wellknown-selectall-control";
+    public static readonly string BocListValidationFailureSourceRow = "data-boclist-validation-failure-source-row";
+    public static readonly string BocListValidationFailureSourceColumn = "data-boclist-validation-failure-source-column";
   }
 }

@@ -175,4 +175,14 @@
       </td>
       <td>(normal, required)</td>
     </tr>
+  <tr>
+    <td></td>
+    <td>
+      <remotion:BocTextValue
+        ID="UnboundText"
+        ValueType="String"
+        runat="server"/>
+    </td>
+    <td>(unbound)</td>
+  </tr>
 </table>

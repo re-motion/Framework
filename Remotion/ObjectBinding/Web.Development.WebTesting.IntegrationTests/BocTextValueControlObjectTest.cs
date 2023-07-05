@@ -211,9 +211,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var input = builder.ToString();
 
-      var bocText = home.TextValues().GetByLocalID("LastNameField_Normal");
+      var bocText = home.TextValues().GetByLocalID("UnboundText");
       bocText.FillWith(input);
-      Assert.That(home.Scope.FindIdEndingWith("NormalCurrentValueLabel").Text, Is.EqualTo(input));
+      Assert.That(home.Scope.FindIdEndingWith("UnboundText_Value").Value, Is.EqualTo(input));
       Assert.That(bocText.GetText(), Is.EqualTo(input));
     }
 

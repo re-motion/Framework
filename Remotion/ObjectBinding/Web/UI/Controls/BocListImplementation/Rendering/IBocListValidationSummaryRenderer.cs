@@ -14,30 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
-using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
-using Remotion.ServiceLocation;
-using Remotion.Utilities;
-
-namespace Remotion.ObjectBinding.Web.UI.Controls
+namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
   /// <summary>
-  /// A column definition for displaying a validation error indicator for a row.
+  /// Defines an API for rendering a validation summary in <see cref="IBocList"/> controls.
   /// </summary>
-  public class BocValidationErrorIndicatorColumnDefinition : BocColumnDefinition
+  public interface IBocListValidationSummaryRenderer
   {
-    public BocValidationErrorIndicatorColumnDefinition ()
-    {
-    }
-
-    /// <inheritdoc />
-    protected override IBocColumnRenderer GetRendererInternal (IServiceLocator serviceLocator)
-    {
-      ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
-
-      return serviceLocator.GetInstance<IBocValidationErrorIndicatorColumnRenderer>();
-    }
-
-    /// <inheritdoc />
-    protected override string DisplayedTypeName => "ValidationErrorIndicatorColumnDefinition";
+    void Render (BocRenderingContext<IBocList> renderingContext, in BocListValidationSummaryRenderArguments arguments);
   }
 }

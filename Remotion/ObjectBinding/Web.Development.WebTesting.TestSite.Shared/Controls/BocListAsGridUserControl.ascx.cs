@@ -18,9 +18,14 @@ using System;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
+using Remotion.Validation.Results;
 using Remotion.Web;
+using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
@@ -69,6 +74,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
       JobList_Normal.SwitchListIntoEditMode();
       JobList_Empty.SwitchListIntoEditMode();
+      JobList_Validation.SwitchListIntoEditMode();
     }
 
     protected override void OnPreRender (EventArgs e)
@@ -133,6 +139,35 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     private BocListAsGridUserControlTestOutput TestOutput
     {
       get { return (BocListAsGridUserControlTestOutput)((Layout)Page.Master).GetTestOutputControl(); }
+    }
+
+    protected void ValidationTestCaseRow (object sender, EventArgs e)
+    {
+      var jobs = ((Person)CurrentObject.BusinessObject!).Jobs;
+      AddValidationFailures(new ObjectValidationFailure(jobs[0], "Row validation failure message", "Localized row validation failure message"));
+    }
+
+    protected void ValidationTestCaseCell (object sender, EventArgs e)
+    {
+      var jobs = ((Person)CurrentObject.BusinessObject!).Jobs;
+      var displayNameProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Job _) => _.DisplayName));
+
+      AddValidationFailures(
+          new PropertyValidationFailure(
+              jobs[0],
+              displayNameProperty,
+              jobs[0].DisplayName,
+              "Cell validation failure message",
+              "Localized cell validation failure message"));
+    }
+
+    private void AddValidationFailures (params ValidationFailure[] validationFailures)
+    {
+      var validationResult = BusinessObjectValidationResult.Create(new ValidationResult(validationFailures));
+
+      ((SmartPage)Page)!.PrepareValidation();
+      CurrentObjectValidationResultDispatchingValidator.DispatchValidationFailures(validationResult);
+      CurrentObjectValidationResultDispatchingValidator.Validate();
     }
   }
 }

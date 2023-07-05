@@ -36,6 +36,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   [ImplementationFor(typeof(IBocRowRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocRowRenderer : IBocRowRenderer
   {
+    internal static string GetCellIDForValidationMarker (IBocList bocList, int rowIndex, int visibleColumnIndex)
+    {
+      ArgumentUtility.CheckNotNull(nameof(bocList), bocList);
+
+      return $"{bocList.ClientID}_C{visibleColumnIndex}_R{rowIndex}_ValidationMarker";
+    }
+
     private readonly BocListCssClassDefinition _cssClasses;
     private readonly IBocIndexColumnRenderer _indexColumnRenderer;
     private readonly IBocSelectorColumnRenderer _selectorColumnRenderer;

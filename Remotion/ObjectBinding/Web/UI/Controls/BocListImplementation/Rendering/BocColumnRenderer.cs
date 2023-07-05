@@ -154,6 +154,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           renderingContext.Control,
           renderingContext.BusinessObjectWebServiceContext,
           ColumnDefinition,
+          renderingContext.ColumnIndexProvider,
           ColumnIndex,
           VisibleColumnIndex);
     }

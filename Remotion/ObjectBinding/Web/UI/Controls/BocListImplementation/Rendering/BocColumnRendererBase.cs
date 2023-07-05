@@ -147,6 +147,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       string cssClassTitleCell = CssClasses.TitleCell;
       if (!string.IsNullOrEmpty(renderingContext.ColumnDefinition.CssClass))
         cssClassTitleCell += " " + renderingContext.ColumnDefinition.CssClass;
+      var additionalCssClassForTitleCell = GetAdditionalCssClassForTitleCell(renderingContext, in arguments);
+      if (!string.IsNullOrEmpty(additionalCssClassForTitleCell))
+        cssClassTitleCell += " " + additionalCssClassForTitleCell;
       renderingContext.AddAttributeToRender(HtmlTextWriterAttribute.Class, cssClassTitleCell);
       renderingContext.AddAttributeToRender(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.ColumnHeader);
       if (_renderingFeatures.EnableDiagnosticMetadata)
@@ -171,6 +174,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       }
     }
 
+    /// <summary>
+    /// Returns additional css class that are added to a rendered title cell.
+    /// </summary>
+    protected virtual string GetAdditionalCssClassForTitleCell (BocCellAttributeRenderingContext<TBocColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
+    {
+      return string.Empty;
+    }
+
     void IBocColumnRenderer.RenderDataColumnDeclaration (BocColumnRenderingContext renderingContext, bool isTextXml)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
@@ -181,6 +192,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private void RenderDataColumnDeclaration (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, bool isTextXml)
     {
       renderingContext.Writer.WriteBeginTag("col");
+
+      var cssClassForDataColumnDefinition = GetAdditionalCssClassForDataColumnDeclaration(renderingContext);
+      if (!string.IsNullOrEmpty(cssClassForDataColumnDefinition))
+      {
+        renderingContext.Writer.Write(" ");
+        renderingContext.Writer.WriteAttribute("class", cssClassForDataColumnDefinition);
+      }
+
       if (!renderingContext.ColumnDefinition.Width.IsEmpty)
       {
         renderingContext.Writer.Write(" style=\"");
@@ -197,6 +216,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.Write(" />");
       else
         renderingContext.Writer.Write(">");
+    }
+
+    /// <summary>
+    /// Returns additional css class that are added to a rendered data column declaration.
+    /// </summary>
+    protected virtual string GetAdditionalCssClassForDataColumnDeclaration (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
+    {
+      return string.Empty;
     }
 
     private void RenderTitleCellMarkers (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
@@ -345,6 +372,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       if (!string.IsNullOrEmpty(renderingContext.ColumnDefinition.CssClass))
         cssClassTableCell += " " + renderingContext.ColumnDefinition.CssClass;
+      var additionalCssClassForDataCell = GetAdditionalCssClassForDataCell(renderingContext, in arguments);
+      if (!string.IsNullOrEmpty(additionalCssClassForDataCell))
+        cssClassTableCell += " " + additionalCssClassForDataCell;
       renderingContext.AddAttributeToRender(HtmlTextWriterAttribute.Class, cssClassTableCell);
 
       if (arguments.IsRowHeader)
@@ -369,6 +399,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.AddAttributeToRender(HtmlTextWriterAttribute2.Role, ariaRoleForTableDataElement);
       if (_renderingFeatures.EnableDiagnosticMetadata)
         AddDiagnosticMetadataAttributes(renderingContext);
+    }
+
+    /// <summary>
+    /// Returns additional css class that are added to a rendered data cell.
+    /// </summary>
+    protected virtual string GetAdditionalCssClassForDataCell (BocCellAttributeRenderingContext<TBocColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
+    {
+      return string.Empty;
     }
 
     [Obsolete(

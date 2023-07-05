@@ -28,6 +28,7 @@
   <tr>
     <td colSpan=2><ros:TestBocList id=ChildrenList runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children" EnableOptionalValidators="true" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="0" indexoffset="100" RowMenuDisplay="Manual" ShowEmptyListMessage="True" Index="InitialOrder" Selection="Multiple" errormessage="test" showeditmodevalidationmarkers="True">
 <fixedcolumns>
+<remotion:BocValidationErrorIndicatorColumnDefinition/>
 <remotion:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit"></remotion:BocRowEditModeColumnDefinition>
 <remotion:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
 <persistedcommand>
@@ -90,8 +91,15 @@
   <remotion:WebButton id="RemoveRowsButton" runat="server" Text="Remove Rows"></remotion:WebButton>
   <remotion:WebButton id="RemoveItemsButton" runat="server" Text="Remove Items"></remotion:WebButton>
 </p>
+<p>
+  <remotion:WebButton id="ChildrenAddValidationErrorsButton" runat="server" Text="Add validation errors"></remotion:WebButton>
+</p>
 <p><asp:checkbox id=ChildrenListEventCheckBox runat="server" Text="ChildrenList Event raised" enableviewstate="False" Enabled="False"></asp:checkbox></p>
-<p><asp:label id=ChildrenListEventArgsLabel runat="server" enableviewstate="False"></asp:label></p>
+<p>
+  <asp:label id=ChildrenListEventArgsLabel runat="server" enableviewstate="False"></asp:label>
+  <br>
+  <asp:Label id="UnhandledValidationErrorsLabel" runat="server" ForeColor="Red" style="white-space: pre"></asp:Label>
+</p>
 <div style="BORDER-RIGHT: black thin solid; BORDER-TOP: black thin solid; BORDER-LEFT: black thin solid; BORDER-BOTTOM: black thin solid; BACKGROUND-COLOR: #ffff99" runat="server" visible="false" ID="NonVisualControls">
     <remotion:formgridmanager id=FormGridManager runat="server"/>
     <remotion:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person"/>
