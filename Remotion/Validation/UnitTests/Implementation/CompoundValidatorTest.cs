@@ -59,9 +59,19 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       _compoundValidator = new CompoundValidator(new[] { _validatorStub1.Object, _validatorStub2.Object }, typeof(Customer));
 
-      _validationFailure1 = new ObjectValidationFailure(_validatedObject, "Error1", "ValidationMessage1");
-      _validationFailure2 = new PropertyValidationFailure(_validatedObject, propertyStub2.Object, "value2", "Error2", "ValidationMessage2");
-      _validationFailure3 = new PropertyValidationFailure(_validatedObject, propertyStub3.Object, null, "Error3", "ValidationMessage3");
+      _validationFailure1 = ValidationFailure.CreateObjectValidationFailure(_validatedObject, "Error1", "ValidationMessage1");
+      _validationFailure2 = ValidationFailure.CreatePropertyValidationFailure(
+          _validatedObject,
+          propertyStub2.Object,
+          "value2",
+          "Error2",
+          "ValidationMessage2");
+      _validationFailure3 = ValidationFailure.CreatePropertyValidationFailure(
+          _validatedObject,
+          propertyStub3.Object,
+          null,
+          "Error3",
+          "ValidationMessage3");
 
       _validationResult1 = new ValidationResult(new[] { _validationFailure1, _validationFailure2 });
       _validationResult2 = new ValidationResult(new[] { _validationFailure3 });

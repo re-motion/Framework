@@ -103,7 +103,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
         var jobs = ((Person)CurrentObject.BusinessObject!).Jobs;
         var startDateProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Job _) => _.StartDate));
         AddValidationFailures(
-            new PropertyValidationFailure(
+            ValidationFailure.CreatePropertyValidationFailure(
                 jobs[0],
                 startDateProperty,
                 jobs[0].StartDate,
@@ -180,7 +180,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     protected void ValidationTestCaseRow (object sender, EventArgs e)
     {
       var jobs = ((Person)CurrentObject.BusinessObject!).Jobs;
-      AddValidationFailures(new ObjectValidationFailure(jobs[0], "Row validation failure message", "Localized row validation failure message"));
+      AddValidationFailures(
+          ValidationFailure.CreateObjectValidationFailure(
+              jobs[0],
+              "Row validation failure message",
+              "Localized row validation failure message"));
     }
 
     protected void ValidationTestCaseCell (object sender, EventArgs e)
@@ -189,7 +193,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
       var displayNameProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Job _) => _.DisplayName));
 
       AddValidationFailures(
-          new PropertyValidationFailure(
+          ValidationFailure.CreatePropertyValidationFailure(
               jobs[0],
               displayNameProperty,
               jobs[0].DisplayName,

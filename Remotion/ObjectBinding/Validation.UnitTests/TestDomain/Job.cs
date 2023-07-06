@@ -13,27 +13,14 @@
 // 
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Remotion.Validation.Implementation;
-using Remotion.Validation.Results;
-using Remotion.Validation.Validators;
-
-namespace Remotion.Validation.UnitTests.TestDomain.Validators
+namespace Remotion.ObjectBinding.Validation.UnitTests.TestDomain
 {
-  public class FakeObjectValidator : IObjectValidator
+  public class Job : BindableObjectBase
   {
-    public ValidationMessage ValidationMessage { get; }
-
-    public FakeObjectValidator (ValidationMessage validationMessage)
+    public Job ()
     {
-      ValidationMessage = validationMessage;
     }
 
-    public IEnumerable<ValidationFailure> Validate (ObjectValidatorContext context)
-    {
-      return Enumerable.Empty<ValidationFailure>();
-    }
+    public string JobTitle { get; set; }
   }
 }

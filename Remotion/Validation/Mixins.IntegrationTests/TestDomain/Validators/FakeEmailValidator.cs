@@ -28,9 +28,9 @@ namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.Validators
     {
     }
 
-    public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
+    public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
-      return Enumerable.Empty<PropertyValidationFailure>();
+      return Enumerable.Empty<ValidationFailure>();
     }
   }
 }

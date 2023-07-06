@@ -120,43 +120,43 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
           new ValidationResult(
               new ValidationFailure[]
               {
-                new PropertyValidationFailure(
+                ValidationFailure.CreatePropertyValidationFailure(
                     person,
                     personDateOfBirthProperty,
                     person.DateOfBirth,
                     "invalid dateOfBirth.",
                     "Localized invalid dateOfBirth."),
-                new PropertyValidationFailure(
+                ValidationFailure.CreatePropertyValidationFailure(
                     person,
                     personDeceasedProperty,
                     person.Deceased,
                     "invalid deceased status.",
                     "Localized invalid deceased status."),
-                new PropertyValidationFailure(
+                ValidationFailure.CreatePropertyValidationFailure(
                     person,
                     personPartnerProperty,
                     person.Partner,
                     "invalid partner.",
                     "Localized invalid partner."),
-                new PropertyValidationFailure(
+                ValidationFailure.CreatePropertyValidationFailure(
                     person,
                     personMarriageStatusProperty,
                     person.MarriageStatus,
                     "invalid marriage status.",
                     "Localized invalid marriage status."),
-                new PropertyValidationFailure(
+                ValidationFailure.CreatePropertyValidationFailure(
                     person,
                     personCVProperty,
                     person.CV,
                     "invalid CV.",
                     "Localized invalid CV."),
-                new PropertyValidationFailure(
+                ValidationFailure.CreatePropertyValidationFailure(
                     person,
                     personCVStringProperty,
                     person.CVString,
                     "invalid CV string.",
                     "Localized invalid CV string."),
-                new PropertyValidationFailure(
+                ValidationFailure.CreatePropertyValidationFailure(
                     person,
                     personLastNameProperty,
                     person.LastName,

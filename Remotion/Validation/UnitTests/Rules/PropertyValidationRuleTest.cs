@@ -70,7 +70,12 @@ namespace Remotion.Validation.UnitTests.Rules
     {
       var propertyInformationMock = new Mock<IPropertyInformation>();
 
-      var propertyFailure = new PropertyValidationFailure(new Person(), propertyInformationMock.Object, "propval", "err", "validmessage");
+      var propertyFailure = ValidationFailure.CreatePropertyValidationFailure(
+          new Person(),
+          propertyInformationMock.Object,
+          "propval",
+          "err",
+          "validmessage");
 
       var validatorMock = new Mock<IPropertyValidator>();
 
@@ -111,7 +116,12 @@ namespace Remotion.Validation.UnitTests.Rules
     {
       var propertyInformationMock = new Mock<IPropertyInformation>();
 
-      var propertyFailure = new PropertyValidationFailure(new Person(), propertyInformationMock.Object, "propval", "err", "validmessage");
+      var propertyFailure = ValidationFailure.CreatePropertyValidationFailure(
+          new Person(),
+          propertyInformationMock.Object,
+          "propval",
+          "err",
+          "validmessage");
 
       var validatorMock = new Mock<IPropertyValidator>();
 

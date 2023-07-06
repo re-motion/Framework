@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Validation
               .SelectMany(validationFailure =>
               {
                 return CreateBusinessObjectValidationFailures(validationFailure)
-                        .Select(businessObjectValidationFailure => (businessObjectValidationFailure, validationFailure));
+                    .Select(businessObjectValidationFailure => (businessObjectValidationFailure, validationFailure));
               }));
     }
 
@@ -50,81 +50,40 @@ namespace Remotion.ObjectBinding.Validation
       // Instead, either support matching via visitor or some other good idea. Keep in mind to not clutter the
       // IBusinessObjectProperty interface to accomplish this design goal.
 
-      switch (validationFailure)
+      var businessObjectValidationFailuresForValidatedProperties = new List<BusinessObjectValidationFailure>();
+      foreach (var validatedProperty in validationFailure.ValidatedProperties.Where(vp => vp.Object is IBusinessObject))
       {
-        case PropertyValidationFailure propertyValidationFailure
-            when validationFailure.ValidatedObject is IBusinessObject validatedBusinessObject
-                 && GetBusinessObjectProperty(validatedBusinessObject, propertyValidationFailure.ValidatedProperty) is { } validatedBusinessObjectProperty:
+        BusinessObjectValidationFailure failure;
+        var validatedPropertyObject = (IBusinessObject)validatedProperty.Object;
+
+        if (GetBusinessObjectProperty(validatedPropertyObject, validatedProperty.Property) is { } validatedBusinessObjectProperty)
         {
-          return EnumerableUtility.Singleton(
-              BusinessObjectValidationFailure.CreateForBusinessObjectProperty(
-                  propertyValidationFailure.LocalizedValidationMessage,
-                  validatedBusinessObject,
-                  validatedBusinessObjectProperty));
+          failure = BusinessObjectValidationFailure.CreateForBusinessObjectProperty(
+              validationFailure.LocalizedValidationMessage,
+              validatedPropertyObject,
+              validatedBusinessObjectProperty);
+        }
+        else
+        {
+          failure = BusinessObjectValidationFailure.CreateForBusinessObject(
+              validatedPropertyObject,
+              validationFailure.LocalizedValidationMessage);
         }
 
-        case ObjectValidationFailure objectValidationFailure
-            when objectValidationFailure.ValidatedProperties.Count > 0:
-        {
-          return CreateBusinessObjectValidationFailuresFromValidatedProperties(
-              objectValidationFailure.ValidatedProperties,
-              objectValidationFailure.LocalizedValidationMessage);
-        }
-
-        case ObjectValidationFailure objectValidationFailure
-            when validationFailure.ValidatedObject is IBusinessObject validatedBusinessObject:
-        {
-          return EnumerableUtility.Singleton(
-              BusinessObjectValidationFailure.CreateForBusinessObject(
-                  validatedBusinessObject,
-                  objectValidationFailure.LocalizedValidationMessage));
-        }
-
-        default:
-        {
-          return EnumerableUtility.Singleton(BusinessObjectValidationFailure.Create(validationFailure.LocalizedValidationMessage));
-        }
-      }
-    }
-
-    private static IEnumerable<BusinessObjectValidationFailure> CreateBusinessObjectValidationFailuresFromValidatedProperties (
-        IEnumerable<ValidatedProperty> validatedProperties,
-        string localizedValidationMessage)
-    {
-      var reportedAnyFailure = false;
-      foreach (var validatedProperty in validatedProperties)
-      {
-        var failure = CreateBusinessObjectValidationFailureFromValidatedProperty(validatedProperty, localizedValidationMessage);
-        if (failure == null)
-          continue;
-
-        yield return failure;
-        reportedAnyFailure = true;
+        businessObjectValidationFailuresForValidatedProperties.Add(failure);
       }
 
-      if (!reportedAnyFailure)
-        yield return BusinessObjectValidationFailure.Create(localizedValidationMessage);
-    }
-
-    private static BusinessObjectValidationFailure? CreateBusinessObjectValidationFailureFromValidatedProperty (
-        ValidatedProperty validatedProperty,
-        string localizedValidationMessage)
-    {
-      if (validatedProperty.Object is not IBusinessObject validatedBusinessObject)
-        return null;
-
-      if (GetBusinessObjectProperty(validatedBusinessObject, validatedProperty.Property) is { } validatedBusinessObjectProperty)
+      if (businessObjectValidationFailuresForValidatedProperties.Count > 0)
       {
-        return BusinessObjectValidationFailure.CreateForBusinessObjectProperty(
-            localizedValidationMessage,
-            validatedBusinessObject,
-            validatedBusinessObjectProperty);
+        return businessObjectValidationFailuresForValidatedProperties;
+      }
+      else if (validationFailure.ValidatedObject is IBusinessObject validatedBusinessObject)
+      {
+        return EnumerableUtility.Singleton(BusinessObjectValidationFailure.CreateForBusinessObject(validatedBusinessObject, validationFailure.LocalizedValidationMessage));
       }
       else
       {
-        return BusinessObjectValidationFailure.CreateForBusinessObject(
-            validatedBusinessObject,
-            localizedValidationMessage);
+        return EnumerableUtility.Singleton(BusinessObjectValidationFailure.Create(validationFailure.LocalizedValidationMessage));
       }
     }
 

@@ -433,23 +433,24 @@ public class BocListUserControl : BaseUserControl
             new ValidationFailure[]
             {
                 // Jobs property failures
-                new PropertyValidationFailure(
+                ValidationFailure.CreatePropertyValidationFailure(
                     person,
                     jobsProperty,
                     person.Jobs,
                     "Bad jobs",
                     "Localized bad jobs"),
                 // First job failure (visible)
-                new ObjectValidationFailure(
+                ValidationFailure.CreateObjectValidationFailure(
                     firstJob,
                     "Bad first job",
                     "Localized bad first job"),
-                new PropertyValidationFailure(
+                ValidationFailure.CreatePropertyValidationFailure(
                     firstJob,
                     jobTitleProperty,
                     firstJob.Title,
                     "Bad first job.Title",
-                    "Localized bad first job.Title"),new ObjectValidationFailure(
+                    "Localized bad first job.Title"),
+                ValidationFailure.CreateObjectValidationFailure(
                     firstJob,
                     new[]
                     {
@@ -457,7 +458,7 @@ public class BocListUserControl : BaseUserControl
                     },
                     "Bad first job date",
                     "Localized bad first job dates"),
-                new ObjectValidationFailure(
+                ValidationFailure.CreateObjectValidationFailure(
                     firstJob,
                     new[]
                     {
@@ -467,17 +468,17 @@ public class BocListUserControl : BaseUserControl
                     "Bad first job dates",
                     "Localized bad first job dates"),
                 // Last job failure (invisible)
-                new ObjectValidationFailure(
+                ValidationFailure.CreateObjectValidationFailure(
                     lastJob,
                     "Bad last job",
                     "Localized bad last job"),
-                new PropertyValidationFailure(
+                ValidationFailure.CreatePropertyValidationFailure(
                     lastJob,
                     jobTitleProperty,
                     lastJob.Title,
                     "Bad last job.Title",
                     "Localized bad last job.Title"),
-                new ObjectValidationFailure(
+                ValidationFailure.CreateObjectValidationFailure(
                     lastJob,
                     new[]
                     {
@@ -485,7 +486,7 @@ public class BocListUserControl : BaseUserControl
                     },
                     "Bad last job date",
                     "Localized bad last job dates"),
-                new ObjectValidationFailure(
+                ValidationFailure.CreateObjectValidationFailure(
                     lastJob,
                     new[]
                     {
@@ -495,24 +496,24 @@ public class BocListUserControl : BaseUserControl
                     "Bad last job dates",
                     "Localized bad last job dates"),
                 // Children property failures
-                new PropertyValidationFailure(
+                ValidationFailure.CreatePropertyValidationFailure(
                     person,
                     childrenProperty,
                     person.Children,
                     "Bad children",
                     "Localized bad children"),
                 // First child failure (visible)
-                new ObjectValidationFailure(
+                ValidationFailure.CreateObjectValidationFailure(
                     firstChild,
                     "Bad first child",
                     "Localized bad first child"),
-                new PropertyValidationFailure(
+                ValidationFailure.CreatePropertyValidationFailure(
                     firstChild,
                     personPartnerProperty,
                     firstChild.Partner,
                     "Bad first child.Partner",
                     "Localized bad first child.Partner"),
-                new ObjectValidationFailure(
+                ValidationFailure.CreateObjectValidationFailure(
                     firstChild,
                     new[]
                     {
@@ -520,7 +521,7 @@ public class BocListUserControl : BaseUserControl
                     },
                     "Bad first child name",
                     "Localized bad first child name"),
-                new ObjectValidationFailure(
+                ValidationFailure.CreateObjectValidationFailure(
                     firstChild,
                     new[]
                     {
@@ -530,17 +531,17 @@ public class BocListUserControl : BaseUserControl
                     "Bad first child names",
                     "Localized bad first child names"),
                 // Last child failure (invisible)
-                new ObjectValidationFailure(
+                ValidationFailure.CreateObjectValidationFailure(
                     lastChild,
                     "Bad last child",
                     "Localized bad last child"),
-                new PropertyValidationFailure(
+                ValidationFailure.CreatePropertyValidationFailure(
                     lastChild,
                     personPartnerProperty,
                     lastChild.Partner,
                     "Bad last child.Partner",
                     "Localized bad last child.Partner"),
-                new ObjectValidationFailure(
+                ValidationFailure.CreateObjectValidationFailure(
                     lastChild,
                     new[]
                     {
@@ -548,7 +549,7 @@ public class BocListUserControl : BaseUserControl
                     },
                     "Bad last child name",
                     "Localized bad last child name"),
-                new ObjectValidationFailure(
+                ValidationFailure.CreateObjectValidationFailure(
                     lastChild,
                     new[]
                     {
@@ -573,18 +574,8 @@ public class BocListUserControl : BaseUserControl
 
     static string FormatValidationFailure (ValidationFailure failure)
     {
-      return failure switch
-      {
-        PropertyValidationFailure propertyValidationFailure =>
-            $"Unhandled property validation failure '{propertyValidationFailure.ErrorMessage}'"
-            + $" for property '{propertyValidationFailure.ValidatedProperty.Name}'"
-            + $" on object '{propertyValidationFailure.ValidatedObject}'.",
-        ObjectValidationFailure objectValidationFailure =>
-            $"Unhandled object validation failure '{objectValidationFailure.ErrorMessage}'"
-            + $" for properties '{string.Join(", ", objectValidationFailure.ValidatedProperties.Select(e => e.Property.Name))}'"
-            + $" on object '{objectValidationFailure.ValidatedObject}'.",
-        _ => $"Unhandled property validation failure '{failure.ErrorMessage}' on object '{failure.ValidatedObject}'."
-      };
+      return $"Unhandled validation failure '{failure.ErrorMessage}' for "
+             + $"properties {string.Join(", ", failure.ValidatedProperties.Select(vp => $"'{vp}'"))} on object '{failure.ValidatedObject}'.";
     }
   }
 
