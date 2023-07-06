@@ -163,12 +163,15 @@
     <value>Opzioni</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListEditModeErrorMessage" xml:space="preserve">
-    <value>Si è verificato un errore in almeno una riga.</value>
+    <value>Si sono verificati errori in almeno una riga.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoTitle" xml:space="preserve">
     <value>Input non valido nella riga appena modificata</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListMenuHeading" xml:space="preserve">
     <value>Opzioni</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RemainingValidationFailureText" xml:space="preserve">
+    <value>Si sono verificati errori in almeno un'altra pagina.</value>
   </data>
 </root>

@@ -163,12 +163,15 @@
     <value>Optionen</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListEditModeErrorMessage" xml:space="preserve">
-    <value>In zumindest einer Zeile ist ein Fehler aufgetreten.</value>
+    <value>In zumindest einer Zeile sind Fehler aufgetreten.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoTitle" xml:space="preserve">
     <value>Ungültige Eingabe in der aktuellen Zeile</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListMenuHeading" xml:space="preserve">
     <value>Optionen</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RemainingValidationFailureText" xml:space="preserve">
+    <value>Auf mindestens einer anderen Seite sind Fehler aufgetreten.</value>
   </data>
 </root>
