@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -70,6 +71,39 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
+    public void GetEnumerator_IEnumerableGeneric ()
+    {
+      _collection.Add(_extension1.Object);
+      _collection.Add(_extension2.Object);
+
+      using IEnumerator<IClientTransactionExtension> enumerator = ((IEnumerable<IClientTransactionExtension>)_collection).GetEnumerator();
+
+      Assert.That(enumerator.Current, Is.Null);
+      Assert.That(enumerator.MoveNext(), Is.True);
+      Assert.That(enumerator.Current, Is.EqualTo(_extension1.Object));
+      Assert.That(enumerator.MoveNext(), Is.True);
+      Assert.That(enumerator.Current, Is.EqualTo(_extension2.Object));
+      Assert.That(enumerator.MoveNext(), Is.False);
+    }
+
+    [Test]
+    public void GetEnumerator_ForIEnumerable ()
+    {
+      _collection.Add(_extension1.Object);
+      _collection.Add(_extension2.Object);
+
+      // ReSharper disable once NotDisposedResource
+      IEnumerator enumerator = ((IEnumerable)_collection).GetEnumerator();
+
+      Assert.That(enumerator.Current, Is.Null);
+      Assert.That(enumerator.MoveNext(), Is.True);
+      Assert.That(enumerator.Current, Is.EqualTo(_extension1.Object));
+      Assert.That(enumerator.MoveNext(), Is.True);
+      Assert.That(enumerator.Current, Is.EqualTo(_extension2.Object));
+      Assert.That(enumerator.MoveNext(), Is.False);
+    }
+
+    [Test]
     public void Add ()
     {
       Assert.That(_collection.Count, Is.EqualTo(0));
@@ -95,10 +129,11 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void Remove ()
     {
+      _collection.Add(_extension2.Object);
       _collection.Add(_extension1.Object);
-      Assert.That(_collection.Count, Is.EqualTo(1));
+      Assert.That(_collection.Count, Is.EqualTo(2));
       _collection.Remove(_extension1.Object.Key);
-      Assert.That(_collection.Count, Is.EqualTo(0));
+      Assert.That(_collection.Count, Is.EqualTo(1));
       _collection.Remove(_extension1.Object.Key);
       //expectation: no exception
     }
@@ -113,12 +148,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void IndexerWithName ()
+    public void IndexerWithKey ()
     {
       _collection.Add(_extension1.Object);
       _collection.Add(_extension2.Object);
       Assert.That(_collection[_extension1.Object.Key], Is.SameAs(_extension1.Object));
       Assert.That(_collection[_extension2.Object.Key], Is.SameAs(_extension2.Object));
+      Assert.That(_collection["unknown"], Is.Null);
     }
 
     [Test]
@@ -144,7 +180,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void InsertWithDuplicateName ()
+    public void InsertWithDuplicateKey ()
     {
       _collection.Insert(0, _extension1.Object);
 
