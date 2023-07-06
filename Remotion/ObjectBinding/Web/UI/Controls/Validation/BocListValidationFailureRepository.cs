@@ -83,6 +83,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
         return _rowFailures is { Count: > 0 } || _cellFailures.Count > 0 && _cellFailures.Values.SelectMany(e => e).Any();
       }
 
+      public bool HasUnhandledValidationFailures ()
+      {
+        return _rowFailures.Any(f => !f.Handled) || _cellFailures.Values.Any(e => e.Any(f => !f.Handled));
+      }
+
       public IEnumerable<HandleableFailure> GetAllCellFailuresForRow ()
       {
         return _cellFailures.SelectMany(c => c.Value).ToList();
@@ -114,7 +119,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
       ArgumentUtility.CheckNotNull(nameof(validationFailures), validationFailures);
 
       var failureContainer = GetOrCreateRowFailureContainer(rowObject);
-      failureContainer.AddRowFailures(validationFailures.Select(f =>BocListValidationFailureWithLocationInformation.CreateFailureForRow(f, rowObject)));
+      failureContainer.AddRowFailures(validationFailures.Select(f => BocListValidationFailureWithLocationInformation.CreateFailureForRow(f, rowObject)));
 
       OnValidationFailureAdded();
     }

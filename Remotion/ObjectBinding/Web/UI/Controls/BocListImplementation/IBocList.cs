@@ -195,6 +195,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     IBocListValidationFailureRepository ValidationFailureRepository { get; }
 
     /// <summary>
+    /// Returns the <see cref="BocColumnDefinition"/>s displayed in the <see cref="IBocList"/>.
+    /// </summary>
+    IReadOnlyList<BocColumnDefinition> GetColumnDefinitions ();
+
+    /// <summary>
     /// Gets the list of validation errors for this control.
     /// </summary>
     IEnumerable<PlainTextString> GetValidationErrors ();

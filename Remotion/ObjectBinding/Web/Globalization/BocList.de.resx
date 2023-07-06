@@ -171,7 +171,7 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListMenuHeading" xml:space="preserve">
     <value>Optionen</value>
   </data>
-  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RemainingValidationFailureText" xml:space="preserve">
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInOtherListPagesErrorMessage" xml:space="preserve">
     <value>Auf mindestens einer anderen Seite sind Fehler aufgetreten.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoCell" xml:space="preserve">
@@ -179,5 +179,8 @@
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationColumnTitleText" xml:space="preserve">
     <value>Fehler</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInListErrorMessage" xml:space="preserve">
+      <value>Es wurden Fehler gefunden.</value>
   </data>
 </root>

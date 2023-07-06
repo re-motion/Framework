@@ -564,9 +564,12 @@ public class BocListUserControl : BaseUserControl
     DataSourceValidationResultDispatchingValidator.DispatchValidationFailures(validationResult);
     DataSourceValidationResultDispatchingValidator.Validate();
 
-    UnhandledValidationErrorsLabel.Text =
-        $"This should be the only red message shown in this block. If there are other validation failures shown here, then you probably have a bug somewhere.\n"
-        + $"{string.Join(Environment.NewLine, validationResult.GetUnhandledValidationFailures().Select(FormatValidationFailure))}";
+    if (validationResult.GetUnhandledValidationFailures().Any())
+    {
+      UnhandledValidationErrorsLabel.Text =
+          $"This should be the only red message shown in this block. If there are other validation failures shown here, then you probably have a bug somewhere.\n"
+          + $"{string.Join(Environment.NewLine, validationResult.GetUnhandledValidationFailures().Select(FormatValidationFailure))}";
+    }
 
     static string FormatValidationFailure (ValidationFailure failure)
     {
