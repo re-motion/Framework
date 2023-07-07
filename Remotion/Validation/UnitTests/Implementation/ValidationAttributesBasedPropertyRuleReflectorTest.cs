@@ -82,10 +82,10 @@ namespace Remotion.Validation.UnitTests.Implementation
       Assert.That(addingPropertyValidators.Length, Is.EqualTo(2));
       Assert.That(
           addingPropertyValidators.Select(v => v.GetType()),
-          Is.EquivalentTo(new[] { typeof(LengthValidator), typeof(NotNullValidator) }));
+          Is.EquivalentTo(new[] { typeof(MaximumLengthValidator), typeof(NotNullValidator) }));
 
       validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
-      Assert.That(addingPropertyValidators.OfType<LengthValidator>().Single().ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
+      Assert.That(addingPropertyValidators.OfType<MaximumLengthValidator>().Single().ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
       Assert.That(addingPropertyValidators.OfType<NotNullValidator>().Single().ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
     }
 
@@ -105,10 +105,10 @@ namespace Remotion.Validation.UnitTests.Implementation
       Assert.That(addingPropertyValidators.Length, Is.EqualTo(2));
       Assert.That(
           addingPropertyValidators.Select(v => v.GetType()),
-          Is.EquivalentTo(new[] { typeof(LengthValidator), typeof(NotNullValidator) }));
+          Is.EquivalentTo(new[] { typeof(MaximumLengthValidator), typeof(NotNullValidator) }));
 
       validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
-      Assert.That(addingPropertyValidators.OfType<LengthValidator>().Single().ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
+      Assert.That(addingPropertyValidators.OfType<MaximumLengthValidator>().Single().ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
       Assert.That(addingPropertyValidators.OfType<NotNullValidator>().Single().ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
     }
 
@@ -154,7 +154,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       var removingValidatorRegistrations = _specialCustomerPropertyReflector.GetRemovingValidatorRegistrations().ToArray();
 
       Assert.That(removingValidatorRegistrations.Length, Is.EqualTo(1));
-      Assert.That(removingValidatorRegistrations[0].ValidatorType, Is.EqualTo(typeof(LengthValidator)));
+      Assert.That(removingValidatorRegistrations[0].ValidatorType, Is.EqualTo(typeof(MaximumLengthValidator)));
     }
 
     [Test]
