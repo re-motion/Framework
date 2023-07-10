@@ -132,7 +132,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
       ErrorMessage = sb.ToString();
 
-      return _validationFailuresForBusinessObjectPropertyOfBocList.Length == 0 && hasRowsWithValidationFailures;
+      return _validationFailuresForBusinessObjectPropertyOfBocList.Length == 0 && !hasRowsWithValidationFailures;
     }
 
     protected override bool ControlPropertiesValid ()
