@@ -187,6 +187,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     int CurrentPageIndex { get; }
     string GetCurrentPageControlName ();
 
+    bool IsInlineValidationDisplayEnabled { get; }
+
     /// <summary>
     /// Gets the <see cref="ValidationFailureRepository"/> belonging to this <see cref="BocList"/>.
     /// </summary>

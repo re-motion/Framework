@@ -32,6 +32,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 {
   public partial class BocListUserControl : DataEditUserControl
   {
+    private IBusinessObjectValidationResult _validationResult = BusinessObjectValidationResult.Create(new ValidationResult());
+
     protected string SampleIconUrl;
 
     public override IBusinessObjectDataSourceControl DataSource
@@ -95,6 +97,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     {
       base.OnPreRender(e);
       SetTestOutput();
+
+      // We do the validation on every request since it is easier that covering it in multiple event handlers.
+      // While we use domain validation, it should only affect the last control that is intended for testing validation.
+      ((SmartPage)Page)!.PrepareValidation();
+      CurrentObjectValidationResultDispatchingValidator.DispatchValidationFailures(_validationResult);
+      CurrentObjectValidationResultDispatchingValidator.Validate();
     }
 
     private void MenuItemClickHandler (object sender, WebMenuItemClickEventArgs e)
@@ -178,11 +186,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     private void AddValidationFailures (params ValidationFailure[] validationFailures)
     {
-      var validationResult = BusinessObjectValidationResult.Create(new ValidationResult(validationFailures));
-
-      ((SmartPage)Page)!.PrepareValidation();
-      CurrentObjectValidationResultDispatchingValidator.DispatchValidationFailures(validationResult);
-      CurrentObjectValidationResultDispatchingValidator.Validate();
+      _validationResult = BusinessObjectValidationResult.Create(new ValidationResult(validationFailures));
     }
   }
 }

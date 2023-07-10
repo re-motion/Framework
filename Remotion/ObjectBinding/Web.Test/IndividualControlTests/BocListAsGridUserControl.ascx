@@ -92,7 +92,7 @@
   <remotion:WebButton id="RemoveItemsButton" runat="server" Text="Remove Items"></remotion:WebButton>
 </p>
 <p>
-  <remotion:WebButton id="ChildrenAddValidationErrorsButton" runat="server" Text="Add validation errors"></remotion:WebButton>
+  <asp:CheckBox id="EnableValidationErrorsCheckBox" runat="server" AutoPostBack="True" Text="Enable validation errors" />
 </p>
 <p><asp:checkbox id=ChildrenListEventCheckBox runat="server" Text="ChildrenList Event raised" enableviewstate="False" Enabled="False"></asp:checkbox></p>
 <p>

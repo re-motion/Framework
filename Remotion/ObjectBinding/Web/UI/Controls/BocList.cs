@@ -262,6 +262,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private IReadOnlyList<BocColumnDefinition>? _columnDefinitions;
 
     private bool _hasAppendedAllPropertyColumnDefinitions;
+    private bool _hasValidationErrorIndicatorColumnDefinition;
 
 
     /// <summary> Determines whether the options menu is shown. </summary>
@@ -1749,6 +1750,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       var columnDefinitions = GetColumns(columnDefinitionList.ToArray());
 
       CheckRowMenuColumns(columnDefinitions);
+
+      _hasValidationErrorIndicatorColumnDefinition = columnDefinitions.Any(e => e is BocValidationErrorIndicatorColumnDefinition);
 
       return new ReadOnlyCollection<BocColumnDefinition>(columnDefinitions);
     }
@@ -3434,6 +3437,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected bool IsSelectionEnabled
     {
       get { return _selection != RowSelection.Undefined && _selection != RowSelection.Disabled; }
+    }
+
+    bool IBocList.IsInlineValidationDisplayEnabled
+    {
+      get
+      {
+        EnsureColumnsGot();
+        return _hasValidationErrorIndicatorColumnDefinition;
+      }
     }
 
     /// <summary> Gets or sets a value that indicating the row index is enabled. </summary>

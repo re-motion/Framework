@@ -50,7 +50,7 @@ public class BocListUserControl : BaseUserControl
   protected Button ChildrenListSetPageButton;
   protected Button ChildrenListAddRowButton;
   protected Button ChildrenListRemoveRowsButton;
-  protected Button ChildrenAddValidationErrorsButton;
+  protected CheckBox EnableValidationErrorsCheckbox;
   protected CheckBox ChildrenListEventCheckBox;
   protected Label ChildrenListEventArgsLabel;
   protected Label UnhandledValidationErrorsLabel;
@@ -73,8 +73,6 @@ public class BocListUserControl : BaseUserControl
     ChildrenListSetPageButton.Click += ChildrenListSetPageButton_Click;
     ChildrenListAddRowButton.Click += ChildrenListAddRowButton_Click;
     ChildrenListRemoveRowsButton.Click += ChildrenListRemoveRowsButton_Click;
-
-    ChildrenAddValidationErrorsButton.Click += ChildrenAddValidationErrorsButtonClick;
 
     ChildrenList.ListItemCommandClick += new BocListItemCommandClickEventHandler(ChildrenList_ListItemCommandClick);
     ChildrenList.MenuItemClick += new WebMenuItemClickEventHandler(ChildrenList_MenuItemClick);
@@ -354,6 +352,9 @@ public class BocListUserControl : BaseUserControl
   protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender(e);
+
+    if (EnableValidationErrorsCheckbox.Checked)
+      CreateValidationErrors();
   }
 
   public override void LoadValues (bool interim)
@@ -401,7 +402,8 @@ public class BocListUserControl : BaseUserControl
     ChildrenList.SynchronizeRows();
   }
 
-  private void ChildrenAddValidationErrorsButtonClick (object sender, EventArgs e)
+
+  private void CreateValidationErrors ()
   {
     // Ensure that the last row of the jobs list is not displayed to test that failure from rows
     // that are currently not visible are also displayed
