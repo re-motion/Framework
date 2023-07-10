@@ -21,6 +21,7 @@ using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -323,6 +324,82 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var document = Html.GetResultDocument();
       var th = Html.GetAssertedChildElement(document, "th", 0);
       Html.AssertAttribute(th, DiagnosticMetadataAttributesForObjectBinding.BocListColumnIsRowHeader, "true");
+    }
+
+    [Test]
+    public void TestValidationFailureInCell ()
+    {
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.WithDiagnosticMetadata,
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
+      var renderingContext = CreateRenderingContext();
+
+      renderingContext.Control.ValidationFailureRepository.AddValidationFailuresForDataCell(
+          EventArgs.BusinessObject,
+          Column,
+          new[] { BusinessObjectValidationFailure.Create("error message"), });
+
+      renderer.RenderDataCell(renderingContext, CreateBocDataCellRenderArguments(columnsWithValidationFailures: new [] { true }));
+
+      var document = Html.GetResultDocument();
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertChildElementCount(td, 3);
+
+      var iconSpan = Html.GetAssertedChildElement(td, "span", 0);
+      Html.AssertAttribute(iconSpan, "class", _bocListCssClassDefinition.ValidationErrorMarker);
+      Html.AssertAttribute(iconSpan, "id", "MyList_C6_R0_ValidationMarker");
+      Html.AssertAttribute(iconSpan, "title", "Invalid input in current cell\r\n• error message\r\n");
+      Html.AssertAttribute(iconSpan, "aria-hidden", "true");
+      Html.AssertChildElementCount(iconSpan, 1);
+
+      var img = Html.GetAssertedChildElement(iconSpan, "img", 0);
+      Html.AssertAttribute(img, "src", "/fake/Remotion.Web/Themes/Fake/Image/sprite.svg#ValidationError");
+
+      var div = Html.GetAssertedChildElement(td, "div", 1);
+      Html.AssertAttribute(div, "class", _bocListCssClassDefinition.Content);
+
+      var screenReaderSpan = Html.GetAssertedChildElement(td, "div", 2);
+      Html.AssertAttribute(screenReaderSpan, "class", _bocListCssClassDefinition.CssClassScreenReaderText);
+      Html.AssertChildElementCount(screenReaderSpan, 1);
+
+      var ul = Html.GetAssertedChildElement(screenReaderSpan, "ul", 0);
+      Html.AssertAttribute(ul, "aria-label", "Invalid input in current cell");
+      Html.AssertChildElementCount(ul, 1);
+
+      var li = Html.GetAssertedChildElement(ul, "li", 0);
+      Html.AssertChildElementCount(li, 1);
+
+      var errorMessageSpan = Html.GetAssertedChildElement(li, "span", 0);
+      Assert.That(errorMessageSpan.InnerText, Is.EqualTo("error message"));
+    }
+
+    [Test]
+    public void TestValidationFailureInOtherCell ()
+    {
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.WithDiagnosticMetadata,
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
+      var renderingContext = CreateRenderingContext();
+
+      renderer.RenderDataCell(renderingContext, CreateBocDataCellRenderArguments(columnsWithValidationFailures: new [] { true }));
+
+      var document = Html.GetResultDocument();
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertChildElementCount(td, 2);
+
+      var span = Html.GetAssertedChildElement(td, "span", 0);
+      Html.AssertAttribute(span, "class", _bocListCssClassDefinition.ValidationErrorMarker);
+      Html.AssertChildElementCount(span, 1);
+
+      var img = Html.GetAssertedChildElement(span, "img", 0);
+      Html.AssertAttribute(img, "src", "/fake/Remotion.Development.Web/Image/Spacer.gif");
+
+      var div = Html.GetAssertedChildElement(td, "div", 1);
+      Html.AssertAttribute(div, "class", _bocListCssClassDefinition.Content);
     }
 
     private void RenderTitleCell (

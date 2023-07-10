@@ -113,6 +113,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var rowIndex = 13;
       var cellID = "DataCell_0";
       var headerIDs = new string[] { "ID1" };
+      var columnsWithValidationFailures = new bool[_renderingContext.ColumnRenderers.Length];
 
       _columnRenderMock
           .Setup(
@@ -124,10 +125,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
                           && rc.Writer == _htmlTextWriterStub.Object
                           && rc.ColumnIndex == 0
                           && rc.ColumnDefinition == _columnDefinition),
-                  new BocDataCellRenderArguments(dataRowRenderEventArgs, rowIndex, true, cellID, headerIDs)))
+                  new BocDataCellRenderArguments(dataRowRenderEventArgs, rowIndex, true, cellID, headerIDs, columnsWithValidationFailures)))
           .Verifiable();
 
-      _columnRendererAdapter.RenderDataCell(_renderingContext, rowIndex: rowIndex, cellID: cellID, headerIDs: headerIDs, dataRowRenderEventArgs);
+      _columnRendererAdapter.RenderDataCell(
+              _renderingContext,
+              rowIndex: rowIndex,
+              cellID: cellID,
+              headerIDs: headerIDs,
+              columnsWithValidationFailures: columnsWithValidationFailures,
+              dataRowRenderEventArgs);
 
       _columnRenderMock.Verify();
     }

@@ -129,7 +129,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderEndTag();
     }
 
-    public void RenderDataRow (BocListRenderingContext renderingContext, BocListRowRenderingContext rowRenderingContext, int rowIndex)
+    public void RenderDataRow (BocListRenderingContext renderingContext, BocListRowRenderingContext rowRenderingContext, in BocRowRenderArguments arguments)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
       ArgumentUtility.CheckNotNull("rowRenderingContext", rowRenderingContext);
@@ -137,6 +137,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       var absoluteRowIndex = rowRenderingContext.SortedIndex;
       var originalRowIndex = rowRenderingContext.Row.Index;
       var businessObject = rowRenderingContext.Row.BusinessObject;
+
+      var rowIndex = arguments.RowIndex;
 
       bool isChecked = rowRenderingContext.IsSelected;
       bool isOddRow = (rowIndex % 2 == 0); // row index is zero-based here, but one-based in rendering => invert even/odd
@@ -181,7 +183,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       GetIndexColumnRenderer().RenderDataCell(renderingContext, originalRowIndex: originalRowIndex, absoluteRowIndex: absoluteRowIndex, headerIDs: dataCellIDsForIndexColumn);
       GetSelectorColumnRenderer().RenderDataCell(renderingContext, rowRenderingContext, headerIDs: dataCellIDsForSelectorColumn);
 
-      RenderDataCells(renderingContext, rowIndex, dataRowRenderEventArgs);
+      RenderDataCells(renderingContext, in arguments, dataRowRenderEventArgs);
 
       renderingContext.Writer.RenderEndTag();
 
@@ -247,8 +249,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderEndTag(); //Tr
     }
 
-    private void RenderDataCells (BocListRenderingContext renderingContext, int rowIndex, BocListDataRowRenderEventArgs dataRowRenderEventArgs)
+    private void RenderDataCells (BocListRenderingContext renderingContext, in BocRowRenderArguments arguments, BocListDataRowRenderEventArgs dataRowRenderEventArgs)
     {
+      var rowIndex = arguments.RowIndex;
       var renderInformation = renderingContext.ColumnRenderers
           .Select(r => (ColumnRenderer: r, DataCellID: r.IsRowHeader ? GetDataCellID(renderingContext, columnIndex: r.VisibleColumnIndex, rowIndex: rowIndex) : null))
           .ToArray();
@@ -284,6 +287,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
             rowIndex: rowIndex,
             cellID: dataCellID,
             headerIDs: headerIDs,
+            columnsWithValidationFailures: arguments.ColumnsWithValidationFailures,
             dataRowRenderEventArgs);
       }
     }

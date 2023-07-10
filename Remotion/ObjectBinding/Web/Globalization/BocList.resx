@@ -168,6 +168,9 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoTitle" xml:space="preserve">
     <value>Invalid input in current row</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoCell" xml:space="preserve">
+    <value>Invalid input in current cell</value>
+  </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListMenuHeading" xml:space="preserve">
     <value>Options</value>
   </data>

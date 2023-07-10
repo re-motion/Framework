@@ -36,6 +36,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       _impl = new BocListCellFunctionality(context);
     }
 
+    /// <summary>
+    /// Gets any validation errors assigned to the cell.
+    /// </summary>
+    public BocListValidationError[] GetValidationErrors ()
+    {
+      return _impl.GetValidationErrors();
+    }
+
     /// <inheritdoc/>
     public TControlObject GetControl<TControlObject> (IControlSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject

@@ -174,4 +174,7 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RemainingValidationFailureText" xml:space="preserve">
     <value>Si sono verificati errori in almeno un'altra pagina.</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoCell" xml:space="preserve">
+    <value>Input non valido nella cella appena modificata</value>
+  </data>
 </root>

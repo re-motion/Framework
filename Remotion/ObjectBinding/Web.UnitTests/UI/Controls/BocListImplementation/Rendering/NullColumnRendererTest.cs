@@ -84,7 +84,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
               0,
               showIcon: false,
               cellID: null,
-              headerIDs: Array.Empty<string>()));
+              headerIDs: Array.Empty<string>(),
+              columnsWithValidationFailures: Array.Empty<bool>()));
 
       _htmlTextWriterMock.Verify();
     }

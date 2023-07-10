@@ -152,9 +152,20 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
         int rowIndex = 0,
         bool showIcon = false,
         string cellID = null,
-        IReadOnlyCollection<string> headerIDs = null)
+        IReadOnlyCollection<string> headerIDs = null,
+        bool[] columnsWithValidationFailures = null)
     {
-      return new BocDataCellRenderArguments(dataRowRenderEventArgs ?? EventArgs, rowIndex, showIcon, cellID, headerIDs ?? Array.Empty<string>());
+      // If no columns are specified, we don't know how many columns are actually needed so we use 30 to be safe
+      // Most tests don't care so this is fine, otherwise the tests need to provide a valid argument instead.
+      var defaultColumnsWithValidationFailures = new bool[30];
+
+      return new BocDataCellRenderArguments(
+          dataRowRenderEventArgs ?? EventArgs,
+          rowIndex,
+          showIcon,
+          cellID,
+          headerIDs ?? Array.Empty<string>(),
+          columnsWithValidationFailures ?? defaultColumnsWithValidationFailures);
     }
   }
 }

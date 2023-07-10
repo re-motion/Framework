@@ -43,6 +43,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <summary>Gets the list of IDs that describe the header for this cell.</summary>
     public IReadOnlyCollection<string> HeaderIDs { get; }
 
+    /// <summary>
+    /// Gets an array indicating what columns in the <see cref="BocList"/> have validation failures.
+    /// Array indices mirror <see cref="BocListRenderingContext"/>.<see cref="BocListRenderingContext.ColumnRenderers"/>.
+    /// </summary>
+    public IReadOnlyList<bool> ColumnsWithValidationFailures { get; }
+
     private readonly BocListDataRowRenderEventArgs _dataRowRenderEventArgs;
 
     public BocDataCellRenderArguments (
@@ -50,11 +56,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         int rowIndex,
         bool showIcon,
         string? cellID,
-        IReadOnlyCollection<string> headerIDs)
+        IReadOnlyCollection<string> headerIDs,
+        IReadOnlyList<bool> columnsWithValidationFailures)
     {
       ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
       ArgumentUtility.CheckNotEmpty("cellID", cellID);
       ArgumentUtility.CheckNotNull("headerIDs", headerIDs);
+      ArgumentUtility.CheckNotNull("columnsWithValidationFailures", columnsWithValidationFailures);
 
       _dataRowRenderEventArgs = dataRowRenderEventArgs;
       RowIndex = rowIndex;
@@ -62,6 +70,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       IsRowHeader = cellID != null;
       CellID = cellID;
       HeaderIDs = headerIDs;
+      ColumnsWithValidationFailures = columnsWithValidationFailures;
     }
 
     /// <inheritdoc cref="BocListItemEventArgs.ListIndex"/>

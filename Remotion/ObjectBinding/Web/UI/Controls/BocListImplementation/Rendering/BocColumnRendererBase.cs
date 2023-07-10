@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
@@ -24,6 +25,7 @@ using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
@@ -44,6 +46,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     /// <summary>Filename of the image used to indicate an descending sort order of the column in its title cell.</summary>
     protected const string c_sortDescendingIcon = "sprite.svg#SortDescending";
+
+    /// <summary>Filename of the image used to indicate that there are validation failures in a cell.</summary>
+    protected string c_validationIndicatorIcon = "sprite.svg#ValidationError";
 
     /// <summary>Entity definition for whitespace separating controls, e.g. icons from following text</summary>
     protected const string c_whiteSpace = "&nbsp;";
@@ -355,9 +360,81 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
 
+      var validationInfoText = renderingContext.Control.GetResourceManager().GetString(BocList.ResourceIdentifier.ValidationErrorInfoCell);
+      var validationFailures = renderingContext.Control.ValidationFailureRepository.GetUnhandledValidationFailuresForDataCell(
+          arguments.BusinessObject,
+          renderingContext.ColumnDefinition,
+          false);
+
+      if (validationFailures.Count > 0)
+      {
+        var tooltipStringBuilder = new StringBuilder();
+        tooltipStringBuilder.AppendLine(validationInfoText);
+        foreach (var validationFailure in validationFailures)
+        {
+          tooltipStringBuilder.Append("• ");
+          tooltipStringBuilder.AppendLine(validationFailure.Failure.ErrorMessage);
+        }
+
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, BocRowRenderer.GetCellIDForValidationMarker(renderingContext.Control, arguments.RowIndex, renderingContext.VisibleColumnIndex));
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Title, tooltipStringBuilder.ToString());
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.ValidationErrorMarker);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+
+        var iconInfo = new IconInfo(_resourceUrlFactory.CreateThemedResourceUrl(typeof(InfrastructureResourceUrlFactory), ResourceType.Image, c_validationIndicatorIcon).GetUrl());
+        iconInfo.Render(renderingContext.Writer, renderingContext.Control);
+
+        renderingContext.Writer.RenderEndTag(); // </span>
+      }
+      else if (arguments.ColumnsWithValidationFailures[renderingContext.ColumnIndex])
+      {
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.ValidationErrorMarker);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+
+        var iconInfo = IconInfo.CreateSpacer(_resourceUrlFactory);
+        iconInfo.Render(renderingContext.Writer, renderingContext.Control);
+
+        renderingContext.Writer.RenderEndTag(); // </span>
+      }
+
       RenderCellContents(renderingContext, arguments);
 
-      renderingContext.Writer.RenderEndTag();
+      if (validationFailures.Count > 0)
+      {
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, _cssClasses.CssClassScreenReaderText);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaLabel, validationInfoText);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Ul);
+        foreach (var validationFailure in validationFailures)
+        {
+          if (_renderingFeatures.EnableDiagnosticMetadata)
+          {
+            var validatedObjectWithIdentity = validationFailure.Failure.ValidatedObject as IBusinessObjectWithIdentity;
+            var rowObjectWithIdentity = validationFailure.RowObject as IBusinessObjectWithIdentity;
+
+            renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListValidationFailureSourceRow, rowObjectWithIdentity?.UniqueIdentifier ?? string.Empty);
+            renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListValidationFailureSourceColumn, validationFailure.ColumnDefinition?.ItemID ?? string.Empty);
+            renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.ValidationFailureSourceBusinessObject, validatedObjectWithIdentity?.UniqueIdentifier ?? string.Empty);
+            renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.ValidationFailureSourceProperty, validationFailure.Failure.ValidatedProperty?.Identifier ?? string.Empty);
+          }
+
+          // We are rendering an extra span here to align the structure of the <ul> with the other lists rendered for the validation row/column
+          // This allows us to reuse the web testing logic without changes
+          renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Li);
+          renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+          renderingContext.Writer.WriteEncodedText(validationFailure.Failure.ErrorMessage);
+          renderingContext.Writer.RenderEndTag(); // </span>
+          renderingContext.Writer.RenderEndTag(); // </li>
+        }
+
+        renderingContext.Writer.RenderEndTag(); // </ul>
+
+        renderingContext.Writer.RenderEndTag(); // </div>
+      }
+
+      renderingContext.Writer.RenderEndTag(); // </td>
     }
 
     /// <remarks>
