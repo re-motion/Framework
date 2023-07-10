@@ -143,6 +143,17 @@ div.bocList div.bocListTableBlock tr.bocListValidationRow div div
   min-inline-size: 20em;
 }
 
+div.bocList div.bocListTableBlock tr.bocListValidationRow a
+{
+  color: red;
+  text-decoration: none;
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow a:hover
+{
+  text-decoration: underline;
+}
+
 div.bocListListMenuContainer
 {
   width: 100%;

@@ -409,6 +409,17 @@ div.bocList div.bocListTableBlock tr.bocListValidationRow div div
   min-inline-size: calc(var(--boclist-validationrow-minimum-width) * 1.25);
 }
 
+div.bocList div.bocListTableBlock tr.bocListValidationRow a
+{
+  color: var(--color-validationerror-text);
+  text-decoration: none;
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow a:hover
+{
+  text-decoration: underline;
+}
+
 /*endregion*/
 
 /*region bocListMenuBlock*/
