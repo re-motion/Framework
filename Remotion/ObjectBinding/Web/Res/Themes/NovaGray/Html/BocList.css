@@ -392,6 +392,12 @@ td.bocListDataCell
   cursor: default;
 }
 
+/*  Style applied to the cells in the BocList's data rows with a validation row. */
+tr.bocListDataRow.hasValidationRow td.bocListDataCell
+{
+  border-bottom: none;
+}
+
 /*  Style applied to the cells in the BocList's not-selected odd and even data rows. */
 tr.bocListDataRow.odd td.bocListDataCell
 {
