@@ -53,7 +53,7 @@ public class BocListAsGridUserControl : BaseUserControl
   protected BocTextValue LastNameField;
   protected TestBocList ChildrenList;
   protected TestBocList EmptyList;
-  protected WebButton ChildrenAddValidationErrorsButton;
+  protected CheckBox EnableValidationErrorsCheckBox;
   protected CheckBox ChildrenListEventCheckBox;
   protected Label ChildrenListEventArgsLabel;
   protected Label UnhandledValidationErrorsLabel;
@@ -102,8 +102,6 @@ public class BocListAsGridUserControl : BaseUserControl
 
     ChildrenList.EditModeControlFactory = new AllRequiredEditableRowControlFactory();
     ChildrenList.DisableEditModeValidationMessages = true;
-
-    ChildrenAddValidationErrorsButton.Click += ChildrenAddValidationErrorsButtonClick;
   }
 
   public override IBusinessObjectDataSourceControl DataSource
@@ -235,6 +233,9 @@ public class BocListAsGridUserControl : BaseUserControl
     EndEditModeButton.Enabled = ChildrenList.IsListEditModeActive;
     EndEditModeButton.Enabled = ChildrenList.IsListEditModeActive;
     CancelEditModeButton.Enabled = ChildrenList.IsListEditModeActive;
+
+    if (EnableValidationErrorsCheckBox.Checked)
+      CreateValidationErrors();
   }
 
   private void SwitchToEditModeButton_Click (object sender, EventArgs e)
@@ -298,7 +299,7 @@ public class BocListAsGridUserControl : BaseUserControl
     ChildrenList.SynchronizeRows();
   }
 
-  private void ChildrenAddValidationErrorsButtonClick (object sender, EventArgs e)
+  private void CreateValidationErrors ()
   {
     var person = (Person)CurrentObject.BusinessObject;
 

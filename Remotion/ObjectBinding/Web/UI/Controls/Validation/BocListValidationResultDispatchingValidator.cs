@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.UI;
@@ -23,6 +24,8 @@ using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Validation;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 
@@ -41,13 +44,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
       ArgumentUtility.CheckNotNull("validationResult", validationResult);
 
       var bocListControl = GetControlToValidate();
-      var dispatchToValidationFailureRepository = bocListControl
-          .GetColumnDefinitions()
-          .Any(cd => cd is BocValidationErrorIndicatorColumnDefinition);
 
       DispatchToValidationResultDispatchers(validationResult, bocListControl);
 
-      if (dispatchToValidationFailureRepository)
+      if (((IBocList)bocListControl).IsInlineValidationDisplayEnabled)
         DispatchToValidationFailureRepository(validationResult, bocListControl);
 
       //TODO-RM-5906: this call could be optimized away and replaced by an explicit call to Validate() from an external source.
@@ -76,8 +76,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
       if (rowObjects != null)
       {
-        var columnsAndMatchers = bocListControl
-            .GetColumnDefinitions()
+        var columnDefinitions = bocListControl.GetColumnDefinitions();
+        var columnsAndMatchers = columnDefinitions
             .OfType<IBocColumnDefinitionWithValidationSupport>()
             .Select(c => new { Column = (BocColumnDefinition)c, Matcher = c.GetValidationFailureMatcher() })
             .ToArray();
@@ -94,6 +94,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
           var otherRowFailures = validationResult.GetUnhandledValidationFailures(rowObject);
           if (otherRowFailures.Count > 0)
             validationFailureRepository.AddValidationFailuresForDataRow(rowObject, otherRowFailures);
+        }
+
+        var editModeController = ((IBocList)bocListControl).EditModeController;
+        if (editModeController.IsRowEditModeActive)
+        {
+          var bocListRow = editModeController.GetEditedRow();
+          var editableRow = editModeController.GetEditableRow(bocListRow.Index);
+          if (editableRow != null)
+            DispatchEditableRowValidationFailures(editableRow, bocListRow.BusinessObject, columnDefinitions, validationFailureRepository);
+        }
+        else if (editModeController.IsListEditModeActive)
+        {
+          for (var i = 0; i < rowObjects.Count; i++)
+          {
+            var editableRow = editModeController.GetEditableRow(i);
+            if (editableRow != null)
+              DispatchEditableRowValidationFailures(editableRow, rowObjects[i], columnDefinitions, validationFailureRepository);
+          }
         }
       }
 
@@ -142,6 +160,31 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
         return base.ControlPropertiesValid();
       else
         return NamingContainer.FindControl(controlToValidate) != null;
+    }
+
+    private void DispatchEditableRowValidationFailures (
+        IEditableRow editableRow,
+        IBusinessObject rowObject,
+        IReadOnlyList<BocColumnDefinition> columnDefinitions,
+        IBocListValidationFailureRepository validationFailureRepository)
+    {
+      for (var i = 0; i < columnDefinitions.Count; i++)
+      {
+        var controlCollection = editableRow.GetValidators(i);
+        if (controlCollection != null)
+        {
+          foreach (BaseValidator baseValidator in controlCollection)
+          {
+            if (baseValidator is not IBusinessObjectBoundEditableWebControlValidationResultDispatcher && !baseValidator.IsValid)
+            {
+              validationFailureRepository.AddValidationFailuresForDataCell(
+                  rowObject,
+                  columnDefinitions[i],
+                  new[] { BusinessObjectValidationFailure.Create(baseValidator.ErrorMessage) });
+            }
+          }
+        }
+      }
     }
 
     [NotNull]

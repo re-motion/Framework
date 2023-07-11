@@ -38,5 +38,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         IReadOnlyCollection<string> headerIDs);
 
     IBusinessObjectBoundEditableWebControl? GetEditControl (int index);
+
+    ControlCollection? GetValidators (int columnIndex);
+    bool HasValidators ();
+    bool HasValidators (int columnIndex);
   }
 }

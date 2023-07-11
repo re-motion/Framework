@@ -2112,6 +2112,34 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That(bocListValidationErrors, Is.EqualTo(expectedValidationErrors));
     }
 
+    [Test]
+    public void GetValidationErrors_EditableRowWithEditModeValidationFailure ()
+    {
+      var home = Start();
+      var bocList = home.Lists().GetByLocalID("JobList_Validation");
+
+      var row = bocList.GetRow(1);
+      var editableRow = row.Edit();
+
+      var dateTimeControl = editableRow.GetCell("StartDate").DateTimeValues().First();
+      dateTimeControl.SetDate("");
+
+      editableRow.Save();
+
+      var expectedValidationErrors = new[]
+                                     {
+                                         new BocListValidationError(
+                                             "StartDate: Enter a date.",
+                                             "89dc8cd2-30e0-4bb3-92a0-4587f32492f5",
+                                             "StartDate",
+                                             null,
+                                             null)
+                                     };
+
+      var validationErrors = editableRow.GetValidationErrors();
+      Assert.That(validationErrors, Is.EqualTo(expectedValidationErrors));
+    }
+
     private WxePageObject Start ()
     {
       return Start("BocList");

@@ -443,7 +443,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       writer.AddAttribute(HtmlTextWriterAttribute.Class, "bocListEditableCell");
       writer.RenderBeginTag(HtmlTextWriterTag.Div); // Div Container
 
-      if (_editModeHost.ShowEditModeValidationMarkers)
+      if (_editModeHost.ShowEditModeValidationMarkers && !_editModeHost.IsInlineValidationDisplayEnabled)
       {
         bool isCellValid = true;
         var toolTipBuilder = new StringBuilder();
@@ -490,30 +490,33 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
       writer.RenderEndTag(); // Div Control
 
-      writer.AddAttribute(HtmlTextWriterAttribute.Class, "validationMessages");
-      writer.RenderBeginTag(HtmlTextWriterTag.Div);
-
-      foreach (BaseValidator validator in validators)
+      if (!_editModeHost.IsInlineValidationDisplayEnabled)
       {
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, "validationMessages");
         writer.RenderBeginTag(HtmlTextWriterTag.Div);
-        validator.RenderControl(writer);
-        writer.RenderEndTag();
 
-        if (   ! validator.IsValid
-               && validator.Display == ValidatorDisplay.None
-               && ! _editModeHost.DisableEditModeValidationMessages)
+        foreach (BaseValidator validator in validators)
         {
-          if (! string.IsNullOrEmpty(validator.CssClass))
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, validator.CssClass);
-          else
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassEditModeValidationMessage);
           writer.RenderBeginTag(HtmlTextWriterTag.Div);
-          PlainTextString.CreateFromText(validator.ErrorMessage).WriteTo(writer);
+          validator.RenderControl(writer);
           writer.RenderEndTag();
-        }
-      }
 
-      writer.RenderEndTag(); // validationMessages Div container
+          if (!validator.IsValid
+              && validator.Display == ValidatorDisplay.None
+              && !_editModeHost.DisableEditModeValidationMessages)
+          {
+            if (! string.IsNullOrEmpty(validator.CssClass))
+              writer.AddAttribute(HtmlTextWriterAttribute.Class, validator.CssClass);
+            else
+              writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassEditModeValidationMessage);
+            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            PlainTextString.CreateFromText(validator.ErrorMessage).WriteTo(writer);
+            writer.RenderEndTag();
+          }
+        }
+
+        writer.RenderEndTag(); // validationMessages Div container
+      }
 
       writer.RenderEndTag(); // Div Container
     }
