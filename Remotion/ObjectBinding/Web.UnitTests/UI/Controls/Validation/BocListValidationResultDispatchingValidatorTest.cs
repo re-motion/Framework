@@ -175,5 +175,70 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
 
       Assert.That(validator.ErrorMessage, Is.EqualTo("Errors on BocList\r\nErrors on rows in BocList\r\n"));
     }
+
+    [Test]
+    public void EvaluateIsValid_WithoutFailures_EmptyErrorMessageAndValid ()
+    {
+      var validationFailureRepoStub = new Mock<IBocListValidationFailureRepository>();
+      validationFailureRepoStub
+          .Setup(_ => _.GetUnhandledValidationFailuresForBocListAndContainingDataRowsAndDataCells(false))
+          .Returns(Array.Empty<BocListValidationFailureWithLocationInformation>());
+
+      var error = "BocList has validation errors.";
+      var resourceManagerStub = new Mock<IResourceManager>();
+      resourceManagerStub.Setup(_ => _.TryGetString("Remotion.ObjectBinding.Web.UI.Controls.BocList.RemainingValidationFailureText", out error)).Returns(true);
+
+      var bocListMock = new Mock<Control> { CallBase = true };
+      bocListMock.As<IBocList>().Setup(_ => _.ValidationFailureRepository).Returns(validationFailureRepoStub.Object);
+      bocListMock.As<IBocList>().Setup(_ => _.GetResourceManager()).Returns(resourceManagerStub.Object);
+      bocListMock.Object.ID = "someBocList";
+
+      var validator = new BocListValidationResultDispatchingValidator();
+      validator.ErrorMessage = "This should not be output.";
+      validator.ControlToValidate = "someBocList";
+
+      NamingContainer.Controls.Add(bocListMock.Object);
+      NamingContainer.Controls.Add(validator);
+
+      validator.Validate();
+
+      Assert.That(validator.ErrorMessage, Is.EqualTo(""));
+      Assert.That(validator.IsValid, Is.True);
+    }
+
+    [Test]
+    public void EvaluateIsValid_WithFailures_ErrorMessageFromResourceManagerAndInvalid ()
+    {
+      var validationFailuresForBocListRows = new[]
+                                             {
+                                               BocListValidationFailureWithLocationInformation.CreateFailure(BusinessObjectValidationFailure.Create("Errors on BocList rows."))
+                                             };
+
+      var validationFailureRepoStub = new Mock<IBocListValidationFailureRepository>();
+      validationFailureRepoStub
+          .Setup(_ => _.GetUnhandledValidationFailuresForBocListAndContainingDataRowsAndDataCells(false))
+          .Returns(validationFailuresForBocListRows);
+
+      var error = "BocList has validation errors.";
+      var resourceManagerStub = new Mock<IResourceManager>();
+      resourceManagerStub.Setup(_ => _.TryGetString("Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInListErrorMessage", out error)).Returns(true);
+
+      var bocListMock = new Mock<Control> { CallBase = true };
+      bocListMock.As<IBocList>().Setup(_ => _.ValidationFailureRepository).Returns(validationFailureRepoStub.Object);
+      bocListMock.As<IBocList>().Setup(_ => _.GetResourceManager()).Returns(resourceManagerStub.Object);
+      bocListMock.Object.ID = "someBocList";
+
+      var validator = new BocListValidationResultDispatchingValidator();
+      validator.ErrorMessage = "This should not be output.";
+      validator.ControlToValidate = "someBocList";
+
+      NamingContainer.Controls.Add(bocListMock.Object);
+      NamingContainer.Controls.Add(validator);
+
+      validator.Validate();
+
+      Assert.That(validator.ErrorMessage, Is.EqualTo("BocList has validation errors."));
+      Assert.That(validator.IsValid, Is.False);
+    }
   }
 }
