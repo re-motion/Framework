@@ -17,4 +17,5 @@
   <image id="RequiredField" height="16" width="16" href="data:image/gif;base64,R0lGODlhEAAQAHAAACH5BAEAAAEALAAAAAAQABAAgQAAAAAAAAAAAAAAAAIajI+py+2fAHgy1Mqknm7TzS3XhDUlhKbqmhYAOw==" />
   <image id="SortAscending" height="16" width="16" href="data:image/gif;base64,R0lGODlhEAAQAHAAACH5BAEAAAEALAAAAAAQABAAgQlFfgAAAAAAAAAAAAIYjI+pAbsAHYJUMlofxmp7C4biSJbmiR4FADs=" />
   <image id="SortDescending" height="16" width="16" href="data:image/gif;base64,R0lGODlhEAAQAHAAACH5BAEAAAEALAAAAAAQABAAgQlFfgAAAAAAAAAAAAIYjI9pwO2gnlNL0vMuajrBDobiSJbmiVIFADs=" />
+  <image id="ValidationErrorColumnTitleIcon" height="17" width="12" href="data:image/gif;base64,R0lGODlhEAAQAHAAACH5BAEAAAEALAAAAAAQABAAgZeXlwAAAAAAAAAAAAIejB8AyKja2lvRvWohNnPz6yVUqJFjiKYW2nmtex4FADs" />
 </svg>

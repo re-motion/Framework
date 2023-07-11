@@ -18,10 +18,15 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Globalization;
+using Remotion.Web.Infrastructure;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -30,8 +35,35 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// </summary>
   public class BocValidationErrorIndicatorColumnDefinition : BocColumnDefinition, IBocSortableColumnDefinition
   {
+    private const string c_validationIndicatorColumnTitleIcon = "sprite.svg#ValidationErrorColumnTitleIcon";
+
     public BocValidationErrorIndicatorColumnDefinition ()
     {
+    }
+
+    public override WebString ColumnTitleDisplayValue
+    {
+      get
+      {
+        var ownerControl = Assertion.IsNotNull(OwnerControl);
+        var columnTitle = ColumnTitle;
+        return columnTitle.IsEmpty
+            ? ((IControlWithResourceManager)ownerControl).GetResourceManager().GetText(BocList.ResourceIdentifier.ValidationColumnTitleText)
+            : columnTitle;
+      }
+    }
+
+    public override IconInfo ColumnTitleIconDisplayValue
+    {
+      get
+      {
+        if (ColumnTitleIcon.HasRenderingInformation)
+          return ColumnTitleIcon;
+
+        var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
+        var iconUrl = resourceUrlFactory.CreateThemedResourceUrl(typeof(BocValidationErrorIndicatorColumnRenderer), ResourceType.Image, c_validationIndicatorColumnTitleIcon).GetUrl();
+        return new IconInfo(iconUrl) { ToolTip = ColumnTitleDisplayValue.GetValue() }; // We leave out the alt text since the column title is rendered separately for screen readers
+      }
     }
 
     /// <inheritdoc />
