@@ -128,6 +128,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       RenderTitleCellMarkers(renderingContext);
       RenderBeginTagTitleCellSortCommand(renderingContext);
+      RenderTitleCellIcon(renderingContext);
       RenderTitleCellText(renderingContext);
       if (renderingContext.Control.IsClientSideSortingEnabled || renderingContext.Control.HasSortingKeys)
         RenderTitleCellSortingButton(renderingContext, arguments.SortingDirection, arguments.OrderIndex);
@@ -270,15 +271,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
     }
 
+    private void RenderTitleCellIcon (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
+    {
+      var showColumnTitleIcon = renderingContext.ColumnDefinition.ColumnTitleStyle.HasFlag(BocColumnTitleStyle.Icon);
+      var icon = renderingContext.ColumnDefinition.ColumnTitleIconDisplayValue;
+      if (showColumnTitleIcon && icon.HasRenderingInformation)
+      {
+        icon.Render(renderingContext.Writer, renderingContext.Control);
+      }
+    }
+
     private void RenderTitleCellText (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
     {
+      var showColumnTitle = renderingContext.ColumnDefinition.ColumnTitleStyle.HasFlag(BocColumnTitleStyle.Text);
+      var showColumnTitleIcon = renderingContext.ColumnDefinition.ColumnTitleStyle.HasFlag(BocColumnTitleStyle.Icon);
       var columnTitle = renderingContext.ColumnDefinition.ColumnTitleDisplayValue;
-      if (!renderingContext.ColumnDefinition.ShowColumnTitle)
+      if (!showColumnTitle)
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, _cssClasses.CssClassScreenReaderText);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       columnTitle.WriteTo(renderingContext.Writer);
       renderingContext.Writer.RenderEndTag();
-      if (!renderingContext.ColumnDefinition.ShowColumnTitle)
+      if (!showColumnTitle && !showColumnTitleIcon)
       {
         // Render a non-breaking space to allow screen readers to highlight a visual cue for the current reading position.
         // For sortable columns, this will push the sorting icon one space to the right, but given that a sortable should 

@@ -156,7 +156,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new FakeFallbackNavigationUrlProvider());
       var renderingContext = CreateRenderingContext();
-      renderingContext.ColumnDefinition.ShowColumnTitle = false;
+      renderingContext.ColumnDefinition.ColumnTitleStyle = BocColumnTitleStyle.None;
 
       renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments());
 
@@ -185,7 +185,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new FakeFallbackNavigationUrlProvider());
       var renderingContext = CreateRenderingContext();
-      renderingContext.ColumnDefinition.ShowColumnTitle = false;
+      renderingContext.ColumnDefinition.ColumnTitleStyle = BocColumnTitleStyle.None;
       renderingContext.ColumnDefinition.IsSortable = false;
 
       renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments());
@@ -204,6 +204,95 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertChildElementCount(titleSpan, 0);
 
       Html.AssertTextNode(cellBody, c_whitespace, 1);
+    }
+
+    [Test]
+    public void RenderSortableTitleCellWithColumnTitleIcon ()
+    {
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.Default,
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
+      var renderingContext = CreateRenderingContext();
+      renderingContext.ColumnDefinition.ColumnTitleStyle = BocColumnTitleStyle.Icon;
+      renderingContext.ColumnDefinition.ColumnTitleIcon = new IconInfo("testUrl");
+
+      renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments());
+
+      var document = Html.GetResultDocument();
+
+      var th = Html.GetAssertedChildElement(document, "th", 0);
+
+      Assert.Less(0, th.ChildNodes.Count);
+      var sortCommandLink = Html.GetAssertedChildElement(th, "a", 0);
+      Assert.That(sortCommandLink.ChildNodes.Count, Is.EqualTo(2));
+
+      var img = Html.GetAssertedChildElement(sortCommandLink, "img", 0);
+      Html.AssertAttribute(img, "src", "testUrl");
+
+      var titleSpan = Html.GetAssertedChildElement(sortCommandLink, "span", 1);
+      Html.AssertAttribute(titleSpan, "class", c_screenReaderText, HtmlHelperBase.AttributeValueCompareMode.Equal);
+      Html.AssertTextNode(titleSpan, Column.ColumnTitleDisplayValue.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
+      Html.AssertChildElementCount(titleSpan, 0);
+    }
+
+    [Test]
+    public void RenderSortableTitleCellWithColumnTitleIconAndText ()
+    {
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.Default,
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
+      var renderingContext = CreateRenderingContext();
+      renderingContext.ColumnDefinition.ColumnTitleStyle = BocColumnTitleStyle.IconAndText;
+      renderingContext.ColumnDefinition.ColumnTitleIcon = new IconInfo("testUrl");
+
+      renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments());
+
+      var document = Html.GetResultDocument();
+
+      var th = Html.GetAssertedChildElement(document, "th", 0);
+
+      Assert.Less(0, th.ChildNodes.Count);
+      var sortCommandLink = Html.GetAssertedChildElement(th, "a", 0);
+      Assert.That(sortCommandLink.ChildNodes.Count, Is.EqualTo(2));
+
+      var img = Html.GetAssertedChildElement(sortCommandLink, "img", 0);
+      Html.AssertAttribute(img, "src", "testUrl");
+
+      var titleSpan = Html.GetAssertedChildElement(sortCommandLink, "span", 1);
+      Html.AssertNoAttribute(titleSpan, "class");
+      Html.AssertTextNode(titleSpan, Column.ColumnTitleDisplayValue.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
+      Html.AssertChildElementCount(titleSpan, 0);
+    }
+
+    [Test]
+    public void RenderSortableTitleCellWithColumnTitleTextAndInvalidColumnTitleIcon ()
+    {
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.Default,
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
+      var renderingContext = CreateRenderingContext();
+      renderingContext.ColumnDefinition.ColumnTitleStyle = BocColumnTitleStyle.IconAndText;
+
+      renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments());
+
+      var document = Html.GetResultDocument();
+
+      var th = Html.GetAssertedChildElement(document, "th", 0);
+
+      Assert.Less(0, th.ChildNodes.Count);
+      var sortCommandLink = Html.GetAssertedChildElement(th, "a", 0);
+      Assert.That(sortCommandLink.ChildNodes.Count, Is.EqualTo(1));
+
+      var titleSpan = Html.GetAssertedChildElement(sortCommandLink, "span", 0);
+      Html.AssertNoAttribute(titleSpan, "class");
+      Html.AssertTextNode(titleSpan, Column.ColumnTitleDisplayValue.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
+      Html.AssertChildElementCount(titleSpan, 0);
     }
 
     [Test]

@@ -483,7 +483,7 @@
         Height="10em"
         runat="server">
         <FixedColumns>
-          <remotion:BocValidationErrorIndicatorColumnDefinition/>
+          <remotion:BocValidationErrorIndicatorColumnDefinition ColumnTitleStyle="Icon" />
           <remotion:BocRowEditModeColumnDefinition ItemID="EditRow" EditText="Edit" SaveText="Save" CancelText="Cancel" Width="2em" />
           <remotion:BocCommandColumnDefinition ItemID="RowCmd" Text="Row command" Icon-Width="16px" Icon-Height="16px" Icon-Url="../Image/SampleIcon.gif" ColumnTitle="Command">
             <PersistedCommand>
