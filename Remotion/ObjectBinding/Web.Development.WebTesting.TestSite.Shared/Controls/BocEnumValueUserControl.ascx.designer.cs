@@ -7,242 +7,253 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls {
-    
-    
-    public partial class BocEnumValueUserControl {
-        
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
+{
+
+
+    public partial class BocEnumValueUserControl
+    {
+
         /// <summary>
         /// FormGridManager control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.FormGridManager FormGridManager;
-        
+
         /// <summary>
         /// CurrentObject control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-        
+
         /// <summary>
         /// NoObject control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl NoObject;
-        
+
+        /// <summary>
+        /// CurrentObjectValidationResultDispatchingValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.Validation.BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
+
         /// <summary>
         /// FormGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTable FormGrid;
-        
+
         /// <summary>
         /// MarriageStatusField_DropDownListNormal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_DropDownListNormal;
-        
+
         /// <summary>
         /// MarriageStatusField_DropDownListReadOnly control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_DropDownListReadOnly;
-        
+
         /// <summary>
         /// MarriageStatusField_DropDownListReadOnlyWithoutSelectedValue control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_DropDownListReadOnlyWithoutSelectedValue;
-        
+
         /// <summary>
         /// MarriageStatusField_DropDownListDisabled control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_DropDownListDisabled;
-        
+
         /// <summary>
         /// MarriageStatusField_DropDownListNoAutoPostBack control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_DropDownListNoAutoPostBack;
-        
+
         /// <summary>
         /// MarriageStatusField_ListBoxNormal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_ListBoxNormal;
-        
+
         /// <summary>
         /// MarriageStatusField_ListBoxReadOnly control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_ListBoxReadOnly;
-        
+
         /// <summary>
         /// MarriageStatusField_ListBoxReadOnlyWithoutSelectedValue control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_ListBoxReadOnlyWithoutSelectedValue;
-        
+
         /// <summary>
         /// MarriageStatusField_ListBoxDisabled control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_ListBoxDisabled;
-        
+
         /// <summary>
         /// MarriageStatusField_ListBoxNoAutoPostBack control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_ListBoxNoAutoPostBack;
-        
+
         /// <summary>
         /// MarriageStatusField_RadioButtonListNormal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_RadioButtonListNormal;
-        
+
         /// <summary>
         /// MarriageStatusField_RadioButtonListReadOnly control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_RadioButtonListReadOnly;
-        
+
         /// <summary>
         /// MarriageStatusField_RadioButtonListReadOnlyWithoutSelectedValue control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_RadioButtonListReadOnlyWithoutSelectedValue;
-        
+
         /// <summary>
         /// MarriageStatusField_RadioButtonListDisabled control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_RadioButtonListDisabled;
-        
+
         /// <summary>
         /// MarriageStatusField_RadioButtonListNoAutoPostBack control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_RadioButtonListNoAutoPostBack;
-        
+
         /// <summary>
         /// MarriageStatusField_RadioButtonListMultiColumn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_RadioButtonListMultiColumn;
-        
+
         /// <summary>
         /// MarriageStatusField_RadioButtonListFlow control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_RadioButtonListFlow;
-        
+
         /// <summary>
         /// MarriageStatusField_RadioButtonListOrderedList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_RadioButtonListOrderedList;
-        
+
         /// <summary>
         /// MarriageStatusField_RadioButtonListUnorderedList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_RadioButtonListUnorderedList;
-        
+
         /// <summary>
         /// MarriageStatusField_RadioButtonListLabelLeft control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_RadioButtonListLabelLeft;
-        
+
         /// <summary>
         /// MarriageStatusField_RadioButtonListRequiredWithoutSelectedValue control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_RadioButtonListRequiredWithoutSelectedValue;
-        
+
         /// <summary>
         /// MarriageStatusField_RadioButtonListWithoutSelectedValueAndWithoutVisibleNullValue control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField_RadioButtonListWithoutSelectedValueAndWithoutVisibleNullValue;
     }

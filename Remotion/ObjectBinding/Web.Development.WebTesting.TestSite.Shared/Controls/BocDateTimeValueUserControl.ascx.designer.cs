@@ -7,98 +7,109 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls {
-    
-    
-    public partial class BocDateTimeValueUserControl {
-        
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
+{
+
+
+    public partial class BocDateTimeValueUserControl
+    {
+
         /// <summary>
         /// FormGridManager control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.FormGridManager FormGridManager;
-        
+
         /// <summary>
         /// CurrentObject control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl CurrentObject;
-        
+
+        /// <summary>
+        /// CurrentObjectValidationResultDispatchingValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.Validation.BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
+
         /// <summary>
         /// FormGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTable FormGrid;
-        
+
         /// <summary>
         /// DateOfBirthField_Normal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfBirthField_Normal;
-        
+
         /// <summary>
         /// DateOfBirthField_ReadOnly control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfBirthField_ReadOnly;
-        
+
         /// <summary>
         /// DateOfBirthField_Disabled control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfBirthField_Disabled;
-        
+
         /// <summary>
         /// DateOfBirthField_NoAutoPostBack control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfBirthField_NoAutoPostBack;
-        
+
         /// <summary>
         /// DateOfBirthField_DateOnly control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfBirthField_DateOnly;
-        
+
         /// <summary>
         /// DateOfBirthField_ReadOnlyDateOnly control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfBirthField_ReadOnlyDateOnly;
-        
+
         /// <summary>
         /// DateOfBirthField_WithSeconds control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfBirthField_WithSeconds;
     }

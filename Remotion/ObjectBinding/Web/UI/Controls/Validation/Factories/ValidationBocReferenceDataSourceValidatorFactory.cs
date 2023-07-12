@@ -45,9 +45,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
     {
       ArgumentUtility.CheckNotNull("control", control);
 
-      if (isReadOnly)
-        yield break;
-
       yield return CreateBocReferenceDataSourceValidator(control);
     }
 

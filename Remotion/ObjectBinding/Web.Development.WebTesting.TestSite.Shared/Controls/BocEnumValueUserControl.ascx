@@ -17,9 +17,11 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BocEnumValueUserControl.ascx.cs" Inherits="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.BocEnumValueUserControl" %>
 <%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 <%@ Register tagPrefix="remotion" namespace="Remotion.ObjectBinding.Web.UI.Controls" assembly="Remotion.ObjectBinding.Web" %>
+<%@ Register TagPrefix="remotion" Namespace="Remotion.ObjectBinding.Web.UI.Controls.Validation" Assembly="Remotion.ObjectBinding.Web" %>
 <remotion:FormGridManager ID="FormGridManager" runat="server" />
 <remotion:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
 <remotion:BindableObjectDataSourceControl ID="NoObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" Mode="Search" />
+<remotion:BindableObjectDataSourceControlValidationResultDispatchingValidator ID="CurrentObjectValidationResultDispatchingValidator" ControlToValidate="CurrentObject" runat="server" />
 <table id="FormGrid" runat="server">
   <tr>
     <td></td>

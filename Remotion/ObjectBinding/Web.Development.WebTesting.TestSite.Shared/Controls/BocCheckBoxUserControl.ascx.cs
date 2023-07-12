@@ -15,13 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
 {
-  public partial class BocCheckBoxUserControl : DataEditUserControl
+  public partial class BocCheckBoxUserControl : DataEditUserControl, IDataControlWithValidationDispatcher
   {
+    public BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceDispatchingValidator => CurrentObjectValidationResultDispatchingValidator;
+
     public override IBusinessObjectDataSourceControl DataSource
     {
       get { return CurrentObject; }

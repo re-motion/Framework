@@ -112,63 +112,60 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
     {
       ArgumentUtility.CheckNotNull("control", control);
 
-      return CreateBocValidator(control.ID, isReadOnly);
+      return CreateBocValidator(control.ID);
     }
 
     public IEnumerable<BaseValidator> CreateValidators (IBocReferenceValue control, bool isReadOnly)
     {
       ArgumentUtility.CheckNotNull("control", control);
 
-      return CreateBocValidator(control.ID, isReadOnly);
+      return CreateBocValidator(control.ID);
     }
 
     public IEnumerable<BaseValidator> CreateValidators (IBocAutoCompleteReferenceValue control, bool isReadOnly)
     {
       ArgumentUtility.CheckNotNull("control", control);
 
-      return CreateBocValidator(control.ID, isReadOnly);
+      return CreateBocValidator(control.ID);
     }
 
     public IEnumerable<BaseValidator> CreateValidators (IBocBooleanValue control, bool isReadOnly)
     {
       ArgumentUtility.CheckNotNull("control", control);
 
-      return CreateBocValidator(control.ID, isReadOnly);
+      return CreateBocValidator(control.ID);
     }
 
     public IEnumerable<BaseValidator> CreateValidators (IBocCheckBox control, bool isReadOnly)
     {
       ArgumentUtility.CheckNotNull("control", control);
 
-      return CreateBocValidator(control.ID, isReadOnly);
+      return CreateBocValidator(control.ID);
     }
 
     public IEnumerable<BaseValidator> CreateValidators (IBocDateTimeValue control, bool isReadOnly)
     {
       ArgumentUtility.CheckNotNull("control", control);
 
-      return CreateBocValidator(control.ID, isReadOnly);
+      return CreateBocValidator(control.ID);
     }
 
     public IEnumerable<BaseValidator> CreateValidators (IBocEnumValue control, bool isReadOnly)
     {
       ArgumentUtility.CheckNotNull("control", control);
 
-      return CreateBocValidator(control.ID, isReadOnly);
+      return CreateBocValidator(control.ID);
     }
 
     public IEnumerable<BaseValidator> CreateValidators (IBocMultilineTextValue control, bool isReadOnly)
     {
       ArgumentUtility.CheckNotNull("control", control);
 
-      return CreateBocValidator(control.ID, isReadOnly);
+      return CreateBocValidator(control.ID);
     }
 
-    private IEnumerable<BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator> CreateBocValidator (string? id, bool isReadonly)
+    private IEnumerable<BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator> CreateBocValidator (string? id)
     {
-      if (isReadonly)
-        yield break;
-
       var bocValidator = new BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator();
       bocValidator.ControlToValidate = id;
       bocValidator.ID = id + "_BocValidator";
