@@ -114,8 +114,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", $"{_bocListCssClassDefinition.DataCell} {_bocListCssClassDefinition.DataCellValidationFailureIndicator}");
       Html.AssertAttribute(td, "role", "cell");
 
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+
       Assert.That(td.ChildNodes.Count, Is.EqualTo(1));
-      Html.AssertTextNode(td, "&nbsp;", 0);
+      Html.AssertTextNode(cellStructureDiv, "&nbsp;", 0);
     }
 
     [Test]
@@ -136,7 +139,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", $"{_bocListCssClassDefinition.DataCell} {_bocListCssClassDefinition.DataCellValidationFailureIndicator}");
       Html.AssertAttribute(td, "role", "cell");
 
-      var div = Html.GetAssertedChildElement(td, "div", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+
+      var div = Html.GetAssertedChildElement(cellStructureDiv, "div", 0);
       Html.AssertAttribute(div, "class", _bocListCssClassDefinition.Content);
       Html.AssertChildElementCount(div, 2);
 

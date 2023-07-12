@@ -74,7 +74,7 @@
     <td></td>
     <td><remotion:bocAutoCompleteReferenceValue id=DisabledReadOnlyPartnerField runat="server" ControlServicePath="BocAutoCompleteReferenceValueWebService.asmx" readonly="True" datasourcecontrol="CurrentObject" propertyidentifier="Partner" enabled="false">
 </remotion:bocAutoCompleteReferenceValue></td>
-    <td>disabled, bound, read-only</td>j
+    <td>disabled, bound, read-only</td>
     <td style="WIDTH: 20%"><asp:label id="DisabledReadOnlyPartnerFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
     <td><remotion:SmartLabel ID="DisabledUnboundPartnerFieldLabel" runat="server" ForControl="DisabledUnboundPartnerField" Text="Partner"/></td>

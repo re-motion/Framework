@@ -373,6 +373,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
 
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.CellStructureElement);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
       var validationInfoText = renderingContext.Control.GetResourceManager().GetString(BocList.ResourceIdentifier.ValidationErrorInfoCell);
       var validationFailures = renderingContext.Control.ValidationFailureRepository.GetUnhandledValidationFailuresForDataCell(
           arguments.BusinessObject,
@@ -447,6 +450,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.RenderEndTag(); // </div>
       }
 
+      renderingContext.Writer.RenderEndTag(); // </div>
       renderingContext.Writer.RenderEndTag(); // </td>
     }
 
