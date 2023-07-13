@@ -252,6 +252,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return "validationErrorMarker"; }
     }
 
+    /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s validation failure cells. </summary>
+    public virtual string ValidationFailureCell
+    {
+      get { return "bocListValidationFailureCell"; }
+    }
+
     public string ListMenuContainer
     {
       get { return "bocListListMenuContainer"; }

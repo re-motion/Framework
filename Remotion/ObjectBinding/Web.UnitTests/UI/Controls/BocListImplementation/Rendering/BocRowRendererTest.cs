@@ -521,6 +521,85 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(ctx.ColumnRenderers, Is.EqualTo(columnRenderers));
     }
 
+    [Test]
+    public void RenderValidationRow_WithValidationFailureColumn_AddsTDBeforeErrorMessageContainer ()
+    {
+      var validationSummaryRendererStub = new StubValidationSummaryRenderer();
+      BocListValidationSummaryRenderArguments? args = null;
+      BocListRenderingContext ctx = null;
+      validationSummaryRendererStub.Callback = (BocRenderingContext<IBocList> context, in BocListValidationSummaryRenderArguments arguments) =>
+      {
+        ctx = context as BocListRenderingContext;
+        args = arguments;
+      };
+
+      var validationFailureRepository = new BocListValidationFailureRepository();
+      validationFailureRepository.AddValidationFailuresForDataRow(BusinessObject, new []{BusinessObjectValidationFailure.Create("Big error")});
+
+      List.Setup(_ => _.ValidationFailureRepository).Returns(validationFailureRepository);
+
+      IBocRowRenderer renderer = new BocRowRenderer(
+          _bocListCssClassDefinition,
+          new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
+          RenderingFeatures.Default,
+          validationSummaryRendererStub);
+      var columnRenderers = new[]
+                            {
+                                new BocColumnRenderer(
+                                    new StubColumnRenderer(new FakeResourceUrlFactory()),
+                                    new StubColumnDefinition(),
+                                    columnIndex: 0,
+                                    visibleColumnIndex: 2,
+                                    isRowHeader: true,
+                                    showIcon: false,
+                                    SortingDirection.None,
+                                    orderIndex: -1),
+                                new BocColumnRenderer(
+                                    new StubColumnRenderer(new FakeResourceUrlFactory()),
+                                    new BocValidationErrorIndicatorColumnDefinition(),
+                                    columnIndex: 1,
+                                    visibleColumnIndex: 3,
+                                    isRowHeader: true,
+                                    showIcon: false,
+                                    SortingDirection.None,
+                                    orderIndex: -1)
+                            };
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
+      Html.Writer.RenderBeginTag("root");
+      renderer.RenderDataRow(
+          new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, columnRenderers),
+          new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
+          new BocRowRenderArguments(17, new bool[columnRenderers.Length]));
+
+      Html.Writer.RenderEndTag();
+
+      var document = Html.GetResultDocument();
+
+      var root = Html.GetAssertedChildElement(document, "root", 0);
+
+      var trRow = Html.GetAssertedChildElement(root, "tr", 0);
+      trRow.AssertAttributeValueContains("class", "hasValidationRow");
+
+      var trValidationRow = Html.GetAssertedChildElement(root, "tr", 1);
+      trValidationRow.AssertAttributeValueContains("class", "bocListValidationRow");
+
+      var tdBeforeErrorMessages = Html.GetAssertedChildElement(trValidationRow, "td", 0);
+      tdBeforeErrorMessages.AssertAttributeValueEquals("colspan", "3");
+
+      var tdWithErrorMessages = Html.GetAssertedChildElement(trValidationRow, "td", 1);
+      tdWithErrorMessages.AssertAttributeValueEquals("colspan", "1");
+
+      var outerDiv = Html.GetAssertedChildElement(tdWithErrorMessages, "div", 0);
+
+      var innerDiv = Html.GetAssertedChildElement(outerDiv, "div", 0);
+
+      var validationSummary = Html.GetAssertedChildElement(innerDiv, "validation-summary", 0);
+
+      Assert.That(args.Value.ValidationFailures.Single().Failure.ErrorMessage, Is.EqualTo("Big error"));
+      Assert.That(ctx.ColumnRenderers, Is.EqualTo(columnRenderers));
+    }
+
     private BocListRenderingContext CreateRenderingContext ()
     {
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);

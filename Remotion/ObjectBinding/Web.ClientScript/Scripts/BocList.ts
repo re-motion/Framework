@@ -118,6 +118,8 @@ class BocList
       BocList.FixUpScrolling(bocList);
     }
 
+    BocList.FixupValidationErrorOverflowSize(bocList);
+
     var selectedRows = new BocList_SelectedRows (selection);
     if (   selectedRows.Selection != BocList._rowSelectionUndefined
         && selectedRows.Selection != BocList._rowSelectionDisabled)
@@ -150,7 +152,7 @@ class BocList
 
         if (hasClickSensitiveRows)
           BocList.BindRowClickEventHandler (bocList, tableRow, tableCell, checkBox);
-    
+
         if (checkBox.checked)
         {
           var rowBlock = new BocList_RowBlock(tableRow, checkBox);
@@ -521,6 +523,24 @@ class BocList
 
       BocList.FixHeaderSize(scrollableContainer);
       BocList.FixHeaderPosition(tableContainer, scrollableContainer);
+      setTimeout(resizeHandler, resizeInterval);
+    };
+    resizeHandler();
+  }
+
+  private static FixupValidationErrorOverflowSize(bocList: HTMLElement): void
+  {
+    const tableBlock = bocList.querySelector(':scope > div.bocListTableBlock')!;
+    const tableContainer = tableBlock.querySelector<HTMLElement>(':scope > div.bocListTableContainer')!;
+    const scrollableContainer = tableContainer.querySelector<HTMLElement>(':scope > div.bocListTableScrollContainer')!;
+
+    const resizeInterval = 50;
+
+    let resizeHandler = function ()
+    {
+      if (!PageUtility.Instance.IsInDom (scrollableContainer))
+        return;
+
       BocList.FixValidationErrorOverflowSize(scrollableContainer);
       setTimeout(resizeHandler, resizeInterval);
     };
@@ -529,14 +549,30 @@ class BocList
 
   private static FixValidationErrorOverflowSize(scrollableContainer: HTMLElement)
   {
-    // Sets the width of the validation error field to be as wide as the visible part of the bocList.
+    // Sets the width of the validation error field to be as wide as the visible part of the bocList
+    // minus how much space the td on the left requires to align with the error indicator column.
     // This enables sticky behaviour while still allowing for a scrollbar if required.
 
-    const width = LayoutUtility.GetWidth(scrollableContainer);
+    const availableWidthInContainer = scrollableContainer.clientWidth;
 
-    const overflowContainers = [...scrollableContainer.querySelectorAll<HTMLElement>(':scope tr.bocListValidationRow > td > div')];
-    overflowContainers.forEach(e => {
-      e.style.width = "calc(" + width.toString() + "px - var(--remotion-themed-scrollbar-width))";
+    const tdBeforeValidationFailureColumn: Nullable<HTMLElement> = scrollableContainer.querySelector('tr.bocListValidationRow td:first-child:not(.bocListValidationFailureCell)');
+
+    let widthBeforeValidationFailureColumn = 0;
+    if (tdBeforeValidationFailureColumn != null)
+    {
+      widthBeforeValidationFailureColumn = Math.max(tdBeforeValidationFailureColumn.clientWidth - scrollableContainer.scrollLeft, 0);
+    }
+
+    const overflowContainers = [...scrollableContainer.querySelectorAll<HTMLElement>(':scope tr.bocListValidationRow > td.bocListValidationFailureCell > div')];
+
+    overflowContainers.forEach(container =>
+    {
+      let parentStyle = window.getComputedStyle(<HTMLElement>container.parentNode);
+
+      let padding = parseFloat(parentStyle.paddingLeft) + parseFloat(parentStyle.paddingRight);
+      let border = parseFloat(parentStyle.borderLeftWidth) + parseFloat(parentStyle.borderRightWidth);
+        
+      container.style.width = (availableWidthInContainer - widthBeforeValidationFailureColumn - padding - border).toString() + "px";
     });
   }
 

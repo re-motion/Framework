@@ -127,7 +127,14 @@ div.bocList table.bocListTable tr.bocListValidationRow.selected td
 
 div.bocList div.bocListTableBlock tr.bocListValidationRow td ul
 {
-  margin: 1em 0;
+  margin: 0.5em 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow td li:not(:last-child)
+{
+  margin-bottom: 0.5em;
 }
 
 div.bocList div.bocListTableBlock tr.bocListValidationRow div

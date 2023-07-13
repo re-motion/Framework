@@ -231,7 +231,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         }
       }
 
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Colspan, "" + lastColumnIndex);
+      var validationFailureColumnIndex = 0;
+
+      var validationFailureColumn = columnRenderers.FirstOrDefault(r => r.ColumnDefinition is BocValidationErrorIndicatorColumnDefinition);
+      if (validationFailureColumn is not null)
+      {
+        validationFailureColumnIndex = validationFailureColumn.VisibleColumnIndex;
+
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Colspan, validationFailureColumnIndex.ToString());
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
+        renderingContext.Writer.RenderEndTag();
+      }
+
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Colspan, (lastColumnIndex - validationFailureColumnIndex).ToString());
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, _cssClasses.ValidationFailureCell);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
 
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
