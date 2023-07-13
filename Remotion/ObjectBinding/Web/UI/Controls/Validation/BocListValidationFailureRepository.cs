@@ -89,6 +89,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
       }
     }
 
+    public event EventHandler? ValidationFailureAdded;
+
     private readonly List<HandleableFailure> _listValidationFailures = new();
     private readonly Dictionary<IBusinessObject, RowFailureContainer> _rowValidationFailures = new();
 
@@ -102,6 +104,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
       _listValidationFailures.AddRange(
           validationFailures.Select(e => new HandleableFailure(BocListValidationFailureWithLocationInformation.CreateFailure(e))));
+
+      OnValidationFailureAdded();
     }
 
     public void AddValidationFailuresForDataRow (IBusinessObject rowObject, IEnumerable<BusinessObjectValidationFailure> validationFailures)
@@ -111,6 +115,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
       var failureContainer = GetOrCreateRowFailureContainer(rowObject);
       failureContainer.AddRowFailures(validationFailures.Select(f =>BocListValidationFailureWithLocationInformation.CreateFailureForRow(f, rowObject)));
+
+      OnValidationFailureAdded();
     }
 
     public void AddValidationFailuresForDataCell (
@@ -128,6 +134,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
           validationFailures.Select(
               f => BocListValidationFailureWithLocationInformation.CreateFailureForCell(f, rowObject, columnDefinition)
           ));
+
+      OnValidationFailureAdded();
+    }
+
+    private void OnValidationFailureAdded ()
+    {
+      ValidationFailureAdded?.Invoke(this, EventArgs.Empty);
     }
 
 

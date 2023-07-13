@@ -428,6 +428,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       _availableViews.CollectionChanged += AvailableViews_CollectionChanged;
       Binding.BindingChanged += Binding_BindingChanged;
+      ValidationFailureRepository.ValidationFailureAdded += ValidationFailureRepository_ValidationFailureAdded;
 
       Page!.RegisterRequiresPostBack(this);
       InitializeMenusItems();
@@ -1620,6 +1621,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private void Binding_BindingChanged (object? sender, EventArgs e)
     {
       _allPropertyColumns = null;
+    }
+
+    private void ValidationFailureRepository_ValidationFailureAdded (object? sender, EventArgs e)
+    {
+      OnSortedRowsChanged();
     }
 
     protected virtual void InitializeMenusItems ()
