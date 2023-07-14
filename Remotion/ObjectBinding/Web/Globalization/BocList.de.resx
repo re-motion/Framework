@@ -177,4 +177,7 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoCell" xml:space="preserve">
     <value>Ungültige Eingabe in der aktuellen Zelle</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationColumnTitleText" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
 </root>

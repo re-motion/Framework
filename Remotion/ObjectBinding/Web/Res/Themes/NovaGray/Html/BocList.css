@@ -361,6 +361,13 @@ th.bocListTitleCell > a[href]:active
   background-color: #C5E0FC;
 }
 
+th.bocListTitleCell > a > img,
+th.bocListTitleCell > span > img
+{
+  width: 16px;
+  height: 16px;
+}
+
 th.bocListTitleCell .bocListSortingOrder img
 {
   height: 16px;

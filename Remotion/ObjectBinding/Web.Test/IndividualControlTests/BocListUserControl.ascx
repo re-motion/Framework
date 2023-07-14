@@ -36,14 +36,14 @@
     <td colSpan=2>
       <ros:TestBocList id=ChildrenList runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="4" indexoffset="100" RowMenuDisplay="Manual" ShowEmptyListMessage="True" Index="InitialOrder" Selection="Multiple" Width="100%" Height="15em" ControlServicePath="BocListWebService.asmx" ControlServiceArguments="ControlServiceArgs">
         <fixedcolumns>
-          <remotion:BocValidationErrorIndicatorColumnDefinition/>
-          <remotion:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit" ColumnTitle="Edit" ShowColumnTitle="False"></remotion:BocRowEditModeColumnDefinition>
+          <remotion:BocValidationErrorIndicatorColumnDefinition ColumnTitleStyle="Icon" />
+          <remotion:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit" ColumnTitle="Edit" ColumnTitleStyle="None"></remotion:BocRowEditModeColumnDefinition>
           <remotion:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
             <persistedcommand>
               <remotion:BocListItemCommand ToolTip="An Event Command" CommandStateType="Remotion.ObjectBinding.Sample::PersonListItemCommandState" Type="Event"></remotion:BocListItemCommand>
             </PersistedCommand>
           </remotion:BocCommandColumnDefinition>
-          <remotion:BocCommandColumnDefinition ItemID="Href" Text="Href" ShowColumnTitle="False">
+          <remotion:BocCommandColumnDefinition ItemID="Href" Text="Href" ColumnTitleStyle="None">
             <persistedcommand>
               <remotion:BocListItemCommand HrefCommand-Href="edit.aspx?ID={1}&amp;Index={0}" Type="Href"></remotion:BocListItemCommand>
             </PersistedCommand>
@@ -68,7 +68,7 @@
               <remotion:BocListItemCommand></remotion:BocListItemCommand>
             </PersistedCommand>
           </remotion:BocSimpleColumnDefinition>
-          <remotion:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName" ColumnTitle="Partner Firstname" ShowColumnTitle="False">
+          <remotion:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName" ColumnTitle="Partner Firstname" ColumnTitleStyle="None">
             <persistedcommand>
               <remotion:BocListItemCommand Type="Event"></remotion:BocListItemCommand>
             </PersistedCommand>
@@ -84,7 +84,7 @@
               <remotion:BocListItemCommand></remotion:BocListItemCommand>
             </PersistedCommand>
           </remotion:BocSimpleColumnDefinition>
-          <remotion:BocDropDownMenuColumnDefinition ItemID="RowMenu" MenuTitleText="Context" ShowMenuTitle="true" Width="16px" ColumnTitle="Menu" ShowColumnTitle="False"></remotion:BocDropDownMenuColumnDefinition>
+          <remotion:BocDropDownMenuColumnDefinition ItemID="RowMenu" MenuTitleText="Context" ShowMenuTitle="true" Width="16px" ColumnTitle="Menu" ColumnTitleStyle="None"></remotion:BocDropDownMenuColumnDefinition>
         </FixedColumns>
       </ros:TestBocList>
     </td>

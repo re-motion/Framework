@@ -177,4 +177,7 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RemainingValidationFailureText" xml:space="preserve">
     <value>Errors found on at least one other page.</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationColumnTitleText" xml:space="preserve">
+    <value>Errors</value>
+  </data>
 </root>

@@ -179,6 +179,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       /// <summary> The menu title text used for an automatically generated row menu column. </summary>
       RowMenuTitle,
       RemainingValidationFailureText,
+      ValidationColumnTitleText
     }
 
     public enum RowEditModeCommand
