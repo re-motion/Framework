@@ -16,11 +16,7 @@
 // 
 using System;
 using System.Drawing;
-using System.Linq;
-using Coypu;
-using Coypu.Drivers;
 using NUnit.Framework;
-using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
@@ -453,8 +449,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var validateErrors = bocDateTimeValue.GetDateValidationErrors();
 
-      Assert.That(validateErrors.Count, Is.EqualTo(1));
-      Assert.That(validateErrors.First(), Is.EqualTo("Enter a date."));
+      Assert.That(validateErrors, Is.EquivalentTo(new [] { "Enter a date.", "Localized invalid dateOfBirth." }));
     }
 
     [Test]
@@ -471,8 +466,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var validateErrors = bocDateTimeValue.GetTimeValidationErrors();
 
-      Assert.That(validateErrors.Count, Is.EqualTo(1));
-      Assert.That(validateErrors.First(), Is.EqualTo("Enter a time."));
+      Assert.That(validateErrors, Is.EquivalentTo(new [] { "Enter a time.", "Localized invalid dateOfBirth." }));
     }
 
     [Test]
@@ -493,8 +487,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       // to remind the updater to update bocDateTimeValue.GetValidationErrors () to return the errors of both Fields.
       var validateErrors = bocDateTimeValue.GetValidationErrors();
 
-      Assert.That(validateErrors.Count, Is.EqualTo(1));
-      Assert.That(validateErrors.First(), Is.EqualTo("Enter a time."));
+      Assert.That(validateErrors, Is.EquivalentTo(new [] { "Enter a time.", "Localized invalid dateOfBirth." }));
     }
 
     [Test]
@@ -513,8 +506,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var validateErrors = bocDateTimeValue.GetValidationErrors();
 
-      Assert.That(validateErrors.Count, Is.EqualTo(1));
-      Assert.That(validateErrors.First(), Is.EqualTo("Enter a date and time."));
+      Assert.That(validateErrors, Is.EquivalentTo(new [] { "Enter a date and time.", "Localized invalid dateOfBirth." }));
     }
 
     private WxePageObject Start ()
