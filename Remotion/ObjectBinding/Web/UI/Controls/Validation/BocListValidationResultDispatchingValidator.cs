@@ -83,7 +83,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
       var validationFailureRepository = bocListControl.ValidationFailureRepository;
       validationFailureRepository.ClearAllValidationFailures();
 
-      var rowObjects = bocListControl.Value;
+      var rowObjects = bocListControl.GetBusinessObjectsForValidation();
 
       if (rowObjects != null)
       {

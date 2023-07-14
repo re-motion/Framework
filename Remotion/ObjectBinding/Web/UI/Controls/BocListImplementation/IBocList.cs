@@ -203,6 +203,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     /// Gets the list of validation errors for this control.
     /// </summary>
     IEnumerable<PlainTextString> GetValidationErrors ();
+
+    /// <summary> Gets the <see cref="IBusinessObject"/>s relevant for validation.</summary>
+    IReadOnlyList<IBusinessObject>? GetBusinessObjectsForValidation ();
+
     string? ControlServicePath { get; }
   }
 }
