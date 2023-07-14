@@ -534,11 +534,10 @@ class BocList
 
     const width = LayoutUtility.GetWidth(scrollableContainer);
 
-    const overflowContainer: Nullable<HTMLElement> = scrollableContainer.querySelector('div.bocListTableBlock tr.bocListValidationRow div');
-    if (overflowContainer)
-    {
-      overflowContainer.style.width = "calc(" + width.toString() + "px - var(--remotion-themed-scrollbar-width))";
-    }
+    const overflowContainers = [...scrollableContainer.querySelectorAll<HTMLElement>(':scope tr.bocListValidationRow > td > div')];
+    overflowContainers.forEach(e => {
+      e.style.width = "calc(" + width.toString() + "px - var(--remotion-themed-scrollbar-width))";
+    });
   }
 
   private static CreateFakeTableHead(tableContainer: HTMLElement, scrollableContainer: HTMLElement, bocList: HTMLElement): void
