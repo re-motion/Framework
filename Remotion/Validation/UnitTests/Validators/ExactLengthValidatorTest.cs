@@ -30,7 +30,7 @@ namespace Remotion.Validation.UnitTests.Validators
     {
       var instanceToValidate = new object();
       var propertyValidatorContext = CreatePropertyValidatorContext(instanceToValidate);
-      var validator = new ExactLengthValidator(0, new InvariantValidationMessage("Fake Message"));
+      var validator = new ExactLengthValidator(1, new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 
@@ -41,7 +41,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValueNull_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(null);
-      var validator = new ExactLengthValidator(0, new InvariantValidationMessage("Fake Message"));
+      var validator = new ExactLengthValidator(1, new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 

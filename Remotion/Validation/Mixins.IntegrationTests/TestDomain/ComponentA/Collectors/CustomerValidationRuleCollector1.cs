@@ -25,7 +25,7 @@ namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentA.Coll
     {
       AddRule(c => c.LastName).CanBeRemoved().NotNull();
       AddRule(c => c.LastName).NotEmptyOrWhitespace().Length(2, 8);
-      AddRule(c => c.PhoneNumber).CanBeRemoved().Length(0, 20);
+      AddRule(c => c.PhoneNumber).CanBeRemoved().MaxLength(20);
 
       RemoveRule(c => c.LastName).Validator<NotEqualValidator, PersonValidationRuleCollector1>();
     }

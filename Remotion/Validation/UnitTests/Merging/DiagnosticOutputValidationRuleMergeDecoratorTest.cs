@@ -133,8 +133,8 @@ namespace Remotion.Validation.UnitTests.Merging
           .Setup(stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(NotNullValidator)), It.IsAny<Func<Type, string>>()))
           .Returns("NotNullValidator");
       _validatorFormatterStub
-          .Setup(stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(LengthValidator)), It.IsAny<Func<Type, string>>()))
-          .Returns("LengthValidator");
+          .Setup(stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(MaximumLengthValidator)), It.IsAny<Func<Type, string>>()))
+          .Returns("MaximumLengthValidator");
       _validatorFormatterStub
           .Setup(stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(NotEmptyOrWhitespaceValidator)), It.IsAny<Func<Type, string>>()))
           .Returns("NotEmptyOrWhitespaceValidator");
@@ -193,7 +193,7 @@ namespace Remotion.Validation.UnitTests.Merging
           + "\r\n"
           + "\r\n    -> Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseType#Property2"
           + "\r\n        ADDED REMOVABLE VALIDATORS:"
-          + "\r\n        -> LengthValidator (x1)"
+          + "\r\n        -> MaximumLengthValidator (x1)"
           + "\r\n        ADDED META VALIDATION RULES:"
           + "\r\n        -> MaxLengthPropertyMetaValidationRule"
           + "\r\n"

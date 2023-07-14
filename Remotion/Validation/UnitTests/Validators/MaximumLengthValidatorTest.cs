@@ -29,7 +29,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValueNull_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(null);
-      var validator = new MaximumLengthValidator(0, new InvariantValidationMessage("Fake Message"));
+      var validator = new MaximumLengthValidator(1, new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 
@@ -40,7 +40,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithObject_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(new object());
-      var validator = new MaximumLengthValidator(0, new InvariantValidationMessage("Fake Message"));
+      var validator = new MaximumLengthValidator(1, new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 
@@ -51,7 +51,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValueEqualsEmptyString_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext("");
-      var validator = new MaximumLengthValidator(0, new InvariantValidationMessage("Fake Message"));
+      var validator = new MaximumLengthValidator(1, new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 

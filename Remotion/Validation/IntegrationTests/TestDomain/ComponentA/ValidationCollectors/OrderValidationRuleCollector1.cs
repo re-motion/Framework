@@ -25,7 +25,7 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationC
     {
       RemoveRule(o => o.Number).Validator<LengthValidator>();
 
-      AddRule(o => o.Number).Length(0, 15);
+      AddRule(o => o.Number).MaxLength(15);
     }
   }
 }
