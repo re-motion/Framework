@@ -443,7 +443,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var iconSpan = Html.GetAssertedChildElement(cellStructureDiv, "span", 0);
       Html.AssertAttribute(iconSpan, "class", _bocListCssClassDefinition.ValidationErrorMarker);
       Html.AssertAttribute(iconSpan, "id", "MyList_C6_R0_ValidationMarker");
-      Html.AssertAttribute(iconSpan, "title", "Invalid input in current cell\r\n• error message\r\n");
+      Html.AssertAttribute(iconSpan, "title", "error message\r\n");
       Html.AssertAttribute(iconSpan, "aria-hidden", "true");
       Html.AssertChildElementCount(iconSpan, 1);
 
