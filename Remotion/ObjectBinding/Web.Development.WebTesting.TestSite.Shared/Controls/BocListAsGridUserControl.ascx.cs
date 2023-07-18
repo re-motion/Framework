@@ -87,6 +87,19 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
       base.OnPreRender(e);
       SetTestOutput();
 
+      if (ValidationTestCaseStartDate.Checked)
+      {
+        var jobs = ((Person)CurrentObject.BusinessObject!).Jobs;
+        var startDateProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Job _) => _.StartDate));
+        AddValidationFailures(
+            new PropertyValidationFailure(
+                jobs[0],
+                startDateProperty,
+                jobs[0].StartDate,
+                "Start date has a failure",
+                "Localized start date has a failure"));
+      }
+
       // We do the validation on every request since it is easier that covering it in multiple event handlers.
       // While we use domain validation, it should only affect the last control that is intended for testing validation.
       ((SmartPage)Page)!.PrepareValidation();

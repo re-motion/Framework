@@ -226,6 +226,7 @@
       <br/>
       <remotion:WebButton ID="ValidationTestCaseRowButton" Text="Validation scenario (row)" OnClick="ValidationTestCaseRow" runat="server"/>
       <remotion:WebButton ID="ValidationTestCaseCellButton" Text="Validation scenario (cell)" OnClick="ValidationTestCaseCell" runat="server"/>
+      <asp:CheckBox ID="ValidationTestCaseStartDate" Text="Validation scenario (StartDate)" runat="server"/>
     </td>
     <td>&nbsp; (validation)</td>
   </tr>

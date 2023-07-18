@@ -57,13 +57,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     private void DispatchToValidationResultDispatchers (IBusinessObjectValidationResult validationResult, IBocList bocListControl)
     {
-      var validatorsMatchingToControls = EnumerableUtility.SelectRecursiveDepthFirst(
-              (Control)bocListControl,
-              child => child.Controls.Cast<Control>().Where(item => item is not INamingContainer))
-          .OfType<IBusinessObjectBoundEditableWebControlValidationResultDispatcher>();
-
-      foreach (var validator in validatorsMatchingToControls)
-        validator.DispatchValidationFailures(validationResult);
+      var rowObjects = bocListControl.Value ?? Array.Empty<IBusinessObject>();
+      var columnDefinitions = bocListControl.GetColumnDefinitions();
+      var editModeController = bocListControl.EditModeController;
+      if (editModeController.IsRowEditModeActive)
+      {
+        var bocListRow = editModeController.GetEditedRow();
+        var editableRow = editModeController.GetEditableRow(bocListRow.Index);
+        if (editableRow != null)
+          DispatchEditableRowValidationFailures(editableRow, validationResult, columnDefinitions);
+      }
+      else if (editModeController.IsListEditModeActive)
+      {
+        for (var i = 0; i < rowObjects.Count; i++)
+        {
+          var editableRow = editModeController.GetEditableRow(i);
+          if (editableRow != null)
+            DispatchEditableRowValidationFailures(editableRow, validationResult, columnDefinitions);
+        }
+      }
     }
 
     private void DispatchToValidationFailureRepository (IBusinessObjectValidationResult validationResult, IBocList bocListControl)
@@ -101,7 +113,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
           var bocListRow = editModeController.GetEditedRow();
           var editableRow = editModeController.GetEditableRow(bocListRow.Index);
           if (editableRow != null)
-            DispatchEditableRowValidationFailures(editableRow, bocListRow.BusinessObject, columnDefinitions, validationFailureRepository);
+            DispatchEditableRowValidationFailuresToValidationRepository(editableRow, bocListRow.BusinessObject, columnDefinitions, validationFailureRepository);
         }
         else if (editModeController.IsListEditModeActive)
         {
@@ -109,7 +121,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
           {
             var editableRow = editModeController.GetEditableRow(i);
             if (editableRow != null)
-              DispatchEditableRowValidationFailures(editableRow, rowObjects[i], columnDefinitions, validationFailureRepository);
+              DispatchEditableRowValidationFailuresToValidationRepository(editableRow, rowObjects[i], columnDefinitions, validationFailureRepository);
           }
         }
       }
@@ -157,6 +169,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
     }
 
     private void DispatchEditableRowValidationFailures (
+        IEditableRow editableRow,
+        IBusinessObjectValidationResult validationResult,
+        IReadOnlyList<BocColumnDefinition> columnDefinitions)
+    {
+      for (var i = 0; i < columnDefinitions.Count; i++)
+      {
+        var validators = editableRow.GetValidators(i);
+        if (validators != null)
+        {
+          foreach (BaseValidator baseValidator in validators)
+          {
+            if (baseValidator is IBusinessObjectBoundEditableWebControlValidationResultDispatcher resultDispatcher)
+            {
+              resultDispatcher.DispatchValidationFailures(validationResult);
+            }
+          }
+        }
+      }
+    }
+
+    private void DispatchEditableRowValidationFailuresToValidationRepository (
         IEditableRow editableRow,
         IBusinessObject rowObject,
         IReadOnlyList<BocColumnDefinition> columnDefinitions,
