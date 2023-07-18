@@ -31,10 +31,9 @@ using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 {
-  public sealed class BocListValidationResultDispatchingValidator : BaseValidator, IBusinessObjectBoundEditableWebControlValidationResultDispatcher
+  public sealed class BocListValidationResultDispatchingValidator
+      : BaseValidator, IBusinessObjectBoundEditableWebControlValidationResultDispatcher, IValidatorWithDynamicErrorMessage
   {
-    private BusinessObjectValidationFailure[] _validationFailuresForBusinessObjectPropertyOfBocList = Array.Empty<BusinessObjectValidationFailure>();
-
     public BocListValidationResultDispatchingValidator ()
     {
     }
@@ -56,10 +55,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
       Validate();
     }
 
-    private void DispatchToValidationResultDispatchers (IBusinessObjectValidationResult validationResult, BocList bocListControl)
+    private void DispatchToValidationResultDispatchers (IBusinessObjectValidationResult validationResult, IBocList bocListControl)
     {
       var validatorsMatchingToControls = EnumerableUtility.SelectRecursiveDepthFirst(
-              bocListControl as Control,
+              (Control)bocListControl,
               child => child.Controls.Cast<Control>().Where(item => item is not INamingContainer))
           .OfType<IBusinessObjectBoundEditableWebControlValidationResultDispatcher>();
 
@@ -67,7 +66,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
         validator.DispatchValidationFailures(validationResult);
     }
 
-    private void DispatchToValidationFailureRepository (IBusinessObjectValidationResult validationResult, BocList bocListControl)
+    private void DispatchToValidationFailureRepository (IBusinessObjectValidationResult validationResult, IBocList bocListControl)
     {
       var validationFailureRepository = bocListControl.ValidationFailureRepository;
       validationFailureRepository.ClearAllValidationFailures();
@@ -91,12 +90,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
               validationFailureRepository.AddValidationFailuresForDataCell(rowObject, columnAndMatcher.Column, matchedFailures);
           }
 
-          var otherRowFailures = validationResult.GetUnhandledValidationFailures(rowObject);
+          var otherRowFailures = validationResult.GetUnhandledValidationFailures(rowObject, markAsHandled: true);
           if (otherRowFailures.Count > 0)
             validationFailureRepository.AddValidationFailuresForDataRow(rowObject, otherRowFailures);
         }
 
-        var editModeController = ((IBocList)bocListControl).EditModeController;
+        var editModeController = bocListControl.EditModeController;
         if (editModeController.IsRowEditModeActive)
         {
           var bocListRow = editModeController.GetEditedRow();
@@ -130,27 +129,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     protected override bool EvaluateIsValid ()
     {
-      var sb = new StringBuilder();
-
       var bocList = GetControlToValidate();
       var validationFailureRepository = bocList.ValidationFailureRepository;
 
-      foreach (var validationFailure in validationFailureRepository.GetUnhandledValidationFailuresForBocList(true))
+      var failuresOnBocList = validationFailureRepository.GetUnhandledValidationFailuresForBocListAndContainingDataRowsAndDataCells(false);
+
+      // We check for all validation failures here, as none would/should be marked as handled yet anyways.
+      if (failuresOnBocList.Count == 0)
       {
-        sb.AppendLine(validationFailure.Failure.ErrorMessage);
+        ErrorMessage = "";
+        return true;
       }
-
-      var rowObjects = bocList.Value ?? Array.Empty<IBusinessObject>();
-      var hasRowsWithValidationFailures = rowObjects.Any(r => validationFailureRepository.HasValidationFailuresForDataRow(r));
-
-      if (hasRowsWithValidationFailures)
+      else
       {
-        sb.Append("### BocList has validation failures.");
+        ErrorMessage = GetControlToValidate().GetResourceManager().GetString(BocList.ResourceIdentifier.ValidationFailuresFoundInListErrorMessage);
+        return false;
       }
-
-      ErrorMessage = sb.ToString();
-
-      return _validationFailuresForBusinessObjectPropertyOfBocList.Length == 0 && !hasRowsWithValidationFailures;
     }
 
     protected override bool ControlPropertiesValid ()
@@ -188,10 +182,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
     }
 
     [NotNull]
-    private BocList GetControlToValidate ()
+    private IBocList GetControlToValidate ()
     {
       var control = NamingContainer.FindControl(ControlToValidate);
-      var bocListControl = control as BocList;
+      var bocListControl = control as IBocList;
       if (bocListControl == null)
       {
         throw new InvalidOperationException(
@@ -199,6 +193,35 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
       }
 
       return bocListControl;
+    }
+
+    void IValidatorWithDynamicErrorMessage.RefreshErrorMessage ()
+    {
+      var bocList = GetControlToValidate();
+      var validationRepository = bocList.ValidationFailureRepository;
+
+      var errorMessageBuilder = new StringBuilder();
+
+      var validationFailuresForBusinessObjectPropertyOfBocList = validationRepository.GetUnhandledValidationFailuresForBocList(true);
+      foreach (var validationFailure in validationFailuresForBusinessObjectPropertyOfBocList)
+      {
+        errorMessageBuilder.AppendLine(validationFailure.Failure.ErrorMessage);
+      }
+
+      var hasRowsWithUnhandledValidationFailures = validationRepository.GetUnhandledValidationFailuresForBocListAndContainingDataRowsAndDataCells(true).Any();
+      if (hasRowsWithUnhandledValidationFailures)
+      {
+        var remainingValidationFailuresText = bocList
+            .GetResourceManager()
+            .GetString(BocList.ResourceIdentifier.ValidationFailuresFoundInOtherListPagesErrorMessage);
+
+        errorMessageBuilder.AppendLine(remainingValidationFailuresText);
+      }
+
+      if (errorMessageBuilder.Length > 0)
+        ErrorMessage = errorMessageBuilder.ToString();
+      else
+        ErrorMessage = GetControlToValidate().GetResourceManager().GetString(BocList.ResourceIdentifier.ValidationFailuresFoundInListErrorMessage);
     }
   }
 }
