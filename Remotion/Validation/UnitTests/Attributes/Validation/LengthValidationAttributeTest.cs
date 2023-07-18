@@ -58,6 +58,21 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     }
 
     [Test]
+    public void GetPropertyValidator_WithoutMinAndMaxValues_ReturnsEmptyResult ()
+    {
+      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty("LastName"));
+      var validationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<IPropertyValidator>(), propertyInformation))
+          .Returns(validationMessageStub.Object);
+
+      var lengthValidationAttribute = new LengthValidationAttribute();
+      var result = lengthValidationAttribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
+
+      Assert.That(result, Is.Empty);
+    }
+
+    [Test]
     public void GetPropertyValidator_WithNotEqualMinAndMaxValues_ReturnsLengthValidator ()
     {
       var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty("LastName"));

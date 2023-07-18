@@ -16,10 +16,12 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.Results;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Attributes.Validation
@@ -29,6 +31,11 @@ namespace Remotion.Validation.Attributes.Validation
   /// </summary>
   public class LengthValidationAttribute : AddingValidationAttributeBase
   {
+    private class SkippedValidator : IPropertyValidator
+    {
+      public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context) => Enumerable.Empty<PropertyValidationFailure>();
+    }
+
     /// <summary>
     /// Gets or sets the minimum number of characters required.
     /// </summary>
@@ -64,12 +71,17 @@ namespace Remotion.Validation.Attributes.Validation
         validator = CreateValidator(new InvariantValidationMessage(ErrorMessage));
       }
 
+      if (validator is SkippedValidator)
+        return Enumerable.Empty<IPropertyValidator>();
+
       return EnumerableUtility.Singleton(validator);
     }
 
     private IPropertyValidator CreateValidator (ValidationMessage message)
     {
-      if (MinLength == 0 && MaxLength > 0)
+      if (MinLength == 0 && MaxLength == 0)
+        return new SkippedValidator();
+      else if (MinLength == 0 && MaxLength > 0)
         return new MaximumLengthValidator(MaxLength, message);
       else if (MaxLength == 0 & MinLength > 0)
         return new MinimumLengthValidator(MinLength, message);
