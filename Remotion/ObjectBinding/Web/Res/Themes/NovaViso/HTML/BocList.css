@@ -141,29 +141,27 @@ div.bocList table.bocListTable th.bocListTitleCell > span
   border: var(--remotion-themed-border-placeholder);
 }
 
-div.bocList table.bocListTable td.bocListDataCell > a:not([hidden]),
-div.bocList table.bocListTable td.bocListDataCell > div:not([hidden])
+div.bocList table.bocListTable td.bocListDataCell:not(.bocListDataCellEditModeButtons) > div.bocListCellStructureElement
 {
-  display: flex !important; /*overrides hardcoded enforce-width setting 'display:block' */
-  align-items: center;
-  box-sizing: border-box;
-  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: var(--remotion-themed-spacing-small);
 }
 
-div.bocList table.bocListTable td.bocListDataCell > a:not([hidden]),
-div.bocList table.bocListTable td.bocListDataCell > div:not([hidden], .bocListCellStructureElement),
-div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > a:not([hidden]),
+div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > a:not([hidden])
+{
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;  padding: calc(var(--remotion-themed-spacing) / 2) var(--remotion-themed-spacing);
+}
+
 div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > div:not([hidden], .bocListCellStructureElement)
 {
-  display: inline-block;
-  padding: calc(var(--remotion-themed-spacing) / 2) var(--remotion-themed-spacing);
-}
-
-div.bocList table.bocListTable td.bocListDataCell > div.bocListContent > div[onclick],
-div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > div.bocListContent > div[onclick]
-{
-  display: block;
-  width: 100%;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;  padding: calc(var(--remotion-themed-spacing) / 2) var(--remotion-themed-spacing);
 }
 
 div.bocList table.bocListTable td.bocListTitleCell.bocListTitleCellAllRowsSelector > span,
@@ -185,7 +183,6 @@ div.bocList table.bocListTable td.bocListTitleCell
 }
 
 div.bocList table.bocListTable th.bocListTitleCell > a,
-div.bocList table.bocListTable td.bocListDataCell > a,
 div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > a
 {
   color: var(--color-primary);
@@ -193,17 +190,14 @@ div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement 
 }
 
 div.bocList table.bocListTable th.bocListTitleCell > a,
-div.bocList table.bocListTable td.bocListDataCell > a,
 div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > a,
-div.bocList table.bocListTable td.bocListDataCell > div:not(.bocListCellStructureElement),
-div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > div:not(.bocListCellStructureElement)
+div.bocList table.bocListTable td.bocListDataCell:not(.bocListDataCellValidationFailureIndicator) *.bocListCellStructureElement > div:not(.bocListCellStructureElement)
 {
   border-radius: var(--remotion-themed-border-radius);
   border: var(--remotion-themed-border-placeholder);
 }
 
 div.bocList table.bocListTable th.bocListTitleCell > a:hover,
-div.bocList table.bocListTable td.bocListDataCell > a:hover,
 div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > a:hover
 {
   color: var(--color-standard-text);
@@ -213,7 +207,6 @@ div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement 
 }
 
 div.bocList table.bocListTable th.bocListTitleCell > a:focus,
-div.bocList table.bocListTable td.bocListDataCell > a:focus,
 div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > a:focus
 {
   outline: none;
@@ -224,7 +217,6 @@ div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement 
 }
 
 div.bocList table.bocListTable th.bocListTitleCell > a:focus:hover,
-div.bocList table.bocListTable td.bocListDataCell > a:focus:hover,
 div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > a:focus:hover
 {
   color: var(--color-standard-text);
@@ -238,17 +230,13 @@ div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell
   background-color: var(--remotion-themed-background-color-page);
 }
 
-div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > div.bocListContent > img,
 div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell *.bocListCellStructureElement > div.bocListContent > img,
-div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > a > img,
 div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell *.bocListCellStructureElement > a > img
 {
   align-self: start;
 }
 
-div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > div.bocListContent > img,
 div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell *.bocListCellStructureElement > div.bocListContent > img,
-div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > a > img,
 div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell *.bocListCellStructureElement > a > img
 {
   /* Intended gap between the image and the text is --remotion-themed-spacing. Given there is already a non-breaking-space rendered after the image
@@ -266,19 +254,19 @@ div.bocList table.bocListTable tr:not(.hasValidationRow) td.bocListDataCell
   border-bottom: var(--boclist-tabledata-border);
 }
 
-div.bocList table.bocListTable td.bocListDataCellIndex > div
+div.bocList table.bocListTable td.bocListDataCellIndex *.bocListCellStructureElement > div.bocListContent
 {
   justify-content: end;
 }
 /*endregion*/
 
 /*region BocList row menu*/
-div.bocList table.bocListTable td.bocListDataCell > * > .DropDownMenuContainer
+div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > div > .DropDownMenuContainer
 {
   margin-top: calc(-1 * (var(--remotion-themed-spacing) / 2 - var(--remotion-themed-border-width)));
 }
 
-div.bocList table.bocListTable td.bocListDataCell > * > .DropDownMenuContainer .DropDownMenuSelect
+div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > div > .DropDownMenuContainer .DropDownMenuSelect
 {
   height: calc(var(--remotion-themed-line-height) + var(--remotion-themed-spacing-small));
 }
@@ -375,6 +363,20 @@ div.bocList div.bocListTableBlock div.bocListNavigator a:not([href]) img
 {
   filter: opacity(0.5);
 }
+/*endregion*/
+
+/*region validation marker*/
+div.bocList .bocListCellStructureElement > .validationErrorMarker
+{
+  margin-top: calc(var(--remotion-themed-spacing) / 2);
+}
+
+div.bocList .bocListCellStructureElement > .validationErrorMarker,
+div.bocList .bocListContent > .validationErrorMarker
+{
+  border: var(--remotion-themed-border-placeholder);
+}
+
 /*endregion*/
 
 /*region bocListValidationRow*/

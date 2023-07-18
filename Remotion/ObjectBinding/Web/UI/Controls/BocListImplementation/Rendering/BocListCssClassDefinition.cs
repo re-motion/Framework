@@ -161,6 +161,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return "bocListTitleCellAllRowsSelector"; }
     }
 
+    /// <summary> Gets the CSS-Class applied to the cell in the <see cref="BocList"/>'s data rows that contains the edit mode controls. </summary>
+    /// <remarks> Class: <c>bocListDataCellEditModeButtons</c> </remarks>
+    public virtual string DataCellEditModeButtons
+    {
+      get { return "bocListDataCellEditModeButtons"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to the cell in the <see cref="BocList"/>'s title row that contains the edit mode controls. </summary>
+    /// <remarks> Class: <c>bocListTitleCellEditModeButtons</c> </remarks>
+    public virtual string TitleCellEditModeButtons
+    {
+      get { return "bocListTitleCellEditModeButtons"; }
+    }
+
     /// <summary> Gets the CSS-Class applied to the cell in the <see cref="BocList"/>'s data rows that contains the row selector. </summary>
     /// <remarks> Class: <c>bocListDataCellRowSelector</c> </remarks>
     public virtual string DataCellSelector

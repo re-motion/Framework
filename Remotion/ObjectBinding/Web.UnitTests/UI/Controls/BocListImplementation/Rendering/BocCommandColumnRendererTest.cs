@@ -87,7 +87,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var a = Html.GetAssertedChildElement(td, "a", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+
+      var a = Html.GetAssertedChildElement(cellStructureDiv, "a", 0);
       Html.AssertAttribute(a, "id", List.Object.ClientID + "_Column_0_Command_Row_10");
       Html.AssertAttribute(a, "href", "fakeFallbackUrl");
       Html.AssertAttribute(a, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
@@ -127,7 +130,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var a = Html.GetAssertedChildElement(td, "a", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+
+      var a = Html.GetAssertedChildElement(cellStructureDiv, "a", 0);
       Html.AssertAttribute(a, "href", "fakeFallbackUrl");
       Html.AssertAttribute(a, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
 
@@ -156,7 +162,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var a = Html.GetAssertedChildElement(td, "a", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+
+      var a = Html.GetAssertedChildElement(cellStructureDiv, "a", 0);
       Html.AssertAttribute(a, "href", "fakeFallbackUrl");
       Html.AssertAttribute(a, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
 
@@ -183,7 +192,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var div = Html.GetAssertedChildElement(td, "div", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+
+      var div = Html.GetAssertedChildElement(cellStructureDiv, "div", 0);
       Html.AssertAttribute(div, "class", _bocListCssClassDefinition.Content);
 
       Html.AssertTextNode(div, "TestCommand", 0);

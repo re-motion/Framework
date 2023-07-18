@@ -139,7 +139,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       }
       Html.AssertAttribute(td, DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, 1.ToString());
 
-      var label = Html.GetAssertedChildElement(td, "div", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+
+      var label = Html.GetAssertedChildElement(cellStructureDiv, "div", 0);
       Html.AssertAttribute(label, "class", _bocListCssClassDefinition.Content);
 
       Html.AssertTextNode(label, (1 + indexOffset).ToString(), 0);

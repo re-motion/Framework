@@ -434,9 +434,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var document = Html.GetResultDocument();
       var td = Html.GetAssertedChildElement(document, "td", 0);
-      Html.AssertChildElementCount(td, 3);
+      Html.AssertChildElementCount(td, 1);
 
-      var iconSpan = Html.GetAssertedChildElement(td, "span", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+      Html.AssertChildElementCount(cellStructureDiv, 3);
+
+      var iconSpan = Html.GetAssertedChildElement(cellStructureDiv, "span", 0);
       Html.AssertAttribute(iconSpan, "class", _bocListCssClassDefinition.ValidationErrorMarker);
       Html.AssertAttribute(iconSpan, "id", "MyList_C6_R0_ValidationMarker");
       Html.AssertAttribute(iconSpan, "title", "Invalid input in current cell\r\n• error message\r\n");
@@ -446,10 +450,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var img = Html.GetAssertedChildElement(iconSpan, "img", 0);
       Html.AssertAttribute(img, "src", "/fake/Remotion.Web/Themes/Fake/Image/sprite.svg#ValidationError");
 
-      var div = Html.GetAssertedChildElement(td, "div", 1);
+      var div = Html.GetAssertedChildElement(cellStructureDiv, "div", 1);
       Html.AssertAttribute(div, "class", _bocListCssClassDefinition.Content);
 
-      var screenReaderSpan = Html.GetAssertedChildElement(td, "div", 2);
+      var screenReaderSpan = Html.GetAssertedChildElement(cellStructureDiv, "div", 2);
       Html.AssertAttribute(screenReaderSpan, "class", _bocListCssClassDefinition.CssClassScreenReaderText);
       Html.AssertChildElementCount(screenReaderSpan, 1);
 
@@ -478,16 +482,20 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var document = Html.GetResultDocument();
       var td = Html.GetAssertedChildElement(document, "td", 0);
-      Html.AssertChildElementCount(td, 2);
+      Html.AssertChildElementCount(td, 1);
 
-      var span = Html.GetAssertedChildElement(td, "span", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+      Html.AssertChildElementCount(cellStructureDiv, 2);
+
+      var span = Html.GetAssertedChildElement(cellStructureDiv, "span", 0);
       Html.AssertAttribute(span, "class", _bocListCssClassDefinition.ValidationErrorMarker);
       Html.AssertChildElementCount(span, 1);
 
       var img = Html.GetAssertedChildElement(span, "img", 0);
       Html.AssertAttribute(img, "src", "/fake/Remotion.Development.Web/Image/Spacer.gif");
 
-      var div = Html.GetAssertedChildElement(td, "div", 1);
+      var div = Html.GetAssertedChildElement(cellStructureDiv, "div", 1);
       Html.AssertAttribute(div, "class", _bocListCssClassDefinition.Content);
     }
 

@@ -49,6 +49,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
     }
 
+    protected override string GetAdditionalCssClassForTitleCell (BocCellAttributeRenderingContext<BocRowEditModeColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
+    {
+      return CssClasses.TitleCellEditModeButtons;
+    }
+
+    protected override string GetAdditionalCssClassForDataCell (BocCellAttributeRenderingContext<BocRowEditModeColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
+    {
+      return CssClasses.DataCellEditModeButtons;
+    }
+
     /// <summary>
     /// Renders the cell contents depending on the <paramref name="arguments"/>'s
     /// <see cref="BocListDataRowRenderEventArgs.IsEditableRow"/> property.
