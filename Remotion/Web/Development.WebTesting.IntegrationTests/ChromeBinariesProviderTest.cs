@@ -29,6 +29,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
     [Test]
     [Retry(3)]
+    [Ignore("TODO: RM-8894 With Chrome v115 the binary resolution has been changed and the implementation requires a rework.")]
     public void GetInstalledExecutable ()
     {
       var provider = new ChromeBinariesProvider();
