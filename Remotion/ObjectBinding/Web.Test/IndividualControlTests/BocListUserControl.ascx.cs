@@ -39,6 +39,7 @@ namespace OBWTest.IndividualControlTests
 public class BocListUserControl : BaseUserControl
 {
   private const string c_deleteItemID = "Delete";
+  protected NewFormGrid MyNewFormGrid;
   protected HtmlTable Table3;
   protected BocTextValue FirstNameField;
   protected BocTextValue LastNameField;
@@ -102,6 +103,14 @@ public class BocListUserControl : BaseUserControl
   {
     base.OnInit(e);
     InitializeMenuItems();
+
+    var row = new NewFormGridRow();
+    var bocBooleanValue = new BocBooleanValue();
+    bocBooleanValue.ID = "MyBocTest";
+    bocBooleanValue.DataSource = CurrentObject;
+    bocBooleanValue.PropertyIdentifier = "Deceased";
+    row.ValueControls.Add(bocBooleanValue);
+    MyNewFormGrid.Rows.Add(row);
   }
 
   private void InitializeMenuItems ()

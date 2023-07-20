@@ -16,6 +16,15 @@
 --%>
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="BocListUserControl.ascx.cs" Inherits="OBWTest.IndividualControlTests.BocListUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
 
+<remotion:NewFormGrid ID="MyNewFormGrid" runat="server">
+  <Rows>
+    <remotion:NewFormGridRow runat="server" Label="Text">
+      <ValueControls>
+        <label>asd</label>
+      </ValueControls>
+    </remotion:NewFormGridRow>
+  </Rows>
+</remotion:NewFormGrid>
 
 <table id="FormGrid" runat="server">
   <tr>
