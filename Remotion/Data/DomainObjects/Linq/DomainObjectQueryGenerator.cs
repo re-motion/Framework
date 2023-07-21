@@ -277,8 +277,8 @@ namespace Remotion.Data.DomainObjects.Linq
       var endPoint = InlineTypeDefinitionWalker.WalkDescendants(
           typeDefinition,
           classDefinition => classDefinition.ResolveRelationEndPoint(propertyInfoAdapter),
-          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported."),
-          match: relationEndPoint => relationEndPoint != null); // TODO R2I Mapping: Add support for interfaces
+          interfaceDefinition => interfaceDefinition.ResolveRelationEndPoint(propertyInfoAdapter),
+          match: relationEndPoint => relationEndPoint != null);
 
       if (endPoint == null)
       {

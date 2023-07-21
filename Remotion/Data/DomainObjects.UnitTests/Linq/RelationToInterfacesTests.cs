@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
+using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.InterfaceMapping;
 using Remotion.TypePipe;
@@ -202,6 +204,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       Assert.That(oldOrders[0].Group, Is.EqualTo(orderGroup));
       Assert.That(oldOrders.Skip(1).All(e => e.Group == null), Is.True);
       Assert.That(newOrders.All(e => e.Group == orderGroup), Is.True);
+    }
+
+    [Test]
+    public void EagerFetching ()
+    {
+      var orderGroup = QueryFactory.CreateLinqQuery<IOrderGroup>()
+          .FetchMany(e => e.Orders)
+          .ToArray();
+
+      Assert.That(orderGroup.Length, Is.EqualTo(1));
+      //Assert.That(orderGroup[0].Orders.IsDataComplete, Is.True);
     }
 
     // ObjectList example
