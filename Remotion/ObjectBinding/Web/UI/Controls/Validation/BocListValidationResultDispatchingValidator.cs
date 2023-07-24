@@ -53,6 +53,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
       ArgumentUtility.CheckNotNull("validationResult", validationResult);
 
       var bocListControl = GetControlToValidate();
+      if (!bocListControl.Visible)
+        validationResult = new ReadOnlyBusinessObjectValidationResultDecorator(validationResult);
 
       DispatchToValidationResultDispatchers(validationResult, bocListControl);
 
