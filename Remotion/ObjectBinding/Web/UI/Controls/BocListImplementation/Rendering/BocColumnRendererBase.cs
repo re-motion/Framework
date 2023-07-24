@@ -376,7 +376,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.CellStructureElement);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-      var validationInfoText = renderingContext.Control.GetResourceManager().GetString(BocList.ResourceIdentifier.ValidationErrorInfoCell);
+      var validationInfoText = renderingContext.Control.GetResourceManager().GetString(BocList.ResourceIdentifier.ValidationErrorInfoForCellLabelText);
       var validationFailures = renderingContext.Control.ValidationFailureRepository.GetUnhandledValidationFailuresForDataCell(
           arguments.BusinessObject,
           renderingContext.ColumnDefinition,
@@ -385,10 +385,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (validationFailures.Count > 0)
       {
         var tooltipStringBuilder = new StringBuilder();
-        tooltipStringBuilder.AppendLine(validationInfoText);
         foreach (var validationFailure in validationFailures)
         {
-          tooltipStringBuilder.Append("• ");
           tooltipStringBuilder.AppendLine(validationFailure.Failure.ErrorMessage);
         }
 
