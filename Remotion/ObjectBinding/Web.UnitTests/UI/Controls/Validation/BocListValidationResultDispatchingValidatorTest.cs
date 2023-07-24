@@ -37,9 +37,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       validationFailureRepoStub
           .Setup(_ => _.GetUnhandledValidationFailuresForBocList(true))
           .Returns(Array.Empty<BocListValidationFailureWithLocationInformation>());
+
+
+      var validationFailuresForBocList = new[]
+                                         {
+                                           BocListValidationFailureWithLocationInformation.CreateFailure(BusinessObjectValidationFailure.Create("Errors on BocList"))
+                                         };
+
       validationFailureRepoStub
-          .Setup(_ => _.GetUnhandledValidationFailuresForBocListAndContainingDataRowsAndDataCells(true))
-          .Returns(Array.Empty<BocListValidationFailureWithLocationInformation>());
+          .SetupSequence(_ => _.GetUnhandledValidationFailuresForBocListAndContainingDataRowsAndDataCells(true))
+          .Returns(Array.Empty<BocListValidationFailureWithLocationInformation>())
+          .Returns(validationFailuresForBocList);
 
       var error = "New error just arrived";
       var resourceManagerStub = new Mock<IResourceManager>();
@@ -66,9 +74,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
     public void RefreshErrorMessage_WithBocListValidationFailures_ReturnsFailuresOfBocList ()
     {
       var validationFailureRepoStub = new Mock<IBocListValidationFailureRepository>();
+      var resourceManagerStub = new Mock<IResourceManager>();
 
       var bocListMock = new Mock<Control> { CallBase = true };
       bocListMock.As<IBocList>().Setup(_ => _.ValidationFailureRepository).Returns(validationFailureRepoStub.Object);
+      bocListMock.As<IBocList>().Setup(_ => _.GetResourceManager()).Returns(resourceManagerStub.Object);
       bocListMock.Object.ID = "someBocList";
 
       var validationFailuresForBocList = new[]
@@ -107,9 +117,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       validationFailureRepoStub
           .Setup(_ => _.GetUnhandledValidationFailuresForBocList(true))
           .Returns(Array.Empty<BocListValidationFailureWithLocationInformation>());
+
       validationFailureRepoStub
-          .Setup(_ => _.GetUnhandledValidationFailuresForBocListAndContainingDataRowsAndDataCells(true))
-          .Returns(validationFailuresForBocListRows);
+          .SetupSequence(_ => _.GetUnhandledValidationFailuresForBocListAndContainingDataRowsAndDataCells(true))
+          .Returns(validationFailuresForBocListRows)
+          .Returns(Array.Empty<BocListValidationFailureWithLocationInformation>());
+
       var error = "Errors on rows in BocList";
 
       var resourceManagerStub = new Mock<IResourceManager>();
@@ -136,6 +149,44 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
     }
 
     [Test]
+    public void RefreshErrorMessage_WithoutErrors_ReturnsLocalizedInfo ()
+    {
+      var validationFailureRepoStub = new Mock<IBocListValidationFailureRepository>();
+      validationFailureRepoStub
+          .Setup(_ => _.GetUnhandledValidationFailuresForBocList(true))
+          .Returns(Array.Empty<BocListValidationFailureWithLocationInformation>());
+
+      validationFailureRepoStub
+          .Setup(_ => _.GetUnhandledValidationFailuresForBocListAndContainingDataRowsAndDataCells(true))
+          .Returns(Array.Empty<BocListValidationFailureWithLocationInformation>());
+
+
+      var error = "Errors on rows in BocList";
+
+      var resourceManagerStub = new Mock<IResourceManager>();
+      resourceManagerStub.Setup(_ => _.TryGetString("Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInListErrorMessage", out error)).Returns(true);
+
+      var businessObjectStub = new Mock<IBusinessObject>();
+
+      var bocListMock = new Mock<Control> { CallBase = true };
+      bocListMock.As<IBocList>().Setup(_ => _.ValidationFailureRepository).Returns(validationFailureRepoStub.Object);
+      bocListMock.As<IBocList>().Setup(_ => _.GetResourceManager()).Returns(resourceManagerStub.Object);
+      bocListMock.As<IBocList>().Setup(_ => _.Value).Returns(new[] { businessObjectStub.Object });
+      bocListMock.Object.ID = "someBocList";
+
+      var validator = new BocListValidationResultDispatchingValidator();
+      validator.ErrorMessage = "This should not be output.";
+      validator.ControlToValidate = "someBocList";
+
+      NamingContainer.Controls.Add(bocListMock.Object);
+      NamingContainer.Controls.Add(validator);
+
+      ((IValidatorWithDynamicErrorMessage)validator).RefreshErrorMessage();
+
+      Assert.That(validator.ErrorMessage, Is.EqualTo("Errors on rows in BocList"));
+    }
+
+    [Test]
     public void RefreshErrorMessage_WithValidationFailuresForBoundPropertyAndRowFailures_ReturnsAppendedMessageText ()
     {
       var validationFailuresForBocList = new[]
@@ -149,8 +200,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
                                              };
 
       var validationFailureRepoStub = new Mock<IBocListValidationFailureRepository>();
-      validationFailureRepoStub.Setup(_ => _.GetUnhandledValidationFailuresForBocList(true)).Returns(validationFailuresForBocList);
-      validationFailureRepoStub.Setup(_ => _.GetUnhandledValidationFailuresForBocListAndContainingDataRowsAndDataCells(true)).Returns(validationFailuresForBocListRows);
+      validationFailureRepoStub
+          .Setup(_ => _.GetUnhandledValidationFailuresForBocList(true))
+          .Returns(validationFailuresForBocList);
+
+      validationFailureRepoStub
+          .SetupSequence(_ => _.GetUnhandledValidationFailuresForBocListAndContainingDataRowsAndDataCells(true))
+          .Returns(validationFailuresForBocListRows)
+          .Returns(Array.Empty<BocListValidationFailureWithLocationInformation>());
+
+
       var error = "Errors on rows in BocList";
 
       var resourceManagerStub = new Mock<IResourceManager>();

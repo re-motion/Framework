@@ -2209,6 +2209,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
+    /// <summary>
+    /// Gets the <see cref="IBusinessObject"/>s relevant for validation and can be overriden to adapt this behavior in their own domain-specific context,
+    /// e.g. to provider a super-set of the list in the <see cref="Value"/> property.
+    /// </summary>
+    /// <returns>All <see cref="IBusinessObject"/>s rows of this <see cref="BocList"/>.</returns>
+    public virtual IReadOnlyList<IBusinessObject>? GetBusinessObjectsForValidation ()
+    {
+      return Value;
+    }
+
     /// <summary> Gets or sets the current value. </summary>
     /// <value> A list of <see cref="IBusinessObject"/> implementations or <see langword="null"/>. </value>
     [Browsable(false)]

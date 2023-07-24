@@ -18,14 +18,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
-using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 
@@ -34,8 +34,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
   public sealed class BocListValidationResultDispatchingValidator
       : BaseValidator, IBusinessObjectBoundEditableWebControlValidationResultDispatcher, IValidatorWithDynamicErrorMessage
   {
+    private readonly IBocListValidationFailureHandler _validationFailureHandler;
+
     public BocListValidationResultDispatchingValidator ()
+        : this(SafeServiceLocator.Current.GetInstance<IBocListValidationFailureHandler>())
     {
+    }
+
+    public BocListValidationResultDispatchingValidator (IBocListValidationFailureHandler validationFailureHandler)
+    {
+      ArgumentUtility.CheckNotNull("validationFailureHandler", validationFailureHandler);
+
+      _validationFailureHandler = validationFailureHandler;
     }
 
     public void DispatchValidationFailures (IBusinessObjectValidationResult validationResult)
@@ -83,7 +93,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
       var validationFailureRepository = bocListControl.ValidationFailureRepository;
       validationFailureRepository.ClearAllValidationFailures();
 
-      var rowObjects = bocListControl.Value;
+      var rowObjects = bocListControl.GetBusinessObjectsForValidation();
 
       if (rowObjects != null)
       {
@@ -231,30 +241,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
     void IValidatorWithDynamicErrorMessage.RefreshErrorMessage ()
     {
       var bocList = GetControlToValidate();
-      var validationRepository = bocList.ValidationFailureRepository;
+
+      var context = new ValidationFailureHandlingContext(bocList);
+      _validationFailureHandler.HandleValidationFailures(context);
 
       var errorMessageBuilder = new StringBuilder();
 
-      var validationFailuresForBusinessObjectPropertyOfBocList = validationRepository.GetUnhandledValidationFailuresForBocList(true);
-      foreach (var validationFailure in validationFailuresForBusinessObjectPropertyOfBocList)
+      context.AppendErrorMessages(errorMessageBuilder);
+
+      if (bocList.ValidationFailureRepository.GetUnhandledValidationFailuresForBocListAndContainingDataRowsAndDataCells(true).Any() || errorMessageBuilder.Length == 0)
       {
-        errorMessageBuilder.AppendLine(validationFailure.Failure.ErrorMessage);
+        errorMessageBuilder.Append(bocList.GetResourceManager().GetString(BocList.ResourceIdentifier.ValidationFailuresFoundInListErrorMessage));
       }
 
-      var hasRowsWithUnhandledValidationFailures = validationRepository.GetUnhandledValidationFailuresForBocListAndContainingDataRowsAndDataCells(true).Any();
-      if (hasRowsWithUnhandledValidationFailures)
-      {
-        var remainingValidationFailuresText = bocList
-            .GetResourceManager()
-            .GetString(BocList.ResourceIdentifier.ValidationFailuresFoundInOtherListPagesErrorMessage);
-
-        errorMessageBuilder.AppendLine(remainingValidationFailuresText);
-      }
-
-      if (errorMessageBuilder.Length > 0)
-        ErrorMessage = errorMessageBuilder.ToString();
-      else
-        ErrorMessage = GetControlToValidate().GetResourceManager().GetString(BocList.ResourceIdentifier.ValidationFailuresFoundInListErrorMessage);
+      ErrorMessage = errorMessageBuilder.ToString();
     }
   }
 }
