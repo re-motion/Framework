@@ -21,8 +21,10 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Validation;
+using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
+using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
@@ -30,6 +32,36 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
   [TestFixture]
   public class BocListValidationResultDispatchingValidatorTest : BocTest
   {
+    [Test]
+    public void DispatchValidationFailures_WithInvisibleControl_UsesReadOnlyValidationResultForDispatching ()
+    {
+      IBusinessObject businessObject = TypeWithReference.Create();
+      var businessObjectProperty = businessObject.BusinessObjectClass.GetPropertyDefinition("ReferenceList");
+
+      var bocList = new BocListMock();
+      bocList.ID = "someBocList";
+      bocList.DataSource = new StubDataSource(businessObject.BusinessObjectClass);
+      bocList.DataSource.BusinessObject = businessObject;
+      bocList.Property = (IBusinessObjectReferenceProperty)businessObjectProperty;
+      bocList.Visible = false;
+      bocList.FixedColumns.Add(new BocValidationErrorIndicatorColumnDefinition());
+
+      var validationResultMock = new Mock<IBusinessObjectValidationResult>(MockBehavior.Strict);
+      validationResultMock.Setup(e => e.GetValidationFailures(businessObject, businessObjectProperty, false))
+          .Returns(Array.Empty<BusinessObjectValidationFailure>())
+          .Verifiable();
+
+      var validator = new BocListValidationResultDispatchingValidator();
+      validator.ControlToValidate = "someBocList";
+
+      NamingContainer.Controls.Add(bocList);
+      NamingContainer.Controls.Add(validator);
+
+      validator.DispatchValidationFailures(validationResultMock.Object);
+
+      validationResultMock.Verify();
+    }
+
     [Test]
     public void RefreshErrorMessage_WithoutValidationFailures_ReturnsMessageFromResourceManager ()
     {
