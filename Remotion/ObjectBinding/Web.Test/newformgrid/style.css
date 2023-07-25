@@ -1,0 +1,95 @@
+/* Custom styles for this test site */
+.myFormGrid {
+    width: 90%;
+    margin: 1em;
+    margin-bottom: 30em;
+}
+
+img {
+    width: 16px;
+    height: 16px;
+}
+
+.row:not(fieldset) {
+    padding: 1em 0.5em;
+    border-bottom: 1px solid rgb(225, 225, 225);
+}
+
+.row:not(.extra) > .key {
+    min-width: 200px;
+}
+
+fieldset.row > legend, .key {
+    font-weight: bold;
+}
+
+.row.header {
+    background-color: #f9f9f9;
+}
+
+.icons {
+    margin: 0 0.3em;
+}
+
+.value {
+
+}
+
+/* General form grid styles */
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(var(--form-grid-columns), minmax(max-content, 1fr) min-content 2fr);
+    counter-reset: form-grid-nesting;
+    --form-grid-columns: 1;
+    --form-grid-width: 3;
+    --form-grid-full-width: calc(var(--form-grid-columns) * var(--form-grid-width));
+    --form-grid-value-inset: 3;
+}
+
+.row {
+    grid-column-end: span var(--form-grid-width);
+    display: grid;
+    grid-template-columns: subgrid;
+}
+
+.icons {
+    display: flex;
+    gap: 0.2em;
+}
+
+.error {
+    color: #ac1b1b;
+    grid-column-start: var(--form-grid-value-inset);
+}
+
+fieldset.row {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    grid-column-end: span var(--form-grid-full-width);
+}
+
+fieldset.row > legend {
+    display: none;
+}
+
+fieldset.row > .row:not(.header) {
+    /* border-left: 7px solid #979797; */
+    padding-left: 2em;
+}
+
+/* Extra row for value */
+.row.extra {
+    display: grid;
+    grid-template-columns: min-content auto;
+    --form-grid-value-inset: 1;
+}
+
+.row.extra > .value {
+    grid-column-end: span var(--form-grid-width);
+}
+
+/* Double column layout */
+.formGrid.double {
+    --form-grid-columns: 2;
+}

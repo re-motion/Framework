@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="index.js" async></script>
+</head>
+
+<body>
+    <h2>New Form Grid</h2>
+    <span><input id="doubleInput" type="checkbox" /> two columns</span>
+    <form-grid id="myFormGrid" class="formGrid myFormGrid">
+        <div class="row">
+            <div class="key">Geschäftszeichen</div>
+            <div class="icons"><img src="sprite.svg#Help"></div>
+            <div class="value">01.06.2017/2</div>
+        </div>
+        <div class="row">
+            <div class="key">Verfahrensbereich</div>
+            <div class="icons"></div>
+            <div class="value">Sektion I - Umwelt und Klimaschutz</div>        
+        </div>
+        <div class="row">
+            <div class="key">Sachgebiet</div>
+            <div class="icons">
+                <img src="sprite.svg#Help">
+                <img src="sprite.svg#RequiredField">
+                <img src="sprite.svg#ValidationError">
+            </div>
+            <div class="value">Sektion I Parken</div>
+            <div class="error">
+                Geben Sie einen gültigen Wert ein:<br>
+                Format: dd.MM.yyyy HH:mm<br>
+                Zeiträume: 01.01.2000 12:00:00 - 01.01.2020 12:00:00, 04.03.2014 12:00:00 -, - 05.05.2020 12:00:00<br>
+                Relative Ausdrücke: +1Y, -3d, +0fW, -1lM, +3fY, -6M - today, -5h - now<br>
+            </div>
+        </div>
+        <div class="row extra">
+            <div class="key">Sachgebiet</div>
+            <div class="icons">
+                <img src="sprite.svg#Help">
+                <img src="sprite.svg#RequiredField">
+            </div>
+            <div class="value">
+                <ul>
+                    <li>Item A</li>
+                    <li>Item B</li>
+                    <li>Item C</li>
+                    <li>Item D</li>
+                    <li>Item E</li>
+                </ul>
+            </div>
+            <!--<div class="error">
+                Geben Sie einen gültigen Wert ein:<br>
+                Format: dd.MM.yyyy HH:mm<br>
+                Zeiträume: 01.01.2000 12:00:00 - 01.01.2020 12:00:00, 04.03.2014 12:00:00 -, - 05.05.2020 12:00:00<br>
+                Relative Ausdrücke: +1Y, -3d, +0fW, -1lM, +3fY, -6M - today, -5h - now<br>
+            </div>-->
+        </div>
+        <fieldset class="row">
+            <legend>Absender</legend>
+            <div class="row header">
+                <div class="key">Absender</div>
+            </div>
+            <div class="row">
+                <div class="key">Erstellt von</div>
+                <div class="icons">
+                    <img src="sprite.svg#Help">
+                </div>
+                <div class="value"><input value="Markus"/></div>
+            </div>
+            <div class="row">
+                <div class="key">Erstellt am/um</div>
+                <div class="icons">
+                    <img src="sprite.svg#Help">
+                </div>
+                <div class="value"><input value="" type="date"/></div>
+            </div>
+            <div class="row">
+                <div class="key">Geändert von</div>
+                <div class="icons">
+                    <img src="sprite.svg#Help">
+                </div>
+                <div class="value"><input value="Karl"/></div>
+            </div>
+            <div class="row">
+                <div class="key">Geändert am/um</div>
+                <div class="icons">
+                    <img src="sprite.svg#Help">
+                </div>
+                <div class="value"><input value="" type="date"/></div>
+            </div>
+            <fieldset class="row">
+                <legend>Inner Thing</legend>
+                <div class="row header">
+                    <div class="key">Wohnort</div>
+                </div>
+                <div class="row">
+                    <div class="key">PLZ</div>
+                    <div class="icons">
+                        <img src="sprite.svg#Help">
+                    </div>
+                    <div class="value"><input value="1210"/></div>
+                </div>
+                <div class="row">
+                    <div class="key">Adresse</div>
+                    <div class="icons">
+                        <img src="sprite.svg#Help">
+                    </div>
+                    <div class="value"><input value="Blablastraße 34"/></div>
+                </div>
+            </fieldset>
+            <div class="row extra">
+                <div class="key">Spitznamen</div>
+                <div class="icons">
+                    <img src="sprite.svg#Help">
+                </div>
+                <div class="value">
+                    <ul>
+                        <li>Mark</li>
+                        <li>Mr M</li>
+                    </ul>
+                </div>
+            </div>
+        </fieldset>
+        <div class="row">
+            <div class="key">Sachgebiet</div>
+            <div class="icons">
+                <img src="sprite.svg#Help">
+                <img src="sprite.svg#RequiredField">
+            </div>
+            <div class="value">Sektion I Parken</div>
+        </div>
+    </form-grid>
+
+    <h3>Two column layout</h3>
+    <div id="myFormGrid" class="formGrid double myFormGrid">
+        <div class="row">
+            <div class="key">Geschäftszeichen</div>
+            <div class="icons"><img src="sprite.svg#Help"></div>
+            <div class="value">01.06.2017/2</div>
+        </div>
+        <div class="row">
+            <div class="key">Geschäftszeichen</div>
+            <div class="icons"><img src="sprite.svg#Help"></div>
+            <div class="value">03.08.2019/1</div>
+        </div>
+        <div class="row">
+            <div class="key">Verfahrensbereich</div>
+            <div class="icons"></div>
+            <div class="value">Sektion I - Umwelt und Klimaschutz</div>        
+        </div>
+        <div class="row">
+            <div class="key">Verfahrensbereich</div>
+            <div class="icons"></div>
+            <div class="value">Sektion I - Umwelt und Klimaschutz</div>        
+        </div>
+        <div class="row">
+            <div class="key">Sachgebiet</div>
+            <div class="icons">
+                <img src="sprite.svg#Help">
+                <img src="sprite.svg#RequiredField">
+            </div>
+            <div class="value">Sektion I Parken</div>
+        </div>
+        <div class="row">
+            <div class="key">Sachgebiet</div>
+            <div class="icons">
+                <img src="sprite.svg#Help">
+                <img src="sprite.svg#RequiredField">
+            </div>
+            <div class="value">Sektion II Fahren</div>
+        </div>
+        <div class="row extra">
+            <div class="key">Sachgebiet</div>
+            <div class="icons">
+                <img src="sprite.svg#Help">
+                <img src="sprite.svg#RequiredField">
+            </div>
+            <div class="value">
+                <ul>
+                    <li>Item A</li>
+                    <li>Item B</li>
+                    <li>Item C</li>
+                    <li>Item D</li>
+                    <li>Item E</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row extra">
+            <div class="key">Sachgebiet</div>
+            <div class="icons">
+                <img src="sprite.svg#Help">
+                <img src="sprite.svg#RequiredField">
+            </div>
+            <div class="value">
+                <ul>
+                    <li>Item A</li>
+                    <li>Item B</li>
+                    <li>Item C</li>
+                    <li>Item D</li>
+                    <li>Item E</li>
+                </ul>
+            </div>
+        </div>
+        <fieldset class="row">
+            <legend>Absender</legend>
+            <div class="row header">
+                <div class="key">Absender</div>
+            </div>
+            <div class="row header">
+                <div class="key">Annehmer</div>
+            </div>
+            <div class="row">
+                <div class="key">Erstellt von</div>
+                <div class="icons">
+                    <img src="sprite.svg#Help">
+                </div>
+                <div class="value"><input value="Markus"/></div>
+            </div>
+            <div class="row">
+                <div class="key">Erstellt von</div>
+                <div class="icons">
+                    <img src="sprite.svg#Help">
+                </div>
+                <div class="value"><input value="Tim"/></div>
+            </div>
+            <div class="row">
+                <div class="key">Erstellt am/um</div>
+                <div class="icons">
+                    <img src="sprite.svg#Help">
+                </div>
+                <div class="value"><input value="" type="date"/></div>
+            </div>
+            <div class="row">
+                <div class="key">Erstellt am/um</div>
+                <div class="icons">
+                    <img src="sprite.svg#Help">
+                </div>
+                <div class="value"><input value="" type="date"/></div>
+            </div>
+            <div class="row">
+                <div class="key">Geändert von</div>
+                <div class="icons">
+                    <img src="sprite.svg#Help">
+                </div>
+                <div class="value"><input value="Karl"/></div>
+            </div>
+            <div class="row">
+                <div class="key"></div>
+                <div class="icons"></div>
+                <div class="value"></div>
+            </div>
+            <div class="row">
+                <div class="key">Geändert am/um</div>
+                <div class="icons">
+                    <img src="sprite.svg#Help">
+                </div>
+                <div class="value"><input value="" type="date"/></div>
+            </div>
+            <div class="row">
+                <div class="key"></div>
+                <div class="icons"></div>
+                <div class="value"></div>
+            </div>
+            <div class="row extra">
+                <div class="key">Kopien</div>
+                <div class="icons">
+                    <img src="sprite.svg#Help">
+                </div>
+                <div class="value">
+                    <ul>
+                        <li>Kopie 1</li>
+                        <li>Kopie 2</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row extra">
+                <div class="key">Kopien</div>
+                <div class="icons">
+                    <img src="sprite.svg#Help">
+                </div>
+                <div class="value">
+                    <ul>
+                        <li>Kopie 4</li>
+                        <li>Kopie 5</li>
+                    </ul>
+                </div>
+            </div>
+        </fieldset>
+        <div class="row">
+            <div class="key">Sachgebiet</div>
+            <div class="icons">
+                <img src="sprite.svg#Help">
+                <img src="sprite.svg#RequiredField">
+            </div>
+            <div class="value">Sektion I Parken</div>
+        </div>
+        <div class="row">
+            <div class="key">Sachgebiet</div>
+            <div class="icons">
+                <img src="sprite.svg#Help">
+                <img src="sprite.svg#RequiredField">
+            </div>
+            <div class="value">Sektion I Parken</div>
+        </div>
+    </div>
+</body>
+
+</html>
