@@ -373,6 +373,35 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That(() => derivedDropDown.Open(), Throws.Nothing);
     }
 
+    [Category("Screenshot")]
+    [Test]
+    public void ScreenshotTest_ValidationMarkerAndMessages ()
+    {
+      var home = Start();
+
+      home.WebButtons().GetByLocalID("ValidationTestCaseCellButton").Click();
+
+      var control = home.Lists().GetByLocalID("JobList_Validation");
+      var fluentControl = control.ForScreenshot();
+
+      Helper.RunScreenshotTestExact<FluentScreenshotElement<ScreenshotBocList<BocListControlObject, BocListRowControlObject, BocListCellControlObject>>,
+          BocListControlObjectTest>(
+              fluentControl,
+              ScreenshotTestingType.Both,
+              (builder, target) =>
+              {
+                var row = target.GetTableContainer().GetRow().WithIndex(1);
+
+                builder.AnnotateBox(row.GetErrors(), Pens.Red, WebPadding.Inner);
+                builder.AnnotateBox(row.GetCell(7), Pens.Yellow, WebPadding.Inner);
+                builder.AnnotateBox(row.GetCell(7).GetErrorMarker(), Pens.Blue, WebPadding.Inner);
+                builder.AnnotateBox(row.GetErrorMarker(), Pens.Green, WebPadding.Inner);
+                builder.AnnotateBox(target.GetTableContainer().GetHeaderRow().GetErrorMarker(), Pens.Orange, WebPadding.Inner);
+
+                builder.Crop(row, new WebPadding(0, 25, 0, 30), isRestrictedByParent: false);
+              });
+    }
+
     [Test]
     public void TestSelectAfterClickOnSortColumnCheckBox ()
     {

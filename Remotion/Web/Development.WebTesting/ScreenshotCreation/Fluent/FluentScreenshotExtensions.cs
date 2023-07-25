@@ -231,13 +231,18 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     public static void Crop<T> (
         [NotNull] this ScreenshotBuilder builder,
         [NotNull] IFluentScreenshotElement<T> fluentTarget,
-        [CanBeNull] WebPadding? padding = null)
+        [CanBeNull] WebPadding? padding = null,
+        bool isRestrictedByParent = true,
+        bool isRestrictedByImageBounds = true)
         where T : notnull
     {
       ArgumentUtility.CheckNotNull("builder", builder);
       ArgumentUtility.CheckNotNull("fluentTarget", fluentTarget);
 
-      FluentUtility.CropFluent(builder, fluentTarget, new ScreenshotCropping(padding ?? WebPadding.None));
+      var screenshotCropping = new ScreenshotCropping(padding ?? WebPadding.None);
+      screenshotCropping.IsRestrictedByParent = isRestrictedByParent;
+      screenshotCropping.IsRestrictedByImageBounds = isRestrictedByImageBounds;
+      FluentUtility.CropFluent(builder, fluentTarget, screenshotCropping);
     }
 
     /// <summary>

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Drawing;
 using System.Linq;
 using Coypu;
 using NUnit.Framework;
@@ -30,7 +31,10 @@ using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStr
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.Utilities;
 
@@ -237,6 +241,36 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
               fluentDropDown.GetTarget().FluentList,
               fluentDropDown.GetTarget().FluentElement));
       Assert.That(() => derivedDropDown.Open(), Throws.Nothing);
+    }
+
+    [Ignore("TODO: RM-8902 is required for this test to work on build agent because the screenshot is too big.")]
+    [Category("Screenshot")]
+    [Test]
+    public void ScreenshotTest_ValidationMarkerAndMessages ()
+    {
+      var home = Start();
+
+      home.WebButtons().GetByLocalID("ValidationTestCaseCellButton").Click();
+
+      var control = home.ListAsGrids().GetByLocalID("JobList_Validation");
+      var fluentControl = control.ForScreenshot();
+
+      Helper.RunScreenshotTestExact<FluentScreenshotElement<ScreenshotBocList<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject>>,
+          BocListAsGridControlObject>(
+              fluentControl,
+              ScreenshotTestingType.Both,
+              (builder, target) =>
+              {
+                var row = target.GetTableContainer().GetRow().WithIndex(1);
+
+                builder.AnnotateBox(row.GetErrors(), Pens.Red, WebPadding.Inner);
+                builder.AnnotateBox(row.GetCell(6), Pens.Yellow, WebPadding.Inner);
+                builder.AnnotateBox(row.GetCell(6).GetErrorMarker(), Pens.Blue, WebPadding.Inner);
+                builder.AnnotateBox(row.GetErrorMarker(), Pens.Green, WebPadding.Inner);
+                builder.AnnotateBox(target.GetTableContainer().GetHeaderRow().GetErrorMarker(), Pens.Orange, WebPadding.Inner);
+
+                builder.Crop(row.GetCell(3), new WebPadding(0, 25, 0, 30), isRestrictedByParent: false);
+              });
     }
 
     [Test]
