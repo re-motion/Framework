@@ -18,6 +18,12 @@
 
 <remotion:NewFormGrid ID="MyNewFormGrid" runat="server">
   <Rows>
+    <remotion:NewFormGridRow runat="server" Style="Header">
+      <ValueControls>
+        <remotion:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" ReadOnly="True" datasourcecontrol="CurrentObject"></remotion:boctextvalue>
+        <remotion:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" ReadOnly="True" datasourcecontrol="CurrentObject"></remotion:boctextvalue>
+      </ValueControls>
+    </remotion:NewFormGridRow>
     <remotion:NewFormGridRow runat="server" Label="Text">
       <ValueControls>
         <label>asd</label>
@@ -27,9 +33,6 @@
 </remotion:NewFormGrid>
 
 <table id="FormGrid" runat="server">
-  <tr>
-    <td colSpan=2><remotion:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" ReadOnly="True" datasourcecontrol="CurrentObject"></remotion:boctextvalue>&nbsp;<remotion:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" ReadOnly="True" datasourcecontrol="CurrentObject"></remotion:boctextvalue></td>
-  </tr>
   <tr>
     <td></td>
     <td>

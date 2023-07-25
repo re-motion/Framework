@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
@@ -45,6 +46,9 @@ namespace Remotion.Web.UI.Controls
     [PersistenceMode(PersistenceMode.InnerProperty)]
     public ControlCollection ValueControls => _valueControlsPlaceHolder.Controls;
 
+    [PersistenceMode(PersistenceMode.Attribute)]
+    public NewFormGridRowStyle Style { get; set; }
+
     public NewFormGridRow ()
     {
       _labelControlsPlaceHolder = new PlaceHolder();
@@ -57,6 +61,13 @@ namespace Remotion.Web.UI.Controls
 
     private NewFormGrid FormGrid => _formGrid ??= (NewFormGrid)((IControlItem)this).OwnerControl!;
 
+    protected override void OnInit (EventArgs e)
+    {
+      base.OnInit(e);
+
+      EnsureChildControls();
+    }
+
     protected override void CreateChildControls ()
     {
       base.CreateChildControls();
@@ -68,12 +79,14 @@ namespace Remotion.Web.UI.Controls
       Controls.Add(_requiredIconPlaceHolder);
       Controls.Add(_validatorControls);
 
-      var helpInfo = FilterForVisibleSmartControls(_labelControlsPlaceHolder.Controls)
+      var controlWithHelpInfo = FilterForVisibleSmartControls(_labelControlsPlaceHolder.Controls)
           .Concat(FilterForVisibleSmartControls(_valueControlsPlaceHolder.Controls))
-          .FirstOrDefault(e => e.HelpInfo != null)?.HelpInfo;
-      if (helpInfo != null)
+          .FirstOrDefault(e => e.HelpInfo != null);
+      if (controlWithHelpInfo != null)
       {
-        _helpIconPlaceHolder.Controls.Add(CreateHelpMarker(helpInfo));
+        var helpInfo = CreateHelpMarker(controlWithHelpInfo.HelpInfo!);
+        helpInfo.ID += "_" + controlWithHelpInfo.ID;
+        _helpIconPlaceHolder.Controls.Add(helpInfo);
       }
 
       var isRequired = FilterForVisibleSmartControls(_labelControlsPlaceHolder.Controls)
@@ -83,10 +96,25 @@ namespace Remotion.Web.UI.Controls
       {
         _requiredIconPlaceHolder.Controls.Add(CreateRequiredMarker());
       }
+
+      var firstControl = _valueControlsPlaceHolder.Controls.Cast<Control>()
+          .Concat(_labelControlsPlaceHolder.Controls.Cast<Control>())
+          .FirstOrDefault();
+      if (firstControl != null)
+        ID = $"NewFormGridRow_{firstControl.ID}";
     }
 
     protected override void Render (HtmlTextWriter writer)
     {
+      var className = Style switch
+      {
+          NewFormGridRowStyle.Default => string.Empty,
+          NewFormGridRowStyle.SeparateValue => "separate",
+          NewFormGridRowStyle.Header => "header",
+          _ => throw new ArgumentOutOfRangeException()
+      };
+      if (!string.IsNullOrEmpty(className))
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, className);
       writer.RenderBeginTag(c_formGridRowTag); // <form-grid-row>
 
       // Label

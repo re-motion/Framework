@@ -183,7 +183,7 @@
 form-grid {
   display: grid;
   grid-template-columns: repeat(var(--form-grid-columns), minmax(max-content, 1fr) min-content min-content min-content 2fr);
-  --formgrid-border: var(--remotion-themed-border-width) solid var(--color-standard-separator);
+  --form-grid-border: var(--remotion-themed-border-width) solid var(--color-standard-separator);
   --form-grid-columns: 1;
   --form-grid-width: 5;
   --form-grid-full-width: calc(var(--form-grid-columns) * var(--form-grid-width));
@@ -195,7 +195,7 @@ form-grid-row {
   display: grid;
   grid-template-columns: subgrid;
   padding: var(--remotion-themed-spacing) calc(var(--remotion-themed-spacing) / 2);
-  border-bottom: var(--formgrid-border);
+  border-bottom: var(--form-grid-border);
 }
 
 form-grid-icon > img {

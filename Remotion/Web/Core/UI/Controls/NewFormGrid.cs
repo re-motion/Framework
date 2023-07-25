@@ -50,15 +50,20 @@ namespace Remotion.Web.UI.Controls
       get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
-    protected override void OnInit (EventArgs e)
+    protected override void CreateChildControls ()
     {
+      base.CreateChildControls();
+
       foreach (NewFormGridRow row in Rows)
       {
-        var rowControl = new NewFormGridRowControl(row);
-        Controls.Add(rowControl);
+        Controls.Add(row);
       }
+    }
 
+    protected override void OnInit (EventArgs e)
+    {
       base.OnInit(e);
+      EnsureChildControls();
     }
 
     protected override void Render (HtmlTextWriter writer)
