@@ -466,13 +466,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
           {
             ((HtmlControl)validationErrorMarker).Attributes["tabIndex"] = "0";
             ((HtmlControl)validationErrorMarker).Attributes["title"] = null;
-            ((HtmlControl)validationErrorMarker).Attributes[HtmlTextWriterAttribute2.AriaLabel] = toolTipBuilder.ToString();
+            if (_editModeHost.DisableEditModeValidationMessages)
+              ((HtmlControl)validationErrorMarker).Attributes[HtmlTextWriterAttribute2.AriaLabel] = toolTipBuilder.ToString();
           }
           else if (validationErrorMarker is WebControl)
           {
             ((WebControl)validationErrorMarker).TabIndex = 0;
             ((WebControl)validationErrorMarker).ToolTip = null;
-            ((WebControl)validationErrorMarker).Attributes[HtmlTextWriterAttribute2.AriaLabel] = toolTipBuilder.ToString();
+            if (_editModeHost.DisableEditModeValidationMessages)
+              ((WebControl)validationErrorMarker).Attributes[HtmlTextWriterAttribute2.AriaLabel] = toolTipBuilder.ToString();
           }
           validationErrorMarker.RenderControl(writer);
         }
