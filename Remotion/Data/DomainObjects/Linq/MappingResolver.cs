@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.Linq
           entityTypeDefinition,
           classDefinition => ResolveMemberInTypeDefinition(originatingEntity, property, classDefinition),
           interfaceDefinition => ResolveMemberInTypeDefinition(originatingEntity, property, interfaceDefinition),
-          match: expression => expression != null); // TODO R2I Mapping: Add support for interfaces
+          match: expression => expression != null);
 
       if (resolvedMember == null)
       {
@@ -257,7 +257,7 @@ namespace Remotion.Data.DomainObjects.Linq
           entityTypeDefinition,
           classDefinition => classDefinition.ResolveRelationEndPoint(property),
           interfaceDefinition => interfaceDefinition.ResolveRelationEndPoint(property),
-          match: relationEndPoint => relationEndPoint != null); // TODO R2I Mapping: Add support for interfaces
+          match: relationEndPoint => relationEndPoint != null);
 
       if (leftEndPointDefinition == null)
       {

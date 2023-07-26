@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         InlineTypeDefinitionWalker.WalkDescendants(
             classHierarchyRoot,
             EnsureStoragePropertiesCreated,
-            interfaceDefinition => throw new InvalidOperationException("Interfaces are not expected.")); // TODO R2I Linq: Add support for interfaces
+            interfaceDefinition => throw new InvalidOperationException("Interfaces are not expected."));
       }
       foreach (var typeDefinition in typeDefinitionsArray)
         EnsureStoragePropertiesCreated(typeDefinition);
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         InlineTypeDefinitionWalker.WalkDescendants(
             classHierarchyRoot,
             EnsureStorageEntitiesCreated,
-            interfaceDefinition => throw new InvalidOperationException("Interfaces are not expected.")); // TODO R2I Linq: Add support for interfaces
+            interfaceDefinition => throw new InvalidOperationException("Interfaces are not expected."));
       }
       foreach (var typeDefinition in typeDefinitionsArray)
         EnsureStorageEntitiesCreated(typeDefinition);
