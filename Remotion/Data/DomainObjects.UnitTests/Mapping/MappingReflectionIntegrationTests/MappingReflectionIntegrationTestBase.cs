@@ -71,7 +71,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     }
 
     protected IRelationEndPointDefinition GetRelationEndPointDefinition (
-        TypeDefinition typeDefinition, Type declaringType, string shortPropertyName)
+        TypeDefinition typeDefinition,
+        Type declaringType,
+        string shortPropertyName)
     {
       return typeDefinition.GetRelationEndPointDefinition(declaringType.FullName + "." + shortPropertyName);
     }
@@ -102,7 +104,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     protected PropertyInfoAdapter GetPropertyInformation (Type declaringType, string propertyName)
     {
       var propertyInfo = declaringType.GetProperty(
-          propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+          propertyName,
+          BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
       Assert.That(propertyInfo, Is.Not.Null, "Property not found: '{0}.{1}'", declaringType, propertyName);
       return PropertyInfoAdapter.Create(propertyInfo);
     }
@@ -115,6 +118,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
         var message = string.Format("Property must be declared on type '{0}', but it is declared on '{1}'.", typeof(T), memberInfo.DeclaringType);
         throw new InvalidOperationException(message);
       }
+
       return PropertyInfoAdapter.Create(memberInfo);
     }
   }
