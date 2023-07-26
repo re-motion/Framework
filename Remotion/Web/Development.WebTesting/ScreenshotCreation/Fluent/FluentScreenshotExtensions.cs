@@ -103,6 +103,17 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     }
 
     /// <summary>
+    /// Sets the <see cref="IFluentScreenshotElement.MinimumElementVisibility"/> on the specified <paramref name="element"/>
+    /// to <see cref="ElementVisibility"/>.<see cref="ElementVisibility.PartiallyVisible"/>.
+    /// </summary>
+    public static IFluentScreenshotElement<T> AllowPartialVisibility<T> (this IFluentScreenshotElement<T> element)
+      where T : notnull
+    {
+      element.MinimumElementVisibility = ElementVisibility.PartiallyVisible;
+      return element;
+    }
+
+    /// <summary>
     /// Returns the target element of the specified <paramref name="fluentElement"/>.
     /// </summary>
     public static T GetTarget<T> ([NotNull] this IFluentScreenshotElement<T> fluentElement)

@@ -167,7 +167,12 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
       ArgumentUtility.CheckNotNull("fluentTarget", fluentTarget);
       ArgumentUtility.CheckNotNull("cropping", cropping);
 
-      builder.Crop(fluentTarget, FluentResolver<T>.Instance, cropping, new FluentTransformation<T>(fluentTarget));
+      builder.Crop(
+          fluentTarget,
+          FluentResolver<T>.Instance,
+          cropping,
+          new FluentTransformation<T>(fluentTarget),
+          fluentTarget.MinimumElementVisibility);
     }
   }
 }
