@@ -201,5 +201,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     {
       _validationResult = BusinessObjectValidationResult.Create(new ValidationResult(validationFailures));
     }
+
+    protected void DeleteSelectedRowTestCaseRowButton_OnClick (object sender, EventArgs e)
+    {
+      JobList_Normal.RemoveRows(JobList_Normal.GetSelectedBusinessObjects());
+    }
   }
 }
