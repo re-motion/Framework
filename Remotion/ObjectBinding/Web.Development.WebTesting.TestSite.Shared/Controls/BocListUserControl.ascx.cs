@@ -74,6 +74,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
       JobList_Normal.CustomCellClick += CustomCellClickHandler;
       JobList_ReadOnly.CustomCellClick += CustomCellClickHandler;
 
+      JobList_Normal.MenuItemClick += JobList_MenuItemClick;
+
       AlwaysInvalidValidator.ServerValidate += (source, args) => args.IsValid = false;
       JobList_AlwaysInvalid.RegisterValidator(AlwaysInvalidValidator);
 
@@ -200,6 +202,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     private void AddValidationFailures (params ValidationFailure[] validationFailures)
     {
       _validationResult = BusinessObjectValidationResult.Create(new ValidationResult(validationFailures));
+    }
+
+    private void JobList_MenuItemClick (object sender, WebMenuItemClickEventArgs e)
+    {
+      if (e.Item.ItemID == "Delete")
+        JobList_Normal.RemoveRows(JobList_Normal.GetSelectedBusinessObjects());
     }
   }
 }

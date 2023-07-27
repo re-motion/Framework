@@ -90,6 +90,11 @@
               <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
             </PersistedCommand>
           </remotion:BocMenuItem>
+          <remotion:BocMenuItem ItemID="Delete" Text="Delete" Category="Edit">
+            <PersistedCommand>
+              <remotion:BocMenuItemCommand Type="Event"></remotion:BocMenuItemCommand>
+            </PersistedCommand>
+          </remotion:BocMenuItem>
         </ListMenuItems>
         <FixedColumns>
           <remotion:BocRowEditModeColumnDefinition ItemID="EditRow" EditText="Edit" SaveText="Save" CancelText="Cancel" Width="2em" />
