@@ -107,6 +107,8 @@
           </remotion:BocSimpleColumnDefinition>
         </FixedColumns>
       </testsite:TestBocListWithRowMenuItems>
+      <br/>
+      <remotion:WebButton ID="DeleteSelectedRowTestCaseRowButton" Text="Delete Selected Row Test Case" OnClick="DeleteSelectedRowTestCaseRowButton_OnClick" runat="server"/>
     </td>
     <td>&nbsp; (normal)</td>
   </tr>

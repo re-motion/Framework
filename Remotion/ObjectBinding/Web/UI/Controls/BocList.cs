@@ -2764,7 +2764,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         else
           newValueAsReadOnlyList = new BusinessObjectListAdapter<IBusinessObject>(newValue);
 
-        SetValue(newValueAsReadOnlyList, ValueMode.Complete);
+        SetValue(newValueAsReadOnlyList, ValueMode.Interim);
         IsDirty = true;
 
         foreach (var row in rows.OrderByDescending(r => r.Index))

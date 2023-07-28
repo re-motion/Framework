@@ -69,6 +69,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
         protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems JobList_Normal;
 
         /// <summary>
+        /// DeleteSelectedRowTestCaseRowButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton DeleteSelectedRowTestCaseRowButton;
+
+        /// <summary>
         /// JobList_WithRadioButtons control.
         /// </summary>
         /// <remarks>
@@ -105,7 +114,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
         protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems JobList_Empty;
 
         /// <summary>
-        /// CList_EmptyWithRowHeaders control.
+        /// ChildrenList_EmptyWithRowHeaders control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
@@ -186,7 +195,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
         protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems JobList_Empty_Umlauts;
 
         /// <summary>
-        /// JobList_Normal control.
+        /// JobList_Validation control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
