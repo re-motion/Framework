@@ -25,7 +25,6 @@ using Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Reflection;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.MetaValidation.Rules.Custom;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttributesBasedValidationPropertyRuleReflectorTests
@@ -371,21 +370,9 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     [Test]
     public void GetRemovablePropertyValidators_NullableStringPropertyAttribute ()
     {
-      var validationMessageStub = new Mock<ValidationMessage>();
-      _validationMessageFactoryStub
-          .Setup(
-              _ => _.CreateValidationMessageForPropertyValidator(
-                  It.IsAny<MaximumLengthValidator>(),
-                  PropertyInfoAdapter.Create(_mixinPropertyWithNullableStringPropertyAttribute)))
-          .Returns(validationMessageStub.Object);
-
       var result = _propertyWithNullableStringPropertyAttributeReflector.GetRemovablePropertyValidators().ToArray();
 
-      validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
-      Assert.That(result.Count(), Is.EqualTo(1));
-      Assert.That(result[0], Is.TypeOf(typeof(MaximumLengthValidator)));
-      Assert.That(((MaximumLengthValidator)result[0]).Max, Is.EqualTo(10));
-      Assert.That(((MaximumLengthValidator)result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message"));
+      Assert.That(result, Is.Empty);
     }
 
     [Test]
@@ -415,15 +402,10 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
 
       var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetRemovablePropertyValidators().ToArray();
 
-      lengthValidationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message for Length");
-      Assert.That(result.Count(), Is.EqualTo(2));
-      Assert.That(result[0], Is.TypeOf(typeof(MaximumLengthValidator)));
-      Assert.That(((MaximumLengthValidator)result[0]).Max, Is.EqualTo(20));
-      Assert.That(((MaximumLengthValidator)result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message for Length"));
-
       notEmptyValidationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message for NotEmpty");
-      Assert.That(result[1], Is.TypeOf(typeof(NotEmptyOrWhitespaceValidator)));
-      Assert.That(((NotEmptyOrWhitespaceValidator)result[1]).ValidationMessage.ToString, Is.EqualTo("Stub Message for NotEmpty"));
+      Assert.That(result.Count(), Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof(NotEmptyOrWhitespaceValidator)));
+      Assert.That(((NotEmptyOrWhitespaceValidator)result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message for NotEmpty"));
     }
 
     [Test]
@@ -435,28 +417,51 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     [Test]
     public void GetNonRemovablePropertyValidators_NullableStringPropertyAttribute ()
     {
+      var lengthValidationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(
+              _ => _.CreateValidationMessageForPropertyValidator(
+                  It.IsAny<MaximumLengthValidator>(),
+                  PropertyInfoAdapter.Create(_mixinPropertyWithNullableStringPropertyAttribute)))
+          .Returns(lengthValidationMessageStub.Object);
+
       var result = _propertyWithNullableStringPropertyAttributeReflector.GetNonRemovablePropertyValidators().ToArray();
 
-      Assert.That(result.Any(), Is.False);
+      lengthValidationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message for length");
+      Assert.That(result.Count(), Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof(MaximumLengthValidator)));
+      Assert.That(((MaximumLengthValidator)result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message for length"));
     }
 
     [Test]
     public void GetNonRemovablePropertyValidators_MandatoryStringPropertyAttribute ()
     {
-      var validationMessageStub = new Mock<ValidationMessage>();
+      var notNullValidationMessageStub = new Mock<ValidationMessage>();
       _validationMessageFactoryStub
           .Setup(
               _ => _.CreateValidationMessageForPropertyValidator(
                   It.IsAny<NotNullValidator>(),
                   PropertyInfoAdapter.Create(_mixinPropertyWithMandatoryStringPropertyAttribute)))
-          .Returns(validationMessageStub.Object);
+          .Returns(notNullValidationMessageStub.Object);
+
+      var lengthValidationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(
+              _ => _.CreateValidationMessageForPropertyValidator(
+                  It.IsAny<MaximumLengthValidator>(),
+                  PropertyInfoAdapter.Create(_mixinPropertyWithMandatoryStringPropertyAttribute)))
+          .Returns(lengthValidationMessageStub.Object);
 
       var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetNonRemovablePropertyValidators().ToArray();
 
-      validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
-      Assert.That(result.Count(), Is.EqualTo(1));
-      Assert.That(result[0], Is.TypeOf(typeof(NotNullValidator)));
-      Assert.That(((NotNullValidator)result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message"));
+      lengthValidationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message for length");
+      Assert.That(result.Count(), Is.EqualTo(2));
+      Assert.That(result[0], Is.TypeOf(typeof(MaximumLengthValidator)));
+      Assert.That(((MaximumLengthValidator)result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message for length"));
+
+      notNullValidationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message for not null");
+      Assert.That(result[1], Is.TypeOf(typeof(NotNullValidator)));
+      Assert.That(((NotNullValidator)result[1]).ValidationMessage.ToString, Is.EqualTo("Stub Message for not null"));
     }
 
     [Test]
@@ -464,7 +469,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     {
       var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetRemovingValidatorRegistrations().ToArray();
 
-      Assert.That(result.Any(), Is.False);
+      Assert.That(result, Is.Empty);
     }
 
     [Test]
@@ -472,7 +477,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     {
       var result = _propertyWithMandatoryAttributeReflector.GetMetaValidationRules().ToArray();
 
-      Assert.That(result.Any(), Is.False);
+      Assert.That(result, Is.Empty);
     }
 
     [Test]
@@ -480,9 +485,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     {
       var result = _propertyWithNullableStringPropertyAttributeReflector.GetMetaValidationRules().ToArray();
 
-      Assert.That(result.Count(), Is.EqualTo(1));
-      Assert.That(result[0], Is.TypeOf(typeof(RemotionMaxLengthPropertyMetaValidationRule)));
-      Assert.That(((RemotionMaxLengthPropertyMetaValidationRule)result[0]).MaxLength, Is.EqualTo(10));
+      Assert.That(result, Is.Empty);
     }
 
     [Test]
