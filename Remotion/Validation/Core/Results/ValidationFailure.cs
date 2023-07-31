@@ -15,15 +15,51 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Results
 {
-  public abstract class ValidationFailure
+  public class ValidationFailure
   {
+    public static ValidationFailure CreatePropertyValidationFailure (
+        [NotNull] object validatedObject,
+        [NotNull] IPropertyInformation validatedProperty,
+        [CanBeNull] object? validatedPropertyValue,
+        [NotNull] string errorMessage,
+        [NotNull] string localizedValidationMessage)
+    {
+      return new ValidationFailure(
+          validatedObject,
+          new[] { new ValidatedProperty(validatedObject, validatedProperty, validatedPropertyValue) },
+          errorMessage,
+          localizedValidationMessage);
+    }
+
+    public static ValidationFailure CreateObjectValidationFailure (
+        [NotNull] object validatedObject,
+        [NotNull] IReadOnlyList<ValidatedProperty> validatedProperties,
+        [NotNull] string errorMessage,
+        [NotNull] string localizedValidationMessage)
+    {
+      return new ValidationFailure(validatedObject, validatedProperties, errorMessage, localizedValidationMessage);
+    }
+
+    public static ValidationFailure CreateObjectValidationFailure (
+        [NotNull] object validatedObject,
+        [NotNull] string errorMessage,
+        [NotNull] string localizedValidationMessage)
+    {
+      return new ValidationFailure(validatedObject, Array.Empty<ValidatedProperty>(), errorMessage, localizedValidationMessage);
+    }
+
     [NotNull]
     public object ValidatedObject { get; }
+
+    [NotNull]
+    public IReadOnlyList<ValidatedProperty> ValidatedProperties { get; }
 
     /// <summary>The technical representation of this validation error. Intended for logging.</summary>
     [NotNull]
@@ -35,14 +71,17 @@ namespace Remotion.Validation.Results
 
     protected ValidationFailure (
         [NotNull] object validatedObject,
+        [NotNull] IReadOnlyList<ValidatedProperty> validatedProperties,
         [NotNull] string errorMessage,
         [NotNull] string localizedValidationMessage)
     {
       ArgumentUtility.CheckNotNull("validatedObject", validatedObject);
+      ArgumentUtility.CheckNotNull("validatedProperties", validatedProperties);
       ArgumentUtility.CheckNotNullOrEmpty("errorMessage", errorMessage);
       ArgumentUtility.CheckNotNullOrEmpty("localizedValidationMessage", localizedValidationMessage);
 
       ValidatedObject = validatedObject;
+      ValidatedProperties = validatedProperties;
       ErrorMessage = errorMessage;
       LocalizedValidationMessage = localizedValidationMessage;
     }

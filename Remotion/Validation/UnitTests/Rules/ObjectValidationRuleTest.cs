@@ -33,12 +33,12 @@ namespace Remotion.Validation.UnitTests.Rules
     {
       var context = new ValidationContext(new object());
 
-      var failure1 = new ObjectValidationFailure(
+      var failure1 = ValidationFailure.CreateObjectValidationFailure(
           15,
           "15 is not a number",
           "Localized validation message: 15 is not a number.");
 
-      var failure2 = new ObjectValidationFailure(
+      var failure2 = ValidationFailure.CreateObjectValidationFailure(
           42,
           "42 is not a number",
           "Localized validation message: 42 is not a number.");
@@ -65,7 +65,7 @@ namespace Remotion.Validation.UnitTests.Rules
       var instance = new object();
       var validationContext = new ValidationContext(instance);
 
-      var failure1 = new ObjectValidationFailure(
+      var failure1 = ValidationFailure.CreateObjectValidationFailure(
           15,
           "15 is not a number",
           "Localized validation message: 15 is not a number.");
@@ -103,7 +103,7 @@ namespace Remotion.Validation.UnitTests.Rules
           .Returns(
               new[]
               {
-                new ObjectValidationFailure(
+                  ValidationFailure.CreateObjectValidationFailure(
                     15,
                     "15 is not a number",
                     "Localized validation message: 15 is not a number.")
@@ -128,7 +128,7 @@ namespace Remotion.Validation.UnitTests.Rules
           .Returns(
               new[]
               {
-                new ObjectValidationFailure(
+                  ValidationFailure.CreateObjectValidationFailure(
                     15,
                     "15 is not a number",
                     "Localized validation message: 15 is not a number.")

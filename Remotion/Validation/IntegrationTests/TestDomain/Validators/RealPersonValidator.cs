@@ -26,21 +26,21 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.Validators
 {
   public class RealPersonValidator : IObjectValidator
   {
-    public IEnumerable<ObjectValidationFailure> Validate (ObjectValidatorContext context)
+    public IEnumerable<ValidationFailure> Validate (ObjectValidatorContext context)
     {
       if (context.Instance is Person person)
       {
         if (string.IsNullOrEmpty(person.FirstName) || string.IsNullOrEmpty(person.LastName))
         {
           return EnumerableUtility.Singleton(
-              new ObjectValidationFailure(
+              ValidationFailure.CreateObjectValidationFailure(
                   person,
                   "Person must have 'FirstName' and 'LastName' properties set.",
                   "Localized validation message for 'RealPersonValidator': 'FirstName' or 'LastName' property is null or empty."));
         }
       }
 
-      return Enumerable.Empty<ObjectValidationFailure>();
+      return Enumerable.Empty<ValidationFailure>();
     }
   }
 }

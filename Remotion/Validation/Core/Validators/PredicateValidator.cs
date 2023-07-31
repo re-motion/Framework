@@ -45,12 +45,12 @@ namespace Remotion.Validation.Validators
       ValidationMessage = validationMessage;
     }
 
-    public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
+    public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
       ArgumentUtility.CheckNotNull("context", context);
 
       if (IsValid(context))
-        return Enumerable.Empty<PropertyValidationFailure>();
+        return Enumerable.Empty<ValidationFailure>();
 
       return EnumerableUtility.Singleton(CreateValidationError(context));
     }
@@ -60,9 +60,9 @@ namespace Remotion.Validation.Validators
       return _predicate(context.Instance, context.PropertyValue, context);
     }
 
-    private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
+    private ValidationFailure CreateValidationError (PropertyValidatorContext context)
     {
-      return new PropertyValidationFailure(
+      return ValidationFailure.CreatePropertyValidationFailure(
           context.Instance,
           context.Property,
           context.PropertyValue,

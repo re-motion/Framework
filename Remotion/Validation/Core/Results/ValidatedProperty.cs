@@ -14,13 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using JetBrains.Annotations;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Results
 {
   /// <summary>
-  /// Represents a validated property and its declaring object which caused a <see cref="ObjectValidationFailure"/>.
+  /// Represents a validated property and its declaring object which caused a <see cref="ValidationFailure"/>.
   /// </summary>
   public class ValidatedProperty
   {
@@ -28,13 +29,16 @@ namespace Remotion.Validation.Results
 
     public IPropertyInformation Property { get; }
 
-    public ValidatedProperty (object @object, IPropertyInformation property)
+    public object? ValidatedPropertyValue { get; }
+
+    public ValidatedProperty (object @object, IPropertyInformation property, object? validatedPropertyValue = null)
     {
       ArgumentUtility.CheckNotNull("object", @object);
       ArgumentUtility.CheckNotNull("property", property);
 
       Object = @object;
       Property = property;
+      ValidatedPropertyValue = validatedPropertyValue;
     }
   }
 }

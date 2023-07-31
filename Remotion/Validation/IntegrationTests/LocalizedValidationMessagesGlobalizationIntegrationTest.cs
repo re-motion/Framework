@@ -41,7 +41,9 @@ namespace Remotion.Validation.IntegrationTests
 
       Assert.That(result.IsValid, Is.False);
       Assert.That(
-          result.Errors.OfType<PropertyValidationFailure>().Select(e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
+          result.Errors
+              .Where(e => e.ValidatedProperties.Count != 0)
+              .SelectMany(e => e.ValidatedProperties.Select(vp =>$"{vp.Property.Name}: {e.LocalizedValidationMessage}")),
           Is.EquivalentTo(new[] { "FirstName: Enter a value.", "LastName: Enter a valid value." }));
     }
 
@@ -60,7 +62,9 @@ namespace Remotion.Validation.IntegrationTests
 
         Assert.That(result.IsValid, Is.False);
         Assert.That(
-            result.Errors.OfType<PropertyValidationFailure>().Select(e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
+            result.Errors
+                .Where(e => e.ValidatedProperties.Count != 0)
+                .SelectMany(e => e.ValidatedProperties.Select(vp =>$"{vp.Property.Name}: {e.LocalizedValidationMessage}")),
             Is.EquivalentTo(new[] { "FirstName: Geben Sie einen Wert ein." }));
       }
     }
@@ -82,7 +86,9 @@ namespace Remotion.Validation.IntegrationTests
 
         Assert.That(result.IsValid, Is.False);
         Assert.That(
-            result.Errors.OfType<PropertyValidationFailure>().Select(e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
+            result.Errors
+                .Where(e => e.ValidatedProperties.Count != 0)
+                .SelectMany(e => e.ValidatedProperties.Select(vp =>$"{vp.Property.Name}: {e.LocalizedValidationMessage}")),
             Is.EquivalentTo(new[] { "FirstName: Geben Sie einen Wert ein." }));
       }
     }
@@ -106,7 +112,9 @@ namespace Remotion.Validation.IntegrationTests
         {
           Assert.That(result.IsValid, Is.False);
           Assert.That(
-              result.Errors.OfType<PropertyValidationFailure>().Select(e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
+              result.Errors
+                  .Where(e => e.ValidatedProperties.Count != 0)
+                  .SelectMany(e => e.ValidatedProperties.Select(vp =>$"{vp.Property.Name}: {e.LocalizedValidationMessage}")),
               Is.EquivalentTo(new[] { "FirstName: Geben Sie einen Wert ein." }));
         }
       }

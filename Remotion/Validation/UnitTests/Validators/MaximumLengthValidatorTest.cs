@@ -79,8 +79,8 @@ namespace Remotion.Validation.UnitTests.Validators
 
       Assert.That(validationFailures.Length, Is.EqualTo(1));
       Assert.That(validationFailures[0].ValidatedObject, Is.EqualTo(propertyValidatorContext.Instance));
-      Assert.That(validationFailures[0].ValidatedProperty, Is.EqualTo(propertyValidatorContext.Property));
-      Assert.That(validationFailures[0].ValidatedPropertyValue, Is.EqualTo(propertyValidatorContext.PropertyValue));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.Property), Is.EqualTo(new [] { propertyValidatorContext.Property }));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.ValidatedPropertyValue), Is.EqualTo(new [] { propertyValidatorContext.PropertyValue }));
       Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must have at most 10 characters."));
       Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '10'."));
     }

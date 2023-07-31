@@ -24,9 +24,9 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.Validators
 {
   public class FakeCustomerValidator : IObjectValidator
   {
-    public IEnumerable<ObjectValidationFailure> Validate (ObjectValidatorContext context)
+    public IEnumerable<ValidationFailure> Validate (ObjectValidatorContext context)
     {
-      return Enumerable.Empty<ObjectValidationFailure>();
+      return Enumerable.Empty<ValidationFailure>();
     }
   }
 }

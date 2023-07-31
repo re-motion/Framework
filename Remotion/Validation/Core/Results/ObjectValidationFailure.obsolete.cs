@@ -17,34 +17,31 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.Results
 {
+  [Obsolete("Use ValidationFailure instead. (Version 5.0.0)", true)]
   public class ObjectValidationFailure : ValidationFailure
   {
-    [NotNull]
-    public IReadOnlyCollection<ValidatedProperty> ValidatedProperties { get; }
-
+    [Obsolete("Use ValidationFailure.CreateObjectValidationFailure(object, string, string) instead. (Version 5.0.0)", true)]
     public ObjectValidationFailure (
         [NotNull] object validatedObject,
         [NotNull] string errorMessage,
         [NotNull] string localizedValidationMessage)
-        : this(validatedObject, Array.Empty<ValidatedProperty>(), errorMessage, localizedValidationMessage)
+        : base(null!, null!, null!, null!)
     {
+      throw new NotSupportedException("Use ValidationFailure.CreateObjectValidationFailure(object, string, string) instead. (Version 5.0.0)");
     }
 
+    [Obsolete("Use ValidationFailure.CreateObjectValidationFailure(object, IReadOnlyList<ValidatedProperty>, string, string) instead. (Version 5.0.0)", true)]
     public ObjectValidationFailure (
         [NotNull] object validatedObject,
         [NotNull] IReadOnlyCollection<ValidatedProperty> validatedProperties,
         [NotNull] string errorMessage,
         [NotNull] string localizedValidationMessage)
-        : base(validatedObject, errorMessage, localizedValidationMessage)
+        : base(null!, null!, null!, null!)
     {
-      ArgumentUtility.CheckNotNull("validatedProperties", validatedProperties);
-
-      ValidatedProperties = validatedProperties;
+      throw new NotSupportedException("Use ValidationFailure.CreateObjectValidationFailure(object, IReadOnlyList<ValidatedProperty>, string, string) instead. (Version 5.0.0)");
     }
   }
 }

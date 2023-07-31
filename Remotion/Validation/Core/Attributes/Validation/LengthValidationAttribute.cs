@@ -33,7 +33,7 @@ namespace Remotion.Validation.Attributes.Validation
   {
     private class SkippedValidator : IPropertyValidator
     {
-      public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context) => Enumerable.Empty<PropertyValidationFailure>();
+      public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context) => Enumerable.Empty<ValidationFailure>();
     }
 
     /// <summary>

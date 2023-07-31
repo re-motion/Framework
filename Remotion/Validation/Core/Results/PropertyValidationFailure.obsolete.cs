@@ -17,30 +17,34 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.Results
 {
+  [Obsolete("Use ValidationFailure instead. (Version 5.0.0)", true)]
   public class PropertyValidationFailure : ValidationFailure
   {
-    [NotNull]
-    public IPropertyInformation ValidatedProperty { get; }
+    [Obsolete("Use ValidationFailure.ValidatedProperties[i].ValidatedProperty instead. (Version 5.0.0)", true)]
+    public IPropertyInformation ValidatedProperty
+    {
+      get { throw new NotSupportedException("Use ValidationFailure.ValidatedProperties[i].ValidatedProperty instead. (Version 5.0.0)"); }
+    }
 
-    [CanBeNull]
-    public object? ValidatedPropertyValue { get; }
+    [Obsolete("Use ValidationFailure.ValidatedProperties[i].ValidatedPropertyValue instead. (Version 5.0.0)", true)]
+    public object? ValidatedPropertyValue
+    {
+      get { throw new NotSupportedException("Use ValidationFailure.ValidatedProperties[i].ValidatedPropertyValue instead. (Version 5.0.0)"); }
+    }
 
+    [Obsolete("Use ValidationFailure.CreatePropertyValidationFailure(object, IPropertyInformation, object?, string, string) instead. (Version 5.0.0)", true)]
     public PropertyValidationFailure (
         [NotNull] object validatedObject,
         [NotNull] IPropertyInformation validatedProperty,
         [CanBeNull] object? validatedPropertyValue,
         [NotNull] string errorMessage,
         [NotNull] string localizedValidationMessage)
-        :base(validatedObject, errorMessage, localizedValidationMessage)
+        : base(null!, null!, null!, null!)
     {
-      ArgumentUtility.CheckNotNull("validatedProperty", validatedProperty);
-
-      ValidatedProperty = validatedProperty;
-      ValidatedPropertyValue = validatedPropertyValue;
+      throw new NotSupportedException("Use ValidationFailure.CreatePropertyValidationFailure(object, IPropertyInformation, object?, string, string) instead. (Version 5.0.0)");
     }
   }
 }

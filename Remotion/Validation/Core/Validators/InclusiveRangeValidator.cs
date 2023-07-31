@@ -60,12 +60,12 @@ namespace Remotion.Validation.Validators
       ValidationMessage = validationMessage;
     }
 
-    public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
+    public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
       ArgumentUtility.CheckNotNull("context", context);
 
       if (IsValid(context))
-        return Enumerable.Empty<PropertyValidationFailure>();
+        return Enumerable.Empty<ValidationFailure>();
 
       return EnumerableUtility.Singleton(CreateValidationError(context));
     }
@@ -86,7 +86,7 @@ namespace Remotion.Validation.Validators
       return ((IComparable)propertyValue).CompareTo(From) >= 0 && ((IComparable)propertyValue).CompareTo(To) <= 0;
     }
 
-    private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
+    private ValidationFailure CreateValidationError (PropertyValidatorContext context)
     {
       string localizedValidationMessage = ValidationMessage.Format(
           CultureInfo.CurrentUICulture,
@@ -94,7 +94,7 @@ namespace Remotion.Validation.Validators
           From,
           To);
 
-      return new PropertyValidationFailure(
+      return ValidationFailure.CreatePropertyValidationFailure(
           context.Instance,
           context.Property,
           context.PropertyValue,

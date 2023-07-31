@@ -83,23 +83,58 @@ namespace Remotion.Data.DomainObjects.Validation
       foreach (var errorByValidatedObject in errorsByValidatedObjects)
       {
         errorMessage.AppendLine();
-        errorMessage.AppendLine(GetKeyText(errorByValidatedObject.Key));
+        AppendValidatedObject(errorMessage, errorByValidatedObject.Key);
+        errorMessage.AppendLine();
         errorByValidatedObject
-            .OfType<PropertyValidationFailure>().OrderBy(f=>f.ValidatedProperty.Name)
-            .Aggregate(errorMessage, (sb, f) => sb.Append(" -- ").Append(f.ValidatedProperty.Name).Append(": " ).Append(f.ErrorMessage).AppendLine());
-        errorByValidatedObject
-            .OfType<ObjectValidationFailure>()
-            .Aggregate(errorMessage, (sb, f) => sb.Append(" -- ").Append(f.ErrorMessage).AppendLine());
+            .SelectMany(f => f.ValidatedProperties.DefaultIfEmpty().Select(p => (f.ValidatedObject, f.ErrorMessage, ValidatedProperty: p)))
+            .OrderBy(f => f.ValidatedProperty == null ? 2 : f.ValidatedProperty.Object == f.ValidatedObject ? 1 : 0)
+            .ThenBy(f => f.ValidatedProperty?.Property.Name)
+            .Aggregate(errorMessage, (sb, f) => AppendErrorMessage(sb, f.ValidatedObject, f.ErrorMessage, f.ValidatedProperty));
       }
       return errorMessage.ToString();
     }
 
-    private static string GetKeyText (object validatedInstance)
+    private static void AppendValidatedObject (StringBuilder errorMessage, object validatedInstance)
     {
-      var domainObject = validatedInstance as DomainObject;
-      if (domainObject != null)
-        return string.Format("Object '{0}' with ID '{1}':", domainObject.ID.ClassID, domainObject.ID.Value);
-      return string.Format("Validation error on object of Type '{0}':", validatedInstance.GetType().GetFullNameSafe());
+      if (validatedInstance is DomainObject domainObject)
+        errorMessage.AppendFormat("Object '{0}' with ID '{1}':", domainObject.ID.ClassID, domainObject.ID.Value);
+      else
+        errorMessage.AppendFormat("Validation error on object of Type '{0}':", validatedInstance.GetType().GetFullNameSafe());
+    }
+
+    private static StringBuilder AppendErrorMessage (StringBuilder stringBuilder, object validatedObject, string errorMessage, ValidatedProperty? validatedProperty)
+    {
+      stringBuilder.Append(" -- ");
+
+      if (validatedProperty == null)
+      {
+        // NOP
+      }
+      else if (validatedProperty.Object == validatedObject)
+      {
+        stringBuilder
+            .Append(validatedProperty.Property.Name)
+            .Append(": ");
+      }
+      else if (validatedProperty.Object is DomainObject dependentDomainObject)
+      {
+        stringBuilder
+            .Append(validatedProperty.Property.Name)
+            .Append(" on dependent object '").Append(dependentDomainObject.ID.ClassID).Append("' with ID '").Append(dependentDomainObject.ID.Value)
+            .Append("': ");
+      }
+      else
+      {
+        stringBuilder
+            .Append(validatedProperty.Property.Name)
+            .Append(" on dependent object of Type '").Append(validatedProperty.Object.GetType().GetFullNameSafe())
+            .Append("': ");
+      }
+
+      stringBuilder.Append(errorMessage);
+      stringBuilder.AppendLine();
+
+      return stringBuilder;
     }
 
     private List<ValidationResult> Validate (IReadOnlyList<PersistableData> domainObjectsToValidate, Dictionary<Type, IValidator> validatorCache)
