@@ -123,6 +123,10 @@ publish/
 # NuGet Packages Directory
 packages/
 
+# NPM packages
+node_modules/
+package-lock.json
+
 # Visual Stduio 2015
 .vs/
 
