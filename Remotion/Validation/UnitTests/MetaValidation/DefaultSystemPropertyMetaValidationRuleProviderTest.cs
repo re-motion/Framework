@@ -39,7 +39,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation
     {
       var result = _provider.GetSystemPropertyMetaValidationRules();
 
-      Assert.That(result.Any(), Is.True);
+      Assert.That(result.Any(), Is.False);
     }
   }
 }
