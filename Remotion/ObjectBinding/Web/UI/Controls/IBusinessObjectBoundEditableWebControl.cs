@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -47,5 +48,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// Gets a flag if the business object control should generate validators that go beyond the validation of the .NET data type itself.
     /// </summary>
     bool AreOptionalValidatorsEnabled { get; }
+
+    /// <summary>
+    /// Gets or sets a flag that indicates if the <see cref="IBusinessObjectBoundWebControl"/> is required via the <see cref="BusinessObjectPropertyValueRequiredConstraint"/>.
+    /// </summary>
+    bool? RequiredByPropertyConstraint { get; set; }
   }
 }
