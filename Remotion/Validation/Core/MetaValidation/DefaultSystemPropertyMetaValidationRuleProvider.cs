@@ -16,15 +16,14 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Remotion.Reflection;
 using Remotion.Utilities;
-using Remotion.Validation.MetaValidation.Rules.System;
 
 namespace Remotion.Validation.MetaValidation
 {
   /// <summary>
-  /// Default implementation of the <see cref="ISystemPropertyMetaValidationRuleProvider"/> interface. Provides a <see cref="MinimumLengthSystemPropertyMetaValidationRule"/> and
-  /// a <see cref="MaximumLengthSystemPropertyMetaValidationRule"/>.
+  /// Default implementation of the <see cref="ISystemPropertyMetaValidationRuleProvider"/> interface.
   /// </summary>
   public class DefaultSystemPropertyMetaValidationRuleProvider : ISystemPropertyMetaValidationRuleProvider
   {
@@ -44,8 +43,7 @@ namespace Remotion.Validation.MetaValidation
 
     public IEnumerable<IPropertyMetaValidationRule> GetSystemPropertyMetaValidationRules ()
     {
-      yield return new MinimumLengthSystemPropertyMetaValidationRule(_propertyInformation);
-      yield return new MaximumLengthSystemPropertyMetaValidationRule(_propertyInformation);
+      return Enumerable.Empty<IPropertyMetaValidationRule>();
     }
   }
 }
