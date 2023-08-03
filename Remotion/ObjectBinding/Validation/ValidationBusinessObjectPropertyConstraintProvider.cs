@@ -54,8 +54,7 @@ namespace Remotion.ObjectBinding.Validation
           .OfType<IPropertyValidationRule>()
           .Where(HasPropertyMatch)
           .Where(IsActive)
-          .SelectMany(r => r.Validators)
-          .SelectMany(r => PropertyValidatorConverter.Convert(r));
+          .SelectMany(r => PropertyValidatorConverter.Convert(r.Validators));
 
       bool HasPropertyMatch (IPropertyValidationRule rule)
       {
