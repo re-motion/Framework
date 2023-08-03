@@ -122,27 +122,27 @@
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchExclusiveRangeValidationMessage" xml:space="preserve">
-    <value>Saisissez une valeur entre «{0}» et «{1}».</value>
+    <value>Saisissez une valeur entre {0} et {1}.</value>
     <comment>{0} = from value; {1} = to value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeGreaterThanOrEqualValidationMessage" xml:space="preserve">
-    <value>Saisissez une valeur supérieure ou égale à «{0}».</value>
+    <value>Saisissez une valeur supérieure ou égale à {0}.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeGreaterThanValidationMessage" xml:space="preserve">
-    <value>Saisissez une valeur supérieure à «{0}».</value>
+    <value>Saisissez une valeur supérieure à {0}.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchInclusiveRangeValidationMessage" xml:space="preserve">
-    <value>Saisissez une valeur entre «{0}» et «{1}».</value>
+    <value>Saisissez une valeur entre {0} et {1}.</value>
     <comment>{0} = from value; {1} = to value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeLessThanOrEqualValidationMessage" xml:space="preserve">
-    <value>Saisissez une valeur inférieure ou égale à  «{0}».</value>
+    <value>Saisissez une valeur inférieure ou égale à {0}.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeLessThanValidationMessage" xml:space="preserve">
-    <value>Saisissez une valeur inférieur à  «{0}».</value>
+    <value>Saisissez une valeur inférieur à {0}.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveExactLengthValidationMessage" xml:space="preserve">

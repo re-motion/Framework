@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeGreaterThanOrEqualValidationMessage" xml:space="preserve">
-    <value>Geben Sie einen Wert grösser oder gleich "{0}" ein.</value>
+    <value>Geben Sie einen Wert grösser oder gleich {0} ein.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeGreaterThanValidationMessage" xml:space="preserve">
-    <value>Geben Sie einen Wert grösser als "{0}" ein.</value>
+    <value>Geben Sie einen Wert grösser als {0} ein.</value>
     <comment>{0} = comparison value</comment>
   </data>
 </root>
