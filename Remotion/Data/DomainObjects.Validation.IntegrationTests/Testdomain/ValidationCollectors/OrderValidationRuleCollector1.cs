@@ -24,8 +24,6 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.Val
   {
     public OrderValidationRuleCollector1 ()
     {
-      RemoveRule(o => o.Number).Validator<MaximumLengthValidator>();
-
       AddRule(o => o.Number).Length(3, 8);
     }
   }

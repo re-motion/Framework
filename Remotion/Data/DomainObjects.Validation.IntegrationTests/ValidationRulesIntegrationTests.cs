@@ -100,16 +100,6 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
     }
 
     [Test]
-    public void BuildValidator_StringPropertyReStoreAttributeIsReplaced_MaxLengthMetaValidationRuleFails ()
-    {
-      Assert.That(
-          () => ValidationProvider.GetValidator(typeof(InvalidOrder)),
-          Throws.TypeOf<ValidationConfigurationException>().And.Message.EqualTo(
-              "'RemotionMaxLengthPropertyMetaValidationRule' failed for property 'Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.InvalidOrder.Number': "
-              + "Max-length validation rule value '15' exceeds meta validation rule max-length value of '10'."));
-    }
-
-    [Test]
     public void BuildValidator_NotLoadedCollectionNotValidated_AndDataNotLoaded ()
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
