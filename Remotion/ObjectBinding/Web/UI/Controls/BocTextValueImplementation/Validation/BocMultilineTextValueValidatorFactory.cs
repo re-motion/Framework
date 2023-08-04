@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
@@ -80,7 +81,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
 
     private LengthValidator? CreateLengthValidator (IBocMultilineTextValue control, IResourceManager resourceManager)
     {
-      var maxLength = control.TextBoxStyle.MaxLength;
+      var maxLength = control.TextBoxStyle.GetMaxLength();
       var hasControlMaxLength = control.AreOptionalValidatorsEnabled && maxLength.HasValue;
 
       if (hasControlMaxLength)
@@ -88,10 +89,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
         LengthValidator lengthValidator = new LengthValidator();
         lengthValidator.ID = control.ID + "_ValidatorMaxLength";
         lengthValidator.ControlToValidate = control.TargetControl.ID;
-        lengthValidator.MaximumLength = maxLength!.Value;
+        lengthValidator.MaximumLength = maxLength;
         lengthValidator.ErrorMessage = string.Format(
             resourceManager.GetString(BocMultilineTextValue.ResourceIdentifier.MaxLengthValidationMessage),
-            maxLength.Value);
+            maxLength);
         lengthValidator.EnableViewState = false;
 
         return lengthValidator;

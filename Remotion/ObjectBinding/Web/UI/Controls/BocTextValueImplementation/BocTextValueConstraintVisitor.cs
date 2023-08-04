@@ -44,10 +44,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     {
       ArgumentUtility.CheckNotNull("constraint", constraint);
 
-      if (Control.TextBoxStyle.MaxLength.HasValue)
-        return;
-
-      Control.TextBoxStyle.MaxLength = constraint.MaxLength;
+      Control.TextBoxStyle.MaxLengthByPropertyConstraint = constraint.MaxLength;
     }
   }
 }

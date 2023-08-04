@@ -656,14 +656,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
         IBusinessObjectStringProperty? stringProperty = Property as IBusinessObjectStringProperty;
         if (stringProperty != null)
-        {
-          if (TextBoxStyle.MaxLength == null)
-          {
-            int? length = stringProperty.MaxLength;
-            if (length.HasValue)
-              TextBoxStyle.MaxLength = length.Value;
-          }
-        }
+          TextBoxStyle.MaxLengthFromDomainModel = stringProperty.MaxLength;
       }
     }
 
