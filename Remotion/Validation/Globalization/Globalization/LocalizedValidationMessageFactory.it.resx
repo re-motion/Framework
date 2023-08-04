@@ -122,27 +122,27 @@
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchExclusiveRangeValidationMessage" xml:space="preserve">
-    <value>Immetti un valore compreso tra "{0}" e "{1}".</value>
+    <value>Immetti un valore compreso tra {0} e {1}.</value>
     <comment>{0} = from value; {1} = to value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeGreaterThanOrEqualValidationMessage" xml:space="preserve">
-    <value>Immetti un valore maggiore o uguale a "{0}".</value>
+    <value>Immetti un valore maggiore o uguale a {0}.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeGreaterThanValidationMessage" xml:space="preserve">
-    <value>Immetti un valore maggiore di "{0}".</value>
+    <value>Immetti un valore maggiore di {0}.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchInclusiveRangeValidationMessage" xml:space="preserve">
-    <value>Immetti un valore compreso tra "{0}" e "{1}".</value>
+    <value>Immetti un valore compreso tra {0} e {1}.</value>
     <comment>{0} = from value; {1} = to value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeLessThanOrEqualValidationMessage" xml:space="preserve">
-    <value>Immetti un valore minore o uguale a "{0}".</value>
+    <value>Immetti un valore minore o uguale a {0}.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeLessThanValidationMessage" xml:space="preserve">
-    <value>Immetti un valore minore di "{0}".</value>
+    <value>Immetti un valore minore di {0}.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveExactLengthValidationMessage" xml:space="preserve">

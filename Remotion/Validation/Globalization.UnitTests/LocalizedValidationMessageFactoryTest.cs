@@ -91,7 +91,7 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.Not.Null);
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
-      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value between \"{0}\" and \"{1}\"."));
+      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value between {0} and {1}."));
       Assert.That(
           ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
           Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustMatchExclusiveRangeValidationMessage));
@@ -107,7 +107,7 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.Not.Null);
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
-      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value greater than or equal to \"{0}\"."));
+      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value greater than or equal to {0}."));
       Assert.That(
           ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
           Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustBeGreaterThanOrEqualValidationMessage));
@@ -123,7 +123,7 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.Not.Null);
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
-      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value greater than \"{0}\"."));
+      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value greater than {0}."));
       Assert.That(
           ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
           Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustBeGreaterThanValidationMessage));
@@ -139,7 +139,7 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.Not.Null);
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
-      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value from \"{0}\" to \"{1}\"."));
+      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value from {0} to {1}."));
       Assert.That(
           ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
           Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustMatchInclusiveRangeValidationMessage));
@@ -171,7 +171,7 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.Not.Null);
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
-      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value less than or equal to \"{0}\"."));
+      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value less than or equal to {0}."));
       Assert.That(
           ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
           Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustBeLessThanOrEqualValidationMessage));
@@ -187,7 +187,7 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.Not.Null);
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
-      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value less than \"{0}\"."));
+      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value less than {0}."));
       Assert.That(
           ((ResourceManagerBasedValidationMessage)validationMessage).ResourceIdentifier,
           Is.EqualTo(LocalizedValidationMessageFactory.ResourceIdentifier.ValueMustBeLessThanValidationMessage));

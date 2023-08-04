@@ -126,19 +126,19 @@
     <comment>{0} = expected length</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchExclusiveRangeValidationMessage" xml:space="preserve">
-    <value>Enter a value between "{0}" and "{1}".</value>
+    <value>Enter a value between {0} and {1}.</value>
     <comment>{0} = from value; {1} = to value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeGreaterThanOrEqualValidationMessage" xml:space="preserve">
-    <value>Enter a value greater than or equal to "{0}".</value>
+    <value>Enter a value greater than or equal to {0}.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeGreaterThanValidationMessage" xml:space="preserve">
-    <value>Enter a value greater than "{0}".</value>
+    <value>Enter a value greater than {0}.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchInclusiveRangeValidationMessage" xml:space="preserve">
-    <value>Enter a value from "{0}" to "{1}".</value>
+    <value>Enter a value from {0} to {1}.</value>
     <comment>{0} = from value; {1} = to value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchMinAndMaxLengthValidationMessage" xml:space="preserve">
@@ -146,11 +146,11 @@
     <comment>{0} = min length; {1} = max length</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeLessThanOrEqualValidationMessage" xml:space="preserve">
-    <value>Enter a value less than or equal to "{0}".</value>
+    <value>Enter a value less than or equal to {0}.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeLessThanValidationMessage" xml:space="preserve">
-    <value>Enter a value less than "{0}".</value>
+    <value>Enter a value less than {0}.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEmptyBinaryValidationMessage" xml:space="preserve">
