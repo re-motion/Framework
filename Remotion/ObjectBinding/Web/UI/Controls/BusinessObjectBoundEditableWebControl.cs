@@ -26,7 +26,6 @@ using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
-using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -38,6 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public abstract class BusinessObjectBoundEditableWebControl : BusinessObjectBoundWebControl, IBusinessObjectBoundEditableWebControl
   {
     private bool? _required;
+    private bool? _requiredByPropertyConstraint;
     private bool? _readOnly;
     private bool? _enableOptionalValidators;
     private HashSet<BaseValidator>? _validators;
@@ -72,6 +72,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _required; }
       set { _required = value; }
+    }
+
+    bool? IBusinessObjectBoundEditableWebControl.RequiredByPropertyConstraint
+    {
+      get { return _requiredByPropertyConstraint; }
+      set { _requiredByPropertyConstraint = value; }
     }
 
     /// <summary> Gets or sets a flag that specifies whether the control should be displayed in read-only mode. </summary>
@@ -225,6 +231,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///       the value of <see cref="Required"/> is returned.
     ///     </item>
     ///     <item>
+    ///       If the <see cref="IBusinessObjectBoundEditableWebControl.RequiredByPropertyConstraint"/> property is not <see langword="null"/>, 
+    ///       the value of <see cref="IBusinessObjectBoundEditableWebControl.RequiredByPropertyConstraint"/> is returned.
+    ///     </item>
+    ///     <item>
     ///       If the <see cref="BusinessObjectBoundWebControl.Property"/> contains a property definition with the
     ///       <see cref="IBusinessObjectProperty.IsRequired"/> flag set, <see langword="true"/> is returned. 
     ///     </item>
@@ -238,10 +248,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (IsReadOnly)
           return false;
+
         if (_required != null)
-          return _required == true;
+          return _required.Value;
+
+        if (_requiredByPropertyConstraint.HasValue)
+          return _requiredByPropertyConstraint.Value;
+
         if (Property != null)
           return Property.IsRequired;
+
         return false;
       }
     }

@@ -303,6 +303,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   {
     private int? _columns;
     private int? _maxLength;
+    private int? _maxLengthByPropertyConstraint;
+    private int? _maxLengthFromDomainModel;
     private bool? _readOnly;
     private bool? _autoPostBack;
     private bool? _checkClientSideMaxLength;
@@ -331,7 +333,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (ts != null)
       {
         if (_checkClientSideMaxLength != false)
-          _maxLength = ts.MaxLength;
+          _maxLength = ts.GetMaxLength();
         _columns = ts.Columns;
         _readOnly = ts.ReadOnly;
       }
@@ -353,8 +355,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [NotifyParentProperty(true)]
     public int? MaxLength
     {
+      [Obsolete("Use SingleRowTextBoxStyle.GetMaxLength() instead.")]
       get { return _maxLength; }
       set { _maxLength = value; }
+    }
+
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public int? MaxLengthByPropertyConstraint
+    {
+      get => _maxLengthByPropertyConstraint;
+      set => _maxLengthByPropertyConstraint = value;
+    }
+
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public int? MaxLengthFromDomainModel
+    {
+      get => _maxLengthFromDomainModel;
+      set => _maxLengthFromDomainModel = value;
     }
 
     [Description("Whether the text in the control can be changed or not.")]
@@ -387,6 +406,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _checkClientSideMaxLength; }
       set { _checkClientSideMaxLength = value; }
+    }
+
+    public int? GetMaxLength ()
+    {
+      if (_maxLength.HasValue)
+        return _maxLength.Value;
+
+      if (_maxLengthByPropertyConstraint.HasValue)
+        return _maxLengthByPropertyConstraint.Value;
+
+      if (_maxLengthFromDomainModel.HasValue)
+        return _maxLengthFromDomainModel.Value;
+
+      return null;
     }
   }
 
@@ -433,10 +466,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (!string.IsNullOrEmpty(_autoComplete))
         textBox.Attributes.Add("autocomplete", _autoComplete);
 
+      var maxLength = GetMaxLength();
+
       if (_textMode == BocTextBoxMode.MultiLine
-          && MaxLength != null
+          && maxLength != null
           && CheckClientSideMaxLength != false)
-        textBox.Attributes.Add("onkeydown", "return TextBoxStyle.OnKeyDown (this, " + MaxLength.Value + ");");
+        textBox.Attributes.Add("onkeydown", "return TextBoxStyle.OnKeyDown (this, " + maxLength.Value + ");");
 
       textBox.TextMode = GetSystemWebTextMode();
     }

@@ -36,10 +36,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation
     {
       ArgumentUtility.CheckNotNull("constraint", constraint);
 
-      if (Control.Required.HasValue)
-        return;
-
-      Control.Required = constraint.IsRequired;
+      ((IBusinessObjectBoundEditableWebControl)Control).RequiredByPropertyConstraint = constraint.IsRequired;
     }
   }
 }

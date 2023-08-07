@@ -37,20 +37,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     {
       ArgumentUtility.CheckNotNull("constraint", constraint);
 
-      if (Control.Required.HasValue)
-        return;
-
-      Control.Required = constraint.IsRequired;
+      ((IBusinessObjectBoundEditableWebControl)Control).RequiredByPropertyConstraint = constraint.IsRequired;
     }
 
     public void Visit (BusinessObjectPropertyValueLengthConstraint constraint)
     {
       ArgumentUtility.CheckNotNull("constraint", constraint);
 
-      if (Control.TextBoxStyle.MaxLength.HasValue)
-        return;
-
-      Control.TextBoxStyle.MaxLength = constraint.MaxLength;
+      Control.TextBoxStyle.MaxLengthByPropertyConstraint = constraint.MaxLength;
     }
   }
 }

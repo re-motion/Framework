@@ -375,6 +375,8 @@ namespace Remotion.ObjectBinding.Sample
       get { return _repeaterInternal.AreOptionalValidatorsEnabled; }
     }
 
+    public bool? RequiredByPropertyConstraint { get; set; }
+
     public virtual IEnumerable<BaseValidator> CreateValidators ()
     {
       return _repeaterInternal.CreateValidators();
