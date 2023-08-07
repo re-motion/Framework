@@ -25,5 +25,5 @@
 <remotion:BocReferenceValue id="StateDefinitionField" runat="server" DataSourceControl="StateDefinitionDataSource" Required="True" Width="10em" EnableOptionalValidators="true"/>
 <remotion:WebButton ID="DeleteStateDefinitionButton" runat="server" OnClick="DeleteStateDefinitionButton_Click" CssClass="imageButton" />
 </div>
-<asp:CustomValidator ID="RequiredStateCombinationValidator" runat="server" ErrorMessage="###" OnServerValidate="RequiredStateCombinationValidator_ServerValidate" style="display:block"/>
+<asp:CustomValidator ID="RequiredStateCombinationValidator" runat="server" ErrorMessage="###" OnServerValidate="RequiredStateCombinationValidator_ServerValidate" CssClass="permissionsEditorValidationMessage"/>
 </div>

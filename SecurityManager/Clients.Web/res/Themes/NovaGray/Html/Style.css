@@ -236,6 +236,26 @@ table.accessControlEntryExpanded td.formGridTitleCell
   display: none;
 }
 
+div.mainContent > span.permissionsEditorValidationMessage,
+div.accessControlListContainer td.stateCombinationsContainer span.permissionsEditorValidationMessage
+{
+  display: flex;
+  gap: 0;
+  color: red;
+  margin-top: 0.5em;
+}
+
+div.mainContent > span.permissionsEditorValidationMessage::before,
+div.accessControlListContainer td.stateCombinationsContainer span.permissionsEditorValidationMessage::before
+{
+  content: '';
+  width: 16px;
+  flex-shrink: 0;
+  background-image: url('../../../../Remotion.Web/Themes/NovaGray/Image/sprite.svg#ValidationError');
+  background-size: 16px;
+  background-repeat: no-repeat;
+}
+
 tr.underlinedMarkerCellRow td.formGridMarkersCell
 {
   border-top: 0;

@@ -119,6 +119,7 @@ div.accessControlListContainer td.stateCombinationsContainer > div > div
 
 div.accessControlListContainer td.stateCombinationsButtons
 {
+  height: 0;
   vertical-align: top;
   padding-top: var(--remotion-themed-spacing);
   padding-right: var(--remotion-themed-spacing-large);
@@ -128,6 +129,12 @@ div.accessControlListContainer td.stateCombinationsButtons button
 {
   width: 100%;
   margin-bottom: var(--remotion-themed-spacing);
+}
+
+div.accessControlListContainer td.stateCombinationsContainer
+{
+  height: 100%;
+  vertical-align: top;
 }
 
 div.accessControlListContainer td.accessControlEntriesButtons,
@@ -294,6 +301,26 @@ div.accessControlListContainer tr.underlinedMarkerCellRow td.formGridMarkersCell
 {
   border-top: 0;
   border-bottom: 0;
+}
+
+div.mainContent > span.permissionsEditorValidationMessage,
+div.accessControlListContainer td.stateCombinationsContainer span.permissionsEditorValidationMessage
+{
+  display: flex;
+  gap: var(--remotion-themed-spacing-small);
+  color: var(--color-validationerror-text);
+  margin-top: var(--remotion-themed-spacing-small);
+}
+
+div.mainContent > span.permissionsEditorValidationMessage::before,
+div.accessControlListContainer td.stateCombinationsContainer span.permissionsEditorValidationMessage::before
+{
+  content: '';
+  width: var(--remotion-themed-img-width);
+  flex-shrink: 0;
+  background-image: url('../../../../Remotion.Web/Themes/NovaViso/Image/sprite.svg#ValidationError');
+  background-size: var(--remotion-themed-img-width);
+  background-repeat: no-repeat;
 }
 
 div.listControlContent
