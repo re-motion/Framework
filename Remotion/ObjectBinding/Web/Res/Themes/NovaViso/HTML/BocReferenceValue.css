@@ -120,6 +120,7 @@
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  min-width: min-content;
   padding: var(--remotion-themed-control-padding-readonly);
   border: var(--remotion-themed-border-readonly);
   border-radius: var(--remotion-themed-border-radius);
