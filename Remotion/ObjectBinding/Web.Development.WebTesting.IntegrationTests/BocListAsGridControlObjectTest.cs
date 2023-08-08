@@ -816,8 +816,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
                                              "StartDate: Enter a date.",
                                              "89dc8cd2-30e0-4bb3-92a0-4587f32492f5",
                                              "StartDate",
-                                             null,
-                                             null)
+                                             "89dc8cd2-30e0-4bb3-92a0-4587f32492f5",
+                                             "StartDate")
                                      };
 
       var validationErrors = editableRow.GetValidationErrors();
