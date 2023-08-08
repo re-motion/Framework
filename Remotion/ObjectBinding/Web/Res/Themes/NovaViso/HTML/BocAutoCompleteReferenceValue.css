@@ -152,17 +152,11 @@
 
 .bocAutoCompleteReferenceValue.readOnly span.content
 {
-  display: inline-flex;
-  align-items: center;
-  justify-content: start;
-}
-
-.bocAutoCompleteReferenceValue.readOnly span.content
-{
   min-height: var(--remotion-themed-singleline-min-height);
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  min-width: min-content;
   padding: var(--remotion-themed-control-padding-readonly);
   border: var(--remotion-themed-border-readonly);
   border-radius: var(--remotion-themed-border-radius);
