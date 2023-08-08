@@ -1,0 +1,7 @@
+﻿{
+  "name": "@rubicon/remotion.dependencies",
+  "version": "5.0.0",
+  "dependencies": {
+    "axe-core": "3.5.6"
+  }
+}
