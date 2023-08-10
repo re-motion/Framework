@@ -75,5 +75,24 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
 
       return fluentHeaderRow.Target.GetCellSelector().WithIndex(oneBasedIndex);
     }
+
+    /// <summary>
+    /// Returns the error marker for this header row.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">The error marker could not be found.</exception>
+    public static FluentScreenshotElement<ElementScope> GetErrorMarker<TList, TRow, TCell> (
+        [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListHeaderRow<TList, TRow, TCell>> fluentRow)
+        where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
+        where TCell : ControlObject
+    {
+      ArgumentUtility.CheckNotNull("fluentRow", fluentRow);
+
+      var result = fluentRow.Target.Element.FindCss("th.bocListTitleCellValidationFailureIndicator img", Options.NoWait);
+      if (!result.Exists(Options.NoWait))
+        throw new InvalidOperationException("Can not find a error marker for this row.");
+
+      return result.ForElementScopeScreenshot();
+    }
   }
 }
