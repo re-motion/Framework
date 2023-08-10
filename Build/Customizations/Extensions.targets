@@ -79,4 +79,17 @@
                                                   AssemblyProduct="$(ProductNameForSecurityManager)"
                                                   AssemblyCopyright="$(CopyrightForSecurityManager)" />
   </Target>
+
+  <Target Name="CreateNpmDependencyPackage" AfterTargets="CreateNuGetPackagesWithDebugSymbols">
+    <PropertyGroup>
+      <_npmDependenciesFilePath>$(SolutionDirectory)Remotion\Web\Dependencies.JavaScript\package.json</_npmDependenciesFilePath>
+      <_outputPath>$(OutputDirectory)Npm\remotion.dependencies\package.json</_outputPath>
+    </PropertyGroup>
+    <Error Text="Cannot find the NPM dependencies declaration file '$(_npmDependenciesFilePath)'." Condition="!Exists('$(_npmDependenciesFilePath)')" />
+    <WriteLinesToFile
+            File="$(_outputPath)"
+            Lines="$([System.IO.File]::ReadAllText($(_npmDependenciesFilePath)).Replace('$version$','$(Version)'))"
+            Overwrite="true"/>
+  </Target>
+
 </Project>
