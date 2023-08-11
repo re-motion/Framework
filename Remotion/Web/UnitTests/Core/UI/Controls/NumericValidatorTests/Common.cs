@@ -48,5 +48,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.NumericValidatorTests
               .With.Message.EqualTo(
                   "The value '-1' of the 'DataType' property is not a valid value."));
     }
+
+    [Test]
+    public void Validate_WithSpaces ()
+    {
+      TextBox.Text = "   ";
+      Assert.That(() => Validator.Validate(), Throws.Nothing);
+      Assert.That(Validator.IsValid, Is.True);
+    }
   }
 }
