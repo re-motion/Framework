@@ -772,7 +772,7 @@ namespace Remotion.Web.UI.Controls
           writer.AddAttribute(DiagnosticMetadataAttributes.TriggersPostBack, "true");
       }
       writer.AddAttribute("tabindex", "-1");
-      writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
+      writer.AddAttribute(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
       writer.RenderBeginTag(HtmlTextWriterTag.A);
 
       nodeIcon.Render(writer, this);
