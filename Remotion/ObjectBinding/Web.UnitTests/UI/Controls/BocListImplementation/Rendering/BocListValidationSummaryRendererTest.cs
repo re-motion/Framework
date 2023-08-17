@@ -83,6 +83,41 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
+    public void Render_UsesColumnTitleDisplayValue ()
+    {
+      var propertyStub = new Mock<IBusinessObjectProperty>();
+      propertyStub.Setup(e => e.DisplayName).Returns("ColumnName");
+
+      var columnDefinitionStub1 = new Mock<BocColumnDefinition>();
+      columnDefinitionStub1.Setup(e => e.ColumnTitle).Returns(WebString.CreateFromText("Incorrect title"));
+      columnDefinitionStub1.Setup(e => e.ColumnTitleDisplayValue).Returns(WebString.CreateFromText("MyColumnTitle"));
+      columnDefinitionStub1.Setup(e => e.ItemID).Returns("MyColumnItemID");
+
+      var columnDefinitionStub2 = new Mock<BocColumnDefinition>();
+      columnDefinitionStub2.Setup(e => e.ColumnTitle).Returns(WebString.CreateFromText("Incorrect title"));
+      columnDefinitionStub2.Setup(e => e.ColumnTitleDisplayValue).Returns(WebString.CreateFromText(""));
+      columnDefinitionStub2.Setup(e => e.ItemID).Returns("MyColumnItemID");
+
+      _columnIndexProviderMock.Setup(e => e.GetVisibleColumnIndex(columnDefinitionStub1.Object)).Returns(1);
+      _columnIndexProviderMock.Setup(e => e.GetVisibleColumnIndex(columnDefinitionStub2.Object)).Returns(2);
+
+      var validationFailures = new[]
+                               {
+                                   CreateCellValidationFailure("My first failure", propertyStub.Object, columnDefinitionStub1.Object),
+                                   CreateCellValidationFailure("My second failure", propertyStub.Object, columnDefinitionStub2.Object)
+                               };
+
+      RenderAndAssertValidationSummary(
+          TestSettings.None,
+          validationFailures,
+          new[]
+          {
+              CreateLinkAssert("MyColumnTitle: My first failure", "#MyList_C1_R3_ValidationMarker"),
+              CreateLinkAssert("Column 2: My second failure", "#MyList_C2_R3_ValidationMarker")
+          });
+    }
+
+    [Test]
     public void Render_WithDiagnosticMetadata ()
     {
       var propertyStub = new Mock<IBusinessObjectProperty>();
