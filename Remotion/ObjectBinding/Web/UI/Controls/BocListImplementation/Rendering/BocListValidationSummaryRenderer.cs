@@ -100,9 +100,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, BocColumnRendererBase<BocValidationErrorIndicatorColumnDefinition>.OnCommandClickScript);
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.A);
 
-        var columnTitle = columnDefinition.ColumnTitle.IsEmpty
+        var columnTitle = columnDefinition.ColumnTitleDisplayValue.IsEmpty
             ? WebString.CreateFromText($"Column {visibleColumnIndex}")
-            : columnDefinition.ColumnTitle;
+            : columnDefinition.ColumnTitleDisplayValue;
         columnTitle.WriteTo(renderingContext.Writer);
         renderingContext.Writer.Write(": ");
       }
