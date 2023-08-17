@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
@@ -216,10 +217,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
           {
             if (baseValidator is not IBusinessObjectBoundEditableWebControlValidationResultDispatcher && !baseValidator.IsValid)
             {
+              var businessObjectProperties =
+                  ((BocSimpleColumnDefinition)columnDefinitions[i])
+                  .GetPropertyPath()
+                  .Properties;
+
+              Assertion.IsTrue(businessObjectProperties.Count == 1, "There should be exactly one property found on a column definition in edit mode.");
+
+              var property = businessObjectProperties.Single();
+
               validationFailureRepository.AddValidationFailuresForDataCell(
                   rowObject,
                   columnDefinitions[i],
-                  new[] { BusinessObjectValidationFailure.Create(baseValidator.ErrorMessage) });
+                  new[] { BusinessObjectValidationFailure.CreateForBusinessObjectProperty(baseValidator.ErrorMessage, rowObject, property) });
             }
           }
         }
