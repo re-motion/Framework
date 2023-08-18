@@ -32,6 +32,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
     public event EventHandler? ValidationFailureAdded;
 
     /// <summary>
+    /// Gets the number of list failures currently contained in the repository.
+    /// </summary>
+    public int GetListFailureCount ();
+
+    /// <summary>
+    /// Gets the number of unhandled list failures currently contained in the repository.
+    /// </summary>
+    public int GetUnhandledListFailureCount ();
+
+    /// <summary>
+    /// Gets the number of row and cell failures currently contained in the repository.
+    /// </summary>
+    public int GetRowAndCellFailureCount ();
+
+    /// <summary>
+    /// Gets the number of unhandled row and cell failures currently contained in the repository.
+    /// </summary>
+    public int GetUnhandledRowAndCellFailureCount ();
+
+    /// <summary>
     /// Adds <see cref="BusinessObjectValidationFailure"/>s that belong to the <see cref="BocList"/> as a whole.
     /// </summary>
     public void AddValidationFailuresForBocList (IEnumerable<BusinessObjectValidationFailure> validationFailures);
@@ -75,6 +95,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
     /// <param name="markAsHandled">If set to true, validation failures will not be returned again by any of the <c>GetUnhandled*</c> methods of this repository.</param>
     /// <returns><see cref="BusinessObjectValidationFailure"/>s wrapped with positional information inside <see cref="BocListValidationFailureWithLocationInformation"/>s.</returns>
     public IReadOnlyCollection<BocListValidationFailureWithLocationInformation> GetUnhandledValidationFailuresForDataRow (IBusinessObject rowObject, bool markAsHandled);
+
+    /// <summary>
+    /// Returns a collection of all unhandled <see cref="BusinessObjectValidationFailure"/>s that exist for all rows
+    /// and any of the (nested) property values associated with this <see cref="BocList"/> row.
+    /// </summary>
+    /// <param name="markAsHandled">If set to true, validation failures will not be returned again by any of the <c>GetUnhandled*</c> methods of this repository.</param>
+    /// <returns><see cref="BusinessObjectValidationFailure"/>s wrapped with positional information inside <see cref="BocListValidationFailureWithLocationInformation"/>s.</returns>
+    public IReadOnlyCollection<BocListValidationFailureWithLocationInformation> GetUnhandledValidationFailuresForDataRowsAndContainingDataCells (bool markAsHandled);
 
     /// <summary>
     /// Returns a collection of all unhandled <see cref="BusinessObjectValidationFailure"/>s that exist for the <paramref name="rowObject"/> itself

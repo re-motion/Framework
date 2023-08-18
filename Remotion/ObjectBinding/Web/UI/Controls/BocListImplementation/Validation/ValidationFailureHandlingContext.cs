@@ -39,14 +39,39 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validatio
     /// </summary>
     public IBocListValidationFailureRepository ValidationFailureRepository => BocList.ValidationFailureRepository;
 
-    private readonly List<string> _errorMessages;
+    /// <summary>
+    /// Returns the number of list failures currently contained in the repository at the time of the context creation.
+    /// </summary>
+    public int InitialListFailureCount { get; }
+
+    /// <summary>
+    /// Returns the number of unhandled list failures currently contained in the repository at the time of the context creation.
+    /// </summary>
+    public int InitialUnhandledListFailureCount { get; }
+
+    /// <summary>
+    /// Returns the number of row and cell failures currently contained in the repository at the time of the context creation.
+    /// </summary>
+    public int InitialRowAndCellFailureCount { get; }
+
+    /// <summary>
+    /// Returns the number of unhandled row and cell failures currently contained in the repository at the time of the context creation.
+    /// </summary>
+    public int InitialUnhandledRowAndCellFailureCount { get; }
+
+    private readonly List<string> _errorMessages = new();
 
     public ValidationFailureHandlingContext (IBocList bocList)
     {
       ArgumentUtility.CheckNotNull("bocList", bocList);
 
       BocList = bocList;
-      _errorMessages = new List<string>();
+
+      var validationFailureRepository = BocList.ValidationFailureRepository;
+      InitialListFailureCount = validationFailureRepository.GetListFailureCount();
+      InitialUnhandledListFailureCount = validationFailureRepository.GetUnhandledListFailureCount();
+      InitialRowAndCellFailureCount = validationFailureRepository.GetRowAndCellFailureCount();
+      InitialUnhandledRowAndCellFailureCount = validationFailureRepository.GetUnhandledRowAndCellFailureCount();
     }
 
     /// <summary>

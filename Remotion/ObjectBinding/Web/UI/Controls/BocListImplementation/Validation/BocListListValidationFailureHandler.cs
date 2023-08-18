@@ -22,13 +22,12 @@ using Remotion.Utilities;
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation
 {
   /// <summary>
-  /// Handles all validation failures for the <see cref="IBusinessObjectProperty"/> of the
-  /// <see cref="IBocList"/>. Should always be the first handler to run.
+  /// Handles all validation failures for the <see cref="IBusinessObjectProperty"/> of the <see cref="IBocList"/>.
   /// </summary>
   [ImplementationFor(typeof(IBocListValidationFailureHandler), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class BocListListValidationFailureHandler : IBocListValidationFailureHandler
   {
-    public const int Position = -1_000_000_000;
+    public const int Position = 1_000_000_000;
 
     public BocListListValidationFailureHandler ()
     {

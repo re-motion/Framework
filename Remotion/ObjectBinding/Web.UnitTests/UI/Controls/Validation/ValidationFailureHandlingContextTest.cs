@@ -19,6 +19,7 @@ using System;
 using System.Text;
 using Moq;
 using NUnit.Framework;
+using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
@@ -28,18 +29,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
   [TestFixture]
   public class ValidationFailureHandlingContextTest
   {
-    private Mock<IBocList> _bocListStub;
+    private BocListMock _bocListStub;
 
     [SetUp]
     public void Setup ()
     {
-      _bocListStub = new Mock<IBocList>();
+      _bocListStub = new BocListMock();
     }
 
     [Test]
     public void AppendErrorMessage_AppendsReportedMessagesToStringBuilder ()
     {
-      var context = new ValidationFailureHandlingContext(_bocListStub.Object);
+      var context = new ValidationFailureHandlingContext(_bocListStub);
 
       context.ReportErrorMessage("First error message.");
       context.ReportErrorMessage("Second error message.");
@@ -54,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
     [Test]
     public void AppendErrorMessages_WithExistingContentInStringBuilder_AppendsNewLineAndReportedMessagesToStringBuilder ()
     {
-      var context = new ValidationFailureHandlingContext(_bocListStub.Object);
+      var context = new ValidationFailureHandlingContext(_bocListStub);
 
       context.ReportErrorMessage("First error message.");
       context.ReportErrorMessage("Second error message.");
@@ -70,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
     [Test]
     public void AppendErrorMessages_WithTrailingNewLineInStringBuilder_AppendsReportedMessagesToStringBuilder ()
     {
-      var context = new ValidationFailureHandlingContext(_bocListStub.Object);
+      var context = new ValidationFailureHandlingContext(_bocListStub);
 
       context.ReportErrorMessage("First error message.");
       context.ReportErrorMessage("Second error message.");
@@ -86,7 +87,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
     [Test]
     public void AppendErrorMessage_WithMessagesAfterReporting_AppendsReportedMessagesToStringBuilder ()
     {
-      var context = new ValidationFailureHandlingContext(_bocListStub.Object);
+      var context = new ValidationFailureHandlingContext(_bocListStub);
 
       context.ReportErrorMessage("First error message.");
       context.ReportErrorMessage("Second error message.");
@@ -107,21 +108,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
     [Test]
     public void BocList_ReturnsBocListSuppliedInCtor ()
     {
-      var context = new ValidationFailureHandlingContext(_bocListStub.Object);
+      var context = new ValidationFailureHandlingContext(_bocListStub);
 
-      Assert.That(context.BocList, Is.SameAs(_bocListStub.Object));
+      Assert.That(context.BocList, Is.SameAs(_bocListStub));
     }
 
     [Test]
     public void ValidationFailureRepository_ReturnsValidationFailureRepositoryOfBocList ()
     {
-      var context = new ValidationFailureHandlingContext(_bocListStub.Object);
+      var context = new ValidationFailureHandlingContext(_bocListStub);
 
-      var repository = new BocListValidationFailureRepository();
-
-      _bocListStub.Setup(_ => _.ValidationFailureRepository).Returns(repository);
-
-      Assert.That(context.ValidationFailureRepository, Is.SameAs(repository));
+      Assert.That(context.ValidationFailureRepository, Is.SameAs(_bocListStub.ValidationFailureRepository));
     }
   }
 }

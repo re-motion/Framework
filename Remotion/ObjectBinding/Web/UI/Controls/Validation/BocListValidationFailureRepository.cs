@@ -52,6 +52,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
       private readonly List<HandleableFailure> _rowFailures = new();
       private readonly Dictionary<BocColumnDefinition, List<HandleableFailure>> _cellFailures = new();
 
+      public int GetRowFailureCount () => _rowFailures.Count;
+
+      public int GetUnhandledRowFailureCount () => _rowFailures.Count(e => !e.Handled);
+
+      public int GetRowAndCellFailuresCount () => GetRowFailureCount() + _cellFailures.Sum(e => e.Value.Count);
+
+      public int GetUnhandledRowAndCellFailuresCount () => GetUnhandledRowFailureCount() + _cellFailures.Sum(e => e.Value.Count(f => !f.Handled));
+
       public void AddRowFailures (IEnumerable<BocListValidationFailureWithLocationInformation> failures)
       {
         _rowFailures.AddRange(failures.Select(e => new HandleableFailure(e)));
@@ -102,6 +110,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
     public BocListValidationFailureRepository ()
     {
     }
+
+    public int GetListFailureCount () => _listValidationFailures.Count;
+
+    public int GetUnhandledListFailureCount () => _listValidationFailures.Count(e => !e.Handled);
+
+    public int GetRowAndCellFailureCount () => _rowValidationFailures.Sum(e => e.Value.GetRowAndCellFailuresCount());
+
+    public int GetUnhandledRowAndCellFailureCount () => _rowValidationFailures.Sum(e => e.Value.GetUnhandledRowAndCellFailuresCount());
 
     public void AddValidationFailuresForBocList (IEnumerable<BusinessObjectValidationFailure> validationFailures)
     {
@@ -184,6 +200,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
         return Array.Empty<BocListValidationFailureWithLocationInformation>();
 
       var failures = failureContainer.GetValidationFailuresForDataRow().Where(f => !f.Handled);
+
+      if (markAsHandled)
+        failures = failures.ApplySideEffect(f => f.MarkAsHandled());
+
+      return failures.Select(f => f.Failure).ToList();
+    }
+
+    public IReadOnlyCollection<BocListValidationFailureWithLocationInformation> GetUnhandledValidationFailuresForDataRowsAndContainingDataCells (bool markAsHandled)
+    {
+      var failures = _rowValidationFailures.Values
+          .SelectMany(
+              row => row
+                  .GetValidationFailuresForDataRow()
+                  .Concat(row.GetAllCellFailuresForRow()))
+          .Where(f => !f.Handled);
 
       if (markAsHandled)
         failures = failures.ApplySideEffect(f => f.MarkAsHandled());

@@ -180,7 +180,10 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationColumnTitleText" xml:space="preserve">
     <value>Meldung</value>
   </data>
-  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInListErrorMessage" xml:space="preserve">
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.UnhandledValidationFailuresFoundErrorMessage" xml:space="preserve">
     <value>Ungültige Eingabe in zumindest einer ausgeblendeten Zeile.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInListErrorMessage" xml:space="preserve">
+    <value>Ungültige Eingabe in zumindest einer Zeile. Prüfen Sie die Zeilen auf weitere Details.</value>
   </data>
 </root>
