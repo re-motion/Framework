@@ -15,7 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+#if NETFRAMEWORK
 using System.Runtime.Serialization;
+#else
+using System.Runtime.CompilerServices;
+#endif
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
@@ -44,7 +48,11 @@ namespace Remotion.Mixins.UnitTests.Core
     public void InitializeUnconstructedInstance_ConstructionSemantics ()
     {
       var concreteType = TypeFactory.GetConcreteType(typeof(BaseType3));
+#if NETFRAMEWORK
       var target = (BaseType3)FormatterServices.GetSafeUninitializedObject(concreteType);
+#else
+      var target = (BaseType3)RuntimeHelpers.GetUninitializedObject(concreteType);
+#endif
 
 // ReSharper disable SuspiciousTypeConversion.Global
       TypeFactory.InitializeUnconstructedInstance(target as IMixinTarget, InitializationSemantics.Construction);
@@ -59,7 +67,11 @@ namespace Remotion.Mixins.UnitTests.Core
     public void InitializeUnconstructedInstance_DeserializationSemantics ()
     {
       var concreteType = TypeFactory.GetConcreteType(typeof(TargetType));
+#if NETFRAMEWORK
       var target = FormatterServices.GetSafeUninitializedObject(concreteType);
+#else
+      var target = RuntimeHelpers.GetUninitializedObject(concreteType);
+#endif
       // Simulate a deserialzed instance.
       var mixins = new object[] { new DeserializationMixin() };
       PrivateInvoke.SetNonPublicField(target, "__extensions", mixins);

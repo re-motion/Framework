@@ -34,6 +34,10 @@ namespace Remotion.SecurityManager.Domain.Metadata
     public ImportException () : this("A metadata import exception occurred.") { }
     public ImportException (string message) : base(message) { }
     public ImportException (string message, Exception inner) : base(message, inner) { }
+
+#if NET8_0_OR_GREATER
+    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
+#endif
     protected ImportException (SerializationInfo info, StreamingContext context) : base(info, context) { }
 
     // methods and properties

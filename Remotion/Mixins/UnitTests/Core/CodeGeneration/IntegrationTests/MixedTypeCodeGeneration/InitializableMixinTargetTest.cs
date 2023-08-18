@@ -16,7 +16,11 @@
 // 
 using System;
 using System.Linq;
+#if NETFRAMEWORK
 using System.Runtime.Serialization;
+#else
+using System.Runtime.CompilerServices;
+#endif
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain;
@@ -106,7 +110,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       var instance = (IMixinTarget)CreateMixedObject<NullTarget>(typeof(MixinWithOnInitializedAndOnDeserialized));
 
       // Simulate a deserialized instance that got its mixin deserialized.
+#if NETFRAMEWORK
       var deserialized = (IMixinTarget)FormatterServices.GetUninitializedObject(instance.GetType());
+#else
+      var deserialized = (IMixinTarget)RuntimeHelpers.GetUninitializedObject(instance.GetType());
+#endif
       PrivateInvoke.SetNonPublicField(deserialized, "__extensions", new object[] { new MixinWithOnInitializedAndOnDeserialized() });
       // __extensionsInitialized is _not_ deserialized
       Assert.That(PrivateInvoke.GetNonPublicField(deserialized, "__extensionsInitialized"), Is.False);
@@ -172,7 +180,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     {
       var instance = (IMixinTarget)CreateMixedObject<NullTarget>(typeof(MixinWithOnInitializedAndOnDeserialized));
       // Simulate a deserialized instance
+#if NETFRAMEWORK
       var deserialized = (IMixinTarget)FormatterServices.GetUninitializedObject(instance.GetType());
+#else
+      var deserialized = (IMixinTarget)RuntimeHelpers.GetUninitializedObject(instance.GetType());
+#endif
 
       var mixins = new object[] { new MixinWithOnInitializedAndOnDeserialized { OnDeserializedCalled = false } };
 
@@ -190,7 +202,11 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       var mixins = instance.Mixins.Select(m => Activator.CreateInstance(m.GetType())).ToArray();
 
       // and simulate a deserialized instance
+#if NETFRAMEWORK
       var deserialized = (IMixinTarget)FormatterServices.GetUninitializedObject(instance.GetType());
+#else
+      var deserialized = (IMixinTarget)RuntimeHelpers.GetUninitializedObject(instance.GetType());
+#endif
 
       CallInitializeMixins(deserialized, InitializationSemantics.Deserialization, mixinInstances: mixins);
 

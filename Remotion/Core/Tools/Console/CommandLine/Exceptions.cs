@@ -63,6 +63,9 @@ public abstract class CommandLineArgumentException: Exception
   {
   }
 
+#if NET8_0_OR_GREATER
+  [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
+#endif
   protected CommandLineArgumentException (SerializationInfo info, StreamingContext context)
     : base(info, context)
   {
@@ -92,6 +95,9 @@ public class InvalidCommandLineArgumentValueException: CommandLineArgumentExcept
   {
   }
 
+#if NET8_0_OR_GREATER
+  [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
+#endif
   protected InvalidCommandLineArgumentValueException (SerializationInfo info, StreamingContext context)
     : base(info, context)
   {
@@ -117,6 +123,9 @@ public class InvalidCommandLineArgumentNameException: CommandLineArgumentExcepti
   {
   }
 
+#if NET8_0_OR_GREATER
+  [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
+#endif
   protected InvalidCommandLineArgumentNameException (SerializationInfo info, StreamingContext context)
     : base(info, context)
   {
@@ -136,6 +145,9 @@ public class InvalidNumberOfCommandLineArgumentsException: CommandLineArgumentEx
   {
   }
 
+#if NET8_0_OR_GREATER
+  [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
+#endif
   protected InvalidNumberOfCommandLineArgumentsException (SerializationInfo info, StreamingContext context)
     : base(info, context)
   {
@@ -155,6 +167,9 @@ public class MissingRequiredCommandLineParameterException: CommandLineArgumentEx
   {
   }
 
+#if NET8_0_OR_GREATER
+  [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
+#endif
   protected MissingRequiredCommandLineParameterException (SerializationInfo info, StreamingContext context)
     : base(info, context)
   {
@@ -174,6 +189,9 @@ public class ConflictCommandLineParameterException: CommandLineArgumentException
   {
   }
 
+#if NET8_0_OR_GREATER
+  [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
+#endif
   protected ConflictCommandLineParameterException (SerializationInfo info, StreamingContext context)
     : base(info, context)
   {
@@ -200,6 +218,9 @@ public class CommandLineArgumentApplicationException: CommandLineArgumentExcepti
   {
   }
 
+#if NET8_0_OR_GREATER
+  [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
+#endif
   protected CommandLineArgumentApplicationException (SerializationInfo info, StreamingContext context)
     : base(info, context)
   {

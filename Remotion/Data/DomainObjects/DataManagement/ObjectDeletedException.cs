@@ -45,6 +45,9 @@ public class ObjectDeletedException : DomainObjectException
   {
   }
 
+#if NET8_0_OR_GREATER
+  [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
+#endif
   protected ObjectDeletedException (SerializationInfo info, StreamingContext context) : base(info, context)
   {
     _id = (ObjectID?)info.GetValue("ID", typeof(ObjectID));
@@ -68,6 +71,9 @@ public class ObjectDeletedException : DomainObjectException
     get { return _id; }
   }
 
+#if NET8_0_OR_GREATER
+    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
+#endif
   public override void GetObjectData (SerializationInfo info, StreamingContext context)
   {
     base.GetObjectData(info, context);

@@ -39,7 +39,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     [SetUp]
     public void SetUp ()
     {
+#pragma warning disable SYSLIB0050
       _serializationInfo = new SerializationInfo(typeof(object), new FormatterConverter());
+#pragma warning restore SYSLIB0050
       _context = new StreamingContext();
       _concreteMixin = new FakeConcreteMixinType();
       var classContext = ClassContextObjectMother.Create(typeof(ClassOverridingMixinMembers), typeof(FakeConcreteMixinType));
