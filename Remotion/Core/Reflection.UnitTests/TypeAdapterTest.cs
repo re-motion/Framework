@@ -36,6 +36,11 @@ namespace Remotion.Reflection.UnitTests
     {
     }
 
+    private class GenericWithParameterConstraint<T>
+        where T : Exception
+    {
+    }
+
     [Test]
     public void Create_ReturnsSameInstance ()
     {
@@ -529,12 +534,13 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void GetGenericParameterConstraints_GenericParameter ()
     {
-      var type = typeof(Nullable<>).GetGenericArguments().Single();
+      var type = typeof(GenericWithParameterConstraint<>).GetGenericArguments().Single();
+      Assert.That(type.GetGenericParameterConstraints(), Is.EqualTo(new[] { typeof(Exception) }));
 
       Assert.That(TypeAdapter.Create(type).GetGenericParameterConstraints(), Has.All.TypeOf<TypeAdapter>());
       Assert.That(
           TypeAdapter.Create(type).GetGenericParameterConstraints(),
-          Is.EqualTo(new[] { TypeAdapter.Create(typeof(ValueType)) }));
+          Is.EqualTo(new[] { TypeAdapter.Create(typeof(Exception)) }));
     }
 
     [Test]
