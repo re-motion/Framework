@@ -1,6 +1,10 @@
 using System;
 using System.Linq;
+#if NETFRAMEWORK
 using System.Runtime.Serialization;
+#else
+using System.Runtime.CompilerServices;
+#endif
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.ExtensibleEnums;
 using Remotion.Reflection;
@@ -51,7 +55,11 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     private IExtensibleEnum CreateUninitializedExtensibleEnumValue (Type extensibleEnumType)
     {
+#if NETFRAMEWORK
       var uninitializedObject = FormatterServices.GetSafeUninitializedObject(extensibleEnumType);
+#else
+      var uninitializedObject = RuntimeHelpers.GetUninitializedObject(extensibleEnumType);
+#endif
       return (IExtensibleEnum)uninitializedObject;
     }
   }

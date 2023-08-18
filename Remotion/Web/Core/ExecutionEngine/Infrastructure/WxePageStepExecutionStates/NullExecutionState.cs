@@ -24,7 +24,11 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
   /// returns <see langword="false" /> for the <see cref="IsExecuting"/> property.
   /// </summary>
   [Serializable]
-  public class NullExecutionState : IExecutionState, IObjectReference
+  public class NullExecutionState
+      : IExecutionState,
+#pragma warning disable SYSLIB0050
+          IObjectReference
+#pragma warning restore SYSLIB0050
   {
     public static readonly NullExecutionState Null = new NullExecutionState();
 

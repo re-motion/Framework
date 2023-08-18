@@ -30,7 +30,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// type (or object) is passed to them rather than throwing exceptions.</remarks>
   public static class DomainObjectMixinCodeGenerationBridge
   {
-    internal class DummyObjectReference : IObjectReference
+    internal class DummyObjectReference
+#pragma warning disable SYSLIB0050
+        : IObjectReference
+#pragma warning restore SYSLIB0050
     {
       private readonly object _realObject;
 

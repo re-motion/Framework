@@ -44,8 +44,8 @@ namespace Remotion.Development.UnitTesting
 
       using (MemoryStream stream = new MemoryStream())
       {
-        BinaryFormatter formatter = new BinaryFormatter();
 #pragma warning disable SYSLIB0011
+        BinaryFormatter formatter = new BinaryFormatter();
         formatter.Serialize(stream, o);
 #pragma warning restore SYSLIB0011
         return stream.ToArray();
@@ -59,8 +59,8 @@ namespace Remotion.Development.UnitTesting
 
       using (MemoryStream stream = new MemoryStream(bytes))
       {
-        BinaryFormatter formatter = new BinaryFormatter();
 #pragma warning disable SYSLIB0011
+        BinaryFormatter formatter = new BinaryFormatter();
         return formatter.Deserialize(stream);
 #pragma warning restore SYSLIB0011
       }

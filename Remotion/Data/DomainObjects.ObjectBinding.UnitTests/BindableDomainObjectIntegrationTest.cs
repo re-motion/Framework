@@ -112,6 +112,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       Assert.That(provider, Is.Not.SameAs(BusinessObjectProvider.GetProvider(typeof(BindableObjectProviderAttribute))));
     }
 
+#pragma warning disable SYSLIB0050
     [Test]
     public void DeserializationConstructor_CallsBase ()
     {
@@ -127,6 +128,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
           (SampleBindableDomainObject_ImplementingISerializable)Activator.CreateInstance(((object)serializable).GetType(), info, context);
       Assert.That(deserialized.ID, Is.EqualTo(serializable.ID));
     }
+#pragma warning restore SYSLIB0050
 
     [Test]
     public void GetProvider ()

@@ -372,19 +372,23 @@ namespace Remotion.Reflection.UnitTests
       Assert.That(TypeAdapter.Create(type).IsNested, Is.EqualTo(type.IsNested).And.False);
     }
 
+#pragma warning disable SYSLIB0050
     [Test]
     public void IsSerializable_SerializableType ()
     {
       var type = typeof(Exception);
       Assert.That(TypeAdapter.Create(type).IsSerializable, Is.EqualTo(type.IsSerializable).And.True);
     }
+#pragma warning restore SYSLIB0050
 
+#pragma warning disable SYSLIB0050
     [Test]
     public void IsSerializable_NotSerializableType ()
     {
       var type = typeof(Activator);
       Assert.That(TypeAdapter.Create(type).IsSerializable, Is.EqualTo(type.IsSerializable).And.False);
     }
+#pragma warning restore SYSLIB0050
 
     [Test]
     public void HasElementType_TypeWithElementType ()

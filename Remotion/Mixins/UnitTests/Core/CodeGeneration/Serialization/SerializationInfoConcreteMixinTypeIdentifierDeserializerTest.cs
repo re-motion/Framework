@@ -47,7 +47,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.Serialization
       _methodOnGenericClosedWithReferenceType = typeof(GenericClassWithAllKindsOfMembers<string>).GetMethod("Method");
       _methodOnGenericClosedWithValueType = typeof(GenericClassWithAllKindsOfMembers<int>).GetMethod("Method");
 
+#pragma warning disable SYSLIB0050
       _serializationInfo = new SerializationInfo(typeof(ConcreteMixinTypeIdentifier), new FormatterConverter());
+#pragma warning restore SYSLIB0050
       _serializer = new SerializationInfoConcreteMixinTypeIdentifierSerializer(_serializationInfo, "identifier");
       _deserializer = new SerializationInfoConcreteMixinTypeIdentifierDeserializer(_serializationInfo, "identifier");
     }

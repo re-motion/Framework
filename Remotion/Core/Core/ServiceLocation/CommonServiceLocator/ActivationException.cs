@@ -78,6 +78,9 @@ namespace Remotion.ServiceLocation
     /// <exception cref="T:System.Runtime.Serialization.SerializationException">
     /// The class name is null or <see cref="P:System.Exception.HResult" /> is zero (0).
     /// </exception>
+#if NET8_0_OR_GREATER
+    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
+#endif
     protected ActivationException (SerializationInfo info, StreamingContext context)
         : base(info, context)
     {

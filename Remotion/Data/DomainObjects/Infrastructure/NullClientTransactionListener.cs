@@ -23,7 +23,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// <see cref="INullObject"/> implementation of <see cref="IClientTransactionListener"/>.
   /// </summary>
   [Serializable]
-  public sealed class NullClientTransactionListener : ClientTransactionListenerBase, IObjectReference
+  public sealed class NullClientTransactionListener
+      : ClientTransactionListenerBase,
+#pragma warning disable SYSLIB0050
+          IObjectReference
+#pragma warning restore SYSLIB0050
   {
     public static readonly IClientTransactionListener Instance = new NullClientTransactionListener();
 
