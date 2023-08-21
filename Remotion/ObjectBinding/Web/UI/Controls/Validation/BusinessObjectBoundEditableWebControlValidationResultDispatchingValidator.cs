@@ -38,7 +38,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
       var control = GetControlToValidate();
 
-      _validationFailures = validationResult.GetValidationFailures(control, markAsHandled: true).ToArray();
+      var markAsHandled = control.Visible;
+      _validationFailures = validationResult.GetValidationFailures(control, markAsHandled).ToArray();
 
       //TODO-RM-5906: this call could be optimized away and replaced by an explicit call to Validate() from an external source. 
       //              Possibly, we could also tweak this to only track if validate has been called before, and if so, we set the validator invalid.
