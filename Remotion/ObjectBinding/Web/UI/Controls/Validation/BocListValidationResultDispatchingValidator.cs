@@ -60,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
       DispatchToValidationResultDispatchers(validationResult, bocListControl);
 
-      if (((IBocList)bocListControl).IsInlineValidationDisplayEnabled)
+      if (bocListControl.IsInlineValidationDisplayEnabled)
         DispatchToValidationFailureRepository(validationResult, bocListControl);
 
       //TODO-RM-5906: this call could be optimized away and replaced by an explicit call to Validate() from an external source.
