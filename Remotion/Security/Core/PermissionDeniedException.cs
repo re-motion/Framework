@@ -34,6 +34,10 @@ namespace Remotion.Security
     public PermissionDeniedException () : this("The operation is not allowed.") {}
     public PermissionDeniedException (string message) : base(message) {}
     public PermissionDeniedException (string message, Exception inner) : base(message, inner) {}
+
+#if NET8_0_OR_GREATER
+    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
+#endif
     protected PermissionDeniedException (SerializationInfo info, StreamingContext context) : base(info, context) { }
 
     // methods and properties

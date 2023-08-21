@@ -17,7 +17,11 @@
 using System;
 using System.Reflection;
 using System.Reflection.Emit;
+#if NETFRAMEWORK || NET6_0 || NET7_0
 using System.Runtime.Serialization;
+#else
+using Moq;
+#endif
 using NUnit.Framework;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Reflection.CodeGeneration;
@@ -33,7 +37,12 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     public override void SetUp ()
     {
       base.SetUp();
+
+#if NETFRAMEWORK || NET6_0 || NET7_0
       _fakeILGenerator = (ILGenerator)FormatterServices.GetSafeUninitializedObject(typeof(ILGenerator));
+#else
+      _fakeILGenerator = Mock.Of<ILGenerator>();
+#endif
     }
 
     [Test]

@@ -83,8 +83,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
         newOrder.OrderTicket = OrderTicket.NewObject();
       }
 
+#pragma warning disable SYSLIB0050
       var info = new SerializationInfo(typeof(DataManager), new FormatterConverter());
       ((ISerializable)dataManager).GetObjectData(info, new StreamingContext());
+#pragma warning restore SYSLIB0050
       var data = (object[])info.GetValue("doInfo.GetData", typeof(object[]));
       Console.WriteLine("Object stream:");
       Dump((object[])data[0]);

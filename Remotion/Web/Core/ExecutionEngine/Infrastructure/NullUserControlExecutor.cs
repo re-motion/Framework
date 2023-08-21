@@ -20,7 +20,11 @@ using System.Runtime.Serialization;
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
   [Serializable]
-  public class NullUserControlExecutor : IUserControlExecutor, IObjectReference
+  public class NullUserControlExecutor
+      : IUserControlExecutor,
+#pragma warning disable SYSLIB0050
+          IObjectReference
+#pragma warning restore SYSLIB0050
   {
     public static readonly IUserControlExecutor Null = new NullUserControlExecutor();
 

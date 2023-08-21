@@ -262,7 +262,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(
           () => _orderItemListAsIList.CopyTo(destination, -1),
           Throws.InstanceOf<ArgumentOutOfRangeException>()
+#if NET8_0_OR_GREATER
+              .With.Message.EqualTo("destinationIndex ('-1') must be greater than or equal to '0'. (Parameter 'destinationIndex')\r\nActual value was -1."));
+#else
               .With.Message.Contains("Number was less than the array's lower bound in the first dimension."));
+#endif
     }
 
     [Test]
