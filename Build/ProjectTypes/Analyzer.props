@@ -1,9 +1,6 @@
 ﻿<Project>
   <PropertyGroup>
-    <!-- Analyzers do not support .NET 7.0 when using Toolset before v4.7.0. First available toolset with .NET 7.0 support is MSBuild 1.17.7.
-         https://learn.microsoft.com/en-us/visualstudio/extensibility/roslyn-version-support?view=vs-2022
-    -->
-    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net6.0;net7.0</TargetFrameworks>
 <!--Langversion 9 is required for compatibility with netstandard2.0 -->
     <LangVersion>9</LangVersion>
     <Nullable>enable</Nullable>
