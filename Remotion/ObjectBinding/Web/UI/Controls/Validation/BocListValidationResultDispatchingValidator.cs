@@ -20,7 +20,6 @@ using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
-using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
@@ -33,9 +32,11 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 {
   public sealed class BocListValidationResultDispatchingValidator
-      : BaseValidator, IBusinessObjectBoundEditableWebControlValidationResultDispatcher, IValidatorWithDynamicErrorMessage
+      : BaseValidator, IBusinessObjectBoundEditableWebControlValidationResultDispatcher
   {
     private readonly IBocListValidationFailureHandler _validationFailureHandler;
+
+    private bool _isErrorMessageBuilt = false;
 
     public BocListValidationResultDispatchingValidator ()
         : this(SafeServiceLocator.Current.GetInstance<IBocListValidationFailureHandler>())
@@ -250,8 +251,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
       return bocListControl;
     }
 
-    void IValidatorWithDynamicErrorMessage.RefreshErrorMessage ()
+    public void BuildErrorMessage ()
     {
+      if (_isErrorMessageBuilt)
+        throw new InvalidOperationException("The validation error message has already been built.");
+      _isErrorMessageBuilt = true;
+
       var bocList = GetControlToValidate();
 
       var context = new ValidationFailureHandlingContext(bocList);

@@ -205,8 +205,8 @@ namespace Remotion.Web.UI.Controls
     private HtmlControl ToGenericControl (string? cssClass, string tag)
     {
       HtmlControl control;
-      if (_validator is IValidatorWithDynamicErrorMessage validatorWithDynamicErrorMessage)
-        control = new LazyEvaluatedValidationMessageControl(tag, validatorWithDynamicErrorMessage);
+      if (_validator is ILazyEvaluatedValidator)
+        control = new LazyEvaluatedValidationMessageControl(tag, _validator);
       else
         control = new HtmlGenericControl(tag) { InnerHtml = ValidationMessage.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks) };
 

@@ -39,7 +39,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
     private class TestableOpenLazyEvaluatedValidationMessageControl : LazyEvaluatedValidationMessageControl
     {
-      public TestableOpenLazyEvaluatedValidationMessageControl (string tag, [CanBeNull] IValidatorWithDynamicErrorMessage validatorStub)
+      public TestableOpenLazyEvaluatedValidationMessageControl (string tag, [CanBeNull] IValidator validatorStub)
           : base(tag, validatorStub)
       {
       }
@@ -55,14 +55,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       var errorMessage = "Unexpected error message";
 
-      var validatorStub = new Mock<IValidatorWithDynamicErrorMessage>();
+      var validatorStub = new Mock<IValidator>();
       validatorStub.Setup(_ => _.IsValid).Returns(false);
       validatorStub.Setup(_ => _.ErrorMessage).Returns(() => errorMessage);
-      validatorStub
-          .Setup(_ => _.RefreshErrorMessage())
-          .Callback(() => { errorMessage = "A lazy error."; });
 
       var lazyValidationControl = new TestableOpenLazyEvaluatedValidationMessageControl("span", validatorStub.Object);
+
+      errorMessage = "A lazy error.";
 
       lazyValidationControl.Render(_html.Writer);
 

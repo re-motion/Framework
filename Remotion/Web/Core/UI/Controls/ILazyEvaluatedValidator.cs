@@ -21,13 +21,10 @@ using System.Web.UI;
 namespace Remotion.Web.UI.Controls
 {
   /// <summary>
-  /// <see cref="IValidatorWithDynamicErrorMessage" /> defines an API for validators which need to have their <see cref="IValidator.ErrorMessage"/> updated at a late point.
+  /// <see cref="ILazyEvaluatedValidator" /> is a marker interface for validators that update their <see cref="IValidator.ErrorMessage"/> during rendering,
+  /// thus requiring that the <see cref="IValidator.ErrorMessage"/> is evaluated at the time of render and not before.
   /// </summary>
-  public interface IValidatorWithDynamicErrorMessage : IValidator
+  public interface ILazyEvaluatedValidator : IValidator
   {
-    /// <summary>
-    /// Performs validation on the already validated associated input control again and updates the <see cref="IValidator.ErrorMessage" /> property.
-    /// </summary>
-    void RefreshErrorMessage ();
   }
 }

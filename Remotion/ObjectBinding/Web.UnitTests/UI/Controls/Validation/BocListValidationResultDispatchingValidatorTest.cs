@@ -163,7 +163,31 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
     }
 
     [Test]
-    public void RefreshErrorMessage_WithoutValidationFailures_ReturnsMessageFromResourceManager ()
+    public void BuildErrorMessage_OnSecondCall_Throws ()
+    {
+      var validationFailureRepository = new BocListValidationFailureRepository();
+      validationFailureRepository.AddValidationFailuresForBocList(new [] { BusinessObjectValidationFailure.Create("A list failure") });
+
+      var bocListMock = new Mock<Control> { CallBase = true };
+      bocListMock.As<IBocList>().Setup(_ => _.ValidationFailureRepository).Returns(validationFailureRepository);
+      bocListMock.Object.ID = "someBocList";
+
+      var validator = new BocListValidationResultDispatchingValidator();
+      validator.ControlToValidate = "someBocList";
+
+      NamingContainer.Controls.Add(bocListMock.Object);
+      NamingContainer.Controls.Add(validator);
+
+      validator.BuildErrorMessage();
+
+      Assert.That(
+          () => validator.BuildErrorMessage(),
+          Throws.TypeOf<InvalidOperationException>()
+              .With.Message.EqualTo("The validation error message has already been built."));
+    }
+
+    [Test]
+    public void BuildErrorMessage_WithoutValidationFailures_ReturnsMessageFromResourceManager ()
     {
       var validationFailureRepoStub = new Mock<IBocListValidationFailureRepository>();
       validationFailureRepoStub
@@ -200,13 +224,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       NamingContainer.Controls.Add(bocListMock.Object);
       NamingContainer.Controls.Add(validator);
 
-      ((IValidatorWithDynamicErrorMessage)validator).RefreshErrorMessage();
+      validator.BuildErrorMessage();
 
       Assert.That(validator.ErrorMessage, Is.EqualTo("New error just arrived"));
     }
 
     [Test]
-    public void RefreshErrorMessage_WithBocListValidationFailures_ReturnsFailuresOfBocList ()
+    public void BuildErrorMessage_WithBocListValidationFailures_ReturnsFailuresOfBocList ()
     {
       var validationFailureRepository = new BocListValidationFailureRepository();
       validationFailureRepository.AddValidationFailuresForBocList(new [] { BusinessObjectValidationFailure.Create("Errors on BocList") });
@@ -225,13 +249,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       NamingContainer.Controls.Add(bocListMock.Object);
       NamingContainer.Controls.Add(validator);
 
-      ((IValidatorWithDynamicErrorMessage)validator).RefreshErrorMessage();
+      validator.BuildErrorMessage();
 
       Assert.That(validator.ErrorMessage, Is.EqualTo("Errors on BocList\r\n"));
     }
 
     [Test]
-    public void RefreshErrorMessage_WithValidationFailuresForBoundProperty_ReturnsLocalizedInfo ()
+    public void BuildErrorMessage_WithValidationFailuresForBoundProperty_ReturnsLocalizedInfo ()
     {
       var validationFailureRepository = new BocListValidationFailureRepository();
       validationFailureRepository.AddValidationFailuresForDataRow(Mock.Of<IBusinessObject>(), new [] { BusinessObjectValidationFailure.Create("Errors on BocList rows") });
@@ -256,13 +280,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       NamingContainer.Controls.Add(bocListMock.Object);
       NamingContainer.Controls.Add(validator);
 
-      ((IValidatorWithDynamicErrorMessage)validator).RefreshErrorMessage();
+      validator.BuildErrorMessage();
 
       Assert.That(validator.ErrorMessage, Is.EqualTo("Errors on rows in BocList\r\n"));
     }
 
     [Test]
-    public void RefreshErrorMessage_WithoutErrors_ReturnsLocalizedInfo ()
+    public void BuildErrorMessage_WithoutErrors_ReturnsLocalizedInfo ()
     {
       var validationFailureRepository = new BocListValidationFailureRepository();
 
@@ -286,13 +310,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       NamingContainer.Controls.Add(bocListMock.Object);
       NamingContainer.Controls.Add(validator);
 
-      ((IValidatorWithDynamicErrorMessage)validator).RefreshErrorMessage();
+      validator.BuildErrorMessage();
 
       Assert.That(validator.ErrorMessage, Is.EqualTo("Errors on rows in BocList"));
     }
 
     [Test]
-    public void RefreshErrorMessage_WithValidationFailuresForBoundPropertyAndRowFailures_ReturnsAppendedMessageText ()
+    public void BuildErrorMessage_WithValidationFailuresForBoundPropertyAndRowFailures_ReturnsAppendedMessageText ()
     {
       var validationFailureRepository = new BocListValidationFailureRepository();
       validationFailureRepository.AddValidationFailuresForBocList(new [] { BusinessObjectValidationFailure.Create("A list error") });
@@ -318,13 +342,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       NamingContainer.Controls.Add(bocListMock.Object);
       NamingContainer.Controls.Add(validator);
 
-      ((IValidatorWithDynamicErrorMessage)validator).RefreshErrorMessage();
+      validator.BuildErrorMessage();
 
       Assert.That(validator.ErrorMessage, Is.EqualTo("Errors on rows in BocList\r\nA list error\r\n"));
     }
 
     [Test]
-    public void RefreshErrorMessage_WithAllKindsOfFailures_ReturnsMessagesFromAllHandlers ()
+    public void BuildErrorMessage_WithAllKindsOfFailures_ReturnsMessagesFromAllHandlers ()
     {
       var validationFailureRepository = new BocListValidationFailureRepository();
       validationFailureRepository.AddValidationFailuresForBocList(new [] { BusinessObjectValidationFailure.Create("A list error") });
@@ -357,7 +381,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       NamingContainer.Controls.Add(bocListMock.Object);
       NamingContainer.Controls.Add(validator);
 
-      ((IValidatorWithDynamicErrorMessage)validator).RefreshErrorMessage();
+      validator.BuildErrorMessage();
 
       Assert.That(validator.ErrorMessage, Is.EqualTo("Error details in rows\r\nErrors on other page\r\nA list error\r\n"));
     }

@@ -118,6 +118,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         RenderTableClosingTag(renderingContext);
       }
 
+      // Build the actual error messages since we have rendered all the inline error messages
+      renderingContext.Control.BuildErrorMessages();
+      validationErrors = GetValidationErrorsToRender(renderingContext).ToArray();
+
       _validationErrorRenderer.RenderValidationErrors(renderingContext.Writer, validationErrorsID, validationErrors);
     }
 
