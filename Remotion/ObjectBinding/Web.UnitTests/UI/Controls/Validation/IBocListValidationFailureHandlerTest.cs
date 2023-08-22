@@ -29,8 +29,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
           Is.EqualTo(
               new[]
               {
-                typeof(BocListListValidationFailureHandler),
-                typeof(BocListRowAndCellValidationFailureHandler)
+                  typeof(CheckRowsBocListValidationFailureHandler),
+                  typeof(BocListRowAndCellValidationFailureHandler),
+                  typeof(BocListListValidationFailureHandler)
               }));
     }
 

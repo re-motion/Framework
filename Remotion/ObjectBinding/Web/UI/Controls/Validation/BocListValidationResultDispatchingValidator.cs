@@ -167,7 +167,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
       }
       else
       {
-        ErrorMessage = GetControlToValidate().GetResourceManager().GetString(BocList.ResourceIdentifier.ValidationFailuresFoundInListErrorMessage);
+        ErrorMessage = GetControlToValidate().GetResourceManager().GetString(BocList.ResourceIdentifier.UnhandledValidationFailuresFoundErrorMessage);
         return false;
       }
     }
@@ -263,7 +263,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
       if (bocList.ValidationFailureRepository.GetUnhandledValidationFailuresForBocListAndContainingDataRowsAndDataCells(true).Any() || errorMessageBuilder.Length == 0)
       {
-        errorMessageBuilder.Append(bocList.GetResourceManager().GetString(BocList.ResourceIdentifier.ValidationFailuresFoundInListErrorMessage));
+        errorMessageBuilder.Append(bocList.GetResourceManager().GetString(BocList.ResourceIdentifier.UnhandledValidationFailuresFoundErrorMessage));
       }
 
       ErrorMessage = errorMessageBuilder.ToString();

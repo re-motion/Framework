@@ -362,6 +362,108 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       Assert.That(result, Is.EquivalentTo(new[] { rowFailuresWithPosition, unmarkedFailureWithPosition }));
     }
 
+
+    [Test]
+    public void GetUnhandledValidationFailuresForDataRowsAndContainingDataCells_ReturnsCellAndRowFailures ()
+    {
+      var repository = new BocListValidationFailureRepository();
+
+      var cellFailure = BusinessObjectValidationFailure.Create("Cell failure");
+      repository.AddValidationFailuresForDataCell(_rowObjectStub.Object, _columnDefinitionStub.Object, new[] { cellFailure });
+
+      var rowFailure = BusinessObjectValidationFailure.Create("Row failure");
+      repository.AddValidationFailuresForDataRow(_rowObjectStub.Object, new[] { rowFailure });
+
+      var listFailure = BusinessObjectValidationFailure.Create("List failure");
+      repository.AddValidationFailuresForBocList(new[] { listFailure });
+
+      var expectedFailures = new []
+                             {
+                                 BocListValidationFailureWithLocationInformation.CreateFailureForCell(cellFailure, _rowObjectStub.Object, _columnDefinitionStub.Object),
+                                 BocListValidationFailureWithLocationInformation.CreateFailureForRow(rowFailure, _rowObjectStub.Object)
+                             };
+
+      var result = repository.GetUnhandledValidationFailuresForDataRowsAndContainingDataCells(false).ToArray();
+      Assert.That(result, Is.EquivalentTo(expectedFailures));
+    }
+
+    [Test]
+    public void GetUnhandledValidationFailuresForDataRowsAndContainingDataCells_MarkAsHandled_NotContainedInRepositoryAfterwards ()
+    {
+      var repository = new BocListValidationFailureRepository();
+
+      var cellFailure = BusinessObjectValidationFailure.Create("Cell failure");
+      repository.AddValidationFailuresForDataCell(_rowObjectStub.Object, _columnDefinitionStub.Object, new[] { cellFailure });
+
+      var rowFailure = BusinessObjectValidationFailure.Create("Row failure");
+      repository.AddValidationFailuresForDataRow(_rowObjectStub.Object, new[] { rowFailure });
+
+      var expectedFailures = new[]
+                             {
+                                 BocListValidationFailureWithLocationInformation.CreateFailureForCell(cellFailure, _rowObjectStub.Object, _columnDefinitionStub.Object),
+                                 BocListValidationFailureWithLocationInformation.CreateFailureForRow(rowFailure, _rowObjectStub.Object)
+                             };
+
+      var result = repository.GetUnhandledValidationFailuresForDataRowsAndContainingDataCells(true);
+      Assert.That(result, Is.EquivalentTo(expectedFailures));
+
+      result = repository.GetUnhandledValidationFailuresForDataRowsAndContainingDataCells(false);
+      Assert.That(result, Is.Empty);
+    }
+
+    [Test]
+    public void GetUnhandledValidationFailuresForDataRowsAndContainingDataCells_DontMarkAsHandled_ContainedInRepositoryAfterwards ()
+    {
+      var repository = new BocListValidationFailureRepository();
+
+      var cellFailure = BusinessObjectValidationFailure.Create("Cell failure");
+      repository.AddValidationFailuresForDataCell(_rowObjectStub.Object, _columnDefinitionStub.Object, new[] { cellFailure });
+
+      var rowFailure = BusinessObjectValidationFailure.Create("Row failure");
+      repository.AddValidationFailuresForDataRow(_rowObjectStub.Object, new[] { rowFailure });
+
+      var expectedFailures = new[]
+                             {
+                                 BocListValidationFailureWithLocationInformation.CreateFailureForCell(cellFailure, _rowObjectStub.Object, _columnDefinitionStub.Object),
+                                 BocListValidationFailureWithLocationInformation.CreateFailureForRow(rowFailure, _rowObjectStub.Object)
+                             };
+
+      var result = repository.GetUnhandledValidationFailuresForDataRowsAndContainingDataCells(false);
+      Assert.That(result, Is.EquivalentTo(expectedFailures));
+
+      result = repository.GetUnhandledValidationFailuresForDataRowsAndContainingDataCells(false);
+      Assert.That(result, Is.EquivalentTo(expectedFailures));
+    }
+
+    [Test]
+    public void GetUnhandledValidationFailuresForDataRowsAndContainingDataCells_WithCellHandledSeparately_OnlyContainsUnhandledFailures ()
+    {
+      var repository = new BocListValidationFailureRepository();
+      var markedColumnStub = new Mock<BocColumnDefinition>();
+
+      var rowFailure = BusinessObjectValidationFailure.Create("A failure");
+      var rowFailuresWithPosition = BocListValidationFailureWithLocationInformation.CreateFailureForRow(rowFailure, _rowObjectStub.Object);
+
+      var unmarkedFailure = BusinessObjectValidationFailure.Create("Unmarked Failure");
+      var unmarkedFailureWithPosition = BocListValidationFailureWithLocationInformation.CreateFailureForCell(unmarkedFailure, _rowObjectStub.Object, _columnDefinitionStub.Object);
+
+      var markedFailure = BusinessObjectValidationFailure.Create("Marked Failure");
+      var markedFailureWithPosition = BocListValidationFailureWithLocationInformation.CreateFailureForCell(markedFailure, _rowObjectStub.Object, markedColumnStub.Object);
+
+      repository.AddValidationFailuresForDataRow(_rowObjectStub.Object, new[] { rowFailure });
+      repository.AddValidationFailuresForDataCell(_rowObjectStub.Object, _columnDefinitionStub.Object, new[] { unmarkedFailure });
+      repository.AddValidationFailuresForDataCell(_rowObjectStub.Object, markedColumnStub.Object, new[] { markedFailure });
+
+      var result = repository.GetUnhandledValidationFailuresForDataRowsAndContainingDataCells(false);
+      Assert.That(result, Is.EquivalentTo(new[] { rowFailuresWithPosition, unmarkedFailureWithPosition, markedFailureWithPosition }));
+
+      result = repository.GetUnhandledValidationFailuresForDataCell(_rowObjectStub.Object, markedColumnStub.Object, true);
+      Assert.That(result, Is.EqualTo(new[] { markedFailureWithPosition }));
+
+      result = repository.GetUnhandledValidationFailuresForDataRowsAndContainingDataCells(false);
+      Assert.That(result, Is.EquivalentTo(new[] { rowFailuresWithPosition, unmarkedFailureWithPosition }));
+    }
+
     [Test]
     public void GetUnhandledValidationFailuresForBocList_ReturnsListFailures ()
     {

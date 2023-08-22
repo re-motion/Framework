@@ -180,6 +180,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       RowMenuTitle,
       ValidationFailuresFoundInOtherListPagesErrorMessage,
       ValidationColumnTitleText,
+      UnhandledValidationFailuresFoundErrorMessage,
       ValidationFailuresFoundInListErrorMessage
     }
 

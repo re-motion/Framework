@@ -27,26 +27,34 @@ using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
 {
   [TestFixture]
-  public class BocListRowAndCellValidationFailureHandlerTest
+  public class CheckRowsBocListValidationFailureHandlerTest
   {
     private Mock<IBocList> _bocListStub;
+    private Mock<IResourceManager> _resourceManagerStub;
     private BocListValidationFailureRepository _repository;
 
     [SetUp]
     public void Setup ()
     {
       _bocListStub = new Mock<IBocList>();
+      _resourceManagerStub = new Mock<IResourceManager>();
       _repository = new BocListValidationFailureRepository();
+
+      _bocListStub.Setup(_ => _.ValidationFailureRepository).Returns(_repository);
+      _bocListStub.Setup(_ => _.GetResourceManager()).Returns(_resourceManagerStub.Object);
     }
 
     [Test]
-    public void HandleValidationFailures_WithoutValidationFailures_ContextContainsEmptyMessage ()
+    public void HandleValidationFailures_WithoutHandledRowOrCellFailuresValidationFailures_ContextContainsEmptyMessage ()
     {
-      _bocListStub.Setup(_ => _.ValidationFailureRepository).Returns(_repository);
+      _repository.AddValidationFailuresForBocList(new [] { BusinessObjectValidationFailure.Create("A handled list failure.") });
+      _repository.AddValidationFailuresForDataRow(Mock.Of<IBusinessObject>(), new [] { BusinessObjectValidationFailure.Create("A row failure"),  });
+      _repository.GetUnhandledValidationFailuresForBocList(true);
+      _repository.AddValidationFailuresForBocList(new [] { BusinessObjectValidationFailure.Create("An unhandled list failure.") });
 
       var context = new ValidationFailureHandlingContext(_bocListStub.Object);
 
-      var handler = new BocListRowAndCellValidationFailureHandler();
+      var handler = new CheckRowsBocListValidationFailureHandler();
 
       handler.HandleValidationFailures(context);
 
@@ -58,21 +66,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
     [Test]
     public void HandleValidationFailures_WithValidationFailures_ContextContainsConcatenatedMessages ()
     {
-      var resourceManagerStub = new Mock<IResourceManager>();
-
-      _bocListStub.Setup(_ => _.ValidationFailureRepository).Returns(_repository);
-      _bocListStub.Setup(_ => _.GetResourceManager()).Returns(resourceManagerStub.Object);
-
-      _repository.AddValidationFailuresForDataRow(Mock.Of<IBusinessObject>(), new[] { BusinessObjectValidationFailure.Create("A row failure") });
+      _repository.AddValidationFailuresForDataRow(Mock.Of<IBusinessObject>(), new [] { BusinessObjectValidationFailure.Create("A handled row failure"),  });
+      _repository.GetUnhandledValidationFailuresForBocListAndContainingDataRowsAndDataCells(true);
 
       var errorMessage = "Error message from resource manager.";
-      resourceManagerStub
-          .Setup(_ => _.TryGetString("Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInOtherListPagesErrorMessage", out errorMessage))
+      _resourceManagerStub
+          .Setup(_ => _.TryGetString("Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInListErrorMessage", out errorMessage))
           .Returns(true);
 
       var context = new ValidationFailureHandlingContext(_bocListStub.Object);
 
-      var handler = new BocListRowAndCellValidationFailureHandler();
+      var handler = new CheckRowsBocListValidationFailureHandler();
 
       handler.HandleValidationFailures(context);
 

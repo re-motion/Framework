@@ -93,6 +93,14 @@
 </p>
 <p>
   <asp:CheckBox id="EnableValidationErrorsCheckBox" runat="server" AutoPostBack="True" Text="Enable validation errors" />
+  <asp:DropDownList id="ValidationErrorsScenarioListbox" AutoPostBack="True" runat="server">
+    <Items>
+      <asp:ListItem Text="All validation errors" Selected="True" Value="all" />
+      <asp:ListItem Text="Cell validation errors" Value="cell" />
+      <asp:ListItem Text="Row validation errors" Value="row" />
+      <asp:ListItem Text="List validation errors" Value="list" />
+    </Items>
+  </asp:DropDownList>
 </p>
 <p><asp:checkbox id=ChildrenListEventCheckBox runat="server" Text="ChildrenList Event raised" enableviewstate="False" Enabled="False"></asp:checkbox></p>
 <p>

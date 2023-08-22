@@ -13,10 +13,7 @@
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
-// using NUnit.Framework;
 //
-using System;
-using System.Linq;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -24,38 +21,31 @@ using Remotion.Utilities;
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation
 {
   /// <summary>
-  /// Handles all still unhandled validation failures for rows or cells.
-  /// Reports a notice in the form of "errors on another page" if applicable.
+  /// Reports a notice in the form of "look at the rows" if inline errors have been rendered in the <see cref="BocList"/>.
   /// </summary>
   [ImplementationFor(typeof(IBocListValidationFailureHandler), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
-  public class BocListRowAndCellValidationFailureHandler : IBocListValidationFailureHandler
+  public class CheckRowsBocListValidationFailureHandler : IBocListValidationFailureHandler
   {
-    public const int Position = -500_000_000;
+    public const int Position = -1_000_000_000;
 
-    public BocListRowAndCellValidationFailureHandler ()
+    public CheckRowsBocListValidationFailureHandler ()
     {
     }
 
-    /// <summary>
-    /// Handles all still unhandled validation failures by reporting a single message to the <see cref="ValidationFailureHandlingContext"/>.
-    /// </summary>
-    /// <remarks>
-    ///   It is expected that all unhandled validation failures at this point are unhandled due to them being on a different page of the
-    ///   <see cref="IBocList"/>.
-    /// </remarks>
+    /// <inheritdoc />
     public void HandleValidationFailures (ValidationFailureHandlingContext context)
     {
       ArgumentUtility.CheckNotNull("context", context);
 
-      var hasRowsWithUnhandledValidationFailures = context.ValidationFailureRepository.GetUnhandledValidationFailuresForDataRowsAndContainingDataCells(true).Any();
-      if (!hasRowsWithUnhandledValidationFailures)
-        return;
+      var bocList = context.BocList;
 
-      var remainingValidationFailuresText = context.BocList
-          .GetResourceManager()
-          .GetString(BocList.ResourceIdentifier.ValidationFailuresFoundInOtherListPagesErrorMessage);
-
-      context.ReportErrorMessage(remainingValidationFailuresText);
+      // To determine if failures were rendered inline in the rows, we check if any row/cell failures have been handled at the
+      // time of the context creation. Checking them against the now value would return false results as other handlers might have ran already.
+      var rowOrCellFailuresWereRendered = context.InitialUnhandledRowAndCellFailureCount < context.InitialRowAndCellFailureCount;
+      if (rowOrCellFailuresWereRendered)
+      {
+        context.ReportErrorMessage(bocList.GetResourceManager().GetString(BocList.ResourceIdentifier.ValidationFailuresFoundInListErrorMessage));
+      }
     }
   }
 }
