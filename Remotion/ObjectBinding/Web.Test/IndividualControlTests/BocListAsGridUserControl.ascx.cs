@@ -304,13 +304,6 @@ public class BocListAsGridUserControl : BaseUserControl
   {
     var person = (Person)CurrentObject.BusinessObject;
 
-    var firstJob = person.Jobs.First();
-    var lastJob = person.Jobs.Last();
-    var jobsProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.Jobs));
-    var jobTitleProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Job _) => _.Title));
-    var jobStartDateProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Job _) => _.StartDate));
-    var jobEndDateProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Job _) => _.EndDate));
-
     var firstChild = person.Children.OrderBy(e => e.LastName).First();
     var lastChild = person.Children.OrderBy(e => e.LastName).Last();
     var childrenProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.Children));
@@ -323,69 +316,6 @@ public class BocListAsGridUserControl : BaseUserControl
 
     var allValidationFailures = new ValidationFailure[]
                                 {
-                                    // Jobs property failures
-                                    ValidationFailure.CreatePropertyValidationFailure(
-                                        person,
-                                        jobsProperty,
-                                        person.Jobs,
-                                        "Bad jobs",
-                                        "Localized bad jobs"),
-                                    // First job failure (visible)
-                                    ValidationFailure.CreateObjectValidationFailure(
-                                        firstJob,
-                                        "Bad first job",
-                                        "Localized bad first job"),
-                                    ValidationFailure.CreatePropertyValidationFailure(
-                                        firstJob,
-                                        jobTitleProperty,
-                                        firstJob.Title,
-                                        "Bad first job.Title",
-                                        "Localized bad first job.Title"),
-                                    ValidationFailure.CreateObjectValidationFailure(
-                                        firstJob,
-                                        new[]
-                                        {
-                                            new ValidatedProperty(firstJob, jobStartDateProperty),
-                                        },
-                                        "Bad first job date",
-                                        "Localized bad first job dates"),
-                                    ValidationFailure.CreateObjectValidationFailure(
-                                        firstJob,
-                                        new[]
-                                        {
-                                            new ValidatedProperty(firstJob, jobStartDateProperty),
-                                            new ValidatedProperty(firstJob, jobEndDateProperty)
-                                        },
-                                        "Bad first job dates",
-                                        "Localized bad first job dates"),
-                                    // Last job failure (invisible)
-                                    ValidationFailure.CreateObjectValidationFailure(
-                                        lastJob,
-                                        "Bad last job",
-                                        "Localized bad last job"),
-                                    ValidationFailure.CreatePropertyValidationFailure(
-                                        lastJob,
-                                        jobTitleProperty,
-                                        lastJob.Title,
-                                        "Bad last job.Title",
-                                        "Localized bad last job.Title"),
-                                    ValidationFailure.CreateObjectValidationFailure(
-                                        lastJob,
-                                        new[]
-                                        {
-                                            new ValidatedProperty(lastJob, jobStartDateProperty),
-                                        },
-                                        "Bad last job date",
-                                        "Localized bad last job dates"),
-                                    ValidationFailure.CreateObjectValidationFailure(
-                                        lastJob,
-                                        new[]
-                                        {
-                                            new ValidatedProperty(lastJob, jobStartDateProperty),
-                                            new ValidatedProperty(lastJob, jobEndDateProperty)
-                                        },
-                                        "Bad last job dates",
-                                        "Localized bad last job dates"),
                                     // Children property failures
                                     ValidationFailure.CreatePropertyValidationFailure(
                                         person,
