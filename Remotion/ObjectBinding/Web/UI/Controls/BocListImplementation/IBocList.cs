@@ -189,6 +189,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     bool IsInlineValidationDisplayEnabled { get; }
 
+    void BuildErrorMessages ();
+
     /// <summary>
     /// Gets the <see cref="ValidationFailureRepository"/> belonging to this <see cref="BocList"/>.
     /// </summary>

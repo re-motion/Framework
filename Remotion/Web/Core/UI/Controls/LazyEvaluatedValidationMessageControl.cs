@@ -22,16 +22,16 @@ using Remotion.Utilities;
 namespace Remotion.Web.UI.Controls
 {
   /// <summary>
-  /// Wraps an instance of the <see cref="IValidatorWithDynamicErrorMessage" /> interface and evaluates the error message during the render phase.
+  /// Wraps an instance of the <see cref="IValidator" /> interface and evaluates the error message during the render phase.
   /// </summary>
   public class LazyEvaluatedValidationMessageControl : HtmlContainerControl
   {
-    private readonly IValidatorWithDynamicErrorMessage _validator;
+    private readonly IValidator _validator;
 
     /// <summary>Initializes a new instance of the <see cref="LazyEvaluatedValidationMessageControl" /> class using the specified tag name and validator.</summary>
     /// <param name="tag">A string that specifies the tag name of the control. </param>
     /// <param name="validator">The validator for which the error message should be displayed.</param>
-    public LazyEvaluatedValidationMessageControl (string tag, IValidatorWithDynamicErrorMessage validator)
+    public LazyEvaluatedValidationMessageControl (string tag, IValidator validator)
         : base(tag)
     {
       ArgumentUtility.CheckNotNull(nameof(tag), tag);
@@ -43,8 +43,6 @@ namespace Remotion.Web.UI.Controls
     protected override void RenderChildren (HtmlTextWriter writer)
     {
       ArgumentUtility.CheckNotNull(nameof(writer), writer);
-
-      _validator.RefreshErrorMessage();
 
       PlainTextString.CreateFromText(_validator.ErrorMessage).WriteTo(writer);
     }

@@ -48,6 +48,19 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocList
     {
       var home = Start();
 
+      home.Scope.FindId("body_DataEditControl_ValidationTestCaseRowButton").Click();
+
+      var bocList = home.Lists().GetByLocalID("JobList_Validation");
+
+      var expectedValidationErrors = new [] { "Invalid input in at least one row. Check the rows for more details." };
+      Assert.That(bocList.GetValidationErrors(), Is.EqualTo(expectedValidationErrors));
+    }
+
+    [Test]
+    public void BocListValidation_DomainValidationFailures ()
+    {
+      var home = Start();
+
       home.Scope.FindId("body_DataEditControl_ValidationTestCaseStartDate").Check();
 
       var bocList = home.Lists().GetByLocalID("JobList_Validation");

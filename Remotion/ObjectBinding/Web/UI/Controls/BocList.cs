@@ -29,6 +29,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.Collections;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
@@ -3465,6 +3466,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         EnsureColumnsGot();
         return _hasValidationErrorIndicatorColumnDefinition;
       }
+    }
+
+    void IBocList.BuildErrorMessages ()
+    {
+      foreach (var registeredValidator in GetRegisteredValidators().Where(v => !v.IsValid).OfType<BocListValidationResultDispatchingValidator>())
+        registeredValidator.BuildErrorMessage();
     }
 
     /// <summary> Gets or sets a value that indicating the row index is enabled. </summary>
