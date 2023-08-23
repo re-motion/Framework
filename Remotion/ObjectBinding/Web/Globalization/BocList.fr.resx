@@ -184,6 +184,6 @@
     <value>Saisie non valable dans un moins une ligne masquée.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInListErrorMessage" xml:space="preserve">
-    <value>Saisie non valable dans un moins une ligne. Vérifiez les lignes pour plus de détails.</value>
+    <value>Saisie non valable dans au moins une ligne. Vérifier les lignes pour plus de détails.</value>
   </data>
 </root>
