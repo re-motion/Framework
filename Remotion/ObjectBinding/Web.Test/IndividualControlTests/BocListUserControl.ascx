@@ -25,6 +25,9 @@
     <td></td>
     <td>
       <remotion:boclist id=JobList runat="server" datasourcecontrol="CurrentObject" showallproperties="True" showavailableviewslist="False" propertyidentifier="Jobs" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" selection="SingleRadioButton" index="Disabled" PageSize="2" ShowSortingOrder="True" ListMenuHeading="Jobs Options" ListMenuHeadingLevel="H5" Width="100%" Height="15em">
+        <fixedcolumns>
+          <remotion:BocValidationErrorIndicatorColumnDefinition ColumnTitleStyle="Icon"/>
+        </fixedcolumns>
       </remotion:boclist>
     </td>
   </tr>
