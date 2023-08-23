@@ -184,6 +184,6 @@
     <value>Input non valido in almeno una riga nascosta.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInListErrorMessage" xml:space="preserve">
-    <value>Input non valido in almeno una riga. Controlla le righe per maggiori dettagli.</value>
+    <value>Input non valido in almeno una riga. Controllare le righe per maggiori dettagli.</value>
   </data>
 </root>
