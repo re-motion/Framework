@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validatio
   [ImplementationFor(typeof(IBocListValidationFailureHandler), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class BocListRowAndCellValidationFailureHandler : IBocListValidationFailureHandler
   {
-    public const int Position = -500_000_000;
+    public const int Position = 500_000_000;
 
     public BocListRowAndCellValidationFailureHandler ()
     {
