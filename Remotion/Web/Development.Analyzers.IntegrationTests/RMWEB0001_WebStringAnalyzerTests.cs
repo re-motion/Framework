@@ -21,9 +21,6 @@ using Verifier = Remotion.Web.Development.Analyzers.IntegrationTests.CSharpAnaly
 
 namespace Remotion.Web.Development.Analyzers.IntegrationTests
 {
-#if NET7_0
-  [Ignore("MSBuild Tools v4.7.0 or higher are required for testing Roslyn Analyzers in .NET 7.")]
-#endif  
   [TestFixture]
   public class RMWEB0001_WebStringAnalyzerTests
   {
