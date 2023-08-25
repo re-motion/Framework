@@ -26,7 +26,11 @@ namespace Remotion.Validation.Implementation
   /// </summary>
   [Serializable]
   [ImplementationFor(typeof(IValidatorBuilder), RegistrationType = RegistrationType.Decorator, Position = Int32.MinValue)]
-  public class ValidatorBuilderSerializationDecorator : IValidatorBuilder, IObjectReference
+  public class ValidatorBuilderSerializationDecorator
+      : IValidatorBuilder,
+#pragma warning disable SYSLIB0050
+          IObjectReference
+#pragma warning restore SYSLIB0050
   {
     [NonSerialized]
     private readonly IValidatorBuilder _validatorBuilder;

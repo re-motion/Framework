@@ -29,7 +29,10 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
   /// </remarks>
   /// <threadsafety static="true" instance="true" />
   [Serializable]
-  public sealed class LinqToSqlAppenderProxy : IObjectReference
+  public sealed class LinqToSqlAppenderProxy
+#pragma warning disable SYSLIB0050
+      : IObjectReference
+#pragma warning restore SYSLIB0050
   {
     private static readonly DoubleCheckedLockingContainer<LinqToSqlAppenderProxy> s_instance =
         new DoubleCheckedLockingContainer<LinqToSqlAppenderProxy>(() => new LinqToSqlAppenderProxy(

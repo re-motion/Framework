@@ -40,7 +40,9 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.Serialization
       _simpleMethod = typeof(BaseType1).GetMethod("VirtualMethod", Type.EmptyTypes);
       _genericMethod = typeof(BaseType7).GetMethod("One");
 
+#pragma warning disable SYSLIB0050
       _serializationInfo = new SerializationInfo(typeof(ConcreteMixinTypeIdentifier), new FormatterConverter());
+#pragma warning restore SYSLIB0050
       _serializer = new SerializationInfoConcreteMixinTypeIdentifierSerializer(_serializationInfo, "identifier");
     }
 

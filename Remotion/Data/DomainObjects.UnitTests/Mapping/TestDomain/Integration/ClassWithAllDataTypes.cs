@@ -49,10 +49,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     {
     }
 
+#pragma warning disable SYSLIB0051
     public void GetObjectData (SerializationInfo info, StreamingContext context)
     {
       BaseGetObjectData(info, context);
     }
+#pragma warning restore SYSLIB0051
 
     [StorageClassNone]
     public object ObjectProperty

@@ -72,6 +72,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
       Assert.That(mixin2A.Next.GetType(), Is.SameAs(bt3A.GetType().GetField("__first", BindingFlags.NonPublic | BindingFlags.Instance).FieldType));
     }
 
+#pragma warning disable SYSLIB0050
     [Test]
     public void GeneratedTypeIsSerializable ()
     {
@@ -80,6 +81,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
       Assert.That(mixin.GetType().IsSerializable, Is.True);
       Serializer.Serialize(targetInstance);
     }
+#pragma warning restore SYSLIB0050
 
     [Test]
     public void GeneratedTypeIsDeserializable ()

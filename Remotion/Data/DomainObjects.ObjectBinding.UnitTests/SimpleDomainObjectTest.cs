@@ -71,6 +71,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     }
 
 
+#pragma warning disable SYSLIB0050
     [Test]
     public void DeserializationConstructor_CallsBase ()
     {
@@ -86,5 +87,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
           (ClassDerivedFromSimpleDomainObject_ImplementingISerializable)Activator.CreateInstance(((object)serializable).GetType(), info, context);
       Assert.That(deserialized.ID, Is.EqualTo(serializable.ID));
     }
+#pragma warning restore SYSLIB0050
   }
 }

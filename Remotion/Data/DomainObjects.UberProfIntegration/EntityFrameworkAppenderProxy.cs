@@ -30,7 +30,10 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
   /// </remarks>
   /// <threadsafety static="true" instance="true" />
   [Serializable]
-  public sealed class EntityFrameworkAppenderProxy : IObjectReference
+  public sealed class EntityFrameworkAppenderProxy
+#pragma warning disable SYSLIB0050
+      : IObjectReference
+#pragma warning restore SYSLIB0050
   {
     private static readonly DoubleCheckedLockingContainer<EntityFrameworkAppenderProxy> s_instance =
         new DoubleCheckedLockingContainer<EntityFrameworkAppenderProxy>(

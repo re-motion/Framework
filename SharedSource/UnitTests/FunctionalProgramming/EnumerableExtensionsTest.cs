@@ -486,12 +486,12 @@ namespace Remotion.UnitTests.FunctionalProgramming
     [Test]
     public void ConvertToCollection_WithNonCollection ()
     {
-      var collection = Enumerable.Range(1, 3);
+      var enumerable = Enumerable.Range(1, 3).Reverse();
 
-      ICollection<int> result = collection.ConvertToCollection();
+      ICollection<int> result = enumerable.ConvertToCollection();
 
-      Assert.That(result, Is.Not.SameAs(collection));
-      Assert.That(result, Is.EqualTo(collection));
+      Assert.That(result, Is.Not.SameAs(enumerable));
+      Assert.That(result, Is.EqualTo(enumerable));
     }
 
     [Test]

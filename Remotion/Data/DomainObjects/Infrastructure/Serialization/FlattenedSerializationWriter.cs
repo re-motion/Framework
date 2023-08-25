@@ -39,8 +39,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
       if (value is Delegate)
         throw new ArgumentException(string.Format("Cannot serialize values of type '{0}'.", typeof(Delegate).GetFullNameSafe()), "value");
 
+#pragma warning disable SYSLIB0050
       if (value is not null && !value.GetType().IsSerializable)
         throw new ArgumentException(string.Format("Cannot serialize values of type '{0}'.", value.GetType().GetFullNameSafe()), "value");
+#pragma warning restore SYSLIB0050
 #endif
 
       _data.Add(value);
