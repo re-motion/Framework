@@ -178,7 +178,7 @@
     <value>Input non valido nella cella attuale</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationColumnTitleText" xml:space="preserve">
-    <value>Messaggio</value>
+    <value>Messaggi di validazione</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.UnhandledValidationFailuresFoundErrorMessage" xml:space="preserve">
     <value>Input non valido in almeno una riga nascosta.</value>
