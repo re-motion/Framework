@@ -178,7 +178,7 @@
     <value>Ungültige Eingabe in der aktuellen Zelle</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationColumnTitleText" xml:space="preserve">
-    <value>Meldung</value>
+    <value>Validierungsmeldungen</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.UnhandledValidationFailuresFoundErrorMessage" xml:space="preserve">
     <value>Ungültige Eingabe in zumindest einer ausgeblendeten Zeile.</value>
