@@ -178,7 +178,7 @@
     <value>Saisie non valable dans la cellule actuelle</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationColumnTitleText" xml:space="preserve">
-    <value>Message</value>
+    <value>Messages de validation</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.UnhandledValidationFailuresFoundErrorMessage" xml:space="preserve">
     <value>Saisie non valable dans un moins une ligne masquée.</value>

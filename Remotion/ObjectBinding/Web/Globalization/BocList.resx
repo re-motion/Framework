@@ -178,7 +178,7 @@
     <value>Invalid input on at least one other page.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationColumnTitleText" xml:space="preserve">
-    <value>Message</value>
+    <value>Validation messages</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.UnhandledValidationFailuresFoundErrorMessage" xml:space="preserve">
     <value>Invalid input in at least one hidden row.</value>
