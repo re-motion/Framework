@@ -162,6 +162,13 @@ div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement 
   display: flex;
   align-items: center;
   box-sizing: border-box;  padding: calc(var(--remotion-themed-spacing) / 2) var(--remotion-themed-spacing);
+  width: 100%;
+}
+
+div.bocList table.bocListTable td.bocListDataCell > div.bocListContent > div[onclick],
+div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > div.bocListContent > div[onclick]
+{
+  width: inherit;
 }
 
 div.bocList table.bocListTable td.bocListTitleCell.bocListTitleCellAllRowsSelector > span,

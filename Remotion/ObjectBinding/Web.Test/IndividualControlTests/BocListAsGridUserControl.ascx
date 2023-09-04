@@ -55,7 +55,7 @@
 <remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
 </remotion:BocCompoundColumnDefinition>
-<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" Width="7em" ColumnTitle="Partner">
+<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" Width="20em" ColumnTitle="Partner">
 <persistedcommand>
 <remotion:BocListItemCommand Type="None"></remotion:BocListItemCommand>
 </PersistedCommand>
