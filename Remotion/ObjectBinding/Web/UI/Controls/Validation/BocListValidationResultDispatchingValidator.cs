@@ -32,7 +32,7 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 {
   public sealed class BocListValidationResultDispatchingValidator
-      : BaseValidator, IBusinessObjectBoundEditableWebControlValidationResultDispatcher
+      : BaseValidator, IBusinessObjectBoundEditableWebControlValidationResultDispatcher, ILazyEvaluatedValidator
   {
     private readonly IBocListValidationFailureHandler _validationFailureHandler;
 
