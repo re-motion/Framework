@@ -5,7 +5,7 @@
     <NoWarn>1591</NoWarn>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <IsPackable>True</IsPackable>
-    <TargetFrameworks>net48;net6.0-windows;net7.0-windows;net8.0-windows</TargetFrameworks>
+    <TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
     <DefineConstants>$(DefineConstants);JETBRAINS_ANNOTATIONS;</DefineConstants>
     <Nullable Condition="'$(TargetFramework)' == 'net48'">annotations</Nullable>
     <Nullable Condition="'$(TargetFramework)' != 'net48'">enable</Nullable>
