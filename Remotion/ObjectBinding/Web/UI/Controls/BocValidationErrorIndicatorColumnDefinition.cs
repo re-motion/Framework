@@ -18,14 +18,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Globalization;
-using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -84,6 +82,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [DefaultValue(true)]
     [NotifyParentProperty(true)]
     public bool IsSortable { get; set; } = true;
+
+    /// <summary> Determines the visibility of the column depending on the existence of validation failures. </summary>
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("Determines the visibility of the column depending on the existence of validation failures.")]
+    [DefaultValue(BocValidationErrorIndicatorColumnDefinitionVisibility.Always)]
+    public BocValidationErrorIndicatorColumnDefinitionVisibility Visibility { get; set; } = BocValidationErrorIndicatorColumnDefinitionVisibility.Always;
 
     public IComparer<BocListRow> CreateCellValueComparer ()
     {
