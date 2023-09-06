@@ -1,17 +1,5 @@
 <Project>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-windows'">
-    <PackageReference Include="CoreForms.Web" Version="7.0.0" />
-    <PackageReference Include="CoreForms.Web.Extensions" Version="7.0.0" />
-    <PackageReference Include="CoreForms.Web.Services" Version="7.0.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0-windows'">
-    <PackageReference Include="CoreForms.Web" Version="7.0.0" />
-    <PackageReference Include="CoreForms.Web.Extensions" Version="7.0.0" />
-    <PackageReference Include="CoreForms.Web.Services" Version="7.0.0" />
-  </ItemGroup>
-
   <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
     <PackageReference Include="CoreForms.Web" Version="8.0.0-alpha.2" />
     <PackageReference Include="CoreForms.Web.Extensions" Version="8.0.0-alpha.2" />
