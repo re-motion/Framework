@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Remotion.Collections;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -164,9 +163,35 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       var columnAsDropDownMenuColumn = column as BocDropDownMenuColumnDefinition;
       if (columnAsDropDownMenuColumn != null)
-        return IsColumnVisibleForBocDropDownMenuColumnDefinition(columnAsDropDownMenuColumn);
+      {
+        if (!IsColumnVisibleForBocDropDownMenuColumnDefinition(columnAsDropDownMenuColumn))
+          return false;
+      }
+
+      var columnAsValidationErrorIndicatorColumn = column as BocValidationErrorIndicatorColumnDefinition;
+      if (columnAsValidationErrorIndicatorColumn != null)
+      {
+        if (!IsColumnVisibleForBocValidationErrorIndicatorColumnDefinition(columnAsValidationErrorIndicatorColumn))
+          return false;
+      }
 
       return true;
+    }
+
+    private bool IsColumnVisibleForBocValidationErrorIndicatorColumnDefinition (BocValidationErrorIndicatorColumnDefinition columnAsValidationErrorIndicatorColumn)
+    {
+      var bocList = (IBocList?)columnAsValidationErrorIndicatorColumn.OwnerControl;
+      if (bocList == null)
+        return true;
+
+      var repository = bocList.ValidationFailureRepository;
+      return columnAsValidationErrorIndicatorColumn.Visibility switch
+      {
+        BocValidationErrorIndicatorColumnDefinitionVisibility.Always => true,
+        BocValidationErrorIndicatorColumnDefinitionVisibility.AnyValidationFailure => (repository.GetListFailureCount() + repository.GetRowAndCellFailureCount()) > 0,
+        BocValidationErrorIndicatorColumnDefinitionVisibility.AnyRowOrCellValidationFailure => repository.GetRowAndCellFailureCount() > 0,
+        _ => throw new ArgumentOutOfRangeException()
+      };
     }
 
     private bool IsColumnVisibleForBocCommandColumnDefinition (BocCommandColumnDefinition columnAsCommandColumn)

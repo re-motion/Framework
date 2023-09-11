@@ -21,7 +21,9 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Web.UI;
 
@@ -54,6 +56,227 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(bocColumnRenderers.Length, Is.EqualTo(1));
       Assert.That(PrivateInvoke.GetNonPublicField(bocColumnRenderers[0], "_columnRenderer"), Is.TypeOf(typeof(StubColumnRenderer)));
       Assert.That(bocColumnRenderers[0].ColumnDefinition, Is.SameAs(_stubColumnDefinition));
+      Assert.That(bocColumnRenderers[0].ColumnIndex, Is.EqualTo(0));
+    }
+
+    [Test]
+    public void GetColumnRenderers_WithBocValidationErrorIndicatorColumnDefinition_AlwaysVisibility_WithoutFailures_ContainsNullColumnRenderer ()
+    {
+      var bocListStub = new Mock<IBocList>();
+      bocListStub.Setup(_ => _.ValidationFailureRepository).Returns(new Mock<IBocListValidationFailureRepository>().Object);
+
+      var validationErrorColumn = new BocValidationErrorIndicatorColumnDefinition
+                                  {
+                                    OwnerControl = bocListStub.Object,
+                                    Visibility = BocValidationErrorIndicatorColumnDefinitionVisibility.Always
+                                  };
+
+      var builder = new BocColumnRendererArrayBuilder(CreateColumnCollection(validationErrorColumn), _serviceLocator, _wcagHelperStub.Object);
+
+      var bocColumnRenderers = builder.CreateColumnRenderers();
+
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(1));
+      Assert.That(PrivateInvoke.GetNonPublicField(bocColumnRenderers[0], "_columnRenderer"), Is.TypeOf(typeof(BocValidationErrorIndicatorColumnRenderer)));
+      Assert.That(bocColumnRenderers[0].ColumnDefinition, Is.SameAs(validationErrorColumn));
+      Assert.That(bocColumnRenderers[0].ColumnIndex, Is.EqualTo(0));
+    }
+
+    [Test]
+    public void GetColumnRenderers_WithBocValidationErrorIndicatorColumnDefinition_AlwaysVisibility_WithListFailures_ContainsValidationErrorColumnRenderer ()
+    {
+      var validationRepositoryStub = new Mock<IBocListValidationFailureRepository>();
+      validationRepositoryStub.Setup(_ => _.GetListFailureCount()).Returns(1);
+
+      var bocListStub = new Mock<IBocList>();
+      bocListStub.Setup(_ => _.ValidationFailureRepository).Returns(validationRepositoryStub.Object);
+
+      var validationErrorColumn = new BocValidationErrorIndicatorColumnDefinition
+                                  {
+                                    OwnerControl = bocListStub.Object,
+                                    Visibility = BocValidationErrorIndicatorColumnDefinitionVisibility.Always
+                                  };
+
+      var builder = new BocColumnRendererArrayBuilder(CreateColumnCollection(validationErrorColumn), _serviceLocator, _wcagHelperStub.Object);
+
+      var bocColumnRenderers = builder.CreateColumnRenderers();
+
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(1));
+      Assert.That(PrivateInvoke.GetNonPublicField(bocColumnRenderers[0], "_columnRenderer"), Is.TypeOf(typeof(BocValidationErrorIndicatorColumnRenderer)));
+      Assert.That(bocColumnRenderers[0].ColumnDefinition, Is.SameAs(validationErrorColumn));
+      Assert.That(bocColumnRenderers[0].ColumnIndex, Is.EqualTo(0));
+    }
+
+    [Test]
+    public void GetColumnRenderers_WithBocValidationErrorIndicatorColumnDefinition_AlwaysVisibility_WithRowOrCellFailures_ContainsValidationErrorColumnRenderer ()
+    {
+      var validationRepositoryStub = new Mock<IBocListValidationFailureRepository>();
+      validationRepositoryStub.Setup(_ => _.GetListFailureCount()).Returns(0);
+      validationRepositoryStub.Setup(_ => _.GetRowAndCellFailureCount()).Returns(1);
+
+      var bocListStub = new Mock<IBocList>();
+      bocListStub.Setup(_ => _.ValidationFailureRepository).Returns(validationRepositoryStub.Object);
+
+      var validationErrorColumn = new BocValidationErrorIndicatorColumnDefinition
+                                  {
+                                    OwnerControl = bocListStub.Object,
+                                    Visibility = BocValidationErrorIndicatorColumnDefinitionVisibility.Always
+                                  };
+
+      var builder = new BocColumnRendererArrayBuilder(CreateColumnCollection(validationErrorColumn), _serviceLocator, _wcagHelperStub.Object);
+
+      var bocColumnRenderers = builder.CreateColumnRenderers();
+
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(1));
+      Assert.That(PrivateInvoke.GetNonPublicField(bocColumnRenderers[0], "_columnRenderer"), Is.TypeOf(typeof(BocValidationErrorIndicatorColumnRenderer)));
+      Assert.That(bocColumnRenderers[0].ColumnDefinition, Is.SameAs(validationErrorColumn));
+      Assert.That(bocColumnRenderers[0].ColumnIndex, Is.EqualTo(0));
+    }
+
+    [Test]
+    public void GetColumnRenderers_WithBocValidationErrorIndicatorColumnDefinition_AnyValidationFailureVisibility_WithoutFailures_ContainsNullColumnRenderer ()
+    {
+      var bocListStub = new Mock<IBocList>();
+      bocListStub.Setup(_ => _.ValidationFailureRepository).Returns(new Mock<IBocListValidationFailureRepository>().Object);
+
+      var validationErrorColumn = new BocValidationErrorIndicatorColumnDefinition
+                                  {
+                                    OwnerControl = bocListStub.Object,
+                                    Visibility = BocValidationErrorIndicatorColumnDefinitionVisibility.AnyValidationFailure
+                                  };
+
+      var builder = new BocColumnRendererArrayBuilder(CreateColumnCollection(validationErrorColumn), _serviceLocator, _wcagHelperStub.Object);
+
+      var bocColumnRenderers = builder.CreateColumnRenderers();
+
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(1));
+      Assert.That(PrivateInvoke.GetNonPublicField(bocColumnRenderers[0], "_columnRenderer"), Is.TypeOf(typeof(NullColumnRenderer)));
+      Assert.That(bocColumnRenderers[0].ColumnDefinition, Is.SameAs(validationErrorColumn));
+      Assert.That(bocColumnRenderers[0].ColumnIndex, Is.EqualTo(0));
+    }
+
+    [Test]
+    public void GetColumnRenderers_WithBocValidationErrorIndicatorColumnDefinition_AnyValidationFailureVisibility_WithListFailures_ContainsValidationErrorColumnRenderer ()
+    {
+      var validationRepositoryStub = new Mock<IBocListValidationFailureRepository>();
+      validationRepositoryStub.Setup(_ => _.GetListFailureCount()).Returns(1);
+
+      var bocListStub = new Mock<IBocList>();
+      bocListStub.Setup(_ => _.ValidationFailureRepository).Returns(validationRepositoryStub.Object);
+
+      var validationErrorColumn = new BocValidationErrorIndicatorColumnDefinition
+                                  {
+                                    OwnerControl = bocListStub.Object,
+                                    Visibility = BocValidationErrorIndicatorColumnDefinitionVisibility.AnyValidationFailure
+                                  };
+
+      var builder = new BocColumnRendererArrayBuilder(CreateColumnCollection(validationErrorColumn), _serviceLocator, _wcagHelperStub.Object);
+
+      var bocColumnRenderers = builder.CreateColumnRenderers();
+
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(1));
+      Assert.That(PrivateInvoke.GetNonPublicField(bocColumnRenderers[0], "_columnRenderer"), Is.TypeOf(typeof(BocValidationErrorIndicatorColumnRenderer)));
+      Assert.That(bocColumnRenderers[0].ColumnDefinition, Is.SameAs(validationErrorColumn));
+      Assert.That(bocColumnRenderers[0].ColumnIndex, Is.EqualTo(0));
+    }
+
+    [Test]
+    public void GetColumnRenderers_WithBocValidationErrorIndicatorColumnDefinition_AnyValidationFailureVisibility_WithRowOrCellFailures_ContainsValidationErrorColumnRenderer ()
+    {
+      var validationRepositoryStub = new Mock<IBocListValidationFailureRepository>();
+      validationRepositoryStub.Setup(_ => _.GetListFailureCount()).Returns(0);
+      validationRepositoryStub.Setup(_ => _.GetRowAndCellFailureCount()).Returns(1);
+
+      var bocListStub = new Mock<IBocList>();
+      bocListStub.Setup(_ => _.ValidationFailureRepository).Returns(validationRepositoryStub.Object);
+
+      var validationErrorColumn = new BocValidationErrorIndicatorColumnDefinition
+                                  {
+                                    OwnerControl = bocListStub.Object,
+                                    Visibility = BocValidationErrorIndicatorColumnDefinitionVisibility.AnyValidationFailure
+                                  };
+
+      var builder = new BocColumnRendererArrayBuilder(CreateColumnCollection(validationErrorColumn), _serviceLocator, _wcagHelperStub.Object);
+
+      var bocColumnRenderers = builder.CreateColumnRenderers();
+
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(1));
+      Assert.That(PrivateInvoke.GetNonPublicField(bocColumnRenderers[0], "_columnRenderer"), Is.TypeOf(typeof(BocValidationErrorIndicatorColumnRenderer)));
+      Assert.That(bocColumnRenderers[0].ColumnDefinition, Is.SameAs(validationErrorColumn));
+      Assert.That(bocColumnRenderers[0].ColumnIndex, Is.EqualTo(0));
+    }
+
+    [Test]
+    public void GetColumnRenderers_WithBocValidationErrorIndicatorColumnDefinition_AnyRowOrCellValidationFailureVisibility_WithoutFailures_ContainsNullColumnRenderer ()
+    {
+      var bocListStub = new Mock<IBocList>();
+      bocListStub.Setup(_ => _.ValidationFailureRepository).Returns(new Mock<IBocListValidationFailureRepository>().Object);
+
+      var validationErrorColumn = new BocValidationErrorIndicatorColumnDefinition
+                                  {
+                                    OwnerControl = bocListStub.Object,
+                                    Visibility = BocValidationErrorIndicatorColumnDefinitionVisibility.AnyRowOrCellValidationFailure
+                                  };
+
+      var builder = new BocColumnRendererArrayBuilder(CreateColumnCollection(validationErrorColumn), _serviceLocator, _wcagHelperStub.Object);
+
+      var bocColumnRenderers = builder.CreateColumnRenderers();
+
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(1));
+      Assert.That(PrivateInvoke.GetNonPublicField(bocColumnRenderers[0], "_columnRenderer"), Is.TypeOf(typeof(NullColumnRenderer)));
+      Assert.That(bocColumnRenderers[0].ColumnDefinition, Is.SameAs(validationErrorColumn));
+      Assert.That(bocColumnRenderers[0].ColumnIndex, Is.EqualTo(0));
+    }
+
+    [Test]
+    public void GetColumnRenderers_WithBocValidationErrorIndicatorColumnDefinition_AnyRowOrCellValidationFailureVisibility_WithListFailures_ContainsNullColumnRenderer ()
+    {
+      var validationRepositoryStub = new Mock<IBocListValidationFailureRepository>();
+      validationRepositoryStub.Setup(_ => _.GetListFailureCount()).Returns(1);
+      validationRepositoryStub.Setup(_ => _.GetRowAndCellFailureCount()).Returns(0);
+
+      var bocListStub = new Mock<IBocList>();
+      bocListStub.Setup(_ => _.ValidationFailureRepository).Returns(validationRepositoryStub.Object);
+
+      var validationErrorColumn = new BocValidationErrorIndicatorColumnDefinition
+                                  {
+                                    OwnerControl = bocListStub.Object,
+                                    Visibility = BocValidationErrorIndicatorColumnDefinitionVisibility.AnyRowOrCellValidationFailure
+                                  };
+
+      var builder = new BocColumnRendererArrayBuilder(CreateColumnCollection(validationErrorColumn), _serviceLocator, _wcagHelperStub.Object);
+
+      var bocColumnRenderers = builder.CreateColumnRenderers();
+
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(1));
+      Assert.That(PrivateInvoke.GetNonPublicField(bocColumnRenderers[0], "_columnRenderer"), Is.TypeOf(typeof(NullColumnRenderer)));
+      Assert.That(bocColumnRenderers[0].ColumnDefinition, Is.SameAs(validationErrorColumn));
+      Assert.That(bocColumnRenderers[0].ColumnIndex, Is.EqualTo(0));
+    }
+
+
+    [Test]
+    public void GetColumnRenderers_WithBocValidationErrorIndicatorColumnDefinition_AnyRowOrCellValidationFailureVisibility_WithRowOrCellFailures_ContainsValidationErrorColumnRenderer ()
+    {
+      var validationRepositoryStub = new Mock<IBocListValidationFailureRepository>();
+      validationRepositoryStub.Setup(_ => _.GetListFailureCount()).Returns(0);
+      validationRepositoryStub.Setup(_ => _.GetRowAndCellFailureCount()).Returns(2);
+
+      var bocListStub = new Mock<IBocList>();
+      bocListStub.Setup(_ => _.ValidationFailureRepository).Returns(validationRepositoryStub.Object);
+
+      var validationErrorColumn = new BocValidationErrorIndicatorColumnDefinition
+                                  {
+                                    OwnerControl = bocListStub.Object,
+                                    Visibility = BocValidationErrorIndicatorColumnDefinitionVisibility.AnyRowOrCellValidationFailure
+                                  };
+
+      var builder = new BocColumnRendererArrayBuilder(CreateColumnCollection(validationErrorColumn), _serviceLocator, _wcagHelperStub.Object);
+
+      var bocColumnRenderers = builder.CreateColumnRenderers();
+
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(1));
+      Assert.That(PrivateInvoke.GetNonPublicField(bocColumnRenderers[0], "_columnRenderer"), Is.TypeOf(typeof(BocValidationErrorIndicatorColumnRenderer)));
+      Assert.That(bocColumnRenderers[0].ColumnDefinition, Is.SameAs(validationErrorColumn));
       Assert.That(bocColumnRenderers[0].ColumnIndex, Is.EqualTo(0));
     }
 
