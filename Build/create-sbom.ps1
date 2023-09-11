@@ -1,10 +1,17 @@
-﻿param(
+﻿# Version: 2
+# Note: The previous line must be the first line in the script
+#   It provides version information to the caller, allowing the parameters to change.
+#   Otherwise, changing the parameter would break old versions
+# 
+# Changelog:
+#  - Version 2: Replaced $OutputPath by $OutputFolder
+param(
     [string] $TempFolder = "Build\BuildOutput\temp\sbom",
     [Parameter(mandatory=$true)] [string] $NpmProjectJson,
     [Parameter(mandatory=$true)] [string] $Solution,
     [Parameter(mandatory=$true)] [string] $GithubUsername,
     [Parameter(mandatory=$true)] [string] $GithubAccessToken,
-    [Parameter(mandatory=$true)] [string] $OutputPath
+    [Parameter(mandatory=$true)] [string] $OutputFolder
 )
 # temp folder: Use BuildOutput\temp as default -> set on TC
 # check if tools already exist in the temp folder before downloading again
@@ -43,9 +50,14 @@ Write-Host "Using NPM project: $NpmProjectJson"
 $Solution = [System.IO.Path]::GetFullPath($Solution)
 Write-Host "Using solution file: $Solution"
 
-$OutputPath = [System.IO.Path]::GetFullPath($OutputPath)
-[System.IO.Directory]::CreateDirectory([System.IO.Path]::GetDirectoryName($OutputPath))
-Write-Host "Using output path: $OutputPath"
+$OutputFolder = [System.IO.Path]::GetFullPath($OutputFolder)
+[System.IO.Directory]::CreateDirectory($OutputFolder)
+Write-Host "Using output folder: $OutputFolder"
+
+$OutputSbomXmlProd = "$OutputFolder\re-motion.sbom.xml"
+$OutputSbomJsonProd = "$OutputFolder\re-motion.sbom.json"
+$OutputSbomXmlDev = "$OutputFolder\re-motion.development.sbom.xml"
+$OutputSbomJsonDev = "$OutputFolder\re-motion.development.sbom.json"
 
 cd $TempFolder
 
@@ -82,21 +94,47 @@ npm install
 Fail-On-Error "npm install"
 cd $TempFolder
 
-Write-Host "Analyzing NPM dependencies"
-npx "@cyclonedx/cyclonedx-npm" $NpmProjectJson --omit dev --output-format xml --output-file npm-dep.xml
-Fail-On-Error "cyclonedx-npm"
+function Create-SBOM {
+    param(
+        $isProduction,
+        $outputXml,
+        $outputJson
+    )
 
-Write-Host "Analyzing Nuget dependencies"
-.\dotnet-CycloneDX.exe -o . -gu $GithubUsername -gt $GithubAccessToken -f dotnet-dep.xml $Solution
-Fail-On-Error "dotnet-CycloneDX.exe"
+    if ($isProduction) {
+        $suffix = "production"
+    } else {
+        $suffix = "development"
+    }
 
-Write-Host "Merging NPM and Nuget SBOMs"
-.\cyclonedx-cli.exe merge --input-files "npm-dep.xml" "dotnet-dep.xml" --output-file $OutputPath
-Fail-On-Error "cyclonedx-cli.exe merge"
+    Write-Host "Analyzing NPM dependencies ($suffix)"
+    if ($isProduction) {
+        npx "@cyclonedx/cyclonedx-npm" $NpmProjectJson --omit dev --output-format xml --output-file "npm-dep-$suffix.xml"
+    } else {
+        npx "@cyclonedx/cyclonedx-npm" $NpmProjectJson --output-format xml --output-file "npm-dep-$suffix.xml"
+    }
 
-Write-Host "Add JSON output"
-$JsonOutputPath = [System.IO.Path]::ChangeExtension($OutputPath, ".json")
-.\cyclonedx-cli.exe convert --input-file $OutputPath --output-file $JsonOutputPath
-Fail-On-Error "cyclonedx-cli.exe convert"
+    Fail-On-Error "cyclonedx-npm"
+
+    Write-Host "Analyzing Nuget dependencies ($suffix)"
+    if ($isProduction) {
+        .\dotnet-CycloneDX.exe -o . --disable-package-restore --exclude-dev --exclude-test-projects -gu $GithubUsername -gt $GithubAccessToken -f "dotnet-dep-$suffix.xml" $Solution
+    } else {
+        .\dotnet-CycloneDX.exe -o . --disable-package-restore -gu $GithubUsername -gt $GithubAccessToken -f "dotnet-dep-$suffix.xml" $Solution
+    }
+
+    Fail-On-Error "dotnet-CycloneDX.exe"
+    
+    Write-Host "Merging NPM and Nuget SBOMs ($suffix)"
+    .\cyclonedx-cli.exe merge --input-files "npm-dep-$suffix.xml" "dotnet-dep-$suffix.xml" --output-file $outputXml
+    Fail-On-Error "cyclonedx-cli.exe merge"
+
+    Write-Host "Add JSON output ($suffix)"
+    .\cyclonedx-cli.exe convert --input-file $outputXml --output-file $outputJson
+    Fail-On-Error "cyclonedx-cli.exe convert"
+}
+
+Create-SBOM $true $OutputSbomXmlProd $OutputSbomJsonProd
+Create-SBOM $false $OutputSbomXmlDev $OutputSbomJsonDev
 
 cd $originalDirectory
