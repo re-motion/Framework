@@ -36,57 +36,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
   public class BocListValidationResultDispatchingValidatorTest : BocTest
   {
 
-    public (BocListMock boclist, BocSimpleColumnDefinition simpleColumnDefinition) InitiateBocListForEditModeWithStringClass (TypeWithString[] typeWithStrings)
-    {
-      var typeWithStringClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(TypeWithString));
-
-      var typeWithStringFirstValuePath = BusinessObjectPropertyPath.CreateStatic(typeWithStringClass, "FirstValue");
-
-      var typeWithStringFirstValueSimpleColumn = new BocSimpleColumnDefinition();
-      typeWithStringFirstValueSimpleColumn.SetPropertyPath(typeWithStringFirstValuePath);
-
-
-      var hostTypeForTypeWithString = HostTypeForTypeWithString.Create();
-      hostTypeForTypeWithString.Strings = typeWithStrings;
-      var businessObject = (IBusinessObject)hostTypeForTypeWithString;
-      var businessObjectProperty = businessObject.BusinessObjectClass.GetPropertyDefinition("Strings");
-
-      var bocList = new BocListMock();
-      bocList.DataSource = new StubDataSource(typeWithStringClass);
-      bocList.DataSource.BusinessObject = businessObject;
-      bocList.DataSource.Mode = DataSourceMode.Edit;
-      bocList.Property = (IBusinessObjectReferenceProperty)businessObjectProperty;
-      bocList.FixedColumns.Add(typeWithStringFirstValueSimpleColumn);
-      bocList.FixedColumns.Add(new BocValidationErrorIndicatorColumnDefinition());
-      bocList.EnableAutoFocusOnSwitchToEditMode = false;
-
-      Assert.That(bocList.IsReadOnly, Is.False);
-
-      bocList.LoadValue(false);
-      bocList.SwitchRowIntoEditMode(0);
-
-      Assert.That(bocList.IsRowEditModeActive, Is.True);
-
-      var editableRow = ((IBocList)bocList).EditModeController.GetEditableRow(0);
-      ((EditableRow)editableRow).EnsureValidatorsRestored();
-
-      Assert.That(editableRow.HasValidators(), Is.True);
-
-      Assert.That(editableRow.HasValidators(0), Is.True);
-      ControlCollection editableRowValidators = editableRow.GetValidators(0);
-      Assert.That(editableRowValidators.Cast<BaseValidator>().Select(v => v.GetType()),
-          Is.EqualTo(
-              new[]
-              {
-                typeof(ControlCharactersCharactersValidator),
-                typeof(BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
-              }));
-
-      ((BaseValidator)editableRowValidators[0]).Validate();
-
-      return (bocList, typeWithStringFirstValueSimpleColumn);
-    }
-
     [Test]
     public void DispatchValidationFailures_WithInvisibleControl_UsesReadOnlyValidationResultForDispatching ()
     {
@@ -130,6 +79,27 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       var validator = new BocListValidationResultDispatchingValidator();
       validator.ControlToValidate = "someBocList";
       bocList.ID = "someBocList";
+      bocList.SwitchRowIntoEditMode(0);
+
+      Assert.That(bocList.IsRowEditModeActive, Is.True);
+
+      var editableRow = ((IBocList)bocList).EditModeController.GetEditableRow(0);
+      ((EditableRow)editableRow).EnsureValidatorsRestored();
+
+      Assert.That(editableRow.HasValidators(), Is.True);
+
+      Assert.That(editableRow.HasValidators(0), Is.True);
+      ControlCollection editableRowValidators = editableRow.GetValidators(0);
+      Assert.That(
+          editableRowValidators.Cast<BaseValidator>().Select(v => v.GetType()),
+          Is.EqualTo(
+              new[]
+              {
+                typeof(ControlCharactersCharactersValidator),
+                typeof(BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
+              }));
+
+      ((BaseValidator)editableRowValidators[0]).Validate();
 
       NamingContainer.Controls.Add(bocList);
       NamingContainer.Controls.Add(validator);
@@ -160,6 +130,166 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       Assert.That(failuresInRepository.Single().Failure.ErrorMessage, Is.EqualTo("The value contains unsupported characters: \"\u0001\" (position: 1)."));
 
       validationResultMock.Verify();
+    }
+
+    [Test]
+    public void DispatchValidationFailures_WithListEditModeControlHavingInvalidValidator_HasFailureFromValidatorInRepositoryWithMetadata ()
+    {
+      var values = new[]
+                   {
+                     TypeWithString.Create("\u0001", "A")
+                   };
+
+      var (bocList, simpleColumnDefinition) = InitiateBocListForEditModeWithStringClass(values);
+
+      var validator = new BocListValidationResultDispatchingValidator();
+      validator.ControlToValidate = "someBocList";
+      bocList.ID = "someBocList";
+      bocList.SwitchListIntoEditMode();
+
+      Assert.That(bocList.IsListEditModeActive, Is.True);
+
+      var editableRow = ((IBocList)bocList).EditModeController.GetEditableRow(0);
+      ((EditableRow)editableRow).EnsureValidatorsRestored();
+
+      Assert.That(editableRow.HasValidators(), Is.True);
+
+      Assert.That(editableRow.HasValidators(0), Is.True);
+      ControlCollection editableRowValidators = editableRow.GetValidators(0);
+      Assert.That(
+          editableRowValidators.Cast<BaseValidator>().Select(v => v.GetType()),
+          Is.EqualTo(
+              new[]
+              {
+                typeof(ControlCharactersCharactersValidator),
+                typeof(BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)
+              }));
+
+      ((BaseValidator)editableRowValidators[0]).Validate();
+
+      NamingContainer.Controls.Add(bocList);
+      NamingContainer.Controls.Add(validator);
+
+      var validationResultMock = new Mock<IBusinessObjectValidationResult>();
+      validationResultMock
+          .Setup(e => e.GetValidationFailures(bocList.DataSource.BusinessObject, bocList.Property, true))
+          .Returns(Array.Empty<BusinessObjectValidationFailure>())
+          .Verifiable();
+
+      validationResultMock
+          .Setup(_ => _.GetValidationFailures((IBusinessObject)values[0], simpleColumnDefinition.GetPropertyPath().Properties.Single(), true))
+          .Returns(Array.Empty<BusinessObjectValidationFailure>())
+          .Verifiable();
+      validationResultMock
+          .Setup(_ => _.GetUnhandledValidationFailures(It.IsAny<IBusinessObject>(), It.IsAny<bool>(), It.IsAny<bool>()))
+          .Returns(Array.Empty<BusinessObjectValidationFailure>());
+
+      validator.DispatchValidationFailures(validationResultMock.Object);
+
+      var bocListValidationFailureRepository = bocList.ValidationFailureRepository;
+
+      var failuresInRepository = bocListValidationFailureRepository.GetUnhandledValidationFailuresForBocListAndContainingDataRowsAndDataCells(true);
+      Assert.That(failuresInRepository.Count, Is.EqualTo(1));
+      Assert.That(failuresInRepository.Single().ColumnDefinition, Is.EqualTo(simpleColumnDefinition));
+      Assert.That(failuresInRepository.Single().RowObject, Is.EqualTo(values[0]));
+      Assert.That(failuresInRepository.Single().Failure.ErrorMessage, Is.EqualTo("The value contains unsupported characters: \"\u0001\" (position: 1)."));
+
+      validationResultMock.Verify();
+    }
+
+    [Test]
+    public void DispatchValidationFailures_WithoutErrorIndicatorColumn_DoesNotDispatchToRepository ()
+    {
+      IBusinessObject businessObject = TypeWithReference.Create();
+      var businessObjectProperty = businessObject.BusinessObjectClass.GetPropertyDefinition("ReferenceList");
+
+      var bocList = new BocListMock();
+      bocList.ID = "someBocList";
+      bocList.DataSource = new StubDataSource(businessObject.BusinessObjectClass);
+      bocList.DataSource.BusinessObject = businessObject;
+      bocList.Property = (IBusinessObjectReferenceProperty)businessObjectProperty;
+
+      var validationResultMock = new Mock<IBusinessObjectValidationResult>(MockBehavior.Strict);
+
+      var validator = new BocListValidationResultDispatchingValidator();
+      validator.ControlToValidate = "someBocList";
+
+      NamingContainer.Controls.Add(bocList);
+      NamingContainer.Controls.Add(validator);
+
+      validator.DispatchValidationFailures(validationResultMock.Object);
+
+      Assert.That(bocList.ValidationFailureRepository.GetUnhandledValidationFailuresForBocListAndContainingDataRowsAndDataCells(true), Is.Empty);
+
+      validationResultMock.VerifyNoOtherCalls();
+    }
+
+    [Test]
+    public void DispatchValidationFailures_WithErrorIndicatorColumn_DispatchesToRepository ()
+    {
+      var validationFailureRepo = new BocListValidationFailureRepository();
+
+      var error = "BocList has validation errors.";
+      var resourceManagerStub = new Mock<IResourceManager>();
+      resourceManagerStub
+          .Setup(_ => _.TryGetString("Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInListErrorMessage", out error))
+          .Returns(true);
+
+      IBusinessObject businessObject = TypeWithReference.Create();
+      var businessObjectProperty = businessObject.BusinessObjectClass.GetPropertyDefinition("ReferenceList");
+
+      var editModeControllerStub = new Mock<IEditModeController>();
+      var dataSourceStub = new Mock<IBusinessObjectDataSource>();
+      dataSourceStub.Setup(_ => _.BusinessObject).Returns(businessObject);
+
+      var columnDefinitionMock = new Mock<BocColumnDefinition>();
+      var validationFailureMatcherMock = new Mock<IValidationFailureMatcher>();
+      columnDefinitionMock.As<IBocColumnDefinitionWithValidationSupport>().Setup(_ => _.GetValidationFailureMatcher()).Returns(validationFailureMatcherMock.Object);
+
+      var bocListMock = new Mock<Control> { CallBase = true };
+      bocListMock.As<IBocList>().Setup(_ => _.ValidationFailureRepository).Returns(validationFailureRepo);
+      bocListMock.As<IBocList>().Setup(_ => _.GetResourceManager()).Returns(resourceManagerStub.Object);
+      bocListMock.As<IBocList>().Setup(_ => _.GetBusinessObjectsForValidation()).Returns(new[] { businessObject });
+      bocListMock.As<IBocList>().Setup(_ => _.EditModeController).Returns(editModeControllerStub.Object);
+      bocListMock.As<IBocList>().Setup(_ => _.DataSource).Returns(dataSourceStub.Object);
+      bocListMock.As<IBocList>().Setup(_ => _.Property).Returns(businessObjectProperty);
+      bocListMock.As<IBocList>().Setup(_ => _.IsInlineValidationDisplayEnabled).Returns(true);
+      bocListMock.As<IBocList>().Setup(_ => _.GetColumnDefinitions()).Returns(new[] { columnDefinitionMock.Object });
+      bocListMock.As<IBocList>().Setup(_ => _.Visible).Returns(true);
+
+      bocListMock.Object.ID = "someBocList";
+
+
+      var validationResultMock = new Mock<IBusinessObjectValidationResult>();
+      validationResultMock
+          .Setup(e => e.GetValidationFailures(businessObject, businessObjectProperty, true))
+          .Returns(new []{BusinessObjectValidationFailure.CreateForBusinessObjectProperty("ListErrorMessage", businessObject, businessObjectProperty) })
+          .Verifiable();
+      validationResultMock
+          .Setup(e => e.GetUnhandledValidationFailures(businessObject, false, true))
+          .Returns(new []{BusinessObjectValidationFailure.CreateForBusinessObject(businessObject, "RowErrorMessage") })
+          .Verifiable();
+
+      validationFailureMatcherMock
+          .Setup(_ => _.GetMatchingValidationFailures(businessObject, validationResultMock.Object))
+          .Returns(new[] { BusinessObjectValidationFailure.CreateForBusinessObjectProperty("ColumnErrorMessage", businessObject, businessObjectProperty) });
+
+
+      var validator = new BocListValidationResultDispatchingValidator();
+      validator.ControlToValidate = "someBocList";
+
+      NamingContainer.Controls.Add(bocListMock.Object);
+      NamingContainer.Controls.Add(validator);
+
+      validator.DispatchValidationFailures(validationResultMock.Object);
+
+      validationResultMock.Verify();
+      Assert.That(validator.IsValid, Is.False);
+      Assert.That(validationFailureRepo.GetUnhandledValidationFailuresForBocList(true).Single().Failure.ErrorMessage, Is.EqualTo("ListErrorMessage"));
+      Assert.That(validationFailureRepo.GetUnhandledValidationFailuresForDataRow(businessObject, true).Single().Failure.ErrorMessage, Is.EqualTo("RowErrorMessage"));
+      Assert.That(
+          validationFailureRepo.GetUnhandledValidationFailuresForDataCell(businessObject, columnDefinitionMock.Object, true).Single().Failure.ErrorMessage,
+          Is.EqualTo("ColumnErrorMessage"));
     }
 
     [Test]
@@ -439,6 +569,37 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
 
       Assert.That(validator.ErrorMessage, Is.EqualTo("BocList has validation errors."));
       Assert.That(validator.IsValid, Is.False);
+    }
+
+    private (BocListMock boclist, BocSimpleColumnDefinition simpleColumnDefinition) InitiateBocListForEditModeWithStringClass (TypeWithString[] typeWithStrings)
+    {
+      var typeWithStringClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(TypeWithString));
+
+      var typeWithStringFirstValuePath = BusinessObjectPropertyPath.CreateStatic(typeWithStringClass, "FirstValue");
+
+      var typeWithStringFirstValueSimpleColumn = new BocSimpleColumnDefinition();
+      typeWithStringFirstValueSimpleColumn.SetPropertyPath(typeWithStringFirstValuePath);
+
+
+      var hostTypeForTypeWithString = HostTypeForTypeWithString.Create();
+      hostTypeForTypeWithString.Strings = typeWithStrings;
+      var businessObject = (IBusinessObject)hostTypeForTypeWithString;
+      var businessObjectProperty = businessObject.BusinessObjectClass.GetPropertyDefinition("Strings");
+
+      var bocList = new BocListMock();
+      bocList.DataSource = new StubDataSource(typeWithStringClass);
+      bocList.DataSource.BusinessObject = businessObject;
+      bocList.DataSource.Mode = DataSourceMode.Edit;
+      bocList.Property = (IBusinessObjectReferenceProperty)businessObjectProperty;
+      bocList.FixedColumns.Add(typeWithStringFirstValueSimpleColumn);
+      bocList.FixedColumns.Add(new BocValidationErrorIndicatorColumnDefinition());
+      bocList.EnableAutoFocusOnSwitchToEditMode = false;
+
+      Assert.That(bocList.IsReadOnly, Is.False);
+
+      bocList.LoadValue(false);
+
+      return (bocList, typeWithStringFirstValueSimpleColumn);
     }
   }
 }
