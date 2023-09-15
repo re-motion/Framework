@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <UseWebForms>true</UseWebForms>
-    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
     <OutputPath>bin</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <IsPackable>false</IsPackable>
@@ -12,9 +12,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoreForms.Web.Infrastructure.MachineConfig" Version="7.0.0" />
-    <PackageReference Include="CoreForms.Web.Infrastructure.Roslyn" Version="7.0.0" />
-    <PackageReference Include="CoreForms.Web.Infrastructure" Version="7.0.0" />
+    <PackageReference Include="CoreForms.Web.Infrastructure.MachineConfig" Version="8.0.0-alpha.2" />
+    <PackageReference Include="CoreForms.Web.Infrastructure.Roslyn" Version="8.0.0-alpha.2" />
+    <PackageReference Include="CoreForms.Web.Infrastructure" Version="8.0.0-alpha.2" />
     <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.3.1" ExcludeAssets="all" GeneratePathProperty="true" />
   </ItemGroup>
 
