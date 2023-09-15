@@ -27,7 +27,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.3.1" GeneratePathProperty="true" ExcludeAssets="all" />
-    <PackageReference Include="Remotion.TypePipe.Development" Version="3.2.0-beta.1" />
+    <PackageReference Include="Remotion.TypePipe.Development" Version="3.2.0" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
   <Import Project="..\..\Development\UnitTesting.Compilation\build\Remotion.Development.UnitTesting.Compilation.targets" />
