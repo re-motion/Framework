@@ -333,7 +333,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (ts != null)
       {
         if (_checkClientSideMaxLength != false)
-          _maxLength = ts.GetMaxLength();
+          _maxLength = ts.MaxLength;
         _columns = ts.Columns;
         _readOnly = ts.ReadOnly;
       }
