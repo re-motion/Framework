@@ -67,7 +67,7 @@ namespace Remotion.UnitTests.Collections
       Assert.That(notFoundValue, Is.EqualTo(0));
     }
 
-#if(NETFRAMEWORK || NET6_0)
+#if NETFRAMEWORK
     [Test]
     public void GetValueOrDefault_WithReadOnlyDictionary_ValueTypes ()
     {
@@ -134,7 +134,7 @@ namespace Remotion.UnitTests.Collections
       Assert.That(substitutedDefaultValue, Is.EqualTo("Beta"));
     }
 
-#if(NETFRAMEWORK || NET6_0)
+#if NETFRAMEWORK
     [Test]
     public void GetValueOrDefault_WithReadOnlyDictionary_WithDefaultValue ()
     {
@@ -167,7 +167,7 @@ namespace Remotion.UnitTests.Collections
       Assert.That(substitutedDefaultValue, Is.Null);
     }
 
-#if(NETFRAMEWORK || NET6_0)
+#if NETFRAMEWORK
     [Test]
     public void GetValueOrDefault_WithReadOnlyDictionary_WithDefaultValue_NullDefaultValue ()
     {
@@ -199,7 +199,7 @@ namespace Remotion.UnitTests.Collections
       Assert.That(() => ((Dictionary<string, string>)_dictionary).GetOrCreateValue(null, key => throw new InvalidOperationException()), Throws.ArgumentNullException);
     }
 
-#if(NETFRAMEWORK || NET6_0)
+#if NETFRAMEWORK
     [Test]
     public void AsReadOnly ()
     {
