@@ -14,7 +14,7 @@
     <ProjectReference Include="..\Core\Core.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Remotion.TypePipe" Version="3.2.0-beta.1" />
+    <PackageReference Include="Remotion.TypePipe" Version="3.2.0" />
     <PackageReference Remove="JetBrains.Annotations" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
