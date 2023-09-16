@@ -96,7 +96,7 @@
       <HintPath>..\..\..\packages\Remotion.Linq.2.2.0\lib\net45\Remotion.Linq.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.TypePipe, Version=3.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.TypePipe.3.2.0-beta.1\lib\net45\Remotion.TypePipe.dll</HintPath>
+      <HintPath>..\..\..\packages\Remotion.TypePipe.3.2.0\lib\net45\Remotion.TypePipe.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
