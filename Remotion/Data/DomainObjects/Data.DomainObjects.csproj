@@ -26,7 +26,7 @@
   <ItemGroup>
     <PackageReference Include="Remotion.Linq" Version="2.2.0" />
     <PackageReference Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
-    <PackageReference Include="Remotion.Linq.SqlBackend" Version="2.2.0-beta.1" />
+    <PackageReference Include="Remotion.Linq.SqlBackend" Version="2.2.0" />
     <PackageReference Include="Remotion.TypePipe" Version="3.2.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
