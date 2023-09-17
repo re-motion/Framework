@@ -313,8 +313,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       textBox.ApplyStyle(this);
 
-      if (_maxLength != null && _checkClientSideMaxLength != false)
-        textBox.MaxLength = _maxLength.Value;
+      var maxLength = GetMaxLength();
+      if (maxLength != null && _checkClientSideMaxLength != false)
+        textBox.MaxLength = maxLength.Value;
 
       if (_columns != null)
         textBox.Columns = _columns.Value;
@@ -332,10 +333,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       SingleRowTextBoxStyle? ts = s as SingleRowTextBoxStyle;
       if (ts != null)
       {
-        if (_checkClientSideMaxLength != false)
-          _maxLength = ts.GetMaxLength();
-        _columns = ts.Columns;
-        _readOnly = ts.ReadOnly;
+        this._columns = ts._columns;
+        this._maxLength = ts._maxLength;
+        this._maxLengthByPropertyConstraint = ts._maxLengthByPropertyConstraint;
+        this._maxLengthFromDomainModel = ts._maxLengthFromDomainModel;
+        this._readOnly = ts._readOnly;
+        this._autoPostBack = ts._autoPostBack;
+        this._checkClientSideMaxLength = ts._checkClientSideMaxLength;
       }
     }
 
@@ -507,11 +511,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       TextBoxStyle? ts = s as TextBoxStyle;
       if (ts != null)
       {
-        Rows = ts.Rows;
-        TextMode = ts.TextMode;
-        Wrap = ts.Wrap;
-        Placeholder = ts.Placeholder;
-        AutoComplete = ts.AutoComplete;
+        this._rows = ts._rows;
+        this._textMode = ts._textMode;
+        this._wrap = ts._wrap;
+        this._placeholder = ts._placeholder;
+        this._autoComplete = ts._autoComplete;
       }
     }
 
