@@ -43,8 +43,8 @@
        NOTE: If the versions do not intersect, the file is always copied locally. This is the reason why no workaround is needed for .NET 6.
   -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
-    <PackageReference Include="System.CodeDom" Version="8.0.0-preview.6.23329.7" GeneratePathProperty="true" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0-preview.6.23329.7" GeneratePathProperty="true" />
+    <PackageReference Include="System.CodeDom" Version="8.0.0-rc.1.23419.4" GeneratePathProperty="true" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0-rc.1.23419.4" GeneratePathProperty="true" />
   </ItemGroup>
   <Target Name="CopySystemConfigurationConfigurationManager" AfterTargets="ResolveAssemblyReferences" Condition="'$(PkgSystem_Configuration_ConfigurationManager)' != ''">
     <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
