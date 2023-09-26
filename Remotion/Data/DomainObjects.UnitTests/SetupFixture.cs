@@ -16,7 +16,6 @@
 // 
 using System;
 using log4net;
-using CommonServiceLocator;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.Database;

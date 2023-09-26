@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using CommonServiceLocator;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;

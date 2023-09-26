@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using CommonServiceLocator;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation

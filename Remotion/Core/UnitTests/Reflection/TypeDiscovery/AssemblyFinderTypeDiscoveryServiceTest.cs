@@ -78,7 +78,6 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
       var assemblies = new HashSet<Assembly>();
       assemblies.Add(_remotionAssembly);
       assemblies.Add(_dotnetAssembly);
-      assemblies.Add(typeof(CommonServiceLocator.IServiceLocator).Assembly);
       assemblies.Add(typeof(log4net.ILog).Assembly);
       assemblies.Add(typeof(System.Collections.Specialized.StringCollection).Assembly);
       assemblies.Add(typeof(System.Collections.CollectionBase).Assembly);
@@ -113,7 +112,6 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
       var assemblies = new HashSet<Assembly>();
       assemblies.Add(_remotionAssembly);
       assemblies.Add(_dotnetAssembly);
-      assemblies.Add(typeof(CommonServiceLocator.IServiceLocator).Assembly);
       assemblies.Add(typeof(log4net.ILog).Assembly);
       assemblies.Add(typeof(System.Collections.Specialized.StringCollection).Assembly);
       assemblies.Add(typeof(System.Collections.CollectionBase).Assembly);

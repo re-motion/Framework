@@ -19,7 +19,6 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
-using CommonServiceLocator;
 using Remotion.Data.DomainObjects;
 using Remotion.Globalization;
 using Remotion.Reflection;

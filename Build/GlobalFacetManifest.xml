@@ -11,10 +11,6 @@
            feature="Castle.Core"
            layer="Core"/>
 
-  <package id="CommonServiceLocator"
-           feature="CommonServiceLocator"
-           layer="Core"/>
-
   <package id="CoreForms.Web"
            feature="Remotion.Web"
            layer="WebCommon"/>

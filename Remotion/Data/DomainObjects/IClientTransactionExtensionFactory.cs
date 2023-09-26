@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using CommonServiceLocator;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects
 {

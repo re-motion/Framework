@@ -21,7 +21,6 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using CommonServiceLocator;
 using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;

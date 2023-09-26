@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Web.UI;
-using CommonServiceLocator;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Web.UI.Controls.Hotkey
 {

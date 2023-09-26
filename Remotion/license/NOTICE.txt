@@ -40,9 +40,9 @@ IronPython.dll and IronPython.Modules.dll
 Copyright Microsoft
 Original software available from http://ironpython.codeplex.com/
 
-Microsoft.Practices.ServiceLocation.dll
-Copyright 2008 Microsoft
-Original software available from http://commonservicelocator.codeplex.com/
+     (embedded within Remotion.dll)
+Copyright © .NET Foundation and Contributors
+Original software available from https://github.com/unitycontainer/commonservicelocator
 
 Microsoft.Scripting.Core.dll, Microsoft.Scripting.dll, and Microsoft.Scripting.ExtensionAttribute.dll
 Copyright Microsoft
