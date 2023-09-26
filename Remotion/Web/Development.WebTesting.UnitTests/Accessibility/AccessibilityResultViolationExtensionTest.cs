@@ -32,10 +32,10 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
     {
       _defaultViolation = new AccessibilityRuleResult(
           new AccessibilityRule(
-              AccessibilityRuleID.AudioCaption,
+              AccessibilityRuleID.AriaAllowedAttr,
               "Description",
               AccessibilityTestImpact.Moderate,
-              new[] { AccessibilityTestSuccessCriteria.Wcag_1_3_6 }),
+              new[] { AccessibilityTestSuccessCriteria.Wcag_4_1_2 }),
           new[] { new AccessibilityTestTarget("xPath", "CSS") },
           "Html",
           new[] { new AccessibilityRequirement(AccessibilityRequirementID.MetaViewport, "Message", AccessibilityTestImpact.Moderate) },
@@ -195,7 +195,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
           targets ?? new[] { new AccessibilityTestTarget("A", "B") },
           "test",
           new List<AccessibilityRequirement>(),
-          checkIDs == null ? CreateRequirements(new[] { AccessibilityRequirementID.AriaLabeledBy }).ToArray() : CreateRequirements(checkIDs).ToArray(),
+          checkIDs == null ? CreateRequirements(new[] { AccessibilityRequirementID.AriaLabelledBy }).ToArray() : CreateRequirements(checkIDs).ToArray(),
           new List<AccessibilityRequirement>()
           );
     }

@@ -21,87 +21,161 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
   /// <summary>
   /// IDs of the accessibility checks.
   /// </summary>
+  /// <remarks>
+  /// A list of all all requirements can be found at <see href="https://github.com/dequelabs/axe-core/tree/develop/lib/checks"/>.
+  /// Each folder relates to a section in this list.
+  /// The easiest way to quickly find which checks changed was to look at the diff of these files between the releases.
+  /// </remarks>
   public enum AccessibilityRequirementID
   {
     Unknown,
+
+    // --- Aria Checks ---
     AbstractRole,
     AriaAllowedAttr,
-    AriaHiddenBody,
+    AriaAllowedRole,
+    AriaBusy,
+    AriaConditionalAttr,
     AriaErrorMessage,
-    HasWidgetRole,
-    ImplicitRoleFallback,
-    InvalidRole,
+    AriaHiddenBody,
+    AriaLevel,
+    AriaProhibitedAttr,
     AriaRequiredAttr,
     AriaRequiredChildren,
     AriaRequiredParent,
+    AriaRoledescription,
+    AriaUnsupportedAttr,
     AriaValidAttrValue,
     AriaValidAttr,
+    BrailleLabelEquivalent,
+    BrailleRoledescriptionEquivalent,
+    Deprecatedrole,
+    Fallbackrole,
+    HasGlobalAriaAttribute,
+    HasWidgetRole,
+    InvalidRole,
+    IsElementFocusable,
+    NoImplicitExplicitLabel,
+    Unsupportedrole,
     ValidScrollableSemantics,
+
+    // --- Color Checks ---
+    ColorContrastEnhanced,
     ColorContrast,
+    LinkInTextBlockStyle,
     LinkInTextBlock,
-    Fieldset,
-    GroupLabeledBy,
+
+    // --- Forms Checks ---
+    AutocompleteAppropriate,
+    AutocompleteValid,
+
+    // --- Generic Checks ---
+
+    // --- Keyboard Checks ---
     AccessKeys,
+    FocusableContent,
+    FocusableDisabled,
+    FocusableElement,
+    FocusableModalOpen,
     FocusableNoName,
+    FocusableNotTabbable,
+    FrameFocusableContent,
     LandmarkIsTopLevel,
+    NoFocusableContent,
     PageHasHeadingOne,
     PageHasMain,
     PageNoDuplicateBanner,
     PageNoDuplicateContentInfo,
     PageNoDuplicateMain,
     Tabindex,
+
+    // --- Label Checks ---
+    AltSpaceValue,
     DuplicateImgLabel,
     ExplicitLabel,
     HelpSameAsLabel,
+    HiddenExplicitLabel,
     ImplicitLabel,
+    LabelContentNameMismatch,
     MultipleLabel,
     TitleOnly,
+
+    // --- Landmark Checks ---
+    LandmarkIsUnique,
+
+    // --- Language Checks ---
     HasLang,
     ValidLang,
+    XMLLangMismatch,
+
+    // --- List Checks ---
     DlItem,
     ListItem,
     OnlyDlItems,
     OnlyListItems,
     StructuredDlItems,
+
+    // --- Media Checks ---
     Caption,
-    Description,
     FrameTested,
+    NoAutoplayAudio,
+
+    // --- Mobile Checks ---
+    CSSOrientationLock,
     MetaViewportLarge,
     MetaViewport,
+    TargetOffset,
+    TargetSize,
+
+    // --- Navigation Checks ---
     HeaderPresent,
     HeadingOrder,
+    IdenticalLinksSamePurpose,
     InternalLinkPresent,
     Landmark,
+    MetaRefreshNoExceptions,
     MetaRefresh,
     PAsHeading,
     Region,
     SkipLink,
     UniqueFrameTitle,
+
+    // --- Parsing Checks
+    DuplicateIdActive,
+    DuplicateIdAria,
+    DuplicateId,
+
+    // --- Shared Checks
     AriaLabel,
-    AriaLabeledBy,
+    AriaLabelledBy,
+    AvoidInlineSpacing,
     ButtonHasVisibleText,
     DocHasTitle,
-    DuplicateId,
     Exists,
     HasAlt,
     HasVisibleText,
+    ImportantLetterSpacing,
+    ImportantLineHeight,
+    ImportantWordSpacing,
     IsOnScreen,
     NonEmptyAlt,
     NonEmptyIfPresent,
+    NonEmptyPlaceholder,
     NonEmptyTitle,
     NonEmptyValue,
-    RoleNone,
-    RolePresentation,
+    PresentationalRole,
+    SVGNonEmptyTitle,
+
+    // --- Table Checks ---
     CaptionFaked,
-    HasCaption,
-    HasSummary,
-    HasTh,
     Html5Scope,
     SameCaptionSummary,
     ScopeValue,
     TdHasHeader,
     TdHeadersAttr,
     ThHasDataCells,
+
+    // --- Visibility Checks ---
     HiddenContent
   }
 }

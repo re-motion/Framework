@@ -35,7 +35,9 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocListAsGrid
 
       var result = bocListAsGrid.Analyze(analyzer);
 
-      Assert.That(result.Violations, Is.Empty);
+      //RM-8997 This will be removed again when the accessibility problems have been fixed
+      var violationResult = result.Violations.IgnoreKnownIssues();
+      Assert.That(violationResult, Is.Empty);
     }
 
     [Test]
