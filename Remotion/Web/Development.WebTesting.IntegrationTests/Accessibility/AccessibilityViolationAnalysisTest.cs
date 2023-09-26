@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
               new[]
               {
                   AccessibilityRequirementID.AriaLabel,
-                  AccessibilityRequirementID.AriaLabeledBy,
+                  AccessibilityRequirementID.AriaLabelledBy,
                   AccessibilityRequirementID.ExplicitLabel,
                   AccessibilityRequirementID.ImplicitLabel,
                   AccessibilityRequirementID.NonEmptyTitle
@@ -83,7 +83,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
               {
                   AccessibilityRequirementID.HasAlt,
                   AccessibilityRequirementID.AriaLabel,
-                  AccessibilityRequirementID.AriaLabeledBy,
+                  AccessibilityRequirementID.AriaLabelledBy,
                   AccessibilityRequirementID.NonEmptyTitle,
                   AccessibilityRequirementID.RolePresentation,
                   AccessibilityRequirementID.RoleNone
@@ -118,7 +118,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
               {
                   AccessibilityRequirementID.ButtonHasVisibleText,
                   AccessibilityRequirementID.AriaLabel,
-                  AccessibilityRequirementID.AriaLabeledBy,
+                  AccessibilityRequirementID.AriaLabelledBy,
                   AccessibilityRequirementID.RolePresentation,
                   AccessibilityRequirementID.RoleNone,
                   AccessibilityRequirementID.NonEmptyTitle,
