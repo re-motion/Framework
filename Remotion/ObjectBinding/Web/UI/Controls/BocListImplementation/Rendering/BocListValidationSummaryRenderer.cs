@@ -32,6 +32,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   [ImplementationFor(typeof(IBocListValidationSummaryRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocListValidationSummaryRenderer : IBocListValidationSummaryRenderer
   {
+    /// <summary>Name of the JavaScript function to call when a command control has been clicked.</summary>
+    private const string c_onInlineValidationEntryClickScript = "BocList.OnInlineValidationEntryClick(event);";
+
     private readonly IRenderingFeatures _renderingFeatures;
     private readonly BocListCssClassDefinition _bocListCssClassDefinition;
 
@@ -97,7 +100,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
         var validationMarkerCellID = BocRowRenderer.GetCellIDForValidationMarker(renderingContext.Control, rowIndex, visibleColumnIndex);
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, $"#{validationMarkerCellID}");
-        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, BocColumnRendererBase<BocValidationErrorIndicatorColumnDefinition>.OnCommandClickScript);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, c_onInlineValidationEntryClickScript);
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.A);
 
         var columnTitle = columnDefinition.ColumnTitleDisplayValue.IsEmpty

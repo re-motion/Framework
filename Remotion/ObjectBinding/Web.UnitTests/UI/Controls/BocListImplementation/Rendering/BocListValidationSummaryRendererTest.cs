@@ -207,6 +207,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           var a = Html.GetAssertedChildElement(li, "a", 0);
           Html.AssertChildElementCount(a, 0);
           Html.AssertAttribute(a, "href", href);
+          Html.AssertAttribute(a, "onclick", "BocList.OnInlineValidationEntryClick(event);");
         }
         else
         {
