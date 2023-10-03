@@ -35,7 +35,6 @@ using Remotion.Web.Development.WebTesting.Utilities;
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
-  [RequiresUserInterface]
   public class DropDownMenuControlObjectTest : IntegrationTest
   {
     // Note: the <see cref="T:DropDownMenu.Mode"/>=<see cref="T:MenuMode.ContextMenu"/> option is tested indirectly by the BocTreeViewControlObjectTest.

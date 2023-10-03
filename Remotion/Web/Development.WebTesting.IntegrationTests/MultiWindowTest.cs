@@ -27,7 +27,6 @@ using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
-  [RequiresUserInterface]
   public class MultiWindowTest : IntegrationTest
   {
     [Test]
