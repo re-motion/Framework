@@ -10,6 +10,9 @@
     <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Development\NUnit\UnitTesting\**\*.cs" Link="SharedSource\NUnit\UnitTesting\%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
     <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj" />
