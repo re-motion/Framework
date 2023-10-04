@@ -392,6 +392,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, BocRowRenderer.GetCellIDForValidationMarker(renderingContext.Control, arguments.RowIndex, renderingContext.VisibleColumnIndex));
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Title, tooltipStringBuilder.ToString());
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Tabindex, "-1");
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.ValidationErrorMarker);
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
