@@ -418,6 +418,29 @@ class BocList
     BocList._isCommandClick = true;
   }
 
+  public static OnInlineValidationEntryClick(event: MouseEvent)
+  {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const a = event.target as HTMLAnchorElement;
+    if (a && a.hash && a.hash.startsWith("#"))
+    {
+      const targetElement = document.getElementById(a.hash.substring(1));
+
+      // We want to scroll the parent <td> element into view to ensure that the whole cell content is visible after scrolling
+      let tdElement = targetElement;
+      while (tdElement && tdElement.tagName !== "TD")
+        tdElement = tdElement.parentElement;
+
+      if (targetElement && tdElement)
+      {
+        tdElement.scrollIntoView({ block: "nearest", inline: "nearest" });
+        targetElement.focus({ preventScroll: true });
+      }
+    }
+  }
+
   //  Returns the number of rows selected for the specified BocList
   public static GetSelectionCount(bocListID: string): number
   {
