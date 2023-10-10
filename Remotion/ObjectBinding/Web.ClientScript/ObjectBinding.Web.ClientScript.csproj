@@ -15,5 +15,8 @@
       <Link>Scripts\typings\common.d.ts</Link>
     </TypeScriptCompile>
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Remotion.ThirdPartyDependency.JQuery.Autocomplete" Version="1.1.0-pre" />
+  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
