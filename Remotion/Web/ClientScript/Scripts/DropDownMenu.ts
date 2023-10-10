@@ -825,6 +825,8 @@ class DropDownMenu
     var textPane = document.createElement('span');
     textPane.className = DropDownMenu._itemSeparatorClassName;
     item.setAttribute('role', 'none');
+    item.setAttribute("aria-hidden", "true");
+
     textPane.innerHTML = '&nbsp;';
 
     item.appendChild(textPane);
