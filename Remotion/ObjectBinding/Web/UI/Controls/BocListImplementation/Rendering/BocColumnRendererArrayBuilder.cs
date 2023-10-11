@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Remotion.Collections;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -63,14 +64,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       PrepareSorting(sortingDirections, sortingOrder);
 
-      var firstValueColumnRendered = false;
       var bocColumnRenderers = new List<BocColumnRenderer>(_columnDefinitions.Count);
       var visibleColumnIndex = GetInitialVisibleColumnIndex();
+
+      BocColumnDefinition? iconColumn = null;
+      if (EnableIcon)
+      {
+        iconColumn = _columnDefinitions.FirstOrDefault(cd => cd is IBocColumnDefinitionWithRowIconSupport { RowIconMode: RowIconMode.Preferred })
+                     ?? _columnDefinitions.FirstOrDefault(cd => cd is IBocColumnDefinitionWithRowIconSupport { RowIconMode: RowIconMode.Automatic });
+      }
+
       for (int columnIndex = 0; columnIndex < _columnDefinitions.Count; columnIndex++)
       {
         var columnDefinition = _columnDefinitions[columnIndex];
         var isRowHeader = (columnDefinition as IBocColumnDefinitionWithRowHeaderSupport)?.IsRowHeader ?? false;
-        var showIcon = !firstValueColumnRendered && columnDefinition is BocValueColumnDefinition && EnableIcon;
+        var showIcon = ReferenceEquals(columnDefinition, iconColumn);
 
         var sortingDirection = SortingDirection.None;
         if (sortingDirections.ContainsKey(columnIndex))
@@ -106,9 +114,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
                   sortingDirection,
                   orderIndex));
         }
-
-        if (columnDefinition is BocValueColumnDefinition)
-          firstValueColumnRendered = true;
       }
       return bocColumnRenderers.ToArray();
     }
