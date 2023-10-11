@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectType>Test</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>re-motion Security Manager Web Interface Unit Tests</AssemblyTitle>
+    <AssemblyName>Remotion.SecurityManager.Clients.Web.UnitTests</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\SharedSource\Development\NUnit\UnitTesting\**\*.cs" Link="SharedSource\NUnit\UnitTesting\%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Clients.Web\SecurityManager.Clients.Web.csproj" />
+    <ProjectReference Include="..\..\Remotion\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Remotion\Globalization\Core\Globalization.Core.csproj" />
+  </ItemGroup>
+  <Import Project="..\..\Build\Shared.build.targets" />
+</Project>
