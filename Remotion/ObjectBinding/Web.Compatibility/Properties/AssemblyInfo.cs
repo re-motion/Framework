@@ -23,7 +23,7 @@ using Remotion.Globalization;
 [assembly: TagPrefix("Remotion.ObjectBinding.Web.UI.Controls", "remotion")]
 
 [assembly: NeutralResourcesLanguage("en")]
-[assembly: AvailableResourcesLanguages("", "de", "fr", "it")]
+[assembly: AvailableResourcesLanguages("")]
 
 [assembly: AssemblyCulture("")]
 #if NETFRAMEWORK

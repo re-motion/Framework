@@ -11,7 +11,7 @@
     <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\SharedSource\Development\NUnit\UnitTesting\*.cs" Link="SharedSource\NUnit\UnitTesting\%(Filename)%(Extension)" />
+    <Compile Include="..\..\..\SharedSource\Development\NUnit\UnitTesting\**\*.cs" Link="SharedSource\NUnit\UnitTesting\%(RecursiveDir)%(Filename)%(Extension)" />
     <ProjectReference Include="..\..\Core\Collections.DataStore\Core.Collections.DataStore.csproj" />
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Core\ExtensibleEnums\Core.ExtensibleEnums.csproj" />
