@@ -5,8 +5,8 @@
   </PropertyGroup>
   <Import Project="..\..\..\Build\Shared.build.props" />
   <PropertyGroup>
-    <AssemblyTitle>Remotion Validation Web Library Unit Tests</AssemblyTitle>
-    <AssemblyName>Remotion.ObjectBinding.Web.Validation.UnitTests</AssemblyName>
+    <AssemblyTitle>re-motion ObjectBinding Web Controls (Preview) Library UnitTests</AssemblyTitle>
+    <AssemblyName>Remotion.ObjectBinding.Web.Preview.UnitTests</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
@@ -14,13 +14,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
-    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
     <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj" />
-    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />
-    <ProjectReference Include="..\..\Web\Core\Web.Core.csproj" />
-    <ProjectReference Include="..\Core\ObjectBinding.Core.csproj" />
-    <ProjectReference Include="..\Web.Validation\ObjectBinding.Web.Validation.csproj" />
-    <ProjectReference Include="..\Web\ObjectBinding.Web.csproj" />
+    <ProjectReference Include="..\Web.Preview\ObjectBinding.Web.Preview.csproj" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
