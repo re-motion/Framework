@@ -26,6 +26,7 @@ using Remotion.Web.Context;
 namespace Remotion.Web.UnitTests.Core.Context
 {
   [TestFixture]
+  [Obsolete("HttpContextStorageProviderWithAsyncLocalBasedFallback is obsolete.")]
   public class HttpContextStorageProviderWithAsyncLocalBasedFallbackTest
   {
     private HttpContextStorageProviderWithAsyncLocalBasedFallback _provider;
