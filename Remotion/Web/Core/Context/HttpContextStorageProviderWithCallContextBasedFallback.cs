@@ -23,7 +23,7 @@ using Remotion.Utilities;
 namespace Remotion.Web.Context
 {
 #if NETFRAMEWORK
-  [ImplementationFor(typeof(ISafeContextStorageProvider), Position = 0)]
+  [ImplementationFor(typeof(ISafeContextStorageProvider), Lifetime = LifetimeKind.Singleton, Position = 0)]
   public class HttpContextStorageProviderWithCallContextBasedFallback : ISafeContextStorageProvider
   {
     private readonly CallContextStorageProvider _fallbackProvider = new();

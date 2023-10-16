@@ -34,9 +34,7 @@ namespace Remotion.Web.Context
   /// <see cref="HttpContext"/>.<see cref="HttpContext.Current"/>.<see cref="HttpContext.Items"/>, the values cannot be retrieved via the
   /// <see cref="HttpContext.Items"/> property.
   /// </remarks>
-#if !NETFRAMEWORK
-  [ImplementationFor(typeof(ISafeContextStorageProvider), Position = 0)]
-#endif
+  [Obsolete("Registering AsyncLocalStorageProvider is sufficient in a .NET context. (Version: 6.0.0)")]
   public class HttpContextStorageProviderWithAsyncLocalBasedFallback : ISafeContextStorageProvider, ISafeContextBoundaryStrategy
   {
     private struct HashTableAccessor
