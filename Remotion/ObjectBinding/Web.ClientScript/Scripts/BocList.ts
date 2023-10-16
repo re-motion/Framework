@@ -594,8 +594,11 @@ class BocList
 
       let padding = parseFloat(parentStyle.paddingLeft) + parseFloat(parentStyle.paddingRight);
       let border = parseFloat(parentStyle.borderLeftWidth) + parseFloat(parentStyle.borderRightWidth);
-        
-      container.style.width = (availableWidthInContainer - widthBeforeValidationFailureColumn - padding - border).toString() + "px";
+
+      // We use a magic 10px width reduction here to ensure that the determined size is always smaller than the actual size
+      // This is needed as the calculation is not quite as precise as necessary as even a 1px offset can lead to weird scrolling behavior
+      // See RM-8887 and RM-8994 for more context
+      container.style.width = (availableWidthInContainer - widthBeforeValidationFailureColumn - padding - border - 10).toString() + "px";
     });
   }
 
