@@ -30,7 +30,6 @@
     <seealso cref="IConfigurationSectionHandler"/>
     <seealso cref="ExecutionEngineConfiguration"/>
     <seealso cref="ResourceConfiguration"/>
-    <seealso cref="SmartNavigationConfiguration"/>
     <seealso cref="WcagConfiguration"/>
     <example>
       Register the configuration section in the configuration file within the <c>configSections</c> element
@@ -57,11 +56,7 @@
     &lt;<see cref="ResourceConfiguration">resources</see> 
         root="res" 
     /&gt;
-    &lt;<see cref="SmartNavigationConfiguration">smartNavigation</see> 
-        enableScrolling="true" 
-        enableFocusing="true" 
-    /&gt;
-    &lt;<see cref="WcagConfiguration">wcag</see> 
+    &lt;<see cref="WcagConfiguration">wcag</see>
         <see cref="WaiConformanceLevel">conformanceLevel</see>="Undefined" 
         <see cref="WcagDebugMode">debugging</see>="Disabled" 
     /&gt;
