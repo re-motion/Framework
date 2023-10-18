@@ -18,10 +18,12 @@ using System;
 using System.Collections.Concurrent;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
+  [ImplementationFor(typeof(IPropertyMetadataProvider), Lifetime = LifetimeKind.Singleton)]
   public sealed class PropertyMetadataReflector : IPropertyMetadataProvider
   {
     private readonly ConcurrentDictionary<IPropertyInformation, StorageClass?> _storageClassCache
