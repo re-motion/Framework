@@ -70,7 +70,6 @@ public class WebConfiguration: IConfigurationSectionHandler
   private ExecutionEngineConfiguration _executionEngine = new ExecutionEngineConfiguration();
   private WcagConfiguration _wcag = new WcagConfiguration();
   private ResourceConfiguration _resources = new ResourceConfiguration();
-  private SmartNavigationConfiguration _smartNavigation = new SmartNavigationConfiguration();
 
   /// <summary> Gets or sets the <see cref="ExecutionEngineConfiguration"/> entry. </summary>
   [XmlElement("executionEngine")]
@@ -94,14 +93,6 @@ public class WebConfiguration: IConfigurationSectionHandler
   {
     get { return _resources; }
     set { _resources = value; }
-  }
-
-  /// <summary> Gets or sets the <see cref="SmartNavigationConfiguration"/> entry. </summary>
-  [XmlElement("smartNavigation")]
-  public SmartNavigationConfiguration SmartNavigation
-  {
-    get { return _smartNavigation; }
-    set { _smartNavigation = value; }
   }
 
   object IConfigurationSectionHandler.Create (object parent, object configContext, XmlNode section)
