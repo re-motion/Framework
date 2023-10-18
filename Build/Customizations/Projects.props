@@ -297,6 +297,9 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\SecurityManager\Clients.Web\SecurityManager.Clients.Web.csproj">
       <ExcludeFromDocumentation>True</ExcludeFromDocumentation>
     </ReleaseProjectFiles>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\SecurityManager\Clients.Web.UnitTests\SecurityManager.Clients.Web.UnitTests.csproj">
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
+    </UnitTestProjectFiles>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\SecurityManager\Core\SecurityManager.Core.csproj">
       <ExcludeFromDocumentation>True</ExcludeFromDocumentation>
     </ReleaseProjectFiles>
