@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
@@ -32,6 +33,7 @@ using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Mixed
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
@@ -884,7 +886,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           null,
           DefaultStorageClass.Persistent,
           new PersistentMixinFinderStub(classType, persistentMixins),
-          MappingReflectorObjectMother.DomainObjectCreator);
+          SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>());
       SetFakeStorageEntity(classDefinition, entityName);
       return classDefinition;
     }
@@ -906,7 +908,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           null,
           DefaultStorageClass.Transaction,
           new PersistentMixinFinderStub(classType, persistentMixins),
-          MappingReflectorObjectMother.DomainObjectCreator);
+          SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>());
       classDefinition.SetStorageEntity(new NonPersistentStorageEntity(_nonPersistentProviderDefinition));
       return classDefinition;
     }
