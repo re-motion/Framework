@@ -23,6 +23,7 @@ using System.Net;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Threading;
 using JetBrains.Annotations;
 using Microsoft.Win32;
 using Remotion.Utilities;
@@ -159,19 +160,13 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
       Directory.CreateDirectory(tempPath);
 
       var fullZipPath = Path.Combine(Path.GetTempPath(), c_driverZipFileName);
-
-#pragma warning disable SYSLIB0014
-      using (var webClient = new WebClient()) // TODO RM-8492: Replace with HttpClient
-#pragma warning restore SYSLIB0014
+      try
       {
-        try
-        {
-          webClient.DownloadFile(downloadUrl, fullZipPath);
-        }
-        catch (WebException ex)
-        {
-          throw new WebException($"Could not download the latest geckodriver from '{downloadUrl}': {ex.Message}", ex.Status);
-        }
+        FileDownloadUtility.DownloadFileWithRetry(downloadUrl, fullZipPath);
+      }
+      catch (WebException ex)
+      {
+        throw new WebException($"Could not download the latest geckodriver from '{downloadUrl}': {ex.Message}", ex.Status);
       }
 
       ZipFile.ExtractToDirectory(fullZipPath, tempPath);
