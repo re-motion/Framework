@@ -29,12 +29,6 @@
             <xs:attribute name="root" type="xs:string" default="res" />
           </xs:complexType>
         </xs:element>
-        <xs:element name="smartNavigation" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:attribute name="enableScrolling" type="xs:boolean" default="true" />
-            <xs:attribute name="enableFocusing" type="xs:boolean" default="true" />
-          </xs:complexType>
-        </xs:element>
       </xs:all>
     </xs:complexType>
   </xs:element>
