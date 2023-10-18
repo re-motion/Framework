@@ -86,7 +86,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       var serialized = Serializer.Serialize(unknownQueryDefinition);
       DomainObjectsConfiguration.SetCurrent(
           new FakeDomainObjectsConfiguration(
-              DomainObjectsConfiguration.Current.MappingLoader,
               DomainObjectsConfiguration.Current.Storage,
               new QueryConfiguration()));
 

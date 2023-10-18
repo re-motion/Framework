@@ -23,7 +23,6 @@ using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurati
 using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Mapping.Configuration;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -51,7 +50,6 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
 
         DomainObjectsConfiguration.SetCurrent(
             new FakeDomainObjectsConfiguration(
-                new MappingLoaderConfiguration(),
                 storageConfiguration,
                 new QueryConfiguration()));
 

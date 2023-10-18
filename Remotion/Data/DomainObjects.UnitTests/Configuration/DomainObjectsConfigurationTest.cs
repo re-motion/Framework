@@ -20,7 +20,6 @@ using NUnit.Framework;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Development;
-using Remotion.Data.DomainObjects.Mapping.Configuration;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -49,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     public void GetAndSet ()
     {
       IDomainObjectsConfiguration configuration =
-          new FakeDomainObjectsConfiguration(new MappingLoaderConfiguration(), new StorageConfiguration(), new QueryConfiguration());
+          new FakeDomainObjectsConfiguration(new StorageConfiguration(), new QueryConfiguration());
       DomainObjectsConfiguration.SetCurrent(configuration);
 
       Assert.That(DomainObjectsConfiguration.Current, Is.SameAs(configuration));
@@ -66,7 +65,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     {
       DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
 
-      Assert.That(domainObjectsConfiguration.MappingLoader, Is.Not.Null);
       Assert.That(domainObjectsConfiguration.Storage, Is.Not.Null);
     }
 
@@ -79,7 +77,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
 
         DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
 
-        Assert.That(domainObjectsConfiguration.MappingLoader, Is.Not.Null);
         Assert.That(domainObjectsConfiguration.Storage, Is.Not.Null);
         Assert.That(domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition, Is.Not.Null);
         Assert.That(domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition.Factory, Is.TypeOf<SqlStorageObjectFactory>());
@@ -149,9 +146,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
 
         DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
 
-        Assert.That(domainObjectsConfiguration.MappingLoader, Is.Not.Null);
-        Assert.That(domainObjectsConfiguration.MappingLoader.MappingLoaderType, Is.SameAs(typeof(FakeMappingLoader)));
-
         Assert.That(domainObjectsConfiguration.Storage, Is.Not.Null);
         Assert.That(domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition, Is.Not.Null);
         Assert.That(domainObjectsConfiguration.Storage.StorageProviderDefinitions.Count, Is.EqualTo(1));
@@ -173,20 +167,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
         Assertion.IsNotNull(domainObjectsConfiguration);
 
         Assert.That(domainObjectsConfiguration.SectionGroupName, Is.EqualTo("domainObjects"));
-        Assert.That(domainObjectsConfiguration.MappingLoader, Is.Not.Null);
         Assert.That(domainObjectsConfiguration.Storage, Is.Not.Null);
         Assert.That(domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition, Is.Not.Null);
         Assert.That(domainObjectsConfiguration.Storage.StorageProviderDefinitions.Count, Is.EqualTo(1));
         Assert.That(domainObjectsConfiguration.Storage.StorageGroups, Is.Empty);
       }
-    }
-
-    [Test]
-    public void GetMappingLoader_SameInstanceTwice ()
-    {
-      DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
-
-      Assert.That(domainObjectsConfiguration.MappingLoader, Is.SameAs(domainObjectsConfiguration.MappingLoader));
     }
 
     [Test]

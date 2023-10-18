@@ -21,7 +21,6 @@ using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Mapping.Configuration;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries.Configuration;
@@ -40,7 +39,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private static TestMappingConfiguration s_instance;
 
     private readonly StorageConfiguration _storageConfiguration;
-    private readonly MappingLoaderConfiguration _mappingLoaderConfiguration;
     private readonly QueryConfiguration _queryConfiguration;
     private readonly MappingConfiguration _mappingConfiguration;
     private readonly DomainObjectIDs _domainObjectIDs;
@@ -79,10 +77,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       _storageConfiguration.StorageGroups.Add(
           new StorageGroupElement(new NonPersistentTestDomainAttribute(), MappingReflectionTestBase.c_nonPersistentTestDomainProviderID));
 
-      _mappingLoaderConfiguration = new MappingLoaderConfiguration();
       _queryConfiguration = new QueryConfiguration("QueriesForStandardMapping.xml");
       DomainObjectsConfiguration.SetCurrent(
-          new FakeDomainObjectsConfiguration(_mappingLoaderConfiguration, _storageConfiguration, _queryConfiguration));
+          new FakeDomainObjectsConfiguration(_storageConfiguration, _queryConfiguration));
 
       var typeDiscoveryService = GetTypeDiscoveryService();
 
@@ -121,7 +118,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public FakeDomainObjectsConfiguration GetDomainObjectsConfiguration ()
     {
-      return new FakeDomainObjectsConfiguration(_mappingLoaderConfiguration, _storageConfiguration, _queryConfiguration);
+      return new FakeDomainObjectsConfiguration(_storageConfiguration, _queryConfiguration);
     }
 
     public DomainObjectIDs GetDomainObjectIDs ()

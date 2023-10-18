@@ -23,7 +23,6 @@ using System.Reflection;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Mapping.Configuration;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
@@ -71,7 +70,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     }
 
     private readonly StorageConfiguration _storageConfiguration;
-    private readonly MappingLoaderConfiguration _mappingLoaderConfiguration;
     private readonly QueryConfiguration _queryConfiguration;
     private readonly MappingConfiguration _mappingConfiguration;
 
@@ -102,7 +100,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
               new TableInheritanceTestDomainAttribute(),
               TableInheritanceMappingTest.TableInheritanceTestDomainProviderID));
 
-      _mappingLoaderConfiguration = new MappingLoaderConfiguration();
       _queryConfiguration = new QueryConfiguration("QueriesForStandardMapping.xml");
 
       var typeDiscoveryService = GetTypeDiscoveryService(GetType().Assembly);
@@ -124,7 +121,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
     public FakeDomainObjectsConfiguration GetDomainObjectsConfiguration ()
     {
-      return new FakeDomainObjectsConfiguration(_mappingLoaderConfiguration, _storageConfiguration, _queryConfiguration);
+      return new FakeDomainObjectsConfiguration(_storageConfiguration, _queryConfiguration);
     }
 
     public void DisableDatabaseAccess ()
