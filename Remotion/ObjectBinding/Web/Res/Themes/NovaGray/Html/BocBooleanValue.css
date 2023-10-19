@@ -25,7 +25,7 @@
 {
   display: inline-block;
   width: 0;
-  overflow: hidden;
+  overflow: clip;
   padding-left: 1em;
 }
 

@@ -7,7 +7,7 @@ span.bocMultilineTextValue
   position: relative;
   display: inline-block;
   vertical-align: middle;
-  overflow: hidden;
+  overflow: clip;
 }
 
 .bocMultilineTextValue.readOnly

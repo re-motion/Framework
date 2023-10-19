@@ -31,7 +31,7 @@ div.bocList div.bocListTableBlock div.bocListTableContainer
 {
   grid-row: 1 / span 2;
   position: relative;
-  overflow: hidden;
+  overflow: clip;
 }
 
 div.bocList.hasDimensions  div.bocListTableBlock div.bocListTableContainer
@@ -299,7 +299,7 @@ div.bocList div.bocListTableBlock.hasMenuBlock
 /*region bocListNavigator*/
 div.bocList div.bocListTableBlock div.bocListNavigator
 {
-  overflow: hidden;
+  overflow: clip;
   padding: var(--remotion-themed-spacing-small);
   display: flex;
   align-items: center;

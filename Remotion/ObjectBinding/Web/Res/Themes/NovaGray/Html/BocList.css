@@ -18,7 +18,7 @@ div.bocList
 div.bocListNavigator
 {
   white-space: nowrap;
-  overflow: hidden;
+  overflow: clip;
   margin-top: 0.25em;
 }
 
@@ -189,7 +189,7 @@ div.bocListTableBlock
 {
   display: block;
   width: auto;
-  overflow: hidden;
+  overflow: clip;
 }
 
 /* Style applied to the list-area (table and navigation block) of the BocList if there is a menu block. */
@@ -231,7 +231,7 @@ div.bocList.hasDimensions div.bocListTableBlock div.bocListTableContainer
   left: 0;
   bottom: 0;
   right: 0;
-  overflow: hidden;
+  overflow: clip;
 }
 
 div.bocList.hasDimensions div.bocListTableBlock span:focus + div.bocListTableContainer

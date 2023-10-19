@@ -5,7 +5,7 @@
   /* position and dimension are set via javascript */
   max-height: 20em;
   max-width: 30em;
-  overflow: hidden;
+  overflow: clip;
   box-shadow: var(--remotion-themed-popup-shadow);
   z-index: var(--z-index-max);
   box-sizing: border-box;
@@ -117,7 +117,7 @@
   max-height: 4em;
   max-width: 30em;
   white-space: normal;
-  overflow: hidden;
+  overflow: clip;
   z-index: var(--z-index-max);
 }
 
