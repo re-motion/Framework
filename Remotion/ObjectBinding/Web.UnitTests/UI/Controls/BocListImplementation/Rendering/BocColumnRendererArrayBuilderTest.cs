@@ -426,6 +426,132 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(bocColumnRenderers[2].ShowIcon, Is.False);
     }
 
+    [Test]
+    public void GetColumnRenderers_ColumnDefinitionWithRowIconPreferred_EnablesIconOnColumnRendererWithRowIconPreferred ()
+    {
+      var builder = new BocColumnRendererArrayBuilder(
+          CreateColumnCollection(
+              new StubValueColumnDefinition {RowIconMode = RowIconMode.Automatic},
+              new StubValueColumnDefinition {RowIconMode = RowIconMode.Preferred},
+              new StubValueColumnDefinition {RowIconMode = RowIconMode.Automatic}),
+          _serviceLocator,
+          _wcagHelperStub.Object);
+
+      builder.EnableIcon = true;
+
+      var bocColumnRenderers = builder.CreateColumnRenderers();
+
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(3));
+      Assert.That(bocColumnRenderers[0].ShowIcon, Is.False);
+      Assert.That(bocColumnRenderers[1].ShowIcon, Is.True);
+      Assert.That(bocColumnRenderers[2].ShowIcon, Is.False);
+    }
+
+    [Test]
+    public void GetColumnRenderers_ColumnDefinitionWithRowIconDisabled_EnablesIconOnFirstColumnRendererWithRowIconAutomatic ()
+    {
+      var builder = new BocColumnRendererArrayBuilder(
+          CreateColumnCollection(
+              new StubValueColumnDefinition {RowIconMode = RowIconMode.Disabled},
+              new StubValueColumnDefinition {RowIconMode = RowIconMode.Disabled},
+              new StubValueColumnDefinition {RowIconMode = RowIconMode.Automatic}),
+          _serviceLocator,
+          _wcagHelperStub.Object);
+
+      builder.EnableIcon = true;
+
+      var bocColumnRenderers = builder.CreateColumnRenderers();
+
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(3));
+      Assert.That(bocColumnRenderers[0].ShowIcon, Is.False);
+      Assert.That(bocColumnRenderers[1].ShowIcon, Is.False);
+      Assert.That(bocColumnRenderers[2].ShowIcon, Is.True);
+    }
+
+    [Test]
+    public void GetColumnRenderers_ColumnDefinitionWithRowIconAutomatic_EnablesIconOnFirstColumnRendererWithRowIconAutomatic ()
+    {
+      var builder = new BocColumnRendererArrayBuilder(
+          CreateColumnCollection(
+              new StubValueColumnDefinition {RowIconMode = RowIconMode.Automatic},
+              new StubValueColumnDefinition {RowIconMode = RowIconMode.Automatic},
+              new StubValueColumnDefinition {RowIconMode = RowIconMode.Automatic}),
+          _serviceLocator,
+          _wcagHelperStub.Object);
+
+      builder.EnableIcon = true;
+
+      var bocColumnRenderers = builder.CreateColumnRenderers();
+
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(3));
+      Assert.That(bocColumnRenderers[0].ShowIcon, Is.True);
+      Assert.That(bocColumnRenderers[1].ShowIcon, Is.False);
+      Assert.That(bocColumnRenderers[2].ShowIcon, Is.False);
+    }
+
+    [Test]
+    public void GetColumnRenderers_ColumnDefinitionWithRowIcon_Automatic_Disabled_Preferred_EnablesIconOnColumnRendererWithRowIconPreferred ()
+    {
+      var builder = new BocColumnRendererArrayBuilder(
+          CreateColumnCollection(
+              new StubValueColumnDefinition {RowIconMode = RowIconMode.Disabled},
+              new StubValueColumnDefinition {RowIconMode = RowIconMode.Automatic},
+              new StubValueColumnDefinition {RowIconMode = RowIconMode.Preferred}),
+          _serviceLocator,
+          _wcagHelperStub.Object);
+
+      builder.EnableIcon = true;
+
+      var bocColumnRenderers = builder.CreateColumnRenderers();
+
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(3));
+      Assert.That(bocColumnRenderers[0].ShowIcon, Is.False);
+      Assert.That(bocColumnRenderers[1].ShowIcon, Is.False);
+      Assert.That(bocColumnRenderers[2].ShowIcon, Is.True);
+    }
+
+    [Test]
+    public void GetColumnRenderers_ColumnDefinitionWithRowIcon_Preferred_Automatic_Preferred_EnablesIconOnFirstColumnRenderer ()
+    {
+      var builder = new BocColumnRendererArrayBuilder(
+          CreateColumnCollection(
+              new StubValueColumnDefinition {RowIconMode = RowIconMode.Preferred},
+              new StubValueColumnDefinition {RowIconMode = RowIconMode.Automatic},
+              new StubValueColumnDefinition {RowIconMode = RowIconMode.Preferred}),
+          _serviceLocator,
+          _wcagHelperStub.Object);
+
+      builder.EnableIcon = true;
+
+      var bocColumnRenderers = builder.CreateColumnRenderers();
+
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(3));
+      Assert.That(bocColumnRenderers[0].ShowIcon, Is.True);
+      Assert.That(bocColumnRenderers[1].ShowIcon, Is.False);
+      Assert.That(bocColumnRenderers[2].ShowIcon, Is.False);
+    }
+
+    [Test]
+    public void GetColumnRenderers_ColumnDefinitionWithRowIcon_OnlyPreferred_EnablesIconOnFirstColumnRenderer ()
+    {
+      var builder = new BocColumnRendererArrayBuilder(
+          CreateColumnCollection(
+              new StubValueColumnDefinition {RowIconMode = RowIconMode.Preferred},
+              new StubValueColumnDefinition {RowIconMode = RowIconMode.Preferred},
+              new StubValueColumnDefinition {RowIconMode = RowIconMode.Preferred}),
+          _serviceLocator,
+          _wcagHelperStub.Object);
+
+      builder.EnableIcon = true;
+
+      var bocColumnRenderers = builder.CreateColumnRenderers();
+
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(3));
+      Assert.That(bocColumnRenderers[0].ShowIcon, Is.True);
+      Assert.That(bocColumnRenderers[1].ShowIcon, Is.False);
+      Assert.That(bocColumnRenderers[2].ShowIcon, Is.False);
+    }
+
     private static ReadOnlyCollection<BocColumnDefinition> CreateColumnCollection (params BocColumnDefinition[] values) => new(values);
   }
 }

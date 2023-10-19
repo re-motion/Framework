@@ -3297,7 +3297,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary>
-    ///   Gets or sets a flag that indicates whether the control automatically generates a column 
+    ///   Gets or sets a flag that indicates whether the control automatically generates a column
     ///   for each property of the bound object.
     /// </summary>
     /// <value> <see langword="true"/> show all properties of the bound business object. </value>
@@ -3311,12 +3311,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary>
-    ///   Gets or sets a flag that indicates whether to display an icon in front of the first value 
-    ///   column.
+    ///   Gets or sets a flag that indicates whether to display an icon for the row's business object.
     /// </summary>
+    /// <remarks>
+    ///   Customize which <see cref="BocValueColumnDefinition"/> displays the icon via the <see cref="IBocColumnDefinitionWithRowIconSupport.RowIconMode"/> flag.
+    /// </remarks>
     /// <value> <see langword="true"/> to enable the icon. </value>
     [Category("Appearance")]
-    [Description("Enables the icon in front of the first value column.")]
+    [Description("Enables the icon for the row's business object.")]
     [DefaultValue(true)]
     public virtual bool EnableIcon
     {
