@@ -72,6 +72,16 @@
         </div>
       </div>
     </div>
+      <script type="text/javascript">
+      window.console.log("hello world");
+      </script>
+            <script type="text/javascript">
+            function Test()
+            {
+                 window.console.log("<%=DateTime.Now.Ticks%>");
+            }
+            </script>
+      <asp:PlaceHolder runat="server" ID="PlaceHolderInsideUpdatePanel"></asp:PlaceHolder>
   </ContentTemplate>
   <Triggers>
     <asp:AsyncPostBackTrigger ControlID="AsyncPostBackOutsideUpdatePanelButton" />
@@ -81,6 +91,8 @@
     <asp:PostBackTrigger ControlID="SyncPostBackInsideUpdatePanelLinkButton" />
   </Triggers>
 </asp:UpdatePanel>
+      <asp:PlaceHolder runat="server" ID="PlaceHolderOutsideUpdatePanel"></asp:PlaceHolder>
+
 <div>
   Sync PostBacks:
   <asp:Label ID="PostBackCountOutsideUpdatePanelLabel" runat="server" Text="###" EnableViewState="false" />

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Web.UI;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 
@@ -27,5 +28,15 @@ namespace Remotion.Web.Test.Shared.UpdatePanelTests
       base.OnPreRender(e);
       HtmlHeadAppender.Current.RegisterPageStylesheetLink();
     }
-  }
+
+    protected override void Render (HtmlTextWriter writer)
+    {
+      ((ISmartPage)Page).ClientScript.RegisterStartupScriptBlock(
+          (ISmartPage)Page,
+          typeof(Page),
+          "ScriptManager inside Page Render",
+          "window.console.log('ScriptManager: inside Page Render: " + DateTime.Now.Ticks + "');");
+      base.Render(writer);
+    }
+    }
 }

@@ -72,6 +72,50 @@ namespace Remotion.Web.Test.Shared.UpdatePanelTests
       menuItem.ItemID = "Item" + PostBackCount;
       menuItem.Text = WebString.CreateFromText("Item " + PostBackCount);
       DropDownMenuInsideUpdatePanel.MenuItems.Add(menuItem);
+      PlaceHolderInsideUpdatePanel.SetRenderMethodDelegate(
+          delegate (HtmlTextWriter output, Control container)
+          {
+            output.AddStyleAttribute(HtmlTextWriterStyle.BackgroundColor, "lime");
+            output.RenderBeginTag("section");
+            output.Write("section: " + DateTime.Now.Ticks);
+            output.RenderEndTag();
+
+            output.AddAttribute(HtmlTextWriterAttribute.Type, "text/javascript");
+            output.RenderBeginTag("script");
+            output.Write("window.console.log('direct render: inside updatepanel: " + DateTime.Now.Ticks + "');");
+            output.RenderEndTag();
+
+            ((ISmartPage)Page).ClientScript.RegisterStartupScriptBlock(
+                (ISmartPage)Page,
+                typeof(Page),
+                "insideUpdatePanel",
+                "window.console.log('ScriptManager: inside updatepanel: " + DateTime.Now.Ticks + "');");
+          });
+      PlaceHolderOutsideUpdatePanel.SetRenderMethodDelegate(
+          delegate (HtmlTextWriter output, Control container)
+          {
+            output.AddStyleAttribute(HtmlTextWriterStyle.BackgroundColor, "pink");
+            output.RenderBeginTag("nav");
+            output.Write("nav: " + DateTime.Now.Ticks);
+            output.RenderEndTag();
+
+            output.AddAttribute(HtmlTextWriterAttribute.Type, "text/javascript");
+            output.RenderBeginTag("script");
+            output.Write("window.console.log('direct render: outside updatepanel: " + DateTime.Now.Ticks + "');");
+            output.RenderEndTag();
+
+            ((ISmartPage)Page).ClientScript.RegisterStartupScriptBlock(
+                (ISmartPage)Page,
+                typeof(Page),
+                "outsideUpdatePanel",
+                "window.console.log('ScriptManager: outside updatepanel: " + DateTime.Now.Ticks + "');");
+          });
+
+      ((ISmartPage)Page).ClientScript.RegisterStartupScriptBlock(
+          (ISmartPage)Page,
+          typeof(Page),
+          "before Render",
+          "window.console.log('ScriptManager: before Render: " + DateTime.Now.Ticks + "');");
     }
 
     protected int PostBackCount
@@ -97,6 +141,16 @@ namespace Remotion.Web.Test.Shared.UpdatePanelTests
         lastPostBack = ((Control)sender).ID;
       LastPostBackInsideUpdatePanelLabel.Text = lastPostBack;
       LastPostBackOutsideUpdatePanelLabel.Text = lastPostBack;
+    }
+
+    protected override void Render (HtmlTextWriter writer)
+    {
+      ((ISmartPage)Page).ClientScript.RegisterStartupScriptBlock(
+          (ISmartPage)Page,
+          typeof(Page),
+          "inside child Render",
+          "window.console.log('ScriptManager: inside child Render: " + DateTime.Now.Ticks + "');");
+      base.Render(writer);
     }
   }
 }
