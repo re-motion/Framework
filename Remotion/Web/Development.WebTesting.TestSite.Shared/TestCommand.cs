@@ -51,6 +51,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Shared
                     };
 
       writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+      writer.AddStyleAttribute(HtmlTextWriterStyle.TextDecoration, "underline");
       var postBackEvent = Page.ClientScript.GetPostBackEventReference(this, "additional") + ";";
       command.RenderBegin(writer, _renderingFeatures, postBackEvent, new string[0], null, null);
 

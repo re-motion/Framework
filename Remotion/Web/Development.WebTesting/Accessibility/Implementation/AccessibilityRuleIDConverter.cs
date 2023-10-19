@@ -25,6 +25,9 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
   /// <summary>
   /// Provides conversions from <see cref="AccessibilityRuleID"/> to <see cref="string"/> and vice versa.
   /// </summary>
+  /// <remarks>
+  /// A list of all all rules can be found at <see href="https://github.com/dequelabs/axe-core/blob/master/doc/rule-descriptions.md"/>.
+  /// </remarks>
   public static class AccessibilityRuleIDConverter
   {
     private static readonly IReadOnlyDictionary<string, AccessibilityRuleID> s_stringToEnum;
@@ -39,40 +42,44 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
                 { "area-alt", AccessibilityRuleID.AreaAlt },
                 { "aria-allowed-attr", AccessibilityRuleID.AriaAllowedAttr },
                 { "aria-allowed-role", AccessibilityRuleID.AriaAllowedRole },
-#pragma warning disable CS0618
-                { "aria-dpub-role-fallback", AccessibilityRuleID.AriaDpubRoleFallback },
-#pragma warning restore CS0618
+                { "aria-braille-equivalent", AccessibilityRuleID.AriaBrailleEquivalent },
+                { "aria-command-name", AccessibilityRuleID.AriaCommandName },
+                { "aria-conditional-attr", AccessibilityRuleID.AriaConditionalAttr },
+                { "aria-deprecated-role", AccessibilityRuleID.AriaDeprecatedRole },
+                { "aria-dialog-name", AccessibilityRuleID.AriaDialogName },
                 { "aria-hidden-body", AccessibilityRuleID.AriaHiddenBody },
                 { "aria-hidden-focus", AccessibilityRuleID.AriaHiddenFocus },
                 { "aria-input-field-name", AccessibilityRuleID.AriaInputFieldName },
+                { "aria-meter-name", AccessibilityRuleID.AriaMeterName },
+                { "aria-progressbar-name", AccessibilityRuleID.AriaProgressbarName },
+                { "aria-prohibited-attr", AccessibilityRuleID.AriaProhibitedAttr },
                 { "aria-required-attr", AccessibilityRuleID.AriaRequiredAttr },
                 { "aria-required-children", AccessibilityRuleID.AriaRequiredChildren },
                 { "aria-required-parent", AccessibilityRuleID.AriaRequiredParent },
-                { "aria-roledescription", AccessibilityRuleID.AriaRoleDescription},
                 { "aria-roles", AccessibilityRuleID.AriaRoles },
+                { "aria-text", AccessibilityRuleID.AriaText },
                 { "aria-toggle-field-name", AccessibilityRuleID.AriaToggleFieldName },
+                { "aria-tooltip-name", AccessibilityRuleID.AriaTooltipName },
+                { "aria-treeitem-name", AccessibilityRuleID.AriaTreeitemName },
                 { "aria-valid-attr-value", AccessibilityRuleID.AriaValidAttrValue },
                 { "aria-valid-attr", AccessibilityRuleID.AriaValidAttr },
-                { "audio-caption", AccessibilityRuleID.AudioCaption },
                 { "autocomplete-valid", AccessibilityRuleID.AutocompleteValid },
                 { "avoid-inline-spacing", AccessibilityRuleID.AvoidInlineSpacing },
                 { "blink", AccessibilityRuleID.Blink },
                 { "button-name", AccessibilityRuleID.ButtonName },
                 { "bypass", AccessibilityRuleID.Bypass },
-#pragma warning disable CS0618
-                { "checkboxgroup", AccessibilityRuleID.CheckboxGroup },
-#pragma warning restore CS0618
                 { "color-contrast", AccessibilityRuleID.ColorContrast },
+                { "color-contrast-enhanced", AccessibilityRuleID.ColorContrastEnhanced },
                 { "css-orientation-lock", AccessibilityRuleID.CssOrientationLock },
                 { "definition-list", AccessibilityRuleID.DefinitionList },
                 { "dlitem", AccessibilityRuleID.Dlitem },
                 { "document-title", AccessibilityRuleID.DocumentTitle },
-                { "duplicate-id-active", AccessibilityRuleID.DuplicateIdActive },
                 { "duplicate-id-aria", AccessibilityRuleID.DuplicateIdAria },
-                { "duplicate-id", AccessibilityRuleID.DuplicateId },
                 { "empty-heading", AccessibilityRuleID.EmptyHeading },
+                { "empty-table-header", AccessibilityRuleID.EmptyTableHeader },
                 { "focus-order-semantics", AccessibilityRuleID.FocusOrderSemantics },
                 { "form-field-multiple-labels", AccessibilityRuleID.FormFieldMultipleLabels },
+                { "frame-focusable-content", AccessibilityRuleID.FrameFocusableContent },
                 { "frame-tested", AccessibilityRuleID.FrameTested },
                 { "frame-title-unique", AccessibilityRuleID.FrameTitleUnique },
                 { "frame-title", AccessibilityRuleID.FrameTitle },
@@ -98,44 +105,38 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
                 { "landmark-no-duplicate-main", AccessibilityRuleID.LandmarkNoDuplicateMain },
                 { "landmark-one-main", AccessibilityRuleID.LandmarkOneMain },
                 { "landmark-unique", AccessibilityRuleID.LandmarkUnique },
-#pragma warning disable CS0618
-                { "layout-table", AccessibilityRuleID.LayoutTable },
-#pragma warning restore CS0618
                 { "link-in-text-block", AccessibilityRuleID.LinkInTextBlock },
                 { "link-name", AccessibilityRuleID.LinkName },
                 { "list", AccessibilityRuleID.List },
                 { "listitem", AccessibilityRuleID.ListItem },
                 { "marquee", AccessibilityRuleID.Marquee },
                 { "meta-refresh", AccessibilityRuleID.MetaRefresh },
+                { "meta-refresh-no-exceptions", AccessibilityRuleID.MetaRefreshNoExceptions },
                 { "meta-viewport-large", AccessibilityRuleID.MetaViewportLarge },
                 { "meta-viewport", AccessibilityRuleID.MetaViewport },
-#pragma warning disable CS0618
+                { "nested-interactive", AccessibilityRuleID.NestedInteractive },
                 { "no-autoplay-audio", AccessibilityRuleID.NoAutoplayAudio },
-#pragma warning restore CS0618
                 { "object-alt", AccessibilityRuleID.ObjectAlt },
                 { "p-as-heading", AccessibilityRuleID.PAsHeading },
                 { "page-has-heading-one", AccessibilityRuleID.PageHasHeadingOne },
-#pragma warning disable CS0618
-                { "radiogroup", AccessibilityRuleID.RadioGroup },
-#pragma warning restore CS0618
+                { "presentation-role-conflict", AccessibilityRuleID.PresentationRoleConflict },
                 { "region", AccessibilityRuleID.Region },
                 { "role-img-alt", AccessibilityRuleID.RoleImgAlt },
                 { "scope-attr-valid", AccessibilityRuleID.ScopeAttrValid },
                 { "scrollable-region-focusable", AccessibilityRuleID.ScrollableRegionFocusable },
+                { "select-name", AccessibilityRuleID.SelectName },
                 { "server-side-image-map", AccessibilityRuleID.ServerSideImageMap },
                 { "skip-link", AccessibilityRuleID.SkipLink },
                 { "svg-img-alt", AccessibilityRuleID.SvgImageAlt},
                 { "tabindex", AccessibilityRuleID.Tabindex },
                 { "table-duplicate-name", AccessibilityRuleID.TableDuplicateName },
                 { "table-fake-caption", AccessibilityRuleID.TableFakeCaption },
+                { "target-size", AccessibilityRuleID.TargetSize },
                 { "td-has-header", AccessibilityRuleID.TdHasHeader },
                 { "td-headers-attr", AccessibilityRuleID.TdHeadersAttr },
                 { "th-has-data-cells", AccessibilityRuleID.ThHasDataCells },
                 { "valid-lang", AccessibilityRuleID.ValidLang },
-                { "video-caption", AccessibilityRuleID.VideoCaption },
-#pragma warning disable CS0618
-                { "video-description", AccessibilityRuleID.VideoDescription }
-#pragma warning restore CS0618
+                { "video-caption", AccessibilityRuleID.VideoCaption }
             };
 
       s_enumToString = s_stringToEnum.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);

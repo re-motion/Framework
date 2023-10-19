@@ -46,7 +46,16 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
             "cat.structure",
             "experimental",
             "review-item",
-            "best-practice"
+            "best-practice",
+            "ACT",
+            "TTv5",
+            "EN-301-549"
+        };
+
+    private readonly Regex[] _wellKnownSuccessCriteriaMatcherToIgnore =
+        {
+            new Regex(@"EN-\d\.\d\.\d\.\d"),
+            new Regex(@"TT\d+\.[a-z]")
         };
 
     public AccessibilityResultMapper ()
@@ -128,6 +137,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
       return ruleTags
           .Where(t => !AccessibilityConformanceLevelConverter.IsValid(t))
           .Where(t => !_wellKnownSuccessCriteriaToIgnore.Contains(t))
+          .Where(t => !_wellKnownSuccessCriteriaMatcherToIgnore.Any(m => m.IsMatch(t)))
           .Select(ParseAccessibilityTestSuccessCriteria);
     }
 
