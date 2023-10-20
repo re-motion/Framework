@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.ServiceLocation;
 using Remotion.Web.Resources;
 
 namespace Remotion.Web
@@ -36,8 +35,7 @@ namespace Remotion.Web
     ///     The default implementation (<see cref="ResourceUrl"/>) uses the URL 
     ///     &lt;resource root&gt;/&lt;definingType.Assembly&gt;/&lt;ResourceType&gt;/relativeUrl.
     ///   </para><para>
-    ///     The <b>resource root</b> is loaded from the application configuration,
-    ///     <see cref="Remotion.Web.Configuration.WebConfiguration.Resources">WebConfiguration.Resources</see>, and 
+    ///     The <b>resource root</b> is loaded from the application configuration, <see cref="ResourceRoot"/>, and
     ///     defaults to <c>/&lt;AppDir&gt;/res</c>, e.g. <c>/WebApplication/res/Remotion.Web/Html/Utilities.js</c>.
     ///   </para><para>
     ///     During design time, the <b>resource root</b> is mapped to the environment variable
@@ -57,8 +55,7 @@ namespace Remotion.Web
     ///     The default implementation (<see cref="ThemedResourceUrl"/>) uses the URL 
     ///     &lt;resource root&gt;/&lt;definingType.Assembly&gt;/&lt;ResourceTheme&gt;/&lt;ResourceType&gt;/relativeUrl.
     ///   </para><para>
-    ///     The <b>resource root</b> is loaded from the application configuration,
-    ///     <see cref="Remotion.Web.Configuration.WebConfiguration.Resources">WebConfiguration.Resources</see>, and 
+    ///     The <b>resource root</b> is loaded from the application configuration, <see cref="ResourceRoot"/>, and
     ///     defaults to <c>/&lt;AppDir&gt;/res</c>, e.g. <c>/WebApplication/res/Remotion.Web/NovaBlue/Image/Help.gif</c>.
     ///   </para><para>
     ///     During design time, the <b>resource root</b> is mapped to the environment variable
