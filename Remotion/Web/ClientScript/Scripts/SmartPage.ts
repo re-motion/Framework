@@ -1304,6 +1304,11 @@ class SmartPage_Context
     return element;
   }
 
+  public RegisterInlineEvent(target: string, eventType: string, handler: AnyFunction) {
+    const targetElement = document.querySelector(`[data-inline-event-target='${target}']`);
+    targetElement.addEventListener(eventType, handler);
+  }
+
   // The single instance of the SmartPage_Context object
   public static Instance: Nullable<SmartPage_Context> = null; // TODO RM-7696: Convert SmartPage_Context.Instance to a get method and throw an exception when it is called before initialization
 }
