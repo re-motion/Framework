@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Linq;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
@@ -188,7 +187,7 @@ namespace Remotion.Data.DomainObjects.Queries
     public static IQuery CreateQueryFromConfiguration (string id, QueryParameterCollection queryParameterCollection)
     {
       ArgumentUtility.CheckNotNullOrEmpty("id", id);
-      var queryDefinition = DomainObjectsConfiguration.Current.Query.QueryDefinitions.GetMandatory(id);
+      var queryDefinition = SafeServiceLocator.Current.GetInstance<IQueryDefinitionRepository>().GetMandatory(id);
       return new Query(queryDefinition, queryParameterCollection);
     }
 
