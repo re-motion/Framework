@@ -16,11 +16,11 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var parameters = new QueryParameterCollection();
       var query = (Query)QueryFactory.CreateQueryFromConfiguration("OrderQuery", parameters);
 
-      QueryDefinition definition = DomainObjectsConfiguration.Current.Query.QueryDefinitions["OrderQuery"];
+      QueryDefinition definition = SafeServiceLocator.Current.GetInstance<IQueryDefinitionRepository>().GetMandatory("OrderQuery");
       Assert.That(query.Definition, Is.SameAs(definition));
       Assert.That(query.ID, Is.EqualTo(definition.ID));
       Assert.That(query.CollectionType, Is.EqualTo(definition.CollectionType));
