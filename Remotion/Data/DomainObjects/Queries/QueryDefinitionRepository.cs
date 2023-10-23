@@ -17,8 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.Queries.ConfigurationLoader;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -39,8 +39,8 @@ namespace Remotion.Data.DomainObjects.Queries
 
     private readonly Dictionary<string, QueryDefinition> _queryLookup;
 
-    public QueryDefinitionRepository ()
-        : this(DomainObjectsConfiguration.Current.Query.QueryDefinitions.Cast<QueryDefinition>()) // TODO RM-8992: Introduce QueryDefinitionLoader
+    public QueryDefinitionRepository (IQueryDefinitionLoader queryDefinitionLoader)
+        : this(ArgumentUtility.CheckNotNull(nameof(queryDefinitionLoader), queryDefinitionLoader).LoadAllQueryDefinitions())
     {
     }
 
