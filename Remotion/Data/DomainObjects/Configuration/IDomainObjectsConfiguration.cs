@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Configuration;
-using Remotion.Data.DomainObjects.Mapping.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 
@@ -28,8 +27,6 @@ namespace Remotion.Data.DomainObjects.Configuration
   /// </summary>
   public interface IDomainObjectsConfiguration
   {
-    MappingLoaderConfiguration MappingLoader { get; }
-
     StorageConfiguration Storage { get; }
 
     QueryConfiguration Query { get; }

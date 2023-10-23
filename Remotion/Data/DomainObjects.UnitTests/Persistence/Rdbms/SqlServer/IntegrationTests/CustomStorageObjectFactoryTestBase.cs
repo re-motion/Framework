@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     public override void SetUp ()
     {
       base.SetUp();
-      var mappingLoader = new MappingReflector(
+      var mappingLoader = MappingReflector.Create(
           new FixedTypeDiscoveryService(GetReflectedTypes()),
           new ClassIDProvider(),
           new ReflectionBasedMemberInformationNameResolver(),
@@ -73,7 +73,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       DomainObjectsConfiguration.SetCurrent(
           new FakeDomainObjectsConfiguration(
-              null,
               new StorageConfiguration(
                   new ProviderCollection<StorageProviderDefinition> { _storageProviderDefinition },
                   _storageProviderDefinition),

@@ -17,7 +17,6 @@
 using System;
 using System.Configuration;
 using Remotion.Configuration;
-using Remotion.Data.DomainObjects.Mapping.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 
@@ -47,20 +46,12 @@ namespace Remotion.Data.DomainObjects.Configuration
 
     public DomainObjectsConfiguration ()
     {
-      _mappingLoaderConfiguration =new DoubleCheckedLockingContainer<MappingLoaderConfiguration>(GetMappingLoaderConfiguration);
       _persistenceConfiguration = new DoubleCheckedLockingContainer<StorageConfiguration>(GetPersistenceConfiguration);
       _queryConfiguration = new DoubleCheckedLockingContainer<QueryConfiguration>(GetQueryConfiguration);
     }
 
-    private readonly DoubleCheckedLockingContainer<MappingLoaderConfiguration> _mappingLoaderConfiguration;
     private readonly DoubleCheckedLockingContainer<StorageConfiguration> _persistenceConfiguration;
     private readonly DoubleCheckedLockingContainer<QueryConfiguration> _queryConfiguration;
-
-    [ConfigurationProperty(MappingLoaderPropertyName)]
-    public MappingLoaderConfiguration MappingLoader
-    {
-      get { return _mappingLoaderConfiguration.Value; }
-    }
 
     [ConfigurationProperty(StoragePropertyName)]
     public StorageConfiguration Storage
@@ -72,13 +63,6 @@ namespace Remotion.Data.DomainObjects.Configuration
     public QueryConfiguration Query
     {
       get { return _queryConfiguration.Value; }
-    }
-
-    private MappingLoaderConfiguration GetMappingLoaderConfiguration ()
-    {
-      return
-          (MappingLoaderConfiguration?)ConfigurationWrapper.Current.GetSection(ConfigKey + "/" + MappingLoaderPropertyName, false)
-          ?? new MappingLoaderConfiguration();
     }
 
     private StorageConfiguration GetPersistenceConfiguration ()

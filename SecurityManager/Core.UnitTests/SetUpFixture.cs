@@ -23,6 +23,7 @@ using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Development;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
@@ -76,15 +77,15 @@ namespace Remotion.SecurityManager.UnitTests
 
         MappingConfiguration.SetCurrent(
             new MappingConfiguration(
-                new MappingReflector(
+                MappingReflector.Create(
                     typeDiscoveryService,
-                    new ClassIDProvider(),
-                    new ReflectionBasedMemberInformationNameResolver(),
-                    new PropertyMetadataReflector(),
-                    new DomainModelConstraintProvider(),
-                    new PropertyDefaultValueProvider(),
-                    new SortExpressionDefinitionProvider(),
-                    MappingReflector.CreateDomainObjectCreator()),
+                    SafeServiceLocator.Current.GetInstance<IClassIDProvider>(),
+                    SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),
+                    SafeServiceLocator.Current.GetInstance<IPropertyMetadataProvider>(),
+                    SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>(),
+                    SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
+                    SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
+                    SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>()),
                 new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
 
         SqlConnection.ClearAllPools();

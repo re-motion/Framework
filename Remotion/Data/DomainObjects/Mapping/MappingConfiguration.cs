@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Logging;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
@@ -37,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       // ReSharper disable once MemberHidesStaticFromOuterClass
       public readonly DoubleCheckedLockingContainer<IMappingConfiguration> Current = new DoubleCheckedLockingContainer<IMappingConfiguration>(
           () => new MappingConfiguration(
-              DomainObjectsConfiguration.Current.MappingLoader.CreateMappingLoader(),
+              SafeServiceLocator.Current.GetInstance<IMappingLoader>(),
               new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
     }
 

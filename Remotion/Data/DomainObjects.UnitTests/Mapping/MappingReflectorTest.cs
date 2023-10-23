@@ -16,20 +16,18 @@
 // 
 using System;
 using System.Linq;
-using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Data.DomainObjects.Mapping.Validation.Logical;
 using Remotion.Data.DomainObjects.Mapping.Validation.Reflection;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.TypePipe;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -46,23 +44,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    public void CreateDomainObjectCreator ()
-    {
-      var registryStub = new Mock<IPipelineRegistry>();
-
-      var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle<IPipelineRegistry>(() => registryStub.Object);
-      using (new ServiceLocatorScope(serviceLocator))
-      {
-        var creator = MappingReflector.CreateDomainObjectCreator();
-        Assert.That(creator.PipelineRegistry, Is.SameAs(registryStub.Object));
-      }
-    }
-
-    [Test]
     public void Initialization_DefaultTypeDiscoveryService ()
     {
-      var reflector = new MappingReflector();
+      var reflector = new MappingReflector(
+          SafeServiceLocator.Current.GetInstance<IClassIDProvider>(),
+          SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),
+          SafeServiceLocator.Current.GetInstance<IPropertyMetadataProvider>(),
+          SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>(),
+          SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
+          SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
+          SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>());
 
       Assert.That(reflector.TypeDiscoveryService, Is.SameAs(ContextAwareTypeUtility.GetTypeDiscoveryService()));
     }
@@ -70,7 +61,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void Initialization_MappingObjectFactory_InstanceCreator ()
     {
-      var defaultCreator = new MappingReflector().MappingObjectFactory.CreateClassDefinition(typeof(Order), null).InstanceCreator;
+      var reflector = new MappingReflector(
+          SafeServiceLocator.Current.GetInstance<IClassIDProvider>(),
+          SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),
+          SafeServiceLocator.Current.GetInstance<IPropertyMetadataProvider>(),
+          SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>(),
+          SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
+          SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
+          SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>());
+
+      var defaultCreator = reflector.MappingObjectFactory.CreateClassDefinition(typeof(Order), null).InstanceCreator;
       Assert.That(defaultCreator, Is.TypeOf<DomainObjectCreator>());
    }
 

@@ -17,7 +17,9 @@
 using System;
 using System.Linq;
 using Remotion.Configuration;
+using Remotion.Context;
 using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.ConfigurationLoader;
 using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
@@ -28,6 +30,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Logging;
+using Remotion.ServiceLocation;
 using Remotion.Tools;
 #if NETFRAMEWORK
 using System.IO;
@@ -110,11 +113,11 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
     {
       DomainObjectsConfiguration.SetCurrent(
           new FakeDomainObjectsConfiguration(
-              DomainObjectsConfiguration.Current.MappingLoader, GetPersistenceConfiguration(), new QueryConfiguration()));
+              GetPersistenceConfiguration(), new QueryConfiguration()));
 
       MappingConfiguration.SetCurrent(
           new MappingConfiguration(
-              DomainObjectsConfiguration.Current.MappingLoader.CreateMappingLoader(),
+              SafeServiceLocator.Current.GetInstance<IMappingLoader>(),
               new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
     }
 
