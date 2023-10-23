@@ -132,13 +132,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
       QueryConfiguration configuration = new QueryConfiguration();
 
       Assert.That(configuration.QueryFiles.Count, Is.EqualTo(0));
-      Assert.That(configuration.QueryDefinitions.Count, Is.GreaterThan(0));
 
       Assert.That(configuration.GetDefaultQueryFilePath(), Is.EqualTo(Path.Combine(AppContext.BaseDirectory, "queries.xml")));
-
-      QueryConfigurationLoader loader = new QueryConfigurationLoader(configuration.GetDefaultQueryFilePath(), _storageProviderDefinitionFinder);
-      QueryDefinitionChecker checker = new QueryDefinitionChecker();
-      checker.Check(loader.GetQueryDefinitions(), configuration.QueryDefinitions);
     }
 
     [Test]
@@ -271,36 +266,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     }
 
     [Test]
-    public void GetDefinitions ()
-    {
-      QueryConfiguration configuration = new QueryConfiguration(Path.Combine(TestContext.CurrentContext.TestDirectory, "QueriesForLoaderTest.xml"));
-
-      QueryConfigurationLoader loader = new QueryConfigurationLoader(
-          Path.Combine(TestContext.CurrentContext.TestDirectory, "QueriesForLoaderTest.xml"),
-          _storageProviderDefinitionFinder);
-      QueryDefinitionCollection expectedQueries = loader.GetQueryDefinitions();
-
-      QueryDefinitionChecker checker = new QueryDefinitionChecker();
-      checker.Check(expectedQueries, configuration.QueryDefinitions);
-    }
-
-    [Test]
-    public void GetDefinitions_WithMultipleFiles ()
-    {
-      QueryConfiguration configuration = new QueryConfiguration("QueriesForLoaderTest.xml", "QueriesForLoaderTest2.xml");
-
-      QueryConfigurationLoader loader1 = new QueryConfigurationLoader(@"QueriesForLoaderTest.xml", _storageProviderDefinitionFinder);
-      QueryConfigurationLoader loader2 = new QueryConfigurationLoader(@"QueriesForLoaderTest2.xml", _storageProviderDefinitionFinder);
-      QueryDefinitionCollection expectedQueries = loader1.GetQueryDefinitions();
-      expectedQueries.Merge(loader2.GetQueryDefinitions());
-
-      Assert.That(expectedQueries.Count > loader1.GetQueryDefinitions().Count, Is.True);
-
-      QueryDefinitionChecker checker = new QueryDefinitionChecker();
-      checker.Check(expectedQueries, configuration.QueryDefinitions);
-    }
-
-    [Test]
     public void RootedPath_UnaffectedByDirectoryChange ()
     {
       QueryConfiguration configuration = new QueryConfiguration("QueriesForLoaderTest.xml");
@@ -316,41 +281,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
       {
         Environment.CurrentDirectory = oldDirectory;
       }
-    }
-
-    [Test]
-    public void GetDefinitions_UsesRootedPath ()
-    {
-      QueryConfiguration configuration = new QueryConfiguration("QueriesForLoaderTest.xml");
-      string oldDirectory = AppContext.BaseDirectory;
-      try
-      {
-        Environment.CurrentDirectory = @"c:\";
-        Assert.IsNotEmpty(configuration.QueryDefinitions);
-      }
-      finally
-      {
-        Environment.CurrentDirectory = oldDirectory;
-      }
-    }
-
-    [Test]
-    public void CollectionType_SupportsTypeUtilityNotation ()
-    {
-      QueryDefinitionCollection queries = new QueryConfiguration("QueriesForStandardMapping.xml").QueryDefinitions;
-      Assert.That(queries["QueryWithSpecificCollectionType"].CollectionType, Is.SameAs(typeof(SpecificOrderCollection)));
-    }
-
-    [Test]
-    public void DifferentQueryFiles_SpecifyingDuplicates ()
-    {
-      QueryConfiguration configuration = new QueryConfiguration("QueriesForLoaderTest.xml", "QueriesForLoaderTestDuplicate.xml");
-      Assert.That(
-          () => configuration.QueryDefinitions,
-          Throws.InstanceOf<ConfigurationException>()
-              .With.Message.Matches(
-                  @"File '.*QueriesForLoaderTestDuplicate.xml' defines a duplicate "
-                  + @"for query definition 'OrderQueryWithCustomCollectionType'."));
     }
 
     private QueryDefinitionCollection CreateExpectedQueryDefinitions ()
