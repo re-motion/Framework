@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 
@@ -22,13 +24,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
 {
   public class QueryDefinitionChecker
   {
-    public void Check (QueryDefinitionCollection expectedQueries, QueryDefinitionCollection actualQueries)
+    public void Check (IReadOnlyList<QueryDefinition> expectedQueries, IReadOnlyList<QueryDefinition> actualQueries)
     {
       Assert.AreEqual(expectedQueries.Count, actualQueries.Count, "Number of queries does not match.");
 
-      foreach (QueryDefinition expectedQuery in expectedQueries)
+      var actualQueriesLookup = actualQueries.ToDictionary(e => e.ID, e => e);
+      foreach (var expectedQuery in expectedQueries)
       {
-        QueryDefinition actualQuery = actualQueries[expectedQuery.ID];
+        if (!actualQueriesLookup.TryGetValue(expectedQuery.ID, out var actualQuery))
+          throw new InvalidOperationException($"Actual queries does not contain the query '{expectedQuery.ID}'.");
+
         CheckQuery(expectedQuery, actualQuery);
       }
     }

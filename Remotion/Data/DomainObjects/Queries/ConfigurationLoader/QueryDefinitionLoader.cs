@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using Remotion.Data.DomainObjects.Configuration;
-using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.ServiceLocation;
@@ -54,16 +53,15 @@ namespace Remotion.Data.DomainObjects.Queries.ConfigurationLoader
     private ReadOnlyCollection<QueryDefinition> LoadAllQueryDefinitionsImplementation ()
     {
       var storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage);
+      var loader = new QueryDefinitionFileLoader(storageProviderDefinitionFinder);
 
       var result = new List<QueryDefinition>();
       var addedQueryIDs = new HashSet<string>();
       foreach (var queryFilePath in _queryFileFinder.GetQueryFilePaths())
       {
-        var loader = new QueryConfigurationLoader(queryFilePath, storageProviderDefinitionFinder);
-        var queryDefinitions = loader.GetQueryDefinitions();
-        for (var i = 0; i < queryDefinitions.Count; i++)
+        var queryDefinitions = loader.LoadQueryDefinitions(queryFilePath);
+        foreach (var queryDefinition in queryDefinitions)
         {
-          var queryDefinition = queryDefinitions[i];
           if (!addedQueryIDs.Add(queryDefinition.ID))
             throw new ConfigurationException($"File '{queryFilePath}' defines a duplicate for query definition '{queryDefinition.ID}'.");
 
