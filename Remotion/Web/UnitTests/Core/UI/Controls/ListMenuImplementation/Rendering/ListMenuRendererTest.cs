@@ -163,6 +163,33 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
     }
 
     [Test]
+    public void Render_HasRoleNoneOnAllChildElementsBetweenRoleMenuAndRoleMenuItem ()
+    {
+      SetUpGetPostBackLinkExpectations(false);
+      _control.Setup(stub => stub.LineBreaks).Returns(ListMenuLineBreaks.BetweenGroups);
+
+      var table = GetAssertedTable();
+      table.AssertAttributeValueEquals("role", "menu");
+
+      //var tbody = table.GetAssertedChildElement("tbody", 0);
+      //tbody.AssertAttributeValueEquals("role", "none");
+
+      //var tr = tbody.GetAssertedChildElement("tr", 0);
+      var tr = table.GetAssertedChildElement("tr", 0);
+      tr.AssertAttributeValueEquals("role", "none");
+      tr.AssertChildElementCount(1);
+
+      var td = tr.GetAssertedChildElement("td", 0);
+      td.AssertAttributeValueEquals("role", "none");
+
+      var span = td.GetAssertedChildElement("span", 0);
+      span.AssertAttributeValueEquals("role", "none");
+
+      var a = span.GetAssertedChildElement("a", 0);
+      a.AssertAttributeValueEquals("role","menuitem");
+    }
+
+    [Test]
     public void RenderWithEncodedWebString ()
     {
       SetUpGetPostBackLinkExpectations(true);

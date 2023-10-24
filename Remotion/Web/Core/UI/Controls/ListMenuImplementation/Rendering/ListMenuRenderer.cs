@@ -108,6 +108,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       var groupedMenuItems = GetVisibleMenuItemsInGroups(renderingContext);
       foreach (var menuItemsInGroup in groupedMenuItems)
       {
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Tr);
         renderingContext.Writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "100%");
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, "listMenuRow");
@@ -201,6 +202,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, GetMenuItemClientID(renderingContext, index));
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, "listMenuItem");
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
       var attributes = new NameValueCollection();

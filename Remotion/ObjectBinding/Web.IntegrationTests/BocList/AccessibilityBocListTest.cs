@@ -35,9 +35,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocList
 
       var result = bocList.Analyze(analyzer);
 
-      //RM-8997 This will be removed again when the accessibility problems have been fixed
-      var violationResult = result.Violations.IgnoreKnownIssues();
-      Assert.That(violationResult, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
