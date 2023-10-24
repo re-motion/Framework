@@ -231,8 +231,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get
       {
-        if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
-          return false;
         if (_rowMenuDisplay == RowMenuDisplay.Undefined
             || _rowMenuDisplay == RowMenuDisplay.Disabled)
           return false;

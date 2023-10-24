@@ -28,17 +28,8 @@ using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Sample.ReferenceDataSourceTestDomain;
 using Remotion.ObjectBinding.Web;
-using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Web;
-using Remotion.Web.Configuration;
 using Remotion.Web.Infrastructure;
 
 namespace OBWTest
@@ -47,7 +38,6 @@ namespace OBWTest
   {
     private const string c_writeReflectionBusinessObjectToDiskAppSettingName = "WriteBusinessObjectsToDisk";
 
-    private WaiConformanceLevel _waiConformanceLevelBackup;
     private static ResourceVirtualPathProvider _resourceVirtualPathProvider;
 
     public Global ()
@@ -163,8 +153,6 @@ namespace OBWTest
 
     protected void Application_PreRequestHandlerExecute (Object sender, EventArgs e)
     {
-      _waiConformanceLevelBackup = WebConfiguration.Current.Wcag.ConformanceLevel;
-
       try
       {
         Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
@@ -183,7 +171,6 @@ namespace OBWTest
 
     protected void Application_PostRequestHandlerExecute (Object sender, EventArgs e)
     {
-      WebConfiguration.Current.Wcag.ConformanceLevel = _waiConformanceLevelBackup;
     }
 
     protected void Application_EndRequest (Object sender, EventArgs e)

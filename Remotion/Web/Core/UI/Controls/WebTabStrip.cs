@@ -36,7 +36,6 @@ using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
-  /// <include file='..\..\doc\include\UI\Controls\WebTabStrip.xml' path='WebTabStrip/Class/*' />
   [ToolboxData("<{0}:WebTabStrip runat=server></{0}:WebTabStrip>")]
   public class WebTabStrip
       :
@@ -233,9 +232,6 @@ namespace Remotion.Web.UI.Controls
     protected override void Render (HtmlTextWriter writer)
     {
       ArgumentUtility.CheckNotNull("writer", writer);
-
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-        WcagHelper.Instance.HandleError(1, this);
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));

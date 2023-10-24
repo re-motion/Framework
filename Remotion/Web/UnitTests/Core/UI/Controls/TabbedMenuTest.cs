@@ -34,7 +34,7 @@ public class TabbedMenuTest: WebControlTest
 {
   private HttpContext _currentHttpContext;
 
-  private TabbedMenuMock _tabbedMenu;
+  private TabbedMenu _tabbedMenu;
 
   private MainMenuTab _mainMenuTab1;
   private MainMenuTab _mainMenuTab2;
@@ -61,7 +61,7 @@ public class TabbedMenuTest: WebControlTest
   {
     base.SetUpPage();
 
-    _tabbedMenu = new TabbedMenuMock();
+    _tabbedMenu = new TabbedMenu();
     _tabbedMenu.ID = "TabbedMenu";
 
     _mainMenuTab1 = new MainMenuTab("MainMenuTab1", WebString.CreateFromText("Main 1"));
@@ -171,47 +171,6 @@ public class TabbedMenuTest: WebControlTest
 
     Assert.That(value, Is.Not.Null);
     Assert.That(value, Is.EqualTo(expectedUrl));
-  }
-
-	[Test]
-  public void EvaluateWaiConformityDebugLevelUndefined ()
-  {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
-    _mainMenuTab1.Command.Type = CommandType.Event;
-    _subMenuTab11.Command.Type = CommandType.Event;
-
-    _tabbedMenu.EvaluateWaiConformity();
-
-	  Assert.That(WcagHelperMock.HasWarning, Is.False);
-	  Assert.That(WcagHelperMock.HasError, Is.False);
-  }
-
-	[Test]
-  public void EvaluateWaiConformityDebugLevelAWithMainMenuTabSetToEvent ()
-  {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-    _tabbedMenu.Tabs.Clear();
-    _tabbedMenu.Tabs.Add(_mainMenuTab1);
-    _mainMenuTab1.Command.Type = CommandType.Event;
-
-    _tabbedMenu.EvaluateWaiConformity();
-
-	  Assert.That(WcagHelperMock.HasWarning, Is.False);
-	  Assert.That(WcagHelperMock.HasError, Is.True);
-  }
-
-	[Test]
-  public void EvaluateWaiConformityDebugLevelAWithSubMenuTabSetToEvent ()
-  {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-    _tabbedMenu.Tabs.Clear();
-    _tabbedMenu.Tabs.Add(_mainMenuTab1);
-    _mainMenuTab1.Command.Type = CommandType.Event;
-
-    _tabbedMenu.EvaluateWaiConformity();
-
-	  Assert.That(WcagHelperMock.HasWarning, Is.False);
-	  Assert.That(WcagHelperMock.HasError, Is.True);
   }
 
   [Test]

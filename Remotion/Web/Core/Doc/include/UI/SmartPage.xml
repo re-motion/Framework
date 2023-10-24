@@ -19,29 +19,6 @@
   <Class>
     <remarks>
 
-      <h4 class="dtH4">Standards Conformance</h4>
-      <list type="table">
-        <listheader>
-          <term>Standard</term>
-          <description>Conformance Information</description>
-        </listheader>
-        <item>
-          <term>HTML 4.01</term>
-          <description>valid</description>
-        </item>
-        <item>
-          <term>XHTML 1.0</term>
-          <description>valid</description>
-        </item>
-        <item>
-          <term>WAI WCAG 1.0</term>
-          <description>
-            Dirty state tracking, displaying the abort confirmation dialog, concurrent postback prevention, 
-            and smart navigation require java-script but are not considered to be required for a usable page.
-          </description>
-        </item>        
-      </list>
-
       <h4 class="dtH4">Dirty State Tracking (specified in <see cref="ISmartPage"/>)</h4>
       <para>
         The <see cref="SmartPage"/> provides methods for server-side and client-side dirty state tracking.

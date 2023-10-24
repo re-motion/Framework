@@ -26,7 +26,6 @@ using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.Web.UI.Controls
 {
-  /// <include file='..\..\doc\include\UI\Controls\DropDownMenu.xml' path='DropDownMenu/Class/*' />
   public class DropDownMenu : MenuBase, IDropDownMenu
   {
     #region Obsolete
@@ -99,9 +98,6 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull("writer", writer);
 
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-        WcagHelper.Instance.HandleError(1, this);
-
       var renderer = CreateRenderer();
       renderer.RenderAsContextMenu(CreateRenderingContext(writer));
     }
@@ -109,9 +105,6 @@ namespace Remotion.Web.UI.Controls
     protected override void Render (HtmlTextWriter writer)
     {
       ArgumentUtility.CheckNotNull("writer", writer);
-
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-        WcagHelper.Instance.HandleError(1, this);
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));

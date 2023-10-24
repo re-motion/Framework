@@ -31,11 +31,6 @@ public class BocReferenceValueMock: BocReferenceValue
   {
   }
 
-  public new void EvaluateWaiConformity ()
-  {
-    base.EvaluateWaiConformity();
-  }
-
   public new string InternalValue
   {
     get { return base.InternalValue; }

@@ -234,29 +234,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         eventHandler(this, EventArgs.Empty);
     }
 
-    /// <summary> Checks whether the control conforms to the required WAI level. </summary>
-    /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
-    protected virtual void EvaluateWaiConformity ()
-    {
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-      {
-        if (DateTextBoxStyle.AutoPostBack == true)
-          WcagHelper.Instance.HandleWarning(1, this, "DateTextBoxStyle.AutoPostBack");
-
-        if (TimeTextBoxStyle.AutoPostBack == true)
-          WcagHelper.Instance.HandleWarning(1, this, "TimeTextBoxStyle.AutoPostBack");
-
-        if (DateTimeTextBoxStyle.AutoPostBack == true)
-          WcagHelper.Instance.HandleWarning(1, this, "DateTimeTextBoxStyle.AutoPostBack");
-      }
-
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelDoubleARequired())
-      {
-        if (ActualValueType == BocDateTimeValueType.DateTime)
-          WcagHelper.Instance.HandleError(2, this, "ActualValueType");
-      }
-    }
-
     protected override void OnPreRender (EventArgs e)
     {
       EnsureChildControls();
@@ -267,7 +244,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _datePickerButton.ContainerControlID = ClientID;
       _datePickerButton.TargetControlID = GetDateValueName();
 
-      EvaluateWaiConformity();
     }
 
     protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()

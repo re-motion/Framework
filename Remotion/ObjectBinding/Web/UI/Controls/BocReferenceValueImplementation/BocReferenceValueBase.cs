@@ -281,8 +281,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       get
       {
-        return ! WcagHelper.Instance.IsWaiConformanceLevelARequired()
-               && _showOptionsMenu && (OptionsMenuItems.Count > 0)
+        return _showOptionsMenu
+               && (OptionsMenuItems.Count > 0)
                && OptionsMenu.IsBrowserCapableOfScripting;
       }
     }

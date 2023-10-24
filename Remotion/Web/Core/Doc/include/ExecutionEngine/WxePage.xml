@@ -18,32 +18,6 @@
 <WxePage>
   <Class>
     <remarks>
-
-      <h4 class="dtH4">Standards Conformance</h4>
-      <list type="table">
-        <listheader>
-          <term>Standard</term>
-          <description>Conformance Information</description>
-        </listheader>
-        <item>
-          <term>HTML 4.01</term>
-          <description>valid</description>
-        </item>
-        <item>
-          <term>XHTML 1.0</term>
-          <description>valid</description>
-        </item>
-        <item>
-          <term>WAI WCAG 1.0</term>
-          <description>
-            Priority 1 checkpoint 6.3 is not met by calls to <see cref="Remotion.Web.ExecutionEngine.Obsolete.WxePageExtensions.ExecuteFunctionExternal"/> since the 
-            <see cref="WxePage"/> uses javascript to open the new window. This is currently <b>not</b> 
-            enforced or validated by setting the <see cref="Remotion.Web.Configuration.WebConfiguration.Wcag"/> 
-            configuration entry.
-          </description>
-        </item>        
-      </list>
-
       <h4 class="dtH4">Session Management</h4>
       <para>
         The execution engine provides features for keeping the session alive and for aborting the function stack when 

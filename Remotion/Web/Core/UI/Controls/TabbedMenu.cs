@@ -210,43 +210,10 @@ namespace Remotion.Web.UI.Controls
         writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
     }
 
-    /// <summary> Checks whether the control conforms to the required WAI level. </summary>
-    /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
-    protected virtual void EvaluateWaiConformity ()
-    {
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-      {
-        MainMenuTabCollection mainMenuTabs = Tabs;
-        for (int mainMenuTabsIdx = 0; mainMenuTabsIdx < mainMenuTabs.Count; mainMenuTabsIdx++)
-        {
-          MainMenuTab mainMenuTab = mainMenuTabs[mainMenuTabsIdx];
-          bool hasMainMenuTabPostBackCommand = mainMenuTab.Command != null
-                                              && mainMenuTab.Command.Type == CommandType.Event;
-          if (hasMainMenuTabPostBackCommand)
-            WcagHelper.Instance.HandleError(1, this, string.Format("Tabs[{0}].Command", mainMenuTabsIdx));
-
-          SubMenuTabCollection subMenuTabs = mainMenuTab.SubMenuTabs;
-          for (int subMenuTabsIdx = 0; subMenuTabsIdx < subMenuTabs.Count; subMenuTabsIdx++)
-          {
-            SubMenuTab subMenuTab = subMenuTabs[subMenuTabsIdx];
-            bool hasSubMenuTabPostBackCommand = subMenuTab.Command != null
-                                               && subMenuTab.Command.Type == CommandType.Event;
-            if (hasSubMenuTabPostBackCommand)
-            {
-              WcagHelper.Instance.HandleError(
-                  1, this, string.Format("Tabs[{0}].SubMenuTabs[{1}].Command", mainMenuTabsIdx, subMenuTabsIdx));
-            }
-          }
-        }
-      }
-    }
-
     protected override void Render (HtmlTextWriter writer)
     {
       ArgumentUtility.CheckNotNull("writer", writer);
       EnsureChildControls();
-
-      EvaluateWaiConformity();
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));
