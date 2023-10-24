@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Configuration;
-using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
 using Remotion.Web.Schemas;
@@ -69,7 +68,6 @@ public class WebConfiguration: IConfigurationSectionHandler
 
   private ExecutionEngineConfiguration _executionEngine = new ExecutionEngineConfiguration();
   private WcagConfiguration _wcag = new WcagConfiguration();
-  private ResourceConfiguration _resources = new ResourceConfiguration();
 
   /// <summary> Gets or sets the <see cref="ExecutionEngineConfiguration"/> entry. </summary>
   [XmlElement("executionEngine")]
@@ -85,14 +83,6 @@ public class WebConfiguration: IConfigurationSectionHandler
   {
     get { return _wcag; }
     set { _wcag = value; }
-  }
-
-  /// <summary> Gets or sets the <see cref="ResourceConfiguration"/> entry. </summary>
-  [XmlElement("resources")]
-  public ResourceConfiguration Resources
-  {
-    get { return _resources; }
-    set { _resources = value; }
   }
 
   object IConfigurationSectionHandler.Create (object parent, object configContext, XmlNode section)

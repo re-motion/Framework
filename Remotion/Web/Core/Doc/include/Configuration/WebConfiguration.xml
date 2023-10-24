@@ -29,7 +29,6 @@
     </remarks>
     <seealso cref="IConfigurationSectionHandler"/>
     <seealso cref="ExecutionEngineConfiguration"/>
-    <seealso cref="ResourceConfiguration"/>
     <seealso cref="WcagConfiguration"/>
     <example>
       Register the configuration section in the configuration file within the <c>configSections</c> element
@@ -53,9 +52,7 @@
         refreshInterval="10" 
         urlMappingFile="C:\ProjectDirectory\UrlMapping.xml"
     /&gt;
-    &lt;<see cref="ResourceConfiguration">resources</see> 
-        root="res" 
-    /&gt;
+
     &lt;<see cref="WcagConfiguration">wcag</see>
         <see cref="WaiConformanceLevel">conformanceLevel</see>="Undefined" 
         <see cref="WcagDebugMode">debugging</see>="Disabled" 

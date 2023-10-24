@@ -18,6 +18,7 @@ using System;
 using System.Web;
 using Moq;
 using NUnit.Framework;
+using Remotion.ServiceLocation;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.Resources;
 
@@ -30,7 +31,6 @@ namespace Remotion.Web.UnitTests.Core.Resources
     public void BuildAbsolutePath_MultiplePathParts_ResultingPathDoesNotEndWithTrailingSlash ()
     {
       var builder = CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir");
-
       Assert.That(
           builder.BuildAbsolutePath(GetType().Assembly, "part1", "part2"),
           Is.EqualTo("/appDir/resourceRoot/Remotion.Web.UnitTests/part1/part2"));
@@ -79,7 +79,7 @@ namespace Remotion.Web.UnitTests.Core.Resources
     [Test]
     public void BuildAbsolutePath_MultipleCalls_DoesNotCacheHttpContext ()
     {
-      var builder = (TestableResourcePathBuilder)CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir");
+      var builder = CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir");
 
       builder.BuildAbsolutePath(GetType().Assembly, "part1");
       Mock.Get(builder.HttpContextProvider).Verify(_ => _.GetCurrentHttpContext());
@@ -100,7 +100,7 @@ namespace Remotion.Web.UnitTests.Core.Resources
       var httpContextProviderStub = new Mock<IHttpContextProvider>();
       httpContextProviderStub.Setup(_ => _.GetCurrentHttpContext()).Returns(httpContextStub.Object);
 
-      return new TestableResourcePathBuilder(httpContextProviderStub.Object, "resourceRoot");
+      return new ResourcePathBuilder(httpContextProviderStub.Object, new FakeResourceRoot("resourceRoot"));
     }
   }
 }
