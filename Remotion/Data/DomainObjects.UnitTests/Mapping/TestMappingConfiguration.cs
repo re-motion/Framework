@@ -23,7 +23,6 @@ using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
-using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
@@ -39,7 +38,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private static TestMappingConfiguration s_instance;
 
     private readonly StorageConfiguration _storageConfiguration;
-    private readonly QueryConfiguration _queryConfiguration;
     private readonly MappingConfiguration _mappingConfiguration;
     private readonly DomainObjectIDs _domainObjectIDs;
 
@@ -77,9 +75,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       _storageConfiguration.StorageGroups.Add(
           new StorageGroupElement(new NonPersistentTestDomainAttribute(), MappingReflectionTestBase.c_nonPersistentTestDomainProviderID));
 
-      _queryConfiguration = new QueryConfiguration("QueriesForStandardMapping.xml");
       DomainObjectsConfiguration.SetCurrent(
-          new FakeDomainObjectsConfiguration(_storageConfiguration, _queryConfiguration));
+          new FakeDomainObjectsConfiguration(_storageConfiguration));
 
       var typeDiscoveryService = GetTypeDiscoveryService();
 
@@ -118,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public FakeDomainObjectsConfiguration GetDomainObjectsConfiguration ()
     {
-      return new FakeDomainObjectsConfiguration(_storageConfiguration, _queryConfiguration);
+      return new FakeDomainObjectsConfiguration(_storageConfiguration);
     }
 
     public DomainObjectIDs GetDomainObjectIDs ()

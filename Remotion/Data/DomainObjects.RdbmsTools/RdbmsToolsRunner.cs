@@ -27,7 +27,6 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
-using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Logging;
 using Remotion.ServiceLocation;
 using Remotion.Tools;
@@ -112,7 +111,7 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
     {
       DomainObjectsConfiguration.SetCurrent(
           new FakeDomainObjectsConfiguration(
-              GetPersistenceConfiguration(), new QueryConfiguration()));
+              GetPersistenceConfiguration()));
 
       MappingConfiguration.SetCurrent(
           new MappingConfiguration(

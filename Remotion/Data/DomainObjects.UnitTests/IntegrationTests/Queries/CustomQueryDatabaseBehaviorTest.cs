@@ -20,9 +20,11 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.Queries.ConfigurationLoader;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
 {
@@ -45,6 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
 
       var locator = DefaultServiceLocator.Create();
       locator.RegisterSingle<IPersistenceExtensionFactory>(() => persistenceExtensionFactoryStub.Object);
+      locator.RegisterSingle<IQueryFileFinder>(() => new QueriesForStandardMappingQueryFileFinder(new AppContextProvider()));
       _serviceLocatorScope = new ServiceLocatorScope(locator);
     }
 

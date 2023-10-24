@@ -25,7 +25,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
 using Remotion.Development.UnitTesting;
@@ -68,7 +67,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     }
 
     private readonly StorageConfiguration _storageConfiguration;
-    private readonly QueryConfiguration _queryConfiguration;
     private readonly MappingConfiguration _mappingConfiguration;
 
     private readonly Dictionary<RdbmsProviderDefinition, string> _originalConnectionStrings = new();
@@ -98,8 +96,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
               new TableInheritanceTestDomainAttribute(),
               TableInheritanceMappingTest.TableInheritanceTestDomainProviderID));
 
-      _queryConfiguration = new QueryConfiguration("QueriesForStandardMapping.xml");
-
       var typeDiscoveryService = GetTypeDiscoveryService(GetType().Assembly);
 
       _mappingConfiguration = new MappingConfiguration(
@@ -119,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
     public FakeDomainObjectsConfiguration GetDomainObjectsConfiguration ()
     {
-      return new FakeDomainObjectsConfiguration(_storageConfiguration, _queryConfiguration);
+      return new FakeDomainObjectsConfiguration(_storageConfiguration);
     }
 
     public void DisableDatabaseAccess ()
