@@ -15,15 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Configuration;
-using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
-using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting.Configuration;
 using Remotion.Utilities;
 using File = System.IO.File;
@@ -60,48 +60,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
       File.Delete(_tempQueriesFilePath);
 
       base.TestFixtureTearDown();
-    }
-
-    [Test]
-    public void Loading ()
-    {
-      QueryConfigurationLoader loader = new QueryConfigurationLoader(@"QueriesForLoaderTest.xml", _storageProviderDefinitionFinder);
-      QueryDefinitionCollection actualQueries = loader.GetQueryDefinitions();
-      QueryDefinitionCollection expectedQueries = CreateExpectedQueryDefinitions();
-
-      QueryDefinitionChecker checker = new QueryDefinitionChecker();
-      checker.Check(expectedQueries, actualQueries);
-    }
-
-    [Test]
-    public void ScalarQueryWithCollectionType ()
-    {
-      QueryConfigurationLoader loader = new QueryConfigurationLoader(@"ScalarQueryWithCollectionType.xml", _storageProviderDefinitionFinder);
-      Assert.That(
-          () => loader.GetQueryDefinitions(),
-          Throws.InstanceOf<QueryConfigurationException>()
-              .With.Message.EqualTo("A scalar query 'OrderSumQuery' must not specify a collectionType."));
-    }
-
-    [Test]
-    public void QueryConfigurationWithInvalidNamespace ()
-    {
-      string configurationFile = "QueriesWithInvalidNamespace.xml";
-      try
-      {
-        QueryConfigurationLoader loader = new QueryConfigurationLoader(configurationFile, _storageProviderDefinitionFinder);
-
-        Assert.Fail("QueryConfigurationException was expected");
-      }
-      catch (QueryConfigurationException ex)
-      {
-        string expectedMessage = string.Format(
-            "Error while reading query configuration: The namespace 'http://www.re-motion.org/Data/DomainObjects/InvalidNamespace' of"
-            + " the root element is invalid. Expected namespace: 'http://www.re-motion.org/Data/DomainObjects/Queries/1.0'. File: '{0}'.",
-            Path.GetFullPath(configurationFile));
-
-        Assert.That(ex.Message, Is.EqualTo(expectedMessage));
-      }
     }
 
     [Test]
@@ -281,54 +239,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
       {
         Environment.CurrentDirectory = oldDirectory;
       }
-    }
-
-    private QueryDefinitionCollection CreateExpectedQueryDefinitions ()
-    {
-      QueryDefinitionCollection queries = new QueryDefinitionCollection();
-
-      queries.Add(TestQueryFactory.CreateOrderQueryWithCustomCollectionType());
-      queries.Add(TestQueryFactory.CreateOrderQueryDefinitionWithObjectListOfOrder());
-      queries.Add(TestQueryFactory.CreateCustomerTypeQueryDefinition());
-      queries.Add(TestQueryFactory.CreateOrderSumQueryDefinition());
-
-      return queries;
-    }
-
-    [Test]
-    public void Load_ProviderFromDefaultStorageProvider ()
-    {
-      QueryConfigurationLoader loader = new QueryConfigurationLoader(@"QueriesForStorageGroupTest.xml", _storageProviderDefinitionFinder);
-      QueryDefinitionCollection queries = loader.GetQueryDefinitions();
-
-      Assert.That(
-          queries["QueryFromDefaultStorageProvider"].StorageProviderDefinition,
-          Is.SameAs(DomainObjectsConfiguration.Current.Storage.DefaultStorageProviderDefinition));
-    }
-
-    [Test]
-    public void Load_ProviderFromCustomStorageGroup ()
-    {
-      QueryConfigurationLoader loader = new QueryConfigurationLoader(@"QueriesForStorageGroupTest.xml", _storageProviderDefinitionFinder);
-      QueryDefinitionCollection queries = loader.GetQueryDefinitions();
-
-      Assert.That(
-          queries["QueryFromCustomStorageGroup"].StorageProviderDefinition,
-          Is.SameAs(DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions["TestDomain"]));
-      Assert.That(
-         queries["QueryFromCustomStorageGroup"].StorageProviderDefinition,
-         Is.Not.SameAs(DomainObjectsConfiguration.Current.Storage.DefaultStorageProviderDefinition));
-    }
-
-    [Test]
-    public void Load_ProviderFromUndefinedStorageGroup ()
-    {
-      QueryConfigurationLoader loader = new QueryConfigurationLoader(@"QueriesForStorageGroupTest.xml", _storageProviderDefinitionFinder);
-      QueryDefinitionCollection queries = loader.GetQueryDefinitions();
-
-      Assert.That(
-          queries["QueryFromUndefinedStorageGroup"].StorageProviderDefinition,
-          Is.SameAs(DomainObjectsConfiguration.Current.Storage.DefaultStorageProviderDefinition));
     }
   }
 }

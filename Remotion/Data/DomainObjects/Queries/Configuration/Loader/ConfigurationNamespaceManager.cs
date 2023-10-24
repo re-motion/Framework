@@ -18,19 +18,11 @@ using System;
 using System.Xml;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader
+namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
 {
-  public class ConfigurationNamespaceManager : XmlNamespaceManager
+  internal class ConfigurationNamespaceManager : XmlNamespaceManager
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
     private PrefixNamespace[] _configurationNamespaces;
-
-    // construction and disposing
 
     public ConfigurationNamespaceManager (
         XmlDocument document,

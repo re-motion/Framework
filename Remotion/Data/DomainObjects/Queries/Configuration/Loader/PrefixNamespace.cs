@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -17,7 +17,7 @@
 using System;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader
+namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
 {
   public class PrefixNamespace
   {
