@@ -29,6 +29,7 @@ namespace Remotion.Data.DomainObjects.Configuration
   {
     StorageConfiguration Storage { get; }
 
+    [Obsolete("QueryConfiguration is no longer supported. (Version 6.0.0)", true)]
     QueryConfiguration Query { get; }
   }
 }

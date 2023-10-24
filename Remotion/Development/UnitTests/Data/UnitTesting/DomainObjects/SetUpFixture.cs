@@ -50,8 +50,7 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
 
         DomainObjectsConfiguration.SetCurrent(
             new FakeDomainObjectsConfiguration(
-                storageConfiguration,
-                new QueryConfiguration()));
+                storageConfiguration));
 
         var rootAssemblyFinder = new FixedRootAssemblyFinder(new RootAssembly(typeof(TestDomainObject).Assembly, true));
         var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
