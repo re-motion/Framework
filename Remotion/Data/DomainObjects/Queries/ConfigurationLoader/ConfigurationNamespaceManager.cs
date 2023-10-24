@@ -18,7 +18,7 @@ using System;
 using System.Xml;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader
+namespace Remotion.Data.DomainObjects.Queries.ConfigurationLoader
 {
   public class ConfigurationNamespaceManager : XmlNamespaceManager
   {
