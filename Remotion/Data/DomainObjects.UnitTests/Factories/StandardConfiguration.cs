@@ -16,6 +16,11 @@
 // 
 using System;
 using System.Diagnostics;
+using System.IO;
+using NUnit.Framework;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.Queries.Configuration.Loader;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
@@ -46,15 +51,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     }
 
     private readonly DomainObjectIDs _domainObjectIDs;
+    private readonly IQueryDefinitionRepository _queries;
 
     private StandardConfiguration ()
     {
       _domainObjectIDs = new DomainObjectIDs(GetMappingConfiguration());
+      var queryDefinitionFileLoader = new QueryDefinitionFileLoader(new StorageGroupBasedStorageProviderDefinitionFinder(GetPersistenceConfiguration()));
+      _queries = new QueryDefinitionRepository(
+          queryDefinitionFileLoader.LoadQueryDefinitions(
+              Path.Combine(TestContext.CurrentContext.TestDirectory, "QueriesForStandardMapping.xml")));
     }
 
     public DomainObjectIDs GetDomainObjectIDs ()
     {
       return _domainObjectIDs;
+    }
+
+    public IQueryDefinitionRepository GetQueries ()
+    {
+      return _queries;
     }
   }
 }

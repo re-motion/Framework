@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
   /// <summary>
   /// Creates a <see cref="IQueryFileFinder"/> from the list of <see cref="IQueryFileFinder"/> implementations combining their query files.
   /// </summary>
-  //[ImplementationFor(typeof(IQueryFileFinder), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IQueryFileFinder), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundQueryFileFinder : IQueryFileFinder
   {
     public CompoundQueryFileFinder (IEnumerable<IQueryFileFinder> queryFileFinders)

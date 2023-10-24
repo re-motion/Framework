@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
   /// <summary>
   /// Default implementation of <see cref="IQueryFileFinder"/> that locates a "queries.xml" file in <see cref="IAppContextProvider"/>.<see cref="IAppContextProvider.BaseDirectory"/>.
   /// </summary>
-  //[ImplementationFor(typeof(IQueryFileFinder), Position = 0, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IQueryFileFinder), Position = 0, RegistrationType = RegistrationType.Multiple)]
   public class DefaultQueryFileFinder : IQueryFileFinder
   {
     private const string c_defaultConfigurationFile = "queries.xml";

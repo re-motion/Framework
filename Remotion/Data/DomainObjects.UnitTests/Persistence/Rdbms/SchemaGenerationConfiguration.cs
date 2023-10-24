@@ -25,7 +25,6 @@ using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
-using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain;
 using Remotion.Development.UnitTesting.Reflection.TypeDiscovery;
@@ -56,7 +55,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     private readonly StorageConfiguration _storageConfiguration;
     private readonly MappingConfiguration _mappingConfiguration;
-    private readonly QueryConfiguration _queryConfiguration;
     private readonly FakeDomainObjectsConfiguration _domainObjectsConfiguration;
 
     public SchemaGenerationConfiguration ()
@@ -102,14 +100,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
               new InternalStorageGroupAttribute(),
               DatabaseTest.SchemaGenerationInternalStorageProviderID));
 
-      _queryConfiguration = new QueryConfiguration();
-
       var typeDiscoveryService = GetTypeDiscoveryService(GetType().Assembly);
 
       _mappingConfiguration = new MappingConfiguration(
           MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
           new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(_storageConfiguration)));
-      _domainObjectsConfiguration = new FakeDomainObjectsConfiguration(_storageConfiguration, _queryConfiguration);
+      _domainObjectsConfiguration = new FakeDomainObjectsConfiguration(_storageConfiguration);
     }
 
     public MappingConfiguration GetMappingConfiguration ()

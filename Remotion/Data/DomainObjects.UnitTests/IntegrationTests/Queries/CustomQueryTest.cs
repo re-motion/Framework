@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void FromXmlFile ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("CustomQuery");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomQuery"));
 
       var result = QueryManager.GetCustom(query, QueryResultRowTestHelper.ExtractRawValues);
 

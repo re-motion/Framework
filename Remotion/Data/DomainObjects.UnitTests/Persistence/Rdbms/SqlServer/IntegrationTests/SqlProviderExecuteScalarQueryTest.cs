@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void ScalarQueryWithoutParameter ()
     {
-      Assert.That(Provider.ExecuteScalarQuery(QueryFactory.CreateQueryFromConfiguration("QueryWithoutParameter")), Is.EqualTo(42));
+      Assert.That(Provider.ExecuteScalarQuery(QueryFactory.CreateQuery(Queries.GetMandatory("QueryWithoutParameter"))), Is.EqualTo(42));
     }
 
     [Test]
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void ScalarQueryWithParameter ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("OrderNoSumByCustomerNameQuery");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderNoSumByCustomerNameQuery"));
       query.Parameters.Add("@customerName", "Kunde 1");
 
       Assert.That(Provider.ExecuteScalarQuery(query), Is.EqualTo(3));
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void ParameterWithTextReplacement ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("OrderNoSumForMultipleCustomers");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderNoSumForMultipleCustomers"));
       query.Parameters.Add("{companyNames}", "'Kunde 1', 'Kunde 3'", QueryParameterType.Text);
 
       Assert.That(Provider.ExecuteScalarQuery(query), Is.EqualTo(6));
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     public void CollectionQuery ()
     {
       Assert.That(
-          () => Provider.ExecuteScalarQuery(QueryFactory.CreateQueryFromConfiguration("OrderQuery")),
+          () => Provider.ExecuteScalarQuery(QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"))),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Expected query type is 'Scalar', but was 'Collection'.", "query"));
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void BulkUpdateQuery ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("BulkUpdateQuery");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("BulkUpdateQuery"));
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer1.Value);
 
       Assert.That(Provider.ExecuteScalarQuery(query), Is.EqualTo(2));

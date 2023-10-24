@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void ExecuteCollectionQuery ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("OrderQuery");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"));
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer1.Value);
 
       var orderContainerIDs = Provider.ExecuteCollectionQuery(query).Select(dc => dc.ID).ToArray();
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void AllDataTypes ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("QueryWithAllDataTypes");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("QueryWithAllDataTypes"));
       query.Parameters.Add("@boolean", false);
       query.Parameters.Add("@byte", (byte)85);
       query.Parameters.Add("@date", new DateTime(2005, 1, 1));
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     public void ScalarQuery ()
     {
       Assert.That(
-          () => Provider.ExecuteCollectionQuery(QueryFactory.CreateQueryFromConfiguration("OrderNoSumByCustomerNameQuery")),
+          () => Provider.ExecuteCollectionQuery(QueryFactory.CreateQuery(Queries.GetMandatory("OrderNoSumByCustomerNameQuery"))),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Expected query type is 'Collection', but was 'Scalar'.", "query"));
@@ -165,7 +165,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void ObjectIDParameter ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("OrderQuery");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"));
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer1);
 
       var orderContainerIDs = Provider.ExecuteCollectionQuery(query).Select(dc => dc.ID);
@@ -176,7 +176,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void ObjectIDOfDifferentStorageProvider ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("OrderByOfficialQuery");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderByOfficialQuery"));
       query.Parameters.Add("@officialID", DomainObjectIDs.Official1);
 
       var orderContainerIDs = Provider.ExecuteCollectionQuery(query).Select(dc => dc.ID);

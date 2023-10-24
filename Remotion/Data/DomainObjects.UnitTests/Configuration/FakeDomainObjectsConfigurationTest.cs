@@ -19,7 +19,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
-using Remotion.Data.DomainObjects.Queries.Configuration;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Configuration
 {
@@ -30,11 +29,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     public void Initialize ()
     {
       StorageConfiguration storage = new StorageConfiguration();
-      QueryConfiguration query = new QueryConfiguration();
-      IDomainObjectsConfiguration configuration = new FakeDomainObjectsConfiguration(storage, query);
+      IDomainObjectsConfiguration configuration = new FakeDomainObjectsConfiguration(storage);
 
       Assert.That(configuration.Storage, Is.SameAs(storage));
-      Assert.That(configuration.Query, Is.SameAs(query));
     }
 
     [Test]
@@ -43,7 +40,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
       IDomainObjectsConfiguration configuration = new FakeDomainObjectsConfiguration();
 
       Assert.That(configuration.Storage,  Is.TypeOf<StorageConfiguration>());
-      Assert.That(configuration.Query, Is.TypeOf<QueryConfiguration>());
     }
   }
 }

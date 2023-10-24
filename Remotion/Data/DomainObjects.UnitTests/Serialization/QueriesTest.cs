@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
@@ -69,7 +70,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void Deserialize_WithQueryDefinitionFromRepo_ReturnsSameInstance ()
     {
-      QueryDefinition queryDefinition = SafeServiceLocator.Current.GetInstance<IQueryDefinitionRepository>().GetMandatory("OrderQuery");
+      var queryDefinitionRepository = Queries;
+
+      DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
+      defaultServiceLocator.RegisterSingle<IQueryDefinitionRepository>(() => queryDefinitionRepository);
+      using var scope = new ServiceLocatorScope(defaultServiceLocator);
+
+      QueryDefinition queryDefinition = queryDefinitionRepository.GetMandatory("OrderQuery");
 
       QueryDefinition deserializedQueryDefinition = Serializer.SerializeAndDeserialize(queryDefinition);
 
@@ -103,13 +110,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void DeserializeList_WithQueryDefinitionsFromRepo_ReturnsSameInstances ()
     {
-      var queryDefinitionRepository = SafeServiceLocator.Current.GetInstance<IQueryDefinitionRepository>();
+      var queryDefinitionRepository = Queries;
 
-      QueryDefinitionCollection queryDefinitions = new QueryDefinitionCollection();
+      DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
+      defaultServiceLocator.RegisterSingle<IQueryDefinitionRepository>(() => queryDefinitionRepository);
+      using var scope = new ServiceLocatorScope(defaultServiceLocator);
+
+      var queryDefinitions = new List<QueryDefinition>();
       queryDefinitions.Add(queryDefinitionRepository.GetMandatory("QueryWithoutParameter"));
       queryDefinitions.Add(queryDefinitionRepository.GetMandatory("OrderNoSumByCustomerNameQuery"));
 
-      QueryDefinitionCollection deserializedQueryDefinitions = Serializer.SerializeAndDeserialize(queryDefinitions);
+      var deserializedQueryDefinitions = Serializer.SerializeAndDeserialize(queryDefinitions);
       AreEqual(queryDefinitions, deserializedQueryDefinitions);
       Assert.That(queryDefinitionRepository.GetMandatory("QueryWithoutParameter"), Is.SameAs(deserializedQueryDefinitions[0]));
       Assert.That(queryDefinitionRepository.GetMandatory("OrderNoSumByCustomerNameQuery"), Is.SameAs(deserializedQueryDefinitions[1]));
@@ -118,12 +129,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void Query ()
     {
-      var query = (Query)QueryFactory.CreateQueryFromConfiguration("OrderQuery");
+      var queryDefinitionRepository = Queries;
+
+      DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
+      defaultServiceLocator.RegisterSingle<IQueryDefinitionRepository>(() => queryDefinitionRepository);
+      using var scope = new ServiceLocatorScope(defaultServiceLocator);
+
+      var query = (Query)QueryFactory.CreateQuery(queryDefinitionRepository.GetMandatory("OrderQuery"));
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer1);
 
       var deserializedQuery = Serializer.SerializeAndDeserialize(query);
       AreEqual(query, deserializedQuery);
-      Assert.That(deserializedQuery.Definition, Is.SameAs(SafeServiceLocator.Current.GetInstance<IQueryDefinitionRepository>().GetMandatory("OrderQuery")));
+      Assert.That(deserializedQuery.Definition, Is.SameAs(queryDefinitionRepository.GetMandatory("OrderQuery")));
     }
 
     private void AreEqual (Query expected, Query actual)
@@ -136,7 +153,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       AreEqual(expected.Parameters, actual.Parameters);
     }
 
-    private void AreEqual (QueryDefinitionCollection expected, QueryDefinitionCollection actual)
+    private void AreEqual (IReadOnlyList<QueryDefinition> expected, IReadOnlyList<QueryDefinition> actual)
     {
       Assert.That(ReferenceEquals(expected, actual), Is.False);
       Assert.That(actual, Is.Not.Null);

@@ -28,12 +28,10 @@ namespace Remotion.Data.DomainObjects.Development
   public class FakeDomainObjectsConfiguration: IDomainObjectsConfiguration
   {
     private readonly StorageConfiguration _storage;
-    private readonly QueryConfiguration _query;
 
-    public FakeDomainObjectsConfiguration (StorageConfiguration? storage = null, QueryConfiguration? query = null)
+    public FakeDomainObjectsConfiguration (StorageConfiguration? storage = null)
     {
       _storage = storage ?? new StorageConfiguration();
-      _query = query ?? new QueryConfiguration();
     }
 
     public StorageConfiguration Storage
@@ -41,9 +39,7 @@ namespace Remotion.Data.DomainObjects.Development
       get { return _storage; }
     }
 
-    public QueryConfiguration Query
-    {
-      get { return _query; }
-    }
+    [Obsolete("QueryConfiguration is no longer supported. Resolve IQueryRepository via IoC instead. (Version 6.0.0)", true)]
+    public QueryConfiguration Query => throw new NotSupportedException("QueryConfiguration is no longer supported. Resolve IQueryRepository via IoC instead. (Version 6.0.0)");
   }
 }
