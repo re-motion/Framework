@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Reflection.CodeGeneration.TypePipe.Configuration;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
@@ -37,7 +36,8 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe
     private static IPipeline CreateDefaultPipeline (IEnumerable<IParticipant> defaultPipelineParticipants)
     {
       var remotionPipelineFactory = new RemotionPipelineFactory();
-      var settings = new AppConfigBasedSettingsProvider().GetSettings();
+      // We don't resolve the settings from IoC here as this the "remotion-default-pipeline" and customization is not needed at this point
+      var settings = new PipelineSettingsProvider().GetSettings();
       return remotionPipelineFactory.Create("remotion-default-pipeline", settings, defaultPipelineParticipants);
     }
 
