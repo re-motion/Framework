@@ -104,6 +104,9 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Table);
 
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Tbody);
+
       var isFirst = true;
       var groupedMenuItems = GetVisibleMenuItemsInGroups(renderingContext);
       foreach (var menuItemsInGroup in groupedMenuItems)
@@ -153,8 +156,9 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       //  if (isFirstItem)
       //    isFirstItem = false;
       //}
-      renderingContext.Writer.RenderEndTag();
-      renderingContext.Writer.RenderEndTag();
+      renderingContext.Writer.RenderEndTag(); //tbody
+      renderingContext.Writer.RenderEndTag(); //table
+      renderingContext.Writer.RenderEndTag(); //div
     }
 
     protected override void AddDiagnosticMetadataAttributes (RenderingContext<IListMenu> renderingContext)
