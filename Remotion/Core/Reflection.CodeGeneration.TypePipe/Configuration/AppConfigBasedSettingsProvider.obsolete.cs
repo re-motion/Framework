@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Configuration;
 using Remotion.TypePipe;
 
 namespace Remotion.Reflection.CodeGeneration.TypePipe.Configuration
@@ -41,46 +40,19 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.Configuration
   /// </code>
   /// </example>
   /// </summary>
+  [Obsolete("Use IPipelineSettingsProvider instead. (Version 6.0.0)", true)]
   public class AppConfigBasedSettingsProvider
   {
-    private readonly TypePipeConfigurationSection _section;
-
     public AppConfigBasedSettingsProvider ()
     {
-      _section = (TypePipeConfigurationSection)ConfigurationManager.GetSection("remotion.reflection.codeGeneration.typePipe") ?? new TypePipeConfigurationSection();
     }
 
-#if !FEATURE_STRONGNAMESIGNING
-    [Obsolete("Strong name signing is not supported and throws PlatformNotSupportedException.", DiagnosticId="SYSLIB0017", UrlFormat="https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    public bool ForceStrongNaming
-    {
-      get { return _section.ForceStrongNaming.ElementInformation.IsPresent; }
-    }
+    public bool ForceStrongNaming => throw new NotSupportedException("AppConfigBasedSettingsProvider is no longer supported. (Version 6.0.0)");
 
-#if !FEATURE_STRONGNAMESIGNING
-    [Obsolete("Strong name signing is not supported and throws PlatformNotSupportedException.", DiagnosticId="SYSLIB0017", UrlFormat="https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    public string KeyFilePath
-    {
-      get { return _section.ForceStrongNaming.KeyFilePath; }
-    }
+    public string KeyFilePath => throw new NotSupportedException("AppConfigBasedSettingsProvider is no longer supported. (Version 6.0.0)");
 
-    public bool EnableSerializationWithoutAssemblySaving
-    {
-      get { return _section.EnableSerializationWithoutAssemblySaving.ElementInformation.IsPresent; }
-    }
+    public bool EnableSerializationWithoutAssemblySaving => throw new NotSupportedException("AppConfigBasedSettingsProvider is no longer supported. (Version 6.0.0)");
 
-    public PipelineSettings GetSettings ()
-    {
-      return PipelineSettings
-          .New()
-#pragma warning disable SYSLIB0017
-          .SetForceStrongNaming(ForceStrongNaming)
-          .SetKeyFilePath(KeyFilePath)
-#pragma warning restore
-          .SetEnableSerializationWithoutAssemblySaving(EnableSerializationWithoutAssemblySaving)
-          .Build();
-    }
+    public PipelineSettings GetSettings () => throw new NotSupportedException("Use IPipelineSettingsProvider instead. (Version 6.0.0)");
   }
 }

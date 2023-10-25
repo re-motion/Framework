@@ -15,6 +15,7 @@
     <ProjectReference Include="..\..\Core\Collections.DataStore\Core.Collections.DataStore.csproj" />
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Core\ExtensibleEnums\Core.ExtensibleEnums.csproj" />
+    <ProjectReference Include="..\..\Core\Reflection.CodeGeneration.TypePipe\Core.Reflection.CodeGeneration.TypePipe.csproj" />
     <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
     <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj" />

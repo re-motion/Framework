@@ -24,6 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Remotion\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Remotion\Core\Reflection.CodeGeneration.TypePipe\Core.Reflection.CodeGeneration.TypePipe.csproj" />
     <ProjectReference Include="..\..\Remotion\Core\Reflection\Core.Reflection.csproj" />
     <ProjectReference Include="..\..\Remotion\Core\Tools\Core.Tools.csproj" />
     <ProjectReference Include="..\..\Remotion\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj" />
