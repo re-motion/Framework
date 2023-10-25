@@ -126,21 +126,6 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
       return violations.Where(v => v.Rule.ID != ruleID || !ArrayEquals(v.TargetPath.Select(p => p.XPath).ToArray(), xPath)).ToArray();
     }
 
-    /// <summary>
-    /// Removes elements where known workarounds cause violations.
-    /// </summary>
-    public static IEnumerable<AccessibilityRuleResult> IgnoreKnownIssues (
-        [NotNull] this IEnumerable<AccessibilityRuleResult> violations)
-    {
-      //RM-8997 This will be removed again when the accessibility problems have been fixed
-      var cssRegex = new Regex(@"(\.bocListTableBlock|\.hasMenuBlock|\.hasNavigator) > \.screenReaderText\[aria-label="".+""]\[aria-hidden=""true""]");
-
-      var requiredChildrenRegex = new Regex(@"/div[@id='.*_Boc_ListMenu']/table");
-      var xpath = new Regex(@"/a\[@id='.*_MenuItem_/d+_Command'\]");
-      violations = violations.Where(r => !(r.Rule.ID == AccessibilityRuleID.AriaRequiredParent)&& cssRegex.IsMatch(r.TargetPath.Last().XPath));
-      return violations;
-    }
-
     private static bool ArrayEquals (string[] arrayA, string[] arrayB)
     {
       if (arrayA.Length != arrayB.Length)
