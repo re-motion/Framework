@@ -78,12 +78,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
-
-      string scriptKey = typeof(DropDownMenuRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(DropDownMenuRenderer), ResourceType.Html, "DropDownMenu.js");
-      htmlHeadAppender.RegisterJavaScriptInclude(scriptKey, scriptUrl);
-
+      htmlHeadAppender.RegisterWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();
 
       string styleSheetKey = typeof(DropDownMenuRenderer).GetFullNameChecked() + "_Style";

@@ -129,7 +129,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       base.RegisterJavaScriptFiles(htmlHeadAppender);
 
-      htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
+      htmlHeadAppender.RegisterWebClientScriptInclude();
 
       string autocompleteScriptKey = typeof(BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_AutoCompleteScript";
       htmlHeadAppender.RegisterJavaScriptInclude(

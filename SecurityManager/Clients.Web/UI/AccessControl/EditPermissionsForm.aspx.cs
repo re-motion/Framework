@@ -301,7 +301,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
       EnableNewAccessControlListButton();
 
-      HtmlHeadAppender.Current.RegisterUtilitiesJavaScriptInclude();
+      HtmlHeadAppender.Current.RegisterWebClientScriptInclude();
       var url = ResourceUrlFactory.CreateResourceUrl(typeof(EditPermissionsForm), ResourceType.Html, "EditPermissionsForm.js");
       HtmlHeadAppender.Current.RegisterJavaScriptInclude(GetType().GetFullNameChecked() + "_script", url);
     }

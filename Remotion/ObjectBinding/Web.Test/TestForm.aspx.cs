@@ -24,7 +24,7 @@ namespace OBWTest
   {
     protected override void OnPreRender (EventArgs e)
     {
-      HtmlHeadAppender.Current.RegisterUtilitiesJavaScriptInclude();
+      HtmlHeadAppender.Current.RegisterWebClientScriptInclude();
       base.OnPreRender(e);
     }
   }

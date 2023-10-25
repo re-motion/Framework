@@ -78,7 +78,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
+      htmlHeadAppender.RegisterWebClientScriptInclude();
 
       string scriptKey = typeof(BocReferenceValueRendererBase<>).GetFullNameChecked() + "_Script";
       htmlHeadAppender.RegisterJavaScriptInclude(

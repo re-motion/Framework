@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
+      htmlHeadAppender.RegisterWebClientScriptInclude();
     }
 
     /// <summary>

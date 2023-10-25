@@ -121,8 +121,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
-
+      htmlHeadAppender.RegisterWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();
 
       string styleFileKey = typeof(BocListRenderer).GetFullNameChecked() + "_Style";

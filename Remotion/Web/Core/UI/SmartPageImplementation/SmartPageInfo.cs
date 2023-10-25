@@ -58,9 +58,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     private const string c_smartPageTokenID = "SmartPage_TokenField";
     private const string c_smartScrollingID = "smartScrolling";
     private const string c_smartFocusID = "smartFocus";
-    private const string c_scriptFileUrl = "SmartPage.js";
     private const string c_styleFileUrl = "SmartPage.css";
-    private const string c_smartNavigationScriptFileUrl = "SmartNavigation.js";
 
     private static readonly DateTime s_pageTokenStartDate = new(2022, 01, 01);
     private static readonly string s_scriptFileKey = typeof(SmartPageInfo).GetFullNameChecked() + "_Script";
@@ -274,22 +272,6 @@ namespace Remotion.Web.UI.SmartPageImplementation
           _page.Header.Controls.AddAt(0, new HtmlHeadContents());
       }
 
-      HtmlHeadAppender.Current.RegisterUtilitiesJavaScriptInclude();
-
-      var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
-
-      var smartNavigationUrl = resourceUrlFactory.CreateResourceUrl(typeof(SmartPageInfo), ResourceType.Html, c_smartNavigationScriptFileUrl);
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude(s_smartNavigationScriptKey, smartNavigationUrl);
-
-      var scriptUrl = resourceUrlFactory.CreateResourceUrl(typeof(SmartPageInfo), ResourceType.Html, c_scriptFileUrl);
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude(s_scriptFileKey, scriptUrl);
-
-      HtmlHeadAppender.Current.RegisterCommonStyleSheet();
-
-      var infrastructureResourceUrlFactory = SafeServiceLocator.Current.GetInstance<IInfrastructureResourceUrlFactory>();
-      var styleUrl = infrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Html, c_styleFileUrl);
-      HtmlHeadAppender.Current.RegisterStylesheetLink(s_styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
-
       var scriptManager = ScriptManager.GetCurrent(_page.WrappedInstance);
       if (scriptManager != null)
       {
@@ -317,6 +299,13 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
       _page.ClientScript.RegisterHiddenField(_page, c_smartPageTokenID, smartPageTokenValue.ToString());
       _page.ClientScript.RegisterHiddenField(_page, CacheDetectionID, null);
+
+      HtmlHeadAppender.Current.RegisterWebClientScriptInclude();
+      HtmlHeadAppender.Current.RegisterCommonStyleSheet();
+
+      var infrastructureResourceUrlFactory = SafeServiceLocator.Current.GetInstance<IInfrastructureResourceUrlFactory>();
+      var styleUrl = infrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Html, c_styleFileUrl);
+      HtmlHeadAppender.Current.RegisterStylesheetLink(s_styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
 
       RegisterSmartPageInitializationScript();
     }

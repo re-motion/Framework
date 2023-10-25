@@ -46,15 +46,12 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
       ArgumentUtility.CheckNotNull("control", control);
 
+      htmlHeadAppender.RegisterWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();
 
       string key = typeof(WebTabStripRenderer).GetFullNameChecked() + "_Style";
       var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(WebTabStripRenderer), ResourceType.Html, "TabStrip.css");
       htmlHeadAppender.RegisterStylesheetLink(key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
-
-      string keyScript = typeof(WebTabStripRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(WebTabStripRenderer), ResourceType.Html, "TabStrip.js");
-      htmlHeadAppender.RegisterJavaScriptInclude(keyScript, scriptUrl);
 
       ScriptUtility.Instance.RegisterJavaScriptInclude(control, htmlHeadAppender);
     }
