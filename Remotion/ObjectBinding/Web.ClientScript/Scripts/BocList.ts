@@ -514,7 +514,10 @@ class BocList
     var tableBlock = bocList.querySelector(':scope > div.bocListTableBlock')!;
 
     var scrollTimer: Nullable<number> = null;
-    var tableContainer = tableBlock.querySelector<HTMLElement>(':scope > div.bocListTableContainer')!;
+    const tableContainer = tableBlock.querySelector<HTMLElement>(':scope > div.bocListTableContainer');
+    if (!tableContainer) // In the case of an empty BocList we don't have a table container
+      return;
+
     var scrollableContainer = tableContainer.querySelector<HTMLElement>(':scope > div.bocListTableScrollContainer')!;
     var horizontalScroll = 0;
   
@@ -554,7 +557,10 @@ class BocList
   private static FixupValidationErrorOverflowSize(bocList: HTMLElement): void
   {
     const tableBlock = bocList.querySelector(':scope > div.bocListTableBlock')!;
-    const tableContainer = tableBlock.querySelector<HTMLElement>(':scope > div.bocListTableContainer')!;
+    const tableContainer = tableBlock.querySelector<HTMLElement>(':scope > div.bocListTableContainer');
+    if (!tableContainer) // In the case of an empty BocList we don't have a table container
+      return;
+
     const scrollableContainer = tableContainer.querySelector<HTMLElement>(':scope > div.bocListTableScrollContainer')!;
 
     const resizeInterval = 50;
