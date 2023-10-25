@@ -93,8 +93,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      RegisterBrowserCompatibilityScript(htmlHeadAppender);
-
       htmlHeadAppender.RegisterCommonStyleSheet();
 
       string styleKey = typeof(BocDateTimeValueRenderer).GetFullNameChecked() + "_Style";

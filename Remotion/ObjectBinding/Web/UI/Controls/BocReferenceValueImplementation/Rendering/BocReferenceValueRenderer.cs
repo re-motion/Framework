@@ -88,8 +88,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      htmlHeadAppender.RegisterWebClientScriptInclude();
-      RegisterBrowserCompatibilityScript(htmlHeadAppender);
       RegisterJavaScriptFiles(htmlHeadAppender);
       RegisterStylesheets(htmlHeadAppender);
     }
@@ -111,17 +109,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
                             && renderingContext.Control.DropDownListStyle.AutoPostBack.Value;
       renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.TriggersPostBack, hasAutoPostBack.ToString().ToLower());
       renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.NullIdentifier, renderingContext.Control.NullValueString);
-    }
-
-    protected override void RegisterJavaScriptFiles (HtmlHeadAppender htmlHeadAppender)
-    {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
-
-      base.RegisterJavaScriptFiles(htmlHeadAppender);
-
-      string scriptFileKey = typeof(BocReferenceValueRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(BocReferenceValueRenderer), ResourceType.Html, "BocReferenceValue.js");
-      htmlHeadAppender.RegisterJavaScriptInclude(scriptFileKey, scriptUrl);
     }
 
     private void RegisterStylesheets (HtmlHeadAppender htmlHeadAppender)

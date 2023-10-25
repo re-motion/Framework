@@ -94,7 +94,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      RegisterBrowserCompatibilityScript(htmlHeadAppender);
       RegisterJavaScriptFiles(htmlHeadAppender);
       RegisterStylesheets(htmlHeadAppender);
     }
@@ -121,28 +120,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       var hasAutoPostBack = renderingContext.Control.TextBoxStyle.AutoPostBack.HasValue && renderingContext.Control.TextBoxStyle.AutoPostBack.Value;
       renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.TriggersPostBack, hasAutoPostBack.ToString().ToLower());
-    }
-
-    protected override sealed void RegisterJavaScriptFiles (HtmlHeadAppender htmlHeadAppender)
-    {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
-
-      base.RegisterJavaScriptFiles(htmlHeadAppender);
-
-      htmlHeadAppender.RegisterWebClientScriptInclude();
-
-      string autocompleteScriptKey = typeof(BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_AutoCompleteScript";
-      htmlHeadAppender.RegisterJavaScriptInclude(
-          autocompleteScriptKey,
-          ResourceUrlFactory.CreateResourceUrl(
-              typeof(BocAutoCompleteReferenceValueRenderer),
-              ResourceType.Html,
-              "BocAutoCompleteReferenceValue.UI.js"));
-
-      string scriptKey = typeof(BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_Script";
-      htmlHeadAppender.RegisterJavaScriptInclude(
-          scriptKey,
-          ResourceUrlFactory.CreateResourceUrl(typeof(BocAutoCompleteReferenceValueRenderer), ResourceType.Html, "BocAutoCompleteReferenceValue.js"));
     }
 
     private void RegisterStylesheets (HtmlHeadAppender htmlHeadAppender)

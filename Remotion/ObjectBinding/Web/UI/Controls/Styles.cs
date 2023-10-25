@@ -432,7 +432,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// </summary>
   public class TextBoxStyle : SingleRowTextBoxStyle
   {
-    private const string c_scriptFileUrl = "TextBoxStyle.js";
     private static readonly string s_scriptFileKey = typeof(TextBoxStyle).GetFullNameChecked() + "_Script";
 
     private int? _rows;
@@ -501,8 +500,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      var scriptUrl = resourceUrlFactory.CreateResourceUrl(typeof(TextBoxStyle), ResourceType.Html, c_scriptFileUrl);
-      htmlHeadAppender.RegisterJavaScriptInclude(s_scriptFileKey, scriptUrl);
+      htmlHeadAppender.RegisterObjectBindingWebClientScriptInclude();
     }
 
     public override void CopyFrom (Style s)
