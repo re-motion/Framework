@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
       var clientTransaction = new SecurityClientTransactionFactory().CreateRootTransaction();
-      clientTransaction.To<ClientTransaction>().EnterDiscardingScope();
+      clientTransaction.EnterDiscardingScope();
 
       BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
     }

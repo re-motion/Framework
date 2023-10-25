@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using JetBrains.Annotations;
 using Remotion.Context;
 using Remotion.Data.DomainObjects;
@@ -25,7 +26,6 @@ using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Security;
 using Remotion.FunctionalProgramming;
 using Remotion.Security;
-using Remotion.Security.Configuration;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -84,6 +84,9 @@ namespace Remotion.SecurityManager.Domain
     private readonly IReadOnlyList<RoleProxy>? _roleProxies;
     private readonly SubstitutionProxy? _substitutionProxy;
     private readonly SecurityPrincipal _securityPrincipal;
+
+    [NonSerialized]
+    private SecurityClientTransactionFactory? _securityTransactionFactory;
 
     public SecurityManagerPrincipal (
         [NotNull] IDomainObjectHandle<Tenant> tenantHandle,
@@ -308,12 +311,12 @@ namespace Remotion.SecurityManager.Domain
 
     private ClientTransaction CreateClientTransaction ()
     {
-      var transaction = ClientTransaction.CreateRootTransaction();
-
-      if (!SecurityConfiguration.Current.DisableAccessChecks)
-        transaction.Extensions.Add(new SecurityClientTransactionExtension());
-
-      return transaction;
+      if (_securityTransactionFactory == null)
+      {
+        var securityTransactionFactory = new SecurityClientTransactionFactory();
+        Interlocked.CompareExchange(ref _securityTransactionFactory, securityTransactionFactory, null);
+      }
+      return _securityTransactionFactory!.CreateRootTransaction();
     }
 
     private GuidRevisionValue GetDomainRevision ()

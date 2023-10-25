@@ -139,6 +139,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
 
       Assert.That(deserializedPrincipal.Substitution.ID, Is.EqualTo(principal.Substitution.ID));
       Assert.That(deserializedPrincipal.Substitution, Is.Not.SameAs(principal.Substitution));
+
+      Assert.That(() => deserializedPrincipal.GetTenants(true), Throws.Nothing);
+      Assert.That(() => deserializedPrincipal.GetTenants(false), Throws.Nothing);
+      Assert.That(() => deserializedPrincipal.GetTenants(false), Is.Not.Empty);
+      Assert.That(() => deserializedPrincipal.GetActiveSubstitutions(), Throws.Nothing);
+      Assert.That(() => deserializedPrincipal.GetActiveSubstitutions(), Is.Not.Empty);
     }
 
     [Test]
