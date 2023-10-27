@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
       <providerDefinitions>
         <add type=""Remotion.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition""
              name=""Default""
-             factoryType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2014.SqlStorageObjectFactory""
+             factoryType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2016.SqlStorageObjectFactory""
              connectionString=""DefaultConnection"" />
       </providerDefinitions>
     </storage>
