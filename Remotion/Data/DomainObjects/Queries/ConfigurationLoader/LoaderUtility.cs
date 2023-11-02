@@ -20,7 +20,7 @@ using System.Xml;
 using Remotion.Configuration;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader
+namespace Remotion.Data.DomainObjects.Queries.ConfigurationLoader
 {
   public static class LoaderUtility
   {

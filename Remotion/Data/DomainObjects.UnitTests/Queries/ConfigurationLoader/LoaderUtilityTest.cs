@@ -19,10 +19,10 @@ using System.IO;
 using System.Xml;
 using NUnit.Framework;
 using Remotion.Configuration;
-using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Queries.ConfigurationLoader;
 using Remotion.Development.UnitTesting.Configuration;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Configuration
+namespace Remotion.Data.DomainObjects.UnitTests.Queries.ConfigurationLoader
 {
   [TestFixture]
   public class LoaderUtilityTest
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     [Test]
     public void GetTypeWithTypeUtilityNotation ()
     {
-      Assert.That(LoaderUtility.GetType("Remotion.Data.DomainObjects::ConfigurationLoader.XmlBasedConfigurationLoader.LoaderUtility"), Is.EqualTo(typeof(LoaderUtility)));
+      Assert.That(LoaderUtility.GetType("Remotion.Data.DomainObjects::Queries.ConfigurationLoader.LoaderUtility"), Is.EqualTo(typeof(LoaderUtility)));
     }
 
     [Test]
