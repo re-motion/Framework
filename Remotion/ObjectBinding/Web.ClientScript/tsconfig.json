@@ -1,12 +1,10 @@
 {
   "compilerOptions" : {
-    "target" : "es2020",
+    "target": "es2020",
     "module": "system",
 
     "noEmit": true,
     "strict": true,
-    "alwaysStrict" : false,
-    "noImplicitUseStrict" : true,
 
     "allowJs": true
   },
