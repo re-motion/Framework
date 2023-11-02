@@ -38,17 +38,6 @@
             </xs:all>
           </xs:complexType>
         </xs:element>
-        <xs:element name="query" minOccurs="0" maxOccurs="1" >
-          <xs:complexType>
-            <xs:all>
-              <xs:element name="queryFiles" type="c:QueryFileCollection"  minOccurs="0" maxOccurs="1" />
-            </xs:all>
-          </xs:complexType>
-          <xs:unique name="uniqueNames">
-            <xs:selector xpath="c:queryFiles/c:add"/>
-            <xs:field xpath="@filename"/>
-          </xs:unique>      
-        </xs:element>
       </xs:all>
     </xs:complexType>
 	</xs:element>
@@ -109,26 +98,6 @@
     </xs:choice>
   </xs:complexType>
 
-
-  <xs:complexType name="QueryFileCollection">
-    <xs:choice minOccurs="1" maxOccurs="unbounded">
-      <xs:element name="add">
-        <xs:complexType>
-          <xs:attribute name="filename" type="c:RequiredStringType" use="required"/>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="remove">
-        <xs:complexType>
-          <xs:attribute name="filename" type="c:RequiredStringType" use="required"/>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="clear">
-        <xs:complexType>
-          <!--tag is empty-->
-        </xs:complexType>
-      </xs:element>
-    </xs:choice>
-  </xs:complexType>
 
   <xs:simpleType name="RequiredStringType">
     <xs:restriction base="xs:string">

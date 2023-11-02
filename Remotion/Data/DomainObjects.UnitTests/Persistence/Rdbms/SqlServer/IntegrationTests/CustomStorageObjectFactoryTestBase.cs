@@ -75,8 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           new FakeDomainObjectsConfiguration(
               new StorageConfiguration(
                   new ProviderCollection<StorageProviderDefinition> { _storageProviderDefinition },
-                  _storageProviderDefinition),
-              null));
+                  _storageProviderDefinition)));
     }
 
     public override void TearDown ()

@@ -26,6 +26,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.UnitTests.Database;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests
@@ -33,6 +34,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
   public abstract class StandardMappingTest : DatabaseTest
   {
     public const string CreateTestDataFileName = "Database\\DataDomainObjects_CreateTestData.sql";
+
+    private IDisposable _serviceLocatorScope;
 
     protected StandardMappingTest ()
         : base(new StandardMappingDatabaseAgent(TestDomainConnectionString), CreateTestDataFileName)
@@ -52,6 +55,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       base.SetUp();
 
+      // Setup a scope for the tests that registers the QueriesForStandardMapping.xml query file
+      _serviceLocatorScope = new ServiceLocatorScope(QueriesForStandardMappingQueryFileFinder.CreateServiceConfigurationEntry());
+
       DomainObjectsConfiguration.SetCurrent(StandardConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent(StandardConfiguration.Instance.GetMappingConfiguration());
       ConfigurationWrapper.SetCurrent(null);
@@ -59,6 +65,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public override void TearDown ()
     {
+      _serviceLocatorScope.Dispose();
+
       DomainObjectsConfiguration.SetCurrent(null);
       MappingConfiguration.SetCurrent(null);
       ConfigurationWrapper.SetCurrent(null);

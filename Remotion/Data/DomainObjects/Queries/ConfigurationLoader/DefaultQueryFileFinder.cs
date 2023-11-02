@@ -15,35 +15,22 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using System.Collections.Generic;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries.ConfigurationLoader
 {
   /// <summary>
-  /// Default implementation of the <see cref="IQueryFileFinder"/> interface.
+  /// Default implementation of <see cref="IQueryFileFinder"/> that locates a "queries.xml" file in <see cref="IAppContextProvider"/>.<see cref="IAppContextProvider.BaseDirectory"/>.
   /// </summary>
-  [ImplementationFor(typeof(IQueryFileFinder), Lifetime = LifetimeKind.Singleton)]
-  public class QueryFileFinder : IQueryFileFinder
+  [ImplementationFor(typeof(IQueryFileFinder), Position = 0, RegistrationType = RegistrationType.Multiple)]
+  public class DefaultQueryFileFinder : BaseDirectoryBasedOptionalQueryFileFinder
   {
-    public QueryFileFinder ()
-    {
-    }
+    private const string c_defaultConfigurationFile = "queries.xml";
 
-    /// <inheritdoc />
-    public IEnumerable<string> GetQueryFilePaths ()
+    public DefaultQueryFileFinder (IAppContextProvider appContextProvider)
+        : base(appContextProvider, c_defaultConfigurationFile)
     {
-      var queryFiles = DomainObjectsConfiguration.Current.Query.QueryFiles;
-      if (queryFiles.Count == 0)
-      {
-        yield return DomainObjectsConfiguration.Current.Query.GetDefaultQueryFilePath();
-      }
-      else
-      {
-        for (var i = 0; i < queryFiles.Count; i++)
-          yield return queryFiles[i].RootedFileName;
-      }
     }
   }
 }
