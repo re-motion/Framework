@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.ObjectBinding;
@@ -36,8 +35,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
       if (defaultSearchArguments == null || string.IsNullOrEmpty(defaultSearchArguments.SearchStatement))
         return new IBusinessObject[0];
 
-      QueryDefinition definition = DomainObjectsConfiguration.Current.Query.QueryDefinitions.GetMandatory(defaultSearchArguments.SearchStatement);
-      if (definition.QueryType != QueryType.Collection)
+      var query = QueryFactory.CreateQueryFromConfiguration(defaultSearchArguments.SearchStatement);
+      if (query.QueryType != QueryType.Collection)
         throw new ArgumentException(string.Format("The query '{0}' is not a collection query.", defaultSearchArguments.SearchStatement));
 
       var referencingDomainObject = referencingObject as DomainObject;
@@ -46,7 +45,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
       if (clientTransaction == null)
         throw new InvalidOperationException("No ClientTransaction has been associated with the current thread or the referencing object.");
 
-      var result = clientTransaction.QueryManager.GetCollection(QueryFactory.CreateQuery(definition));
+      var result = clientTransaction.QueryManager.GetCollection(query);
       var availableObjects = new IBusinessObjectWithIdentity[result.Count];
 
       if (availableObjects.Length > 0)
