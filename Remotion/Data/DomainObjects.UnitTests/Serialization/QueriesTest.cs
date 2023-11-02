@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
@@ -103,11 +104,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     {
       var queryDefinitionRepository = SafeServiceLocator.Current.GetInstance<IQueryDefinitionRepository>();
 
-      QueryDefinitionCollection queryDefinitions = new QueryDefinitionCollection();
+      var queryDefinitions = new List<QueryDefinition>();
       queryDefinitions.Add(queryDefinitionRepository.GetMandatory("QueryWithoutParameter"));
       queryDefinitions.Add(queryDefinitionRepository.GetMandatory("OrderNoSumByCustomerNameQuery"));
 
-      QueryDefinitionCollection deserializedQueryDefinitions = Serializer.SerializeAndDeserialize(queryDefinitions);
+      var deserializedQueryDefinitions = Serializer.SerializeAndDeserialize(queryDefinitions);
       AreEqual(queryDefinitions, deserializedQueryDefinitions);
       Assert.That(queryDefinitionRepository.GetMandatory("QueryWithoutParameter"), Is.SameAs(deserializedQueryDefinitions[0]));
       Assert.That(queryDefinitionRepository.GetMandatory("OrderNoSumByCustomerNameQuery"), Is.SameAs(deserializedQueryDefinitions[1]));
@@ -134,7 +135,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       AreEqual(expected.Parameters, actual.Parameters);
     }
 
-    private void AreEqual (QueryDefinitionCollection expected, QueryDefinitionCollection actual)
+    private void AreEqual (IReadOnlyList<QueryDefinition> expected, IReadOnlyList<QueryDefinition> actual)
     {
       Assert.That(ReferenceEquals(expected, actual), Is.False);
       Assert.That(actual, Is.Not.Null);

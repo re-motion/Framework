@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Development.UnitTesting;
 
@@ -46,7 +45,6 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       // Have all xml files loaded, so if the code is instrumented by a profiler, 
       // the loading does not falsify the method run times during the first call of GetObject.
       Dev.Null = MappingConfiguration.Current;
-      Dev.Null = DomainObjectsConfiguration.Current.Query;
 
       //RunLoadObjectsTest();
 

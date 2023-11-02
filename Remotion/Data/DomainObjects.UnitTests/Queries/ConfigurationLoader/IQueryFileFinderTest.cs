@@ -38,7 +38,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.ConfigurationLoader
       var factory = _serviceLocator.GetInstance<IQueryFileFinder>();
 
       Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof(QueryFileFinder)));
+      Assert.That(factory, Is.TypeOf(typeof(CompoundQueryFileFinder)));
+
+      var queryFileFinders = ((CompoundQueryFileFinder)factory).QueryFileFinders;
+      Assert.That(queryFileFinders.Count, Is.EqualTo(1));
+      Assert.That(queryFileFinders[0], Is.TypeOf<DefaultQueryFileFinder>());
     }
 
     [Test]

@@ -47,11 +47,9 @@ namespace Remotion.Data.DomainObjects.Configuration
     public DomainObjectsConfiguration ()
     {
       _persistenceConfiguration = new DoubleCheckedLockingContainer<StorageConfiguration>(GetPersistenceConfiguration);
-      _queryConfiguration = new DoubleCheckedLockingContainer<QueryConfiguration>(GetQueryConfiguration);
     }
 
     private readonly DoubleCheckedLockingContainer<StorageConfiguration> _persistenceConfiguration;
-    private readonly DoubleCheckedLockingContainer<QueryConfiguration> _queryConfiguration;
 
     [ConfigurationProperty(StoragePropertyName)]
     public StorageConfiguration Storage
@@ -60,23 +58,14 @@ namespace Remotion.Data.DomainObjects.Configuration
     }
 
     [ConfigurationProperty(QueryPropertyName)]
-    public QueryConfiguration Query
-    {
-      get { return _queryConfiguration.Value; }
-    }
+    [Obsolete("QueryConfiguration is no longer supported. (Version 6.0.0)", true)]
+    public QueryConfiguration Query => throw new NotSupportedException("QueryConfiguration is no longer supported. (Version 6.0.0)");
 
     private StorageConfiguration GetPersistenceConfiguration ()
     {
       return
           (StorageConfiguration?)ConfigurationWrapper.Current.GetSection(ConfigKey + "/" + StoragePropertyName, false)
           ?? new StorageConfiguration();
-    }
-
-    private QueryConfiguration GetQueryConfiguration ()
-    {
-      return
-          (QueryConfiguration?)ConfigurationWrapper.Current.GetSection(ConfigKey + "/" + QueryPropertyName, false)
-          ?? new QueryConfiguration();
     }
 
     private string ConfigKey

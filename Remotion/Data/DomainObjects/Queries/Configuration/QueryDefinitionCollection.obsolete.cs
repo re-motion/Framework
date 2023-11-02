@@ -23,6 +23,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
   /// Represents a collection of <see cref="QueryDefinition"/>s.
   /// </summary>
   [Serializable]
+  [Obsolete("QueryDefinitionCollection is no longer supported. (Version 6.0.0)", true)]
   public class QueryDefinitionCollection : CommonCollection
   {
     // types
