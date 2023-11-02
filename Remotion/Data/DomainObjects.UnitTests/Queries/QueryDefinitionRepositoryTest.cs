@@ -15,9 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.Queries.ConfigurationLoader;
 using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries
@@ -60,6 +62,55 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
 
       Assert.That(
           () => QueryDefinitionRepository.FromQueryDefinitions(new[] { queryDefinition, null }),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("Item 1 of parameter 'queryDefinitions' is null.", "queryDefinitions"));
+    }
+
+    [Test]
+    public void Constructor_WithDuplicateQueryID_ThrowsException ()
+    {
+      var storageProviderDefinition = new UnitTestStorageProviderStubDefinition("provider");
+      var queryDefinition1 = new QueryDefinition("myId", storageProviderDefinition, "statement", default);
+      var queryDefinition2 = new QueryDefinition("myId", storageProviderDefinition, "statement", default);
+
+      var queryDefinitionLoaderMock = new Mock<IQueryDefinitionLoader>();
+      queryDefinitionLoaderMock.Setup(e => e.LoadAllQueryDefinitions()).Returns(new[] { queryDefinition1, queryDefinition2 });
+
+      Assert.That(
+          () => new QueryDefinitionRepository(queryDefinitionLoaderMock.Object),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("Duplicate query definitions with the following IDs: 'myId'.", "queryDefinitions"));
+    }
+
+    [Test]
+    public void Constructor_WithMultipleDuplicateQueryID_ThrowsExceptionAndListsAllOfThem ()
+    {
+      var storageProviderDefinition = new UnitTestStorageProviderStubDefinition("provider");
+      var queryDefinition1 = new QueryDefinition("duplicateId1", storageProviderDefinition, "statement", default);
+      var queryDefinition2 = new QueryDefinition("myId1", storageProviderDefinition, "statement", default);
+      var queryDefinition3 = new QueryDefinition("duplicateId2", storageProviderDefinition, "statement", default);
+      var queryDefinition4 = new QueryDefinition("duplicateId1", storageProviderDefinition, "statement", default);
+      var queryDefinition5 = new QueryDefinition("duplicateId1", storageProviderDefinition, "statement", default);
+      var queryDefinition6 = new QueryDefinition("duplicateId2", storageProviderDefinition, "statement", default);
+
+      var queryDefinitionLoaderMock = new Mock<IQueryDefinitionLoader>();
+      queryDefinitionLoaderMock
+          .Setup(e => e.LoadAllQueryDefinitions())
+          .Returns(new[] { queryDefinition1, queryDefinition2, queryDefinition3, queryDefinition4, queryDefinition5, queryDefinition6 });
+
+      Assert.That(
+          () => new QueryDefinitionRepository(queryDefinitionLoaderMock.Object),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("Duplicate query definitions with the following IDs: 'duplicateId1', 'duplicateId2'.", "queryDefinitions"));
+    }
+
+    [Test]
+    public void Constructor_WithNullItem_ThrowsException ()
+    {
+      var queryDefinition = new QueryDefinition("myId", new UnitTestStorageProviderStubDefinition("provider"), "statement", default);
+
+      var queryDefinitionLoaderMock = new Mock<IQueryDefinitionLoader>();
+      queryDefinitionLoaderMock.Setup(e => e.LoadAllQueryDefinitions()).Returns(new[] { queryDefinition, null });
+
+      Assert.That(
+          () => new QueryDefinitionRepository(queryDefinitionLoaderMock.Object),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("Item 1 of parameter 'queryDefinitions' is null.", "queryDefinitions"));
     }
 
