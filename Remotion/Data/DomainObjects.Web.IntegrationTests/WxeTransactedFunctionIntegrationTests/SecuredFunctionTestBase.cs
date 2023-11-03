@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects.Web.IntegrationTests.TestDomain;
 using Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunctionIntegrationTests.WxeFunctions;
 using Remotion.Development.UnitTesting;
 using Remotion.Security;
-using Remotion.Security.Configuration;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.Web.ExecutionEngine;

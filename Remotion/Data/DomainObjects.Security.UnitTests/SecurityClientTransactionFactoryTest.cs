@@ -19,7 +19,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransactionExtensionTests;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
-using Remotion.Security.Configuration;
 
 namespace Remotion.Data.DomainObjects.Security.UnitTests
 {
@@ -36,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
     }
 
     [Test]
-    public void CreateRootTransaction_WithEnabledSecurity ()
+    public void CreateRootTransaction ()
     {
       ITransactionFactory factory = new SecurityClientTransactionFactory();
 
@@ -44,7 +43,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       ITransaction transaction;
       try
       {
-        Assert.That(SecurityConfiguration.Current.DisableAccessChecks, Is.False);
         transaction = factory.CreateRootTransaction();
       }
       finally
@@ -59,29 +57,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
           clientTransaction.Extensions,
           Has.Some.InstanceOf(typeof(SecurityClientTransactionExtension))
               .With.Property("Key").EqualTo(typeof(SecurityClientTransactionExtension).FullName));
-    }
-
-    [Test]
-    public void CreateRootTransaction_WithDisabledSecurity ()
-    {
-      ITransactionFactory factory = new SecurityClientTransactionFactory();
-
-      var backupValue = SecurityConfiguration.Current.DisableAccessChecks;
-      try
-      {
-        SecurityConfiguration.Current.DisableAccessChecks = true;
-
-        ITransaction transaction = factory.CreateRootTransaction();
-
-        var clientTransaction = transaction.To<ClientTransaction>();
-        var persistenceStrategy = ClientTransactionTestHelper.GetPersistenceStrategy(clientTransaction);
-        Assert.That(persistenceStrategy, Is.InstanceOf(typeof(RootPersistenceStrategy)));
-        Assert.That(clientTransaction.Extensions, Has.No.InstanceOf<SecurityClientTransactionExtension>());
-      }
-      finally
-      {
-        SecurityConfiguration.Current.DisableAccessChecks = backupValue;
-      }
     }
   }
 }

@@ -18,7 +18,6 @@ using System;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Security.Configuration;
 using Remotion.Security.Metadata;
 using Remotion.ServiceLocation;
 
@@ -59,10 +58,8 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     }
 
     [Test]
-    public void Create_WithEnabledAccessChecks_ReturnsSecurityClientWithMembersFromServiceLocator ()
+    public void Create_ReturnsSecurityClientWithMembersFromServiceLocator ()
     {
-      Assert.That(SecurityConfiguration.Current.DisableAccessChecks, Is.False);
-
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
 
       Assert.IsInstanceOf(typeof(SecurityClient), securityClient);
@@ -74,27 +71,8 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     }
 
     [Test]
-    public void Create_WithDisabledAccessChecks_ReturnsNullObject ()
-    {
-      bool backupValue = SecurityConfiguration.Current.DisableAccessChecks;
-      try
-      {
-        SecurityConfiguration.Current.DisableAccessChecks = true;
-
-        SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
-
-        Assert.That(securityClient, Is.SameAs(SecurityClient.Null));
-      }
-      finally
-      {
-        SecurityConfiguration.Current.DisableAccessChecks = backupValue;
-      }
-    }
-
-    [Test]
     public void Create_WithNullSecurityProvider_ReturnsNullObject ()
     {
-      Assert.That(SecurityConfiguration.Current.DisableAccessChecks, Is.False);
       _stubSecurityProvider.Setup(_ => _.IsNull).Returns(true);
 
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
