@@ -21,14 +21,14 @@ using System.Web;
 using System.Web.SessionState;
 using Remotion.Logging;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Web.Configuration;
 using Remotion.Web.Utilities;
 using VirtualPathUtility = System.Web.VirtualPathUtility;
 
 namespace Remotion.Web.ExecutionEngine
 {
-  /// <summary> 
+  /// <summary>
   ///   The <see cref="IHttpHandler"/> implementation responsible for handling requests to the 
   ///   <b>Web Execution Engine.</b>
   /// </summary>
@@ -91,36 +91,45 @@ namespace Remotion.Web.ExecutionEngine
 
     private static ILog s_log = LogManager.GetLogger(typeof(WxeHandler));
 
-    /// <summary> Gets a flag indication whether session management is enabled for the application. </summary>
-    /// <value> <see langword="true"/> if session management is enabled. </value>
-    /// <remarks> Without session management both session refreshing and session aborting are disabled. </remarks>
-    public static bool IsSessionManagementEnabled
-    {
-      get { return WebConfiguration.Current.ExecutionEngine.EnableSessionManagement; }
-    }
-
-    /// <summary> Gets a flag indication whether session refreshing is enabled for the application. </summary>
-    /// <value> <see langword="true"/> if session refreshing is enabled. </value>
-    public static bool IsSessionRefreshEnabled
-    {
-      get { return WebConfiguration.Current.ExecutionEngine.RefreshInterval > 0; }
-    }
-
-    /// <summary> Gets session refresh interval for the application. </summary>
-    /// <value> The time between refresh postbacks in minutes. </value>
-    public static int RefreshInterval
-    {
-      get { return WebConfiguration.Current.ExecutionEngine.RefreshInterval; }
-    }
-
     /// <summary> The <see cref="WxeFunctionState"/> representing the <see cref="RootFunction"/> and its context. </summary>
     private WxeFunctionState? _currentFunctionState;
+
+    private readonly IWxeLifetimeManagementSettings _wxeLifetimeManagementSettings;
+    private readonly WxeUrlSettings _wxeUrlSettings;
+
+    public WxeHandler ()
+    {
+      _wxeLifetimeManagementSettings = SafeServiceLocator.Current.GetInstance<IWxeLifetimeManagementSettings>();
+      _wxeUrlSettings = SafeServiceLocator.Current.GetInstance<WxeUrlSettings>();
+    }
 
     /// <summary> The root function executed by the <b>WxeHanlder</b>. </summary>
     /// <value> The <see cref="WxeFunction"/> invoked by the <see cref="Parameters.WxeFunctionType"/> parameter. </value>
     public WxeFunction RootFunction
     {
       get { return _currentFunctionState!.Function; } // TODO RM-8118: not null assertion
+    }
+
+    /// <summary> Gets a flag indication whether session management is enabled for the application. </summary>
+    /// <value> <see langword="true"/> if session management is enabled. </value>
+    /// <remarks> Without session management both session refreshing and session aborting are disabled. </remarks>
+    public bool IsSessionManagementEnabled
+    {
+      get { return  _wxeLifetimeManagementSettings.EnableSessionManagement; }
+    }
+
+    /// <summary> Gets a flag indication whether session refreshing is enabled for the application. </summary>
+    /// <value> <see langword="true"/> if session refreshing is enabled. </value>
+    public bool IsSessionRefreshEnabled
+    {
+      get { return _wxeLifetimeManagementSettings.RefreshInterval > 0; }
+    }
+
+    /// <summary> Gets session refresh interval for the application. </summary>
+    /// <value> The time between refresh postbacks in minutes. </value>
+    public int RefreshInterval
+    {
+      get { return _wxeLifetimeManagementSettings.RefreshInterval; }
     }
 
     /// <summary> Processes the requests associated with the <see cref="WxeHandler"/>. </summary>
@@ -159,20 +168,19 @@ namespace Remotion.Web.ExecutionEngine
     {
       ArgumentUtility.CheckNotNull("context", context);
 
-      if (! IsSessionManagementEnabled)
+      if (!IsSessionManagementEnabled)
         return;
 
-      int functionTimeout = WebConfiguration.Current.ExecutionEngine.FunctionTimeout;
+      int functionTimeout = _wxeLifetimeManagementSettings.FunctionTimeout;
       if (functionTimeout > context.Session.Timeout)
         throw new WxeException("The FunctionTimeout setting in the configuration must not be greater than the session timeout.");
-      int refreshInterval = WebConfiguration.Current.ExecutionEngine.RefreshInterval;
+      int refreshInterval = _wxeLifetimeManagementSettings.RefreshInterval;
       if (refreshInterval > 0)
       {
         if (refreshInterval >= functionTimeout)
           throw new WxeException("The RefreshInterval setting in the configuration must be less than the FunctionTimeout.");
       }
     }
-
 
     /// <summary> Gets the <see cref="Type"/> from the information provided by the <paramref name="context"/>. </summary>
     /// <include file='..\doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/GetType/*' />
@@ -241,7 +249,7 @@ namespace Remotion.Web.ExecutionEngine
 
       WxeFunction function = (WxeFunction)Activator.CreateInstance(type)!;
 
-      WxeFunctionState functionState = new WxeFunctionState(function, true);
+      WxeFunctionState functionState = new WxeFunctionState(function, _wxeLifetimeManagementSettings.FunctionTimeout, true);
       functionStates.Add(functionState);
 
       function.VariablesContainer.InitializeParameters(context.Request.QueryString);
@@ -391,7 +399,13 @@ namespace Remotion.Web.ExecutionEngine
       if (functionState.IsAborted)
         throw new ArgumentException("The function state " + functionState.FunctionToken + " is aborted.");
 
-      WxeContext wxeContext = new WxeContext(new HttpContextWrapper(context), WxeFunctionStateManager.Current, functionState, context.Request.QueryString);
+      WxeContext wxeContext = new WxeContext(
+          new HttpContextWrapper(context),
+          WxeFunctionStateManager.Current,
+          functionState,
+          context.Request.QueryString,
+          _wxeUrlSettings,
+          _wxeLifetimeManagementSettings);
       WxeContext.SetCurrent(wxeContext);
 
       functionState.PostBackID++;

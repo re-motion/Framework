@@ -16,8 +16,8 @@
 // 
 using System;
 using Remotion.Logging;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Web.Configuration;
 
 namespace Remotion.Web.ExecutionEngine
 {
@@ -40,7 +40,7 @@ namespace Remotion.Web.ExecutionEngine
     public WxeFunctionState (WxeFunction function, bool enableCleanUp)
         : this(
             function,
-            WebConfiguration.Current.ExecutionEngine.FunctionTimeout,
+            SafeServiceLocator.Current.GetInstance<IWxeLifetimeManagementSettings>().FunctionTimeout,
             enableCleanUp)
     {
     }

@@ -141,6 +141,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void GetFunctionTypeByPath ()
     {
+      UrlMappingConfiguration.SetCurrent(UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
       UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(_functionType, "~/Test.wxe"));
 
       Type type = _wxeHandler.GetTypeByPath(@"/Test.wxe");
@@ -152,6 +153,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void GetFunctionTypeByPathWithoutMapping ()
     {
+      UrlMappingConfiguration.SetCurrent(UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
+
       Assert.That(
           () => _wxeHandler.GetTypeByPath(@"/Test1.wxe"),
           Throws.InstanceOf<WxeException>());
@@ -256,6 +259,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void RetrieveMissingFunctionStateWithNoType ()
     {
+      UrlMappingConfiguration.SetCurrent(UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
+
       NameValueCollection form = new NameValueCollection();
       form.Set(WxeHandler.Parameters.WxeFunctionToken, c_functionTokenForMissingFunctionState);
       HttpContextHelper.SetForm(CurrentHttpContext, form);
@@ -268,7 +273,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     public void RetrieveMissingFunctionStateWithTypeFromMapping ()
     {
       HttpContext context = HttpContextHelper.CreateHttpContext("GET", "Test.wxe", null);
-
+      UrlMappingConfiguration.SetCurrent(UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
       UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(_functionType, "~/Test.wxe"));
 
       WxeFunctionState functionState = _wxeHandler.ResumeExistingFunctionState(context, c_functionTokenForMissingFunctionState);
@@ -284,7 +289,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       NameValueCollection queryString = new NameValueCollection();
       queryString.Add(WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
       HttpContextHelper.SetQueryString(context, queryString);
-
+      UrlMappingConfiguration.SetCurrent(UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
       UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(typeof(TestFunction), "~/Test.wxe"));
 
       _wxeHandler.ResumeExistingFunctionState(context, c_functionTokenForMissingFunctionState);
@@ -301,6 +306,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       form.Add(WxeHandler.Parameters.WxeFunctionToken, c_functionTokenForMissingFunctionState);
       HttpContextHelper.SetForm(context, form);
 
+      UrlMappingConfiguration.SetCurrent(UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
       UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(typeof(TestFunction), "~/Test.wxe"));
       Assert.That(
           () => _wxeHandler.ResumeExistingFunctionState(context, c_functionTokenForMissingFunctionState),
@@ -366,6 +372,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void RetrieveExpiredFunctionState ()
     {
+      UrlMappingConfiguration.SetCurrent(UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
+
       NameValueCollection form = new NameValueCollection();
       form.Set(WxeHandler.Parameters.WxeFunctionToken, c_functionTokenForExpiredFunctionState);
       HttpContextHelper.SetForm(CurrentHttpContext, form);

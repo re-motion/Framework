@@ -32,10 +32,10 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     {
       var httpContext = new Mock<HttpContextBase>();
       WxeFunctionStateManager functionStateManager = new WxeFunctionStateManager(new Mock<HttpSessionStateBase>().Object);
-      WxeFunctionState functionState = new WxeFunctionState(rootFunction, false);
+      WxeFunctionState functionState = new WxeFunctionState(rootFunction, 20, false);
       NameValueCollection queryString = new NameValueCollection();
 
-      return new WxeContext(httpContext.Object, functionStateManager, functionState, queryString);
+      return new WxeContext(httpContext.Object, functionStateManager, functionState, queryString, new WxeUrlSettings(), new WxeLifetimeManagementSettings());
     }
 
   }

@@ -19,6 +19,7 @@ using System.Collections.Specialized;
 using System.Web;
 using Moq;
 using NUnit.Framework;
+using Remotion.Web.Configuration;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.UrlMapping;
@@ -48,7 +49,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       _subFunction = CreateSubFunction();
 
       _httpContextMock = new Mock<HttpContextBase>();
-      _functionState = new WxeFunctionState(_rootFunction, true);
+      _functionState = new WxeFunctionState(_rootFunction, 20, true);
 
       _responseMock = new Mock<HttpResponseBase>(MockBehavior.Strict);
       _httpContextMock.Setup(stub => stub.Response).Returns(_responseMock.Object);
@@ -59,7 +60,13 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       _postBackCollection = new NameValueCollection();
 
       _functionStateManager = new WxeFunctionStateManager(new FakeHttpSessionStateBase());
-      _wxeContext = new WxeContext(_httpContextMock.Object, _functionStateManager, _functionState, new NameValueCollection());
+      _wxeContext = new WxeContext(
+          _httpContextMock.Object,
+          _functionStateManager,
+          _functionState,
+          new NameValueCollection(),
+          new WxeUrlSettings(),
+          new WxeLifetimeManagementSettings());
     }
 
     protected virtual Mock<OtherTestFunction> CreateSubFunction ()

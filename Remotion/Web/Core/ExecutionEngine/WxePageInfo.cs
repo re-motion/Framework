@@ -335,7 +335,7 @@ namespace Remotion.Web.ExecutionEngine
       int refreshInterval = 0;
       string refreshPath = "null";
       string abortPath = "null";
-      if (WxeHandler.IsSessionManagementEnabled)
+      if (_page.WxeHandler.IsSessionManagementEnabled)
       {
         //  Ensure the registration of "__doPostBack" on the page.
         _ = _page.ClientScript.GetPostBackEventReference(_page, null);
@@ -344,9 +344,9 @@ namespace Remotion.Web.ExecutionEngine
 
         string resumePath = wxeContext.GetPath(wxeContext.FunctionToken, null);
 
-        if (WxeHandler.IsSessionRefreshEnabled)
+        if (_page.WxeHandler.IsSessionRefreshEnabled)
         {
-          refreshInterval = WxeHandler.RefreshInterval * 60000;
+          refreshInterval = _page.WxeHandler.RefreshInterval * 60000;
           refreshPath = "'" + resumePath + "&" + WxeHandler.Parameters.WxeAction + "=" + WxeHandler.Actions.Refresh + "'";
         }
 

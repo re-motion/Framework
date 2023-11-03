@@ -45,13 +45,19 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
 
       _httpContextMock = new Mock<HttpContextBase>();
       _pageExecutorMock = new Mock<IWxePageExecutor>(MockBehavior.Strict);
-      _functionState = new WxeFunctionState(_rootFunction, true);
+      _functionState = new WxeFunctionState(_rootFunction, 20, true);
 
       _pageStep = new Mock<WxePageStep>("ThePage") { CallBase = true };
       _pageStep.Object.SetPageExecutor(_pageExecutorMock.Object);
 
       _functionStateManager = new WxeFunctionStateManager(new FakeHttpSessionStateBase());
-      _wxeContext = new WxeContext(_httpContextMock.Object, _functionStateManager, _functionState, new NameValueCollection());
+      _wxeContext = new WxeContext(
+          _httpContextMock.Object,
+          _functionStateManager,
+          _functionState,
+          new NameValueCollection(),
+          new WxeUrlSettings(),
+          new WxeLifetimeManagementSettings());
     }
 
     [Test]

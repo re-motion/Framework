@@ -18,8 +18,8 @@ using System;
 using System.Collections;
 using System.Xml.Serialization;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Web.Configuration;
 using Remotion.Web.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.UrlMapping
@@ -55,11 +55,11 @@ public class UrlMappingConfiguration: ConfigurationBase
 
   private static UrlMappingConfiguration CreateConfig ()
   {
-    string mappingFile = WebConfiguration.Current.ExecutionEngine.UrlMappingFile;
+    var mappingFile = SafeServiceLocator.Current.GetInstance<WxeUrlSettings>().UrlMappingFile;
     if (string.IsNullOrEmpty(mappingFile))
       return new UrlMappingConfiguration();
     else
-      return UrlMappingConfiguration.CreateUrlMappingConfiguration(WebConfiguration.Current.ExecutionEngine.UrlMappingFile);
+      return CreateUrlMappingConfiguration(mappingFile);
   }
 
   /// <summary> Sets the current <see cref="UrlMappingConfiguration"/>. </summary>

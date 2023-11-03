@@ -35,6 +35,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     {
       base.SetUp();
 
+      UrlMappingConfiguration.SetCurrent(UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
       UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(RootFunction.GetType(), "~/root.wxe"));
       UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(SubFunction.Object.GetType(), "~/sub.wxe"));
 

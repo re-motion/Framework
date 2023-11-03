@@ -61,8 +61,11 @@
       If <see langword="true"/>, the method uses the <see cref="Uri.AbsolutePath"/> of the 
       <paramref name="httpContext"/>'s <see cref="System.Web.HttpContext.Request"/> as a fallback if no mapping for the
       <paramref name="functionType"/> has been defined, and the 
-      <see cref="Remotion.Web.Configuration.ExecutionEngineConfiguration.DefaultWxeHandler"/> is not set. 
+      <see cref="Remotion.Web.ExecutionEngine.WxeUrlSettings.DefaultWxeHandler"/> is not set.
       Otherwise, a <see cref="WxeException"/> is thrown.
+    </param>
+    <param name="wxeUrlSettings">
+      Used to specify the DefaultWxeHandler.
     </param>
   </GetPermanentUrl>
 </WxeContext>
