@@ -9,6 +9,7 @@
     <Description>Client Scripts for re-motion's ObjectBinding web controls.</Description>
     <AssemblyName>Remotion.ObjectBinding.Web.ClientScript</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
+    <TypeScriptBuildMode>true</TypeScriptBuildMode>
   </PropertyGroup>
   <ItemGroup>
     <TypeScriptCompile Include="..\..\Web\ClientScript\Scripts\typings\common.d.ts">

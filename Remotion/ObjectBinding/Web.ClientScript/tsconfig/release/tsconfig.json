@@ -6,5 +6,10 @@
 
     "sourceMap": false,
     "inlineSources": false
-  }
+  },
+  "references": [
+    {
+      "path": "../../../../Web/ClientScript/tsconfig/release"
+    }
+  ]
 }
