@@ -54,13 +54,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     public abstract string GetCssClassBase (TControl control);
 
-    protected void RegisterBrowserCompatibilityScript (HtmlHeadAppender htmlHeadAppender)
-    {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
-
-      htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
-    }
-
     /// <summary>
     /// Adds class and style attributes found in the <see cref="RenderingContext{TControl}.Control"/> 
     /// to the <paramref name="renderingContext"/> so that they are rendered in the next begin tag.

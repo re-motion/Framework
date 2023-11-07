@@ -61,12 +61,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
-
-      string scriptFileKey = typeof(ListMenuRenderer).GetFullNameChecked() + "_Script";
-      var scriptFileUrl = ResourceUrlFactory.CreateResourceUrl(typeof(ListMenuRenderer), ResourceType.Html, "ListMenu.js");
-      htmlHeadAppender.RegisterJavaScriptInclude(scriptFileKey, scriptFileUrl);
-
+      htmlHeadAppender.RegisterWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();
 
       string styleSheetKey = typeof(ListMenuRenderer).GetFullNameChecked() + "_Style";

@@ -142,7 +142,7 @@ namespace Remotion.Web.Utilities
       {
         var url = _infrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Html, "StyleUtility.js");
 
-        htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
+        htmlHeadAppender.RegisterWebClientScriptInclude();
         htmlHeadAppender.RegisterJavaScriptInclude(key, url);
 
         control.Page!.ClientScript.RegisterClientScriptBlock(control, typeof(ScriptUtility), key, "StyleUtility.AddBrowserSwitch();");

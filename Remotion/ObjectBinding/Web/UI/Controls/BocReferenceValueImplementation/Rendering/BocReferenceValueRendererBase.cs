@@ -74,16 +74,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     protected abstract string GetAriaRoleDescriptionForComboboxReadOnly (BocRenderingContext<TControl> renderingContext);
 
-    protected virtual void RegisterJavaScriptFiles (HtmlHeadAppender htmlHeadAppender)
+    protected void RegisterJavaScriptFiles (HtmlHeadAppender htmlHeadAppender)
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
-
-      string scriptKey = typeof(BocReferenceValueRendererBase<>).GetFullNameChecked() + "_Script";
-      htmlHeadAppender.RegisterJavaScriptInclude(
-          scriptKey,
-          ResourceUrlFactory.CreateResourceUrl(typeof(BocReferenceValueRendererBase<>), ResourceType.Html, "BocReferenceValueBase.js"));
+      htmlHeadAppender.RegisterObjectBindingWebClientScriptInclude();
     }
 
     [Obsolete("Use Render (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)", false)]

@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../bin/Debug/dist",
+    "outFile": "../../bin/Debug/dist/Remotion.ObjectBinding.Web.ClientScript.js",
     "noEmit": false,
 
     "sourceMap": true,

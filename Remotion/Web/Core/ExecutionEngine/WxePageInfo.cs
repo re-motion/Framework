@@ -66,7 +66,6 @@ namespace Remotion.Web.ExecutionEngine
     private const int HttpStatusCode_ServerError = 500;
     private const int HttpStatusCode_NotFound = 404;
 
-    private const string c_scriptFileUrl = "ExecutionEngine.js";
     private const string c_styleFileUrl = "ExecutionEngine.css";
     private const string c_styleFileUrlForIE = "ExecutionEngineIE.css";
 
@@ -130,7 +129,6 @@ namespace Remotion.Web.ExecutionEngine
       _wxeExecutor = new WxeExecutor(context, _page, this);
 
       _page.PreInit += HandlePagePreInit;
-      _page.Init += HandlePageInit;
     }
 
     public NameValueCollection? EnsurePostBackModeDetermined (HttpContext context)
@@ -231,16 +229,6 @@ namespace Remotion.Web.ExecutionEngine
     {
       return (member is FieldInfo && ((FieldInfo)member).FieldType == typeof(HtmlForm));
     }
-    private void HandlePageInit (object? sender, EventArgs e)
-    {
-      var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
-      var scriptUrl = resourceUrlFactory.CreateResourceUrl(typeof(WxePageInfo), ResourceType.Html, c_scriptFileUrl);
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude(s_scriptFileKey, scriptUrl);
-
-      var infrastructureResourceUrlFactory = SafeServiceLocator.Current.GetInstance<IInfrastructureResourceUrlFactory>();
-      var styleUrl = infrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Html, c_styleFileUrl);
-      HtmlHeadAppender.Current.RegisterStylesheetLink(s_styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
-    }
 
     private void Form_LoadPostData (object? sender, EventArgs e)
     {
@@ -322,7 +310,11 @@ namespace Remotion.Web.ExecutionEngine
           + "  __doPostBack (control, argument); \r\n"
           + "}");
 
-      HtmlHeadAppender.Current.RegisterUtilitiesJavaScriptInclude();
+      HtmlHeadAppender.Current.RegisterWebClientScriptInclude();
+
+      var infrastructureResourceUrlFactory = SafeServiceLocator.Current.GetInstance<IInfrastructureResourceUrlFactory>();
+      var styleUrl = infrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Html, c_styleFileUrl);
+      HtmlHeadAppender.Current.RegisterStylesheetLink(s_styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
 
       RegisterWxeInitializationScript();
       SetCacheSettings();

@@ -24,20 +24,34 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.Web.UI
 {
   /// <summary>
-  /// Declares extension methods for HtmlHeadAppender.
+  /// Declares extension methods for <see cref="HtmlHeadAppender"/>.
   /// </summary>
   public static class HtmlHeadAppenderExtensions
   {
     /// <summary>
+    /// Registers the client scripts in non-themed HTML folder of Remotion.Web.dll.
+    /// </summary>
+    public static void RegisterWebClientScriptInclude (this HtmlHeadAppender htmlHeadAppender)
+    {
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+
+      const string scriptKey = "Remotion.Web.ClientScript";
+      if (htmlHeadAppender.IsRegistered(scriptKey))
+        return;
+
+      var webClientScriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(HtmlHeadAppenderExtensions), ResourceType.Html, "Remotion.Web.ClientScript.js");
+      htmlHeadAppender.RegisterJavaScriptInclude(scriptKey, webClientScriptUrl);
+    }
+
+    /// <summary>
     /// Registers Utilities.js in non-themed HTML folder of Remotion.Web.dll.
     /// </summary>
+    [Obsolete("Please use RegisterWebClientScript instead. (Version 6.0.0)")]
     public static void RegisterUtilitiesJavaScriptInclude (this HtmlHeadAppender htmlHeadAppender)
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      string utilitiesKey = typeof(HtmlHeadContents).GetFullNameChecked() + "_Utilities";
-      var utilitiesScripFileUrl = ResourceUrlFactory.CreateResourceUrl(typeof(HtmlHeadContents), ResourceType.Html, "Utilities.js");
-      htmlHeadAppender.RegisterJavaScriptInclude(utilitiesKey, utilitiesScripFileUrl);
+      RegisterWebClientScriptInclude(htmlHeadAppender);
     }
 
     /// <summary>
