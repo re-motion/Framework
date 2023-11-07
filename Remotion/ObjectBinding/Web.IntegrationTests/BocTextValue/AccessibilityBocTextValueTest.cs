@@ -119,11 +119,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocTextValue
 
       var result = bocTextValue.Analyze(analyzer);
 
-      var violations = result.Violations
-          // TODO RM-7223 remove ignore once issue is resolved: https://github.com/dequelabs/axe-core/issues/3691
-          .IgnoreByRuleIDAndXPath(AccessibilityRuleID.ScrollableRegionFocusable, "/textarea[@id='body_DataEditControl_CVString_Disabled_Value']");
-
-      Assert.That(violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
