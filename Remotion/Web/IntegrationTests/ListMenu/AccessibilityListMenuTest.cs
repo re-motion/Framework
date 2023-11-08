@@ -35,10 +35,7 @@ namespace Remotion.Web.IntegrationTests.ListMenu
 
       var result = analyzer.Analyze(listMenu);
 
-      //RM-8997 This will be removed again when the accessibility problems have been fixed
-      var violationResult = result.Violations.IgnoreByRuleID(AccessibilityRuleID.AriaRequiredChildren).IgnoreKnownIssues();
-
-      Assert.That(violationResult, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
@@ -50,10 +47,7 @@ namespace Remotion.Web.IntegrationTests.ListMenu
 
       var result = analyzer.Analyze(listMenu);
 
-      //RM-8997 This will be removed again when the accessibility problems have been fixed
-      var violationResult = result.Violations.IgnoreByRuleID(AccessibilityRuleID.AriaRequiredChildren).IgnoreKnownIssues();
-
-      Assert.That(violationResult, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
@@ -65,10 +59,7 @@ namespace Remotion.Web.IntegrationTests.ListMenu
 
       var result = analyzer.Analyze(listMenu);
 
-      //RM-8997 This will be removed again when the accessibility problems have been fixed
-      var violationResult = result.Violations.IgnoreByRuleID(AccessibilityRuleID.AriaRequiredChildren).IgnoreKnownIssues();
-
-      Assert.That(violationResult, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     private WxePageObject Start ()
