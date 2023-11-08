@@ -66,8 +66,6 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
     public Control[] CreateSut ()
     {
-      Assertion.IsFalse(WcagHelper.Instance.IsWaiConformanceLevelARequired());
-
       List<Control> controls = new List<Control>();
 
       _label = new Label();

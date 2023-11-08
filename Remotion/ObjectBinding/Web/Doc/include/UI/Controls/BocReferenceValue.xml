@@ -26,44 +26,6 @@
       </para><para>
         The control's <see cref="BocReferenceValueBase.Property"/> supports the <see cref="IBusinessObjectReferenceProperty"/>.
       </para>
-      
-      <h4 class="dtH4">Standards Conformance</h4>
-      <list type="table">
-        <listheader>
-          <term>Standard</term>
-          <description>Conformance Information</description>
-        </listheader>
-        <item>
-          <term>HTML 4.01</term>
-          <description>valid</description>
-        </item>
-        <item>
-          <term>XHTML 1.0</term>
-          <description>valid</description>
-        </item>
-        <item>
-          <term>WAI WCAG 1.0</term>
-          <description>
-            <para> 
-              Level A conform if advanced features are turned off. This can be enforced by the 
-              <see cref="Remotion.Web.Configuration.WebConfiguration.Wcag"/> configuration entry.
-            </para>
-            <para> Priority 1 checkpoint 6.3 is not met by the following advacned features:</para>
-            <list type="bullet">
-              <item> An event or a WXE command is defined. </item>
-              <item> The drop down menu. </item>
-            </list>
-            <para>
-              Enabling auto post back can break compliance with priority 1 checkpoint 6.3 if the post back is 
-              required for using the page.
-            </para>
-            <para> Priority 2 checkpoints 6.5 and 10.1 are not met if the advanced features are enabled. </para>
-            <para> 
-              Priority 2 checkpoint 13.1 is not met by the command. The value is used to decribe the link's target.
-            </para>
-          </description>
-        </item>        
-      </list>
 
       <h4 class="dtH4">Usage Notes</h4>      
       <para>

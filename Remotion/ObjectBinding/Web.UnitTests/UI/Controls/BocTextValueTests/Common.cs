@@ -26,7 +26,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
   [TestFixture]
   public class Common : BocTest
   {
-    private BocTextValueMock _bocTextValue;
+    private BocTextValue _bocTextValue;
     private TypeWithString _businessObject;
     private IBusinessObjectDataSource _dataSource;
     private IBusinessObjectStringProperty _propertyStringValue;
@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
     public override void SetUp ()
     {
       base.SetUp();
-      _bocTextValue = new BocTextValueMock();
+      _bocTextValue = new BocTextValue();
       _bocTextValue.ID = "BocTextValue";
       NamingContainer.Controls.Add(_bocTextValue);
 
@@ -46,42 +46,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
 
       _dataSource = new StubDataSource(((IBusinessObject)_businessObject).BusinessObjectClass);
       _dataSource.BusinessObject = (IBusinessObject)_businessObject;
-    }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelUndefined ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
-      _bocTextValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-    [Test]
-    public void EvaluateWaiConformityLevelA ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-      _bocTextValue.TextBoxStyle.AutoPostBack = true;
-      _bocTextValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelAWithTextBoxStyleAutoPostBackTrue ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocTextValue.TextBoxStyle.AutoPostBack = true;
-      _bocTextValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.True);
-      Assert.That(WcagHelperMock.Priority, Is.EqualTo(1));
-      Assert.That(WcagHelperMock.Control, Is.SameAs(_bocTextValue));
-      Assert.That(WcagHelperMock.Property, Is.EqualTo("TextBoxStyle.AutoPostBack"));
     }
 
     [Test]

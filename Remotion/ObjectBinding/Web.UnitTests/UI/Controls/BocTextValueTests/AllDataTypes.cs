@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
   [TestFixture]
   public class AllDataTypes : BocTest
   {
-    private BocTextValueMock _bocTextValue;
+    private BocTextValue _bocTextValue;
     private IBusinessObject _businessObject;
     private BindableObjectDataSourceControl _dataSource;
     private CultureScope _cultureScope;
@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests
     public override void SetUp ()
     {
       base.SetUp();
-      _bocTextValue = new BocTextValueMock();
+      _bocTextValue = new BocTextValue();
       _bocTextValue.ID = "BocTextValue";
       NamingContainer.Controls.Add(_bocTextValue);
 

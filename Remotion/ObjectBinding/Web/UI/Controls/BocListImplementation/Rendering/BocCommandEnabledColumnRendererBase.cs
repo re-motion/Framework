@@ -79,8 +79,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       bool isCommandAllowed = (command.Type != CommandType.None) && !renderingContext.Control.EditModeController.IsRowEditModeActive;
       bool isCommandEnabled = (command.CommandState == null)
                               || command.CommandState.IsEnabled(renderingContext.Control, businessObject, renderingContext.ColumnDefinition);
-      bool isCommandWaiCompliant = (!WcagHelper.Instance.IsWaiConformanceLevelARequired() || command.Type == CommandType.Href);
-      if (isActive && isCommandAllowed && isCommandEnabled && isCommandWaiCompliant)
+      if (isActive && isCommandAllowed && isCommandEnabled)
       {
         string? objectID = null;
         IBusinessObjectWithIdentity? businessObjectWithIdentity = businessObject as IBusinessObjectWithIdentity;

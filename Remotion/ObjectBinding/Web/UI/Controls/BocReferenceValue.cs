@@ -252,20 +252,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         Select = resourceManager.GetString(key);
     }
 
-    /// <summary> Checks whether the control conforms to the required WAI level. </summary>
-    /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
-    protected virtual void EvaluateWaiConformity ()
-    {
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-      {
-        if (ShowOptionsMenu)
-          WcagHelper.Instance.HandleError(1, this, "ShowOptionsMenu");
-
-        if (DropDownListStyle.AutoPostBack == true)
-          WcagHelper.Instance.HandleWarning(1, this, "DropDownListStyle.AutoPostBack");
-      }
-    }
-
     /// <summary>
     /// A validator for the display name is created.
     /// </summary>
@@ -320,8 +306,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override void Render (HtmlTextWriter writer)
     {
       ArgumentUtility.CheckNotNull("writer", writer);
-
-      EvaluateWaiConformity();
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));

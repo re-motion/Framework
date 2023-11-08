@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Configuration;
+using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
@@ -24,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
   [TestFixture]
   public class BocDropDownMenuTest : BocTest
   {
-    private BocDropDownMenuMock _bocDropDownMenu;
+    private BocDropDownMenu _bocDropDownMenu;
     private TypeWithReference _businessObject;
     private BusinessObjectReferenceDataSource _dataSource;
     private IBusinessObjectReferenceProperty _propertyReferenceValue;
@@ -38,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public override void SetUp ()
     {
       base.SetUp();
-      _bocDropDownMenu = new BocDropDownMenuMock();
+      _bocDropDownMenu = new BocDropDownMenu();
       _bocDropDownMenu.ID = "BocDropDownMenu";
       NamingContainer.Controls.Add(_bocDropDownMenu);
 
@@ -50,41 +51,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _dataSource = new BusinessObjectReferenceDataSource();
       _dataSource.BusinessObject = (IBusinessObject)_businessObject;
     }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelUndefined ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
-      _bocDropDownMenu.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-    [Test]
-    public void EvaluateWaiConformityLevelA ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-      _bocDropDownMenu.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelA ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocDropDownMenu.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasError, Is.True);
-      Assert.That(WcagHelperMock.Priority, Is.EqualTo(1));
-      Assert.That(WcagHelperMock.Control, Is.SameAs(_bocDropDownMenu));
-      Assert.That(WcagHelperMock.Property, Is.Null);
-    }
-
 
     [Test]
     public void SetValueToObject ()

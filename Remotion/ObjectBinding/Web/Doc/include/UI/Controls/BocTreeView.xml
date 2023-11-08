@@ -28,26 +28,6 @@
         no longer represent he current object model.
       </para>
       
-      <h4 class="dtH4">Standards Conformance</h4>
-      <list type="table">
-        <listheader>
-          <term>Standard</term>
-          <description>Conformance Information</description>
-        </listheader>
-        <item>
-          <term>HTML 4.01</term>
-          <description>valid</description>
-        </item>
-        <item>
-          <term>XHTML 1.0</term>
-          <description>valid</description>
-        </item>
-        <item>
-          <term>WAI WCAG 1.0</term>
-          <description>not conform</description>
-        </item>        
-      </list>
-      
       <h4 class="dtH4">General Usage Notes</h4>     
       <para>
         The <see cref="InvalidOperationException"/> will be thrown during the encapsulated <see cref="WebTreeView"/>'s 

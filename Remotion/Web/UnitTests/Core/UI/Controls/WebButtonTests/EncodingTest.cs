@@ -18,19 +18,20 @@ using System.Web.UI;
 using System.Xml;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.UI.Controls;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
 {
   [TestFixture]
   public class EncodingTest : BaseTest
   {
-    private TestWebButton _webButton;
+    private WebButton _webButton;
     private HtmlHelper _html;
 
     protected override void SetUpPage ()
     {
       base.SetUpPage();
-      _webButton = new TestWebButton();
+      _webButton = new WebButton();
       _webButton.ID = "WebButton";
       _html = new HtmlHelper();
     }

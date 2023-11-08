@@ -34,7 +34,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
     [Test]
     public void RenderDiagnosticMetadataAttributes ()
     {
-      var webButton = new TestWebButton { ID = "WebButton", Text = WebString.CreateFromText("My\nButton") };
+      var webButton = new WebButton { ID = "WebButton", Text = WebString.CreateFromText("My\nButton") };
 
       var renderedText = RenderControl(webButton);
 
@@ -48,7 +48,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
     [Test]
     public void RenderDiagnosticMetadataAttributes_WithHtmlText_StripsTagsInContent ()
     {
-      var webButton = new TestWebButton { ID = "WebButton", Text = WebString.CreateFromHtml("<p>My Button</p>") };
+      var webButton = new WebButton { ID = "WebButton", Text = WebString.CreateFromHtml("<p>My Button</p>") };
 
       var renderedText = RenderControl(webButton);
 
@@ -58,7 +58,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
     [Test]
     public void RenderDiagnosticMetadataAttributesWithCommand ()
     {
-      var webButton = new TestWebButton { ID = "WebButton", CommandName = "MyCommand" };
+      var webButton = new WebButton { ID = "WebButton", CommandName = "MyCommand" };
 
       var renderedText = RenderControl(webButton);
 

@@ -224,14 +224,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         OnSelectionChanged();
     }
 
-    /// <summary> Checks whether the control conforms to the required WAI level. </summary>
-    /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
-    protected virtual void EvaluateWaiConformity ()
-    {
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-        WcagHelper.Instance.HandleError(1, this);
-    }
-
     protected override void OnPreRender (EventArgs e)
     {
       EnsureChildControls();
@@ -259,8 +251,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override void Render (HtmlTextWriter writer)
     {
       ArgumentUtility.CheckNotNull("writer", writer);
-
-      EvaluateWaiConformity();
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));

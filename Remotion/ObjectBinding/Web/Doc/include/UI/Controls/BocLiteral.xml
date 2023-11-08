@@ -27,28 +27,6 @@
         The control's <see cref="BusinessObjectBoundWebControl.Property"/> supports objects of type <see cref="IBusinessObjectStringProperty"/>.
       </para>
 
-      <h4 class="dtH4">Standards Conformance</h4>
-      <list type="table">
-        <listheader>
-          <term>Standard</term>
-          <description>Conformance Information</description>
-        </listheader>
-        <item>
-          <term>HTML 4.01</term>
-          <description>valid</description>
-        </item>
-        <item>
-          <term>XHTML 1.0</term>
-          <description>valid</description>
-        </item>
-        <item>
-          <term>WAI WCAG 1.0</term>
-          <description>
-            <para>level Triple-A conform</para>
-          </description>
-        </item>        
-      </list>
-
       <h4 class="dtH4">Usage Notes</h4>      
       <para>
         If <see cref="BusinessObjectBoundWebControl.DataSource"/> and <see cref="BusinessObjectBoundWebControl.PropertyIdentifier"/> 

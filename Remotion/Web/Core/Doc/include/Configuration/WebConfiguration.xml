@@ -29,7 +29,6 @@
     </remarks>
     <seealso cref="IConfigurationSectionHandler"/>
     <seealso cref="ExecutionEngineConfiguration"/>
-    <seealso cref="WcagConfiguration"/>
     <example>
       Register the configuration section in the configuration file within the <c>configSections</c> element
       and create the configuration section for <c>remotion.web</c>. The <c>configSections</c> element must 
@@ -53,10 +52,6 @@
         urlMappingFile="C:\ProjectDirectory\UrlMapping.xml"
     /&gt;
 
-    &lt;<see cref="WcagConfiguration">wcag</see>
-        <see cref="WaiConformanceLevel">conformanceLevel</see>="Undefined" 
-        <see cref="WcagDebugMode">debugging</see>="Disabled" 
-    /&gt;
   &lt;/remotion.web&gt;
 
   &lt;!-- Other configuration sections. --&gt;

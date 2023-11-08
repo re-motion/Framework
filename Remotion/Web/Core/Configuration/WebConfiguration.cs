@@ -67,7 +67,6 @@ public class WebConfiguration: IConfigurationSectionHandler
   }
 
   private ExecutionEngineConfiguration _executionEngine = new ExecutionEngineConfiguration();
-  private WcagConfiguration _wcag = new WcagConfiguration();
 
   /// <summary> Gets or sets the <see cref="ExecutionEngineConfiguration"/> entry. </summary>
   [XmlElement("executionEngine")]
@@ -75,14 +74,6 @@ public class WebConfiguration: IConfigurationSectionHandler
   {
     get { return _executionEngine; }
     set { _executionEngine = value; }
-  }
-
-  /// <summary> Gets or sets the <see cref="WcagConfiguration"/> entry. </summary>
-  [XmlElement("wcag")]
-  public WcagConfiguration Wcag
-  {
-    get { return _wcag; }
-    set { _wcag = value; }
   }
 
   object IConfigurationSectionHandler.Create (object parent, object configContext, XmlNode section)

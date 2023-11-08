@@ -90,14 +90,6 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     _dropDownMenu.WxeFunctionCommandClick += new WebMenuItemClickEventHandler(DropDownMenu_WxeFunctionCommandClick);
   }
 
-  /// <summary> Checks whether the control conforms to the required WAI level. </summary>
-  /// <exception cref="Remotion.Web.UI.WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
-  protected virtual void EvaluateWaiConformity ()
-  {
-    if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-      WcagHelper.Instance.HandleError(1, this);
-  }
-
   protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender(e);
@@ -215,7 +207,6 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
   protected override void Render (HtmlTextWriter writer)
   {
-    EvaluateWaiConformity();
 
     if (!string.IsNullOrEmpty(ControlServicePath))
     {

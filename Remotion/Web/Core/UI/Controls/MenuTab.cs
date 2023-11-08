@@ -164,11 +164,6 @@ namespace Remotion.Web.UI.Controls
 
       if (Command != null)
       {
-        if (WcagHelper.Instance.IsWaiConformanceLevelARequired()
-            && Command.Type == CommandType.Event)
-        {
-          return false;
-        }
         if (MissingPermissionBehavior == MissingPermissionBehavior.Invisible)
           return Command.HasAccess(null);
       }

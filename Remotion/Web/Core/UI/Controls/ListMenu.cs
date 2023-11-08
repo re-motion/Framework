@@ -60,9 +60,6 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull("writer", writer);
 
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-        WcagHelper.Instance.HandleError(1, this);
-
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));
     }

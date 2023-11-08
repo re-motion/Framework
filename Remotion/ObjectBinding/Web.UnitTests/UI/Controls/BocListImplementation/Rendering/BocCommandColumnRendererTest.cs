@@ -173,32 +173,5 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       Html.AssertTextNode(a, "TestCommand", 1);
     }
-
-    [Test]
-    public void RenderDisabledCommandForWaiConformanceLevelA ()
-    {
-      WebConfigurationMock.Current.Wcag.ConformanceLevel = WaiConformanceLevel.A;
-
-      IBocColumnRenderer renderer = new BocCommandColumnRenderer(
-          new FakeResourceUrlFactory(),
-          RenderingFeatures.Default,
-          _bocListCssClassDefinition,
-          new FakeFallbackNavigationUrlProvider());
-      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
-
-      var document = Html.GetResultDocument();
-
-      var td = Html.GetAssertedChildElement(document, "td", 0);
-      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
-      Html.AssertAttribute(td, "role", "cell");
-
-      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
-      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
-
-      var div = Html.GetAssertedChildElement(cellStructureDiv, "div", 0);
-      Html.AssertAttribute(div, "class", _bocListCssClassDefinition.Content);
-
-      Html.AssertTextNode(div, "TestCommand", 0);
-    }
   }
 }

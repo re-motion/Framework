@@ -18,12 +18,6 @@
             <xs:attribute name="defaultWxeHandler" type="xs:string" default="" />
           </xs:complexType>
         </xs:element>
-        <xs:element name="wcag" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:attribute name="conformanceLevel" type="c:WcagLevel" default="Undefined" />
-            <xs:attribute name="debugging" type="c:WcagDebugMode" default="Disabled" />
-          </xs:complexType>
-        </xs:element>
         <xs:element name="resources" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:attribute name="root" type="xs:string" default="res" />
@@ -32,19 +26,4 @@
       </xs:all>
     </xs:complexType>
   </xs:element>
-  <xs:simpleType name="WcagLevel">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Undefined" />
-      <xs:enumeration value="A" />
-      <xs:enumeration value="DoubleA" />
-      <xs:enumeration value="TripleA" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="WcagDebugMode">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Disabled" />
-      <xs:enumeration value="Logging" />
-      <xs:enumeration value="Exception" />
-    </xs:restriction>
-  </xs:simpleType>
 </xs:schema>

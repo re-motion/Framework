@@ -40,7 +40,6 @@ using Remotion.Web.Utilities;
 namespace Remotion.Web.UI.Controls
 {
   /// <summary> A tree view. </summary>
-  /// <include file='..\..\doc\include\UI\Controls\WebTreeView.xml' path='WebTreeView/Class/*' />
   [ToolboxData("<{0}:WebTreeView runat=server></{0}:WebTreeView>")]
   [DefaultEvent("Click")]
   public class WebTreeView : WebControl, IWebTreeView, IPostBackEventHandler, IResourceDispatchTarget
@@ -586,9 +585,6 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Overrides the parent control's <c>RenderContents</c> method. </summary>
     protected override void RenderContents (HtmlTextWriter writer)
     {
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-        WcagHelper.Instance.HandleError(1, this);
-
       ((IControl)this).Page!.ClientScript.RegisterStartupScriptBlock(
           this,
           typeof(WebTreeView),
