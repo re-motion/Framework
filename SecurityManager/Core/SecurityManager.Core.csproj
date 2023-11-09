@@ -12,7 +12,6 @@
     <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Configuration\SecurityManagerConfiguration.xsd" />
     <EmbeddedResource Include="AclTools\Expansion\AclExpansion.css" />
   </ItemGroup>
   <ItemGroup>

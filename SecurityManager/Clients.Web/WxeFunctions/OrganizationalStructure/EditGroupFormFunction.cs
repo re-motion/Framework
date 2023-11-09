@@ -19,8 +19,8 @@ using System;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure;
-using Remotion.SecurityManager.Configuration;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure
@@ -46,7 +46,7 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
     {
       if (CurrentObject == null)
       {
-        CurrentObject = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateGroup();
+        CurrentObject = SafeServiceLocator.Current.GetInstance<IOrganizationalStructureFactory>().CreateGroup();
         CurrentObject.Tenant = TenantHandle.GetObject();
       }
     }

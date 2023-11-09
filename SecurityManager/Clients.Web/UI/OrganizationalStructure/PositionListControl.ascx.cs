@@ -25,8 +25,8 @@ using Remotion.Security;
 using Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure;
-using Remotion.SecurityManager.Configuration;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Globalization;
@@ -60,7 +60,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       PositionList.LoadUnboundValue(GetValues(), false);
 
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
-      Type positionType = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.GetPositionType();
+      Type positionType = SafeServiceLocator.Current.GetInstance<IOrganizationalStructureFactory>().GetPositionType();
       NewPositionButton.Visible = securityClient.HasConstructorAccess(positionType);
     }
 

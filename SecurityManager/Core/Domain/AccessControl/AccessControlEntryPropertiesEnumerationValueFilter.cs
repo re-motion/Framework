@@ -19,7 +19,7 @@ using System;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.Reflection;
-using Remotion.SecurityManager.Configuration;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
@@ -33,8 +33,18 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   /// </remarks>
   public class AccessControlEntryPropertiesEnumerationValueFilter : IEnumerationValueFilter
   {
+    private readonly IAccessControlSettings _accessControlSettings;
+
     public AccessControlEntryPropertiesEnumerationValueFilter ()
+        : this(SafeServiceLocator.Current.GetInstance<IAccessControlSettings>())
     {
+    }
+
+    public AccessControlEntryPropertiesEnumerationValueFilter (IAccessControlSettings accessControlSettings)
+    {
+      ArgumentUtility.CheckNotNull("accessControlSettings", accessControlSettings);
+
+      _accessControlSettings = accessControlSettings;
     }
 
     public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject? businessObject, IBusinessObjectEnumerationProperty property)
@@ -105,7 +115,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
         case UserCondition.Owner:
           return isStateful;
         case UserCondition.SpecificUser:
-          return !SecurityManagerConfiguration.Current.AccessControl.DisableSpecificUser;
+          return !_accessControlSettings.DisableSpecificUser;
         case UserCondition.SpecificPosition:
           return true;
         default:

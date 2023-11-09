@@ -20,8 +20,8 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.ObjectBinding;
-using Remotion.SecurityManager.Configuration;
 using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.ServiceLocation;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEntryTests
 {
@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     {
       var ace = CreateAceForStateful();
       var property = GetPropertyDefinition(ace, "UserCondition");
-      Assert.That(SecurityManagerConfiguration.Current.AccessControl.DisableSpecificUser, Is.False);
+      Assert.That(SafeServiceLocator.Current.GetInstance<IAccessControlSettings>().DisableSpecificUser, Is.False);
 
       Assert.That(
           property.GetEnabledValues(ace).Select(value => value.Value).ToArray(),
