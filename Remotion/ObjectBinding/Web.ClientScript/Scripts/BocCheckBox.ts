@@ -43,12 +43,12 @@ class BocCheckBox
   public static OnClick (checkBox: HTMLInputElement, label: HTMLLabelElement, trueDescription: Nullable<string>, falseDescription: Nullable<string>): void
   {    
   // Update the controls
-    var checkBoxToolTip; // TODO RM-7654: BocCheckBox_OnClick sets checkBoxToolTip but does not use it
-    var labelText;
+    let checkBoxToolTip; // TODO RM-7654: BocCheckBox_OnClick sets checkBoxToolTip but does not use it
+    let labelText;
     
     if (checkBox.checked)
     {
-      var description;
+      let description;
       if (trueDescription == null)
         description = BocCheckBox._bocCheckBox_trueDescription;
       else
@@ -58,7 +58,7 @@ class BocCheckBox
     }
     else
     {
-      var description;
+      let description;
       if (falseDescription == null)
         description = BocCheckBox._bocCheckBox_falseDescription;
       else

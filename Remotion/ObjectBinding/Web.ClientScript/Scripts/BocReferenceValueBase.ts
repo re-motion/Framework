@@ -69,17 +69,17 @@ class BocReferenceValueBase //TODO RM-7715 - Make the TypeScript classes BocRefe
     ArgumentUtility.CheckNotNullAndTypeIsObject('iconContext', iconContext);
     ArgumentUtility.CheckTypeIsFunction('onFailure', onFailure);
 
-    var oldIcon = icon;
-    var newIcon = BocReferenceValueBase.CreateEmptyIcon(oldIcon);
+    const oldIcon = icon;
+    const newIcon = BocReferenceValueBase.CreateEmptyIcon(oldIcon);
 
     oldIcon.replaceWith(newIcon);
 
-    var pageRequestManager = Sys.WebForms.PageRequestManager.getInstance();
+    const pageRequestManager = Sys.WebForms.PageRequestManager.getInstance();
     if (pageRequestManager.get_isInAsyncPostBack())
       return oldIcon;
 
-    var params: Dictionary<string> = { businessObject: businessObject! };
-    for (var propertyName in iconContext) // TODO RM-7714 - Simplify copiyng JavaScript properties in TypeScript files
+    const params: Dictionary<string> = { businessObject: businessObject! };
+    for (const propertyName in iconContext) // TODO RM-7714 - Simplify copiyng JavaScript properties in TypeScript files
       params[propertyName] = (iconContext as any)[propertyName];
 
     WebServiceUtility.Execute<BocReferenceValueBase_IconInformation>(
@@ -106,7 +106,7 @@ class BocReferenceValueBase //TODO RM-7715 - Make the TypeScript classes BocRefe
   {
     ArgumentUtility.CheckNotNull('oldIcon', oldIcon);
 
-    var newIcon = (window.document.createElement('img') as HTMLImageElement);
+    const newIcon = (window.document.createElement('img') as HTMLImageElement);
     newIcon.setAttribute('src', BocReferenceValueBase._nullIconUrl!);
     newIcon.setAttribute('alt', '');
     newIcon.style.width = LayoutUtility.GetWidth(oldIcon) + 'px';
