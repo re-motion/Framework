@@ -34,6 +34,7 @@ using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Web.Services;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
 using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
@@ -386,6 +387,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void LoadPostData_NotEmpty_SetEmpty ()
     {
       PrivateInvoke.InvokeNonPublicMethod (_control, "CreateChildControls");
+      var controlInvoker = new Remotion.Development.Web.UnitTesting.UI.Controls.ControlInvoker (_control);
+      var controlState = controlInvoker.SaveControlState();
+      controlInvoker.LoadControlState (controlState);
 
       var postbackCollection = new NameValueCollection();
 
@@ -413,6 +417,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void LoadPostData_NotEmpty_ChangedToValidValue ()
     {
       PrivateInvoke.InvokeNonPublicMethod (_control, "CreateChildControls");
+      var controlInvoker = new Remotion.Development.Web.UnitTesting.UI.Controls.ControlInvoker (_control);
+      var controlState = controlInvoker.SaveControlState();
+      controlInvoker.LoadControlState (controlState);
 
       var postbackCollection = new NameValueCollection();
 
@@ -474,6 +481,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void LoadPostData_Empty_ChangedToInvalidValue ()
     {
       PrivateInvoke.InvokeNonPublicMethod (_control, "CreateChildControls");
+      var controlInvoker = new Remotion.Development.Web.UnitTesting.UI.Controls.ControlInvoker (_control);
+      var controlState = controlInvoker.SaveControlState();
+      controlInvoker.LoadControlState (controlState);
 
       var postbackCollection = new NameValueCollection();
 
@@ -505,6 +515,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void LoadPostData_NotEmpty_ChangedToInvalidValue ()
     {
       PrivateInvoke.InvokeNonPublicMethod (_control, "CreateChildControls");
+      var controlInvoker = new Remotion.Development.Web.UnitTesting.UI.Controls.ControlInvoker (_control);
+      var controlState = controlInvoker.SaveControlState();
+      controlInvoker.LoadControlState (controlState);
 
       var postbackCollection = new NameValueCollection();
 
@@ -535,6 +548,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void LoadPostData_ResolvesDisplayName ()
     {
       PrivateInvoke.InvokeNonPublicMethod (_control, "CreateChildControls");
+      var controlInvoker = new Remotion.Development.Web.UnitTesting.UI.Controls.ControlInvoker (_control);
+      var controlState = controlInvoker.SaveControlState();
+      controlInvoker.LoadControlState (controlState);
 
       var postbackCollection = new NameValueCollection();
 
