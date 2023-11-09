@@ -219,7 +219,7 @@ class WxePage_Context
     var lockName = btoa("" + (Math.random() * 10e18));
     var lockIndex = 0;
 
-    function onLockTaken(lock: Lock)
+    function onLockTaken(lock: Nullable<Lock>)
     {
       if (lock === null)
       {
