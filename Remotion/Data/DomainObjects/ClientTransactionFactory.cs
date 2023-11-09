@@ -19,6 +19,7 @@ using System;
 namespace Remotion.Data.DomainObjects
 {
   /// <summary>The <see cref="ClientTransactionFactory"/> is the default implementation of the <see cref="ITransactionFactory"/> interface.</summary>
+  /// <threadsafety static="true" instance="true"/>
   [Serializable]
   public class ClientTransactionFactory : ITransactionFactory
   {
@@ -26,13 +27,17 @@ namespace Remotion.Data.DomainObjects
     /// Creates a new root transaction instance. This instance is not yet managed by a scope.
     /// </summary>
     /// <returns>A new root transaction.</returns>
-    public ITransaction CreateRootTransaction ()
+    public ClientTransaction CreateRootTransaction ()
     {
       var transaction = ClientTransaction.CreateRootTransaction();
 
       OnTransactionCreated(transaction);
+      return transaction;
+    }
 
-      return transaction.ToITransaction();
+    ITransaction ITransactionFactory.CreateRootTransaction ()
+    {
+      return CreateRootTransaction().ToITransaction();
     }
 
     protected virtual void OnTransactionCreated (ClientTransaction transaction)
