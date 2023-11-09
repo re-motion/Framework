@@ -5,8 +5,6 @@
 
     "noEmit": true,
     "strict": true,
-    "alwaysStrict" : false,
-    "noImplicitUseStrict" : true,
 
     "allowJs": true
   },
