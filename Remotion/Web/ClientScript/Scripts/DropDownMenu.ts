@@ -136,7 +136,7 @@ class DropDownMenu
 
     const openTarget = ElementResolverUtility.ResolveSingle (openTargetOrSelector);
 
-    var menuButton: HTMLAnchorElement;
+    let menuButton: HTMLAnchorElement;
 
     if (openTarget.tagName.toLowerCase() === 'a')
     {
@@ -166,7 +166,7 @@ class DropDownMenu
       menuButton.addEventListener ("focus", function () { openTarget.querySelectorAll ('.' + DropDownMenu._buttonClassName).forEach (b => b.classList.add (DropDownMenu._focusClassName)); })
       menuButton.addEventListener ("blur", function () { openTarget.querySelectorAll ('.' + DropDownMenu._buttonClassName).forEach (b => b.classList.remove (DropDownMenu._focusClassName)); });
 
-      var allButMenuButton = Array.from (openTarget.querySelectorAll ('a[href]')).filter (b => menuButton !== b);
+      const allButMenuButton = Array.from (openTarget.querySelectorAll ('a[href]')).filter (b => menuButton !== b);
       allButMenuButton.forEach (b => b.addEventListener ("mouseover", function () { openTarget.querySelectorAll ('.' + DropDownMenu._buttonClassName).forEach (b => b.classList.add (DropDownMenu._nestedHoverClassName)); }));
       allButMenuButton.forEach (b => b.addEventListener ("mouseout", function () { openTarget.querySelectorAll ('.' + DropDownMenu._buttonClassName).forEach (b => b.classList.remove (DropDownMenu._nestedHoverClassName)); }));
     }
@@ -201,7 +201,7 @@ class DropDownMenu
           {});
 
         let previousVisibleItemIsSeparator = false;
-        for (var i = itemInfos.length - 1; i >= 0; i--)
+        for (let i = itemInfos.length - 1; i >= 0; i--)
         {
           const itemInfo = itemInfos[i];
           const hasFilterOption = itemInfo.ID !== null;
@@ -260,10 +260,10 @@ class DropDownMenu
     }
     if (DropDownMenu._currentMenu == null)
     {
-      var event: Nullable<MouseEvent> = null;
+      let event: Nullable<MouseEvent> = null;
       if (evt != null)
       {
-        var bounds = context.getBoundingClientRect();
+        const bounds = context.getBoundingClientRect();
         if (bounds.left <= evt.clientX &&
           bounds.right >= evt.clientX &&
           bounds.top <= evt.clientY &&
@@ -382,8 +382,8 @@ class DropDownMenu
 
   private static EndOpenPopUp (menuID: string, context: HTMLElement, selectionCount: number, evt: Nullable<MouseEvent>, itemInfos: DropDownMenu_ItemInfo[]): void
   {
-    var menuOptionsID = menuID + '_DropDownMenuOptions';
-    var menuButtonAnchor = document.querySelector<HTMLAnchorElement> ('#' + menuID + ' a[aria-haspopup=menu]')!;
+    const menuOptionsID = menuID + '_DropDownMenuOptions';
+    const menuButtonAnchor = document.querySelector<HTMLAnchorElement> ('#' + menuID + ' a[aria-haspopup=menu]')!;
 
     if (itemInfos.length == 0)
       return;
@@ -392,7 +392,7 @@ class DropDownMenu
       clearTimeout(DropDownMenu._statusPopupRepositionTimer);
     if (DropDownMenu._currentStatusPopup !== null)
     {
-      var statusPopup = DropDownMenu._currentStatusPopup;
+      const statusPopup = DropDownMenu._currentStatusPopup;
       DropDownMenu._currentStatusPopup = null;
       // Clear the role=alert before removing to item to prevent screenreaders (JAWS) from announcing the old value during removal.
       statusPopup.removeAttribute('role');
@@ -402,7 +402,7 @@ class DropDownMenu
     menuButtonAnchor.setAttribute ('aria-controls', menuOptionsID);
     menuButtonAnchor.setAttribute ('aria-expanded', 'true');
 
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.classList.add('DropDownMenuOptions');
     div.classList.add(CssClassDefinition.Themed);
     div.id = menuOptionsID;
@@ -417,7 +417,7 @@ class DropDownMenu
 
     DropDownMenu._currentPopup = div;
 
-    var ul = document.createElement('ul');
+    const ul = document.createElement('ul');
     ul.className = 'DropDownMenuOptions';
     ul.setAttribute('role', 'none');
     div.appendChild(ul);
@@ -434,7 +434,7 @@ class DropDownMenu
       if (DropDownMenu._ignoreHoverMouseEvents)
         return;
 
-      var eventTarget = DropDownMenu.GetTarget (event, "LI");
+      const eventTarget = DropDownMenu.GetTarget (event, "LI");
 
       ul.querySelectorAll ("li").forEach (b => b.classList.remove (DropDownMenu._itemSelectedClassName));
 
@@ -455,18 +455,18 @@ class DropDownMenu
 
     for (let i = 0; i < itemInfos.length; i++)
     {
-      var item = DropDownMenu.CreateItem(itemInfos[i], selectionCount);
+      const item = DropDownMenu.CreateItem(itemInfos[i], selectionCount);
       if (item != null)
         ul.appendChild(item);
     }
 
-    var titleDivFunc = DropDownMenu.CreateTitleDivGetter (context);
+    const titleDivFunc = DropDownMenu.CreateTitleDivGetter (context);
     const positioningDetails = this.CalculatePositioningDetails(titleDivFunc(), evt);
     DropDownMenu.ApplyPosition (div, positioningDetails, titleDivFunc(), false);
 
     if (DropDownMenu._repositionTimer) 
       clearTimeout(DropDownMenu._repositionTimer);
-    var repositionHandler = function ()
+    const repositionHandler = function ()
     {
       if (DropDownMenu._repositionTimer)
         clearTimeout (DropDownMenu._repositionTimer);
@@ -512,26 +512,26 @@ class DropDownMenu
 
   private static ApplyPosition (popUpDiv: HTMLDivElement, details: DropDownMenuPositioningDetails, referenceElement: HTMLElement, onlyUpdateIfNecessary: boolean): void
   {
-    var space_top = Math.round (LayoutUtility.GetOffset (referenceElement).top - window.pageYOffset);
-    var space_bottom = Math.round (document.documentElement.clientHeight - LayoutUtility.GetOffset (referenceElement).top - LayoutUtility.GetHeight (referenceElement) + window.pageYOffset);
-    var space_left = LayoutUtility.GetOffset (referenceElement).left;
-    var space_right = document.documentElement.clientWidth - LayoutUtility.GetOffset (referenceElement).left - LayoutUtility.GetWidth (referenceElement);
+    const space_top = Math.round (LayoutUtility.GetOffset (referenceElement).top - window.pageYOffset);
+    const space_bottom = Math.round (document.documentElement.clientHeight - LayoutUtility.GetOffset (referenceElement).top - LayoutUtility.GetHeight (referenceElement) + window.pageYOffset);
+    let space_left = LayoutUtility.GetOffset (referenceElement).left;
+    let space_right = document.documentElement.clientWidth - LayoutUtility.GetOffset (referenceElement).left - LayoutUtility.GetWidth (referenceElement);
     
-    var positionString = `${space_top};${space_right};${space_bottom};${space_left};${JSON.stringify(details)}`;
+    const positionString = `${space_top};${space_right};${space_bottom};${space_left};${JSON.stringify(details)}`;
     if (onlyUpdateIfNecessary && positionString === this._lastPositionInformation)
       return;
 
     this._lastPositionInformation = positionString;
 
     // position drop-down list
-    var top = Math.max (0, space_top + referenceElement.offsetHeight + details.offsetY);
-    var left = Math.max (0, LayoutUtility.GetOffset (referenceElement).left + details.offsetX) + 'px';
-    var right = Math.max (0, document.documentElement.clientWidth - LayoutUtility.GetOffset (referenceElement).left - referenceElement.offsetWidth - details.offsetX) + 'px';
+    const top = Math.max (0, space_top + referenceElement.offsetHeight + details.offsetY);
+    const left = Math.max (0, LayoutUtility.GetOffset (referenceElement).left + details.offsetX) + 'px';
+    const right = Math.max (0, document.documentElement.clientWidth - LayoutUtility.GetOffset (referenceElement).left - referenceElement.offsetWidth - details.offsetX) + 'px';
 
     const popUpMargin = parseInt(getComputedStyle(popUpDiv).fontSize) * 2;
 
     // Save and restore the scrollTop value to retain the scrolling after resizing
-    var scrollTop = popUpDiv.scrollTop;
+    const scrollTop = popUpDiv.scrollTop;
 
     popUpDiv.style.top = top + 'px';
     popUpDiv.style.bottom = 'auto';
@@ -708,29 +708,27 @@ class DropDownMenu
     if (itemInfo == null)
       return null;
 
-    var item;
-    if (itemInfo.Text == '-')
-      item = DropDownMenu.CreateSeparatorItem();
-    else
-      item = DropDownMenu.CreateTextItem(itemInfo, selectionCount);
+    const item = itemInfo.Text == '-'
+        ? DropDownMenu.CreateSeparatorItem()
+        : DropDownMenu.CreateTextItem(itemInfo, selectionCount)
 
     return item;
   }
 
   private static CreateTextItem(itemInfo: DropDownMenu_ItemInfo, selectionCount: number): HTMLLIElement
   {
-    var isEnabled = DropDownMenu.GetItemEnabled(itemInfo, selectionCount);
+    const isEnabled = DropDownMenu.GetItemEnabled(itemInfo, selectionCount);
 
-    var item = document.createElement("li");
+    const item = document.createElement("li");
 
-    var className = DropDownMenu._itemClassName;
-    if (!isEnabled)
-      className = DropDownMenu._itemDisabledClassName;
+    const className = isEnabled
+        ? DropDownMenu._itemClassName
+        : DropDownMenu._itemDisabledClassName;
 
     item.className = className;
     item.setAttribute('role', 'none');
 
-    var anchor = document.createElement("a");
+    const anchor = document.createElement("a");
     anchor.setAttribute('role', 'menuitem');
     anchor.setAttribute('tabindex', '-1');
     if (isEnabled)
@@ -747,26 +745,24 @@ class DropDownMenu
     item.appendChild(anchor);
     if (isEnabled && itemInfo.Href != null)
     {
-      var isJavaScript = itemInfo.Href.toLowerCase().indexOf('javascript:') >= 0;
+      const isJavaScript = itemInfo.Href.toLowerCase().indexOf('javascript:') >= 0;
       if (isJavaScript)
       {
         anchor.setAttribute('javascript', itemInfo.Href);
       }
       else
       {
-        var href = itemInfo.Href;
-        var target;
-        if (itemInfo.Target != null && itemInfo.Target.length > 0)
-          target = itemInfo.Target;
-        else
-          target = '_self';
+        const href = itemInfo.Href;
+        const target = itemInfo.Target != null && itemInfo.Target.length > 0
+            ? itemInfo.Target
+            : '_self';
         anchor.setAttribute('javascript', 'window.open (\'' + href + '\', \'' + target + '\');');
       }
     }
 
     if (itemInfo.Icon != null)
     {
-      var icon = document.createElement('img');
+      const icon = document.createElement('img');
       if (isEnabled || itemInfo.IconDisabled == null)
         icon.src = itemInfo.Icon;
       else
@@ -780,7 +776,7 @@ class DropDownMenu
     }
     else
     {
-      var iconPlaceholder = document.createElement('span');
+      const iconPlaceholder = document.createElement('span');
       iconPlaceholder.className = DropDownMenu._itemIconClassName;
       anchor.appendChild(iconPlaceholder);
     }
@@ -809,7 +805,7 @@ class DropDownMenu
       }
     }
 
-    var span = document.createElement('span');
+    const span = document.createElement('span');
     span.innerHTML = itemInfo.Text!;
     anchor.appendChild(span);
     anchor.addEventListener ('focus', DropDownMenu.FocusHandler);
@@ -820,9 +816,9 @@ class DropDownMenu
 
   private static CreateSeparatorItem(): HTMLLIElement
   {
-    var item = document.createElement('li');
+    const item = document.createElement('li');
 
-    var textPane = document.createElement('span');
+    const textPane = document.createElement('span');
     textPane.className = DropDownMenu._itemSeparatorClassName;
     item.setAttribute('role', 'none');
     item.setAttribute("aria-hidden", "true");
@@ -914,14 +910,14 @@ class DropDownMenu
     if (DropDownMenu._currentPopup == null)
       return;
 
-    var itemInfos = DropDownMenu._menuInfos[dropDownMenu.id]!.ItemInfos!;
+    const itemInfos = DropDownMenu._menuInfos[dropDownMenu.id]!.ItemInfos!;
     if (itemInfos.length === 0)
       return;
 
-    var oldIndex;
-    var isSelectionUpdated = false;
-    var dropDownMenuItems = Array.from (DropDownMenu._currentPopup.querySelector ('ul')!.children);
-    var currentItemIndex = dropDownMenuItems.findIndex (i => i.classList.contains (DropDownMenu._itemSelectedClassName))
+    let oldIndex;
+    let isSelectionUpdated = false;
+    const dropDownMenuItems = Array.from (DropDownMenu._currentPopup.querySelector ('ul')!.children);
+    let currentItemIndex = dropDownMenuItems.findIndex (i => i.classList.contains (DropDownMenu._itemSelectedClassName))
 
     switch (event.keyCode)
     {
@@ -934,7 +930,7 @@ class DropDownMenu
         event.stopPropagation();
         if (currentItemIndex >= 0)
         {
-          var itemAnchor = dropDownMenuItems[currentItemIndex].querySelector<HTMLAnchorElement> (':scope > a')!;
+          const itemAnchor = dropDownMenuItems[currentItemIndex].querySelector<HTMLAnchorElement> (':scope > a')!;
           itemAnchor.click();
         }
         break;
@@ -992,11 +988,11 @@ class DropDownMenu
       DropDownMenu._currentPopup.querySelectorAll ("li").forEach (b => b.classList.remove (DropDownMenu._itemSelectedClassName));
       if (currentItemIndex >= 0 && currentItemIndex < itemInfos.length)
       {
-        var dropDownMenuItem = dropDownMenuItems[currentItemIndex];
+        const dropDownMenuItem = dropDownMenuItems[currentItemIndex];
         if (dropDownMenuItem.querySelectorAll (':scope > a').length > 0) // skip separators
         {
           dropDownMenuItem.classList.add (DropDownMenu._itemSelectedClassName);
-          var anchor = dropDownMenuItem.querySelector<HTMLAnchorElement> (':scope > a')!;
+          const anchor = dropDownMenuItem.querySelector<HTMLAnchorElement> (':scope > a')!;
           anchor.focus();
         }
       }
@@ -1019,7 +1015,7 @@ class DropDownMenu
 
   private static GetItemEnabled (itemInfo: DropDownMenu_ItemInfo, selectionCount: number): boolean
   {
-    var isEnabled = true;
+    let isEnabled = true;
     if (itemInfo.IsDisabled)
     {
       isEnabled = false;
@@ -1042,7 +1038,7 @@ class DropDownMenu
 
   private static GetTarget (event: MouseEvent, tagName: string): Nullable<Element>
   {
-    var element: Nullable<Element> = event.target as Element;
+    let element: Nullable<Element> = event.target as Element;
     while (element && element.tagName != tagName)
       element = element.parentNode as Nullable<Element>;
     return element;

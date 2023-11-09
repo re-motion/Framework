@@ -30,12 +30,12 @@ class WebTabStrip
 
   private static OnKeyDown (event: KeyboardEvent, tabStrip: HTMLElement): void
   {
-    var tabs = Array.from (tabStrip.querySelectorAll<HTMLElement> ('ul li a'));
+    const tabs = Array.from (tabStrip.querySelectorAll<HTMLElement> ('ul li a'));
 
-    var oldTabIndex = -1;
+    let oldTabIndex = -1;
 
-    var oldTab = null;
-    var activeTab = document.activeElement as Nullable<HTMLElement>;
+    let oldTab = null;
+    const activeTab = document.activeElement as Nullable<HTMLElement>;
     if (activeTab != null && TypeUtility.IsDefined (activeTab.tagName) && activeTab.tagName.toUpperCase() === 'A')
     {
       oldTab = activeTab;
@@ -43,7 +43,7 @@ class WebTabStrip
     }
     else
     {
-      for (var i = 0; i < tabs.length; i++)
+      for (let i = 0; i < tabs.length; i++)
       {
         // TODO RM-7686: Fix misspellings of tabIndex in the TypeScript codebase
         if ((tabs[i] as any).tabindex === 0)
@@ -56,7 +56,7 @@ class WebTabStrip
         oldTab = tabs[oldTabIndex];
     }
 
-    var currentTabIndex = Math.max (0, oldTabIndex);
+    let currentTabIndex = Math.max (0, oldTabIndex);
 
     switch (event.keyCode)
     {
@@ -107,7 +107,7 @@ class WebTabStrip
           else
             currentTabIndex = 0;
 
-          var newTab = tabs[currentTabIndex];
+          const newTab = tabs[currentTabIndex];
           newTab.focus();
 
           return;
