@@ -23,6 +23,10 @@ using System.Web.UI;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Compilation;
+#if !NETFRAMEWORK
+using System.IO;
+using Remotion.Web.ContentSecurityPolicy;
+#endif
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.SmartPageImplementation;
@@ -240,6 +244,9 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   private bool? _enableSmartScrolling;
   private bool? _enableSmartFocusing;
   private readonly SmartPageClientScriptManager _clientScriptManager;
+#if !NETFRAMEWORK
+  private readonly INonceGenerator _nonceGenerator;
+#endif
 
   public SmartPage ()
   {
@@ -247,7 +254,41 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     _validatableControlInitializer = new ValidatableControlInitializer(this);
     _postLoadInvoker = new PostLoadInvoker(this);
     _clientScriptManager = new SmartPageClientScriptManager(base.ClientScript);
+#if !NETFRAMEWORK
+    _nonceGenerator = new NonceGenerator();
+#endif
   }
+
+#if !NETFRAMEWORK
+  protected override void OnPreRenderComplete (EventArgs e)
+  {
+    base.OnPreRenderComplete(e);
+
+    var scriptManager = ScriptManager.GetCurrent(this);
+
+    if (scriptManager == null || !scriptManager.IsInAsyncPostBack)
+    {
+      ViewState["nonce"] = _nonceGenerator.GenerateAlphaNumericNonce();
+    }
+  }
+
+  protected override void Render (HtmlTextWriter writer)
+  {
+    Response.Headers.Add("Content-Security-Policy",  $"default-src 'self'; script-src 'unsafe-eval' 'self' 'nonce-{GetCspNonceValue()}'; script-src-attr 'unsafe-inline';");
+
+    base.Render(writer);
+  }
+
+  private string GetCspNonceValue ()
+  {
+    return (string)ViewState["nonce"]!;
+  }
+
+  protected override HtmlTextWriter CreateHtmlTextWriter (TextWriter writer)
+  {
+    return new CspEnabledHtmlTextWriter(this, writer, _nonceGenerator, GetCspNonceValue());
+  }
+#endif
 
   protected override NameValueCollection? DeterminePostBackMode ()
   {
