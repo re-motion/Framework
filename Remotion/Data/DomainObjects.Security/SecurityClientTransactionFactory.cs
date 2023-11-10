@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Security.Configuration;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Security
@@ -32,8 +31,7 @@ namespace Remotion.Data.DomainObjects.Security
     {
       ArgumentUtility.CheckNotNull("transaction", transaction);
 
-      if (!SecurityConfiguration.Current.DisableAccessChecks)
-        transaction.Extensions.Add(new SecurityClientTransactionExtension());
+      transaction.Extensions.Add(new SecurityClientTransactionExtension());
     }
   }
 }

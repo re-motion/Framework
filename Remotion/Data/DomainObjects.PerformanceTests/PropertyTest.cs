@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.PerformanceTests.TestDomain;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
-using Remotion.Security.Configuration;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.PerformanceTests
@@ -51,8 +50,6 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       serviceLocator.RegisterSingle<IBindablePropertyWriteAccessStrategy>(() => bindablePropertyWriteAccessStrategy);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
-      _disableAccessChecksBackup = SecurityConfiguration.Current.DisableAccessChecks;
-      SecurityConfiguration.Current.DisableAccessChecks = true;
       ClientTransaction.CreateRootTransaction().EnterDiscardingScope();
 
       BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
@@ -64,7 +61,6 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
 
       ClientTransactionScope.ResetActiveScope();
-      SecurityConfiguration.Current.DisableAccessChecks = _disableAccessChecksBackup;
       _serviceLocatorScope.Dispose();
     }
 
