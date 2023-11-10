@@ -18,11 +18,16 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.UI;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Compilation;
+#if !NETFRAMEWORK
+using Remotion.Web.ContentSecurityPolicy;
+#endif
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.SmartPageImplementation;
@@ -248,6 +253,43 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     _postLoadInvoker = new PostLoadInvoker(this);
     _clientScriptManager = new SmartPageClientScriptManager(base.ClientScript);
   }
+
+#if !NETFRAMEWORK
+  protected override void OnPreRenderComplete (EventArgs e)
+  {
+    base.OnPreRenderComplete(e);
+
+    var scriptManager = ScriptManager.GetCurrent(this);
+
+    if (scriptManager == null || !scriptManager.IsInAsyncPostBack)
+    {
+      ViewState["nonce"] = GenerateRandomNonceValue();
+    }
+  }
+
+  protected override void Render (HtmlTextWriter writer)
+  {
+    Response.Headers.Add("Content-Security-Policy",  $"default-src 'self'; script-src 'unsafe-eval' 'self' 'nonce-{GetCspNonceValue()}'; script-src-attr 'unsafe-inline';");
+
+    base.Render(writer);
+  }
+
+  private string GetCspNonceValue ()
+  {
+    return (string)ViewState["nonce"]!;
+  }
+
+  protected override HtmlTextWriter CreateHtmlTextWriter (TextWriter writer)
+  {
+    return new CspEnabledHtmlTextWriter(this, writer, GetCspNonceValue());
+  }
+
+  private static string GenerateRandomNonceValue ()
+  {
+    using var rng = RandomNumberGenerator.Create();
+    return Convert.ToHexString(RandomNumberGenerator.GetBytes(8));
+  }
+#endif
 
   protected override NameValueCollection? DeterminePostBackMode ()
   {
