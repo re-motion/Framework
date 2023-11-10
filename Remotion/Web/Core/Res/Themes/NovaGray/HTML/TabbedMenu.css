@@ -22,7 +22,7 @@ td.tabbedSubMenuCell
 
 td.tabbedSubMenuCell ul
 {
-  overflow: hidden;
+  overflow: clip;
 }
 
 td.tabbedMenuStatusCell

@@ -32,7 +32,7 @@ div.tabbedMultiViewActiveView
   grid-area: view;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: clip;
 }
 
 div.tabbedMultiViewActiveView > div.contentBorder
@@ -55,7 +55,7 @@ div.tabbedMultiViewActiveView > div.contentBorder > div.content
 div.tabbedMultiViewTopControls
 {
   grid-area: topControls;
-  overflow: hidden;
+  overflow: clip;
   background-color: White;
 }
 
@@ -69,7 +69,7 @@ div.tabbedMultiViewTopControls.empty
 div.tabbedMultiViewBottomControls
 {
   grid-area: bottomControls;
-  overflow: hidden;
+  overflow: clip;
   background-color: White;
   padding-left: 0.5em;
   padding-right: 0.5em;

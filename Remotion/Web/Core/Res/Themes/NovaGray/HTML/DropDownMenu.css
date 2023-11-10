@@ -239,7 +239,7 @@ ul.DropDownMenuOptions
 
 ul.DropDownMenuOptions li a
 {
-  overflow: hidden;
+  overflow: clip;
   cursor: hand;
   cursor: pointer;
   text-decoration: none;
@@ -343,7 +343,7 @@ span.DropDownMenuItemIcon
 
 div.DropDownMenuStatus
 {
-  overflow: hidden;
+  overflow: clip;
   z-index: 2147483647;
   /* position and dimension are set via javascript */
   max-height: 4em;

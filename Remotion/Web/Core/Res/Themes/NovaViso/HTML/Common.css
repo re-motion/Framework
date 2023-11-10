@@ -542,7 +542,7 @@ img.disabled,
   clip-path: circle(0) !important;
   height: 1px !important;
   width: 1px !important;
-  overflow: hidden !important;
+  overflow: clip !important;
   position: absolute !important;
   display: inline !important;
   padding: 0 !important;

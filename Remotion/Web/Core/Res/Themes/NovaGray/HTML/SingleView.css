@@ -32,7 +32,7 @@ div.singleViewView
   grid-area: view;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: clip;
 }
 
 div.singleViewView > div.contentBorder
