@@ -438,7 +438,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
     bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      if (IsLoadPostDataRequired())
+      if (IsLoadPostDataRequired (skipGuardForReadOnly: true))
         return LoadPostData (postDataKey, postCollection);
       else
         return false;
@@ -466,7 +466,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void HandleSelectedViewChanged (object sender, EventArgs e)
     {
-      if (!IsLoadPostDataRequired())
+      if (!IsLoadPostDataRequired (skipGuardForReadOnly: true))
         return;
 
       SelectedViewIndex = int.Parse (((ScalarLoadPostDataTarget) sender).Value);
@@ -474,7 +474,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void HandleCurrentPageChanged (object sender, EventArgs e)
     {
-      if (!IsLoadPostDataRequired())
+      if (!IsLoadPostDataRequired (skipGuardForReadOnly: true))
         return;
 
       if (!IsPagingEnabled)
