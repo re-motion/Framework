@@ -300,7 +300,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     /// <summary> Invokes the <see cref="BocBooleanValue.LoadPostData(string,System.Collections.Specialized.NameValueCollection)"/> method. </summary>
     bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      if (RequiresLoadPostData)
+      if (IsLoadPostDataRequired())
         return LoadPostData(postDataKey, postCollection);
 
       return false;

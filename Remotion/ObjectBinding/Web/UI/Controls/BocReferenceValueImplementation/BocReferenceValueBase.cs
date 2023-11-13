@@ -555,7 +555,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <summary> Invokes the <see cref="LoadPostData(string,System.Collections.Specialized.NameValueCollection)"/> method. </summary>
     bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      if (RequiresLoadPostData)
+      if (IsLoadPostDataRequired())
         return LoadPostData(postDataKey, postCollection);
       else
         return false;
