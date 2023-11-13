@@ -28,6 +28,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private const string c_guidRegex = @"(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}";
 
     [Test]
+    [Ignore("With Chrome v115 the binary resolution has been changed. An implementation has been done in RM-8894, but a backport to v2.x is not required.")]
     public void GetInstalledExecutable ()
     {
       var provider = new ChromeBinariesProvider();
