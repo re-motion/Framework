@@ -470,7 +470,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
     bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      if (RequiresLoadPostData)
+      if (IsLoadPostDataRequired())
         return LoadPostData(postDataKey, postCollection);
       else
         return false;
@@ -500,7 +500,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull("sender", sender!);
 
-      if (!RequiresLoadPostData)
+      if (!IsLoadPostDataRequired())
         return;
 
       var value = ((ScalarLoadPostDataTarget)sender).Value;
@@ -512,7 +512,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull("sender", sender!);
 
-      if (!RequiresLoadPostData)
+      if (!IsLoadPostDataRequired())
         return;
 
       if (!IsPagingEnabled)
