@@ -383,29 +383,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// Gets a value that determines whether a server control needs to load data from the posted form values
     /// to its internal state.
     /// </summary>
-    /// <value><see langword="true"/> if the control has been rendered as a visible, enabled, and editable element in the previous lifecycle,
-    /// or if it is on a <see cref="IWxePage"/> and <see cref="IWxePage.IsOutOfSequencePostBack"/> is <see langword="true"/>.</value>
-    protected virtual bool RequiresLoadPostData
+    /// <returns>
+    ///   <see langword="true"/> if the control has been rendered as a visible, enabled, and editable element in the previous lifecycle,
+    ///   or if it is on a <see cref="IWxePage"/> and <see cref="IWxePage.IsOutOfSequencePostBack"/> is <see langword="true"/>.
+    /// </returns>
+    protected virtual bool IsLoadPostDataRequired ()
     {
-      get
-      {
-        if ((Page as IWxePage)?.IsOutOfSequencePostBack == true)
-          return true;
-
-        if (_hasBeenReadOnlyInPreviousLifecycle)
-          return false;
-
-        if (!_hasBeenEnabledInPreviousLifecycle)
-          return false;
-
-        if (!_hasBeenVisibleInPreviousLifecycle)
-          return false;
-
-        if (!_hasBeenRenderedInPreviousLifecycle)
-          return false;
-
+      if ((Page as IWxePage)?.IsOutOfSequencePostBack == true)
         return true;
-      }
+
+      if (_hasBeenReadOnlyInPreviousLifecycle)
+        return false;
+
+      if (!_hasBeenEnabledInPreviousLifecycle)
+        return false;
+
+      if (!_hasBeenVisibleInPreviousLifecycle)
+        return false;
+
+      if (!_hasBeenRenderedInPreviousLifecycle)
+        return false;
+
+      return true;
     }
 
     /// <summary>
