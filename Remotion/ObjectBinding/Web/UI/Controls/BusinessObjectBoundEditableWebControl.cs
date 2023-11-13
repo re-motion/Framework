@@ -397,19 +397,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// Gets a value that determines whether a server control needs to load data from the posted form values
     /// to its internal state.
     /// </summary>
+    /// <param name="skipGuardForReadOnly">
+    /// If <see langword="true"/>, the control will process posted data even when it was readonly during the previous page life cycle. Use this flag to process posted data that
+    /// is independent of the editable state of the control.
+    /// </param>
+    /// <param name="skipGuardForEnabled">
+    /// If <see langword="true"/>, the control will process posted data even when it was disabled during the previous page life cycle. Use this flag to process posted data that
+    /// is independent of the enabled/disabled state of the control.
+    /// </param>
     /// <returns>
     ///   <see langword="true"/> if the control has been rendered as a visible, enabled, and editable element in the previous lifecycle,
     ///   or if it is on a <see cref="IWxePage"/> and <see cref="IWxePage.IsOutOfSequencePostBack"/> is <see langword="true"/>.
     /// </returns>
-    protected virtual bool IsLoadPostDataRequired ()
+    protected virtual bool IsLoadPostDataRequired (bool skipGuardForReadOnly = false, bool skipGuardForEnabled = false)
     {
       if ((Page as IWxePage)?.IsOutOfSequencePostBack == true)
         return true;
 
-      if (_hasBeenReadOnlyInPreviousLifecycle)
+      if (!skipGuardForReadOnly && _hasBeenReadOnlyInPreviousLifecycle)
         return false;
 
-      if (!_hasBeenEnabledInPreviousLifecycle)
+      if (!skipGuardForEnabled && !_hasBeenEnabledInPreviousLifecycle)
         return false;
 
       if (!_hasBeenVisibleInPreviousLifecycle)
