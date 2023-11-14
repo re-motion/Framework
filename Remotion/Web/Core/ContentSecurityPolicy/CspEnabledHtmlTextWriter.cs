@@ -37,6 +37,7 @@ namespace Remotion.Web.ContentSecurityPolicy
       {
         randomNumberGenerator.GetBytes(data);
       }
+
       return Convert.ToHexString(data);
     }
   }
@@ -55,7 +56,8 @@ namespace Remotion.Web.ContentSecurityPolicy
             { "onkeypress", "keypress" }
         };
 
-    private INonceGenerator _nonceGenerator;
+    private readonly List<Tuple<string, string>> _registeredEvents = new();
+    private readonly INonceGenerator _nonceGenerator;
     private readonly ISmartPage _page;
     private readonly string _nonceValue;
 
@@ -74,6 +76,18 @@ namespace Remotion.Web.ContentSecurityPolicy
         AddAttribute("nonce", _nonceValue);
       }
 
+      if (_registeredEvents.Count != 0)
+      {
+        var eventTargetID = _nonceGenerator.GenerateAlphaNumericNonce();
+        AddAttribute("data-inline-event-target", eventTargetID);
+
+        foreach (var registeredEvent in _registeredEvents)
+        {
+          var script = $"SmartPageContext.Instance.RegisterInlineEvent(\"{eventTargetID}\", \"{registeredEvent.Item1}\", function (event){{{registeredEvent.Item2}}});";
+          _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(CspEnabledHtmlTextWriter), eventTargetID, script);
+        }
+      }
+
       base.RenderBeginTag(tagKey);
     }
 
@@ -83,10 +97,12 @@ namespace Remotion.Web.ContentSecurityPolicy
       {
         if (s_supportedEvents.TryGetValue(name, out var eventType))
         {
-          var eventID = _nonceGenerator.GenerateAlphaNumericNonce();
-          base.AddAttribute("data-inline-event-target", eventID);
-          var script = $"SmartPageContext.Instance.RegisterInlineEvent(\"{eventID}\", \"{eventType}\", function (event){{{value}}});";
-          _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(CspEnabledHtmlTextWriter), eventID, script);
+          if (_registeredEvents.Exists(e => e.Item1 == eventType))
+          {
+            throw new NotSupportedException($"{name} cannot be added more than once.");
+          }
+
+          _registeredEvents.Add(new Tuple<string, string>(eventType, value));
         }
         else
         {
