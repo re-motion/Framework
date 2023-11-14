@@ -168,7 +168,10 @@ function SmartPage_Context(
     // IE, Mozilla 1.7, Firefox 0.9
     window.onbeforeunload = _beforeUnloadHandler;
 
-    window.onunload = _unloadHandler;
+    if (TypeUtility.IsDefined(window.onpagehide))
+      window.onpagehide = _unloadHandler;
+    else
+      window.onunload = _unloadHandler;
 
     RemoveEventHandler(window, 'scroll', _scrollHandler);
     AddEventHandler(window, 'scroll', _scrollHandler);
