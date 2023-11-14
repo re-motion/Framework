@@ -166,7 +166,6 @@
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\ScreenshotTest.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\ScreenshotTest_MenuBlock.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\ScreenshotTest_Navigator.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\ScreenshotTest_TableContainer.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\InternetExplorer.any.ScreenshotTest0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\InternetExplorer.any.ScreenshotTest1.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\InternetExplorer.any.ScreenshotTest2.png" />
@@ -191,6 +190,10 @@
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Firefox.any.ScreenshotTest_MenuBlock.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Firefox.any.ScreenshotTest_Navigator.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Firefox.any.ScreenshotTest_TableContainer.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Edge.any.ScreenshotTest_TableContainer0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Edge.any.ScreenshotTest_TableContainer1.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\ScreenshotTest_TableContainer0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\ScreenshotTest_TableContainer1.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocTreeViewControlObjectTest\Firefox.any.WebTreeView.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\Firefox.any.ScreenshotTest_Popup.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\Chrome.any.ScreenshotTest.png" />
@@ -199,9 +202,6 @@
   <ItemGroup>
     <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\InternetExplorer.any.ScreenshotTest_AutoComplete0.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\InternetExplorer.any.ScreenshotTest_AutoComplete1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Edge.any.ScreenshotTest_TableContainer.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
