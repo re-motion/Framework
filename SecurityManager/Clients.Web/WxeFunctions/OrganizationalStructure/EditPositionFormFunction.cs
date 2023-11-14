@@ -19,8 +19,8 @@ using System;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure;
-using Remotion.SecurityManager.Configuration;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure
@@ -45,7 +45,7 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
     private void Step1 ()
     {
       if (CurrentObject == null)
-        CurrentObject = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreatePosition();
+        CurrentObject = SafeServiceLocator.Current.GetInstance<IOrganizationalStructureFactory>().CreatePosition();
     }
 
     private WxeResourcePageStep Step2 = new WxeResourcePageStep(typeof(EditPositionForm), "UI/OrganizationalStructure/EditPositionForm.aspx");

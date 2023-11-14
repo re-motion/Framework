@@ -17,10 +17,9 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding;
-using Remotion.SecurityManager.Configuration;
 using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.ServiceLocation;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlEntryPropertiesEnumerationValueFilterTests
 {
@@ -35,12 +34,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
       base.SetUp();
       _ace = CreateAceForStateless();
       _property = GetPropertyDefinition(_ace, "UserCondition");
-    }
-
-    public override void TearDown ()
-    {
-      base.TearDown();
-      PrivateInvoke.InvokeNonPublicStaticMethod(typeof(SecurityManagerConfiguration), "SetCurrent", null);
     }
 
     [Test]
@@ -70,22 +63,22 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     [Test]
     public void SpecificUser ()
     {
-      Assert.That(SecurityManagerConfiguration.Current.AccessControl.DisableSpecificUser, Is.False);
+      Assert.That(SafeServiceLocator.Current.GetInstance<IAccessControlSettings>().DisableSpecificUser, Is.False);
       Assert.That(Filter.IsEnabled(CreateEnumValueInfo(UserCondition.SpecificUser), _ace, _property), Is.True);
     }
 
     [Test]
     public void SpecificUser_Disabled ()
     {
-      Assert.That(SecurityManagerConfiguration.Current.AccessControl.DisableSpecificUser, Is.False);
+      Assert.That(SafeServiceLocator.Current.GetInstance<IAccessControlSettings>().DisableSpecificUser, Is.False);
       Assert.That(Filter.IsEnabled(CreateEnumValueInfo_Disabled(UserCondition.SpecificUser), _ace, _property), Is.False);
     }
 
     [Test]
     public void SpecificUser_DisabledFromConfiguration ()
     {
-      SecurityManagerConfiguration.Current.AccessControl.DisableSpecificUser = true;
-      Assert.That(Filter.IsEnabled(CreateEnumValueInfo(UserCondition.SpecificUser), _ace, _property), Is.False);
+      var filter = new AccessControlEntryPropertiesEnumerationValueFilter(AccessControlSettings.Create(disableSpecificUser: true));
+      Assert.That(filter.IsEnabled(CreateEnumValueInfo(UserCondition.SpecificUser), _ace, _property), Is.False);
     }
 
     [Test]

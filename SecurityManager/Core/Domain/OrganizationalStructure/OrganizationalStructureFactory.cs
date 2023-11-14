@@ -16,9 +16,11 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using Remotion.ServiceLocation;
 
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
+  [ImplementationFor(typeof(IOrganizationalStructureFactory), Lifetime = LifetimeKind.Singleton)]
   public class OrganizationalStructureFactory : IOrganizationalStructureFactory
   {
     public virtual Tenant CreateTenant ()
