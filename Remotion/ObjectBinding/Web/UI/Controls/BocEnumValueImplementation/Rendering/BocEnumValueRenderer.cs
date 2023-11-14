@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Reflection;

@@ -27,7 +27,6 @@ using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Services;
-using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 using Remotion.Web.Utilities;

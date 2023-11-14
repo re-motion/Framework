@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;

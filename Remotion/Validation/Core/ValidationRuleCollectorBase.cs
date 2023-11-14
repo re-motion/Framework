@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.RuleBuilders;

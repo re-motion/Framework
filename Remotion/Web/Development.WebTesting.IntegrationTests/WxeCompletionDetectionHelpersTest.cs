@@ -15,15 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Diagnostics;
-using System.Threading;
 using NUnit.Framework;
-using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
-using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies;
-using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {

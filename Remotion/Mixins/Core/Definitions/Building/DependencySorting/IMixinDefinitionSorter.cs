@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Mixins.Definitions.Building.DependencySorting
 {

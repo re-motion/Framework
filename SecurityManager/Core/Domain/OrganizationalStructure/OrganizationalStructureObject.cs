@@ -17,9 +17,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Collections;
 using Remotion.Collections.Caching;
-using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Security;
 using Remotion.Globalization;
 using Remotion.Security;

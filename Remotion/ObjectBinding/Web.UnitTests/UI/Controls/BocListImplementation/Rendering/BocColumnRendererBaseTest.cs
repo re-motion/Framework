@@ -30,7 +30,6 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ServiceLocation;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
-using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 

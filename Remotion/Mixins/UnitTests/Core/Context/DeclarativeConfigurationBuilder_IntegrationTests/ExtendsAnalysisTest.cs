@@ -20,7 +20,6 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder_IntegrationTests
 {

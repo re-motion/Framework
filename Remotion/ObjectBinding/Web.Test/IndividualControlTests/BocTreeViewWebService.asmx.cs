@@ -18,7 +18,6 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
-using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
 using Remotion.ObjectBinding.Web.Services;

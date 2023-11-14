@@ -19,7 +19,6 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Linq;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
 {

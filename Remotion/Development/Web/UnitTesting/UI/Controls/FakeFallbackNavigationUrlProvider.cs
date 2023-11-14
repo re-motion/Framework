@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.ServiceLocation;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.Development.Web.UnitTesting.UI.Controls

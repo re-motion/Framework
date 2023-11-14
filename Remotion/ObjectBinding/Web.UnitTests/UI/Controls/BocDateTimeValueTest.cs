@@ -20,7 +20,6 @@ using System.Web.UI.WebControls;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation;

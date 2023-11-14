@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Drawing;
-using System.Threading;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation;

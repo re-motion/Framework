@@ -16,7 +16,6 @@
 // 
 using System;
 using System.ComponentModel;
-using Remotion.Reflection.TypeDiscovery;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Utilities

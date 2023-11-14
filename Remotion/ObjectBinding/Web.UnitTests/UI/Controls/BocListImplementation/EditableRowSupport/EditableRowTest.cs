@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.CodeDom;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -24,7 +23,6 @@ using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Web.UI.Controls;
 

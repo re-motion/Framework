@@ -19,16 +19,13 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Data.DomainObjects.Mapping.Validation.Logical;
 using Remotion.Data.DomainObjects.Mapping.Validation.Reflection;
 using Remotion.Logging;
 using Remotion.Reflection;
-using Remotion.Reflection.TypeDiscovery;
 using Remotion.ServiceLocation;
-using Remotion.TypePipe;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader

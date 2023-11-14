@@ -17,7 +17,6 @@
 using System;
 using System.Reflection;
 using Remotion.Reflection;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Security.Metadata
 {

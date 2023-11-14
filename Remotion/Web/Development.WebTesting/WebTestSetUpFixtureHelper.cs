@@ -17,16 +17,13 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Sockets;
 using System.Threading;
 using JetBrains.Annotations;
 using log4net;
 using log4net.Config;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.HostingStrategies;
-using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting
 {

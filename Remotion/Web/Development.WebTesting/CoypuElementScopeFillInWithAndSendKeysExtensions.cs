@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using Coypu;
-using Coypu.Drivers;
 using JetBrains.Annotations;
 using log4net;
 using OpenQA.Selenium;

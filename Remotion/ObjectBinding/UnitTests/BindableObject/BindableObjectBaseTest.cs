@@ -22,7 +22,6 @@ using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {

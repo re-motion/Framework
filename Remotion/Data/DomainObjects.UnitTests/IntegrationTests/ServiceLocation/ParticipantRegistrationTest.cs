@@ -19,7 +19,6 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Mixins.CodeGeneration.TypePipe;
-using Remotion.Reflection.TypeDiscovery;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 

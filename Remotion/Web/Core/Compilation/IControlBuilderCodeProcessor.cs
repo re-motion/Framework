@@ -17,7 +17,6 @@
 using System;
 using System.CodeDom;
 using System.Web.UI;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Web.Compilation
 {

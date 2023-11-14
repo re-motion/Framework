@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Reflection
 {

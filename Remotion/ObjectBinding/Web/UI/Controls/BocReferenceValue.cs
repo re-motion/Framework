@@ -38,7 +38,6 @@ using Remotion.Web.Services;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
-using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {

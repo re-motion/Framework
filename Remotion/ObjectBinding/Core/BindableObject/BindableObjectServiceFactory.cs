@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Mixins;
-using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.Utilities;
 

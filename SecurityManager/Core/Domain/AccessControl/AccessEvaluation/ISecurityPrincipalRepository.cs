@@ -19,7 +19,6 @@ using System;
 using JetBrains.Annotations;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
-using Remotion.ServiceLocation;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {

@@ -19,7 +19,6 @@ using System.ComponentModel.Design;
 using System.Threading;
 using Remotion.Configuration.TypeDiscovery;
 using Remotion.Configuration.TypeResolution;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection
 {

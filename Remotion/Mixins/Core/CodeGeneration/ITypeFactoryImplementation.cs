@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.ServiceLocation;
 using Remotion.TypePipe.Implementation;
 
 namespace Remotion.Mixins.CodeGeneration

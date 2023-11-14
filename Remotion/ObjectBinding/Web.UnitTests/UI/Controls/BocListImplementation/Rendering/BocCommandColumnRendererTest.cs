@@ -25,7 +25,6 @@ using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web;
-using Remotion.Web.Configuration;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 

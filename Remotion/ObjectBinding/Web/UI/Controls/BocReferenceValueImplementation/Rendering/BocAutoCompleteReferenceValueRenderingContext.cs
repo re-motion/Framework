@@ -19,7 +19,6 @@ using System.Web;
 using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Services;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering
 {

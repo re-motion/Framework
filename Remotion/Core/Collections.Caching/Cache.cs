@@ -19,7 +19,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Collections.Caching

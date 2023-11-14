@@ -19,7 +19,6 @@ using System.Linq;
 using System.Runtime.Serialization;
 using NUnit.Framework;
 using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting;
 using Remotion.Mixins.Context.Serialization;
 
 namespace Remotion.Mixins.UnitTests.Core.Context.Serialization

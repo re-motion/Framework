@@ -21,7 +21,6 @@ using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
-using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Configuration;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration

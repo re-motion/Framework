@@ -22,7 +22,6 @@ using System.Web.UI.WebControls;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -33,7 +32,6 @@ using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Services;
-using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {

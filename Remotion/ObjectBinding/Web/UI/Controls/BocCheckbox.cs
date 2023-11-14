@@ -27,12 +27,10 @@ using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Globalization;
 using Remotion.Web.UI;
-using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
 

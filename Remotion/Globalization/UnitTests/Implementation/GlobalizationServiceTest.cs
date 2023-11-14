@@ -18,7 +18,6 @@ using System;
 using Moq;
 using NUnit.Framework;
 using Remotion.Globalization.Implementation;
-using Remotion.Globalization.UnitTests.TestDomain;
 using Remotion.Reflection;
 
 namespace Remotion.Globalization.UnitTests.Implementation

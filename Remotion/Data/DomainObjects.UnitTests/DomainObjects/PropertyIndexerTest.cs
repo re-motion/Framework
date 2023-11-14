@@ -24,7 +24,6 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
-using Remotion.Development.UnitTesting;
 using Remotion.TypePipe;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects

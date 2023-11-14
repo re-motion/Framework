@@ -22,7 +22,6 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.ObjectBinding.Web.Services;

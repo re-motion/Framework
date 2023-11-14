@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Reflection;
-using Remotion.Collections;
 using Remotion.Utilities;
 
 namespace Remotion.Reflection

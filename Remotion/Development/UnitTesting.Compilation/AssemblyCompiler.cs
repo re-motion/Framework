@@ -19,7 +19,6 @@ using System.CodeDom.Compiler;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Microsoft.CSharp;
 using Remotion.Development.UnitTesting.Compilation.Roslyn;
 using Remotion.Utilities;
 

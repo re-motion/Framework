@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation

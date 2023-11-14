@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Linq;
-using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;

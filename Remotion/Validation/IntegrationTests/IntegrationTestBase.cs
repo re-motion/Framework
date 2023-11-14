@@ -21,7 +21,6 @@ using log4net.Config;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
-using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using LogManager = log4net.LogManager;
 

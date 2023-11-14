@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation;
-using Remotion.Data.DomainObjects.Persistence.NonPersistent.Model;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation

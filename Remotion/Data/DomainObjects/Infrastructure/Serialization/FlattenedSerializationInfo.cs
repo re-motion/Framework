@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.Serialization

@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Specialized;
-using System.Web.UI;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls.Hotkey;

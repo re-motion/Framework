@@ -29,7 +29,6 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.Collections;
-using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;

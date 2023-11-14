@@ -18,7 +18,6 @@ using System;
 using System.Web.UI;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.SmartPageImplementation;

@@ -20,7 +20,6 @@ using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
 using log4net;
-using OpenQA.Selenium;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;

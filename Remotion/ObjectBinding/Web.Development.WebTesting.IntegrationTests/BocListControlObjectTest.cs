@@ -36,7 +36,6 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCa
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.Utilities;
-using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {

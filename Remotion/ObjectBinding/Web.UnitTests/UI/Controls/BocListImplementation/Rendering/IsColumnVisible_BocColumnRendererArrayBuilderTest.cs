@@ -16,13 +16,11 @@
 // 
 using System;
 using System.Collections.ObjectModel;
-using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ServiceLocation;
-using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering

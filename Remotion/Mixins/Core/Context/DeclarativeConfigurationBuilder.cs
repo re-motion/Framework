@@ -24,7 +24,6 @@ using Remotion.Logging;
 using Remotion.Mixins.Context.DeclarativeAnalyzers;
 using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Reflection;
-using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
 

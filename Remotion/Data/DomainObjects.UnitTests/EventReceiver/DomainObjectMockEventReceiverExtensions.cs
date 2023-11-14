@@ -16,7 +16,6 @@
 //
 using System;
 using Moq;
-using Moq.Language;
 using Moq.Language.Flow;
 using Remotion.Data.DomainObjects.Mapping;
 

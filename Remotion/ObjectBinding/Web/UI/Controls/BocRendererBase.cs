@@ -15,17 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
-using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;

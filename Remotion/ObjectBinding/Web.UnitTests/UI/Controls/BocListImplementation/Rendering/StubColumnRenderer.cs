@@ -17,10 +17,8 @@
 using System;
 using System.Linq;
 using System.Web.UI;
-using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web;
-using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {

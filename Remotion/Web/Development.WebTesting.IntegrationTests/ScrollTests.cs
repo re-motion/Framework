@@ -23,7 +23,6 @@ using System.Text;
 using System.Threading;
 using Coypu;
 using NUnit.Framework;
-using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;

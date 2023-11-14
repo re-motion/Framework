@@ -22,13 +22,11 @@ using System.Threading;
 using Coypu;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Internal;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
-using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {

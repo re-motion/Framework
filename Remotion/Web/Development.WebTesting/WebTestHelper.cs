@@ -22,7 +22,6 @@ using Coypu;
 using JetBrains.Annotations;
 using log4net;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Accessibility;

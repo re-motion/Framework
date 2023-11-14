@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Validation;
-using Remotion.Validation.Validators;
 
 namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.ValidationCollectors
 {

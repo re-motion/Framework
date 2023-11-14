@@ -19,7 +19,6 @@ using System.Drawing;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Internal;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ControlSelection;

@@ -16,8 +16,6 @@
 // 
 using System;
 using System.Web.UI;
-using Remotion.ServiceLocation;
-using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Obsolete;
 using Remotion.Web.UI.Controls.PostBackTargets;

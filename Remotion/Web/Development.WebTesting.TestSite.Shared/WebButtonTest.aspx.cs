@@ -16,8 +16,6 @@
 // 
 using System;
 using System.Web.UI.WebControls;
-using Remotion.ServiceLocation;
-using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.Development.WebTesting.TestSite.Shared

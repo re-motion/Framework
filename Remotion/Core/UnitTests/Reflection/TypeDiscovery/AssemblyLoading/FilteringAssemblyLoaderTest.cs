@@ -25,7 +25,6 @@ using log4net.Appender;
 using log4net.Config;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Compilation;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;

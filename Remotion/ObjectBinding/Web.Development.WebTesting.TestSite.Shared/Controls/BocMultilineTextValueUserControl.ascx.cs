@@ -17,7 +17,6 @@
 using System;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
-using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
 {

@@ -20,7 +20,6 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Internal;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 

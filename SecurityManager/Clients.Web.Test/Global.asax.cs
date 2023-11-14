@@ -22,7 +22,6 @@ using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Domain;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Web;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.SecurityManager.Clients.Web.Test

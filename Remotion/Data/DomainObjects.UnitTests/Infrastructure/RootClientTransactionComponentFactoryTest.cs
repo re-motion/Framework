@@ -32,7 +32,6 @@ using Remotion.Data.DomainObjects.Queries.EagerFetching;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
-using Remotion.Data.DomainObjects.Validation;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 using Remotion.ServiceLocation;

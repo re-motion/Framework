@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Reflection;
-using Remotion.Web.Configuration;
 
 namespace Remotion.Web.Resources
 {

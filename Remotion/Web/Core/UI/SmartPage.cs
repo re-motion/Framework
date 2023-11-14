@@ -23,7 +23,6 @@ using System.Web.UI;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Compilation;
-using Remotion.Web.Configuration;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.SmartPageImplementation;

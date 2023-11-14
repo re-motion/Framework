@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
@@ -27,7 +26,6 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
-using Remotion.FunctionalProgramming;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 {

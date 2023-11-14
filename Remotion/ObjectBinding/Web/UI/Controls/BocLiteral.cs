@@ -26,7 +26,6 @@ using Remotion.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {

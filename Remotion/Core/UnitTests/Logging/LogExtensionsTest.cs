@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.Enumerables;
 using Remotion.Logging;
 
 namespace Remotion.UnitTests.Logging

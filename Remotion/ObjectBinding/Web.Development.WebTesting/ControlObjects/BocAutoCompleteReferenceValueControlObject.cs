@@ -24,7 +24,6 @@ using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
-using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebTestActions;
 using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 

@@ -18,14 +18,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -35,7 +33,6 @@ using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.ServiceLocation;
 using Remotion.Web.Services;
 using Remotion.Web.UI;
-using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {

@@ -17,7 +17,6 @@
 using System;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
-using Remotion.TypePipe;
 
 namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests
 {

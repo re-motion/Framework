@@ -23,7 +23,6 @@ using System.Net;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
-using System.Threading;
 using JetBrains.Annotations;
 using Microsoft.Win32;
 using Remotion.Utilities;

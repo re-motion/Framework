@@ -19,7 +19,6 @@ using System;
 using JetBrains.Annotations;
 using Moq;
 using NUnit.Framework;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.AccessControl;

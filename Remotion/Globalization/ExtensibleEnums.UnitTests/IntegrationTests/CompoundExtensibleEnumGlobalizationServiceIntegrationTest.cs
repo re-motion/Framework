@@ -15,8 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using NUnit.Framework;
 using Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain;
 using Remotion.ServiceLocation;

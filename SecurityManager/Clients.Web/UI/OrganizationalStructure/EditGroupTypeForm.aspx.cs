@@ -19,7 +19,6 @@ using System;
 using Remotion.Globalization;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
-using Remotion.Web;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI.Controls;
 

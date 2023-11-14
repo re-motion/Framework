@@ -18,7 +18,6 @@ using System;
 using System.Web;
 using Moq;
 using NUnit.Framework;
-using Remotion.ServiceLocation;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.Resources;
 

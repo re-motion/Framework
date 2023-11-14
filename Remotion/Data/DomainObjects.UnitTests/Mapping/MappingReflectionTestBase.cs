@@ -23,7 +23,6 @@ using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurati
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
-using Remotion.Data.DomainObjects.UnitTests.Factories;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {

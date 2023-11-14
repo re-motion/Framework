@@ -22,7 +22,6 @@ using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
-using Remotion.Web.UnitTests.Core.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
 {

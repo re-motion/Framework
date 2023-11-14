@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using Remotion.Configuration;
-using Remotion.Context;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader;
 using Remotion.Data.DomainObjects.Development;

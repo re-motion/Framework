@@ -22,7 +22,6 @@ using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation;
-using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls
 {

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Moq;
-using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.Serialization;

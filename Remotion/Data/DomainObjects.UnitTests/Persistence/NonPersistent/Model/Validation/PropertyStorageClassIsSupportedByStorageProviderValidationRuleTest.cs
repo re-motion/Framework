@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent.Model;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation;
-using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.Validation;

@@ -18,14 +18,11 @@ using System;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering;
-using Remotion.Web.Utilities;
 using Calendar = System.Web.UI.WebControls.Calendar;
 
 namespace Remotion.Web.UI.Controls

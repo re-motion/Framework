@@ -23,7 +23,6 @@ using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Security.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
 using Remotion.Security;
 using Remotion.Security.Metadata;

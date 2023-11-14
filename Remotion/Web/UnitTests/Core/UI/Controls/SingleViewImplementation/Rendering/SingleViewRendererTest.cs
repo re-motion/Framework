@@ -26,7 +26,6 @@ using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.SingleViewImplementation;
 using Remotion.Web.UI.Controls.SingleViewImplementation.Rendering;

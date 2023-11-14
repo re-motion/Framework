@@ -19,7 +19,6 @@ using System.Runtime.Serialization;
 using Remotion.Mixins;
 using Remotion.ObjectBinding;
 using Remotion.Utilities;
-using TypeExtensions = Remotion.Reflection.TypeExtensions;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding
 {

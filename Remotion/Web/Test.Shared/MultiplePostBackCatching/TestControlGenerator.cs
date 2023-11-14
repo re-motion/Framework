@@ -19,7 +19,6 @@ using System.Collections;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Microsoft.Win32.SafeHandles;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls;

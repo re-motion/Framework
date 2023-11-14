@@ -18,7 +18,6 @@ using System;
 using System.IO;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries.Configuration;
-using Remotion.Development;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration

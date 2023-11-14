@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using JetBrains.Annotations;
 
 namespace Remotion.Web.UI.Controls
 {

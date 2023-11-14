@@ -17,7 +17,6 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls

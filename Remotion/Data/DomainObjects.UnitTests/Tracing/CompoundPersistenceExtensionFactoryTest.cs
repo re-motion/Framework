@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Tracing;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Tracing

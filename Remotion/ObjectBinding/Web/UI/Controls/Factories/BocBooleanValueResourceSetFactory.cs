@@ -22,7 +22,6 @@ using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Globalization;
-using Remotion.Web.UI;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
 {

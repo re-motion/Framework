@@ -17,7 +17,6 @@
 using System;
 using JetBrains.Annotations;
 using OpenQA.Selenium.Chrome;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge

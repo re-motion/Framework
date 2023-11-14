@@ -15,10 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
-using System.Web.UI.WebControls;
 using NUnit.Framework;
-using Remotion.Globalization;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.EditableRowSupport
 {

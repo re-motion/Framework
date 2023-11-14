@@ -16,7 +16,6 @@
 // 
 using System;
 using Moq;
-using Remotion.Collections;
 using Remotion.Collections.DataStore;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain

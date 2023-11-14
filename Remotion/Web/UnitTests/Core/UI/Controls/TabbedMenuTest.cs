@@ -20,8 +20,6 @@ using System.Linq;
 using System.Web;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
-using Remotion.Development.Web.UnitTesting.Configuration;
-using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.Utilities;

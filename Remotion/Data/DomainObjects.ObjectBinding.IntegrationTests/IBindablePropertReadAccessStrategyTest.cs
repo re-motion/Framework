@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Linq;
-using System.Security.Claims;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Security.BindableObject;

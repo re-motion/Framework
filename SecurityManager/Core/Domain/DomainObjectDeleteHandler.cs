@@ -19,7 +19,6 @@ using System;
 using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Remotion.Data.DomainObjects;
 using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain

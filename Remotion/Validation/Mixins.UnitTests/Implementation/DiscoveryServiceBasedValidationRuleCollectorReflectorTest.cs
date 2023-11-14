@@ -16,10 +16,8 @@
 // 
 using System;
 using System.ComponentModel.Design;
-using System.Linq;
 using Moq;
 using NUnit.Framework;
-using Remotion.Validation.Attributes;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Mixins.Implementation;
 using Remotion.Validation.Mixins.UnitTests.TestDomain;

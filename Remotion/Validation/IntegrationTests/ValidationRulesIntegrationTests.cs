@@ -20,7 +20,6 @@ using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.IntegrationTests.TestDomain.ComponentA;
 using Remotion.Validation.IntegrationTests.TestDomain.ComponentB;
-using Remotion.Validation.Results;
 
 namespace Remotion.Validation.IntegrationTests
 {

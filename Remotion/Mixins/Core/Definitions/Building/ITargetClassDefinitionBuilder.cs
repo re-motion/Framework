@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Mixins.Context;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Mixins.Definitions.Building
 {

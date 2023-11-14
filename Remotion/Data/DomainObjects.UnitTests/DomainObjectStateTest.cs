@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests

@@ -19,7 +19,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using Remotion.Collections;
 using Remotion.Reflection;
 
 namespace Remotion.Utilities

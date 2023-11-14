@@ -18,7 +18,6 @@ using System;
 using NUnit.Framework;
 using Remotion.Development.Mixins.UnitTesting;
 using Remotion.Development.Moq.UnitTesting;
-using Remotion.Development.UnitTesting;
 using Remotion.TypePipe;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Serialization

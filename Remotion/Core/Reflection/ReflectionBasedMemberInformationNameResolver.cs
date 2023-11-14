@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Concurrent;
-using Remotion.Collections;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 

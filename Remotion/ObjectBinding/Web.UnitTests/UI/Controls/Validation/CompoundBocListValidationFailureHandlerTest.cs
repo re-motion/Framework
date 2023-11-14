@@ -1,8 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
-using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
-using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
 {

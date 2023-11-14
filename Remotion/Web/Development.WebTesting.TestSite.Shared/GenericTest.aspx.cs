@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.ServiceLocation;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 using Remotion.Web.Development.WebTesting.TestSite.Shared.GenericPages;
