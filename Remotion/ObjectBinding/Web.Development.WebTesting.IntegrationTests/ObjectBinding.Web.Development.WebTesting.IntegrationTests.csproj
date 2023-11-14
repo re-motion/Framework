@@ -183,7 +183,8 @@
     <EmbeddedResource Include="SavedTestScreenshots\BocTreeViewControlObjectTest\WebTreeView.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\InternetExplorer.any.ScreenshotTest2.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\Firefox.any.ScreenshotTest.png" />
-    <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\Firefox.any.ScreenshotTest_AutoComplete.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\Firefox.any.ScreenshotTest_AutoComplete0.png" />
+    <EmbeddedResource Include="SavedTestScreenshots\BocAutoCompleteReferenceValueControlObjectTest\Firefox.any.ScreenshotTest_AutoComplete1.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocDateTimeValueControlObjectTest\Firefox.any.ScreenshotTest.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocDateTimeValueControlObjectTest\Firefox.any.ScreenshotTest_DatePicker.png" />
     <EmbeddedResource Include="SavedTestScreenshots\BocListControlObjectTest\Firefox.any.ScreenshotTest.png" />
