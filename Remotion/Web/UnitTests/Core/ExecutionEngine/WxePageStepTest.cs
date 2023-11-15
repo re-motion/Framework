@@ -54,7 +54,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       _subFunction = new Mock<TestFunction>() { CallBase = true };
 
       _httpContextMock = new Mock<HttpContextBase>();
-      _functionState = new WxeFunctionState(_rootFunction, true);
+      _functionState = new WxeFunctionState(_rootFunction, 20, true);
 
       _pageStep = new Mock<WxePageStep>("ThePage") { CallBase = true };
 
@@ -62,7 +62,13 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       _wxeHandler = new WxeHandler();
 
       _functionStateManager = new WxeFunctionStateManager(new FakeHttpSessionStateBase());
-      _wxeContext = new WxeContext(_httpContextMock.Object, _functionStateManager, _functionState, new NameValueCollection());
+      _wxeContext = new WxeContext(
+          _httpContextMock.Object,
+          _functionStateManager,
+          _functionState,
+          new NameValueCollection(),
+          new WxeUrlSettings(),
+          new WxeLifetimeManagementSettings());
     }
 
     [TearDown]

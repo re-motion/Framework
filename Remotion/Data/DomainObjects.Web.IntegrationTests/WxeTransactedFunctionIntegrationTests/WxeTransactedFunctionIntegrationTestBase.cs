@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     [SetUp]
     public virtual void SetUp ()
     {
-      _context = new WxeContextMock(WxeContextMock.CreateHttpContext());
+      _context = new WxeContextMock(WxeContextMock.CreateHttpContext(), new WxeUrlSettings(), new WxeLifetimeManagementSettings());
       _transactionScope = new TransactionScope();
     }
 

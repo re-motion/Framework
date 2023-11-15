@@ -23,25 +23,14 @@
     </remarks>
     <seealso cref="WebConfiguration"/>
     <example>
-      Setting the <c>executionEngine</c> entry's values in the <c>remotion.web</c> configuration section.
+      Setting the <c>executionEngine</c> lifetime management settings during startup:
       <code>
 <![CDATA[
-<remotion.web xmlns="http://www.re-motion.org/web/configuration"> 
-  <executionEngine 
-      defaultWxeHandler="~/WxeHandler.ashx"
-      enableSessionManagement="true" 
-      functionTimeout="20" 
-      refreshInterval="10" 
-      urlMappingFile="C:\ProjectDirectory\UrlMapping.xml"
-  />
-  <!-- Other configuration section entries. -->
-</remotion.web>
+      var defaultServiceLocator = DefaultServiceLocator.Create();
+      var settings  = WxeLifetimeManagementSettings.Create(functionTimeout: 10, refreshInterval: 5);
+      defaultServiceLocator.RegisterSingle<IWxeLifetimeManagementSettings >(() => settings);
+      ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
 ]]></code>
-      <note>
-        The values used for the <see cref="DefaultWxeHandler">defaultWxeHandler</see> and 
-        <see cref="UrlMappingFile">urlMappingFile</see> do not correspond to the default settings, which is 
-        undefined <see cref="String.Empty">String.Empty</see>).
-      </note>
     </example>
   </Class>
   
@@ -60,14 +49,14 @@
     </remarks>
   </EnableSessionManagement>
   
-  <RefreshIntervall>
+  <RefreshInterval>
     <value> 
-      The timeout in mintues. Use zero to disable refreshing. Defaults to 10 minutes. Must not be a negative number.
+      The timeout in minutes. Use zero to disable refreshing. Defaults to 10 minutes. Must not be a negative number.
     </value>
     <remarks> 
       The value must be less than both the <see cref="FunctionTimeout"/> and the 
       <see cref="System.Web.SessionState.HttpSessionState.Timeout"/>.
     </remarks>
-  </RefreshIntervall>
+  </RefreshInterval>
   
 </ExecutionEngineConfiguration>

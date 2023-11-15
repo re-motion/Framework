@@ -69,23 +69,15 @@
     <seealso cref="Remotion.Web.Configuration.ExecutionEngineConfiguration"/>
     <seealso cref="Remotion.Web.Configuration.WebConfiguration"/>
     <example>
-      An example for specifying the 
-      <see cref="Remotion.Web.Configuration.ExecutionEngineConfiguration.UrlMappingFile">urlMappingFile</see>
-      attribute with the <see cref="Remotion.Web.Configuration.ExecutionEngineConfiguration">executionEngine</see> 
-      configuration section element.
+      Setting the <c>UrlMappingFile</c> during startup:
       <code>
 <![CDATA[
-<remotion.web xmlns="http://www.re-motion.org/web/configuration"> 
-  <!-- The configuration section entries. -->
-  <executionEngine
-      urlMappingFile="C:\ProjectDirectory\UrlMapping.xml"
-      <!-- Other elements of the executionEngine section. -->
-  />
-  <!-- Other configuration section entries. -->
-</remotion.web>
-]]></code>
+      var defaultServiceLocator = DefaultServiceLocator.Create();
+      var settings  = WxeUrlSettings.Create(urlMappingFile: "MyUrlMapping.xml");
+      defaultServiceLocator.RegisterSingle<WxeUrlSettings > (() => settings);
+      ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
+  ]]></code>
     </example>
-    
     <example>
       The following example shows an XML file that contains the following mappings:
       <list type="bullet">

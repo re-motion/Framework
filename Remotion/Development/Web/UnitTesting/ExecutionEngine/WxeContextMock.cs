@@ -44,21 +44,25 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine
       return CreateHttpContext(queryString);
     }
 
-    public WxeContextMock (HttpContext context)
+    public WxeContextMock (HttpContext context, WxeUrlSettings wxeUrlSettings, IWxeLifetimeManagementSettings wxeLifetimeManagementSettings)
         : base(
             new HttpContextWrapper(context),
             new WxeFunctionStateManager(new HttpSessionStateWrapper(context.Session)),
-            new WxeFunctionState(new TestFunction(), false),
-            null!)
+            new WxeFunctionState(new TestFunction(), 20, false),
+            null!,
+            wxeUrlSettings,
+            wxeLifetimeManagementSettings)
     {
     }
 
-    public WxeContextMock (HttpContext context, NameValueCollection queryString)
+    public WxeContextMock (HttpContext context, NameValueCollection queryString, WxeUrlSettings wxeUrlSettings, IWxeLifetimeManagementSettings wxeLifetimeManagementSettings)
         : base(
             new HttpContextWrapper(context),
             new WxeFunctionStateManager(new HttpSessionStateWrapper(context.Session)),
-            new WxeFunctionState(new TestFunction(), false),
-            queryString)
+            new WxeFunctionState(new TestFunction(), 20, false),
+            queryString,
+            wxeUrlSettings,
+            wxeLifetimeManagementSettings)
     {
     }
   }

@@ -24,11 +24,6 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 [Serializable]
 public class WxeFunctionStateMock: WxeFunctionState
 {
-  public WxeFunctionStateMock (WxeFunction function, bool enableCleanUp)
-    : base(function, enableCleanUp)
-  {
-  }
-
   public WxeFunctionStateMock (WxeFunction function, int lifetime, bool enableCleanUp)
     : base(function, lifetime, enableCleanUp)
   {

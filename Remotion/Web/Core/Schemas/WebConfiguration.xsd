@@ -13,9 +13,6 @@
             <xs:attribute name="functionTimeout" type="xs:int" default="20" />
             <xs:attribute name="enableSessionManagement" type="xs:boolean" default="true" />
             <xs:attribute name="refreshInterval" type="xs:int" default="10" />
-            <xs:attribute name="urlMappingFile" type="xs:string" default="" />
-            <xs:attribute name="maximumUrlLength" type="xs:int" default="1024" />
-            <xs:attribute name="defaultWxeHandler" type="xs:string" default="" />
           </xs:complexType>
         </xs:element>
         <xs:element name="resources" minOccurs="0" maxOccurs="1">

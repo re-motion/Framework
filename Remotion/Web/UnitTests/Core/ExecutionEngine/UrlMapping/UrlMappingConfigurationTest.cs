@@ -17,7 +17,9 @@
 using System;
 using System.IO;
 using NUnit.Framework;
-using Remotion.Development.Web.UnitTesting.Configuration;
+using Remotion.Development.UnitTesting;
+using Remotion.ServiceLocation;
+using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.UrlMapping;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
@@ -35,6 +37,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     [TearDown]
     public virtual void TearDown ()
     {
+      UrlMappingConfiguration.SetCurrent(null);
     }
 
     [Test]
@@ -75,7 +78,13 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     [Test]
     public void GetCurrentMapping ()
     {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineUrlMapping();
+      UrlMappingConfiguration.SetCurrent(null!);
+
+      var wxeUrlSettings = WxeUrlSettings.Create(@"Res\UrlMapping.xml");
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterSingle(() => wxeUrlSettings);
+      using var _ = new ServiceLocatorScope(serviceLocator);
+
       UrlMappingConfiguration mapping = UrlMappingConfiguration.Current;
       Assert.That(mapping, Is.Not.Null);
     }
@@ -83,8 +92,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     [Test]
     public void GetCurrentMappingFromConfiguration ()
     {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineUrlMapping();
-      UrlMappingConfiguration mapping = UrlMappingConfiguration.Current;
+      UrlMappingConfiguration mapping = UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml");
 
       Assert.IsNotNull(mapping, "Mapping is null.");
 
@@ -111,7 +119,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     [Test]
     public void GetCurrentMappingFromConfigurationWithNoFilemane ()
     {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineMappingWithNoFilename();
+      var wxeUrlSettings = WxeUrlSettings.Create(urlMappingFile: null);
+
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterSingle(() => wxeUrlSettings);
+      using var _ = new ServiceLocatorScope(serviceLocator);
+
       UrlMappingConfiguration mapping = UrlMappingConfiguration.Current;
 
       Assert.IsNotNull(mapping, "Mapping is null.");
@@ -123,8 +136,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     [Test]
     public void FindByFunctionType ()
     {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineUrlMapping();
-      UrlMappingCollection mappings = UrlMappingConfiguration.Current.Mappings;
+      UrlMappingCollection mappings = UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml").Mappings;
 
       UrlMappingEntry entry = mappings[0];
       Assert.AreSame(mappings[0], mappings.Find(entry.FunctionType), "Could not find {0}.", entry.FunctionType.FullName);
@@ -141,8 +153,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     [Test]
     public void FindByResource ()
     {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineUrlMapping();
-      UrlMappingCollection mappings = UrlMappingConfiguration.Current.Mappings;
+      UrlMappingCollection mappings = UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml").Mappings;
 
       UrlMappingEntry entry = mappings[0];
       Assert.AreSame(mappings[0], mappings.Find(entry.Resource), "Could not find {0}.", entry.Resource);
@@ -159,8 +170,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     [Test]
     public void FindByID ()
     {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineUrlMapping();
-      UrlMappingCollection mappings = UrlMappingConfiguration.Current.Mappings;
+      UrlMappingCollection mappings = UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml").Mappings;
 
       UrlMappingEntry entry = mappings[0];
       Assert.AreSame(mappings[0], mappings.FindByID(entry.ID), "Could not find {0}.", entry.ID);
@@ -171,5 +181,4 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
       Assert.IsNull(mappings.FindByID("unknown"), "Found mapping for unknown id.");
     }
   }
-
 }
