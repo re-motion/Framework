@@ -81,7 +81,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
     [Test]
     public void Test_SubFunction ()
     {
-      WxeContextMock.SetCurrent(_wxeContext);
+      WxeContext.SetCurrent(_wxeContext);
 
       var sequence = new VerifiableSequence();
 
@@ -128,7 +128,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
     [Test]
     public void Test_SubFunctionCompleted_ReEntrancy ()
     {
-      WxeContextMock.SetCurrent(_wxeContext);
+      WxeContext.SetCurrent(_wxeContext);
 
       var sequence = new VerifiableSequence();
 
@@ -169,7 +169,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
     [Test]
     public void Test_SubFunction_ReEntrancy ()
     {
-      WxeContextMock.SetCurrent(_wxeContext);
+      WxeContext.SetCurrent(_wxeContext);
 
       var sequence = new VerifiableSequence();
       var executeCallbacks = new Queue<Action>();
@@ -210,7 +210,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
     [Test]
     public void Test_SubFunction_RedirectToPermaUrl ()
     {
-      WxeContextMock.SetCurrent(_wxeContext);
+      WxeContext.SetCurrent(_wxeContext);
       Uri uri = new Uri("http://localhost/AppDir/root.wxe");
 
       var responseMock = new Mock<HttpResponseBase>(MockBehavior.Strict);

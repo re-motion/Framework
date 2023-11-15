@@ -18,6 +18,7 @@ using System;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
@@ -35,8 +36,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     public void SetUp ()
     {
       TestFunction rootFunction = new TestFunction();
-      WxeContextFactory contextFactory = new WxeContextFactory();
-      _wxeContext = contextFactory.CreateContext(rootFunction);
+      _wxeContext = WxeContextFactory.Create(rootFunction);
       _mockWxeSecurityAdapter = new Mock<IWxeSecurityAdapter>(MockBehavior.Strict);
 
       var serviceLocator = DefaultServiceLocator.Create();

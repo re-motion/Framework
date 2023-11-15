@@ -18,6 +18,7 @@ using System;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
@@ -30,8 +31,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void CreateTransactionStrategy_WithoutParentFunction_And_WithoutParentTransaction ()
     {
-      WxeContextFactory wxeContextFactory = new WxeContextFactory();
-      WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
+      WxeContext context = WxeContextFactory.Create(new TestFunction());
 
       ITransactionMode transactionMode = new CreateChildIfParentTransactionMode(true, new TestTransactionFactory());
       TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy(new TestFunction2(transactionMode), context);
@@ -55,8 +55,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       var stepMock = new Mock<WxeStep>();
       childFunction.Add(stepMock.Object);
 
-      WxeContextFactory wxeContextFactory = new WxeContextFactory();
-      WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
+      WxeContext context = WxeContextFactory.Create(new TestFunction());
 
       stepMock
           .Setup(mock => mock.Execute(context))
@@ -84,8 +83,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       var stepMock = new Mock<WxeStep>();
       childFunction.Add(stepMock.Object);
 
-      WxeContextFactory wxeContextFactory = new WxeContextFactory();
-      WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
+      WxeContext context = WxeContextFactory.Create(new TestFunction());
 
       stepMock
           .Setup(mock => mock.Execute(context))
@@ -118,8 +116,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       var stepMock = new Mock<WxeStep>();
       childFunction.Add(stepMock.Object);
 
-      WxeContextFactory wxeContextFactory = new WxeContextFactory();
-      WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
+      WxeContext context = WxeContextFactory.Create(new TestFunction());
 
       stepMock
           .Setup(mock => mock.Execute(context))

@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
@@ -32,8 +33,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [SetUp]
     public void SetUp ()
     {
-      WxeContextFactory contextFactory = new WxeContextFactory();
-      _context = contextFactory.CreateContext(new TestFunction());
+      _context = WxeContextFactory.Create(new TestFunction());
 
       _executionListener = NullExecutionListener.Null;
     }

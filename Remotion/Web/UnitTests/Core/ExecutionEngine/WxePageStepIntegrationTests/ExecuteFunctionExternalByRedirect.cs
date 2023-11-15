@@ -93,7 +93,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
           new NameValueCollection(),
           new WxeUrlSettings(),
           new WxeLifetimeManagementSettings());
-      WxeContextMock.SetCurrent(_wxeContext);
+      WxeContext.SetCurrent(_wxeContext);
     }
 
     [Test]

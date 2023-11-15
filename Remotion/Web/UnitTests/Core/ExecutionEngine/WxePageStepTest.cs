@@ -99,7 +99,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void ExecuteFunction ()
     {
-      WxeContextMock.SetCurrent(_wxeContext);
+      WxeContext.SetCurrent(_wxeContext);
 
       WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions();
       WxeRepostOptions repostOptions = WxeRepostOptions.SuppressRepost(new Mock<Control>().Object, true);
@@ -132,7 +132,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void ExecuteFunction_IsAlreadyExecutingSubFunction ()
     {
-      WxeContextMock.SetCurrent(_wxeContext);
+      WxeContext.SetCurrent(_wxeContext);
 
       _pageMock.Setup(stub => stub.GetPostBackCollection()).Returns(new NameValueCollection());
       _pageMock.Setup(stub => stub.SaveAllState());
@@ -159,7 +159,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void ExecuteFunction_CopiesDirtyStateFromPageBeforeInnerExecuteWhenPageIsDirty ()
     {
-      WxeContextMock.SetCurrent(_wxeContext);
+      WxeContext.SetCurrent(_wxeContext);
 
       _pageMock.Setup(_=> _.GetDirtyStates(new[] { SmartPageDirtyStates.CurrentPage })).Returns(new[] { SmartPageDirtyStates.CurrentPage });
       _pageStep
@@ -182,7 +182,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void ExecuteFunction_CopiesDirtyStateFromPageBeforeInnerExecuteWhenPageStepWhenPageIsNotDirty ()
     {
-      WxeContextMock.SetCurrent(_wxeContext);
+      WxeContext.SetCurrent(_wxeContext);
 
       _pageStep.Object.SetDirtyStateForCurrentPage(true);
 
@@ -207,7 +207,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void ExecuteFunctionExternalByRedirect ()
     {
-      WxeContextMock.SetCurrent(_wxeContext);
+      WxeContext.SetCurrent(_wxeContext);
 
       WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions();
       WxeReturnOptions returnOptions = new WxeReturnOptions();
@@ -241,7 +241,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void ExecuteFunctionExternalByRedirect_IsAlreadyExecutingSubFunction ()
     {
-      WxeContextMock.SetCurrent(_wxeContext);
+      WxeContext.SetCurrent(_wxeContext);
 
       _pageMock.Setup(stub => stub.GetPostBackCollection()).Returns(new NameValueCollection());
       _pageMock.Setup(stub => stub.SaveAllState());
@@ -268,7 +268,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void ExecuteFunctionExternalByRedirect_CopiesDirtyStateFromPageBeforeInnerExecuteWhenPageIsDirty ()
     {
-      WxeContextMock.SetCurrent(_wxeContext);
+      WxeContext.SetCurrent(_wxeContext);
 
       _pageMock.Setup(_=> _.GetDirtyStates(new[] { SmartPageDirtyStates.CurrentPage })).Returns(new[] { SmartPageDirtyStates.CurrentPage });
       _pageStep
@@ -291,7 +291,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void ExecuteFunctionExternalByRedirect_CopiesDirtyStateFromPageBeforeInnerExecuteWhenPageStepWhenPageIsNotDirty ()
     {
-      WxeContextMock.SetCurrent(_wxeContext);
+      WxeContext.SetCurrent(_wxeContext);
 
       _pageStep.Object.SetDirtyStateForCurrentPage(true);
 

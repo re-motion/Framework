@@ -35,8 +35,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     public void SetUp ()
     {
       TestFunction rootFunction = new TestFunction();
-      WxeContextFactory contextFactory = new WxeContextFactory();
-      _context = contextFactory.CreateContext(rootFunction);
+      _context = WxeContextFactory.Create(rootFunction);
 
       _executionListenerMock = new Mock<IWxeFunctionExecutionListener>(MockBehavior.Strict);
     }
