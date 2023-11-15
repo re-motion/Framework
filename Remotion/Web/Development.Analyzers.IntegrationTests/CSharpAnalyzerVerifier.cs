@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.Analyzers.IntegrationTests
     }
 
     private static readonly Lazy<ReferenceAssemblies> s_net80 =
-        new(() => new ReferenceAssemblies("net8.0", new PackageIdentity("Microsoft.NETCore.App.Ref", "8.0.0-rc.2.23479.6"), Path.Combine("ref", "net8.0")));
+        new(() => new ReferenceAssemblies("net8.0", new PackageIdentity("Microsoft.NETCore.App.Ref", "8.0.0"), Path.Combine("ref", "net8.0")));
 
     public static DiagnosticResult Diagnostic () => AnalyzerVerifier<TAnalyzer>.Diagnostic();
 
