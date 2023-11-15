@@ -21,7 +21,7 @@ using System.Xml.Schema;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.UnitTests.Resources;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport

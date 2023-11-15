@@ -25,7 +25,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Utilities;

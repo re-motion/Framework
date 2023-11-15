@@ -60,7 +60,7 @@
     <PropertyGroup>
       <Configurations>Debug+Release</Configurations>
       <Platforms>x64</Platforms>
-      <DatabaseSystems>SqlServer2014+NoDB</DatabaseSystems>
+      <DatabaseSystems>SqlServer2016+NoDB</DatabaseSystems>
       <Browsers>NoBrowser</Browsers>
       <ExecutionRuntimes>Win_NET48</ExecutionRuntimes>
       <TargetRuntimes>NET48</TargetRuntimes>
