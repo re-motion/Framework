@@ -170,13 +170,17 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       HttpContextHelper.SetCurrent(HttpContextHelper.CreateHttpContext("get", "default.aspx", string.Empty));
       Assert.That(WxeFunctionStateManager.HasSession, Is.False);
       Assert.That(WxeFunctionStateManager.Current, Is.Not.Null);
+      Assert.That(WxeFunctionStateManager.HasSession, Is.True);
       ThreadRunner.Run(
           delegate
           {
-            HttpContextHelper.SetCurrent(HttpContextHelper.CreateHttpContext("get", "default.aspx", string.Empty));
-            Assert.That(WxeFunctionStateManager.HasSession, Is.False);
-            Assert.That(WxeFunctionStateManager.Current, Is.Not.Null);
-            Assert.That(WxeFunctionStateManager.HasSession, Is.True);
+            using (SafeContext.Instance.OpenSafeContextBoundary())
+            {
+              HttpContextHelper.SetCurrent(HttpContextHelper.CreateHttpContext("get", "default.aspx", string.Empty));
+              Assert.That(WxeFunctionStateManager.HasSession, Is.False);
+              Assert.That(WxeFunctionStateManager.Current, Is.Not.Null);
+              Assert.That(WxeFunctionStateManager.HasSession, Is.True);
+            }
           });
     }
 
