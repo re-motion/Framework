@@ -120,7 +120,7 @@ class BocList
 
     BocList.FixupValidationErrorOverflowSize(bocList);
 
-    var selectedRows = new BocList_SelectedRows (selection);
+    const selectedRows = new BocList_SelectedRows (selection);
     if (   selectedRows.Selection != BocList._rowSelectionUndefined
         && selectedRows.Selection != BocList._rowSelectionDisabled)
     {
@@ -128,7 +128,7 @@ class BocList
       selectedRows.SelectAllSelectorControls = document.querySelectorAll<HTMLInputElement>('input[name="' + selectAllSelectorControlName + '"]')!;
       selectedRows.OnSelectionChanged = onSelectionChangedHandler;
 
-      var visualizer = document.querySelectorAll('input[name="' + selectAllSelectorControlName + '"] + span')!;
+      const visualizer = document.querySelectorAll('input[name="' + selectAllSelectorControlName + '"] + span')!;
       visualizer.forEach(checkbox =>
       {
         checkbox.addEventListener('click', function (evt)
@@ -142,11 +142,11 @@ class BocList
       {
         selectedRows.DataRowCount++;
 
-        var tableCell = checkBox.parentNode as HTMLElement;
+        const tableCell = checkBox.parentNode as HTMLElement;
         if (tableCell.nodeName !== 'TD')
           throw 'Unexpected element type: \'' + tableCell.nodeName + '\'';
 
-        var tableRow = tableCell.parentNode as HTMLElement;
+        const tableRow = tableCell.parentNode as HTMLElement;
         if (tableRow.nodeName !== 'TR')
           throw 'Unexpected element type: \'' + tableRow.nodeName + '\'';
 
@@ -155,7 +155,7 @@ class BocList
 
         if (checkBox.checked)
         {
-          var rowBlock = new BocList_RowBlock(tableRow, checkBox);
+          const rowBlock = new BocList_RowBlock(tableRow, checkBox);
           selectedRows.Rows[checkBox.id] = rowBlock;
           selectedRows.Length++;
         }
@@ -175,10 +175,10 @@ class BocList
   {
     row.addEventListener('click', (evt) =>
     {
-      var hasSelectionChanged = BocList.OnRowClick (evt, bocList, row, selectorControl);
+      const hasSelectionChanged = BocList.OnRowClick (evt, bocList, row, selectorControl);
       if (hasSelectionChanged)
       {
-        var selectedRows = BocList._selectedRows[bocList.id]!;
+        const selectedRows = BocList._selectedRows[bocList.id]!;
         selectedRows.OnSelectionChanged (bocList, false);
       }
     });
@@ -230,12 +230,10 @@ class BocList
       return false;
     }  
   
-    var currentRowBlock = new BocList_RowBlock (currentRow, selectorControl);
-    var selectedRows = BocList._selectedRows[bocList.id]!;
-    var isRowHighlightingEnabled = true
-    var isCtrlKeyPress = false;
-    if (evt)
-      isCtrlKeyPress = evt.ctrlKey;
+    const currentRowBlock = new BocList_RowBlock (currentRow, selectorControl);
+    const selectedRows = BocList._selectedRows[bocList.id]!;
+    const isRowHighlightingEnabled = true
+    const isCtrlKeyPress = evt?.ctrlKey === true;
       
     if (   selectedRows.Selection == BocList._rowSelectionUndefined
         || selectedRows.Selection == BocList._rowSelectionDisabled)
@@ -293,7 +291,7 @@ class BocList
   private static SelectRow(bocList: HTMLElement, rowBlock: BocList_RowBlock, isRowHighlightingEnabled: boolean): void
   {
     //  Add currentRow to list  
-    var selectedRows = BocList._selectedRows[bocList.id]!;
+    const selectedRows = BocList._selectedRows[bocList.id]!;
     selectedRows.Rows[rowBlock.SelectorControl.id] = rowBlock;
     selectedRows.Length++;
 
@@ -313,10 +311,10 @@ class BocList
   //  isRowHighlightingEnabled: true to update the row's css-class.
   private static UnselectAllRows(bocList: HTMLElement, isRowHighlightingEnabled: boolean): void
   {
-    var selectedRows = BocList._selectedRows[bocList.id]!;
-    for (var rowID in selectedRows.Rows)
+    const selectedRows = BocList._selectedRows[bocList.id]!;
+    for (const rowID in selectedRows.Rows)
     {
-      var rowBlock = selectedRows.Rows[rowID];
+      const rowBlock = selectedRows.Rows[rowID];
       if (rowBlock != null)
       {
         BocList.UnselectRow (bocList, rowBlock, isRowHighlightingEnabled);
@@ -335,7 +333,7 @@ class BocList
   private static UnselectRow(bocList: HTMLElement, rowBlock: BocList_RowBlock, isRowHighlightingEnabled: boolean): void
   {
     //  Remove currentRow from list
-    var selectedRows = BocList._selectedRows[bocList.id]!;
+    const selectedRows = BocList._selectedRows[bocList.id]!;
     selectedRows.Rows[rowBlock.SelectorControl.id] = null;
     selectedRows.Length--;
 
@@ -373,7 +371,7 @@ class BocList
 
     const bocList = ElementResolverUtility.ResolveSingle(bocListOrSelector);
     const selectAllSelectorControl = ElementResolverUtility.ResolveSingle(selectAllSelectorControlOrSelector);
-    var selectedRows = BocList._selectedRows[bocList.id]!;
+    const selectedRows = BocList._selectedRows[bocList.id]!;
 
     if (selectedRows.Selection != BocList.rowSelectionMultiple)
       return;
@@ -383,15 +381,15 @@ class BocList
 
     selectedRows.SelectRowSelectorControls!.forEach (checkBox => // TODO RM-7711 - Move BocList's Row Selection logic to TypeScript class 'BocList_SelectedRows'.
     {
-      var tableCell = checkBox.parentNode!;
+      const tableCell = checkBox.parentNode!;
       if (tableCell.nodeName !== 'TD')
         throw 'Unexpected element type: \'' + tableCell.nodeName + '\'';
   
-      var tableRow = tableCell.parentNode as HTMLElement;
+      const tableRow = tableCell.parentNode as HTMLElement;
       if (tableRow.nodeName !== 'TR')
         throw 'Unexpected element type: \'' + tableRow.nodeName + '\'';
   
-      var rowBlock = new BocList_RowBlock (tableRow, checkBox);
+      const rowBlock = new BocList_RowBlock (tableRow, checkBox);
       if (selectAllSelectorControl.checked)
         BocList.SelectRow (bocList, rowBlock, isRowHighlightingEnabled);
       else
@@ -444,7 +442,7 @@ class BocList
   //  Returns the number of rows selected for the specified BocList
   public static GetSelectionCount(bocListID: string): number
   {
-    var selectedRows = BocList._selectedRows[bocListID];
+    const selectedRows = BocList._selectedRows[bocListID];
     if (selectedRows == null)
       return 0;
     return selectedRows.Length;
@@ -452,25 +450,25 @@ class BocList
 
   private static HasDimensions(bocList: HTMLElement): boolean
   {
-    var heightFromAttribute = bocList.getAttribute('height');
+    const heightFromAttribute = bocList.getAttribute('height');
     if (!TypeUtility.IsNull(heightFromAttribute) && heightFromAttribute != '')
       return true;
   
-    var heightFromInlineStyle = bocList.style.height;
+    const heightFromInlineStyle = bocList.style.height;
     if (!TypeUtility.IsNull(heightFromInlineStyle) && heightFromInlineStyle != '')
       return true;
   
-    var widthFromAttribute = bocList.getAttribute('width');
+    const widthFromAttribute = bocList.getAttribute('width');
     if (!TypeUtility.IsNull(widthFromAttribute) && widthFromAttribute != '')
       return true;
   
-    var widthFromInlineStyle = bocList.style.width;
+    const widthFromInlineStyle = bocList.style.width;
     if (!TypeUtility.IsNull(widthFromAttribute) && widthFromInlineStyle != '')
       return true;
   
-    var referenceHeight = 0;
-    var referenceWidth = 0;
-    var tempList = document.createElement('div');
+    const referenceHeight = 0;
+    const referenceWidth = 0;
+    const tempList = document.createElement('div');
     bocList.classList.forEach(className => { tempList.classList.add(className) });
     tempList.style.display = 'none';
   
@@ -511,20 +509,20 @@ class BocList
 
   private static FixUpScrolling(bocList: HTMLElement): void
   {
-    var tableBlock = bocList.querySelector(':scope > div.bocListTableBlock')!;
+    const tableBlock = bocList.querySelector(':scope > div.bocListTableBlock')!;
 
-    var scrollTimer: Nullable<number> = null;
+    let scrollTimer: Nullable<number> = null;
     const tableContainer = tableBlock.querySelector<HTMLElement>(':scope > div.bocListTableContainer');
     if (!tableContainer) // In the case of an empty BocList we don't have a table container
       return;
 
-    var scrollableContainer = tableContainer.querySelector<HTMLElement>(':scope > div.bocListTableScrollContainer')!;
-    var horizontalScroll = 0;
+    const scrollableContainer = tableContainer.querySelector<HTMLElement>(':scope > div.bocListTableScrollContainer')!;
+    let horizontalScroll = 0;
   
     scrollableContainer.addEventListener('scroll', () =>
     {
-      var newHorizontalScroll = scrollableContainer.scrollLeft;
-      var hasHorizontalScrollUpdated = horizontalScroll != newHorizontalScroll;
+      const newHorizontalScroll = scrollableContainer.scrollLeft;
+      const hasHorizontalScrollUpdated = horizontalScroll != newHorizontalScroll;
       horizontalScroll = newHorizontalScroll;
   
       if (hasHorizontalScrollUpdated)
@@ -541,8 +539,8 @@ class BocList
   
     BocList.CreateFakeTableHead(tableContainer, scrollableContainer, bocList);
   
-    var resizeInterval = 50;
-    var resizeHandler = function ()
+    const resizeInterval = 50;
+    const resizeHandler = function ()
     {
       if (!PageUtility.Instance.IsInDom (scrollableContainer))
         return;
@@ -613,17 +611,17 @@ class BocList
     // Add diganostic metadata for web testing framework (actually: should only be rendered with IRenderingFeatures.EnableDiagnosticMetadata on)
     tableContainer.setAttribute('data-boclist-has-fake-table-head', 'true');
   
-    var table = scrollableContainer.querySelector(':scope > table')!;
+    const table = scrollableContainer.querySelector(':scope > table')!;
   
-    var fakeTable = document.createElement('table');
+    const fakeTable = document.createElement('table');
     fakeTable.setAttribute('role', 'none');
     table.classList.forEach(className => { fakeTable.classList.add(className) });
     fakeTable.setAttribute('cellPadding', '0');
     fakeTable.setAttribute('cellSpacing', '0');
     fakeTable.style.width = '100%';
 
-    var realTableHead = table.querySelector(':scope > thead')!;
-    var fakeTableHead = realTableHead.cloneNode(true) as HTMLElement;
+    const realTableHead = table.querySelector(':scope > thead')!;
+    const fakeTableHead = realTableHead.cloneNode(true) as HTMLElement;
     realTableHead.setAttribute('aria-hidden', 'true')
     realTableHead.setAttribute('role', 'none')
     realTableHead.querySelectorAll('*[role]').forEach(element =>
@@ -632,11 +630,11 @@ class BocList
     });
     fakeTable.append(fakeTableHead);
   
-    var fakeTableHeadWidthContainer = document.createElement('div');
+    const fakeTableHeadWidthContainer = document.createElement('div');
     fakeTableHeadWidthContainer.setAttribute('role', 'none');
     fakeTableHeadWidthContainer.append(fakeTable);
   
-    var fakeTableHeadContainer = document.createElement('div');
+    const fakeTableHeadContainer = document.createElement('div');
     fakeTableHeadContainer.setAttribute('role', 'none');
     fakeTableHeadContainer.classList.add('bocListFakeTableHead');
     fakeTableHeadContainer.style.display = 'none';
@@ -651,13 +649,13 @@ class BocList
     scrollableContainer.before(fakeTableHeadContainer);
   
     // sync checkboxes
-    var checkboxes = fakeTableHead.querySelectorAll<HTMLInputElement>("th input[type=checkbox]");
+    const checkboxes = fakeTableHead.querySelectorAll<HTMLInputElement>("th input[type=checkbox]");
     checkboxes.forEach(checkbox =>
     {
       checkbox.addEventListener('click', (event) =>
       {
-        var checkName = checkbox.getAttribute('name');
-        var checkStatus = checkbox.checked;
+        const checkName = checkbox.getAttribute('name');
+        const checkStatus = checkbox.checked;
         document.querySelectorAll('input[name="' + checkName + '"]').forEach(element =>
         {
           (element as HTMLInputElement).checked = checkStatus;
@@ -669,24 +667,24 @@ class BocList
 
   private static FixHeaderSize(scrollableContainer: HTMLElement): void
   {
-    var realTable = scrollableContainer.querySelector<HTMLTableElement>(':scope > table')!;
-    var realTableWidth = Math.floor(LayoutUtility.GetWidth(realTable));
-    var previousRealTableWidth = parseInt(realTable.dataset.bocListPreviousRealTableWidth!);
+    const realTable = scrollableContainer.querySelector<HTMLTableElement>(':scope > table')!;
+    const realTableWidth = Math.floor(LayoutUtility.GetWidth(realTable));
+    const previousRealTableWidth = parseInt(realTable.dataset.bocListPreviousRealTableWidth!);
     if (previousRealTableWidth == realTableWidth)
       return;
     realTable.dataset.bocListPreviousRealTableWidth = realTableWidth.toString();
   
-    var realTableHead = realTable.querySelector('thead')!;
-    var realTableHeadRow = realTableHead.children[0];
-    var realTableHeadRowChildren = Array.from(realTableHeadRow.children);
+    const realTableHead = realTable.querySelector('thead')!;
+    const realTableHeadRow = realTableHead.children[0];
+    const realTableHeadRowChildren = Array.from(realTableHeadRow.children);
   
-    var fakeTableHeadContainer = scrollableContainer.parentNode!.querySelector<HTMLTableElement>(':scope > div.bocListFakeTableHead')!;
-    var fakeTableHead = fakeTableHeadContainer.querySelector('thead')!;
-    var fakeTableHeadRow = fakeTableHead.children[0];
-    var fakeTableHeadRowChildren = Array.from(fakeTableHeadRow.children);
+    const fakeTableHeadContainer = scrollableContainer.parentNode!.querySelector<HTMLTableElement>(':scope > div.bocListFakeTableHead')!;
+    const fakeTableHead = fakeTableHeadContainer.querySelector('thead')!;
+    const fakeTableHeadRow = fakeTableHead.children[0];
+    const fakeTableHeadRowChildren = Array.from(fakeTableHeadRow.children);
   
     // store cell widths in array
-    var realTableHeadCellWidths = new Array();
+    const realTableHeadCellWidths = new Array();
     realTableHeadRowChildren.forEach(function (element: Element, index: number)
     {
       realTableHeadCellWidths[index] = Math.floor(LayoutUtility.GetWidth(element as HTMLElement));
@@ -698,23 +696,23 @@ class BocList
       (element as HTMLElement).style.width = realTableHeadCellWidths[index] + 'px';
     });
 
-    var fakeTableHeadWidthContainer = fakeTableHeadContainer.querySelector<HTMLElement> (':scope > div')!;
+    const fakeTableHeadWidthContainer = fakeTableHeadContainer.querySelector<HTMLElement> (':scope > div')!;
     fakeTableHeadWidthContainer.style.width = realTableWidth + 'px';
     fakeTableHeadContainer.style.display = 'block';
-    var fakeTableHeadContainerHeight = Math.floor(LayoutUtility.GetHeight(fakeTableHeadContainer));
+    const fakeTableHeadContainerHeight = Math.floor(LayoutUtility.GetHeight(fakeTableHeadContainer));
     scrollableContainer.style.top = fakeTableHeadContainerHeight + 'px';
     realTable.style.marginTop = (fakeTableHeadContainerHeight * -1) + 'px';
   }
 
   private static FixHeaderPosition(tableContainer: HTMLElement, scrollableContainer: HTMLElement): void
   {
-    var fakeTableHeadContainer = tableContainer.querySelector(':scope > div.bocListFakeTableHead')!;
-    var scrollLeft = scrollableContainer.scrollLeft;
-    var previousScrollLeft = parseFloat(scrollableContainer.dataset.bocListPreviousScrollLeft!)
-    var fakeTableHeadScrollLeft = fakeTableHeadContainer.scrollLeft;
+    const fakeTableHeadContainer = tableContainer.querySelector(':scope > div.bocListFakeTableHead')!;
+    let scrollLeft = scrollableContainer.scrollLeft;
+    const previousScrollLeft = parseFloat(scrollableContainer.dataset.bocListPreviousScrollLeft!)
+    const fakeTableHeadScrollLeft = fakeTableHeadContainer.scrollLeft;
 
-    var hasScrollMoveFromScrollbar = previousScrollLeft !== scrollLeft;
-    var hasScrollMoveFromColumnHeader = previousScrollLeft !== fakeTableHeadScrollLeft;
+    const hasScrollMoveFromScrollbar = previousScrollLeft !== scrollLeft;
+    const hasScrollMoveFromColumnHeader = previousScrollLeft !== fakeTableHeadScrollLeft;
     if (!hasScrollMoveFromScrollbar && !hasScrollMoveFromColumnHeader)
       return;
 
@@ -739,7 +737,7 @@ class BocList
 
     pageNumberField.addEventListener('change', function () {
   
-      var pageNumber = parseInt(pageNumberField.value, 10);
+      const pageNumber = parseInt(pageNumberField.value, 10);
       if (isNaN (pageNumber) || !TypeUtility.IsInteger (pageNumber))
       {
         if (pageNumberField.value.length > 0)
@@ -757,16 +755,16 @@ class BocList
     });
   
     pageNumberField.addEventListener('keydown', function (event) {
-      var enterKey = 13;
-      var zeroKey = 48;
-      var nineKey = 57;
-      var zeroKeyNumBlock = 96;
-      var nineKeyNumBlock = 105;
-      var f1Key = 112;
-      var f12Key = 123;
-      var isEnterKey = event.keyCode == enterKey;
-      var isControlKey = event.keyCode < zeroKey || event.keyCode >= f1Key && event.keyCode <= f12Key;
-      var isNumericKey = event.keyCode >= zeroKey && event.keyCode <= nineKey || event.keyCode >= zeroKeyNumBlock && event.keyCode <= nineKeyNumBlock;
+      const enterKey = 13;
+      const zeroKey = 48;
+      const nineKey = 57;
+      const zeroKeyNumBlock = 96;
+      const nineKeyNumBlock = 105;
+      const f1Key = 112;
+      const f12Key = 123;
+      const isEnterKey = event.keyCode == enterKey;
+      const isControlKey = event.keyCode < zeroKey || event.keyCode >= f1Key && event.keyCode <= f12Key;
+      const isNumericKey = event.keyCode >= zeroKey && event.keyCode <= nineKey || event.keyCode >= zeroKeyNumBlock && event.keyCode <= nineKeyNumBlock;
   
       if (isEnterKey)
       {

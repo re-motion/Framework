@@ -61,7 +61,7 @@ class BocReferenceValue //TODO RM-7715 - Make the TypeScript classes BocReferenc
         if (icon == null)
           return;
 
-        var errorHandler = function (error: Sys.Net.WebServiceError)
+        const errorHandler = function (error: Sys.Net.WebServiceError)
         {
           BocReferenceValue.SetError(dropDownList, resources.LoadIconFailedErrorMessage);
         };
@@ -72,7 +72,7 @@ class BocReferenceValue //TODO RM-7715 - Make the TypeScript classes BocReferenc
         }
         else
         {
-          var businessObject = BocReferenceValue.GetSelectedValue(dropDownList, nullValueString);
+          const businessObject = BocReferenceValue.GetSelectedValue(dropDownList, nullValueString);
           icon = BocReferenceValueBase.UpdateIcon(iconMarker, icon, businessObject, controlServiceUrl, iconContext, errorHandler);
         }
       }
@@ -86,7 +86,7 @@ class BocReferenceValue //TODO RM-7715 - Make the TypeScript classes BocReferenc
 
     if (dropDownList === null || dropDownList.selectedIndex < 0)
       return nullValueString;
-    var selectedValue = (dropDownList.children[dropDownList.selectedIndex] as HTMLInputElement).value;
+    const selectedValue = (dropDownList.children[dropDownList.selectedIndex] as HTMLInputElement).value;
     if (selectedValue == nullValueString)
       return null;
     return selectedValue;
@@ -98,7 +98,7 @@ class BocReferenceValue //TODO RM-7715 - Make the TypeScript classes BocReferenc
     ArgumentUtility.CheckNotNullAndTypeIsString('referenceValueDropDownListID', referenceValueDropDownListID);
     ArgumentUtility.CheckNotNullAndTypeIsString('nullValueString', nullValueString);
 
-    var dropDownList = document.getElementById(referenceValueDropDownListID) as Nullable<HTMLSelectElement>;
+    const dropDownList = document.getElementById(referenceValueDropDownListID) as Nullable<HTMLSelectElement>;
     if (BocReferenceValue.GetSelectedValue(dropDownList, nullValueString) == null)
       return 0;
     return 1;
@@ -126,7 +126,7 @@ class BocReferenceValue //TODO RM-7715 - Make the TypeScript classes BocReferenc
   {
     if (!dropDownList.classList.contains('error'))
     {
-      var oldTitle: Nullable<string> = dropDownList.getAttribute('title');
+      const oldTitle: Nullable<string> = dropDownList.getAttribute('title');
       if (oldTitle !== null)
       {
         dropDownList.dataset['title-backup'] = oldTitle;

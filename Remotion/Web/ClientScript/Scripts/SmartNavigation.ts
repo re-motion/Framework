@@ -37,7 +37,7 @@ class SmartScrolling_Element
     if (StringUtility.IsNullOrEmpty (value))
       return null;
   
-    var fields = value.split (' ');
+    const fields = value.split (' ');
     // TODO RM-7697: SmartScrolling_Element.Parse does not convert strings into numbers when parsing
     return new SmartScrolling_Element (fields[0], fields[1] as unknown as number, fields[2] as unknown as number);
   };
@@ -51,42 +51,40 @@ class SmartScrolling
     if (StringUtility.IsNullOrEmpty (data))
       return;
           
-    var dataFields = data.split ('*');
+    const dataFields = data.split ('*');
     if (dataFields.length == 0)
       return;
     
-    var dataField = dataFields[0];
-    dataFields = dataFields.slice (1);
-    var sseBody = SmartScrolling_Element.Parse (dataField);
+    const dataField = dataFields[0].slice (1);
+    const sseBody = SmartScrolling_Element.Parse (dataField);
     // TODO RM-7698: SmartScrolling.Restore can fail when parsing the specified SmartScrolling_Element
     window.document.body.scrollTop = sseBody!.Top;
     window.document.body.scrollLeft = sseBody!.Left;
     
-    for (var i = 0; i < dataFields.length; i++)
+    for (let i = 0; i < dataFields.length; i++)
     {
-      var scrollElement = SmartScrolling_Element.Parse (dataFields[i]);
+      const scrollElement = SmartScrolling_Element.Parse (dataFields[i]);
       SmartScrolling.SetScrollPosition (scrollElement);
     } 
   }
 
   public static Backup(): string
   {
-    var data = '';
-    var scrollElements: SmartScrolling_Element[] = [];
+    const scrollElements: SmartScrolling_Element[] = [];
     
     if (TypeUtility.IsUndefined (window.document.body.id) || StringUtility.IsNullOrEmpty (window.document.body.id))
     {
-      var sseBody = 
-          new SmartScrolling_Element ('body', window.document.body.scrollTop, window.document.body.scrollLeft);
-      scrollElements[scrollElements.length] = sseBody;
+      const sseBody = new SmartScrolling_Element ('body', window.document.body.scrollTop, window.document.body.scrollLeft);
+      scrollElements.push(sseBody);
     }
-    scrollElements = scrollElements.concat (SmartScrolling.GetScrollPositions (window.document.body));
+    scrollElements.push(...SmartScrolling.GetScrollPositions (window.document.body));
     
-    for (var i = 0; i < scrollElements.length; i++)
+    let data = '';
+    for (let i = 0; i < scrollElements.length; i++)
     {
       if (i > 0)
         data += '*'; 
-      var scrollElement = scrollElements[i];
+      const scrollElement = scrollElements[i];
       data += scrollElement.ToString();
     }
 
@@ -95,21 +93,21 @@ class SmartScrolling
 
   public static GetScrollPositions (currentElement: Nullable<HTMLElement>): SmartScrolling_Element[]
   {
-    var scrollElements: SmartScrolling_Element[] = [];
+    const scrollElements: SmartScrolling_Element[] = [];
     if (currentElement != null)
     {
       if (   ! TypeUtility.IsUndefined (currentElement.id) && ! StringUtility.IsNullOrEmpty (currentElement.id)
           && (currentElement.scrollTop != 0 || currentElement.scrollLeft != 0))
       {
-        var sseCurrentElement = SmartScrolling.GetScrollPosition (currentElement)!;
-        scrollElements[scrollElements.length] = sseCurrentElement;
+        const sseCurrentElement = SmartScrolling.GetScrollPosition (currentElement)!;
+        scrollElements.push(sseCurrentElement);
       }
       
-      for (var i = 0; i < currentElement.childNodes.length; i++)
+      for (let i = 0; i < currentElement.childNodes.length; i++)
       {
-        var element = currentElement.childNodes[i];
-        var scrollChilden = SmartScrolling.GetScrollPositions (element as HTMLElement);
-        scrollElements = scrollElements.concat (scrollChilden);
+        const element = currentElement.childNodes[i];
+        const scrollChilden = SmartScrolling.GetScrollPositions (element as HTMLElement);
+        scrollElements.push(...scrollChilden);
       }
     }
     return scrollElements;  
@@ -127,7 +125,7 @@ class SmartScrolling
   {
     if (scrollElement == null)
       return;
-    var htmlElement = window.document.getElementById (scrollElement.ID);
+    const htmlElement = window.document.getElementById (scrollElement.ID);
     if (htmlElement == null)
       return;
     htmlElement.scrollTop = scrollElement.Top;
@@ -139,21 +137,16 @@ class SmartFocus
 {
   public static Backup(): string
   {
-    var data = '';
-    var activeElement = window.document.activeElement;
-    if (activeElement != null)
-    {
-      data += activeElement.id;
-    }
-    return data;
+    const activeElement = window.document.activeElement;
+    return activeElement?.id || '';
   }
 
   public static Restore (data: string): boolean
   {
-    var activeElementID = data;
+    const activeElementID = data;
     if (! StringUtility.IsNullOrEmpty (activeElementID))
     {
-      var activeElement = document.getElementById(activeElementID);
+      const activeElement = document.getElementById(activeElementID);
       if (activeElement)
       {
         function isEnabledFilter(el: HTMLElement)
@@ -181,9 +174,9 @@ class SmartFocus
         }
         else
         {
-          var focusableElements = Array.from(document.querySelectorAll<HTMLElement>('input, textarea, select, button, a'));
-          var elementIndex = focusableElements.indexOf(activeElement);
-          var fallBackElements = focusableElements.slice(elementIndex).filter(isEnabledFilter);
+          const focusableElements = Array.from(document.querySelectorAll<HTMLElement>('input, textarea, select, button, a'));
+          const elementIndex = focusableElements.indexOf(activeElement);
+          let fallBackElements = focusableElements.slice(elementIndex).filter(isEnabledFilter);
           if (fallBackElements.length > 0)
           {
             SmartFocus.SetFocus (fallBackElements[0]);

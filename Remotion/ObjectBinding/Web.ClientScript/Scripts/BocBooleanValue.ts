@@ -45,12 +45,12 @@ class BocBooleanValue_Resource
     falseDescription: Nullable<string>,
     nullDescription: Nullable<string>) 
   {
-    var trueValue = this._trueValue;
-    var falseValue = this._falseValue;
-    var nullValue = this._nullValue;
+    const trueValue = this._trueValue;
+    const falseValue = this._falseValue;
+    const nullValue = this._nullValue;
 
-    var oldValue = hiddenField.value;
-    var newValue;
+    const oldValue = hiddenField.value;
+    let newValue;
 
     //  Select the next value.
     //  true -> false -> null -> true
@@ -73,10 +73,10 @@ class BocBooleanValue_Resource
 
     // Update the controls
     hiddenField.value = newValue;
-    var checkedState: Optional<string>;
-    var iconSrc: Optional<string>;
-    var iconHoverSrc: Optional<string>;
-    var description: Optional<string>;
+    let checkedState: Optional<string>;
+    let iconSrc: Optional<string>;
+    let iconHoverSrc: Optional<string>;
+    let description: Optional<string>;
 
     if (newValue == falseValue) {
         checkedState = 'false';
@@ -177,7 +177,7 @@ class BocBooleanValue
     falseDescription: Nullable<string>,
     nullDescription: Nullable<string>): void
   {
-    var resource = BocBooleanValue._bocBooleanValue_Resources[key]!;
+    const resource = BocBooleanValue._bocBooleanValue_Resources[key]!;
     resource.SelectNextCheckboxValue(
     checkboxSpan,
     icon,

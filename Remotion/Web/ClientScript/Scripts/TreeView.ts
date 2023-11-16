@@ -81,14 +81,14 @@ class WebTreeView
       }
     }
 
-    var focusableTreeNode = treeView.querySelector ('li[tabindex="0"][role=treeitem]');
+    const focusableTreeNode = treeView.querySelector ('li[tabindex="0"][role=treeitem]');
     if (focusableTreeNode === null)
     {
-      var firstSelectedTreeNode = treeView.querySelector ('li[aria-selected=true]');
+      const firstSelectedTreeNode = treeView.querySelector ('li[aria-selected=true]');
       if (firstSelectedTreeNode === null)
       {
-        var firstTopLevelTreeNodeList = treeView.querySelector ('ul[role=tree]');
-        var firstTopLevelTreeNode = firstTopLevelTreeNodeList?.querySelector (':scope > li[role=treeitem]');
+        const firstTopLevelTreeNodeList = treeView.querySelector ('ul[role=tree]');
+        const firstTopLevelTreeNode = firstTopLevelTreeNodeList?.querySelector (':scope > li[role=treeitem]');
         if (firstTopLevelTreeNode)
         {
           firstTopLevelTreeNode.setAttribute ('tabindex', '0');
@@ -103,11 +103,11 @@ class WebTreeView
 
   private static OnKeyDown (event: KeyboardEvent, treeView: HTMLElement): void
   {
-    var treeNodes = Array.from (treeView.querySelectorAll<HTMLElement> ('li[role=treeitem]'));
+    const treeNodes = Array.from (treeView.querySelectorAll<HTMLElement> ('li[role=treeitem]'));
 
-    var activeTreeNodeIndex = -1;
+    let activeTreeNodeIndex = -1;
 
-    var activeTreeNode = document.activeElement as HTMLElement;
+    let activeTreeNode = document.activeElement as HTMLElement;
     if (activeTreeNode != null &&
       TypeUtility.IsDefined (activeTreeNode.tagName) &&
       activeTreeNode.tagName.toUpperCase() === 'LI')
@@ -116,7 +116,7 @@ class WebTreeView
     }
     else
     {
-      for (var i = 0; i < treeNodes.length; i++)
+      for (let i = 0; i < treeNodes.length; i++)
       {
         if ((treeNodes[i] as any).tabindex === 0) // TODO RM-7686: Fix misspellings of tabIndex in the TypeScript codebase
         {
@@ -187,7 +187,7 @@ class WebTreeView
           let hasChildren = activeTreeNode.getAttribute ('aria-expanded') === 'true';
           if (hasChildren)
           {
-            var newTreeNode = activeTreeNode.querySelector<HTMLElement> (':scope > ul > li')!;
+            const newTreeNode = activeTreeNode.querySelector<HTMLElement> (':scope > ul > li')!;
             WebTreeView.SetFocus (newTreeNode, activeTreeNode);
           }
           else
@@ -269,8 +269,8 @@ class WebTreeView
 
   private static ToggleExpander (treeNode: HTMLElement): void
   {
-    var expanderSpan = treeNode.querySelector<HTMLElement> ('span')!;
-    var expanderAnchor = expanderSpan.querySelector<HTMLElement> ('a')!;
+    const expanderSpan = treeNode.querySelector<HTMLElement> ('span')!;
+    const expanderAnchor = expanderSpan.querySelector<HTMLElement> ('a')!;
     expanderAnchor.click();
   };
 

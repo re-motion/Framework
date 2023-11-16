@@ -195,7 +195,7 @@ class PageUtility
   {
     ArgumentUtility.CheckNotNull('element', element);
 
-    var html = window.document.body.parentNode;
+    const html = window.document.body.parentNode;
     let node: Nullable<Node & ParentNode> = element;
     while (node)
     {
@@ -252,8 +252,8 @@ class WebServiceUtility
       },
       function (err: Sys.Net.WebServiceError, userContext: never, methodName: string) {
         executingRequest = null;
-        var isTimedOut = err.get_timedOut();
-        var isAborting = !isTimedOut && err.get_statusCode() === -1;
+        const isTimedOut = err.get_timedOut();
+        const isAborting = !isTimedOut && err.get_statusCode() === -1;
         if (!isAborting)
         {
           onError (err);

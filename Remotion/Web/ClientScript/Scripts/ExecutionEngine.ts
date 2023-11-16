@@ -100,8 +100,8 @@ class WxePage_Context
 
     if (this._dmaWxePostBackSequenceNumberFieldID != null)
     {
-      var dmaWxePostBackSequenceNumberField = document.getElementById(this._dmaWxePostBackSequenceNumberFieldID) as HTMLInputElement;
-      var postBackSequenceNumber = (document.getElementById(this._wxePostBackSequenceNumberFieldID!) as HTMLInputElement).value;
+      const dmaWxePostBackSequenceNumberField = document.getElementById(this._dmaWxePostBackSequenceNumberFieldID) as HTMLInputElement;
+      const postBackSequenceNumber = (document.getElementById(this._wxePostBackSequenceNumberFieldID!) as HTMLInputElement).value;
       dmaWxePostBackSequenceNumberField.value = postBackSequenceNumber;
     }
 
@@ -140,8 +140,8 @@ class WxePage_Context
     if (this._isAbortEnabled && this._abortUrl !== null
         && (this._isCacheDetectionEnabled && (!isCached || hasSubmitted)))
     {
-      var successHandler: SmartPage_OutOfBandRequestSuccessHandler = function (args) {};
-      var errorHandler: SmartPage_OutOfBandRequestErrorHandler = function (args) {};
+      const successHandler: SmartPage_OutOfBandRequestSuccessHandler = function (args) {};
+      const errorHandler: SmartPage_OutOfBandRequestErrorHandler = function (args) {};
       SmartPage_Context.Instance!.SendOutOfBandRequest(this._abortUrl, successHandler, errorHandler);
     }
   };
@@ -155,8 +155,8 @@ class WxePage_Context
   // Handles the refresh timer events
   public Refresh(): void
   {
-    var successHandler: SmartPage_OutOfBandRequestSuccessHandler = function (args) {};
-    var errorHandler: SmartPage_OutOfBandRequestErrorHandler = (args) =>
+    const successHandler: SmartPage_OutOfBandRequestSuccessHandler = function (args) {};
+    const errorHandler: SmartPage_OutOfBandRequestErrorHandler = (args) =>
     {
       if (args.Status === this._httpStatusFunctionTimeout)
       {
@@ -216,8 +216,8 @@ class WxePage_Context
 
   public EstablishPageKeepAliveLock = function(): void
   {
-    var lockName = btoa("" + (Math.random() * 10e18));
-    var lockIndex = 0;
+    const lockName = btoa("" + (Math.random() * 10e18));
+    let lockIndex = 0;
 
     function onLockTaken(lock: Nullable<Lock>)
     {

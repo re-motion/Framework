@@ -251,7 +251,7 @@ class SmartPage_Context
 
     this.AttachDataChangedEventHandlers();
 
-    var pageRequestManager = this.GetPageRequestManager();
+    const pageRequestManager = this.GetPageRequestManager();
     if (pageRequestManager != null)
     {
       pageRequestManager.add_endRequest(this.SmartPage_PageRequestManager_endRequest);
@@ -262,10 +262,10 @@ class SmartPage_Context
   {
     if (args.get_error() != undefined && (args.get_error() as any).httpStatusCode == '500')
     {
-      var errorMessage = args.get_error().message;
+      const errorMessage = args.get_error().message;
       args.set_errorHandled(true);
 
-      var errorBody = '<div class="SmartPageErrorBody"><div>' + errorMessage + '</div></div>';
+      const errorBody = '<div class="SmartPageErrorBody"><div>' + errorMessage + '</div></div>';
 
       SmartPage_Context.Instance!.ShowMessage("SmartPageServerErrorMessage", errorBody);
     }
@@ -274,18 +274,18 @@ class SmartPage_Context
   // Attached the OnValueChanged event handler to all form data elements listed in _trackedIDs.
   private AttachDataChangedEventHandlers(): void
   {
-    for (var i = 0; i < this._trackedIDs.length; i++)
+    for (let i = 0; i < this._trackedIDs.length; i++)
     {
-      var id = this._trackedIDs[i];
-      var element = this.GetFormElementOrNull(id);
+      const id = this._trackedIDs[i];
+      const element = this.GetFormElementOrNull(id);
       if (element == null)
         continue;
 
-      var tagName = element.tagName.toLowerCase();
+      const tagName = element.tagName.toLowerCase();
 
       if (tagName == 'input')
       {
-        var type = (element as HTMLInputElement).type.toLowerCase();
+        const type = (element as HTMLInputElement).type.toLowerCase();
         if (type == 'text' || type == 'hidden')
         {
           element.removeEventListener('change', this._valueChangedHandler);
@@ -313,8 +313,8 @@ class SmartPage_Context
 
   public OnMouseDown (e: MouseEvent): void
   {
-    var isLeftButton = e.button === 0;
-    var target = this.GetSubmitTarget (e.target as Nullable<HTMLElement>);
+    const isLeftButton = e.button === 0;
+    const target = this.GetSubmitTarget (e.target as Nullable<HTMLElement>);
     if (isLeftButton && target !== null)
     {
       this._lastManualSubmitter = target;
@@ -323,7 +323,7 @@ class SmartPage_Context
 
   public OnMouseUp (e: MouseEvent): void
   {
-    var lastTarget = this._lastManualSubmitter;
+    const lastTarget = this._lastManualSubmitter;
     this._lastManualSubmitter = null;
 
     if (lastTarget == null)
@@ -332,7 +332,7 @@ class SmartPage_Context
     if (this.IsRooted (lastTarget))
       return;
 
-    var currentTarget = this.GetSubmitTarget (e.target as Nullable<HTMLElement>);
+    const currentTarget = this.GetSubmitTarget (e.target as Nullable<HTMLElement>);
     if (currentTarget == null)
     {
       if (window.console)
@@ -341,15 +341,15 @@ class SmartPage_Context
       return;
     }
 
-    var executeClick = false;
+    let executeClick = false;
     if (TypeUtility.IsDefined (currentTarget.id) && TypeUtility.IsDefined (lastTarget.id) && !StringUtility.IsNullOrEmpty (lastTarget.id))
     {
       executeClick = currentTarget.id === lastTarget.id;
     }
     else
     {
-      var lastTargetContent = lastTarget.innerHTML;
-      var currentTargetContent = currentTarget.innerHTML;
+      const lastTargetContent = lastTarget.innerHTML;
+      const currentTargetContent = currentTarget.innerHTML;
       executeClick = currentTargetContent === lastTargetContent;
     }
 
@@ -357,7 +357,7 @@ class SmartPage_Context
     {
       if (this.IsJavaScriptAnchor (currentTarget))
       {
-        var href = (currentTarget as HTMLAnchorElement).href;
+        const href = (currentTarget as HTMLAnchorElement).href;
         eval (href);
       }
       else
@@ -388,20 +388,20 @@ class SmartPage_Context
   // Event handler for window.OnLoad
   public OnLoad(): void
   {
-    var pageRequestManager = this.GetPageRequestManager();
+    const pageRequestManager = this.GetPageRequestManager();
     if (pageRequestManager != null)
     {
       pageRequestManager.remove_pageLoaded(this.PageRequestManager_pageLoaded.bind(this));
       pageRequestManager.add_pageLoaded(this.PageRequestManager_pageLoaded.bind(this));
     }
 
-    var isAsynchronous = false;
+    const isAsynchronous = false;
     this.PageLoaded(isAsynchronous);
   };
 
   private PageRequestManager_pageLoaded (sender: Sys.WebForms.PageRequestManager, args: Sys.WebForms.PageLoadedEventArgs): void
   {
-    var isAsynchronous = sender && sender.get_isInAsyncPostBack();
+    const isAsynchronous = sender && sender.get_isInAsyncPostBack();
     if (isAsynchronous)
     {
       this.PageLoaded(isAsynchronous);
@@ -417,10 +417,10 @@ class SmartPage_Context
 
     this.ExecuteEventHandlers ('onloading', this._hasSubmitted, this._isCached, isAsynchronous);
 
-    var isSubmitting = false;
+    let isSubmitting = false;
     if (this.IsSubmitting() && this._submitState!.NextSubmitState != null && this._submitState!.NextSubmitState.Submitter != null && !this._abortQueuedSubmit)
     {
-      var nextSubmitState = this._submitState!.NextSubmitState;
+      const nextSubmitState = this._submitState!.NextSubmitState;
       this._submitState = null;
       if (!StringUtility.IsNullOrEmpty(nextSubmitState.EventTarget))
       {
@@ -429,15 +429,15 @@ class SmartPage_Context
       }
       else
       {
-        var nextSubmitterID = nextSubmitState.Submitter!.id;
+        const nextSubmitterID = nextSubmitState.Submitter!.id;
         const submitterElement = document.getElementById(nextSubmitterID);
         if (submitterElement != null)
         {
-          var isButton = false;
-          var tagName = submitterElement.tagName.toLowerCase();
+          let isButton = false;
+          const tagName = submitterElement.tagName.toLowerCase();
           if (tagName === 'input')
           {
-            var type = (submitterElement as HTMLInputElement).type.toLowerCase();
+            const type = (submitterElement as HTMLInputElement).type.toLowerCase();
             isButton = type === 'submit' || type === 'button';
           }
           else if (tagName === 'button')
@@ -574,16 +574,16 @@ class SmartPage_Context
     try
     {
       this._isAbortingBeforeUnload = false;
-      var displayAbortConfirmation = false;
+      let displayAbortConfirmation = false;
 
       if (!this._hasUnloaded
         && !this._isCached
         && !this._isSubmittingBeforeUnload
         && !this._isAborting && this._isAbortConfirmationEnabled)
       {
-        var submitterElement = this.GetSubmitterOrActiveElement();
-        var isJavaScriptAnchor = this.IsJavaScriptAnchor(submitterElement);
-        var isAbortConfirmationRequired = !isJavaScriptAnchor
+        const submitterElement = this.GetSubmitterOrActiveElement();
+        const isJavaScriptAnchor = this.IsJavaScriptAnchor(submitterElement);
+        const isAbortConfirmationRequired = !isJavaScriptAnchor
           && (this._hasUnconditionalAbortConfirmation || this.IsDirty(undefined));
 
         if (isAbortConfirmationRequired)
@@ -639,8 +639,8 @@ class SmartPage_Context
   private DoPostBack (eventTarget: string, eventArgument: string): void
   {
     // Debugger space
-    var dummy = 0;
-    var continueRequest = this.CheckFormState();
+    const dummy = 0;
+    const continueRequest = this.CheckFormState();
     if (continueRequest)
     {
       try
@@ -649,7 +649,7 @@ class SmartPage_Context
         this._theForm.__EVENTTARGET.value = eventTarget;
         this._theForm.__EVENTARGUMENT.value = eventArgument;
 
-        var submitState = this.SetIsSubmitting(false, eventTarget, eventArgument);
+        const submitState = this.SetIsSubmitting(false, eventTarget, eventArgument);
         // Abort the postback if there is already a postback in progress
         if (submitState.NextSubmitState !== null)
           return;
@@ -684,7 +684,7 @@ class SmartPage_Context
     }
     else
     {
-      var postBackSettings = this.GetPostBackSettings();
+      const postBackSettings = this.GetPostBackSettings();
       if (postBackSettings != null && postBackSettings.async)
       {
         if (this.IsSynchronousPostBackRequired(postBackSettings))
@@ -694,10 +694,10 @@ class SmartPage_Context
         }
         else
         {
-          var eventTarget = postBackSettings.asyncTarget === this._theForm.__EVENTTARGET.value ? postBackSettings.asyncTarget : '';
-          var eventArgument = eventTarget !== '' ? this._theForm.__EVENTARGUMENT.value : '';
-          var continueRequest = this.CheckFormState();
-          var submitState = this.SetIsSubmitting(true, eventTarget, eventArgument);
+          const eventTarget = postBackSettings.asyncTarget === this._theForm.__EVENTTARGET.value ? postBackSettings.asyncTarget : '';
+          const eventArgument = eventTarget !== '' ? this._theForm.__EVENTARGUMENT.value : '';
+          const continueRequest = this.CheckFormState();
+          const submitState = this.SetIsSubmitting(true, eventTarget, eventArgument);
           if (continueRequest && submitState.NextSubmitState === null)
           {
             this._isSubmittingBeforeUnload = true;
@@ -713,7 +713,7 @@ class SmartPage_Context
         }
       }
 
-      var continueRequest = this.CheckFormState();
+      const continueRequest = this.CheckFormState();
       if (this.IsSubmitting() && continueRequest)
       {
         // This Code path is taken for synchronous requests that are not triggered via form-submit
@@ -722,15 +722,15 @@ class SmartPage_Context
         this._theForm.__EVENTARGUMENT.value = '';
       }
 
-      var submitState = this.SetIsSubmitting(false, '', '');
+      const submitState = this.SetIsSubmitting(false, '', '');
       if (continueRequest && submitState.NextSubmitState === null)
       {
         this._isSubmittingBeforeUnload = true;
 
         this.Backup();
 
-        var eventSource = this.GetSubmitterOrActiveElement();
-        var eventSourceID = (eventSource != null) ? eventSource.id : null;
+        const eventSource = this.GetSubmitterOrActiveElement();
+        const eventSourceID = (eventSource != null) ? eventSource.id : null;
         this.ExecuteEventHandlers('onpostback', eventSourceID, '');
         this.SetCacheDetectionFieldSubmitted();
 
@@ -746,14 +746,14 @@ class SmartPage_Context
   // Event handler for Form.OnClick.
   public OnFormClick (evt: Nullable<MouseEvent>): Optional<boolean>
   {
-    var postBackSettings = this.GetPostBackSettings();
+    const postBackSettings = this.GetPostBackSettings();
     if (postBackSettings != null && this.IsSynchronousPostBackRequired(postBackSettings))
       return true;
 
-    var eventSource = this.GetEventSource(evt);
+    const eventSource = this.GetEventSource(evt);
     if (this.IsJavaScriptAnchor(eventSource))
     {
-      var continueRequest = this.CheckFormState();
+      const continueRequest = this.CheckFormState();
       if (!continueRequest)
         return false;
       else
@@ -771,10 +771,10 @@ class SmartPage_Context
     if (this._aspnetFormOnSubmit != null && !this._aspnetFormOnSubmit())
       return false;
 
-    var continueRequest = true;
-    var fct: Nullable<SmartPage_CheckFormState> = null;
-    if (this._checkFormStateFunctionName != null)
-      fct = this.GetFunctionPointer<SmartPage_CheckFormState>(this._checkFormStateFunctionName);
+    let continueRequest = true;
+    const fct: Nullable<SmartPage_CheckFormState> = this._checkFormStateFunctionName
+        ? this.GetFunctionPointer<SmartPage_CheckFormState>(this._checkFormStateFunctionName)
+        : null;
     if (fct != null)
     {
       try
@@ -792,9 +792,9 @@ class SmartPage_Context
     if (!this._submitState)
       return true;
 
-    var isAsyncAutoPostback = this._submitState.IsAsynchronous && this._submitState.IsAutoPostback;
-    var isTriggeredByCurrentSubmitter = this._submitState.Submitter === this.GetActiveElement();
-    var hasQueuedSubmit = this._submitState.NextSubmitState != null;
+    const isAsyncAutoPostback = this._submitState.IsAsynchronous && this._submitState.IsAutoPostback;
+    const isTriggeredByCurrentSubmitter = this._submitState.Submitter === this.GetActiveElement();
+    const hasQueuedSubmit = this._submitState.NextSubmitState != null;
     if (!hasQueuedSubmit && isAsyncAutoPostback && !isTriggeredByCurrentSubmitter)
       return true;
 
@@ -813,7 +813,7 @@ class SmartPage_Context
 
     if ((this._isOnBeforeUnloadExecuting || this._isOnPageHideExecuting) && navigator.sendBeacon)
     {
-      var result = navigator.sendBeacon (url, null);
+      const result = navigator.sendBeacon (url, null);
       if (result)
       {
         let args = { Status : 200 };
@@ -827,19 +827,19 @@ class SmartPage_Context
     }
     else
     {
-      var xhr = new XMLHttpRequest();
+      const xhr = new XMLHttpRequest();
 
-      var readStateDone = 4;
-      var httpStatusSuccess = 299;
-      var method = 'GET';
-      var isAsyncCall = true;
+      const readStateDone = 4;
+      const httpStatusSuccess = 299;
+      const method = 'GET';
+      const isAsyncCall = true;
 
       xhr.open (method, url, isAsyncCall);
       xhr.onreadystatechange = function ()
       {
         if (this.readyState === readStateDone)
         {
-          var args = { Status : this.status };
+          const args = { Status : this.status };
           if (this.status > 0 && this.status <= httpStatusSuccess)
             successHandler (args);
           else
@@ -854,13 +854,13 @@ class SmartPage_Context
   // eventHandlers: an array of event handlers.
   private ExecuteEventHandlers<TEventName extends SmartPage_Event>(eventName: TEventName, ...args: Parameters<SmartPage_EventMap[TEventName]>)
   {
-    var eventHandlers = (this._eventHandlers as unknown as { [K in SmartPage_Event]: Optional<Nullable<string[]>> })[eventName];
+    const eventHandlers = (this._eventHandlers as unknown as { [K in SmartPage_Event]: Optional<Nullable<string[]>> })[eventName];
     if (!eventHandlers)
       return;
 
-    for (var i = 0; i < eventHandlers.length; i++)
+    for (let i = 0; i < eventHandlers.length; i++)
     {
-      var eventHandler = this.GetFunctionPointer<(...args: Parameters<SmartPage_EventMap[TEventName]>) => void>(eventHandlers[i]);
+      const eventHandler = this.GetFunctionPointer<(...args: Parameters<SmartPage_EventMap[TEventName]>) => void>(eventHandlers[i]);
       if (eventHandler != null)
       {
         try
@@ -882,7 +882,7 @@ class SmartPage_Context
     ArgumentUtility.CheckTypeIsString('functionName', functionName);
     if (StringUtility.IsNullOrEmpty(functionName))
       return null;
-    var fct = null;
+    let fct = null;
     try
     {
       fct = eval(functionName);
@@ -912,7 +912,7 @@ class SmartPage_Context
 
     if (this._statusMessageWindow == null)
     {
-      var statusMessageWindow = window.document.createElement('DIV');
+      const statusMessageWindow = window.document.createElement('DIV');
       statusMessageWindow.id = id;
       statusMessageWindow.style.width = '50%';
       statusMessageWindow.style.height = '50%';
@@ -920,7 +920,7 @@ class SmartPage_Context
       statusMessageWindow.style.top = '25%';
       statusMessageWindow.style.position = 'absolute';
 
-      var statusMessageBlock = window.document.createElement ('DIV');
+      const statusMessageBlock = window.document.createElement ('DIV');
       statusMessageBlock.style.width = '100%';
       statusMessageBlock.style.height = '100%';
       statusMessageBlock.style.left = '0';
@@ -943,10 +943,10 @@ class SmartPage_Context
   {
     ArgumentUtility.CheckNotNullAndTypeIsObject('message', message);
 
-    var scrollLeft = window.document.body.scrollLeft;
-    var scrollTop = window.document.body.scrollTop;
-    var windowWidth = window.document.body.clientWidth;
-    var windowHeight = window.document.body.clientHeight;
+    const scrollLeft = window.document.body.scrollLeft;
+    const scrollTop = window.document.body.scrollTop;
+    const windowWidth = window.document.body.clientWidth;
+    const windowHeight = window.document.body.clientHeight;
 
     // TODO RM-7699: SmartPage_Context.AlignStatusMessage incorrectly assigns styles to the specified message element
     message.style.left = (windowWidth / 2 - message.offsetWidth / 2 + scrollLeft) as any;
@@ -965,7 +965,7 @@ class SmartPage_Context
   // Returns the document.activeElement and uses the hovered element as fallback if the activeElement is not set.
   private GetActiveElement(): Nullable<HTMLElement>
   {
-    var activeElement = window.document.activeElement;
+    const activeElement = window.document.activeElement;
     if (!TypeUtility.IsNull (activeElement) && !TypeUtility.IsUndefined (activeElement.tagName) && activeElement.tagName.toLowerCase() !== 'body')
       return activeElement as HTMLElement;
 
@@ -976,17 +976,17 @@ class SmartPage_Context
 
   private GetDoPostBackSubmitterElement(): Nullable<HTMLElement>
   {
-    var postBackSettings = this.GetPostBackSettings();
+    const postBackSettings = this.GetPostBackSettings();
     if (postBackSettings != null && postBackSettings.async && postBackSettings.sourceElement != null)
     {
       if (this.IsFocusableTag (postBackSettings.sourceElement.tagName))
         return postBackSettings.sourceElement;
     }
 
-    var eventTarget = this._theForm.__EVENTTARGET.value;
+    const eventTarget = this._theForm.__EVENTTARGET.value;
     if (eventTarget != '')
     {
-      var eventTargetElement = this.GetFormElementOrNull(eventTarget);
+      const eventTargetElement = this.GetFormElementOrNull(eventTarget);
       if (eventTargetElement != null)
         return eventTargetElement;
     }
@@ -1021,7 +1021,7 @@ class SmartPage_Context
       return false;
     ArgumentUtility.CheckTypeIsObject('element', element);
 
-    var tagName = element.tagName.toLowerCase();
+    const tagName = element.tagName.toLowerCase();
     if (tagName == 'a'
         && TypeUtility.IsDefined((element as HTMLAnchorElement).href) && (element as HTMLAnchorElement).href != null
         && (element as HTMLAnchorElement).href.substring(0, 'javascript:'.length).toLowerCase() == 'javascript:')
@@ -1060,7 +1060,7 @@ class SmartPage_Context
 
     ArgumentUtility.CheckTypeIsObject('element', element);
 
-    var tagName = element.tagName.toLowerCase();
+    const tagName = element.tagName.toLowerCase();
     if (tagName === 'button')
       return element;
     if (tagName === 'a')
@@ -1069,7 +1069,7 @@ class SmartPage_Context
     {
       if (!TypeUtility.HasPropertyOfType (element, "type", "string"))
         return null;
-      var type = element.type.toLowerCase();
+      const type = element.type.toLowerCase();
       if (type === 'submit')
         return element;
       if (type === 'button')
@@ -1109,7 +1109,7 @@ class SmartPage_Context
     if (TypeUtility.IsUndefined (element.tagName))
       return false;
 
-    var tagName = element.tagName.toLowerCase();
+    const tagName = element.tagName.toLowerCase();
     if (tagName === 'html')
       return true;
 
@@ -1123,7 +1123,7 @@ class SmartPage_Context
   // evt: the event object. Used for Mozilla browsers.
   private GetEventSource (evt: Optional<Nullable<Event>>): Nullable<HTMLElement>
   {
-    var e = TypeUtility.IsUndefined(evt) ? window.event : evt;
+    const e = TypeUtility.IsUndefined(evt) ? window.event : evt;
     if (e == null)
       return null;
 
@@ -1148,7 +1148,7 @@ class SmartPage_Context
 
   private GetPostBackSettings(): Nullable<Sys.WebForms.PostBackSettings>
   {
-    var pageRequestManager = this.GetPageRequestManager();
+    const pageRequestManager = this.GetPageRequestManager();
     if (pageRequestManager == null || !TypeUtility.HasPropertyOfType(pageRequestManager, "_postBackSettings", "object"))
       return null;
     return pageRequestManager._postBackSettings as Sys.WebForms.PostBackSettings;
@@ -1166,7 +1166,7 @@ class SmartPage_Context
 
   public SetIsSubmitting (isAsynchronous: boolean, eventTarget: string, eventArgument: string): SmartPage_SubmitState
   {
-    var submitterElement = this.GetSubmitterOrActiveElement();
+    const submitterElement = this.GetSubmitterOrActiveElement();
     if (submitterElement != null)
     {
       submitterElement.classList.add('SmartPageSubmitter');
@@ -1174,13 +1174,13 @@ class SmartPage_Context
 
     document.documentElement.classList.add('SmartPageBusy');
 
-    var isAutoPostback = false;
+    let isAutoPostback = false;
     if (submitterElement != null)
     {
-      var tagName = submitterElement.tagName.toLowerCase();
+      const tagName = submitterElement.tagName.toLowerCase();
       if (tagName === 'input')
       {
-        var type = (submitterElement as HTMLInputElement).type.toLowerCase();
+        const type = (submitterElement as HTMLInputElement).type.toLowerCase();
         isAutoPostback = type !== 'submit' && type !== 'button';
       }
       else if (tagName === 'textarea')
@@ -1193,7 +1193,7 @@ class SmartPage_Context
       }
     }
 
-    var submitState: SmartPage_SubmitState = {
+    const submitState: SmartPage_SubmitState = {
       CancelSubmit: false,
       IsAsynchronous: isAsynchronous,
       IsAutoPostback: isAutoPostback,
@@ -1231,18 +1231,18 @@ class SmartPage_Context
         this._submitState.Submitter.classList.remove('SmartPageSubmitter');
       }
 
-      var html = document.documentElement;
+      const html = document.documentElement;
       html.classList.remove('SmartPageBusy');
 
       //setTimeout (function ()
     //{
-      var html = document.documentElement;
+      //const html = document.documentElement;
       html.classList.remove('SmartPageBusy');
 
         // Needed in IE8, Firefox 23, Chrome 4
         // Does not work in Safari 4 for Windows
         // Does not work in IE10, IE11
-        var cursorBackUp = window.getComputedStyle(html)["cursor"];
+        const cursorBackUp = window.getComputedStyle(html)["cursor"];
         html.style.cursor = 'auto !important';
         //setTimeout (function ()
         //{
@@ -1285,7 +1285,7 @@ class SmartPage_Context
 
   private GetFormElement(name: string): HTMLInputElement
   {
-    var formElement = this.GetFormElementOrNull(name);
+    const formElement = this.GetFormElementOrNull(name);
     if (formElement == null)
       throw ('"' + name + '" does not specify a element of Form "' + this._theForm.id + '".');
 

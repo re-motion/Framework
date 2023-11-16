@@ -164,25 +164,25 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
         },
         formatItem: function (item: Remotion.BocAutoCompleteReferenceValue.Item) //What we display on input box
         {
-          var row = document.createElement('li');
+          const row = document.createElement('li');
 
           if (item.IconUrl != '')
           {
-            var img = document.createElement('img');
+            const img = document.createElement('img');
             img.src = item.IconUrl;
             img.alt = '';
             img.setAttribute('aria-hidden', 'true');
 
-            var imgContainer = document.createElement('div');
+            const imgContainer = document.createElement('div');
             imgContainer.appendChild(img);
 
             row.append(imgContainer);
           }
 
-          var displayName = document.createElement('span');
+          const displayName = document.createElement('span');
           displayName.innerText = item.DisplayName;
 
-          var displayNameContainer = document.createElement('div');
+          const displayNameContainer = document.createElement('div');
           displayNameContainer.appendChild(displayName);
           row.append(displayNameContainer);
 
@@ -219,7 +219,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
     {
       try
       {
-        var actualItem = item;
+        let actualItem = item;
 
         if (item.DisplayName.toLowerCase() == this._itemBackUp!.DisplayName.toLowerCase()
           && (item.UniqueIdentifier == this._itemBackUp!.UniqueIdentifier || item.UniqueIdentifier == this._nullValueString))
@@ -231,7 +231,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
           actualItem = this._itemBackUp!;
         }
 
-        var hasChanged = this._itemBackUp != actualItem;
+        const hasChanged = this._itemBackUp != actualItem;
 
         if (this._isInvalidated || hasChanged)
         {
@@ -290,9 +290,9 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
     }
     else
     {
-      var businessObject = null;
-      if (selectedValue != this._nullValueString)
-        businessObject = selectedValue;
+      const businessObject = selectedValue != this._nullValueString
+          ? selectedValue
+          : null;
 
       this._icon = BocReferenceValueBase.UpdateIcon(this._iconMarker, this._icon, businessObject, this._controlServiceUrl, this._iconContext, errorHandler);
     }
@@ -332,7 +332,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
     ArgumentUtility.CheckNotNullAndTypeIsString('referenceValueHiddenFieldID', referenceValueHiddenFieldID);
     ArgumentUtility.CheckNotNullAndTypeIsString('nullValueString', nullValueString);
 
-    var hiddenField = document.getElementById(referenceValueHiddenFieldID) as Nullable<HTMLInputElement>;
+    const hiddenField = document.getElementById(referenceValueHiddenFieldID) as Nullable<HTMLInputElement>;
     if (hiddenField == null || hiddenField.value == nullValueString)
       return 0;
 

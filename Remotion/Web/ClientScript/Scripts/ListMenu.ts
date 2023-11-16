@@ -82,19 +82,19 @@ class ListMenu
 
     const listMenu = ElementResolverUtility.ResolveSingle (listMenuOrSelector);
 
-    var menuInfo = ListMenu._listMenuInfos[listMenu.id];
+    const menuInfo = ListMenu._listMenuInfos[listMenu.id];
     if (menuInfo == null)
       return;
 
-    var itemInfos = menuInfo.ItemInfos;
-    var selectionCount = -1;
-    if (getSelectionCount != null)
-      selectionCount = getSelectionCount();
+    const itemInfos = menuInfo.ItemInfos;
+    const selectionCount = getSelectionCount
+        ? getSelectionCount()
+        : -1;
 
-    for (var i = 0; i < itemInfos.length; i++)
+    for (let i = 0; i < itemInfos.length; i++)
     {
-      var itemInfo = itemInfos[i];
-      var isEnabled = true;
+      const itemInfo = itemInfos[i];
+      let isEnabled = true;
       if (itemInfo.IsDisabled)
       {
         isEnabled = false;
@@ -111,9 +111,9 @@ class ListMenu
         }
       }
 
-      var item = document.getElementById (itemInfo.ID) as HTMLElement;
+      const item = document.getElementById (itemInfo.ID) as HTMLElement;
       let anchor = item.children[0] as HTMLAnchorElement;
-      var icon = anchor.children[0] as HTMLImageElement;
+      const icon = anchor.children[0] as HTMLImageElement;
       if (isEnabled)
       {
         if (icon != null && icon.nodeType == 1)
@@ -188,18 +188,18 @@ class ListMenu
 
   private static OnKeyDown (event: KeyboardEvent, listMenu: HTMLElement): void
   {
-    var menuItems = Array.from (listMenu.querySelectorAll ('a'));
+    const menuItems = Array.from (listMenu.querySelectorAll ('a'));
 
-    var oldMenuItemIndex = -1;
+    let oldMenuItemIndex = -1;
 
-    var selectedMenuItem = document.activeElement as HTMLAnchorElement;
+    const selectedMenuItem = document.activeElement as HTMLAnchorElement;
     if (selectedMenuItem != null && TypeUtility.IsDefined (selectedMenuItem.tagName) && selectedMenuItem.tagName.toUpperCase() === 'A')
     {
       oldMenuItemIndex = menuItems.indexOf (selectedMenuItem);
     }
     else
     {
-      for (var i = 0; i < menuItems.length; i++)
+      for (let i = 0; i < menuItems.length; i++)
       {
         // TODO RM-7686 Fix misspellings of tabIndex
         if ((menuItems[i] as any).tabindex === 0)
@@ -210,10 +210,10 @@ class ListMenu
       }
     }
 
-    var oldMenuItem = null;
-    if (oldMenuItemIndex >= 0)
-      oldMenuItem = menuItems[oldMenuItemIndex];
-    var currentMenuItemIndex = Math.max (0, oldMenuItemIndex);
+    const oldMenuItem = oldMenuItemIndex >= 0
+        ? menuItems[oldMenuItemIndex]
+        : null;
+    let currentMenuItemIndex = Math.max (0, oldMenuItemIndex);
 
     switch (event.keyCode)
     {
@@ -263,7 +263,7 @@ class ListMenu
           else
             currentMenuItemIndex = 0;
 
-          var newMenuItem = menuItems[currentMenuItemIndex];
+          const newMenuItem = menuItems[currentMenuItemIndex];
           ListMenu.UpdateFocus (newMenuItem, oldMenuItem);
 
           return;
