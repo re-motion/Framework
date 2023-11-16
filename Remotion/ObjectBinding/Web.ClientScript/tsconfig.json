@@ -14,5 +14,10 @@
   ],
   "files": [
     "../../Web/ClientScript/Scripts/typings/common.d.ts"
+  ],
+  "references": [
+    {
+      "path": "../../Web/ClientScript/tsconfig/debug"
+    }
   ]
 }

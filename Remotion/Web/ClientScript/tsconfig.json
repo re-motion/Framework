@@ -6,6 +6,9 @@
     "noEmit": true,
     "strict": true,
 
+    "composite": true,
+    "baseUrl": "./Scripts/",
+
     "allowJs": true
   },
   "include": [
