@@ -1,0 +1,8 @@
+<Project>
+
+  <Target Name="VerifySourceLinkSourceRevision" DependsOnTargets="InitializeSourceControlInformationFromSourceControlManager" BeforeTargets="Pack">
+    <Error Text="The commit ID provided by the build script ('$(CommitID)') does not match up with the commit ID from source link ('$(SourceRevisionId)')"
+           Condition="'$(CommitID)' != '' AND '$(CommitID)' != '$(SourceRevisionId)'" />
+  </Target>
+
+</Project>

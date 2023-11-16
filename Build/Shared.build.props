@@ -47,9 +47,13 @@
 
   <PropertyGroup>
     <ProjectFeaturesRoot>$(MSBuildThisFileDirectory)ProjectFeatures\</ProjectFeaturesRoot>
+    <!-- Enable source link for .NET Core but not for .NET Framework -->
+    <UseSourceLink Condition="'$(UseSourceLink)' == '' AND '$(TargetFramework)' == 'net48'">false</UseSourceLink>
+    <UseSourceLink Condition="'$(UseSourceLink)' == ''">true</UseSourceLink>
   </PropertyGroup>
 
   <Import Project="$(ProjectFeaturesRoot)UseWebForms.props" Condition="'$(UseWebForms)' == 'true'" />
+  <Import Project="$(ProjectFeaturesRoot)UseSourceLink.props" Condition="'$(UseSourceLink)' == 'true'" />
 
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)..\remotion.snk" Link="remotion.snk" />
@@ -60,7 +64,6 @@
 
   <ItemGroup>
     <PackageReference Include="Remotion.Infrastructure.Styles.Analyzer" Version="1.1.3" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
   </ItemGroup>
 
   <PropertyGroup>

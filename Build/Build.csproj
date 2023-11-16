@@ -53,6 +53,8 @@
     <None Include="NuSpec\Uninstall.ps1" />
     <None Include="NuSpec\Web.targets" />
     <None Include="packages.config" />
+    <None Include="ProjectFeatures\UseSourceLink.props" />
+    <None Include="ProjectFeatures\UseSourceLink.targets" />
     <None Include="ProjectFeatures\UseWebForms.props" />
     <None Include="ProjectTypes\Executable.props" />
     <None Include="ProjectTypes\JavascriptLibrary.props" />

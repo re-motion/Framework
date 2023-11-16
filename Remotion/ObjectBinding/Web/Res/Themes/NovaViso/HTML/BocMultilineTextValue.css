@@ -41,6 +41,8 @@ span.bocMultilineTextValue textarea
   padding: var(--remotion-themed-control-padding-readonly);
   border: var(--remotion-themed-border-readonly);
   border-radius: var(--remotion-themed-border-radius);
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 .bocMultilineTextValue.readOnly .content textarea:read-only:focus-visible + span

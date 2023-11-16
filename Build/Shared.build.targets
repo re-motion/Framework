@@ -2,6 +2,7 @@
 
   <Import Project="$(ProjectTypeTargetsFile)" Condition="'$(ProjectTypeTargetsFile)' != '' AND Exists('$(ProjectTypeTargetsFile)')" />
   <Import Project="$(ProjectFeaturesRoot)UseWebForms.targets" Condition="'$(UseWebForms)' == 'true' AND Exists('$(FeaturesRoot)UseWebForms.targets')" />
+  <Import Project="$(ProjectFeaturesRoot)UseSourceLink.targets" Condition="'$(UseSourceLink)' == 'true' AND Exists('$(FeaturesRoot)UseSourceLink.targets')" />
 
   <Target Name="VerifyProjectConfiguration">
     <Error Text="No project type configured." Condition="'$(ProjectType)' == ''" />
@@ -10,11 +11,6 @@
 
   <Target Name="VerifyProductType">
     <Error Text="Invalid product type '$(ProductType)'." Condition="'$(ProductType)' != 'Default' AND '$(ProductType)' != 'Mixins' AND '$(ProductType)' != 'SecurityManager'" />
-  </Target>
-
-  <Target Name="VerifySourceLinkSourceRevision" DependsOnTargets="InitializeSourceControlInformationFromSourceControlManager" BeforeTargets="Pack">
-    <Error Text="The commit ID provided by the build script ('$(CommitID)') does not match up with the commit ID from source link ('$(SourceRevisionId)')" 
-           Condition="'$(CommitID)' != '' AND '$(CommitID)' != '$(SourceRevisionId)'" />
   </Target>
 
 </Project>
