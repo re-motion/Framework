@@ -77,7 +77,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     [NotNull]
     public static Screenshot TakePrimaryDesktopScreenshot ()
     {
-      return TakeDesktopScreenshot(new[] { Screen.PrimaryScreen });
+      return TakeDesktopScreenshot(new[] { Assertion.IsNotNull(Screen.PrimaryScreen, "Screen.PrimaryScreen may not be null when taking a screen shot.") });
     }
 
     [NotNull]

@@ -123,6 +123,7 @@ namespace Remotion.Collections
       return newValue;
     }
 
+#if NETFRAMEWORK
     public static ReadOnlyDictionary<TKey, TValue> AsReadOnly<TKey, TValue> (this IDictionary<TKey, TValue> dict)
         where TKey : notnull
     {
@@ -133,5 +134,6 @@ namespace Remotion.Collections
 
       return new ReadOnlyDictionary<TKey, TValue>(dict);
     }
+#endif
   }
 }

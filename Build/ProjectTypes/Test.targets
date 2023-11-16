@@ -8,7 +8,7 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="CopyTestHostAppConfigs" AfterTargets="_CopyAppConfigFile" Condition="'$(TargetFramework)' == 'net6.0-windows' AND Exists('$(OutDir)\$(AssemblyName).dll.config')">
+  <Target Name="CopyTestHostAppConfigs" AfterTargets="_CopyAppConfigFile" Condition="'$(TargetFramework)' != 'net48' AND Exists('$(OutDir)\$(AssemblyName).dll.config')">
     <ItemGroup>
       <_testHostAppConfig Include="$(OutDir)\testhost.dll.config" />
       <_testHostAppConfig Include="$(OutDir)\testhost.x86.dll.config" />

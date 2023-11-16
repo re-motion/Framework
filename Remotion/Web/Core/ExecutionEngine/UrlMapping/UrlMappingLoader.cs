@@ -131,10 +131,21 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
 
     private string GetExecutingAssemblyPath ()
     {
-      AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName(copiedName: false);
+      var assembly = typeof(UrlMappingLoader).Assembly;
+#if NETFRAMEWORK
+      AssemblyName assemblyName = assembly.GetName(copiedName: false);
 
       Uri codeBaseUri = new Uri(assemblyName.EscapedCodeBase!);
       return Path.GetDirectoryName(codeBaseUri.LocalPath)!; // TODO RM-8118: Add notnull assertion
+#else
+      var assemblyLocation = assembly.Location;
+      if (string.IsNullOrEmpty(assemblyLocation))
+        throw new InvalidOperationException(string.Format("Assembly '{0}' does not have a location. It was likely loaded from a byte array.", assembly.FullName));
+
+      var assemblyDirectory = Path.GetDirectoryName(assemblyLocation);
+      Assertion.IsNotNull(assemblyDirectory, "Assembly location '{0}' does not contain a valid directory name.", assemblyLocation);
+      return assemblyDirectory;
+#endif
     }
   }
 }

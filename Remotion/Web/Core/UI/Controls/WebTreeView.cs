@@ -910,7 +910,7 @@ namespace Remotion.Web.UI.Controls
 
     private HashAlgorithm CreateNodeIDAlgorithm ()
     {
-      return Assertion.IsNotNull(HashAlgorithm.Create("MD5"), "HashAlgorithm.Create('MD5') != null");
+      return Assertion.IsNotNull(MD5.Create(), "HashAlgorithm.Create('MD5') != null");
     }
 
     private string CreateNodeID (HashAlgorithm nodeIDAlgorithm, string nodePath)

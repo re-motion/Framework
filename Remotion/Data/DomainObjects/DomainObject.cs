@@ -361,6 +361,9 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>Be sure to call this method from the <see cref="ISerializable.GetObjectData"/> implementation of any concrete
     /// <see cref="DomainObject"/> type implementing the <see cref="ISerializable"/> interface.</remarks>
     // ReSharper disable UnusedParameter.Global
+#if NET8_0_OR_GREATER
+    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
+#endif
     protected void BaseGetObjectData (SerializationInfo info, StreamingContext context)
         // ReSharper restore UnusedParameter.Global
     {

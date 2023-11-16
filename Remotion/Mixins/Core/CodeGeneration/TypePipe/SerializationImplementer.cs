@@ -29,7 +29,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class SerializationImplementer
   {
     private static readonly MethodInfo s_getObjectDataMethod =
+#pragma warning disable SYSLIB0050
         MemberInfoFromExpressionUtility.GetMethod((ISerializable o) => o.GetObjectData(null!, new StreamingContext()))!;
+#pragma warning restore SYSLIB0050
 
     private static readonly ConstructorInfo s_invalidOperationExceptionConstructor =
         MemberInfoFromExpressionUtility.GetConstructor(() => new InvalidOperationException("message"));

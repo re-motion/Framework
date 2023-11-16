@@ -100,6 +100,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull("assembly", assembly);
 
+#if NETFRAMEWORK
       var assemblyNameWithoutShadowCopy = assembly.GetName(copiedName: false);
       var escapedCodeBase = assemblyNameWithoutShadowCopy.EscapedCodeBase;
       if (escapedCodeBase == null)
@@ -112,6 +113,17 @@ namespace Remotion.Data.DomainObjects
       }
 
       return Path.GetDirectoryName(codeBaseUri.LocalPath)!;
+#else
+      var assemblyLocation = assembly.Location;
+      if (string.IsNullOrEmpty(assemblyLocation))
+        throw new InvalidOperationException(string.Format("Assembly '{0}' does not have a location. It was likely loaded from a byte array.", assembly.FullName));
+
+      // Guarding against URL-based paths isn't needed in .NET. Assemblies are never loaded from a URL anyway.
+
+      var assemblyDirectory = Path.GetDirectoryName(assemblyLocation);
+      Assertion.IsNotNull(assemblyDirectory, "Assembly location '{0}' does not contain a valid directory name.", assemblyLocation);
+      return assemblyDirectory;
+#endif
     }
 
     /// <summary>

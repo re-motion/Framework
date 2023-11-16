@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Core.Development.Analyzers;
 using NUnit.Framework;
 using Verifier = Remotion.Core.Development.Analyzers.IntegrationTests.CSharpAnalyzerVerifier<Core.Development.Analyzers.RMCORE0001_SafeContextAnalyzer>;
 using Analyzer = Core.Development.Analyzers.RMCORE0001_SafeContextAnalyzer;

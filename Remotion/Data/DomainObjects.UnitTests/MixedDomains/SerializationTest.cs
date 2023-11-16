@@ -33,12 +33,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
     }
 
+#pragma warning disable SYSLIB0050
     [Test]
     public void MixedTypesAreSerializable ()
     {
       var instance = TargetClassForMixinWithState.NewObject();
       Assert.That(((object)instance).GetType().IsSerializable, Is.True);
     }
+#pragma warning restore SYSLIB0050
 
     [Test]
     public void MixedObjectsCanBeSerializedWithoutException ()

@@ -90,6 +90,7 @@ namespace Remotion.Reflection.TypeResolution
       if (assembly == null)
         return null;
 
+#if NETFRAMEWORK
       var assemblyNameWithoutShadowCopy = assembly.GetName(copiedName: false);
       var escapedCodeBase = assemblyNameWithoutShadowCopy.EscapedCodeBase;
       if (escapedCodeBase == null)
@@ -106,6 +107,9 @@ namespace Remotion.Reflection.TypeResolution
         // This scenario cannot be tested.
         return codeBaseUri.OriginalString;
       }
+#else
+      return assembly.Location;
+#endif
     }
   }
 }

@@ -98,8 +98,8 @@
     <Reference Include="Remotion.Linq, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Remotion.Linq.2.2.0\lib\net45\Remotion.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="Remotion.TypePipe, Version=3.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.TypePipe.3.0.0\lib\net45\Remotion.TypePipe.dll</HintPath>
+    <Reference Include="Remotion.TypePipe, Version=3.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Remotion.TypePipe.3.2.0\lib\net45\Remotion.TypePipe.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -435,7 +435,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>27872</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:60400/fx-develop/Data.DomainObjects.Web.Test/</IISUrl>
+          <IISUrl>http://localhost:60400/fx-4.x/Data.DomainObjects.Web.Test/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

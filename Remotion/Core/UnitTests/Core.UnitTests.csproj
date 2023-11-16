@@ -25,7 +25,7 @@
     <ProjectReference Include="..\Core\Core.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.3.1" GeneratePathProperty="true" ExcludeAssets="all" />
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.8.0-3.final" GeneratePathProperty="true" ExcludeAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Reflection\TestDomain\ContextAwareTypeUtilityTest\app.config">
@@ -35,6 +35,28 @@
   <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
     <ProjectReference Include="..\..\Development\UnitTesting.IsolatedCodeRunner\Development.UnitTesting.IsolatedCodeRunner.csproj" />
   </ItemGroup>
+  <!-- BEGIN: ensure that required DLLs available in output directory for IsolatedCodeRunner to work correctly.
+       Due to DotNet magic, some projects require that System.Configuration.ConfigurationManager and System.CodeDOM are copied locally while other projects 
+       resovle it from the system directory. Until we can identify the underlying reason and switch IsolatedCodeRunner to use the system directory dependency,
+       the deps.json file for IsolatedCodeRunner requires a local copy.
+
+       NOTE: If the versions do not intersect, the file is always copied locally. This is the reason why no workaround is needed for .NET 6.
+  -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
+    <PackageReference Include="System.CodeDom" Version="8.0.0" GeneratePathProperty="true" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" GeneratePathProperty="true" />
+  </ItemGroup>
+  <Target Name="CopySystemConfigurationConfigurationManager" AfterTargets="ResolveAssemblyReferences" Condition="'$(PkgSystem_Configuration_ConfigurationManager)' != ''">
+    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
+      <ReferenceCopyLocalPaths Include="$(PkgSystem_Configuration_ConfigurationManager)/lib/net8.0/System.Configuration.ConfigurationManager.dll"/>
+    </ItemGroup>
+  </Target>
+  <Target Name="CopySystemCodeDom" AfterTargets="ResolveAssemblyReferences" Condition="'$(PkgSystem_CodeDom)' != ''">
+    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
+      <ReferenceCopyLocalPaths Include="$(PkgSystem_CodeDom)/lib/net8.0/System.CodeDom.dll"/>
+    </ItemGroup>
+  </Target>
+  <!-- END: ensure that required DLLs available in output directory for IsolatedCodeRunner to work correctly. -->
   <Import Project="..\..\..\Build\Shared.build.targets" />
   <Import Project="..\..\Development\UnitTesting.Compilation\build\Remotion.Development.UnitTesting.Compilation.targets" />
 </Project>

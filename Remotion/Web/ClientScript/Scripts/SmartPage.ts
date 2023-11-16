@@ -90,8 +90,8 @@ class SmartPage_Context
   private _isAbortingBeforeUnload: boolean = false;
   // Special flag to support conditional logic during OnBeforeUnload
   private _isOnBeforeUnloadExecuting: boolean = false;
-  // Special flag to support conditional logic during OnUnload
-  private _isOnUnloadExecuting: boolean = false;
+  // Special flag to support conditional logic during OnPageHide
+  private _isOnPageHideExecuting: boolean = false;
 
   // The name of the function used to evaluate whether to submit the form.
   // null if no external logic should be incorporated.
@@ -126,7 +126,7 @@ class SmartPage_Context
 
   private _loadHandler = function () { SmartPage_Context.Instance!.OnLoad(); };
   private _beforeUnloadHandler = function () { return SmartPage_Context.Instance!.OnBeforeUnload(); };
-  private _unloadHandler = function () { return SmartPage_Context.Instance!.OnUnload(); };
+  private _pagehideHandler = function (evt: PageTransitionEvent) { return SmartPage_Context.Instance!.OnUnload(); };
   private _formSubmitHandler = function () { return SmartPage_Context.Instance!.OnFormSubmit(); };
   private _formClickHandler = function (evt: MouseEvent) { return SmartPage_Context.Instance!.OnFormClick(evt); };
   private _doPostBackHandler = function (eventTarget: string, eventArg: string) { SmartPage_Context.Instance!.DoPostBack(eventTarget, eventArg); };
@@ -221,7 +221,7 @@ class SmartPage_Context
     // IE, Mozilla 1.7, Firefox 0.9
     window.onbeforeunload = this._beforeUnloadHandler;
 
-    window.onunload = this._unloadHandler;
+    window.onpagehide = this._pagehideHandler;
 
     window.document.removeEventListener('mousedown', this._mouseDownHandler);
     window.document.addEventListener('mousedown', this._mouseDownHandler);
@@ -610,10 +610,10 @@ class SmartPage_Context
     }
   };
 
-  // Event handler for window.OnUnload.
+  // Event handler for window.OnPageHide.
   public OnUnload()
   {
-    this._isOnUnloadExecuting = true;
+    this._isOnPageHideExecuting = true;
     try
     {
       if ((!this.IsSubmitting() || this._isAbortingBeforeUnload) && !this._isAborting)
@@ -631,7 +631,7 @@ class SmartPage_Context
     }
     finally
     {
-      this._isOnUnloadExecuting = false;
+      this._isOnPageHideExecuting = false;
     }
   };
 
@@ -811,7 +811,7 @@ class SmartPage_Context
     ArgumentUtility.CheckNotNullAndTypeIsFunction('successHandler', successHandler);
     ArgumentUtility.CheckNotNullAndTypeIsFunction('errorHandler', errorHandler);
 
-    if ((this._isOnBeforeUnloadExecuting || this._isOnUnloadExecuting) && navigator.sendBeacon)
+    if ((this._isOnBeforeUnloadExecuting || this._isOnPageHideExecuting) && navigator.sendBeacon)
     {
       var result = navigator.sendBeacon (url, null);
       if (result)

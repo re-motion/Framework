@@ -35,9 +35,11 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 
     public virtual int IntProperty { get; set; }
 
+#pragma warning disable SYSLIB0051
     public void GetObjectData (SerializationInfo info, StreamingContext context)
     {
       BaseGetObjectData(info, context);
     }
+#pragma warning restore SYSLIB0051
   }
 }
