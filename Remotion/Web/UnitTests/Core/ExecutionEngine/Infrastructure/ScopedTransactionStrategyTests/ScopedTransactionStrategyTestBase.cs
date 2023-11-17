@@ -20,6 +20,7 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
@@ -45,8 +46,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     [SetUp]
     public virtual void SetUp ()
     {
-      WxeContextFactory wxeContextFactory = new WxeContextFactory();
-      _context = wxeContextFactory.CreateContext(new TestFunction());
+      _context = WxeContextFactory.Create(new TestFunction());
 
       _executionListenerStub = new Mock<IWxeFunctionExecutionListener>();
 

@@ -17,6 +17,7 @@
 using System;
 using Moq;
 using NUnit.Framework;
+using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 using Remotion.Security;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
@@ -35,8 +36,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [SetUp]
     public void SetUp ()
     {
-      WxeContextFactory wxeContextFactory = new WxeContextFactory();
-      _wxeContext = wxeContextFactory.CreateContext(new TestFunction());
+      _wxeContext = WxeContextFactory.Create(new TestFunction());
 
       _securityAdapterMock = new Mock<IWxeSecurityAdapter>(MockBehavior.Strict);
       _innerListenerMock = new Mock<IWxeFunctionExecutionListener>(MockBehavior.Strict);

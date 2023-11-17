@@ -26,13 +26,13 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
 {
   public class WxeTransactedFunctionIntegrationTestBase
   {
-    private WxeContextMock _context;
+    private WxeContext _context;
     private TransactionScope _transactionScope;
 
     [SetUp]
     public virtual void SetUp ()
     {
-      _context = new WxeContextMock(WxeContextMock.CreateHttpContext(), new WxeUrlSettings(), new WxeLifetimeManagementSettings());
+      _context = WxeContextFactory.Create(WxeContextFactory.CreateHttpContext(), new WxeUrlSettings(), new WxeLifetimeManagementSettings());
       _transactionScope = new TransactionScope();
     }
 
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       _transactionScope.Dispose();
     }
 
-    public WxeContextMock Context
+    public WxeContext Context
     {
       get { return _context; }
     }

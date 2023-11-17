@@ -76,8 +76,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       function.Add(new WxeDelegateStep(() => actualTransaction = function.Transaction));
       function.SetTransactionMode(WxeTransactionMode<TestTransactionFactory>.CreateRoot);
 
-      WxeContextFactory contextFactory = new WxeContextFactory();
-      var context = contextFactory.CreateContext(function);
+      var context = WxeContextFactory.Create(function);
 
       Assert.That(function.Transaction, Is.InstanceOf<NullTransactionStrategy>());
 
@@ -97,8 +96,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
                   Throws.InvalidOperationException
                       .With.Message.EqualTo("The TransactionMode cannot be set after the TransactionStrategy has been initialized."))));
 
-      WxeContextFactory contextFactory = new WxeContextFactory();
-      var context = contextFactory.CreateContext(function);
+      var context = WxeContextFactory.Create(function);
 
       function.Execute(context);
     }
@@ -136,8 +134,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
                   Throws.InvalidOperationException
                       .With.Message.EqualTo("The ExecutionListener cannot be set after the TransactionStrategy has been initialized."))));
 
-      WxeContextFactory contextFactory = new WxeContextFactory();
-      var context = contextFactory.CreateContext(function);
+      var context = WxeContextFactory.Create(function);
 
       function.Execute(context);
     }
@@ -165,8 +162,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       TestFunction2 function = new TestFunction2();
       function.Add(new WxeDelegateStep(() => { }));
 
-      WxeContextFactory contextFactory = new WxeContextFactory();
-      var context = contextFactory.CreateContext(function);
+      var context = WxeContextFactory.Create(function);
 
       function.Execute(context);
 
@@ -186,8 +182,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
           });
       function.Add(expectedStep);
 
-      WxeContextFactory contextFactory = new WxeContextFactory();
-      var context = contextFactory.CreateContext(function);
+      var context = WxeContextFactory.Create(function);
 
       function.Execute(context);
 
@@ -210,8 +205,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       TestFunction2 function = new TestFunction2();
       function.Add(new WxeDelegateStep(() => { }));
 
-      WxeContextFactory contextFactory = new WxeContextFactory();
-      var context = contextFactory.CreateContext(function);
+      var context = WxeContextFactory.Create(function);
 
       function.Execute(context);
 
@@ -231,8 +225,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
           });
       function.Add(expectedStep);
 
-      WxeContextFactory contextFactory = new WxeContextFactory();
-      var context = contextFactory.CreateContext(function);
+      var context = WxeContextFactory.Create(function);
 
       function.Execute(context);
 

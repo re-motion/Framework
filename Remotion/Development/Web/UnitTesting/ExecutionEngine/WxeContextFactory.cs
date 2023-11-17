@@ -25,7 +25,7 @@ using Remotion.Web.ExecutionEngine;
 namespace Remotion.Development.Web.UnitTesting.ExecutionEngine
 {
   /// <summary> Provides a <see cref="WxeContext"/> for simualating ASP.NET request life cycles. </summary>
-  public class WxeContextMock : WxeContext
+  public class WxeContextFactory
   {
     public static HttpContext CreateHttpContext (NameValueCollection queryString)
     {
@@ -44,26 +44,36 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine
       return CreateHttpContext(queryString);
     }
 
-    public WxeContextMock (HttpContext context, WxeUrlSettings wxeUrlSettings, IWxeLifetimeManagementSettings wxeLifetimeManagementSettings)
-        : base(
-            new HttpContextWrapper(context),
-            new WxeFunctionStateManager(new HttpSessionStateWrapper(context.Session)),
-            new WxeFunctionState(new TestFunction(), 20, false),
-            null!,
-            wxeUrlSettings,
-            wxeLifetimeManagementSettings)
+    public static WxeContext Create (HttpContext context, WxeUrlSettings wxeUrlSettings, IWxeLifetimeManagementSettings wxeLifetimeManagementSettings)
     {
+      return new WxeContext(
+          new HttpContextWrapper(context),
+          new WxeFunctionStateManager(new HttpSessionStateWrapper(context.Session)),
+          new WxeFunctionState(new TestFunction(), 20, false),
+          null!,
+          wxeUrlSettings,
+          wxeLifetimeManagementSettings);
     }
 
-    public WxeContextMock (HttpContext context, NameValueCollection queryString, WxeUrlSettings wxeUrlSettings, IWxeLifetimeManagementSettings wxeLifetimeManagementSettings)
-        : base(
-            new HttpContextWrapper(context),
-            new WxeFunctionStateManager(new HttpSessionStateWrapper(context.Session)),
-            new WxeFunctionState(new TestFunction(), 20, false),
-            queryString,
-            wxeUrlSettings,
-            wxeLifetimeManagementSettings)
+    public static WxeContext Create (HttpContext context, NameValueCollection queryString, WxeUrlSettings wxeUrlSettings, IWxeLifetimeManagementSettings wxeLifetimeManagementSettings)
     {
+      return new WxeContext(
+          new HttpContextWrapper(context),
+          new WxeFunctionStateManager(new HttpSessionStateWrapper(context.Session)),
+          new WxeFunctionState(new TestFunction(), 20, false),
+          queryString,
+          wxeUrlSettings,
+          wxeLifetimeManagementSettings);
+    }
+
+    public static WxeContext Create (WxeFunction rootFunction)
+    {
+      var httpContext = CreateHttpContext();
+      WxeFunctionStateManager functionStateManager = new WxeFunctionStateManager(new HttpSessionStateWrapper(httpContext.Session));
+      WxeFunctionState functionState = new WxeFunctionState(rootFunction, 20, false);
+      NameValueCollection queryString = new NameValueCollection();
+
+      return new WxeContext(new HttpContextWrapper(httpContext), functionStateManager, functionState, queryString, new WxeUrlSettings(), new WxeLifetimeManagementSettings());
     }
   }
 }

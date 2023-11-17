@@ -18,6 +18,7 @@ using System;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data;
+using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 using Remotion.Development.Web.UnitTesting.ExecutionEngine.TestFunctions;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
@@ -35,8 +36,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [SetUp]
     public void SetUp ()
     {
-      WxeContextFactory wxeContextFactory = new WxeContextFactory();
-      _wxeContext = wxeContextFactory.CreateContext(new TestFunction());
+      _wxeContext = WxeContextFactory.Create(new TestFunction());
       var transactionMock = new Mock<ITransaction>();
       var outerTransactionStrategyStub = new Mock<TransactionStrategyBase>();
       var executionContextStub = new Mock<IWxeFunctionExecutionContext>();

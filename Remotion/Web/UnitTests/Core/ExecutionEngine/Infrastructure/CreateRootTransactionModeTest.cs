@@ -17,6 +17,7 @@
 using System;
 using Moq;
 using NUnit.Framework;
+using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
@@ -29,8 +30,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void CreateTransactionStrategy_WithoutParentFunction ()
     {
-      WxeContextFactory wxeContextFactory = new WxeContextFactory();
-      WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
+      WxeContext context = WxeContextFactory.Create(new TestFunction());
 
       ITransactionMode transactionMode = new CreateRootTransactionMode(true, new TestTransactionFactory());
       TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy(new TestFunction2(transactionMode), context);
@@ -54,8 +54,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       var stepMock = new Mock<WxeStep>();
       childFunction.Add(stepMock.Object);
 
-      WxeContextFactory wxeContextFactory = new WxeContextFactory();
-      WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
+      WxeContext context = WxeContextFactory.Create(new TestFunction());
 
       stepMock
           .Setup(mock => mock.Execute(context))
