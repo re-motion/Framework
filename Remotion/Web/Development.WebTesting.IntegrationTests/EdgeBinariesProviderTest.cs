@@ -34,7 +34,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var result = provider.GetInstalledExecutable();
 
-      Assert.That(result.BrowserBinaryPath, Is.EqualTo(@"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"));
+      Assert.That(result.BrowserBinaryPath,
+          Is.EqualTo(@"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe").
+          Or.EqualTo(@"C:\Program Files\Microsoft\Edge\Application\msedge.exe"));
+
       Assert.That(
           result.DriverBinaryPath,
           Does.Match(

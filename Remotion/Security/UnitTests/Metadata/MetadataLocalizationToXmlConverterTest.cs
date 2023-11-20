@@ -112,10 +112,8 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void ConvertAndSave_NewFile ()
     {
-      string testOutputPath = @"Core\Metadata\Testoutput";
-
-      if (!Directory.Exists(testOutputPath))
-        Directory.CreateDirectory(testOutputPath);
+      string testOutputPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+      Directory.CreateDirectory(testOutputPath);
 
       string filename = Path.Combine(testOutputPath, "metadata.xml");
       string expectedFilename = Path.Combine(testOutputPath, "metadata.Localization.de.xml");
@@ -127,6 +125,7 @@ namespace Remotion.Security.UnitTests.Metadata
       converter.ConvertAndSave(new LocalizedName[0], new CultureInfo("de"), filename);
 
       Assert.That(File.Exists(expectedFilename), Is.True);
+      Directory.Delete(testOutputPath, true);
     }
   }
 }

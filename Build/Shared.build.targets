@@ -12,4 +12,9 @@
     <Error Text="Invalid product type '$(ProductType)'." Condition="'$(ProductType)' != 'Default' AND '$(ProductType)' != 'Mixins' AND '$(ProductType)' != 'SecurityManager'" />
   </Target>
 
+  <Target Name="VerifySourceLinkSourceRevision" DependsOnTargets="InitializeSourceControlInformationFromSourceControlManager" BeforeTargets="Pack">
+    <Error Text="The commit ID provided by the build script ('$(CommitID)') does not match up with the commit ID from source link ('$(SourceRevisionId)')" 
+           Condition="'$(CommitID)' != '' AND '$(CommitID)' != '$(SourceRevisionId)'" />
+  </Target>
+
 </Project>

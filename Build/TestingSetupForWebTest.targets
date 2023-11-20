@@ -28,6 +28,7 @@
     <Error Text="The property 'Browser' is not set." Condition="'$(Browser)' == ''" />
     <Error Text="The property 'HostTestSitesInDocker' is not set." Condition="'$(HostTestSitesInDocker)' == ''" />
     <Error Text="The property 'DockerImage' is not set." Condition="'$(DockerImage)' == ''" />
+    <Error Text="The property 'DockerIsolationMode' is not set." Condition="'$(DockerIsolationMode)' == ''" />
 
     <PropertyGroup>
       <!-- Hostname cannot be longer than 63 characters-->
@@ -35,7 +36,7 @@
       <_dockerPortNumber>60402</_dockerPortNumber>
       <_dockerWebApplicationRoot>http://$(_dockerHostName).local:$(_dockerPortNumber)/</_dockerWebApplicationRoot>
       <_dockerPullTimeout>00:15:00</_dockerPullTimeout>
-      <_dockerVerifyWebApplicationStartedTimeout>00:01:00</_dockerVerifyWebApplicationStartedTimeout>
+      <_dockerVerifyWebApplicationStartedTimeout>00:01:30</_dockerVerifyWebApplicationStartedTimeout>
     </PropertyGroup>
 
     <Message Text="Selected Browser: '$(Browser)'" />
@@ -43,7 +44,7 @@
     <Message Text="The property 'EdgeVersionArchive' is set to '$(EdgeVersionArchive)'." />
     <Message Text="The property 'FirefoxVersionArchive' is set to '$(FirefoxVersionArchive)'." />
     <Message Text="Docker enabled: '$(HostTestSitesInDocker)'" />
-    <Message Text="Using Docker image '$(DockerImage)' to host the test site." Condition="'$(HostTestSitesInDocker)' == 'True'" />
+    <Message Text="Using Docker image '$(DockerImage)' with isolation mode '$(DockerIsolationMode)' to host the test site." Condition="'$(HostTestSitesInDocker)' == 'True'" />
 
     <MSBuild.ExtensionPack.Xml.XmlFile
         TaskAction="ReadAttribute"
@@ -140,6 +141,10 @@
       <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting/rwt:hosting">
         <Key>dockerImageName</Key>
         <Value>$(DockerImage)</Value>
+      </_appConfigAttributes>
+      <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting/rwt:hosting">
+        <Key>dockerIsolationMode</Key>
+        <Value>$(DockerIsolationMode)</Value>
       </_appConfigAttributes>
       <_appConfigAttributes Include="/configuration/rwt:remotion.webTesting/rwt:hosting">
         <Key>dockerPullTimeout</Key>

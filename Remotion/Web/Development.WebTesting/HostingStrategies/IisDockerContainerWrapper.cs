@@ -68,6 +68,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
           portMappings,
           mounts,
           _configurationParameters.DockerImageName,
+          _configurationParameters.DockerIsolationMode,
           _configurationParameters.Hostname,
           true,
           "powershell",
