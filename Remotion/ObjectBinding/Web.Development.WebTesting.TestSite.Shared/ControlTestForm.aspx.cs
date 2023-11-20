@@ -15,8 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
+using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Validation;
+using Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Reflection;
+using Remotion.Utilities;
+using Remotion.Validation.Results;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 {
@@ -95,6 +103,71 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
       if (_dataEditControl == null)
         return true;
+
+      var validatableControls = _dataEditControl.DataSource.GetAllBoundControls().Where(c => c.HasValidBinding).OfType<IValidatableControl>();
+
+      var person = (Person)_dataEditControl.BusinessObject;
+
+      var personDateOfBirthProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.DateOfBirth));
+      var personDeceasedProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.Deceased));
+      var personPartnerProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.Partner));
+      var personMarriageStatusProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.MarriageStatus));
+      var personCVProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.CV));
+      var personCVStringProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.CVString));
+      var personLastNameProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.LastName));
+
+      var validationResult = BusinessObjectValidationResult.Create(
+          new ValidationResult(
+              new ValidationFailure[]
+              {
+                ValidationFailure.CreatePropertyValidationFailure(
+                    person,
+                    personDateOfBirthProperty,
+                    person.DateOfBirth,
+                    "invalid dateOfBirth.",
+                    "Localized invalid dateOfBirth."),
+                ValidationFailure.CreatePropertyValidationFailure(
+                    person,
+                    personDeceasedProperty,
+                    person.Deceased,
+                    "invalid deceased status.",
+                    "Localized invalid deceased status."),
+                ValidationFailure.CreatePropertyValidationFailure(
+                    person,
+                    personPartnerProperty,
+                    person.Partner,
+                    "invalid partner.",
+                    "Localized invalid partner."),
+                ValidationFailure.CreatePropertyValidationFailure(
+                    person,
+                    personMarriageStatusProperty,
+                    person.MarriageStatus,
+                    "invalid marriage status.",
+                    "Localized invalid marriage status."),
+                ValidationFailure.CreatePropertyValidationFailure(
+                    person,
+                    personCVProperty,
+                    person.CV,
+                    "invalid CV.",
+                    "Localized invalid CV."),
+                ValidationFailure.CreatePropertyValidationFailure(
+                    person,
+                    personCVStringProperty,
+                    person.CVString,
+                    "invalid CV string.",
+                    "Localized invalid CV string."),
+                ValidationFailure.CreatePropertyValidationFailure(
+                    person,
+                    personLastNameProperty,
+                    person.LastName,
+                    "invalid last name.",
+                    "Localized invalid last name.")
+              }));
+
+      if (_dataEditControl is IDataControlWithValidationDispatcher controlWithValidationDispatcher)
+      {
+        controlWithValidationDispatcher.DataSourceDispatchingValidator.DispatchValidationFailures(validationResult);
+      }
 
       return _dataEditControl.Validate();
     }

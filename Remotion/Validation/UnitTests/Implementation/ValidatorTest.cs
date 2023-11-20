@@ -41,7 +41,10 @@ namespace Remotion.Validation.UnitTests.Implementation
       _validationRuleStub1 = new Mock<IValidationRule>();
       _validationRuleStub2 = new Mock<IValidationRule>();
 
-      _validationFailure = new ObjectValidationFailure(_validatedObject, "Error", "ValidationMessage");
+      _validationFailure = ValidationFailure.CreateObjectValidationFailure(
+          _validatedObject,
+          "Error",
+          "ValidationMessage");
 
       _validator = new Validator(new[] { _validationRuleStub1.Object, _validationRuleStub2.Object }, typeof(Customer));
     }

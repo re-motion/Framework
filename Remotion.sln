@@ -362,6 +362,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.TestSite.NetFramework", "Remotion\Web\Development.WebTesting.TestSite.NetFramework\Web.Development.WebTesting.TestSite.NetFramework.csproj", "{357F7AE9-8BEF-44A4-A5BE-6DFC2A760957}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Dependencies.JavaScript", "Remotion\Web\Dependencies.JavaScript\Web.Dependencies.JavaScript.csproj", "{F1DF0BD0-B359-4074-98D0-99AD80F373C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1488,6 +1490,10 @@ Global
 		{357F7AE9-8BEF-44A4-A5BE-6DFC2A760957}.Release|Any CPU.Build.0 = Release|Any CPU
 		{357F7AE9-8BEF-44A4-A5BE-6DFC2A760957}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{357F7AE9-8BEF-44A4-A5BE-6DFC2A760957}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F1DF0BD0-B359-4074-98D0-99AD80F373C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1DF0BD0-B359-4074-98D0-99AD80F373C5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F1DF0BD0-B359-4074-98D0-99AD80F373C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1DF0BD0-B359-4074-98D0-99AD80F373C5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1633,6 +1639,7 @@ Global
 		{58D59F90-73C7-415C-99AA-02CE436FAD6F} = {9F4D90EC-6AD2-495D-BFC3-270DC15974DD}
 		{165A8123-C506-4239-BB21-ADBEF603BC0B} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 		{357F7AE9-8BEF-44A4-A5BE-6DFC2A760957} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
+		{F1DF0BD0-B359-4074-98D0-99AD80F373C5} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {26742782-2BDC-4959-9951-6D45B54A5C0D}

@@ -1,6 +1,6 @@
 ﻿<Project>
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
 <!--Langversion 9 is required for compatibility with netstandard2.0 -->
     <LangVersion>9</LangVersion>
     <Nullable>enable</Nullable>

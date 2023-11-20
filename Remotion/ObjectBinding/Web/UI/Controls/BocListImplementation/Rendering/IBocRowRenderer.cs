@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <summary>Renders a table row containing the data of the <see cref="IBusinessObject"/> wrapped inside <paramref name="rowRenderingContext"/>. </summary>
     /// <param name="renderingContext">The <see cref="BocListRenderingContext"/>.</param>
     /// <param name="rowRenderingContext"> The <see cref="BocListRowRenderingContext"/> contains all data about the row being rendererd. </param>
-    /// <param name="rowIndex"> The row number in the current view. </param>
-    void RenderDataRow (BocListRenderingContext renderingContext, BocListRowRenderingContext rowRenderingContext, int rowIndex);
+    /// <param name="arguments">The row-specific rendering arguments.</param>
+    void RenderDataRow (BocListRenderingContext renderingContext, BocListRowRenderingContext rowRenderingContext, in BocRowRenderArguments arguments);
   }
 }

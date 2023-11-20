@@ -204,10 +204,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see cref="BocDropDownMenuColumnDefinition"/> if the <see cref="RowMenuDisplay"/> is set to 
     ///   <see cref="Controls.RowMenuDisplay.Automatic"/> or <see cref="Controls.RowMenuDisplay.Manual"/>.
     /// </summary>
-    private void CheckRowMenuColumns (BocColumnDefinition[] columnDefinitions)
+    private void CheckRowMenuColumns (IReadOnlyList<BocColumnDefinition> columnDefinitions)
     {
       bool isFound = false;
-      for (int i = 0; i < columnDefinitions.Length; i++)
+      for (int i = 0; i < columnDefinitions.Count; i++)
       {
         if (columnDefinitions[i] is BocDropDownMenuColumnDefinition)
         {

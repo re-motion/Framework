@@ -57,7 +57,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           false,
           true,
           20,
-          StorageClass.None);
+          StorageClass.None,
+          null);
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
       _classDefinition.SetStorageEntity(_nonPersistentStorageEntityDefinition);
       _classDefinition.SetReadOnly();
@@ -77,7 +78,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           false,
           true,
           20,
-          StorageClass.Transaction);
+          StorageClass.Transaction,
+          null);
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
       _classDefinition.SetStorageEntity(_nonPersistentStorageEntityDefinition);
       _classDefinition.SetReadOnly();
@@ -97,7 +99,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           false,
           true,
           20,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          null);
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
       _classDefinition.SetStorageEntity(_persistentStorageEntityDefinition.Object);
       _classDefinition.SetReadOnly();
@@ -117,7 +120,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           false,
           true,
           null,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          null);
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
       _classDefinition.SetReadOnly();
 
@@ -136,7 +140,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           false,
           true,
           null,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          null);
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
       _classDefinition.SetStorageEntity(_nonPersistentStorageEntityDefinition);
       _classDefinition.SetReadOnly();

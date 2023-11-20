@@ -423,7 +423,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Verifiable();
 
       var parentDataContainer = CreateChangedDataContainer(parentObject.ID, 4711, _fileNamePropertyDefinition, "Hugo");
-      CheckDataContainer(parentDataContainer, parentObject.ID, 4711, state => state.IsChanged, _fileNamePropertyDefinition, "Hugo", "", true);
+      CheckDataContainer(parentDataContainer, parentObject.ID, 4711, state => state.IsChanged, _fileNamePropertyDefinition, "Hugo", null, true);
       _parentTransactionContextMock
           .Setup(mock => mock.GetDataContainerWithLazyLoad(parentObject.ID, true))
           .Returns(parentDataContainer)
@@ -494,7 +494,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Verifiable();
 
       var parentDataContainer = CreateChangedDataContainer(parentObjects[1].ID, 4711, _productPropertyDefinition, "Keyboard");
-      CheckDataContainer(parentDataContainer, parentObjects[1].ID, 4711, state => state.IsChanged, _productPropertyDefinition, "Keyboard", "", true);
+      CheckDataContainer(parentDataContainer, parentObjects[1].ID, 4711, state => state.IsChanged, _productPropertyDefinition, "Keyboard", null, true);
       _parentTransactionContextMock
           .Setup(mock => mock.GetDataContainerWithLazyLoad(parentObjects[1].ID, true))
           .Returns(parentDataContainer)

@@ -16,7 +16,8 @@
 // 
 using System;
 using System.Collections.Generic;
-using CommonServiceLocator;
+using Remotion.Collections;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -30,11 +31,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// </summary>
   public class BocColumnRendererArrayBuilder
   {
-    private readonly BocColumnDefinition[] _columnDefinitions;
+    private readonly IReadOnlyList<BocColumnDefinition> _columnDefinitions;
     private readonly IServiceLocator _serviceLocator;
     private readonly WcagHelper _wcagHelper;
 
-    public BocColumnRendererArrayBuilder (BocColumnDefinition[] columnDefinitions, IServiceLocator serviceLocator, WcagHelper wcagHelper)
+    public BocColumnRendererArrayBuilder (IReadOnlyList<BocColumnDefinition> columnDefinitions, IServiceLocator serviceLocator, WcagHelper wcagHelper)
     {
       ArgumentUtility.CheckNotNullOrEmpty("columnDefinitions", columnDefinitions);
       ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
@@ -63,9 +64,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       PrepareSorting(sortingDirections, sortingOrder);
 
       var firstValueColumnRendered = false;
-      var bocColumnRenderers = new List<BocColumnRenderer>(_columnDefinitions.Length);
+      var bocColumnRenderers = new List<BocColumnRenderer>(_columnDefinitions.Count);
       var visibleColumnIndex = GetInitialVisibleColumnIndex();
-      for (int columnIndex = 0; columnIndex < _columnDefinitions.Length; columnIndex++)
+      for (int columnIndex = 0; columnIndex < _columnDefinitions.Count; columnIndex++)
       {
         var columnDefinition = _columnDefinitions[columnIndex];
         var isRowHeader = (columnDefinition as IBocColumnDefinitionWithRowHeaderSupport)?.IsRowHeader ?? false;
@@ -120,7 +121,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
         foreach (var entry in SortingOrder)
         {
-          var columnIndex = Array.IndexOf(_columnDefinitions, entry.Column);
+          var columnIndex = _columnDefinitions.IndexOf((BocColumnDefinition?)entry.Column);
           if (entry.Direction != SortingDirection.None)
           {
             sortingDirections.Add(columnIndex, entry.Direction);
@@ -162,9 +163,35 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       var columnAsDropDownMenuColumn = column as BocDropDownMenuColumnDefinition;
       if (columnAsDropDownMenuColumn != null)
-        return IsColumnVisibleForBocDropDownMenuColumnDefinition(columnAsDropDownMenuColumn);
+      {
+        if (!IsColumnVisibleForBocDropDownMenuColumnDefinition(columnAsDropDownMenuColumn))
+          return false;
+      }
+
+      var columnAsValidationErrorIndicatorColumn = column as BocValidationErrorIndicatorColumnDefinition;
+      if (columnAsValidationErrorIndicatorColumn != null)
+      {
+        if (!IsColumnVisibleForBocValidationErrorIndicatorColumnDefinition(columnAsValidationErrorIndicatorColumn))
+          return false;
+      }
 
       return true;
+    }
+
+    private bool IsColumnVisibleForBocValidationErrorIndicatorColumnDefinition (BocValidationErrorIndicatorColumnDefinition columnAsValidationErrorIndicatorColumn)
+    {
+      var bocList = (IBocList?)columnAsValidationErrorIndicatorColumn.OwnerControl;
+      if (bocList == null)
+        return true;
+
+      var repository = bocList.ValidationFailureRepository;
+      return columnAsValidationErrorIndicatorColumn.Visibility switch
+      {
+        BocValidationErrorIndicatorColumnDefinitionVisibility.Always => true,
+        BocValidationErrorIndicatorColumnDefinitionVisibility.AnyValidationFailure => (repository.GetListFailureCount() + repository.GetRowAndCellFailureCount()) > 0,
+        BocValidationErrorIndicatorColumnDefinitionVisibility.AnyRowOrCellValidationFailure => repository.GetRowAndCellFailureCount() > 0,
+        _ => throw new ArgumentOutOfRangeException()
+      };
     }
 
     private bool IsColumnVisibleForBocCommandColumnDefinition (BocCommandColumnDefinition columnAsCommandColumn)

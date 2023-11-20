@@ -140,15 +140,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public void CommitRoot ()
     {
       var newObject = ClassWithAllDataTypes.NewObject();
-      newObject.DateTimeProperty = new DateTime(2012, 12, 12);
-      newObject.DateProperty = new DateTime(2012, 12, 12);
+      newObject.PopulateMandatoryProperties();
       Assert.That(newObject.State.IsNew, Is.True);
 
       var changedObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
       ++changedObject.Int32Property;
+      changedObject.TransactionOnlyStringProperty = "TransactionOnly"; // the default value is null, which is invalid for this property during commit
+      changedObject.TransactionOnlyBinaryProperty = new byte[] { 08, 15 }; // the default value is null, which is invalid for this property during commit
       Assert.That(changedObject.State.IsChanged, Is.True);
 
       var unchangedObject = DomainObjectIDs.ClassWithAllDataTypes2.GetObject<ClassWithAllDataTypes>();
+      unchangedObject.TransactionOnlyStringProperty = "TransactionOnly"; // the default value is null, which is invalid for this property during commit
+      unchangedObject.TransactionOnlyBinaryProperty = new byte[] { 47, 11 }; // the default value is null, which is invalid for this property during commit
+      unchangedObject.InternalDataContainer.CommitState(); // we want to test an unchanged object, so the previous change must be committed
       Assert.That(unchangedObject.State.IsUnchanged, Is.True);
 
       newObject.RegisterForCommit();
@@ -198,6 +202,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public void CommitRoot_RegisterForUnchanged_LeadsToConcurrencyCheck ()
     {
       var unchangedObject = DomainObjectIDs.ClassWithAllDataTypes2.GetObject<ClassWithAllDataTypes>();
+      unchangedObject.TransactionOnlyStringProperty = "TransactionOnly"; // the default value is null, which is invalid for this property during commit
+      unchangedObject.TransactionOnlyBinaryProperty = new byte[] { 47, 11 }; // the default value is null, which is invalid for this property during commit
+      unchangedObject.InternalDataContainer.CommitState(); // we want to test an unchanged object, so the previous change must be committed
       unchangedObject.RegisterForCommit();
 
       ModifyAndCommitInOtherTransaction(unchangedObject.ID);
@@ -424,6 +431,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       {
         var domainObject = objectID.GetObject<ClassWithAllDataTypes>();
         ++domainObject.Int32Property;
+        domainObject.TransactionOnlyStringProperty = "TransactionOnly"; // the default value is null, which is invalid for this property during commit
+        domainObject.TransactionOnlyBinaryProperty = new byte[] { 47, 11 }; // the default value is null, which is invalid for this property during commit
         ClientTransaction.Current.Commit();
       }
     }

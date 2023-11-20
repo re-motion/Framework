@@ -50,7 +50,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
           false,
           true,
           20,
-          StorageClass.None);
+          StorageClass.None,
+          null);
       propertyDefinition.SetStorageProperty(SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("PropertyWithStorageClassNone"));
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
       _classDefinition.SetReadOnly();
@@ -70,7 +71,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
           false,
           true,
           null,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          null);
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
       _classDefinition.SetReadOnly();
 
@@ -89,7 +91,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
           false,
           true,
           20,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          null);
       propertyDefinition.SetStorageProperty(SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("PropertyWithStorageClassPersistent"));
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
       _classDefinition.SetReadOnly();
@@ -109,7 +112,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
           false,
           true,
           null,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          null);
       propertyDefinition.SetStorageProperty(new UnsupportedStoragePropertyDefinition(typeof(int), "Message", null));
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
       _classDefinition.SetReadOnly();

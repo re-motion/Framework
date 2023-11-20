@@ -21,6 +21,7 @@ using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -155,7 +156,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new FakeFallbackNavigationUrlProvider());
       var renderingContext = CreateRenderingContext();
-      renderingContext.ColumnDefinition.ShowColumnTitle = false;
+      renderingContext.ColumnDefinition.ColumnTitleStyle = BocColumnTitleStyle.None;
 
       renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments());
 
@@ -184,7 +185,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new FakeFallbackNavigationUrlProvider());
       var renderingContext = CreateRenderingContext();
-      renderingContext.ColumnDefinition.ShowColumnTitle = false;
+      renderingContext.ColumnDefinition.ColumnTitleStyle = BocColumnTitleStyle.None;
       renderingContext.ColumnDefinition.IsSortable = false;
 
       renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments());
@@ -203,6 +204,95 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertChildElementCount(titleSpan, 0);
 
       Html.AssertTextNode(cellBody, c_whitespace, 1);
+    }
+
+    [Test]
+    public void RenderSortableTitleCellWithColumnTitleIcon ()
+    {
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.Default,
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
+      var renderingContext = CreateRenderingContext();
+      renderingContext.ColumnDefinition.ColumnTitleStyle = BocColumnTitleStyle.Icon;
+      renderingContext.ColumnDefinition.ColumnTitleIcon = new IconInfo("testUrl");
+
+      renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments());
+
+      var document = Html.GetResultDocument();
+
+      var th = Html.GetAssertedChildElement(document, "th", 0);
+
+      Assert.Less(0, th.ChildNodes.Count);
+      var sortCommandLink = Html.GetAssertedChildElement(th, "a", 0);
+      Assert.That(sortCommandLink.ChildNodes.Count, Is.EqualTo(2));
+
+      var img = Html.GetAssertedChildElement(sortCommandLink, "img", 0);
+      Html.AssertAttribute(img, "src", "testUrl");
+
+      var titleSpan = Html.GetAssertedChildElement(sortCommandLink, "span", 1);
+      Html.AssertAttribute(titleSpan, "class", c_screenReaderText, HtmlHelperBase.AttributeValueCompareMode.Equal);
+      Html.AssertTextNode(titleSpan, Column.ColumnTitleDisplayValue.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
+      Html.AssertChildElementCount(titleSpan, 0);
+    }
+
+    [Test]
+    public void RenderSortableTitleCellWithColumnTitleIconAndText ()
+    {
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.Default,
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
+      var renderingContext = CreateRenderingContext();
+      renderingContext.ColumnDefinition.ColumnTitleStyle = BocColumnTitleStyle.IconAndText;
+      renderingContext.ColumnDefinition.ColumnTitleIcon = new IconInfo("testUrl");
+
+      renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments());
+
+      var document = Html.GetResultDocument();
+
+      var th = Html.GetAssertedChildElement(document, "th", 0);
+
+      Assert.Less(0, th.ChildNodes.Count);
+      var sortCommandLink = Html.GetAssertedChildElement(th, "a", 0);
+      Assert.That(sortCommandLink.ChildNodes.Count, Is.EqualTo(2));
+
+      var img = Html.GetAssertedChildElement(sortCommandLink, "img", 0);
+      Html.AssertAttribute(img, "src", "testUrl");
+
+      var titleSpan = Html.GetAssertedChildElement(sortCommandLink, "span", 1);
+      Html.AssertNoAttribute(titleSpan, "class");
+      Html.AssertTextNode(titleSpan, Column.ColumnTitleDisplayValue.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
+      Html.AssertChildElementCount(titleSpan, 0);
+    }
+
+    [Test]
+    public void RenderSortableTitleCellWithColumnTitleTextAndInvalidColumnTitleIcon ()
+    {
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.Default,
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
+      var renderingContext = CreateRenderingContext();
+      renderingContext.ColumnDefinition.ColumnTitleStyle = BocColumnTitleStyle.IconAndText;
+
+      renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments());
+
+      var document = Html.GetResultDocument();
+
+      var th = Html.GetAssertedChildElement(document, "th", 0);
+
+      Assert.Less(0, th.ChildNodes.Count);
+      var sortCommandLink = Html.GetAssertedChildElement(th, "a", 0);
+      Assert.That(sortCommandLink.ChildNodes.Count, Is.EqualTo(1));
+
+      var titleSpan = Html.GetAssertedChildElement(sortCommandLink, "span", 0);
+      Html.AssertNoAttribute(titleSpan, "class");
+      Html.AssertTextNode(titleSpan, Column.ColumnTitleDisplayValue.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
+      Html.AssertChildElementCount(titleSpan, 0);
     }
 
     [Test]
@@ -325,6 +415,91 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(th, DiagnosticMetadataAttributesForObjectBinding.BocListColumnIsRowHeader, "true");
     }
 
+    [Test]
+    public void TestValidationFailureInCell ()
+    {
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.WithDiagnosticMetadata,
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
+      var renderingContext = CreateRenderingContext();
+
+      renderingContext.Control.ValidationFailureRepository.AddValidationFailuresForDataCell(
+          EventArgs.BusinessObject,
+          Column,
+          new[] { BusinessObjectValidationFailure.Create("error message"), });
+
+      renderer.RenderDataCell(renderingContext, CreateBocDataCellRenderArguments(columnsWithValidationFailures: new [] { true }));
+
+      var document = Html.GetResultDocument();
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertChildElementCount(td, 1);
+
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+      Html.AssertChildElementCount(cellStructureDiv, 3);
+
+      var iconSpan = Html.GetAssertedChildElement(cellStructureDiv, "span", 0);
+      Html.AssertAttribute(iconSpan, "class", _bocListCssClassDefinition.ValidationErrorMarker);
+      Html.AssertAttribute(iconSpan, "id", "MyList_C6_R0_ValidationMarker");
+      Html.AssertAttribute(iconSpan, "title", "error message\r\n");
+      Html.AssertAttribute(iconSpan, "tabindex", "-1");
+      Html.AssertAttribute(iconSpan, "aria-hidden", "true");
+      Html.AssertChildElementCount(iconSpan, 1);
+
+      var img = Html.GetAssertedChildElement(iconSpan, "img", 0);
+      Html.AssertAttribute(img, "src", "/fake/Remotion.Web/Themes/Fake/Image/sprite.svg#ValidationError");
+
+      var div = Html.GetAssertedChildElement(cellStructureDiv, "div", 1);
+      Html.AssertAttribute(div, "class", _bocListCssClassDefinition.Content);
+
+      var screenReaderSpan = Html.GetAssertedChildElement(cellStructureDiv, "div", 2);
+      Html.AssertAttribute(screenReaderSpan, "class", _bocListCssClassDefinition.CssClassScreenReaderText);
+      Html.AssertChildElementCount(screenReaderSpan, 1);
+
+      var ul = Html.GetAssertedChildElement(screenReaderSpan, "ul", 0);
+      Html.AssertAttribute(ul, "aria-label", "Invalid input in current cell");
+      Html.AssertChildElementCount(ul, 1);
+
+      var li = Html.GetAssertedChildElement(ul, "li", 0);
+      Html.AssertChildElementCount(li, 1);
+
+      var errorMessageSpan = Html.GetAssertedChildElement(li, "span", 0);
+      Assert.That(errorMessageSpan.InnerText, Is.EqualTo("error message"));
+    }
+
+    [Test]
+    public void TestValidationFailureInOtherCell ()
+    {
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.WithDiagnosticMetadata,
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
+      var renderingContext = CreateRenderingContext();
+
+      renderer.RenderDataCell(renderingContext, CreateBocDataCellRenderArguments(columnsWithValidationFailures: new [] { true }));
+
+      var document = Html.GetResultDocument();
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertChildElementCount(td, 1);
+
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+      Html.AssertChildElementCount(cellStructureDiv, 2);
+
+      var span = Html.GetAssertedChildElement(cellStructureDiv, "span", 0);
+      Html.AssertAttribute(span, "class", _bocListCssClassDefinition.ValidationErrorMarker);
+      Html.AssertChildElementCount(span, 1);
+
+      var img = Html.GetAssertedChildElement(span, "img", 0);
+      Html.AssertAttribute(img, "src", "/fake/Remotion.Development.Web/Image/Spacer.gif");
+
+      var div = Html.GetAssertedChildElement(cellStructureDiv, "div", 1);
+      Html.AssertAttribute(div, "class", _bocListCssClassDefinition.Content);
+    }
+
     private void RenderTitleCell (
         SortingDirection sortDirection,
         int sortIndex,
@@ -371,7 +546,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(List.Object.DataSource, List.Object.Property, "Args");
 
       return new BocColumnRenderingContext<BocSimpleColumnDefinition>(
-          new BocColumnRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, Column, 0, 6));
+          new BocColumnRenderingContext(
+              HttpContext,
+              Html.Writer,
+              List.Object,
+              businessObjectWebServiceContext,
+              Column,
+              ColumnIndexProvider.Object,
+              0,
+              6));
     }
   }
 }

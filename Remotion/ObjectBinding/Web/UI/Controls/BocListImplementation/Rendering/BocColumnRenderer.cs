@@ -129,10 +129,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         int rowIndex,
         string? cellID,
         IReadOnlyCollection<string> headerIDs,
+        IReadOnlyList<bool> columnsWithValidationFailures,
         BocListDataRowRenderEventArgs dataRowRenderEventArgs)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
       ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
+      ArgumentUtility.CheckNotNull("columnsWithValidationFailures", columnsWithValidationFailures);
+      if (renderingContext.ColumnRenderers.Length != columnsWithValidationFailures.Count)
+        throw new ArgumentException("The number of validation failures flags must match the number of column renderers.", nameof(columnsWithValidationFailures));
 
       var columnRenderingContext = CreateBocColumnRenderingContext(renderingContext);
 
@@ -143,7 +147,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
               rowIndex: rowIndex,
               showIcon: _showIcon,
               cellID: cellID,
-              headerIDs: headerIDs));
+              headerIDs: headerIDs,
+              columnsWithValidationFailures: columnsWithValidationFailures));
     }
 
     private BocColumnRenderingContext CreateBocColumnRenderingContext (BocListRenderingContext renderingContext)
@@ -154,6 +159,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           renderingContext.Control,
           renderingContext.BusinessObjectWebServiceContext,
           ColumnDefinition,
+          renderingContext.ColumnIndexProvider,
           ColumnIndex,
           VisibleColumnIndex);
     }

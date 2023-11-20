@@ -28,8 +28,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     {
       DateTime referenceDateTime = DateTime.Now;
       Employee referenceEmployee = Employee.NewObject();
+      referenceEmployee.Name = "Employee";
 
       Computer computer = Computer.NewObject();
+      computer.SerialNumber = "12345";
       CheckDefaultValueAndValueAfterSet(computer, referenceDateTime, referenceEmployee);
       CheckValueAfterCommitAndRollback(computer, referenceDateTime, referenceEmployee);
       CheckValueInParallelRootTransaction(computer, referenceEmployee);

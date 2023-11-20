@@ -23,10 +23,12 @@ using System.Linq;
 using System.Reflection;
 using System.Web.UI;
 using JetBrains.Annotations;
-using CommonServiceLocator;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Utilities;
@@ -34,7 +36,7 @@ using Remotion.Web.Utilities;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> A column definition using <see cref="BocCustomColumnDefinitionCell"/> for rendering the data. </summary>
-  public class BocCustomColumnDefinition : BocColumnDefinition, IBusinessObjectClassSource, IBocSortableColumnDefinition, IBocColumnDefinitionWithRowHeaderSupport
+  public class BocCustomColumnDefinition : BocColumnDefinition, IBusinessObjectClassSource, IBocSortableColumnDefinition, IBocColumnDefinitionWithRowHeaderSupport, IBocColumnDefinitionWithValidationSupport
   {
     private readonly PropertyPathBinding _propertyPathBinding;
     private BocCustomColumnDefinitionCell? _customCell;
@@ -241,6 +243,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       var args = new BocCustomCellArguments((IBocList)OwnerControl, this);
       return CustomCell.CreateCellValueComparerInternal(args);
+    }
+
+    public virtual IValidationFailureMatcher GetValidationFailureMatcher ()
+    {
+      Assertion.IsNotNull(OwnerControl, "OwnerControl must not be null.");
+
+      var args = new BocCustomCellArguments((IBocList)OwnerControl, this);
+      return CustomCell.GetValidationFailureMatcherInternal(args);
     }
   }
 
@@ -460,6 +470,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return CreateCellValueComparer(arguments);
     }
 
+    [NotNull]
+    internal IValidationFailureMatcher GetValidationFailureMatcherInternal (BocCustomCellArguments arguments)
+    {
+      InitArguments(arguments);
+      return GetValidationFailureMatcher(arguments);
+    }
+
     /// <summary>
     /// Override this method to change the implementation of <see cref="IComparer{T}"/> instantiated for comparing the two <see cref="BocListRow"/>
     /// instances based on this <see cref="BocCustomColumnDefinitionCell"/>.
@@ -472,6 +489,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ArgumentUtility.CheckNotNull("arguments", arguments);
 
       return arguments.ColumnDefinition.GetPropertyPath().CreateComparer();
+    }
+
+    /// <summary>
+    /// Override this method to change the implementation of <see cref="Remotion.ObjectBinding.Validation.IValidationFailureMatcher"/> instantiated to match all failures pertaining to this <see cref="BocListRow"/>
+    /// instances based on this <see cref="BocCustomColumnDefinitionCell"/>.
+    /// </summary>
+    /// <returns>An implementation of <see cref="Remotion.ObjectBinding.Validation.IValidationFailureMatcher"/>.</returns>
+    /// <remarks>The default type created is <see cref="Remotion.ObjectBinding.Validation.BusinessObjectPropertyPathValidationFailureMatcher"/>.</remarks>
+    [NotNull]
+    protected virtual IValidationFailureMatcher GetValidationFailureMatcher (BocCustomCellArguments arguments)
+    {
+      ArgumentUtility.CheckNotNull(nameof(arguments), arguments);
+
+      var propertyPath = arguments.ColumnDefinition.GetPropertyPath();
+      return new BusinessObjectPropertyPathValidationFailureMatcher(propertyPath);
     }
 
     private void InitArguments (BocCustomCellArguments arguments)

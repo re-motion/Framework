@@ -113,6 +113,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       if (Helper.BrowserConfiguration.IsFirefox())
         Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
 
+      if (Helper.BrowserConfiguration.IsEdge())
+        Assert.Ignore("RM-8738: Edge upgrade broke headless mode to still display a popup upon downloading xml-files, cannot automatically download");
+
       // Note: test for Chrome "safebrowsing" (requires safebrowsing.enabled to be set to true in browser preferences - see Chrome configuration).
       // This test fails if safebrowsing is set to false because downloading an XML file produces an additional user prompt.
       var home = Start();
@@ -245,6 +248,9 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
       if (Helper.BrowserConfiguration.IsFirefox())
         Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
 
+
+      if (Helper.BrowserConfiguration.IsEdge())
+        Assert.Ignore("RM-8738: Edge upgrade broke headless mode to still display a popup upon downloading xml-files, cannot automatically download");
       // Note: test for Chrome "safebrowsing" (requires safebrowsing.enabled to be set to true in browser preferences - see Chrome configuration).
       // This test fails if safebrowsing is set to false because downloading an XML file produces an additional user prompt.
 

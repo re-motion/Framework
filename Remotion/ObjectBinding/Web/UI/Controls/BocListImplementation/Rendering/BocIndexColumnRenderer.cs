@@ -126,13 +126,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <summary> Renders the zero-based row index normalized to a one-based format. </summary>
     private void RenderRowIndex (BocListRenderingContext renderingContext, int index, string selectorControlID)
     {
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.CellStructureElement);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.Content);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
       int renderedIndex = index + 1;
       if (renderingContext.Control.IndexOffset != null)
         renderedIndex += renderingContext.Control.IndexOffset.Value;
       renderingContext.Writer.Write(renderedIndex);
-      renderingContext.Writer.RenderEndTag();
+      renderingContext.Writer.RenderEndTag(); // div.Content
+      renderingContext.Writer.RenderEndTag(); // div.CellStructureElement
     }
   }
 }

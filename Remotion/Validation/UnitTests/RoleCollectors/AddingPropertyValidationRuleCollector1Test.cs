@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -26,6 +27,7 @@ using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.RuleCollectors;
+using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
 using Remotion.Validation.UnitTests.TestHelpers;
@@ -37,12 +39,11 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
   public class AddingPropertyValidationRuleCollector1Test
   {
     private Expression<Func<Customer, string>> _userNameExpression;
-    private Expression<Func<Customer, string>> _lastNameExpression;
-    private IAddingPropertyValidationRuleCollector _addingPropertyValidationRuleCollector;
+    private AddingPropertyValidationRuleCollector<Customer, string> _addingPropertyValidationRuleCollector;
     private IPropertyInformation _property;
     private Mock<IPropertyValidatorExtractor> _propertyValidatorExtractorMock;
     private StubPropertyValidator _stubPropertyValidator1;
-    private NotEmptyValidator _stubPropertyValidator2;
+    private NotEmptyOrWhitespaceValidator _stubPropertyValidator2;
     private NotEqualValidator _stubPropertyValidator3;
 
     [SetUp]
@@ -51,10 +52,9 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
       _property = PropertyInfoAdapter.Create(typeof(Customer).GetProperty("UserName"));
 
       _userNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.UserName);
-      _lastNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.LastName);
 
       _stubPropertyValidator1 = new StubPropertyValidator();
-      _stubPropertyValidator2 = new NotEmptyValidator(new InvariantValidationMessage("Fake Message"));
+      _stubPropertyValidator2 = new NotEmptyOrWhitespaceValidator(new InvariantValidationMessage("Fake Message"));
       _stubPropertyValidator3 = new NotEqualValidator("gfsf", new InvariantValidationMessage("Fake Message"));
 
       _propertyValidatorExtractorMock = new Mock<IPropertyValidatorExtractor>(MockBehavior.Strict);
@@ -73,83 +73,159 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
       Assert.That(_addingPropertyValidationRuleCollector.CollectorType, Is.EqualTo(typeof(CustomerValidationRuleCollector1)));
       Assert.That(_addingPropertyValidationRuleCollector.Validators.Any(), Is.False);
       Assert.That(_addingPropertyValidationRuleCollector.IsRemovable, Is.False);
+      Assert.That(_addingPropertyValidationRuleCollector.ValidatedType, Is.EqualTo(typeof(Customer)));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void Initialization_CollectorTypeDoesNotImplementIValidationRuleCollector_ThrowsArgumentException ()
     {
-    }
-
-    [Test]
-    public void Create_MemberInfoIsNoPropertyInfo_ExceptionIsThrown ()
-    {
-      var dummyExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.Dummy());
-
       Assert.That(
-          () => AddingPropertyValidationRuleCollector.Create(dummyExpression, typeof(CustomerValidationRuleCollector1)),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("Must be a MemberExpression.", "expression"));
+          () => new AddingPropertyValidationRuleCollector<Customer, string>(_property, _ => "", typeof(Customer)),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Parameter 'collectorType' is a 'Remotion.Validation.UnitTests.TestDomain.Customer', "
+                  + "which cannot be assigned to type 'Remotion.Validation.IValidationRuleCollector'.",
+                  "collectorType"));
     }
 
     [Test]
-    public void Create_PropertyDeclaredInBaseClass ()
-    {
-      var componentPropertyRule = AddingPropertyValidationRuleCollector.Create(_lastNameExpression, typeof(CustomerValidationRuleCollector1));
-      var propertyInfo = ((PropertyInfoAdapter)componentPropertyRule.Property).PropertyInfo;
-
-      //TODO-5906 simplify assertion with PropertyInfoAdapter compare
-      Assert.That(
-          MemberInfoEqualityComparer<MemberInfo>.Instance.Equals(propertyInfo, typeof(Customer).GetMember("LastName")[0]),
-          Is.True);
-      Assert.That(propertyInfo.DeclaringType, Is.EqualTo(typeof(Person)));
-    }
-
-    [Test]
-    [Ignore("TODO RM-5906")]
-    public void Create_BuildsFuncForPropertyAccess ()
-    {
-    }
-
-    [Test]
-    [Ignore("TODO RM-5906")]
     public void CreateValidationRule_InitializesDeferredInitializationValidationMessages ()
     {
+      var validationMessageFactoryStub = new Mock<IValidationMessageFactory>();
+      validationMessageFactoryStub
+          .Setup(e => e.CreateValidationMessageForPropertyValidator(It.IsAny<NotNullValidator>(), _property))
+          .Returns(new InvariantValidationMessage("expectedMessage"));
+
+      Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory = param => new NotNullValidator(param.ValidationMessage);
+
+      _addingPropertyValidationRuleCollector.RegisterValidator(validatorFactory);
+      var result = ((IAddingPropertyValidationRuleCollector)_addingPropertyValidationRuleCollector).CreateValidationRule(validationMessageFactoryStub.Object);
+
+      var notNullValidators = ((IPropertyValidationRule)result).Validators.Cast<NotNullValidator>().ToArray();
+      Assert.That(notNullValidators.Length, Is.EqualTo(1));
+      Assert.That(notNullValidators[0].ValidationMessage.ToString(), Is.EqualTo("expectedMessage"));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void CreateValidationRule_WhenCalledTwice_InitializesDeferredInitializationValidationMessagesOnlyForNewlyRegisteredValidators ()
     {
+      var validationMessageFactoryStub1 = new Mock<IValidationMessageFactory>();
+      validationMessageFactoryStub1
+          .Setup(e => e.CreateValidationMessageForPropertyValidator(It.IsAny<NotNullValidator>(), _property))
+          .Returns(new InvariantValidationMessage("expectedMessage1"));
+
+      var validationMessageFactoryStub2 = new Mock<IValidationMessageFactory>();
+      validationMessageFactoryStub2
+          .Setup(e => e.CreateValidationMessageForPropertyValidator(It.IsAny<NotNullValidator>(), _property))
+          .Returns(new InvariantValidationMessage("expectedMessage2"));
+
+      Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory = param => new NotNullValidator(param.ValidationMessage);
+
+      _addingPropertyValidationRuleCollector.RegisterValidator(validatorFactory);
+      var result1 = ((IAddingPropertyValidationRuleCollector)_addingPropertyValidationRuleCollector).CreateValidationRule(validationMessageFactoryStub1.Object);
+
+      var notNullValidators1 = ((IPropertyValidationRule)result1).Validators.Cast<NotNullValidator>().ToArray();
+      Assert.That(notNullValidators1.Length, Is.EqualTo(1));
+      Assert.That(notNullValidators1[0].ValidationMessage.ToString(), Is.EqualTo("expectedMessage1"));
+
+      _addingPropertyValidationRuleCollector.RegisterValidator(validatorFactory);
+      var result2 = ((IAddingPropertyValidationRuleCollector)_addingPropertyValidationRuleCollector).CreateValidationRule(validationMessageFactoryStub2.Object);
+
+      var notNullValidators2 = ((IPropertyValidationRule)result2).Validators.Cast<NotNullValidator>().ToArray();
+      Assert.That(notNullValidators2.Length, Is.EqualTo(2));
+      Assert.That(notNullValidators2[0].ValidationMessage.ToString(), Is.EqualTo("expectedMessage1"));
+      Assert.That(notNullValidators2[1].ValidationMessage.ToString(), Is.EqualTo("expectedMessage2"));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void CreateValidationRule_IgnoresValidationMessagesForValidatorsWithoutADeferredInitializationValidationMessage ()
     {
+      var validationMessageFactoryStub = new Mock<IValidationMessageFactory>();
+      validationMessageFactoryStub
+          .Setup(e => e.CreateValidationMessageForPropertyValidator(It.IsAny<NotNullValidator>(), _property))
+          .Returns(new InvariantValidationMessage("unexpectedMessage"));
+
+      Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory = _ => new NotNullValidator(new InvariantValidationMessage("expectedMessage"));
+
+      _addingPropertyValidationRuleCollector.RegisterValidator(validatorFactory);
+      var result = ((IAddingPropertyValidationRuleCollector)_addingPropertyValidationRuleCollector).CreateValidationRule(validationMessageFactoryStub.Object);
+
+      var propertyValidators = ((IPropertyValidationRule)result).Validators.Cast<NotNullValidator>().ToArray();
+      Assert.That(propertyValidators.Length, Is.EqualTo(1));
+      Assert.That(propertyValidators[0].ValidationMessage.ToString(), Is.EqualTo("expectedMessage"));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void CreateValidationRule_WithValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
+      var validationMessageFactoryStub = new Mock<IValidationMessageFactory>();
+      validationMessageFactoryStub
+          .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<NotNullValidator>(), _property))
+          .Returns((ValidationMessage)null);
+
+      Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory = param => new NotNullValidator(param.ValidationMessage);
+
+      _addingPropertyValidationRuleCollector.RegisterValidator(validatorFactory);
+
+      Assert.That(
+          () => ((IAddingPropertyValidationRuleCollector)_addingPropertyValidationRuleCollector).CreateValidationRule(validationMessageFactoryStub.Object),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "The IValidationMessageFactory did not return a result for 'NotNullValidator' applied to "
+                  + "property 'UserName' on type 'Remotion.Validation.UnitTests.TestDomain.Customer'."));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void CreateValidationRule_WithConditionNotNull_InitializesConditionForCreatedPropertyValidationRule ()
     {
+      var validationMessageFactoryStub = new Mock<IValidationMessageFactory>();
+      validationMessageFactoryStub
+          .Setup(e => e.CreateValidationMessageForPropertyValidator(It.IsAny<NotNullValidator>(), _property))
+          .Returns(new InvariantValidationMessage("expectedMessage"));
+
+      Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory = param => new NotNullValidator(param.ValidationMessage);
+      Func<Customer, bool> predicate = _ => true;
+
+      _addingPropertyValidationRuleCollector.RegisterValidator(validatorFactory);
+      _addingPropertyValidationRuleCollector.SetCondition(predicate);
+
+      var result = ((IAddingPropertyValidationRuleCollector)_addingPropertyValidationRuleCollector).CreateValidationRule(validationMessageFactoryStub.Object);
+
+      Assert.That(((PropertyValidationRule<Customer, string>)result).Condition, Is.SameAs(predicate));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void SetCondition ()
     {
+      Func<Customer, bool> predicate = _ => true;
+      _addingPropertyValidationRuleCollector.SetCondition(predicate);
+
+      Assert.That(_addingPropertyValidationRuleCollector.Condition, Is.SameAs(predicate));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
+    public void SetCondition_WithInvalidTypeOfPredicate_ThrowsArgumentException ()
+    {
+      Func<Person, bool> predicate = _ => true;
+
+      Assert.That(
+          () => _addingPropertyValidationRuleCollector.SetCondition(predicate),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "The type 'Remotion.Validation.UnitTests.TestDomain.Person' of the predicate does not match the "
+                  + "type 'Remotion.Validation.UnitTests.TestDomain.Customer' of the validation rule.", "predicate"));
+    }
+
+    [Test]
     public void SetCondition_Twice_UsesNewCondition ()
     {
+      Func<Customer, bool> predicateOne = _ => true;
+      Func<Customer, bool> predicateTwo = _ => false;
+
+      _addingPropertyValidationRuleCollector.SetCondition(predicateOne);
+      _addingPropertyValidationRuleCollector.SetCondition(predicateTwo);
+
+      Assert.That(_addingPropertyValidationRuleCollector.Condition, Is.SameAs(predicateTwo));
     }
 
     [Test]

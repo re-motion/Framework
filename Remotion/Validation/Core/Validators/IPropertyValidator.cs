@@ -23,6 +23,6 @@ namespace Remotion.Validation.Validators
   public interface IPropertyValidator
   {
     //TODO RM-5906: Introduce ID, have implementations return the ID for ToString(), ID is not guaranteed to be unique
-    IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context);
+    IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context);
   }
 }

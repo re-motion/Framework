@@ -172,7 +172,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
           propertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
     }
 
     private PropertyDefinition GetPropertyDefinition (string propertyName)

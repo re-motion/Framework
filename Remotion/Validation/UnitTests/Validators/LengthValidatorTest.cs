@@ -35,7 +35,7 @@ namespace Remotion.Validation.UnitTests.Validators
         Assert.That(
             () => new LengthValidator(-1, 3, new InvariantValidationMessage("Fake Message")),
             Throws.InstanceOf<ArgumentOutOfRangeException>()
-                .With.ArgumentExceptionMessageEqualTo("Value cannot be less than zero.", "min"));
+                .With.ArgumentExceptionMessageEqualTo("Value must be greater than zero.", "min"));
       }
     }
 
@@ -47,7 +47,7 @@ namespace Remotion.Validation.UnitTests.Validators
         Assert.That(
             () => new LengthValidator(4, 3, new InvariantValidationMessage("Fake Message")),
             Throws.InstanceOf<ArgumentOutOfRangeException>()
-                .With.ArgumentExceptionMessageEqualTo("Max should be larger than min.", "max"));
+                .With.ArgumentExceptionMessageEqualTo("Max must be greater than min.", "max"));
       }
     }
 
@@ -55,7 +55,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValueNull_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(null);
-      var validator = new LengthValidator(0, 0, new InvariantValidationMessage("Fake Message"));
+      var validator = new LengthValidator(1, 4, new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 
@@ -66,7 +66,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValueNonString_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(new object());
-      var validator = new LengthValidator(0, 0, new InvariantValidationMessage("Fake Message"));
+      var validator = new LengthValidator(1, 4, new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 
@@ -115,7 +115,9 @@ namespace Remotion.Validation.UnitTests.Validators
       var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
       Assert.That(validationFailures.Length, Is.EqualTo(1));
-      //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
+      Assert.That(validationFailures[0].ValidatedObject, Is.EqualTo(propertyValidatorContext.Instance));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.Property), Is.EqualTo(new [] { propertyValidatorContext.Property }));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.ValidatedPropertyValue), Is.EqualTo(new [] { propertyValidatorContext.PropertyValue }));
       Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must have between 1 and 4 characters."));
       Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '1', '4'."));
     }
@@ -129,7 +131,9 @@ namespace Remotion.Validation.UnitTests.Validators
       var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
       Assert.That(validationFailures.Length, Is.EqualTo(1));
-      //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
+      Assert.That(validationFailures[0].ValidatedObject, Is.EqualTo(propertyValidatorContext.Instance));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.Property), Is.EqualTo(new [] { propertyValidatorContext.Property }));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.ValidatedPropertyValue), Is.EqualTo(new [] { propertyValidatorContext.PropertyValue }));
       Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must have between 1 and 4 characters."));
       Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '1', '4'."));
     }

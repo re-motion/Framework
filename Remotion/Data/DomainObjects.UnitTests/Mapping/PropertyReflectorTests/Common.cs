@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void GetMetadata_ForSingleProperty ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>("BooleanProperty", DomainModelConstraintProviderStub.Object);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>("BooleanProperty", DomainModelConstraintProviderStub.Object, PropertyDefaultValueProviderStub.Object);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
       actual.SetStorageProperty(SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty());

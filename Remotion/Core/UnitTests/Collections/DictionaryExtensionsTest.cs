@@ -67,6 +67,7 @@ namespace Remotion.UnitTests.Collections
       Assert.That(notFoundValue, Is.EqualTo(0));
     }
 
+#if NETFRAMEWORK
     [Test]
     public void GetValueOrDefault_WithReadOnlyDictionary_ValueTypes ()
     {
@@ -79,6 +80,7 @@ namespace Remotion.UnitTests.Collections
       var notFoundValue = readOnlyDictionary.GetValueOrDefault("z");
       Assert.That(notFoundValue, Is.EqualTo(0));
     }
+#endif
 
     [Test]
     public void GetValueOrDefault_WithIReadOnlyDictionary_NullKey ()
@@ -132,6 +134,7 @@ namespace Remotion.UnitTests.Collections
       Assert.That(substitutedDefaultValue, Is.EqualTo("Beta"));
     }
 
+#if NETFRAMEWORK
     [Test]
     public void GetValueOrDefault_WithReadOnlyDictionary_WithDefaultValue ()
     {
@@ -141,6 +144,7 @@ namespace Remotion.UnitTests.Collections
       var substitutedDefaultValue = ((ReadOnlyDictionary<string, string>)_dictionary.AsReadOnly()).GetValueOrDefault("z", "Beta");
       Assert.That(substitutedDefaultValue, Is.EqualTo("Beta"));
     }
+#endif
 
     [Test]
     public void GetValueOrDefault_WithIReadOnlyDictionary_WithDefaultValue_NullDefaultValue ()
@@ -163,12 +167,14 @@ namespace Remotion.UnitTests.Collections
       Assert.That(substitutedDefaultValue, Is.Null);
     }
 
+#if NETFRAMEWORK
     [Test]
     public void GetValueOrDefault_WithReadOnlyDictionary_WithDefaultValue_NullDefaultValue ()
     {
       var substitutedDefaultValue = ((ReadOnlyDictionary<string, string>)_dictionary.AsReadOnly()).GetValueOrDefault("z", null);
       Assert.That(substitutedDefaultValue, Is.Null);
     }
+#endif
 
     [Test]
     public void GetOrCreateValue_WithDictionary_WithNewKey ()
@@ -193,6 +199,7 @@ namespace Remotion.UnitTests.Collections
       Assert.That(() => ((Dictionary<string, string>)_dictionary).GetOrCreateValue(null, key => throw new InvalidOperationException()), Throws.ArgumentNullException);
     }
 
+#if NETFRAMEWORK
     [Test]
     public void AsReadOnly ()
     {
@@ -210,5 +217,6 @@ namespace Remotion.UnitTests.Collections
 
       Assert.That(readOnlyDictionary, Is.SameAs(dictionary));
     }
+#endif
   }
 }

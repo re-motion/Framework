@@ -23,8 +23,8 @@ namespace Remotion.ObjectBinding.Validation.UnitTests.TestDomain
   {
     public ICustomerValidationRuleCollector ()
     {
-      AddRule(_ => _.PhoneNumber).NotNull().NotEmpty();
-      AddRule(_ => _.CustomerNumber).NotNull().NotEmpty();
+      AddRule(_ => _.PhoneNumber).NotNull().NotEmptyOrWhitespace();
+      AddRule(_ => _.CustomerNumber).NotNull().NotEmptyOrWhitespace();
     }
   }
 }

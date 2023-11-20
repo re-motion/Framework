@@ -52,7 +52,8 @@ namespace Remotion.Validation.Globalization
       ValueMustMatchPredicateValidationMessage,
       ValueMustMatchRegularExpressionValidationMessage,
       ValueMustNotBeEmptyCollectionValidationMessage,
-      ValueMustNotBeEmptyStringValidationMessage,
+      ValueMustNotBeEmptyBinaryValidationMessage,
+      ValueMustNotBeEmptyOrWhitespaceValidationMessage,
       ValueMustNotBeEqualValidationMessage,
       ValueMustNotBeNullCollectionValidationMessage,
       ValueMustNotBeNullBooleanValidationMessage,
@@ -124,11 +125,26 @@ namespace Remotion.Validation.Globalization
       if (validator is LessThanValidator)
         return ResourceIdentifier.ValueMustBeLessThanValidationMessage;
 
-      if (validator is LengthValidator lengthValidator)
-        return GetResourceIdentifierForLengthValidator(lengthValidator);
+      if (validator is LengthValidator)
+        return ResourceIdentifier.ValueMustMatchMinAndMaxLengthValidationMessage;
 
-      if (validator is NotEmptyValidator)
-        return GetResourceIdentifierForNotEmptyValidator(dataType);
+      if (validator is ExactLengthValidator exactLengthValidator)
+        return GetResourceIdentifierForExactLengthValidator(exactLengthValidator);
+
+      if (validator is MinimumLengthValidator minLengthValidator)
+        return GetResourceIdentifierForMinimumLengthValidator(minLengthValidator);
+
+      if (validator is MaximumLengthValidator maxLengthValidator)
+        return GetResourceIdentifierForMaximumLengthValidator(maxLengthValidator);
+
+      if (validator is NotEmptyBinaryValidator)
+        return ResourceIdentifier.ValueMustNotBeEmptyBinaryValidationMessage;
+
+      if (validator is NotEmptyOrWhitespaceValidator)
+        return ResourceIdentifier.ValueMustNotBeEmptyOrWhitespaceValidationMessage;
+
+      if (validator is NotEmptyCollectionValidator)
+        return ResourceIdentifier.ValueMustNotBeEmptyCollectionValidationMessage;
 
       if (validator is NotEqualValidator)
         return ResourceIdentifier.ValueMustNotBeEqualValidationMessage;
@@ -148,33 +164,28 @@ namespace Remotion.Validation.Globalization
       return null;
     }
 
-    private ResourceIdentifier GetResourceIdentifierForLengthValidator (LengthValidator validator)
+    private ResourceIdentifier GetResourceIdentifierForExactLengthValidator (ExactLengthValidator validator)
     {
-      if (validator.Min == validator.Max)
-      {
-        if (validator.Min == 1)
-          return ResourceIdentifier.ValueMustHaveExactLengthOfOneValidationMessage;
+      if (validator.Length == 1)
+        return ResourceIdentifier.ValueMustHaveExactLengthOfOneValidationMessage;
 
-        return ResourceIdentifier.ValueMustHaveExactLengthValidationMessage;
-      }
+      return ResourceIdentifier.ValueMustHaveExactLengthValidationMessage;
+    }
 
-      if (validator.Max == null)
-      {
-        if (validator.Min == 1)
-          return ResourceIdentifier.ValueMustHaveMinimumLengthOfOneValidationMessage;
+    private ResourceIdentifier GetResourceIdentifierForMinimumLengthValidator (MinimumLengthValidator validator)
+    {
+      if (validator.Min == 1)
+        return ResourceIdentifier.ValueMustHaveMinimumLengthOfOneValidationMessage;
 
-        return ResourceIdentifier.ValueMustHaveMinimumLengthValidationMessage;
-      }
+      return ResourceIdentifier.ValueMustHaveMinimumLengthValidationMessage;
+    }
 
-      if (validator.Min == 0)
-      {
-        if (validator.Max == 1)
-          return ResourceIdentifier.ValueMustHaveMaximumLengthOfOneValidationMessage;
+    private ResourceIdentifier GetResourceIdentifierForMaximumLengthValidator (MaximumLengthValidator validator)
+    {
+      if (validator.Max == 1)
+        return ResourceIdentifier.ValueMustHaveMaximumLengthOfOneValidationMessage;
 
-        return ResourceIdentifier.ValueMustHaveMaximumLengthValidationMessage;
-      }
-
-      return ResourceIdentifier.ValueMustMatchMinAndMaxLengthValidationMessage;
+      return ResourceIdentifier.ValueMustHaveMaximumLengthValidationMessage;
     }
 
     private ResourceIdentifier GetResourceIdentifierForNotNullValidator (Type dataType)
@@ -220,17 +231,6 @@ namespace Remotion.Validation.Globalization
         return ResourceIdentifier.ValueMustNotBeNullCollectionValidationMessage;
 
       return ResourceIdentifier.ValueMustNotBeNullReferenceValidationMessage;
-    }
-
-    private ResourceIdentifier? GetResourceIdentifierForNotEmptyValidator (Type dataType)
-    {
-      if (dataType == typeof(String))
-        return ResourceIdentifier.ValueMustNotBeEmptyStringValidationMessage;
-
-      if (typeof(IEnumerable).IsAssignableFrom(dataType))
-        return ResourceIdentifier.ValueMustNotBeEmptyCollectionValidationMessage;
-
-      return null;
     }
   }
 }

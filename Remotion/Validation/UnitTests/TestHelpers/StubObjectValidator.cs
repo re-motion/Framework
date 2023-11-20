@@ -23,7 +23,7 @@ namespace Remotion.Validation.UnitTests.TestHelpers
 {
   public class StubObjectValidator : IObjectValidator
   {
-    public IEnumerable<ObjectValidationFailure> Validate (ObjectValidatorContext context)
+    public IEnumerable<ValidationFailure> Validate (ObjectValidatorContext context)
     {
       throw new NotImplementedException();
     }

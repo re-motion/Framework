@@ -29,7 +29,11 @@ namespace Remotion.SecurityManager.Domain
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
   [Serializable]
-  public sealed class NullSecurityManagerPrincipal:ISecurityManagerPrincipal, IObjectReference
+  public sealed class NullSecurityManagerPrincipal
+      : ISecurityManagerPrincipal,
+#pragma warning disable SYSLIB0050
+          IObjectReference
+#pragma warning restore SYSLIB0050
   {
     private static readonly TenantProxy[] s_emptyTenantProxies = new TenantProxy[0];
     private static readonly SubstitutionProxy[] s_emptySubstitutionProxies = new SubstitutionProxy[0];

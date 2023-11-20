@@ -549,7 +549,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           true,
           true,
           null,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          null);
       propertyDefinition.SetStorageProperty(SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty(columnName));
       return propertyDefinition;
     }

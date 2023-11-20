@@ -30,7 +30,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithRealRelationEndPoints>(
           "NoAttributeForDomainObjectCollection",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
@@ -49,7 +50,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithRealRelationEndPoints>(
           "NotNullableForVirtualCollection",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 

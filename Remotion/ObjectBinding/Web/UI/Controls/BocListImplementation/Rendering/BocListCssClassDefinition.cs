@@ -105,6 +105,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return "bocListDataRow"; }
     }
 
+    /// <summary> Gets the CSS-Class applied to a validation row in the <see cref="BocList"/>. </summary>
+    /// <remarks> Class: <c>bocListValidationRow</c> </remarks>
+    public virtual string ValidationRow
+    {
+      get { return "bocListValidationRow"; }
+    }
+
     /// <summary> Gets the CSS-Class additionally applied to the <see cref="BocList"/>'s selected data rows. </summary>
     /// <remarks> Class: <c>selected</c> </remarks>
     public string DataRowSelected
@@ -154,11 +161,46 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return "bocListTitleCellAllRowsSelector"; }
     }
 
+    /// <summary> Gets the CSS-Class applied to the cell in the <see cref="BocList"/>'s data rows that contains the edit mode controls. </summary>
+    /// <remarks> Class: <c>bocListDataCellEditModeButtons</c> </remarks>
+    public virtual string DataCellEditModeButtons
+    {
+      get { return "bocListDataCellEditModeButtons"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to the cell in the <see cref="BocList"/>'s title row that contains the edit mode controls. </summary>
+    /// <remarks> Class: <c>bocListTitleCellEditModeButtons</c> </remarks>
+    public virtual string TitleCellEditModeButtons
+    {
+      get { return "bocListTitleCellEditModeButtons"; }
+    }
+
     /// <summary> Gets the CSS-Class applied to the cell in the <see cref="BocList"/>'s data rows that contains the row selector. </summary>
     /// <remarks> Class: <c>bocListDataCellRowSelector</c> </remarks>
     public virtual string DataCellSelector
     {
       get { return "bocListDataCellRowSelector"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to the cell in the <see cref="BocList"/>'s data column declaration that represents the validation failure indicator column. </summary>
+    /// <remarks> Class: <c>bocListDataColumnDeclarationValidationFailureIndicator</c> </remarks>
+    public virtual string DataColumnDeclarationValidationFailureIndicator
+    {
+      get { return "bocListDataColumnDeclarationValidationFailureIndicator"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to the cell in the <see cref="BocList"/>'s title row that contains the validation failure indicator header. </summary>
+    /// <remarks> Class: <c>bocListTitleCellValidationFailureIndicator</c> </remarks>
+    public virtual string TitleCellValidationFailureIndicator
+    {
+      get { return "bocListTitleCellValidationFailureIndicator"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to the cell in the <see cref="BocList"/>'s data rows that contains the validation failure indicator. </summary>
+    /// <remarks> Class: <c>bocListDataCellValidationFailureIndicator</c> </remarks>
+    public virtual string DataCellValidationFailureIndicator
+    {
+      get { return "bocListDataCellValidationFailureIndicator"; }
     }
 
     /// <summary> Gets the CSS-Class applied to the content if there is no anchor element. </summary>
@@ -203,6 +245,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return "bocListAvailableViewsListLabel"; }
     }
 
+    /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s validation error marker icons. </summary>
+    /// <remarks> Class: <c>validationErrorMarker</c> </remarks>
+    public virtual string ValidationErrorMarker
+    {
+      get { return "validationErrorMarker"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s validation failure cells. </summary>
+    public virtual string ValidationFailureCell
+    {
+      get { return "bocListValidationFailureCell"; }
+    }
+
     public string ListMenuContainer
     {
       get { return "bocListListMenuContainer"; }
@@ -231,6 +286,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public string HasNavigator
     {
       get { return "hasNavigator"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to BocListRows which have a BocListValidationRow associated with it. </summary>
+    public string HasValidationRow
+    {
+      get { return "hasValidationRow"; }
     }
 
     public virtual string MenuBlock

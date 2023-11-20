@@ -70,7 +70,7 @@ namespace Remotion.Validation.UnitTests.Providers
       var validators = addingComponentPropertyRules.SelectMany(r => r.Validators).ToArray();
       Assert.That(validators, Is.Not.Empty);
       Assert.That(validators, Is.All.InstanceOf<IPropertyValidator>());
-      Assert.That(validators.OfType<LengthValidator>().First().ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
+      Assert.That(validators.OfType<MaximumLengthValidator>().First().ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
       Assert.That(validators.OfType<NotNullValidator>().First().ValidationMessage.ToString, Is.EqualTo("Stub Message"));
     }
 
@@ -81,7 +81,7 @@ namespace Remotion.Validation.UnitTests.Providers
 
       Assert.That(result, Is.Not.Null);
       var propertyReflectors = result[typeof(Customer)].ToArray();
-      Assert.That(propertyReflectors.Count(), Is.EqualTo(6));
+      Assert.That(propertyReflectors.Count(), Is.EqualTo(7));
       CollectionAssert.AllItemsAreInstancesOfType(propertyReflectors, typeof(ValidationAttributesBasedPropertyRuleReflector));
     }
   }

@@ -26,6 +26,7 @@ using Remotion.TypePipe;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Serialization
 {
+#pragma warning disable SYSLIB0050
   [TestFixture]
   public class SerializationTest : CodeGenerationBaseTest
   {
@@ -223,4 +224,5 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
       Assert.That(Mixin.Get<NullMixin>(deserializedInstance), Is.Not.Null);
     }
   }
+#pragma warning restore SYSLIB0050
 }

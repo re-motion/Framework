@@ -30,6 +30,7 @@ using Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
+using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -952,7 +953,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           ReflectionUtility.IsDomainObject(propertyInformation.PropertyType),
           isNullable,
           maxLength,
-          storageClass);
+          storageClass,
+          propertyInformation.PropertyType.GetDefaultValue());
     }
 
     #endregion

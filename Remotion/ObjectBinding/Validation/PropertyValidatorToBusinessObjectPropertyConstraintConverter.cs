@@ -16,6 +16,8 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -36,18 +38,17 @@ namespace Remotion.ObjectBinding.Validation
     {
     }
 
-    public IEnumerable<IBusinessObjectPropertyConstraint> Convert (IPropertyValidator propertyValidator)
+    public IEnumerable<IBusinessObjectPropertyConstraint> Convert (IReadOnlyCollection<IPropertyValidator> propertyValidators)
     {
-      ArgumentUtility.CheckNotNull("propertyValidator", propertyValidator);
+      ArgumentUtility.CheckNotNull("propertyValidators", propertyValidators);
 
-      if (propertyValidator is ILengthValidator lengthValidator && lengthValidator.Max.HasValue)
-        yield return new BusinessObjectPropertyValueLengthConstraint(lengthValidator.Max.Value);
-
-      if (propertyValidator is INotNullValidator)
+      if (propertyValidators.OfType<IRequiredValidator>().Any())
         yield return new BusinessObjectPropertyValueRequiredConstraint();
 
-      if (propertyValidator is INotEmptyValidator)
-        yield return new BusinessObjectPropertyValueRequiredConstraint();
+      var maximumLength = propertyValidators.OfType<IMaximumLengthValidator>().Select(v => (int?)v.Max).Min();
+
+      if (maximumLength.HasValue)
+        yield return new BusinessObjectPropertyValueLengthConstraint(maximumLength.Value);
     }
   }
 }

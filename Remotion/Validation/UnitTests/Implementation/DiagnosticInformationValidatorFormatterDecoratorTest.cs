@@ -51,27 +51,65 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
-    public void Format_NotEmptyValidator ()
+    public void Format_NotEmptyBinaryValidator ()
     {
-      var validator = new NotEmptyValidator(new InvariantValidationMessage("Fake Message"));
+      var validator = new NotEmptyBinaryValidator(new InvariantValidationMessage("Fake Message"));
 
       var result = _formatter.Format(validator, _typeNameFormatter);
 
-      Assert.That(result, Is.EqualTo("NotEmptyValidator"));
+      Assert.That(result, Is.EqualTo("NotEmptyBinaryValidator"));
     }
 
     [Test]
-    public void Format_ILengthValidators ()
+    public void Format_NotEmptyListValidator ()
     {
-      var validator1 = new LengthValidator(5, 10, new InvariantValidationMessage("Fake Message"));
-      var validator2 = new MaximumLengthValidator(12, new InvariantValidationMessage("Fake Message"));
-      var validator3 = new MinimumLengthValidator(2, new InvariantValidationMessage("Fake Message"));
-      var validator4 = new ExactLengthValidator(4, new InvariantValidationMessage("Fake Message"));
+      var validator = new NotEmptyCollectionValidator(new InvariantValidationMessage("Fake Message"));
 
-      Assert.That(_formatter.Format(validator1, _typeNameFormatter), Is.EqualTo("LengthValidator { MinLength = '5', MaxLength = '10' }"));
-      Assert.That(_formatter.Format(validator2, _typeNameFormatter), Is.EqualTo("MaximumLengthValidator { MinLength = '0', MaxLength = '12' }"));
-      Assert.That(_formatter.Format(validator3, _typeNameFormatter), Is.EqualTo("MinimumLengthValidator { MinLength = '2', MaxLength = '' }"));
-      Assert.That(_formatter.Format(validator4, _typeNameFormatter), Is.EqualTo("ExactLengthValidator { MinLength = '4', MaxLength = '4' }"));
+      var result = _formatter.Format(validator, _typeNameFormatter);
+
+      Assert.That(result, Is.EqualTo("NotEmptyCollectionValidator"));
+    }
+
+    [Test]
+    public void Format_NotEmptyOrWhitespaceValidator ()
+    {
+      var validator = new NotEmptyOrWhitespaceValidator(new InvariantValidationMessage("Fake Message"));
+
+      var result = _formatter.Format(validator, _typeNameFormatter);
+
+      Assert.That(result, Is.EqualTo("NotEmptyOrWhitespaceValidator"));
+    }
+
+    [Test]
+    public void Format_LengthValidator ()
+    {
+      var validator = new LengthValidator(5, 10, new InvariantValidationMessage("Fake Message"));
+
+      Assert.That(_formatter.Format(validator, _typeNameFormatter), Is.EqualTo("LengthValidator { MinLength = '5', MaxLength = '10' }"));
+    }
+
+    [Test]
+    public void Format_MinimumLengthValidator ()
+    {
+      var validator = new MinimumLengthValidator(2, new InvariantValidationMessage("Fake Message"));
+
+      Assert.That(_formatter.Format(validator, _typeNameFormatter), Is.EqualTo("MinimumLengthValidator { MinLength = '2' }"));
+    }
+
+    [Test]
+    public void Format_MaximumLengthValidator ()
+    {
+      var validator = new MaximumLengthValidator(12, new InvariantValidationMessage("Fake Message"));
+
+      Assert.That(_formatter.Format(validator, _typeNameFormatter), Is.EqualTo("MaximumLengthValidator { MaxLength = '12' }"));
+    }
+
+    [Test]
+    public void Format_ExactLengthValidator ()
+    {
+      var validator = new ExactLengthValidator(4, new InvariantValidationMessage("Fake Message"));
+
+      Assert.That(_formatter.Format(validator, _typeNameFormatter), Is.EqualTo("ExactLengthValidator { Length = '4' }"));
     }
 
     [Test]

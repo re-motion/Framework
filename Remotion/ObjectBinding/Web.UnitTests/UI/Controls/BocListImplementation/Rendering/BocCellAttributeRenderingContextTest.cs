@@ -32,6 +32,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     private StubColumnDefinition _columnDefinition;
     private Mock<HttpContextBase> _httpContextStub;
     private Mock<IBocList> _bocListStub;
+    private Mock<IBocListColumnIndexProvider> _columnIndexProviderStub;
     private BocColumnRenderingContext<StubColumnDefinition> _renderingContext;
     private BocCellAttributeRenderingContext<StubColumnDefinition> _attributeRenderingContext;
 
@@ -42,6 +43,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       _columnDefinition = new StubColumnDefinition();
       _httpContextStub = new Mock<HttpContextBase>();
       _bocListStub = new Mock<IBocList>();
+      _columnIndexProviderStub = new Mock<IBocListColumnIndexProvider>();
       _renderingContext = new BocColumnRenderingContext<StubColumnDefinition>(
           new BocColumnRenderingContext(
               _httpContextStub.Object,
@@ -49,6 +51,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
               _bocListStub.Object,
               BusinessObjectWebServiceContext.Create(null, null, null),
               _columnDefinition,
+              _columnIndexProviderStub.Object,
               17,
               23));
       _attributeRenderingContext = new BocCellAttributeRenderingContext<StubColumnDefinition>(_renderingContext);

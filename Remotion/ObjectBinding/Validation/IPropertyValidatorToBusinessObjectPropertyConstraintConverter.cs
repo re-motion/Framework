@@ -24,6 +24,6 @@ namespace Remotion.ObjectBinding.Validation
 {
   public interface IPropertyValidatorToBusinessObjectPropertyConstraintConverter
   {
-    IEnumerable<IBusinessObjectPropertyConstraint> Convert ([NotNull] IPropertyValidator propertyValidator);
+    IEnumerable<IBusinessObjectPropertyConstraint> Convert ([NotNull] IReadOnlyCollection<IPropertyValidator> propertyValidators);
   }
 }

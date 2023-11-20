@@ -206,7 +206,9 @@ namespace Remotion.Reflection
 
     public bool IsSerializable
     {
+#pragma warning disable SYSLIB0050
       get { return _type.IsSerializable; }
+#pragma warning restore SYSLIB0050
     }
 
     public bool HasElementType

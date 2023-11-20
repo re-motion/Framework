@@ -21,6 +21,7 @@ span.bocTextValue textarea
   display: inline-flex;
   align-items: center;
   width: fit-content;
+  min-width: min-content;
 }
 
 span.bocTextValue .content,

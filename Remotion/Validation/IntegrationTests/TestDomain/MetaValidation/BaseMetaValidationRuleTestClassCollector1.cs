@@ -24,7 +24,7 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation
   {
     public BaseMetaValidationRuleTestClassCollector1 ()
     {
-      AddRule(c => c.Property1).Length(0, 10);
+      AddRule(c => c.Property1).MaxLength(10);
       AddRule(c => c.Property2).NotNull();
       AddRule(c => c.Property3).AddMetaValidationRule<IPropertyValidator>(rules => rules.Any());
       AddRule(c => c.Property4).AddMetaValidationRule<IPropertyValidator>(rules => rules.Any());

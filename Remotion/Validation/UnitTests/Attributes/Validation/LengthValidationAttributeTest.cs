@@ -29,25 +29,51 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
   [TestFixture]
   public class LengthValidationAttributeTest
   {
-    private LengthValidationAttribute _attribute;
     private Mock<IValidationMessageFactory> _validationMessageFactoryStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _attribute = new LengthValidationAttribute(10, 20);
       _validationMessageFactoryStub = new Mock<IValidationMessageFactory>();
     }
 
     [Test]
-    public void Initialization ()
+    public void GetAndSetMinimumLength ()
     {
-      Assert.That(_attribute.MinLength, Is.EqualTo(10));
-      Assert.That(_attribute.MaxLength, Is.EqualTo(20));
+      var lengthValidationAttribute = new LengthValidationAttribute();
+
+      Assert.That(lengthValidationAttribute.MinLength, Is.EqualTo(0));
+      lengthValidationAttribute.MinLength = 10;
+      Assert.That(lengthValidationAttribute.MinLength, Is.EqualTo(10));
     }
 
     [Test]
-    public void GetPropertyValidator ()
+    public void GetAndSetMaximumLength ()
+    {
+      var lengthValidationAttribute = new LengthValidationAttribute();
+
+      Assert.That(lengthValidationAttribute.MaxLength, Is.EqualTo(0));
+      lengthValidationAttribute.MaxLength = 20;
+      Assert.That(lengthValidationAttribute.MaxLength, Is.EqualTo(20));
+    }
+
+    [Test]
+    public void GetPropertyValidator_WithoutMinAndMaxValues_ReturnsEmptyResult ()
+    {
+      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty("LastName"));
+      var validationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<IPropertyValidator>(), propertyInformation))
+          .Returns(validationMessageStub.Object);
+
+      var lengthValidationAttribute = new LengthValidationAttribute();
+      var result = lengthValidationAttribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
+
+      Assert.That(result, Is.Empty);
+    }
+
+    [Test]
+    public void GetPropertyValidator_WithNotEqualMinAndMaxValues_ReturnsLengthValidator ()
     {
       var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty("LastName"));
       var validationMessageStub = new Mock<ValidationMessage>();
@@ -55,7 +81,8 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
           .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<LengthValidator>(), propertyInformation))
           .Returns(validationMessageStub.Object);
 
-      var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
+      var lengthValidationAttribute = new LengthValidationAttribute() { MinLength = 10, MaxLength = 20 };
+      var result = lengthValidationAttribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
 
       Assert.That(result.Length, Is.EqualTo(1));
       Assert.That(result[0], Is.TypeOf(typeof(LengthValidator)));
@@ -65,16 +92,78 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
 
       validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
       Assert.That(((LengthValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
+    }
 
+    [Test]
+    public void GetPropertyValidator_WithEqualMinAndMaxValues_ReturnsExactLengthValidator ()
+    {
+      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty("LastName"));
+      var validationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<ExactLengthValidator>(), propertyInformation))
+          .Returns(validationMessageStub.Object);
+
+      var exactLengthValidationAttribute = new LengthValidationAttribute() { MinLength = 10, MaxLength = 10 };
+      var result = exactLengthValidationAttribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
+
+      Assert.That(result.Length, Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof(ExactLengthValidator)));
+      Assert.That(((ExactLengthValidator)result[0]).Length, Is.EqualTo(10));
+      Assert.That(((ExactLengthValidator)result[0]).ValidationMessage, Is.Not.Null);
+
+      validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
+      Assert.That(((ExactLengthValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
+    }
+
+    [Test]
+    public void GetPropertyValidator_WithMinValue_ReturnsMinimumLengthValidator ()
+    {
+      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty("LastName"));
+      var validationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<MinimumLengthValidator>(), propertyInformation))
+          .Returns(validationMessageStub.Object);
+
+      var minimumLengthValidationAttribute = new LengthValidationAttribute() { MinLength = 10 };
+      var result = minimumLengthValidationAttribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
+
+      Assert.That(result.Length, Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof(MinimumLengthValidator)));
+      Assert.That(((MinimumLengthValidator)result[0]).Min, Is.EqualTo(10));
+      Assert.That(((MinimumLengthValidator)result[0]).ValidationMessage, Is.Not.Null);
+
+      validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
+      Assert.That(((MinimumLengthValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
+    }
+
+    [Test]
+    public void GetPropertyValidator_WithMaxValue_ReturnsMaximumLengthValidator ()
+    {
+      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty("LastName"));
+      var validationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<MaximumLengthValidator>(), propertyInformation))
+          .Returns(validationMessageStub.Object);
+
+      var maximumLengthValidationAttribute = new LengthValidationAttribute() { MaxLength = 10 };
+      var result = maximumLengthValidationAttribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
+
+      Assert.That(result.Length, Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof(MaximumLengthValidator)));
+      Assert.That(((MaximumLengthValidator)result[0]).Max, Is.EqualTo(10));
+      Assert.That(((MaximumLengthValidator)result[0]).ValidationMessage, Is.Not.Null);
+
+      validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
+      Assert.That(((MaximumLengthValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
     }
 
     [Test]
     public void GetPropertyValidator_CustomMessage ()
     {
       var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty("LastName"));
-      _attribute.ErrorMessage = "CustomMessage";
 
-      var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
+      var lengthValidationAttribute = new LengthValidationAttribute { MinLength = 10, MaxLength = 20, ErrorMessage = "CustomMessage" };
+      var result = lengthValidationAttribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
 
       Assert.That(result.Length, Is.EqualTo(1));
       Assert.That(((LengthValidator)result[0]).ValidationMessage, Is.InstanceOf<InvariantValidationMessage>());
@@ -82,9 +171,15 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void GetPropertyValidator_WithValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
+      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty("LastName"));
+      _validationMessageFactoryStub
+          .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<LengthValidator>(), propertyInformation))
+          .Returns((ValidationMessage)null);
+
+      var lengthValidationAttribute = new LengthValidationAttribute() { MinLength = 10, MaxLength = 20 };
+      Assert.That(() => lengthValidationAttribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object), Throws.InvalidOperationException);
     }
   }
 }

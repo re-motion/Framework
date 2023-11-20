@@ -180,7 +180,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
       var id = GetDatePickerID(dateTimeValue);
       var result = dateTimeValue.Context.RootScope.FindId(id, Options.NoWait);
 
-      return result.Exists(Options.NoWait);
+      return result.ExistsWorkaround();
     }
 
     private static void WaitUntilVisible (IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker, TimeSpan timeout)

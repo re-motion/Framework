@@ -126,7 +126,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       Order order = DomainObjectIDs.Order1.GetObject<Order>();
       DomainObjectCollection originalOrderItems = order.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
-      OrderItem.NewObject(order);
+      var orderItem = OrderItem.NewObject(order);
+      orderItem.Product = "MyProduct";
 
       TestableClientTransaction.Commit();
 

@@ -47,7 +47,9 @@ namespace Remotion.Validation.UnitTests.Validators
       var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
       Assert.That(validationFailures.Length, Is.EqualTo(1));
-      //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
+      Assert.That(validationFailures[0].ValidatedObject, Is.EqualTo(propertyValidatorContext.Instance));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.Property), Is.EqualTo(new [] { propertyValidatorContext.Property }));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.ValidatedPropertyValue), Is.EqualTo(new [] { propertyValidatorContext.PropertyValue }));
       Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must be greater than '3'."));
       Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '3'."));
     }
@@ -61,15 +63,30 @@ namespace Remotion.Validation.UnitTests.Validators
       var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
       Assert.That(validationFailures.Length, Is.EqualTo(1));
-      //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
+      Assert.That(validationFailures[0].ValidatedObject, Is.EqualTo(propertyValidatorContext.Instance));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.Property), Is.EqualTo(new [] { propertyValidatorContext.Property }));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.ValidatedPropertyValue), Is.EqualTo(new [] { propertyValidatorContext.PropertyValue }));
       Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must be greater than '3'."));
       Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '3'."));
     }
 
     [Test]
-    [Ignore("RM-5906")]
     public void Validate_WithIComparable_CallsCompareTo ()
     {
+      var comparisonValueMock = new Mock<IComparable>(MockBehavior.Strict);
+      var propertyValueMock = new Mock<IComparable>(MockBehavior.Strict);
+      propertyValueMock
+          .Setup(_ => _.CompareTo(comparisonValueMock.Object))
+          .Returns(1)
+          .Verifiable();
+
+      var propertyValidatorContext = CreatePropertyValidatorContext(propertyValueMock.Object);
+      var validator = new GreaterThanValidator(comparisonValueMock.Object, new InvariantValidationMessage("Custom validation message: '{0}'."));
+
+      var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
+
+      propertyValueMock.Verify();
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]

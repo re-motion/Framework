@@ -127,15 +127,19 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       Assertion.IsNotNull(_nextCallProxy, "AddNextCallProxy must be called first.");
 
+#pragma warning disable SYSLIB0050
+      var notSerialized = FieldAttributes.NotSerialized;
+#pragma warning restore SYSLIB0050
+
       // Not serialized so that initialization is triggered again after deserialization. Default is false. Set immediately _before_ mixins are
       // serialized (to avoid reentrancy).
       _extensionsInitializedField = AddDebuggerInvisibleField(
-          "__extensionsInitialized", typeof(bool), FieldAttributes.Private | FieldAttributes.NotSerialized);
+          "__extensionsInitialized", typeof(bool), FieldAttributes.Private | notSerialized);
 
       var privateStatic = FieldAttributes.Private | FieldAttributes.Static;
       _classContextField = AddDebuggerInvisibleField("__classContext", typeof(ClassContext), privateStatic);
       _mixinArrayInitializerField = AddDebuggerInvisibleField("__mixinArrayInitializer", typeof(MixinArrayInitializer), privateStatic);
-      _firstField = AddDebuggerInvisibleField("__first", _nextCallProxy.Type, FieldAttributes.Private | FieldAttributes.NotSerialized);
+      _firstField = AddDebuggerInvisibleField("__first", _nextCallProxy.Type, FieldAttributes.Private | notSerialized);
     }
 
     public void AddTypeInitializations (ClassContext classContext, IEnumerable<Type> mixinTypes)

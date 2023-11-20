@@ -18,9 +18,11 @@
 <%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 <%@ Register tagPrefix="remotion" namespace="Remotion.ObjectBinding.Web.UI.Controls" assembly="Remotion.ObjectBinding.Web" %>
 <%@ Register tagPrefix="testsite" namespace="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls" assembly="Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared" %>
+<%@ Register TagPrefix="remotion" Namespace="Remotion.ObjectBinding.Web.UI.Controls.Validation" Assembly="Remotion.ObjectBinding.Web" %>
 <remotion:FormGridManager ID="FormGridManager" runat="server" />
 <remotion:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
 <remotion:BindableObjectDataSourceControl ID="EmptyObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
+<remotion:BindableObjectDataSourceControlValidationResultDispatchingValidator ID="CurrentObjectValidationResultDispatchingValidator" ControlToValidate="CurrentObject" runat="server"/>
 <table id="FormGrid" runat="server">
   <tr>
     <td></td>
@@ -172,4 +174,60 @@
       </td>
       <td>&nbsp; (always invalid)</td>
     </tr>
+  <tr>
+    <td></td>
+    <td>
+      <testsite:TestBocListWithRowMenuItems
+        ID="JobList_Validation"
+        ReadOnly="False"
+        DataSourceControl="CurrentObject"
+        PropertyIdentifier="Jobs"
+
+        AlwaysShowPageInfo="True"
+        AvailableViewsListTitle="V_iews:"
+        EnableEditModeValidator="true"
+        EnableMultipleSorting="true"
+        EnableSorting="true"
+        Index="SortedOrder"
+        IndexColumnTitle="I_ndex"
+        IndexOffset="10"
+        ListMenuLineBreaks="BetweenGroups"
+        OptionsTitle="O_ptions:"
+        RowMenuDisplay="Manual"
+        Selection="Multiple"
+        ShowAllProperties="True"
+        ShowAvailableViewsList="True"
+        ShowEditModeRequiredMarkers="true"
+        ShowEditModeValidationMarkers="true"
+        ShowListMenu="true"
+        ShowOptionsMenu="true"
+        ShowSortingOrder="True"
+
+        Width="100%"
+        Height="35em"
+        runat="server">
+        <FixedColumns>
+          <remotion:BocValidationErrorIndicatorColumnDefinition ColumnTitleStyle="Icon" />
+          <remotion:BocRowEditModeColumnDefinition ItemID="EditRow" EditText="Edit" SaveText="Save" CancelText="Cancel" Width="2em" />
+          <remotion:BocCommandColumnDefinition ItemID="RowCmd" Text="Row command" ColumnTitle="Command">
+            <PersistedCommand>
+              <remotion:BocListItemCommand Type="Event" CommandStateType="Remotion.ObjectBinding.Sample::PersonListItemCommandState"></remotion:BocListItemCommand>
+            </PersistedCommand>
+          </remotion:BocCommandColumnDefinition>
+          <remotion:BocDropDownMenuColumnDefinition ItemID="RowMenu" MenuTitleText="Context" Width="16px" ColumnTitle="Menu"/>
+          <remotion:BocAllPropertiesPlaceholderColumnDefinition/>
+          <remotion:BocSimpleColumnDefinition ColumnTitle="TitleWithCmd" PropertyPathIdentifier="Title">
+            <PersistedCommand>
+              <remotion:BocListItemCommand Type="Event" CommandStateType="Remotion.ObjectBinding.Sample::PersonListItemCommandState"></remotion:BocListItemCommand>
+            </PersistedCommand>
+          </remotion:BocSimpleColumnDefinition>
+        </FixedColumns>
+      </testsite:TestBocListWithRowMenuItems>
+      <br/>
+      <remotion:WebButton ID="ValidationTestCaseRowButton" Text="Validation scenario (row)" OnClick="ValidationTestCaseRow" runat="server"/>
+      <remotion:WebButton ID="ValidationTestCaseCellButton" Text="Validation scenario (cell)" OnClick="ValidationTestCaseCell" runat="server"/>
+      <asp:CheckBox ID="ValidationTestCaseStartDate" Text="Validation scenario (StartDate)" runat="server"/>
+    </td>
+    <td>&nbsp; (validation)</td>
+  </tr>
 </table>

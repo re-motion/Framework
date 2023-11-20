@@ -21,6 +21,11 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
   [Serializable]
   public class DerivedTypeWithDomainObjectAttributes : TypeWithDomainObjectAttributes
   {
+    public static DerivedTypeWithDomainObjectAttributes NewObject ()
+    {
+      return NewObject<DerivedTypeWithDomainObjectAttributes>();
+    }
+
     public override string PropertyWithNullableStringPropertyAttribute
     {
       get => base.PropertyWithNullableStringPropertyAttribute;

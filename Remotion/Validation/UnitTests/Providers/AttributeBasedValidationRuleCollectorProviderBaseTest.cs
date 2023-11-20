@@ -64,9 +64,9 @@ namespace Remotion.Validation.UnitTests.Providers
       _propertyMetaValidationRule3 = new MaxLengthPropertyMetaValidationRule();
 
       _removingValidatorRegistration1 = new RemovingValidatorRegistration(typeof(NotNullValidator), null);
-      _removingValidatorRegistration2 = new RemovingValidatorRegistration(typeof(NotEmptyValidator), null);
+      _removingValidatorRegistration2 = new RemovingValidatorRegistration(typeof(NotEmptyOrWhitespaceValidator), null);
       _removingValidatorRegistration3 = new RemovingValidatorRegistration(typeof(NotNullValidator), null);
-      _removingValidatorRegistration4 = new RemovingValidatorRegistration(typeof(NotEmptyValidator), null);
+      _removingValidatorRegistration4 = new RemovingValidatorRegistration(typeof(NotEmptyOrWhitespaceValidator), null);
 
       _validationPropertyRuleReflectorMockForEmployeePosition = new Mock<IAttributesBasedValidationPropertyRuleReflector>(MockBehavior.Strict);
       _validationPropertyRuleReflectorMockForEmployeeNotes= new Mock<IAttributesBasedValidationPropertyRuleReflector>(MockBehavior.Strict);

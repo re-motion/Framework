@@ -15,18 +15,70 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using JetBrains.Annotations;
+using Remotion.FunctionalProgramming;
+using Remotion.Utilities;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Validators
 {
-  public class MinimumLengthValidator : LengthValidator
+  public class MinimumLengthValidator : IMinimumLengthValidator
   {
+    public int Min { get; }
+
+    public string ErrorMessage { get; }
+
+    public ValidationMessage ValidationMessage { get; }
+
     public MinimumLengthValidator (int min, [NotNull] ValidationMessage validationMessage)
-        : base(min, null, $"The value must have at least {min} characters.", validationMessage)
     {
+      ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
+
+      if (min <= 0)
+        throw new ArgumentOutOfRangeException("min", "Value must be be greater than zero.");
+
+      Min = min;
+      ErrorMessage = $"The value must have at least {min} characters.";
+      ValidationMessage = validationMessage;
     }
 
-    // TODO RM-5906: build separate validator with a dedicated message
+    public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
+    {
+      ArgumentUtility.CheckNotNull("context", context);
+
+      if (IsValid(context))
+        return Enumerable.Empty<ValidationFailure>();
+
+      return EnumerableUtility.Singleton(CreateValidationError(context));
+    }
+
+    private bool IsValid (PropertyValidatorContext context)
+    {
+      var propertyValue = context.PropertyValue;
+
+      if (propertyValue is not string stringValue)
+        return true;
+
+      return stringValue.Length >= Min;
+    }
+
+    private ValidationFailure CreateValidationError (PropertyValidatorContext context)
+    {
+      var localizedValidationMessage = ValidationMessage.Format(
+          CultureInfo.CurrentUICulture,
+          (IFormatProvider)CultureInfo.CurrentCulture,
+          Min);
+
+      return ValidationFailure.CreatePropertyValidationFailure(
+          context.Instance,
+          context.Property,
+          context.PropertyValue,
+          errorMessage: ErrorMessage,
+          localizedValidationMessage: localizedValidationMessage);
+    }
   }
 }

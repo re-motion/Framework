@@ -20,7 +20,10 @@ using System.Runtime.Serialization;
 namespace Remotion.Data.DomainObjects.Mapping
 {
   [Serializable]
-  public abstract class SerializableMappingObject : IObjectReference
+  public abstract class SerializableMappingObject
+#pragma warning disable SYSLIB0050
+      : IObjectReference
+#pragma warning restore SYSLIB0050
   {
     public abstract object GetRealObject (StreamingContext context);
     protected abstract bool IsPartOfMapping { get; }

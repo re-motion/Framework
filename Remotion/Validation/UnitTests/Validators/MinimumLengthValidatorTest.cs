@@ -29,7 +29,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValueNull_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(null);
-      var validator = new MinimumLengthValidator(0, new InvariantValidationMessage("Fake Message"));
+      var validator = new MinimumLengthValidator(1, new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 
@@ -40,18 +40,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithObject_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(new object());
-      var validator = new MinimumLengthValidator(0, new InvariantValidationMessage("Fake Message"));
-
-      var validationFailures = validator.Validate(propertyValidatorContext);
-
-      Assert.That(validationFailures, Is.Empty);
-    }
-
-    [Test]
-    public void Validate_WithPropertyValueEqualsEmptyStringAndMinLengthZero_ReturnsNoValidationFailures ()
-    {
-      var propertyValidatorContext = CreatePropertyValidatorContext("");
-      var validator = new MinimumLengthValidator(0, new InvariantValidationMessage("Fake Message"));
+      var validator = new MinimumLengthValidator(1, new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 
@@ -62,15 +51,16 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValueStringShorterThanComparisonValue_ReturnsSingleValidationError ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext("short");
-      var validator = new MinimumLengthValidator("short".Length + 1, new InvariantValidationMessage("Custom validation message: '{0}', '{1}'."));
+      var validator = new MinimumLengthValidator("short".Length + 1, new InvariantValidationMessage("Custom validation message: '{0}'."));
 
       var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
-      // TODO RM-5906: Fix ErrorMessage not displaying a max value.
       Assert.That(validationFailures.Length, Is.EqualTo(1));
-      //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
+      Assert.That(validationFailures[0].ValidatedObject, Is.EqualTo(propertyValidatorContext.Instance));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.Property), Is.EqualTo(new [] { propertyValidatorContext.Property }));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.ValidatedPropertyValue), Is.EqualTo(new [] { propertyValidatorContext.PropertyValue }));
       Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must have at least 6 characters."));
-      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '6', ''."));
+      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '6'."));
     }
 
     [Test]

@@ -46,6 +46,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return _impl.GetText();
     }
 
+    /// <summary>
+    /// Gets any validation errors assigned to the cell.
+    /// </summary>
+    public BocListValidationError[] GetValidationErrors ()
+    {
+      return _impl.GetValidationErrors();
+    }
+
     /// <inheritdoc/>
     public CommandControlObject GetCommand ()
     {

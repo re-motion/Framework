@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq.Expressions;
+using JetBrains.Annotations;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DomainImplementation;
@@ -29,10 +30,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
   {
     protected ObjectID CreateCompanyAndSetIndustrialSectorInOtherTransaction (ObjectID industrialSectorID)
     {
-      return RelationInconcsistenciesTestHelper.CreateObjectAndSetRelationInOtherTransaction<Company, IndustrialSector>(industrialSectorID, (c, s) =>
+      return RelationInconcsistenciesTestHelper.CreateAndInitializeObjectAndSetRelationInOtherTransaction<Company, IndustrialSector>(industrialSectorID, (c, s) =>
       {
+        c.Name = "Company";
         c.IndustrialSector = s;
         c.Ceo = Ceo.NewObject();
+        c.Ceo.Name = "John Doe";
       });
     }
 
@@ -43,7 +46,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
     protected ObjectID CreateComputerAndSetEmployeeInOtherTransaction (ObjectID employeeID)
     {
-      return RelationInconcsistenciesTestHelper.CreateObjectAndSetRelationInOtherTransaction<Computer, Employee>(employeeID, (c, e) => c.Employee = e);
+      return RelationInconcsistenciesTestHelper.CreateAndInitializeObjectAndSetRelationInOtherTransaction<Computer, Employee>(employeeID, (c, e) =>
+      {
+        c.SerialNumber = "12345";
+        c.Employee = e;
+      });
     }
 
     protected void SetEmployeeInOtherTransaction (ObjectID computerID, ObjectID employeeID)
@@ -95,7 +102,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var company = Company.NewObject();
+        company.Name = "MyCompany";
         company.Ceo = Ceo.NewObject();
+        company.Ceo.Name = "John Doe";
         ClientTransaction.Current.Commit();
         objectID = company.ID;
       }
@@ -108,8 +117,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         IndustrialSector industrialSector = IndustrialSector.NewObject();
+        industrialSector.Name = "Sector1";
+
         Company oldCompany = Company.NewObject();
+        oldCompany.Name = "OldCompany";
         oldCompany.Ceo = Ceo.NewObject();
+        oldCompany.Ceo.Name = "John Doe";
         industrialSector.Companies.Add(oldCompany);
         objectID = industrialSector.ID;
 
@@ -118,12 +131,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       return objectID.GetObject<IndustrialSector>();
     }
 
-    protected T CreateObjectInDatabaseAndLoad<T> () where T : DomainObject
+    protected T CreateObjectInDatabaseAndLoad<T> ([CanBeNull] Action<T> initialize = null) where T : DomainObject
     {
       ObjectID objectID;
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var domainObject = LifetimeService.NewObject(ClientTransaction.Current, typeof(T), ParamList.Empty);
+        var domainObject = (T)LifetimeService.NewObject(ClientTransaction.Current, typeof(T), ParamList.Empty);
+        initialize?.Invoke(domainObject);
         ClientTransaction.Current.Commit();
         objectID = domainObject.ID;
       }
@@ -188,7 +202,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
     protected void PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsToNull (out Computer computer, out Employee nonMatchingEmployee)
     {
-      computer = CreateObjectInDatabaseAndLoad<Computer>();
+      computer = CreateObjectInDatabaseAndLoad<Computer>(c => c.SerialNumber = "12345");
       Assert.That(computer.Employee, Is.Null);
 
       nonMatchingEmployee = DomainObjectIDs.Employee1.GetObject<Employee>();
@@ -232,6 +246,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     protected void PrepareInconsistentState_InconsistentForeignKeyLoaded_VirtualSideAlreadyNonNull (out Employee employee, out Computer computer, out Computer computer2)
     {
       employee = DomainObjectIDs.Employee1.GetObject<Employee>();
+      employee.Name = "Employee1";
 
       // This computer points to employee
       computer = CreateComputerAndSetEmployeeInOtherTransaction(employee.ID).GetObject<Computer>();

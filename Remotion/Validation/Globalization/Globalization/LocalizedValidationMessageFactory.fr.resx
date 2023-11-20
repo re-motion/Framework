@@ -122,27 +122,27 @@
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchExclusiveRangeValidationMessage" xml:space="preserve">
-    <value>Saisissez une valeur entre «{0}» et «{1}».</value>
+    <value>Saisissez une valeur entre {0} et {1}.</value>
     <comment>{0} = from value; {1} = to value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeGreaterThanOrEqualValidationMessage" xml:space="preserve">
-    <value>Saisissez une valeur supérieure ou égale à «{0}».</value>
+    <value>Saisissez une valeur supérieure ou égale à {0}.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeGreaterThanValidationMessage" xml:space="preserve">
-    <value>Saisissez une valeur supérieure à «{0}».</value>
+    <value>Saisissez une valeur supérieure à {0}.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchInclusiveRangeValidationMessage" xml:space="preserve">
-    <value>Saisissez une valeur entre «{0}» et «{1}».</value>
+    <value>Saisissez une valeur entre {0} et {1}.</value>
     <comment>{0} = from value; {1} = to value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeLessThanOrEqualValidationMessage" xml:space="preserve">
-    <value>Saisissez une valeur inférieure ou égale à  «{0}».</value>
+    <value>Saisissez une valeur inférieure ou égale à {0}.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeLessThanValidationMessage" xml:space="preserve">
-    <value>Saisissez une valeur inférieur à  «{0}».</value>
+    <value>Saisissez une valeur inférieur à {0}.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveExactLengthValidationMessage" xml:space="preserve">
@@ -159,7 +159,7 @@
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchRegularExpressionValidationMessage" xml:space="preserve">
     <value>Saisissez une valeur dans le format correct.</value>
   </data>
-  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEmptyStringValidationMessage" xml:space="preserve">
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEmptyBinaryValidationMessage" xml:space="preserve">
     <value>Saisissez une valeur.</value>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEqualValidationMessage" xml:space="preserve">
@@ -200,8 +200,8 @@
     <value>Ne saisissez pas plus de 1 caractère.</value>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveMaximumLengthValidationMessage" xml:space="preserve">
-    <value>Ne saisissez pas plus de {1} caractères.</value>
-    <comment>{1} = expected length</comment>
+    <value>Ne saisissez pas plus de {0} caractères.</value>
+    <comment>{0} = expected length</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveMinimumLengthOfOneValidationMessage" xml:space="preserve">
     <value>Saisissez au moins 1 caractère.</value>
@@ -218,5 +218,8 @@
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullBooleanValidationMessage" xml:space="preserve">
     <value>Choisissez une entrée.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEmptyOrWhitespaceValidationMessage" xml:space="preserve">
+      <value>Saisissez au moins un caractère visible.</value>
   </data>
 </root>

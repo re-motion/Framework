@@ -16,10 +16,12 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.Results;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Attributes.Validation
@@ -29,29 +31,26 @@ namespace Remotion.Validation.Attributes.Validation
   /// </summary>
   public class LengthValidationAttribute : AddingValidationAttributeBase
   {
-    // TODO RM-5906: make max-length nullable and create specific type of length-validator based on min and max-length values
-    private readonly int _maxLength;
-    private readonly int _minLength;
+    private class SkippedValidator : IPropertyValidator
+    {
+      public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context) => Enumerable.Empty<ValidationFailure>();
+    }
+
+    /// <summary>
+    /// Gets or sets the minimum number of characters required.
+    /// </summary>
+    public int MinLength { get; set; }
+
+    /// <summary>
+    /// Gets or sets the maximum number of characters allowed.
+    /// </summary>
+    public int MaxLength { get; set; }
 
     /// <summary>
     /// Instantiates a new <see cref="LengthValidationAttribute"/>.
     /// </summary>
-    /// <param name="minLength">The minimum number of characters required.</param>
-    /// <param name="maxLength">The maximum number of characters allowed.</param>
-    public LengthValidationAttribute (int minLength, int maxLength)
+    public LengthValidationAttribute ()
     {
-      _minLength = minLength;
-      _maxLength = maxLength;
-    }
-
-    public int MinLength
-    {
-      get { return _minLength; }
-    }
-
-    public int MaxLength
-    {
-      get { return _maxLength; }
     }
 
     protected override IEnumerable<IPropertyValidator> GetValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory)
@@ -59,20 +58,37 @@ namespace Remotion.Validation.Attributes.Validation
       ArgumentUtility.CheckNotNull("property", property);
       ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
 
-      LengthValidator validator;
+      IPropertyValidator validator;
       if (string.IsNullOrEmpty(ErrorMessage))
       {
         validator = PropertyValidatorFactory.Create(
             property,
-            parameters => new LengthValidator(MinLength, MaxLength, parameters.ValidationMessage),
+            parameters => CreateValidator(parameters.ValidationMessage),
             validationMessageFactory);
       }
       else
       {
-        validator = new LengthValidator(MinLength, MaxLength, new InvariantValidationMessage(ErrorMessage));
+        validator = CreateValidator(new InvariantValidationMessage(ErrorMessage));
       }
 
+      if (validator is SkippedValidator)
+        return Enumerable.Empty<IPropertyValidator>();
+
       return EnumerableUtility.Singleton(validator);
+    }
+
+    private IPropertyValidator CreateValidator (ValidationMessage message)
+    {
+      if (MinLength == 0 && MaxLength == 0)
+        return new SkippedValidator();
+      else if (MinLength == 0 && MaxLength > 0)
+        return new MaximumLengthValidator(MaxLength, message);
+      else if (MaxLength == 0 & MinLength > 0)
+        return new MinimumLengthValidator(MinLength, message);
+      else if (MinLength == MaxLength)
+        return new ExactLengthValidator(MinLength, message);
+      else
+        return new LengthValidator(MinLength, MaxLength, message);
     }
   }
 }

@@ -25,6 +25,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
   /// <summary>
   /// Represents an export strategy for <see cref="DomainObject"/> instances using binary serialization. This matches <see cref="BinaryImportStrategy"/>.
   /// </summary>
+#pragma warning disable SYSLIB0011
   public class BinaryExportStrategy : IExportStrategy
   {
     public static readonly BinaryExportStrategy Instance = new BinaryExportStrategy();
@@ -48,9 +49,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       ArgumentUtility.CheckNotNull("dataStream", dataStream);
       ArgumentUtility.CheckNotNull("formatter", formatter);
 
-#pragma warning disable SYSLIB0011
       formatter.Serialize(dataStream, versionIndependentItems);
-#pragma warning restore SYSLIB0011
     }
 
     private KeyValuePair<string, Dictionary<string, object?>>[] GetVersionIndependentItems (TransportItem[] transportItems)
@@ -59,4 +58,5 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
                                item => new KeyValuePair<string, Dictionary<string, object?>>(item.ID.ToString(), item.Properties));
     }
   }
+#pragma warning restore SYSLIB0011
 }

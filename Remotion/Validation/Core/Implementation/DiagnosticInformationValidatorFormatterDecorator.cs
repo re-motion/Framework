@@ -54,14 +54,22 @@ namespace Remotion.Validation.Implementation
 
       switch (validator)
       {
-        case INotNullValidator _:
+        case IRequiredValidator _:
+        case NotEmptyBinaryValidator _:
+        case NotEmptyOrWhitespaceValidator _:
           return typeName;
 
-        case INotEmptyValidator _:
-          return typeName;
-
-        case ILengthValidator lengthValidator:
+        case LengthValidator lengthValidator:
           return FormatLengthValidator(lengthValidator, typeName);
+
+        case ExactLengthValidator minLengthValidator:
+          return FormatExactLengthValidator(minLengthValidator, typeName);
+
+        case MinimumLengthValidator minLengthValidator:
+          return FormatMinimumLengthValidator(minLengthValidator, typeName);
+
+        case MaximumLengthValidator maxLengthValidator:
+          return FormatMaximumLengthValidator(maxLengthValidator, typeName);
 
         case IRangeValidator rangeValidator:
           return FormatRangeValidator(rangeValidator, typeName);
@@ -80,9 +88,24 @@ namespace Remotion.Validation.Implementation
       }
     }
 
-    private string FormatLengthValidator (ILengthValidator validator, string typeName)
+    private string FormatLengthValidator (LengthValidator validator, string typeName)
     {
       return string.Format("{0} {{ MinLength = '{1}', MaxLength = '{2}' }}", typeName, validator.Min, validator.Max);
+    }
+
+    private string FormatExactLengthValidator (ExactLengthValidator validator, string typeName)
+    {
+      return string.Format("{0} {{ Length = '{1}' }}", typeName, validator.Length);
+    }
+
+    private string FormatMinimumLengthValidator (MinimumLengthValidator validator, string typeName)
+    {
+      return string.Format("{0} {{ MinLength = '{1}' }}", typeName, validator.Min);
+    }
+
+    private string FormatMaximumLengthValidator (MaximumLengthValidator validator, string typeName)
+    {
+      return string.Format("{0} {{ MaxLength = '{1}' }}", typeName, validator.Max);
     }
 
     private string FormatRangeValidator (IRangeValidator validator, string typeName)

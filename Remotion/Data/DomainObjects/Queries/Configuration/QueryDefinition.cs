@@ -32,7 +32,11 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
 /// <see cref="Query"/> with the same <see cref="ID"/> again. Otherwise, a new object will be instantiated.
 /// </remarks>
 [Serializable]
-public class QueryDefinition : ISerializable, IObjectReference
+public class QueryDefinition
+    : ISerializable,
+#pragma warning disable SYSLIB0050
+        IObjectReference
+#pragma warning restore SYSLIB0050
 {
   // types
 
@@ -229,6 +233,9 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// </summary>
   /// <param name="info">The <see cref="System.Runtime.Serialization.SerializationInfo"/> to populate with data.</param>
   /// <param name="context">The contextual information about the source or destination of the serialization.</param>
+#if NET8_0_OR_GREATER
+    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
+#endif
   void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
   {
     GetObjectData(info, context);
@@ -242,6 +249,9 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// <param name="info">The <see cref="System.Runtime.Serialization.SerializationInfo"/> to populate with data.</param>
   /// <param name="context">The contextual information about the source or destination of the serialization.</param>
   /// <note type="inheritinfo">Overwrite this method to support serialization of derived classes.</note>
+#if NET8_0_OR_GREATER
+    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
+#endif
   protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
   {
     info.AddValue("ID", _id);

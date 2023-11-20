@@ -25,6 +25,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
   /// <summary>
   /// Represents an import strategy for <see cref="DomainObject"/> instances using binary serialization. This matches <see cref="BinaryExportStrategy"/>.
   /// </summary>
+#pragma warning disable SYSLIB0011
   public class BinaryImportStrategy : IImportStrategy
   {
     public static readonly BinaryImportStrategy Instance = new BinaryImportStrategy();
@@ -51,9 +52,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       ArgumentUtility.CheckNotNull("stream", stream);
       ArgumentUtility.CheckNotNull("formatter", formatter);
 
-#pragma warning disable SYSLIB0011
       return (KeyValuePair<string, Dictionary<string, object?>>[])formatter.Deserialize(stream);
-#pragma warning restore SYSLIB0011
     }
 
     private TransportItem[] GetTransportItems (KeyValuePair<string, Dictionary<string, object?>>[] deserializedData)
@@ -61,4 +60,5 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       return Array.ConvertAll(deserializedData, pair => new TransportItem(ObjectID.Parse(pair.Key), pair.Value));
     }
   }
+#pragma warning restore SYSLIB0011
 }

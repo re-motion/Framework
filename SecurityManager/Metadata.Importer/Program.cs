@@ -17,7 +17,6 @@
 // 
 using System;
 using System.ComponentModel.Design;
-using CommonServiceLocator;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
@@ -30,6 +29,7 @@ using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Security.Metadata;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.ServiceLocation;
 using Remotion.Tools.Console.CommandLine;
 using Remotion.Utilities;
 
@@ -99,6 +99,7 @@ namespace Remotion.SecurityManager.Metadata.Importer
                     new ReflectionBasedMemberInformationNameResolver(),
                     new PropertyMetadataReflector(),
                     new DomainModelConstraintProvider(),
+                    new PropertyDefaultValueProvider(),
                     new SortExpressionDefinitionProvider(),
                     MappingReflector.CreateDomainObjectCreator()),
                 new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));

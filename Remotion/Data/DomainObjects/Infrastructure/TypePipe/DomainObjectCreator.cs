@@ -15,7 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+#if NETFRAMEWORK
 using System.Runtime.Serialization;
+#else
+using System.Runtime.CompilerServices;
+#endif
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
@@ -61,7 +65,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       objectID.ClassDefinition.ValidateCurrentMixinConfiguration();
 
       var concreteType = Pipeline.ReflectionService.GetAssembledType(objectID.ClassDefinition.ClassType);
+#if NETFRAMEWORK
       var instance = (DomainObject)FormatterServices.GetSafeUninitializedObject(concreteType);
+#else
+      var instance = (DomainObject)RuntimeHelpers.GetUninitializedObject(concreteType);
+#endif
+
       Pipeline.ReflectionService.PrepareExternalUninitializedObject(instance, InitializationSemantics.Construction);
 
       // These calls are normally performed by DomainObject's ctor

@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void GetMetadata_NoDomainObjectAndNoValueType_NullableTrue ()
     {
-      var propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties>("NoAttribute", DomainModelConstraintProviderStub.Object);
+      var propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties>("NoAttribute", DomainModelConstraintProviderStub.Object, PropertyDefaultValueProviderStub.Object);
 
       DomainModelConstraintProviderStub
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
@@ -50,11 +50,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void GetMetadata_NoDomainObjectAndNoValueType_NullableFalse ()
     {
-      var propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties>("NoAttribute", DomainModelConstraintProviderStub.Object);
+      var propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties>("NoAttribute", DomainModelConstraintProviderStub.Object, PropertyDefaultValueProviderStub.Object);
 
       DomainModelConstraintProviderStub
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
           .Returns(false);
+
+      var binaryValue = new byte[] { 47, 11 };
+      PropertyDefaultValueProviderStub
+          .Setup(stub => stub.GetDefaultValue(propertyReflector.PropertyInfo, false))
+          .Returns(binaryValue);
 
       var actual = propertyReflector.GetMetadata();
 
@@ -64,13 +69,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       Assert.That(actual.PropertyType, Is.SameAs(typeof(byte[])));
       Assert.That(actual.IsNullable, Is.False);
       Assert.That(actual.MaxLength, Is.Null);
-      Assert.That(actual.DefaultValue, Is.EqualTo(new byte[0]));
+      Assert.That(actual.DefaultValue, Is.EqualTo(binaryValue));
     }
 
     [Test]
     public void GetMetadata_WithMaximumLength ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties>("MaximumLength", DomainModelConstraintProviderStub.Object);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties>("MaximumLength", DomainModelConstraintProviderStub.Object, PropertyDefaultValueProviderStub.Object);
 
       DomainModelConstraintProviderStub
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))

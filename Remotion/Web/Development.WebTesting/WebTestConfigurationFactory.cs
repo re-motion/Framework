@@ -45,19 +45,19 @@ namespace Remotion.Web.Development.WebTesting
     /// Represents the latest tested version of Chrome, compatible with the framework.
     /// In order to achieve a stable testing environment, a standalone Chrome browser with a matching ChromeDriver version should be used.
     /// </summary>
-    protected const string LatestTestedChromeVersion = "106";
+    protected const string LatestTestedChromeVersion = "110";
 
     /// <summary>
     /// Represents the latest version of Edge verified to be compatible with the framework.
     /// In order to achieve a stable testing environment, a standalone Edge browser with a matching MSEdgeDriver version should be used.
     /// </summary>
-    protected const string LatestTestedEdgeVersion = "106";
+    protected const string LatestTestedEdgeVersion = "110";
 
     /// <summary>
     /// Represents the latest version of Firefox verified to be compatible with Selenium WebDriver.
     /// In order to achieve a stable testing environment a standalone Firefox with a matching GeckoDriver version should be used.
     /// </summary>
-    protected const string LatestTestedFirefoxVersion = "96";
+    protected const string LatestTestedFirefoxVersion = "111";
 
     /// <summary>
     /// Creates a new <see cref="IBrowserConfiguration"/> from app.config.

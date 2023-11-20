@@ -51,7 +51,7 @@ class BocList_RowBlock
 {
   public Row: HTMLElement;
   public SelectorControl: HTMLInputElement;
-
+  public ValidationRow: Nullable<HTMLElement>
   constructor(row: HTMLElement, selectorControl: HTMLInputElement)
   {
     if (row.nodeName !== 'TR')
@@ -59,6 +59,9 @@ class BocList_RowBlock
 
     this.Row = row;
     this.SelectorControl = selectorControl
+    this.ValidationRow = this.Row.classList.contains("hasValidationRow")
+        ? this.Row.nextSibling as HTMLElement
+        : null;
   }
 }
 
@@ -115,6 +118,8 @@ class BocList
       BocList.FixUpScrolling(bocList);
     }
 
+    BocList.FixupValidationErrorOverflowSize(bocList);
+
     var selectedRows = new BocList_SelectedRows (selection);
     if (   selectedRows.Selection != BocList._rowSelectionUndefined
         && selectedRows.Selection != BocList._rowSelectionDisabled)
@@ -147,7 +152,7 @@ class BocList
 
         if (hasClickSensitiveRows)
           BocList.BindRowClickEventHandler (bocList, tableRow, tableCell, checkBox);
-    
+
         if (checkBox.checked)
         {
           var rowBlock = new BocList_RowBlock(tableRow, checkBox);
@@ -177,6 +182,13 @@ class BocList
         selectedRows.OnSelectionChanged (bocList, false);
       }
     });
+
+    if (row.classList.contains("hasValidationRow"))
+    {
+      let validationRow = row.nextSibling as HTMLElement;
+
+      validationRow.addEventListener('click', () => row.dispatchEvent(new Event("click")));
+    }
   
     selectorControl.addEventListener('click', function (evt)
     {
@@ -201,7 +213,7 @@ class BocList
     }
   }
 
-  //  Event handler for a table row in the BocList. 
+  //  Event handler for a table row in the BocList.
   //  Selects/unselects a row/all rows depending on its selection state,
   //      whether CTRL has been pressed and if _bocList_isSelectorControlClick is true.
   //  Aborts the execution if _bocList_isCommandClick or _bocList_isSelectorControlClick is true.
@@ -288,8 +300,10 @@ class BocList
     // Select currentRow
     rowBlock.SelectorControl.checked = true;
     if (isRowHighlightingEnabled)
+    {
       rowBlock.Row.classList.add(BocList.TrClassNameSelected);
-
+      rowBlock.ValidationRow?.classList.add(BocList.TrClassNameSelected);
+    }
     BocList.SetSelectAllRowsSelectorOnDemand (selectedRows);
   }
 
@@ -328,7 +342,10 @@ class BocList
     // Unselect currentRow
     rowBlock.SelectorControl.checked = false;
     if (isRowHighlightingEnabled)
+    {
       rowBlock.Row.classList.remove(BocList.TrClassNameSelected);
+      rowBlock.ValidationRow?.classList.remove(BocList.TrClassNameSelected);
+    }
 
     BocList.ClearSelectAllRowsSelector (selectedRows);
   }
@@ -399,6 +416,29 @@ class BocList
   public static OnCommandClick(): void
   {
     BocList._isCommandClick = true;
+  }
+
+  public static OnInlineValidationEntryClick(event: MouseEvent)
+  {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const a = event.target as HTMLAnchorElement;
+    if (a && a.hash && a.hash.startsWith("#"))
+    {
+      const targetElement = document.getElementById(a.hash.substring(1));
+
+      // We want to scroll the parent <td> element into view to ensure that the whole cell content is visible after scrolling
+      let tdElement = targetElement;
+      while (tdElement && tdElement.tagName !== "TD")
+        tdElement = tdElement.parentElement;
+
+      if (targetElement && tdElement)
+      {
+        tdElement.scrollIntoView({ block: "nearest", inline: "nearest" });
+        targetElement.focus({ preventScroll: true });
+      }
+    }
   }
 
   //  Returns the number of rows selected for the specified BocList
@@ -474,7 +514,10 @@ class BocList
     var tableBlock = bocList.querySelector(':scope > div.bocListTableBlock')!;
 
     var scrollTimer: Nullable<number> = null;
-    var tableContainer = tableBlock.querySelector<HTMLElement>(':scope > div.bocListTableContainer')!;
+    const tableContainer = tableBlock.querySelector<HTMLElement>(':scope > div.bocListTableContainer');
+    if (!tableContainer) // In the case of an empty BocList we don't have a table container
+      return;
+
     var scrollableContainer = tableContainer.querySelector<HTMLElement>(':scope > div.bocListTableScrollContainer')!;
     var horizontalScroll = 0;
   
@@ -503,12 +546,66 @@ class BocList
     {
       if (!PageUtility.Instance.IsInDom (scrollableContainer))
         return;
-  
+
       BocList.FixHeaderSize(scrollableContainer);
       BocList.FixHeaderPosition(tableContainer, scrollableContainer);
       setTimeout(resizeHandler, resizeInterval);
     };
     resizeHandler();
+  }
+
+  private static FixupValidationErrorOverflowSize(bocList: HTMLElement): void
+  {
+    const tableBlock = bocList.querySelector(':scope > div.bocListTableBlock')!;
+    const tableContainer = tableBlock.querySelector<HTMLElement>(':scope > div.bocListTableContainer');
+    if (!tableContainer) // In the case of an empty BocList we don't have a table container
+      return;
+
+    const scrollableContainer = tableContainer.querySelector<HTMLElement>(':scope > div.bocListTableScrollContainer')!;
+
+    const resizeInterval = 50;
+
+    let resizeHandler = function ()
+    {
+      if (!PageUtility.Instance.IsInDom (scrollableContainer))
+        return;
+
+      BocList.FixValidationErrorOverflowSize(scrollableContainer);
+      setTimeout(resizeHandler, resizeInterval);
+    };
+    resizeHandler();
+  }
+
+  private static FixValidationErrorOverflowSize(scrollableContainer: HTMLElement)
+  {
+    // Sets the width of the validation error field to be as wide as the visible part of the bocList
+    // minus how much space the td on the left requires to align with the error indicator column.
+    // This enables sticky behaviour while still allowing for a scrollbar if required.
+
+    const availableWidthInContainer = scrollableContainer.clientWidth;
+
+    const tdBeforeValidationFailureColumn: Nullable<HTMLElement> = scrollableContainer.querySelector('tr.bocListValidationRow td:first-child:not(.bocListValidationFailureCell)');
+
+    let widthBeforeValidationFailureColumn = 0;
+    if (tdBeforeValidationFailureColumn != null)
+    {
+      widthBeforeValidationFailureColumn = Math.max(tdBeforeValidationFailureColumn.clientWidth - scrollableContainer.scrollLeft, 0);
+    }
+
+    const overflowContainers = [...scrollableContainer.querySelectorAll<HTMLElement>(':scope tr.bocListValidationRow > td.bocListValidationFailureCell > div')];
+
+    overflowContainers.forEach(container =>
+    {
+      let parentStyle = window.getComputedStyle(<HTMLElement>container.parentNode);
+
+      let padding = parseFloat(parentStyle.paddingLeft) + parseFloat(parentStyle.paddingRight);
+      let border = parseFloat(parentStyle.borderLeftWidth) + parseFloat(parentStyle.borderRightWidth);
+
+      // We use a magic 10px width reduction here to ensure that the determined size is always smaller than the actual size
+      // This is needed as the calculation is not quite as precise as necessary as even a 1px offset can lead to weird scrolling behavior
+      // See RM-8887 and RM-8994 for more context
+      container.style.width = (availableWidthInContainer - widthBeforeValidationFailureColumn - padding - border - 10).toString() + "px";
+    });
   }
 
   private static CreateFakeTableHead(tableContainer: HTMLElement, scrollableContainer: HTMLElement, bocList: HTMLElement): void

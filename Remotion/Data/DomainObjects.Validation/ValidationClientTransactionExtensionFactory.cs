@@ -22,8 +22,7 @@ using Remotion.Validation;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
-  //TODO RM-6055: enable IoC
-  //[ImplementationFor (typeof(IClientTransactionExtensionFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IClientTransactionExtensionFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class ValidationClientTransactionExtensionFactory : IClientTransactionExtensionFactory
   {
     public const int Position = CommitValidationClientTransactionExtensionFactory.Position - 113;

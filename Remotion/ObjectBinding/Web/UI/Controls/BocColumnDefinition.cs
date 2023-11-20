@@ -16,14 +16,16 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using CommonServiceLocator;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Globalization;
+using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -32,8 +34,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public abstract class BocColumnDefinition : BusinessObjectControlItem
   {
     private string _itemID = string.Empty;
-    private bool _showColumnTitle = true;
     private WebString _columnTitle = WebString.Empty;
+    private IconInfo _columnTitleIcon = new IconInfo();
+    private BocColumnTitleStyle _columnTitleStyle = BocColumnTitleStyle.Text;
     private Unit _width = Unit.Empty;
     private string _cssClass = string.Empty;
 
@@ -88,17 +91,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return ColumnTitle; }
     }
 
-    /// <summary> Gets or sets a flag to show/hide the columns's title. </summary>
-    /// <value> <see langword="false" /> to hide the columns's title. </value>
-    [PersistenceMode(PersistenceMode.Attribute)]
-    [Category("Appearance")]
-    [Description("Set false to hide the columns's title")]
-    [DefaultValue(true)]
-    [NotifyParentProperty(true)]
-    public bool ShowColumnTitle
+    /// <summary> Gets the displayed image of the column title. </summary>
+    /// <remarks> Override this property to change the way the column title icon is generated. </remarks>
+    /// <value> A <see cref="IconInfo"/> representing this column's title icon. </value>
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    public virtual IconInfo ColumnTitleIconDisplayValue
     {
-      get { return _showColumnTitle; }
-      set { _showColumnTitle = value; }
+      get { return ColumnTitleIcon; }
     }
 
     /// <summary> Gets or sets the text displayed in the column title. </summary>
@@ -115,6 +115,39 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _columnTitle; }
       set { _columnTitle = value; }
+    }
+
+    /// <summary>
+    ///   Gets or sets the image displayed in the title cell of the column. Must not be <see langword="null"/>.
+    ///   Only displayed if <see cref="BocColumnTitleStyle"/>.<see cref="BocColumnTitleStyle.Icon"/> is set in <see cref="ColumnTitleStyle"/>.
+    /// </summary>
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Category("Appearance")]
+    [Description("The image displayed in the column title in the rendered page.")]
+    [NotifyParentProperty(true)]
+    public IconInfo ColumnTitleIcon
+    {
+      get { return _columnTitleIcon; }
+      set
+      {
+        ArgumentUtility.CheckNotNull("Icon", value);
+        _columnTitleIcon = value;
+      }
+    }
+
+    /// <summary>
+    /// Gets or sets the <see cref="BocColumnTitleStyle"/> that is used to determine how the column title cell is displayed.
+    /// </summary>
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Category("Appearance")]
+    [Description("The style determining how the column title is displayed in the rendered page.")]
+    [NotifyParentProperty(true)]
+    public BocColumnTitleStyle ColumnTitleStyle
+    {
+      get { return _columnTitleStyle; }
+      set { _columnTitleStyle = value; }
     }
 
     /// <summary> Gets or sets the width of the column definition. </summary>

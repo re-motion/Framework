@@ -18,14 +18,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
+using Remotion.Reflection;
 using Remotion.Utilities;
+using Remotion.Validation.Results;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
@@ -49,8 +53,11 @@ public class BocListAsGridUserControl : BaseUserControl
   protected BocTextValue LastNameField;
   protected TestBocList ChildrenList;
   protected TestBocList EmptyList;
+  protected CheckBox EnableValidationErrorsCheckBox;
+  protected DropDownList ValidationErrorsScenarioListbox;
   protected CheckBox ChildrenListEventCheckBox;
   protected Label ChildrenListEventArgsLabel;
+  protected Label UnhandledValidationErrorsLabel;
   protected FormGridManager FormGridManager;
   protected BindableObjectDataSourceControl EmptyDataSourceControl;
   protected HtmlTable FormGrid;
@@ -227,6 +234,9 @@ public class BocListAsGridUserControl : BaseUserControl
     EndEditModeButton.Enabled = ChildrenList.IsListEditModeActive;
     EndEditModeButton.Enabled = ChildrenList.IsListEditModeActive;
     CancelEditModeButton.Enabled = ChildrenList.IsListEditModeActive;
+
+    if (EnableValidationErrorsCheckBox.Checked)
+      CreateValidationErrors();
   }
 
   private void SwitchToEditModeButton_Click (object sender, EventArgs e)
@@ -288,6 +298,122 @@ public class BocListAsGridUserControl : BaseUserControl
     foreach (var obj in selectedBusinessObjects)
       ChildrenList.ValueAsList.Remove((Person)obj);
     ChildrenList.SynchronizeRows();
+  }
+
+  private void CreateValidationErrors ()
+  {
+    var person = (Person)CurrentObject.BusinessObject;
+
+    var firstChild = person.Children.OrderBy(e => e.LastName).First();
+    var lastChild = person.Children.OrderBy(e => e.LastName).Last();
+    var childrenProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.Children));
+    var personPartnerProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.Partner));
+    var personFirstNameProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.FirstName));
+    var personLastNameProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.LastName));
+    var personFullNameProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.DisplayName));
+
+    var firstNameProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.FirstName));
+
+    var allValidationFailures = new ValidationFailure[]
+                                {
+                                    // Children property failures
+                                    ValidationFailure.CreatePropertyValidationFailure(
+                                        person,
+                                        childrenProperty,
+                                        person.Children,
+                                        "Bad children",
+                                        "Localized bad children"),
+                                    // First child failure (visible)
+                                    ValidationFailure.CreateObjectValidationFailure(
+                                        firstChild,
+                                        "Bad first child",
+                                        "Localized bad first child"),
+                                    ValidationFailure.CreatePropertyValidationFailure(
+                                        firstChild,
+                                        personPartnerProperty,
+                                        firstChild.Partner,
+                                        "Bad first child.Partner",
+                                        "Localized bad first child.Partner"),
+                                    ValidationFailure.CreateObjectValidationFailure(
+                                        firstChild,
+                                        new[]
+                                        {
+                                            new ValidatedProperty(firstChild, personLastNameProperty),
+                                        },
+                                        "Bad first child name",
+                                        "Localized bad first child names"),
+                                    ValidationFailure.CreateObjectValidationFailure(
+                                        firstChild,
+                                        new[]
+                                        {
+                                            new ValidatedProperty(firstChild, personLastNameProperty),
+                                            new ValidatedProperty(firstChild, personFullNameProperty)
+                                        },
+                                        "Bad first child names",
+                                        "Localized bad first child names"),
+                                    // Last child failure (invisible)
+                                    ValidationFailure.CreateObjectValidationFailure(
+                                        lastChild,
+                                        "Bad last child",
+                                        "Localized bad last child"),
+                                    ValidationFailure.CreatePropertyValidationFailure(
+                                        lastChild,
+                                        personPartnerProperty,
+                                        lastChild.Partner,
+                                        "Bad last child.Partner",
+                                        "Localized bad last child.Partner"),
+                                    ValidationFailure.CreateObjectValidationFailure(
+                                        lastChild,
+                                        new[]
+                                        {
+                                            new ValidatedProperty(lastChild, personLastNameProperty),
+                                        },
+                                        "Bad last child name",
+                                        "Localized bad last child name"),
+                                    ValidationFailure.CreateObjectValidationFailure(
+                                        lastChild,
+                                        new[]
+                                        {
+                                            new ValidatedProperty(lastChild, personLastNameProperty),
+                                            new ValidatedProperty(lastChild, personFullNameProperty)
+                                        },
+                                        "Bad last child names",
+                                        "Localized bad last child names"),
+                                };
+
+    var selectedValidationFailures = ValidationErrorsScenarioListbox.SelectedValue switch
+    {
+        "cell" => allValidationFailures
+            .Where(e => e.ValidatedObject is Person && e.ValidatedProperties.Count == 2)
+            .Take(1)
+            .Concat(allValidationFailures.Where(e => e.ValidatedObject is Job && e.ValidatedProperties.Count == 2).Take(1))
+            .ToArray(),
+        "row" => allValidationFailures
+            .Where(e => e.ValidatedObject is Person && e.ValidatedProperties.Count == 0)
+            .Take(1)
+            .Concat(allValidationFailures.Where(e => e.ValidatedObject is Job && e.ValidatedProperties.Count == 0).Take(1))
+            .ToArray(),
+        "list" => allValidationFailures
+            .Where(e => e.ValidatedProperties.Count == 1 && e.ValidatedProperties[0].Property.Name is "Jobs" or "Children")
+            .ToArray(),
+        _ => allValidationFailures
+    };
+    var validationResult = BusinessObjectValidationResult.Create(new ValidationResult(selectedValidationFailures));
+
+    PrepareValidation();
+    FormGridManager.PrepareValidation();
+    DataSourceValidationResultDispatchingValidator.DispatchValidationFailures(validationResult);
+    DataSourceValidationResultDispatchingValidator.Validate();
+
+    UnhandledValidationErrorsLabel.Text = string.Join(
+        Environment.NewLine,
+        validationResult.GetUnhandledValidationFailures().Select(FormatValidationFailure));
+
+    static string FormatValidationFailure (ValidationFailure failure)
+    {
+      return $"Unhandled validation failure '{failure.ErrorMessage}' for "
+             + $"properties {string.Join(", ", failure.ValidatedProperties.Select(vp => $"'{vp}'"))} on object '{failure.ValidatedObject}'.";
+    }
   }
 
   private void ChildrenList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)

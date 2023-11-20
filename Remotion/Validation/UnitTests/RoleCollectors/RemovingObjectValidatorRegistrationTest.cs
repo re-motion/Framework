@@ -19,6 +19,7 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
+using Remotion.Validation.UnitTests.TestDomain.Validators;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.UnitTests.RoleCollectors
@@ -29,7 +30,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     [Test]
     public void Initialization ()
     {
-      var validatorType = new Mock<IObjectValidator>().GetType();
+      var validatorType = new Mock<IObjectValidator>().Object.GetType();
       var collectorTypeToRemoveFrom = typeof(CustomerValidationRuleCollector1);
       Func<IObjectValidator, bool> validatorPredicate = _ => false;
       var removingObjectValidationRuleCollectorStub = new Mock<IRemovingObjectValidationRuleCollector>();
@@ -51,7 +52,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     [Test]
     public void Initialization_WithCollectorTypeToRemoveFromIsNull ()
     {
-      var validatorType = new Mock<IObjectValidator>().GetType();
+      var validatorType = new Mock<IObjectValidator>().Object.GetType();
       Func<IObjectValidator, bool> validatorPredicate = _ => false;
       var removingObjectValidationRuleCollectorStub = new Mock<IRemovingObjectValidationRuleCollector>();
 
@@ -72,7 +73,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     [Test]
     public void Initialization_WithValidatorPredicateIsNull ()
     {
-      var validatorType = typeof(NotEqualValidator);
+      var validatorType = new Mock<IObjectValidator>().Object.GetType();
       var collectorTypeToRemoveFrom = typeof(CustomerValidationRuleCollector1);
       var removingObjectValidationRuleCollectorStub = new Mock<IRemovingObjectValidationRuleCollector>();
 

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Remotion.Validation.Attributes.Validation;
 
@@ -22,7 +23,7 @@ namespace Remotion.Validation.UnitTests.TestDomain
 {
   public class Customer : Person
   {
-    [LengthValidation(0, 8, IsRemovable = true)]
+    [LengthValidation(MaxLength = 8, IsRemovable = true)]
     [NotNullValidation(IsRemovable = true)]
     [NotEqualValidation("Test")]
     public virtual string UserName { get; set; }
@@ -36,6 +37,8 @@ namespace Remotion.Validation.UnitTests.TestDomain
     public virtual Address BillingAddress { get; set; }
 
     public virtual ICollection<Address> ShippingAddresses { get; set; }
+
+    public virtual ICollection AvailableBonuses { get; set; }
 
     public string Dummy ()
     {

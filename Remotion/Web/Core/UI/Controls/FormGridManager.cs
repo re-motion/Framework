@@ -24,7 +24,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using CommonServiceLocator;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.Reflection;

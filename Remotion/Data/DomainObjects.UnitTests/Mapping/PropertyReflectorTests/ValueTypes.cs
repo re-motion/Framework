@@ -19,6 +19,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
+using Remotion.Development.UnitTesting.ObjectMothers;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
 {
@@ -28,7 +29,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void GetMetadata_WithBasicType ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>("BooleanProperty", DomainModelConstraintProviderStub.Object);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>("BooleanProperty", DomainModelConstraintProviderStub.Object, PropertyDefaultValueProviderStub.Object);
+
+      var booleanValue = BooleanObjectMother.GetRandomBoolean();
+      PropertyDefaultValueProviderStub
+          .Setup(stub => stub.GetDefaultValue(propertyReflector.PropertyInfo, false))
+          .Returns(booleanValue);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
@@ -36,13 +42,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       Assert.That(actual.PropertyType, Is.SameAs(typeof(bool)));
       Assert.That(actual.IsNullable, Is.False);
       Assert.That(actual.MaxLength, Is.Null);
-      Assert.That(actual.DefaultValue, Is.EqualTo(false));
+      Assert.That(actual.DefaultValue, Is.EqualTo(booleanValue));
     }
 
     [Test]
     public void GetMetadata_WithNullableBasicType ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>("NaBooleanProperty", DomainModelConstraintProviderStub.Object);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>("NaBooleanProperty", DomainModelConstraintProviderStub.Object, PropertyDefaultValueProviderStub.Object);
+
+      var nullableBooleanValue = BooleanObjectMother.GetRandomNullableBoolean();
+      PropertyDefaultValueProviderStub
+          .Setup(stub => stub.GetDefaultValue(propertyReflector.PropertyInfo, true))
+          .Returns(nullableBooleanValue);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
@@ -50,13 +61,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       Assert.That(actual.PropertyType, Is.SameAs(typeof(bool?)));
       Assert.That(actual.IsNullable, Is.True);
       Assert.That(actual.MaxLength, Is.Null);
-      Assert.That(actual.DefaultValue, Is.Null);
+      Assert.That(actual.DefaultValue, Is.EqualTo(nullableBooleanValue));
     }
 
     [Test]
     public void GetMetadata_WithEnumProperty ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>("EnumProperty", DomainModelConstraintProviderStub.Object);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>("EnumProperty", DomainModelConstraintProviderStub.Object, PropertyDefaultValueProviderStub.Object);
+
+      var enumValue = (ClassWithAllDataTypes.EnumType)42;
+      PropertyDefaultValueProviderStub
+          .Setup(stub => stub.GetDefaultValue(propertyReflector.PropertyInfo, false))
+          .Returns(enumValue);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
@@ -64,18 +80,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       Assert.That(actual.PropertyType, Is.SameAs(typeof(ClassWithAllDataTypes.EnumType)));
       Assert.That(actual.IsNullable, Is.False);
       Assert.That(actual.MaxLength, Is.Null);
-      Assert.That(actual.DefaultValue, Is.EqualTo(ClassWithAllDataTypes.EnumType.Value0));
+      Assert.That(actual.DefaultValue, Is.EqualTo(enumValue));
     }
 
     [Test]
     public void GetMetadata_WithExtensibleEnumProperty ()
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>(
-          "ExtensibleEnumProperty", DomainModelConstraintProviderStub.Object);
+          "ExtensibleEnumProperty",
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
 
       DomainModelConstraintProviderStub
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
           .Returns(false);
+
+      var extensibleEnumValue = Color.Values.Green();
+      PropertyDefaultValueProviderStub
+          .Setup(stub => stub.GetDefaultValue(propertyReflector.PropertyInfo, false))
+          .Returns(extensibleEnumValue);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
@@ -83,14 +106,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       Assert.That(actual.PropertyType, Is.SameAs(typeof(Color)));
       Assert.That(actual.IsNullable, Is.False);
       Assert.That(actual.MaxLength, Is.Null);
-      Assert.That(actual.DefaultValue, Is.EqualTo(Color.Values.Blue()));
+      Assert.That(actual.DefaultValue, Is.EqualTo(extensibleEnumValue));
     }
 
     [Test]
     public void GetMetadata_WithOptionalRelationProperty ()
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithGuidKey>(
-          "ClassWithValidRelationsOptional", DomainModelConstraintProviderStub.Object);
+          "ClassWithValidRelationsOptional",
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 

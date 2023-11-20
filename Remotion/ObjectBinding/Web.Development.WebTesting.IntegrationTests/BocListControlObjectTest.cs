@@ -373,6 +373,35 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That(() => derivedDropDown.Open(), Throws.Nothing);
     }
 
+    [Category("Screenshot")]
+    [Test]
+    public void ScreenshotTest_ValidationMarkerAndMessages ()
+    {
+      var home = Start();
+
+      home.WebButtons().GetByLocalID("ValidationTestCaseCellButton").Click();
+
+      var control = home.Lists().GetByLocalID("JobList_Validation");
+      var fluentControl = control.ForScreenshot();
+
+      Helper.RunScreenshotTestExact<FluentScreenshotElement<ScreenshotBocList<BocListControlObject, BocListRowControlObject, BocListCellControlObject>>,
+          BocListControlObjectTest>(
+              fluentControl,
+              ScreenshotTestingType.Both,
+              (builder, target) =>
+              {
+                var row = target.GetTableContainer().GetRow().WithIndex(1);
+
+                builder.AnnotateBox(row.GetErrors(), Pens.Red, WebPadding.Inner);
+                builder.AnnotateBox(row.GetCell(7), Pens.Yellow, WebPadding.Inner);
+                builder.AnnotateBox(row.GetCell(7).GetErrorMarker(), Pens.Blue, WebPadding.Inner);
+                builder.AnnotateBox(row.GetErrorMarker(), Pens.Green, WebPadding.Inner);
+                builder.AnnotateBox(target.GetTableContainer().GetHeaderRow().GetErrorMarker(), Pens.Orange, WebPadding.Inner);
+
+                builder.Crop(row, new WebPadding(0, 25, 0, 30), isRestrictedByParent: false);
+              });
+    }
+
     [Test]
     public void TestSelectAfterClickOnSortColumnCheckBox ()
     {
@@ -1950,6 +1979,194 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       Assert.That(view1Columns.Count, Is.EqualTo(2));
       Assert.That(view2Columns.Count, Is.EqualTo(3));
+    }
+
+    [Test]
+    public void GetValidationErrors_NoValidationFailures ()
+    {
+      var home = Start();
+      var bocList = home.Lists().GetByLocalID("JobList_Validation");
+
+      Assert.That(bocList.GetRow(1).GetValidationErrors(), Is.Empty);
+    }
+
+    [Test]
+    public void GetValidationErrors_RowValidationFailure ()
+    {
+      var home = Start();
+      var bocList = home.Lists().GetByLocalID("JobList_Validation");
+
+      home.WebButtons().GetByLocalID("ValidationTestCaseRowButton").Click();
+
+      var expectedValidationFailures = new []
+                                       {
+                                           new BocListValidationError(
+                                               "Localized row validation failure message",
+                                               "89dc8cd2-30e0-4bb3-92a0-4587f32492f5",
+                                               null,
+                                               "89dc8cd2-30e0-4bb3-92a0-4587f32492f5",
+                                               null)
+                                       };
+
+      var bocListValidationFailures = bocList.GetRow(1).GetValidationErrors();
+      Assert.That(bocListValidationFailures, Is.EqualTo(expectedValidationFailures));
+    }
+
+    [Test]
+    public void GetValidationErrors_CellValidationFailureOnRow ()
+    {
+      var home = Start();
+      var bocList = home.Lists().GetByLocalID("JobList_Validation");
+
+      home.WebButtons().GetByLocalID("ValidationTestCaseCellButton").Click();
+
+      var expectedValidationFailures = new []
+                                       {
+                                           new BocListValidationError(
+                                               "DisplayName: Localized cell validation failure message",
+                                               "89dc8cd2-30e0-4bb3-92a0-4587f32492f5",
+                                               "DisplayName",
+                                               "89dc8cd2-30e0-4bb3-92a0-4587f32492f5",
+                                               "DisplayName")
+                                       };
+
+      var bocListValidationFailures = bocList.GetRow(1).GetValidationErrors();
+      Assert.That(bocListValidationFailures, Is.EqualTo(expectedValidationFailures));
+    }
+
+    [Test]
+    public void GetValidationErrors_CellValidationFailure ()
+    {
+      var home = Start();
+      var bocList = home.Lists().GetByLocalID("JobList_Validation");
+
+      home.WebButtons().GetByLocalID("ValidationTestCaseCellButton").Click();
+
+      var expectedValidationErrors = new []
+                                       {
+                                           new BocListValidationError(
+                                               "Localized cell validation failure message",
+                                               "89dc8cd2-30e0-4bb3-92a0-4587f32492f5",
+                                               "DisplayName",
+                                               "89dc8cd2-30e0-4bb3-92a0-4587f32492f5",
+                                               "DisplayName")
+                                       };
+
+      var bocListValidationErrors = bocList.GetRow(1).GetCell().WithColumnTitle("DisplayName").GetValidationErrors();
+      Assert.That(bocListValidationErrors, Is.EqualTo(expectedValidationErrors));
+    }
+
+    [Test]
+    public void GetValidationError_EditableRowAndNoValidationFailures ()
+    {
+      var home = Start();
+      var bocList = home.Lists().GetByLocalID("JobList_Validation");
+
+      var row = bocList.GetRow(1);
+      var editableRow = row.Edit();
+
+      Assert.That(editableRow.GetValidationErrors(), Is.Empty);
+    }
+
+    [Test]
+    public void GetValidationErrors_EditableRowAndRowValidationFailure ()
+    {
+      var home = Start();
+      var bocList = home.Lists().GetByLocalID("JobList_Validation");
+
+      var row = bocList.GetRow(1);
+      var editableRow = row.Edit();
+
+      home.WebButtons().GetByLocalID("ValidationTestCaseRowButton").Click();
+
+      var expectedValidationFailures = new []
+                                       {
+                                           new BocListValidationError(
+                                               "Localized row validation failure message",
+                                               "89dc8cd2-30e0-4bb3-92a0-4587f32492f5",
+                                               null,
+                                               "89dc8cd2-30e0-4bb3-92a0-4587f32492f5",
+                                               null)
+                                       };
+
+      Assert.That(editableRow.GetValidationErrors(), Is.EqualTo(expectedValidationFailures));
+    }
+
+    [Test]
+    public void GetValidationErrors_EditableRowAndCellValidationFailureOnRow ()
+    {
+      var home = Start();
+      var bocList = home.Lists().GetByLocalID("JobList_Validation");
+
+      var row = bocList.GetRow(1);
+      var editableRow = row.Edit();
+
+      home.WebButtons().GetByLocalID("ValidationTestCaseCellButton").Click();
+
+      var expectedValidationFailures = new []
+                                       {
+                                           new BocListValidationError(
+                                               "DisplayName: Localized cell validation failure message",
+                                               "89dc8cd2-30e0-4bb3-92a0-4587f32492f5",
+                                               "DisplayName",
+                                               "89dc8cd2-30e0-4bb3-92a0-4587f32492f5",
+                                               "DisplayName")
+                                       };
+
+      Assert.That(editableRow.GetValidationErrors(), Is.EqualTo(expectedValidationFailures));
+    }
+
+    [Test]
+    public void GetValidationErrors_EditableRowAndCellValidationFailure ()
+    {
+      var home = Start();
+      var bocList = home.Lists().GetByLocalID("JobList_Validation");
+
+      var row = bocList.GetRow(1);
+      var editableRow = row.Edit();
+
+      home.WebButtons().GetByLocalID("ValidationTestCaseCellButton").Click();
+
+      var expectedValidationErrors = new []
+                                       {
+                                           new BocListValidationError(
+                                               "Localized cell validation failure message",
+                                               "89dc8cd2-30e0-4bb3-92a0-4587f32492f5",
+                                               "DisplayName",
+                                               "89dc8cd2-30e0-4bb3-92a0-4587f32492f5",
+                                               "DisplayName")
+                                       };
+
+      var bocListValidationErrors = editableRow.GetCell().WithColumnTitle("DisplayName").GetValidationErrors();
+      Assert.That(bocListValidationErrors, Is.EqualTo(expectedValidationErrors));
+    }
+
+    [Test]
+    public void GetValidationErrors_EditableRowWithEditModeValidationFailure ()
+    {
+      var home = Start();
+      var bocList = home.Lists().GetByLocalID("JobList_Validation");
+
+      var row = bocList.GetRow(1);
+      var editableRow = row.Edit();
+
+      var dateTimeControl = editableRow.GetCell("StartDate").DateTimeValues().First();
+      dateTimeControl.SetDate("");
+
+      editableRow.Save();
+
+      var expectedValidationErrors = new[]
+                                     {
+                                         new BocListValidationError(
+                                             "StartDate: Enter a date.",
+                                             "89dc8cd2-30e0-4bb3-92a0-4587f32492f5",
+                                             "StartDate",
+                                             "89dc8cd2-30e0-4bb3-92a0-4587f32492f5",
+                                             "StartDate")
+                                     };
+
+      var validationErrors = editableRow.GetValidationErrors();
+      Assert.That(validationErrors, Is.EqualTo(expectedValidationErrors));
     }
 
     private WxePageObject Start ()

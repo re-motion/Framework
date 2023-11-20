@@ -102,6 +102,65 @@ div.bocListNavigator a[href]:active img
   filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
 }
 
+div.bocList div.bocListTableBlock tr.bocListValidationRow.even
+{
+  background-color: #F0F0F0;
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow.odd
+{
+  background-color: White;
+}
+
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow
+{
+  border-bottom: 1px solid #C8C8C8;
+  border-top: none;
+  color: Red;
+}
+
+div.bocList table.bocListTable tr.bocListValidationRow.selected td
+{
+  background-color: #C5E0FC;
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow td ul
+{
+  margin: 0.5em 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow td li:not(:last-child)
+{
+  margin-bottom: 0.5em;
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow div
+{
+  position: sticky;
+  left: 0;
+  overflow-x: auto;
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow div div
+{
+  inline-size: fit-content;
+  min-inline-size: 20em;
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow a
+{
+  color: red;
+  text-decoration: none;
+}
+
+div.bocList div.bocListTableBlock tr.bocListValidationRow a:hover
+{
+  text-decoration: underline;
+}
+
 div.bocListListMenuContainer
 {
   width: 100%;
@@ -309,6 +368,13 @@ th.bocListTitleCell > a[href]:active
   background-color: #C5E0FC;
 }
 
+th.bocListTitleCell > a > img,
+th.bocListTitleCell > span > img
+{
+  width: 16px;
+  height: 16px;
+}
+
 th.bocListTitleCell .bocListSortingOrder img
 {
   height: 16px;
@@ -338,6 +404,12 @@ td.bocListDataCell
   border-bottom: 1px solid #C8C8C8;
 
   cursor: default;
+}
+
+/*  Style applied to the cells in the BocList's data rows with a validation row. */
+tr.bocListDataRow.hasValidationRow td.bocListDataCell
+{
+  border-bottom: none;
 }
 
 /*  Style applied to the cells in the BocList's not-selected odd and even data rows. */
@@ -597,6 +669,11 @@ div.bocListEditableCell .control
 {
   width: 100%; 
   display: block;
+}
+
+.bocListDataColumnDeclarationValidationFailureIndicator
+{
+  width: 2.5em;
 }
 
 div.bocListEditableCell .validationErrorMarker + .control

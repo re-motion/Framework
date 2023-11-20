@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Results;
 using Remotion.Validation.Validators;
@@ -70,6 +71,11 @@ namespace Remotion.Validation.Rules
         return false;
 
       return Condition(instanceToValidate);
+    }
+
+    public override string ToString ()
+    {
+      return $"ObjectValidationRule ({typeof(TValidatedType).GetFullNameSafe()})";
     }
   }
 }

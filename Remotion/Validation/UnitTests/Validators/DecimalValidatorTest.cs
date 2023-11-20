@@ -133,7 +133,9 @@ namespace Remotion.Validation.UnitTests.Validators
       var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
       Assert.That(validationFailures.Length, Is.EqualTo(1));
-      //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
+      Assert.That(validationFailures[0].ValidatedObject, Is.EqualTo(propertyValidatorContext.Instance));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.Property), Is.EqualTo(new [] { propertyValidatorContext.Property }));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.ValidatedPropertyValue), Is.EqualTo(new [] { propertyValidatorContext.PropertyValue }));
       Assert.That(
           validationFailures[0].ErrorMessage,
           Is.EqualTo("The value must not have more than 4 integer digits and 2 decimal places."));
@@ -153,7 +155,9 @@ namespace Remotion.Validation.UnitTests.Validators
       var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
       Assert.That(validationFailures.Length, Is.EqualTo(1));
-      //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
+      Assert.That(validationFailures[0].ValidatedObject, Is.EqualTo(propertyValidatorContext.Instance));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.Property), Is.EqualTo(new [] { propertyValidatorContext.Property }));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.ValidatedPropertyValue), Is.EqualTo(new [] { propertyValidatorContext.PropertyValue }));
       Assert.That(
           validationFailures[0].ErrorMessage,
           Is.EqualTo("The value must not have more than 2 integer digits and 4 decimal places."));
@@ -173,7 +177,9 @@ namespace Remotion.Validation.UnitTests.Validators
       var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
       Assert.That(validationFailures.Length, Is.EqualTo(1));
-      //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
+      Assert.That(validationFailures[0].ValidatedObject, Is.EqualTo(propertyValidatorContext.Instance));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.Property), Is.EqualTo(new [] { propertyValidatorContext.Property }));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.ValidatedPropertyValue), Is.EqualTo(new [] { propertyValidatorContext.PropertyValue }));
       Assert.That(
           validationFailures[0].ErrorMessage,
           Is.EqualTo("The value must not have more than 3 integer digits and 1 decimal places including trailing zeros."));

@@ -31,6 +31,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
 {
   public class ValidationIntegrationTestBase
   {
+    [OneTimeSetUp]
+    public void OneTimeSetup ()
+    {
+      StandardConfiguration.EnsureInitialized();
+    }
+
     protected void ValidateMapping (string testDomainNamespaceSuffix)
     {
       var testDomainNamespace = "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration." + testDomainNamespaceSuffix;

@@ -34,6 +34,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     private Mock<HtmlTextWriter> _htmlTextWriterMock;
     private Mock<HttpContextBase> _httpContextStub;
     private Mock<IBocList> _bocListStub;
+    private Mock<IBocListColumnIndexProvider> _columnIndexProviderStub;
     private BocColumnRenderingContext<StubColumnDefinition> _renderingContext;
     private StubColumnDefinition _columnDefinition;
 
@@ -45,6 +46,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       _htmlTextWriterMock = new Mock<HtmlTextWriter>(MockBehavior.Strict, TextWriter.Null);
       _httpContextStub = new Mock<HttpContextBase>();
       _bocListStub = new Mock<IBocList>();
+      _columnIndexProviderStub = new Mock<IBocListColumnIndexProvider>();
       _renderingContext = new BocColumnRenderingContext<StubColumnDefinition>(
           new BocColumnRenderingContext(
               _httpContextStub.Object,
@@ -52,6 +54,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
               _bocListStub.Object,
               BusinessObjectWebServiceContext.Create(null, null, null),
               _columnDefinition,
+              _columnIndexProviderStub.Object,
               0,
               0));
     }
@@ -81,7 +84,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
               0,
               showIcon: false,
               cellID: null,
-              headerIDs: Array.Empty<string>()));
+              headerIDs: Array.Empty<string>(),
+              columnsWithValidationFailures: Array.Empty<bool>()));
 
       _htmlTextWriterMock.Verify();
     }

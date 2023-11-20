@@ -55,17 +55,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
       var factory = new ValidationBocReferenceDataSourceValidatorFactory();
       var validators = factory.CreateValidators(mock.Object, isReadOnly).ToArray();
 
-      if (isReadOnly)
-      {
-        Assert.That(validators, Is.Empty);
-      }
-      else
-      {
-        Assert.That(
-            validators.Select(v => v.GetType()),
-            Is.EquivalentTo(new[] { typeof(BusinessObjectReferenceDataSourceControlValidationResultDispatchingValidator) }));
-        Assert.That(validators, Has.All.Property("EnableViewState").False);
-      }
+      Assert.That(
+          validators.Select(v => v.GetType()),
+          Is.EquivalentTo(new[] { typeof(BusinessObjectReferenceDataSourceControlValidationResultDispatchingValidator) }));
+      Assert.That(validators, Has.All.Property("EnableViewState").False);
     }
   }
 }

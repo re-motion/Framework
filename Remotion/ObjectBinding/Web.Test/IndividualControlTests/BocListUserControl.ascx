@@ -25,6 +25,9 @@
     <td></td>
     <td>
       <remotion:boclist id=JobList runat="server" datasourcecontrol="CurrentObject" showallproperties="True" showavailableviewslist="False" propertyidentifier="Jobs" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" selection="SingleRadioButton" index="Disabled" PageSize="2" ShowSortingOrder="True" ListMenuHeading="Jobs Options" ListMenuHeadingLevel="H5" Width="100%" Height="15em">
+        <fixedcolumns>
+          <remotion:BocValidationErrorIndicatorColumnDefinition ColumnTitleStyle="Icon"/>
+        </fixedcolumns>
       </remotion:boclist>
     </td>
   </tr>
@@ -36,13 +39,14 @@
     <td colSpan=2>
       <ros:TestBocList id=ChildrenList runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="4" indexoffset="100" RowMenuDisplay="Manual" ShowEmptyListMessage="True" Index="InitialOrder" Selection="Multiple" Width="100%" Height="15em" ControlServicePath="BocListWebService.asmx" ControlServiceArguments="ControlServiceArgs">
         <fixedcolumns>
-          <remotion:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit" ColumnTitle="Edit" ShowColumnTitle="False"></remotion:BocRowEditModeColumnDefinition>
+          <remotion:BocValidationErrorIndicatorColumnDefinition ColumnTitleStyle="Icon" />
+          <remotion:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit" ColumnTitle="Edit" ColumnTitleStyle="None"></remotion:BocRowEditModeColumnDefinition>
           <remotion:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
             <persistedcommand>
               <remotion:BocListItemCommand ToolTip="An Event Command" CommandStateType="Remotion.ObjectBinding.Sample::PersonListItemCommandState" Type="Event"></remotion:BocListItemCommand>
             </PersistedCommand>
           </remotion:BocCommandColumnDefinition>
-          <remotion:BocCommandColumnDefinition ItemID="Href" Text="Href" ShowColumnTitle="False">
+          <remotion:BocCommandColumnDefinition ItemID="Href" Text="Href" ColumnTitleStyle="None">
             <persistedcommand>
               <remotion:BocListItemCommand HrefCommand-Href="edit.aspx?ID={1}&amp;Index={0}" Type="Href"></remotion:BocListItemCommand>
             </PersistedCommand>
@@ -67,7 +71,7 @@
               <remotion:BocListItemCommand></remotion:BocListItemCommand>
             </PersistedCommand>
           </remotion:BocSimpleColumnDefinition>
-          <remotion:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName" ColumnTitle="Partner Firstname" ShowColumnTitle="False">
+          <remotion:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName" ColumnTitle="Partner Firstname" ColumnTitleStyle="None">
             <persistedcommand>
               <remotion:BocListItemCommand Type="Event"></remotion:BocListItemCommand>
             </PersistedCommand>
@@ -83,7 +87,7 @@
               <remotion:BocListItemCommand></remotion:BocListItemCommand>
             </PersistedCommand>
           </remotion:BocSimpleColumnDefinition>
-          <remotion:BocDropDownMenuColumnDefinition ItemID="RowMenu" MenuTitleText="Context" ShowMenuTitle="true" Width="16px" ColumnTitle="Menu" ShowColumnTitle="False"></remotion:BocDropDownMenuColumnDefinition>
+          <remotion:BocDropDownMenuColumnDefinition ItemID="RowMenu" MenuTitleText="Context" ShowMenuTitle="true" Width="16px" ColumnTitle="Menu" ColumnTitleStyle="None"></remotion:BocDropDownMenuColumnDefinition>
         </FixedColumns>
       </ros:TestBocList>
     </td>
@@ -222,7 +226,20 @@
   <asp:button id="ChildrenListRemoveRowsButton" runat="server" Text="Remove Selected"></asp:button>
 </p>
 <p>
+  <asp:CheckBox id="EnableValidationErrorsCheckbox" runat="server" AutoPostBack="True" Text="Enable validation errors" />
+  <asp:DropDownList id="ValidationErrorsScenarioListbox" AutoPostBack="True" runat="server">
+    <Items>
+      <asp:ListItem Text="All validation errors" Selected="True" Value="all" />
+      <asp:ListItem Text="Cell validation errors" Value="cell" />
+      <asp:ListItem Text="Row validation errors" Value="row" />
+      <asp:ListItem Text="List validation errors" Value="list" />
+    </Items>
+  </asp:DropDownList>
+</p>
+<p>
   <asp:checkbox id=ChildrenListEventCheckBox runat="server" Text="ChildrenList Event raised" enableviewstate="False" Enabled="False"></asp:checkbox>
+  <br>
+  <asp:Label id="UnhandledValidationErrorsLabel" runat="server" ForeColor="Red" style="white-space: pre"></asp:Label>
 </p>
 <p>
   <asp:label id=ChildrenListEventArgsLabel runat="server" enableviewstate="False"></asp:label>

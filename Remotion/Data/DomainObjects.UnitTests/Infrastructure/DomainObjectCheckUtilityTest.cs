@@ -85,6 +85,50 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     }
 
     [Test]
+    public void DebugCheckIfRightTransaction_Works_ForSameRootTransaction ()
+    {
+      var order = Order.NewObject();
+
+      DomainObjectCheckUtility.DebugCheckIfRightTransaction(order, ClientTransaction.Current);
+    }
+
+    [Test]
+    public void DebugCheckIfRightTransaction_Works_ForLeftSubTransaction ()
+    {
+      var order = TestableClientTransaction.CreateSubTransaction().ExecuteInScope(() => Order.NewObject());
+
+      DomainObjectCheckUtility.DebugCheckIfRightTransaction(order, TestableClientTransaction);
+    }
+
+    [Test]
+    public void DebugCheckIfRightTransaction_Works_ForRightSubTransaction ()
+    {
+      var order = Order.NewObject();
+
+      var subTransaction = TestableClientTransaction.CreateSubTransaction();
+      DomainObjectCheckUtility.DebugCheckIfRightTransaction(order, subTransaction);
+    }
+
+#if !DEBUG
+    [Ignore("Skipped unless DEBUG build")]
+#endif
+    [Test]
+    public void DebugCheckIfRightTransaction_Fails ()
+    {
+      var order = Order.NewObject();
+      using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
+      {
+        Assert.That(
+            () => DomainObjectCheckUtility.DebugCheckIfRightTransaction(order, ClientTransaction.Current),
+            Throws.InstanceOf<ClientTransactionsDifferException>()
+                .With.Message.Matches(
+                    "Domain object 'Order|.*|System.Guid' cannot be used in the "
+                    + "given transaction as it was loaded or created in another transaction. Enter a scope for the transaction, or call EnlistInTransaction to "
+                    + "enlist the object in the transaction. (If no transaction was explicitly given, ClientTransaction.Current was used.)"));
+      }
+    }
+
+    [Test]
     public void EnsureNotDeleted_NotDeleted ()
     {
       var relatedObject = DomainObjectIDs.OrderItem1.GetObject<OrderItem>();

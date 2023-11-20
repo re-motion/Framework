@@ -87,4 +87,10 @@
   <svg class="sprite-part" id="SortDescending" width="16px" height="16px" viewBox="0 0 16 16">
     <use href="#SortingArrowDown" />
   </svg>
+  <svg class="sprite-part" id="ValidationErrorColumnTitleIcon" width="16px" height="16px" viewBox="0 0 16 16">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+      <circle fill="#979797" stroke="none" cx="8" cy="8" r="7.8" />
+      <path fill="#FFFFFF" d="M8 10.2c.718 0 1.3.582 1.3 1.3 0 .718-.582 1.3-1.3 1.3-.718 0-1.3-.582-1.3-1.3 0-.718.582-1.3 1.3-1.3zM9 3v6H7V3h2z"/>
+    </g>
+  </svg>
 </svg>

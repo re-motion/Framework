@@ -22,7 +22,7 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA
 {
   public class Customer : Person
   {
-    [LengthValidation(0, 8)]
+    [LengthValidation(MaxLength = 8)]
     [NotEqualValidation("Test")]
     public virtual string UserName { get; set; }
 

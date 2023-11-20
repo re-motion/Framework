@@ -21,7 +21,6 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using CommonServiceLocator;
 using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
@@ -433,10 +432,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return false; }
     }
 
-    IEnumerable<BaseValidator> ISmartControl.CreateValidators ()
-    {
-      return Enumerable.Empty<BaseValidator>();
-    }
+    /// <inheritdoc cref="ISmartControl.CreateValidators"/>
+    public virtual IEnumerable<BaseValidator> CreateValidators () => Enumerable.Empty<BaseValidator>();
 
     public new IPage? Page
     {

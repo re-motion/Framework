@@ -39,13 +39,16 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
                 { "area-alt", AccessibilityRuleID.AreaAlt },
                 { "aria-allowed-attr", AccessibilityRuleID.AriaAllowedAttr },
                 { "aria-allowed-role", AccessibilityRuleID.AriaAllowedRole },
+#pragma warning disable CS0618
                 { "aria-dpub-role-fallback", AccessibilityRuleID.AriaDpubRoleFallback },
+#pragma warning restore CS0618
                 { "aria-hidden-body", AccessibilityRuleID.AriaHiddenBody },
                 { "aria-hidden-focus", AccessibilityRuleID.AriaHiddenFocus },
                 { "aria-input-field-name", AccessibilityRuleID.AriaInputFieldName },
                 { "aria-required-attr", AccessibilityRuleID.AriaRequiredAttr },
                 { "aria-required-children", AccessibilityRuleID.AriaRequiredChildren },
                 { "aria-required-parent", AccessibilityRuleID.AriaRequiredParent },
+                { "aria-roledescription", AccessibilityRuleID.AriaRoleDescription},
                 { "aria-roles", AccessibilityRuleID.AriaRoles },
                 { "aria-toggle-field-name", AccessibilityRuleID.AriaToggleFieldName },
                 { "aria-valid-attr-value", AccessibilityRuleID.AriaValidAttrValue },
@@ -56,7 +59,9 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
                 { "blink", AccessibilityRuleID.Blink },
                 { "button-name", AccessibilityRuleID.ButtonName },
                 { "bypass", AccessibilityRuleID.Bypass },
+#pragma warning disable CS0618
                 { "checkboxgroup", AccessibilityRuleID.CheckboxGroup },
+#pragma warning restore CS0618
                 { "color-contrast", AccessibilityRuleID.ColorContrast },
                 { "css-orientation-lock", AccessibilityRuleID.CssOrientationLock },
                 { "definition-list", AccessibilityRuleID.DefinitionList },
@@ -76,6 +81,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
                 { "html-has-lang", AccessibilityRuleID.HtmlHasLang },
                 { "html-lang-valid", AccessibilityRuleID.HtmlLangValid },
                 { "html-xml-lang-mismatch", AccessibilityRuleID.HtmlXmlLangMismatch },
+                { "identical-links-same-purpose", AccessibilityRuleID.IdenticalLinksSamePurpose},
                 { "image-alt", AccessibilityRuleID.ImageAlt },
                 { "image-redundant-alt", AccessibilityRuleID.ImageRedundantAlt },
                 { "input-button-name", AccessibilityRuleID.InputButtonName },
@@ -89,9 +95,12 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
                 { "landmark-main-is-top-level", AccessibilityRuleID.LandmarkMainIsTopLevel },
                 { "landmark-no-duplicate-banner", AccessibilityRuleID.LandmarkNoDuplicateBanner },
                 { "landmark-no-duplicate-contentinfo", AccessibilityRuleID.LandmarkNoDuplicateContentInfo },
+                { "landmark-no-duplicate-main", AccessibilityRuleID.LandmarkNoDuplicateMain },
                 { "landmark-one-main", AccessibilityRuleID.LandmarkOneMain },
                 { "landmark-unique", AccessibilityRuleID.LandmarkUnique },
+#pragma warning disable CS0618
                 { "layout-table", AccessibilityRuleID.LayoutTable },
+#pragma warning restore CS0618
                 { "link-in-text-block", AccessibilityRuleID.LinkInTextBlock },
                 { "link-name", AccessibilityRuleID.LinkName },
                 { "list", AccessibilityRuleID.List },
@@ -100,16 +109,22 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
                 { "meta-refresh", AccessibilityRuleID.MetaRefresh },
                 { "meta-viewport-large", AccessibilityRuleID.MetaViewportLarge },
                 { "meta-viewport", AccessibilityRuleID.MetaViewport },
+#pragma warning disable CS0618
+                { "no-autoplay-audio", AccessibilityRuleID.NoAutoplayAudio },
+#pragma warning restore CS0618
                 { "object-alt", AccessibilityRuleID.ObjectAlt },
                 { "p-as-heading", AccessibilityRuleID.PAsHeading },
                 { "page-has-heading-one", AccessibilityRuleID.PageHasHeadingOne },
+#pragma warning disable CS0618
                 { "radiogroup", AccessibilityRuleID.RadioGroup },
+#pragma warning restore CS0618
                 { "region", AccessibilityRuleID.Region },
                 { "role-img-alt", AccessibilityRuleID.RoleImgAlt },
                 { "scope-attr-valid", AccessibilityRuleID.ScopeAttrValid },
                 { "scrollable-region-focusable", AccessibilityRuleID.ScrollableRegionFocusable },
                 { "server-side-image-map", AccessibilityRuleID.ServerSideImageMap },
                 { "skip-link", AccessibilityRuleID.SkipLink },
+                { "svg-img-alt", AccessibilityRuleID.SvgImageAlt},
                 { "tabindex", AccessibilityRuleID.Tabindex },
                 { "table-duplicate-name", AccessibilityRuleID.TableDuplicateName },
                 { "table-fake-caption", AccessibilityRuleID.TableFakeCaption },
@@ -118,7 +133,9 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
                 { "th-has-data-cells", AccessibilityRuleID.ThHasDataCells },
                 { "valid-lang", AccessibilityRuleID.ValidLang },
                 { "video-caption", AccessibilityRuleID.VideoCaption },
+#pragma warning disable CS0618
                 { "video-description", AccessibilityRuleID.VideoDescription }
+#pragma warning restore CS0618
             };
 
       s_enumToString = s_stringToEnum.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);

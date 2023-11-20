@@ -29,6 +29,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private readonly IBocList _control;
     private readonly BusinessObjectWebServiceContext _businessObjectWebServiceContext;
     private readonly BocColumnDefinition _columnDefinition;
+    private readonly IBocListColumnIndexProvider _columnIndexProvider;
     private readonly int _columnIndex;
     private readonly int _visibleColumnIndex;
 
@@ -38,6 +39,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IBocList control,
         BusinessObjectWebServiceContext businessObjectWebServiceContext,
         BocColumnDefinition columnDefinition,
+        IBocListColumnIndexProvider columnIndexProvider,
         int columnIndex,
         int visibleColumnIndex)
     {
@@ -46,12 +48,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       ArgumentUtility.CheckNotNull("control", control);
       ArgumentUtility.CheckNotNull("businessObjectWebServiceContext", businessObjectWebServiceContext);
       ArgumentUtility.CheckNotNull("columnDefinition", columnDefinition);
+      ArgumentUtility.CheckNotNull("columnIndexProvider", columnIndexProvider);
 
       _httpContext = httpContext;
       _writer = writer;
       _control = control;
       _businessObjectWebServiceContext = businessObjectWebServiceContext;
       _columnDefinition = columnDefinition;
+      _columnIndexProvider = columnIndexProvider;
       _columnIndex = columnIndex;
       _visibleColumnIndex = visibleColumnIndex;
     }
@@ -79,6 +83,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public BocColumnDefinition ColumnDefinition
     {
       get { return _columnDefinition; }
+    }
+
+    public IBocListColumnIndexProvider ColumnIndexProvider
+    {
+      get { return _columnIndexProvider; }
     }
 
     public int ColumnIndex

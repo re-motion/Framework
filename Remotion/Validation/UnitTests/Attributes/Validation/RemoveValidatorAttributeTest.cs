@@ -30,13 +30,13 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     [SetUp]
     public void SetUp ()
     {
-      _attribute = new RemoveValidatorAttribute(typeof(NotEmptyValidator), typeof(CustomerValidationRuleCollector1));
+      _attribute = new RemoveValidatorAttribute(typeof(NotEmptyOrWhitespaceValidator), typeof(CustomerValidationRuleCollector1));
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That(_attribute.ValidatorType, Is.EqualTo(typeof(NotEmptyValidator)));
+      Assert.That(_attribute.ValidatorType, Is.EqualTo(typeof(NotEmptyOrWhitespaceValidator)));
       Assert.That(_attribute.CollectorTypeToRemoveFrom, Is.EqualTo(typeof(CustomerValidationRuleCollector1)));
     }
   }

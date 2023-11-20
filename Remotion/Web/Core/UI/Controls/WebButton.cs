@@ -20,7 +20,6 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using CommonServiceLocator;
 using Remotion.Globalization;
 using Remotion.Security;
 using Remotion.ServiceLocation;
@@ -332,14 +331,7 @@ namespace Remotion.Web.UI.Controls
         bool hasText = !Text.IsEmpty;
         if (hasIcon)
         {
-          writer.AddAttribute(HtmlTextWriterAttribute.Src, _icon.Url);
-          if (!_icon.Height.IsEmpty)
-            writer.AddAttribute(HtmlTextWriterAttribute.Height, _icon.Height.ToString());
-          if (!_icon.Width.IsEmpty)
-            writer.AddAttribute(HtmlTextWriterAttribute.Width, _icon.Width.ToString());
-          writer.AddAttribute(HtmlTextWriterAttribute.Alt, _icon.AlternateText);
-          writer.RenderBeginTag(HtmlTextWriterTag.Img);
-          writer.RenderEndTag();
+          Icon.Render(writer, this);
         }
         if (hasText)
         {

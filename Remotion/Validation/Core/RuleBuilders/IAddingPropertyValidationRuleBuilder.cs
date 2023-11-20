@@ -27,7 +27,7 @@ namespace Remotion.Validation.RuleBuilders
   /// Provides an API for extending a validation rule with metadata, such as whether the validation rule can be removed by another component.
   /// </summary>
   ///<seealso cref="AddingPropertyValidationRuleBuilder{TValidatedType,TProperty}"/>
-  public interface IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty>
+  public interface IAddingPropertyValidationRuleBuilder<TValidatedType, out TProperty>
   {
     /// <summary>
     /// Associates a validator with this the property for this rule builder.

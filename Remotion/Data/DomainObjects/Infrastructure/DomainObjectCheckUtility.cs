@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Utilities;
@@ -84,6 +85,23 @@ namespace Remotion.Data.DomainObjects.Infrastructure
             domainObject.ID);
         throw new ClientTransactionsDifferException(message);
       }
+    }
+
+    /// <summary>
+    /// Checks if the given <see cref="IDomainObject"/> can be used in the given transaction, and, if not, throws a
+    /// <see cref="ClientTransactionsDifferException"/>. If the method succeeds, <see cref="ClientTransaction.IsEnlisted"/> is guaranteed to be
+    /// <see langword="true" /> for the given <see cref="DomainObject"/>. Calls to this method will be compiled iff the 'DEBUG' condition is set.
+    /// </summary>
+    /// <param name="domainObject">The domain object to check.</param>
+    /// <param name="clientTransaction">The transaction to check the object against.</param>
+    /// <returns>Returns <see langword="true"/> if the method succeeds without throwing an exception. This return value is available so that the
+    /// method can be used from within an expression.</returns>
+    /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
+    [AssertionMethod]
+    [Conditional("DEBUG")]
+    public static void DebugCheckIfRightTransaction ([NotNull] IDomainObject domainObject, [NotNull] ClientTransaction clientTransaction)
+    {
+      CheckIfRightTransaction(domainObject, clientTransaction);
     }
   }
 }

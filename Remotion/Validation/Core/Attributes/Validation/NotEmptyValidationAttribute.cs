@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
@@ -25,8 +26,30 @@ using Remotion.Validation.Validators;
 namespace Remotion.Validation.Attributes.Validation
 {
   /// <summary>
-  /// Apply the <see cref="NotEmptyValidationAttribute"/> to introduce a <see cref="NotEmptyValidator"/> constraint for a property.
+  /// Apply the <see cref="NotEmptyValidationAttribute"/> to introduce a <see cref="NotEmptyBinaryValidator"/> or <see cref="NotEmptyCollectionValidator"/>,
+  /// based on the property <see cref="Type"/>.
   /// </summary>
+  /// <remarks>
+  /// The mapping between property types and validator types is as follows:
+  /// <list type="bullet">
+  ///   <item>
+  ///     <term>byte[]: </term>
+  ///     <description><see cref="NotEmptyBinaryValidator"/></description>
+  ///   </item>
+  ///   <item>
+  ///     <term><see cref="ICollection"/>: </term>
+  ///     <description><see cref="NotEmptyCollectionValidator"/></description>
+  ///   </item>
+  ///   <item>
+  ///     <term><see cref="ICollection{T}"/>: </term>
+  ///     <description><see cref="NotEmptyCollectionValidator"/></description>
+  ///   </item>
+  ///   <item>
+  ///     <term><see cref="IReadOnlyCollection{T}"/>: </term>
+  ///     <description><see cref="NotEmptyCollectionValidator"/></description>
+  ///   </item>
+  /// </list>
+  /// </remarks>
   public class NotEmptyValidationAttribute : AddingValidationAttributeBase
   {
     public NotEmptyValidationAttribute ()
@@ -38,20 +61,32 @@ namespace Remotion.Validation.Attributes.Validation
       ArgumentUtility.CheckNotNull("property", property);
       ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
 
-      NotEmptyValidator validator;
+      Func<ValidationMessage, IPropertyValidator> validatorFactory;
+      if (property.PropertyType == typeof(byte[]))
+        validatorFactory = msg => new NotEmptyBinaryValidator(msg);
+      else if(typeof(ICollection).IsAssignableFrom(property.PropertyType))
+        validatorFactory = msg => new NotEmptyCollectionValidator(msg);
+      else if (typeof(IReadOnlyCollection<object>).IsAssignableFrom(property.PropertyType))
+        validatorFactory = msg => new NotEmptyCollectionValidator(msg);
+      else if(property.PropertyType.CanAscribeTo(typeof(ICollection<>)))
+        validatorFactory = msg => new NotEmptyCollectionValidator(msg);
+      else
+        throw new NotSupportedException($"{nameof(NotEmptyValidationAttribute)} is not supported for properties of type '{property.PropertyType.FullName}'.");
+
+      IPropertyValidator propertyValidator;
       if (string.IsNullOrEmpty(ErrorMessage))
       {
-        validator = PropertyValidatorFactory.Create(
+        propertyValidator = PropertyValidatorFactory.Create(
             property,
-            parameters => new NotEmptyValidator(parameters.ValidationMessage),
+            parameters => validatorFactory(parameters.ValidationMessage),
             validationMessageFactory);
       }
       else
       {
-        validator = new NotEmptyValidator(new InvariantValidationMessage(ErrorMessage));
+        propertyValidator = validatorFactory(new InvariantValidationMessage(ErrorMessage));
       }
 
-      return EnumerableUtility.Singleton(validator);
+      return EnumerableUtility.Singleton(propertyValidator);
     }
   }
 }

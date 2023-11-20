@@ -16,10 +16,12 @@
 // 
 using System;
 using System.Collections.Generic;
-using CommonServiceLocator;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
+using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -36,6 +38,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     protected override IComparer<BocListRow> CreateCellValueComparer ()
+    {
+      throw new NotImplementedException();
+    }
+
+    protected override IValidationFailureMatcher GetValidationFailureMatcher ()
     {
       throw new NotImplementedException();
     }

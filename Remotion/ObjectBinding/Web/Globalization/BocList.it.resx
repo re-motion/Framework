@@ -124,7 +124,7 @@
     <value>Vista</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeErrorMessage" xml:space="preserve">
-    <value>Si sono verificati errori nella riga appena modificata.</value>
+    <value>Input non valido nella riga appena modificata.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RequiredFieldTitle" xml:space="preserve">
     <value>Input obbligatorio nella riga appena modificata</value>
@@ -163,12 +163,27 @@
     <value>Opzioni</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListEditModeErrorMessage" xml:space="preserve">
-    <value>Si è verificato un errore in almeno una riga.</value>
+    <value>Input non valido in almeno una riga.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoTitle" xml:space="preserve">
-    <value>Input non valido nella riga appena modificata</value>
+    <value>Input non valido nella riga attuale</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListMenuHeading" xml:space="preserve">
     <value>Opzioni</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInOtherListPagesErrorMessage" xml:space="preserve">
+    <value>Input non valido in almeno un'altra pagina.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoForCellLabelText" xml:space="preserve">
+    <value>Input non valido nella cella attuale</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationColumnTitleText" xml:space="preserve">
+    <value>Messaggi di validazione</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.UnhandledValidationFailuresFoundErrorMessage" xml:space="preserve">
+    <value>Input non valido in almeno una riga nascosta.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInListErrorMessage" xml:space="preserve">
+    <value>Input non valido in almeno una riga. Controllare le righe per maggiori dettagli.</value>
   </data>
 </root>

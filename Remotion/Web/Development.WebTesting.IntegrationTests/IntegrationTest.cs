@@ -87,13 +87,25 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     protected TPageObject Start<TPageObject> (string page)
       where TPageObject : PageObject
     {
-      var isWxe = page.EndsWith(".wxe", StringComparison.OrdinalIgnoreCase);
-      var url = isWxe
-          ? _webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot + page
-          : SharedProjectWebRoot + page;
-      _webTestHelper.MainBrowserSession.Window.Visit(url);
+      _webTestHelper.MainBrowserSession.Window.Visit(ResolveUrlForPage(page));
 
       return _webTestHelper.CreateInitialPageObject<TPageObject>(_webTestHelper.MainBrowserSession);
+    }
+
+    protected TPageObject StartWithoutRequestErrorDetection<TPageObject> (string page)
+      where TPageObject : PageObject
+    {
+      _webTestHelper.MainBrowserSession.Window.Visit(ResolveUrlForPage(page));
+
+      return _webTestHelper.CreateInitialPageObjectWithoutRequestErrorDetection<TPageObject>(_webTestHelper.MainBrowserSession);
+    }
+
+    protected string ResolveUrlForPage (string page)
+    {
+      var isWxe = page.EndsWith(".wxe", StringComparison.OrdinalIgnoreCase);
+      return isWxe
+          ? _webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot + page
+          : SharedProjectWebRoot + page;
     }
   }
 }

@@ -122,27 +122,27 @@
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchExclusiveRangeValidationMessage" xml:space="preserve">
-    <value>Geben Sie einen Wert zwischen "{0}" und "{1}" ein.</value>
+    <value>Geben Sie einen Wert zwischen {0} und {1} ein.</value>
     <comment>{0} = from value; {1} = to value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeGreaterThanOrEqualValidationMessage" xml:space="preserve">
-    <value>Geben Sie einen Wert größer oder gleich "{0}" ein.</value>
+    <value>Geben Sie einen Wert größer oder gleich {0} ein.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeGreaterThanValidationMessage" xml:space="preserve">
-    <value>Geben Sie einen Wert größer als "{0}" ein.</value>
+    <value>Geben Sie einen Wert größer als {0} ein.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchInclusiveRangeValidationMessage" xml:space="preserve">
-    <value>Geben Sie einen Wert von "{0}" bis "{1}" ein.</value>
+    <value>Geben Sie einen Wert von {0} bis {1} ein.</value>
     <comment>{0} = from value; {1} = to value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeLessThanOrEqualValidationMessage" xml:space="preserve">
-    <value>Geben Sie einen Wert kleiner oder gleich "{0}" ein.</value>
+    <value>Geben Sie einen Wert kleiner oder gleich {0} ein.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustBeLessThanValidationMessage" xml:space="preserve">
-    <value>Geben Sie einen Wert kleiner als "{0}" ein.</value>
+    <value>Geben Sie einen Wert kleiner als {0} ein.</value>
     <comment>{0} = comparison value</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveExactLengthValidationMessage" xml:space="preserve">
@@ -159,7 +159,7 @@
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchRegularExpressionValidationMessage" xml:space="preserve">
     <value>Geben Sie einen Wert im richtigen Format ein.</value>
   </data>
-  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEmptyStringValidationMessage" xml:space="preserve">
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEmptyBinaryValidationMessage" xml:space="preserve">
     <value>Geben Sie einen Wert ein.</value>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEqualValidationMessage" xml:space="preserve">
@@ -206,8 +206,8 @@
     <value>Geben Sie maximal 1 Zeichen ein.</value>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveMaximumLengthValidationMessage" xml:space="preserve">
-    <value>Geben Sie maximal {1} Zeichen ein.</value>
-    <comment>{1} = expected length</comment>
+    <value>Geben Sie maximal {0} Zeichen ein.</value>
+    <comment>{0} = expected length</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveMinimumLengthOfOneValidationMessage" xml:space="preserve">
     <value>Geben Sie mindestens 1 Zeichen ein.</value>
@@ -218,5 +218,8 @@
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullBooleanValidationMessage" xml:space="preserve">
     <value>Wählen Sie einen Eintrag aus.</value>
+  </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEmptyOrWhitespaceValidationMessage" xml:space="preserve">
+      <value>Geben Sie mindestens ein sichtbares Zeichen ein.</value>
   </data>
 </root>

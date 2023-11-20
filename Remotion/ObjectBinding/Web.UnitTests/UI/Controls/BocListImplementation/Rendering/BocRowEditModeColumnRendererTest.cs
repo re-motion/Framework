@@ -58,7 +58,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
       _renderingContext = new BocColumnRenderingContext<BocRowEditModeColumnDefinition>(
-          new BocColumnRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, Column, 0, 0));
+          new BocColumnRenderingContext(
+              HttpContext,
+              Html.Writer,
+              List.Object,
+              businessObjectWebServiceContext,
+              Column,
+              ColumnIndexProvider.Object,
+              0,
+              0));
     }
 
     [Test]
@@ -77,9 +85,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var document = Html.GetResultDocument();
 
       var td = Html.GetAssertedChildElement(document, "td", 0);
-      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell + " " + _bocListCssClassDefinition.DataCellEditModeButtons);
 
-      var a = Html.GetAssertedChildElement(td, "a", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+
+      var a = Html.GetAssertedChildElement(cellStructureDiv, "a", 0);
       Html.AssertAttribute(a, "id", List.Object.ClientID + "_Column_0_RowEditCommand_Edit_Row_10");
       Html.AssertAttribute(a, "href", "fakeFallbackUrl");
       Html.AssertAttribute(a, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
@@ -120,15 +131,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var document = Html.GetResultDocument();
 
       var td = Html.GetAssertedChildElement(document, "td", 0);
-      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell + " " + _bocListCssClassDefinition.DataCellEditModeButtons);
 
-      var save = Html.GetAssertedChildElement(td, "a", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+
+      var save = Html.GetAssertedChildElement(cellStructureDiv, "a", 0);
       Html.AssertAttribute(save, "id", List.Object.ClientID + "_Column_0_RowEditCommand_Save_Row_10");
       Html.AssertAttribute(save, "href", "fakeFallbackUrl");
       Html.AssertAttribute(save, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
       Html.AssertTextNode(save, "Speichern", 0);
 
-      var cancel = Html.GetAssertedChildElement(td, "a", 1);
+      var cancel = Html.GetAssertedChildElement(cellStructureDiv, "a", 1);
       Html.AssertAttribute(cancel, "id", List.Object.ClientID + "_Column_0_RowEditCommand_Cancel_Row_10");
       Html.AssertAttribute(cancel, "href", "fakeFallbackUrl");
       Html.AssertAttribute(cancel, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");

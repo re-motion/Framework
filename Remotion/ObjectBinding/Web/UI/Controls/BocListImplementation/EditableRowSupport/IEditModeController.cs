@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Web.UI;
 using Remotion.Web.UI.Controls;
 
@@ -26,15 +27,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     bool IsListEditModeActive { get; }
     bool EnableEditModeValidator { get; }
     BocListRow GetEditedRow ();
-    void SwitchRowIntoEditMode (int index, BocColumnDefinition[] columns);
-    void SwitchListIntoEditMode (BocColumnDefinition[] columns);
-    bool AddAndEditRow (IBusinessObject businessObject, BocColumnDefinition[] columns);
-    void EndRowEditMode (bool saveChanges, BocColumnDefinition[] columns);
-    void EndListEditMode (bool saveChanges, BocColumnDefinition[] columns);
-    void EnsureEditModeRestored (BocColumnDefinition[] columns);
-    void SynchronizeEditModeControls (BocColumnDefinition[] columns);
-    BocListRow[] AddRows (IBusinessObject[] businessObjects, BocColumnDefinition[] columns);
-    int AddRow (IBusinessObject businessObject, BocColumnDefinition[] columns);
+    void SwitchRowIntoEditMode (int index, IReadOnlyList<BocColumnDefinition> columns);
+    void SwitchListIntoEditMode (IReadOnlyList<BocColumnDefinition> columns);
+    bool AddAndEditRow (IBusinessObject businessObject, IReadOnlyList<BocColumnDefinition> columns);
+    void EndRowEditMode (bool saveChanges, IReadOnlyList<BocColumnDefinition> columns);
+    void EndListEditMode (bool saveChanges, IReadOnlyList<BocColumnDefinition> columns);
+    void EnsureEditModeRestored (IReadOnlyList<BocColumnDefinition> columns);
+    void SynchronizeEditModeControls (IReadOnlyList<BocColumnDefinition> columns);
+    BocListRow[] AddRows (IBusinessObject[] businessObjects, IReadOnlyList<BocColumnDefinition> columns);
+    int AddRow (IBusinessObject businessObject, IReadOnlyList<BocColumnDefinition> columns);
     void RemoveRows (IBusinessObject[] businessObjects);
     void RemoveRow (IBusinessObject businessObject);
 

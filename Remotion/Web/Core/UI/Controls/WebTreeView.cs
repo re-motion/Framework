@@ -772,7 +772,7 @@ namespace Remotion.Web.UI.Controls
           writer.AddAttribute(DiagnosticMetadataAttributes.TriggersPostBack, "true");
       }
       writer.AddAttribute("tabindex", "-1");
-      writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
+      writer.AddAttribute(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
       writer.RenderBeginTag(HtmlTextWriterTag.A);
 
       nodeIcon.Render(writer, this);
@@ -910,7 +910,7 @@ namespace Remotion.Web.UI.Controls
 
     private HashAlgorithm CreateNodeIDAlgorithm ()
     {
-      return Assertion.IsNotNull(HashAlgorithm.Create("MD5"), "HashAlgorithm.Create('MD5') != null");
+      return Assertion.IsNotNull(MD5.Create(), "HashAlgorithm.Create('MD5') != null");
     }
 
     private string CreateNodeID (HashAlgorithm nodeIDAlgorithm, string nodePath)

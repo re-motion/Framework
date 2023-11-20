@@ -30,6 +30,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
             renderingContext.Control,
             renderingContext.BusinessObjectWebServiceContext,
             renderingContext.ColumnDefinition,
+            renderingContext.ColumnIndexProvider,
             renderingContext.ColumnIndex,
             renderingContext.VisibleColumnIndex)
     {

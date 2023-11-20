@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
+using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
@@ -72,6 +74,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public BocListEditableCellControlObject GetCell (int oneBasedIndex)
     {
       return GetCell().WithIndex(oneBasedIndex);
+    }
+
+    /// <summary>
+    /// Gets any validation errors assigned to the row.
+    /// </summary>
+    public BocListValidationError[] GetValidationErrors ()
+    {
+      return Scope.FindAllCss(".bocListDataCellValidationFailureIndicator ul li")
+          .Select(BocListValidationError.Parse)
+          .ToArray();
     }
 
     /// <inheritdoc/>

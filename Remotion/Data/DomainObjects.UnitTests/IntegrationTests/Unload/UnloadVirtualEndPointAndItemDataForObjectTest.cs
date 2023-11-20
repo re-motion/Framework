@@ -72,6 +72,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       {
         var employeeInOtherTx = employee.ID.GetObject<Employee>();
         var newComputer = Computer.NewObject();
+        newComputer.SerialNumber = "12345";
+
         newComputerID = newComputer.ID;
         employeeInOtherTx.Computer = newComputer;
 

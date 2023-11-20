@@ -49,6 +49,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
     }
 
+    protected override string GetAdditionalCssClassForTitleCell (BocCellAttributeRenderingContext<BocRowEditModeColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
+    {
+      return CssClasses.TitleCellEditModeButtons;
+    }
+
+    protected override string GetAdditionalCssClassForDataCell (BocCellAttributeRenderingContext<BocRowEditModeColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
+    {
+      return CssClasses.DataCellEditModeButtons;
+    }
+
     /// <summary>
     /// Renders the cell contents depending on the <paramref name="arguments"/>'s
     /// <see cref="BocListDataRowRenderEventArgs.IsEditableRow"/> property.
@@ -163,7 +173,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       c.ItemID = commandItemID;
       c.OwnerControl = renderingContext.Control;
 
-      c.RenderBegin(renderingContext.Writer, RenderingFeatures, postBackEvent, new string[0], c_onCommandClickScript, null);
+      c.RenderBegin(renderingContext.Writer, RenderingFeatures, postBackEvent, new string[0], OnCommandClickScript, null);
 
       bool hasIcon = icon.HasRenderingInformation;
       bool hasText = !text.IsEmpty;

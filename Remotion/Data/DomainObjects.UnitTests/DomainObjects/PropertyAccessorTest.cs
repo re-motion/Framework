@@ -458,8 +458,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void IsNullPropertyValue ()
     {
       ClassWithAllDataTypes cwadt = ClassWithAllDataTypes.NewObject();
-      Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"].IsNull, Is.True);
+
+      // boolean starts with value, cannot be set to null 
       Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"].IsNull, Is.False);
+
+      Assert.That(
+          () => cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"].SetValue<bool?>(null),
+          Throws.Exception.AssignableTo<InvalidTypeException>());
+      Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"].IsNull, Is.False);
+
+      // nullable boolean starts with null, can be set to value or null
+      Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"].IsNull, Is.True);
 
       cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"].SetValue<bool?>(true);
       Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"].IsNull, Is.False);
@@ -470,8 +479,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"].SetValue<bool?>(null);
       Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"].IsNull, Is.True);
 
+      // nullable string starts with null, can be set to value or null
       Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringWithNullValueProperty"].IsNull, Is.True);
-      Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"].IsNull, Is.False);
 
       cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringWithNullValueProperty"].SetValue("");
       Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringWithNullValueProperty"].IsNull, Is.False);
@@ -479,14 +488,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringWithNullValueProperty"].SetValue<string>(null);
       Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringWithNullValueProperty"].IsNull, Is.True);
 
+      // string behaves like nullable string
+      Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"].IsNull, Is.True);
+
+      cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"].SetValue("");
+      Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"].IsNull, Is.False);
+
+      cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"].SetValue<string>(null);
+      Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"].IsNull, Is.True);
+
+      // nullable extensible enum starts with null, can be set to value or null
       Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ExtensibleEnumWithNullValueProperty"].IsNull, Is.True);
-      Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ExtensibleEnumProperty"].IsNull, Is.False);
 
       cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ExtensibleEnumWithNullValueProperty"].SetValue(Color.Values.Green());
       Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ExtensibleEnumWithNullValueProperty"].IsNull, Is.False);
 
       cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ExtensibleEnumWithNullValueProperty"].SetValue<Color>(null);
       Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ExtensibleEnumWithNullValueProperty"].IsNull, Is.True);
+
+      // extensible enum behaves like nullable extensible enum
+      Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ExtensibleEnumProperty"].IsNull, Is.True);
+
+      cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ExtensibleEnumProperty"].SetValue(Color.Values.Green());
+      Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ExtensibleEnumProperty"].IsNull, Is.False);
+
+      cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ExtensibleEnumProperty"].SetValue<Color>(null);
+      Assert.That(cwadt.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ExtensibleEnumProperty"].IsNull, Is.True);
     }
 
     [Test]

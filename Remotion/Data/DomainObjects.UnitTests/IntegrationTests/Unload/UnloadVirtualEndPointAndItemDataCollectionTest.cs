@@ -102,7 +102,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       {
         var orderInOtherTx = DomainObjectIDs.Order1.GetObject<Order>();
         var orderItem1InOtherTx = DomainObjectIDs.OrderItem1.GetObject<OrderItem>();
+
         var newOrderItem = OrderItem.NewObject();
+        newOrderItem.Product = "Product";
+
         newOrderItemID = newOrderItem.ID;
         orderInOtherTx.OrderItems.Add(newOrderItem);
         orderInOtherTx.OrderItems.Remove(orderItem1InOtherTx);

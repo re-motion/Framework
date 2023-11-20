@@ -170,7 +170,7 @@ namespace Remotion.Data.DomainObjects
     private ObjectID _id;
     private ClientTransaction _rootTransaction;
     private bool _needsLoadModeDataContainerOnly; // true if the object was created by a constructor call or OnLoaded has already been called once
-    private bool _isReferenceInitializeEventExecuting; // true only while OnReferenceInitializing is executed
+    private DomainObjectTransactionContextImplementation _transactionContextImplementation;
 
     /// <summary>
     /// Initializes a new <see cref="DomainObject"/> with the current <see cref="DomainObjects.ClientTransaction"/>.
@@ -225,6 +225,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull("info", info);
 
+      _transactionContextImplementation = new DomainObjectTransactionContextImplementation(this);
       try
       {
         _id = (ObjectID)info.GetValue("DomainObject.ID", typeof(ObjectID))!;
@@ -281,17 +282,14 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Gets a <see cref="DomainObjectTransactionContextIndexer"/> object that can be used to select an <see cref="IDomainObjectTransactionContext"/>
+    /// Gets a <see cref="DomainObjectTransactionContextIndexer"/> object that can be used to select an <see cref="DomainObjectTransactionContext"/>
     /// for a specific <see cref="DomainObjects.ClientTransaction"/>. To obtain the default context, use <see cref="DefaultTransactionContext"/>.
     /// </summary>
     /// <value>The transaction context.</value>
-    public DomainObjectTransactionContextIndexer TransactionContext
-    {
-      get { return new DomainObjectTransactionContextIndexer(this, _isReferenceInitializeEventExecuting); }
-    }
+    public DomainObjectTransactionContextIndexer TransactionContext => new DomainObjectTransactionContextIndexer(_transactionContextImplementation);
 
     /// <summary>
-    /// Gets the default <see cref="IDomainObjectTransactionContext"/>, i.e. the transaction context that is used when this 
+    /// Gets the default <see cref="DomainObjectTransactionContext"/>, i.e. the transaction context that is used when this
     /// <see cref="DomainObject"/>'s properties are accessed without specifying a <see cref="DomainObjects.ClientTransaction"/>.
     /// </summary>
     /// <value>The default transaction context.</value>
@@ -300,7 +298,7 @@ namespace Remotion.Data.DomainObjects
     /// <see cref="RootTransaction"/>. The <see cref="ClientTransaction.ActiveTransaction"/> is usually the 
     /// <see cref="ClientTransaction.LeafTransaction"/>, but it can be changed by using <see cref="ClientTransaction"/> APIs.
     /// </remarks>
-    public IDomainObjectTransactionContext DefaultTransactionContext
+    public DomainObjectTransactionContext DefaultTransactionContext
     {
       get { return this.GetDefaultTransactionContext(); }
     }
@@ -361,6 +359,9 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>Be sure to call this method from the <see cref="ISerializable.GetObjectData"/> implementation of any concrete
     /// <see cref="DomainObject"/> type implementing the <see cref="ISerializable"/> interface.</remarks>
     // ReSharper disable UnusedParameter.Global
+#if NET8_0_OR_GREATER
+    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
+#endif
     protected void BaseGetObjectData (SerializationInfo info, StreamingContext context)
         // ReSharper restore UnusedParameter.Global
     {
@@ -395,6 +396,7 @@ namespace Remotion.Data.DomainObjects
     /// <see cref="ID"/> and enlists it with the given <see cref="DomainObjects.ClientTransaction"/>.</remarks>
     [MemberNotNull(nameof(_id))]
     [MemberNotNull(nameof(_rootTransaction))]
+    [MemberNotNull(nameof(_transactionContextImplementation))]
     public void Initialize (ObjectID id, ClientTransaction rootTransaction)
     {
       ArgumentUtility.CheckNotNull("id", id);
@@ -408,6 +410,7 @@ namespace Remotion.Data.DomainObjects
 
       _id = id;
       _rootTransaction = rootTransaction;
+      _transactionContextImplementation = new DomainObjectTransactionContextImplementation(this);
     }
 
     /// <summary>
@@ -467,6 +470,11 @@ namespace Remotion.Data.DomainObjects
       LifetimeService.DeleteObject(DefaultTransactionContext.ClientTransaction, this);
     }
 
+    private void CheckInitializeEventNotExecuting ()
+    {
+      _transactionContextImplementation.CheckForDomainObjectReferenceInitializing();
+    }
+
     /// <summary>
     /// Provides simple, encapsulated access to the current property.
     /// </summary>
@@ -507,7 +515,7 @@ namespace Remotion.Data.DomainObjects
     /// </summary>
     internal void RaiseReferenceInitializatingEvent ()
     {
-      _isReferenceInitializeEventExecuting = true;
+      _transactionContextImplementation.BeginDomainObjectReferenceInitializing();
       try
       {
         OnReferenceInitializing();
@@ -515,7 +523,7 @@ namespace Remotion.Data.DomainObjects
       }
       finally
       {
-        _isReferenceInitializeEventExecuting = false;
+        _transactionContextImplementation.EndDomainObjectReferenceInitializing();
       }
     }
 
@@ -719,12 +727,6 @@ namespace Remotion.Data.DomainObjects
     {
       if (Deleted != null)
         Deleted(this, args);
-    }
-
-    private void CheckInitializeEventNotExecuting ()
-    {
-      if (_isReferenceInitializeEventExecuting)
-        throw new InvalidOperationException("While the OnReferenceInitializing event is executing, this member cannot be used.");
     }
 
     /// <summary>

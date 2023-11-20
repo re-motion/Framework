@@ -28,18 +28,18 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void Initialization_OneParameter ()
     {
-      var removingValidatorRegistration = new RemovingValidatorRegistration(typeof(NotEmptyValidator), null);
+      var removingValidatorRegistration = new RemovingValidatorRegistration(typeof(NotEmptyOrWhitespaceValidator), null);
 
-      Assert.That(removingValidatorRegistration.ValidatorType, Is.EqualTo(typeof(NotEmptyValidator)));
+      Assert.That(removingValidatorRegistration.ValidatorType, Is.EqualTo(typeof(NotEmptyOrWhitespaceValidator)));
       Assert.That(removingValidatorRegistration.CollectorTypeToRemoveFrom, Is.Null);
     }
 
     [Test]
     public void Initialization_TwoParameters ()
     {
-      var removingValidatorRegistration = new RemovingValidatorRegistration(typeof(NotEmptyValidator), typeof(CustomerValidationRuleCollector1));
+      var removingValidatorRegistration = new RemovingValidatorRegistration(typeof(NotEmptyOrWhitespaceValidator), typeof(CustomerValidationRuleCollector1));
 
-      Assert.That(removingValidatorRegistration.ValidatorType, Is.EqualTo(typeof(NotEmptyValidator)));
+      Assert.That(removingValidatorRegistration.ValidatorType, Is.EqualTo(typeof(NotEmptyOrWhitespaceValidator)));
       Assert.That(removingValidatorRegistration.CollectorTypeToRemoveFrom, Is.EqualTo(typeof(CustomerValidationRuleCollector1)));
     }
   }

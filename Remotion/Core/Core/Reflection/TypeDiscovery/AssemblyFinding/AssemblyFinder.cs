@@ -119,8 +119,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
           var nonprocessedAssemblyNames = currentRoot.GetReferencedAssemblies().Where(a => !processedAssemblyNames.Contains(a.FullName)).ToList();
           processedAssemblyNames.UnionWith(nonprocessedAssemblyNames.Select(a => a.FullName));
 
-          // Parallel starts here
-          foreach (var referencedAssemblyName in nonprocessedAssemblyNames.AsParallel())
+          foreach (var referencedAssemblyName in nonprocessedAssemblyNames)
           {
             var referencedAssembly = _assemblyLoader.TryLoadAssembly(referencedAssemblyName, currentRoot.GetFullNameChecked());
             if (referencedAssembly != null) // might return null if filtered by the loader
@@ -133,7 +132,6 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
               }
             }
           }
-          // Parallel ends here
         }
 
         return result

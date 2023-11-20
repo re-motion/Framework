@@ -99,13 +99,13 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     [Test]
     public void RegisterValidator_WithCollectorNotNullAndPredicateNull_AddsValidatorToCollector ()
     {
-      _removingPropertyValidationRuleCollector.RegisterValidator(typeof(NotEmptyValidator), typeof(CustomerValidationRuleCollector1), null);
+      _removingPropertyValidationRuleCollector.RegisterValidator(typeof(NotEmptyOrWhitespaceValidator), typeof(CustomerValidationRuleCollector1), null);
 
       Assert.That(_removingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo(1));
 
       var removingPropertyValidatorRegistration = _removingPropertyValidationRuleCollector.Validators.Single();
 
-      Assert.That(removingPropertyValidatorRegistration.ValidatorType, Is.EqualTo(typeof(NotEmptyValidator)));
+      Assert.That(removingPropertyValidatorRegistration.ValidatorType, Is.EqualTo(typeof(NotEmptyOrWhitespaceValidator)));
       Assert.That(removingPropertyValidatorRegistration.CollectorTypeToRemoveFrom, Is.EqualTo(typeof(CustomerValidationRuleCollector1)));
       Assert.That(removingPropertyValidatorRegistration.ValidatorPredicate, Is.Null);
       Assert.That(
@@ -118,13 +118,13 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     public void RegisterValidator_WithCollectorNullAndPredicateNotNull_AddsValidatorToCollector ()
     {
       Func<IPropertyValidator, bool> validatorPredicate = _ => false;
-      _removingPropertyValidationRuleCollector.RegisterValidator(typeof(NotEmptyValidator), null, validatorPredicate);
+      _removingPropertyValidationRuleCollector.RegisterValidator(typeof(NotEmptyOrWhitespaceValidator), null, validatorPredicate);
 
       Assert.That(_removingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo(1));
 
       var removingPropertyValidatorRegistration = _removingPropertyValidationRuleCollector.Validators.Single();
 
-      Assert.That(removingPropertyValidatorRegistration.ValidatorType, Is.EqualTo(typeof(NotEmptyValidator)));
+      Assert.That(removingPropertyValidatorRegistration.ValidatorType, Is.EqualTo(typeof(NotEmptyOrWhitespaceValidator)));
       Assert.That(removingPropertyValidatorRegistration.CollectorTypeToRemoveFrom, Is.Null);
       Assert.That(removingPropertyValidatorRegistration.ValidatorPredicate, Is.SameAs(validatorPredicate));
       Assert.That(
@@ -137,27 +137,42 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     {
       _removingPropertyValidationRuleCollector.RegisterValidator(typeof(StubPropertyValidator), null, null);
       _removingPropertyValidationRuleCollector.RegisterValidator(typeof(StubPropertyValidator), null, null);
-      _removingPropertyValidationRuleCollector.RegisterValidator(typeof(NotEmptyValidator), null, null);
+      _removingPropertyValidationRuleCollector.RegisterValidator(typeof(NotEmptyOrWhitespaceValidator), null, null);
 
       Assert.That(
           _removingPropertyValidationRuleCollector.Validators.Select(v => v.ValidatorType),
-          Is.EqualTo(new[] { typeof(StubPropertyValidator), typeof(StubPropertyValidator), typeof(NotEmptyValidator) }));
+          Is.EqualTo(new[] { typeof(StubPropertyValidator), typeof(StubPropertyValidator), typeof(NotEmptyOrWhitespaceValidator) }));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void RegisterValidator_ValidatorTypeDoesNotImplementIPropertyValidator_ThrowsArgumentException ()
     {
+      Assert.That(
+          () => _removingPropertyValidationRuleCollector.RegisterValidator(typeof(Customer), typeof(CustomerValidationRuleCollector1), null),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Parameter 'validatorType' is a 'Remotion.Validation.UnitTests.TestDomain.Customer', "
+                  + "which cannot be assigned to type 'Remotion.Validation.Validators.IPropertyValidator'.",
+                  "validatorType"));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void RegisterValidator_CollectorTypeDoesNotImplementIValidationRuleCollector_ThrowsArgumentException ()
     {
+      Assert.That(
+          () => _removingPropertyValidationRuleCollector.RegisterValidator(
+              typeof(StubPropertyValidator),
+              typeof(Customer),
+              null),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Parameter 'collectorTypeToRemoveFrom' is a 'Remotion.Validation.UnitTests.TestDomain.Customer', "
+                  + "which cannot be assigned to type 'Remotion.Validation.IValidationRuleCollector'.",
+                  "collectorTypeToRemoveFrom"));
     }
 
     [Test]
-    public void To_String ()
+    public void ToString_Overridden ()
     {
       var result = _removingPropertyValidationRuleCollector.ToString();
 

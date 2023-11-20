@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
+using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
@@ -39,6 +41,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public string GetText ()
     {
       return Scope.Text.Trim();
+    }
+
+    /// <summary>
+    /// Gets any validation errors assigned to the cell.
+    /// </summary>
+    public BocListValidationError[] GetValidationErrors ()
+    {
+      return Scope.FindAllCss("div.screenReaderText:last-child ul li", options: Options.NoWait)
+          .Select(BocListValidationError.Parse)
+          .ToArray();
     }
 
     /// <inheritdoc/>

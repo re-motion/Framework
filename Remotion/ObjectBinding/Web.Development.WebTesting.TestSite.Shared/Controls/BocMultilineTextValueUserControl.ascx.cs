@@ -16,11 +16,15 @@
 // 
 using System;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
 {
-  public partial class BocMultilineTextValueUserControl : DataEditUserControl
+  public partial class BocMultilineTextValueUserControl : DataEditUserControl, IDataControlWithValidationDispatcher
   {
+    public BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceDispatchingValidator => CurrentObjectValidationResultDispatchingValidator;
+
     public override IBusinessObjectDataSourceControl DataSource
     {
       get { return CurrentObject; }

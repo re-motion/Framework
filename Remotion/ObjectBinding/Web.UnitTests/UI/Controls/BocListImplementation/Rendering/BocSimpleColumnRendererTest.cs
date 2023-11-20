@@ -56,7 +56,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
       _renderingContext = new BocColumnRenderingContext<BocSimpleColumnDefinition>(
-          new BocColumnRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, Column, 0, 0));
+          new BocColumnRenderingContext(
+              HttpContext,
+              Html.Writer,
+              List.Object,
+              businessObjectWebServiceContext,
+              Column,
+              ColumnIndexProvider.Object,
+              0,
+              0));
     }
 
     [Test]
@@ -75,10 +83,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var span = Html.GetAssertedChildElement(td, "div", 0);
-      Html.AssertAttribute(span, "class", _bocListCssClassDefinition.Content);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
 
-      var textWrapper = Html.GetAssertedChildElement(span, "span", 0);
+      var div = Html.GetAssertedChildElement(cellStructureDiv, "div", 0);
+      Html.AssertAttribute(div, "class", _bocListCssClassDefinition.Content);
+
+      var textWrapper = Html.GetAssertedChildElement(div, "span", 0);
       Html.AssertTextNode(textWrapper, "referencedObject1", 0);
     }
 
@@ -97,7 +108,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var document = Html.GetResultDocument();
       var td = Html.GetAssertedChildElement(document, "td", 0);
-      var span = Html.GetAssertedChildElement(td, "div", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      var span = Html.GetAssertedChildElement(cellStructureDiv, "div", 0);
       var textWrapper = Html.GetAssertedChildElement(span, "span", 0);
       Html.AssertAttribute(textWrapper, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, string.Empty);
     }
@@ -119,7 +131,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(businessObject.ReferenceValue, Is.Null);
       var document = Html.GetResultDocument();
       var td = Html.GetAssertedChildElement(document, "td", 0);
-      var span = Html.GetAssertedChildElement(td, "div", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      var span = Html.GetAssertedChildElement(cellStructureDiv, "div", 0);
       var textWrapper = Html.GetAssertedChildElement(span, "span", 0);
       Html.AssertAttribute(textWrapper, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, string.Empty);
     }
@@ -141,7 +154,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var span = Html.GetAssertedChildElement(td, "div", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+
+      var span = Html.GetAssertedChildElement(cellStructureDiv, "div", 0);
       Html.AssertAttribute(span, "class", _bocListCssClassDefinition.Content);
 
       var textWrapper = Html.GetAssertedChildElement(span, "span", 0);
@@ -169,7 +185,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var a = Html.GetAssertedChildElement(td, "a", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+
+      var a = Html.GetAssertedChildElement(cellStructureDiv, "a", 0);
       Html.AssertAttribute(a, "id", List.Object.ClientID + "_Column_0_Command_Row_10");
       Html.AssertAttribute(a, "href", "url");
       Html.AssertAttribute(a, "onclick", "BocList.OnCommandClick();");
@@ -194,7 +213,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var span = Html.GetAssertedChildElement(td, "div", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+
+      var span = Html.GetAssertedChildElement(cellStructureDiv, "div", 0);
       Html.AssertAttribute(span, "class", _bocListCssClassDefinition.Content);
 
       Html.AssertIcon(span, EventArgs.BusinessObject, null);
@@ -228,7 +250,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var span = Html.GetAssertedChildElement(td, "div", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+
+      var span = Html.GetAssertedChildElement(cellStructureDiv, "div", 0);
       Html.AssertAttribute(span, "class", _bocListCssClassDefinition.Content);
 
       var clickSpan = Html.GetAssertedChildElement(span, "div", 0);
@@ -266,7 +291,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var td = Html.GetAssertedChildElement(document, "td", 0);
       Html.AssertAttribute(td, DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, "1");
-      var span = Html.GetAssertedChildElement(td, "div", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      var span = Html.GetAssertedChildElement(cellStructureDiv, "div", 0);
       var clickSpan = Html.GetAssertedChildElement(span, "div", 0);
       Html.AssertAttribute(clickSpan, "onclick", "BocList.OnCommandClick();");
       Html.AssertAttribute(clickSpan, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, "referencedObject1");

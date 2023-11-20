@@ -89,7 +89,12 @@
 </remotion:bocreferencevalue></td>
     <td>
       disabled, unbound, value set, read only</td>
-    <td style="WIDTH: 20%"><asp:label id="DisabledUnboundReadOnlyPartnerFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td></tr></table>
+    <td style="WIDTH: 20%"><asp:label id="DisabledUnboundReadOnlyPartnerFieldValueLabel" runat="server" enableviewstate="False">#</asp:label></td></tr>
+  <tr>
+    <td></td>
+    <td><remotion:bocreferencevalue id=FatherField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Father" /></td>
+    <td>bound, required</td>
+    <td style="WIDTH: 20%"><asp:label id=FatherFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr></table>
 <p>Partner Command Click: <asp:label id="PartnerCommandClickLabel" runat="server" enableviewstate="False">#</asp:label></p>
 <p>Partner Selection Changed: <asp:label id=PartnerFieldSelectionChangedLabel runat="server" enableviewstate="False">#</asp:label></p>
 <p>Partner Menu Click: <asp:label id=PartnerFieldMenuClickEventArgsLabel runat="server" enableviewstate="False">#</asp:label></p>

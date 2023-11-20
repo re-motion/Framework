@@ -30,7 +30,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithExtensibleEnumProperties>(
           "NoAttribute",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
 
       DomainModelConstraintProviderStub
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
@@ -52,7 +53,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithExtensibleEnumProperties>(
           "NullableFromAttribute",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
 
       DomainModelConstraintProviderStub
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
@@ -74,11 +76,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithExtensibleEnumProperties>(
           "NotNullable",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
 
       DomainModelConstraintProviderStub
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
           .Returns(false);
+
+      var extensibleEnumValue = TestExtensibleEnum.Values.Value2();
+      PropertyDefaultValueProviderStub
+          .Setup(stub => stub.GetDefaultValue(propertyReflector.PropertyInfo, false))
+          .Returns(extensibleEnumValue);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
@@ -88,7 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       Assert.That(actual.PropertyType, Is.SameAs(typeof(TestExtensibleEnum)));
       Assert.That(actual.IsNullable, Is.False);
       Assert.That(actual.MaxLength, Is.Null);
-      Assert.That(actual.DefaultValue, Is.EqualTo(TestExtensibleEnum.Values.Value1()));
+      Assert.That(actual.DefaultValue, Is.EqualTo(extensibleEnumValue));
     }
 
     // ReSharper disable UnusedMember.Local

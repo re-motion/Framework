@@ -17,6 +17,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Reflection;
 using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.UnitTests.TestDomain;
@@ -111,19 +112,34 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void RegisterValidator_ValidatorTypeDoesNotImplementIObjectValidator_ThrowsArgumentException ()
     {
+      Assert.That(
+          () => _removingObjectValidationRuleCollector.RegisterValidator(typeof(Customer), typeof(CustomerValidationRuleCollector1), null),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Parameter 'validatorType' is a 'Remotion.Validation.UnitTests.TestDomain.Customer', "
+                  + "which cannot be assigned to type 'Remotion.Validation.Validators.IObjectValidator'.",
+                  "validatorType"));
     }
 
     [Test]
-    [Ignore("TODO RM-5906")]
     public void RegisterValidator_CollectorTypeDoesNotImplementIValidationRuleCollector_ThrowsArgumentException ()
     {
+      Assert.That(
+          () => _removingObjectValidationRuleCollector.RegisterValidator(
+              typeof(FakeCustomerValidator),
+              typeof(Customer),
+              null),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Parameter 'collectorTypeToRemoveFrom' is a 'Remotion.Validation.UnitTests.TestDomain.Customer', "
+                  + "which cannot be assigned to type 'Remotion.Validation.IValidationRuleCollector'.",
+                  "collectorTypeToRemoveFrom"));
     }
 
     [Test]
-    public void To_String ()
+    public void ToString_Overridden ()
     {
       var result = _removingObjectValidationRuleCollector.ToString();
 

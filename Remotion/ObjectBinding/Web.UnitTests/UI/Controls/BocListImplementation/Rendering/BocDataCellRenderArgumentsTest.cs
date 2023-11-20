@@ -47,6 +47,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           rowIndex: 17,
           showIcon: showIcon,
           cellID: "TheCellID",
+          columnsWithValidationFailures: Array.Empty<bool>(),
           headerIDs: new[] { "X" });
 
       Assert.That(arguments.AdditionalCssClassForDataRow, Is.EqualTo(_bocListDataRowRenderEventArgs.AdditionalCssClassForDataRow));
@@ -63,14 +64,26 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void IsRowHeader_WithCellIDNotNull_ReturnsTrue ()
     {
-      var arguments = new BocDataCellRenderArguments(_bocListDataRowRenderEventArgs, -1, false, cellID: "TheCellID", headerIDs: Array.Empty<string>());
+      var arguments = new BocDataCellRenderArguments(
+          _bocListDataRowRenderEventArgs,
+          -1,
+          false,
+          cellID: "TheCellID",
+          headerIDs: Array.Empty<string>(),
+          columnsWithValidationFailures: Array.Empty<bool>());
 
       Assert.That(arguments.IsRowHeader, Is.True);
     }
     [Test]
     public void IsRowHeader_WithCellIDNull_ReturnsFalse ()
     {
-      var arguments = new BocDataCellRenderArguments(_bocListDataRowRenderEventArgs, -1, false, cellID: null, headerIDs: Array.Empty<string>());
+      var arguments = new BocDataCellRenderArguments(
+          _bocListDataRowRenderEventArgs,
+          -1,
+          false,
+          cellID: null,
+          headerIDs: Array.Empty<string>(),
+          columnsWithValidationFailures: Array.Empty<bool>());
 
       Assert.That(arguments.IsRowHeader, Is.False);
     }

@@ -22,8 +22,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.UnitTesting
       using (var clientTransaction = ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var newObject = CreateClassWithAllDataTypes();
-        newObject.StringWithNullValueProperty = null;
-        newObject.NullableBinaryProperty = null;
+        newObject.PopulateMandatoryProperties();
 
         clientTransaction.Commit();
       }

@@ -72,7 +72,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
       _renderingContext = new BocColumnRenderingContext<BocCustomColumnDefinition>(
-              new BocColumnRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, Column, 0, 0));
+          new BocColumnRenderingContext(
+              HttpContext,
+              Html.Writer,
+              List.Object,
+              businessObjectWebServiceContext,
+              Column,
+              ColumnIndexProvider.Object,
+              0,
+              0));
     }
 
     [Test]
@@ -93,7 +101,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var span = Html.GetAssertedChildElement(td, "div", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+
+      var span = Html.GetAssertedChildElement(cellStructureDiv, "div", 0);
       Html.AssertAttribute(span, "onclick", "BocList.OnCommandClick();");
     }
 
@@ -115,7 +126,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var span = Html.GetAssertedChildElement(td, "div", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+
+      var span = Html.GetAssertedChildElement(cellStructureDiv, "div", 0);
       Html.AssertAttribute(span, "onclick", "BocList.OnCommandClick();");
     }
 
@@ -137,7 +151,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var span = Html.GetAssertedChildElement(td, "div", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+
+      var span = Html.GetAssertedChildElement(cellStructureDiv, "div", 0);
       Html.AssertAttribute(span, "onclick", "BocList.OnCommandClick();");
 
       _smartControlMock.Verify(_ => _.AssignLabels(new[] { "h1", "h2" }));

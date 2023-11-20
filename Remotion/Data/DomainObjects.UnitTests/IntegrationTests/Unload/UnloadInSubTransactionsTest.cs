@@ -155,7 +155,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var orderInOtherTx = DomainObjectIDs.Order1.GetObject<Order>();
+
         var newOrderItem = OrderItem.NewObject();
+        newOrderItem.Product = "Product";
+
         newOrderItemID = newOrderItem.ID;
         orderInOtherTx.OrderItems.Add(newOrderItem);
         ClientTransaction.Current.Commit();
@@ -262,6 +265,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
         var orderInOtherTx = DomainObjectIDs.Order1.GetObject<Order>();
         orderInOtherTx.OrderTicket.Delete();
         orderInOtherTx.OrderTicket = OrderTicket.NewObject();
+        orderInOtherTx.OrderTicket.FileName = @"C:\order.tkt";
         newOrderTicketID = orderInOtherTx.OrderTicket.ID;
         ClientTransaction.Current.Commit();
       }
@@ -367,6 +371,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       {
         var computerInOtherTx = computer1.ID.GetObject<Computer>();
         computerInOtherTx.Employee = Employee.NewObject();
+        computerInOtherTx.Employee.Name = "Employee";
         newEmployeeID = computerInOtherTx.Employee.ID;
         ClientTransaction.Current.Commit();
       }
@@ -549,6 +554,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
         var orderInOtherTx = DomainObjectIDs.Order1.GetObject<Order>();
         var orderItem1InOtherTx = DomainObjectIDs.OrderItem1.GetObject<OrderItem>();
         var newOrderItem = OrderItem.NewObject();
+        newOrderItem.Product = "Product";
         newOrderItemID = newOrderItem.ID;
         orderInOtherTx.OrderItems.Add(newOrderItem);
         orderInOtherTx.OrderItems.Remove(orderItem1InOtherTx);

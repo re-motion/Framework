@@ -63,6 +63,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         get { return _bocList.EnableOptionalValidators; }
       }
 
+      public bool IsInlineValidationDisplayEnabled
+      {
+        get { return ((IBocList)_bocList).IsInlineValidationDisplayEnabled; }
+      }
+
       public EditableRowDataSourceFactory EditModeDataSourceFactory
       {
         get { return _bocList.EditModeDataSourceFactory; }

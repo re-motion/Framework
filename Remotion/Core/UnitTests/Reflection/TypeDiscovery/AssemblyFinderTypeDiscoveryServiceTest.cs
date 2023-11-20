@@ -78,7 +78,6 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
       var assemblies = new HashSet<Assembly>();
       assemblies.Add(_remotionAssembly);
       assemblies.Add(_dotnetAssembly);
-      assemblies.Add(typeof(CommonServiceLocator.IServiceLocator).Assembly);
       assemblies.Add(typeof(log4net.ILog).Assembly);
       assemblies.Add(typeof(System.Collections.Specialized.StringCollection).Assembly);
       assemblies.Add(typeof(System.Collections.CollectionBase).Assembly);
@@ -88,6 +87,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
       assemblies.Add(typeof(System.ComponentModel.TypeConverter).Assembly);
       assemblies.Add(typeof(System.Configuration.Provider.ProviderBase).Assembly);
       assemblies.Add(typeof(System.Diagnostics.TraceListener).Assembly);
+      assemblies.Add(typeof(System.Text.RegularExpressions.Regex).Assembly);
       assemblies.Add(typeof(System.Xml.XmlNode).Assembly);
       var expectedTypes = new HashSet<Type>(assemblies.SelectMany(a => a.GetTypes()));
 
@@ -112,7 +112,6 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
       var assemblies = new HashSet<Assembly>();
       assemblies.Add(_remotionAssembly);
       assemblies.Add(_dotnetAssembly);
-      assemblies.Add(typeof(CommonServiceLocator.IServiceLocator).Assembly);
       assemblies.Add(typeof(log4net.ILog).Assembly);
       assemblies.Add(typeof(System.Collections.Specialized.StringCollection).Assembly);
       assemblies.Add(typeof(System.Collections.CollectionBase).Assembly);
@@ -122,6 +121,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
       assemblies.Add(typeof(System.ComponentModel.TypeConverter).Assembly);
       assemblies.Add(typeof(System.Configuration.Provider.ProviderBase).Assembly);
       assemblies.Add(typeof(System.Diagnostics.TraceListener).Assembly);
+      assemblies.Add(typeof(System.Text.RegularExpressions.Regex).Assembly);
       assemblies.Add(typeof(System.Xml.XmlNode).Assembly);
       var expectedTypes = new HashSet<Type>(assemblies.SelectMany(a => a.GetTypes()));
 

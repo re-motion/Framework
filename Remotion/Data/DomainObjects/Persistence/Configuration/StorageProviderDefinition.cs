@@ -18,7 +18,6 @@ using System;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Linq;
-using CommonServiceLocator;
 using Remotion.Configuration;
 using Remotion.Mixins;
 using Remotion.ServiceLocation;

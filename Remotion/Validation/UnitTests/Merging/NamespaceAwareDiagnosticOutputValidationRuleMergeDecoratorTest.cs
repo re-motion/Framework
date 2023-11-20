@@ -94,7 +94,7 @@ namespace Remotion.Validation.UnitTests.Merging
       var userNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.UserName);
       var lastNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.LastName);
       var stubValidator1 = new NotNullValidator(new InvariantValidationMessage("Fake Message"));
-      var stubValidator2 = new NotEmptyValidator(new InvariantValidationMessage("Fake Message"));
+      var stubValidator2 = new NotEmptyOrWhitespaceValidator(new InvariantValidationMessage("Fake Message"));
       var stubValidator3 = new NotEqualValidator("test", new InvariantValidationMessage("Fake Message"));
       var stubValidator4 = new StubPropertyValidator();
 
@@ -102,11 +102,14 @@ namespace Remotion.Validation.UnitTests.Merging
           .Setup(stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(NotNullValidator)), It.IsAny<Func<Type, string>>()))
           .Returns("Remotion.Validation.Validators.NotNullValidator");
       _validatorFormatterStub
-          .Setup(stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(LengthValidator)), It.IsAny<Func<Type, string>>()))
-          .Returns("Remotion.Validation.Validators.LengthValidator");
+          .Setup(stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(MaximumLengthValidator)), It.IsAny<Func<Type, string>>()))
+          .Returns("Remotion.Validation.Validators.MaximumLengthValidator");
       _validatorFormatterStub
-          .Setup(stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(NotEmptyValidator)), It.IsAny<Func<Type, string>>()))
-          .Returns("Remotion.Validation.Validators.NotEmptyValidator");
+          .Setup(stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(NotEmptyOrWhitespaceValidator)), It.IsAny<Func<Type, string>>()))
+          .Returns("Remotion.Validation.Validators.NotEmptyOrWhitespaceValidator");
+      _validatorFormatterStub
+          .Setup(stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(NotEmptyBinaryValidator)), It.IsAny<Func<Type, string>>()))
+          .Returns("Remotion.Validation.Validators.NotEmptyBinaryValidator");
       _validatorFormatterStub
           .Setup(stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(NotEqualValidator)), It.IsAny<Func<Type, string>>()))
           .Returns("Remotion.Validation.Validators.NotEqualValidator");
@@ -133,9 +136,9 @@ namespace Remotion.Validation.UnitTests.Merging
           stubValidator2,
           new[]
           {
-              new RemovingPropertyValidatorRegistration(typeof(NotEmptyValidator), null, null, removingPropertyRuleStub1.Object),
-              new RemovingPropertyValidatorRegistration(typeof(NotEmptyValidator), null, null, removingPropertyRuleStub1.Object),
-              new RemovingPropertyValidatorRegistration(typeof(NotEmptyValidator), null, null, removingPropertyRuleStub2.Object)
+              new RemovingPropertyValidatorRegistration(typeof(NotEmptyOrWhitespaceValidator), null, null, removingPropertyRuleStub1.Object),
+              new RemovingPropertyValidatorRegistration(typeof(NotEmptyOrWhitespaceValidator), null, null, removingPropertyRuleStub1.Object),
+              new RemovingPropertyValidatorRegistration(typeof(NotEmptyOrWhitespaceValidator), null, null, removingPropertyRuleStub2.Object)
           });
       var logContextInfo2 = new PropertyValidatorLogContextInfo(
           stubValidator1,
@@ -163,9 +166,9 @@ namespace Remotion.Validation.UnitTests.Merging
           + "\r\n    -> Remotion.Validation.UnitTests.TestDomain.Customer#UserName"
           + "\r\n        VALIDATORS:"
           + "\r\n        -> Remotion.Validation.Validators.NotNullValidator (x2)"
-          + "\r\n        -> Remotion.Validation.Validators.NotEmptyValidator (x1)"
+          + "\r\n        -> Remotion.Validation.Validators.NotEmptyOrWhitespaceValidator (x1)"
           + "\r\n        MERGE LOG:"
-          + "\r\n        -> 'Remotion.Validation.Validators.NotEmptyValidator' was removed from collectors 'CustomerValidationRuleCollector1, CustomerValidationRuleCollector2'"
+          + "\r\n        -> 'Remotion.Validation.Validators.NotEmptyOrWhitespaceValidator' was removed from collectors 'CustomerValidationRuleCollector1, CustomerValidationRuleCollector2'"
           + "\r\n        -> 'Remotion.Validation.Validators.NotNullValidator' was removed from collector 'CustomerValidationRuleCollector2'"
           + "\r\n"
           + "\r\n    -> Remotion.Validation.UnitTests.TestDomain.Person#LastName"
@@ -192,7 +195,7 @@ namespace Remotion.Validation.UnitTests.Merging
           + "\r\n"
           + "\r\n    -> Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseType#Property2"
           + "\r\n        ADDED REMOVABLE VALIDATORS:"
-          + "\r\n        -> Remotion.Validation.Validators.LengthValidator (x1)"
+          + "\r\n        -> Remotion.Validation.Validators.MaximumLengthValidator (x1)"
           + "\r\n        ADDED META VALIDATION RULES:"
           + "\r\n        -> Remotion.Validation.UnitTests.TestDomain.ValidationRules.MaxLengthPropertyMetaValidationRule"
           + "\r\n"
@@ -200,7 +203,7 @@ namespace Remotion.Validation.UnitTests.Merging
           + "\r\n"
           + "\r\n    -> Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseType#Property2"
           + "\r\n        REMOVED VALIDATORS:"
-          + "\r\n        -> Remotion.Validation.Validators.NotEmptyValidator#Conditional (x1)"
+          + "\r\n        -> Remotion.Validation.Validators.NotEmptyOrWhitespaceValidator#Conditional (x1)"
           + "\r\n        -> Remotion.Validation.Validators.MaximumLengthValidator#Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseTypeCollector1 (x1)";
       //TODO RM-5906: test IObjectValidator
       CheckLoggingMethod(() => _diagnosticOutputValidationRuleMergeDecorator.Merge(validationCollectorInfos), expectedBeforeMerge, 1);

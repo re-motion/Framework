@@ -64,7 +64,9 @@ namespace Remotion.Validation.UnitTests.Validators
       var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
       Assert.That(validationFailures.Length, Is.EqualTo(1));
-      //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
+      Assert.That(validationFailures[0].ValidatedObject, Is.EqualTo(propertyValidatorContext.Instance));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.Property), Is.EqualTo(new [] { propertyValidatorContext.Property }));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.ValidatedPropertyValue), Is.EqualTo(new [] { propertyValidatorContext.PropertyValue }));
       Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must meet the specified condition."));
       Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message."));
     }

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CommonServiceLocator;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.Enumerables;

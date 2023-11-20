@@ -161,6 +161,27 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public IEnumerable<IPropertyValidator> GetRemovablePropertyValidators ()
     {
+      if (!_domainModelConstraintProvider.IsNullable(_implementationPropertyInformation))
+      {
+        if (_implementationProperty.PropertyType == typeof(string))
+        {
+          yield return PropertyValidatorFactory.Create(
+              _implementationPropertyInformation,
+              parameters => new NotEmptyOrWhitespaceValidator(parameters.ValidationMessage),
+              _validationMessageFactory);
+        }
+        else if (_implementationProperty.PropertyType == typeof(byte[]))
+        {
+          yield return PropertyValidatorFactory.Create(
+              _implementationPropertyInformation,
+              parameters => new NotEmptyBinaryValidator(parameters.ValidationMessage),
+              _validationMessageFactory);
+        }
+      }
+    }
+
+    public IEnumerable<IPropertyValidator> GetNonRemovablePropertyValidators ()
+    {
       var maxLength = _domainModelConstraintProvider.GetMaxLength(_implementationPropertyInformation);
       if (maxLength.HasValue)
       {
@@ -170,20 +191,6 @@ namespace Remotion.Data.DomainObjects.Validation
             _validationMessageFactory);
       }
 
-      if (!_domainModelConstraintProvider.IsNullable(_implementationPropertyInformation)
-          && typeof(IEnumerable).IsAssignableFrom(_implementationProperty.PropertyType)
-          && !ReflectionUtility.IsObjectList(_implementationProperty.PropertyType)
-          && !ReflectionUtility.IsIObjectList(_implementationProperty.PropertyType))
-      {
-        yield return PropertyValidatorFactory.Create(
-            _implementationPropertyInformation,
-            parameters => new NotEmptyValidator(parameters.ValidationMessage),
-            _validationMessageFactory);
-      }
-    }
-
-    public IEnumerable<IPropertyValidator> GetNonRemovablePropertyValidators ()
-    {
       if (!_domainModelConstraintProvider.IsNullable(_implementationPropertyInformation))
       {
         yield return PropertyValidatorFactory.Create(
@@ -196,7 +203,7 @@ namespace Remotion.Data.DomainObjects.Validation
         {
           yield return PropertyValidatorFactory.Create(
               _implementationPropertyInformation,
-              parameters => new NotEmptyValidator(parameters.ValidationMessage),
+              parameters => new NotEmptyCollectionValidator(parameters.ValidationMessage),
               _validationMessageFactory);
         }
       }
@@ -209,9 +216,7 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public IEnumerable<IPropertyMetaValidationRule> GetMetaValidationRules ()
     {
-      var maxLength = _domainModelConstraintProvider.GetMaxLength(_implementationPropertyInformation);
-      if (maxLength.HasValue)
-        yield return new RemotionMaxLengthPropertyMetaValidationRule(_implementationProperty, maxLength.Value);
+      return Enumerable.Empty<IPropertyMetaValidationRule>();
     }
   }
 }

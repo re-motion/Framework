@@ -119,7 +119,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       var mixin2 = Mixin.Get<MixinAddingUnidirectionalRelation2>(mixedInstance);
 
       var relationTarget1 = clientTransaction.ExecuteInScope(() => Computer.NewObject());
+      relationTarget1.SerialNumber = "12345";
       var relationTarget2 = clientTransaction.ExecuteInScope(() => Computer.NewObject());
+      relationTarget2.SerialNumber = "09876";
 
       mixin1.Computer = relationTarget1;
       mixin2.Computer = relationTarget2;
@@ -146,7 +148,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       MixinAddingUnidirectionalRelation1 mixin2 = Mixin.Get<MixinAddingUnidirectionalRelation1>(mixedInstance2);
 
       Computer relationTarget1 = clientTransaction.ExecuteInScope(() => Computer.NewObject());
-      Computer relationTarget2 = clientTransaction.ExecuteInScope(() => Computer.NewObject());
+      relationTarget1.SerialNumber = "12345";
+      var relationTarget2 = clientTransaction.ExecuteInScope(() => Computer.NewObject());
+      relationTarget2.SerialNumber = "09876";
 
       mixin1.Computer = relationTarget1;
       mixin2.Computer = relationTarget2;

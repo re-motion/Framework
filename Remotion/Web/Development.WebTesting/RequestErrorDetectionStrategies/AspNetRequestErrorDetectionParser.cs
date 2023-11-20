@@ -15,10 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics;
+using System.Runtime.Serialization;
 using System.Web;
 using Coypu;
 using JetBrains.Annotations;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.Extensions;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies
 {
@@ -71,33 +76,64 @@ namespace Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies
       }
     }
 
+    [DataContract]
+    private class ErrorObject
+    {
+      [DataMember]
+      public string? Message { get; set; }
+
+      [DataMember]
+      public string? StackTrace { get; set; }
+    }
+
+    private const string c_errorPageDetectionJs = @"
+function fixNewlines(text) {
+  // Ensure strings have a CRLF endings
+  return text.replaceAll(/(?<!\r)\n/g, '\r\n');
+}
+
+let result = null;
+
+const smartPageErrorMessage = document.getElementById('SmartPageServerErrorMessage');
+const errorPageTarget = smartPageErrorMessage
+  ? smartPageErrorMessage.querySelector(':scope .SmartPageErrorBody > div')
+  : document.body;
+
+const message = errorPageTarget?.querySelector(':scope > span > h2 > i')?.innerText;
+const stacktrace = errorPageTarget?.querySelector(':scope > font > table:nth-of-type(2) > tbody > tr > td > code > pre')?.innerText;
+
+if (message && stacktrace) {
+  result = {
+    Message: fixNewlines(message),
+    StackTrace: fixNewlines(stacktrace)
+  };
+}
+
+return JSON.stringify(result);
+";
+
     public Result Parse ([NotNull] ElementScope scope)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
 
-      var pageRequestManagerException = scope.FindCss(".SmartPageErrorBody:first-child", Options.NoWait);
+      // We do the error page detection using JavaScript as it provides better performance than selenium/coypu
+      // The JS solution (~2ms) is more than 25x faster than the selenium equivalent, which adds up if the detection is used often
+      var resultJson = ((IWebDriver)scope.GetDriver().Native).ExecuteJavaScript<string>(c_errorPageDetectionJs);
 
-      var startSelector = GetRootSelectorForErrorInformation(pageRequestManagerException);
+      // Shortcut the JSON deserialization for the common case (no error) to improve performance
+      if (resultJson is null or "null")
+        return Result.CreateEmptyResult();
 
-      var message = scope.FindCss(startSelector + " > span > h2 > i", Options.NoWait);
-      var stacktrace = scope.FindCss(startSelector + " > font > table:nth-of-type(2) > tbody > tr > td > code > pre", Options.NoWait);
-
-      if (message.ExistsWorkaround() && stacktrace.ExistsWorkaround())
-        return Result.CreateErrorResult(HttpUtility.HtmlDecode(message.InnerHTML.Replace("<br>", "\r\n")), HttpUtility.HtmlDecode(stacktrace.InnerHTML));
-
-      return Result.CreateEmptyResult();
-    }
-
-    private string GetRootSelectorForErrorInformation (ElementScope pageRequestManagerException)
-    {
-      if (pageRequestManagerException.ExistsWorkaround()
-          && pageRequestManagerException.Text.StartsWith("Sys.WebForms.PageRequestManagerServerErrorException:"))
+      var resultObject = DataContractJsonSerializationUtility.Deserialize<ErrorObject>(resultJson);
+      if (resultObject != null)
       {
-        return "div.SmartPageErrorBody > div";
+        return Result.CreateErrorResult(
+            resultObject.Message ?? "The error message could not be determined.",
+            resultObject.StackTrace ?? "The stack trace could not be determined.");
       }
       else
       {
-        return "body";
+        return Result.CreateEmptyResult();
       }
     }
   }

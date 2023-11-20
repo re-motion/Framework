@@ -92,7 +92,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       }
     }
 
-    public virtual void CreateControls (IBusinessObject value, BocColumnDefinition[] columns)
+    public virtual void CreateControls (IBusinessObject value, IReadOnlyList<BocColumnDefinition> columns)
     {
       ArgumentUtility.CheckNotNull("value", value);
       ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
@@ -113,9 +113,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
       _dataSource = _dataSourceFactory.Create(value);
 
-      _rowEditModeControls = new IBusinessObjectBoundEditableWebControl[columns.Length];
+      _rowEditModeControls = new IBusinessObjectBoundEditableWebControl[columns.Count];
 
-      for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
+      for (int idxColumns = 0; idxColumns < columns.Count; idxColumns++)
       {
         BocSimpleColumnDefinition? simpleColumn = columns[idxColumns] as BocSimpleColumnDefinition;
 
@@ -141,7 +141,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       _isRowEditModeValidatorsRestored = false;
     }
 
-    protected void CreatePlaceHolders (BocColumnDefinition[] columns)
+    protected void CreatePlaceHolders (IReadOnlyList<BocColumnDefinition> columns)
     {
       RemoveControls();
 
@@ -151,7 +151,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       _validatorControls = new PlaceHolder();
       Controls.Add(_validatorControls);
 
-      for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
+      for (int idxColumns = 0; idxColumns < columns.Count; idxColumns++)
       {
         _editControls.Controls.Add(new PlaceHolder());
         _validatorControls.Controls.Add(new PlaceHolder());
@@ -443,7 +443,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       writer.AddAttribute(HtmlTextWriterAttribute.Class, "bocListEditableCell");
       writer.RenderBeginTag(HtmlTextWriterTag.Div); // Div Container
 
-      if (_editModeHost.ShowEditModeValidationMarkers)
+      if (_editModeHost.ShowEditModeValidationMarkers && !_editModeHost.IsInlineValidationDisplayEnabled)
       {
         bool isCellValid = true;
         var toolTipBuilder = new StringBuilder();
@@ -466,13 +466,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
           {
             ((HtmlControl)validationErrorMarker).Attributes["tabIndex"] = "0";
             ((HtmlControl)validationErrorMarker).Attributes["title"] = null;
-            ((HtmlControl)validationErrorMarker).Attributes[HtmlTextWriterAttribute2.AriaLabel] = toolTipBuilder.ToString();
+            if (_editModeHost.DisableEditModeValidationMessages)
+              ((HtmlControl)validationErrorMarker).Attributes[HtmlTextWriterAttribute2.AriaLabel] = toolTipBuilder.ToString();
           }
           else if (validationErrorMarker is WebControl)
           {
             ((WebControl)validationErrorMarker).TabIndex = 0;
             ((WebControl)validationErrorMarker).ToolTip = null;
-            ((WebControl)validationErrorMarker).Attributes[HtmlTextWriterAttribute2.AriaLabel] = toolTipBuilder.ToString();
+            if (_editModeHost.DisableEditModeValidationMessages)
+              ((WebControl)validationErrorMarker).Attributes[HtmlTextWriterAttribute2.AriaLabel] = toolTipBuilder.ToString();
           }
           validationErrorMarker.RenderControl(writer);
         }
@@ -490,30 +492,33 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
       writer.RenderEndTag(); // Div Control
 
-      writer.AddAttribute(HtmlTextWriterAttribute.Class, "validationMessages");
-      writer.RenderBeginTag(HtmlTextWriterTag.Div);
-
-      foreach (BaseValidator validator in validators)
+      if (!_editModeHost.IsInlineValidationDisplayEnabled)
       {
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, "validationMessages");
         writer.RenderBeginTag(HtmlTextWriterTag.Div);
-        validator.RenderControl(writer);
-        writer.RenderEndTag();
 
-        if (   ! validator.IsValid
-               && validator.Display == ValidatorDisplay.None
-               && ! _editModeHost.DisableEditModeValidationMessages)
+        foreach (BaseValidator validator in validators)
         {
-          if (! string.IsNullOrEmpty(validator.CssClass))
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, validator.CssClass);
-          else
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassEditModeValidationMessage);
           writer.RenderBeginTag(HtmlTextWriterTag.Div);
-          PlainTextString.CreateFromText(validator.ErrorMessage).WriteTo(writer);
+          validator.RenderControl(writer);
           writer.RenderEndTag();
-        }
-      }
 
-      writer.RenderEndTag(); // validationMessages Div container
+          if (!validator.IsValid
+              && validator.Display == ValidatorDisplay.None
+              && !_editModeHost.DisableEditModeValidationMessages)
+          {
+            if (! string.IsNullOrEmpty(validator.CssClass))
+              writer.AddAttribute(HtmlTextWriterAttribute.Class, validator.CssClass);
+            else
+              writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassEditModeValidationMessage);
+            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            PlainTextString.CreateFromText(validator.ErrorMessage).WriteTo(writer);
+            writer.RenderEndTag();
+          }
+        }
+
+        writer.RenderEndTag(); // validationMessages Div container
+      }
 
       writer.RenderEndTag(); // Div Container
     }

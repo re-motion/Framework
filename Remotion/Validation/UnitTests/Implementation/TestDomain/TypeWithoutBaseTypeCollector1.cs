@@ -24,7 +24,7 @@ namespace Remotion.Validation.UnitTests.Implementation.TestDomain
     public TypeWithoutBaseTypeCollector1 ()
     {
       AddRule(t => t.Property1).NotNull().NotEqual("test");
-      AddRule(t => t.Property2).CanBeRemoved().AddMetaValidationRule(new MaxLengthPropertyMetaValidationRule()).Length(0, 20);
+      AddRule(t => t.Property2).CanBeRemoved().AddMetaValidationRule(new MaxLengthPropertyMetaValidationRule()).MaxLength(20);
     }
   }
 }

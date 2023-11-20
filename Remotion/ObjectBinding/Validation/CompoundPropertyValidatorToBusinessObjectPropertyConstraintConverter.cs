@@ -38,11 +38,11 @@ namespace Remotion.ObjectBinding.Validation
     }
 
 
-    public IEnumerable<IBusinessObjectPropertyConstraint> Convert (IPropertyValidator propertyValidator)
+    public IEnumerable<IBusinessObjectPropertyConstraint> Convert (IReadOnlyCollection<IPropertyValidator> propertyValidators)
     {
-      ArgumentUtility.CheckNotNull("propertyValidator", propertyValidator);
+      ArgumentUtility.CheckNotNull("propertyValidators", propertyValidators);
 
-      return Converters.SelectMany(c => c.Convert(propertyValidator));
+      return Converters.SelectMany(c => c.Convert(propertyValidators));
     }
   }
 }

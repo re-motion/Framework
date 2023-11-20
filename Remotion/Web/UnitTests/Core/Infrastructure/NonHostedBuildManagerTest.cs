@@ -53,7 +53,11 @@ namespace Remotion.Web.UnitTests.Core.Infrastructure
       Assert.That(
           () => _buildManager.GetType("Remotion.Web.Infrastructure.Invalid, Remotion.Web", throwOnError: true, ignoreCase: false),
           Throws.TypeOf<TypeLoadException>()
+#if NET8_0_OR_GREATER
+              .And.Message.StartsWith("Could not load type 'Remotion.Web.Infrastructure.Invalid' from assembly 'Remotion.Web, Version="));
+#else
               .And.Message.EqualTo("Could not load type 'Remotion.Web.Infrastructure.Invalid' from assembly 'Remotion.Web'."));
+#endif
     }
 
     [Test]

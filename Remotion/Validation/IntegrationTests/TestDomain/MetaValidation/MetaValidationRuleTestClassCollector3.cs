@@ -23,7 +23,7 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation
   {
     public MetaValidationRuleTestClassCollector3 ()
     {
-      AddRule(o => o.Property1).SetCondition(c => c.Property1 == "Test1").AddMetaValidationRule(new MaxLengthPropertyMetaValidationRule()).Length(0, 100);
+      AddRule(o => o.Property1).SetCondition(c => c.Property1 == "Test1").AddMetaValidationRule(new MaxLengthPropertyMetaValidationRule()).MaxLength(100);
     }
   }
 }

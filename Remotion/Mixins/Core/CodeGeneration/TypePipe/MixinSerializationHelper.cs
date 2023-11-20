@@ -24,6 +24,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
+#pragma warning disable SYSLIB0050
   [Serializable]
   public class MixinSerializationHelper : IObjectReference, ISerializable, IDeserializationCallback
   {
@@ -126,4 +127,5 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       // Note: This and Next properties are initialized from the target class via InitializeDeserializedMixinTarget
     }
   }
+#pragma warning restore SYSLIB0050
 }

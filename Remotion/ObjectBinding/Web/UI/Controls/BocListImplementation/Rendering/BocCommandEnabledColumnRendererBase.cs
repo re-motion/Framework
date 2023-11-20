@@ -91,7 +91,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
             renderingContext.ColumnIndex,
             new BocListRow(originalRowIndex, businessObject));
         string postBackEvent = renderingContext.Control.Page!.ClientScript.GetPostBackEventReference(renderingContext.Control, argument) + ";";
-        string onClick = renderingContext.Control.HasClientScript ? c_onCommandClickScript : string.Empty;
+        string onClick = renderingContext.Control.HasClientScript ? OnCommandClickScript : string.Empty;
         if (command.Type == CommandType.None)
           renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.Disabled);
 

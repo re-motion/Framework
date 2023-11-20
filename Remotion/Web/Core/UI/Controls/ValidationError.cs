@@ -139,7 +139,7 @@ namespace Remotion.Web.UI.Controls
     /// </remarks>
     /// <param name="cssClass"> The name of the CSS-class used to format the label. </param>
     /// <returns> A <see cref="Label"/>. </returns>
-    public HtmlGenericControl ToLabel (string cssClass)
+    public HtmlControl ToLabel (string cssClass)
     {
       HtmlGenericControl label = new HtmlGenericControl("label");
       label.EnableViewState = false;
@@ -180,7 +180,7 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     /// <param name="cssClass"> The name of the CSS-class used to format the <c>div</c>-tag. </param>
     /// <returns> A <see cref="HtmlGenericControl"/>. </returns>
-    public HtmlGenericControl ToDiv (string? cssClass = null)
+    public HtmlControl ToDiv (string? cssClass = null)
     {
       return ToGenericControl(cssClass, "div");
     }
@@ -190,7 +190,7 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     /// <param name="cssClass"> The name of the CSS-class used to format the <c>span</c>-tag. </param>
     /// <returns> A <see cref="HtmlGenericControl"/>. </returns>
-    public HtmlGenericControl ToSpan (string? cssClass = null)
+    public HtmlControl ToSpan (string? cssClass = null)
     {
       return ToGenericControl(cssClass, "span");
     }
@@ -202,15 +202,19 @@ namespace Remotion.Web.UI.Controls
     /// <param name="cssClass"> The name of the CSS-class used to format the HTML tag. </param>
     /// <param name="tag"> The HTML tag to be used. </param>
     /// <returns> A <see cref="HtmlGenericControl"/>. </returns>
-    private HtmlGenericControl ToGenericControl (string? cssClass, string tag)
+    private HtmlControl ToGenericControl (string? cssClass, string tag)
     {
-      HtmlGenericControl genericControl = new HtmlGenericControl(tag);
-      genericControl.EnableViewState = false;
+      HtmlControl control;
+      if (_validator is ILazyEvaluatedValidator)
+        control = new LazyEvaluatedValidationMessageControl(tag, _validator);
+      else
+        control = new HtmlGenericControl(tag) { InnerHtml = ValidationMessage.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks) };
 
+      control.EnableViewState = false;
       if (!string.IsNullOrEmpty(cssClass))
-        genericControl.Attributes["class"] = cssClass;
-      genericControl.InnerHtml = ValidationMessage.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
-      return genericControl;
+        control.Attributes["class"] = cssClass;
+
+      return control;
     }
   }
 }

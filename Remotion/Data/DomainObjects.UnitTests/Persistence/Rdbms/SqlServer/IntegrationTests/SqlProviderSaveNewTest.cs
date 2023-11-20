@@ -145,10 +145,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       DataContainer classWithAllDataTypes = CreateNewDataContainer(typeof(ClassWithAllDataTypes));
       ObjectID newID = classWithAllDataTypes.ID;
 
+      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "BinaryProperty", Array.Empty<byte>());
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty", new DateTime(1753, 1, 1));
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateTimeProperty", new DateTime(
           1753, 1, 1, 0, 0, 0));
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "DecimalProperty", 0m);
+      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "ExtensibleEnumProperty", Color.Values.Blue());
+      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringProperty", "Test");
+      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringPropertyWithoutMaxLength", "NoMaxLength");
 
       Provider.Save(new[] { classWithAllDataTypes });
 
@@ -166,8 +170,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "Int32Property"), Is.EqualTo(0));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "Int64Property"), Is.EqualTo(0L));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "SingleProperty"), Is.EqualTo(0F));
-      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringProperty"), Is.EqualTo(string.Empty));
-      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringPropertyWithoutMaxLength"), Is.EqualTo(string.Empty));
+      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringProperty"), Is.EqualTo("Test"));
+      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringPropertyWithoutMaxLength"), Is.EqualTo("NoMaxLength"));
       ResourceManager.IsEmptyImage(
           (byte[])GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BinaryProperty"));
 
@@ -244,6 +248,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     public void NewRelatedObjects ()
     {
       var newCustomerDataContainer = CreateNewDataContainer(typeof(Customer));
+      SetPropertyValue(newCustomerDataContainer, typeof(Company), "Name", "MyCustomer");
       var newOrderDataContainer = CreateNewDataContainer(typeof(Order));
 
       var deliveryDateProperty = GetPropertyDefinition(typeof(Order), "DeliveryDate");
@@ -340,6 +345,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       // Note: SqlDecimal has problems with Decimal.MinValue => Set this property too.
       SetPropertyValue(classWithAllDataTypesContainer, typeof(ClassWithAllDataTypes), "DecimalProperty", 10m);
+
+      // Note: PropertyDefaultValueProvider returns null for these properties, which cannot be saved
+      SetPropertyValue(classWithAllDataTypesContainer, typeof(ClassWithAllDataTypes), "BinaryProperty", Array.Empty<byte>());
+      SetPropertyValue(classWithAllDataTypesContainer, typeof(ClassWithAllDataTypes), "ExtensibleEnumProperty", Color.Values.Blue());
+      SetPropertyValue(classWithAllDataTypesContainer, typeof(ClassWithAllDataTypes), "StringProperty", "Test");
+      SetPropertyValue(classWithAllDataTypesContainer, typeof(ClassWithAllDataTypes), "StringPropertyWithoutMaxLength", "NoMaxLength");
     }
 
     private DataContainer LoadDataContainer (ObjectID id)

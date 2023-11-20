@@ -19,10 +19,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
-using CommonServiceLocator;
 using Remotion.Mixins;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
+using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -229,6 +231,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IComparer<BocListRow> CreateCellValueComparer ()
     {
       return GetPropertyPath().CreateComparer();
+    }
+
+    protected override IValidationFailureMatcher GetValidationFailureMatcher ()
+    {
+      return new BusinessObjectPropertyPathValidationFailureMatcher(GetPropertyPath());
     }
 
     IBusinessObjectClass? IBusinessObjectClassSource.BusinessObjectClass

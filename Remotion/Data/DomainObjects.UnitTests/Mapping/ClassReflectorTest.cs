@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample;
+using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
@@ -631,7 +632,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           ReflectionUtility.IsDomainObject(propertyInfoAdapter.PropertyType),
           isNullable,
           maxLength,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          propertyInfoAdapter.PropertyType.GetDefaultValue());
     }
 
     private Lazy<SortExpressionDefinition> CreateSortExpressionDefinition (string propertyName)

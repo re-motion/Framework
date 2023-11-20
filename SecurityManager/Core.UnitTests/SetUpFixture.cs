@@ -18,7 +18,6 @@
 using System;
 using System.ComponentModel.Design;
 using System.Data.SqlClient;
-using CommonServiceLocator;
 using NUnit.Framework;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Configuration;
@@ -83,6 +82,7 @@ namespace Remotion.SecurityManager.UnitTests
                     new ReflectionBasedMemberInformationNameResolver(),
                     new PropertyMetadataReflector(),
                     new DomainModelConstraintProvider(),
+                    new PropertyDefaultValueProvider(),
                     new SortExpressionDefinitionProvider(),
                     MappingReflector.CreateDomainObjectCreator()),
                 new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));

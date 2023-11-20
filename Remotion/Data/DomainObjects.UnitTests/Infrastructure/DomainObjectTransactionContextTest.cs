@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 {
@@ -36,8 +35,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     private DomainObjectTransactionContext _notYetLoadedOrder2Context;
     private DomainObjectTransactionContext _newOrderContext;
 
-    private DomainObjectTransactionContext _referenceInitializationContext;
-
     public override void SetUp ()
     {
       base.SetUp();
@@ -46,13 +43,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _notYetLoadedOrder2 = (Order)LifetimeService.GetObjectReference(TestableClientTransaction, DomainObjectIDs.Order3);
       _newOrder = Order.NewObject();
 
-      _loadedOrder1Context = new DomainObjectTransactionContext(_loadedOrder1, TestableClientTransaction);
-      _notYetLoadedOrder2Context = new DomainObjectTransactionContext(_notYetLoadedOrder2, TestableClientTransaction);
-      _newOrderContext = new DomainObjectTransactionContext(_newOrder, TestableClientTransaction);
-
-      var objectBeingInitialized = Order.NewObject();
-      PrivateInvoke.SetNonPublicField(objectBeingInitialized, "_isReferenceInitializeEventExecuting", true);
-      _referenceInitializationContext = new DomainObjectTransactionContext(objectBeingInitialized, TestableClientTransaction);
+      _loadedOrder1Context = new DomainObjectTransactionContext(new DomainObjectTransactionContextImplementation(_loadedOrder1), TestableClientTransaction);
+      _notYetLoadedOrder2Context = new DomainObjectTransactionContext(new DomainObjectTransactionContextImplementation(_notYetLoadedOrder2), TestableClientTransaction);
+      _newOrderContext = new DomainObjectTransactionContext(new DomainObjectTransactionContextImplementation(_newOrder), TestableClientTransaction);
     }
 
     [Test]
@@ -66,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     public void Initialization_InvalidTransaction ()
     {
       Assert.That(
-          () => new DomainObjectTransactionContext(_newOrder, ClientTransaction.CreateRootTransaction()),
+          () => new DomainObjectTransactionContext(new DomainObjectTransactionContextImplementation(_newOrder), ClientTransaction.CreateRootTransaction()),
           Throws.TypeOf<ClientTransactionsDifferException>());
     }
 
@@ -255,7 +248,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     public void TryEnsureDataAvailable_False ()
     {
       var notFoundObjectReference = DomainObjectMother.GetNotLoadedObject(TestableClientTransaction, new ObjectID(typeof(ClassWithAllDataTypes), Guid.NewGuid()));
-      var notFoundContext = new DomainObjectTransactionContext(notFoundObjectReference, TestableClientTransaction);
+      var notFoundContext = new DomainObjectTransactionContext(new DomainObjectTransactionContextImplementation(notFoundObjectReference), TestableClientTransaction);
       Assert.That(TestableClientTransaction.DataManager.DataContainers[notFoundObjectReference.ID], Is.Null);
 
       var result = notFoundContext.TryEnsureDataAvailable();
@@ -274,9 +267,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     }
 
     [Test]
-    public void ClientTransaction_DuringReferenceInitialization_Allowed ()
+    public void ClientTransaction_WhenReferenceInitializationIsActive_ReturnsValue ()
     {
-      Assert.That(_referenceInitializationContext.ClientTransaction, Is.SameAs(TestableClientTransaction));
+      var objectBeingInitialized = Order.NewObject();
+      var context = new DomainObjectTransactionContextImplementation(objectBeingInitialized);
+      context.BeginDomainObjectReferenceInitializing();
+      var referenceInitializationContext = new DomainObjectTransactionContext(context, TestableClientTransaction);
+
+      Assert.That(referenceInitializationContext.ClientTransaction, Is.SameAs(TestableClientTransaction));
     }
 
     private void DeleteOrder (Order order)

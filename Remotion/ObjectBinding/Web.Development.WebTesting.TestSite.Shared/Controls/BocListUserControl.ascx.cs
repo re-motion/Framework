@@ -17,15 +17,23 @@
 using System;
 using System.Linq;
 using Remotion.ObjectBinding.Sample;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
+using Remotion.Validation.Results;
 using Remotion.Web;
+using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
 {
   public partial class BocListUserControl : DataEditUserControl
   {
+    private IBusinessObjectValidationResult _validationResult = BusinessObjectValidationResult.Create(new ValidationResult());
+
     protected string SampleIconUrl;
 
     public override IBusinessObjectDataSourceControl DataSource
@@ -89,6 +97,25 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     {
       base.OnPreRender(e);
       SetTestOutput();
+
+      if (ValidationTestCaseStartDate.Checked)
+      {
+        var jobs = ((Person)CurrentObject.BusinessObject!).Jobs;
+        var startDateProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Job _) => _.StartDate));
+        AddValidationFailures(
+            ValidationFailure.CreatePropertyValidationFailure(
+                jobs[0],
+                startDateProperty,
+                jobs[0].StartDate,
+                "Start date has a failure",
+                "Localized start date has a failure"));
+      }
+
+      // We do the validation on every request since it is easier that covering it in multiple event handlers.
+      // While we use domain validation, it should only affect the last control that is intended for testing validation.
+      ((SmartPage)Page)!.PrepareValidation();
+      CurrentObjectValidationResultDispatchingValidator.DispatchValidationFailures(_validationResult);
+      CurrentObjectValidationResultDispatchingValidator.Validate();
     }
 
     private void MenuItemClickHandler (object sender, WebMenuItemClickEventArgs e)
@@ -148,6 +175,40 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     private BocListUserControlTestOutput TestOutput
     {
       get { return (BocListUserControlTestOutput)((Layout)Page.Master).GetTestOutputControl(); }
+    }
+
+    protected void ValidationTestCaseRow (object sender, EventArgs e)
+    {
+      var jobs = ((Person)CurrentObject.BusinessObject!).Jobs;
+      AddValidationFailures(
+          ValidationFailure.CreateObjectValidationFailure(
+              jobs[0],
+              "Row validation failure message",
+              "Localized row validation failure message"));
+    }
+
+    protected void ValidationTestCaseCell (object sender, EventArgs e)
+    {
+      var jobs = ((Person)CurrentObject.BusinessObject!).Jobs;
+      var displayNameProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Job _) => _.DisplayName));
+
+      AddValidationFailures(
+          ValidationFailure.CreatePropertyValidationFailure(
+              jobs[0],
+              displayNameProperty,
+              jobs[0].DisplayName,
+              "Cell validation failure message",
+              "Localized cell validation failure message"));
+    }
+
+    private void AddValidationFailures (params ValidationFailure[] validationFailures)
+    {
+      _validationResult = BusinessObjectValidationResult.Create(new ValidationResult(validationFailures));
+    }
+
+    protected void DeleteSelectedRowTestCaseRowButton_OnClick (object sender, EventArgs e)
+    {
+      JobList_Normal.RemoveRows(JobList_Normal.GetSelectedBusinessObjects());
     }
   }
 }

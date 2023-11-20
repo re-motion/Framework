@@ -15,6 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using System.IO;
+using System.Reflection;
+using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Testing;
@@ -33,6 +36,9 @@ namespace Remotion.Core.Development.Analyzers.IntegrationTests
     {
     }
 
+    private static readonly Lazy<ReferenceAssemblies> s_net80 =
+        new(() => new ReferenceAssemblies("net8.0", new PackageIdentity("Microsoft.NETCore.App.Ref", "8.0.0"), Path.Combine("ref", "net8.0")));
+
     public static DiagnosticResult Diagnostic (DiagnosticDescriptor desc) => AnalyzerVerifier<TAnalyzer>.Diagnostic(desc);
 
     public static Task VerifyAnalyzerAsync (string source, bool withSafeContextReference, params DiagnosticResult[] expected )
@@ -42,7 +48,7 @@ namespace Remotion.Core.Development.Analyzers.IntegrationTests
       var test = new Test
                  {
                      TestCode = source,
-                     ReferenceAssemblies = ReferenceAssemblies.Net.Net60,
+                     ReferenceAssemblies = GetReferenceAssemblies(typeof(SafeContext).Assembly),
                      SolutionTransforms =
                      {
                          (solution, id) =>
@@ -60,6 +66,16 @@ namespace Remotion.Core.Development.Analyzers.IntegrationTests
       test.ExpectedDiagnostics.AddRange(expected);
 
       return test.RunAsync();
+    }
+
+    private static ReferenceAssemblies GetReferenceAssemblies (Assembly assembly)
+    {
+      return assembly.GetCustomAttribute<TargetFrameworkAttribute>()!.FrameworkName switch
+      {
+          // RM-8930 Previous syntax for when the assemblies were easily accessible: ".NETCoreApp,Version=v6.0" => ReferenceAssemblies.Net.Net60
+          ".NETCoreApp,Version=v8.0" => s_net80.Value,
+          var frameworkName => throw new NotSupportedException($"'{frameworkName}' is not supported.")
+      };
     }
   }
 }

@@ -24,6 +24,7 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
@@ -186,10 +187,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     int CurrentPageIndex { get; }
     string GetCurrentPageControlName ();
 
+    bool IsInlineValidationDisplayEnabled { get; }
+
+    void BuildErrorMessages ();
+
+    /// <summary>
+    /// Gets the <see cref="ValidationFailureRepository"/> belonging to this <see cref="BocList"/>.
+    /// </summary>
+    IBocListValidationFailureRepository ValidationFailureRepository { get; }
+
+    /// <summary>
+    /// Returns the <see cref="BocColumnDefinition"/>s displayed in the <see cref="IBocList"/>.
+    /// </summary>
+    IReadOnlyList<BocColumnDefinition> GetColumnDefinitions ();
+
     /// <summary>
     /// Gets the list of validation errors for this control.
     /// </summary>
     IEnumerable<PlainTextString> GetValidationErrors ();
+
+    /// <summary> Gets the <see cref="IBusinessObject"/>s relevant for validation. This list can be a superset of the <see cref="Value" /> property.</summary>
+    IReadOnlyList<IBusinessObject>? GetBusinessObjectsForValidation ();
+
     string? ControlServicePath { get; }
   }
 }

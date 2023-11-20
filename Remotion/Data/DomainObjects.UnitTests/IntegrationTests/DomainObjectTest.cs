@@ -53,8 +53,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       newCustomer2.Name = "NewCustomer2";
 
       Official official2 = DomainObjectIDs.Official2.GetObject<Official>();
+
       Ceo newCeo1 = Ceo.NewObject();
+      newCeo1.Name = "NewCeo1";
+
       Ceo newCeo2 = Ceo.NewObject();
+      newCeo2.Name = "NewCeo2";
+
       Order newOrder1 = Order.NewObject();
       newOrder1.DeliveryDate = new DateTime(2006, 1, 1);
 
@@ -62,7 +67,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       newOrder2.DeliveryDate = new DateTime(2006, 2, 2);
 
       OrderItem newOrderItem1 = OrderItem.NewObject();
+      newOrderItem1.Product = "Product1";
+
       OrderItem newOrderItem2 = OrderItem.NewObject();
+      newOrderItem2.Product = "Product2";
 
       DomainObjectCollection newCustomer1Orders = newCustomer1.Orders;
       Assert.That(newCustomer1Orders.IsDataComplete, Is.True);
@@ -706,6 +714,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 
       //13
       //OrderTicket newOrderTicket1 = OrderTicket.NewObject (newOrder1);
+      //newOrderTicket1.FileName = @"C:\orders\order1.tkt";
 
       extension
           .InVerifiableSequence(sequence1)
@@ -754,6 +763,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
           .Setup(_ => _.RelationChanged(TestableClientTransaction, It.IsNotNull<OrderTicket>(), GetEndPointDefinition(typeof(OrderTicket), "Order"), null, newOrder1))
           .Verifiable();
 
+      extension
+          .InVerifiableSequence(sequence1)
+          .Setup(_ => _.PropertyValueChanging(TestableClientTransaction, It.IsNotNull<OrderTicket>(), GetPropertyDefinition(typeof(OrderTicket), "FileName"), null, @"C:\orders\order1.tkt"))
+          .Verifiable();
+
+      extension
+          .InVerifiableSequence(sequence1)
+          .Setup(_ => _.PropertyValueChanged(TestableClientTransaction, It.IsNotNull<OrderTicket>(), GetPropertyDefinition(typeof(OrderTicket), "FileName"), null, @"C:\orders\order1.tkt"))
+          .Verifiable();
+
       extension.Setup(stub => stub.Key).Returns("Extension");
 
       ClientTransactionScope.CurrentTransaction.Extensions.Add(extension.Object);
@@ -785,6 +804,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         newOrder1.Official = official2;
         //13
         OrderTicket newOrderTicket1 = OrderTicket.NewObject(newOrder1);
+        newOrderTicket1.FileName = @"C:\orders\order1.tkt";
 
         newCustomer1EventReceiver.Verify();
         newCustomer2EventReceiver.Verify();
@@ -1328,18 +1348,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public void NewCustomerAndCEOTest ()
     {
       IndustrialSector industrialSector = IndustrialSector.NewObject();
+      industrialSector.Name = "Sector";
+
       Customer customer = Customer.NewObject();
+      customer.Name = "Customer";
       customer.Ceo = Ceo.NewObject();
+      customer.Ceo.Name = "CustomerCEO";
 
       industrialSector.Companies.Add(customer);
 
       Order order1 = Order.NewObject();
-      OrderTicket.NewObject(order1);
+      var orderTicket1 = OrderTicket.NewObject(order1);
+      orderTicket1.FileName = @"C:\temp\order.tkt";
 
       //getting an SQL Exception without this line
       order1.DeliveryDate = DateTime.Now;
 
       OrderItem orderItem = OrderItem.NewObject();
+      orderItem.Product = "Product";
+
       order1.OrderItems.Add(orderItem);
       order1.Official = DomainObjectIDs.Official2.GetObject<Official>();
       customer.Orders.Add(order1);
@@ -1423,7 +1450,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public void SaveObjectWithNonMandatoryOneToManyRelation ()
     {
       Customer newCustomer = Customer.NewObject();
+      newCustomer.Name = "Customer";
       newCustomer.Ceo = Ceo.NewObject();
+      newCustomer.Ceo.Name = "CustomerCEO";
 
       Customer existingCustomer = DomainObjectIDs.Customer3.GetObject<Customer>();
       Assert.That(existingCustomer.Orders.Count, Is.EqualTo(1));

@@ -118,6 +118,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         RenderTableClosingTag(renderingContext);
       }
 
+      // Build the actual error messages since we have rendered all the inline error messages
+      renderingContext.Control.BuildErrorMessages();
+      validationErrors = GetValidationErrorsToRender(renderingContext).ToArray();
+
       _validationErrorRenderer.RenderValidationErrors(renderingContext.Writer, validationErrorsID, validationErrors);
     }
 
@@ -191,9 +195,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       else
       {
         var rowRenderingContexts = renderingContext.Control.GetRowsToRender();
+
+        var validationFailureRepository = renderingContext.Control.ValidationFailureRepository;
+        var columnDefinitionsWithValidationFailures = rowRenderingContexts
+            .SelectMany(e => validationFailureRepository.GetUnhandledValidationFailuresForDataRowAndContainingDataCells(e.Row.BusinessObject, false))
+            .Where(e => e.ColumnDefinition != null)
+            .Select(e => e.ColumnDefinition)
+            .ToHashSet();
+
+        var columnsWithValidationFailures = new bool[renderingContext.ColumnRenderers.Length];
+        for (var i = 0; i < columnsWithValidationFailures.Length; i++)
+          columnsWithValidationFailures[i] = columnDefinitionsWithValidationFailures.Contains(renderingContext.ColumnRenderers[i].ColumnDefinition);
+
         for (int index = 0; index < rowRenderingContexts.Length; index++)
         {
-          RowRenderer.RenderDataRow(renderingContext, rowRenderingContexts[index], index);
+          var arguments = new BocRowRenderArguments(index, columnsWithValidationFailures);
+          RowRenderer.RenderDataRow(renderingContext, rowRenderingContexts[index], in arguments);
         }
       }
 

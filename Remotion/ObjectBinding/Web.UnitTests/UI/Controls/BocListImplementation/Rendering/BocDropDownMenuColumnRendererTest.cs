@@ -61,7 +61,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(List.Object.DataSource, List.Object.Property, "Args");
       _renderingContext = new BocColumnRenderingContext<BocDropDownMenuColumnDefinition>(
-          new BocColumnRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, Column, 0, 0));
+          new BocColumnRenderingContext(
+              HttpContext,
+              Html.Writer,
+              List.Object,
+              businessObjectWebServiceContext,
+              Column,
+              ColumnIndexProvider.Object,
+              0,
+              0));
     }
 
     [Test]
@@ -93,7 +101,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var div = Html.GetAssertedChildElement(td, "div", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+
+      var div = Html.GetAssertedChildElement(cellStructureDiv, "div", 0);
       Html.AssertAttribute(div, "onclick", "BocList.OnCommandClick();");
 
       Html.AssertTextNode(div, "mocked dropdown menu", 0);
@@ -117,7 +128,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var div = Html.GetAssertedChildElement(td, "div", 0);
+      var cellStructureDiv = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(cellStructureDiv, "class", _bocListCssClassDefinition.CellStructureElement);
+
+      var div = Html.GetAssertedChildElement(cellStructureDiv, "div", 0);
       Html.AssertAttribute(div, "onclick", "BocList.OnCommandClick();");
 
       Html.AssertTextNode(div, "mocked dropdown menu", 0);

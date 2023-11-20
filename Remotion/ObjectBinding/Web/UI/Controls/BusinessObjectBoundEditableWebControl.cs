@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
@@ -37,12 +38,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public abstract class BusinessObjectBoundEditableWebControl : BusinessObjectBoundWebControl, IBusinessObjectBoundEditableWebControl
   {
     private bool? _required;
+    private bool? _requiredByPropertyConstraint;
     private bool? _readOnly;
     private bool? _enableOptionalValidators;
     private HashSet<BaseValidator>? _validators;
     private bool _isDirty;
     private bool _hasBeenRenderedInPreviousLifecycle;
     private bool _isRenderedInCurrentLifecycle;
+    private bool _hasBeenReadOnlyInPreviousLifecycle;
+    private bool _hasBeenEnabledInPreviousLifecycle;
+    private bool _hasBeenVisibleInPreviousLifecycle;
 
     [NotNull]
     protected abstract IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ();
@@ -71,6 +76,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _required; }
       set { _required = value; }
+    }
+
+    bool? IBusinessObjectBoundEditableWebControl.RequiredByPropertyConstraint
+    {
+      get { return _requiredByPropertyConstraint; }
+      set { _requiredByPropertyConstraint = value; }
     }
 
     /// <summary> Gets or sets a flag that specifies whether the control should be displayed in read-only mode. </summary>
@@ -224,6 +235,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///       the value of <see cref="Required"/> is returned.
     ///     </item>
     ///     <item>
+    ///       If the <see cref="IBusinessObjectBoundEditableWebControl.RequiredByPropertyConstraint"/> property is not <see langword="null"/>, 
+    ///       the value of <see cref="IBusinessObjectBoundEditableWebControl.RequiredByPropertyConstraint"/> is returned.
+    ///     </item>
+    ///     <item>
     ///       If the <see cref="BusinessObjectBoundWebControl.Property"/> contains a property definition with the
     ///       <see cref="IBusinessObjectProperty.IsRequired"/> flag set, <see langword="true"/> is returned. 
     ///     </item>
@@ -237,10 +252,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (IsReadOnly)
           return false;
+
         if (_required != null)
-          return _required == true;
+          return _required.Value;
+
+        if (_requiredByPropertyConstraint.HasValue)
+          return _requiredByPropertyConstraint.Value;
+
         if (Property != null)
           return Property.IsRequired;
+
         return false;
       }
     }
@@ -286,10 +307,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Creates the list of validators required for the current binding and property settings. </summary>
     /// <remarks> Override <see cref="CreateValidators(bool)"/> to define the validators for this control.</remarks>
-    public IEnumerable<BaseValidator> CreateValidators ()
-    {
-      return CreateValidators(IsReadOnly);
-    }
+    public sealed override IEnumerable<BaseValidator> CreateValidators () => CreateValidators(IsReadOnly);
 
     /// <summary> Creates the list of validators required for the current binding and property settings. </summary>
     /// <param name="isReadOnly">
@@ -379,18 +397,36 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// Gets a value that determines whether a server control needs to load data from the posted form values
     /// to its internal state.
     /// </summary>
-    /// <value><see langword="true"/> if the control has been rendered in the previous lifecycle,
-    /// or if it is on a <see cref="IWxePage"/> and <see cref="IWxePage.IsOutOfSequencePostBack"/> is <see langword="true"/>.</value>
-    protected virtual bool RequiresLoadPostData
+    /// <param name="skipGuardForReadOnly">
+    /// If <see langword="true"/>, the control will process posted data even when it was readonly during the previous page life cycle. Use this flag to process posted data that
+    /// is independent of the editable state of the control.
+    /// </param>
+    /// <param name="skipGuardForEnabled">
+    /// If <see langword="true"/>, the control will process posted data even when it was disabled during the previous page life cycle. Use this flag to process posted data that
+    /// is independent of the enabled/disabled state of the control.
+    /// </param>
+    /// <returns>
+    ///   <see langword="true"/> if the control has been rendered as a visible, enabled, and editable element in the previous lifecycle,
+    ///   or if it is on a <see cref="IWxePage"/> and <see cref="IWxePage.IsOutOfSequencePostBack"/> is <see langword="true"/>.
+    /// </returns>
+    protected virtual bool IsLoadPostDataRequired (bool skipGuardForReadOnly = false, bool skipGuardForEnabled = false)
     {
-      get
-      {
-        IWxePage? wxePage = Page as IWxePage;
-        if (wxePage != null)
-          return _hasBeenRenderedInPreviousLifecycle || wxePage.IsOutOfSequencePostBack;
+      if ((Page as IWxePage)?.IsOutOfSequencePostBack == true)
+        return true;
 
-        return _hasBeenRenderedInPreviousLifecycle;
-      }
+      if (!skipGuardForReadOnly && _hasBeenReadOnlyInPreviousLifecycle)
+        return false;
+
+      if (!skipGuardForEnabled && !_hasBeenEnabledInPreviousLifecycle)
+        return false;
+
+      if (!_hasBeenVisibleInPreviousLifecycle)
+        return false;
+
+      if (!_hasBeenRenderedInPreviousLifecycle)
+        return false;
+
+      return true;
     }
 
     /// <summary>
@@ -400,10 +436,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="savedState">The object saved by <see cref="SaveControlState"/>.</param>
     protected override void LoadControlState (object? savedState)
     {
-      object?[] values = (object?[])savedState!;
-      base.LoadControlState(values[0]);
-      _isDirty = (bool)values[1]!;
-      _hasBeenRenderedInPreviousLifecycle = (bool)values[2]!;
+      var values = (Pair)savedState!;
+      base.LoadControlState(values.First);
+      int flags = (int)values.Second!;
+
+      _isDirty = DecodeFlag(flags, 0);
+      _hasBeenRenderedInPreviousLifecycle = DecodeFlag(flags, 1);
+      _hasBeenReadOnlyInPreviousLifecycle = DecodeFlag(flags, 2);
+      _hasBeenEnabledInPreviousLifecycle = DecodeFlag(flags, 3);
+      _hasBeenVisibleInPreviousLifecycle = DecodeFlag(flags, 4);
+
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      static bool DecodeFlag (int flags, int position) => (flags & (1 << position)) != 0;
     }
 
     /// <summary>
@@ -413,11 +457,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns>An object containing the state required to be loaded in the next lifecycle.</returns>
     protected override object SaveControlState ()
     {
-      object?[] values = new object?[3];
-      values[0] = base.SaveControlState();
-      values[1] = _isDirty;
-      values[2] = _isRenderedInCurrentLifecycle;
+      int flags = 0;
+      flags = EncodeFlag(flags, _isDirty, 0);
+      flags = EncodeFlag(flags, _isRenderedInCurrentLifecycle, 1);
+      flags = EncodeFlag(flags, IsReadOnly, 2);
+      flags = EncodeFlag(flags, Enabled, 3);
+      flags = EncodeFlag(flags, Visible, 4);
+
+      var values = new Pair();
+      values.First = base.SaveControlState();
+      values.Second = flags;
+
       return values;
+
+      [MethodImpl(MethodImplOptions.AggressiveInlining)]
+      static int EncodeFlag (int flags, bool value, int position) => flags | ((value ? 1 : 0) << position);
     }
 
     /// <summary>

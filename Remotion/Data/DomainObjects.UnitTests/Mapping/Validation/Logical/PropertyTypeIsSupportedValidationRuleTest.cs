@@ -47,7 +47,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           false,
           true,
           20,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          null);
       propertyDefinition.SetStorageProperty(new FakeStoragePropertyDefinition("PropertyWithStorageClassPersistent"));
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
       _classDefinition.SetReadOnly();
@@ -67,7 +68,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           false,
           true,
           null,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          null);
       propertyDefinition.SetStorageProperty(new FakeStoragePropertyDefinition("PropertyWithTypeObjectWithStorageClassPersistent"));
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
       _classDefinition.SetReadOnly();
@@ -92,7 +94,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           true,
           true,
           null,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          null);
       propertyDefinition.SetStorageProperty(new FakeStoragePropertyDefinition("RelationPropertyWithStorageClassPersistent"));
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
       _classDefinition.SetReadOnly();

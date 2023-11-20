@@ -124,7 +124,7 @@
     <value>View</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeErrorMessage" xml:space="preserve">
-    <value>Errors found in current row.</value>
+    <value>Invalid input in current row.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RequiredFieldTitle" xml:space="preserve">
     <value>Input required in current row</value>
@@ -163,12 +163,27 @@
     <value>Options</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListEditModeErrorMessage" xml:space="preserve">
-    <value>Error found in at least one row.</value>
+    <value>Invalid input in at least one row.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoTitle" xml:space="preserve">
     <value>Invalid input in current row</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoForCellLabelText" xml:space="preserve">
+    <value>Invalid input in current cell</value>
+  </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListMenuHeading" xml:space="preserve">
     <value>Options</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInOtherListPagesErrorMessage" xml:space="preserve">
+    <value>Invalid input on at least one other page.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationColumnTitleText" xml:space="preserve">
+    <value>Validation messages</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.UnhandledValidationFailuresFoundErrorMessage" xml:space="preserve">
+    <value>Invalid input in at least one hidden row.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInListErrorMessage" xml:space="preserve">
+    <value>Invalid input in at least one row. Check the rows for more details.</value>
   </data>
 </root>

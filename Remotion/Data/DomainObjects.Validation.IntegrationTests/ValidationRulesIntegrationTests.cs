@@ -51,8 +51,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
         var result1 = validator.Validate(orderItem1);
         Assert.That(result1.IsValid, Is.False);
         Assert.That(result1.Errors.Count, Is.EqualTo(1));
-        Assert.That(result1.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
-        Assert.That(result1.Errors.OfType<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo("Order"));
+        Assert.That(result1.Errors.First().ValidatedProperties.Select(vp => vp.Property.Name), Is.EqualTo(new [] { "Order" }));
         Assert.That(result1.Errors.First().ErrorMessage, Is.EqualTo("The value must not be null."));
 
         var result2 = validator.Validate(orderItem2);
@@ -74,8 +73,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
         var result1 = validator.Validate(customer1);
         Assert.That(result1.IsValid, Is.False);
         Assert.That(result1.Errors.Count, Is.EqualTo(1));
-        Assert.That(result1.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
-        Assert.That(result1.Errors.OfType<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo("Address"));
+        Assert.That(result1.Errors.First().ValidatedProperties.Select(vp => vp.Property.Name), Is.EqualTo(new [] { "Address" }));
         Assert.That(result1.Errors.First().ErrorMessage, Is.EqualTo("The value must not be null."));
 
         var result2 = validator.Validate(customer2);
@@ -102,16 +100,6 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
     }
 
     [Test]
-    public void BuildValidator_StringPropertyReStoreAttributeIsReplaced_MaxLengthMetaValidationRuleFails ()
-    {
-      Assert.That(
-          () => ValidationProvider.GetValidator(typeof(InvalidOrder)),
-          Throws.TypeOf<ValidationConfigurationException>().And.Message.EqualTo(
-              "'RemotionMaxLengthPropertyMetaValidationRule' failed for property 'Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.InvalidOrder.Number': "
-              + "Max-length validation rule value '15' exceeds meta validation rule max-length value of '10'."));
-    }
-
-    [Test]
     public void BuildValidator_NotLoadedCollectionNotValidated_AndDataNotLoaded ()
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
@@ -133,8 +121,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
           var result1 = validator.Validate(order1);
           Assert.That(result1.IsValid, Is.False);
           Assert.That(result1.Errors.Count, Is.EqualTo(1));
-          Assert.That(result1.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
-          Assert.That(result1.Errors.OfType<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo("OrderItems"));
+          Assert.That(result1.Errors.First().ValidatedProperties.Select(vp => vp.Property.Name), Is.EqualTo(new [] { "OrderItems" }));
           Assert.That(result1.Errors.First().ErrorMessage, Is.EqualTo("The value must not be empty."));
           Assert.That(order1.OrderItems.IsDataComplete, Is.True);
 
@@ -172,8 +159,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
           var result1 = validator.Validate(productReference1);
           Assert.That(result1.IsValid, Is.False);
           Assert.That(result1.Errors.Count, Is.EqualTo(1));
-          Assert.That(result1.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
-          Assert.That(result1.Errors.OfType<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo("OrderItem"));
+          Assert.That(result1.Errors.First().ValidatedProperties.Select(vp => vp.Property.Name), Is.EqualTo(new [] { "OrderItem" }));
           Assert.That(result1.Errors.First().ErrorMessage, Is.EqualTo("The value must not be null."));
           Assert.That(product1.State.IsNotLoadedYet, Is.True);
 

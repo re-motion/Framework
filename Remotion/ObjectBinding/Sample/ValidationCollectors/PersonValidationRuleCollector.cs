@@ -23,13 +23,13 @@ namespace Remotion.ObjectBinding.Sample.ValidationCollectors
   {
     public PersonValidationRuleCollector ()
     {
-      AddRule(p => p.LastName).NotNull().NotEmpty().Length(0, 25);
+      AddRule(p => p.LastName).NotNull().NotEmptyOrWhitespace().MaxLength(25);
 
-      AddRule(p => p.FirstName).NotNull().NotEmpty().Length(0, 10);
+      AddRule(p => p.FirstName).NotNull().NotEmptyOrWhitespace().MaxLength(10);
 
-      AddRule(p => p.Partner).NotNull();
+      AddRule(p => p.Father).NotNull();
 
-      AddRule(p => p.CV).NotNull().NotEmpty();//.Length (0, 50);
+      AddRule(p => p.CV).NotNull().NotEmpty();//.MaxLength (50);
     }
   }
 }

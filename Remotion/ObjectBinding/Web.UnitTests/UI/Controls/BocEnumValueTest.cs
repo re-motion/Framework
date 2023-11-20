@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
-using CommonServiceLocator;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
@@ -26,6 +25,7 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 

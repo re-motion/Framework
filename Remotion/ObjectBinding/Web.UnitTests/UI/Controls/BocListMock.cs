@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Web;
@@ -27,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 [ToolboxItem(false)]
 public class BocListMock: BocList
 {
-	public new void EvaluateWaiConformity (BocColumnDefinition[] columns)
+	public new void EvaluateWaiConformity (IReadOnlyList<BocColumnDefinition> columns)
   {
     base.EvaluateWaiConformity(columns);
   }

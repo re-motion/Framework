@@ -26,7 +26,7 @@ using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Validators
 {
-  public class NotNullValidator : INotNullValidator
+  public class NotNullValidator : IRequiredValidator
   {
     public string ErrorMessage { get; }
     public ValidationMessage ValidationMessage { get; }
@@ -39,10 +39,12 @@ namespace Remotion.Validation.Validators
       ValidationMessage = validationMessage;
     }
 
-    public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
+    public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
+      ArgumentUtility.CheckNotNull("context", context);
+
       if (IsValid(context))
-        return Enumerable.Empty<PropertyValidationFailure>();
+        return Enumerable.Empty<ValidationFailure>();
 
       return EnumerableUtility.Singleton(CreateValidationError(context));
     }
@@ -52,9 +54,9 @@ namespace Remotion.Validation.Validators
       return !object.Equals(null, context.PropertyValue);
     }
 
-    private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
+    private ValidationFailure CreateValidationError (PropertyValidatorContext context)
     {
-      return new PropertyValidationFailure(
+      return ValidationFailure.CreatePropertyValidationFailure(
           context.Instance,
           context.Property,
           context.PropertyValue,

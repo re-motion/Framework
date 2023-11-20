@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       properties[endPointDefinition.PropertyName].SetValue(relatedObject);
     }
 
-    public static ObjectID CreateObjectAndSetRelationInOtherTransaction<TCreated, TRelated> (ObjectID relatedID, Action<TCreated, TRelated> setter)
+    public static ObjectID CreateAndInitializeObjectAndSetRelationInOtherTransaction<TCreated, TRelated> (ObjectID relatedID, Action<TCreated, TRelated> setter)
         where TCreated : DomainObject
         where TRelated : DomainObject
     {

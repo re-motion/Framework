@@ -15,18 +15,70 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using JetBrains.Annotations;
+using Remotion.FunctionalProgramming;
+using Remotion.Utilities;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Validators
 {
-  public class MaximumLengthValidator : LengthValidator
+  public class MaximumLengthValidator : IMaximumLengthValidator
   {
+    public int Max { get; }
+
+    public string ErrorMessage { get; }
+
+    public ValidationMessage ValidationMessage { get; }
+
     public MaximumLengthValidator (int max, [NotNull] ValidationMessage validationMessage)
-        : base(0, max, $"The value must have at most {max} characters.", validationMessage)
     {
+      ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
+
+      if (max <= 0)
+        throw new ArgumentOutOfRangeException("max", "Value must be greater than zero.");
+
+      Max = max;
+      ErrorMessage = $"The value must have at most {max} characters.";
+      ValidationMessage = validationMessage;
     }
 
-    // TODO RM-5906: build separate validator with a dedicated message
+    public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
+    {
+      ArgumentUtility.CheckNotNull("context", context);
+
+      if (IsValid(context))
+        return Enumerable.Empty<ValidationFailure>();
+
+      return EnumerableUtility.Singleton(CreateValidationError(context));
+    }
+
+    private bool IsValid (PropertyValidatorContext context)
+    {
+      var propertyValue = context.PropertyValue;
+
+      if (propertyValue is not string stringValue)
+        return true;
+
+      return stringValue.Length <= Max;
+    }
+
+    private ValidationFailure CreateValidationError (PropertyValidatorContext context)
+    {
+      var localizedValidationMessage = ValidationMessage.Format(
+          CultureInfo.CurrentUICulture,
+          (IFormatProvider)CultureInfo.CurrentCulture,
+          Max);
+
+      return ValidationFailure.CreatePropertyValidationFailure(
+          context.Instance,
+          context.Property,
+          context.PropertyValue,
+          errorMessage: ErrorMessage,
+          localizedValidationMessage: localizedValidationMessage);
+    }
   }
 }

@@ -124,7 +124,7 @@
     <value>Ansicht</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeErrorMessage" xml:space="preserve">
-    <value>In der aktuellen Zeile sind Fehler aufgetreten.</value>
+    <value>Ungültige Eingabe in der aktuellen Zeile.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RequiredFieldTitle" xml:space="preserve">
     <value>Eingabe erforderlich in der aktuellen Zeile</value>
@@ -163,12 +163,27 @@
     <value>Optionen</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListEditModeErrorMessage" xml:space="preserve">
-    <value>In zumindest einer Zeile ist ein Fehler aufgetreten.</value>
+    <value>Ungültige Eingabe in zumindest einer Zeile.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoTitle" xml:space="preserve">
     <value>Ungültige Eingabe in der aktuellen Zeile</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListMenuHeading" xml:space="preserve">
     <value>Optionen</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInOtherListPagesErrorMessage" xml:space="preserve">
+    <value>Ungültige Eingabe auf zumindest einer anderen Seite.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoForCellLabelText" xml:space="preserve">
+    <value>Ungültige Eingabe in der aktuellen Zelle</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationColumnTitleText" xml:space="preserve">
+    <value>Validierungsmeldungen</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.UnhandledValidationFailuresFoundErrorMessage" xml:space="preserve">
+    <value>Ungültige Eingabe in zumindest einer ausgeblendeten Zeile.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInListErrorMessage" xml:space="preserve">
+    <value>Ungültige Eingabe in zumindest einer Zeile. Prüfen Sie die Zeilen auf weitere Details.</value>
   </data>
 </root>

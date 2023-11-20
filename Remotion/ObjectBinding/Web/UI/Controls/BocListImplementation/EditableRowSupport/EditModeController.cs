@@ -102,14 +102,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       return _rows[editedIndex];
     }
 
-    public void SwitchRowIntoEditMode (int index, BocColumnDefinition[] columns)
+    public void SwitchRowIntoEditMode (int index, IReadOnlyList<BocColumnDefinition> columns)
     {
       ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
 
       SwitchRowIntoEditMode(index, columns, _editModeHost.IsAutoFocusOnSwitchToEditModeEnabled);
     }
 
-    private void SwitchRowIntoEditMode (int index, BocColumnDefinition[] columns, bool autoFocus)
+    private void SwitchRowIntoEditMode (int index, IReadOnlyList<BocColumnDefinition> columns, bool autoFocus)
     {
         if (_editModeHost.Value == null)
       {
@@ -136,7 +136,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         SetFocus(_rows.First());
     }
 
-    public void SwitchListIntoEditMode (BocColumnDefinition[] columns)
+    public void SwitchListIntoEditMode (IReadOnlyList<BocColumnDefinition> columns)
     {
       ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
 
@@ -160,7 +160,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         SetFocus(_rows.First());
     }
 
-    public bool AddAndEditRow (IBusinessObject businessObject, BocColumnDefinition[] columns)
+    public bool AddAndEditRow (IBusinessObject businessObject, IReadOnlyList<BocColumnDefinition> columns)
     {
       ArgumentUtility.CheckNotNull("businessObject", businessObject);
       ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
@@ -188,7 +188,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       return true;
     }
 
-    private void RestoreAndEndEditMode (BocColumnDefinition[] columns)
+    private void RestoreAndEndEditMode (IReadOnlyList<BocColumnDefinition> columns)
     {
       EnsureEditModeRestored(columns);
 
@@ -198,7 +198,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         EndListEditMode(true, columns);
     }
 
-    public void EndRowEditMode (bool saveChanges, BocColumnDefinition[] columns)
+    public void EndRowEditMode (bool saveChanges, IReadOnlyList<BocColumnDefinition> columns)
     {
       ArgumentUtility.CheckNotNull("columns", columns);
 
@@ -248,7 +248,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       _isEditNewRow = false;
     }
 
-    public void EndListEditMode (bool saveChanges, BocColumnDefinition[] columns)
+    public void EndListEditMode (bool saveChanges, IReadOnlyList<BocColumnDefinition> columns)
     {
       ArgumentUtility.CheckNotNull("columns", columns);
 
@@ -320,7 +320,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       _editedRowIDs = null;
     }
 
-    public void SynchronizeEditModeControls (BocColumnDefinition[] columns)
+    public void SynchronizeEditModeControls (IReadOnlyList<BocColumnDefinition> columns)
     {
       ArgumentUtility.CheckNotNull("columns", columns);
 
@@ -336,7 +336,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     }
 
 
-    private Tuple<BocListRow, EditableRow>[] CreateEditModeControls (BocColumnDefinition[] columns)
+    private Tuple<BocListRow, EditableRow>[] CreateEditModeControls (IReadOnlyList<BocColumnDefinition> columns)
     {
       EnsureChildControls();
 
@@ -381,7 +381,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       return SynchronizeEditModeControlsForNewAndRemovedRows(columns);
     }
 
-    private Tuple<BocListRow, EditableRow>[] SynchronizeEditModeControlsForNewAndRemovedRows (BocColumnDefinition[] columns)
+    private Tuple<BocListRow, EditableRow>[] SynchronizeEditModeControlsForNewAndRemovedRows (IReadOnlyList<BocColumnDefinition> columns)
     {
       if (!IsListEditModeActive)
         return new Tuple<BocListRow, EditableRow>[0];
@@ -415,7 +415,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       return result.ToArray();
     }
 
-    private EditableRow CreateEditableRow (BocListRow bocListRow, BocColumnDefinition[] columns)
+    private EditableRow CreateEditableRow (BocListRow bocListRow, IReadOnlyList<BocColumnDefinition> columns)
     {
       EditableRow row = new EditableRow(_editModeHost);
       row.ID = ID + "_Row_" + _editModeHost.RowIDProvider.GetControlRowID(bocListRow);
@@ -448,7 +448,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         dataSource.LoadValues(interim && !newBusinessObjects.ContainsKey(dataSource.BusinessObject!));
     }
 
-    public void EnsureEditModeRestored (BocColumnDefinition[] columns)
+    public void EnsureEditModeRestored (IReadOnlyList<BocColumnDefinition> columns)
     {
       ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
 
@@ -474,7 +474,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         RemoveRowFromDataStructure(i);
     }
 
-    public BocListRow[] AddRows (IBusinessObject[] businessObjects, BocColumnDefinition[] columns)
+    public BocListRow[] AddRows (IBusinessObject[] businessObjects, IReadOnlyList<BocColumnDefinition> columns)
     {
       ArgumentUtility.CheckNotNullOrItemsNull("businessObjects", businessObjects);
       ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
@@ -504,7 +504,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       return bocListRows;
     }
 
-    public int AddRow (IBusinessObject businessObject, BocColumnDefinition[] columns)
+    public int AddRow (IBusinessObject businessObject, IReadOnlyList<BocColumnDefinition> columns)
     {
       ArgumentUtility.CheckNotNull("businessObject", businessObject);
       ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
@@ -516,7 +516,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       return bocListRows.Single().Index;
     }
 
-    private EditableRow AddRowToDataStructure (BocListRow bocListRow, BocColumnDefinition[] columns)
+    private EditableRow AddRowToDataStructure (BocListRow bocListRow, IReadOnlyList<BocColumnDefinition> columns)
     {
       EditableRow row = CreateEditableRow(bocListRow, columns);
       Controls.Add(row);

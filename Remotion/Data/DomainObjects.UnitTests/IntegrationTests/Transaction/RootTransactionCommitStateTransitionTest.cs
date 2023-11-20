@@ -53,6 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void CommitRootNew ()
     {
       ClassWithAllDataTypes obj = GetNewUnchanged();
+      obj.PopulateMandatoryProperties();
       obj.DateProperty = DateTime.Today;
       obj.DateTimeProperty = DateTime.Now;
       Assert.That(obj.State.IsNew, Is.True);

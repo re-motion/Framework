@@ -16,7 +16,6 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
-using CommonServiceLocator;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Security;
 using Remotion.SecurityManager.Clients.Web.Classes;
@@ -40,6 +39,8 @@ namespace Remotion.SecurityManager.Clients.Web.Test
       //defaultServiceLocator.Register (typeof (Remotion.Data.DomainObjects.Tracing.IPersistenceExtensionFactory), typeof (Remotion.Data.DomainObjects.UberProfIntegration.LinqToSqlExtensionFactory), LifetimeKind.Singleton);
       //defaultServiceLocator.RegisterMultiple<IOrganizationalStructureEditControlFormGridRowProvider<EditUserControl>> (() => new EditUserControlFormGridRowProvider());
       defaultServiceLocator.Register(typeof(IRenderingFeatures), typeof(WithDiagnosticMetadataRenderingFeatures), LifetimeKind.Singleton);
+
+      //defaultServiceLocator.RegisterSingle<ResourceTheme>(() => new ResourceTheme.NovaGray());
 
       ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
 

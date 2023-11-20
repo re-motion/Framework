@@ -29,7 +29,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValueNull_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(null);
-      var validator = new MaximumLengthValidator(0, new InvariantValidationMessage("Fake Message"));
+      var validator = new MaximumLengthValidator(1, new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 
@@ -40,7 +40,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithObject_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(new object());
-      var validator = new MaximumLengthValidator(0, new InvariantValidationMessage("Fake Message"));
+      var validator = new MaximumLengthValidator(1, new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 
@@ -51,7 +51,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValueEqualsEmptyString_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext("");
-      var validator = new MaximumLengthValidator(0, new InvariantValidationMessage("Fake Message"));
+      var validator = new MaximumLengthValidator(1, new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 
@@ -73,14 +73,16 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValueIsStringWithLengthGreaterThanMaxLength_ReturnsSingleValidationFailure ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext("some string");
-      var validator = new MaximumLengthValidator("some string".Length - 1, new InvariantValidationMessage("Custom validation message: '{0}', '{1}'."));
+      var validator = new MaximumLengthValidator("some string".Length - 1, new InvariantValidationMessage("Custom validation message: '{0}'."));
 
       var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
       Assert.That(validationFailures.Length, Is.EqualTo(1));
-      //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
+      Assert.That(validationFailures[0].ValidatedObject, Is.EqualTo(propertyValidatorContext.Instance));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.Property), Is.EqualTo(new [] { propertyValidatorContext.Property }));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.ValidatedPropertyValue), Is.EqualTo(new [] { propertyValidatorContext.PropertyValue }));
       Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must have at most 10 characters."));
-      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '0', '10'."));
+      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '10'."));
     }
   }
 }

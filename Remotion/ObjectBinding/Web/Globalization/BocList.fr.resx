@@ -124,7 +124,7 @@
     <value>Affichage</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeErrorMessage" xml:space="preserve">
-    <value>Des erreurs sont apparues sur la ligne en cours d’édition.</value>
+    <value>Saisie non valable dans la ligne en cours d’édition.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RequiredFieldTitle" xml:space="preserve">
     <value>Saisie nécessaire dans la ligne en cours d’édition</value>
@@ -163,12 +163,27 @@
     <value>Options</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListEditModeErrorMessage" xml:space="preserve">
-    <value>Une erreur est apparue sur une ligne au moins.</value>
+    <value>Saisie non valable dans au moins une ligne.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoTitle" xml:space="preserve">
-    <value>Saisie non valable dans la ligne en cours d’édition</value>
+    <value>Saisie non valable dans la ligne actuelle</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListMenuHeading" xml:space="preserve">
     <value>Options</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInOtherListPagesErrorMessage" xml:space="preserve">
+    <value>Saisie non valide sur au moins une autre page.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoForCellLabelText" xml:space="preserve">
+    <value>Saisie non valable dans la cellule actuelle</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationColumnTitleText" xml:space="preserve">
+    <value>Messages de validation</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.UnhandledValidationFailuresFoundErrorMessage" xml:space="preserve">
+    <value>Saisie non valable dans un moins une ligne masquée.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationFailuresFoundInListErrorMessage" xml:space="preserve">
+    <value>Saisie non valable dans au moins une ligne. Vérifier les lignes pour plus de détails.</value>
   </data>
 </root>

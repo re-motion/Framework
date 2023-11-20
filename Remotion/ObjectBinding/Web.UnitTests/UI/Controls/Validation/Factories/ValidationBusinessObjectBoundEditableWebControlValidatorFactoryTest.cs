@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using Moq;
 using NUnit.Framework;
@@ -115,7 +114,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
 
       var factory = new ValidationBusinessObjectBoundEditableWebControlValidatorFactory();
       var validators = factory.CreateValidators(mock.Object, isReadOnly);
-      CheckValidators(isReadOnly, validators);
+      CheckValidators(validators);
     }
 
     [Test]
@@ -128,7 +127,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
 
       var factory = new ValidationBusinessObjectBoundEditableWebControlValidatorFactory();
       var validators = factory.CreateValidators(mock.Object, isReadOnly);
-      CheckValidators(isReadOnly, validators);
+      CheckValidators(validators);
     }
 
     [Test]
@@ -141,7 +140,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
 
       var factory = new ValidationBusinessObjectBoundEditableWebControlValidatorFactory();
       var validators = factory.CreateValidators(mock.Object, isReadOnly);
-      CheckValidators(isReadOnly, validators);
+      CheckValidators(validators);
     }
 
     [Test]
@@ -154,7 +153,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
 
       var factory = new ValidationBusinessObjectBoundEditableWebControlValidatorFactory();
       var validators = factory.CreateValidators(mock.Object, isReadOnly);
-      CheckValidators(isReadOnly, validators);
+      CheckValidators(validators);
     }
 
     [Test]
@@ -167,7 +166,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
 
       var factory = new ValidationBusinessObjectBoundEditableWebControlValidatorFactory();
       var validators = factory.CreateValidators(mock.Object, isReadOnly);
-      CheckValidators(isReadOnly, validators);
+      CheckValidators(validators);
     }
 
     [Test]
@@ -180,7 +179,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
 
       var factory = new ValidationBusinessObjectBoundEditableWebControlValidatorFactory();
       var validators = factory.CreateValidators(mock.Object, isReadOnly);
-      CheckValidators(isReadOnly, validators);
+      CheckValidators(validators);
     }
 
     [Test]
@@ -193,7 +192,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
 
       var factory = new ValidationBusinessObjectBoundEditableWebControlValidatorFactory();
       var validators = factory.CreateValidators(mock.Object, isReadOnly);
-      CheckValidators(isReadOnly, validators);
+      CheckValidators(validators);
     }
 
     [Test]
@@ -206,23 +205,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
 
       var factory = new ValidationBusinessObjectBoundEditableWebControlValidatorFactory();
       var validators = factory.CreateValidators(mock.Object, isReadOnly);
-      CheckValidators(isReadOnly, validators);
+      CheckValidators(validators);
     }
 
-    private void CheckValidators (bool isReadOnly, IEnumerable<BaseValidator> validators)
+    private void CheckValidators (IEnumerable<BaseValidator> validators)
     {
       var validatorsArray = validators.ToArray();
-      if (isReadOnly)
-      {
-        Assert.That(validatorsArray, Is.Empty);
-      }
-      else
-      {
-        Assert.That(
-            validatorsArray.Select(v => v.GetType()),
-            Is.EquivalentTo(new[] { typeof(BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator) }));
-        Assert.That(validatorsArray, Has.All.Property("EnableViewState").False);
-      }
+
+      Assert.That(
+          validatorsArray.Select(v => v.GetType()),
+          Is.EquivalentTo(new[] { typeof(BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator) }));
+      Assert.That(validatorsArray, Has.All.Property("EnableViewState").False);
     }
   }
 }

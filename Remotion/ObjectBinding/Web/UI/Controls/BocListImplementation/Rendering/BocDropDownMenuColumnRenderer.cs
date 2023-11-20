@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       var dropDownMenu = renderingContext.Control.RowMenus[arguments.RowIndex];
 
       if (renderingContext.Control.HasClientScript)
-        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, OnCommandClickScript);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div); // Begin div
 
       dropDownMenu.Enabled = !renderingContext.Control.EditModeController.IsRowEditModeActive;

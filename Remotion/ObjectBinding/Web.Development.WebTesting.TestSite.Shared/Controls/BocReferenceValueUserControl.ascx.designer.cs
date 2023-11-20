@@ -42,6 +42,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BindableObjectDataSourceControl NoObject;
 
         /// <summary>
+        /// CurrentObjectValidationResultDispatchingValidator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.Validation.BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
+
+        /// <summary>
         /// PostbackButton control.
         /// </summary>
         /// <remarks>

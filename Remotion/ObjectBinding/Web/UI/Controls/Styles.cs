@@ -303,6 +303,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   {
     private int? _columns;
     private int? _maxLength;
+    private int? _maxLengthByPropertyConstraint;
+    private int? _maxLengthFromDomainModel;
     private bool? _readOnly;
     private bool? _autoPostBack;
     private bool? _checkClientSideMaxLength;
@@ -311,8 +313,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       textBox.ApplyStyle(this);
 
-      if (_maxLength != null && _checkClientSideMaxLength != false)
-        textBox.MaxLength = _maxLength.Value;
+      var maxLength = GetMaxLength();
+      if (maxLength != null && _checkClientSideMaxLength != false)
+        textBox.MaxLength = maxLength.Value;
 
       if (_columns != null)
         textBox.Columns = _columns.Value;
@@ -330,10 +333,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       SingleRowTextBoxStyle? ts = s as SingleRowTextBoxStyle;
       if (ts != null)
       {
-        if (_checkClientSideMaxLength != false)
-          _maxLength = ts.MaxLength;
-        _columns = ts.Columns;
-        _readOnly = ts.ReadOnly;
+        this._columns = ts._columns;
+        this._maxLength = ts._maxLength;
+        this._maxLengthByPropertyConstraint = ts._maxLengthByPropertyConstraint;
+        this._maxLengthFromDomainModel = ts._maxLengthFromDomainModel;
+        this._readOnly = ts._readOnly;
+        this._autoPostBack = ts._autoPostBack;
+        this._checkClientSideMaxLength = ts._checkClientSideMaxLength;
       }
     }
 
@@ -353,8 +359,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [NotifyParentProperty(true)]
     public int? MaxLength
     {
+      [Obsolete("Use SingleRowTextBoxStyle.GetMaxLength() instead.")]
       get { return _maxLength; }
       set { _maxLength = value; }
+    }
+
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public int? MaxLengthByPropertyConstraint
+    {
+      get => _maxLengthByPropertyConstraint;
+      set => _maxLengthByPropertyConstraint = value;
+    }
+
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public int? MaxLengthFromDomainModel
+    {
+      get => _maxLengthFromDomainModel;
+      set => _maxLengthFromDomainModel = value;
     }
 
     [Description("Whether the text in the control can be changed or not.")]
@@ -387,6 +410,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _checkClientSideMaxLength; }
       set { _checkClientSideMaxLength = value; }
+    }
+
+    public int? GetMaxLength ()
+    {
+      if (_maxLength.HasValue)
+        return _maxLength.Value;
+
+      if (_maxLengthByPropertyConstraint.HasValue)
+        return _maxLengthByPropertyConstraint.Value;
+
+      if (_maxLengthFromDomainModel.HasValue)
+        return _maxLengthFromDomainModel.Value;
+
+      return null;
     }
   }
 
@@ -433,10 +470,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (!string.IsNullOrEmpty(_autoComplete))
         textBox.Attributes.Add("autocomplete", _autoComplete);
 
+      var maxLength = GetMaxLength();
+
       if (_textMode == BocTextBoxMode.MultiLine
-          && MaxLength != null
+          && maxLength != null
           && CheckClientSideMaxLength != false)
-        textBox.Attributes.Add("onkeydown", "return TextBoxStyle.OnKeyDown (this, " + MaxLength.Value + ");");
+        textBox.Attributes.Add("onkeydown", "return TextBoxStyle.OnKeyDown (this, " + maxLength.Value + ");");
 
       textBox.TextMode = GetSystemWebTextMode();
     }
@@ -472,11 +511,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       TextBoxStyle? ts = s as TextBoxStyle;
       if (ts != null)
       {
-        Rows = ts.Rows;
-        TextMode = ts.TextMode;
-        Wrap = ts.Wrap;
-        Placeholder = ts.Placeholder;
-        AutoComplete = ts.AutoComplete;
+        this._rows = ts._rows;
+        this._textMode = ts._textMode;
+        this._wrap = ts._wrap;
+        this._placeholder = ts._placeholder;
+        this._autoComplete = ts._autoComplete;
       }
     }
 

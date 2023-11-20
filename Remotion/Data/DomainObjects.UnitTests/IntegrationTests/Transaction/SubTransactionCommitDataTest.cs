@@ -522,6 +522,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void ObjectValuesCanBeChangedInParentAndChildSubTransactions ()
     {
       ClassWithAllDataTypes cwadt = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
+      cwadt.PopulateMandatoryProperties();
       Assert.That(cwadt.Int32Property, Is.Not.EqualTo(7));
       Assert.That(cwadt.Int16Property, Is.Not.EqualTo(8));
 
@@ -554,6 +555,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void PropertyValue_HasChangedHandling_WithNestedSubTransactions ()
     {
       ClassWithAllDataTypes cwadt = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
+      cwadt.PopulateMandatoryProperties();
+
       Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.False);
       Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.False);
       Assert.That(cwadt.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.False);
@@ -747,7 +750,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void DomainObjectCollectionEndPoint_HasChangedHandling_WithNestedSubTransactions ()
     {
       Order order = DomainObjectIDs.Order1.GetObject<Order>();
+
       OrderItem newItem = OrderItem.NewObject();
+      newItem.Product = "Product";
+
       OrderItem firstItem = order.OrderItems[0];
 
       RelationEndPointID propertyID = RelationEndPointID.Create(order.ID, typeof(Order).FullName + ".OrderItems");
