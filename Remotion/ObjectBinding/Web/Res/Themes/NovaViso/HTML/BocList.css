@@ -373,15 +373,26 @@ div.bocList div.bocListTableBlock div.bocListNavigator a:not([href]) img
 /*endregion*/
 
 /*region validation marker*/
-div.bocList .bocListCellStructureElement > .validationErrorMarker
-{
-  margin-top: calc(var(--remotion-themed-spacing) / 2);
-}
-
 div.bocList .bocListCellStructureElement > .validationErrorMarker,
 div.bocList .bocListContent > .validationErrorMarker
 {
   border: var(--remotion-themed-border-placeholder);
+  border-radius: var(--remotion-themed-border-radius);
+}
+
+div.bocList .bocListCellStructureElement > .validationErrorMarker
+{
+  /* .bocListContent already comes with padding so we only need this for .bocListCellStructureElement */
+  padding: calc(var(--remotion-themed-spacing) / 2);
+}
+
+div.bocList .bocListCellStructureElement > .validationErrorMarker:focus,
+div.bocList .bocListContent > .validationErrorMarker:focus
+{
+  outline: none;
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
 }
 
 /*endregion*/
