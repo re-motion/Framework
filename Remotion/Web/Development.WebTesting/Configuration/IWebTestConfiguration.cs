@@ -1,0 +1,57 @@
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// Copyright (c) rubicon IT GmbH, www.rubicon.eu
+//
+// The re-motion Core Framework is free software; you can redistribute it
+// and/or modify it under the terms of the GNU Lesser General Public License
+// as published by the Free Software Foundation; either version 2.1 of the
+// License, or (at your option) any later version.
+//
+// re-motion is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with re-motion; if not, see http://www.gnu.org/licenses.
+//
+using System;
+
+namespace Remotion.Web.Development.WebTesting.Configuration
+{
+  public interface IWebTestConfiguration
+  {
+    string Browser { get; }
+
+    TimeSpan SearchTimeout { get; }
+
+    TimeSpan DownloadStartedTimeout { get; }
+
+    TimeSpan DownloadUpdatedTimeout { get; }
+
+    TimeSpan RetryInterval { get; }
+
+    TimeSpan AsyncJavaScriptTimeout { get; }
+
+    bool Headless { get; }
+
+    string WebApplicationRoot { get; }
+
+    string ScreenshotDirectory { get; }
+
+    string LogsDirectory { get; }
+
+    bool CloseBrowserWindowsOnSetUpAndTearDown { get; }
+
+    bool CleanUpUnmatchedDownloadedFiles { get; }
+
+    string RequestErrorDetectionStrategy { get; }
+
+    IChromiumConfiguration Chrome { get; }
+
+    IChromiumConfiguration Edge { get; }
+
+    IHosting Hosting { get; }
+
+    ITestSiteLayout TestSiteLayout { get; }
+  }
+}
