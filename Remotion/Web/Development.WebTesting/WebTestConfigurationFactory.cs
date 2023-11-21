@@ -69,7 +69,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     public IBrowserConfiguration CreateBrowserConfiguration ()
     {
-      var configSettings = WebTestConfigurationSection.Current;
+      var configSettings = WebTestSettings.Current;
 
       var configuredBrowser = Browser.Parse(configSettings.BrowserName);
 
@@ -90,7 +90,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public DriverConfiguration CreateDriverConfiguration ()
     {
-      var configSettings = WebTestConfigurationSection.Current;
+      var configSettings = WebTestSettings.Current;
 
       return new DriverConfiguration(
           configSettings.CommandTimeout,
@@ -105,7 +105,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public ITestInfrastructureConfiguration CreateTestInfrastructureConfiguration ()
     {
-      var configSettings = WebTestConfigurationSection.Current;
+      var configSettings = WebTestSettings.Current;
 
       //Not extensible as it is used in user code and test infrastructure utilities 
       return new TestInfrastructureConfiguration(configSettings);
@@ -117,7 +117,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns></returns>
     public IHostingConfiguration CreateHostingConfiguration ()
     {
-      var configSettings = WebTestConfigurationSection.Current;
+      var configSettings = WebTestSettings.Current;
 
       return CreateHostingConfiguration(configSettings);
     }
@@ -127,7 +127,7 @@ namespace Remotion.Web.Development.WebTesting
     /// Note that the <see cref="WebTestConfigurationFactory"/> itself does not provide support for other browsers so this implementation throws an not supported exception.
     /// </summary>
     /// <param name="configSettings">Receives app.config settings when called in <see cref="CreateBrowserConfiguration"/></param>
-    protected virtual IBrowserConfiguration CreateCustomBrowserConfiguration ([NotNull] WebTestConfigurationSection configSettings)
+    protected virtual IBrowserConfiguration CreateCustomBrowserConfiguration ([NotNull] IWebTestSettings configSettings)
     {
       ArgumentUtility.CheckNotNull("configSettings", configSettings);
 
@@ -142,7 +142,7 @@ namespace Remotion.Web.Development.WebTesting
     /// Override this method to customize the configuration settings, e.g. the location of the chrome.exe and the user directory 
     /// via <see cref="ChromeExecutable"/> or custom <see cref="ChromeOptions"/> by extending <see cref="ChromeConfiguration"/> itself.
     /// </remarks>
-    protected virtual IChromeConfiguration CreateChromeConfiguration ([NotNull] WebTestConfigurationSection configSettings)
+    protected virtual IChromeConfiguration CreateChromeConfiguration ([NotNull] IWebTestSettings configSettings)
     {
       ArgumentUtility.CheckNotNull("configSettings", configSettings);
 
@@ -157,14 +157,14 @@ namespace Remotion.Web.Development.WebTesting
     /// Override this method to customize the configuration settings, e.g. the location of the msedge.exe and the user directory 
     /// via <see cref="EdgeExecutable"/> or custom <see cref="EdgeOptions"/> by extending <see cref="EdgeConfiguration"/> itself.
     /// </remarks>
-    protected virtual IEdgeConfiguration CreateEdgeConfiguration ([NotNull] WebTestConfigurationSection configSettings)
+    protected virtual IEdgeConfiguration CreateEdgeConfiguration ([NotNull] IWebTestSettings configSettings)
     {
       ArgumentUtility.CheckNotNull("configSettings", configSettings);
 
       return new EdgeConfiguration(configSettings);
     }
 
-    protected virtual IFirefoxConfiguration CreateFirefoxConfiguration (WebTestConfigurationSection configSettings)
+    protected virtual IFirefoxConfiguration CreateFirefoxConfiguration (IWebTestSettings configSettings)
     {
       ArgumentUtility.CheckNotNull("configSettings", configSettings);
 
@@ -178,7 +178,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <remarks>
     /// Override this method when you need to introduce a new hosting strategy.
     /// </remarks>
-    protected virtual IHostingConfiguration CreateHostingConfiguration ([NotNull] WebTestConfigurationSection configSettings)
+    protected virtual IHostingConfiguration CreateHostingConfiguration ([NotNull] IWebTestSettings configSettings)
     {
       ArgumentUtility.CheckNotNull("configSettings", configSettings);
 
@@ -197,7 +197,7 @@ namespace Remotion.Web.Development.WebTesting
 
     private ITestSiteLayoutConfiguration CreateTestSiteLayoutConfiguration ()
     {
-      var configSettings = WebTestConfigurationSection.Current;
+      var configSettings = WebTestSettings.Current;
 
       return new TestSiteLayoutConfiguration(configSettings);
     }

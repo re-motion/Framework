@@ -19,12 +19,12 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 
-namespace Remotion.Web.Development.WebTesting.Configuration
+namespace Remotion.Web.Development.WebTesting.Configuration.Legacy
 {
   /// <summary>
   /// Configures the path to the test site and its required resources.
   /// </summary>
-  public class TestSiteLayoutConfigurationElement : ConfigurationElement
+  public class TestSiteLayoutConfigurationElement : ConfigurationElement, IWebTestTestSiteLayoutSettings
   {
     private readonly ConfigurationProperty _rootPathProperty;
     private readonly ConfigurationProperty _resourcesProperty;
@@ -46,6 +46,8 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     public IReadOnlyList<TestSiteResourceConfigurationElement> Resources => ((ConfigurationElementCollection)this[_resourcesProperty])
         .Cast<TestSiteResourceConfigurationElement>()
         .ToArray();
+
+    IReadOnlyList<string> IWebTestTestSiteLayoutSettings.Resources => Resources.Select(e => e.Path).ToArray();
 
     /// <inheritdoc />
     protected override ConfigurationPropertyCollection Properties => new ConfigurationPropertyCollection { _rootPathProperty, _resourcesProperty };

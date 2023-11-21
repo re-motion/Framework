@@ -18,7 +18,7 @@ using System;
 using System.Configuration;
 using System.IO;
 using OpenQA.Selenium;
-using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.Configuration.Legacy;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 
 namespace Remotion.Web.Development.WebTesting.Configuration
@@ -26,10 +26,8 @@ namespace Remotion.Web.Development.WebTesting.Configuration
   /// <summary>
   /// Loads the app.config and validates the parameter. Serves as DTO Object to transfer the app.config settings to the finer grained config classes.
   /// </summary>
-  public class WebTestConfigurationSection : ConfigurationSection
+  public class WebTestConfigurationSection : ConfigurationSection, IWebTestSettings
   {
-    private static readonly Lazy<WebTestConfigurationSection> s_current;
-
     private readonly ConfigurationPropertyCollection _properties;
     private readonly ConfigurationProperty _browserProperty;
     private readonly ConfigurationProperty _searchTimeoutProperty;
@@ -50,17 +48,6 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private readonly ConfigurationProperty _edge;
     private readonly ConfigurationProperty _testSiteLayoutProperty;
     private readonly ConfigurationProperty _headless;
-
-    static WebTestConfigurationSection ()
-    {
-      s_current = new Lazy<WebTestConfigurationSection>(
-          () =>
-          {
-            var configuration = (WebTestConfigurationSection)ConfigurationManager.GetSection("remotion.webTesting");
-            Assertion.IsNotNull(configuration, "Configuration section 'remotion.webTesting' missing.");
-            return configuration;
-          });
-    }
 
     private WebTestConfigurationSection ()
     {
@@ -120,14 +107,6 @@ namespace Remotion.Web.Development.WebTesting.Configuration
                         _edge,
                         _headless
                     };
-    }
-
-    /// <summary>
-    /// Internal method to access app.config webtesting section values. External projects needing to access configuration should use <see cref="WebTestConfigurationFactory"/>
-    /// </summary>
-    internal static WebTestConfigurationSection Current
-    {
-      get { return s_current.Value; }
     }
 
     protected override ConfigurationPropertyCollection Properties
@@ -298,5 +277,13 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     {
       get { return (bool)this[_headless]; }
     }
+
+    IWebTestChromiumSettings IWebTestSettings.Chrome => Chrome;
+
+    IWebTestChromiumSettings IWebTestSettings.Edge => Edge;
+
+    IWebTestHostingSettings IWebTestSettings.Hosting => new WebTestHostingAdapter(HostingProviderSettings);
+
+    IWebTestTestSiteLayoutSettings IWebTestSettings.TestSiteLayout => TestSiteLayoutConfiguration;
   }
 }

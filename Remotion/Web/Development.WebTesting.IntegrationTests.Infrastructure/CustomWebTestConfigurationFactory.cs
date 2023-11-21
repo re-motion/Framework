@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {
   public class CustomWebTestConfigurationFactory : WebTestConfigurationFactory
   {
-    protected override IChromeConfiguration CreateChromeConfiguration (WebTestConfigurationSection configSettings)
+    protected override IChromeConfiguration CreateChromeConfiguration (IWebTestSettings configSettings)
     {
       var chromeVersionArchivePath = ConfigurationManager.AppSettings["ChromeVersionArchive"];
 
@@ -49,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       return new ChromeConfiguration(configSettings, chromeExecutable);
     }
 
-    protected override IEdgeConfiguration CreateEdgeConfiguration (WebTestConfigurationSection configSettings)
+    protected override IEdgeConfiguration CreateEdgeConfiguration (IWebTestSettings configSettings)
     {
       var edgeVersionArchivePath = ConfigurationManager.AppSettings["EdgeVersionArchive"];
 
@@ -68,7 +68,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       return new EdgeConfiguration(configSettings, edgeExecutable);
     }
 
-    protected override IFirefoxConfiguration CreateFirefoxConfiguration (WebTestConfigurationSection configSettings)
+    protected override IFirefoxConfiguration CreateFirefoxConfiguration (IWebTestSettings configSettings)
     {
       var firefoxVersionArchivePath = ConfigurationManager.AppSettings["FirefoxVersionArchive"];
 

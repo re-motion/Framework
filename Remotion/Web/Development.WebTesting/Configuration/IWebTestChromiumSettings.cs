@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 //
 // The re-motion Core Framework is free software; you can redistribute it
@@ -14,29 +14,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
-using System;
-using System.Configuration;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 
 namespace Remotion.Web.Development.WebTesting.Configuration
 {
   /// <summary>
-  /// Configures the path to a resource required by the test site.
+  /// Represents settings for Chromium specific browsers.
   /// </summary>
-  public class TestSiteResourceConfigurationElement : ConfigurationElement
+  public interface IWebTestChromiumSettings
   {
-    private readonly ConfigurationProperty _pathProperty;
-
-    public TestSiteResourceConfigurationElement ()
-    {
-      _pathProperty = new ConfigurationProperty("path", typeof(string), "", ConfigurationPropertyOptions.IsRequired);
-    }
-
     /// <summary>
-    /// Gets the path to the resource needed by the test site.
+    /// Specifies the wanted behavior related to the <c>CommandLineFlagSecurityWarningsEnabled</c> registry flag responsible for hiding infobars
+    /// showing "Chrome is being controlled by automated test software". Default is <see cref="ChromiumDisableSecurityWarningsBehavior"/>.<see cref="ChromiumDisableSecurityWarningsBehavior.Ignore"/>.
     /// </summary>
-    public string Path => (string)this[_pathProperty];
-
-    /// <inheritdoc />
-    protected override ConfigurationPropertyCollection Properties => new ConfigurationPropertyCollection { _pathProperty };
+    ChromiumDisableSecurityWarningsBehavior DisableSecurityWarningsBehavior { get; }
   }
 }

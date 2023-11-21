@@ -15,9 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using System.Collections.Generic;
 using System.IO;
+using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.Configuration;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.HostingStrategies.Configuration;
 
@@ -26,43 +27,20 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
   [TestFixture]
   public class TestSiteLayoutConfigurationTest
   {
-    private const string c_configurationXmlWithRelativePaths = @"
-<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0""
-    browser=""Chrome""
-    searchTimeout=""00:00:43""
-    retryInterval=""00:00:00.042""
-    webApplicationRoot=""http://some.url:1337/"">
-  <hosting name=""IisExpress"" type=""IisExpress"" port=""60042"" />
-  <testSiteLayout rootPath="".\Some\Path"">
-    <resources>
-      <add path="".\Some\Resource"" />
-    </resources>
-  </testSiteLayout>
-</remotion.webTesting>";
-
-    private const string c_configurationXmlWithAbsolutePaths = @"
-<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0""
-    browser=""Chrome""
-    searchTimeout=""00:00:43""
-    retryInterval=""00:00:00.042""
-    webApplicationRoot=""http://some.url:1337/"">
-  <hosting name=""IisExpress"" type=""IisExpress"" port=""60042"" />
-  <testSiteLayout rootPath=""C:\Some\Path"">
-    <resources>
-      <add path=""C:\Some\Resource"" />
-      <add path=""Some\Other\Resource"" />
-    </resources>
-  </testSiteLayout>
-</remotion.webTesting>";
-
     [Test]
     public void CreateFromWebTestConfigurationSection_WithRelativePaths ()
     {
       var currentBasePath = AppContext.BaseDirectory;
-      var configurationSection = (WebTestConfigurationSection)Activator.CreateInstance(typeof(WebTestConfigurationSection), true);
-      ConfigurationHelper.DeserializeSection(configurationSection, c_configurationXmlWithRelativePaths);
 
-      var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration(configurationSection);
+      var webTestSettingsStub = new Mock<IWebTestSettings>();
+      webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.RootPath)
+          .Returns(@".\Some\Path");
+      webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.Resources)
+          .Returns(new List<string>() { @".\Some\Resource" });
+
+      var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration(webTestSettingsStub.Object);
 
       Assert.That(testSiteLayoutConfiguration.RootPath, Is.EqualTo(Path.Combine(currentBasePath, @"Some\Path")));
       Assert.That(testSiteLayoutConfiguration.Resources.Count, Is.EqualTo(1));
@@ -72,10 +50,15 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
     [Test]
     public void CreateFromWebTestConfigurationSection_WithAbsolutePaths ()
     {
-      var configurationSection = (WebTestConfigurationSection)Activator.CreateInstance(typeof(WebTestConfigurationSection), true);
-      ConfigurationHelper.DeserializeSection(configurationSection, c_configurationXmlWithAbsolutePaths);
+      var webTestSettingsStub = new Mock<IWebTestSettings>();
+      webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.RootPath)
+          .Returns(@"C:\Some\Path");
+      webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.Resources)
+          .Returns(new List<string>() { @"C:\Some\Resource", @"Some\Other\Resource" });
 
-      var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration(configurationSection);
+      var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration(webTestSettingsStub.Object);
 
       Assert.That(testSiteLayoutConfiguration.RootPath, Is.EqualTo(@"C:\Some\Path"));
       Assert.That(testSiteLayoutConfiguration.Resources.Count, Is.EqualTo(2));

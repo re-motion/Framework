@@ -67,17 +67,17 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     public ChromiumDisableSecurityWarningsBehavior DisableSecurityWarningsBehavior { get; }
 
     public ChromeConfiguration (
-        [NotNull] WebTestConfigurationSection webTestConfigurationSection)
-        : this(webTestConfigurationSection, s_chromeExecutable.Value)
+        [NotNull] IWebTestSettings webTestSettings)
+        : this(webTestSettings, s_chromeExecutable.Value)
     {
     }
 
     public ChromeConfiguration (
-        [NotNull] WebTestConfigurationSection webTestConfigurationSection,
+        [NotNull] IWebTestSettings webTestSettings,
         [NotNull] ChromeExecutable chromeExecutable)
-        : base(webTestConfigurationSection)
+        : base(webTestSettings)
     {
-      ArgumentUtility.CheckNotNull("webTestConfigurationSection", webTestConfigurationSection);
+      ArgumentUtility.CheckNotNull("webTestSettings", webTestSettings);
       ArgumentUtility.CheckNotNull("chromeExecutable", chromeExecutable);
 
       BrowserBinaryPath = chromeExecutable.BrowserBinaryPath;
@@ -91,12 +91,12 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       DownloadHelper = new DefaultDownloadHelper(
           DownloadDirectory,
           c_partialFileDownloadExtension,
-          webTestConfigurationSection.DownloadStartedTimeout,
-          webTestConfigurationSection.DownloadUpdatedTimeout,
+          webTestSettings.DownloadStartedTimeout,
+          webTestSettings.DownloadUpdatedTimeout,
           downloadStartedGracePeriod,
-          webTestConfigurationSection.CleanUpUnmatchedDownloadedFiles);
+          webTestSettings.CleanUpUnmatchedDownloadedFiles);
 
-      DisableSecurityWarningsBehavior = webTestConfigurationSection.Chrome.DisableSecurityWarningsBehavior;
+      DisableSecurityWarningsBehavior = webTestSettings.Chrome.DisableSecurityWarningsBehavior;
     }
 
     public override IBrowserFactory BrowserFactory => new ChromeBrowserFactory(this);
