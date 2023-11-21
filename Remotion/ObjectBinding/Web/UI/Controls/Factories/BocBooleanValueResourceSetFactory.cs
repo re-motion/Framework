@@ -77,7 +77,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
 
     private string GetResourceUrl (string icon)
     {
-      return _resourceUrlFactory.CreateThemedResourceUrl(typeof(HtmlHeadAppenderExtensions), ResourceType.Image, icon).GetUrl();
+      return _resourceUrlFactory.CreateThemedResourceUrl(typeof(Remotion.Web.UI.HtmlHeadAppenderExtensions), ResourceType.Image, icon).GetUrl();
     }
   }
 }
