@@ -5,6 +5,10 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {
+  /// <summary>
+  /// Enables configuration of the storage definition providers.
+  /// </summary>
+  /// <seealso cref="DeferredStorageSettings"/>
   class StorageSettings : IStorageSettings
   {
     private readonly StorageProviderDefinition? _defaultStorageProviderDefinition;
@@ -14,13 +18,22 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     public StorageSettings (
         StorageProviderDefinition? defaultStorageProviderDefinition,
         ProviderCollection<StorageProviderDefinition> storageProviderCollection,
-        ConfigurationElementCollection<StorageGroupElement> storageGroups)
+        ConfigurationElementCollection<StorageGroupElement>? storageGroups)
     {
+      ArgumentUtility.CheckNotNullOrEmpty("storageProviderCollection", storageProviderCollection);
+
       _defaultStorageProviderDefinition = defaultStorageProviderDefinition;
       _storageProviderCollection = storageProviderCollection;
       _storageGroups = storageGroups;
     }
 
+    /// <summary>
+    /// Gets a storage provider definition based on its class definition.
+    /// Returns the default storage provider if the <see cref="ClassDefinition.StorageGroupType"/> is null or no storage
+    /// group with the given <see cref="ClassDefinition"/>.<see cref="ClassDefinition.StorageGroupType"/> could be found.
+    /// An exception is thrown if no default storage provider is registered either.
+    /// </summary>
+    /// <returns>The provider with the <see cref="ClassDefinition"/>.<see cref="ClassDefinition.StorageGroupType"/>.</returns>
     public StorageProviderDefinition GetStorageProviderDefinition (ClassDefinition classDefinition)
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
@@ -30,6 +43,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
       return GetStorageProviderDefinition(storageGroupTypeOrNull);
     }
 
+    /// <summary>
+    /// Gets a storage provider definition based on its storage group type.
+    /// Returns the default storage provider if the <see cref="Type"/> is null or no storage
+    /// group with the given <see cref="Type"/> could be found.
+    /// An exception is thrown if no default storage provider is registered either.
+    /// </summary>
+    /// <returns>The provider with the <see cref="Type"/> supplied as a parameter. If no <see cref="Type"/> was supplied or no
+    /// storage group pertaining to the supplied type was found, the default storage provider is returned instead.
+    /// In this case, if the default storage provider is <see langword="null"/> as well, an exception is thrown.</returns>
     public StorageProviderDefinition GetStorageProviderDefinition (Type? storageGroupTypeOrNull)
     {
       if (storageGroupTypeOrNull == null)
@@ -43,6 +65,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
       return _storageProviderCollection.GetMandatory(storageGroup.StorageProviderName);
     }
 
+    /// <summary>
+    /// Gets a storage provider definition based on its name.
+    /// </summary>
     public StorageProviderDefinition GetStorageProviderDefinition (string storageProviderName)
     {
       ArgumentUtility.CheckNotNullOrEmpty("storageProviderName", storageProviderName);
@@ -50,17 +75,23 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
       return _storageProviderCollection[storageProviderName];
     }
 
+    /// <summary>
+    /// Gets the default storage provider definition.
+    /// </summary>
+    /// <returns>The default storage provider definition or <see langword="null"/>.</returns>
     public StorageProviderDefinition? GetDefaultStorageProviderDefinition ()
     {
       return _defaultStorageProviderDefinition;
     }
 
+    /// <summary>
+    /// Gets all storage provider definitions.
+    /// </summary>
     // This probably can't be an IReadOnlyCollection, as most use cases want the specific ProviderCollection methods.
     public ProviderCollection<StorageProviderDefinition> GetStorageProviderDefinitions ()
     {
       return _storageProviderCollection;
     }
-
 
     private ConfigurationException CreateMissingDefaultProviderException ()
     {

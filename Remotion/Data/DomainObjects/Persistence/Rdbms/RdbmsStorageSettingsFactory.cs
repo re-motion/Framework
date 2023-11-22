@@ -5,6 +5,9 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
+  /// <summary>
+  /// Creates an <see cref="IStorageSettings"/> object with an <see cref="RdbmsProviderDefinition"/>.
+  /// </summary>
   public class RdbmsStorageSettingsFactory : IStorageSettingsFactory
   {
     private readonly string _connectionString;
@@ -19,9 +22,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       _storageSettingsFactoryType = storageSettingsFactoryType;
     }
 
+    /// <summary>
+    /// Creates an <see cref="IStorageSettings"/> object.
+    /// </summary>
+    /// <returns>A new <see cref="StorageSettings"/> object with a single default <see cref="StorageProviderDefinition" /> and no storage groups.</returns>
     public IStorageSettings Create (IStorageObjectFactoryFactory storageObjectFactoryFactory)
     {
-      var providerDefinition = new RdbmsProviderDefinition("RdbmsProvider", storageObjectFactoryFactory.Create(_storageSettingsFactoryType), _connectionString);
+      var providerDefinition = new RdbmsProviderDefinition("DefaultRdbmsProvider", storageObjectFactoryFactory.Create(_storageSettingsFactoryType), _connectionString);
 
       var storageProviderCollection = new ProviderCollection<StorageProviderDefinition>();
       storageProviderCollection.Add(providerDefinition);
