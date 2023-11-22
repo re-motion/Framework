@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Configuration;
+using JetBrains.Annotations;
 using Remotion.Mixins;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Persistence
+namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {
   /// <summary>
   /// Resolves or creates an <see cref="IStorageObjectFactory"/>.
   /// </summary>
-  class StorageObjectFactoryFactory : IStorageObjectFactoryFactory
+  [UsedImplicitly]
+  [ImplementationFor(typeof(IStorageObjectFactoryFactory), Lifetime = LifetimeKind.Singleton)]
+  public class StorageObjectFactoryFactory : IStorageObjectFactoryFactory
   {
     /// <summary>
     /// Resolves or creates an <see cref="IStorageObjectFactory"/> object based on the supplied <see cref="Type"/>.
@@ -17,6 +21,8 @@ namespace Remotion.Data.DomainObjects.Persistence
     /// </summary>
     public IStorageObjectFactory Create (Type storageObjectFactoryType)
     {
+
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("storageObjectFactoryType", storageObjectFactoryType, typeof(IStorageObjectFactory));
       try
       {
         var registeredService = (IStorageObjectFactory?)SafeServiceLocator.Current.GetService(storageObjectFactoryType);
@@ -54,16 +60,6 @@ namespace Remotion.Data.DomainObjects.Persistence
             ex.Message);
         throw new ConfigurationErrorsException(message, ex);
       }
-    }
-
-    /// <summary>
-    /// Helper method for <see cref="StorageObjectFactoryFactory.Create"/> to be used with generics.
-    /// </summary>
-    /// <typeparam name="T">The type of which will be supplied to <see cref="StorageObjectFactoryFactory.Create"/>.</typeparam>
-    public T Create<T> ()
-        where T : IStorageObjectFactory
-    {
-      return (T)Create(typeof(T));
     }
   }
 }

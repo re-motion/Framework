@@ -1,9 +1,9 @@
 ﻿using System;
 using Remotion.Configuration;
-using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {
   /// <summary>
   /// Creates an <see cref="IStorageSettings"/> object with an <see cref="RdbmsProviderDefinition"/>.
@@ -28,12 +28,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     /// <returns>A new <see cref="StorageSettings"/> object with a single default <see cref="StorageProviderDefinition" /> and no storage groups.</returns>
     public IStorageSettings Create (IStorageObjectFactoryFactory storageObjectFactoryFactory)
     {
-      var providerDefinition = new RdbmsProviderDefinition("DefaultRdbmsProvider", storageObjectFactoryFactory.Create(_storageSettingsFactoryType), _connectionString);
+      var providerDefinition = new RdbmsProviderDefinition("Default", storageObjectFactoryFactory.Create(_storageSettingsFactoryType), _connectionString);
 
       var storageProviderCollection = new ProviderCollection<StorageProviderDefinition>();
       storageProviderCollection.Add(providerDefinition);
 
-      var settings = new StorageSettings(providerDefinition, storageProviderCollection, null);
+      var settings = new StorageSettings(providerDefinition, storageProviderCollection, null);//TODO storage groups should be on providerDefinition
       return settings;
     }
   }

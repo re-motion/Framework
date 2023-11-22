@@ -1,8 +1,9 @@
 ﻿using System;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 
-namespace Remotion.Data.DomainObjects.Persistence.Configuration
+namespace Remotion.Data.DomainObjects
 {
   public static class StorageSettingsFactory
   {

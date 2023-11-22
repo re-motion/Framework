@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Remotion.Data.DomainObjects.Persistence
+namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {
   /// <summary>
   /// Resolves or creates an <see cref="IStorageObjectFactory"/> object.
@@ -12,11 +12,5 @@ namespace Remotion.Data.DomainObjects.Persistence
     /// Resolves or creates an <see cref="IStorageObjectFactory"/> object based on the supplied <see cref="Type"/>.
     /// </summary>
     IStorageObjectFactory Create (Type storageObjectFactoryType);
-
-    /// <summary>
-    /// Resolves or creates an <see cref="IStorageObjectFactory"/> object based on the <see cref="Type"/> of the generic parameter.
-    /// </summary>
-    T Create<T> ()
-        where T : IStorageObjectFactory;
   }
 }

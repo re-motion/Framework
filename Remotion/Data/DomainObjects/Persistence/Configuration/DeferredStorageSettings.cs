@@ -21,8 +21,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     private readonly IStorageSettingsFactory _storageSettingsFactory;
     private readonly IStorageObjectFactoryFactory _storageObjectFactoryFactory;
 
-    private IStorageSettings? _storageSettings;
-    private IStorageSettings StorageSettings => _storageSettings ??= Initialize();
+    private readonly Lazy<IStorageSettings> _lazyStorageSettings;
+    //TODO use lazy<t>
 
     /// <summary>
     /// Creates an uninitialized instance of this class. When one of the methods on this object is called, it
@@ -39,32 +39,34 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
       _storageSettingsFactory = storageSettingsFactory;
       _storageObjectFactoryFactory = storageObjectFactoryFactory;
+
+      _lazyStorageSettings = new Lazy<IStorageSettings>(Initialize);
     }
 
     public StorageProviderDefinition GetStorageProviderDefinition (ClassDefinition classDefinition)
     {
-      return StorageSettings.GetStorageProviderDefinition(classDefinition);
+      return _lazyStorageSettings.Value.GetStorageProviderDefinition(classDefinition);
     }
 
     public StorageProviderDefinition GetStorageProviderDefinition (Type? storageGroupTypeOrNull)
     {
-      return StorageSettings.GetStorageProviderDefinition(storageGroupTypeOrNull);
+      return _lazyStorageSettings.Value.GetStorageProviderDefinition(storageGroupTypeOrNull);
     }
 
 
     public StorageProviderDefinition GetStorageProviderDefinition (string storageProviderName)
     {
-      return StorageSettings.GetStorageProviderDefinition(storageProviderName);
+      return _lazyStorageSettings.Value.GetStorageProviderDefinition(storageProviderName);
     }
 
     public StorageProviderDefinition? GetDefaultStorageProviderDefinition ()
     {
-      return StorageSettings.GetDefaultStorageProviderDefinition();
+      return _lazyStorageSettings.Value.GetDefaultStorageProviderDefinition();
     }
 
     public ProviderCollection<StorageProviderDefinition> GetStorageProviderDefinitions ()
     {
-      return StorageSettings.GetStorageProviderDefinitions();
+      return _lazyStorageSettings.Value.GetStorageProviderDefinitions();
     }
 
     private IStorageSettings Initialize ()

@@ -9,10 +9,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
   /// Enables configuration of the storage definition providers.
   /// </summary>
   /// <seealso cref="DeferredStorageSettings"/>
-  class StorageSettings : IStorageSettings
+  public class StorageSettings : IStorageSettings
   {
     private readonly StorageProviderDefinition? _defaultStorageProviderDefinition;
-    private readonly ProviderCollection<StorageProviderDefinition> _storageProviderCollection;
+    private readonly ProviderCollection<StorageProviderDefinition> _storageProviderCollection; //TODO change to IReadonlycollection
     private readonly ConfigurationElementCollection<StorageGroupElement>? _storageGroups;
 
     public StorageSettings (
@@ -93,6 +93,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
       return _storageProviderCollection;
     }
 
+    //TODO Rework
     private ConfigurationException CreateMissingDefaultProviderException ()
     {
       return new ConfigurationException(
