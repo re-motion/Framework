@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       {
         throw CreateArgumentException(
             "query",
-            "The StorageProviderID '{0}' of the provided query '{1}' does not match with this StorageProvider's ID '{2}'.",
+            "The StorageProvider '{0}' of the provided query '{1}' does not match with this StorageProvider '{2}'.",
             query.StorageProviderDefinition.Name,
             query.ID,
             StorageProviderDefinition.Name);

@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     protected RdbmsProvider CreateRdbmsProvider ()
     {
-      return RdbmsProviderObjectMother.CreateForIntegrationTest(TestDomainStorageProviderDefinition);
+      return RdbmsProviderObjectMother.CreateForIntegrationTest(StorageSettings, TestDomainStorageProviderDefinition);
     }
   }
 }

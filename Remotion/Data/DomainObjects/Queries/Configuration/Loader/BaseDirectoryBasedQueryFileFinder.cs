@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
 
       return File.Exists(queryFilePath)
           ? EnumerableUtility.Singleton(queryFilePath)
-          : throw new ConfigurationException($"The query file '{queryFilePath}' does not exist.");
+          : throw new QueryConfigurationException($"The query file '{queryFilePath}' does not exist.");
     }
   }
 }

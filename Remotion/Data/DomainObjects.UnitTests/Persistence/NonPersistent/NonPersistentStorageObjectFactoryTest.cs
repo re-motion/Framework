@@ -2,7 +2,6 @@
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Linq.SqlBackend.SqlPreparation;
@@ -26,8 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       var factory = new NonPersistentStorageObjectFactory();
 
       var result = factory.CreatePersistenceModelLoader(
-          _storageProviderDefinition,
-          new Mock<IStorageProviderDefinitionFinder>().Object);
+          _storageProviderDefinition);
 
       Assert.That(result, Is.InstanceOf<NonPersistentPersistenceModelLoader>());
       var nonPersistentPersistenceModelLoader = (NonPersistentPersistenceModelLoader)result;

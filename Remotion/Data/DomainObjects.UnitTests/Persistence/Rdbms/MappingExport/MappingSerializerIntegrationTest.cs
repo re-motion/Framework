@@ -23,6 +23,9 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.UnitTests.Resources;
+using Remotion.Data.DomainObjects.Validation;
+using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
 {
@@ -32,7 +35,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void Serialize ()
     {
-      var sqlStorageObjectFactory = new SqlStorageObjectFactory();
+      var sqlStorageObjectFactory = new SqlStorageObjectFactory(
+          StorageSettings,
+          ServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
+          ServiceLocator.Current.GetInstance<IDataContainerValidator>());
       var mappingSerializer =
           new MappingSerializer(
               d => sqlStorageObjectFactory.CreateEnumSerializer(),
@@ -47,7 +53,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void Serialize_OutputIsValid ()
     {
-      var sqlStorageObjectFactory = new SqlStorageObjectFactory();
+      var sqlStorageObjectFactory = new SqlStorageObjectFactory(
+          StorageSettings,
+          ServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
+          ServiceLocator.Current.GetInstance<IDataContainerValidator>());
       var mappingSerializer =
           new MappingSerializer(
               d => sqlStorageObjectFactory.CreateEnumSerializer(),

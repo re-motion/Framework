@@ -15,8 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Specialized;
-using System.Configuration;
+using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Utilities;
 
@@ -24,26 +23,9 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
 {
   public class NonPersistentProviderDefinition: StorageProviderDefinition
   {
-    public NonPersistentProviderDefinition (string name, INonPersistentStorageObjectFactory factory)
-        : base(name, factory)
+    public NonPersistentProviderDefinition (string name, INonPersistentStorageObjectFactory factory, IReadOnlyCollection<Type>? assignedStorageGroups = null)
+        : base(name, factory, assignedStorageGroups)
     {
-      ArgumentUtility.CheckNotNull("factory", factory);
-    }
-
-    public NonPersistentProviderDefinition (string name, NameValueCollection config)
-        : base(name, config)
-    {
-      ArgumentUtility.CheckNotNull("config", config);
-
-      if (!(base.Factory is INonPersistentStorageObjectFactory))
-      {
-        var message = string.Format(
-            "The factory type for the storage provider defined by '{0}' must implement the 'INonPersistentStorageObjectFactory' interface. "
-            + "'{1}' does not implement that interface.",
-            name,
-            base.Factory.GetType().Name);
-        throw new ConfigurationErrorsException(message);
-      }
     }
 
     public new INonPersistentStorageObjectFactory Factory

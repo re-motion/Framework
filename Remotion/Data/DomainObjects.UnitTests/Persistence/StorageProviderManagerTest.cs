@@ -15,8 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
 
@@ -31,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     {
       base.SetUp();
 
-      _storageProviderManager = new StorageProviderManager(NullPersistenceExtension.Instance);
+      _storageProviderManager = new StorageProviderManager(NullPersistenceExtension.Instance, StorageSettings);
     }
 
     public override void TearDown ()
@@ -41,9 +44,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     }
 
     [Test]
-    public void LookUp ()
+    public void GetMandatory_WithProviderID ()
     {
-      StorageProvider provider = _storageProviderManager[c_testDomainProviderID];
+      StorageProvider provider = _storageProviderManager.GetMandatory(c_testDomainProviderID);
 
       Assert.That(provider, Is.Not.Null);
       Assert.That(provider.GetType(), Is.EqualTo(typeof(RdbmsProvider)));
@@ -51,10 +54,53 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     }
 
     [Test]
-    public void Reference ()
+    public void GetMandatory_WithProviderInstance ()
     {
-      StorageProvider provider1 = _storageProviderManager[c_testDomainProviderID];
-      StorageProvider provider2 = _storageProviderManager[c_testDomainProviderID];
+      var providerDefinition = StorageSettings.GetStorageProviderDefinitions().OfType<RdbmsProviderDefinition>().First();
+      StorageProvider provider = _storageProviderManager.GetMandatory(providerDefinition);
+
+      Assert.That(provider.GetType(), Is.EqualTo(typeof(RdbmsProvider)));
+      Assert.That(provider.StorageProviderDefinition, Is.SameAs(providerDefinition));
+    }
+
+    [Test]
+    public void GetMandatory_WithProviderInstanceNotPartOfStorageSettings ()
+    {
+      var rdbmsStorageObjectFactoryStub = new Mock<IRdbmsStorageObjectFactory>();
+      var providerDefinition = new RdbmsProviderDefinition(c_testDomainProviderID, rdbmsStorageObjectFactoryStub.Object, "connection string");
+
+#if DEBUG
+      rdbmsStorageObjectFactoryStub
+          .Setup(_ => _.CreateStorageProvider(It.IsAny<StorageProviderDefinition>(), It.IsAny<IPersistenceExtension>()))
+          .Throws(new AssertionException("Should not be called"));
+
+      Assert.That(
+          () => _storageProviderManager.GetMandatory(providerDefinition),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  $"Supplied provider definition '{c_testDomainProviderID}' does not match the provider definition with the same name in the IStorageSettings object."));
+#else
+      var rdbmsProvider = new RdbmsProvider(
+          providerDefinition,
+          Mock.Of<IPersistenceExtension>(),
+          Mock.Of<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>>(),
+          () => Mock.Of<System.Data.IDbConnection>());
+
+      rdbmsStorageObjectFactoryStub
+          .Setup(_ => _.CreateStorageProvider(It.IsAny<StorageProviderDefinition>(), It.IsAny<IPersistenceExtension>()))
+          .Returns(rdbmsProvider);
+
+      StorageProvider provider = _storageProviderManager.GetMandatory(providerDefinition);
+
+      Assert.That(provider, Is.SameAs(rdbmsProvider));
+#endif
+    }
+
+    [Test]
+    public void GetMandatory_WithProviderID_ReturnsSameInstanceTwice ()
+    {
+      StorageProvider provider1 = _storageProviderManager.GetMandatory(c_testDomainProviderID);
+      StorageProvider provider2 = _storageProviderManager.GetMandatory(c_testDomainProviderID);
 
       Assert.That(provider2, Is.SameAs(provider1));
     }
@@ -66,7 +112,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
       using (_storageProviderManager)
       {
-        provider = (RdbmsProvider)_storageProviderManager[c_testDomainProviderID];
+        provider = (RdbmsProvider)_storageProviderManager.GetMandatory(c_testDomainProviderID);
         provider.LoadDataContainer(DomainObjectIDs.Order1);
 
         Assert.That(provider.IsConnected, Is.True);

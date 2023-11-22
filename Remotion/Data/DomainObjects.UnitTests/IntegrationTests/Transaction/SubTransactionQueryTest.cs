@@ -184,7 +184,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           var query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"));
           query.Parameters.Add("@customerID", DomainObjectIDs.Customer3);
 
-          var newQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject>();
+          var newQueryResult = TestQueryFactory.CreateTestQueryResult(StorageSettings);
 
           extensionMock
               .Setup(mock => mock.FilterQueryResult(It.IsAny<ClientTransaction>(), It.IsAny<QueryResult<DomainObject>>()))

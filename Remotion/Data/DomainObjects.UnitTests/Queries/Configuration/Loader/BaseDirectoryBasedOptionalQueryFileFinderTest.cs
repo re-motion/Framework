@@ -16,11 +16,9 @@
 //
 using System;
 using System.IO;
-using JetBrains.Annotations;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries.Configuration.Loader;
-using Remotion.Development.UnitTesting.IO;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader

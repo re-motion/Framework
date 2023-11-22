@@ -17,7 +17,6 @@
 using System;
 using System.Linq.Expressions;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -48,7 +47,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       base.SetUp();
 
-      DomainObjectsConfiguration.SetCurrent(SchemaGenerationConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent(SchemaGenerationConfiguration.Instance.GetMappingConfiguration());
     }
 
@@ -63,14 +61,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       get { return SchemaGenerationConfiguration.Instance.GetMappingConfiguration(); }
     }
 
-    protected StorageConfiguration StorageConfiguration
+    protected IStorageSettings StorageSettings
     {
-      get { return SchemaGenerationConfiguration.Instance.GetPersistenceConfiguration(); }
+      get { return SchemaGenerationConfiguration.Instance.GetStorageSettings(); }
     }
 
     protected RdbmsProviderDefinition SchemaGenerationFirstStorageProviderDefinition
     {
-      get { return (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[SchemaGenerationFirstStorageProviderID]; }
+      get { return (RdbmsProviderDefinition)StorageSettings.GetStorageProviderDefinition(SchemaGenerationFirstStorageProviderID); }
     }
 
     protected RdbmsProviderDefinition SchemaGenerationSecondStorageProviderDefinition
@@ -78,13 +76,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       get
       {
         return
-            (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[SchemaGenerationSecondStorageProviderID];
+            (RdbmsProviderDefinition)StorageSettings.GetStorageProviderDefinition(SchemaGenerationSecondStorageProviderID);
       }
     }
 
     protected RdbmsProviderDefinition SchemaGenerationThirdStorageProviderDefinition
     {
-      get { return (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[SchemaGenerationThirdStorageProviderID]; }
+      get { return (RdbmsProviderDefinition)StorageSettings.GetStorageProviderDefinition(SchemaGenerationThirdStorageProviderID); }
     }
 
     protected RdbmsProviderDefinition SchemaGenerationInternalStorageProviderDefinition
@@ -92,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       get
       {
         return
-            (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[SchemaGenerationInternalStorageProviderID];
+            (RdbmsProviderDefinition)StorageSettings.GetStorageProviderDefinition(SchemaGenerationInternalStorageProviderID);
       }
     }
 

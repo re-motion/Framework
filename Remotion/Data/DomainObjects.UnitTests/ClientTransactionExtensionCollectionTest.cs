@@ -553,7 +553,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void FilterQueryResult ()
     {
-      var queryStub = QueryFactory.CreateQuery(TestQueryFactory.CreateOrderQueryWithCustomCollectionType());
+      var queryStub = QueryFactory.CreateQuery(TestQueryFactory.CreateOrderQueryWithCustomCollectionType(StorageSettings));
 
       var originalResult = new QueryResult<Order>(queryStub, new Order[0]);
       var newResult1 = new QueryResult<Order>(queryStub, new[] { DomainObjectIDs.Order1.GetObject<Order>() });

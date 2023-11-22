@@ -6,36 +6,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Resources
 {
   public static class ResourceManager
   {
-    public static byte[] GetDomainObjectsConfigurationWithFakeMappingLoader ()
-    {
-      return ResourceUtility.GetResource(typeof(ResourceManager), "DomainObjectsConfigurationWithFakeMappingLoader.xml");
-    }
-
-    public static byte[] GetDomainObjectsConfigurationWithCustomSectionGroupName ()
-    {
-      return ResourceUtility.GetResource(typeof(ResourceManager), "DomainObjectsConfigurationWithCustomSectionGroupName.xml");
-    }
-
-    public static byte[] GetDomainObjectsConfigurationWithMinimumSettings ()
-    {
-      return ResourceUtility.GetResource(typeof(ResourceManager), "DomainObjectsConfigurationWithMinimumSettings.xml");
-    }
-
-    public static byte[] GetDomainObjectsConfigurationWithResolvedInterfaceStorageObjectFactory ()
-    {
-      return ResourceUtility.GetResource(typeof(ResourceManager), "DomainObjectsConfigurationWithResolvedInterfaceStorageObjectFactory.xml");
-    }
-
-    public static byte[] GetDomainObjectsConfigurationWithUnresolvedInterfaceStorageObjectFactory ()
-    {
-      return ResourceUtility.GetResource(typeof(ResourceManager), "DomainObjectsConfigurationWithUnresolvedInterfaceStorageObjectFactory.xml");
-    }
-
-    public static byte[] GetDomainObjectsConfigurationWithMixedStorageObjectFactory ()
-    {
-      return ResourceUtility.GetResource(typeof(ResourceManager), "DomainObjectsConfigurationWithMixedStorageObjectFactory.xml");
-    }
-
     public static byte[] GetImage1 ()
     {
       return ResourceUtility.GetResource(typeof(ResourceManager), "Image1.png");

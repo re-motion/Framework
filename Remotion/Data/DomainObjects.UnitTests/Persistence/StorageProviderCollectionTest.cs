@@ -20,7 +20,6 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.Tracing;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence
@@ -40,8 +39,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
       _storageProviderCommandFactoryStub = new Mock<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>>();
 
+      var sqlStorageObjectFactoryStub = new Mock<IRdbmsStorageObjectFactory>().Object;
+
       _provider = new RdbmsProvider(
-          new RdbmsProviderDefinition("TestDomain", new SqlStorageObjectFactory(), "ConnectionString"),
+          new RdbmsProviderDefinition("TestDomain", sqlStorageObjectFactoryStub, "ConnectionString"),
           NullPersistenceExtension.Instance,
           _storageProviderCommandFactoryStub.Object,
           () => new SqlConnection());

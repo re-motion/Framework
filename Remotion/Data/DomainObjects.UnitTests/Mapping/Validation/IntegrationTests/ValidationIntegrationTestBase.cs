@@ -20,7 +20,6 @@ using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.UnitTesting.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery;
@@ -42,9 +41,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
       var testDomainNamespace = "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration." + testDomainNamespaceSuffix;
       var typeDiscoveryService = GetTypeDiscoveryService(testDomainNamespace, GetType().Assembly);
       Assert.That(typeDiscoveryService.GetTypes(typeof(DomainObject), true), Is.Not.Empty, "Namespace '{0}' has no DomainObjects.", testDomainNamespaceSuffix);
-      new MappingConfiguration(
+
+      var mappingConfiguration = MappingConfiguration.Create(
           MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
-          new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(StandardConfiguration.Instance.GetPersistenceConfiguration())));
+          new PersistenceModelLoader(StandardConfiguration.Instance.GetStorageSettings()));
+      mappingConfiguration.EnsureInitialized();
     }
 
     private ITypeDiscoveryService GetTypeDiscoveryService (string testDomainNamespace, params Assembly[] rootAssemblies)

@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
+using System;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.ServiceLocation;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Queries
+namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
 {
   [TestFixture]
   public class IQueryDefinitionRepositoryTest : StandardMappingTest

@@ -32,7 +32,10 @@ using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.Validation;
 using Remotion.Development.NUnit.UnitTesting;
+using Remotion.ServiceLocation;
+using Remotion.Utilities;
 using SortOrder = Remotion.Data.DomainObjects.Mapping.SortExpressions.SortOrder;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
@@ -325,8 +328,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Assert.That(
           () => _provider.LoadDataContainer(objectID),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
-              "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ObjectID 'Official|1|System.Int32' does not match with this "
-              + "StorageProvider's ID 'TestDomain'.", "id"));
+              "The StorageProvider 'UnitTestStorageProviderStub' of the provided ObjectID 'Official|1|System.Int32' does not match with this "
+              + "StorageProvider 'TestDomain'.", "id"));
     }
 
     [Test]
@@ -401,8 +404,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Assert.That(
           () => _provider.LoadDataContainers(new[] { objectID }),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
-              "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ObjectID 'Official|1|System.Int32' does not match with this "
-              + "StorageProvider's ID 'TestDomain'.", "ids"));
+              "The StorageProvider 'UnitTestStorageProviderStub' of the provided ObjectID 'Official|1|System.Int32' does not match with this "
+              + "StorageProvider 'TestDomain'.", "ids"));
     }
 
     [Test]
@@ -502,8 +505,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void LoadDataContainersByRelatedID_ClassDefinitionWithDifferentStorageProviderDefinition ()
     {
+      var sqlStorageObjectFactory = new SqlStorageObjectFactory(
+          StorageSettings,
+          ServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
+          ServiceLocator.Current.GetInstance<IDataContainerValidator>());
+
       var providerWithDifferentID = new RdbmsProvider(
-          new RdbmsProviderDefinition("Test", new SqlStorageObjectFactory(), TestDomainConnectionString),
+          new RdbmsProviderDefinition("Test", sqlStorageObjectFactory, TestDomainConnectionString),
           NullPersistenceExtension.Instance,
           _commandFactoryMock.Object,
           () => new SqlConnection());
@@ -513,7 +521,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Assert.That(
           () => providerWithDifferentID.LoadDataContainersByRelatedID(relationEndPointDefinition, null, objectID),
           Throws.Exception.TypeOf<ArgumentException>().With.ArgumentExceptionMessageEqualTo(
-              "The StorageProviderID 'TestDomain' of the provided ClassDefinition does not match with this StorageProvider's ID 'Test'.", "classDefinition"));
+              "The StorageProvider 'TestDomain' of the provided ClassDefinition does not match with this StorageProvider 'Test'.", "classDefinition"));
     }
 
     [Test]

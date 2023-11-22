@@ -301,7 +301,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
       orderItemsFetchQuery.EagerFetchQueries.Add(relationEndPointDefinition, ordersFetchQuery);
     }
 
-    private static ServiceLocatorScope ScopeWithPersistenceExtension (IPersistenceExtension persistenceExtensionMock)
+    private ServiceLocatorScope ScopeWithPersistenceExtension (IPersistenceExtension persistenceExtensionMock)
     {
       var persistenceExtensionFactoryStub = new Mock<IPersistenceExtensionFactory>();
       persistenceExtensionFactoryStub
@@ -309,6 +309,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
           .Returns(new[] { persistenceExtensionMock });
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle<IPersistenceExtensionFactory>(() => persistenceExtensionFactoryStub.Object);
+      RegisterStandardConfiguration(serviceLocator);
       return new ServiceLocatorScope(serviceLocator);
     }
   }

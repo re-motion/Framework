@@ -15,8 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Tracing;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 {
@@ -28,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     [SetUp]
     public void SetUp ()
     {
-      _rootPersistenceStrategy = new RootPersistenceStrategy(Guid.Empty);
+      _rootPersistenceStrategy = new RootPersistenceStrategy(Guid.Empty, Mock.Of<IStorageSettings>(), Mock.Of<IPersistenceExtensionFactory>());
     }
   }
 }

@@ -15,15 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
   public static class QueryResultObjectMother
   {
-    public static QueryResult<T> CreateQueryResult<T> () where T : DomainObject
+    public static QueryResult<T> CreateQueryResult<T> (IStorageSettings storageSettings) where T : DomainObject
     {
-      return new QueryResult<T>(QueryObjectMother.Create(), new[] { DomainObjectMother.CreateFakeObject<T>() });
+      return new QueryResult<T>(QueryObjectMother.Create(storageSettings), new[] { DomainObjectMother.CreateFakeObject<T>() });
     }
   }
 }

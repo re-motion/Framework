@@ -15,14 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Specialized;
-using System.Configuration;
 using NUnit.Framework;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
+using Remotion.Data.DomainObjects.Validation;
 using Remotion.Development.UnitTesting.Configuration;
+using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
@@ -36,12 +37,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       base.SetUp();
 
-      _sqlStorageObjectFactory = new SqlStorageObjectFactory();
+      _sqlStorageObjectFactory = new SqlStorageObjectFactory(
+          StorageSettings,
+          ServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
+          ServiceLocator.Current.GetInstance<IDataContainerValidator>());
       _definition = new RdbmsProviderDefinition("StorageProviderID", _sqlStorageObjectFactory, "ConnectionString");
-
-      FakeConfigurationWrapper configurationWrapper = new FakeConfigurationWrapper();
-      configurationWrapper.SetUpConnectionString("SqlProvider", "ConnectionString", null);
-      ConfigurationWrapper.SetCurrent(configurationWrapper);
     }
 
     [Test]
@@ -52,50 +52,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Assert.That(provider.Name, Is.EqualTo("Provider"));
       Assert.That(provider.Factory, Is.TypeOf(typeof(SqlStorageObjectFactory)));
       Assert.That(provider.ConnectionString, Is.EqualTo("ConnectionString"));
-    }
-
-    [Test]
-    public void Initialize_FromConfig ()
-    {
-      NameValueCollection config = new NameValueCollection();
-      config.Add("description", "The Description");
-      config.Add("factoryType", "Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2016.SqlStorageObjectFactory");
-      config.Add("connectionString", "SqlProvider");
-
-      RdbmsProviderDefinition provider = new RdbmsProviderDefinition("Provider", config);
-
-      Assert.That(provider.Name, Is.EqualTo("Provider"));
-      Assert.That(provider.Description, Is.EqualTo("The Description"));
-      Assert.That(provider.Factory, Is.TypeOf(typeof(SqlStorageObjectFactory)));
-      Assert.That(provider.ConnectionString, Is.EqualTo("ConnectionString"));
-      Assert.That(config, Is.Empty);
-    }
-
-    [Test]
-    public void Initialize_FromConfig_InvalidFactoryType ()
-    {
-      NameValueCollection config = new NameValueCollection();
-      config.Add("description", "The Description");
-      config.Add("factoryType", typeof(InvalidRdbmsStorageObjectFactory).AssemblyQualifiedName);
-      config.Add("connectionString", "SqlProvider");
-      Assert.That(
-          () => new RdbmsProviderDefinition("Provider", config),
-          Throws.InstanceOf<ConfigurationErrorsException>()
-              .With.Message.EqualTo(
-                  "The factory type for the storage provider defined by 'Provider' must implement the 'IRdbmsStorageObjectFactory' interface. "
-                  + "'InvalidRdbmsStorageObjectFactory' does not implement that interface."));
-    }
-
-    [Test]
-    public void Initialize_FromConfig_WithMissingFactoryType ()
-    {
-      NameValueCollection config = new NameValueCollection();
-      config.Add("description", "The Description");
-      config.Add("connectionString", "SqlProvider");
-      Assert.That(
-          () => new RdbmsProviderDefinition("Provider", config),
-          Throws.InstanceOf<ConfigurationErrorsException>()
-              .With.Message.EqualTo("The attribute 'factoryType' is missing in the configuration of the 'Provider' provider."));
     }
 
     [Test]

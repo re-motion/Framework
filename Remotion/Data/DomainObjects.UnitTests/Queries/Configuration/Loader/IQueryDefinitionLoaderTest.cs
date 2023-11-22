@@ -16,7 +16,6 @@
 //
 using System;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Queries.Configuration.Loader;
 using Remotion.ServiceLocation;
 

@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using Remotion.Context;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
@@ -75,9 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static StorageProvider CreateStorageProviderMockForOfficial ()
     {
-      var storageProviderID =
-          MappingConfiguration.Current.GetTypeDefinition(typeof(Official)).StorageEntityDefinition.StorageProviderDefinition.Name;
-      var storageProviderDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory(storageProviderID);
+      var storageProviderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Official)).StorageEntityDefinition.StorageProviderDefinition;
       return new Mock<StorageProvider>(storageProviderDefinition, NullPersistenceExtension.Instance).Object;
     }
 
