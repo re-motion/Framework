@@ -79,6 +79,33 @@ public class StorageProviderManager : IDisposable
     return provider;
   }
 
+  public StorageProvider GetMandatory (StorageProviderDefinition providerDefinition)
+  {
+    CheckDisposed();
+    ArgumentUtility.CheckNotNull("providerDefinition", providerDefinition);
+
+#if DEBUG
+    if (providerDefinition != _storageSettings.GetStorageProviderDefinition(providerDefinition.Name))
+      throw new InvalidOperationException(
+          $"Supplied provider definition '{providerDefinition}' does not match the provider definition with the same name in the IStorageSettings object.");
+#endif
+
+    if (_storageProviders.Contains(providerDefinition.Name))
+      return _storageProviders[providerDefinition.Name]!;
+
+    var provider = providerDefinition.Factory.CreateStorageProvider(providerDefinition, _persistenceExtension);
+
+    if (provider == null)
+    {
+      throw CreatePersistenceException(
+          "Storage Provider with ID '{0}' could not be created.", providerDefinition.Name);
+    }
+
+    _storageProviders.Add(provider);
+
+    return provider;
+  }
+
   public StorageProviderCollection StorageProviders
   {
     get
