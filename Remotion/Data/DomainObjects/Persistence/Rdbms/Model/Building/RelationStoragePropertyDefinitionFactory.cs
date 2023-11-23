@@ -30,25 +30,25 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     private readonly bool _forceClassIDColumnInForeignKeyProperties;
     private readonly IStorageNameProvider _storageNameProvider;
     private readonly IStorageTypeInformationProvider _storageTypeInformationProvider;
-    private readonly IStorageProviderDefinitionFinder _providerDefinitionFinder;
+    private readonly IStorageSettings _storageSettings;
 
     public RelationStoragePropertyDefinitionFactory (
         StorageProviderDefinition storageProviderDefinition,
         bool forceClassIDColumnInForeignKeyProperties,
         IStorageNameProvider storageNameProvider,
         IStorageTypeInformationProvider storageTypeInformationProvider,
-        IStorageProviderDefinitionFinder providerDefinitionFinder)
+        IStorageSettings storageSettings)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
       ArgumentUtility.CheckNotNull("storageNameProvider", storageNameProvider);
       ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
-      ArgumentUtility.CheckNotNull("providerDefinitionFinder", providerDefinitionFinder);
+      ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
 
       _storageProviderDefinition = storageProviderDefinition;
       _forceClassIDColumnInForeignKeyProperties = forceClassIDColumnInForeignKeyProperties;
       _storageNameProvider = storageNameProvider;
       _storageTypeInformationProvider = storageTypeInformationProvider;
-      _providerDefinitionFinder = providerDefinitionFinder;
+      _storageSettings = storageSettings;
     }
 
     public StorageProviderDefinition StorageProviderDefinition
@@ -71,9 +71,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       get { return _storageTypeInformationProvider; }
     }
 
-    public IStorageProviderDefinitionFinder ProviderDefinitionFinder
+    public IStorageSettings StorageSettings
     {
-      get { return _providerDefinitionFinder; }
+      get { return _storageSettings; }
     }
 
     public IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (RelationEndPointDefinition relationEndPointDefinition)
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       ArgumentUtility.CheckNotNullOrEmpty("relationColumnName", relationColumnName);
       ArgumentUtility.CheckNotNullOrEmpty("relationClassIDColumnName", relationClassIDColumnName);
 
-      var relatedStorageProviderDefinition = _providerDefinitionFinder.GetStorageProviderDefinition(relatedClassDefinition, null);
+      var relatedStorageProviderDefinition = _storageSettings.GetStorageProviderDefinition(relatedClassDefinition);
 
       if (_storageProviderDefinition != relatedStorageProviderDefinition)
         return CreateCrossProviderRelationStoragePropertyDefinition(relationColumnName);

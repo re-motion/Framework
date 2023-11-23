@@ -16,8 +16,9 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Mapping.Validation;
-using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Model;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
@@ -25,15 +26,16 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// <summary>
   /// The <see cref="PersistenceModelLoader"/> applied the persistence model to a class hierarchy.
   /// </summary>
+  [ImplementationFor(typeof(IPersistenceModelLoader), Lifetime = LifetimeKind.Singleton)]
   public class PersistenceModelLoader : IPersistenceModelLoader
   {
-    private readonly IStorageProviderDefinitionFinder _storageProviderDefinitionFinder;
+    private readonly IStorageSettings _storageSettings;
 
-    public PersistenceModelLoader (IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
+    public PersistenceModelLoader (IStorageSettings storageSettings)
     {
-      ArgumentUtility.CheckNotNull("storageProviderDefinitionFinder", storageProviderDefinitionFinder);
+      ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
 
-      _storageProviderDefinitionFinder = storageProviderDefinitionFinder;
+      _storageSettings = storageSettings;
     }
 
     public void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition)
@@ -52,8 +54,8 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     private IPersistenceModelLoader GetProviderSpecificPersistenceModelLoader (ClassDefinition classDefinition)
     {
-      var storageProviderDefinition = _storageProviderDefinitionFinder.GetStorageProviderDefinition(classDefinition, null);
-      return storageProviderDefinition.Factory.CreatePersistenceModelLoader(storageProviderDefinition, _storageProviderDefinitionFinder);
+      var storageProviderDefinition = _storageSettings.GetStorageProviderDefinition(classDefinition);
+      return storageProviderDefinition.Factory.CreatePersistenceModelLoader(storageProviderDefinition, _storageSettings);
     }
   }
 }

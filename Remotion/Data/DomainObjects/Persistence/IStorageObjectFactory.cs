@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     IPersistenceModelLoader CreatePersistenceModelLoader (
         StorageProviderDefinition storageProviderDefinition,
-        IStorageProviderDefinitionFinder storageProviderDefinitionFinder);
+        IStorageSettings storageSettings);
 
     IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (
         StorageProviderDefinition storageProviderDefinition,

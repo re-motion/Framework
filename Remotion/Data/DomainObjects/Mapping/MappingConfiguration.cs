@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       public readonly DoubleCheckedLockingContainer<IMappingConfiguration> Current = new DoubleCheckedLockingContainer<IMappingConfiguration>(
           () => new MappingConfiguration(
               SafeServiceLocator.Current.GetInstance<IMappingLoader>(),
-              new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
+              SafeServiceLocator.Current.GetInstance<IPersistenceModelLoader>()));
     }
 
     private static readonly Fields s_fields = new Fields();

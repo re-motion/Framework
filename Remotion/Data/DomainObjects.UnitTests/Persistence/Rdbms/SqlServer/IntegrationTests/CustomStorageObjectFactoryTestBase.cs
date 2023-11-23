@@ -61,12 +61,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           new SortExpressionDefinitionProvider(),
           SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>());
       _storageObjectFactory = CreateSqlStorageObjectFactory();
-      var storageProviderDefinitionFinderStub = new Mock<IStorageProviderDefinitionFinder>();
-      _storageProviderDefinition = new RdbmsProviderDefinition("test", _storageObjectFactory, DatabaseTest.TestDomainConnectionString);
-      storageProviderDefinitionFinderStub
-          .Setup(stub => stub.GetStorageProviderDefinition(It.IsAny<ClassDefinition>(), It.IsAny<string>()))
+      var storageSettingsStub = new Mock<IStorageSettings>();
+      _storageProviderDefinition = new RdbmsProviderDefinition("test", _storageObjectFactory, TestDomainConnectionString);
+      storageSettingsStub
+          .Setup(stub => stub.GetStorageProviderDefinition(It.IsAny<ClassDefinition>()))
           .Returns(_storageProviderDefinition);
-      var persistenceModelLoader = _storageObjectFactory.CreatePersistenceModelLoader(_storageProviderDefinition, storageProviderDefinitionFinderStub.Object);
+      var persistenceModelLoader = _storageObjectFactory.CreatePersistenceModelLoader(_storageProviderDefinition, storageSettingsStub.Object);
       _mappingConfiguration = new MappingConfiguration(mappingLoader, persistenceModelLoader);
 
       MappingConfiguration.SetCurrent(_mappingConfiguration);

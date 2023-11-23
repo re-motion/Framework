@@ -18,7 +18,7 @@ using System;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
   public class RelationStoragePropertyDefinitionFactoryTest : StandardMappingTest
   {
     private Mock<IStorageNameProvider> _storageNameProviderMock;
-    private Mock<IStorageProviderDefinitionFinder> _storageProviderDefinitionFinderStub;
+    private Mock<IStorageSettings> _storageSettingsStub;
     private Mock<IStorageTypeInformationProvider> _storageTypeInformationProviderStrictMock;
     private RelationStoragePropertyDefinitionFactory _factory;
 
@@ -43,11 +43,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       base.SetUp();
 
       _storageNameProviderMock = new Mock<IStorageNameProvider>(MockBehavior.Strict);
-      _storageProviderDefinitionFinderStub = new Mock<IStorageProviderDefinitionFinder>();
+      _storageSettingsStub = new Mock<IStorageSettings>();
       _storageTypeInformationProviderStrictMock = new Mock<IStorageTypeInformationProvider>(MockBehavior.Strict);
 
       _factory = new RelationStoragePropertyDefinitionFactory(TestDomainStorageProviderDefinition,
-          false, _storageNameProviderMock.Object, _storageTypeInformationProviderStrictMock.Object, _storageProviderDefinitionFinderStub.Object);
+          false, _storageNameProviderMock.Object, _storageTypeInformationProviderStrictMock.Object, _storageSettingsStub.Object);
 
       _fakeStorageTypeInformation1 = StorageTypeInformationObjectMother.CreateStorageTypeInformation();
       _fakeStorageTypeInformation2 = StorageTypeInformationObjectMother.CreateStorageTypeInformation();
@@ -74,8 +74,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           .Returns("FakeRelationClassIDColumnName")
           .Verifiable();
 
-      _storageProviderDefinitionFinderStub
-          .Setup(stub => stub.GetStorageProviderDefinition(oppositeClassDefinition, null))
+      _storageSettingsStub
+          .Setup(stub => stub.GetStorageProviderDefinition(oppositeClassDefinition))
           .Returns(_factory.StorageProviderDefinition);
 
       var result = _factory.CreateStoragePropertyDefinition(endPointDefinition);
@@ -123,12 +123,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           .Returns("FakeRelationClassIDColumnName")
           .Verifiable();
 
-      _storageProviderDefinitionFinderStub
-          .Setup(stub => stub.GetStorageProviderDefinition(endPointDefinition.GetOppositeEndPointDefinition().ClassDefinition, null))
+      _storageSettingsStub
+          .Setup(stub => stub.GetStorageProviderDefinition(endPointDefinition.GetOppositeEndPointDefinition().ClassDefinition))
           .Returns(_factory.StorageProviderDefinition);
 
       var factoryForcingClassID = new RelationStoragePropertyDefinitionFactory(TestDomainStorageProviderDefinition,
-          true, _storageNameProviderMock.Object, _storageTypeInformationProviderStrictMock.Object, _storageProviderDefinitionFinderStub.Object);
+          true, _storageNameProviderMock.Object, _storageTypeInformationProviderStrictMock.Object, _storageSettingsStub.Object);
       var result = factoryForcingClassID.CreateStoragePropertyDefinition(endPointDefinition);
 
       _storageTypeInformationProviderStrictMock.Verify();
@@ -165,8 +165,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           .Returns("FakeRelationClassIDColumnName")
           .Verifiable();
 
-      _storageProviderDefinitionFinderStub
-          .Setup(stub => stub.GetStorageProviderDefinition(relationEndPointDefinition.GetOppositeClassDefinition(), null))
+      _storageSettingsStub
+          .Setup(stub => stub.GetStorageProviderDefinition(relationEndPointDefinition.GetOppositeClassDefinition()))
           .Returns(_factory.StorageProviderDefinition);
 
       var result = _factory.CreateStoragePropertyDefinition(relationEndPointDefinition);
@@ -201,8 +201,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           .Returns("FakeRelationClassIDColumnName")
           .Verifiable();
 
-      _storageProviderDefinitionFinderStub
-          .Setup(stub => stub.GetStorageProviderDefinition(GetTypeDefinition(typeof(Official)), null))
+      _storageSettingsStub
+          .Setup(stub => stub.GetStorageProviderDefinition(GetTypeDefinition(typeof(Official))))
           .Returns(UnitTestStorageProviderDefinition);
 
       var result = _factory.CreateStoragePropertyDefinition(relationEndPointDefinition);

@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
@@ -35,14 +35,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         RdbmsProviderDefinition storageProviderDefinition,
         IStorageTypeInformationProvider storageTypeInformationProvider,
         IStorageNameProvider storageNameProvider,
-        IStorageProviderDefinitionFinder providerDefinitionFinder)
+        IStorageSettings storageSettings)
     {
       return new CustomDataTypeStorageProeprtyDefinitionFactoryDecorator(
           base.CreateDataStoragePropertyDefinitionFactory(
               storageProviderDefinition,
               storageTypeInformationProvider,
               storageNameProvider,
-              providerDefinitionFinder),
+              storageSettings),
           storageNameProvider);
     }
 

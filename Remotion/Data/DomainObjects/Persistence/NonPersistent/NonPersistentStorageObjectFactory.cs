@@ -47,10 +47,10 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
 
     public IPersistenceModelLoader CreatePersistenceModelLoader (
         StorageProviderDefinition storageProviderDefinition,
-        IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
+        IStorageSettings storageSettings)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull("storageProviderDefinitionFinder", storageProviderDefinitionFinder);
+      ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
 
       return new NonPersistentPersistenceModelLoader(storageProviderDefinition);
     }
