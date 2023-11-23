@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
 
@@ -31,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     {
       base.SetUp();
 
-      _storageProviderManager = new StorageProviderManager(NullPersistenceExtension.Instance);
+      _storageProviderManager = new StorageProviderManager(NullPersistenceExtension.Instance, new StorageSettings(null, new StorageProviderDefinition[]{}, null));
     }
 
     public override void TearDown ()
@@ -43,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void LookUp ()
     {
-      StorageProvider provider = _storageProviderManager[c_testDomainProviderID];
+      StorageProvider provider = _storageProviderManager.GetMandatory(c_testDomainProviderID);
 
       Assert.That(provider, Is.Not.Null);
       Assert.That(provider.GetType(), Is.EqualTo(typeof(RdbmsProvider)));
@@ -53,8 +54,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void Reference ()
     {
-      StorageProvider provider1 = _storageProviderManager[c_testDomainProviderID];
-      StorageProvider provider2 = _storageProviderManager[c_testDomainProviderID];
+      StorageProvider provider1 = _storageProviderManager.GetMandatory(c_testDomainProviderID);
+      StorageProvider provider2 = _storageProviderManager.GetMandatory(c_testDomainProviderID);
 
       Assert.That(provider2, Is.SameAs(provider1));
     }
@@ -66,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
       using (_storageProviderManager)
       {
-        provider = (RdbmsProvider)_storageProviderManager[c_testDomainProviderID];
+        provider = (RdbmsProvider)_storageProviderManager.GetMandatory(c_testDomainProviderID);
         provider.LoadDataContainer(DomainObjectIDs.Order1);
 
         Assert.That(provider.IsConnected, Is.True);

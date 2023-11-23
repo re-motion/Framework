@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Mixins;
@@ -33,7 +34,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       using (MixinConfiguration.BuildFromActive().ForClass(typeof(StorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
-        StorageProvider provider = new StorageProviderManager(NullPersistenceExtension.Instance)[orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name];
+        StorageProvider provider =
+            new StorageProviderManager(NullPersistenceExtension.Instance, new StorageSettings(null, new StorageProviderDefinition[0], null))
+                .GetMandatory(orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
         Assert.That(Mixin.Get<StorageProviderWithFixedGuidMixin>(provider), Is.Not.Null);
       }
     }
@@ -44,7 +47,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       using (MixinConfiguration.BuildFromActive().ForClass(typeof(StorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
-        StorageProvider provider = new StorageProviderManager(NullPersistenceExtension.Instance)[orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name];
+        StorageProvider provider =
+            new StorageProviderManager(NullPersistenceExtension.Instance, new StorageSettings(null, new StorageProviderDefinition[0], null))
+                .GetMandatory(orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
         ObjectID id1 = provider.CreateNewObjectID(orderDefinition);
         ObjectID id2 = provider.CreateNewObjectID(orderDefinition);
         Assert.That(id2, Is.EqualTo(id1));
@@ -57,7 +62,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       using (MixinConfiguration.BuildFromActive().ForClass(typeof(StorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
-        StorageProvider provider = new StorageProviderManager(NullPersistenceExtension.Instance)[orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name];
+        StorageProvider provider =
+            new StorageProviderManager(NullPersistenceExtension.Instance, new StorageSettings(null, new StorageProviderDefinition[0], null))
+                .GetMandatory(orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
 
         Guid fixedGuid = Guid.NewGuid();
         ((IStorageProviderWithFixedGuid)provider).FixedGuid = fixedGuid;

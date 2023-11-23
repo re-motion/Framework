@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
@@ -196,12 +197,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     protected virtual PersistenceManager CreatePersistenceManager ()
     {
-      return new PersistenceManager(CreatePersistenceExtension());
+      return new PersistenceManager(CreatePersistenceExtension(), SafeServiceLocator.Current.GetInstance<IStorageSettings>());
     }
 
     private StorageProviderManager CreateStorageProviderManager ()
     {
-      return new StorageProviderManager(CreatePersistenceExtension());
+      return new StorageProviderManager(CreatePersistenceExtension(), SafeServiceLocator.Current.GetInstance<IStorageSettings>());
     }
 
     protected IPersistenceExtension CreatePersistenceExtension ()
