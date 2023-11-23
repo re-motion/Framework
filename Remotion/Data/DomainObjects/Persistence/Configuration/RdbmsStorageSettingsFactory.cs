@@ -30,8 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     {
       var providerDefinition = new RdbmsProviderDefinition("Default", storageObjectFactoryFactory.Create(_storageSettingsFactoryType), _connectionString);
 
-      var storageProviderCollection = new ProviderCollection<StorageProviderDefinition>();
-      storageProviderCollection.Add(providerDefinition);
+      var storageProviderCollection = new [] { providerDefinition };
 
       var settings = new StorageSettings(providerDefinition, storageProviderCollection, null);//TODO storage groups should be on providerDefinition
       return settings;

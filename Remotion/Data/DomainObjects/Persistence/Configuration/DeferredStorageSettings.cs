@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
-using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
       return _lazyStorageSettings.Value.GetDefaultStorageProviderDefinition();
     }
 
-    public ProviderCollection<StorageProviderDefinition> GetStorageProviderDefinitions ()
+    public IReadOnlyCollection<StorageProviderDefinition> GetStorageProviderDefinitions ()
     {
       return _lazyStorageSettings.Value.GetStorageProviderDefinitions();
     }

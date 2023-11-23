@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
@@ -12,12 +14,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
   public class StorageSettings : IStorageSettings
   {
     private readonly StorageProviderDefinition? _defaultStorageProviderDefinition;
-    private readonly ProviderCollection<StorageProviderDefinition> _storageProviderCollection; //TODO change to IReadonlycollection
+    private readonly IReadOnlyCollection<StorageProviderDefinition> _storageProviderCollection; //TODO change to IReadonlycollection
     private readonly ConfigurationElementCollection<StorageGroupElement>? _storageGroups;
 
     public StorageSettings (
         StorageProviderDefinition? defaultStorageProviderDefinition,
-        ProviderCollection<StorageProviderDefinition> storageProviderCollection,
+        IReadOnlyCollection<StorageProviderDefinition> storageProviderCollection,
         ConfigurationElementCollection<StorageGroupElement>? storageGroups)
     {
       ArgumentUtility.CheckNotNullOrEmpty("storageProviderCollection", storageProviderCollection);
@@ -25,6 +27,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
       _defaultStorageProviderDefinition = defaultStorageProviderDefinition;
       _storageProviderCollection = storageProviderCollection;
       _storageGroups = storageGroups;
+
+      //TODO Assert that each storage group is only contained in a single storage provider
     }
 
     /// <summary>
@@ -62,7 +66,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
       if (storageGroup == null)
         return GetDefaultStorageProviderDefinition() ?? throw CreateMissingDefaultProviderException();
 
-      return _storageProviderCollection.GetMandatory(storageGroup.StorageProviderName);
+      return _storageProviderCollection.Single(p => p.Name == storageGroup.StorageProviderName);
     }
 
     /// <summary>
@@ -72,7 +76,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     {
       ArgumentUtility.CheckNotNullOrEmpty("storageProviderName", storageProviderName);
 
-      return _storageProviderCollection[storageProviderName];
+      return _storageProviderCollection.FirstOrDefault(p => p.Name == storageProviderName) ?? throw CreateMissingDefaultProviderException();
     }
 
     /// <summary>
@@ -88,7 +92,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     /// Gets all storage provider definitions.
     /// </summary>
     // This probably can't be an IReadOnlyCollection, as most use cases want the specific ProviderCollection methods.
-    public ProviderCollection<StorageProviderDefinition> GetStorageProviderDefinitions ()
+    public IReadOnlyCollection<StorageProviderDefinition> GetStorageProviderDefinitions ()
     {
       return _storageProviderCollection;
     }

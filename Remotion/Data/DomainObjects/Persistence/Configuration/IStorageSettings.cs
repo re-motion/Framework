@@ -1,5 +1,5 @@
 ﻿using System;
-using Remotion.Configuration;
+using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Mapping;
 
 namespace Remotion.Data.DomainObjects.Persistence.Configuration
@@ -36,6 +36,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     /// <summary>
     /// Gets all storage provider definitions
     /// </summary>
-    ProviderCollection<StorageProviderDefinition> GetStorageProviderDefinitions ();
+    IReadOnlyCollection<StorageProviderDefinition> GetStorageProviderDefinitions ();
   }
 }
