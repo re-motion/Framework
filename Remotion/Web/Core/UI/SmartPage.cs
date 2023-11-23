@@ -18,14 +18,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.IO;
-using System.Security.Cryptography;
 using System.Web;
 using System.Web.UI;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Compilation;
 #if !NETFRAMEWORK
+using System.IO;
 using Remotion.Web.ContentSecurityPolicy;
 #endif
 using Remotion.Web.Infrastructure;
@@ -245,6 +244,9 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   private bool? _enableSmartScrolling;
   private bool? _enableSmartFocusing;
   private readonly SmartPageClientScriptManager _clientScriptManager;
+#if !NETFRAMEWORK
+  private readonly INonceGenerator _nonceGenerator;
+#endif
 
   public SmartPage ()
   {
@@ -252,6 +254,9 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     _validatableControlInitializer = new ValidatableControlInitializer(this);
     _postLoadInvoker = new PostLoadInvoker(this);
     _clientScriptManager = new SmartPageClientScriptManager(base.ClientScript);
+#if !NETFRAMEWORK
+    _nonceGenerator = new NonceGenerator();
+#endif
   }
 
 #if !NETFRAMEWORK
@@ -263,7 +268,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
     if (scriptManager == null || !scriptManager.IsInAsyncPostBack)
     {
-      ViewState["nonce"] = GenerateRandomNonceValue();
+      ViewState["nonce"] = _nonceGenerator.GenerateAlphaNumericNonce();
     }
   }
 
@@ -281,13 +286,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
   protected override HtmlTextWriter CreateHtmlTextWriter (TextWriter writer)
   {
-    return new CspEnabledHtmlTextWriter(this, writer, GetCspNonceValue());
-  }
-
-  private static string GenerateRandomNonceValue ()
-  {
-    using var rng = RandomNumberGenerator.Create();
-    return Convert.ToHexString(RandomNumberGenerator.GetBytes(8));
+    return new CspEnabledHtmlTextWriter(this, writer, GetCspNonceValue(), _nonceGenerator);
   }
 #endif
 
