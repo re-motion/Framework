@@ -1,50 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Configuration;
-using Remotion.Utilities;
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// Copyright (c) rubicon IT GmbH, www.rubicon.eu
+//
+// The re-motion Core Framework is free software; you can redistribute it
+// and/or modify it under the terms of the GNU Lesser General Public License
+// as published by the Free Software Foundation; either version 2.1 of the
+// License, or (at your option) any later version.
+//
+// re-motion is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with re-motion; if not, see http://www.gnu.org/licenses.
+//
+
+using System;
 
 namespace Remotion.Web.Development.WebTesting.Configuration
 {
-  public class WebTestConfiguration : IWebTestConfiguration
+  public class WebTestConfiguration
   {
-#if !NETFRAMEWORK
-    internal static IWebTestConfiguration Current
-    {
-      get { return }
+    private static IWebTestConfiguration? s_current;
 
-    }
-#endif
-#if NETFRAMEWORK
-    internal static Lazy<WebTestConfigurationSection> Current
+    public static IWebTestConfiguration Current
     {
-      get { return new Lazy<WebTestConfigurationSection>(
-          () =>
-          {
-            var configuration = (WebTestConfigurationSection)ConfigurationManager.GetSection("remotion.webTesting");
-            Assertion.IsNotNull(configuration, "Configuration section 'remotion.webTesting' missing.");
-            return configuration;
-          });}
+      get => s_current ??= new WebTestConfigurationAdapter();
+      set => s_current = value;
     }
-#endif
-
-    public string Name { get; }
-    public string Type { get; }
-    public NameValueCollection Parameters { get; }
-    public string RootPath { get; }
-    public IReadOnlyList<string> Resources { get; }
-    public string Browser { get; }
-    public TimeSpan SearchTimeout { get; }
-    public TimeSpan DownloadStartedTimeout { get; }
-    public TimeSpan DownloadUpdatedTimeout { get; }
-    public TimeSpan RetryInterval { get; }
-    public TimeSpan AsyncJavaScriptTimeout { get; }
-    public bool Headless { get; }
-    public string WebApplicationRoot { get; }
-    public string ScreenshotDirectory { get; }
-    public string LogsDirectory { get; }
-    public bool CloseBrowserWindowsOnSetUpAndTearDown { get; }
-    public bool CleanUpUnmatchedDownloadedFiles { get; }
-    public string RequestErrorDetectionStrategy { get; }
   }
 }
