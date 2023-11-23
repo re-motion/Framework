@@ -28,6 +28,8 @@ namespace Remotion.Web.Development.WebTesting.Configuration
 
     public TimeSpan DownloadUpdatedTimeout => WebTestConfigurationSection.Current.DownloadUpdatedTimeout;
 
+    public TimeSpan VerifyWebApplicationStartedTimeout => WebTestConfigurationSection.Current.VerifyWebApplicationStartedTimeout;
+
     public TimeSpan RetryInterval => WebTestConfigurationSection.Current.RetryInterval;
 
     public TimeSpan AsyncJavaScriptTimeout => WebTestConfigurationSection.Current.AsyncJavaScriptTimeout;
@@ -46,12 +48,12 @@ namespace Remotion.Web.Development.WebTesting.Configuration
 
     public string RequestErrorDetectionStrategy => WebTestConfigurationSection.Current.RequestErrorDetectionStrategyTypeName;
 
-    public IChromiumConfiguration Chrome { get; } = new ChromeConfigurationAdapter();
+    public IWebTestChromiumConfiguration Chrome { get; } = new WebTestChromeConfigurationAdapter();
 
-    public IChromiumConfiguration Edge { get; } = new EdgeConfigurationAdapter();
+    public IWebTestChromiumConfiguration Edge { get; } = new WebTestEdgeConfigurationAdapter();
 
-    public IHosting Hosting { get; } = new HostingAdapter();
+    public IWebTestHostingConfiguration WebTestHostingConfiguration { get; } = new WebTestHostingConfigurationAdapter();
 
-    public ITestSiteLayout TestSiteLayout { get; } = new TestSiteLayoutAdapter();
+    public IWebTestSiteLayoutConfiguration WebTestSiteLayoutConfiguration { get; } = new WebWebTestWebTestSiteLayoutConfigurationConfigurationAdapter();
   }
 }

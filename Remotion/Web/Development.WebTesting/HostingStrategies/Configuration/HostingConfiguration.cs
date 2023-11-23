@@ -43,15 +43,15 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
             { "Docker", typeof(DockerHostingStrategy) },
         };
 
-    private readonly ProviderSettings _hostingProviderSettings;
+    private readonly IWebTestHostingConfiguration _webTestHostingConfigurationProviderSettings;
     private TimeSpan _verifyWebApplicationStartedTimeout;
 
-    public HostingConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection, [NotNull] ITestSiteLayoutConfiguration testSiteLayoutConfiguration)
+    public HostingConfiguration ([NotNull] IWebTestConfiguration webTestConfigurationSection, [NotNull] ITestSiteLayoutConfiguration testSiteLayoutConfiguration)
     {
       ArgumentUtility.CheckNotNull("webTestConfigurationSection", webTestConfigurationSection);
       ArgumentUtility.CheckNotNull("testSiteLayoutConfiguration", testSiteLayoutConfiguration);
 
-      _hostingProviderSettings = webTestConfigurationSection.HostingProviderSettings;
+      _webTestHostingConfigurationProviderSettings = webTestConfigurationSection.WebTestHostingConfiguration;
       _verifyWebApplicationStartedTimeout = webTestConfigurationSection.VerifyWebApplicationStartedTimeout;
       _testSiteLayoutConfiguration = testSiteLayoutConfiguration;
     }
@@ -60,14 +60,14 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
 
     public IHostingStrategy GetHostingStrategy ()
     {
-      if (string.IsNullOrEmpty(_hostingProviderSettings.Type))
+      if (string.IsNullOrEmpty(_webTestHostingConfigurationProviderSettings.Type))
         return new NullHostingStrategy();
 
-      var hostingStrategyTypeName = _hostingProviderSettings.Type;
+      var hostingStrategyTypeName = _webTestHostingConfigurationProviderSettings.Type;
       var hostingStrategyType = GetHostingStrategyType(hostingStrategyTypeName);
       Assertion.IsNotNull(hostingStrategyType, string.Format("Hosting strategy '{0}' could not be loaded.", hostingStrategyTypeName));
 
-      var hostingStrategy = (IHostingStrategy)Activator.CreateInstance(hostingStrategyType, new object[] { _testSiteLayoutConfiguration, _hostingProviderSettings.Parameters })!;
+      var hostingStrategy = (IHostingStrategy)Activator.CreateInstance(hostingStrategyType, new object[] { _testSiteLayoutConfiguration, _webTestHostingConfigurationProviderSettings.Parameters })!;
       return hostingStrategy;
     }
 

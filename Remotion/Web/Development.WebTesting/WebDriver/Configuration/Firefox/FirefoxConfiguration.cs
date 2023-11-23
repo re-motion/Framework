@@ -53,13 +53,13 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
     /// <inheritdoc />
     public override IDownloadHelper DownloadHelper { get; }
 
-    public FirefoxConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
+    public FirefoxConfiguration ([NotNull] IWebTestConfiguration webTestConfigurationSection)
         : this(webTestConfigurationSection, s_firefoxExecutable.Value)
     {
     }
 
     public FirefoxConfiguration (
-        [NotNull] WebTestConfigurationSection webTestConfigurationSection,
+        [NotNull] IWebTestConfiguration webTestConfigurationSection,
         [NotNull] FirefoxExecutable firefoxExecutable)
         : base(webTestConfigurationSection)
     {

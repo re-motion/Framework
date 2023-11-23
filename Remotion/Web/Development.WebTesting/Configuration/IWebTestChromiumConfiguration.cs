@@ -18,8 +18,8 @@ using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 
 namespace Remotion.Web.Development.WebTesting.Configuration
 {
-  public class EdgeConfigurationAdapter : IChromiumConfiguration
+  public interface IWebTestChromiumConfiguration
   {
-    public ChromiumDisableSecurityWarningsBehavior DisableSecurityWarningsBehavior => WebTestConfigurationSection.Current.Edge.DisableSecurityWarningsBehavior;
+    ChromiumDisableSecurityWarningsBehavior DisableSecurityWarningsBehavior { get; }
   }
 }

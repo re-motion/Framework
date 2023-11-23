@@ -15,13 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Remotion.Web.Development.WebTesting.Configuration
 {
-  public class TestSiteLayoutAdapter : ITestSiteLayout
+  public interface IWebTestSiteLayoutConfiguration
   {
-    public string RootPath => WebTestConfigurationSection.Current.TestSiteLayoutConfiguration.RootPath;
-    public IReadOnlyList<string> Resources => WebTestConfigurationSection.Current.TestSiteLayoutConfiguration.Resources.Select(e => e.Path).ToArray();
+    string RootPath { get; }
+
+    IReadOnlyList<string> Resources { get; }
   }
 }

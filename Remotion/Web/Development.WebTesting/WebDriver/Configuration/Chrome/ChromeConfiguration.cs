@@ -67,13 +67,13 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     public ChromiumDisableSecurityWarningsBehavior DisableSecurityWarningsBehavior { get; }
 
     public ChromeConfiguration (
-        [NotNull] WebTestConfigurationSection webTestConfigurationSection)
+        [NotNull] IWebTestConfiguration webTestConfigurationSection)
         : this(webTestConfigurationSection, s_chromeExecutable.Value)
     {
     }
 
     public ChromeConfiguration (
-        [NotNull] WebTestConfigurationSection webTestConfigurationSection,
+        [NotNull] IWebTestConfiguration webTestConfigurationSection,
         [NotNull] ChromeExecutable chromeExecutable)
         : base(webTestConfigurationSection)
     {

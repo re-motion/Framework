@@ -40,11 +40,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     private readonly LocatorHelper _locatorHelper;
     private readonly MouseHelper _mouseHelper;
 
-    protected BrowserConfigurationBase ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
+    protected BrowserConfigurationBase ([NotNull] IWebTestConfiguration webTestConfigurationSection)
     {
       ArgumentUtility.CheckNotNull("webTestConfigurationSection", webTestConfigurationSection);
 
-      _browserName = webTestConfigurationSection.BrowserName;
+      _browserName = webTestConfigurationSection.Browser;
       _searchTimeout = webTestConfigurationSection.SearchTimeout;
       _retryInterval = webTestConfigurationSection.RetryInterval;
       _logsDirectory = webTestConfigurationSection.LogsDirectory;

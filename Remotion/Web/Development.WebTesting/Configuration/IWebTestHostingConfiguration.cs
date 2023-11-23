@@ -14,14 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
-using System.Collections.Generic;
+using System.Collections.Specialized;
 
 namespace Remotion.Web.Development.WebTesting.Configuration
 {
-  public interface ITestSiteLayout
+  public interface IWebTestHostingConfiguration
   {
-    string RootPath { get; }
+    string Name { get; }
 
-    IReadOnlyList<string> Resources { get; }
+    string Type { get; }
+
+    NameValueCollection Parameters { get; }
   }
 }

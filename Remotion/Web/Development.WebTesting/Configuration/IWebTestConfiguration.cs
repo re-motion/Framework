@@ -28,6 +28,8 @@ namespace Remotion.Web.Development.WebTesting.Configuration
 
     TimeSpan DownloadUpdatedTimeout { get; }
 
+    TimeSpan VerifyWebApplicationStartedTimeout { get; }
+
     TimeSpan RetryInterval { get; }
 
     TimeSpan AsyncJavaScriptTimeout { get; }
@@ -46,12 +48,12 @@ namespace Remotion.Web.Development.WebTesting.Configuration
 
     string RequestErrorDetectionStrategy { get; }
 
-    IChromiumConfiguration Chrome { get; }
+    IWebTestChromiumConfiguration Chrome { get; }
 
-    IChromiumConfiguration Edge { get; }
+    IWebTestChromiumConfiguration Edge { get; }
 
-    IHosting Hosting { get; }
+    IWebTestHostingConfiguration WebTestHostingConfiguration { get; }
 
-    ITestSiteLayout TestSiteLayout { get; }
+    IWebTestSiteLayoutConfiguration WebTestSiteLayoutConfiguration { get; }
   }
 }

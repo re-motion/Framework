@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private readonly IRequestErrorDetectionStrategy _requestErrorDetectionStrategy;
     private readonly bool _closeBrowserWindowsOnSetUpAndTearDown;
 
-    public TestInfrastructureConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
+    public TestInfrastructureConfiguration ([NotNull] IWebTestConfiguration webTestConfigurationSection)
     {
       ArgumentUtility.CheckNotNull("webTestConfigurationSection", webTestConfigurationSection);
 
@@ -47,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
       _screenshotDirectory = webTestConfigurationSection.ScreenshotDirectory;
 
       _closeBrowserWindowsOnSetUpAndTearDown = webTestConfigurationSection.CloseBrowserWindowsOnSetUpAndTearDown;
-      _requestErrorDetectionStrategy = GetRequestErrorDetectionConfiguration(webTestConfigurationSection.RequestErrorDetectionStrategyTypeName);
+      _requestErrorDetectionStrategy = GetRequestErrorDetectionConfiguration(webTestConfigurationSection.RequestErrorDetectionStrategy);
     }
 
     public string WebApplicationRoot

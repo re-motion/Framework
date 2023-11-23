@@ -18,7 +18,7 @@ using System.Collections.Specialized;
 
 namespace Remotion.Web.Development.WebTesting.Configuration
 {
-  public class HostingAdapter : IHosting
+  public class WebTestHostingConfigurationAdapter : IWebTestHostingConfiguration
   {
     public string Name => WebTestConfigurationSection.Current.HostingProviderSettings.Name;
 

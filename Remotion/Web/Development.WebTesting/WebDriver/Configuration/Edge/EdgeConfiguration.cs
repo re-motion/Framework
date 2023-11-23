@@ -66,13 +66,13 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
     public ChromiumDisableSecurityWarningsBehavior DisableSecurityWarningsBehavior { get; }
 
     public EdgeConfiguration (
-        [NotNull] WebTestConfigurationSection webTestConfigurationSection)
+        [NotNull] IWebTestConfiguration webTestConfigurationSection)
         : this(webTestConfigurationSection, s_edgeExecutable.Value)
     {
     }
 
     public EdgeConfiguration (
-        [NotNull] WebTestConfigurationSection webTestConfigurationSection,
+        [NotNull] IWebTestConfiguration webTestConfigurationSection,
         [NotNull] EdgeExecutable edgeExecutable)
         : base(webTestConfigurationSection)
     {

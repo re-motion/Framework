@@ -14,12 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Remotion.Web.Development.WebTesting.Configuration
 {
-  public class ChromeConfigurationAdapter : IChromiumConfiguration
+  public class WebWebTestWebTestSiteLayoutConfigurationConfigurationAdapter : IWebTestSiteLayoutConfiguration
   {
-    public ChromiumDisableSecurityWarningsBehavior DisableSecurityWarningsBehavior => WebTestConfigurationSection.Current.Chrome.DisableSecurityWarningsBehavior;
+    public string RootPath => WebTestConfigurationSection.Current.TestSiteLayoutConfiguration.RootPath;
+    public IReadOnlyList<string> Resources => WebTestConfigurationSection.Current.TestSiteLayoutConfiguration.Resources.Select(e => e.Path).ToArray();
   }
 }
