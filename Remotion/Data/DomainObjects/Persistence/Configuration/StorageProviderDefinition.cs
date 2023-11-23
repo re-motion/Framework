@@ -15,9 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Specialized;
+using System.Collections.Generic;
 using System.Configuration;
-using Remotion.Configuration;
 using Remotion.Mixins;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -28,27 +27,20 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
   /// Defines the configuration for a specific <see cref="StorageProvider"/>. Subclasses of <see cref="StorageProviderDefinition"/> can be 
   /// instantiated from a config file entry.
   /// </summary>
-  public abstract class StorageProviderDefinition: ExtendedProviderBase
+  public abstract class StorageProviderDefinition
   {
+    public string Name { get; }
+
     private readonly IStorageObjectFactory _factory;
 
-    protected StorageProviderDefinition (string name, NameValueCollection config)
-        : base(name, config)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
-      ArgumentUtility.CheckNotNull("config", config);
+    public IReadOnlyCollection<Type> AssignedStorageGroups { get; }
 
-      var factoryTypeName = GetAndRemoveNonEmptyStringAttribute(config, "factoryType", name, required: true)!;
-      var configuredFactoryType = TypeUtility.GetType(factoryTypeName, throwOnError: true)!;
-      _factory = CreateStorageObjectFactory(configuredFactoryType);
-    }
-
-    protected StorageProviderDefinition (string name, IStorageObjectFactory factory)
-        : base(name, new NameValueCollection())
+    protected StorageProviderDefinition (string name, IStorageObjectFactory factory, IReadOnlyCollection<Type>? assignedStorageGroups = null)
     {
       ArgumentUtility.CheckNotNull("factory", factory);
-
+      Name = name;
       _factory = factory;
+      AssignedStorageGroups = assignedStorageGroups ?? new Type[]{};
     }
 
     public abstract bool IsIdentityTypeSupported (Type identityType);

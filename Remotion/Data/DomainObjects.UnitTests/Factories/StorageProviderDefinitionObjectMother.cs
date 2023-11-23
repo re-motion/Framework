@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
@@ -28,6 +29,42 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     public static ProviderCollection<StorageProviderDefinition> CreateTestDomainStorageProviders ()
     {
       ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = new ProviderCollection<StorageProviderDefinition>();
+      var sqlStorageObjectFactory = new SqlStorageObjectFactory();
+      var nonPersistentStorageObjectFactory = new NonPersistentStorageObjectFactory();
+
+      storageProviderDefinitionCollection.Add(
+          new RdbmsProviderDefinition(
+              DatabaseTest.c_testDomainProviderID,
+              sqlStorageObjectFactory,
+              DatabaseTest.TestDomainConnectionString));
+
+      storageProviderDefinitionCollection.Add(
+          new NonPersistentProviderDefinition(
+              DatabaseTest.c_nonPersistentTestDomainProviderID,
+              nonPersistentStorageObjectFactory));
+
+      storageProviderDefinitionCollection.Add(
+          new RdbmsProviderDefinition(
+              DatabaseTest.DefaultStorageProviderID,
+              sqlStorageObjectFactory,
+              DatabaseTest.TestDomainConnectionString));
+
+      storageProviderDefinitionCollection.Add(
+          new UnitTestStorageProviderStubDefinition(
+              DatabaseTest.c_unitTestStorageProviderStubID));
+
+      storageProviderDefinitionCollection.Add(
+          new RdbmsProviderDefinition(
+              TableInheritanceMappingTest.TableInheritanceTestDomainProviderID,
+              sqlStorageObjectFactory,
+              DatabaseTest.TestDomainConnectionString));
+
+      return storageProviderDefinitionCollection;
+    }
+
+    public static IReadOnlyCollection<StorageProviderDefinition> CreateTestDomainStorageProviders2 ()
+    {
+      var storageProviderDefinitionCollection = new List<StorageProviderDefinition>();
       var sqlStorageObjectFactory = new SqlStorageObjectFactory();
       var nonPersistentStorageObjectFactory = new NonPersistentStorageObjectFactory();
 

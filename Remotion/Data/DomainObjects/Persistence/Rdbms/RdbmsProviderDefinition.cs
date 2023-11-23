@@ -15,9 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Specialized;
-using System.Configuration;
-using Remotion.Configuration;
+using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Utilities;
 
@@ -27,32 +25,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
   {
     private readonly string _connectionString;
 
-    public RdbmsProviderDefinition (string name, IStorageObjectFactory factory, string connectionString)
-        : base(name, factory)
+    public RdbmsProviderDefinition (string name, IStorageObjectFactory factory, string connectionString, IReadOnlyCollection<Type>? assignedStorageGroups = null)
+        : base(name, factory, assignedStorageGroups)
     {
       ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
       ArgumentUtility.CheckNotNullAndType<IRdbmsStorageObjectFactory>("factory", factory);
 
       _connectionString = connectionString;
-    }
-
-    public RdbmsProviderDefinition (string name, NameValueCollection config)
-        : base(name, config)
-    {
-      ArgumentUtility.CheckNotNull("config", config);
-
-      if (!(base.Factory is IRdbmsStorageObjectFactory))
-      {
-        var message = string.Format(
-            "The factory type for the storage provider defined by '{0}' must implement the 'IRdbmsStorageObjectFactory' interface. "
-            + "'{1}' does not implement that interface.",
-            name,
-            base.Factory.GetType().Name);
-        throw new ConfigurationErrorsException(message);
-      }
-
-      string connectionStringName = GetAndRemoveNonEmptyStringAttribute(config, "connectionString", name, required: true)!;
-      _connectionString = ConfigurationWrapper.Current.GetConnectionString(connectionStringName, true).ConnectionString;
     }
 
     public new IRdbmsStorageObjectFactory Factory

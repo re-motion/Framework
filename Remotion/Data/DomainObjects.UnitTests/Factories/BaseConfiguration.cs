@@ -73,11 +73,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
     protected BaseConfiguration ()
     {
-      ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = StorageProviderDefinitionObjectMother.CreateTestDomainStorageProviders();
+      var storageProviderDefinitionCollection = StorageProviderDefinitionObjectMother.CreateTestDomainStorageProviders();
 
       _storageConfiguration = new StorageConfiguration(
-          storageProviderDefinitionCollection,
-          storageProviderDefinitionCollection[DatabaseTest.DefaultStorageProviderID]);
+          null,
+          null);
 
       _storageConfiguration.StorageGroups.Add(
           new StorageGroupElement(

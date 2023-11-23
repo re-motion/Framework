@@ -23,11 +23,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
 {
   public class TestableStorageProviderDefinition : StorageProviderDefinition
   {
-    public TestableStorageProviderDefinition (string name, NameValueCollection config)
-        : base(name, config)
-    {
-    }
-
     public TestableStorageProviderDefinition (string name, IStorageObjectFactory factory)
         : base(name, factory)
     {

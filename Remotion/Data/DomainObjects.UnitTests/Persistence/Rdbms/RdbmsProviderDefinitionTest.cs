@@ -55,50 +55,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
-    public void Initialize_FromConfig ()
-    {
-      NameValueCollection config = new NameValueCollection();
-      config.Add("description", "The Description");
-      config.Add("factoryType", "Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2016.SqlStorageObjectFactory");
-      config.Add("connectionString", "SqlProvider");
-
-      RdbmsProviderDefinition provider = new RdbmsProviderDefinition("Provider", config);
-
-      Assert.That(provider.Name, Is.EqualTo("Provider"));
-      Assert.That(provider.Description, Is.EqualTo("The Description"));
-      Assert.That(provider.Factory, Is.TypeOf(typeof(SqlStorageObjectFactory)));
-      Assert.That(provider.ConnectionString, Is.EqualTo("ConnectionString"));
-      Assert.That(config, Is.Empty);
-    }
-
-    [Test]
-    public void Initialize_FromConfig_InvalidFactoryType ()
-    {
-      NameValueCollection config = new NameValueCollection();
-      config.Add("description", "The Description");
-      config.Add("factoryType", typeof(InvalidRdbmsStorageObjectFactory).AssemblyQualifiedName);
-      config.Add("connectionString", "SqlProvider");
-      Assert.That(
-          () => new RdbmsProviderDefinition("Provider", config),
-          Throws.InstanceOf<ConfigurationErrorsException>()
-              .With.Message.EqualTo(
-                  "The factory type for the storage provider defined by 'Provider' must implement the 'IRdbmsStorageObjectFactory' interface. "
-                  + "'InvalidRdbmsStorageObjectFactory' does not implement that interface."));
-    }
-
-    [Test]
-    public void Initialize_FromConfig_WithMissingFactoryType ()
-    {
-      NameValueCollection config = new NameValueCollection();
-      config.Add("description", "The Description");
-      config.Add("connectionString", "SqlProvider");
-      Assert.That(
-          () => new RdbmsProviderDefinition("Provider", config),
-          Throws.InstanceOf<ConfigurationErrorsException>()
-              .With.Message.EqualTo("The attribute 'factoryType' is missing in the configuration of the 'Provider' provider."));
-    }
-
-    [Test]
     public void IsIdentityTypeSupportedFalse ()
     {
       Assert.That(_definition.IsIdentityTypeSupported(typeof(int)), Is.False);
