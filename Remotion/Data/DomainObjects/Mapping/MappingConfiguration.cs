@@ -19,9 +19,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Remotion.Collections;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Logging;
 using Remotion.Reflection;
@@ -30,6 +28,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {
+  [ImplementationFor(typeof(IMappingConfiguration), Lifetime = LifetimeKind.Singleton)]
   public class MappingConfiguration : IMappingConfiguration
   {
     /// <summary>Workaround to allow reflection to reset the fields since setting a static readonly field is not supported in .NET 3.0 and later.</summary>
@@ -37,9 +36,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       // ReSharper disable once MemberHidesStaticFromOuterClass
       public readonly DoubleCheckedLockingContainer<IMappingConfiguration> Current = new DoubleCheckedLockingContainer<IMappingConfiguration>(
-          () => new MappingConfiguration(
-              SafeServiceLocator.Current.GetInstance<IMappingLoader>(),
-              SafeServiceLocator.Current.GetInstance<IPersistenceModelLoader>()));
+          () => SafeServiceLocator.Current.GetInstance<IMappingConfiguration>());
     }
 
     private static readonly Fields s_fields = new Fields();
