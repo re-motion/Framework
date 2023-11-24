@@ -23,7 +23,6 @@ using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurati
 using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
@@ -33,6 +32,7 @@ using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
 {
@@ -68,7 +68,7 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
                     new PropertyDefaultValueProvider(),
                     new SortExpressionDefinitionProvider(),
                     new ThrowingDomainObjectCreator()),
-                new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
+                new PersistenceModelLoader(SafeServiceLocator.Current.GetInstance<IStorageSettings>())));
       }
       catch (Exception e)
       {

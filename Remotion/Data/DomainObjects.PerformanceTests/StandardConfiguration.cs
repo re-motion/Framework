@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
               SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
               SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
               SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>()),
-          new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage)));
+          new PersistenceModelLoader(SafeServiceLocator.Current.GetInstance<IStorageSettings>()));
       MappingConfiguration.SetCurrent(mappingConfiguration);
     }
   }

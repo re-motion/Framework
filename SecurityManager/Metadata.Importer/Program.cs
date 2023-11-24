@@ -18,11 +18,10 @@
 using System;
 using System.ComponentModel.Design;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
@@ -103,7 +102,7 @@ namespace Remotion.SecurityManager.Metadata.Importer
                     SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
                     SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
                     SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>()),
-                new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
+                new PersistenceModelLoader(SafeServiceLocator.Current.GetInstance<IStorageSettings>())));
 
         ClientTransaction transaction = ClientTransaction.CreateRootTransaction();
 

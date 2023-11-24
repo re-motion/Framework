@@ -27,6 +27,7 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
@@ -777,7 +778,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var extensionMock = AddExtensionToClientTransaction(_transaction);
 
       //Note: no reading notification must be performed
-      using (var persistenceManager = new PersistenceManager(NullPersistenceExtension.Instance))
+      using (var persistenceManager = new PersistenceManager(NullPersistenceExtension.Instance, new Mock<IStorageSettings>().Object))
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
         IRelationEndPointDefinition orderTicketEndPointDefinition =

@@ -86,7 +86,7 @@ namespace Remotion.SecurityManager.UnitTests
                     SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
                     SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
                     SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>()),
-                new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
+                new PersistenceModelLoader(SafeServiceLocator.Current.GetInstance<IStorageSettings>())));
 
         SqlConnection.ClearAllPools();
 

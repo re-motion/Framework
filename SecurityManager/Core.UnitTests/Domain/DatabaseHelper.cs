@@ -22,8 +22,9 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.ServiceLocation;
 
 namespace Remotion.SecurityManager.UnitTests.Domain
 {
@@ -87,7 +88,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     private IDbConnection GetConnection ()
     {
       RdbmsProviderDefinition providerDefinition =
-          (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions["SecurityManager"];
+          (RdbmsProviderDefinition)SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition("SecurityManager");
       IDbConnection connection = new SqlConnection(providerDefinition.ConnectionString);
       connection.Open();
 

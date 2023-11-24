@@ -45,11 +45,11 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
 
     public IPersistenceModelLoader CreatePersistenceModelLoader (
         StorageProviderDefinition storageProviderDefinition,
-        IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
+        IStorageSettings storageSettings)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
-      return new SqlStorageObjectFactory().CreatePersistenceModelLoader(storageProviderDefinition, storageProviderDefinitionFinder);
+      return new SqlStorageObjectFactory().CreatePersistenceModelLoader(storageProviderDefinition, storageSettings);
     }
 
     public IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (
