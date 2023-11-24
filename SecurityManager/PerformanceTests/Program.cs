@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Logging;
@@ -194,7 +194,7 @@ namespace Remotion.SecurityManager.PerformanceTests
               QueryFactory.CreateQuery(
                   new QueryDefinition(
                       "id",
-                      DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions["SecurityManager"],
+                      SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition("SecurityManager"),
                       "select * from PositionView",
                       QueryType.Collection));
           ClientTransaction.Current.QueryManager.GetCollection<Position>(query);

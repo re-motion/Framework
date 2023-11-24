@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using NUnit.Framework;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
@@ -16,7 +17,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     public void GetDefaultStorageProviderDefinition_WithDefinition ()
     {
       var defaultStorageProviderDefinition = new UnitTestStorageProviderStubDefinition("stub");
-      var providerCollection = new ProviderCollection<StorageProviderDefinition> { defaultStorageProviderDefinition };
+      var providerCollection = new StorageProviderDefinition [] { defaultStorageProviderDefinition };
 
       var storageSettings = new StorageSettings(defaultStorageProviderDefinition, providerCollection, null);
 
@@ -29,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     public void GetDefaultStorageProviderDefinition_WithNullDefinition ()
     {
       var stubStorageProviderDefinition = new UnitTestStorageProviderStubDefinition("stub");
-      var providerCollection = new ProviderCollection<StorageProviderDefinition> { stubStorageProviderDefinition };
+      var providerCollection = new StorageProviderDefinition [] { stubStorageProviderDefinition };
 
       var storageSettings = new StorageSettings(null, providerCollection, null);
 
@@ -43,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Dummy), baseClass: null);
 
-      var providerCollection = new ProviderCollection<StorageProviderDefinition>();
+      var providerCollection = new List<StorageProviderDefinition>();
 
       var groupName = TypeUtility.GetPartialAssemblyQualifiedName(typeof(Dummy));
       var providerDefinition = new UnitTestStorageProviderStubDefinition(groupName);

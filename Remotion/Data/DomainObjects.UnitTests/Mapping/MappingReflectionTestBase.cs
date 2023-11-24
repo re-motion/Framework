@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurati
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -93,12 +94,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     protected StorageProviderDefinition TestDomainStorageProviderDefinition
     {
-      get { return DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID]; }
+      get { return SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID); }
     }
 
     protected StorageProviderDefinition UnitTestDomainStorageProviderDefinition
     {
-      get { return DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_unitTestStorageProviderStubID]; }
+      get { return SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition(DatabaseTest.c_unitTestStorageProviderStubID); }
     }
   }
 }

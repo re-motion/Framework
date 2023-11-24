@@ -21,12 +21,14 @@ using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.Database;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests
@@ -93,17 +95,20 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     protected RdbmsProviderDefinition TestDomainStorageProviderDefinition
     {
-      get { return (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID]; }
+      get { return (RdbmsProviderDefinition)SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition(c_testDomainProviderID); }
     }
 
     protected NonPersistentProviderDefinition NonPersistentStorageProviderDefinition
     {
-      get { return (NonPersistentProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_nonPersistentTestDomainProviderID]; }
+      get { return (NonPersistentProviderDefinition)SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition(c_nonPersistentTestDomainProviderID); }
     }
 
     protected UnitTestStorageProviderStubDefinition UnitTestStorageProviderDefinition
     {
-      get { return (UnitTestStorageProviderStubDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_unitTestStorageProviderStubID]; }
+      get
+      {
+        return (UnitTestStorageProviderStubDefinition)SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition(c_unitTestStorageProviderStubID);
+      }
     }
 
     protected PropertyDefinition GetPropertyDefinition (Type declaringType, string shortPropertyName)

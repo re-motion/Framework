@@ -252,10 +252,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
 
       var storageTypeInformationProvider = CreateStorageTypeInformationProvider(storageProviderDefinition);
       var storageNameProvider = CreateStorageNameProvider(storageProviderDefinition);
-      var storageProviderDefinitionFinder = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
+      var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
 
       return CreateDataStoragePropertyDefinitionFactory(
-          storageProviderDefinition, storageTypeInformationProvider, storageNameProvider, storageProviderDefinitionFinder);
+          storageProviderDefinition,
+          storageTypeInformationProvider,
+          storageNameProvider,
+          storageSettings);
     }
 
     public IRelationStoragePropertyDefinitionFactory CreateRelationStoragePropertyDefinitionFactory (RdbmsProviderDefinition storageProviderDefinition)
@@ -545,11 +548,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
         RdbmsProviderDefinition storageProviderDefinition,
         IStorageTypeInformationProvider storageTypeInformationProvider,
         IStorageNameProvider storageNameProvider,
-        IStorageSettings StorageSettings)
+        IStorageSettings storageSettings)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
       ArgumentUtility.CheckNotNull("storageNameProvider", storageNameProvider);
-      ArgumentUtility.CheckNotNull("StorageSettings", StorageSettings);
+      ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
       ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
 
       var valueStoragePropertyDefinitionFactory = CreateValueStoragePropertyDefinitionFactory(
@@ -561,7 +564,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
           storageProviderDefinition,
           storageTypeInformationProvider,
           storageNameProvider,
-          StorageSettings);
+          storageSettings);
 
       return new DataStoragePropertyDefinitionFactory(valueStoragePropertyDefinitionFactory, relationStoragePropertyDefinitionFactory);
     }

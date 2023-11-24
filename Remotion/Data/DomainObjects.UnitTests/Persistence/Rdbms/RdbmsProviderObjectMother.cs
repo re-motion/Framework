@@ -18,6 +18,7 @@ using System;
 using System.Data.SqlClient;
 using System.Linq;
 using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
@@ -27,6 +28,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.Validation;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
@@ -50,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
               false,
               storageNameProvider,
               storageTypeInformationProvider,
-              new StorageEntityBasedStorageProviderDefinitionFinder()));
+              SafeServiceLocator.Current.GetInstance<IStorageSettings>()));
       var dataContainerValidator = new CompoundDataContainerValidator(Enumerable.Empty<IDataContainerValidator>());
       var objectReaderFactory = new ObjectReaderFactory(
           rdbmsPersistenceModelProvider,

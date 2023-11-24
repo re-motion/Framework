@@ -18,10 +18,9 @@ using System;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
@@ -32,6 +31,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Fact
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.Validation;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
@@ -55,11 +55,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       var storageNameProvider = new ReflectionBasedStorageNameProvider();
       var infrastructureStoragePropertyDefinitionProvider =
           new InfrastructureStoragePropertyDefinitionProvider(storageTypeInformationProvider, storageNameProvider);
-      var storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage);
+      var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
       var dataStoragePropertyDefinitionFactory = new DataStoragePropertyDefinitionFactory(
           new ValueStoragePropertyDefinitionFactory(storageTypeInformationProvider, storageNameProvider),
           new RelationStoragePropertyDefinitionFactory(
-              TestDomainStorageProviderDefinition, false, storageNameProvider, storageTypeInformationProvider, storageProviderDefinitionFinder));
+              TestDomainStorageProviderDefinition, false, storageNameProvider, storageTypeInformationProvider, storageSettings));
       _factory = new RdbmsProviderCommandFactory(
           TestDomainStorageProviderDefinition,
           new SqlDbCommandBuilderFactory(new SqlDialect()),

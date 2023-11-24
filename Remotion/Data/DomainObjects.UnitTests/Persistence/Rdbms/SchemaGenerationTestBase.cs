@@ -26,6 +26,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.SchemaGeneration;
 using Remotion.Development.UnitTesting.Data.SqlClient;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
@@ -70,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     protected RdbmsProviderDefinition SchemaGenerationFirstStorageProviderDefinition
     {
-      get { return (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[SchemaGenerationFirstStorageProviderID]; }
+      get { return (RdbmsProviderDefinition)SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition(SchemaGenerationFirstStorageProviderID); }
     }
 
     protected RdbmsProviderDefinition SchemaGenerationSecondStorageProviderDefinition
@@ -78,13 +79,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       get
       {
         return
-            (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[SchemaGenerationSecondStorageProviderID];
+            (RdbmsProviderDefinition)SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition(SchemaGenerationSecondStorageProviderID);
       }
     }
 
     protected RdbmsProviderDefinition SchemaGenerationThirdStorageProviderDefinition
     {
-      get { return (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[SchemaGenerationThirdStorageProviderID]; }
+      get { return (RdbmsProviderDefinition)SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition(SchemaGenerationThirdStorageProviderID); }
     }
 
     protected RdbmsProviderDefinition SchemaGenerationInternalStorageProviderDefinition
@@ -92,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       get
       {
         return
-            (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[SchemaGenerationInternalStorageProviderID];
+            (RdbmsProviderDefinition)SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition(SchemaGenerationInternalStorageProviderID);
       }
     }
 

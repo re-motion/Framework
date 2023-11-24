@@ -19,19 +19,16 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
-using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
@@ -66,41 +63,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           });
     }
 
-    private readonly StorageConfiguration _storageConfiguration;
+    private readonly IStorageSettings _storageConfiguration;
     private readonly MappingConfiguration _mappingConfiguration;
 
     private readonly Dictionary<RdbmsProviderDefinition, string> _originalConnectionStrings = new();
 
     protected BaseConfiguration ()
     {
-      var storageProviderDefinitionCollection = StorageProviderDefinitionObjectMother.CreateTestDomainStorageProviders();
 
-      _storageConfiguration = new StorageConfiguration(
+      _storageConfiguration = new StorageSettings(
           null,
+          new StorageProviderDefinition[0],
           null);
-
-      _storageConfiguration.StorageGroups.Add(
-          new StorageGroupElement(
-              new TestDomainAttribute(),
-              DatabaseTest.c_testDomainProviderID));
-      _storageConfiguration.StorageGroups.Add(
-          new StorageGroupElement(
-              new NonPersistentTestDomainAttribute(),
-              DatabaseTest.c_nonPersistentTestDomainProviderID));
-      _storageConfiguration.StorageGroups.Add(
-          new StorageGroupElement(
-              new StorageProviderStubAttribute(),
-              DatabaseTest.c_unitTestStorageProviderStubID));
-      _storageConfiguration.StorageGroups.Add(
-          new StorageGroupElement(
-              new TableInheritanceTestDomainAttribute(),
-              TableInheritanceMappingTest.TableInheritanceTestDomainProviderID));
-
+      /*
+            _storageConfiguration.StorageGroups.Add(
+                new StorageGroupElement(
+                    new TestDomainAttribute(),
+                    DatabaseTest.c_testDomainProviderID));
+            _storageConfiguration.StorageGroups.Add(
+                new StorageGroupElement(
+                    new NonPersistentTestDomainAttribute(),
+                    DatabaseTest.c_nonPersistentTestDomainProviderID));
+            _storageConfiguration.StorageGroups.Add(
+                new StorageGroupElement(
+                    new StorageProviderStubAttribute(),
+                    DatabaseTest.c_unitTestStorageProviderStubID));
+            _storageConfiguration.StorageGroups.Add(
+                new StorageGroupElement(
+                    new TableInheritanceTestDomainAttribute(),
+                    TableInheritanceMappingTest.TableInheritanceTestDomainProviderID));
+      */
       var typeDiscoveryService = GetTypeDiscoveryService(GetType().Assembly);
 
       _mappingConfiguration = new MappingConfiguration(
           MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
-          new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(_storageConfiguration)));
+          new PersistenceModelLoader(SafeServiceLocator.Current.GetInstance<IStorageSettings>()));
     }
 
     public MappingConfiguration GetMappingConfiguration ()
@@ -108,19 +105,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       return _mappingConfiguration;
     }
 
-    public StorageConfiguration GetPersistenceConfiguration ()
-    {
-      return _storageConfiguration;
-    }
-
     public FakeDomainObjectsConfiguration GetDomainObjectsConfiguration ()
     {
-      return new FakeDomainObjectsConfiguration(_storageConfiguration);
+      return new FakeDomainObjectsConfiguration(_storageConfiguration, _queryConfiguration);
     }
 
     public void DisableDatabaseAccess ()
     {
-      foreach (var rdbmsProviderDefinition in _storageConfiguration.StorageProviderDefinitions.OfType<RdbmsProviderDefinition>())
+      foreach (var rdbmsProviderDefinition in _storageConfiguration.GetStorageProviderDefinitions().OfType<RdbmsProviderDefinition>())
       {
         var connectionString = rdbmsProviderDefinition.ConnectionString;
         var isConnectionStringSet = connectionString != c_databaseDisabledConnectionString;
@@ -134,7 +126,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
     public void EnableDatabaseAccess ()
     {
-      foreach (var rdbmsProviderDefinition in _storageConfiguration.StorageProviderDefinitions.OfType<RdbmsProviderDefinition>())
+      foreach (var rdbmsProviderDefinition in _storageConfiguration.GetStorageProviderDefinitions().OfType<RdbmsProviderDefinition>())
       {
         if (_originalConnectionStrings.TryGetValue(rdbmsProviderDefinition, out var originalConnectionString))
           PrivateInvoke.SetNonPublicField(rdbmsProviderDefinition, "_connectionString", originalConnectionString);

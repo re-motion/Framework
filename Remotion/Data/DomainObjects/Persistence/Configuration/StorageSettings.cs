@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
         IReadOnlyCollection<StorageProviderDefinition> storageProviderCollection,
         ConfigurationElementCollection<StorageGroupElement>? storageGroups)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("storageProviderCollection", storageProviderCollection);
+      ArgumentUtility.CheckNotNull("storageProviderCollection", storageProviderCollection);
 
       _defaultStorageProviderDefinition = defaultStorageProviderDefinition;
       _storageProviderCollection = storageProviderCollection;

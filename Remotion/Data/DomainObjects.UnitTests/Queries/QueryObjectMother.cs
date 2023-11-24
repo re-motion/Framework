@@ -15,9 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
@@ -31,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     private static QueryDefinition CreateQueryDefinition ()
     {
       return new QueryDefinition(
-          "test", DomainObjectsConfiguration.Current.Storage.DefaultStorageProviderDefinition, "Some statement", QueryType.Collection);
+          "test", SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetDefaultStorageProviderDefinition(), "Some statement", QueryType.Collection);
     }
   }
 }

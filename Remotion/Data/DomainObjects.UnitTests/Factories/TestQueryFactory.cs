@@ -15,21 +15,24 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
   public static class TestQueryFactory
   {
+    private static IStorageSettings s_storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
+
     public static QueryDefinition CreateOrderQueryWithCustomCollectionType ()
     {
       return new QueryDefinition(
           "OrderQueryWithCustomCollectionType",
-          DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID],
+          s_storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
           "select [Order].* from [Order] inner join [Company] where [Company].[ID] = @customerID order by [OrderNo] asc;",
           QueryType.Collection,
           typeof(OrderCollection));
@@ -39,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     {
       return new QueryDefinition(
           "OrderQueryWithObjectListOfOrder",
-          DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID],
+          s_storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
           "select [Order].* from [Order] inner join [Company] where [Company].[ID] = @customerID order by [OrderNo] asc;",
           QueryType.Collection,
           typeof(ObjectList<Order>));
@@ -49,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     {
       return new QueryDefinition(
           "CustomerTypeQuery",
-          DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID],
+          s_storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
           "select [Company].* from [Company] where [CustomerType] = @customerType order by [Name] asc;",
           QueryType.Collection,
           typeof(DomainObjectCollection));
@@ -59,7 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     {
       return new QueryDefinition(
           "OrderSumQuery",
-          DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID],
+          s_storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
           "select sum(quantity) from [Order] where [CustomerID] = @customerID;",
           QueryType.Scalar);
     }
@@ -75,7 +78,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       var storageProviderDefinition =
           MappingConfiguration.Current.ContainsTypeDefinition(typeof(T))
               ? MappingConfiguration.Current.GetTypeDefinition(typeof(T)).StorageEntityDefinition.StorageProviderDefinition
-              : DomainObjectsConfiguration.Current.Storage.DefaultStorageProviderDefinition;
+              : s_storageSettings.GetDefaultStorageProviderDefinition();
       var query = QueryFactory.CreateCollectionQuery(
           "test", storageProviderDefinition, "TEST", new QueryParameterCollection(), typeof(DomainObjectCollection));
       return CreateTestQueryResult(query, collection);

@@ -15,14 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader;
 using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
@@ -110,29 +110,28 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
     protected virtual void InitializeConfiguration ()
     {
       DomainObjectsConfiguration.SetCurrent(
-          new FakeDomainObjectsConfiguration(
-              GetPersistenceConfiguration()));
+          new FakeDomainObjectsConfiguration());
 
       MappingConfiguration.SetCurrent(
           new MappingConfiguration(
               SafeServiceLocator.Current.GetInstance<IMappingLoader>(),
-              new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
+              SafeServiceLocator.Current.GetInstance<IPersistenceModelLoader>()));
     }
 
-    protected StorageConfiguration GetPersistenceConfiguration ()
+    protected IStorageSettings GetPersistenceConfiguration ()
     {
-      StorageConfiguration storageConfiguration = DomainObjectsConfiguration.Current.Storage;
-      if (storageConfiguration.StorageProviderDefinitions.Count == 0)
+      var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
+      if (storageSettings.GetStorageProviderDefinitions().Count == 0)
       {
-        ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = new ProviderCollection<StorageProviderDefinition>();
+        var storageProviderDefinitionCollection = new List<StorageProviderDefinition>();
         RdbmsProviderDefinition providerDefinition = new RdbmsProviderDefinition(
             "Default", new SqlStorageObjectFactory(), "Initial Catalog=DatabaseName;");
         storageProviderDefinitionCollection.Add(providerDefinition);
 
-        storageConfiguration = new StorageConfiguration(storageProviderDefinitionCollection, providerDefinition);
+        storageSettings = new StorageSettings(providerDefinition, storageProviderDefinitionCollection, null);
       }
 
-      return storageConfiguration;
+      return storageSettings;
     }
 
     protected virtual void BuildSchema ()

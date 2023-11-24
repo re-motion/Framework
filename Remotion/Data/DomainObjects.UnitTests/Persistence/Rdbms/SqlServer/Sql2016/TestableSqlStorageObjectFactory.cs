@@ -16,7 +16,7 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Linq;
-using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
@@ -165,10 +165,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
         RdbmsProviderDefinition storageProviderDefinition,
         IStorageTypeInformationProvider storageTypeInformationProvider,
         IStorageNameProvider storageNameProvider,
-        IStorageProviderDefinitionFinder providerDefinitionFinder)
+        IStorageSettings storageSettings)
     {
       return _dataStoragePropertyDefinitionFactory
-             ?? base.CreateDataStoragePropertyDefinitionFactory(storageProviderDefinition, storageTypeInformationProvider, storageNameProvider, providerDefinitionFinder);
+             ?? base.CreateDataStoragePropertyDefinitionFactory(storageProviderDefinition, storageTypeInformationProvider, storageNameProvider, storageSettings);
     }
 
     protected override IValueStoragePropertyDefinitionFactory CreateValueStoragePropertyDefinitionFactory (
@@ -184,14 +184,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
         RdbmsProviderDefinition storageProviderDefinition,
         IStorageTypeInformationProvider storageTypeInformationProvider,
         IStorageNameProvider storageNameProvider,
-        IStorageProviderDefinitionFinder providerDefinitionFinder)
+        IStorageSettings storageSettings)
     {
       return _relationStoragePropertyDefinitionFactory
              ?? base.CreateRelationStoragePropertyDefinitionFactory(
                  storageProviderDefinition,
                  storageTypeInformationProvider,
                  storageNameProvider,
-                 providerDefinitionFinder);
+                 storageSettings);
     }
 
     protected override ISqlQueryGenerator CreateSqlQueryGenerator (

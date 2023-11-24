@@ -17,10 +17,9 @@
 using System;
 using Moq;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
@@ -51,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     private IRdbmsStorageObjectFactory _sqlProviderFactory;
     private RdbmsProviderDefinition _rdbmsProviderDefinition;
     private Mock<IPersistenceExtension> _persistenceExtensionStub;
-    private StorageGroupBasedStorageProviderDefinitionFinder _storageProviderDefinitionFinder;
+    private StorageSettings _storageSettings;
     private Mock<TableScriptBuilder> _tableBuilderStub;
     private Mock<ViewScriptBuilder> _viewBuilderStub;
     private Mock<ForeignKeyConstraintScriptBuilder> _constraintBuilderStub;
@@ -78,8 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       _rdbmsProviderDefinition = new RdbmsProviderDefinition("TestDomain", new SqlStorageObjectFactory(), "ConnectionString");
       _sqlProviderFactory = new SqlStorageObjectFactory();
       _persistenceExtensionStub = new Mock<IPersistenceExtension>();
-      _storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage);
-
+      _storageSettings = new StorageSettings(_rdbmsProviderDefinition, new[] { _rdbmsProviderDefinition }, null);
       _tableBuilderStub = new Mock<TableScriptBuilder>(
           new Mock<ITableScriptElementFactory>().Object,
           new SqlCommentScriptElementFactory());
@@ -153,7 +151,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     [Test]
     public void CreatePersistenceModelLoader ()
     {
-      var result = _sqlProviderFactory.CreatePersistenceModelLoader(_rdbmsProviderDefinition, _storageProviderDefinitionFinder);
+      var result = _sqlProviderFactory.CreatePersistenceModelLoader(_rdbmsProviderDefinition, _storageSettings);
 
       Assert.That(result, Is.TypeOf(typeof(RdbmsPersistenceModelLoader)));
       var rdbmsPersistenceModelLoader = (RdbmsPersistenceModelLoader)result;

@@ -17,8 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Remotion.Data.DomainObjects.Configuration;
-using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -32,20 +31,20 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
   public class QueryDefinitionLoader : IQueryDefinitionLoader
   {
     private readonly IQueryFileFinder _queryFileFinder;
+    private readonly IStorageSettings _storageSettings;
 
-    public QueryDefinitionLoader (IQueryFileFinder queryFileFinder)
+    public QueryDefinitionLoader (IQueryFileFinder queryFileFinder, IStorageSettings storageSettings)
     {
       ArgumentUtility.CheckNotNull(nameof(queryFileFinder), queryFileFinder);
 
       _queryFileFinder = queryFileFinder;
+      _storageSettings = storageSettings;
     }
 
     /// <inheritdoc />
     public IReadOnlyCollection<QueryDefinition> LoadAllQueryDefinitions ()
     {
-      var storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage);
-      var loader = new QueryDefinitionFileLoader(storageProviderDefinitionFinder);
-
+      var loader = new QueryDefinitionFileLoader(_storageSettings);
       var result = new List<QueryDefinition>();
       var addedQueryIDs = new HashSet<string>();
       foreach (var queryFilePath in _queryFileFinder.GetQueryFilePaths())
@@ -59,6 +58,11 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
           result.Add(queryDefinition);
         }
       }
+        catch (ConfigurationException configurationException)
+        {
+          //TODO im not sure how this could in any way know which query definition was the problem
+          throw new QueryConfigurationException($"Affected file '{queryFilePath}'", configurationException);
+        }
 
       return new ReadOnlyCollection<QueryDefinition>(result);
     }
