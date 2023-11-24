@@ -51,7 +51,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public override void OneTimeSetUp ()
     {
       base.OneTimeSetUp();
-      DomainObjectsConfiguration.SetCurrent(TableInheritanceConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent(StandardConfiguration.Instance.GetMappingConfiguration());
       ConfigurationWrapper.SetCurrent(null);
     }
@@ -59,7 +58,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public override void SetUp ()
     {
       base.SetUp();
-      DomainObjectsConfiguration.SetCurrent(TableInheritanceConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent(TableInheritanceConfiguration.Instance.GetMappingConfiguration());
       ConfigurationWrapper.SetCurrent(null);
       _transactionScope = ClientTransaction.CreateRootTransaction().EnterDiscardingScope();

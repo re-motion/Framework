@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           new SortExpressionDefinitionProvider(),
           SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>());
       _storageObjectFactory = CreateSqlStorageObjectFactory();
-      var storageSettingsStub = new Mock<IStorageSettings>();
+      var storageSettingsStub = new Mock<Data.DomainObjects.Persistence.Configuration.IStorageSettings>();
       _storageProviderDefinition = new RdbmsProviderDefinition("test", _storageObjectFactory, TestDomainConnectionString);
       storageSettingsStub
           .Setup(stub => stub.GetStorageProviderDefinition(It.IsAny<ClassDefinition>()))
@@ -71,11 +71,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       MappingConfiguration.SetCurrent(_mappingConfiguration);
 
-      DomainObjectsConfiguration.SetCurrent(
-          new FakeDomainObjectsConfiguration(
+      /*DomainObjectsConfiguration.SetCurrent(
+          new IStorageSettings(
               new StorageConfiguration(
                   new ProviderCollection<StorageProviderDefinition> { _storageProviderDefinition },
-                  _storageProviderDefinition)));
+                  _storageProviderDefinition)));*/
     }
 
     public override void TearDown ()

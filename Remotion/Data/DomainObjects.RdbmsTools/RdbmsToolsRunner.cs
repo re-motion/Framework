@@ -109,8 +109,6 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
 
     protected virtual void InitializeConfiguration ()
     {
-      DomainObjectsConfiguration.SetCurrent(
-          new FakeDomainObjectsConfiguration());
 
       MappingConfiguration.SetCurrent(
           new MappingConfiguration(
@@ -118,9 +116,9 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
               SafeServiceLocator.Current.GetInstance<IPersistenceModelLoader>()));
     }
 
-    protected IStorageSettings GetPersistenceConfiguration ()
+    protected Persistence.Configuration.IStorageSettings GetPersistenceConfiguration ()
     {
-      var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
+      var storageSettings = SafeServiceLocator.Current.GetInstance<Persistence.Configuration.IStorageSettings>();
       if (storageSettings.StorageProviderDefinitions.Count == 0)
       {
         var storageProviderDefinitionCollection = new List<StorageProviderDefinition>();

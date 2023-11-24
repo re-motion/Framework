@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       providers.Add(new RdbmsProviderDefinition("PerformanceTestDomain", new SqlStorageObjectFactory(), ConnectionString));
       StorageConfiguration storageConfiguration = new StorageConfiguration(providers, providers["PerformanceTestDomain"]);
 
-      DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(storage: storageConfiguration));
+      //DomainObjectsConfiguration.SetCurrent(new IStorageSettings(storage: storageConfiguration));
 
 
       var rootAssemblyFinder = new FixedRootAssemblyFinder(new RootAssembly(typeof(StandardConfiguration).Assembly, true));
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
               SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
               SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
               SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>()),
-          new PersistenceModelLoader(SafeServiceLocator.Current.GetInstance<IStorageSettings>()));
+          new PersistenceModelLoader(SafeServiceLocator.Current.GetInstance<Persistence.Configuration.IStorageSettings>()));
       MappingConfiguration.SetCurrent(mappingConfiguration);
     }
   }

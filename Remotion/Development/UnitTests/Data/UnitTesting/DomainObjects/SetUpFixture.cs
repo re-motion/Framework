@@ -48,10 +48,10 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
         providers.Add(new RdbmsProviderDefinition("Development.Data.DomainObjects", new SqlStorageObjectFactory(), "ConnectionString"));
         StorageConfiguration storageConfiguration = new StorageConfiguration(providers, providers["Development.Data.DomainObjects"]);
 
-        DomainObjectsConfiguration.SetCurrent(
-            new FakeDomainObjectsConfiguration(
+       /*DomainObjectsConfiguration.SetCurrent(
+            new IStorageSettings(
                 storageConfiguration));
-
+*/
         var rootAssemblyFinder = new FixedRootAssemblyFinder(new RootAssembly(typeof(TestDomainObject).Assembly, true));
         var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
         var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(rootAssemblyFinder, assemblyLoader));
@@ -68,7 +68,7 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
                     new PropertyDefaultValueProvider(),
                     new SortExpressionDefinitionProvider(),
                     new ThrowingDomainObjectCreator()),
-                new PersistenceModelLoader(SafeServiceLocator.Current.GetInstance<IStorageSettings>())));
+                new PersistenceModelLoader(SafeServiceLocator.Current.GetInstance<Remotion.Data.DomainObjects.Persistence.Configuration.IStorageSettings>())));
       }
       catch (Exception e)
       {

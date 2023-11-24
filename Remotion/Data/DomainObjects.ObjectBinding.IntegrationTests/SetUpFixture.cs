@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
         providers.Add(new RdbmsProviderDefinition("TheStorageProvider", new SqlStorageObjectFactory(), TestDomainConnectionString));
         var storageConfiguration = new StorageConfiguration(providers, providers["TheStorageProvider"]);
 
-        DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(storage: storageConfiguration));
+        //DomainObjectsConfiguration.SetCurrent(new IStorageSettings(storage: storageConfiguration));
 
         SqlConnection.ClearAllPools();
 

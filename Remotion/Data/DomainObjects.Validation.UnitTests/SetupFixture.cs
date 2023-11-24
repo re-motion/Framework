@@ -38,7 +38,6 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
         var providers = new ProviderCollection<StorageProviderDefinition>();
         providers.Add(new RdbmsProviderDefinition(StubStorageProvider.StorageProviderID, new StubStorageFactory(), "NonExistingRdbms"));
         var storageConfiguration = new StorageConfiguration(providers, providers[StubStorageProvider.StorageProviderID]);
-        DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(storage: storageConfiguration));
 
         Dev.Null = MappingConfiguration.Current;
       }

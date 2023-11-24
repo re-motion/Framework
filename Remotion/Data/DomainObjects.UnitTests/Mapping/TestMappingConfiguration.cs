@@ -75,9 +75,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       _storageConfiguration.StorageGroups.Add(
           new StorageGroupElement(new NonPersistentTestDomainAttribute(), MappingReflectionTestBase.c_nonPersistentTestDomainProviderID));
 
-      DomainObjectsConfiguration.SetCurrent(
-          new FakeDomainObjectsConfiguration(_storageConfiguration));
-
+      /*DomainObjectsConfiguration.SetCurrent(
+          new IStorageSettings(_storageConfiguration));
+*/
       var typeDiscoveryService = GetTypeDiscoveryService();
 
       _mappingConfiguration = new MappingConfiguration(
@@ -111,11 +111,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public StorageConfiguration GetPersistenceConfiguration ()
     {
       return _storageConfiguration;
-    }
-
-    public FakeDomainObjectsConfiguration GetDomainObjectsConfiguration ()
-    {
-      return new FakeDomainObjectsConfiguration(_storageConfiguration);
     }
 
     public DomainObjectIDs GetDomainObjectIDs ()

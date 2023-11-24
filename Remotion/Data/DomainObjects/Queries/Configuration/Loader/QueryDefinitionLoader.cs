@@ -49,20 +49,25 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
       var addedQueryIDs = new HashSet<string>();
       foreach (var queryFilePath in _queryFileFinder.GetQueryFilePaths())
       {
-        var queryDefinitions = loader.LoadQueryDefinitions(queryFilePath);
-        foreach (var queryDefinition in queryDefinitions)
+        try
         {
-          if (!addedQueryIDs.Add(queryDefinition.ID))
-            throw new ConfigurationException($"File '{queryFilePath}' defines a duplicate for query definition '{queryDefinition.ID}'.");
+          var queryDefinitions = loader.LoadQueryDefinitions(queryFilePath);
+          foreach (var queryDefinition in queryDefinitions)
+          {
+            if (!addedQueryIDs.Add(queryDefinition.ID))
+              throw new ConfigurationException($"File '{queryFilePath}' defines a duplicate for query definition '{queryDefinition.ID}'.");
 
-          result.Add(queryDefinition);
+            result.Add(queryDefinition);
+          }
         }
-      }
         catch (ConfigurationException configurationException)
         {
           //TODO im not sure how this could in any way know which query definition was the problem
           throw new QueryConfigurationException($"Affected file '{queryFilePath}'", configurationException);
         }
+
+      }
+
 
       return new ReadOnlyCollection<QueryDefinition>(result);
     }

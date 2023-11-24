@@ -68,7 +68,7 @@ namespace Remotion.SecurityManager.UnitTests
         var storageConfiguration = new StorageConfiguration(providers, providers["SecurityManager"]);
         storageConfiguration.StorageGroups.Add(new StorageGroupElement(new SecurityManagerStorageGroupAttribute(), "SecurityManager"));
 
-        DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(storage: storageConfiguration));
+        //DomainObjectsConfiguration.SetCurrent(new IStorageSettings(storage: storageConfiguration));
 
         var rootAssemblyFinder = new FixedRootAssemblyFinder(new RootAssembly(typeof(BaseSecurityManagerObject).Assembly, true));
         var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
@@ -86,7 +86,7 @@ namespace Remotion.SecurityManager.UnitTests
                     SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
                     SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
                     SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>()),
-                new PersistenceModelLoader(SafeServiceLocator.Current.GetInstance<IStorageSettings>())));
+                new PersistenceModelLoader(SafeServiceLocator.Current.GetInstance<Data.DomainObjects.Persistence.Configuration.IStorageSettings>())));
 
         SqlConnection.ClearAllPools();
 

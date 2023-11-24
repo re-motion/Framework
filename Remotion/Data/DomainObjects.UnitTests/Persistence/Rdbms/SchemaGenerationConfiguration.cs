@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     private readonly StorageConfiguration _storageConfiguration;
     private readonly MappingConfiguration _mappingConfiguration;
-    private readonly FakeDomainObjectsConfiguration _domainObjectsConfiguration;
+    private readonly IStorageSettings _domainObjectsConfiguration;
 
     public SchemaGenerationConfiguration ()
     {
@@ -103,14 +103,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       var storageSettings = new StorageSettings(defaultStorageProviderDefinition, storageProviderDefinitionCollection);
           //TODO need to fix this to actually use the storage groups
 
-      _queryConfiguration = new QueryConfiguration();
-
       var typeDiscoveryService = GetTypeDiscoveryService(GetType().Assembly);
 
       _mappingConfiguration = new MappingConfiguration(
           MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
           new PersistenceModelLoader(storageSettings));
-      _domainObjectsConfiguration = new FakeDomainObjectsConfiguration(storageSettings);
+      //_domainObjectsConfiguration = new IStorageSettings(storageSettings);
     }
 
     public MappingConfiguration GetMappingConfiguration ()
@@ -123,7 +121,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       return _storageConfiguration;
     }
 
-    public FakeDomainObjectsConfiguration GetDomainObjectsConfiguration ()
+    public IStorageSettings GetDomainObjectsConfiguration ()
     {
       return _domainObjectsConfiguration;
     }

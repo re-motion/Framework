@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [SetUp]
     public virtual void SetUp ()
     {
-      DomainObjectsConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetDomainObjectsConfiguration());
+      //DomainObjectsConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetMappingConfiguration());
       ConfigurationWrapper.SetCurrent(null);
 
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public virtual void OneTimeSetUp ()
     {
       TestMappingConfiguration.EnsureInitialized();
-      DomainObjectsConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetDomainObjectsConfiguration());
+      //DomainObjectsConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetMappingConfiguration());
       ConfigurationWrapper.SetCurrent(null);
       FakeMappingConfiguration.Reset();

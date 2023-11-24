@@ -20,7 +20,6 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Configuration;
-using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -55,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
         providers.Add(new RdbmsProviderDefinition("TheStorageProvider", new SqlStorageObjectFactory(), TestDomainConnectionString));
         var storageConfiguration = new StorageConfiguration(providers, providers["TheStorageProvider"]);
 
-        DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(storage: storageConfiguration));
+        //DomainObjectsConfiguration.SetCurrent(new IStorageSettings(storage: storageConfiguration));
 
         SqlConnection.ClearAllPools();
 

@@ -46,7 +46,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       base.OneTimeSetUp();
 
-      DomainObjectsConfiguration.SetCurrent(StandardConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent(StandardConfiguration.Instance.GetMappingConfiguration());
       ConfigurationWrapper.SetCurrent(null);
     }
@@ -55,7 +54,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       base.SetUp();
 
-      DomainObjectsConfiguration.SetCurrent(StandardConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent(StandardConfiguration.Instance.GetMappingConfiguration());
       ConfigurationWrapper.SetCurrent(null);
     }

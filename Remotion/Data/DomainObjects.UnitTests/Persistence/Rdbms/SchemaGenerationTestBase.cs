@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       base.SetUp();
 
-      DomainObjectsConfiguration.SetCurrent(SchemaGenerationConfiguration.Instance.GetDomainObjectsConfiguration());
+      //DomainObjectsConfiguration.SetCurrent(SchemaGenerationConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent(SchemaGenerationConfiguration.Instance.GetMappingConfiguration());
     }
 

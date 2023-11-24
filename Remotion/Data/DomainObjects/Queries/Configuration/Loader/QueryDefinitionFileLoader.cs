@@ -31,11 +31,11 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
   /// </summary>
   public class QueryDefinitionFileLoader
   {
-    private readonly StorageGroupBasedStorageProviderDefinitionFinder _storageProviderDefinitionFinder;
+    private readonly IStorageSettings _storageSettings;
 
-    public QueryDefinitionFileLoader (StorageGroupBasedStorageProviderDefinitionFinder storageProviderDefinitionFinder)
+    public QueryDefinitionFileLoader (IStorageSettings storageSettings)
     {
-      _storageProviderDefinitionFinder = storageProviderDefinitionFinder;
+      _storageSettings = storageSettings;
     }
 
     /// <summary>
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
     private StorageProviderDefinition GetStorageProviderDefinition (string? storageGroupName, string configurationFile)
     {
       var storageGroupType = storageGroupName == null ? null : TypeUtility.GetType(storageGroupName, true);
-      return _storageProviderDefinitionFinder.GetStorageProviderDefinition(storageGroupType, "File: " + configurationFile);
+      return _storageSettings.GetStorageProviderDefinition(storageGroupType);
     }
 
     private Type? GetOptionalType (XmlNode selectionNode, string xPath, XmlNamespaceManager namespaceManager)
