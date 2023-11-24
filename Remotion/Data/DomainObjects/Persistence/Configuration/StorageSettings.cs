@@ -80,7 +80,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
       return storageProvider;
     }
 
-
     /// <summary>
     /// Gets a storage provider definition based on its name.
     /// </summary>
@@ -94,13 +93,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
     private void CheckStorageProviderDefinitionsAreUnique ()
     {
-      //we could also do this by putting all elements in a hashset and checking that way. Not sure which is better, but with the hashset we could name the non unique elements
-      //and it should be faster as well. Thoughts?
-      var count = _storageProviderCollection.Select(p => p.Name).Distinct().Count();
-
-      if (count != _storageProviderCollection.Count)
+      var hashSet = new HashSet<string>();
+      foreach (var storageProvider in _storageProviderCollection)
       {
-        throw new ConfigurationException("There were storage providers with non unique ids defined.");
+        if (!hashSet.Add(storageProvider.Name))
+        {
+          throw new ConfigurationException($"Duplicate storage provider definitions with the following name: {storageProvider.Name}'.");
+        }
       }
     }
 
@@ -110,9 +109,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
       {
         foreach (var type in storageProvider.AssignedStorageGroups)
         {
-          if (_storageGroupToProvider.ContainsKey(type) && _storageGroupToProvider[type] != storageProvider)
+          if (_storageGroupToProvider.TryGetValue(type, out var otherStorageProvider) && _storageGroupToProvider[type] != storageProvider)
           {
-            throw new ConfigurationException($"The storage group with type '{type}' is contained in more than one storage provider.");
+            throw new ConfigurationException($"Storage group with type '{type}' referenced in storage provider with name '{storageProvider.Name}' "
+                                             + $"and storage group provider with name '{otherStorageProvider.Name}");
           }
           _storageGroupToProvider[type] = storageProvider;
         }
