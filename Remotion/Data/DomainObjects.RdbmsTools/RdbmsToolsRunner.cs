@@ -121,14 +121,14 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
     protected IStorageSettings GetPersistenceConfiguration ()
     {
       var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
-      if (storageSettings.GetStorageProviderDefinitions().Count == 0)
+      if (storageSettings.StorageProviderDefinitions.Count == 0)
       {
         var storageProviderDefinitionCollection = new List<StorageProviderDefinition>();
         RdbmsProviderDefinition providerDefinition = new RdbmsProviderDefinition(
             "Default", new SqlStorageObjectFactory(), "Initial Catalog=DatabaseName;");
         storageProviderDefinitionCollection.Add(providerDefinition);
 
-        storageSettings = new StorageSettings(providerDefinition, storageProviderDefinitionCollection, null);
+        storageSettings = new StorageSettings(providerDefinition, storageProviderDefinitionCollection);
       }
 
       return storageSettings;

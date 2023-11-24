@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       _rdbmsProviderDefinition = new RdbmsProviderDefinition("TestDomain", new SqlStorageObjectFactory(), "ConnectionString");
       _sqlProviderFactory = new SqlStorageObjectFactory();
       _persistenceExtensionStub = new Mock<IPersistenceExtension>();
-      _storageSettings = new StorageSettings(_rdbmsProviderDefinition, new[] { _rdbmsProviderDefinition }, null);
+      _storageSettings = new StorageSettings(_rdbmsProviderDefinition, new[] { _rdbmsProviderDefinition });
       _tableBuilderStub = new Mock<TableScriptBuilder>(
           new Mock<ITableScriptElementFactory>().Object,
           new SqlCommentScriptElementFactory());

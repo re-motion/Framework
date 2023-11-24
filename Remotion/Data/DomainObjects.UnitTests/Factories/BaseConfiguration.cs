@@ -73,8 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
       _storageConfiguration = new StorageSettings(
           null,
-          new StorageProviderDefinition[0],
-          null);
+          new StorageProviderDefinition[0]);
       /*
             _storageConfiguration.StorageGroups.Add(
                 new StorageGroupElement(
@@ -112,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
     public void DisableDatabaseAccess ()
     {
-      foreach (var rdbmsProviderDefinition in _storageConfiguration.GetStorageProviderDefinitions().OfType<RdbmsProviderDefinition>())
+      foreach (var rdbmsProviderDefinition in _storageConfiguration.StorageProviderDefinitions.OfType<RdbmsProviderDefinition>())
       {
         var connectionString = rdbmsProviderDefinition.ConnectionString;
         var isConnectionStringSet = connectionString != c_databaseDisabledConnectionString;
@@ -126,7 +125,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
     public void EnableDatabaseAccess ()
     {
-      foreach (var rdbmsProviderDefinition in _storageConfiguration.GetStorageProviderDefinitions().OfType<RdbmsProviderDefinition>())
+      foreach (var rdbmsProviderDefinition in _storageConfiguration.StorageProviderDefinitions.OfType<RdbmsProviderDefinition>())
       {
         if (_originalConnectionStrings.TryGetValue(rdbmsProviderDefinition, out var originalConnectionString))
           PrivateInvoke.SetNonPublicField(rdbmsProviderDefinition, "_connectionString", originalConnectionString);

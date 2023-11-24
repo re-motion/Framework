@@ -31,11 +31,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     /// <summary>
     /// Gets the default storage provider definition or null if it doesn't exist.
     /// </summary>
-    StorageProviderDefinition? GetDefaultStorageProviderDefinition ();
+    StorageProviderDefinition? DefaultStorageProviderDefinition { get; }
 
     /// <summary>
     /// Gets all storage provider definitions
     /// </summary>
-    IReadOnlyCollection<StorageProviderDefinition> GetStorageProviderDefinitions ();
+    IReadOnlyCollection<StorageProviderDefinition> StorageProviderDefinitions { get; }
   }
 }

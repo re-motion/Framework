@@ -59,15 +59,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
       return _lazyStorageSettings.Value.GetStorageProviderDefinition(storageProviderName);
     }
 
-    public StorageProviderDefinition? GetDefaultStorageProviderDefinition ()
-    {
-      return _lazyStorageSettings.Value.GetDefaultStorageProviderDefinition();
-    }
+    public StorageProviderDefinition? DefaultStorageProviderDefinition => _lazyStorageSettings.Value.DefaultStorageProviderDefinition;
 
-    public IReadOnlyCollection<StorageProviderDefinition> GetStorageProviderDefinitions ()
-    {
-      return _lazyStorageSettings.Value.GetStorageProviderDefinitions();
-    }
+    public IReadOnlyCollection<StorageProviderDefinition> StorageProviderDefinitions => _lazyStorageSettings.Value.StorageProviderDefinitions;
 
     private IStorageSettings Initialize ()
     {

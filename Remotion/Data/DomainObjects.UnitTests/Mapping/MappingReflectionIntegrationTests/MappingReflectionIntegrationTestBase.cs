@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     private IEnumerable<ClassDefinition> GetTypeDefinitionsAndValidateMapping (MappingReflector mappingReflector)
     {
       var defaultStorageProviderDefinition = new NoRdbmsUnitTestStorageProviderStubDefinition("name");
-      var storageSettings = new StorageSettings(defaultStorageProviderDefinition, new []{defaultStorageProviderDefinition}, null);
+      var storageSettings = new StorageSettings(defaultStorageProviderDefinition, new []{defaultStorageProviderDefinition});
       var persistenceModelLoader = new PersistenceModelLoader(storageSettings);
       return new MappingConfiguration(mappingReflector, persistenceModelLoader).GetTypeDefinitions();
     }

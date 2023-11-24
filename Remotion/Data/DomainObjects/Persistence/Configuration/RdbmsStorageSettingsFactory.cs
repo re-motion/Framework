@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
       var storageProviderCollection = new [] { providerDefinition };
 
-      var settings = new StorageSettings(providerDefinition, storageProviderCollection, null);//TODO storage groups should be on providerDefinition
+      var settings = new StorageSettings(providerDefinition, storageProviderCollection);
       return settings;
     }
   }

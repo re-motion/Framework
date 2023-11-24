@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
@@ -13,22 +12,36 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
   /// <seealso cref="DeferredStorageSettings"/>
   public class StorageSettings : IStorageSettings
   {
+    /// <summary>
+    /// Gets the default storage provider definition.
+    /// </summary>
+    /// <value>The default storage provider definition or <see langword="null"/>.</value>
+    public StorageProviderDefinition? DefaultStorageProviderDefinition => _defaultStorageProviderDefinition;
+
+    /// <summary>
+    /// Gets all storage provider definitions.
+    /// </summary>
+    public IReadOnlyCollection<StorageProviderDefinition> StorageProviderDefinitions => _storageProviderCollection;
+
     private readonly StorageProviderDefinition? _defaultStorageProviderDefinition;
-    private readonly IReadOnlyCollection<StorageProviderDefinition> _storageProviderCollection; //TODO change to IReadonlycollection
-    private readonly ConfigurationElementCollection<StorageGroupElement>? _storageGroups;
+
+    private readonly IReadOnlyCollection<StorageProviderDefinition> _storageProviderCollection;
+
+    private readonly Dictionary<Type, StorageProviderDefinition> _storageGroupToProvider;
 
     public StorageSettings (
         StorageProviderDefinition? defaultStorageProviderDefinition,
-        IReadOnlyCollection<StorageProviderDefinition> storageProviderCollection,
-        ConfigurationElementCollection<StorageGroupElement>? storageGroups)
+        IReadOnlyCollection<StorageProviderDefinition> storageProviderCollection)
     {
       ArgumentUtility.CheckNotNull("storageProviderCollection", storageProviderCollection);
 
       _defaultStorageProviderDefinition = defaultStorageProviderDefinition;
       _storageProviderCollection = storageProviderCollection;
-      _storageGroups = storageGroups;
 
-      //TODO Assert that each storage group is only contained in a single storage provider
+      CheckStorageProviderDefinitionsAreUnique();
+
+      _storageGroupToProvider = new Dictionary<Type, StorageProviderDefinition>();
+      InitializeStorageGroups();
     }
 
     /// <summary>
@@ -59,15 +72,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     public StorageProviderDefinition GetStorageProviderDefinition (Type? storageGroupTypeOrNull)
     {
       if (storageGroupTypeOrNull == null)
-        return GetDefaultStorageProviderDefinition() ?? throw CreateMissingDefaultProviderException();
+        return DefaultStorageProviderDefinition ?? throw CreateMissingDefaultProviderException();
 
-      string storageGroupName = TypeUtility.GetPartialAssemblyQualifiedName(storageGroupTypeOrNull);
-      var storageGroup = _storageGroups?[storageGroupName];
-      if (storageGroup == null)
-        return GetDefaultStorageProviderDefinition() ?? throw CreateMissingDefaultProviderException();
+      if (!_storageGroupToProvider.TryGetValue(storageGroupTypeOrNull, out var storageProvider))
+        return DefaultStorageProviderDefinition ?? throw CreateMissingDefaultProviderException();
 
-      return _storageProviderCollection.Single(p => p.Name == storageGroup.StorageProviderName);
+      return storageProvider;
     }
+
 
     /// <summary>
     /// Gets a storage provider definition based on its name.
@@ -76,63 +88,49 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     {
       ArgumentUtility.CheckNotNullOrEmpty("storageProviderName", storageProviderName);
 
-      return _storageProviderCollection.FirstOrDefault(p => p.Name == storageProviderName) ?? throw CreateMissingDefaultProviderException();
+      return _storageProviderCollection.FirstOrDefault(p => p.Name == storageProviderName)
+             ?? throw new ConfigurationException($"The requested storage provider '{storageProviderName}' could not be found.");
     }
 
-    /// <summary>
-    /// Gets the default storage provider definition.
-    /// </summary>
-    /// <returns>The default storage provider definition or <see langword="null"/>.</returns>
-    public StorageProviderDefinition? GetDefaultStorageProviderDefinition ()
+    private void CheckStorageProviderDefinitionsAreUnique ()
     {
-      return _defaultStorageProviderDefinition;
+      //we could also do this by putting all elements in a hashset and checking that way. Not sure which is better, but with the hashset we could name the non unique elements
+      //and it should be faster as well. Thoughts?
+      var count = _storageProviderCollection.Select(p => p.Name).Distinct().Count();
+
+      if (count != _storageProviderCollection.Count)
+      {
+        throw new ConfigurationException("There were storage providers with non unique ids defined.");
+      }
     }
 
-    /// <summary>
-    /// Gets all storage provider definitions.
-    /// </summary>
-    // This probably can't be an IReadOnlyCollection, as most use cases want the specific ProviderCollection methods.
-    public IReadOnlyCollection<StorageProviderDefinition> GetStorageProviderDefinitions ()
+    private void InitializeStorageGroups ()
     {
-      return _storageProviderCollection;
+      foreach (var storageProvider in _storageProviderCollection)
+      {
+        foreach (var type in storageProvider.AssignedStorageGroups)
+        {
+          if (_storageGroupToProvider.ContainsKey(type) && _storageGroupToProvider[type] != storageProvider)
+          {
+            throw new ConfigurationException($"The storage group with type '{type}' is contained in more than one storage provider.");
+          }
+          _storageGroupToProvider[type] = storageProvider;
+        }
+      }
     }
 
-    //TODO Rework
     private ConfigurationException CreateMissingDefaultProviderException ()
     {
       return new ConfigurationException(
-          "Missing default storage provider. "
-          + Environment.NewLine
-          + "Please add an application or Web configuration file to your application, declare the "
-          + "remotion.data.domainObjects section group, and add the storage element to configure the default storage provider. Alternatively, "
-          + "explicitly assign all storage groups and queries to specific storage providers."
-          + Environment.NewLine + Environment.NewLine
-          + "Configuration File Example:"
-          + Environment.NewLine +
-          @"<?xml version=""1.0"" encoding=""UTF-8""?>
-<configuration>
-  <configSections>
-    <sectionGroup name=""remotion.data.domainObjects"" type=""Remotion.Data.DomainObjects.Configuration.DomainObjectsConfiguration, Remotion.Data.DomainObjects"">
-      <section name=""storage"" type=""Remotion.Data.DomainObjects.Persistence.Configuration.StorageConfiguration, Remotion.Data.DomainObjects"" />
-    </sectionGroup>
-  </configSections>
+          "Missing default storage provider.\n"
+          + "To properly set up the StorageSettings, add an implementation of IStorageSettingsFactory to the IoC container.\n"
+          + "An example of an implementation for IStorageSettingsFactory can be found as Remotion.Data.DomainObjects.Persistence.Configuration.RdbmsStorageSettingsFactory.\n\n"
 
-  <remotion.data.domainObjects xmlns=""http://www.re-motion.org/Data/DomainObjects/Configuration/2.1"">
-    <storage defaultProviderDefinition=""Default"">
-      <providerDefinitions>
-        <add type=""Remotion.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition""
-             name=""Default""
-             factoryType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2016.SqlStorageObjectFactory""
-             connectionString=""DefaultConnection"" />
-      </providerDefinitions>
-    </storage>
-  </remotion.data.domainObjects>
+          + "Example that inserts a default instance of the RdbmsStorageSettingsFactory:" + @"
+var serviceLocator = DefaultServiceLocator.Create();
+serviceLocator.RegisterSingle(() => StorageSettingsFactory.CreateForSqlServer(""connectionString""));
 
-  <connectionStrings>
-    <add name=""DefaultConnection"" connectionString=""Integrated Security=SSPI;Initial Catalog=TestDatabase;Data Source=localhost"" />
-  </connectionStrings>
-</configuration>");
-    }
-
-  }
+var serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
+");
+    } }
 }

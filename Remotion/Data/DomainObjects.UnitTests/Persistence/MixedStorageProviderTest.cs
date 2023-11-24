@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
         StorageProvider provider =
-            new StorageProviderManager(NullPersistenceExtension.Instance, new StorageSettings(null, new StorageProviderDefinition[0], null))
+            new StorageProviderManager(NullPersistenceExtension.Instance, new StorageSettings(null, new StorageProviderDefinition[0]))
                 .GetMandatory(orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
         Assert.That(Mixin.Get<StorageProviderWithFixedGuidMixin>(provider), Is.Not.Null);
       }
@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
         StorageProvider provider =
-            new StorageProviderManager(NullPersistenceExtension.Instance, new StorageSettings(null, new StorageProviderDefinition[0], null))
+            new StorageProviderManager(NullPersistenceExtension.Instance, new StorageSettings(null, new StorageProviderDefinition[0]))
                 .GetMandatory(orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
         ObjectID id1 = provider.CreateNewObjectID(orderDefinition);
         ObjectID id2 = provider.CreateNewObjectID(orderDefinition);
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
         StorageProvider provider =
-            new StorageProviderManager(NullPersistenceExtension.Instance, new StorageSettings(null, new StorageProviderDefinition[0], null))
+            new StorageProviderManager(NullPersistenceExtension.Instance, new StorageSettings(null, new StorageProviderDefinition[0]))
                 .GetMandatory(orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
 
         Guid fixedGuid = Guid.NewGuid();

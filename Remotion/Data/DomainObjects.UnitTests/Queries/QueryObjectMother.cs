@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     private static QueryDefinition CreateQueryDefinition ()
     {
       return new QueryDefinition(
-          "test", SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetDefaultStorageProviderDefinition(), "Some statement", QueryType.Collection);
+          "test", SafeServiceLocator.Current.GetInstance<IStorageSettings>().DefaultStorageProviderDefinition, "Some statement", QueryType.Collection);
     }
   }
 }
