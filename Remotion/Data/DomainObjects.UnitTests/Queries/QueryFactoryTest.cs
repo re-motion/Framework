@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
@@ -72,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateQueryFromConfiguration_FromID ()
     {
-      var definition = DomainObjectsConfiguration.Current.Query.QueryDefinitions[0];
+      var definition = SafeServiceLocator.Current.GetInstance<IQueryDefinitionRepository>().GetMandatory("QueryWithoutParameter");
 
       IQuery query = QueryFactory.CreateQueryFromConfiguration(definition.ID);
       Assert.That(query.CollectionType, Is.EqualTo(definition.CollectionType));
@@ -86,7 +85,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateQueryFromConfiguration_FromID_WithParameterCollection ()
     {
-      var definition = DomainObjectsConfiguration.Current.Query.QueryDefinitions[0];
+      var definition = SafeServiceLocator.Current.GetInstance<IQueryDefinitionRepository>().GetMandatory("QueryWithoutParameter");
       var parameterCollection = new QueryParameterCollection();
 
       IQuery query = QueryFactory.CreateQueryFromConfiguration(definition.ID, parameterCollection);
