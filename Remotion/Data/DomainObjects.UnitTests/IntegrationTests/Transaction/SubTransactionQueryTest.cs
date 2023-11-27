@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        var query = QueryFactory.CreateQueryFromConfiguration("QueryWithoutParameter");
+        var query = QueryFactory.CreateQuery(Queries.GetMandatory("QueryWithoutParameter"));
 
         Assert.That(ClientTransactionScope.CurrentTransaction.QueryManager.GetScalar(query), Is.EqualTo(42));
       }
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        var query = QueryFactory.CreateQueryFromConfiguration("CustomQuery");
+        var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomQuery"));
 
         var result = ClientTransactionScope.CurrentTransaction.QueryManager.GetCustom(query, qrr => qrr.GetRawValue(0));
 
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        var query = QueryFactory.CreateQueryFromConfiguration("CustomerTypeQuery");
+        var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomerTypeQuery"));
         query.Parameters.Add("@customerType", Customer.CustomerType.Standard);
 
         var queriedObjects = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection(query);
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        var query = QueryFactory.CreateQueryFromConfiguration("CustomerTypeQuery");
+        var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomerTypeQuery"));
         query.Parameters.Add("@customerType", Customer.CustomerType.Standard);
 
         var queriedObjects = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection<Customer>(query);
@@ -98,13 +98,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       IQueryResult queriedObjectsInSub;
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        var query = QueryFactory.CreateQueryFromConfiguration("CustomerTypeQuery");
+        var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomerTypeQuery"));
         query.Parameters.Add("@customerType", Customer.CustomerType.Standard);
 
         queriedObjectsInSub = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection(query);
       }
 
-      var queryInRoot = QueryFactory.CreateQueryFromConfiguration("CustomerTypeQuery");
+      var queryInRoot = QueryFactory.CreateQuery(Queries.GetMandatory("CustomerTypeQuery"));
       queryInRoot.Parameters.Add("@customerType", Customer.CustomerType.Standard);
 
       IQueryResult queriedObjectsInRoot = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection(queryInRoot);
@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        var query = QueryFactory.CreateQueryFromConfiguration("CustomerTypeQuery");
+        var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomerTypeQuery"));
         query.Parameters.Add("@customerType", Customer.CustomerType.Standard);
 
         queriedObjects = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection(query);
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Order newOrder;
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        var query = QueryFactory.CreateQueryFromConfiguration("CustomerTypeQuery");
+        var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomerTypeQuery"));
         query.Parameters.Add("@customerType", Customer.CustomerType.Standard);
 
         queriedObjects = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection(query);
@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         {
           extensionMock.Reset();
 
-          var query = QueryFactory.CreateQueryFromConfiguration("OrderQuery");
+          var query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"));
           query.Parameters.Add("@customerID", DomainObjectIDs.Customer3);
 
           var newQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject>();
@@ -205,7 +205,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void QueryInSubtransaction_CausesObjectsInSubtransactionToBeLoaded ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("OrderQuery");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"));
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer4);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
@@ -222,7 +222,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void QueryInSubtransaction_CausesObjectsInSubtransactionToBeLoaded_WhenKnownInParent ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("OrderQuery");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"));
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer4);
 
       var result = ClientTransaction.Current.QueryManager.GetCollection(query).ToArray(); // preload query result in parent transaction
@@ -243,7 +243,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void QueryInSubtransaction_ReturningObjectDeletedInParentTransaction ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("OrderQuery");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"));
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer3);
 
       var outerResult = ClientTransaction.Current.QueryManager.GetCollection<Order>(query).ToArray();
@@ -265,7 +265,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void QueryInSubtransaction_ReturningObjectInvalidInParentTransaction ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("OrderQuery");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"));
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer3);
 
       var outerResult = ClientTransaction.Current.QueryManager.GetCollection<Order>(query).ToArray();

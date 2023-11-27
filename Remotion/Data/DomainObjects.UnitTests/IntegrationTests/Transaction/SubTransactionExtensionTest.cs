@@ -1266,7 +1266,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void FilterQueryResult ()
     {
-      IQuery query = QueryFactory.CreateQueryFromConfiguration("OrderQuery");
+      IQuery query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"));
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer1);
 
       // preload query results to avoid Load notifications later on
@@ -1295,7 +1295,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void FilterQueryResultWithLoad ()
     {
-      IQuery query = QueryFactory.CreateQueryFromConfiguration("OrderQuery");
+      IQuery query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"));
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer4); // yields Order4, Order5
 
       QueryResult<DomainObject> parentFilteredQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject>(new[] { _order1 });

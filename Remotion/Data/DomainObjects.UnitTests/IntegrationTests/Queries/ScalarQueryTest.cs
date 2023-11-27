@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void ScalarQueryWithoutParameter ()
     {
-      Assert.That(QueryManager.GetScalar(QueryFactory.CreateQueryFromConfiguration("QueryWithoutParameter")), Is.EqualTo(42));
+      Assert.That(QueryManager.GetScalar(QueryFactory.CreateQuery(Queries.GetMandatory("QueryWithoutParameter"))), Is.EqualTo(42));
     }
   }
 }

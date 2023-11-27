@@ -71,7 +71,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateQueryFromConfiguration_FromID ()
     {
-      var definition = SafeServiceLocator.Current.GetInstance<IQueryDefinitionRepository>().GetMandatory("QueryWithoutParameter");
+      var definition = Queries.GetMandatory("QueryWithoutParameter");
+
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterSingle<IQueryDefinitionRepository>(() => Queries);
+      using var scope = new ServiceLocatorScope(serviceLocator);
 
       IQuery query = QueryFactory.CreateQueryFromConfiguration(definition.ID);
       Assert.That(query.CollectionType, Is.EqualTo(definition.CollectionType));
@@ -85,8 +89,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateQueryFromConfiguration_FromID_WithParameterCollection ()
     {
-      var definition = SafeServiceLocator.Current.GetInstance<IQueryDefinitionRepository>().GetMandatory("QueryWithoutParameter");
+      var definition = Queries.GetMandatory("QueryWithoutParameter");
       var parameterCollection = new QueryParameterCollection();
+
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterSingle<IQueryDefinitionRepository>(() => Queries);
+      using var scope = new ServiceLocatorScope(serviceLocator);
 
       IQuery query = QueryFactory.CreateQueryFromConfiguration(definition.ID, parameterCollection);
       Assert.That(query.CollectionType, Is.EqualTo(definition.CollectionType));

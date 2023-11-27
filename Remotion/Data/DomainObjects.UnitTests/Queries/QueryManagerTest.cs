@@ -62,9 +62,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
           _objectLoaderMock.Object,
           _transactionEventSinkWithMock.Object);
 
-      _collectionQuery =  QueryFactory.CreateQueryFromConfiguration("OrderQuery");
-      _scalarQuery = QueryFactory.CreateQueryFromConfiguration("OrderNoSumByCustomerNameQuery");
-      _customQuery = QueryFactory.CreateQueryFromConfiguration("CustomQuery");
+      _collectionQuery = QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"));
+      _scalarQuery = QueryFactory.CreateQuery(Queries.GetMandatory("OrderNoSumByCustomerNameQuery"));
+      _customQuery = QueryFactory.CreateQuery(Queries.GetMandatory("CustomQuery"));
 
       _fakeOrder1 = DomainObjectMother.CreateFakeObject<Order>();
       _fakeOrder2 = DomainObjectMother.CreateFakeObject<Order>();

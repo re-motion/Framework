@@ -16,30 +16,37 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Configuration;
-using Remotion.Data.DomainObjects.Development;
-using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Configuration
+namespace Remotion.UnitTests.Utilities
 {
   [TestFixture]
-  public class FakeDomainObjectsConfigurationTest
+  public class IAppContextProviderTest
   {
-    [Test]
-    public void Initialize ()
-    {
-      StorageConfiguration storage = new StorageConfiguration();
-      IDomainObjectsConfiguration configuration = new FakeDomainObjectsConfiguration(storage);
+    private DefaultServiceLocator _serviceLocator;
 
-      Assert.That(configuration.Storage, Is.SameAs(storage));
+    [SetUp]
+    public void SetUp ()
+    {
+      _serviceLocator = DefaultServiceLocator.Create();
     }
 
     [Test]
-    public void InitializeWithDefaults ()
+    public void GetInstance_Once ()
     {
-      IDomainObjectsConfiguration configuration = new FakeDomainObjectsConfiguration();
+      var instance = _serviceLocator.GetInstance<IAppContextProvider>();
 
-      Assert.That(configuration.Storage,  Is.TypeOf<StorageConfiguration>());
+      Assert.That(instance, Is.TypeOf<AppContextProvider>());
+    }
+
+    [Test]
+    public void GetInstances_Twice_ReturnsSameInstances ()
+    {
+      var instance1 = _serviceLocator.GetInstance<IAppContextProvider>();
+      var instance2 = _serviceLocator.GetInstance<IAppContextProvider>();
+
+      Assert.That(instance1, Is.EqualTo(instance2));
     }
   }
 }

@@ -20,7 +20,6 @@ using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
@@ -28,31 +27,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
   public class QueryTest : StandardMappingTest
   {
     [Test]
-    public void InitializeWithQueryID ()
+    public void Initialize ()
     {
       var parameters = new QueryParameterCollection();
-      var query = (Query)QueryFactory.CreateQueryFromConfiguration("OrderQuery", parameters);
+      var definition = Queries.GetMandatory("OrderQuery");
+      var query = (Query)QueryFactory.CreateQuery(definition, parameters);
 
-      QueryDefinition definition = SafeServiceLocator.Current.GetInstance<IQueryDefinitionRepository>().GetMandatory("OrderQuery");
       Assert.That(query.Definition, Is.SameAs(definition));
       Assert.That(query.ID, Is.EqualTo(definition.ID));
       Assert.That(query.CollectionType, Is.EqualTo(definition.CollectionType));
       Assert.That(query.QueryType, Is.EqualTo(definition.QueryType));
       Assert.That(query.Statement, Is.EqualTo(definition.Statement));
       Assert.That(query.StorageProviderDefinition, Is.EqualTo(definition.StorageProviderDefinition));
-      Assert.That(query.Parameters, Is.SameAs(parameters));
-    }
-
-    [Test]
-    public void InitializeWithQueryDefinition ()
-    {
-      var parameters = new QueryParameterCollection();
-
-      QueryDefinition definition = TestQueryFactory.CreateOrderQueryWithCustomCollectionType();
-      var query = new Query(definition, parameters);
-
-      Assert.That(query.Definition, Is.SameAs(definition));
-      Assert.That(query.ID, Is.EqualTo(definition.ID));
       Assert.That(query.Parameters, Is.SameAs(parameters));
     }
 

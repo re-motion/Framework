@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.Database;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -83,6 +84,11 @@ namespace Remotion.Data.DomainObjects.UnitTests
     protected IMappingConfiguration Configuration
     {
       get { return MappingConfiguration.Current; }
+    }
+
+    protected IQueryDefinitionRepository Queries
+    {
+      get { return StandardConfiguration.Instance.GetQueries(); }
     }
 
     protected RdbmsProviderDefinition TestDomainStorageProviderDefinition
