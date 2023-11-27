@@ -19,9 +19,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using Remotion.Configuration;
-using Remotion.Data.DomainObjects.Configuration;
-using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries.Configuration
@@ -35,8 +32,6 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
 
     private readonly ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();
     private readonly ConfigurationProperty _queryFilesProperty;
-
-    private readonly DoubleCheckedLockingContainer<QueryDefinitionCollection> _queries;
 
     private readonly IAppContextProvider _contextProvider;
 
@@ -58,7 +53,6 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
       ArgumentUtility.CheckNotNull("configurationFiles", configurationFiles);
 
       _contextProvider = provider;
-      _queries = new DoubleCheckedLockingContainer<QueryDefinitionCollection>(LoadAllQueryDefinitions);
 
       _queryFilesProperty = new ConfigurationProperty(
           "queryFiles",
@@ -73,35 +67,6 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
         string configurationFile = configurationFiles[i];
         QueryFileElement element = new QueryFileElement(configurationFile);
         QueryFiles.Add(element);
-      }
-    }
-
-    private QueryDefinitionCollection LoadAllQueryDefinitions ()
-    {
-      var storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage);
-
-      if (QueryFiles.Count == 0)
-        return new QueryConfigurationLoader(GetDefaultQueryFilePath(), storageProviderDefinitionFinder).GetQueryDefinitions();
-      else
-      {
-        QueryDefinitionCollection result = new QueryDefinitionCollection();
-
-        for (int i = 0; i < QueryFiles.Count; i++)
-        {
-          QueryConfigurationLoader loader = new QueryConfigurationLoader(QueryFiles[i].RootedFileName, storageProviderDefinitionFinder);
-            QueryDefinitionCollection queryDefinitions = loader.GetQueryDefinitions();
-          try
-          {
-            result.Merge(queryDefinitions);
-          }
-          catch (DuplicateQueryDefinitionException ex)
-          {
-            string message = string.Format("File '{0}' defines a duplicate for query definition '{1}'.", QueryFiles[i].RootedFileName,
-              ex.QueryDefinition.ID);
-            throw new ConfigurationException(message);
-          }
-        }
-        return result;
       }
     }
 
@@ -157,9 +122,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
       get { return _properties; }
     }
 
-    public QueryDefinitionCollection QueryDefinitions
-    {
-      get { return _queries.Value; }
-    }
+    [Obsolete("Use ObjectFactory or IQueryDefinitionRepository instead. (Version 6.0.0)")]
+    public QueryDefinitionCollection QueryDefinitions => throw new NotSupportedException("Use ObjectFactory or IQueryDefinitionRepository instead. (Version 6.0.0)");
   }
 }

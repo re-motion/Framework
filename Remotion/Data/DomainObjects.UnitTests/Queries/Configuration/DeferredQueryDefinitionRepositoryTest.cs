@@ -15,32 +15,27 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using Moq;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Configuration;
-using Remotion.Data.DomainObjects.Development;
-using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries.Configuration;
-using Remotion.Development.NUnit.UnitTesting;
+using Remotion.Data.DomainObjects.Queries.Configuration.Loader;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
 {
   [TestFixture]
-  [Ignore("RM-8992")]
   public class DeferredQueryDefinitionRepositoryTest : StandardMappingTest
   {
     [Test]
     public void Operation_WithDuplicateQueryID_ThrowsQueryConfigurationExceptionWithID ()
     {
+      var queryDefinitionLoaderStub = new Mock<IQueryDefinitionLoader>();
+      var repository = new DeferredQueryDefinitionRepository(queryDefinitionLoaderStub.Object);
+
       var storageProviderDefinition = new UnitTestStorageProviderStubDefinition("provider");
       var queryDefinition1 = new QueryDefinition("myID", storageProviderDefinition, "statement", default);
       var queryDefinition2 = new QueryDefinition("myID", storageProviderDefinition, "statement", default);
 
-      var queryConfiguration = new QueryConfiguration();
-      queryConfiguration.QueryDefinitions.Add(queryDefinition1);
-      queryConfiguration.QueryDefinitions.Add(queryDefinition2);
-      DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(new StorageConfiguration(), queryConfiguration));
-
-      var repository = new DeferredQueryDefinitionRepository();
+      queryDefinitionLoaderStub.Setup(e => e.LoadAllQueryDefinitions()).Returns(new[] { queryDefinition1, queryDefinition2 });
 
       Assert.That(
           () => repository.GetMandatory("someID"),
@@ -50,6 +45,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     [Test]
     public void Operation_WithMultipleDuplicateQueryID_ThrowsQueryConfigurationExceptionAndListsAllDuplicateID ()
     {
+      var queryDefinitionLoaderStub = new Mock<IQueryDefinitionLoader>();
+      var repository = new DeferredQueryDefinitionRepository(queryDefinitionLoaderStub.Object);
+
       var storageProviderDefinition = new UnitTestStorageProviderStubDefinition("provider");
       var queryDefinition1 = new QueryDefinition("duplicateID1", storageProviderDefinition, "statement", default);
       var queryDefinition2 = new QueryDefinition("myID", storageProviderDefinition, "statement", default);
@@ -58,16 +56,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
       var queryDefinition5 = new QueryDefinition("duplicateID1", storageProviderDefinition, "statement", default);
       var queryDefinition6 = new QueryDefinition("duplicateID2", storageProviderDefinition, "statement", default);
 
-      var queryConfiguration = new QueryConfiguration();
-      queryConfiguration.QueryDefinitions.Add(queryDefinition1);
-      queryConfiguration.QueryDefinitions.Add(queryDefinition2);
-      queryConfiguration.QueryDefinitions.Add(queryDefinition3);
-      queryConfiguration.QueryDefinitions.Add(queryDefinition4);
-      queryConfiguration.QueryDefinitions.Add(queryDefinition5);
-      queryConfiguration.QueryDefinitions.Add(queryDefinition6);
-      DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(new StorageConfiguration(), queryConfiguration));
-
-      var repository = new DeferredQueryDefinitionRepository();
+      queryDefinitionLoaderStub
+          .Setup(e => e.LoadAllQueryDefinitions())
+          .Returns(new[] { queryDefinition1, queryDefinition2, queryDefinition3, queryDefinition4, queryDefinition5, queryDefinition6 });
 
       Assert.That(
           () => repository.Contains("someID"),
@@ -77,10 +68,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     [Test]
     public void Contains_WithNonExistentQuery_ReturnsFalse ()
     {
-      var queryConfiguration = new QueryConfiguration();
-      DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(new StorageConfiguration(), queryConfiguration));
+      var queryDefinitionLoaderStub = new Mock<IQueryDefinitionLoader>();
+      var repository = new DeferredQueryDefinitionRepository(queryDefinitionLoaderStub.Object);
 
-      var repository = new DeferredQueryDefinitionRepository();
+      queryDefinitionLoaderStub
+          .Setup(e => e.LoadAllQueryDefinitions())
+          .Returns(Array.Empty<QueryDefinition>());
 
       Assert.That(repository.Contains("myID"), Is.False);
     }
@@ -88,11 +81,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     [Test]
     public void Contains_WithExistentQuery_ReturnsTrue ()
     {
+      var queryDefinitionLoaderStub = new Mock<IQueryDefinitionLoader>();
+      var repository = new DeferredQueryDefinitionRepository(queryDefinitionLoaderStub.Object);
+
       var queryDefinition = new QueryDefinition("myID", new UnitTestStorageProviderStubDefinition("provider"), "statement", default);
-      var queryConfiguration = new QueryConfiguration();
-      queryConfiguration.QueryDefinitions.Add(queryDefinition);
-      DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(new StorageConfiguration(), queryConfiguration));
-      var repository = new DeferredQueryDefinitionRepository();
+      queryDefinitionLoaderStub
+          .Setup(e => e.LoadAllQueryDefinitions())
+          .Returns(new[] { queryDefinition });
 
       Assert.That(repository.Contains("myID"), Is.True);
     }
@@ -100,11 +95,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     [Test]
     public void GetMandatory_WithExistentQuery_ReturnsQuery ()
     {
+      var queryDefinitionLoaderStub = new Mock<IQueryDefinitionLoader>();
+      var repository = new DeferredQueryDefinitionRepository(queryDefinitionLoaderStub.Object);
+
       var queryDefinition = new QueryDefinition("myID", new UnitTestStorageProviderStubDefinition("provider"), "statement", default);
-      var queryConfiguration = new QueryConfiguration();
-      queryConfiguration.QueryDefinitions.Add(queryDefinition);
-      DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(new StorageConfiguration(), queryConfiguration));
-      var repository = new DeferredQueryDefinitionRepository();
+      queryDefinitionLoaderStub
+          .Setup(e => e.LoadAllQueryDefinitions())
+          .Returns(new[] { queryDefinition });
 
       Assert.That(repository.GetMandatory("myID"), Is.SameAs(queryDefinition));
     }

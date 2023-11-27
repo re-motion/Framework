@@ -17,7 +17,7 @@
 using System;
 using System.Linq;
 using System.Threading;
-using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Queries.Configuration.Loader;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -32,8 +32,13 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
   {
     private readonly Lazy<IQueryDefinitionRepository> _lazyRepository;
 
-    public DeferredQueryDefinitionRepository ()
+    private readonly IQueryDefinitionLoader _queryDefinitionLoader;
+
+    public DeferredQueryDefinitionRepository (IQueryDefinitionLoader queryDefinitionLoader)
     {
+      ArgumentUtility.CheckNotNull("queryDefinitionLoader", queryDefinitionLoader);
+
+      _queryDefinitionLoader = queryDefinitionLoader;
       _lazyRepository = new Lazy<IQueryDefinitionRepository>(
           CreateQueryDefinitionRepository,
           LazyThreadSafetyMode.ExecutionAndPublication);
@@ -55,8 +60,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
 
     private IQueryDefinitionRepository CreateQueryDefinitionRepository ()
     {
-      // TODO RM-8992: Introduce QueryDefinitionLoader
-      var queryDefinitions = DomainObjectsConfiguration.Current.Query.QueryDefinitions.Cast<QueryDefinition>().ToArray();
+      var queryDefinitions = _queryDefinitionLoader.LoadAllQueryDefinitions();
 
       var duplicateQueryIDs = queryDefinitions.GroupBy(qd => qd.ID).Where(g => g.Count() > 1).Select(g => g.Key).ToArray();
       if (duplicateQueryIDs.Length > 0)
