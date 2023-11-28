@@ -17,15 +17,9 @@
 using System;
 using System.ComponentModel.Design;
 using System.Diagnostics;
-using Remotion.Configuration;
-using Remotion.Data.DomainObjects.Configuration;
-using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
-using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
-using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
 using Remotion.Development.UnitTesting.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
@@ -37,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   {
     private static TestMappingConfiguration s_instance;
 
-    private readonly StorageConfiguration _storageConfiguration;
+    private readonly IStorageSettings _storageSettings;
     private readonly MappingConfiguration _mappingConfiguration;
     private readonly DomainObjectIDs _domainObjectIDs;
 
@@ -64,25 +58,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     protected TestMappingConfiguration ()
     {
-      var storageProviderDefinitionCollection = StorageProviderDefinitionObjectMother.CreateTestDomainStorageProviders();
-      _storageConfiguration = new StorageConfiguration(
-          null, null);
-      _storageConfiguration.StorageGroups.Add(new StorageGroupElement(new TestDomainAttribute(), MappingReflectionTestBase.c_testDomainProviderID));
-      _storageConfiguration.StorageGroups.Add(
-          new StorageGroupElement(new StorageProviderStubAttribute(), MappingReflectionTestBase.c_unitTestStorageProviderStubID));
-      _storageConfiguration.StorageGroups.Add(
-          new StorageGroupElement(new TableInheritanceTestDomainAttribute(), TableInheritanceMappingTest.TableInheritanceTestDomainProviderID));
-      _storageConfiguration.StorageGroups.Add(
-          new StorageGroupElement(new NonPersistentTestDomainAttribute(), MappingReflectionTestBase.c_nonPersistentTestDomainProviderID));
+      var storageProviders = StorageProviderDefinitionObjectMother.CreateTestDomainStorageProviders();
+      _storageSettings = new StorageSettings(
+          storageProviders.defaultStorageProvider, storageProviders.storageProviderDefinitionCollection);
 
-      /*DomainObjectsConfiguration.SetCurrent(
-          new IStorageSettings(_storageConfiguration));
-*/
       var typeDiscoveryService = GetTypeDiscoveryService();
 
       _mappingConfiguration = new MappingConfiguration(
           MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
-          new PersistenceModelLoader(new StorageSettings(null, new StorageProviderDefinition[]{})));
+          new PersistenceModelLoader(_storageSettings));
       MappingConfiguration.SetCurrent(_mappingConfiguration);
 
       _domainObjectIDs = new DomainObjectIDs();
@@ -108,9 +92,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return _mappingConfiguration;
     }
 
-    public StorageConfiguration GetPersistenceConfiguration ()
+    public IStorageSettings GetStorageSettings ()
     {
-      return _storageConfiguration;
+      return _storageSettings;
     }
 
     public DomainObjectIDs GetDomainObjectIDs ()

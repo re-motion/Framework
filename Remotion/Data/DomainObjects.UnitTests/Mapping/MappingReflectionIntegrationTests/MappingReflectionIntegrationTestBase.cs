@@ -24,7 +24,6 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Reflection;
@@ -88,8 +87,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
 
     private IEnumerable<ClassDefinition> GetTypeDefinitionsAndValidateMapping (MappingReflector mappingReflector)
     {
-      var defaultStorageProviderDefinition = new NoRdbmsUnitTestStorageProviderStubDefinition("name");
-      var storageSettings = new StorageSettings(defaultStorageProviderDefinition, new []{defaultStorageProviderDefinition});
+      var storageSettings = StandardConfiguration.Instance.GetStorageSettings();
       var persistenceModelLoader = new PersistenceModelLoader(storageSettings);
       return new MappingConfiguration(mappingReflector, persistenceModelLoader).GetTypeDefinitions();
     }

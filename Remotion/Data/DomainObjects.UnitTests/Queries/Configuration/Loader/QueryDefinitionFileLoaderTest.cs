@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
       base.SetUp();
 
 
-      _storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
+      _storageSettings = StandardConfiguration.Instance.GetStorageSettings();
     }
 
     public override void TestFixtureTearDown ()
@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
 
       Assert.That(
           queries.Single(e => e.ID == "QueryFromDefaultStorageProvider").StorageProviderDefinition,
-          Is.SameAs(DomainObjectsConfiguration.Current.Storage.DefaultStorageProviderDefinition));
+          Is.SameAs(_storageSettings.DefaultStorageProviderDefinition));
     }
 
     [Test]
@@ -133,7 +133,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
           Is.SameAs(_storageSettings.GetStorageProviderDefinition("TestDomain")));
       Assert.That(
          queries.Single(e => e.ID == "QueryFromCustomStorageGroup").StorageProviderDefinition,
-         Is.Not.SameAs(DomainObjectsConfiguration.Current.Storage.DefaultStorageProviderDefinition));
+         Is.Not.SameAs(_storageSettings.DefaultStorageProviderDefinition));
     }
 
     [Test]
@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
 
       Assert.That(
           queries.Single(e => e.ID == "QueryFromUndefinedStorageGroup").StorageProviderDefinition,
-          Is.SameAs(DomainObjectsConfiguration.Current.Storage.DefaultStorageProviderDefinition));
+          Is.SameAs(_storageSettings.DefaultStorageProviderDefinition));
     }
 
     private string GetFullScriptPath (string script)

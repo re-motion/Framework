@@ -116,9 +116,9 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
               SafeServiceLocator.Current.GetInstance<IPersistenceModelLoader>()));
     }
 
-    protected Persistence.Configuration.IStorageSettings GetPersistenceConfiguration ()
+    protected IStorageSettings GetPersistenceConfiguration ()
     {
-      var storageSettings = SafeServiceLocator.Current.GetInstance<Persistence.Configuration.IStorageSettings>();
+      var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
       if (storageSettings.StorageProviderDefinitions.Count == 0)
       {
         var storageProviderDefinitionCollection = new List<StorageProviderDefinition>();

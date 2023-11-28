@@ -16,50 +16,58 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
   public static class StorageProviderDefinitionObjectMother
   {
-    public static ProviderCollection<StorageProviderDefinition> CreateTestDomainStorageProviders ()
+    public static (StorageProviderDefinition defaultStorageProvider, IReadOnlyCollection<StorageProviderDefinition> storageProviderDefinitionCollection)
+        CreateTestDomainStorageProviders ()
     {
-      ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = new ProviderCollection<StorageProviderDefinition>();
+      var storageProviderDefinitionCollection = new List<StorageProviderDefinition>();
       var sqlStorageObjectFactory = new SqlStorageObjectFactory();
       var nonPersistentStorageObjectFactory = new NonPersistentStorageObjectFactory();
+
+      var defaultStorageProvider = new RdbmsProviderDefinition(
+          DatabaseTest.DefaultStorageProviderID,
+          sqlStorageObjectFactory,
+          DatabaseTest.TestDomainConnectionString);
 
       storageProviderDefinitionCollection.Add(
           new RdbmsProviderDefinition(
               DatabaseTest.c_testDomainProviderID,
               sqlStorageObjectFactory,
-              DatabaseTest.TestDomainConnectionString));
+              DatabaseTest.TestDomainConnectionString,
+              new[] { typeof(TestDomainAttribute) }));
 
       storageProviderDefinitionCollection.Add(
           new NonPersistentProviderDefinition(
               DatabaseTest.c_nonPersistentTestDomainProviderID,
-              nonPersistentStorageObjectFactory));
+              nonPersistentStorageObjectFactory,
+              assignedStorageGroups: new[] { typeof(NonPersistentTestDomainAttribute) }));
 
-      storageProviderDefinitionCollection.Add(
-          new RdbmsProviderDefinition(
-              DatabaseTest.DefaultStorageProviderID,
-              sqlStorageObjectFactory,
-              DatabaseTest.TestDomainConnectionString));
+      storageProviderDefinitionCollection.Add(defaultStorageProvider);
 
       storageProviderDefinitionCollection.Add(
           new UnitTestStorageProviderStubDefinition(
-              DatabaseTest.c_unitTestStorageProviderStubID));
+              DatabaseTest.c_unitTestStorageProviderStubID,
+              assignedStorageGroups:
+              new[] { typeof(StorageProviderStubAttribute) }));
 
       storageProviderDefinitionCollection.Add(
           new RdbmsProviderDefinition(
               TableInheritanceMappingTest.TableInheritanceTestDomainProviderID,
               sqlStorageObjectFactory,
-              DatabaseTest.TestDomainConnectionString));
+              DatabaseTest.TestDomainConnectionString,
+              new[] { typeof(TableInheritanceTestDomainAttribute) }));
 
-      return storageProviderDefinitionCollection;
+      return (defaultStorageProvider, storageProviderDefinitionCollection);
     }
 
     public static IReadOnlyCollection<StorageProviderDefinition> CreateTestDomainStorageProviders2 ()

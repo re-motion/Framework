@@ -27,15 +27,19 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.Database;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
-using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
+using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
   public abstract class StandardMappingTest : DatabaseTest
   {
     public const string CreateTestDataFileName = "Database\\DataDomainObjects_CreateTestData.sql";
+
+    protected ServiceLocatorScope Scope;
 
     protected StandardMappingTest ()
         : base(new StandardMappingDatabaseAgent(TestDomainConnectionString), CreateTestDataFileName)
@@ -45,6 +49,12 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public override void OneTimeSetUp ()
     {
       base.OneTimeSetUp();
+
+
+      var defaultServiceLocator = DefaultServiceLocator.Create();
+      defaultServiceLocator.RegisterSingle(() => StandardConfiguration.Instance.GetStorageSettings());
+
+      Scope = new ServiceLocatorScope(defaultServiceLocator);
 
       MappingConfiguration.SetCurrent(StandardConfiguration.Instance.GetMappingConfiguration());
       ConfigurationWrapper.SetCurrent(null);
@@ -56,6 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       MappingConfiguration.SetCurrent(StandardConfiguration.Instance.GetMappingConfiguration());
       ConfigurationWrapper.SetCurrent(null);
+
     }
 
     public override void TearDown ()
@@ -72,6 +83,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
       DomainObjectsConfiguration.SetCurrent(null);
       MappingConfiguration.SetCurrent(null);
       ConfigurationWrapper.SetCurrent(null);
+
+      Scope.Dispose();
 
       base.TestFixtureTearDown();
     }
@@ -91,21 +104,26 @@ namespace Remotion.Data.DomainObjects.UnitTests
       get { return StandardConfiguration.Instance.GetQueries(); }
     }
 
+    protected IStorageSettings StorageSettings
+    {
+      get { return StandardConfiguration.Instance.GetStorageSettings(); }
+    }
+
     protected RdbmsProviderDefinition TestDomainStorageProviderDefinition
     {
-      get { return (RdbmsProviderDefinition)SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition(c_testDomainProviderID); }
+      get { return (RdbmsProviderDefinition)StandardConfiguration.Instance.GetStorageSettings().GetStorageProviderDefinition(c_testDomainProviderID); }
     }
 
     protected NonPersistentProviderDefinition NonPersistentStorageProviderDefinition
     {
-      get { return (NonPersistentProviderDefinition)SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition(c_nonPersistentTestDomainProviderID); }
+      get { return (NonPersistentProviderDefinition)StandardConfiguration.Instance.GetStorageSettings().GetStorageProviderDefinition(c_nonPersistentTestDomainProviderID); }
     }
 
     protected UnitTestStorageProviderStubDefinition UnitTestStorageProviderDefinition
     {
       get
       {
-        return (UnitTestStorageProviderStubDefinition)SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition(c_unitTestStorageProviderStubID);
+        return (UnitTestStorageProviderStubDefinition)StandardConfiguration.Instance.GetStorageSettings().GetStorageProviderDefinition(c_unitTestStorageProviderStubID);
       }
     }
 

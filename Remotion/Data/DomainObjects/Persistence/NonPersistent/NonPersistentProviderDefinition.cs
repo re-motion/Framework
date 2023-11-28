@@ -25,8 +25,8 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
 {
   public class NonPersistentProviderDefinition: StorageProviderDefinition
   {
-    public NonPersistentProviderDefinition (string name, INonPersistentStorageObjectFactory factory)
-        : base(name, factory)
+    public NonPersistentProviderDefinition (string name, INonPersistentStorageObjectFactory factory, IReadOnlyCollection<Type>? assignedStorageGroups = null)
+        : base(name, factory, assignedStorageGroups)
     {
       ArgumentUtility.CheckNotNull("factory", factory);
     }

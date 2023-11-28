@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
-using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -69,43 +68,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     private readonly Dictionary<RdbmsProviderDefinition, string> _originalConnectionStrings = new();
 
   protected BaseConfiguration ()
-    {
+  {
+    var storageProviders = StorageProviderDefinitionObjectMother.CreateTestDomainStorageProviders();
+
+    _storageSettings = new StorageSettings(
+        storageProviders.defaultStorageProvider,
+        storageProviders.storageProviderDefinitionCollection);
+
+    var typeDiscoveryService = GetTypeDiscoveryService(GetType().Assembly);
 
 
-        _storageSettings = new StorageSettings(
-          null,
-          new StorageProviderDefinition[0]);
-      /*
-            _storageSettings.StorageGroups.Add(
-                new StorageGroupElement(
-                    new TestDomainAttribute(),
-                    DatabaseTest.c_testDomainProviderID));
-            _storageSettings.StorageGroups.Add(
-                new StorageGroupElement(
-                    new NonPersistentTestDomainAttribute(),
-                    DatabaseTest.c_nonPersistentTestDomainProviderID));
-            _storageSettings.StorageGroups.Add(
-                new StorageGroupElement(
-                    new StorageProviderStubAttribute(),
-                    DatabaseTest.c_unitTestStorageProviderStubID));
-            _storageSettings.StorageGroups.Add(
-                new StorageGroupElement(
-                    new TableInheritanceTestDomainAttribute(),
-                    TableInheritanceMappingTest.TableInheritanceTestDomainProviderID));
-      */
-      var typeDiscoveryService = GetTypeDiscoveryService(GetType().Assembly);
-
-      _mappingConfiguration = new MappingConfiguration(
-          MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
-          new PersistenceModelLoader(SafeServiceLocator.Current.GetInstance<Data.DomainObjects.Persistence.Configuration.IStorageSettings>()));
-    }
+    _mappingConfiguration = new MappingConfiguration(
+        MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
+        new PersistenceModelLoader(_storageSettings));
+  }
 
     public MappingConfiguration GetMappingConfiguration ()
     {
       return _mappingConfiguration;
     }
 
-    public IStorageSettings GetDomainObjectsConfiguration ()
+    public IStorageSettings GetStorageSettings ()
     {
       return _storageSettings;
     }

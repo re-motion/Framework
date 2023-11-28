@@ -121,6 +121,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     [Test]
     public void CreateStorageProvider ()
     {
+      var defaultServiceLocator = DefaultServiceLocator.Create();
+      defaultServiceLocator.RegisterSingle<IStorageSettings>(() => _storageSettings);
+      using var scope = new ServiceLocatorScope(defaultServiceLocator);
+
       var result = _sqlProviderFactory.CreateStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
 
       Assert.That(result, Is.TypeOf(typeof(RdbmsProvider)));
@@ -142,6 +146,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     {
       using (MixinConfiguration.BuildFromActive().ForClass(typeof(RdbmsProvider)).Clear().AddMixins(typeof(SqlProviderTestMixin)).EnterScope())
       {
+        var defaultServiceLocator = DefaultServiceLocator.Create();
+        defaultServiceLocator.RegisterSingle<IStorageSettings>(() => _storageSettings);
+        using var scope = new ServiceLocatorScope(defaultServiceLocator);
+
         var result = _sqlProviderFactory.CreateStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
 
         Assert.That(Mixin.Get<SqlProviderTestMixin>(result), Is.Not.Null);
@@ -270,6 +278,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     [Test]
     public void CreateDataStoragePropertyDefinitionFactory ()
     {
+      var defaultServiceLocator = DefaultServiceLocator.Create();
+      defaultServiceLocator.RegisterSingle<IStorageSettings>(() => _storageSettings);
+      using var scope = new ServiceLocatorScope(defaultServiceLocator);
+
       IRdbmsStorageObjectFactory testableSqlProviderFactory = new TestableSqlStorageObjectFactory(
           null,
           null,
@@ -311,6 +323,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
               null,
               null,
               null);
+      var dataContainerValidator = SafeServiceLocator.Current.GetInstance<IDataContainerValidator>();
+
+      var defaultServiceLocator = DefaultServiceLocator.Create();
+      defaultServiceLocator.RegisterSingle<IStorageSettings>(() => _storageSettings);
+      defaultServiceLocator.RegisterSingle(() => dataContainerValidator);
+      using var scope = new ServiceLocatorScope(defaultServiceLocator);
 
       var result = testableSqlProviderFactory.CreateStorageProviderCommandFactory(_rdbmsProviderDefinition);
 
@@ -329,6 +347,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     [Test]
     public void CreateRelationStoragePropertyDefinitionFactory ()
     {
+      var defaultServiceLocator = DefaultServiceLocator.Create();
+      defaultServiceLocator.RegisterSingle<IStorageSettings>(() => _storageSettings);
+      using var scope = new ServiceLocatorScope(defaultServiceLocator);
+
       IRdbmsStorageObjectFactory testableSqlProviderFactory = new TestableSqlStorageObjectFactory(
           null,
           _storageTypeInformationProviderStub.Object,

@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     private StandardConfiguration ()
     {
       _domainObjectIDs = new DomainObjectIDs(GetMappingConfiguration());
-      var queryDefinitionFileLoader = new QueryDefinitionFileLoader(new StorageGroupBasedStorageProviderDefinitionFinder(GetPersistenceConfiguration()));
+      var queryDefinitionFileLoader = new QueryDefinitionFileLoader(GetStorageSettings());
       _queries = new QueryDefinitionRepository(
           queryDefinitionFileLoader.LoadQueryDefinitions(
               Path.Combine(TestContext.CurrentContext.TestDirectory, "QueriesForStandardMapping.xml")));

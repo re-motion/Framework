@@ -64,9 +64,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       get { return SchemaGenerationConfiguration.Instance.GetMappingConfiguration(); }
     }
 
-    protected StorageConfiguration StorageConfiguration
+    protected IStorageSettings StorageConfiguration
     {
-      get { return SchemaGenerationConfiguration.Instance.GetPersistenceConfiguration(); }
+      get { return SchemaGenerationConfiguration.Instance.GetStorageSettings(); }
     }
 
     protected RdbmsProviderDefinition SchemaGenerationFirstStorageProviderDefinition
