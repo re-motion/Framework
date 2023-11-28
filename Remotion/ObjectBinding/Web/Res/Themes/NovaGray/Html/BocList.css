@@ -642,6 +642,11 @@ span.bocListAvailableViewsListLabel
   padding-top: 0.1em;
 }
 
+.bocList .validationErrorMarker:focus
+{
+  outline: auto 5px -webkit-focus-ring-color;
+}
+
 .bocList .validationErrorMarker > img
 {
   height: 16px;
