@@ -208,8 +208,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           () => Provider.LoadDataContainer(invalidID),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ObjectID 'Official|1|System.Int32' does not match with this "
-                  + "StorageProvider's ID 'TestDomain'.", "id"));
+                  "The StorageProvider 'UnitTestStorageProviderStub' of the provided ObjectID 'Official|1|System.Int32' does not match with this StorageProvider 'TestDomain'.",
+                  "id"));
     }
 
     [Test]

@@ -64,14 +64,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       get { return SchemaGenerationConfiguration.Instance.GetMappingConfiguration(); }
     }
 
-    protected IStorageSettings StorageConfiguration
+    protected IStorageSettings StorageSettings
     {
       get { return SchemaGenerationConfiguration.Instance.GetStorageSettings(); }
     }
 
     protected RdbmsProviderDefinition SchemaGenerationFirstStorageProviderDefinition
     {
-      get { return (RdbmsProviderDefinition)SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition(SchemaGenerationFirstStorageProviderID); }
+      get { return (RdbmsProviderDefinition)StorageSettings.GetStorageProviderDefinition(SchemaGenerationFirstStorageProviderID); }
     }
 
     protected RdbmsProviderDefinition SchemaGenerationSecondStorageProviderDefinition
@@ -79,13 +79,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       get
       {
         return
-            (RdbmsProviderDefinition)SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition(SchemaGenerationSecondStorageProviderID);
+            (RdbmsProviderDefinition)StorageSettings.GetStorageProviderDefinition(SchemaGenerationSecondStorageProviderID);
       }
     }
 
     protected RdbmsProviderDefinition SchemaGenerationThirdStorageProviderDefinition
     {
-      get { return (RdbmsProviderDefinition)SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition(SchemaGenerationThirdStorageProviderID); }
+      get { return (RdbmsProviderDefinition)StorageSettings.GetStorageProviderDefinition(SchemaGenerationThirdStorageProviderID); }
     }
 
     protected RdbmsProviderDefinition SchemaGenerationInternalStorageProviderDefinition
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       get
       {
         return
-            (RdbmsProviderDefinition)SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition(SchemaGenerationInternalStorageProviderID);
+            (RdbmsProviderDefinition)StorageSettings.GetStorageProviderDefinition(SchemaGenerationInternalStorageProviderID);
       }
     }
 

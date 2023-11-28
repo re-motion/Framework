@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms;
 using Remotion.Development.UnitTesting.Data.SqlClient;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -39,11 +40,16 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
     }
 
+    protected IStorageSettings StorageSettings
+    {
+      get { return TableInheritanceConfiguration.Instance.GetStorageSettings(); }
+    }
+
     protected RdbmsProviderDefinition TableInheritanceTestDomainStorageProviderDefinition
     {
       get
       {
-        return (RdbmsProviderDefinition)SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition(TableInheritanceTestDomainProviderID);
+        return (RdbmsProviderDefinition)StorageSettings.GetStorageProviderDefinition(TableInheritanceTestDomainProviderID);
       }
     }
 

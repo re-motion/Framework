@@ -42,6 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     private SqlStorageObjectFactory _storageObjectFactory;
     private RdbmsProviderDefinition _storageProviderDefinition;
     private MappingConfiguration _mappingConfiguration;
+    protected StorageSettings StorageSettings;
 
     protected CustomStorageObjectFactoryTestBase (string createTestDataFileName)
         : base(new DatabaseAgent(TestDomainConnectionString), createTestDataFileName)
@@ -61,21 +62,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           new SortExpressionDefinitionProvider(),
           SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>());
       _storageObjectFactory = CreateSqlStorageObjectFactory();
-      var storageSettingsStub = new Mock<Data.DomainObjects.Persistence.Configuration.IStorageSettings>();
       _storageProviderDefinition = new RdbmsProviderDefinition("test", _storageObjectFactory, TestDomainConnectionString);
-      storageSettingsStub
-          .Setup(stub => stub.GetStorageProviderDefinition(It.IsAny<ClassDefinition>()))
-          .Returns(_storageProviderDefinition);
-      var persistenceModelLoader = _storageObjectFactory.CreatePersistenceModelLoader(_storageProviderDefinition, storageSettingsStub.Object);
+      StorageSettings = new StorageSettings(_storageProviderDefinition, new[] { _storageProviderDefinition });
+      var persistenceModelLoader = _storageObjectFactory.CreatePersistenceModelLoader(_storageProviderDefinition, StorageSettings);
       _mappingConfiguration = new MappingConfiguration(mappingLoader, persistenceModelLoader);
 
       MappingConfiguration.SetCurrent(_mappingConfiguration);
-
-      /*DomainObjectsConfiguration.SetCurrent(
-          new IStorageSettings(
-              new StorageConfiguration(
-                  new ProviderCollection<StorageProviderDefinition> { _storageProviderDefinition },
-                  _storageProviderDefinition)));*/
     }
 
     public override void TearDown ()

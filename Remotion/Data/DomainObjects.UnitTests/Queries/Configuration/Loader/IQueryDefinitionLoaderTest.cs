@@ -16,7 +16,6 @@
 //
 using System;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Queries.Configuration.Loader;
 using Remotion.ServiceLocation;
 
@@ -36,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IQueryDefinitionLoader>();
+     var factory = _serviceLocator.GetInstance<IQueryDefinitionLoader>();
 
       Assert.That(factory, Is.Not.Null);
       Assert.That(factory, Is.TypeOf(typeof(QueryDefinitionLoader)));

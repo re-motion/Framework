@@ -91,14 +91,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     private ObjectID _invalidOrderID1;
     private ObjectID _invalidOrderID2;
 
-    private Mock<IStorageSettings> _storageSettingsStub;
-
     [SetUp]
     public override void SetUp ()
     {
       base.SetUp();
-      _storageSettingsStub = new Mock<IStorageSettings>();
-      _persistenceManager = new PersistenceManager(NullPersistenceExtension.Instance, _storageSettingsStub.Object);
+      _persistenceManager = new PersistenceManager(NullPersistenceExtension.Instance, StorageSettings);
 
       var guid1 = new Guid("11111111111111111111111111111111");
       var guid2 = new Guid("22222222222222222222222222222222");
@@ -116,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     public void Initialize ()
     {
       var persistenceTracer = new Mock<IPersistenceExtension>();
-      using (var persistenceManager = new PersistenceManager(persistenceTracer.Object, _storageSettingsStub.Object))
+      using (var persistenceManager = new PersistenceManager(persistenceTracer.Object, StorageSettings))
       {
         Assert.That(persistenceManager.StorageProviderManager, Is.Not.Null);
 
@@ -460,7 +457,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void SaveInDifferentStorageProviders_WithOverriddenCheck_CallsSaveOnBothStorageProviders ()
     {
-      using (var persistenceManager = new TestablePersistenceManager(NullPersistenceExtension.Instance, _storageSettingsStub.Object))
+      using (var persistenceManager = new TestablePersistenceManager(NullPersistenceExtension.Instance, StorageSettings))
       {
         DataContainer orderContainer = persistenceManager.LoadDataContainer(DomainObjectIDs.Order1).LocatedObject;
         DataContainer officialContainer1 = persistenceManager.LoadDataContainer(DomainObjectIDs.Official1).LocatedObject;
@@ -534,7 +531,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void Save_WithCommit_CallsExtensionPoints ()
     {
-      using (var persistenceManager = new TestablePersistenceManager(NullPersistenceExtension.Instance, _storageSettingsStub.Object))
+      using (var persistenceManager = new TestablePersistenceManager(NullPersistenceExtension.Instance, StorageSettings))
       {
         DataContainer officialContainer = persistenceManager.LoadDataContainer(DomainObjectIDs.Official1).LocatedObject;
 
@@ -587,7 +584,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void Save_WithRollback_CallsExtensionPoints ()
     {
-      using (var persistenceManager = new TestablePersistenceManager(NullPersistenceExtension.Instance, _storageSettingsStub.Object))
+      using (var persistenceManager = new TestablePersistenceManager(NullPersistenceExtension.Instance, StorageSettings))
       {
         DataContainer officialContainer = persistenceManager.LoadDataContainer(DomainObjectIDs.Official1).LocatedObject;
 

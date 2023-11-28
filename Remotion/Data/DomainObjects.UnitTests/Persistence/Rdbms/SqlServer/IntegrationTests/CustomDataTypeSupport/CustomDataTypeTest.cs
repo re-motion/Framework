@@ -18,6 +18,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.Queries;
@@ -50,6 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle<IPersistableDataValidator>(() => new SimpleDataTypePropertyMaxLengthValidator());
       serviceLocator.RegisterSingle<IDataContainerValidator>(() => new SimpleDataTypePropertyMaxLengthValidator());
+      serviceLocator.RegisterSingle<IStorageSettings>(() => StorageSettings);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }
 
