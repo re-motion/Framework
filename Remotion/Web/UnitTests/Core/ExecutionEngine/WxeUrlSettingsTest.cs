@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.Threading;
+using NUnit.Framework;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 
@@ -49,11 +51,46 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void Create ()
     {
-      var settings = WxeUrlSettings.Create("someFile", 42, "someWxeHandler");
+      var settings = WxeUrlSettings.Create("someFile", 42, " ~/someWxeHandler ");
 
       Assert.That(settings.UrlMappingFile, Is.EqualTo("someFile"));
       Assert.That(settings.MaximumUrlLength, Is.EqualTo(42));
-      Assert.That(settings.DefaultWxeHandler, Is.EqualTo("someWxeHandler"));
+      Assert.That(settings.DefaultWxeHandler, Is.EqualTo("~/someWxeHandler"));
+    }
+
+    [Test]
+    public void Create_NullValues ()
+    {
+      var settings = WxeUrlSettings.Create(null, 0, null);
+
+      Assert.That(settings.UrlMappingFile, Is.Null);
+      Assert.That(settings.DefaultWxeHandler, Is.Null);
+    }
+
+    [Test]
+    public void Create_WithDefaultWxeHandlerAsAbsoluteFilePath_Throws ()
+    {
+      Assert.That(
+          () => WxeUrlSettings.Create(null, 0, "C:\\myhandler"),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo("No absolute paths are allowed. Resource: 'C:\\myhandler'", "defaultWxeHandler"));
+    }
+
+    [Test]
+    public void Create_WithDefaultWxeHandlerAsAbsoluteUrlPath_Throws ()
+    {
+      Assert.That(
+          () => WxeUrlSettings.Create(null, 0, "/myhandler"),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo("No absolute paths are allowed. Resource: '/myhandler'", "defaultWxeHandler"));
+    }
+
+    [Test]
+    public void Create_WithRelativePath_IsMadeApplicationRelative ()
+    {
+      var settings = WxeUrlSettings.Create(null, 0, " someWxeHandler ");
+
+      Assert.That(settings.DefaultWxeHandler, Is.EqualTo("~/someWxeHandler"));
     }
   }
 }

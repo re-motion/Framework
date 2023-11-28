@@ -81,7 +81,28 @@ namespace Remotion.Web.ExecutionEngine
     {
       UrlMappingFile = urlMappingFile;
       MaximumUrlLength = maximumUrlLength;
-      DefaultWxeHandler = defaultWxeHandler;
+      DefaultWxeHandler = CheckDefaultWxeHandler(defaultWxeHandler);
+    }
+
+    private string? CheckDefaultWxeHandler (string? defaultWxeHandler)
+    {
+      if (string.IsNullOrEmpty(defaultWxeHandler))
+      {
+        return null;
+      }
+      else
+      {
+        defaultWxeHandler = defaultWxeHandler.Trim();
+        ArgumentUtility.CheckNotNullOrEmpty(nameof(defaultWxeHandler), defaultWxeHandler);
+
+        if (defaultWxeHandler.StartsWith("/") || defaultWxeHandler.IndexOf(":") != -1)
+          throw new ArgumentException($"No absolute paths are allowed. Resource: '{defaultWxeHandler}'", nameof(defaultWxeHandler));
+
+        if (!defaultWxeHandler.StartsWith("~/"))
+          defaultWxeHandler = "~/" + defaultWxeHandler;
+
+        return defaultWxeHandler;
+      }
     }
   }
 }

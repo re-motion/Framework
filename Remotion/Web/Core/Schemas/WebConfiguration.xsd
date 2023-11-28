@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <xs:schema 
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:c="http://www.re-motion.org/web/configuration" 
+    xmlns:c="http://www.re-motion.org/web/configuration/v2"
     elementFormDefault="qualified" 
     attributeFormDefault="unqualified" 
-    targetNamespace="http://www.re-motion.org/web/configuration">
+    targetNamespace="http://www.re-motion.org/web/configuration/v2">
   <xs:element name="remotion.web">
     <xs:complexType>
       <xs:all>
@@ -13,11 +13,6 @@
             <xs:attribute name="functionTimeout" type="xs:int" default="20" />
             <xs:attribute name="enableSessionManagement" type="xs:boolean" default="true" />
             <xs:attribute name="refreshInterval" type="xs:int" default="10" />
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="resources" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:attribute name="root" type="xs:string" default="res" />
           </xs:complexType>
         </xs:element>
       </xs:all>

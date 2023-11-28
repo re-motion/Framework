@@ -29,6 +29,7 @@ using Remotion.ObjectBinding.Sample.ReferenceDataSourceTestDomain;
 using Remotion.ObjectBinding.Web;
 using Remotion.ServiceLocation;
 using Remotion.Web;
+using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Infrastructure;
 
 namespace OBWTest
@@ -63,6 +64,8 @@ namespace OBWTest
       var defaultServiceLocator = DefaultServiceLocator.Create();
 
       //defaultServiceLocator.RegisterSingle<ResourceTheme>(() => new ResourceTheme.NovaGray());
+
+      defaultServiceLocator.RegisterSingle(() => WxeUrlSettings.Create(urlMappingFile: "~/UrlMapping.xml"));
 
       ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
 
