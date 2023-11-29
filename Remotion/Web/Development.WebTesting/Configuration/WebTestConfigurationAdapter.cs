@@ -20,7 +20,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
 {
   public class WebTestConfigurationAdapter : IWebTestConfiguration
   {
-    public string Browser => WebTestConfiguration.Current.Browser;
+    public string Browser => WebTestConfigurationSection.Current.BrowserName;
 
     public TimeSpan SearchTimeout => WebTestConfigurationSection.Current.SearchTimeout;
 

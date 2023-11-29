@@ -49,9 +49,9 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
       Assert.That(testInfrastructureConfiguration.RequestErrorDetectionStrategy, Is.InstanceOf<TestRequestErrorDetectionStrategy>());
     }
 
-    private WebTestConfigurationSection CreateWebTestConfigurationSection ()
+    private IWebTestConfiguration CreateWebTestConfigurationSection ()
     {
-      return (WebTestConfigurationSection)Activator.CreateInstance(typeof(WebTestConfigurationSection), true);
+      return (IWebTestConfiguration)Activator.CreateInstance(typeof(IWebTestConfiguration), true);
     }
 
     private class TestRequestErrorDetectionStrategy : IRequestErrorDetectionStrategy
