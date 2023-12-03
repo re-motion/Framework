@@ -15,14 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.Configuration.ServiceLocation
 {
   public class FakeServiceLocatorProvider : IServiceLocatorProvider
   {
-    public IServiceLocator GetServiceLocator (ReadOnlyCollection<ServiceConfigurationEntry> bootstrapConfiguration)
+    public IServiceLocator GetServiceLocator (IReadOnlyCollection<ServiceConfigurationEntry> bootstrapConfiguration)
     {
       throw new NotImplementedException();
     }

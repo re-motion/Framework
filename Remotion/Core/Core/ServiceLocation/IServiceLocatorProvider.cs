@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace Remotion.ServiceLocation
 {
@@ -34,6 +34,6 @@ namespace Remotion.ServiceLocation
     /// for the boostrapping service locator.
     /// </param>
     /// <returns>An instance of <see cref="IServiceLocator"/>.</returns>
-    IServiceLocator GetServiceLocator (ReadOnlyCollection<ServiceConfigurationEntry> bootstrapConfiguration);
+    IServiceLocator GetServiceLocator (IReadOnlyCollection<ServiceConfigurationEntry> bootstrapConfiguration);
   }
 }

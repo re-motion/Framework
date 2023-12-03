@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -29,7 +29,7 @@ namespace Remotion.ServiceLocation
     {
     }
 
-    public IServiceLocator GetServiceLocator (ReadOnlyCollection<ServiceConfigurationEntry> serviceConfigurationEntries)
+    public IServiceLocator GetServiceLocator (IReadOnlyCollection<ServiceConfigurationEntry> serviceConfigurationEntries)
     {
       ArgumentUtility.CheckNotNull("serviceConfigurationEntries", serviceConfigurationEntries);
 

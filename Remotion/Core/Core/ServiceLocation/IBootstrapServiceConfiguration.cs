@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 
 namespace Remotion.ServiceLocation
 {
@@ -27,25 +28,12 @@ namespace Remotion.ServiceLocation
     /// <summary>
     /// Returns the <see cref="ServiceConfigurationEntry"/> instances registered so far.
     /// </summary>
-    ServiceConfigurationEntry[] Registrations { get; }
+    IReadOnlyCollection<ServiceConfigurationEntry> GetRegistrations ();
 
     /// <summary>
     /// Registers the given <see cref="ServiceConfigurationEntry"/> with this <see cref="IBootstrapServiceConfiguration"/>.
     /// </summary>
     /// <param name="entry">The <see cref="ServiceConfigurationEntry"/> to be registered.</param>
     void Register (ServiceConfigurationEntry entry);
-
-    /// <summary>
-    /// Registers an entry with the given <see cref="Type"/> instances and <see cref="LifetimeKind"/>.
-    /// </summary>
-    /// <param name="serviceType">The service type. This is a type for which instances are requested from a service locator.</param>
-    /// <param name="implementationType">The concrete implementation of the service type.</param>
-    /// <param name="lifetime">The lifetime of the instances of <paramref name="implementationType"/>.</param>
-    void Register (Type serviceType, Type implementationType, LifetimeKind lifetime);
-
-    /// <summary>
-    /// Removes all registered <see cref="ServiceConfigurationEntry"/> data.
-    /// </summary>
-    void Reset ();
   }
 }

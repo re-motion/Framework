@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using NUnit.Framework;
+using Remotion.Logging;
 using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation
@@ -32,58 +34,47 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
-    public void Register_ServiceConfigurationEntry_AddsEntryToRegistrations_AndToBootstrapLocator ()
+    public void Register_ServiceConfigurationEntry_AddsEntryToRegistrations ()
     {
       var entry = new ServiceConfigurationEntry(typeof(IService), new ServiceImplementationInfo(typeof(Service), LifetimeKind.Singleton));
       _configuration.Register(entry);
 
-      Assert.That(_configuration.Registrations, Is.EqualTo(new[] { entry }));
-      Assert.That(_configuration.BootstrapServiceLocator.GetInstance<IService>(), Is.Not.Null.And.TypeOf<Service>());
+      Assert.That(_configuration.GetRegistrations(), Has.Member(entry));
     }
 
     [Test]
-    public void Register_ServiceConfigurationEntry_IfLocatorThrows_NoRegistrationIsAdded ()
+    public void Register_ServiceConfigurationEntry_OverridesExistingEntry ()
     {
-      // This causes the association between IServiceWithAttribute and ServiceWithAttribute1 to be stored in the BootstrapServiceLocator, so it will
-      // later throw on Register.
-      _configuration.BootstrapServiceLocator.GetInstance<IServiceWithAttribute>();
+      var entry1 = new ServiceConfigurationEntry(typeof(IService), new ServiceImplementationInfo(typeof(Service), LifetimeKind.Singleton));
+      _configuration.Register(entry1);
 
-      var entry = new ServiceConfigurationEntry(
-          typeof(IServiceWithAttribute),
-          new ServiceImplementationInfo(typeof(ServiceWithAttribute2), LifetimeKind.Singleton));
-      Assert.That(() => _configuration.Register(entry), Throws.InvalidOperationException);
+      var entry2 = new ServiceConfigurationEntry(typeof(IService), new ServiceImplementationInfo(typeof(Service), LifetimeKind.Singleton));
+      _configuration.Register(entry2);
 
-      Assert.That(_configuration.Registrations, Is.Empty);
-      Assert.That(_configuration.BootstrapServiceLocator.GetInstance<IServiceWithAttribute>(), Is.Not.Null.And.TypeOf<ServiceWithAttribute1>());
+      Assert.That(_configuration.GetRegistrations(), Has.Member(entry2).And.Not.Member(entry1));
     }
 
     [Test]
-    public void Register_Types_AddsEntry ()
+    public void GetRegistrations_HasDefaultRegistrations ()
     {
-      _configuration.Register(typeof(IService), typeof(Service), LifetimeKind.InstancePerDependency);
-
-      Assert.That(_configuration.Registrations, Has.Length.EqualTo(1));
-      Assert.That(_configuration.Registrations[0].ServiceType, Is.SameAs(typeof(IService)));
-
-      Assert.That(_configuration.Registrations[0].ImplementationInfos.Count, Is.EqualTo(1));
-      Assert.That(_configuration.Registrations[0].ImplementationInfos[0].ImplementationType, Is.EqualTo(typeof(Service)));
-      Assert.That(_configuration.Registrations[0].ImplementationInfos[0].Lifetime, Is.EqualTo(LifetimeKind.InstancePerDependency));
-
-      Assert.That(_configuration.BootstrapServiceLocator.GetInstance<IService>(), Is.Not.Null.And.TypeOf<Service>());
+      var serviceConfigurationEntries = _configuration.GetRegistrations();
+      Assert.That(
+          serviceConfigurationEntries.Select(e => e.ServiceType),
+          Is.EquivalentTo(new[] { typeof(ILogManager) }));
+      Assert.That(
+          serviceConfigurationEntries.SelectMany(e => e.ImplementationInfos.Select(i => i.ImplementationType)),
+          Is.EquivalentTo(new[] { typeof(Log4NetLogManager) }));
+      Assert.That(serviceConfigurationEntries.SelectMany(e => e.ImplementationInfos.Select(i => i.Lifetime)), Has.All.EqualTo(LifetimeKind.Singleton));
     }
 
     [Test]
-    public void Reset ()
+    public void GetRegistrations_AllowsOverridingDefaultRegistrations ()
     {
-      _configuration.Register(typeof(IService), typeof(Service), LifetimeKind.InstancePerDependency);
+      var entry = new ServiceConfigurationEntry(typeof(ILogManager), new ServiceImplementationInfo(typeof(FakeLogManager), LifetimeKind.Singleton));
+      _configuration.Register(entry);
 
-      Assert.That(_configuration.Registrations, Is.Not.Empty);
-      Assert.That(_configuration.BootstrapServiceLocator.GetInstance<IService>(), Is.Not.Null.And.TypeOf<Service>());
-
-      _configuration.Reset();
-
-      Assert.That(_configuration.Registrations, Is.Empty);
-      Assert.That(() => _configuration.BootstrapServiceLocator.GetInstance<IService>(), Throws.TypeOf<ActivationException>());
+      var serviceConfigurationEntries = _configuration.GetRegistrations();
+      Assert.That(serviceConfigurationEntries.SingleOrDefault(e => e.ServiceType == typeof(ILogManager)), Is.EqualTo(entry));
     }
 
     public interface IService { }
@@ -100,6 +91,19 @@ namespace Remotion.UnitTests.ServiceLocation
 
     public class ServiceWithAttribute2 : IServiceWithAttribute
     {
+    }
+
+    public class FakeLogManager : ILogManager
+    {
+      ILog ILogManager.GetLogger (string name) => throw new NotImplementedException();
+
+      ILog ILogManager.GetLogger (Type type) => throw new NotImplementedException();
+
+      void ILogManager.Initialize () => throw new NotImplementedException();
+
+      void ILogManager.InitializeConsole () => throw new NotImplementedException();
+
+      void ILogManager.InitializeConsole (LogLevel defaultThreshold, params LogThreshold[] logThresholds) => throw new NotImplementedException();
     }
   }
 }
