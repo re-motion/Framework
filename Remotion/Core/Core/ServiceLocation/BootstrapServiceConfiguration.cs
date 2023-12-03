@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Remotion.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -27,28 +28,33 @@ namespace Remotion.ServiceLocation
   public class BootstrapServiceConfiguration : IBootstrapServiceConfiguration
   {
     private readonly object _lock = new object();
-    private readonly List<ServiceConfigurationEntry> _registrations = new List<ServiceConfigurationEntry>();
-
-    private DefaultServiceLocator _bootstrapServiceLocator = DefaultServiceLocator.Create();
+    private readonly Dictionary<Type, ServiceConfigurationEntry> _registrations = new();
 
     public BootstrapServiceConfiguration ()
     {
+      // Logging
+      RegisterAsSingleton<ILogManager, Log4NetLogManager>(() => new Log4NetLogManager());
 
-    }
-
-    public IServiceLocator BootstrapServiceLocator
-    {
-      get { return _bootstrapServiceLocator; }
-    }
-
-    public ServiceConfigurationEntry[] Registrations
-    {
-      get
+      // ReSharper disable once LocalFunctionHidesMethod
+      void RegisterAsSingleton<TService, TImplementation> (Func<TImplementation> factory)
+          where TService : class
+          where TImplementation : class, TService
       {
         lock (_lock)
         {
-          return _registrations.ToArray();
+          var singleton = new Lazy<TImplementation>(factory);
+          _registrations.Add(
+              typeof(TService),
+              new ServiceConfigurationEntry(typeof(TService), ServiceImplementationInfo.CreateSingle(() => singleton.Value, LifetimeKind.Singleton)));
         }
+      }
+    }
+
+    public IReadOnlyCollection<ServiceConfigurationEntry> GetRegistrations ()
+    {
+      lock (_lock)
+      {
+        return _registrations.Values;
       }
     }
 
@@ -58,26 +64,7 @@ namespace Remotion.ServiceLocation
 
       lock (_lock)
       {
-        _bootstrapServiceLocator.Register(entry);
-        _registrations.Add(entry);
-      }
-    }
-
-    public void Register (Type serviceType, Type implementationType, LifetimeKind lifetime)
-    {
-      ArgumentUtility.CheckNotNull("serviceType", serviceType);
-      ArgumentUtility.CheckNotNull("implementationType", implementationType);
-
-      var entry = new ServiceConfigurationEntry(serviceType, new ServiceImplementationInfo(implementationType, lifetime));
-      Register(entry);
-    }
-
-    public void Reset ()
-    {
-      lock (_lock)
-      {
-        _bootstrapServiceLocator = DefaultServiceLocator.Create();
-        _registrations.Clear();
+        _registrations[entry.ServiceType] = entry;
       }
     }
   }
