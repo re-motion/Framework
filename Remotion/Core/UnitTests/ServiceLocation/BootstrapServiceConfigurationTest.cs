@@ -60,10 +60,10 @@ namespace Remotion.UnitTests.ServiceLocation
       var serviceConfigurationEntries = _configuration.GetRegistrations();
       Assert.That(
           serviceConfigurationEntries.Select(e => e.ServiceType),
-          Is.EquivalentTo(new[] { typeof(ILogManager) }));
+          Is.EquivalentTo(new[] { typeof(ILogManager), typeof(IServiceLocatorProvider) }));
       Assert.That(
           serviceConfigurationEntries.SelectMany(e => e.ImplementationInfos.Select(i => i.ImplementationType)),
-          Is.EquivalentTo(new[] { typeof(Log4NetLogManager) }));
+          Is.EquivalentTo(new[] { typeof(Log4NetLogManager), typeof(DefaultServiceLocatorProvider) }));
       Assert.That(serviceConfigurationEntries.SelectMany(e => e.ImplementationInfos.Select(i => i.Lifetime)), Has.All.EqualTo(LifetimeKind.Singleton));
     }
 

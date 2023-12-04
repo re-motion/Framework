@@ -33,10 +33,26 @@ namespace Remotion.ServiceLocation
     public BootstrapServiceConfiguration ()
     {
       // Logging
-      RegisterAsSingleton<ILogManager, Log4NetLogManager>(() => new Log4NetLogManager());
+      RegisterInstanceAsSingleton<ILogManager, Log4NetLogManager>(() => new Log4NetLogManager());
+
+      // Service Location
+      RegisterImplementationAsSingleton<IServiceLocatorProvider, DefaultServiceLocatorProvider>();
 
       // ReSharper disable once LocalFunctionHidesMethod
-      void RegisterAsSingleton<TService, TImplementation> (Func<TImplementation> factory)
+      void RegisterImplementationAsSingleton<TService, TImplementation> ()
+          where TService : class
+          where TImplementation : class, TService
+      {
+        lock (_lock)
+        {
+          _registrations.Add(
+              typeof(TService),
+              new ServiceConfigurationEntry(typeof(TService), new ServiceImplementationInfo(typeof(TImplementation), LifetimeKind.Singleton, RegistrationType.Single)));
+        }
+      }
+
+      // ReSharper disable once LocalFunctionHidesMethod
+      void RegisterInstanceAsSingleton<TService, TImplementation> (Func<TImplementation> factory)
           where TService : class
           where TImplementation : class, TService
       {

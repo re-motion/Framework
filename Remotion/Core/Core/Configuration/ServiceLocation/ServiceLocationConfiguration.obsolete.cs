@@ -15,17 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Configuration.ServiceLocation
 {
-  public interface IServiceLocationConfiguration
+  [Obsolete("Use IoC bootstrapping to resolve the IServiceLocatorProvider (Version 6.0.0)", true)]
+
+  public static class ServiceLocationConfiguration
   {
-    /// <summary>
-    /// Creates an <see cref="IServiceLocatorProvider"/> instance as indicated by <see cref="ServiceLocationConfiguration.ServiceLocatorProvider"/>. If no 
-    /// <see cref="ServiceLocationConfiguration.ServiceLocatorProvider"/> is set, an instance of <see cref="DefaultServiceLocatorProvider"/> is returned.
-    /// </summary>
-    /// <returns>An new <see cref="IServiceLocatorProvider"/> instance.</returns>
-    IServiceLocatorProvider CreateServiceLocatorProvider ();
+    [Obsolete("Use IoC bootstrapping to resolve the IServiceLocatorProvider (Version 6.0.0)", true)]
+
+    public static IServiceLocationConfiguration Current
+    {
+      get => throw new NotSupportedException("Use IoC bootstrapping to resolve the IServiceLocatorProvider (Version 6.0.0)");
+    }
   }
 }
