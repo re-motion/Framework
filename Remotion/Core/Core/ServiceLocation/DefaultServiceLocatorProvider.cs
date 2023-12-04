@@ -24,8 +24,11 @@ namespace Remotion.ServiceLocation
   /// <summary>
   /// Implements <see cref="IServiceLocatorProvider"/> by providing instances of <see cref="DefaultServiceLocator"/>.
   /// </summary>
+  /// <threadsafety static="true" instance="true" />
   public class DefaultServiceLocatorProvider : IServiceLocatorProvider
   {
+    public const int Position = 0;
+
     public DefaultServiceLocatorProvider ()
     {
     }
