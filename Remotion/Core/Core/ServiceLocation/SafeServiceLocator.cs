@@ -114,7 +114,7 @@ namespace Remotion.ServiceLocation
       var bootstrapServiceLocator = bootstrapServiceLocatorProvider.GetServiceLocator(bootstrapServiceLocatorEntries);
       s_fields.DefaultServiceLocator.Value = bootstrapServiceLocator;
 
-      var serviceLocatorProvider = ServiceLocationConfiguration.Current.CreateServiceLocatorProvider();
+      var serviceLocatorProvider = bootstrapServiceLocator.GetInstance<IServiceLocatorProvider>();
       return serviceLocatorProvider.GetServiceLocator(bootstrapServiceLocatorEntries);
     }
   }
