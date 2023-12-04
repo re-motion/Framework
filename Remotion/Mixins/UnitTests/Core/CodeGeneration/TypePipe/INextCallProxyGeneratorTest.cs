@@ -29,7 +29,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     }
 
     [Test]

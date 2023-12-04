@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Web.Test
           FileExtensionHandlerMapping.Default);
       _resourceVirtualPathProvider.Register();
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
 
       var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer("Integrated Security=SSPI;Initial Catalog=RpaTest;Data Source=localhost");
       serviceLocator.RegisterSingle(() => storageSettingsFactory);

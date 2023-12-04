@@ -101,7 +101,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.NetFramewor
 
     private void SetRenderingFeatures (IRenderingFeatures renderingFeatures, ResourceTheme resourceTheme)
     {
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle(() => renderingFeatures);
       serviceLocator.RegisterSingle(() => resourceTheme);
       ServiceLocator.SetLocatorProvider(() => serviceLocator);

@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
 
       var storageSettingsFactoryStub = Mock.Of<IStorageSettingsFactory>();
 
-      var defaultServiceLocator = DefaultServiceLocator.Create();
+      var defaultServiceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       defaultServiceLocator.RegisterSingle(() => storageSettingsFactoryStub);
 
       using (new ServiceLocatorScope(defaultServiceLocator))
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     public void Resolve_Throws ()
     {
       var storageSettingsFactoryResolver = new StorageSettingsFactoryResolver();
-      var defaultServiceLocator = DefaultServiceLocator.Create();
+      var defaultServiceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
 
       using (new ServiceLocatorScope(defaultServiceLocator))
       {

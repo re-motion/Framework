@@ -32,7 +32,7 @@ namespace Remotion.Web.UnitTests.Core
     {
             Console.WriteLine(typeof(HttpContext).AssemblyQualifiedName);
 
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     }
 
     [Test]

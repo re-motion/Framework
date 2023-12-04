@@ -46,7 +46,7 @@ namespace Remotion.UnitTests.Context.SafeContextTests
 
     protected static IDisposable SetupImplicitSafeContextStorageProvider (ISafeContextStorageProvider safeContextStorageProvider)
     {
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle(() => safeContextStorageProvider);
 
       return new ServiceLocatorScope(serviceLocator);

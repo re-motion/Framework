@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 
       var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
 
-      var locator = DefaultServiceLocator.Create();
+      var locator = DefaultServiceLocator.CreateWithBootstrappedServices();
       var factory = new LinqToSqlExtensionFactory();
       locator.RegisterSingle<IClientTransactionExtensionFactory>(() => factory);
       locator.RegisterSingle<IPersistenceExtensionFactory>(() => factory);

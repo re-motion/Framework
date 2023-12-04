@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     [Test]
     public void GetInstance_ThrowsNoInstanceRegistered ()
     {
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
 
       Assert.That(
           () => serviceLocator.GetInstance<IStorageSettingsFactory>(),

@@ -87,7 +87,7 @@ namespace Remotion.SecurityManager.Metadata.Importer
       {
         if (!hasOriginalServiceLocator)
         {
-          var serviceLocator = DefaultServiceLocator.Create();
+          var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
           var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer(_arguments.ConnectionString);
           serviceLocator.RegisterSingle(() => storageSettingsFactory);
           ServiceLocator.SetLocatorProvider(() => serviceLocator);
