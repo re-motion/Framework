@@ -30,7 +30,7 @@ namespace Remotion.Validation.UnitTests.Providers
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     }
 
     [Test]

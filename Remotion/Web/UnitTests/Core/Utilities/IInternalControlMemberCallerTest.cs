@@ -13,7 +13,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     }
 
     [Test]

@@ -307,7 +307,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
       persistenceExtensionFactoryStub
           .Setup(stub => stub.CreatePersistenceExtensions(It.IsAny<Guid>()))
           .Returns(new[] { persistenceExtensionMock });
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle<IPersistenceExtensionFactory>(() => persistenceExtensionFactoryStub.Object);
       RegisterStandardConfiguration(serviceLocator);
       return new ServiceLocatorScope(serviceLocator);

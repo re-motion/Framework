@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -33,7 +34,8 @@ namespace Remotion.ServiceLocation
     {
       ArgumentUtility.CheckNotNull("serviceConfigurationEntries", serviceConfigurationEntries);
 
-      var defaultServiceLocator = DefaultServiceLocator.Create();
+      var defaultServiceConfigurationDiscoveryService = new DefaultServiceConfigurationDiscoveryService(ContextAwareTypeUtility.GetTypeDiscoveryService());
+      var defaultServiceLocator = new DefaultServiceLocator(defaultServiceConfigurationDiscoveryService);
       foreach (var serviceConfigurationEntry in serviceConfigurationEntries)
         defaultServiceLocator.Register(serviceConfigurationEntry);
 

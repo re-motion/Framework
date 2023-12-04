@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     }
 
     [Test]

@@ -29,7 +29,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     }
 
     [Test]

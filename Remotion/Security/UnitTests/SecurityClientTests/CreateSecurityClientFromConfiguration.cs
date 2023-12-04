@@ -42,7 +42,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       _stubMemberResolver = new Mock<IMemberResolver>();
       _stubFunctionalSecurityStrategy = new Mock<IFunctionalSecurityStrategy>();
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle(() => _stubSecurityProvider.Object);
       serviceLocator.RegisterSingle(() => _stubPrincipalProvider.Object);
       serviceLocator.RegisterSingle(() => _stubPermissionProvider.Object);

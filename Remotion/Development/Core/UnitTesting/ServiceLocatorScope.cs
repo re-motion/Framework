@@ -27,16 +27,6 @@ namespace Remotion.Development.UnitTesting
   /// </summary>
   public class ServiceLocatorScope : IDisposable
   {
-    private static DefaultServiceLocator CreateServiceLocator (IEnumerable<ServiceConfigurationEntry> configuration)
-    {
-      ArgumentUtility.CheckNotNull("configuration", configuration);
-
-      var defaultServiceLocator = DefaultServiceLocator.Create();
-      foreach (var stubbedRegistration in configuration)
-        defaultServiceLocator.Register(stubbedRegistration);
-      return defaultServiceLocator;
-    }
-
     private readonly ServiceLocatorProvider? _previousLocatorProvider;
 
     public ServiceLocatorScope (IServiceLocator temporaryServiceLocator)
@@ -52,11 +42,6 @@ namespace Remotion.Development.UnitTesting
       }
 
       ServiceLocator.SetLocatorProvider(() => temporaryServiceLocator);
-    }
-
-    public ServiceLocatorScope (params ServiceConfigurationEntry[] temporaryConfiguration)
-      : this(CreateServiceLocator(temporaryConfiguration))
-    {
     }
 
     public void Dispose ()

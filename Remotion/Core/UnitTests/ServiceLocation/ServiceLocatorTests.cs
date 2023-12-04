@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 
@@ -29,10 +30,16 @@ namespace Remotion.UnitTests.ServiceLocation
       ServiceLocator.SetLocatorProvider(null);
     }
 
+    [TearDown]
+    public void TearDown ()
+    {
+      ServiceLocator.SetLocatorProvider(null);
+    }
+
     [Test]
     public void IsLocationProviderSet_WithSetProvider_ReturnsTrue ()
     {
-      ServiceLocator.SetLocatorProvider(() => new DefaultServiceLocator(DefaultServiceConfigurationDiscoveryService.Create()));
+      ServiceLocator.SetLocatorProvider(() => Mock.Of<IServiceLocator>());
 
       Assert.That(ServiceLocator.IsLocationProviderSet, Is.True);
     }

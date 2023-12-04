@@ -28,7 +28,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     [Test]
     public void GetDefaultImplementationFromServiceLocator ()
     {
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
 
       Assert.That(serviceLocator.GetInstance<ISecurityManagerPrincipalFactory>(), Is.TypeOf<SecurityManagerPrincipalFactory>());
     }

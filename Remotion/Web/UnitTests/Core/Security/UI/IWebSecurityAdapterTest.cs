@@ -31,7 +31,7 @@ namespace Remotion.Web.UnitTests.Core.Security.UI
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     }
 
     [Test]

@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     {
       var definition = Queries.GetMandatory("QueryWithoutParameter");
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle<IQueryDefinitionRepository>(() => Queries);
       RegisterStandardConfiguration(serviceLocator);
       using var scope = new ServiceLocatorScope(serviceLocator);
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var definition = Queries.GetMandatory("QueryWithoutParameter");
       var parameterCollection = new QueryParameterCollection();
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle<IQueryDefinitionRepository>(() => Queries);
       RegisterStandardConfiguration(serviceLocator);
       using var scope = new ServiceLocatorScope(serviceLocator);
@@ -203,7 +203,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     public void CreateLinqQuery_WithParserAndExecutor ()
     {
       var factoryMock = new Mock<ILinqProviderComponentFactory>(MockBehavior.Strict);
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle<ILinqProviderComponentFactory>(() => factoryMock.Object);
       RegisterStandardConfiguration(serviceLocator);
       using (new ServiceLocatorScope(serviceLocator))
@@ -228,7 +228,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     public void CreateLinqQuery_WithoutParserAndExecutor ()
     {
       var factoryMock = new Mock<ILinqProviderComponentFactory>(MockBehavior.Strict);
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle<ILinqProviderComponentFactory>(() => factoryMock.Object);
       RegisterStandardConfiguration(serviceLocator);
       using (new ServiceLocatorScope(serviceLocator))
