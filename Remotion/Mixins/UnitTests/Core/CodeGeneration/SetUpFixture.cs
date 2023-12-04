@@ -99,7 +99,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       s_pipeline = defaultPipelineFactory.Create(pipelineName, settings, participants);
 #endif
       var pipelineRegistry = new DefaultPipelineRegistry(s_pipeline);
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle<IPipelineRegistry>(() => pipelineRegistry);
       s_serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }

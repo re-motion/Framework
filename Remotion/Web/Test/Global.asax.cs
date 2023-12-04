@@ -33,7 +33,7 @@ namespace Remotion.Web.Test
 
     protected void Application_Start (Object sender, EventArgs e)
     {
-      var defaultServiceLocator = DefaultServiceLocator.Create();
+      var defaultServiceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       var wxeLifetimeManagementSettings = WxeLifetimeManagementSettings.Create(functionTimeout: 16, refreshInterval: 5);
       defaultServiceLocator.RegisterSingle(() => wxeLifetimeManagementSettings);
 

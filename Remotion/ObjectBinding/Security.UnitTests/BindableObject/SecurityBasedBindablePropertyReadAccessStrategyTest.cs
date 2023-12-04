@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
       var principalProviderStub = new Mock<IPrincipalProvider>();
       principalProviderStub.Setup(_ => _.GetPrincipal()).Returns(_principalStub.Object);
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle(() => _securityProviderStub.Object);
       serviceLocator.RegisterSingle(() => principalProviderStub.Object);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);

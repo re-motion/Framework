@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
 
       var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle(() => _securityProviderStub.Object);
       serviceLocator.RegisterSingle(() => principalProviderStub.Object);
       serviceLocator.RegisterSingle(() => _functionalSecurityStrategyStub.Object);

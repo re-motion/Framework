@@ -42,7 +42,7 @@ namespace Remotion.Web.UnitTests.Core
     {
       XmlNodeExtensions.Helper = new HtmlHelper();
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle<IInfrastructureResourceUrlFactory>(() => new FakeInfrastructureResourceUrlFactory());
       serviceLocator.RegisterSingle<IScriptUtility>(() => new FakeScriptUtility());
       serviceLocator.RegisterSingle<IResourceUrlFactory>(() => new FakeResourceUrlFactory());

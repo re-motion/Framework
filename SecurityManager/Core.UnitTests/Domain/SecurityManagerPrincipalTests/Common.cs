@@ -173,7 +173,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
 
       var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle(() => securityProviderStub.Object);
       serviceLocator.RegisterSingle<IPrincipalProvider>(() => new NullPrincipalProvider());
       serviceLocator.RegisterSingle(() => storageSettings);

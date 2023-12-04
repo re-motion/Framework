@@ -19,6 +19,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Mixins.CodeGeneration.TypePipe;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 
@@ -30,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.ServiceLocation
     [Test]
     public void DefaultServiceLocator_ReturnsDomainObjectParticipant ()
     {
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       var participants = serviceLocator.GetAllInstances<IParticipant>().ToArray();
       Assert.That(participants.Select(p => p.GetType()), Has.Member(typeof(DomainObjectParticipant)));
     }
@@ -38,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.ServiceLocation
     [Test]
     public void DefaultServiceLocator_OrdersDomainObjectParticipantAfterMixinParticipant ()
     {
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       var participants = serviceLocator.GetAllInstances<IParticipant>().ToArray();
       Assert.That(participants.Select(p => p.GetType()), Is.EqualTo(new[] { typeof(MixinParticipant), typeof(DomainObjectParticipant) }));
     }
@@ -46,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.ServiceLocation
     [Test]
     public void DefaultServiceConfigurationDiscoveryService_ReturnsDomainObjectParticipant ()
     {
-      var discoveryService = DefaultServiceConfigurationDiscoveryService.Create();
+      var discoveryService = new DefaultServiceConfigurationDiscoveryService(ContextAwareTypeUtility.GetTypeDiscoveryService());
       var services = discoveryService.GetDefaultConfiguration();
       var participantService = services.SingleOrDefault(s => s.ServiceType == typeof(IParticipant));
 
@@ -55,9 +56,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.ServiceLocation
     }
 
     [Test]
-    public void DefaultServiceConfigurationDiscoveryService_ReturnsMixinParticpant ()
+    public void DefaultServiceConfigurationDiscoveryService_ReturnsMixinParticipant ()
     {
-      var discoveryService = DefaultServiceConfigurationDiscoveryService.Create();
+      var discoveryService = new DefaultServiceConfigurationDiscoveryService(ContextAwareTypeUtility.GetTypeDiscoveryService());
       var services = discoveryService.GetDefaultConfiguration();
       var participantService = services.SingleOrDefault(s => s.ServiceType == typeof(IParticipant));
 

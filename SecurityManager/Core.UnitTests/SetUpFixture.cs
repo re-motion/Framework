@@ -65,7 +65,7 @@ namespace Remotion.SecurityManager.UnitTests
         var securityProvider = new FakeSecurityProvider();
         var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer<SecurityManagerSqlStorageObjectFactory>(TestDomainConnectionString);
 
-        var serviceLocator = DefaultServiceLocator.Create();
+        var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
         serviceLocator.RegisterSingle<ISecurityProvider>(() => securityProvider);
         serviceLocator.RegisterSingle<IPrincipalProvider>(() => new NullPrincipalProvider());
         serviceLocator.RegisterSingle(() => storageSettingsFactory);

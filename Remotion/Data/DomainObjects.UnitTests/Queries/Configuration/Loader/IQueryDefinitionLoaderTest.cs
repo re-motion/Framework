@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     }
 
     [Test]

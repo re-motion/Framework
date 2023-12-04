@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.Clients.Web.Test
 
     protected void Application_Start (object sender, EventArgs e)
     {
-      var defaultServiceLocator = DefaultServiceLocator.Create();
+      var defaultServiceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
 
       var storageSettingsFactory =
           StorageSettingsFactory.CreateForSqlServer<SecurityManagerSqlStorageObjectFactory>(

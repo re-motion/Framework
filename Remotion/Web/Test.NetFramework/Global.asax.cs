@@ -32,7 +32,7 @@ namespace Remotion.Web.Test.NetFramework
 
     protected void Application_Start (Object sender, EventArgs e)
     {
-      var defaultServiceLocator = DefaultServiceLocator.Create();
+      var defaultServiceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
       LogManager.Initialize();
 

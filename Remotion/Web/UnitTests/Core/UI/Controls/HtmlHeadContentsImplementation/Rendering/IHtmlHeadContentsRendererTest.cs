@@ -30,7 +30,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.HtmlHeadContentsImplementation
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     }
 
     [Test]

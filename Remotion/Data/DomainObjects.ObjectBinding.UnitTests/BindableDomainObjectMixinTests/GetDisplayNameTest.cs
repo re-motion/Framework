@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
 
       var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle(() => _bindablePropertyReadAccessStrategyMock.Object);
       serviceLocator.RegisterSingle(() => storageSettings);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);

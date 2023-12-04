@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
         var storageSettings = new SerializableStorageSettings(new StorageSettings(storageProviderDefinition, new[] { storageProviderDefinition }));
 
-        var defaultServiceLocator = DefaultServiceLocator.Create();
+        var defaultServiceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
         defaultServiceLocator.RegisterSingle<IStorageSettings>(() => storageSettings);
 
         ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);

@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     {
       var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer(ConnectionString);
 
-      var defaultServiceLocator = DefaultServiceLocator.Create();
+      var defaultServiceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       defaultServiceLocator.RegisterSingle(() => storageSettingsFactory);
 
       ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);

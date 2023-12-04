@@ -13,7 +13,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     }
 
     [Test]
