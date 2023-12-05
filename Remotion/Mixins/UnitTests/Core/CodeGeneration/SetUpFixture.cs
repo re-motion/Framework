@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.PEVerifyPathSources;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
@@ -117,7 +118,15 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       }
 
 #if ENABLE_PEVERIFY
-      s_assemblyTrackingCodeManager.PeVerifySavedAssemblies();
+      // Instead of using the TypePipe-provided version of PEVerify, we supply the latest version available in the Framework codebase
+      // to decouple the installed version of Windows Kit from the versions supported by TypePipe.
+
+      // s_assemblyTrackingCodeManager.PeVerifySavedAssemblies();
+
+      var peVerifier = PEVerifier.CreateDefault();
+      var savedAssemblies = s_assemblyTrackingCodeManager.SavedAssemblies;
+      foreach (var savedAssembly in savedAssemblies)
+        peVerifier.VerifyPEFile(savedAssembly, PEVerifyVersion.DotNet4);
 #endif
 
       if (!s_skipDeletion)
