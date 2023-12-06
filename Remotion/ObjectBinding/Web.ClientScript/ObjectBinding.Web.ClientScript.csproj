@@ -19,5 +19,10 @@
   <ItemGroup>
     <PackageReference Include="Remotion.ThirdPartyDependency.JQuery.Autocomplete" Version="1.1.0-pre" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Web\ClientScript\README.md">
+      <Link>README.md</Link>
+    </Content>
+  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
