@@ -15,8 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.ComponentModel.Design;
-using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 
 namespace Remotion.Configuration.TypeDiscovery
 {
@@ -30,22 +28,18 @@ namespace Remotion.Configuration.TypeDiscovery
     /// and their referenced assemblies.
     /// </summary>
     Automatic,
-    /// <summary>
-    /// Chooses a custom <see cref="IRootAssemblyFinder"/> which searches for root assemblies. The types are discovered from those assemblies. 
-    /// Whether types from referenced assemblies are also included is defined by the <see cref="IRootAssemblyFinder"/>. 
-    /// See <see cref="TypeDiscoveryConfiguration.CustomRootAssemblyFinder"/>.
-    /// </summary>
+
+    [Obsolete("Register the custom implementation of IRootAssemblyFinder via the SafeServiceLocator.BootstrapConfiguration. (Version 6.0.0)", true)]
     CustomRootAssemblyFinder,
+
     /// <summary>
     /// Chooses a number of specific root assemblies. The types are discovered from those assemblies. Whether types from referenced assemblies are 
     /// also included is defined by the user.
     /// See <see cref="TypeDiscoveryConfiguration.SpecificRootAssemblies"/>.
     /// </summary>
     SpecificRootAssemblies,
-    /// <summary>
-    /// Chooses a custom <see cref="ITypeDiscoveryService"/> implementation. The types are discovered by that service.
-    /// See <see cref="TypeDiscoveryConfiguration.CustomTypeDiscoveryService"/>.
-    /// </summary>
+
+    [Obsolete("Register the custom implementation of ITypeDiscoveryService via the SafeServiceLocator.BootstrapConfiguration. (Version 6.0.0)", true)]
     CustomTypeDiscoveryService
   }
 }
