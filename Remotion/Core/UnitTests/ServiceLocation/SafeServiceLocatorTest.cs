@@ -21,6 +21,9 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Logging;
+using Remotion.Reflection.TypeDiscovery;
+using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
+using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Reflection.TypeResolution;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -287,6 +290,35 @@ namespace Remotion.UnitTests.ServiceLocation
     public void DefaultConfiguration_IntegrationTest_ITypeResolutionService ()
     {
       Assert.That(SafeServiceLocator.Current.GetInstance<ITypeResolutionService>(), Is.InstanceOf<DefaultTypeResolutionService>());
+    }
+
+    [Test]
+    public void DefaultConfiguration_IntegrationTest_ITypeDiscoveryService ()
+    {
+      var typeDiscoveryService = SafeServiceLocator.Current.GetInstance<ITypeDiscoveryService>();
+      Assert.That(typeDiscoveryService, Is.InstanceOf<AssemblyFinderTypeDiscoveryService>());
+
+      var assemblyFindingTypeDiscoveryService = (AssemblyFinderTypeDiscoveryService)typeDiscoveryService;
+      Assert.That(assemblyFindingTypeDiscoveryService.AssemblyFinder, Is.InstanceOf<CachingAssemblyFinderDecorator>());
+
+      var cachingAssemblyFinderDecorator = (CachingAssemblyFinderDecorator)assemblyFindingTypeDiscoveryService.AssemblyFinder;
+      Assert.That(cachingAssemblyFinderDecorator.InnerFinder, Is.InstanceOf<AssemblyFinder>());
+      var assemblyFinder = (AssemblyFinder)cachingAssemblyFinderDecorator.InnerFinder;
+      Assert.That(assemblyFinder.AssemblyLoader, Is.InstanceOf<FilteringAssemblyLoader>());
+
+      var filteringAssemblyLoader = (FilteringAssemblyLoader)assemblyFinder.AssemblyLoader;
+      Assert.That(filteringAssemblyLoader.Filter, Is.InstanceOf<ApplicationAssemblyLoaderFilter>());
+
+#if NETFRAMEWORK
+      Assert.That(assemblyFinder.RootAssemblyFinder, Is.InstanceOf<CurrentAppDomainBasedRootAssemblyFinder>());
+      var rootAssemblyFinder = (CurrentAppDomainBasedRootAssemblyFinder)assemblyFinder.RootAssemblyFinder;
+      Assert.That(rootAssemblyFinder.AssemblyLoader, Is.SameAs(assemblyFinder.AssemblyLoader));
+#else
+      Assert.That(assemblyFinder.RootAssemblyFinder, Is.InstanceOf<AppContextBasedRootAssemblyFinder>());
+      var rootAssemblyFinder = (AppContextBasedRootAssemblyFinder)assemblyFinder.RootAssemblyFinder;
+      Assert.That(rootAssemblyFinder.AssemblyLoader, Is.SameAs(assemblyFinder.AssemblyLoader));
+      Assert.That(rootAssemblyFinder.AppContextProvider, Is.InstanceOf<AppContextProvider>());
+#endif
     }
 
     private void ResetSafeServiceLocator (bool resetBootstrapConfiguration = true, bool resetDefaultServiceLocator = true)

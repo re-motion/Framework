@@ -19,8 +19,12 @@ using System.ComponentModel.Design;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Logging;
+using Remotion.Reflection.TypeDiscovery;
+using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
+using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Reflection.TypeResolution;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
 namespace Remotion.UnitTests.ServiceLocation
 {
@@ -62,11 +66,37 @@ namespace Remotion.UnitTests.ServiceLocation
       var serviceConfigurationEntries = _configuration.GetRegistrations();
       Assert.That(
           serviceConfigurationEntries.Select(e => e.ServiceType),
-          Is.EquivalentTo(new[] { typeof(ILogManager), typeof(IServiceLocatorProvider), typeof(ITypeResolutionService) }));
+          Is.EquivalentTo(
+              new[]
+              {
+                  typeof(ILogManager),
+                  typeof(IServiceLocatorProvider),
+                  typeof(ITypeResolutionService),
+                  typeof(IAppContextProvider), typeof(IAssemblyLoader), typeof(IAssemblyLoaderFilter), typeof(IRootAssemblyFinder), typeof(IAssemblyFinder),
+                  typeof(ITypeDiscoveryService)
+              }));
       Assert.That(
           serviceConfigurationEntries.SelectMany(e => e.ImplementationInfos.Select(i => i.ImplementationType)),
-          Is.EquivalentTo(new[] { typeof(Log4NetLogManager), typeof(DefaultServiceLocatorProvider), typeof(DefaultTypeResolutionService) }));
-      Assert.That(serviceConfigurationEntries.SelectMany(e => e.ImplementationInfos.Select(i => i.Lifetime)), Has.All.EqualTo(LifetimeKind.Singleton));
+          Is.EquivalentTo(
+              new[]
+              {
+                  typeof(Log4NetLogManager),
+                  typeof(DefaultServiceLocatorProvider),
+                  typeof(DefaultTypeResolutionService),
+                  typeof(AppContextProvider), typeof(FilteringAssemblyLoader), typeof(ApplicationAssemblyLoaderFilter),
+#if NETFRAMEWORK
+                  typeof(CurrentAppDomainBasedRootAssemblyFinder),
+#else
+                  typeof(AppContextBasedRootAssemblyFinder),
+#endif
+                  typeof(AssemblyFinder), typeof(CachingAssemblyFinderDecorator),
+                  typeof(AssemblyFinderTypeDiscoveryService)
+              }));
+      Assert.That(
+          serviceConfigurationEntries.SelectMany(e => e.ImplementationInfos.Where(i => i.RegistrationType == RegistrationType.Single).Select(i => i.Lifetime)),
+          Has.All.EqualTo(LifetimeKind.Singleton));
+      Assert.That(serviceConfigurationEntries.SelectMany(e => e.ImplementationInfos.Where(i => i.RegistrationType == RegistrationType.Compound)), Is.Empty);
+      Assert.That(serviceConfigurationEntries.SelectMany(e => e.ImplementationInfos.Where(i => i.RegistrationType == RegistrationType.Multiple)), Is.Empty);
     }
 
     [Test]
