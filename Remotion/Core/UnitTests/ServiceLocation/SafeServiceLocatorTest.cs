@@ -16,10 +16,12 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Logging;
+using Remotion.Reflection.TypeResolution;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -279,6 +281,12 @@ namespace Remotion.UnitTests.ServiceLocation
     public void DefaultConfiguration_IntegrationTest_IServiceLocatorProvider ()
     {
       Assert.That(SafeServiceLocator.Current.GetInstance<IServiceLocatorProvider>(), Is.InstanceOf<DefaultServiceLocatorProvider>());
+    }
+
+    [Test]
+    public void DefaultConfiguration_IntegrationTest_ITypeResolutionService ()
+    {
+      Assert.That(SafeServiceLocator.Current.GetInstance<ITypeResolutionService>(), Is.InstanceOf<DefaultTypeResolutionService>());
     }
 
     private void ResetSafeServiceLocator (bool resetBootstrapConfiguration = true, bool resetDefaultServiceLocator = true)
