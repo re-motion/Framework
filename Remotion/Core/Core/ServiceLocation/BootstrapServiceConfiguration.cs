@@ -18,6 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using Remotion.Logging;
+using Remotion.Reflection.TypeDiscovery;
+using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
+using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Reflection.TypeResolution;
 using Remotion.Utilities;
 
@@ -43,32 +46,17 @@ namespace Remotion.ServiceLocation
       // Type resolution
       RegisterImplementationAsSingleton<ITypeResolutionService, DefaultTypeResolutionService>();
 
-      // ReSharper disable once LocalFunctionHidesMethod
-      void RegisterImplementationAsSingleton<TService, TImplementation> ()
-          where TService : class
-          where TImplementation : class, TService
-      {
-        lock (_lock)
-        {
-          _registrations.Add(
-              typeof(TService),
-              new ServiceConfigurationEntry(typeof(TService), new ServiceImplementationInfo(typeof(TImplementation), LifetimeKind.Singleton, RegistrationType.Single)));
-        }
-      }
-
-      // ReSharper disable once LocalFunctionHidesMethod
-      void RegisterInstanceAsSingleton<TService, TImplementation> (Func<TImplementation> factory)
-          where TService : class
-          where TImplementation : class, TService
-      {
-        lock (_lock)
-        {
-          var singleton = new Lazy<TImplementation>(factory);
-          _registrations.Add(
-              typeof(TService),
-              new ServiceConfigurationEntry(typeof(TService), ServiceImplementationInfo.CreateSingle(() => singleton.Value, LifetimeKind.Singleton)));
-        }
-      }
+      // Type discovery
+      RegisterInstanceAsSingleton<IAssemblyLoaderFilter, ApplicationAssemblyLoaderFilter>(() => ApplicationAssemblyLoaderFilter.Instance);
+      RegisterImplementationAsSingleton<IAssemblyLoader, FilteringAssemblyLoader>();
+      RegisterImplementationAsSingleton<IAppContextProvider, AppContextProvider>();
+#if NETFRAMEWORK
+      RegisterImplementationAsSingleton<IRootAssemblyFinder, CurrentAppDomainBasedRootAssemblyFinder>();
+#else
+      RegisterImplementationAsSingleton<IRootAssemblyFinder, AppContextBasedRootAssemblyFinder>();
+#endif
+      RegisterDecoratedImplementationAsSingleton<IAssemblyFinder, AssemblyFinder, CachingAssemblyFinderDecorator>();
+      RegisterImplementationAsSingleton<ITypeDiscoveryService, AssemblyFinderTypeDiscoveryService>();
     }
 
     public IReadOnlyCollection<ServiceConfigurationEntry> GetRegistrations ()
@@ -86,6 +74,47 @@ namespace Remotion.ServiceLocation
       lock (_lock)
       {
         _registrations[entry.ServiceType] = entry;
+      }
+    }
+
+    private void RegisterImplementationAsSingleton<TService, TImplementation> ()
+        where TService : class
+        where TImplementation : class, TService
+    {
+      lock (_lock)
+      {
+        _registrations.Add(
+            typeof(TService),
+            new ServiceConfigurationEntry(typeof(TService), new ServiceImplementationInfo(typeof(TImplementation), LifetimeKind.Singleton, RegistrationType.Single)));
+      }
+    }
+
+    private void RegisterDecoratedImplementationAsSingleton<TService, TImplementation, TDecorator> ()
+        where TService : class
+        where TImplementation : class, TService
+        where TDecorator : class, TService
+    {
+      lock (_lock)
+      {
+        _registrations.Add(
+            typeof(TService),
+            new ServiceConfigurationEntry(
+                typeof(TService),
+                new ServiceImplementationInfo(typeof(TImplementation), LifetimeKind.Singleton, RegistrationType.Single),
+                new ServiceImplementationInfo(typeof(TDecorator), LifetimeKind.InstancePerDependency, RegistrationType.Decorator)));
+      }
+    }
+
+    private void RegisterInstanceAsSingleton<TService, TImplementation> (Func<TImplementation> factory)
+        where TService : class
+        where TImplementation : class, TService
+    {
+      lock (_lock)
+      {
+        var singleton = new Lazy<TImplementation>(factory);
+        _registrations.Add(
+            typeof(TService),
+            new ServiceConfigurationEntry(typeof(TService), ServiceImplementationInfo.CreateSingle(() => singleton.Value, LifetimeKind.Singleton)));
       }
     }
   }
