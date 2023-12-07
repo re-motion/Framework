@@ -203,16 +203,16 @@ namespace Remotion.ServiceLocation
       if (registration.CompoundFactory != null)
         return InvokeInstanceFactoryWithActivationException(registration.CompoundFactory, serviceType);
 
-      if (registration.SingleFactory == null && registration.MultipleFactories.Any())
+      if (registration.SingleFactory != null)
+        return InvokeInstanceFactoryWithActivationException(registration.SingleFactory, serviceType);
+
+      if (registration.SingleFactory == null && registration.MultipleFactories.Count > 0)
       {
         throw new ActivationException(
             string.Format(
                 "Multiple implementations are configured for service type '{0}'. Use GetAllInstances() to retrieve the implementations.",
                 serviceType));
       }
-
-      if (registration.SingleFactory != null)
-        return InvokeInstanceFactoryWithActivationException(registration.SingleFactory, serviceType);
 
       return null;
     }
