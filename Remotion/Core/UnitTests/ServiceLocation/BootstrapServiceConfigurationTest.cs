@@ -15,9 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel.Design;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Logging;
+using Remotion.Reflection.TypeResolution;
 using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation
@@ -60,10 +62,10 @@ namespace Remotion.UnitTests.ServiceLocation
       var serviceConfigurationEntries = _configuration.GetRegistrations();
       Assert.That(
           serviceConfigurationEntries.Select(e => e.ServiceType),
-          Is.EquivalentTo(new[] { typeof(ILogManager), typeof(IServiceLocatorProvider) }));
+          Is.EquivalentTo(new[] { typeof(ILogManager), typeof(IServiceLocatorProvider), typeof(ITypeResolutionService) }));
       Assert.That(
           serviceConfigurationEntries.SelectMany(e => e.ImplementationInfos.Select(i => i.ImplementationType)),
-          Is.EquivalentTo(new[] { typeof(Log4NetLogManager), typeof(DefaultServiceLocatorProvider) }));
+          Is.EquivalentTo(new[] { typeof(Log4NetLogManager), typeof(DefaultServiceLocatorProvider), typeof(DefaultTypeResolutionService) }));
       Assert.That(serviceConfigurationEntries.SelectMany(e => e.ImplementationInfos.Select(i => i.Lifetime)), Has.All.EqualTo(LifetimeKind.Singleton));
     }
 
