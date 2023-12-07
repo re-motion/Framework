@@ -20,6 +20,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Utilities
 {
@@ -132,7 +133,7 @@ namespace Remotion.Utilities
 
     private static ITypeResolutionService TypeResolutionService
     {
-      get { return ContextAwareTypeUtility.GetTypeResolutionService(); }
+      get { return SafeServiceLocator.Current.GetInstance<ITypeResolutionService>(); }
     }
   }
 }

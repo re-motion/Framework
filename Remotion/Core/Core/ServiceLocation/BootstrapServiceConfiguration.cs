@@ -16,7 +16,9 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using Remotion.Logging;
+using Remotion.Reflection.TypeResolution;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -37,6 +39,9 @@ namespace Remotion.ServiceLocation
 
       // Service Location
       RegisterImplementationAsSingleton<IServiceLocatorProvider, DefaultServiceLocatorProvider>();
+
+      // Type resolution
+      RegisterImplementationAsSingleton<ITypeResolutionService, DefaultTypeResolutionService>();
 
       // ReSharper disable once LocalFunctionHidesMethod
       void RegisterImplementationAsSingleton<TService, TImplementation> ()
