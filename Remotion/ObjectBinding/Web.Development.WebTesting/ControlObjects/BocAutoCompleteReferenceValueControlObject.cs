@@ -267,10 +267,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     protected override ElementScope GetLabeledElementScope ()
     {
-      if (IsReadOnly())
-        return Scope.FindChild("TextValue");
-      else
-        return Scope.FindChild("TextValue").FindXPath("..");
+      return Scope.FindChild("TextValue");
     }
 
     private SearchServiceResultItem GetFirstAutoCompleteResult ([NotNull] string filter)
