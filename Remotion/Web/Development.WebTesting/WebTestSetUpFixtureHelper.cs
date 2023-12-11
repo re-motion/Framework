@@ -139,13 +139,12 @@ namespace Remotion.Web.Development.WebTesting
 
     private void VerifyWebApplicationStarted (Uri webApplicationRoot, TimeSpan applicationPingTimeout)
     {
-      var resolvedUri = ResolveHostname(webApplicationRoot);
-      s_log.Info($"Verifying that '{resolvedUri}' is accessible within {applicationPingTimeout}.");
+      s_log.Info($"Verifying that '{webApplicationRoot}' is accessible within {applicationPingTimeout}.");
 
       var stopwatch = Stopwatch.StartNew();
 
 #pragma warning disable SYSLIB0014
-      var webRequest = (HttpWebRequest)HttpWebRequest.Create(resolvedUri); // TODO RM-8492: Replace with HttpClient
+      var webRequest = (HttpWebRequest)HttpWebRequest.Create(webApplicationRoot); // TODO RM-8492: Replace with HttpClient
 #pragma warning restore SYSLIB0014
       webRequest.Method = WebRequestMethods.Http.Head;
       webRequest.AllowAutoRedirect = true;
@@ -179,16 +178,7 @@ namespace Remotion.Web.Development.WebTesting
 
       stopwatch.Stop();
 
-      s_log.Info($"Verified that '{resolvedUri}' is accessible after {stopwatch.Elapsed.TotalMilliseconds:N0} ms.");
-    }
-
-    private Uri ResolveHostname (Uri uri)
-    {
-      var host = new RetryUntilTimeout<IPHostEntry>(() => Dns.GetHostEntry(uri.Host), TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(1)).Run();
-      var address = host.AddressList.First(a => a.AddressFamily == AddressFamily.InterNetwork).MapToIPv4();
-      var uriBuilder = new UriBuilder(uri);
-      uriBuilder.Host = address.ToString();
-      return uriBuilder.Uri;
+      s_log.Info($"Verified that '{webApplicationRoot}' is accessible after {stopwatch.Elapsed.TotalMilliseconds:N0} ms.");
     }
 
     private void UnhostWebApplication ()

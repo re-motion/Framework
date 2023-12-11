@@ -37,6 +37,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
         [NotNull] TestSiteLayoutConfiguration testSiteLayoutConfiguration,
         int port,
         [NotNull] string dockerImageName,
+        [CanBeNull] string? dockerIsolationMode,
         TimeSpan dockerPullTimeout,
         [CanBeNull] string? hostname)
     {
@@ -59,6 +60,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
           absoluteWebApplicationPath,
           port,
           dockerImageName,
+          dockerIsolationMode,
           hostname,
           is32BitProcess,
           mounts);
@@ -77,6 +79,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
             testSiteLayoutConfiguration,
             int.Parse(ArgumentUtility.CheckNotNull("properties", properties)["port"]!),
             properties["dockerImageName"]!,
+            properties["dockerIsolationMode"],
             TimeSpan.Parse(properties["dockerPullTimeout"]!),
             properties["hostname"])
     {

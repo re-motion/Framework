@@ -1,3 +1,0 @@
-Component				License			Source                                             	Custom Build
-=============================================================================================================================================
-SharpZipLib-0.86			GPL, with exceptions	http://www.icsharpcode.net/OpenSource/SharpZipLib/

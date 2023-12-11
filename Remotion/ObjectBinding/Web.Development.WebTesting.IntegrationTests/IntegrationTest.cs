@@ -21,8 +21,6 @@ using NUnit.Framework.Interfaces;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
-using Remotion.Web.Development.WebTesting.Utilities;
-using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
@@ -31,8 +29,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   /// </summary>
   public abstract class IntegrationTest
   {
-    private static Lazy<Uri> s_webApplicationRoot;
-
     private WebTestHelper _webTestHelper;
 
     protected virtual bool MaximizeMainBrowserSession
@@ -56,17 +52,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       _webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
 
       _webTestHelper.OnFixtureSetUp(MaximizeMainBrowserSession);
-      s_webApplicationRoot = new Lazy<Uri>(
-          () =>
-          {
-            var uri = new Uri(_webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot);
-
-            // RM-7401: Edge loads pages slower due to repeated hostname resolution.
-            if (_webTestHelper.BrowserConfiguration.IsEdge())
-              return HostnameResolveHelper.ResolveHostname(uri);
-
-            return uri;
-          });
     }
 
     [SetUp]
@@ -92,7 +77,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var userControlUrl = string.Format("Controls/{0}UserControl.ascx", userControl);
 
-      var url = string.Format("{0}ControlTest.wxe?UserControl={1}", s_webApplicationRoot.Value, userControlUrl);
+      var url = string.Format("{0}ControlTest.wxe?UserControl={1}", _webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot, userControlUrl);
       _webTestHelper.MainBrowserSession.Window.Visit(url);
       _webTestHelper.AcceptPossibleModalDialog();
 

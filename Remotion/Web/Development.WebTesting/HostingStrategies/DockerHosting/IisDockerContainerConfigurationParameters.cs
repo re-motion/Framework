@@ -44,6 +44,11 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     public string DockerImageName { get; }
 
     /// <summary>
+    /// Gets the isolation mode for the container, or <see langword="null"/> if the default isolation mode should be used.
+    /// </summary>
+    public string? DockerIsolationMode { get; }
+
+    /// <summary>
     /// Gets the hostname by which the container can be accessed.
     /// </summary>
     [CanBeNull]
@@ -64,6 +69,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
         [NotNull] string absoluteWebApplicationPath,
         int webApplicationPort,
         [NotNull] string dockerImageName,
+        [CanBeNull] string? dockerIsolationMode,
         [CanBeNull] string? hostname,
         bool is32BitProcess,
         IReadOnlyCollection<string> mounts)
@@ -76,6 +82,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
       AbsoluteWebApplicationPath = absoluteWebApplicationPath;
       WebApplicationPort = webApplicationPort;
       DockerImageName = dockerImageName;
+      DockerIsolationMode = dockerIsolationMode;
       Hostname = hostname;
       Is32BitProcess = is32BitProcess;
       Mounts = mounts;

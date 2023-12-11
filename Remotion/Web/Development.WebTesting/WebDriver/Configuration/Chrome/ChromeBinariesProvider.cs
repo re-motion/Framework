@@ -18,9 +18,14 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Json;
 using JetBrains.Annotations;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome.Dto;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 {
@@ -33,6 +38,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
     private const string c_fetchChromeDriverVersionUrlFormat = "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_{0}";
     private const string c_driverDownloadUrlFormat = "https://chromedriver.storage.googleapis.com/{0}/chromedriver_win32.zip";
+
+    private const string c_chromeJsonApiUrl = "https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json";
 
     private const string c_driverExecutableName = "chromedriver.exe";
     private const string c_chromeExecutableName = "chrome.exe";
@@ -62,12 +69,20 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     private string GetInstalledChromePath ()
     {
       //Even 64 bit Chrome is installed in the 32bit location
-      var defaultStableChromePath = Path.Combine(Get32BitProgramFilesPath(), "Google", "Chrome", "Application", c_chromeExecutableName);
+      var x86StableChromePath = Path.Combine(Get32BitProgramFilesPath(), "Google", "Chrome", "Application", c_chromeExecutableName);
 
-      if (File.Exists(defaultStableChromePath))
-        return defaultStableChromePath;
+      if (File.Exists(x86StableChromePath))
+        return x86StableChromePath;
 
-      throw new InvalidOperationException($"No stable Chrome version could be found at '{defaultStableChromePath}'.");
+      if (!Environment.Is64BitOperatingSystem)
+        throw new InvalidOperationException($"No stable Chrome version could be found at '{x86StableChromePath}'.");
+
+      var x64StableChromePath = Path.Combine(Get64BitProgramFilesPath(), "Google", "Chrome", "Application", c_chromeExecutableName);
+
+      if (File.Exists(x64StableChromePath))
+        return x64StableChromePath;
+
+      throw new InvalidOperationException($"No stable Chrome version could be found at '{x64StableChromePath}' or at '{x86StableChromePath}'.");
     }
 
     private string Get32BitProgramFilesPath ()
@@ -77,6 +92,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
           : Environment.SpecialFolder.ProgramFiles;
 
       return Environment.GetFolderPath(programFiles32BitFolder);
+    }
+
+    private string Get64BitProgramFilesPath ()
+    {
+      return Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
     }
 
     /// <summary>
@@ -96,11 +116,29 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       }
 
       var strippedChromeDriverVersion = StripRevisionFromVersion(chromeVersion);
-      var chromeDriverVersion = GetChromeDriverVersion(strippedChromeDriverVersion);
-      var driverPath = GetChromeDriverTempPath(chromeDriverVersion);
 
-      if (!ChromeDriverExists(chromeDriverVersion))
-        DownloadChromeDriver(chromeDriverVersion);
+      // Legacy download behavior for Chrome versions before 115. Later versions use a JSON endpoint instead
+      string chromeDriverVersion, driverDownloadUrl;
+      string? zipArchiveFolder;
+      if (chromeVersion.Major < 115)
+      {
+        chromeDriverVersion = GetChromeDriverVersion(strippedChromeDriverVersion);
+        driverDownloadUrl = GetDriverDownloadUrl(chromeDriverVersion);
+        zipArchiveFolder = null;
+      }
+      else
+      {
+        // We don't get the chrome driver version from the API so we use the Chrome version for the storage instead
+        // This is not a problem because should be a 1 to 1 mapping between Chrome version and Chrome driver version
+        // In the worst case we would download the same driver twice for differing chrome versions
+        chromeDriverVersion = chromeVersion.ToString(3);
+        driverDownloadUrl = GetDownloadUrlForChrome115AndLater(chromeVersion);
+        zipArchiveFolder = "chromedriver-win32";
+      }
+
+      var driverPath = GetChromeDriverTempPath(chromeDriverVersion, zipArchiveFolder);
+      if (!File.Exists(driverPath))
+        DownloadChromeDriver(chromeDriverVersion, driverDownloadUrl);
 
       return driverPath;
     }
@@ -142,14 +180,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       }
     }
 
-    private bool ChromeDriverExists (string chromeDriverVersion)
+    private string GetChromeDriverTempPath (string chromeDriverVersion, string? zipArchiveFolder)
     {
-      return File.Exists(GetChromeDriverTempPath(chromeDriverVersion));
-    }
-
-    private string GetChromeDriverTempPath (string chromeDriverVersion)
-    {
-      return Path.Combine(GetChromeDriverTempDirectory(chromeDriverVersion), c_driverExecutableName);
+      return zipArchiveFolder != null
+          ? Path.Combine(GetChromeDriverTempDirectory(chromeDriverVersion), zipArchiveFolder, c_driverExecutableName)
+          : Path.Combine(GetChromeDriverTempDirectory(chromeDriverVersion), c_driverExecutableName);
     }
 
     private string GetUserDirectoryTempPath ()
@@ -174,12 +209,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
         Directory.Delete(chromeDriverRootDirectory, true);
     }
 
-    private void DownloadChromeDriver (string chromeDriverVersion)
+    private void DownloadChromeDriver (string chromeDriverVersion, string url)
     {
       var tempPath = GetChromeDriverTempDirectory(chromeDriverVersion);
       var fullZipPath = Path.Combine(Path.GetTempPath(), c_zipFileName);
-
-      var url = GetDriverDownloadUrl(chromeDriverVersion);
 
       RemoveChromeDriverRootDirectoryIfExists();
       Directory.CreateDirectory(tempPath);
@@ -206,6 +239,52 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     private string GetDriverDownloadUrl (string chromeDriverVersion)
     {
       return string.Format(c_driverDownloadUrlFormat, chromeDriverVersion);
+    }
+
+    private string GetDownloadUrlForChrome115AndLater (Version chromeVersion)
+    {
+      string jsonString;
+      try
+      {
+#pragma warning disable SYSLIB0014
+        using (var webClient = new WebClient()) // TODO RM-8492: Replace with HttpClient
+#pragma warning restore SYSLIB0014
+        {
+          jsonString = webClient.DownloadString(c_chromeJsonApiUrl);
+        }
+      }
+      catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
+      {
+        throw new InvalidOperationException(
+            $"No matching ChromeDriver could be found for the installed Chrome version {chromeVersion}."
+            + "This could mean that no corresponding ChromeDriver has been released for the version of Chrome you are using.",
+            ex);
+      }
+      catch (WebException ex)
+      {
+        throw new WebException($"Could not fetch the latest ChromeDriver version from '{c_chromeJsonApiUrl}': {ex.Message}", ex.Status);
+      }
+
+      try
+      {
+        var chromeVersionStringWithoutRevision = chromeVersion.ToString(3);
+        var knownGoodVersionsWithDownloads = DataContractJsonSerializationUtility.Deserialize<ChromeKnownGoodVersionsWithDownloads>(jsonString)!;
+
+        // We might not get an exact match of our Chrome version so we only test for major.minor.build and use the latest version
+        var knownGoodVersionWithDownloads = knownGoodVersionsWithDownloads.Versions.LastOrDefault(e => e.Version.StartsWith(chromeVersionStringWithoutRevision));
+        if (knownGoodVersionWithDownloads == null)
+          throw new InvalidOperationException($"Could not determine the chromedriver download location because Chrome version {chromeVersion} was not found in the JSON API response.");
+
+        var artifactDownload = knownGoodVersionWithDownloads.Downloads.ChromeDriverArtifacts?.FirstOrDefault(e => e.Platform == "win32");
+        if (artifactDownload == null)
+          throw new InvalidOperationException($"Could not determine the chromedriver download location because the download link could not be found for Chrome version {chromeVersion}.");
+
+        return artifactDownload.Url;
+      }
+      catch (Exception ex)
+      {
+        throw new InvalidOperationException("Could not determine the chromedriver download location from the JSON API response.", ex);
+      }
     }
   }
 }
