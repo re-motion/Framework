@@ -33,7 +33,6 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
 
   constructor (
     baseID: Nullable<string>,
-    comboboxOrSelector: CssSelectorOrElement<HTMLElement>,
     textboxOrSelector: CssSelectorOrElement<HTMLInputElement>,
     hiddenFieldOrSelector: CssSelectorOrElement<HTMLInputElement>,
     buttonOrSelector: CssSelectorOrElement<HTMLElement>,
@@ -53,7 +52,6 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
     resources: BocReferenceValueBase_Resources)
   {
     ArgumentUtility.CheckTypeIsString('baseID', baseID);
-    ArgumentUtility.CheckNotNull('comboboxOrSelector', comboboxOrSelector);
     ArgumentUtility.CheckNotNull('textboxOrSelector', textboxOrSelector);
     ArgumentUtility.CheckNotNull('hiddenFieldOrSelector', hiddenFieldOrSelector);
     ArgumentUtility.CheckNotNull('buttonOrSelector', buttonOrSelector);
@@ -75,7 +73,6 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
     }
     ArgumentUtility.CheckNotNullAndTypeIsObject('resources', resources);
 
-    let combobox = ElementResolverUtility.ResolveSingle(comboboxOrSelector);
     const textbox = ElementResolverUtility.ResolveSingle(textboxOrSelector);
     const hiddenField = ElementResolverUtility.ResolveSingle(hiddenFieldOrSelector);
     const button = ElementResolverUtility.ResolveSingle(buttonOrSelector);
@@ -129,7 +126,6 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
         noDataFoundMessage: resources.NoDataFoundMessage,
         autoFill: true,
         matchContains: true,
-        combobox: combobox,
         selectListID: this._selectListID,
         informationPopUpID: this._informationPopUpID,
         dropDownButtonID: button.getAttribute('id')!,
