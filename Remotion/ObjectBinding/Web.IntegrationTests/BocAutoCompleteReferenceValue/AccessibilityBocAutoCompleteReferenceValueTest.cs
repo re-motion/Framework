@@ -118,7 +118,10 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocAutoCompleteReferenceVa
       var result = bocAutoComplete.Analyze(analyzer);
       Assert.That(bocAutoComplete.ForControlObjectScreenshot().GetSelectList().IsVisible(), Is.True);
 
-      Assert.That(result.Violations, Is.Empty);
+      // Violation ignored as the relevant code part conforms to ARIA 1.2 and passes on develop but here we check for an older ARIA standard
+      var violations = result.Violations.IgnoreByRuleID(AccessibilityRuleID.AriaRequiredChildren);
+
+      Assert.That(violations, Is.Empty);
     }
 
     private WxePageObject Start ()
