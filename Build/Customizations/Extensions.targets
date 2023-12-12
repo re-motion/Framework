@@ -26,7 +26,7 @@
   <Target Name="Before_ProcessForDependDBInternal" BeforeTargets="ProcessForDependDBInternal">
     <PropertyGroup>
       <!-- Set TargetFramework for resolving the dependencies to the highest common framework name -->
-      <_preProcessorParameters>$(_preProcessorParameters) --target-framework="net461"</_preProcessorParameters>
+      <_preProcessorParameters>$(_preProcessorParameters) --target-framework="net48"</_preProcessorParameters>
     </PropertyGroup>
   </Target>
 
