@@ -56,8 +56,8 @@
       <Platforms>x86+x64</Platforms>
       <DatabaseSystems>NoDB</DatabaseSystems>
       <!--<Browsers>CUSTOMIZE</Browsers>-->
-      <ExecutionRuntimes>Win_NET472+Win_NET48+EnforcedLocalMachine</ExecutionRuntimes>
-      <TargetRuntimes>NET48+NET472</TargetRuntimes>
+      <ExecutionRuntimes>Win_NET48+EnforcedLocalMachine</ExecutionRuntimes>
+      <TargetRuntimes>NET48</TargetRuntimes>
     </PropertyGroup>
   </Target>
 
