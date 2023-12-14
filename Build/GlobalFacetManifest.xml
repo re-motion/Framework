@@ -47,6 +47,31 @@
            feature="SharpZipLib"
            layer="Core"/>
 
+  <!-- SharpZipLib -->
+  <package id="System.Buffers"
+           feature="System.Buffers"
+           layer="Core"/>
+
+  <!-- SharpZipLib -->
+  <package id="System.Memory"
+           feature="System.Memory"
+           layer="Core"/>
+
+  <!-- SharpZipLib -->
+  <package id="System.Numerics.Vectors"
+           feature="System.Numerics.Vectors"
+           layer="Core"/>
+
+  <!-- SharpZipLib -->
+  <package id="System.Runtime.CompilerServices.Unsafe"
+           feature="System.Runtime.CompilerServices.Unsafe"
+           layer="Core"/>
+
+  <!-- SharpZipLib -->
+  <package id="System.Threading.Tasks.Extensions"
+           feature="System.Threading.Tasks.Extensions"
+           layer="Core"/>
+
   <package id="Remotion.Linq"
            feature="Remotion.Data"
            layer="Core"/>
