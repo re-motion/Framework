@@ -110,6 +110,10 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
         throw;
       }
 
+      // The downloaded file detection might race the browser finishing up the downloaded file, which might cause leftover files
+      // To prevent/minimize this problem we wait a bit of time before proceeding to move the downloaded file
+      Thread.Sleep(TimeSpan.FromMilliseconds(200));
+
       return MoveDownloadedFile(downloadedFile);
     }
 
