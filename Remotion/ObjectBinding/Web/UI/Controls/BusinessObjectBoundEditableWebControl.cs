@@ -39,6 +39,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _isDirty;
     private bool _hasBeenRenderedInPreviousLifecycle;
     private bool _isRenderedInCurrentLifecycle;
+    private bool _hasBeenReadOnlyInPreviousLifecycle;
+    private bool _hasBeenEnabledInPreviousLifecycle;
+    private bool _hasBeenVisibleInPreviousLifecycle;
 
     /// <summary>
     /// Overrides the base method to call <see cref="ISmartPage.RegisterControlForClientSideDirtyStateTracking"/>
@@ -322,18 +325,37 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// Gets a value that determines whether a server control needs to load data from the posted form values
     /// to its internal state.
     /// </summary>
-    /// <value><see langword="true"/> if the control has been rendered in the previous lifecycle,
-    /// or if it is on a <see cref="IWxePage"/> and <see cref="IWxePage.IsOutOfSequencePostBack"/> is <see langword="true"/>.</value>
-    protected virtual bool RequiresLoadPostData
+    /// <param name="skipGuardForReadOnly">
+    /// If <see langword="true"/>, the control will process posted data even when it was readonly during the previous page life cycle. Use this flag to process posted data that
+    /// is independent of the editable state of the control.
+    /// </param>
+    /// <param name="skipGuardForEnabled">
+    /// If <see langword="true"/>, the control will process posted data even when it was disabled during the previous page life cycle. Use this flag to process posted data that
+    /// is independent of the enabled/disabled state of the control.
+    /// </param>
+    /// <returns>
+    ///   <see langword="true"/> if the control has been rendered as a visible, enabled, and editable element in the previous lifecycle,
+    ///   or if it is on a <see cref="IWxePage"/> and <see cref="IWxePage.IsOutOfSequencePostBack"/> is <see langword="true"/>.
+    /// </returns>
+    protected virtual bool IsLoadPostDataRequired (bool skipGuardForReadOnly = false, bool skipGuardForEnabled = false)
     {
-      get
-      {
-        IWxePage wxePage = Page as IWxePage;
-        if (wxePage != null)
-          return _hasBeenRenderedInPreviousLifecycle || wxePage.IsOutOfSequencePostBack;
+      IWxePage wxePage = Page as IWxePage;
+      if (wxePage != null && wxePage.IsOutOfSequencePostBack == true)
+        return true;
 
-        return _hasBeenRenderedInPreviousLifecycle;
-      }
+      if (!skipGuardForReadOnly && _hasBeenReadOnlyInPreviousLifecycle)
+        return false;
+
+      if (!skipGuardForEnabled && !_hasBeenEnabledInPreviousLifecycle)
+        return false;
+
+      if (!_hasBeenVisibleInPreviousLifecycle)
+        return false;
+
+      if (!_hasBeenRenderedInPreviousLifecycle)
+        return false;
+
+      return true;
     }
 
     /// <summary>
@@ -347,6 +369,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.LoadControlState (values[0]);
       _isDirty = (bool) values[1];
       _hasBeenRenderedInPreviousLifecycle = (bool) values[2];
+      _hasBeenReadOnlyInPreviousLifecycle = (bool) values[3];
+      _hasBeenEnabledInPreviousLifecycle = (bool) values[4];
+      _hasBeenVisibleInPreviousLifecycle = (bool) values[5];
     }
 
     /// <summary>
@@ -356,10 +381,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns>An object containing the state required to be loaded in the next lifecycle.</returns>
     protected override object SaveControlState ()
     {
-      object[] values = new object[3];
+      object[] values = new object[6];
       values[0] = base.SaveControlState();
       values[1] = _isDirty;
       values[2] = _isRenderedInCurrentLifecycle;
+      values[3] = IsReadOnly;
+      values[4] = Enabled;
+      values[5] = Visible;
       return values;
     }
 

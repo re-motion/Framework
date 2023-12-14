@@ -6,5 +6,12 @@
       <TestCategoriesToExclude Condition="'$(TestCategoriesToExclude)' == ''">LongRunning;ControlSelectorTest</TestCategoriesToExclude>
     </PropertyGroup>
   </Target>
-
+  <Target Name="Before_FullBuild_Configuration" BeforeTargets="FullBuild_Configuration">
+    <PropertyGroup>
+      <!-- Disable documentation because Sandcastle Helpfile Builder cannot find the installed HHC.exe even though it exists.
+           There is no cost/benefit in maintaining the documentation in the hotfix-only version of re-motion. 
+      -->
+      <SkipDocumentation>True</SkipDocumentation>
+    </PropertyGroup>
+  </Target>
 </Project>

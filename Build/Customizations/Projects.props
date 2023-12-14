@@ -9,9 +9,8 @@
   <PropertyGroup>
     <WebtestingTestConfiguration Condition="'$(WebtestingTestConfiguration)' == ''">
       Chrome           + NET48   + Debug   + x86 + NoDB + Win_NET48  + EnforcedLocalMachine;
-      Firefox          + NET48   + Release + x64 + NoDB + Win_NET472 + EnforcedLocalMachine;
-      Edge             + NET472  + Release + x64 + NoDB + Win_NET48  + EnforcedLocalMachine;
-      Edge             + NET462  + Release + x64 + NoDB + Win_NET462 + EnforcedLocalMachine;
+      Firefox          + NET48   + Release + x64 + NoDB + Win_NET48  + EnforcedLocalMachine;
+      Edge             + NET48   + Release + x64 + NoDB + Win_NET48  + EnforcedLocalMachine;
       InternetExplorer + NET48   + Release + x64 + NoDB + Win_NET48  + EnforcedLocalMachine;
     </WebtestingTestConfiguration>
     <DatabaseTestConfiguration Condition="'$(DatabaseTestConfiguration)' == ''">
@@ -27,11 +26,10 @@
       LocalMachine + NET48 + NoBrowser + SqlServerDefault + Release + x64;
 
       <!-- Exercise compatibility between installed .NET version, target framework and SQL Server -->
-      Win_NET48  + NET472 + NoBrowser + SqlServer2019 + Release + x64;
-      Win_NET48  + NET462 + NoBrowser + SqlServer2017 + Release + x64;
-      Win_NET472 + NET472 + NoBrowser + SqlServer2016 + Release + x64;
-      Win_NET472 + NET462 + NoBrowser + SqlServer2014 + Release + x64;
-      Win_NET462 + NET462 + NoBrowser + SqlServer2014 + Release + x64;
+      Win_NET48  + NET48 + NoBrowser + SqlServer2019 + Release + x64;
+      Win_NET48  + NET48 + NoBrowser + SqlServer2017 + Release + x64;
+      Win_NET48  + NET48 + NoBrowser + SqlServer2016 + Release + x64;
+      Win_NET48  + NET48 + NoBrowser + SqlServer2014 + Release + x64;
 
     </DatabaseTestConfiguration>
     <NormalTestConfiguration Condition="'$(NormalTestConfiguration)' == ''">
@@ -47,11 +45,7 @@
       LocalMachine + NET48 + NoBrowser + NoDB + Release + x64;
 
       <!-- Exercise compatibility between installed .NET version, target framework and SQL Server -->
-      Win_NET48  + NET472 + NoBrowser + NoDB + Release + x64;
-      Win_NET48  + NET462 + NoBrowser + NoDB + Release + x64;
-      Win_NET472 + NET472 + NoBrowser + NoDB + Release + x64;
-      Win_NET472 + NET462 + NoBrowser + NoDB + Release + x64;
-      Win_NET462 + NET462 + NoBrowser + NoDB + Release + x64
+      Win_NET48  + NET48 + NoBrowser + NoDB + Release + x64;
 
     </NormalTestConfiguration>
   </PropertyGroup>

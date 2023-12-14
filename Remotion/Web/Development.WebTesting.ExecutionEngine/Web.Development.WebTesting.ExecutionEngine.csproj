@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Remotion.Web.Development.WebTesting.ExecutionEngine</RootNamespace>
     <AssemblyName>Remotion.Web.Development.WebTesting.ExecutionEngine</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -51,7 +51,7 @@
       <HintPath>..\..\..\packages\Fork.JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+      <HintPath>..\..\..\packages\log4net.2.0.15\lib\net45\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
