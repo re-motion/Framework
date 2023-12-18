@@ -18,9 +18,9 @@
          The NuGet commandline tool tries to evaluate the file inclusion list also for referenced projects, 
          but does not supply the referenced project as the base directory. 
          Note: This also makes the pdb-file optional for the nuget-package. This is acceptable. -->
-    <file src="bin\$configuration$\$id$.pdb*" target="lib\net45" />
-    <file src="bin\$configuration$\**\$id$.resources.dll" target="lib\net45" />
-    <file src="bin\$configuration$\$id$.exe.config*" target="lib\net45"/>
+    <file src="bin\$configuration$\$id$.pdb*" target="lib\net48" />
+    <file src="bin\$configuration$\**\$id$.resources.dll" target="lib\net48" />
+    <file src="bin\$configuration$\$id$.exe.config*" target="lib\net48"/>
     <file src="bin\$configuration$\$id$.exe.config*" target="_files"/>
     <file src="FacetManifest.xml*" />
     <file src="$documentationFile$" target="doc" />
