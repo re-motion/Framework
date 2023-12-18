@@ -28,7 +28,7 @@ using System.Reflection;
 [assembly: AssemblyProduct ("re-motion Framework: re-strict (www.re-motion.org)")]
 [assembly: AssemblyCopyright ("Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under GNU AGPL 3.0")]
 [assembly: AssemblyTrademark ("")]
-[assembly: AssemblyInformationalVersion ("2.28.3-x.9+Debug")]
+[assembly: AssemblyInformationalVersion ("2.28.3+Debug")]
 
 //
 // Version information for an assembly consists of the following four values:
@@ -42,4 +42,4 @@ using System.Reflection;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion ("2.28.0.0")]
-[assembly: AssemblyFileVersion ("2.28.3.24009")]
+[assembly: AssemblyFileVersion ("2.28.3.30000")]
