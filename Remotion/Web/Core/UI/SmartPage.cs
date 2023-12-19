@@ -286,7 +286,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
   protected override HtmlTextWriter CreateHtmlTextWriter (TextWriter writer)
   {
-    return new CspEnabledHtmlTextWriter(this, writer, GetCspNonceValue(), _nonceGenerator);
+    return new CspEnabledHtmlTextWriter(this, writer, _nonceGenerator, GetCspNonceValue());
   }
 #endif
 
