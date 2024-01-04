@@ -20,6 +20,7 @@ using System.Xml.Schema;
 using NUnit.Framework;
 using Remotion.Web.ExecutionEngine.UrlMapping;
 using Remotion.Web.Schemas;
+using Remotion.Web.UnitTests.Core.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
 {
@@ -41,7 +42,7 @@ public class UrlMappingSchemaTest
   public void LoadMappingWithMissingPath ()
   {
     Assert.That(
-        () => UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMappingWithMissingPath.xml"),
+        () => UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMappingWithMissingPath.xml"),
         Throws.InstanceOf<XmlSchemaValidationException>());
   }
 
@@ -49,7 +50,7 @@ public class UrlMappingSchemaTest
   public void LoadMappingWithEmptyPath ()
   {
     Assert.That(
-        () => UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMappingWithEmptyPath.xml"),
+        () => UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMappingWithEmptyPath.xml"),
         Throws.InstanceOf<XmlSchemaValidationException>());
   }
 
@@ -57,7 +58,7 @@ public class UrlMappingSchemaTest
   public void LoadMappingWithMissingFunctionType ()
   {
     Assert.That(
-        () => UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMappingWithMissingFunctionType.xml"),
+        () => UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMappingWithMissingFunctionType.xml"),
         Throws.InstanceOf<XmlSchemaValidationException>());
   }
 
@@ -65,7 +66,7 @@ public class UrlMappingSchemaTest
   public void LoadMappingWithEmptyFunctionType ()
   {
     Assert.That(
-        () => UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMappingWithEmptyFunctionType.xml"),
+        () => UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMappingWithEmptyFunctionType.xml"),
         Throws.InstanceOf<XmlSchemaValidationException>());
   }
 
@@ -73,7 +74,7 @@ public class UrlMappingSchemaTest
   public void LoadMappingWithFunctionTypeHavingNoAssembly ()
   {
     Assert.That(
-        () => UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMappingWithFunctionTypeHavingNoAssembly.xml"),
+        () => UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMappingWithFunctionTypeHavingNoAssembly.xml"),
         Throws.InstanceOf<XmlException>());
   }
 

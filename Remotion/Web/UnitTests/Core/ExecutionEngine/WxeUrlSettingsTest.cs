@@ -24,7 +24,6 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 
       Assert.That(instance, Is.TypeOf<WxeUrlSettings>());
 
-      Assert.That(instance.UrlMappingFile, Is.EqualTo("UrlMapping.xml"));
       Assert.That(instance.MaximumUrlLength, Is.EqualTo(1024));
       Assert.That(instance.DefaultWxeHandler, Is.Null);
     }
@@ -43,7 +42,6 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     {
       var settings = new WxeUrlSettings();
 
-      Assert.That(settings.UrlMappingFile, Is.EqualTo("UrlMapping.xml"));
       Assert.That(settings.MaximumUrlLength, Is.EqualTo(1024));
       Assert.That(settings.DefaultWxeHandler, Is.Null);
     }
@@ -51,9 +49,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void Create ()
     {
-      var settings = WxeUrlSettings.Create("someFile", 42, " ~/someWxeHandler ");
+      var settings = WxeUrlSettings.Create(42, " ~/someWxeHandler ");
 
-      Assert.That(settings.UrlMappingFile, Is.EqualTo("someFile"));
       Assert.That(settings.MaximumUrlLength, Is.EqualTo(42));
       Assert.That(settings.DefaultWxeHandler, Is.EqualTo("~/someWxeHandler"));
     }
@@ -61,9 +58,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void Create_NullValues ()
     {
-      var settings = WxeUrlSettings.Create(null, 0, null);
+      var settings = WxeUrlSettings.Create(0, null);
 
-      Assert.That(settings.UrlMappingFile, Is.Null);
       Assert.That(settings.DefaultWxeHandler, Is.Null);
     }
 
@@ -71,7 +67,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     public void Create_WithDefaultWxeHandlerAsAbsoluteFilePath_Throws ()
     {
       Assert.That(
-          () => WxeUrlSettings.Create(null, 0, "C:\\myhandler"),
+          () => WxeUrlSettings.Create(0, "C:\\myhandler"),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("No absolute paths are allowed. Resource: 'C:\\myhandler'", "defaultWxeHandler"));
     }
@@ -80,7 +76,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     public void Create_WithDefaultWxeHandlerAsAbsoluteUrlPath_Throws ()
     {
       Assert.That(
-          () => WxeUrlSettings.Create(null, 0, "/myhandler"),
+          () => WxeUrlSettings.Create(0, "/myhandler"),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("No absolute paths are allowed. Resource: '/myhandler'", "defaultWxeHandler"));
     }
@@ -88,7 +84,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     [Test]
     public void Create_WithRelativePath_IsMadeApplicationRelative ()
     {
-      var settings = WxeUrlSettings.Create(null, 0, " someWxeHandler ");
+      var settings = WxeUrlSettings.Create(0, " someWxeHandler ");
 
       Assert.That(settings.DefaultWxeHandler, Is.EqualTo("~/someWxeHandler"));
     }
