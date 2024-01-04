@@ -105,26 +105,11 @@ namespace Remotion.Web.Development.WebTesting
       value = value.Replace("\r", "");
 
       var clearTextBoxWithoutTriggeringPostBack = Keys.Control + "a" + Keys.Control + Keys.Delete;
+      value = clearTextBoxWithoutTriggeringPostBack + value;
 
-      if (scope.Browser.IsFirefox())
-      {
-        // GeckoDriver cannot handle inputting the value after receiving the delete command, if both were sent in the same SendKeys.
-        // This occurs after Firefox v99 and would lead to an empty field.
-        s_log.DebugFormat("FillInWith without triggering PostBack on clear: '{0}' followed by '{1}'.", clearTextBoxWithoutTriggeringPostBack, value);
+      s_log.DebugFormat("FillInWith without triggering PostBack on clear: '{0}'.", value);
 
-        scope.SendKeys(clearTextBoxWithoutTriggeringPostBack);
-        scope.SendKeys(value);
-      }
-      else
-      {
-        // The Firefox code has been updated recently (March 2023) and should work for other browsers as well.
-        // However, due to previous problems concerning the insertion of values, we leave the Chromium-based implementation unchanged to avoid the risk of regressions.
-        value = clearTextBoxWithoutTriggeringPostBack + value;
-
-        s_log.DebugFormat("FillInWith without triggering PostBack on clear: '{0}'.", value);
-
-        scope.SendKeys(value);
-      }
+      scope.SendKeys(value);
     }
 
     private static string GetFillInJavaScriptCommand ([NotNull] string id)
