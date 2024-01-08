@@ -211,22 +211,47 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
     private void ValidateResolvedElement (ResolvedScreenshotElement resolvedElement, ElementVisibility? minimumElementVisibility)
     {
-      var visibility = minimumElementVisibility ?? ElementVisibility.FullyVisible;
+      var requiredVisibility = minimumElementVisibility ?? ElementVisibility.FullyVisible;
 
-      if (resolvedElement.ElementVisibility < visibility)
+      var elementVisibility = resolvedElement.ElementVisibility;
+      var elementBounds = resolvedElement.ElementBounds;
+
+      if (elementBounds.Width == 0 || elementBounds.Height == 0)
+        throw new InvalidOperationException("The specified target is empty.");
+
+      // ElementVisibility does not account for the screenshot bounds so we need to check the bounds and adapt it.
+      // The screenshot bounds can form an arbitrary polygon when monitors are not aligned or have different sizes.
+      // A correct bounds check for a polygon is complex, so we take shortcut and assume the element bounds are always
+      // fully contained on a single screen and thus a single rectangle in _screenshotBounds.
+      var restrictedElementBounds = _screenshotBounds
+          .Select(e => Rectangle.Intersect(e, elementBounds))
+          .Where(e => !e.IsEmpty)
+          .ToArray();
+
+      if (restrictedElementBounds.Length == 0)
+      {
+        // None of the screenshot bounds intersects the element -> not visible
+        elementVisibility = ElementVisibility.NotVisible;
+      }
+      else if (restrictedElementBounds.Length == 1)
+      {
+        // Element is on exactly one screen -> partially visible if the bounds changed
+        if (elementBounds != restrictedElementBounds[0] && elementVisibility == ElementVisibility.FullyVisible)
+          elementVisibility = ElementVisibility.PartiallyVisible;
+      }
+      else
+      {
+        throw new InvalidOperationException("Cannot do a bounds check as the resolved element is not fully contained within a single screenshot bound.");
+      }
+
+      if (elementVisibility < requiredVisibility)
       {
         throw new InvalidOperationException(
             string.Format(
                 "The visibility of the resolved element is smaller than the specified minimum visibility. (visibility: {0}; required: {1})",
-                resolvedElement.ElementVisibility,
-                ElementVisibility.FullyVisible));
+                elementVisibility,
+                requiredVisibility));
       }
-
-      if (resolvedElement.ElementBounds.Width == 0 || resolvedElement.ElementBounds.Height == 0)
-        throw new InvalidOperationException("The specified target is empty.");
-
-      if (!_screenshotBounds.Any(b => b.Contains(resolvedElement.ElementBounds)))
-        throw new InvalidOperationException("The specified target is not part of the screenshot.");
     }
 
     private ScreenshotTransformationHelper<T> CreateTransformationHelper<T> (

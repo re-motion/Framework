@@ -630,6 +630,56 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
           test);
     }
 
+    [Category("Screenshot")]
+    [Test]
+    public void ElementOutOfBounds ()
+    {
+      var home = Start();
+
+      // Chromium browsers show the remote control overlay since RM-7184, which is drawn shortly after the page load. The
+      // content however needs a small timespan to be adapted to the slightly smaller viewport.
+      if (Helper.BrowserConfiguration.IsChromium())
+        Thread.Sleep(100);
+
+      ScreenshotTestingDelegate<IFluentScreenshotElement<ElementScope>> test =
+          (builder, target) =>
+          {
+            builder.Crop(target, new WebPadding(5, 5, 5, -5));
+
+            builder.AnnotateBox(target.AllowPartialVisibility(), Pens.Red, WebPadding.Inner);
+          };
+
+      var element = home.Scope.FindId("screenshotTarget").ForElementScopeScreenshot();
+
+      Helper.RunScreenshotTestExact<IFluentScreenshotElement<ElementScope>, ScreenshotTest>(element, ScreenshotTestingType.Both, test);
+    }
+
+    [Category("Screenshot")]
+    [Test]
+    public void ElementOutOfBounds_WithMinimumVisibilityFullyVisible_ThrowsException ()
+    {
+      var home = Start();
+
+      // Chromium browsers show the remote control overlay since RM-7184, which is drawn shortly after the page load. The
+      // content however needs a small timespan to be adapted to the slightly smaller viewport.
+      if (Helper.BrowserConfiguration.IsChromium())
+        Thread.Sleep(100);
+
+      using (var builder = Helper.CreateBrowserScreenshot())
+      {
+        var target = home.Scope.FindId("screenshotTarget").ForElementScopeScreenshot();
+
+        builder.Crop(target, new WebPadding(5, 5, 5, -5));
+
+        Assert.That(
+            () => builder.AnnotateBox(target, Pens.Red, WebPadding.Inner),
+            Throws.InvalidOperationException
+                .With.Message.EqualTo(
+                    "The visibility of the resolved element is smaller than the specified minimum visibility."
+                    + " (visibility: PartiallyVisible; required: FullyVisible)"));
+      }
+    }
+
     [Test]
     public void WebTabStrip_WithDerivedControlObject ()
     {
