@@ -73,6 +73,7 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="UrlMappingFileFinder.cs" />
     <Compile Include="Domain\BaseObject.cs" />
     <Compile Include="Domain\BaseSecurableObject.cs" />
     <Compile Include="Domain\Confidentiality.cs" />

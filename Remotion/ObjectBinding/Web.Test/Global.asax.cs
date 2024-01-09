@@ -65,8 +65,6 @@ namespace OBWTest
 
       //defaultServiceLocator.RegisterSingle<ResourceTheme>(() => new ResourceTheme.NovaGray());
 
-      defaultServiceLocator.RegisterSingle(() => WxeUrlSettings.Create(urlMappingFile: "~/UrlMapping.xml"));
-
       ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
 
       IReflectionBusinessObjectStorageProvider reflectionBusinessObjectStorageProvider;
