@@ -33,9 +33,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
     protected string SharedProjectWebRoot => _webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot + "res/Remotion.Web.Development.WebTesting.TestSite.Shared/";
 
-    protected virtual bool MaximizeMainBrowserSession
+    protected virtual WindowSize WindowSize
     {
-      get { return true; }
+      get { return new WindowSize(1296, 868); }
     }
 
     protected WebTestHelper Helper
@@ -52,11 +52,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void IntegrationTestOneTimeSetUp ()
     {
       DriverConfigurationOverride driverConfigurationOverride = null;
-      if (Debugger.IsAttached || RequiresUserInterfaceAttribute.GetPropertyValue(TestContext.CurrentContext))
+      if (Debugger.IsAttached)
         driverConfigurationOverride = new DriverConfigurationOverride { Headless = false };
 
       _webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
-      _webTestHelper.OnFixtureSetUp(MaximizeMainBrowserSession, driverConfigurationOverride);
+      _webTestHelper.OnFixtureSetUp(WindowSize, driverConfigurationOverride);
     }
 
     [SetUp]

@@ -285,6 +285,11 @@
       <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>
     </IntegrationTestProjectFiles>
 
+    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.IntegrationTests.RequireUI\Web.Development.WebTesting.IntegrationTests.RequireUI.csproj">
+      <TestConfiguration>$(WebtestingTestConfiguration)</TestConfiguration>
+      <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>
+    </IntegrationTestProjectFiles>
+
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\IntegrationTests\Web.IntegrationTests.csproj">
       <TestConfiguration>$(WebtestingTestConfiguration)</TestConfiguration>
       <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>

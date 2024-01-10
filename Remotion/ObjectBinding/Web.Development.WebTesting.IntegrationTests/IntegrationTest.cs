@@ -32,9 +32,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   {
     private WebTestHelper _webTestHelper;
 
-    protected virtual bool MaximizeMainBrowserSession
+    protected virtual WindowSize WindowSize
     {
-      get { return true; }
+      get { return new WindowSize(1296, 868); }
     }
 
     protected WebTestHelper Helper
@@ -51,12 +51,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public void IntegrationTestOneTimeSetUp ()
     {
       DriverConfigurationOverride driverConfigurationOverride = null;
-      if (Debugger.IsAttached || RequiresUserInterfaceAttribute.GetPropertyValue(TestContext.CurrentContext))
+      if (Debugger.IsAttached)
         driverConfigurationOverride = new DriverConfigurationOverride { Headless = false };
 
       _webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
 
-      _webTestHelper.OnFixtureSetUp(MaximizeMainBrowserSession, driverConfigurationOverride);
+      _webTestHelper.OnFixtureSetUp(WindowSize, driverConfigurationOverride);
     }
 
     [SetUp]

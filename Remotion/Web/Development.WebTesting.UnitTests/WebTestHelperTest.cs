@@ -16,8 +16,10 @@
 // 
 using System;
 using System.Linq;
+using Coypu;
 using Moq;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
@@ -38,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
       var webTestHelper = WebTestHelper.CreateFromConfiguration<TestWebTestConfigurationFactory>();
       var browserFactoryStub = webTestHelper.BrowserConfiguration.BrowserFactory;
 
-      webTestHelper.CreateNewBrowserSession(false);
+      webTestHelper.CreateNewBrowserSession(new WindowSize(500, 500));
 
       var driverConfigurationArgument = GetBrowserFactoryStubCreateBrowserArgument(browserFactoryStub);
       Assert.That(driverConfigurationArgument.CommandTimeout, Is.EqualTo(_configCommandTimeout));
@@ -54,7 +56,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
       var configurationOverride = new DriverConfigurationOverride { CommandTimeout = TimeSpan.FromMinutes(5) };
       var browserFactoryStub = webTestHelper.BrowserConfiguration.BrowserFactory;
 
-      webTestHelper.CreateNewBrowserSession(false, configurationOverride);
+      webTestHelper.CreateNewBrowserSession(new WindowSize(500, 500), configurationOverride);
 
       var driverConfigurationArgument = GetBrowserFactoryStubCreateBrowserArgument(browserFactoryStub);
       Assert.That(driverConfigurationArgument.CommandTimeout, Is.EqualTo(TimeSpan.FromMinutes(5)));
@@ -70,7 +72,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
       var configurationOverride = new DriverConfigurationOverride { SearchTimeout = TimeSpan.FromMinutes(5) };
       var browserFactoryStub = webTestHelper.BrowserConfiguration.BrowserFactory;
 
-      webTestHelper.CreateNewBrowserSession(false, configurationOverride);
+      webTestHelper.CreateNewBrowserSession(new WindowSize(500, 500), configurationOverride);
 
       var driverConfigurationArgument = GetBrowserFactoryStubCreateBrowserArgument(browserFactoryStub);
       Assert.That(driverConfigurationArgument.CommandTimeout, Is.EqualTo(_configCommandTimeout));
@@ -86,7 +88,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
       var configurationOverride = new DriverConfigurationOverride { RetryInterval = TimeSpan.FromMinutes(5) };
       var browserFactoryStub = webTestHelper.BrowserConfiguration.BrowserFactory;
 
-      webTestHelper.CreateNewBrowserSession(false, configurationOverride);
+      webTestHelper.CreateNewBrowserSession(new WindowSize(500, 500), configurationOverride);
 
       var driverConfigurationArgument = GetBrowserFactoryStubCreateBrowserArgument(browserFactoryStub);
       Assert.That(driverConfigurationArgument.CommandTimeout, Is.EqualTo(_configCommandTimeout));
@@ -102,7 +104,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
       var configurationOverride = new DriverConfigurationOverride { AsyncJavaScriptTimeout = TimeSpan.FromMinutes(5) };
       var browserFactoryStub = webTestHelper.BrowserConfiguration.BrowserFactory;
 
-      webTestHelper.CreateNewBrowserSession(false, configurationOverride);
+      webTestHelper.CreateNewBrowserSession(new WindowSize(500, 500), configurationOverride);
 
       var driverConfigurationArgument = GetBrowserFactoryStubCreateBrowserArgument(browserFactoryStub);
       Assert.That(driverConfigurationArgument.CommandTimeout, Is.EqualTo(_configCommandTimeout));
@@ -121,6 +123,10 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
       protected override IChromeConfiguration CreateChromeConfiguration (IWebTestSettings configSettings)
       {
         var browserFactoryStub = new Mock<IBrowserFactory>();
+        var browserSessionStub = new Mock<IBrowserSession>();
+
+        browserFactoryStub.Setup(_ => _.CreateBrowser(It.IsAny<DriverConfiguration>())).Returns(browserSessionStub.Object);
+        browserSessionStub.Setup(_ => _.Driver).Returns(Mock.Of<IDriver>());
 
         var chromeConfigurationStub = new Mock<IChromeConfiguration>();
         chromeConfigurationStub

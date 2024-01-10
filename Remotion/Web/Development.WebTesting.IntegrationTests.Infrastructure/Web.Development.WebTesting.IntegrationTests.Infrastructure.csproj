@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Web\Development.WebTesting\Web.Development.WebTesting.csproj" />
+    <ProjectReference Include="..\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <PackageReference Include="System.Text.Json" Version="7.0.3" />

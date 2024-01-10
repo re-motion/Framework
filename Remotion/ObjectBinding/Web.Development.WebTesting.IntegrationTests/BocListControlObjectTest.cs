@@ -40,7 +40,6 @@ using Remotion.Web.Development.WebTesting.Utilities;
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
-  [RequiresUserInterface]
   public class BocListControlObjectTest : IntegrationTest
   {
     [Test]
