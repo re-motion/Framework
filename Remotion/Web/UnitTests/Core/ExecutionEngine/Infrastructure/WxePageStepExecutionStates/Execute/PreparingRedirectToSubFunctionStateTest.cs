@@ -24,6 +24,7 @@ using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute;
 using Remotion.Web.ExecutionEngine.UrlMapping;
+using Remotion.Web.UnitTests.Core.Utilities;
 using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute
@@ -35,7 +36,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     {
       base.SetUp();
 
-      UrlMappingConfiguration.SetCurrent(UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
+      UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
       UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(RootFunction.GetType(), "~/root.wxe"));
       UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(SubFunction.Object.GetType(), "~/sub.wxe"));
 

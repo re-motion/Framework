@@ -27,6 +27,7 @@ using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.UrlMapping;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
+using Remotion.Web.UnitTests.Core.Utilities;
 using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine
@@ -53,7 +54,7 @@ public class WxeContextTest
     _functionTypeName = TypeUtility.GetPartialAssemblyQualifiedName(_functionType);
     _resource = "~/Test.wxe";
 
-    UrlMappingConfiguration.SetCurrent(UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
+    UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
     UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(_functionType, _resource));
   }
 
@@ -293,7 +294,7 @@ public class WxeContextTest
 
   private ServiceLocatorScope CreateWxeUrlSettingsScopeWithDefaultWxeHandler (int maxLength = 1024)
   {
-    var wxeUrlSettings = WxeUrlSettings.Create(null, maxLength, "WxeHandler.ashx");
+    var wxeUrlSettings = WxeUrlSettings.Create(maxLength, "WxeHandler.ashx");
 
     var serviceLocator = DefaultServiceLocator.Create();
     serviceLocator.RegisterSingle(() => wxeUrlSettings);

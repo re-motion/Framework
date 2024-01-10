@@ -28,7 +28,7 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
 /// <summary> Contains the configuration data for the URL mapping system of the execution engine. </summary>
 /// <include file='..\..\doc\include\ExecutionEngine\UrlMapping\UrlMappingConfiguration.xml' path='UrlMappingConfiguration/Class/*' />
 [XmlType(UrlMappingConfiguration.ElementName, Namespace = UrlMappingConfiguration.SchemaUri)]
-public class UrlMappingConfiguration: ConfigurationBase
+public class UrlMappingConfiguration
 {
   /// <summary> The name of the root element. </summary>
   /// <remarks> <c>mapping</c> </remarks>
@@ -41,12 +41,6 @@ public class UrlMappingConfiguration: ConfigurationBase
   private static readonly DoubleCheckedLockingContainer<UrlMappingConfiguration> s_current =
       new DoubleCheckedLockingContainer<UrlMappingConfiguration>(CreateConfig);
 
-  public static UrlMappingConfiguration CreateUrlMappingConfiguration (string configurationFile)
-  {
-    UrlMappingLoader loader = new UrlMappingLoader(configurationFile, typeof(UrlMappingConfiguration));
-    return loader.CreateUrlMappingConfiguration();
-  }
-
   /// <summary> Gets the current <see cref="UrlMappingConfiguration"/>. </summary>
   public static UrlMappingConfiguration Current
   {
@@ -55,11 +49,11 @@ public class UrlMappingConfiguration: ConfigurationBase
 
   private static UrlMappingConfiguration CreateConfig ()
   {
-    var mappingFile = SafeServiceLocator.Current.GetInstance<WxeUrlSettings>().UrlMappingFile;
-    if (string.IsNullOrEmpty(mappingFile))
-      return new UrlMappingConfiguration();
-    else
-      return CreateUrlMappingConfiguration(mappingFile);
+    var urlMappingLoader = new UrlMappingLoader(
+        SafeServiceLocator.Current.GetInstance<IUrlMappingFileFinder>(),
+        SafeServiceLocator.Current.GetInstance<IUrlMappingFileLoader>());
+
+    return urlMappingLoader.CreateUrlMappingConfiguration();
   }
 
   /// <summary> Sets the current <see cref="UrlMappingConfiguration"/>. </summary>
@@ -68,10 +62,18 @@ public class UrlMappingConfiguration: ConfigurationBase
     s_current.Value = mappingConfiguration;
   }
 
+  private string? _applicationName = null;
   private UrlMappingCollection _mappings = new UrlMappingCollection();
 
   public UrlMappingConfiguration ()
   {
+  }
+
+  /// <summary> Gets the application name that is specified in the XML configuration file.  </summary>
+  [XmlAttribute("application")]
+  public string? ApplicationName
+  {
+    get { return _applicationName; }
   }
 
   [XmlElement("add")]

@@ -22,6 +22,7 @@ using Remotion.Web.ExecutionEngine.UrlMapping;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
+using Remotion.Web.UnitTests.Core.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 {
@@ -36,7 +37,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       _testHelper = new CommandTestHelper();
       HttpContextHelper.SetCurrent(_testHelper.HttpContext);
 
-      UrlMappingConfiguration.SetCurrent(UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
+      UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
     }
 
     [Test]

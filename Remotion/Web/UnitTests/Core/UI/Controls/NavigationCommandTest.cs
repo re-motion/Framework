@@ -30,6 +30,7 @@ using Remotion.Web.ExecutionEngine.UrlMapping;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
+using Remotion.Web.UnitTests.Core.Utilities;
 using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls
@@ -171,7 +172,7 @@ public class NavigationCommandTest
   {
     string resource = "~/Test.wxe";
 
-    UrlMappingConfiguration.SetCurrent(UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
+    UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
     UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(_functionType, resource));
     string parameter1 = "Value1";
 
@@ -197,7 +198,7 @@ public class NavigationCommandTest
     string mappingID = "Test";
     string resource = "~/Test.wxe";
 
-    UrlMappingConfiguration.SetCurrent(UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
+    UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
     UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(mappingID, _functionType, resource));
     string parameter1 = "Value1";
 
@@ -224,7 +225,7 @@ public class NavigationCommandTest
     string resource = "~/Test.wxe";
     Type functionWithNestingType = typeof(TestFunctionWithNesting);
 
-    UrlMappingConfiguration.SetCurrent(UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
+    UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
     UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(mappingID, functionWithNestingType, resource));
     string parameter1 = "Value1";
 
@@ -271,7 +272,7 @@ public class NavigationCommandTest
   {
     string resource = "~/Test.wxe";
 
-    UrlMappingConfiguration.SetCurrent(UrlMappingConfiguration.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
+    UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
     UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(_functionType, resource));
     string parameter1 = "Value1";
 
@@ -312,7 +313,7 @@ public class NavigationCommandTest
 
   private ServiceLocatorScope CreateWxeUrlSettingsScope (string defaultWxeHandler = "WxeHandler.ashx")
   {
-    var wxeUrlSettings = WxeUrlSettings.Create(null, 1024, defaultWxeHandler);
+    var wxeUrlSettings = WxeUrlSettings.Create(1024, defaultWxeHandler);
 
     var serviceLocator = DefaultServiceLocator.Create();
     serviceLocator.RegisterSingle(() => wxeUrlSettings);
