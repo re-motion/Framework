@@ -23,15 +23,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   /// <summary>
   /// Testclass to be able to seperate Tests for <see cref="IRequestErrorDetectionStrategy"/> implementation and calls.
   /// </summary>
-  public class DiagnosticInformationCollectioningRequestErrorDetectionStrategy : IRequestErrorDetectionStrategy
+  public class DiagnosticInformationCollectingRequestErrorDetectionStrategy : IRequestErrorDetectionStrategy
   {
     private class RequestErrorDetectionStrategyScope : IDisposable
     {
-      private readonly DiagnosticInformationCollectioningRequestErrorDetectionStrategy _parent;
+      private readonly DiagnosticInformationCollectingRequestErrorDetectionStrategy _parent;
       private readonly IRequestErrorDetectionStrategy _previousRequestErrorDetectionStrategy;
 
       public RequestErrorDetectionStrategyScope (
-          DiagnosticInformationCollectioningRequestErrorDetectionStrategy parent,
+          DiagnosticInformationCollectingRequestErrorDetectionStrategy parent,
           IRequestErrorDetectionStrategy previousRequestErrorDetectionStrategy)
       {
         _parent = parent;
@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private int _callCounter;
     private ElementScope _lastPassedScope;
 
-    public DiagnosticInformationCollectioningRequestErrorDetectionStrategy ()
+    public DiagnosticInformationCollectingRequestErrorDetectionStrategy ()
     {
       _requestErrorDetectionStrategy = new NullRequestErrorDetectionStrategy();
     }
