@@ -258,17 +258,51 @@ class SmartPage_Context
     }
   };
 
-  public SmartPage_PageRequestManager_endRequest = function (sender: unknown, args: Sys.WebForms.EndRequestEventArgs)
+  public SmartPage_PageRequestManager_endRequest = (sender: unknown, args: Sys.WebForms.EndRequestEventArgs) =>
   {
-    if (args.get_error() != undefined && (args.get_error() as any).httpStatusCode == '500')
+    if (args.get_error())
     {
-      const errorMessage = args.get_error().message;
-      args.set_errorHandled(true);
+      let statusCode = (args.get_error() as any).httpStatusCode;
 
-      const errorBody = '<div class="SmartPageErrorBody"><div>' + errorMessage + '</div></div>';
-
-      SmartPage_Context.Instance!.ShowMessage("SmartPageServerErrorMessage", errorBody);
+      if (!statusCode || statusCode === 200)
+      {
+        this.HandleRequestError("undefined", args);
+      }
+      else
+      {
+        this.HandleRequestError(statusCode, args);
+      }
     }
+  }
+
+  private HandleRequestError(statusCode: string, args: Sys.WebForms.EndRequestEventArgs): void
+  {
+    let response = args.get_response();
+    let errorMessage = args.get_error().message;
+
+    //@ts-ignore
+    let serverError: string = Sys.WebForms.Res.PRM_ServerError;
+    let isSynchronousError = errorMessage.includes(serverError.substring(0, serverError.indexOf(':')));
+
+    let errorBody = '<div class="SmartPageErrorBody"><div>';
+
+    const errorMessageWithoutExceptionTypePrefix = errorMessage.substring(errorMessage.indexOf(':') + 1);
+    errorBody += errorMessageWithoutExceptionTypePrefix;
+
+    if (isSynchronousError)
+    {
+      errorBody += ', ' + response.get_statusText();
+      errorBody += '\n';
+
+      errorBody += '<iframe sandbox="" src="data:text/html;base64,';
+      errorBody += btoa(response.get_responseData());
+      errorBody += '" ></iframe>';
+    }
+
+    errorBody += '</div></div>';
+
+    args.set_errorHandled(true);
+    SmartPage_Context.Instance!.ShowMessage("SmartPageServerErrorMessage", errorBody);
   }
 
   // Attached the OnValueChanged event handler to all form data elements listed in _trackedIDs.

@@ -43,6 +43,7 @@
   <add id="BrowserSessionTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::BrowserSessionTestFunction" resource="~/BrowserSessionTest.wxe" />
   <add id="PlatformTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::PlatformTestFunction" resource="~/PlatformTest.wxe" />
   <add id="CompletionDetectionStrategyTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::CompletionDetectionStrategyTestFunction" resource="~/CompletionDetectionStrategyTest.wxe" />
+  <add id="SmartPageErrorTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::SmartPageErrorTestFunction" resource="~/SmartPageErrorTest.wxe" />
 
   <add id="MultiWindowTest_Main" type="Remotion.Web.Development.WebTesting.TestSite.Shared::MultiWindowTest.MainFunction"
        resource="~/MultiWindowTest/Main.wxe" />
