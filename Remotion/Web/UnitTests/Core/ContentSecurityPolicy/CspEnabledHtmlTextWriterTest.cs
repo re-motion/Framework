@@ -118,7 +118,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
                       _pageStub.Object,
                       typeof(CspEnabledHtmlTextWriter),
                       "eventTargetID",
-                      $"SmartPageContext.Instance.RegisterInlineEvent(\"eventTargetID\", \"{value}\", function (event){{console.info('test');}});"),
+                      $"SmartPageContext.Instance.RegisterInlineEvent('eventTargetID', '{value}', function (event){{console.info('test');}});"),
               Times.Once);
 
       _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
@@ -140,7 +140,47 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
                       _pageStub.Object,
                       typeof(CspEnabledHtmlTextWriter),
                       "eventTargetID",
-                      "SmartPageContext.Instance.RegisterInlineEvent(\"eventTargetID\", \"click\", function (event){console.info('test1');});"),
+                      "SmartPageContext.Instance.RegisterInlineEvent('eventTargetID', 'click', function (event){color:white;});"),
+              Times.Never);
+    }
+
+    [Test]
+    public void AddAttribute_WithNullValue_ScriptIsNotRegistered ()
+    {
+      _writer.AddAttribute("onclick", null);
+      _writer.RenderBeginTag(HtmlTextWriterTag.Button);
+      _writer.RenderEndTag();
+
+      var document = _htmlHelper.GetResultDocument();
+      var element = _htmlHelper.GetAssertedChildElement(document, "button", 0);
+      _htmlHelper.AssertNoAttribute(element, "data-inline-event-target");
+
+      _clientScriptStub.Verify(
+          m => m.RegisterStartupScriptBlock(
+              _pageStub.Object,
+              typeof(CspEnabledHtmlTextWriter),
+              "eventTargetID",
+              "SmartPageContext.Instance.RegisterInlineEvent('eventTargetID', 'click', function (event){null});"),
+          Times.Never);
+    }
+
+    [Test]
+    public void AddAttribute_WithEmptyValue_ScriptIsNotRegistered ()
+    {
+      _writer.AddAttribute("onclick", "");
+      _writer.RenderBeginTag(HtmlTextWriterTag.Button);
+      _writer.RenderEndTag();
+
+      var document = _htmlHelper.GetResultDocument();
+      var element = _htmlHelper.GetAssertedChildElement(document, "button", 0);
+      _htmlHelper.AssertNoAttribute(element, "data-inline-event-target");
+
+      _clientScriptStub.Verify(
+              m => m.RegisterStartupScriptBlock(
+                      _pageStub.Object,
+                      typeof(CspEnabledHtmlTextWriter),
+                      "eventTargetID",
+                      "SmartPageContext.Instance.RegisterInlineEvent('eventTargetID', 'click', function (event){});"),
               Times.Never);
     }
 
@@ -166,7 +206,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID",
-              "SmartPageContext.Instance.RegisterInlineEvent(\"eventTargetID\", \"click\", function (event){console.info('test1');});"),
+              "SmartPageContext.Instance.RegisterInlineEvent('eventTargetID', 'click', function (event){console.info('test1');});"),
           Times.Once);
 
       _clientScriptStub.Verify(
@@ -174,7 +214,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID",
-              "SmartPageContext.Instance.RegisterInlineEvent(\"eventTargetID\", \"change\", function (event){console.info('test2');});"),
+              "SmartPageContext.Instance.RegisterInlineEvent('eventTargetID', 'change', function (event){console.info('test2');});"),
           Times.Once);
 
       _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
@@ -215,7 +255,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID1",
-              "SmartPageContext.Instance.RegisterInlineEvent(\"eventTargetID1\", \"click\", function (event){console.info('test1');});"),
+              "SmartPageContext.Instance.RegisterInlineEvent('eventTargetID1', 'click', function (event){console.info('test1');});"),
           Times.Once);
 
       _clientScriptStub.Verify(
@@ -223,7 +263,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID2",
-              "SmartPageContext.Instance.RegisterInlineEvent(\"eventTargetID2\", \"change\", function (event){console.info('test2');});"),
+              "SmartPageContext.Instance.RegisterInlineEvent('eventTargetID2', 'change', function (event){console.info('test2');});"),
           Times.Once);
     }
 
@@ -234,7 +274,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
           () => _writer.AddAttribute("onload", "console.info('test');"),
           Throws.InstanceOf<ArgumentException>()
               .With.ArgumentExceptionMessageEqualTo(
-                  "The name of attribute 'onload' indicates a script event but the event type is not supported by CspEnabledHtmlTextWriter.",
+                  "The name of attribute 'onload' indicates a script event but the event type is not supported.",
                   "name"));
     }
 
@@ -247,7 +287,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
             _writer.AddAttribute("onchange", "console.info('test1');");
             _writer.AddAttribute("onchange", "console.info('test2');");
           },
-          Throws.InstanceOf<InvalidOperationException>()
+          Throws.InstanceOf<ArgumentException>()
               .With.Message.EqualTo("Event handler 'onchange' cannot be registered more than once."));
     }
   }

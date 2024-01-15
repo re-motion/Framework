@@ -40,7 +40,7 @@ namespace Remotion.Web.ContentSecurityPolicy
           { "onkeypress", "keypress" }
         };
 
-    private readonly List<(string type, string value)> _registeredEvents = new();
+    private readonly List<(string Type, string Value)> _registeredEvents = new();
     private readonly INonceGenerator _nonceGenerator;
     private readonly ISmartPage _page;
     private readonly string _requestNonce;
@@ -72,8 +72,7 @@ namespace Remotion.Web.ContentSecurityPolicy
 
         foreach (var registeredEvent in _registeredEvents)
         {
-
-          var script = $"SmartPageContext.Instance.RegisterInlineEvent(\"{eventTargetID}\", \"{registeredEvent.type}\", function (event){{{registeredEvent.value}}});";
+          var script = $"SmartPageContext.Instance.RegisterInlineEvent('{eventTargetID}', '{registeredEvent.Type}', function (event){{{registeredEvent.Value}}});";
           _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(CspEnabledHtmlTextWriter), eventTargetID, script);
         }
       }
@@ -89,17 +88,17 @@ namespace Remotion.Web.ContentSecurityPolicy
       {
         if (s_supportedEvents.TryGetValue(name, out var eventType))
         {
-          if (_registeredEvents.Exists(e => eventType.Equals(e.type)))
+          if (_registeredEvents.Exists(e => eventType.Equals(e.Type)))
           {
-            throw new InvalidOperationException($"Event handler '{name}' cannot be registered more than once.");
+            throw new ArgumentException($"Event handler '{name}' cannot be registered more than once.");
           }
 
-          _registeredEvents.Add((eventType, value));
+          _registeredEvents.Add((Type: eventType, Value: value));
         }
         else
         {
           throw new ArgumentException(
-              $"The name of attribute '{name}' indicates a script event but the event type is not supported by CspEnabledHtmlTextWriter.",
+              $"The name of attribute '{name}' indicates a script event but the event type is not supported.",
               nameof(name));
         }
       }

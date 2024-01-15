@@ -13,28 +13,38 @@
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
+//
 #if !NETFRAMEWORK
-using System;
-using System.Security.Cryptography;
+using NUnit.Framework;
+using Remotion.Web.ContentSecurityPolicy;
 
-namespace Remotion.Web.ContentSecurityPolicy
+namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
 {
-  /// <summary>
-  /// Implements <see cref="INonceGenerator"/> to generate alpha numeric nonce values.
-  /// </summary>
-  /// <threadsafety static="true" instance="true" />
-  public class NonceGenerator : INonceGenerator
+  public class NonceGeneratorTest
   {
-    public NonceGenerator ()
+    private INonceGenerator _nonceGenerator;
+
+    [SetUp]
+    public void SetUp ()
     {
+      _nonceGenerator = new NonceGenerator();
     }
 
-    public string GenerateAlphaNumericNonce ()
+    [Test]
+    public void GenerateAlphaNumericNonce_ReturnsNonNullValue ()
     {
-      Span<byte> data = stackalloc byte[8];
-      RandomNumberGenerator.Fill(data);
+      var nonce = _nonceGenerator.GenerateAlphaNumericNonce();
 
-      return Convert.ToHexString(data);
+      Assert.That(nonce, Is.Not.Null);
+    }
+
+    [Test]
+    public void GenerateAlphaNumericNonce_ReturnsUniqueValues ()
+    {
+      var nonce1 = _nonceGenerator.GenerateAlphaNumericNonce();
+      var nonce2 = _nonceGenerator.GenerateAlphaNumericNonce();
+
+      Assert.That(nonce1, Is.Not.EqualTo(nonce2));
     }
   }
 }

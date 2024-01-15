@@ -21,6 +21,8 @@ namespace Remotion.Web.ContentSecurityPolicy
   /// <summary>
   /// Represents an API for generating alpha numeric nonce values.
   /// </summary>
+  /// <see cref="NonceGenerator"/>
+  /// <threadsafety static="true" instance="true" />
   public interface INonceGenerator
   {
     string GenerateAlphaNumericNonce ();
