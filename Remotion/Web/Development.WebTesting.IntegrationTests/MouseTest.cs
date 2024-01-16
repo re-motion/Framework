@@ -102,6 +102,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var focusElement = home.Scope.FindId(c_focusDivID);
 
+      Thread.Sleep(250);
+
       Helper.BrowserConfiguration.MouseHelper.Hover(focusElement);
       Helper.BrowserConfiguration.MouseHelper.LeftClick();
 
