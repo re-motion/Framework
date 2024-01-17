@@ -29,14 +29,18 @@ namespace Remotion.Web.Resources
   [ImplementationFor(typeof(IResourceUrlFactory), Lifetime = LifetimeKind.Singleton)]
   public class ResourceUrlFactory : IResourceUrlFactory
   {
-    private readonly IResourcePathBuilder _builder;
+    private readonly IResourcePathBuilder _resourcePathBuilder;
+    private readonly ICacheableResourcePathBuilder _cacheableResourcePathBuilder;
     private readonly ResourceTheme _resourceTheme;
 
-    public ResourceUrlFactory (IResourcePathBuilder builder, ResourceTheme resourceTheme)
+    public ResourceUrlFactory (IResourcePathBuilder resourcePathBuilder, ICacheableResourcePathBuilder cacheableResourcePathBuilder, ResourceTheme resourceTheme)
     {
-      ArgumentUtility.CheckNotNull("builder", builder);
+      ArgumentUtility.CheckNotNull("resourcePathBuilder", resourcePathBuilder);
+      ArgumentUtility.CheckNotNull("cacheableResourcePathBuilder", cacheableResourcePathBuilder);
       ArgumentUtility.CheckNotNull("resourceTheme", resourceTheme);
-      _builder = builder;
+
+      _resourcePathBuilder = resourcePathBuilder;
+      _cacheableResourcePathBuilder = cacheableResourcePathBuilder;
       _resourceTheme = resourceTheme;
     }
 
@@ -46,7 +50,11 @@ namespace Remotion.Web.Resources
       ArgumentUtility.CheckNotNull("resourceType", resourceType);
       ArgumentUtility.CheckNotNullOrEmpty("relativeUrl", relativeUrl);
 
-      return new ResourceUrl(_builder, definingType, resourceType, relativeUrl);
+      return new ResourceUrl(
+          GetResourcePathBuilderForResourceType(resourceType),
+          definingType,
+          resourceType,
+          relativeUrl);
     }
 
     public IResourceUrl CreateThemedResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
@@ -55,7 +63,19 @@ namespace Remotion.Web.Resources
       ArgumentUtility.CheckNotNull("resourceType", resourceType);
       ArgumentUtility.CheckNotNullOrEmpty("relativeUrl", relativeUrl);
 
-      return new ThemedResourceUrl(_builder, definingType, resourceType, _resourceTheme, relativeUrl);
+      return new ThemedResourceUrl(
+          GetResourcePathBuilderForResourceType(resourceType),
+          definingType,
+          resourceType,
+          _resourceTheme,
+          relativeUrl);
+    }
+
+    private IResourcePathBuilder GetResourcePathBuilderForResourceType (ResourceType resourceType)
+    {
+      return resourceType.IsCacheable
+          ? _cacheableResourcePathBuilder
+          : _resourcePathBuilder;
     }
   }
 }

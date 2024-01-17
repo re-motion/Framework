@@ -29,6 +29,15 @@ namespace Remotion.Web.Resources
   {
     private static readonly ConcurrentDictionary<Assembly, AssemblyName> s_assemblyNameCache = new ConcurrentDictionary<Assembly, AssemblyName>();
 
+    private readonly IStaticResourceCacheKeyProvider _staticResourceCacheKeyProvider;
+
+    protected ResourcePathBuilderBase (IStaticResourceCacheKeyProvider staticResourceCacheKeyProvider)
+    {
+      ArgumentUtility.CheckNotNull("staticResourceCacheKeyProvider", staticResourceCacheKeyProvider);
+
+      _staticResourceCacheKeyProvider = staticResourceCacheKeyProvider;
+    }
+
     protected abstract string GetResourceRoot ();
 
     protected abstract string BuildPath (string[] completePath);
@@ -42,7 +51,11 @@ namespace Remotion.Web.Resources
       // C# compiler 7.2 already provides caching for anonymous method.
       string assemblyName = s_assemblyNameCache.GetOrAdd(assembly, key => key.GetName()).GetNameChecked();
 
-      string[] completePath = ArrayUtility.Combine(new[] { root, assemblyName }, assemblyRelativePathParts);
+      var cacheKey = _staticResourceCacheKeyProvider.GetStaticResourceCacheKey();
+      string[] completePath = cacheKey != null
+          ? [root, $"cache_{cacheKey}", assemblyName, ..assemblyRelativePathParts]
+          : [root, assemblyName, ..assemblyRelativePathParts];
+
       return BuildPath(completePath);
     }
   }

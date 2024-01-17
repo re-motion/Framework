@@ -37,6 +37,12 @@ namespace Remotion.Web.Resources
 
     [UsedImplicitly]
     public ResourcePathBuilder (IHttpContextProvider httpContextProvider, ResourceRoot resourceRoot)
+        : this(new NullStaticResourceCacheKeyProvider(), httpContextProvider, resourceRoot)
+    {
+    }
+
+    protected ResourcePathBuilder (IStaticResourceCacheKeyProvider staticResourceCacheKeyProvider, IHttpContextProvider httpContextProvider, ResourceRoot resourceRoot)
+        : base(staticResourceCacheKeyProvider)
     {
       ArgumentUtility.CheckNotNull("httpContextProvider", httpContextProvider);
       ArgumentUtility.CheckNotNull("resourceRoot", resourceRoot);
