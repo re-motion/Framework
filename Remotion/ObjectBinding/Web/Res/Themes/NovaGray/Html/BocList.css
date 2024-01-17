@@ -642,7 +642,7 @@ span.bocListAvailableViewsListLabel
   padding-top: 0.1em;
 }
 
-.bocList .validationErrorMarker:focus
+.bocList .validationErrorMarker:focus-within
 {
   outline: auto 5px -webkit-focus-ring-color;
 }
