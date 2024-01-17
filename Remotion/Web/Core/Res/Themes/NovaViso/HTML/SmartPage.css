@@ -95,4 +95,12 @@
   color: navy !important;
   cursor: hand !important;
 }
+
+.SmartPageErrorBody iframe
+{
+  width: 100%;
+  height: calc(100% - 5em);
+  border: hidden;
+}
+
 /* end region */

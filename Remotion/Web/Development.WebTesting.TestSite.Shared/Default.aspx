@@ -55,6 +55,7 @@
           <tr><td><a href="<%= ResolveUrl("~/") %>BrowserSessionTest.wxe">BrowserSessionTest</a></td></tr>
           <tr><td><a href="<%= ResolveUrl("~/") %>PlatformTest.wxe">PlatformTest</a></td></tr>
           <tr><td><a href="<%= ResolveUrl("~/") %>CompletionDetectionStrategyTest.wxe">CompletionDetectionStrategyTest</a></td></tr>
+          <tr><td><a href="<%= ResolveUrl("~/") %>SmartPageErrorTest.wxe">SmartPageErrorTest</a></td></tr>
         </table>
         
         <label>Generic tests</label>

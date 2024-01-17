@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Web;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.ServiceLocation;
+using Remotion.Web.Development.WebTesting.TestSite.Shared;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.Web.Development.WebTesting.TestSite
@@ -35,6 +36,8 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     protected void Application_BeginRequest (Object sender, EventArgs e)
     {
+      SmartPageErrorTestHelper.Execute(Request, Response);
+
       _resourceVirtualPathProvider.HandleBeginRequest();
     }
 
