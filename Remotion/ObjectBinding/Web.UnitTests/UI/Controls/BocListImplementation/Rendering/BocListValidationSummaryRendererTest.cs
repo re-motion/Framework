@@ -38,7 +38,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       None = 0,
       ScreenReader = 1,
-      DiagnosticMetadata = 2
+      DiagnosticMetadata = 2,
+      NoLinks = 4
     }
 
     private BocListCssClassDefinition _bocListCssClassDefinition;
@@ -80,6 +81,33 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           TestSettings.None,
           validationFailures,
           new[] { CreateTextAssert("Failure A"), CreateTextAssert("Failure B") });
+    }
+
+    [Test]
+    public void Render_CellFailureWithoutLink ()
+    {
+      var propertyStub = new Mock<IBusinessObjectProperty>();
+      propertyStub.Setup(e => e.DisplayName).Returns("ColumnName");
+
+      var columnDefinitionStub1 = new Mock<BocColumnDefinition>();
+      columnDefinitionStub1.Setup(e => e.ColumnTitle).Returns(WebString.CreateFromText("Incorrect title"));
+      columnDefinitionStub1.Setup(e => e.ColumnTitleDisplayValue).Returns(WebString.CreateFromText("MyColumnTitle"));
+      columnDefinitionStub1.Setup(e => e.ItemID).Returns("MyColumnItemID");
+
+      _columnIndexProviderMock.Setup(e => e.GetVisibleColumnIndex(columnDefinitionStub1.Object)).Returns(1);
+
+      var validationFailures = new[]
+                               {
+                                   CreateCellValidationFailure("My first failure", propertyStub.Object, columnDefinitionStub1.Object),
+                               };
+
+      RenderAndAssertValidationSummary(
+          TestSettings.NoLinks,
+          validationFailures,
+          new[]
+          {
+              CreateTextAssert("ColumnName: My first failure"),
+          });
     }
 
     [Test]
@@ -228,7 +256,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var renderArguments = new BocListValidationSummaryRenderArguments(
           _columnIndexProviderMock.Object,
           validationFailures,
-          3);
+          3,
+          renderCellValidationFailuresAsLinks: (settings & TestSettings.NoLinks) == 0);
       validationSummaryRenderer.Render(bocRenderingContext, in renderArguments);
 
       return Html.GetResultDocument();

@@ -90,7 +90,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         var renderArguments = new BocListValidationSummaryRenderArguments(
             renderingContext.ColumnIndexProvider,
             validationFailures,
-            arguments.RowIndex);
+            arguments.RowIndex,
+            renderCellValidationFailuresAsLinks: false);
 
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.CssClassScreenReaderText);
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
