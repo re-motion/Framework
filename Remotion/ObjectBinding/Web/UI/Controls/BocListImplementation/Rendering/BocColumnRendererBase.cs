@@ -388,12 +388,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           tooltipStringBuilder.AppendLine(validationFailure.Failure.ErrorMessage);
         }
 
-        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, BocRowRenderer.GetCellIDForValidationMarker(renderingContext.Control, arguments.RowIndex, renderingContext.VisibleColumnIndex));
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Title, tooltipStringBuilder.ToString());
-        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Tabindex, "-1");
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.ValidationErrorMarker);
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+
+        // Render a special zero-sized span that is used as jump target for the validation messages below the current row.
+        // We need a separate zero-sized element here as tabindex="-1" allows click-focus, which is not wanted in this case.
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, BocRowRenderer.GetCellIDForValidationMarker(renderingContext.Control, arguments.RowIndex, renderingContext.VisibleColumnIndex));
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Tabindex, "-1");
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+        renderingContext.Writer.RenderEndTag();
 
         var iconInfo = new IconInfo(_resourceUrlFactory.CreateThemedResourceUrl(typeof(InfrastructureResourceUrlFactory), ResourceType.Image, c_validationIndicatorIcon).GetUrl());
         iconInfo.Render(renderingContext.Writer, renderingContext.Control);
