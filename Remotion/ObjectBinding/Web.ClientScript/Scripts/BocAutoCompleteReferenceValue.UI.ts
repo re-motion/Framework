@@ -488,7 +488,13 @@ namespace Remotion.BocAutoCompleteReferenceValue
                             const selectedItem = select.selected(true);
                             const isAnnotationSelected = selectedItem != null && selectedItem.data.IsAnnotation === true;
                             if (isAnnotationSelected)
+                            {
                                 index = select.findItemPositionWhere (function (data) { return data === selectedItem });
+                            }                            
+                            else
+                            {
+                                index = 0;
+                            }
                         }
 
                         select.selectItem (index);
