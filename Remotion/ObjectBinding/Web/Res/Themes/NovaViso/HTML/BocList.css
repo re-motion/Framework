@@ -386,8 +386,8 @@ div.bocList .bocListCellStructureElement > .validationErrorMarker
   padding: calc(var(--remotion-themed-spacing) / 2);
 }
 
-div.bocList .bocListCellStructureElement > .validationErrorMarker:focus,
-div.bocList .bocListContent > .validationErrorMarker:focus
+div.bocList .bocListCellStructureElement > .validationErrorMarker:focus-within,
+div.bocList .bocListContent > .validationErrorMarker:focus-within
 {
   outline: none;
   background-color: var(--remotion-themed-background-color-focus);

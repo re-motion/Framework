@@ -441,13 +441,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var iconSpan = Html.GetAssertedChildElement(cellStructureDiv, "span", 0);
       Html.AssertAttribute(iconSpan, "class", _bocListCssClassDefinition.ValidationErrorMarker);
-      Html.AssertAttribute(iconSpan, "id", "MyList_C6_R0_ValidationMarker");
       Html.AssertAttribute(iconSpan, "title", "error message\r\n");
-      Html.AssertAttribute(iconSpan, "tabindex", "-1");
       Html.AssertAttribute(iconSpan, "aria-hidden", "true");
-      Html.AssertChildElementCount(iconSpan, 1);
+      Html.AssertChildElementCount(iconSpan, 2);
 
-      var img = Html.GetAssertedChildElement(iconSpan, "img", 0);
+      var jumpMarker = Html.GetAssertedChildElement(iconSpan, "span", 0);
+      Html.AssertAttribute(jumpMarker, "id", "MyList_C6_R0_ValidationMarker");
+      Html.AssertAttribute(jumpMarker, "tabindex", "-1");
+
+      var img = Html.GetAssertedChildElement(iconSpan, "img", 1);
       Html.AssertAttribute(img, "src", "/fake/Remotion.Web/Themes/Fake/Image/sprite.svg#ValidationError");
 
       var div = Html.GetAssertedChildElement(cellStructureDiv, "div", 1);

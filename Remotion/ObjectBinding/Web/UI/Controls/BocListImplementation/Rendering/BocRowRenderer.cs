@@ -252,7 +252,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
       var columnIndexProvider = new BocListColumnIndexProvider(columnRenderers);
-      var arguments = new BocListValidationSummaryRenderArguments(columnIndexProvider ,validationFailuresWithLocationInfo, rowIndex);
+      var arguments = new BocListValidationSummaryRenderArguments(
+          columnIndexProvider,
+          validationFailuresWithLocationInfo,
+          rowIndex,
+          renderCellValidationFailuresAsLinks: true);
 
       _validationSummaryRenderer.Render(renderingContext, arguments);
 
