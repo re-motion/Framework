@@ -41,10 +41,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </summary>
     public int RowIndex { get; }
 
+    /// <summary>
+    /// Indicates that cell validation failure messages should be rendered as links.
+    /// </summary>
+    public bool RenderCellValidationFailuresAsLinks { get; }
+
     public BocListValidationSummaryRenderArguments (
         IBocListColumnIndexProvider columnIndexProvider,
         IEnumerable<BocListValidationFailureWithLocationInformation> validationFailures,
-        int rowIndex)
+        int rowIndex,
+        bool renderCellValidationFailuresAsLinks)
     {
       ArgumentUtility.CheckNotNull(nameof(columnIndexProvider), columnIndexProvider);
       ArgumentUtility.CheckNotNull(nameof(validationFailures), validationFailures);
@@ -52,6 +58,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       ColumnIndexProvider = columnIndexProvider;
       ValidationFailures = validationFailures;
       RowIndex = rowIndex;
+      RenderCellValidationFailuresAsLinks = renderCellValidationFailuresAsLinks;
     }
   }
 }

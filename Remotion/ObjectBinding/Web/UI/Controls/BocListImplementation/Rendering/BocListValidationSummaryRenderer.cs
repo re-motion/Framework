@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
       foreach (var validationFailureWithLocation in arguments.ValidationFailures)
-        RenderValidationFailure(renderingContext, validationFailureWithLocation, arguments.RowIndex, arguments.ColumnIndexProvider);
+        RenderValidationFailure(renderingContext, validationFailureWithLocation, in arguments);
 
       renderingContext.Writer.RenderEndTag();
     }
@@ -65,8 +65,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private void RenderValidationFailure (
         BocRenderingContext<IBocList> renderingContext,
         BocListValidationFailureWithLocationInformation validationFailureWithLocation,
-        int rowIndex,
-        IBocListColumnIndexProvider columnIndexProvider)
+        in BocListValidationSummaryRenderArguments arguments)
     {
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {
@@ -82,7 +81,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
       var columnDefinition = validationFailureWithLocation.ColumnDefinition;
-      if (columnDefinition == null)
+      if (columnDefinition == null || !arguments.RenderCellValidationFailuresAsLinks)
       {
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
@@ -95,10 +94,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       }
       else
       {
-        var visibleColumnIndex = columnIndexProvider.GetVisibleColumnIndex(columnDefinition);
+        var visibleColumnIndex = arguments.ColumnIndexProvider.GetVisibleColumnIndex(columnDefinition);
         Assertion.IsTrue(visibleColumnIndex != -1, "visibleColumnIndex != -1");
 
-        var validationMarkerCellID = BocRowRenderer.GetCellIDForValidationMarker(renderingContext.Control, rowIndex, visibleColumnIndex);
+        var validationMarkerCellID = BocRowRenderer.GetCellIDForValidationMarker(renderingContext.Control, arguments.RowIndex, visibleColumnIndex);
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, $"#{validationMarkerCellID}");
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, c_onInlineValidationEntryClickScript);
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.A);
