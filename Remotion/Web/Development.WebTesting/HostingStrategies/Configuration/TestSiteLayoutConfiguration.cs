@@ -33,13 +33,13 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
     /// <inheritdoc />
     public IReadOnlyList<ITestSiteResource> Resources { get; }
 
-    public TestSiteLayoutConfiguration ([NotNull] WebTestConfigurationSection configSettings)
+    public TestSiteLayoutConfiguration ([NotNull] IWebTestSettings webTestSettings)
     {
-      ArgumentUtility.CheckNotNull("configSettings", configSettings);
+      ArgumentUtility.CheckNotNull("webTestSettings", webTestSettings);
 
-      RootPath = GetRootedRootPath(configSettings.TestSiteLayoutConfiguration.RootPath);
-      Resources = configSettings.TestSiteLayoutConfiguration.Resources
-          .Select(resourceElement => EnsureRootedPath(RootPath, resourceElement.Path))
+      RootPath = GetRootedRootPath(webTestSettings.TestSiteLayout.RootPath);
+      Resources = webTestSettings.TestSiteLayout.Resources
+          .Select(resourceElement => EnsureRootedPath(RootPath, resourceElement))
           .Select(rootedPath => new TestSiteResource(rootedPath)).ToArray();
     }
 

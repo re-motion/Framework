@@ -17,8 +17,8 @@
 using System;
 using System.IO;
 using Coypu;
+using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Web.Development.WebTesting.Configuration;
 
 namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
@@ -31,27 +31,18 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     [Test]
     public void CreateFromWebTestConfigurationSection ()
     {
-      var webTestConfigurationSection = CreateWebTestConfigurationSection();
-      PrivateInvoke.InvokeNonPublicMethod(webTestConfigurationSection, "set_Item", "webApplicationRoot", "http://some.url:1337/");
-      PrivateInvoke.InvokeNonPublicMethod(webTestConfigurationSection, "set_Item", "screenshotDirectory", @".\SomeScreenshotDirectory");
-      PrivateInvoke.InvokeNonPublicMethod(webTestConfigurationSection, "set_Item", "closeBrowserWindowsOnSetUpAndTearDown", false);
-      PrivateInvoke.InvokeNonPublicMethod(
-          webTestConfigurationSection,
-          "set_Item",
-          "requestErrorDetectionStrategy",
-          _testRequestErrorDetectionStrategyAssemblyQualifiedName);
+      var webTestSettingsStub = new Mock<IWebTestSettings>();
+      webTestSettingsStub.Setup(_ => _.WebApplicationRoot).Returns("http://some.url:1337/");
+      webTestSettingsStub.Setup(_ => _.ScreenshotDirectory).Returns(@".\SomeScreenshotDirectory");
+      webTestSettingsStub.Setup(_ => _.CloseBrowserWindowsOnSetUpAndTearDown).Returns(false);
+      webTestSettingsStub.Setup(_ => _.RequestErrorDetectionStrategyTypeName).Returns(_testRequestErrorDetectionStrategyAssemblyQualifiedName);
 
-      var testInfrastructureConfiguration = new TestInfrastructureConfiguration(webTestConfigurationSection);
+      var testInfrastructureConfiguration = new TestInfrastructureConfiguration(webTestSettingsStub.Object);
 
       Assert.That(testInfrastructureConfiguration.WebApplicationRoot, Is.EqualTo("http://some.url:1337/"));
       Assert.That(testInfrastructureConfiguration.ScreenshotDirectory, Is.EqualTo(Path.GetFullPath(@".\SomeScreenshotDirectory")));
       Assert.That(testInfrastructureConfiguration.CloseBrowserWindowsOnSetUpAndTearDown, Is.EqualTo(false));
       Assert.That(testInfrastructureConfiguration.RequestErrorDetectionStrategy, Is.InstanceOf<TestRequestErrorDetectionStrategy>());
-    }
-
-    private WebTestConfigurationSection CreateWebTestConfigurationSection ()
-    {
-      return (WebTestConfigurationSection)Activator.CreateInstance(typeof(WebTestConfigurationSection), true);
     }
 
     private class TestRequestErrorDetectionStrategy : IRequestErrorDetectionStrategy

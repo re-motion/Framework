@@ -14,12 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
 using System.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 
-namespace Remotion.Web.Development.WebTesting.Configuration
+namespace Remotion.Web.Development.WebTesting.Configuration.Legacy
 {
-  public class ChromiumConfigurationElement : ConfigurationElement
+  public class ChromiumConfigurationElement : ConfigurationElement, IWebTestChromiumSettings
   {
     /// <summary>
     /// Specifies the wanted behavior related to the <c>CommandLineFlagSecurityWarningsEnabled</c> registry flag responsible for hiding infobars

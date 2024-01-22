@@ -66,17 +66,17 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
     public ChromiumDisableSecurityWarningsBehavior DisableSecurityWarningsBehavior { get; }
 
     public EdgeConfiguration (
-        [NotNull] WebTestConfigurationSection webTestConfigurationSection)
-        : this(webTestConfigurationSection, s_edgeExecutable.Value)
+        [NotNull] IWebTestSettings webTestSettings)
+        : this(webTestSettings, s_edgeExecutable.Value)
     {
     }
 
     public EdgeConfiguration (
-        [NotNull] WebTestConfigurationSection webTestConfigurationSection,
+        [NotNull] IWebTestSettings webTestSettings,
         [NotNull] EdgeExecutable edgeExecutable)
-        : base(webTestConfigurationSection)
+        : base(webTestSettings)
     {
-      ArgumentUtility.CheckNotNull("webTestConfigurationSection", webTestConfigurationSection);
+      ArgumentUtility.CheckNotNull("webTestSettings", webTestSettings);
       ArgumentUtility.CheckNotNull("edgeExecutable", edgeExecutable);
 
       BrowserBinaryPath = edgeExecutable.BrowserBinaryPath;
@@ -89,12 +89,12 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
       DownloadHelper = new DefaultDownloadHelper(
           DownloadDirectory,
           ".crdownload",
-          webTestConfigurationSection.DownloadStartedTimeout,
-          webTestConfigurationSection.DownloadUpdatedTimeout,
+          webTestSettings.DownloadStartedTimeout,
+          webTestSettings.DownloadUpdatedTimeout,
           downloadStartedGracePeriod,
-          webTestConfigurationSection.CleanUpUnmatchedDownloadedFiles);
+          webTestSettings.CleanUpUnmatchedDownloadedFiles);
 
-      DisableSecurityWarningsBehavior = webTestConfigurationSection.Edge.DisableSecurityWarningsBehavior;
+      DisableSecurityWarningsBehavior = webTestSettings.Edge.DisableSecurityWarningsBehavior;
     }
 
     public virtual ExtendedEdgeOptions CreateEdgeOptions ()

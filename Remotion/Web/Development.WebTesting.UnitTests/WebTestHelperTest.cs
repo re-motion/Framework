@@ -118,7 +118,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
 
     private class TestWebTestConfigurationFactory : WebTestConfigurationFactory
     {
-      protected override IChromeConfiguration CreateChromeConfiguration (WebTestConfigurationSection configSettings)
+      protected override IChromeConfiguration CreateChromeConfiguration (IWebTestSettings configSettings)
       {
         var browserFactoryStub = new Mock<IBrowserFactory>();
 
