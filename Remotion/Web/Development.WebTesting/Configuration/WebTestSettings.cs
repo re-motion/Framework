@@ -17,8 +17,13 @@
 
 using System;
 using System.Configuration;
-using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
+#if !NETFRAMEWORK
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Remotion.Web.Development.WebTesting.Configuration.IConfiguration;
+#endif
 
 namespace Remotion.Web.Development.WebTesting.Configuration
 {
@@ -34,7 +39,6 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// <summary>
     /// Gets the current <see cref="IWebTestSettings"/> and can be set to override the default settings.
     /// </summary>
-    [AllowNull]
     public static IWebTestSettings Current
     {
       get
@@ -48,20 +52,77 @@ namespace Remotion.Web.Development.WebTesting.Configuration
           return s_current ??= CreateDefaultWebTestSettings();
         }
       }
-      set
+    }
+
+    public static void SetCurrent (IWebTestSettings? value)
+    {
+      lock (s_lock)
       {
-        lock (s_lock)
-        {
-          s_current = value;
-        }
+        s_current = value;
       }
     }
 
-    private static IWebTestSettings CreateDefaultWebTestSettings ()
+    public static IWebTestSettings CreateAppConfigBasedWebTestSettings ()
     {
       var settings = (WebTestConfigurationSection)ConfigurationManager.GetSection("remotion.webTesting");
       Assertion.IsNotNull(settings, "Configuration section 'remotion.webTesting' missing.");
       return settings;
+    }
+
+#if !NETFRAMEWORK
+    /// <summary>
+    /// Creates <see cref="IWebTestSettings"/> using the default <see cref="Host"/> configuration.
+    /// Reads settings from appsettings.json and environment variables.
+    /// </summary>
+    /// <remarks>
+    /// Minimal config:
+    /// <code>
+    /// {
+    ///   "Remotion": {
+    ///     "WebTesting": {
+    ///       "BrowserName": "Edge",
+    ///       "SearchTimeout": "00:00:06",
+    ///       "RetryInterval": "00:00:00.011",
+    ///       "WebApplicationRoot": "http://localhost:60401/",
+    ///       "Hosting": {
+    ///         "Name": "IisExpress",
+    ///         "Type": "IisExpressType"
+    ///       },
+    ///       "TestSiteLayout": {
+    ///       "RootPath": "myRootPath"
+    ///       }
+    ///     }
+    ///   }
+    /// }
+    /// </code>
+    /// To override the configuration using environment variables, use the full path to the key you want to override as a name.
+    /// Use two underscores '__' to separate object nesting levels. For example:
+    /// <list type="bullet">
+    ///   <item>'Remotion__WebTesting__BrowserName=Chrome'</item>
+    ///   <item>'Remotion__WebTesting__TestSiteLayout__RootPath=newRootPath'</item>
+    /// </list>
+    /// </remarks>
+    public static IWebTestSettings CreateAppSettingsJsonBasedWebTestSettings ()
+    {
+      var hostApplicationBuilder = Host.CreateApplicationBuilder();
+      hostApplicationBuilder.Services
+          .AddOptions<WebTestSettingsDto>()
+          .Bind(hostApplicationBuilder.Configuration.GetSection("Remotion:WebTesting"))
+          .ValidateDataAnnotations();
+
+      var host = hostApplicationBuilder.Build();
+      var value = host.Services.GetRequiredService<IOptions<WebTestSettingsDto>>().Value;
+      return value;
+    }
+#endif
+
+    private static IWebTestSettings CreateDefaultWebTestSettings ()
+    {
+#if NETFRAMEWORK
+      return CreateAppConfigBasedWebTestSettings();
+#else
+      return CreateAppSettingsJsonBasedWebTestSettings();
+#endif
     }
   }
 }

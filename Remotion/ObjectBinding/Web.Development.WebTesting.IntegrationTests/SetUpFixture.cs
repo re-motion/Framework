@@ -18,19 +18,23 @@ using System;
 using System.IO;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.Configuration;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
   [SetUpFixture]
   public class SetUpFixture
   {
-    private readonly WebTestSetUpFixtureHelper _setUpFixtureHelper = WebTestSetUpFixtureHelper.CreateFromConfiguration();
+    private WebTestSetUpFixtureHelper _setUpFixtureHelper;
 
     [OneTimeSetUp]
     public void OneTimeSetUp ()
     {
       try
       {
+        WebTestSettings.SetCurrent(WebTestSettings.CreateAppConfigBasedWebTestSettings());
+
+        _setUpFixtureHelper = WebTestSetUpFixtureHelper.CreateFromConfiguration();
         var screenshotDirectory = _setUpFixtureHelper.ScreenshotDirectory;
 
         if (Directory.Exists(screenshotDirectory))
