@@ -24,7 +24,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <LangVersion>9</LangVersion>
+    <LangVersion>12</LangVersion>
     <DebugType Condition="'$(TargetFramework)' == 'net48'">full</DebugType>
     <DebugType Condition="'$(TargetFramework)' != 'net48'">embedded</DebugType>
     <SignAssembly>True</SignAssembly>
@@ -61,6 +61,10 @@
     <None Include="$(MSBuildThisFileDirectory)..\Remotion\Remotion LGPL.licenseheader" Link="Remotion LGPL.licenseheader" Condition="'$(ProductType)' == 'Default'" />
     <None Include="$(MSBuildThisFileDirectory)..\Remotion\Remotion LGPL.licenseheader" Link="Remotion LGPL.licenseheader" Condition="'$(ProductType)' == 'Mixins'" />
     <None Include="$(MSBuildThisFileDirectory)..\SecurityManager\SecurityManager AGPL.licenseheader" Link="SecurityManager AGPL.licenseheader" Condition="'$(ProductType)' == 'SecurityManager'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)..\SharedSource\Core\RuntimeTypes\*.cs" Link="SharedSource\RuntimeTypes\%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>
