@@ -2,7 +2,7 @@
 
   <!-- Settings for projects that continue to use classic csproj files (WebForms projects) -->
   <PropertyGroup>
-    <LangVersion>9</LangVersion>
+    <LangVersion>12</LangVersion>
     <DebugType>full</DebugType>
   </PropertyGroup>
 

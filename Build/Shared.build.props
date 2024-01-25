@@ -24,7 +24,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <LangVersion>9</LangVersion>
+    <LangVersion>12</LangVersion>
     <DebugType Condition="'$(TargetFramework)' == 'net48'">full</DebugType>
     <DebugType Condition="'$(TargetFramework)' != 'net48'">embedded</DebugType>
     <SignAssembly>True</SignAssembly>
