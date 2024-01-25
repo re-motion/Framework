@@ -15,4 +15,8 @@
     <MSBuildPath Condition="!Exists($(MSBuildPath))"></MSBuildPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)..\SharedSource\Core\RuntimeTypes\*.cs" Link="SharedSource\RuntimeTypes\%(Filename)%(Extension)" />
+  </ItemGroup>
+
 </Project>

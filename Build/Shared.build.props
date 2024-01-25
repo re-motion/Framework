@@ -64,6 +64,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)..\SharedSource\Core\RuntimeTypes\*.cs" Link="SharedSource\RuntimeTypes\%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Remotion.Infrastructure.Styles.Analyzer" Version="1.1.3" PrivateAssets="All" />
     <ProjectReference Include="$(SolutionDir)Remotion\Core\Development.Analyzers\Core.Development.Analyzers.csproj"
                       PrivateAssets="all"
