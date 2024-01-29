@@ -24,12 +24,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   [TestFixture]
   public class RequestErrorDetectionStrategyTest : IntegrationTest
   {
-    private DiagnosticInformationCollectioningRequestErrorDetectionStrategy _requestErrorDetectionStrategy;
+    private DiagnosticInformationCollectingRequestErrorDetectionStrategy _requestErrorDetectionStrategy;
 
     [SetUp]
     public void SetUp ()
     {
-      _requestErrorDetectionStrategy = (DiagnosticInformationCollectioningRequestErrorDetectionStrategy)Helper.TestInfrastructureConfiguration.RequestErrorDetectionStrategy;
+      _requestErrorDetectionStrategy = (DiagnosticInformationCollectingRequestErrorDetectionStrategy)Helper.TestInfrastructureConfiguration.RequestErrorDetectionStrategy;
     }
 
     [Test]

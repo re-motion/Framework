@@ -127,7 +127,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       SetupWebTestHelper(webTestHelper);
 
       for (var i = 0; i < browserSessions; i++)
-        webTestHelper.CreateNewBrowserSession(false);
+        webTestHelper.CreateNewBrowserSession(new WindowSize(500, 500));
 
       var afterStart = ProcessSnapshot.CreateWithFilter(filter);
       ShutdownWebTestHelper(webTestHelper, testSuccess);

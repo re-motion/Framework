@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectType>Test</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>Remotion WebTesting Framework Integration Tests RequireUI</AssemblyTitle>
+    <AssemblyName>Remotion.Web.Development.WebTesting.IntegrationTests.RequireUI</AssemblyName>
+    <RootNamespace>Remotion.Web.Development.WebTesting.IntegrationTests</RootNamespace>
+    <SignAssembly>False</SignAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\*.png" LogicalName="$(AssemblyName).SavedTestScreenshots.$(RootNamespace).ScreenshotTest.%(Filename)%(Extension)"/>
+    <EmbeddedResource Include="SavedTestScreenshots\MouseTest\*.png" LogicalName="$(AssemblyName).SavedTestScreenshots.$(RootNamespace).MouseTest.%(Filename)%(Extension)"/>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <ProjectReference Include="..\Development.WebTesting.TestSite.NetFramework\Web.Development.WebTesting.TestSite.NetFramework.csproj" ReferenceOutputAssembly="false" ExcludeAssets="all" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
+    <ProjectReference Include="..\Development.WebTesting.TestSite\Web.Development.WebTesting.TestSite.csproj" ReferenceOutputAssembly="false" ExcludeAssets="all" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj" />
+    <ProjectReference Include="..\Development.WebTesting.IntegrationTests.Infrastructure\Web.Development.WebTesting.IntegrationTests.Infrastructure.csproj" />
+    <ProjectReference Include="..\Development.WebTesting.WebFormsControlObjects\Web.Development.WebTesting.WebFormsControlObjects.csproj" />
+    <ProjectReference Include="..\Development.WebTesting\Web.Development.WebTesting.csproj" />
+    <ProjectReference Include="..\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Development.WebTesting\Web.Development.WebTesting.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Development.WebTesting.IntegrationTests\TestExecutionScreenshotRecorderTest.cs">
+      <Link>TestExecutionScreenshotRecorderTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Development.WebTesting.IntegrationTests\BrowserWindowTest.cs">
+      <Link>BrowserWindowTest.cs</Link>
+    </Compile>
+    <Compile Include="..\Development.WebTesting.IntegrationTests\ScreenshotTest.Shared.cs">
+      <Link>ScreenshotTest.Shared.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="..\..\..\Build\Shared.build.targets" />
+</Project>

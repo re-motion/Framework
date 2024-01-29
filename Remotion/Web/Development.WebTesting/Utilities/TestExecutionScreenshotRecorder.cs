@@ -169,16 +169,20 @@ namespace Remotion.Web.Development.WebTesting.Utilities
           nativeDriver.SwitchTo().Window(windowHandle);
 
           var screenshot = Screenshot.TakeBrowserScreenshot(browserSession, locator);
-          var browserContentBounds = locator.GetBrowserContentBounds(nativeDriver);
 
-          using (var graphics = Graphics.FromImage(screenshot.Image))
+          if (!browserSession.Headless)
           {
-            var transformMatrix = new Matrix();
-            transformMatrix.Translate(-browserContentBounds.X, -browserContentBounds.Y);
+            var browserContentBounds = locator.GetBrowserContentBounds(nativeDriver);
 
-            graphics.Transform = transformMatrix;
+            using (var graphics = Graphics.FromImage(screenshot.Image))
+            {
+              var transformMatrix = new Matrix();
+              transformMatrix.Translate(-browserContentBounds.X, -browserContentBounds.Y);
 
-            GetCursorInformation().Draw(graphics);
+              graphics.Transform = transformMatrix;
+
+              GetCursorInformation().Draw(graphics);
+            }
           }
 
           var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath(_outputDirectory, testName, windowSuffix, "png");

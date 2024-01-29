@@ -17,19 +17,17 @@
 using System;
 using System.Drawing;
 using NUnit.Framework;
-using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
-  [RequiresUserInterface]
-  public class BrowserWindowTests : IntegrationTest
+  public partial class BrowserWindowTest : IntegrationTest
   {
-    protected override bool MaximizeMainBrowserSession
+    protected override WindowSize WindowSize
     {
-      get { return false; }
+      get { return new WindowSize(600, 600); }
     }
 
     public BrowserHelper BrowserHelper
@@ -61,38 +59,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       BrowserHelper.MoveBrowserWindowTo(window, position);
 
       Assert.That(BrowserHelper.GetWindowBounds(window).Location, Is.EqualTo(position), "Window position does not match the expected position.");
-    }
-
-    [Test]
-    public void Test_ContentPosition ()
-    {
-      var home = Start();
-      var window = home.Context.Window;
-
-      var offset = BrowserHelper.GetBrowserContentOffset(window);
-
-      var position = new Point(50, 50);
-      BrowserHelper.MoveBrowserWindowTo(window, position);
-
-      Assert.That(
-          BrowserHelper.GetBrowserContentBounds(window).Location,
-          Is.EqualTo(position + offset),
-          "Content position does not match the expected position.");
-    }
-
-    [Test]
-    public void Test_ContentSize ()
-    {
-      var home = Start();
-      var window = home.Context.Window;
-
-      var size = new Size(600, 600);
-      BrowserHelper.ResizeBrowserContentTo(window, size);
-
-      Assert.That(
-          BrowserHelper.GetBrowserContentBounds(window).Size,
-          Is.EqualTo(size),
-          "Browser content size does not match the expected size.");
     }
 
     private HtmlPageObject Start ()

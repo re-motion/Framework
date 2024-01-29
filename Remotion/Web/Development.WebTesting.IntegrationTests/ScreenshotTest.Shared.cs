@@ -19,10 +19,7 @@ using System.Drawing;
 using System.Threading;
 using Coypu;
 using NUnit.Framework;
-using Remotion.Web.Development.WebTesting.ControlObjects;
-using Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
@@ -31,13 +28,11 @@ using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
 using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
-using Remotion.Web.Development.WebTesting.WebFormsControlObjects.FluentScreenshots.Extensions;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
-  [RequiresUserInterface]
-  public class ScreenshotTest : IntegrationTest
+  public partial class ScreenshotTest
   {
     private const string c_nonBreakingSpace = " ";
 
@@ -185,41 +180,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       ScreenshotTestingDelegate<ElementScope> test = (builder, target) =>
       {
         Helper.BrowserConfiguration.BrowserAnnotateHelper.DrawTooltip(builder, target, GetTooltipStyleForCurrentBrowser());
-
         builder.Crop(target.ForElementScopeScreenshot(), new WebPadding(30, 60, 30, 60));
       };
 
       var home = Start();
       var element = home.Scope.FindId("tooltipTarget");
       Helper.RunScreenshotTestExact<ElementScope, ScreenshotTest>(element, ScreenshotTestingType.Both, test);
-    }
-
-    /// <summary>
-    /// Tests that the <see cref="ScreenshotTooltipAnnotation"/> is annotated correctly.
-    /// </summary>
-    [Category("Screenshot")]
-    [Test]
-    public void DrawCursorTooltip ()
-    {
-      ScreenshotTestingDelegate<ElementScope> test = (builder, target) =>
-      {
-        Helper.BrowserConfiguration.BrowserAnnotateHelper.DrawCursorTooltip(builder, Helper.MainBrowserSession, "title", GetTooltipStyleForCurrentBrowser());
-
-        builder.Crop(target.ForElementScopeScreenshot(), new WebPadding(30, 60, 30, 60));
-      };
-
-      var home = Start();
-      var mouseHelper = Helper.BrowserConfiguration.MouseHelper;
-      var element = home.Scope.FindId("tooltipTarget");
-
-      // ElementScope.Hover() cannot be used due to Chromedriver not moving the cursor to trigger the hover event.
-      mouseHelper.Hover(element);
-
-      // When drawing the Cursor tooltip, only ScreenshotTestingType.Desktop is supported.
-      Helper.RunScreenshotTestExact<ElementScope, ScreenshotTest>(element, ScreenshotTestingType.Desktop, test);
-
-      // Reset the cursor to the initial position (0, 0).
-      mouseHelper.Hover(Point.Empty);
     }
 
     /// <summary>
@@ -233,45 +199,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       {
         var annotationTarget = Helper.BrowserConfiguration.BrowserAnnotateHelper.DrawTooltip(builder, target, GetTooltipStyleForCurrentBrowser());
         builder.AnnotateBox(annotationTarget, Pens.Red);
-
         builder.Crop(target.ForElementScopeScreenshot(), new WebPadding(30, 60, 30, 60));
       };
 
       var home = Start();
       var element = home.Scope.FindId("tooltipTarget");
       Helper.RunScreenshotTestExact<ElementScope, ScreenshotTest>(element, ScreenshotTestingType.Both, test);
-    }
-
-    /// <summary>
-    /// Tests that the <see cref="ScreenshotTooltipAnnotation"/> is annotated correctly.
-    /// </summary>
-    [Category("Screenshot")]
-    [Test]
-    public void DrawCursorTooltip_WithFollowingBoxAnnotation ()
-    {
-      ScreenshotTestingDelegate<ElementScope> test = (builder, target) =>
-      {
-        var annotationTarget = Helper.BrowserConfiguration.BrowserAnnotateHelper.DrawCursorTooltip(
-            builder,
-            Helper.MainBrowserSession,
-            "title",
-            GetTooltipStyleForCurrentBrowser());
-        builder.AnnotateBox(annotationTarget, Pens.Red);
-
-        builder.Crop(target.ForElementScopeScreenshot(), new WebPadding(30, 60, 30, 60));
-      };
-
-      var home = Start();
-      var mouseHelper = Helper.BrowserConfiguration.MouseHelper;
-      var element = home.Scope.FindId("tooltipTarget");
-
-      // ElementScope.Hover() cannot be used due to Chromedriver not moving the mouse to trigger the hover event.
-      mouseHelper.Hover(element);
-
-      Helper.RunScreenshotTestExact<ElementScope, ScreenshotTest>(element, ScreenshotTestingType.Both, test);
-
-      // Reset the cursor to the initial position (0, 0).
-      mouseHelper.Hover(Point.Empty);
     }
 
     [Test]
@@ -413,225 +346,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
     [Category("Screenshot")]
     [Test]
-    public void DropDownList ()
-    {
-      WebPadding padding;
-      if (Helper.BrowserConfiguration.IsChromium())
-      {
-        padding = new WebPadding(2, 3, 2, 53);
-      }
-      else if (Helper.BrowserConfiguration.IsFirefox())
-      {
-        padding = new WebPadding(6, 1, 2, 68);
-      }
-      else
-      {
-        Assert.Fail("The current browser is not supported by this test.");
-        // ReSharper disable once HeuristicUnreachableCode
-        return;
-      }
-
-      ScreenshotTestingDelegate<FluentScreenshotElement<DropDownListControlObject>> test = (builder, target) =>
-      {
-        builder.AnnotateBox(target, Pens.Red, WebPadding.Inner);
-
-        builder.Crop(target, padding);
-      };
-
-      var home = Start();
-      var fluentDropDownList = home.DropDownLists().GetByLocalID("MyDropDownList").ForControlObjectScreenshot();
-      fluentDropDownList.Open();
-      Thread.Sleep(250);
-
-      Helper.RunScreenshotTest<FluentScreenshotElement<DropDownListControlObject>, DropDownListControlObjectTest>(
-          fluentDropDownList,
-          ScreenshotTestingType.Desktop,
-          test);
-    }
-
-    [Test]
-    public void DropDownList_WithDerivedControlObject ()
-    {
-      var home = Start();
-      var controlObject = new DerivedDropDownListControlObject(home.DropDownMenus().GetByLocalID("MyDropDownList").Context);
-      var fluentControlObject = controlObject.ForControlObjectScreenshot();
-
-      Assert.That(() => fluentControlObject.Open(), Throws.Nothing);
-    }
-
-    [Category("Screenshot")]
-    [Test]
-    public void DropDownMenu ()
-    {
-      ScreenshotTestingDelegate<FluentScreenshotElement<DropDownMenuControlObject>> test = (builder, target) =>
-      {
-        builder.AnnotateBox(target.GetMenu(), Pens.Magenta, WebPadding.Inner);
-
-        builder.AnnotateBox(target.SelectItem().WithDisplayText("  "), Pens.Red, WebPadding.Inner);
-        builder.AnnotateBox(target.SelectItem().WithDisplayTextContains(c_nonBreakingSpace), Pens.Green, WebPadding.Inner);
-        builder.AnnotateBox(target.SelectItem().WithHtmlID("body_MyDropDownMenu_2"), Pens.Blue, WebPadding.Inner);
-        builder.AnnotateBox(target.SelectItem().WithItemID("ItemID4"), Pens.Orange, WebPadding.Inner);
-        builder.AnnotateBox(target.SelectItem().WithIndex(5), Pens.Yellow, WebPadding.Inner);
-
-        builder.Crop(target.GetMenu(), new WebPadding(1));
-      };
-
-      var home = Start();
-      var fluentDropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu").ForControlObjectScreenshot();
-      fluentDropDownMenu.OpenMenu();
-      Thread.Sleep(250);
-
-      Helper.RunScreenshotTestExact<FluentScreenshotElement<DropDownMenuControlObject>, DropDownMenuControlObjectTest>(
-          fluentDropDownMenu,
-          ScreenshotTestingType.Both,
-          test);
-    }
-
-    [Category("Screenshot")]
-    [Test]
-    public void DropDownMenu_WithHiddenTitle ()
-    {
-      ScreenshotTestingDelegate<FluentScreenshotElement<DropDownMenuControlObject>> test = (builder, target) =>
-      {
-        builder.AnnotateBox(target, Pens.Magenta, WebPadding.Inner);
-
-        builder.Crop(target, new WebPadding(1));
-      };
-
-      var home = Start();
-      var fluentDropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenuWithHiddenTitle").ForControlObjectScreenshot();
-
-      Helper.RunScreenshotTestExact<FluentScreenshotElement<DropDownMenuControlObject>, DropDownMenuControlObjectTest>(
-          fluentDropDownMenu,
-          ScreenshotTestingType.Both,
-          test);
-    }
-
-    [Test]
-    public void DropDownMenu_WithDerivedControlObject ()
-    {
-      var home = Start();
-      var controlObject = new DerivedDropDownMenuControlObject(home.DropDownMenus().GetByLocalID("MyDropDownMenu").Context);
-      var fluentControlObject = controlObject.ForControlObjectScreenshot();
-
-      Assert.That(() => fluentControlObject.OpenMenu(), Throws.Nothing);
-      Assert.That(fluentControlObject.GetMenu(), Is.Not.Null);
-      Assert.That(fluentControlObject.SelectItem(), Is.Not.Null);
-    }
-
-    [Category("Screenshot")]
-    [Test]
-    public void ListMenu ()
-    {
-      ScreenshotTestingDelegate<FluentScreenshotElement<ListMenuControlObject>> test = (builder, target) =>
-      {
-        builder.AnnotateBox(target, Pens.Magenta, WebPadding.Inner);
-
-        builder.AnnotateBox(target.SelectItem().WithDisplayText("  "), Pens.Red, WebPadding.Inner);
-        builder.AnnotateBox(target.SelectItem().WithDisplayTextContains(c_nonBreakingSpace), Pens.Green, WebPadding.Inner);
-        builder.AnnotateBox(target.SelectItem().WithHtmlID("body_MyListMenu_2"), Pens.Blue, WebPadding.Inner);
-        builder.AnnotateBox(target.SelectItem().WithItemID("ItemID4"), Pens.Orange, WebPadding.Inner);
-        builder.AnnotateBox(target.SelectItem().WithIndex(5), Pens.Yellow, WebPadding.Inner);
-
-        builder.Crop(target, new WebPadding(1));
-      };
-
-      var home = Start();
-      var fluentListMenu = home.ListMenus().GetByLocalID("MyListMenu").ForControlObjectScreenshot();
-
-      Helper.RunScreenshotTestExact<FluentScreenshotElement<ListMenuControlObject>, ListMenuControlObjectTest>(
-          fluentListMenu,
-          ScreenshotTestingType.Both,
-          test);
-    }
-
-    [Test]
-    public void ListMenu_WithDerivedControlObject ()
-    {
-      var home = Start();
-      var controlObject = new DerivedListMenuControlObject(home.ListMenus().GetByLocalID("MyListMenu").Context);
-      var fluentControlObject = controlObject.ForControlObjectScreenshot();
-
-      Assert.That(fluentControlObject.SelectItem(), Is.Not.Null);
-    }
-
-    [Category("Screenshot")]
-    [Test]
-    public void TabbedMenu ()
-    {
-      ScreenshotTestingDelegate<FluentScreenshotElement<TabbedMenuControlObject>> test = (builder, target) =>
-      {
-        builder.AnnotateBox(target, Pens.Magenta, WebPadding.Inner);
-
-        builder.AnnotateBox(target.SelectItem().WithDisplayText("  "), Pens.Red, WebPadding.Inner);
-        builder.AnnotateBox(target.SelectItem().WithDisplayTextContains(c_nonBreakingSpace), Pens.Green, WebPadding.Inner);
-        builder.AnnotateBox(target.SelectItem().WithHtmlID("body_MyTabbedMenu_MainMenuTabStrip_ItemID3"), Pens.Blue, WebPadding.Inner);
-        builder.AnnotateBox(target.SelectItem().WithItemID("ItemID4"), Pens.Orange, WebPadding.Inner);
-        builder.AnnotateBox(target.SelectItem().WithIndex(5), Pens.Yellow, WebPadding.Inner);
-
-        var subMenu = target.GetSubMenu();
-        builder.AnnotateBox(subMenu.SelectItem().WithDisplayText("  "), Pens.Red, WebPadding.Inner);
-        builder.AnnotateBox(subMenu.SelectItem().WithDisplayTextContains(c_nonBreakingSpace), Pens.Green, WebPadding.Inner);
-        builder.AnnotateBox(subMenu.SelectItem().WithHtmlID("body_MyTabbedMenu_SubMenuTabStrip_ItemID3"), Pens.Blue, WebPadding.Inner);
-        builder.AnnotateBox(subMenu.SelectItem().WithItemID("ItemID4"), Pens.Orange, WebPadding.Inner);
-        builder.AnnotateBox(subMenu.SelectItem().WithIndex(5), Pens.Yellow, WebPadding.Inner);
-
-        builder.Crop(target, new WebPadding(1));
-      };
-
-      var home = Start();
-      var menu = home.TabbedMenus().GetByLocalID("MyTabbedMenu");
-      var fluentTabbedMenu = menu.ForControlObjectScreenshot();
-
-      Helper.RunScreenshotTestExact<FluentScreenshotElement<TabbedMenuControlObject>, TabbedMenuControlObjectTest>(
-          fluentTabbedMenu,
-          ScreenshotTestingType.Both,
-          test);
-    }
-
-    [Test]
-    public void TabbedMenu_WithDerivedControlObject ()
-    {
-      var home = Start();
-      var controlObject = new DerivedTabbedMenuControlObject(home.TabbedMenus().GetByLocalID("MyTabbedMenu").Context);
-      var fluentControlObject = controlObject.ForControlObjectScreenshot();
-
-      Assert.That(fluentControlObject.SelectItem(), Is.Not.Null);
-      var subMenu = fluentControlObject.GetSubMenu();
-      Assert.That(subMenu, Is.Not.Null);
-      var derivedSubMenu = SelfResolvableFluentScreenshot.Create(
-          new DerivedScreenshotTabbedSubMenu(subMenu.GetTarget().FluentTabbedMenu, subMenu.GetTarget().FluentElement));
-      Assert.That(derivedSubMenu.SelectItem(), Is.Not.Null);
-    }
-
-    [Category("Screenshot")]
-    [Test]
-    public void WebTabStrip ()
-    {
-      ScreenshotTestingDelegate<FluentScreenshotElement<WebTabStripControlObject>> test = (builder, target) =>
-      {
-        builder.AnnotateBox(target, Pens.Magenta, WebPadding.Inner);
-
-        builder.AnnotateBox(target.SelectItem().WithDisplayText("  "), Pens.Red, WebPadding.Inner);
-        builder.AnnotateBox(target.SelectItem().WithDisplayTextContains(c_nonBreakingSpace), Pens.Green, WebPadding.Inner);
-        builder.AnnotateBox(target.SelectItem().WithHtmlID("body_MyTabStrip_ItemID3"), Pens.Blue, WebPadding.Inner);
-        builder.AnnotateBox(target.SelectItem().WithItemID("ItemID4"), Pens.Orange, WebPadding.Inner);
-        builder.AnnotateBox(target.SelectItem().WithIndex(5), Pens.Yellow, WebPadding.Inner);
-
-        builder.Crop(target, new WebPadding(1));
-      };
-
-      var home = Start();
-      var fluentTabStrip = home.WebTabStrips().GetByLocalID("MyTabStrip").ForControlObjectScreenshot();
-
-      Helper.RunScreenshotTestExact<FluentScreenshotElement<WebTabStripControlObject>, WebTabStripControlObjectTest>(
-          fluentTabStrip,
-          ScreenshotTestingType.Both,
-          test);
-    }
-
-    [Category("Screenshot")]
-    [Test]
     public void ElementOutOfBounds ()
     {
       var home = Start();
@@ -680,55 +394,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       }
     }
 
-    [Test]
-    public void WebTabStrip_WithDerivedControlObject ()
-    {
-      var home = Start();
-      var controlObject = new DerivedWebTabStripControlObject(home.TabbedMenus().GetByLocalID("MyTabStrip").Context);
-      var fluentControlObject = controlObject.ForControlObjectScreenshot();
-
-      Assert.That(fluentControlObject.SelectItem(), Is.Not.Null);
-    }
-
-    [Category("Screenshot")]
-    [Test]
-    public void WebTreeView ()
-    {
-      ScreenshotTestingDelegate<FluentScreenshotElement<ScreenshotWebTreeViewNodeControlObject>> test = (builder, target) =>
-      {
-        builder.AnnotateBox(target, Pens.Red, WebPadding.Inner);
-        builder.AnnotateBox(target.GetLabel(), Pens.Green, WebPadding.Inner);
-        builder.AnnotateBox(target.GetChildren(), Pens.Blue, WebPadding.Inner);
-
-        builder.Crop(target, new WebPadding(1));
-      };
-
-      var home = Start();
-      var webTreeView = home.WebTreeViews().GetByLocalID("MyWebTreeView");
-      var fluentNode = webTreeView.GetNode().WithItemID("ItemA").ForScreenshot();
-
-      Helper.RunScreenshotTestExact<FluentScreenshotElement<ScreenshotWebTreeViewNodeControlObject>, WebTreeViewControlObjectTest>(
-          fluentNode,
-          ScreenshotTestingType.Both,
-          test);
-    }
-
-    [Test]
-    public void WebTreeView_WithDerivedControlObject ()
-    {
-      var home = Start();
-      var controlObject = new DerivedWebTreeViewControlObject(home.WebTreeViews().GetByLocalID("MyWebTreeView").Context);
-      var fluentControlObject = controlObject.ForControlObjectScreenshot();
-      Assert.That(fluentControlObject, Is.Not.Null);
-
-      var fluentNode = controlObject.GetNode().WithItemID("ItemA").ForScreenshot();
-      var derivedNode = SelfResolvableFluentScreenshot.Create(
-          new DerivedScreenshotWebTreeViewNodeControlObject(fluentNode.GetTarget().FluentWebTreeViewNode, fluentNode.GetTarget().FluentElement));
-
-      Assert.That(derivedNode.GetChildren(), Is.Not.Null);
-      Assert.That(derivedNode.GetLabel(), Is.Not.Null);
-    }
-
     /// <summary>
     /// Tests using an implementation of <see cref="IScreenshotTransformation{T}"/>, drawing three overlapping ellipses with specified Z indices
     /// and manipulating the height of the resolved element.
@@ -742,10 +407,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
           {
             var transformations = new ScreenshotTransformationCollection<ControlObject>
                                   {
-                                      new EllipseScreenshotTransformation<ControlObject>(50, 50, Brushes.Aqua, 3),
-                                      new EllipseScreenshotTransformation<ControlObject>(50, 50, Brushes.Red, 2, new Point(30, 0)),
-                                      new EllipseScreenshotTransformation<ControlObject>(50, 50, Brushes.Yellow, 4, new Point(60, 0)),
-                                      new RemovePixelsFromBottomScreenshotTransformation<ControlObject>(30)
+                                    new EllipseScreenshotTransformation<ControlObject>(50, 50, Brushes.Aqua, 3),
+                                    new EllipseScreenshotTransformation<ControlObject>(50, 50, Brushes.Red, 2, new Point(30, 0)),
+                                    new EllipseScreenshotTransformation<ControlObject>(50, 50, Brushes.Yellow, 4, new Point(60, 0)),
+                                    new RemovePixelsFromBottomScreenshotTransformation<ControlObject>(30)
                                   };
             var fluentScreenshotElement = target.ForControlObjectScreenshot();
             ((IFluentScreenshotElement<ControlObject>)fluentScreenshotElement).Transformations = transformations;
@@ -804,74 +469,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private HtmlPageObject Start ()
     {
       return Start<HtmlPageObject>("ScreenshotTest.wxe");
-    }
-
-    private class DerivedDropDownListControlObject : DropDownListControlObject
-    {
-      public DerivedDropDownListControlObject (ControlObjectContext context)
-          : base(context)
-      {
-      }
-    }
-
-    private class DerivedDropDownMenuControlObject : DropDownMenuControlObject
-    {
-      public DerivedDropDownMenuControlObject (ControlObjectContext context)
-          : base(context)
-      {
-      }
-    }
-
-    private class DerivedListMenuControlObject : ListMenuControlObject
-    {
-      public DerivedListMenuControlObject (ControlObjectContext context)
-          : base(context)
-      {
-      }
-    }
-
-    private class DerivedTabbedMenuControlObject : TabbedMenuControlObject
-    {
-      public DerivedTabbedMenuControlObject (ControlObjectContext context)
-          : base(context)
-      {
-      }
-    }
-
-    private class DerivedScreenshotTabbedSubMenu : ScreenshotTabbedSubMenu
-    {
-      public DerivedScreenshotTabbedSubMenu (
-          IFluentScreenshotElementWithCovariance<TabbedMenuControlObject> fluentTabbedMenu,
-          IFluentScreenshotElement<ElementScope> fluentElement)
-          : base(fluentTabbedMenu, fluentElement)
-      {
-      }
-    }
-
-    private class DerivedWebTabStripControlObject : WebTabStripControlObject
-    {
-      public DerivedWebTabStripControlObject (ControlObjectContext context)
-          : base(context)
-      {
-      }
-    }
-
-    private class DerivedWebTreeViewControlObject : WebTreeViewControlObject
-    {
-      public DerivedWebTreeViewControlObject (ControlObjectContext context)
-          : base(context)
-      {
-      }
-    }
-
-    private class DerivedScreenshotWebTreeViewNodeControlObject : ScreenshotWebTreeViewNodeControlObject
-    {
-      public DerivedScreenshotWebTreeViewNodeControlObject (
-          IFluentScreenshotElementWithCovariance<WebTreeViewNodeControlObject> fluentWebTreeViewNode,
-          IFluentScreenshotElement<ElementScope> fluentElement)
-          : base(fluentWebTreeViewNode, fluentElement)
-      {
-      }
     }
 
     private class EllipseScreenshotTransformation<T> : IScreenshotTransformation<T>
