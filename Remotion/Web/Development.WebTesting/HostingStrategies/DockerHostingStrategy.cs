@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -34,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     private readonly IisDockerContainerWrapper _iisDockerContainerWrapper;
 
     public DockerHostingStrategy (
-        [NotNull] TestSiteLayoutConfiguration testSiteLayoutConfiguration,
+        [NotNull] ITestSiteLayoutConfiguration testSiteLayoutConfiguration,
         int port,
         [NotNull] string dockerImageName,
         [CanBeNull] string? dockerIsolationMode,
@@ -74,7 +75,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     /// <param name="testSiteLayoutConfiguration">The configuration of the used test site.</param>
     /// <param name="properties">The configuration properties.</param>
     [UsedImplicitly]
-    public DockerHostingStrategy ([NotNull] TestSiteLayoutConfiguration testSiteLayoutConfiguration, [NotNull] NameValueCollection properties)
+    public DockerHostingStrategy ([NotNull] ITestSiteLayoutConfiguration testSiteLayoutConfiguration, [NotNull] IReadOnlyDictionary<string, string> properties)
         : this(
             testSiteLayoutConfiguration,
             int.Parse(ArgumentUtility.CheckNotNull("properties", properties)["port"]!),

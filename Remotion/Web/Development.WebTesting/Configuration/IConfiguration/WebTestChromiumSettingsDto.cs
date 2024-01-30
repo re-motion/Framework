@@ -14,30 +14,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using Remotion.Web.Development.WebTesting.HostingStrategies;
+#if !NETFRAMEWORK
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 
-namespace Remotion.Web.Development.WebTesting.Configuration
+namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
 {
   /// <summary>
-  /// Represents settings for the <see cref="IHostingStrategy"/> used to host the web test site.
+  /// DTO object for <see cref="IWebTestChromiumSettings"/>, which is deserialized by the .NET configuration infrastructure.
   /// </summary>
-  public interface IWebTestHostingSettings
+  public record WebTestChromiumSettingsDto : IWebTestChromiumSettings
   {
-    /// <summary>
-    /// Gets or sets the name of the <see cref="IHostingStrategy"/> configured by this class.
-    /// </summary>
-    string Name { get; }
-
-    /// <summary>
-    /// Gets or sets the type of the <see cref="IHostingStrategy"/> configured by this class.
-    /// </summary>
-    string Type { get; }
-
-    /// <summary>
-    /// Gets a collection of user-defined parameters for the <see cref="IHostingStrategy"/>.
-    /// </summary>
-    IReadOnlyDictionary<string, string> Parameters { get; }
+    /// <inheritdoc />
+    public ChromiumDisableSecurityWarningsBehavior DisableSecurityWarningsBehavior { get; init; } = ChromiumDisableSecurityWarningsBehavior.Ignore;
   }
 }
+#endif
