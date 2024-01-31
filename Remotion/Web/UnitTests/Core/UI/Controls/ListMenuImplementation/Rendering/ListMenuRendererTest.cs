@@ -207,6 +207,54 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       wrapper.AssertAttributeValueEquals(DiagnosticMetadataAttributes.IsDisabled, (!_control.Object.Enabled).ToString().ToLower());
     }
 
+    [Test]
+    public void Render_WithNoHeading_NoHeaderAndNoLabelledBy ()
+    {
+      SetUpGetPostBackLinkExpectations(true);
+
+      _control.Setup(e => e.Heading).Returns(WebString.Empty);
+      var wrapper = GetAssertedWrapper();
+
+      wrapper.AssertNoAttribute("aria-labelledby");
+      wrapper.AssertChildElementCount(1);
+    }
+
+    [Test]
+    public void Render_WithHeadingButNoHeadingLevel_RendersAndLinksSpan ()
+    {
+      SetUpGetPostBackLinkExpectations(true);
+
+      _control.Setup(e => e.Heading).Returns(WebString.CreateFromText("My heading"));
+      _control.Setup(e => e.HeadingLevel).Returns((HeadingLevel?)null);
+      var wrapper = GetAssertedWrapper();
+
+      wrapper.AssertAttributeValueEquals("aria-labelledby", "MyListMenu_Heading");
+
+      var span = wrapper.GetAssertedChildElement("span", 0);
+      span.AssertAttributeValueEquals("id", "MyListMenu_Heading");
+      span.AssertNoAttribute("class");
+      span.AssertAttributeValueEquals("hidden", "hidden");
+      Assert.That(span.InnerText, Is.EqualTo("My heading"));
+    }
+
+    [Test]
+    public void Render_WithHeadingAndHeadingLevel_RendersAndLinksHxElement ()
+    {
+      SetUpGetPostBackLinkExpectations(true);
+
+      _control.Setup(e => e.Heading).Returns(WebString.CreateFromText("My heading"));
+      _control.Setup(e => e.HeadingLevel).Returns(HeadingLevel.H2);
+      var wrapper = GetAssertedWrapper();
+
+      wrapper.AssertAttributeValueEquals("aria-labelledby", "MyListMenu_Heading");
+
+      var h2 = wrapper.GetAssertedChildElement("h2", 0);
+      h2.AssertAttributeValueEquals("id", "MyListMenu_Heading");
+      h2.AssertAttributeValueEquals("class", "screenReaderText");
+      h2.AssertNoAttribute("hidden");
+      h2.AssertTextNode("My heading", 0);
+    }
+
     private XmlNode GetAssertedWrapper ()
     {
       var renderer = new ListMenuRenderer(new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.WithDiagnosticMetadata, new FakeFallbackNavigationUrlProvider());

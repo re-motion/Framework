@@ -80,8 +80,13 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
       RegisterMenuItems(renderingContext);
 
+      var headingID = renderingContext.Control.ClientID + "_Heading";
+      var hasHeading = !renderingContext.Control.Heading.IsEmpty;
+
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassListMenu);
+      if (hasHeading)
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaLabelledBy, headingID);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Region);
 
       if (IsDiagnosticMetadataRenderingEnabled)
@@ -89,15 +94,15 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-      var headingID = renderingContext.Control.ClientID + "_Heading";
-      var hasHeading = !renderingContext.Control.Heading.IsEmpty;
-
       if (hasHeading)
       {
         var heading = renderingContext.Control.Heading;
         var tag = GetTagFromHeadingLevel(renderingContext.Control.HeadingLevel);
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, headingID);
-        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassDefinition.ScreenReaderText);
+        if (tag == HtmlTextWriterTag.Span)
+          renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+        else
+          renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassDefinition.ScreenReaderText);
         renderingContext.Writer.RenderBeginTag(tag);
         heading.WriteTo(renderingContext.Writer);
         renderingContext.Writer.RenderEndTag();
