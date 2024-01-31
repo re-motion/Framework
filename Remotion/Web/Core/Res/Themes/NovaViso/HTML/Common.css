@@ -430,21 +430,25 @@ a.remotion-themed:focus,
   outline: none;
 }
 
-select.remotion-themed,
-textarea.remotion-themed,
-.remotion-themed select,
-.remotion-themed textarea
+/* If either scrollbar-width`/`scrollbar-color` is specified, the `::-webkit-scrollbar` selectors won't work  */
+@supports not selector(::-webkit-scrollbar)
 {
-  scrollbar-width: var(--remotion-themed-scrollbar-style);
-  scrollbar-color: var(--remotion-themed-scrollbar-color-thumb) var(--remotion-themed-background-color-control);
-}
+  select.remotion-themed,
+  textarea.remotion-themed,
+  .remotion-themed select,
+  .remotion-themed textarea
+  {
+    scrollbar-width: var(--remotion-themed-scrollbar-style);
+    scrollbar-color: var(--remotion-themed-scrollbar-color-thumb) var(--remotion-themed-background-color-control);
+  }
 
-select.remotion-themed:disabled,
-textarea.remotion-themed:disabled,
-.remotion-themed select:disabled,
-.remotion-themed textarea:disabled
-{
-  scrollbar-color: var(--color-disabled-border) var(--remotion-themed-background-color-disabled);
+  select.remotion-themed:disabled,
+  textarea.remotion-themed:disabled,
+  .remotion-themed select:disabled,
+  .remotion-themed textarea:disabled
+  {
+    scrollbar-color: var(--color-disabled-border) var(--remotion-themed-background-color-disabled);
+  }  
 }
 
 select.remotion-themed::-webkit-scrollbar,
@@ -514,8 +518,22 @@ img.disabled,
 .remotion-themed.scrollable
 {
   overflow: auto;
-  scrollbar-width: var(--remotion-themed-scrollbar-style);
-  scrollbar-color: var(--remotion-themed-scrollbar-color);
+}
+
+.remotion-themed.scrollable > *
+{
+  scrollbar-color: initial; /* Stop inheriting the scrollbar color to child elements */
+  scrollbar-width: initial; /* Stop inheriting the scrollbar width to child elements */
+}
+
+/* If either scrollbar-width`/`scrollbar-color` is specified, the `::-webkit-scrollbar` selectors won't work  */
+@supports not selector(::-webkit-scrollbar)
+{
+  .remotion-themed.scrollable
+  {
+    scrollbar-width: var(--remotion-themed-scrollbar-style);
+    scrollbar-color: var(--remotion-themed-scrollbar-color);
+  }
 }
 
 .remotion-themed.scrollable::-webkit-scrollbar-thumb
@@ -529,12 +547,6 @@ img.disabled,
   background-color: var(--remotion-themed-scrollbar-color-track);
   width: var(--remotion-themed-scrollbar-width);
   height: var(--remotion-themed-scrollbar-width);
-}
-
-.remotion-themed.scrollable > *
-{
-  scrollbar-color: initial; /* Stop inheriting the scrollbar color to child elements */
-  scrollbar-width: initial; /* Stop inheriting the scrollbar width to child elements */
 }
 
 .screenReaderText

@@ -42,9 +42,18 @@ div.singleViewView > div.contentBorder
   overflow: auto;
   /* for symmetry with TabbedMultiView */
   border: var(--remotion-themed-border-placeholder);
-  scrollbar-width: var(--remotion-themed-scrollbar-style);
-  scrollbar-color: var(--remotion-themed-scrollbar-color);
+  
   height: 100%;
+}
+
+/* If either scrollbar-width`/`scrollbar-color` is specified, the `::-webkit-scrollbar` selectors won't work  */
+@supports not selector(::-webkit-scrollbar)
+{
+  div.singleViewView > div.contentBorder
+  {
+    scrollbar-width: var(--remotion-themed-scrollbar-style);
+    scrollbar-color: var(--remotion-themed-scrollbar-color);
+  }
 }
 
 div.singleViewView > div.contentBorder::-webkit-scrollbar-thumb
