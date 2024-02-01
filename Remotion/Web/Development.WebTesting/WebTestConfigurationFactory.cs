@@ -51,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting
     /// Represents the latest version of Edge verified to be compatible with the framework.
     /// In order to achieve a stable testing environment, a standalone Edge browser with a matching MSEdgeDriver version should be used.
     /// </summary>
-    protected const string LatestTestedEdgeVersion = "110";
+    protected const string LatestTestedEdgeVersion = "121";
 
     /// <summary>
     /// Represents the latest version of Firefox verified to be compatible with Selenium WebDriver.
