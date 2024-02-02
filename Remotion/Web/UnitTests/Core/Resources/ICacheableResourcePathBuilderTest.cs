@@ -15,28 +15,39 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using NUnit.Framework;
+using Remotion.ServiceLocation;
 using Remotion.Web.Resources;
 
-namespace Remotion.Development.Web.UnitTesting.Resources
+namespace Remotion.Web.UnitTests.Core.Resources
 {
-  /// <summary>
-  /// Fake implementation of the <see cref="IResourcePathBuilder"/> interface, intended for use in unit testing.
-  /// </summary>
-  public class FakeResourcePathBuilder : ResourcePathBuilderBase
+  [TestFixture]
+  public class ICacheableResourcePathBuilderTest
   {
-    public FakeResourcePathBuilder ()
-        : base(new NullStaticResourceCacheKeyProvider())
+    private DefaultServiceLocator _serviceLocator;
+
+    [SetUp]
+    public void SetUp ()
     {
+      _serviceLocator = DefaultServiceLocator.Create();
     }
 
-    protected override string GetResourceRoot ()
+    [Test]
+    public void GetInstance_Once ()
     {
-      return "/fake";
+      var factory = _serviceLocator.GetInstance<ICacheableResourcePathBuilder>();
+
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof(CacheableResourcePathBuilder)));
     }
 
-    protected override string BuildPath (string[] completePath)
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      return string.Join("/", completePath);
+      var factory1 = _serviceLocator.GetInstance<ICacheableResourcePathBuilder>();
+      var factory2 = _serviceLocator.GetInstance<ICacheableResourcePathBuilder>();
+
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

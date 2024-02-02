@@ -18,6 +18,6 @@ namespace Remotion.Web.Test.Shared
 {
   public static class TestResourceType
   {
-    public static readonly ResourceType Root = new ResourceType(".");
+    public static readonly ResourceType Root = new ResourceType(".", false);
   }
 }

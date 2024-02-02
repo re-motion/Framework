@@ -29,9 +29,6 @@ namespace Remotion.Web.Resources
   ///   </para><para>
   ///     The <b>resource root</b> is loaded from the application configuration, <see cref="ResourceRoot"/>, and
   ///     defaults to <c>/&lt;AppDir&gt;/res</c>, e.g. <c>/WebApplication/res/Remotion.Web/Html/Utilities.js</c>.
-  ///   </para><para>
-  ///     The <b>resource root</b> is mapped to the environment variable <c>REMOTIONRESOURCES</c>,
-  ///     or if the variable does not exist, <c>C:\Remotion.Resources</c>.
   ///   </para>
   /// </remarks>
   /// <seealso cref="ResourcePathBuilder"/>
