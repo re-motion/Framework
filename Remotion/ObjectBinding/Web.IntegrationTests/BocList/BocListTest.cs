@@ -15,8 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests;
+using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 
@@ -120,6 +122,20 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocList
       // .GetValidationErrors() uses screen reader info, but does not check that the text is actually visible so we also test the form grid message
       var formGridValidationMessage = bocList.Scope.FindXPath("ancestor::td//*[@class='formGridValidationMessage']").Text;
       Assert.That(formGridValidationMessage, Is.EqualTo("Invalid input on at least one other page."));
+    }
+
+    [Test]
+    public void RowMenuItemClick_TriggersPostbackHandlerOnServer ()
+    {
+      var home = Start();
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+
+      bocList.GetRow(2).GetDropDownMenu().SelectItem().WithIndex(1);
+
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderLabel").Text, Is.EqualTo("JobList_Normal"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderRowLabel").Text, Is.EqualTo("1"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedLabel").Text, Is.EqualTo("RowContextMenuClick"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedParameterLabel").Text, Is.EqualTo("RowMenuItemCmd1|Row menu 1"));
     }
 
     private WxePageObject Start ()

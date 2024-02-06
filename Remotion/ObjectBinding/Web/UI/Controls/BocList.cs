@@ -455,7 +455,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         var columns = EnsureColumnsGot();
         EnsureEditModeRestored();
-        EnsureRowMenusInitialized();
+        InitializeRowMenuFromPostback();
         EnsureCustomColumnsInitialized(columns);
       }
     }
