@@ -53,12 +53,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
                                                                {
                                                                    "BrowserRootView",
                                                                    "NonClientView",
-                                                                   "GlassBrowserFrameView",
+                                                                   "BrowserFrameViewWin",
                                                                    "BrowserView",
                                                                    "SidebarContentsSplitView",
                                                                    "SidebarContentsSplitView",
                                                                    "SidebarContentsSplitView",
                                                                    "SidebarContentsSplitView",
+                                                                   "SidebarContentsSplitView",
+                                                                   "SplitWindowContainerView",
                                                                    "View"
                                                                };
 
