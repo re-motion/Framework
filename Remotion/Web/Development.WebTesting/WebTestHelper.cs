@@ -217,7 +217,7 @@ namespace Remotion.Web.Development.WebTesting
         var browserResult = _browserConfiguration.BrowserFactory.CreateBrowser(mergedDriverConfiguration);
         _browserSessions.Add(browserResult);
 
-        windowSize ??= WindowSize.Maximized;
+        windowSize ??= mergedDriverConfiguration.Headless ? new WindowSize(1280, 900) : WindowSize.Maximized;
 
         if (windowSize.IsMaximized)
           browserResult.Window.MaximiseWindow();
