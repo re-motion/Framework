@@ -37,11 +37,26 @@ namespace Remotion.Web
     /// <code>
     /// new WxeResourcePageStep(typeof(int), "Test.aspx"); // &lt;-- RMWEB0003 emitted
     /// new WxeResourcePageStep(typeof(string), new WxeVariableReference("test")); // &lt;-- RMWEB0003 emitted
-    /// vs.
+  /// vs.
     /// new WxeResourcePageStep(typeof(MyClass), "Test.aspx"); // &lt;-- OK (assuming MyClass is the declaring class, or it is in part of the same assembly)
     /// new WxeResourcePageStep(typeof(MyClass), new WxeVariableReference("test")); // &lt;-- OK (see comment above)
     /// </code>
     /// </example>
     public const string RMWEB0003_PossiblyInvalidTypeForWxeResourcePageStepConstructor = "RMWEB0003";
+
+    /// <summary>
+    /// Diagnostic ID reported when a non typeof(xxx) value is passed to the constructor of WxeResourcePageStep.
+    /// The API is intended to be used with a typeof(xxx), otherwise Type.Assembly should be passed instead.
+    /// </summary>
+    /// <example>
+    /// <code>
+    /// new WxeResourcePageStep(value.GetType(), "Test.aspx"); // &lt;-- RMWEB0004 emitted
+    /// new WxeResourcePageStep(myType, new WxeVariableReference("test")); // &lt;-- RMWEB0004 emitted
+    /// // vs.
+    /// new WxeResourcePageStep(value.GetType().Assembly, "Test.aspx"); // &lt;-- OK
+    /// new WxeResourcePageStep(myType.Assembly, new WxeVariableReference("test")); // &lt;-- OK
+    /// </code>
+    /// </example>
+    public const string RMWEB0004_NonTypeofValuePassedToWxeResourcePageStepCosntructur = "RMWEB0004";
   }
 }
