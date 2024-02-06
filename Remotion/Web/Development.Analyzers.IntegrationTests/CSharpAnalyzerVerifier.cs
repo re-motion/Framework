@@ -41,6 +41,8 @@ namespace Remotion.Web.Development.Analyzers.IntegrationTests
 
     public static DiagnosticResult Diagnostic () => AnalyzerVerifier<TAnalyzer>.Diagnostic();
 
+    public static DiagnosticResult Diagnostic (DiagnosticDescriptor descriptor) => AnalyzerVerifier<TAnalyzer>.Diagnostic(descriptor);
+
     public static Task VerifyAnalyzerAsync (string source, params DiagnosticResult[] expected)
     {
       var remotionWebAssemblyLocation = typeof(WebString).Assembly.Location;
