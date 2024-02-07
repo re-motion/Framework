@@ -43,9 +43,17 @@ div.tabbedMultiViewActiveView > div.contentBorder
   overflow: auto;
   /* Offset for focus-border */
   border: var(--remotion-themed-border-placeholder);
-  scrollbar-width: var(--remotion-themed-scrollbar-style);
-  scrollbar-color: var(--remotion-themed-scrollbar-color);
   height: 100%;
+}
+
+/* If either scrollbar-width`/`scrollbar-color` is specified, the `::-webkit-scrollbar` selectors won't work  */
+@supports not selector(::-webkit-scrollbar)
+{
+  div.tabbedMultiViewActiveView > div.contentBorder
+  {
+    scrollbar-width: var(--remotion-themed-scrollbar-style);
+    scrollbar-color: var(--remotion-themed-scrollbar-color);
+  }
 }
 
 div.tabbedMultiViewActiveView > div.contentBorder::-webkit-scrollbar-thumb
@@ -71,8 +79,16 @@ div.tabbedMultiViewActiveView > div.contentBorder > div.content
 {
   height: 100%;
   box-sizing: border-box;
-  scrollbar-color: initial; /* Stop inheriting the scrollbar color to child elements */
-  scrollbar-width: initial; /* Stop inheriting the scrollbar width to child elements */
+}
+
+/* If either scrollbar-width`/`scrollbar-color` is specified, the `::-webkit-scrollbar` selectors won't work  */
+@supports not selector(::-webkit-scrollbar)
+{
+  div.tabbedMultiViewActiveView > div.contentBorder > div.content
+  {
+    scrollbar-color: initial; /* Stop inheriting the scrollbar color to child elements */
+    scrollbar-width: initial; /* Stop inheriting the scrollbar width to child elements */
+  }
 }
 
 /* Applied to the top section of the multi view. */
