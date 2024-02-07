@@ -447,58 +447,6 @@ textarea.remotion-themed:disabled,
   scrollbar-color: var(--color-disabled-border) var(--remotion-themed-background-color-disabled);
 }
 
-select.remotion-themed::-webkit-scrollbar,
-textarea.remotion-themed::-webkit-scrollbar,
-.remotion-themed select::-webkit-scrollbar,
-.remotion-themed textarea::-webkit-scrollbar
-{
-  width: var(--remotion-themed-popup-scrollbar-width);
-}
-
-select.remotion-themed::-webkit-scrollbar-track,
-textarea.remotion-themed::-webkit-scrollbar-track,
-.remotion-themed select::-webkit-scrollbar-track,
-.remotion-themed textarea::-webkit-scrollbar-track
-{
-  background-color: var(--remotion-themed-popup-scrollbar-color-track);
-}
-
-select.remotion-themed:not(:disabled):hover::-webkit-scrollbar-track,
-.remotion-themed select:not(:disabled):hover::-webkit-scrollbar-track
-{
-  background-color: var(--remotion-themed-background-color-control);
-}
-
-select.remotion-themed:disabled:hover::-webkit-scrollbar-track,
-.remotion-themed select:disabled:hover::-webkit-scrollbar-track
-{
-  background-color: var(--remotion-themed-background-color-disabled);
-}
-
-select.remotion-themed::-webkit-scrollbar-thumb,
-textarea.remotion-themed::-webkit-scrollbar-thumb,
-.remotion-themed select::-webkit-scrollbar-thumb,
-.remotion-themed textarea::-webkit-scrollbar-thumb
-{
-  border-radius: var(--remotion-themed-popup-scrollbar-border-radius);
-}
-
-select.remotion-themed:not(:disabled)::-webkit-scrollbar-thumb,
-textarea.remotion-themed:not(:disabled)::-webkit-scrollbar-thumb,
-.remotion-themed select:not(:disabled)::-webkit-scrollbar-thumb,
-.remotion-themed textarea:not(:disabled)::-webkit-scrollbar-thumb
-{
-  background-color: var(--remotion-themed-popup-scrollbar-color-thumb);
-}
-
-select.remotion-themed:disabled::-webkit-scrollbar-thumb,
-textarea.remotion-themed:disabled::-webkit-scrollbar-thumb,
-.remotion-themed select:disabled::-webkit-scrollbar-thumb,
-.remotion-themed textarea:disabled::-webkit-scrollbar-thumb
-{
-  background-color: var(--color-disabled-border);
-}
-
 button.remotion-themed:disabled img,
 .remotion-themed.disabled img,
 .remotion-themed button:disabled img,
@@ -516,19 +464,6 @@ img.disabled,
   overflow: auto;
   scrollbar-width: var(--remotion-themed-scrollbar-style);
   scrollbar-color: var(--remotion-themed-scrollbar-color);
-}
-
-.remotion-themed.scrollable::-webkit-scrollbar-thumb
-{
-  background-color: var(--remotion-themed-scrollbar-color-thumb);
-  border-radius: var(--remotion-themed-scrollbar-border-radius);
-}
-
-.remotion-themed.scrollable::-webkit-scrollbar
-{
-  background-color: var(--remotion-themed-scrollbar-color-track);
-  width: var(--remotion-themed-scrollbar-width);
-  height: var(--remotion-themed-scrollbar-width);
 }
 
 .remotion-themed.scrollable > *

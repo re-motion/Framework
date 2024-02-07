@@ -22,19 +22,6 @@
   scrollbar-color: var(--remotion-themed-popup-scrollbar-color);
 }
 
-.ac_results > div::-webkit-scrollbar-thumb
-{
-  background-color: var(--remotion-themed-popup-scrollbar-color-thumb);
-  border-radius: var(--remotion-themed-popup-scrollbar-border-radius);
-}
-
-.ac_results > div::-webkit-scrollbar
-{
-  background-color: var(--remotion-themed-popup-scrollbar-color-track);
-  width: var(--remotion-themed-popup-scrollbar-width);
-  height: var(--remotion-themed-popup-scrollbar-width);
-}
-
 .ac_results ul
 {
   list-style-position: outside;
