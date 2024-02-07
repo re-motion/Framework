@@ -44,10 +44,18 @@ div.bocList.hasDimensions  div.bocListTableBlock div.bocListTableContainer
 div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListTableScrollContainer
 {
   background-color: var(--remotion-themed-background-color-page);
-  scrollbar-width: var(--remotion-themed-scrollbar-style);
-  scrollbar-color: var(--remotion-themed-scrollbar-color);
   display: block;
   overflow: auto;
+}
+
+/* If either scrollbar-width`/`scrollbar-color` is specified, the `::-webkit-scrollbar` selectors won't work  */
+@supports not selector(::-webkit-scrollbar)
+{
+  div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListTableScrollContainer
+  {
+    scrollbar-width: var(--remotion-themed-scrollbar-style);
+    scrollbar-color: var(--remotion-themed-scrollbar-color);
+  }
 }
 
 div.bocList.hasDimensions div.bocListTableBlock div.bocListTableContainer div.bocListTableScrollContainer
@@ -427,8 +435,16 @@ div.bocList div.bocListTableBlock tr.bocListValidationRow div
   position: sticky;
   left: 0;
   overflow-x: auto;
-  scrollbar-width: var(--remotion-themed-scrollbar-style);
-  scrollbar-color: var(--remotion-themed-scrollbar-color);
+}
+
+/* If either scrollbar-width`/`scrollbar-color` is specified, the `::-webkit-scrollbar` selectors won't work  */
+@supports not selector(::-webkit-scrollbar)
+{
+  div.bocList div.bocListTableBlock tr.bocListValidationRow div
+  {
+    scrollbar-width: var(--remotion-themed-scrollbar-style);
+    scrollbar-color: var(--remotion-themed-scrollbar-color);
+  }
 }
 
 div.bocList div.bocListTableBlock tr.bocListValidationRow div::-webkit-scrollbar
