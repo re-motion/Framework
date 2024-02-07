@@ -17,7 +17,7 @@
 using System;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Verifier = Remotion.Web.Development.Analyzers.IntegrationTests.CSharpAnalyzerVerifier<Web.Development.Analyzers.RMWEB0001_WebStringAnalyzer>;
+using Verifier = Remotion.Web.Development.Analyzers.IntegrationTests.CSharpAnalyzerVerifier<Remotion.Web.Development.Analyzers.RMWEB0001_WebStringAnalyzer>;
 
 namespace Remotion.Web.Development.Analyzers.IntegrationTests
 {
