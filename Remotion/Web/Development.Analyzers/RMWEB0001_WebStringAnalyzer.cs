@@ -23,8 +23,12 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Web.Development.Analyzers
+namespace Remotion.Web.Development.Analyzers
 {
+  /// <summary>
+  /// An analyzer for <see cref="WebDiagnosticIDs.RMWEB0001_WrongWebStringUsage"/>.
+  /// </summary>
+  /// <seealso cref="WebDiagnosticIDs.RMWEB0001_WrongWebStringUsage"/>
   [DiagnosticAnalyzer(LanguageNames.CSharp)]
   public class RMWEB0001_WebStringAnalyzer : DiagnosticAnalyzer
   {
@@ -40,7 +44,7 @@ namespace Web.Development.Analyzers
         IReadOnlyCollection<IMethodSymbol> StringConcatMethodSymbols);
 
     public static readonly DiagnosticDescriptor DiagnosticDescriptor = new DiagnosticDescriptor(
-        "RMWEB0001",
+        WebDiagnosticIDs.RMWEB0001_WrongWebStringUsage,
         "Wrong WebString or PlainTextString usage",
         "'{0}' should not be used with a '{1}' argument. {2}",
         "Usage",

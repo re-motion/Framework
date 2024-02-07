@@ -12,6 +12,9 @@
     <NoWarn>$(NoWarn);0419</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Development.Analyzers\WebDiagnosticIds.cs">
+      <Link>WebDiagnosticIds.cs</Link>
+    </Compile>
     <EmbeddedResource Include="UI\SmartPageImplementation\Generic_Error_Async_Remote.htm" />
     <Content Include="..\ClientScript\bin\$(Configuration)\dist\*" LinkBase="Res.ClientScript\HTML" CopyToOutputDirectory="Never">
       <Pack>true</Pack>
