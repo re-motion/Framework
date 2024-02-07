@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
@@ -24,12 +25,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   [SetUpFixture]
   public class SetUpFixture
   {
-    private readonly WebTestSetUpFixtureHelper _setUpFixtureHelper =
-        WebTestSetUpFixtureHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
+    private WebTestSetUpFixtureHelper _setUpFixtureHelper;
 
     [OneTimeSetUp]
     public void OneTimeSetUp ()
     {
+      WebTestSettings.SetCurrent(WebTestSettings.CreateAppConfigBasedWebTestSettings());
+
+      _setUpFixtureHelper = WebTestSetUpFixtureHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
+
       AppContext.SetSwitch("Switch.System.Net.DontEnableSchUseStrongCrypto", false);
 
       try
