@@ -40,22 +40,22 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
         @"return window.getComputedStyle (arguments[0])['background-color'].match (/rgb\(\s*([0-9]+),\s*([0-9]+),\s*([0-9]+)\)/).slice (1,4);";
 
     [Test]
-    public void Test_CorrectDivColors ()
+    public void CorrectDivColors ()
     {
       var home = Start();
 
       var clickElement = home.Scope.FindId(c_clickDivID);
       Assert.That(GetColor(clickElement).ToArgb(), Is.EqualTo(Color.Black.ToArgb()));
 
-      var focusElement = home.Scope.FindId(c_clickDivID);
+      var focusElement = home.Scope.FindId(c_focusDivID);
       Assert.That(GetColor(focusElement).ToArgb(), Is.EqualTo(Color.Black.ToArgb()));
 
-      var hoverElement = home.Scope.FindId(c_clickDivID);
+      var hoverElement = home.Scope.FindId(c_hoverDivID);
       Assert.That(GetColor(hoverElement).ToArgb(), Is.EqualTo(Color.Black.ToArgb()));
     }
 
     [Test]
-    public void Test_MouseLeftClick ()
+    public void MouseLeftClick ()
     {
       var home = Start();
 
@@ -68,7 +68,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void Test_MouseDoubleLeftClick ()
+    public void MouseDoubleLeftClick ()
     {
       var home = Start();
 
@@ -81,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void Test_MouseRightClick ()
+    public void MouseRightClick ()
     {
       var home = Start();
 
@@ -94,7 +94,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void Test_Focus ()
+    public void Focus ()
     {
       var home = Start();
 
@@ -111,7 +111,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void Test_Hover ()
+    public void Hover ()
     {
       var home = Start();
 
@@ -125,7 +125,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
     [Explicit("Testing the tooltip is flaky as long as there is no good implementation of .ShowTooltip")]
     [Test]
-    public void Test_Tooltip ()
+    public void Tooltip ()
     {
       var home = Start();
 
