@@ -126,7 +126,12 @@ namespace Remotion.Web.ExecutionEngine
         {
           if (IsExpired(functionToken))
           {
-            WxeFunctionState functionState = GetItem(functionToken);
+            WxeFunctionState? functionState = GetItem(functionToken);
+            Assertion.IsNotNull(
+                functionState,
+                "WxeFunctionStateManager.GetItem(...) returned null for WXE function token '{0}' even though the token is still registered in the WxeFunctionStateManager.",
+                functionToken);
+
             Abort(functionState);
           }
         }
@@ -153,7 +158,7 @@ namespace Remotion.Web.ExecutionEngine
       }
     }
 
-    /// <summary> Gets the <see cref="WxeFunctionState"/> for the specifed <paramref name="functionToken"/>. </summary>
+    /// <summary> Gets the <see cref="WxeFunctionState"/> for the specified <paramref name="functionToken"/>. </summary>
     /// <param name="functionToken"> 
     ///   The token to look-up the <see cref="WxeFunctionState"/>. Must not be <see langword="null"/> or empty or empty.
     /// </param>
@@ -188,8 +193,10 @@ namespace Remotion.Web.ExecutionEngine
     /// <param name="functionToken"> 
     ///   The token to look-up the <see cref="WxeFunctionState"/>. Must not be <see langword="null"/> or empty.
     /// </param>
-    /// <returns> The <see cref="WxeFunctionState"/> for the specified <paramref name="functionToken"/>. </returns>
-    public WxeFunctionState GetItem (string functionToken)
+    /// <returns>
+    /// The <see cref="WxeFunctionState"/> for the specified <paramref name="functionToken"/> or <see langword="null"/> if the <see cref="WxeFunctionState"/> does not exist.
+    /// </returns>
+    public WxeFunctionState? GetItem (string functionToken)
     {
       ArgumentUtility.CheckNotNullOrEmpty("functionToken", functionToken);
 
@@ -201,10 +208,10 @@ namespace Remotion.Web.ExecutionEngine
         stopwatch.Start();
       }
 
-      WxeFunctionState functionState;
+      WxeFunctionState? functionState;
       lock (_lockObject)
       {
-        functionState = (WxeFunctionState)_session[GetSessionKeyForFunctionState(functionToken)];
+        functionState = (WxeFunctionState?)_session[GetSessionKeyForFunctionState(functionToken)];
       }
 
       if (hasOutOfProcessSession)
