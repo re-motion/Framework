@@ -104,12 +104,20 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     /// <returns>The <see cref="XmlDocument"/> built from the document text.</returns>
     public XmlDocument GetResultDocument ()
     {
-      XmlDocument document = new XmlDocument();
-      using (TextReader reader = new StringReader(GetDocumentText().Replace("&nbsp;", "&amp;nbsp;")))
+      var content = GetDocumentText().Replace("&nbsp;", "&amp;nbsp;");
+      try
       {
-        document.Load(reader);
+        var document = new XmlDocument();
+        using (TextReader reader = new StringReader(content))
+        {
+          document.Load(reader);
+        }
+        return document;
       }
-      return document;
+      catch (XmlException ex)
+      {
+        throw new XmlException($"{ex.Message}\r\n\r\nContent:\r\n{content}");
+      }
     }
 
     /// <summary>

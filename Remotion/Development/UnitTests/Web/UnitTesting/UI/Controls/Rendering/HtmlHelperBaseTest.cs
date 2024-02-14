@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Xml;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
@@ -122,6 +123,19 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
       Assert.That(document, Is.Not.Null);
       Assert.That(document.DocumentElement, Is.Not.Null);
       Assert.That(document.DocumentElement.Name, Is.EqualTo("TopLevelElement"));
+    }
+
+    [Test]
+    public void Fail_GetResultDocument ()
+    {
+      _htmlHelper.Writer.Write("randomError");
+
+      Assert.That(
+          () => _htmlHelper.GetResultDocument(),
+          Throws.Exception
+              .TypeOf<XmlException>()
+              .With.Message.EqualTo("Data at the root level is invalid. Line 1, position 665.\r\n\r\nContent:\r\n" + c_document + "randomError")
+              .And.With.InnerException.Null);
     }
 
     [Test]
