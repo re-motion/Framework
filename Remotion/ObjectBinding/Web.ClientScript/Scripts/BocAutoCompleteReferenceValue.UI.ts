@@ -534,7 +534,9 @@ namespace Remotion.BocAutoCompleteReferenceValue
                 } else {
                     clearTimeout(timeout);
                     const lastKeyPressCode = state.lastKeyPressCode;
-                    invalidateResult();
+                    if (state.previousValue !== input.value) {
+                        invalidateResult();
+                    }
                     acceptInput(lastKeyPressCode, focusInputAfterSelection);
                 }
             }
