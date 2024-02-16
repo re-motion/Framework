@@ -57,9 +57,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
       if (configuration.Headless)
         extendedEdgeOptions.AddArgument("headless=new");
 
-      // turn off sidebar which kills some tests.
-      extendedEdgeOptions.AddArgument("disable-features=msHubApps");
-
       var driver = CreateEdgeDriver(extendedEdgeOptions, out var driverProcessID, commandTimeout);
       driver.Manage().Timeouts().AsynchronousJavaScript = configuration.AsyncJavaScriptTimeout;
 
