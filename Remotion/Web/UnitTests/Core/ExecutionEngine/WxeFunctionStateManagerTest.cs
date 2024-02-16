@@ -124,6 +124,53 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
+    public void TryGetLiveValue_WithKnownFunctionTokenBeforeExpiration_ReturnsTrueAndExistingFunctionState ()
+    {
+      var functionState = new WxeFunctionState(new TestFunction(), 1, true);
+      var functionStateManager = new WxeFunctionStateManager(_session);
+      functionStateManager.Add(functionState);
+
+      WxeFunctionState resultFunctionState;
+      var result = functionStateManager.TryGetLiveValue(functionState.FunctionToken, out resultFunctionState);
+
+      Assert.That(result, Is.True);
+      Assert.That(resultFunctionState, Is.SameAs(functionState));
+    }
+
+    [Test]
+    [Category("LongRunning")]
+    public void TryGetLiveValue_WithExpiredFunctionToken_ReturnsFalseAndNullForFunctionState ()
+    {
+      var functionState = new WxeFunctionState(new TestFunction(), 1, true);
+      var functionStateManager = new WxeFunctionStateManager(_session);
+      functionStateManager.Add(functionState);
+      WxeFunctionState resultFunctionStateBeforeExpiration;
+      var resultBeforeExpiration = functionStateManager.TryGetLiveValue(functionState.FunctionToken, out resultFunctionStateBeforeExpiration);
+
+      Assert.That(resultBeforeExpiration, Is.True);
+      Assert.That(resultFunctionStateBeforeExpiration, Is.SameAs(functionState));
+
+      Thread.Sleep(61000);
+
+      WxeFunctionState resultFunctionStateAfterExpiration;
+      var resultAfterExpiration = functionStateManager.TryGetLiveValue(functionState.FunctionToken, out resultFunctionStateAfterExpiration);
+
+      Assert.That(resultAfterExpiration, Is.False);
+      Assert.That(resultFunctionStateAfterExpiration, Is.Null);
+    }
+
+    [Test]
+    public void TryGetLiveValue_WithUnknownFunctionToken_ReturnsFalseAndNullForFunctionState ()
+    {
+      var functionStateManager = new WxeFunctionStateManager(_session);
+      WxeFunctionState resultFunctionState;
+      var result = functionStateManager.TryGetLiveValue(Guid.NewGuid().ToString(), out resultFunctionState);
+
+      Assert.That(result, Is.False);
+      Assert.That(resultFunctionState, Is.Null);
+    }
+
+    [Test]
     [Category("LongRunning")]
     public void CleanupExpired_DelaysForOneMinute ()
     {

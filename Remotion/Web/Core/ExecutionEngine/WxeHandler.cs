@@ -310,7 +310,7 @@ namespace Remotion.Web.ExecutionEngine
       }
 
       WxeFunctionStateManager functionStateManager = WxeFunctionStateManager.Current;
-      if (functionStateManager.IsExpired(functionToken))
+      if (!functionStateManager.TryGetLiveValue(functionToken, out var functionState))
       {
         if (isPostBackAction)
         {
@@ -335,7 +335,6 @@ namespace Remotion.Web.ExecutionEngine
         }
       }
 
-      WxeFunctionState functionState = functionStateManager.GetItem(functionToken);
       if (functionState.IsAborted)
       {
         s_log.Error(string.Format("Error resuming WxeFunctionState {0}: The function state has been aborted.", functionState.FunctionToken));
