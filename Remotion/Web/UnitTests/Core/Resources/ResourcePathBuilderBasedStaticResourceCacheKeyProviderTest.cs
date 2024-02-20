@@ -129,10 +129,10 @@ namespace Remotion.Web.UnitTests.Core.Resources
       using var staticResourceCacheKeyProvider = new TestStaticResourceCacheKeyProvider(folder.FullName, new[] { ResourceType.Html });
 
       var expectedCacheKey = CreateExpectedCacheKeyForEntries(
-          (@"Remotion.ObjectBinding.Web\Html\file3.txt", 4, 130000055555555555, 130000066666666666),
-          (@"Remotion.ObjectBinding.Web\Html\a\b\c\d\file3.txt", 18, 130000077777777777, 130000088888888888),
-          (@"Remotion.Web\Html\file1.txt", 7, 130000011111111111, 130000022222222222),
-          (@"Remotion.Web\Html\sub\file2.txt", 3, 130000033333333333, 130000044444444444));
+          (@"Remotion.ObjectBinding.Web\Html\file3.txt", 4, 130000066666666666),
+          (@"Remotion.ObjectBinding.Web\Html\a\b\c\d\file3.txt", 18, 130000088888888888),
+          (@"Remotion.Web\Html\file1.txt", 7, 130000022222222222),
+          (@"Remotion.Web\Html\sub\file2.txt", 3, 130000044444444444));
 
       var cacheKey = staticResourceCacheKeyProvider.GetStaticResourceCacheKey();
       Assert.That(cacheKey, Is.EqualTo(expectedCacheKey));
@@ -150,10 +150,10 @@ namespace Remotion.Web.UnitTests.Core.Resources
 
       var resourcesFileAppenderDetailsMock = new Mock<ResourcePathBuilderBasedStaticResourceCacheKeyProvider.IResourceFileDetailsAppender>(MockBehavior.Strict);
       resourcesFileAppenderDetailsMock
-          .Setup(_ => _.AppendResourceFolderDetails(It.IsAny<List<(string, long, long, long)>>(), folder.FullName, resourceTypes))
+          .Setup(_ => _.AppendResourceFolderDetails(It.IsAny<List<(string, long, long)>>(), folder.FullName, resourceTypes))
           .Callback(
-              new Action<List<(string, long, long, long)>, string, IReadOnlyCollection<ResourceType>>(
-                  (entries, _, _) => { entries.Add(($"{folder.FullName}testFile.txt", 1, 2, 3)); }))
+              new Action<List<(string, long, long)>, string, IReadOnlyCollection<ResourceType>>(
+                  (entries, _, _) => { entries.Add(($"{folder.FullName}testFile.txt", 1, 3)); }))
           .Verifiable();
 
       using var testStaticResourceCacheKeyProvider = new TestStaticResourceCacheKeyProvider(
@@ -162,7 +162,7 @@ namespace Remotion.Web.UnitTests.Core.Resources
           resourceTypes);
 
       var cacheKey = testStaticResourceCacheKeyProvider.GetStaticResourceCacheKey();
-      var expectedCacheKey = CreateExpectedCacheKeyForEntries(("testFile.txt", 1, 2, 3));
+      var expectedCacheKey = CreateExpectedCacheKeyForEntries(("testFile.txt", 1, 3));
       Assert.That(cacheKey, Is.EqualTo(expectedCacheKey));
 
       resourcesFileAppenderDetailsMock.Verify();
@@ -180,21 +180,21 @@ namespace Remotion.Web.UnitTests.Core.Resources
 
       var resourcesFileAppenderDetailsMock = new Mock<ResourcePathBuilderBasedStaticResourceCacheKeyProvider.IResourceFileDetailsAppender>(MockBehavior.Strict);
       resourcesFileAppenderDetailsMock
-          .Setup(_ => _.AppendResourceFolderDetails(It.IsAny<List<(string, long, long, long)>>(), folder.FullName, resourceTypes))
+          .Setup(_ => _.AppendResourceFolderDetails(It.IsAny<List<(string, long, long)>>(), folder.FullName, resourceTypes))
           .Callback(
-              new Action<List<(string, long, long, long)>, string, IReadOnlyCollection<ResourceType>>(
-                  (entries, _, _) => { entries.Add(($"{folder.FullName}testFile.txt", 1, 2, 3)); }));
+              new Action<List<(string, long, long)>, string, IReadOnlyCollection<ResourceType>>(
+                  (entries, _, _) => { entries.Add(($"{folder.FullName}testFile.txt", 1, 3)); }));
 
       using var testStaticResourceCacheKeyProvider = new TestStaticResourceCacheKeyProvider(
           resourcesPhysicalPathLocatorMock.Object,
           resourcesFileAppenderDetailsMock.Object,
           resourceTypes);
 
-      var expectedCacheKey = CreateExpectedCacheKeyForEntries(("testFile.txt", 1, 2, 3));
+      var expectedCacheKey = CreateExpectedCacheKeyForEntries(("testFile.txt", 1, 3));
       Assert.That(testStaticResourceCacheKeyProvider.GetStaticResourceCacheKey(), Is.EqualTo(expectedCacheKey));
       Assert.That(testStaticResourceCacheKeyProvider.GetStaticResourceCacheKey(), Is.EqualTo(expectedCacheKey));
 
-      resourcesFileAppenderDetailsMock.Verify(_ => _.AppendResourceFolderDetails(It.IsAny<List<(string, long, long, long)>>(), folder.FullName, resourceTypes), Times.Once);
+      resourcesFileAppenderDetailsMock.Verify(_ => _.AppendResourceFolderDetails(It.IsAny<List<(string, long, long)>>(), folder.FullName, resourceTypes), Times.Once);
     }
 
     [Test]
@@ -219,7 +219,7 @@ namespace Remotion.Web.UnitTests.Core.Resources
       WaitForCacheKeyChange(testStaticResourceCacheKeyProvider);
 
       var expectedCacheKey = CreateExpectedCacheKeyForEntries(
-          (@"Remotion.Web\Html\test.txt", 6, 130000011111111111, 130000022222222222));
+          (@"Remotion.Web\Html\test.txt", 6, 130000022222222222));
       Assert.That(testStaticResourceCacheKeyProvider.GetStaticResourceCacheKey(), Is.EqualTo(expectedCacheKey));
     }
 
@@ -277,12 +277,12 @@ namespace Remotion.Web.UnitTests.Core.Resources
       throw new InvalidOperationException($"Expected cache key to change but it did not change within the timeout.");
     }
 
-    private static string CreateExpectedCacheKeyForEntries (params (string Name, long Length, long CreatedTime, long LastWriteTime)[] entries)
+    private static string CreateExpectedCacheKeyForEntries (params (string Name, long Length, long LastWriteTime)[] entries)
     {
       var memoryStream = new MemoryStream();
       using (var binaryWriter = new BinaryWriter(memoryStream, Encoding.UTF8, true))
       {
-        foreach (var (name, length, creationTime, lastWriteTime) in entries)
+        foreach (var (name, length, lastWriteTime) in entries)
         {
 #if NETFRAMEWORK
           binaryWriter.Write(name);
@@ -290,7 +290,6 @@ namespace Remotion.Web.UnitTests.Core.Resources
           binaryWriter.Write(name.AsSpan());
 #endif
           binaryWriter.Write(length);
-          binaryWriter.Write(creationTime);
           binaryWriter.Write(lastWriteTime);
         }
       }

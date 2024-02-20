@@ -61,13 +61,13 @@ namespace Remotion.Web.Resources
 
     public interface IResourceFileDetailsAppender
     {
-      void AppendResourceFolderDetails (List<(string Name, long Length, long CreationTime, long LastWriteTime)> folderDetails, string resourceFolder, IReadOnlyCollection<ResourceType> resourceTypes);
+      void AppendResourceFolderDetails (List<(string Name, long Length, long LastWriteTime)> folderDetails, string resourceFolder, IReadOnlyCollection<ResourceType> resourceTypes);
     }
 
     public class ResourceFileDetailsAppender : IResourceFileDetailsAppender
     {
       /// <inheritdoc />
-      public void AppendResourceFolderDetails (List<(string Name, long Length, long CreationTime, long LastWriteTime)> folderDetails, string resourceFolder, IReadOnlyCollection<ResourceType> resourceTypes)
+      public void AppendResourceFolderDetails (List<(string Name, long Length, long LastWriteTime)> folderDetails, string resourceFolder, IReadOnlyCollection<ResourceType> resourceTypes)
       {
         // Format of a resource folder is: '~/<assembly name>/<resource type>/...
         foreach (var assemblyFolder in Directory.EnumerateDirectories(resourceFolder))
@@ -80,7 +80,7 @@ namespace Remotion.Web.Resources
 
             foreach (var resourceFile in resourceTypeDirectory.EnumerateFiles("*", SearchOption.AllDirectories))
             {
-              folderDetails.Add((resourceFile.FullName, resourceFile.Length, resourceFile.CreationTimeUtc.ToFileTimeUtc(), resourceFile.LastWriteTimeUtc.ToFileTimeUtc()));
+              folderDetails.Add((resourceFile.FullName, resourceFile.Length, resourceFile.LastWriteTimeUtc.ToFileTimeUtc()));
             }
           }
         }
@@ -170,13 +170,13 @@ namespace Remotion.Web.Resources
         _fileSystemWatcher.EnableRaisingEvents = true;
       }
 
-      var folderDetails = new List<(string Name, long Length, long CreationTime, long LastWriteTime)>();
+      var folderDetails = new List<(string Name, long Length, long LastWriteTime)>();
       _resourceFileDetailsAppender.AppendResourceFolderDetails(folderDetails, _physicalPath, _resourceTypes);
 
       var memoryStream = new MemoryStream();
       using (var binaryWriter = new BinaryWriter(memoryStream, Encoding.UTF8, true))
       {
-        foreach (var (name, length, creationTime, lastWriteTime) in folderDetails)
+        foreach (var (name, length, lastWriteTime) in folderDetails)
         {
           // Use only the relative path from the root to calculate the cache key.
           // This removes a lot of stuff to cache while also allowing multiple servers
@@ -187,7 +187,6 @@ namespace Remotion.Web.Resources
           binaryWriter.Write(name.AsSpan()[_physicalPath.Length..]);
 #endif
           binaryWriter.Write(length);
-          binaryWriter.Write(creationTime);
           binaryWriter.Write(lastWriteTime);
         }
       }
