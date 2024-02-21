@@ -5,6 +5,7 @@
   <Import Project="..\..\..\Build\Shared.build.props" />
   <PropertyGroup>
     <AssemblyName>Remotion.Web.Development.Analyzers</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
     <AssemblyTitle>Remotion Web Analyzers</AssemblyTitle>
     <Description>Analyzer ensuring best practices when using the Remotion.Web assemblies.</Description>
   </PropertyGroup>

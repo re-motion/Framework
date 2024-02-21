@@ -44,10 +44,18 @@ div.bocList.hasDimensions  div.bocListTableBlock div.bocListTableContainer
 div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListTableScrollContainer
 {
   background-color: var(--remotion-themed-background-color-page);
-  scrollbar-width: var(--remotion-themed-scrollbar-style);
-  scrollbar-color: var(--remotion-themed-scrollbar-color);
   display: block;
   overflow: auto;
+}
+
+/* If either scrollbar-width`/`scrollbar-color` is specified, the `::-webkit-scrollbar` selectors won't work  */
+@supports not selector(::-webkit-scrollbar)
+{
+  div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListTableScrollContainer
+  {
+    scrollbar-width: var(--remotion-themed-scrollbar-style);
+    scrollbar-color: var(--remotion-themed-scrollbar-color);
+  }
 }
 
 div.bocList.hasDimensions div.bocListTableBlock div.bocListTableContainer div.bocListTableScrollContainer
@@ -373,15 +381,26 @@ div.bocList div.bocListTableBlock div.bocListNavigator a:not([href]) img
 /*endregion*/
 
 /*region validation marker*/
-div.bocList .bocListCellStructureElement > .validationErrorMarker
-{
-  margin-top: calc(var(--remotion-themed-spacing) / 2);
-}
-
 div.bocList .bocListCellStructureElement > .validationErrorMarker,
 div.bocList .bocListContent > .validationErrorMarker
 {
   border: var(--remotion-themed-border-placeholder);
+  border-radius: var(--remotion-themed-border-radius);
+}
+
+div.bocList .bocListCellStructureElement > .validationErrorMarker
+{
+  /* .bocListContent already comes with padding so we only need this for .bocListCellStructureElement */
+  padding: calc(var(--remotion-themed-spacing) / 2);
+}
+
+div.bocList .bocListCellStructureElement > .validationErrorMarker:focus-within,
+div.bocList .bocListContent > .validationErrorMarker:focus-within
+{
+  outline: none;
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
 }
 
 /*endregion*/
@@ -416,8 +435,16 @@ div.bocList div.bocListTableBlock tr.bocListValidationRow div
   position: sticky;
   left: 0;
   overflow-x: auto;
-  scrollbar-width: var(--remotion-themed-scrollbar-style);
-  scrollbar-color: var(--remotion-themed-scrollbar-color);
+}
+
+/* If either scrollbar-width`/`scrollbar-color` is specified, the `::-webkit-scrollbar` selectors won't work  */
+@supports not selector(::-webkit-scrollbar)
+{
+  div.bocList div.bocListTableBlock tr.bocListValidationRow div
+  {
+    scrollbar-width: var(--remotion-themed-scrollbar-style);
+    scrollbar-color: var(--remotion-themed-scrollbar-color);
+  }
 }
 
 div.bocList div.bocListTableBlock tr.bocListValidationRow div::-webkit-scrollbar
