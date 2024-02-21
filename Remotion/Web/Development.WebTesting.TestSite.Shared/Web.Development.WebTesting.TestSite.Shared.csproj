@@ -19,5 +19,11 @@
     <ProjectReference Include="..\..\Web\Core\Web.Core.csproj" />
     <ProjectReference Include="..\Development.WebTesting.TestSite.Infrastructure\Web.Development.WebTesting.TestSite.Infrastructure.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="ScreenshotBorderTest.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>ScreenshotBorderTest.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

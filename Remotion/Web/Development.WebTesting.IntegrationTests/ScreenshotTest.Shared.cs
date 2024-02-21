@@ -321,13 +321,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
     [Category("Screenshot")]
     [Test]
-    public void ResolveBorderElementB ()
+    [TestCase("Bottom", $"{nameof(ResolveBorderElement)}Bottom")]
+    [TestCase("Right", $"{nameof(ResolveBorderElement)}Right")]
+    public void ResolveBorderElement (string testSide, string testName)
     {
       // TODO: Remove when RM-7187 is resolved, use the RetryAttribute provided by NUnit instead.
       RetryTest(
           () =>
           {
-            var home = Start();
+            var home = Start<HtmlPageObject>("ScreenshotBorderTest.aspx");
 
             // Chromium browsers show the remote control overlay since RM-7184, which is drawn shortly after the page load. The
             // content however needs a small timespan to be adapted to the slightly smaller viewport.
@@ -337,9 +339,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
             ScreenshotTestingDelegate<IFluentScreenshotElement<ElementScope>> test =
                 (builder, target) => { builder.Crop(target, new WebPadding(1)); };
 
-            var element = home.Scope.FindId("borderElementB").ForElementScopeScreenshot();
+            var element = home.Scope.FindId($"borderElement{testSide}").ForElementScopeScreenshot();
 
-            Helper.RunScreenshotTestExact<IFluentScreenshotElement<ElementScope>, ScreenshotTest>(element, ScreenshotTestingType.Both, test);
+            Helper.RunScreenshotTestExact<IFluentScreenshotElement<ElementScope>, ScreenshotTest>(element, ScreenshotTestingType.Both, test, memberName: testName);
           },
           2);
     }
