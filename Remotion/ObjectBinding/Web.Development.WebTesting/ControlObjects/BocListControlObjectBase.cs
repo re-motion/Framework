@@ -100,7 +100,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     protected BocListControlObjectBase ([NotNull] ControlObjectContext context)
         : base(context)
     {
-      _log = LogManager.GetLogger(GetType());
+      _log = LogManager.GetLogger(typeof(BocListControlObjectBase<TRowControlObject, TCellControlObject>).Assembly, GetType());
       _accessor = new BocListRowControlObjectHostAccessor(this);
 
       EnsureBocListHasBeenFullyInitialized();

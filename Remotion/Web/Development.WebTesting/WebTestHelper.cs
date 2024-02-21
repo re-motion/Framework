@@ -388,7 +388,7 @@ namespace Remotion.Web.Development.WebTesting
           _accessibilityConfiguration,
           new AxeSourceProvider(),
           new AccessibilityResultMapper(),
-          LogManager.GetLogger(typeof(AccessibilityAnalyzer)));
+          LogManager.GetLogger(typeof(WebTestHelper).Assembly, typeof(AccessibilityAnalyzer)));
     }
 
     /// <summary>
