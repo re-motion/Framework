@@ -62,7 +62,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var clickElement = home.Scope.FindId(c_clickDivID);
       Helper.BrowserConfiguration.MouseHelper.Hover(clickElement);
       Helper.BrowserConfiguration.MouseHelper.LeftClick();
-      Thread.Sleep(250);
 
       Assert.That(GetColor(clickElement).ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
     }
@@ -75,7 +74,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var clickElement = home.Scope.FindId(c_clickDivID);
       Helper.BrowserConfiguration.MouseHelper.Hover(clickElement);
       Helper.BrowserConfiguration.MouseHelper.DoubleLeftClick();
-      Thread.Sleep(250);
 
       Assert.That(GetColor(clickElement).ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
     }
@@ -88,7 +86,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var clickElement = home.Scope.FindId(c_clickDivID);
       Helper.BrowserConfiguration.MouseHelper.Hover(clickElement);
       Helper.BrowserConfiguration.MouseHelper.RightClick();
-      Thread.Sleep(250);
 
       Assert.That(GetColor(clickElement).ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
     }
@@ -100,12 +97,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var focusElement = home.Scope.FindId(c_focusDivID);
 
-      Thread.Sleep(250);
-
       Helper.BrowserConfiguration.MouseHelper.Hover(focusElement);
       Helper.BrowserConfiguration.MouseHelper.LeftClick();
-
-      Thread.Sleep(250);
 
       Assert.That(GetColor(focusElement).ToArgb(), Is.EqualTo(Color.Orange.ToArgb()));
     }
@@ -116,7 +109,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var hoverElement = home.Scope.FindId(c_hoverDivID);
-      Thread.Sleep(250);
       Helper.BrowserConfiguration.MouseHelper.Hover(hoverElement);
       Thread.Sleep(250);
 
@@ -138,7 +130,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       // If the test is run behind all the other tests the tooltip will not show.
       // Mouse movement beforehand with a little sleep does the trick
       Helper.BrowserConfiguration.MouseHelper.Hover(tooltipElement);
-      Thread.Sleep(500);
 
 #pragma warning disable 0618
       Helper.BrowserConfiguration.MouseHelper.ShowTooltip(tooltipElement);
