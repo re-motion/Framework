@@ -136,6 +136,11 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return SafeInnerDataManager.CreateUnloadAllCommand();
     }
 
+    public IDataManagementCommand CreateUnloadFilteredDomainObjectsCommand (Predicate<DomainObject> domainObjectFilter)
+    {
+      return SafeInnerDataManager.CreateUnloadFilteredDomainObjectsCommand(domainObjectFilter);
+    }
+
     public void LoadLazyCollectionEndPoint (RelationEndPointID endPointID)
     {
       SafeInnerDataManager.LoadLazyCollectionEndPoint(endPointID);
