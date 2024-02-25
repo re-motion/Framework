@@ -16,18 +16,20 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Data.SqlClient;
 using NUnit.Framework;
-using Remotion.Configuration;
-using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
+using Remotion.Data.DomainObjects.Validation;
 using Remotion.Development.UnitTesting.Data.SqlClient;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
@@ -38,6 +40,7 @@ using Remotion.Security.Development;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Persistence;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.UnitTests
 {
@@ -60,17 +63,13 @@ namespace Remotion.SecurityManager.UnitTests
       try
       {
         var securityProvider = new FakeSecurityProvider();
+        var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer<SecurityManagerSqlStorageObjectFactory>(TestDomainConnectionString);
+
         var serviceLocator = DefaultServiceLocator.Create();
         serviceLocator.RegisterSingle<ISecurityProvider>(() => securityProvider);
         serviceLocator.RegisterSingle<IPrincipalProvider>(() => new NullPrincipalProvider());
+        serviceLocator.RegisterSingle(() => storageSettingsFactory);
         ServiceLocator.SetLocatorProvider(() => serviceLocator);
-
-        var providers = new ProviderCollection<StorageProviderDefinition>();
-        providers.Add(new RdbmsProviderDefinition("SecurityManager", new SecurityManagerSqlStorageObjectFactory(), TestDomainConnectionString));
-        var storageConfiguration = new StorageConfiguration(providers, providers["SecurityManager"]);
-        storageConfiguration.StorageGroups.Add(new StorageGroupElement(new SecurityManagerStorageGroupAttribute(), "SecurityManager"));
-
-        DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(storage: storageConfiguration));
 
         var rootAssemblyFinder = new FixedRootAssemblyFinder(new RootAssembly(typeof(BaseSecurityManagerObject).Assembly, true));
         var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
@@ -78,7 +77,7 @@ namespace Remotion.SecurityManager.UnitTests
         ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService(assemblyFinder);
 
         MappingConfiguration.SetCurrent(
-            new MappingConfiguration(
+            MappingConfiguration.Create(
                 MappingReflector.Create(
                     typeDiscoveryService,
                     SafeServiceLocator.Current.GetInstance<IClassIDProvider>(),
@@ -88,7 +87,7 @@ namespace Remotion.SecurityManager.UnitTests
                     SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
                     SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
                     SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>()),
-                new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
+                SafeServiceLocator.Current.GetInstance<IPersistenceModelLoader>()));
 
         SqlConnection.ClearAllPools();
 

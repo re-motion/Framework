@@ -28,6 +28,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     public void DefaultValuesTest ()
     {
       var settings = new AclExpanderApplicationSettings();
+      Assert.That(settings.ConnectionString, Is.Empty);
       Assert.That(settings.Directory, Is.EqualTo("."));
       Assert.That(settings.UseMultipleFileOutput, Is.EqualTo(false));
       Assert.That(settings.UserFirstName, Is.Null);

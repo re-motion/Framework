@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.UberProfIntegration.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
@@ -41,10 +42,13 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
       _objectID = sampleObject.ID;
       clientTransaction.Commit();
 
+      var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
+
       var locator = DefaultServiceLocator.Create();
       var factory = new LinqToSqlExtensionFactory();
       locator.RegisterSingle<IClientTransactionExtensionFactory>(() => factory);
       locator.RegisterSingle<IPersistenceExtensionFactory>(() => factory);
+      locator.RegisterSingle(() => storageSettings);
       _serviceLocatorScope = new ServiceLocatorScope(locator);
 
       _tracingAppender = new TracingAppender();

@@ -44,9 +44,6 @@ namespace Remotion.Data.DomainObjects.Web.Test
 
     protected void Application_Start (Object sender, EventArgs e)
     {
-      var mappingConfiguration = MappingConfiguration.Current;
-      Trace.WriteLine(mappingConfiguration.GetTypeDefinitions().Length);
-
 #if DEBUG
       const string configuration = "Debug";
 #else
@@ -69,6 +66,10 @@ namespace Remotion.Data.DomainObjects.Web.Test
       _resourceVirtualPathProvider.Register();
 
       var serviceLocator = DefaultServiceLocator.Create();
+
+      var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer("Integrated Security=SSPI;Initial Catalog=RpaTest;Data Source=localhost");
+      serviceLocator.RegisterSingle(() => storageSettingsFactory);
+
       serviceLocator.RegisterSingle<ISecurityProvider>(() => new StubSecurityProvider());
       ServiceLocator.SetLocatorProvider(()=> serviceLocator);
     }

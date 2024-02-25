@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
@@ -41,8 +42,11 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
           new CompundBindablePropertyWriteAccessStrategy(
               new IBindablePropertyWriteAccessStrategy[] { new BindableDomainObjectPropertyWriteAccessStrategy() });
 
+      var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
+
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle<IBindablePropertyReadAccessStrategy>(() => bindablePropertyReadAccessStrategy);
+      serviceLocator.RegisterSingle(() => storageSettings);
       serviceLocator.RegisterSingle<IBindablePropertyWriteAccessStrategy>(() => bindablePropertyWriteAccessStrategy);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
