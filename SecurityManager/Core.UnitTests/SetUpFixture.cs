@@ -34,6 +34,7 @@ using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Security;
+using Remotion.Security.Development;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Persistence;
 using Remotion.ServiceLocation;
@@ -58,8 +59,9 @@ namespace Remotion.SecurityManager.UnitTests
     {
       try
       {
+        var securityProvider = new FakeSecurityProvider();
         var serviceLocator = DefaultServiceLocator.Create();
-        serviceLocator.RegisterSingle<ISecurityProvider>(() => new NullSecurityProvider());
+        serviceLocator.RegisterSingle<ISecurityProvider>(() => securityProvider);
         serviceLocator.RegisterSingle<IPrincipalProvider>(() => new NullPrincipalProvider());
         ServiceLocator.SetLocatorProvider(() => serviceLocator);
 

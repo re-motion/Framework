@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Development.UnitTesting;
 using Remotion.Security;
+using Remotion.Security.Development;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
@@ -78,19 +79,23 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
       var securityProviderStub = new Mock<ISecurityProvider>();
       securityProviderStub.Setup(stub => stub.IsNull).Returns(false);
 
-      var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle(() => securityProviderStub);
-      ISecurityManagerPrincipal refreshedInstance;
-      using (new ServiceLocatorScope(serviceLocator))
+      IncrementDomainRevision();
+
+      var securityProvider = (FakeSecurityProvider)SafeServiceLocator.Current.GetInstance<ISecurityProvider>();
+      securityProvider.SetCustomSecurityProvider(securityProviderStub.Object);
+      try
       {
-        IncrementDomainRevision();
-        refreshedInstance = _principal.GetRefreshedInstance();
+        var refreshedInstance = _principal.GetRefreshedInstance();
         Assert.That(refreshedInstance, Is.Not.SameAs(_principal));
+
+        var roleProxies = refreshedInstance.Roles;
+
+        Assert.That(roleProxies.Select(r => r.ID), Is.EqualTo(_roles.Select(r => r.ID)));
       }
-
-      var roleProxies = refreshedInstance.Roles;
-
-      Assert.That(roleProxies.Select(r=>r.ID), Is.EqualTo(_roles.Select(r=>r.ID)));
+      finally
+      {
+        securityProvider.ResetCustomSecurityProvider();
+      }
     }
   }
 }
