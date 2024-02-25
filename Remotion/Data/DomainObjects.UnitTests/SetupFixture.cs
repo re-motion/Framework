@@ -18,7 +18,8 @@ using System;
 using log4net;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.UnitTests.Database;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
+using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests
@@ -26,20 +27,25 @@ namespace Remotion.Data.DomainObjects.UnitTests
   [SetUpFixture]
   public class SetUpFixture
   {
-    private StandardMappingDatabaseAgent _standardMappingDatabaseAgent;
+    private ServiceLocatorScope _serviceLocatorScope;
 
     [OneTimeSetUp]
     public void OneTimeSetUp ()
     {
-      var defaultServiceLocator = DefaultServiceLocator.Create();
+      StandardConfiguration.EnsureInitialized();
 
-      //defaultServiceLocator.Register(typeof(IClientTransactionExtensionFactory), typeof(UberProfIntegration.EntityFrameworkExtensionFactory), LifetimeKind.Singleton);
-      //defaultServiceLocator.Register(typeof(Remotion.Data.DomainObjects.Tracing.IPersistenceExtensionFactory), typeof(UberProfIntegration.EntityFrameworkExtensionFactory), LifetimeKind.Singleton);
-
-      ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
+      var serviceLocator = DefaultServiceLocator.Create();
+      StandardConfiguration.Instance.Register(serviceLocator);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
       LogManager.ResetConfiguration();
       Assert.That(LogManager.GetLogger(typeof(LoggingClientTransactionListener)).IsDebugEnabled, Is.False);
+    }
+
+    [OneTimeTearDown]
+    public void OneTimeTeardown ()
+    {
+      _serviceLocatorScope.Dispose();
     }
   }
 }

@@ -18,7 +18,6 @@ using System;
 using Moq;
 using NUnit.Framework;
 using Remotion.Configuration;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
@@ -45,9 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [SetUp]
     public virtual void SetUp ()
     {
-      DomainObjectsConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetMappingConfiguration());
-      ConfigurationWrapper.SetCurrent(null);
 
       ClassIDProviderStub = new Mock<IClassIDProvider>();
       DomainModelConstraintProviderStub = new Mock<IDomainModelConstraintProvider>();
@@ -75,9 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public virtual void OneTimeSetUp ()
     {
       TestMappingConfiguration.EnsureInitialized();
-      DomainObjectsConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetMappingConfiguration());
-      ConfigurationWrapper.SetCurrent(null);
       FakeMappingConfiguration.Reset();
     }
 
@@ -91,14 +86,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       get { return MappingConfiguration.Current; }
     }
 
+    protected IStorageSettings StorageSettings
+    {
+      get { return TestMappingConfiguration.Instance.GetStorageSettings(); }
+    }
+
     protected StorageProviderDefinition TestDomainStorageProviderDefinition
     {
-      get { return DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID]; }
+      get { return StorageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID); }
     }
 
     protected StorageProviderDefinition UnitTestDomainStorageProviderDefinition
     {
-      get { return DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_unitTestStorageProviderStubID]; }
+      get { return StorageSettings.GetStorageProviderDefinition(DatabaseTest.c_unitTestStorageProviderStubID); }
     }
   }
 }

@@ -33,7 +33,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       using (MixinConfiguration.BuildFromActive().ForClass(typeof(StorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
-        StorageProvider provider = new StorageProviderManager(NullPersistenceExtension.Instance)[orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name];
+        StorageProvider provider =
+            new StorageProviderManager(NullPersistenceExtension.Instance, StorageSettings).GetMandatory(orderDefinition.StorageEntityDefinition.StorageProviderDefinition);
         Assert.That(Mixin.Get<StorageProviderWithFixedGuidMixin>(provider), Is.Not.Null);
       }
     }
@@ -44,7 +45,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       using (MixinConfiguration.BuildFromActive().ForClass(typeof(StorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
-        StorageProvider provider = new StorageProviderManager(NullPersistenceExtension.Instance)[orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name];
+        StorageProvider provider =
+            new StorageProviderManager(NullPersistenceExtension.Instance, StorageSettings)
+                .GetMandatory(orderDefinition.StorageEntityDefinition.StorageProviderDefinition);
         ObjectID id1 = provider.CreateNewObjectID(orderDefinition);
         ObjectID id2 = provider.CreateNewObjectID(orderDefinition);
         Assert.That(id2, Is.EqualTo(id1));
@@ -57,7 +60,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       using (MixinConfiguration.BuildFromActive().ForClass(typeof(StorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
-        StorageProvider provider = new StorageProviderManager(NullPersistenceExtension.Instance)[orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name];
+        StorageProvider provider =
+            new StorageProviderManager(NullPersistenceExtension.Instance, StorageSettings)
+                .GetMandatory(orderDefinition.StorageEntityDefinition.StorageProviderDefinition);
 
         Guid fixedGuid = Guid.NewGuid();
         ((IStorageProviderWithFixedGuid)provider).FixedGuid = fixedGuid;

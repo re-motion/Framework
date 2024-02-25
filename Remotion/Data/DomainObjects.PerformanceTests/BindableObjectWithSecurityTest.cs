@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ObjectBinding;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Security;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding;
@@ -35,9 +36,13 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     {
       var stubSecurityProvider = new StubSecurityProvider();
       var threadPrincipalProvider = new ThreadPrincipalProvider();
+
+      var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
+
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle<ISecurityProvider>(() => stubSecurityProvider);
       serviceLocator.RegisterSingle<IPrincipalProvider>(() => threadPrincipalProvider);
+      serviceLocator.RegisterSingle(() => storageSettings);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
       var clientTransaction = new SecurityClientTransactionFactory().CreateRootTransaction();

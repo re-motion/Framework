@@ -16,14 +16,12 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Configuration;
-using Remotion.Data.DomainObjects.Configuration;
-using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Development.UnitTesting;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
@@ -35,11 +33,14 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       try
       {
-        var providers = new ProviderCollection<StorageProviderDefinition>();
-        providers.Add(new RdbmsProviderDefinition(StubStorageProvider.StorageProviderID, new StubStorageFactory(), "NonExistingRdbms"));
-        var storageConfiguration = new StorageConfiguration(providers, providers[StubStorageProvider.StorageProviderID]);
-        DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(storage: storageConfiguration));
+        var storageProviderDefinition = new RdbmsProviderDefinition(StubStorageProvider.StorageProviderID, new StubStorageFactory(), "NonExistingRdbms");
 
+        var storageSettings = new SerializableStorageSettings(new StorageSettings(storageProviderDefinition, new[] { storageProviderDefinition }));
+
+        var defaultServiceLocator = DefaultServiceLocator.Create();
+        defaultServiceLocator.RegisterSingle<IStorageSettings>(() => storageSettings);
+
+        ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
         Dev.Null = MappingConfiguration.Current;
       }
       catch (Exception e)

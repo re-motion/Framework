@@ -236,7 +236,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
       var listenerMock = new Mock<IClientTransactionListener>();
       listenerMock
           .Setup(mock => mock.FilterQueryResult(TestableClientTransaction, It.IsAny<QueryResult<DomainObject>>()))
-          .Returns(TestQueryFactory.CreateTestQueryResult<DomainObject>())
+          .Returns(TestQueryFactory.CreateTestQueryResult(StorageSettings))
           .Callback((ClientTransaction clientTransaction, QueryResult<DomainObject> queryResult) => DomainObjectIDs.OrderItem1.GetObject<OrderItem>())
           .Verifiable();
       TestableClientTransaction.AddListener(listenerMock.Object);

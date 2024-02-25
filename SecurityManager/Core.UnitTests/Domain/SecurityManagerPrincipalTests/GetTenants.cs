@@ -20,6 +20,7 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Development.UnitTesting;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain;
@@ -106,9 +107,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
           .Setup(_ => _.GetAccess(tenantSecurityContext, It.IsAny<ISecurityPrincipal>()))
           .Returns(new AccessType[0]);
 
+      var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
+
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle(() => securityProviderStub.Object);
       serviceLocator.RegisterSingle<IPrincipalProvider>(() => new NullPrincipalProvider());
+      serviceLocator.RegisterSingle(() => storageSettings);
       using (new ServiceLocatorScope(serviceLocator))
       {
         SecurityManagerPrincipal principal = new SecurityManagerPrincipal(_rootTenantHandle, _userHandle, null, null, null, null);

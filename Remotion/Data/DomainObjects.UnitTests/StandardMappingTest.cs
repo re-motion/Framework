@@ -17,16 +17,17 @@
 using System;
 using System.Linq.Expressions;
 using Remotion.Configuration;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.Database;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests
@@ -44,36 +45,33 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       base.OneTimeSetUp();
 
-      DomainObjectsConfiguration.SetCurrent(StandardConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent(StandardConfiguration.Instance.GetMappingConfiguration());
-      ConfigurationWrapper.SetCurrent(null);
     }
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      DomainObjectsConfiguration.SetCurrent(StandardConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent(StandardConfiguration.Instance.GetMappingConfiguration());
-      ConfigurationWrapper.SetCurrent(null);
     }
 
     public override void TearDown ()
     {
-      DomainObjectsConfiguration.SetCurrent(null);
       MappingConfiguration.SetCurrent(null);
-      ConfigurationWrapper.SetCurrent(null);
 
       base.TearDown();
     }
 
     public override void TestFixtureTearDown ()
     {
-      DomainObjectsConfiguration.SetCurrent(null);
       MappingConfiguration.SetCurrent(null);
-      ConfigurationWrapper.SetCurrent(null);
 
       base.TestFixtureTearDown();
+    }
+
+    protected void RegisterStandardConfiguration (DefaultServiceLocator defaultServiceLocator)
+    {
+      StandardConfiguration.Instance.Register(defaultServiceLocator);
     }
 
     protected DomainObjectIDs DomainObjectIDs
@@ -83,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     protected IMappingConfiguration Configuration
     {
-      get { return MappingConfiguration.Current; }
+      get { return StandardConfiguration.Instance.GetMappingConfiguration(); }
     }
 
     protected IQueryDefinitionRepository Queries
@@ -91,19 +89,24 @@ namespace Remotion.Data.DomainObjects.UnitTests
       get { return StandardConfiguration.Instance.GetQueries(); }
     }
 
+    protected IStorageSettings StorageSettings
+    {
+      get { return StandardConfiguration.Instance.GetStorageSettings(); }
+    }
+
     protected RdbmsProviderDefinition TestDomainStorageProviderDefinition
     {
-      get { return (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID]; }
+      get { return (RdbmsProviderDefinition)StorageSettings.GetStorageProviderDefinition(c_testDomainProviderID); }
     }
 
     protected NonPersistentProviderDefinition NonPersistentStorageProviderDefinition
     {
-      get { return (NonPersistentProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_nonPersistentTestDomainProviderID]; }
+      get { return (NonPersistentProviderDefinition)StorageSettings.GetStorageProviderDefinition(c_nonPersistentTestDomainProviderID); }
     }
 
     protected UnitTestStorageProviderStubDefinition UnitTestStorageProviderDefinition
     {
-      get { return (UnitTestStorageProviderStubDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_unitTestStorageProviderStubID]; }
+      get { return (UnitTestStorageProviderStubDefinition)StorageSettings.GetStorageProviderDefinition(c_unitTestStorageProviderStubID); }
     }
 
     protected PropertyDefinition GetPropertyDefinition (Type declaringType, string shortPropertyName)

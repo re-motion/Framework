@@ -15,19 +15,22 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Reflection;
-using Remotion.Configuration;
-using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain;
+using Remotion.Data.DomainObjects.Validation;
+using Remotion.Development.Data.UnitTesting.DomainObjects.Configuration;
+using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Reflection.TypeDiscovery;
+using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
@@ -53,59 +56,60 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       s_instance = new SchemaGenerationConfiguration();
     }
 
-    private readonly StorageConfiguration _storageConfiguration;
     private readonly MappingConfiguration _mappingConfiguration;
-    private readonly FakeDomainObjectsConfiguration _domainObjectsConfiguration;
+    private readonly IStorageSettings _storageSettings;
 
     public SchemaGenerationConfiguration ()
     {
-      var sqlStorageObjectFactory = new SqlStorageObjectFactory();
-      var storageProviderDefinitionCollection = new ProviderCollection<StorageProviderDefinition>
+      var fakeStorageObjectFactoryFactory = new FakeStorageObjectFactoryFactory();
+      var fakeStorageSettingsFactory = new FakeStorageSettingsFactory();
+      var fakeStorageSettingsFactoryResolver = new FakeStorageSettingsFactoryResolver(fakeStorageSettingsFactory);
+
+      var deferredStorageSettings = new DeferredStorageSettings(fakeStorageObjectFactoryFactory, fakeStorageSettingsFactoryResolver);
+
+      var sqlStorageObjectFactory = new SqlStorageObjectFactory(
+          deferredStorageSettings,
+          SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
+          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
+
+      var defaultStorageProviderDefinition = new RdbmsProviderDefinition(
+          DatabaseTest.SchemaGenerationFirstStorageProviderID,
+          sqlStorageObjectFactory,
+          DatabaseTest.SchemaGenerationConnectionString1,
+          new[] { typeof(FirstStorageGroupAttribute) });
+
+      var storageProviderDefinitionCollection = new List<StorageProviderDefinition>
                                                 {
-                                                    new RdbmsProviderDefinition(
-                                                        DatabaseTest.SchemaGenerationFirstStorageProviderID,
-                                                        sqlStorageObjectFactory,
-                                                        DatabaseTest.SchemaGenerationConnectionString1),
-                                                    new RdbmsProviderDefinition(
-                                                        DatabaseTest.SchemaGenerationSecondStorageProviderID,
-                                                        sqlStorageObjectFactory,
-                                                        DatabaseTest.SchemaGenerationConnectionString2),
-                                                    new RdbmsProviderDefinition(
-                                                        DatabaseTest.SchemaGenerationThirdStorageProviderID,
-                                                        sqlStorageObjectFactory,
-                                                        DatabaseTest.SchemaGenerationConnectionString3),
-                                                    new RdbmsProviderDefinition(
-                                                        DatabaseTest.SchemaGenerationInternalStorageProviderID,
-                                                        sqlStorageObjectFactory,
-                                                        DatabaseTest.SchemaGenerationConnectionString1)
+                                                  defaultStorageProviderDefinition,
+                                                  new RdbmsProviderDefinition(
+                                                      DatabaseTest.SchemaGenerationSecondStorageProviderID,
+                                                      sqlStorageObjectFactory,
+                                                      DatabaseTest.SchemaGenerationConnectionString2,
+                                                      new[] { typeof(SecondStorageGroupAttribute) }),
+                                                  new RdbmsProviderDefinition(
+                                                      DatabaseTest.SchemaGenerationThirdStorageProviderID,
+                                                      sqlStorageObjectFactory,
+                                                      DatabaseTest.SchemaGenerationConnectionString3,
+                                                      new[] { typeof(ThirdStorageGroupAttribute) }),
+                                                  new RdbmsProviderDefinition(
+                                                      DatabaseTest.SchemaGenerationInternalStorageProviderID,
+                                                      sqlStorageObjectFactory,
+                                                      DatabaseTest.SchemaGenerationConnectionString1,
+                                                      new[] { typeof(InternalStorageGroupAttribute) })
                                                 };
 
-      _storageConfiguration = new StorageConfiguration(
-          storageProviderDefinitionCollection,
-          storageProviderDefinitionCollection[DatabaseTest.SchemaGenerationFirstStorageProviderID]);
-      _storageConfiguration.StorageGroups.Add(
-          new StorageGroupElement(
-              new FirstStorageGroupAttribute(),
-              DatabaseTest.SchemaGenerationFirstStorageProviderID));
-      _storageConfiguration.StorageGroups.Add(
-          new StorageGroupElement(
-              new SecondStorageGroupAttribute(),
-              DatabaseTest.SchemaGenerationSecondStorageProviderID));
-      _storageConfiguration.StorageGroups.Add(
-          new StorageGroupElement(
-              new ThirdStorageGroupAttribute(),
-              DatabaseTest.SchemaGenerationThirdStorageProviderID));
-      _storageConfiguration.StorageGroups.Add(
-          new StorageGroupElement(
-              new InternalStorageGroupAttribute(),
-              DatabaseTest.SchemaGenerationInternalStorageProviderID));
+      _storageSettings = new StorageSettings(
+          defaultStorageProviderDefinition,
+          storageProviderDefinitionCollection);
+
+      fakeStorageObjectFactoryFactory.SetUp(sqlStorageObjectFactory);
+      fakeStorageSettingsFactory.SetUp(_storageSettings);
 
       var typeDiscoveryService = GetTypeDiscoveryService(GetType().Assembly);
 
-      _mappingConfiguration = new MappingConfiguration(
-          MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
-          new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(_storageConfiguration)));
-      _domainObjectsConfiguration = new FakeDomainObjectsConfiguration(_storageConfiguration);
+      _mappingConfiguration = MappingConfiguration.Create(
+            MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
+            new PersistenceModelLoader(_storageSettings));
     }
 
     public MappingConfiguration GetMappingConfiguration ()
@@ -113,14 +117,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       return _mappingConfiguration;
     }
 
-    public StorageConfiguration GetPersistenceConfiguration ()
+    public IStorageSettings GetStorageSettings ()
     {
-      return _storageConfiguration;
-    }
-
-    public FakeDomainObjectsConfiguration GetDomainObjectsConfiguration ()
-    {
-      return _domainObjectsConfiguration;
+      return _storageSettings;
     }
 
     public ITypeDiscoveryService GetTypeDiscoveryService (params Assembly[] rootAssemblies)

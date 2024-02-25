@@ -341,7 +341,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
-      var newQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject>();
+      var newQueryResult = TestQueryFactory.CreateTestQueryResult(StorageSettings);
       _strictListenerMock
           .Setup(mock => mock.FilterQueryResult(TestableClientTransaction, It.Is<QueryResult<DomainObject>>(qr => qr.Count == orders.Count)))
           .Returns(newQueryResult)

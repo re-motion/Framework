@@ -35,11 +35,6 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
-  <ItemGroup>
-    <None Update="dbschema.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
   <PropertyGroup>
 <!--    <PostBuildEvent>cd ..\..\..\;.\GenerateSetupDBScript.cmd $(ConfigurationName)</PostBuildEvent>-->
   </PropertyGroup>

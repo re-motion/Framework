@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.FunctionalProgramming;
@@ -45,11 +46,12 @@ namespace Remotion.Data.DomainObjects.Persistence
     private bool _disposed;
     private StorageProviderManager _storageProviderManager;
 
-    public PersistenceManager (IPersistenceExtension persistenceExtension)
+    public PersistenceManager (IPersistenceExtension persistenceExtension, IStorageSettings storageSettings)
     {
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
 
-      _storageProviderManager = new StorageProviderManager(persistenceExtension);
+      _storageProviderManager = new StorageProviderManager(persistenceExtension, storageSettings);
     }
 
     #region IDisposable Members

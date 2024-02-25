@@ -74,6 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
       DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
       defaultServiceLocator.RegisterSingle<IQueryDefinitionRepository>(() => queryDefinitionRepository);
+      RegisterStandardConfiguration(defaultServiceLocator);
       using var scope = new ServiceLocatorScope(defaultServiceLocator);
 
       QueryDefinition queryDefinition = queryDefinitionRepository.GetMandatory("OrderQuery");
@@ -91,6 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
       DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
       defaultServiceLocator.RegisterSingle<IQueryDefinitionRepository>(() => queryDefinitionRepository);
+      RegisterStandardConfiguration(defaultServiceLocator);
 
       // We serialize the QueryDefinition while it exists in the repo (serialization accesses the repo using DI)
       // to have the IsPartOfQueryConfiguration flag set
@@ -114,6 +116,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
       DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
       defaultServiceLocator.RegisterSingle<IQueryDefinitionRepository>(() => queryDefinitionRepository);
+      RegisterStandardConfiguration(defaultServiceLocator);
       using var scope = new ServiceLocatorScope(defaultServiceLocator);
 
       var queryDefinitions = new List<QueryDefinition>();
@@ -133,6 +136,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
       DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
       defaultServiceLocator.RegisterSingle<IQueryDefinitionRepository>(() => queryDefinitionRepository);
+      RegisterStandardConfiguration(defaultServiceLocator);
       using var scope = new ServiceLocatorScope(defaultServiceLocator);
 
       var query = (Query)QueryFactory.CreateQuery(queryDefinitionRepository.GetMandatory("OrderQuery"));

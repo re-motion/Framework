@@ -34,18 +34,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
 
     public override void SetUp ()
     {
-      base.SetUp();
-
       var persistenceExtensionFactoryStub = new Mock<IPersistenceExtensionFactory>();
       _persistenceExtensionMock = new Mock<IPersistenceExtension>();
 
       persistenceExtensionFactoryStub
-          .Setup(stub => stub.CreatePersistenceExtensions(TestableClientTransaction.ID))
+          .Setup(stub => stub.CreatePersistenceExtensions(It.Is<Guid>(value => value == TestableClientTransaction.ID)))
           .Returns(new[] { _persistenceExtensionMock.Object });
 
       var locator = DefaultServiceLocator.Create();
-      locator.RegisterSingle<IPersistenceExtensionFactory>(() => persistenceExtensionFactoryStub.Object);
+      locator.RegisterSingle(() => persistenceExtensionFactoryStub.Object);
+      RegisterStandardConfiguration(locator);
       _serviceLocatorScope = new ServiceLocatorScope(locator);
+
+      base.SetUp();
+
+      Assert.That(SafeServiceLocator.Current, Is.SameAs(locator));
     }
 
     public override void TearDown ()

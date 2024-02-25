@@ -27,8 +27,11 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Mixins;
+using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.Utilities;
 
@@ -65,7 +68,9 @@ public class ClientTransaction
   /// <see cref="ExtendsAttribute"/> instance for <see cref="ClientTransaction"/> or <see cref="RootPersistenceStrategy"/> to a mixin class.</remarks>
   public static ClientTransaction CreateRootTransaction ()
   {
-    var componentFactory = RootClientTransactionComponentFactory.Create();
+    var componentFactory = RootClientTransactionComponentFactory.Create(
+        SafeServiceLocator.Current.GetInstance<IStorageSettings>(),
+        SafeServiceLocator.Current.GetInstance<IPersistenceExtensionFactory>());
     return ObjectFactory.Create<ClientTransaction>(true, ParamList.Create(componentFactory));
   }
 

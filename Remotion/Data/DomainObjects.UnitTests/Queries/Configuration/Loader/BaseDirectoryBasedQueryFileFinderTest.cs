@@ -19,6 +19,7 @@ using System.IO;
 using JetBrains.Annotations;
 using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Queries.Configuration.Loader;
 using Remotion.Development.UnitTesting.IO;
 using Remotion.Utilities;
@@ -68,7 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
 
       Assert.That(
           () => queryFileFinder.GetQueryFilePaths(),
-          Throws.TypeOf<ConfigurationException>()
+          Throws.TypeOf<QueryConfigurationException>()
               .With.Message.EqualTo(@"The query file 'C:\nonexistent\query.xml' does not exist."));
     }
 
@@ -96,7 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
 
       Assert.That(
           () => queryFileFinder.GetQueryFilePaths(),
-          Throws.TypeOf<ConfigurationException>()
+          Throws.TypeOf<QueryConfigurationException>()
               .With.Message.EqualTo(@"The query file 'C:\queries\query.xml' does not exist."));
     }
   }

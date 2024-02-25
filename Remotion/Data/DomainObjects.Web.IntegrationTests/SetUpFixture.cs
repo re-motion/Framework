@@ -15,19 +15,22 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using Remotion.Configuration;
-using Remotion.Data.DomainObjects.Configuration;
-using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
+using Remotion.Data.DomainObjects.Validation;
 using Remotion.Data.DomainObjects.Web.IntegrationTests.TestDomain;
 using Remotion.Development.UnitTesting.Data.SqlClient;
+using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Web.IntegrationTests
 {
@@ -52,11 +55,12 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
     {
       try
       {
-        var providers = new ProviderCollection<StorageProviderDefinition>();
-        providers.Add(new RdbmsProviderDefinition("TheStorageProvider", new SqlStorageObjectFactory(), TestDomainConnectionString));
-        var storageConfiguration = new StorageConfiguration(providers, providers["TheStorageProvider"]);
+        var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer(TestDomainConnectionString);
 
-        DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(storage: storageConfiguration));
+        var defaultServiceLocator = DefaultServiceLocator.Create();
+        defaultServiceLocator.RegisterSingle(() => storageSettingsFactory);
+
+        ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
 
         SqlConnection.ClearAllPools();
 

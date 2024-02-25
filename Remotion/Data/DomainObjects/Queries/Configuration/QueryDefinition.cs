@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Runtime.Serialization;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.ServiceLocation;
@@ -166,7 +165,8 @@ public class QueryDefinition
     if (!_ispartOfQueryConfiguration)
     {
        var storageProviderID = info.GetString("StorageProviderID")!;
-      _storageProviderDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory(storageProviderID);
+       var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
+       _storageProviderDefinition = storageSettings.GetStorageProviderDefinition(storageProviderID);
       _statement = info.GetString("Statement")!;
       _queryType = (QueryType)info.GetValue("QueryType", typeof(QueryType))!;
       _collectionType = (Type?)info.GetValue("CollectionType", typeof(Type));

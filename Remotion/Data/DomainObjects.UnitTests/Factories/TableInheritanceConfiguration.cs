@@ -15,10 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
-  public class TableInheritanceConfiguration: BaseConfiguration
+  public sealed class TableInheritanceConfiguration
   {
     private static TableInheritanceConfiguration s_instance;
 
@@ -37,6 +40,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       if (s_instance != null)
         return;
 
+      BaseConfiguration.EnsureInitialized();
+
       s_instance = new TableInheritanceConfiguration();
       s_instance.DisableDatabaseAccess();
     }
@@ -51,6 +56,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     public TableInheritanceDomainObjectIDs GetDomainObjectIDs ()
     {
       return _domainObjectIDs;
+    }
+
+    public void Register (DefaultServiceLocator defaultServiceLocator)
+    {
+      BaseConfiguration.Instance.Register(defaultServiceLocator);
+    }
+
+    public IStorageSettings GetStorageSettings ()
+    {
+      return BaseConfiguration.Instance.GetStorageSettings();
+    }
+
+    public MappingConfiguration GetMappingConfiguration ()
+    {
+      return BaseConfiguration.Instance.GetMappingConfiguration();
+    }
+
+    public void DisableDatabaseAccess ()
+    {
+      BaseConfiguration.Instance.DisableDatabaseAccess();
+    }
+
+    public void EnableDatabaseAccess ()
+    {
+      BaseConfiguration.Instance.EnableDatabaseAccess();
     }
   }
 }

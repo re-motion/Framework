@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -18,8 +18,6 @@ using System;
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Configuration;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Queries.Configuration.Loader;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
@@ -30,8 +28,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
   [TestFixture]
   public class QueryDefinitionFileLoaderTest : StandardMappingTest
   {
-    private StorageGroupBasedStorageProviderDefinitionFinder _storageProviderDefinitionFinder;
-
     private string _tempQueriesFilePath;
     private string _tempQueriesDirectory;
 
@@ -45,13 +41,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
       File.Copy(queriesFile, _tempQueriesFilePath, true);
     }
 
-    public override void SetUp ()
-    {
-      base.SetUp();
-
-      _storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage);
-    }
-
     public override void TestFixtureTearDown ()
     {
       File.Delete(_tempQueriesFilePath);
@@ -62,14 +51,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
     [Test]
     public void LoadQueryDefinitions ()
     {
-      var loader = new QueryDefinitionFileLoader(_storageProviderDefinitionFinder);
+      var loader = new QueryDefinitionFileLoader(StorageSettings);
       var actualQueries = loader.LoadQueryDefinitions(GetFullScriptPath("QueriesForLoaderTest.xml"));
       var expectedQueries = new[]
                             {
-                                TestQueryFactory.CreateOrderQueryWithCustomCollectionType(),
-                                TestQueryFactory.CreateOrderQueryDefinitionWithObjectListOfOrder(),
-                                TestQueryFactory.CreateCustomerTypeQueryDefinition(),
-                                TestQueryFactory.CreateOrderSumQueryDefinition()
+                                TestQueryFactory.CreateOrderQueryWithCustomCollectionType(StorageSettings),
+                                TestQueryFactory.CreateOrderQueryDefinitionWithObjectListOfOrder(StorageSettings),
+                                TestQueryFactory.CreateCustomerTypeQueryDefinition(StorageSettings),
+                                TestQueryFactory.CreateOrderSumQueryDefinition(StorageSettings)
                             };
 
       QueryDefinitionChecker checker = new QueryDefinitionChecker();
@@ -79,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
     [Test]
     public void LoadQueryDefinitions_ScalarQueryWithCollectionType_ThrowsQueryConfigurationException ()
     {
-      var loader = new QueryDefinitionFileLoader(_storageProviderDefinitionFinder);
+      var loader = new QueryDefinitionFileLoader(StorageSettings);
       Assert.That(
           () => loader.LoadQueryDefinitions(GetFullScriptPath("ScalarQueryWithCollectionType.xml")),
           Throws.InstanceOf<QueryConfigurationException>()
@@ -92,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
       string configurationFile = GetFullScriptPath("QueriesWithInvalidNamespace.xml");
       try
       {
-        var loader = new QueryDefinitionFileLoader(_storageProviderDefinitionFinder);
+        var loader = new QueryDefinitionFileLoader(StorageSettings);
         loader.LoadQueryDefinitions(configurationFile);
 
         Assert.Fail("QueryConfigurationException was expected");
@@ -111,37 +100,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
     [Test]
     public void LoadQueryDefinitions_ProviderFromDefaultStorageProvider ()
     {
-      var loader = new QueryDefinitionFileLoader(_storageProviderDefinitionFinder);
+      var loader = new QueryDefinitionFileLoader(StorageSettings);
       var queries = loader.LoadQueryDefinitions(GetFullScriptPath("QueriesForStorageGroupTest.xml"));
 
       Assert.That(
           queries.Single(e => e.ID == "QueryFromDefaultStorageProvider").StorageProviderDefinition,
-          Is.SameAs(DomainObjectsConfiguration.Current.Storage.DefaultStorageProviderDefinition));
+          Is.SameAs(StorageSettings.GetDefaultStorageProviderDefinition()));
     }
 
     [Test]
     public void LoadQueryDefinitions_ProviderFromCustomStorageGroup ()
     {
-      var loader = new QueryDefinitionFileLoader(_storageProviderDefinitionFinder);
+      var loader = new QueryDefinitionFileLoader(StorageSettings);
       var queries = loader.LoadQueryDefinitions(GetFullScriptPath("QueriesForStorageGroupTest.xml"));
 
       Assert.That(
           queries.Single(e => e.ID == "QueryFromCustomStorageGroup").StorageProviderDefinition,
-          Is.SameAs(DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions["TestDomain"]));
+          Is.SameAs(StorageSettings.GetStorageProviderDefinition("TestDomain")));
       Assert.That(
          queries.Single(e => e.ID == "QueryFromCustomStorageGroup").StorageProviderDefinition,
-         Is.Not.SameAs(DomainObjectsConfiguration.Current.Storage.DefaultStorageProviderDefinition));
+         Is.Not.SameAs(StorageSettings.GetDefaultStorageProviderDefinition()));
     }
 
     [Test]
     public void LoadQueryDefinitions_ProviderFromUndefinedStorageGroup ()
     {
-      var loader = new QueryDefinitionFileLoader(_storageProviderDefinitionFinder);
+      var loader = new QueryDefinitionFileLoader(StorageSettings);
       var queries = loader.LoadQueryDefinitions(GetFullScriptPath("QueriesForStorageGroupTest.xml"));
 
       Assert.That(
           queries.Single(e => e.ID == "QueryFromUndefinedStorageGroup").StorageProviderDefinition,
-          Is.SameAs(DomainObjectsConfiguration.Current.Storage.DefaultStorageProviderDefinition));
+          Is.SameAs(StorageSettings.GetDefaultStorageProviderDefinition()));
     }
 
     private string GetFullScriptPath (string script)

@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using System.Xml.Schema;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Schemas;
 using Remotion.Utilities;
@@ -31,11 +30,13 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
   /// </summary>
   public class QueryDefinitionFileLoader
   {
-    private readonly StorageGroupBasedStorageProviderDefinitionFinder _storageProviderDefinitionFinder;
+    private readonly IStorageSettings _storageSettings;
 
-    public QueryDefinitionFileLoader (StorageGroupBasedStorageProviderDefinitionFinder storageProviderDefinitionFinder)
+    public QueryDefinitionFileLoader (IStorageSettings storageSettings)
     {
-      _storageProviderDefinitionFinder = storageProviderDefinitionFinder;
+      ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
+
+      _storageSettings = storageSettings;
     }
 
     /// <summary>
@@ -56,10 +57,6 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
         var schemaNamespace = PrefixNamespace.QueryConfigurationNamespace;
         document = LoadConfigurationFile(configurationFile, SchemaLoader.Queries, schemaNamespace.Uri);
         namespaceManager = new ConfigurationNamespaceManager(document, new[] { schemaNamespace });
-      }
-      catch (ConfigurationException ex)
-      {
-        throw new QueryConfigurationException($"Error while reading query configuration: {ex.Message} File: '{configurationFile}'.", ex);
       }
       catch (XmlSchemaException ex)
       {
@@ -97,7 +94,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
       Assertion.DebugIsNotNull(document.DocumentElement, "document.DocumentElement != null");
       if (document.DocumentElement.NamespaceURI != schemaNamespace)
       {
-        throw new ConfigurationException($"The namespace '{document.DocumentElement.NamespaceURI}' of the root element is invalid. Expected namespace: '{schemaNamespace}'.");
+        throw new XmlException($"The namespace '{document.DocumentElement.NamespaceURI}' of the root element is invalid. Expected namespace: '{schemaNamespace}'.");
       }
 
       return document;
@@ -137,7 +134,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
     private StorageProviderDefinition GetStorageProviderDefinition (string? storageGroupName, string configurationFile)
     {
       var storageGroupType = storageGroupName == null ? null : TypeUtility.GetType(storageGroupName, true);
-      return _storageProviderDefinitionFinder.GetStorageProviderDefinition(storageGroupType, "File: " + configurationFile);
+      return _storageSettings.GetStorageProviderDefinition(storageGroupType);
     }
 
     private Type? GetOptionalType (XmlNode selectionNode, string xPath, XmlNamespaceManager namespaceManager)

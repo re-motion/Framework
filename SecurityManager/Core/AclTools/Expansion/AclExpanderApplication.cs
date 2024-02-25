@@ -22,6 +22,7 @@ using System.Reflection;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.AclTools.Expansion.Infrastructure;
 using Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory;
+using Remotion.ServiceLocation;
 using Remotion.Tools.Console.ConsoleApplication;
 using Remotion.Utilities;
 
@@ -65,16 +66,33 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
       Init(settings);
 
-      string? cultureName = GetCultureName();
-
-      using (new CultureScope(cultureName))
+      var hasOriginalServiceLocator = ServiceLocator.IsLocationProviderSet;
+      try
       {
-        using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+        if (!hasOriginalServiceLocator)
         {
-          List<AclExpansionEntry> aclExpansion = GetAclExpansion();
-
-          WriteAclExpansionAsHtmlToStreamWriter(aclExpansion);
+          var serviceLocator = DefaultServiceLocator.Create();
+          var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer(settings.ConnectionString);
+          serviceLocator.RegisterSingle(() => storageSettingsFactory);
+          ServiceLocator.SetLocatorProvider(() => serviceLocator);
         }
+
+        string? cultureName = GetCultureName();
+
+        using (new CultureScope(cultureName))
+        {
+          using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+          {
+            List<AclExpansionEntry> aclExpansion = GetAclExpansion();
+
+            WriteAclExpansionAsHtmlToStreamWriter(aclExpansion);
+          }
+        }
+      }
+      finally
+      {
+        if (!hasOriginalServiceLocator)
+          ServiceLocator.SetLocatorProvider(null);
       }
     }
 

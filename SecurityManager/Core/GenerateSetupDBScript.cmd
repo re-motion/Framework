@@ -8,7 +8,7 @@ echo Running .\..\..\Remotion\Data\DomainObjects.RdbmsTools\bin\%buildconf%\%tfm
 
 .\..\..\Remotion\Data\DomainObjects.RdbmsTools\bin\%buildconf%\%tfm%\dbschema.exe ^
     "/baseDirectory:bin\%buildconf%\%tfm%" ^
-    "/config:dbschema.config" ^
+    "/connectionString:Integrated Security=SSPI;Initial Catalog=RemotionSecurityManager;Data Source=localhost" ^
     "/schema" ^
     "/schemaDirectory:Database"
 

@@ -22,6 +22,9 @@ namespace Remotion.SecurityManager.Metadata.Importer
 {
   public class CommandLineArguments
   {
+    [CommandLineStringArgument("connectionString", false, Placeholder = "Integrated Security=SSPI;Initial Catalog=DemoDB;Data Source=localhost", Description = "The SQL Server connection string.")]
+    public string ConnectionString = "Integrated Security=SSPI;Initial Catalog=DemoDB;Data Source=localhost";
+
     [CommandLineModeArgument(false)]
     public OperationMode Mode;
 

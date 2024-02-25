@@ -17,6 +17,7 @@
 using System;
 using Moq;
 using Remotion.Data.DomainObjects.DomainImplementation;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Web.IntegrationTests.TestDomain;
 using Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunctionIntegrationTests.WxeFunctions;
 using Remotion.Development.UnitTesting;
@@ -53,10 +54,13 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       _functionalSecurityStrategyStub = new Mock<IFunctionalSecurityStrategy>();
       _objectSecurityStrategyStub = new Mock<IObjectSecurityStrategy>();
 
+      var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
+
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle(() => _securityProviderStub.Object);
       serviceLocator.RegisterSingle(() => principalProviderStub.Object);
       serviceLocator.RegisterSingle(() => _functionalSecurityStrategyStub.Object);
+      serviceLocator.RegisterSingle(() => storageSettings);
       serviceLocator.RegisterMultiple<IWebSecurityAdapter>();
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>(() => new WxeSecurityAdapter());
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);

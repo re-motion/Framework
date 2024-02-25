@@ -16,14 +16,17 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Linq;
-using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
+using Remotion.Data.DomainObjects.Validation;
 using Remotion.Linq.SqlBackend.SqlPreparation;
+using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2016
 {
@@ -49,11 +52,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     private readonly IStoragePropertyDefinitionResolver _storagePropertyDefinitionResolver;
 
     public TestableSqlStorageObjectFactory (
+        IStorageSettings storageSettings,
         TableScriptBuilder tableBuilder,
         ViewScriptBuilder viewBuilder,
         ForeignKeyConstraintScriptBuilder constraintBuilder,
         IndexScriptBuilder indexBuilder,
         SynonymScriptBuilder synonymBuilder)
+        : base(storageSettings, SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(), SafeServiceLocator.Current.GetInstance<IDataContainerValidator>())
     {
       _indexBuilder = indexBuilder;
       _constraintBuilder = constraintBuilder;
@@ -63,6 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     }
 
     public TestableSqlStorageObjectFactory (
+        IStorageSettings storageSettings,
         IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider,
         IStorageTypeInformationProvider storageTypeInformationProvider,
         IDbCommandBuilderFactory dbCommandBuilderFactory,
@@ -74,6 +80,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
         ISqlQueryGenerator sqlQueryGenerator,
         IForeignKeyConstraintDefinitionFactory foreignKeyConstraintDefinitionFactoryFactory,
         IStoragePropertyDefinitionResolver storagePropertyDefinitionResolver)
+        : base(storageSettings, SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(), SafeServiceLocator.Current.GetInstance<IDataContainerValidator>())
     {
       _infrastructureStoragePropertyDefinitionProvider = infrastructureStoragePropertyDefinitionProvider;
       _storageNameProvider = storageNameProvider;
@@ -88,7 +95,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       _storagePropertyDefinitionResolver = storagePropertyDefinitionResolver;
     }
 
-    public TestableSqlStorageObjectFactory (IStorageProviderSerializer storageProviderSerializer, IEnumSerializer enumSerializer)
+    public TestableSqlStorageObjectFactory (IStorageSettings storageSettings, IStorageProviderSerializer storageProviderSerializer, IEnumSerializer enumSerializer)
+        : base(storageSettings, SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(), SafeServiceLocator.Current.GetInstance<IDataContainerValidator>())
     {
       _storageProviderSerializer = storageProviderSerializer;
       _enumSerializer = enumSerializer;
@@ -164,11 +172,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     protected override IDataStoragePropertyDefinitionFactory CreateDataStoragePropertyDefinitionFactory (
         RdbmsProviderDefinition storageProviderDefinition,
         IStorageTypeInformationProvider storageTypeInformationProvider,
-        IStorageNameProvider storageNameProvider,
-        IStorageProviderDefinitionFinder providerDefinitionFinder)
+        IStorageNameProvider storageNameProvider)
     {
       return _dataStoragePropertyDefinitionFactory
-             ?? base.CreateDataStoragePropertyDefinitionFactory(storageProviderDefinition, storageTypeInformationProvider, storageNameProvider, providerDefinitionFinder);
+             ?? base.CreateDataStoragePropertyDefinitionFactory(storageProviderDefinition, storageTypeInformationProvider, storageNameProvider);
     }
 
     protected override IValueStoragePropertyDefinitionFactory CreateValueStoragePropertyDefinitionFactory (
@@ -183,15 +190,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     protected override IRelationStoragePropertyDefinitionFactory CreateRelationStoragePropertyDefinitionFactory (
         RdbmsProviderDefinition storageProviderDefinition,
         IStorageTypeInformationProvider storageTypeInformationProvider,
-        IStorageNameProvider storageNameProvider,
-        IStorageProviderDefinitionFinder providerDefinitionFinder)
+        IStorageNameProvider storageNameProvider)
     {
       return _relationStoragePropertyDefinitionFactory
              ?? base.CreateRelationStoragePropertyDefinitionFactory(
                  storageProviderDefinition,
                  storageTypeInformationProvider,
-                 storageNameProvider,
-                 providerDefinitionFinder);
+                 storageNameProvider);
     }
 
     protected override ISqlQueryGenerator CreateSqlQueryGenerator (

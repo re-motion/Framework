@@ -15,21 +15,27 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
-using Remotion.Configuration;
-using Remotion.Data.DomainObjects.Configuration;
-using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Model;
+using Remotion.Data.DomainObjects.Persistence.NonPersistent;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
+using Remotion.Data.DomainObjects.Validation;
+using Remotion.Development.Data.UnitTesting.DomainObjects.Configuration;
+using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
+using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -37,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   {
     private static TestMappingConfiguration s_instance;
 
-    private readonly StorageConfiguration _storageConfiguration;
+    private readonly IStorageSettings _storageSettings;
     private readonly MappingConfiguration _mappingConfiguration;
     private readonly DomainObjectIDs _domainObjectIDs;
 
@@ -64,28 +70,74 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     protected TestMappingConfiguration ()
     {
-      ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = StorageProviderDefinitionObjectMother.CreateTestDomainStorageProviders();
-      _storageConfiguration = new StorageConfiguration(
-          storageProviderDefinitionCollection, storageProviderDefinitionCollection[MappingReflectionTestBase.DefaultStorageProviderID]);
-      _storageConfiguration.StorageGroups.Add(new StorageGroupElement(new TestDomainAttribute(), MappingReflectionTestBase.c_testDomainProviderID));
-      _storageConfiguration.StorageGroups.Add(
-          new StorageGroupElement(new StorageProviderStubAttribute(), MappingReflectionTestBase.c_unitTestStorageProviderStubID));
-      _storageConfiguration.StorageGroups.Add(
-          new StorageGroupElement(new TableInheritanceTestDomainAttribute(), TableInheritanceMappingTest.TableInheritanceTestDomainProviderID));
-      _storageConfiguration.StorageGroups.Add(
-          new StorageGroupElement(new NonPersistentTestDomainAttribute(), MappingReflectionTestBase.c_nonPersistentTestDomainProviderID));
-
-      DomainObjectsConfiguration.SetCurrent(
-          new FakeDomainObjectsConfiguration(_storageConfiguration));
+      _storageSettings = CreateStorageSettings();
 
       var typeDiscoveryService = GetTypeDiscoveryService();
 
-      _mappingConfiguration = new MappingConfiguration(
+      _mappingConfiguration = MappingConfiguration.Create(
           MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
-          new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage)));
+          new PersistenceModelLoader(_storageSettings));
       MappingConfiguration.SetCurrent(_mappingConfiguration);
 
       _domainObjectIDs = new DomainObjectIDs();
+    }
+
+    private static IStorageSettings CreateStorageSettings ()
+    {
+      var fakeStorageObjectFactoryFactory = new FakeStorageObjectFactoryFactory();
+      var fakeStorageSettingsFactory = new FakeStorageSettingsFactory();
+      var fakeStorageSettingsFactoryResolver = new FakeStorageSettingsFactoryResolver(fakeStorageSettingsFactory);
+
+      var deferredStorageSettings = new DeferredStorageSettings(fakeStorageObjectFactoryFactory, fakeStorageSettingsFactoryResolver);
+
+      var sqlStorageObjectFactory = new SqlStorageObjectFactory(
+          deferredStorageSettings,
+          SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
+          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
+
+      var nonPersistentStorageObjectFactory = new NonPersistentStorageObjectFactory();
+
+      var storageProviderDefinitionCollection = new List<StorageProviderDefinition>();
+
+      var defaultStorageProvider = new RdbmsProviderDefinition(
+          MappingReflectionTestBase.DefaultStorageProviderID,
+          sqlStorageObjectFactory,
+          connectionString: "Mapping TestDomain ConnectionString");
+      storageProviderDefinitionCollection.Add(defaultStorageProvider);
+
+      storageProviderDefinitionCollection.Add(
+          new RdbmsProviderDefinition(
+              MappingReflectionTestBase.c_testDomainProviderID,
+              sqlStorageObjectFactory,
+              connectionString: "Mapping TestDomain ConnectionString",
+              assignedStorageGroups: new[] { typeof(TestDomainAttribute) }));
+
+      storageProviderDefinitionCollection.Add(
+          new UnitTestStorageProviderStubDefinition(
+              MappingReflectionTestBase.c_unitTestStorageProviderStubID,
+              assignedStorageGroups: new[] { typeof(StorageProviderStubAttribute) }));
+
+      storageProviderDefinitionCollection.Add(
+          new RdbmsProviderDefinition(
+              TableInheritanceMappingTest.TableInheritanceTestDomainProviderID,
+              sqlStorageObjectFactory,
+              connectionString: "Mapping TestDomain ConnectionString",
+              assignedStorageGroups: new[] { typeof(TableInheritanceTestDomainAttribute) }));
+
+      storageProviderDefinitionCollection.Add(
+          new NonPersistentProviderDefinition(
+              MappingReflectionTestBase.c_nonPersistentTestDomainProviderID,
+              nonPersistentStorageObjectFactory,
+              assignedStorageGroups: new[] { typeof(NonPersistentTestDomainAttribute) }));
+
+      var storageSettings = new StorageSettings(
+          defaultStorageProvider,
+          storageProviderDefinitionCollection);
+
+      fakeStorageObjectFactoryFactory.SetUp(sqlStorageObjectFactory);
+      fakeStorageSettingsFactory.SetUp(storageSettings);
+
+      return storageSettings;
     }
 
     public static ITypeDiscoveryService GetTypeDiscoveryService ()
@@ -108,14 +160,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return _mappingConfiguration;
     }
 
-    public StorageConfiguration GetPersistenceConfiguration ()
+    public IStorageSettings GetStorageSettings ()
     {
-      return _storageConfiguration;
-    }
-
-    public FakeDomainObjectsConfiguration GetDomainObjectsConfiguration ()
-    {
-      return new FakeDomainObjectsConfiguration(_storageConfiguration);
+      return _storageSettings;
     }
 
     public DomainObjectIDs GetDomainObjectIDs ()

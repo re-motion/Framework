@@ -1273,8 +1273,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       LifetimeService.GetObject(_subTransaction, DomainObjectIDs.Order1, true);
       LifetimeService.GetObject(_subTransaction, DomainObjectIDs.Order2, true);
 
-      QueryResult<DomainObject> parentFilteredQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject>(new[] { _order1 });
-      QueryResult<DomainObject> subFilteredQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject>();
+      QueryResult<DomainObject> parentFilteredQueryResult = TestQueryFactory.CreateTestQueryResult(StorageSettings, new[] { _order1 });
+      QueryResult<DomainObject> subFilteredQueryResult = TestQueryFactory.CreateTestQueryResult(StorageSettings);
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
       extensionMock
@@ -1298,8 +1298,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       IQuery query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"));
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer4); // yields Order4, Order5
 
-      QueryResult<DomainObject> parentFilteredQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject>(new[] { _order1 });
-      QueryResult<DomainObject> subFilteredQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject>();
+      QueryResult<DomainObject> parentFilteredQueryResult = TestQueryFactory.CreateTestQueryResult(StorageSettings, new[] { _order1 });
+      QueryResult<DomainObject> subFilteredQueryResult = TestQueryFactory.CreateTestQueryResult(StorageSettings);
 
       UnloadService.UnloadData(_subTransaction, _order1.ID); // unload _order1 to force Load events
       ClientTransactionTestHelper.SetIsWriteable(TestableClientTransaction, true);

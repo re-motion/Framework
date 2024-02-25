@@ -19,6 +19,7 @@ using System.Linq;
 using log4net.Appender;
 using log4net.Config;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 using Remotion.Validation;
@@ -39,9 +40,12 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
     [SetUp]
     public virtual void SetUp ()
     {
+      var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
+
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle<IClientTransactionExtensionFactory>(
           () => new ValidationClientTransactionExtensionFactory(serviceLocator.GetInstance<IValidatorProvider>()));
+      serviceLocator.RegisterSingle(() => storageSettings);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
       MemoryAppender = new MemoryAppender();

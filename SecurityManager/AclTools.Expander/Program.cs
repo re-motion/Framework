@@ -17,7 +17,6 @@
 // 
 using System;
 using Remotion.SecurityManager.AclTools.Expansion;
-using Remotion.ServiceLocation;
 using Remotion.Tools.Console.ConsoleApplication;
 
 namespace Remotion.SecurityManager.AclTools.Expander
@@ -27,7 +26,6 @@ namespace Remotion.SecurityManager.AclTools.Expander
   {
     public static int Main (string[] args)
     {
-      ServiceLocator.SetLocatorProvider(() => null);
       var consoleApplication = new ConsoleApplication<AclExpanderApplication, AclExpanderApplicationSettings>();
       return consoleApplication.Main(args);
     }

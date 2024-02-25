@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       base.SetUp();
 
-      _testHelper = new SqlProviderGeneratedSqlTestHelper(TableInheritanceTestDomainStorageProviderDefinition);
+      _testHelper = new SqlProviderGeneratedSqlTestHelper(StorageSettings, TableInheritanceTestDomainStorageProviderDefinition);
     }
 
     public override void TearDown ()

@@ -19,7 +19,7 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation;
-using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
@@ -27,15 +27,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   [TestFixture]
   public class PersistenceModelLoaderTest
   {
-    private Mock<IStorageProviderDefinitionFinder> _storageProviderDefinitionStub;
+    private Mock<IStorageSettings> _storageSettingsStub;
     private PersistenceModelLoader _persistenceModelLoader;
     private ClassDefinition _classDefinition;
 
     [SetUp]
     public void SetUp ()
     {
-      _storageProviderDefinitionStub = new Mock<IStorageProviderDefinitionFinder>();
-      _persistenceModelLoader = new PersistenceModelLoader(_storageProviderDefinitionStub.Object);
+      _storageSettingsStub = new Mock<IStorageSettings>();
+      _persistenceModelLoader = new PersistenceModelLoader(_storageSettingsStub.Object);
       _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
     }
 
@@ -47,8 +47,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       _classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
       Assert.That(_classDefinition.HasStorageEntityDefinitionBeenSet, Is.False);
 
-      _storageProviderDefinitionStub
-          .Setup(stub => stub.GetStorageProviderDefinition(_classDefinition, null))
+      _storageSettingsStub
+          .Setup(stub => stub.GetStorageProviderDefinition(_classDefinition))
           .Returns(new UnitTestStorageProviderStubDefinition("DefaultStorageProvider"));
 
       _persistenceModelLoader.ApplyPersistenceModelToHierarchy(_classDefinition);
@@ -60,8 +60,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreatePersistenceMappingValidator ()
     {
-      _storageProviderDefinitionStub
-          .Setup(stub => stub.GetStorageProviderDefinition(_classDefinition, null))
+      _storageSettingsStub
+          .Setup(stub => stub.GetStorageProviderDefinition(_classDefinition))
           .Returns(new UnitTestStorageProviderStubDefinition("DefaultStorageProvider"));
 
       var result = _persistenceModelLoader.CreatePersistenceMappingValidator(_classDefinition);

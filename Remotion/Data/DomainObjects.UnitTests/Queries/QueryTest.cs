@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void EagerFetchQueries ()
     {
-      QueryDefinition definition = TestQueryFactory.CreateOrderQueryWithCustomCollectionType();
+      QueryDefinition definition = TestQueryFactory.CreateOrderQueryWithCustomCollectionType(StorageSettings);
       var query1 = new Query(definition, new QueryParameterCollection());
 
       Assert.That(query1.EagerFetchQueries, Is.Not.Null);
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void EagerFetchQueries_Recursive ()
     {
-      QueryDefinition definition = TestQueryFactory.CreateOrderQueryWithCustomCollectionType();
+      QueryDefinition definition = TestQueryFactory.CreateOrderQueryWithCustomCollectionType(StorageSettings);
       var query1 = new Query(definition, new QueryParameterCollection());
 
       Assert.That(query1.EagerFetchQueries, Is.Not.Null);

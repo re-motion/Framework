@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Specialized;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 
@@ -23,11 +22,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
 {
   public class TestableStorageProviderDefinition : StorageProviderDefinition
   {
-    public TestableStorageProviderDefinition (string name, NameValueCollection config)
-        : base(name, config)
-    {
-    }
-
     public TestableStorageProviderDefinition (string name, IStorageObjectFactory factory)
         : base(name, factory)
     {

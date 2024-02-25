@@ -22,6 +22,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Model
   /// <summary>
   /// <see cref="IPersistenceModelLoader"/> defines the API for all persistence model loader implementations.
   /// </summary>
+  /// <threadsafety static="true" instance="true"/>
   public interface IPersistenceModelLoader : IPersistenceModelValidatorFactory
   {
     void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition);

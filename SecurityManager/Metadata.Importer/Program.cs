@@ -18,11 +18,10 @@
 using System;
 using System.ComponentModel.Design;
 using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
@@ -83,9 +82,16 @@ namespace Remotion.SecurityManager.Metadata.Importer
 
     public int Run ()
     {
+      var hasOriginalServiceLocator = ServiceLocator.IsLocationProviderSet;
       try
       {
-        ServiceLocator.SetLocatorProvider(() => null);
+        if (!hasOriginalServiceLocator)
+        {
+          var serviceLocator = DefaultServiceLocator.Create();
+          var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer(_arguments.ConnectionString);
+          serviceLocator.RegisterSingle(() => storageSettingsFactory);
+          ServiceLocator.SetLocatorProvider(() => serviceLocator);
+        }
 
         var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
         var rootAssemblyFinder = new FixedRootAssemblyFinder(new RootAssembly(typeof(BaseSecurityManagerObject).Assembly, true));
@@ -93,7 +99,7 @@ namespace Remotion.SecurityManager.Metadata.Importer
 
         ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService(assemblyFinder);
         MappingConfiguration.SetCurrent(
-            new MappingConfiguration(
+            MappingConfiguration.Create(
                 MappingReflector.Create(
                     typeDiscoveryService,
                     SafeServiceLocator.Current.GetInstance<IClassIDProvider>(),
@@ -103,7 +109,7 @@ namespace Remotion.SecurityManager.Metadata.Importer
                     SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
                     SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
                     SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>()),
-                new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
+                SafeServiceLocator.Current.GetInstance<IPersistenceModelLoader>()));
 
         ClientTransaction transaction = ClientTransaction.CreateRootTransaction();
 
@@ -123,6 +129,11 @@ namespace Remotion.SecurityManager.Metadata.Importer
       {
         HandleException(e);
         return 1;
+      }
+      finally
+      {
+        if (!hasOriginalServiceLocator)
+          ServiceLocator.SetLocatorProvider(null);
       }
     }
 

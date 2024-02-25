@@ -75,6 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
 
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle<IQueryDefinitionRepository>(() => Queries);
+      RegisterStandardConfiguration(serviceLocator);
       using var scope = new ServiceLocatorScope(serviceLocator);
 
       IQuery query = QueryFactory.CreateQueryFromConfiguration(definition.ID);
@@ -94,6 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
 
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle<IQueryDefinitionRepository>(() => Queries);
+      RegisterStandardConfiguration(serviceLocator);
       using var scope = new ServiceLocatorScope(serviceLocator);
 
       IQuery query = QueryFactory.CreateQueryFromConfiguration(definition.ID, parameterCollection);
@@ -203,6 +205,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var factoryMock = new Mock<ILinqProviderComponentFactory>(MockBehavior.Strict);
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle<ILinqProviderComponentFactory>(() => factoryMock.Object);
+      RegisterStandardConfiguration(serviceLocator);
       using (new ServiceLocatorScope(serviceLocator))
       {
         var executorStub = new Mock<IQueryExecutor>();
@@ -227,6 +230,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var factoryMock = new Mock<ILinqProviderComponentFactory>(MockBehavior.Strict);
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle<ILinqProviderComponentFactory>(() => factoryMock.Object);
+      RegisterStandardConfiguration(serviceLocator);
       using (new ServiceLocatorScope(serviceLocator))
       {
         var fakeExecutor = new Mock<IQueryExecutor>();

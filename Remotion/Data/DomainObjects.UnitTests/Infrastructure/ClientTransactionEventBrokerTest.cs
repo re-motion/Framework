@@ -556,9 +556,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void RaiseFilterQueryResultEvent ()
     {
-      var queryResult1 = QueryResultObjectMother.CreateQueryResult<Order>();
-      var queryResult2 = QueryResultObjectMother.CreateQueryResult<Order>();
-      var queryResult3 = QueryResultObjectMother.CreateQueryResult<Order>();
+      var queryResult1 = QueryResultObjectMother.CreateQueryResult<Order>(StorageSettings);
+      var queryResult2 = QueryResultObjectMother.CreateQueryResult<Order>(StorageSettings);
+      var queryResult3 = QueryResultObjectMother.CreateQueryResult<Order>(StorageSettings);
 
       var sequence = new VerifiableSequence();
       _listenerMock.InVerifiableSequence(sequence).Setup(l => l.FilterQueryResult(_clientTransaction, queryResult1)).Returns(queryResult2).Verifiable();
@@ -581,7 +581,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void RaiseFilterCustomQueryResultEvent ()
     {
-      var query = QueryObjectMother.Create();
+      var query = QueryObjectMother.Create(StorageSettings);
       var queryResult1 = new[] { "one" };
       var queryResult2 = new[] { "two" };
 

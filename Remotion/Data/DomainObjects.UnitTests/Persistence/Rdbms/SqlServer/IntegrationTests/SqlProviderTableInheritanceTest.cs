@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       base.SetUp();
 
-      _provider = RdbmsProviderObjectMother.CreateForIntegrationTest(TableInheritanceTestDomainStorageProviderDefinition);
+      _provider = RdbmsProviderObjectMother.CreateForIntegrationTest(StorageSettings, TableInheritanceTestDomainStorageProviderDefinition);
     }
 
     public override void TearDown ()
