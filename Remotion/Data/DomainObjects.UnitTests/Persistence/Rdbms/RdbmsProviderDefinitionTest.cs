@@ -39,8 +39,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       _sqlStorageObjectFactory = new SqlStorageObjectFactory(
           StorageSettings,
-          ServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
-          ServiceLocator.Current.GetInstance<IDataContainerValidator>());
+          SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
+          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
       _definition = new RdbmsProviderDefinition("StorageProviderID", _sqlStorageObjectFactory, "ConnectionString");
     }
 

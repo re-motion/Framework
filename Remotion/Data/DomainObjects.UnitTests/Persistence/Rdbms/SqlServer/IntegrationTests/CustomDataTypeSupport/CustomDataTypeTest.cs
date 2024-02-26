@@ -43,8 +43,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       return new CustomDataTypeStorageObjectFactory(
           storageSettings,
-          ServiceLocation.ServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
-          ServiceLocation.ServiceLocator.Current.GetInstance<IDataContainerValidator>());
+          SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
+          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
     }
 
     protected override void SetupServiceLocator (DefaultServiceLocator serviceLocator)

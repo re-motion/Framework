@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
 
       _clientTransaction.EnterNonDiscardingScope();
 
-      var storageSettings = ServiceLocator.Current.GetInstance<IStorageSettings>();
+      var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
 
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle(() => _securityProviderStub.Object);

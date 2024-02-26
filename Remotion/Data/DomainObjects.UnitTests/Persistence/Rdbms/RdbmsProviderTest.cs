@@ -507,8 +507,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       var sqlStorageObjectFactory = new SqlStorageObjectFactory(
           StorageSettings,
-          ServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
-          ServiceLocator.Current.GetInstance<IDataContainerValidator>());
+          SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
+          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
 
       var providerWithDifferentID = new RdbmsProvider(
           new RdbmsProviderDefinition("Test", sqlStorageObjectFactory, TestDomainConnectionString),

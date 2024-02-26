@@ -40,8 +40,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       return new SqlStorageObjectFactory(
           storageSettings,
-          ServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
-          ServiceLocator.Current.GetInstance<IDataContainerValidator>());
+          SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
+          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
     }
 
     [Test]
