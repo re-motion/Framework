@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -29,16 +28,20 @@ namespace Remotion.ServiceLocation
   {
     public const int Position = 0;
 
-    public DefaultServiceLocatorProvider ()
+    public IServiceConfigurationDiscoveryService ServiceConfigurationDiscoveryService { get; }
+
+    public DefaultServiceLocatorProvider (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService)
     {
+      ArgumentUtility.CheckNotNull("serviceConfigurationDiscoveryService", serviceConfigurationDiscoveryService);
+
+      ServiceConfigurationDiscoveryService = serviceConfigurationDiscoveryService;
     }
 
     public IServiceLocator GetServiceLocator (IReadOnlyCollection<ServiceConfigurationEntry> serviceConfigurationEntries)
     {
       ArgumentUtility.CheckNotNull("serviceConfigurationEntries", serviceConfigurationEntries);
 
-      var defaultServiceConfigurationDiscoveryService = new DefaultServiceConfigurationDiscoveryService(ContextAwareTypeUtility.GetTypeDiscoveryService());
-      var defaultServiceLocator = new DefaultServiceLocator(defaultServiceConfigurationDiscoveryService);
+      var defaultServiceLocator = new DefaultServiceLocator(ServiceConfigurationDiscoveryService);
       foreach (var serviceConfigurationEntry in serviceConfigurationEntries)
         defaultServiceLocator.Register(serviceConfigurationEntry);
 

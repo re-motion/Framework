@@ -77,13 +77,13 @@ namespace Remotion.ServiceLocation
       return defaultServiceLocator;
     }
 
-    private readonly IServiceConfigurationDiscoveryService _serviceConfigurationDiscoveryService;
+    public IServiceConfigurationDiscoveryService ServiceConfigurationDiscoveryService { get; }
 
     public DefaultServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService)
     {
       ArgumentUtility.CheckNotNull("serviceConfigurationDiscoveryService", serviceConfigurationDiscoveryService);
 
-      _serviceConfigurationDiscoveryService = serviceConfigurationDiscoveryService;
+      ServiceConfigurationDiscoveryService = serviceConfigurationDiscoveryService;
 
       // Optimized for memory allocations
       _createRegistrationFromTypeFunc = CreateRegistrationFromType;
