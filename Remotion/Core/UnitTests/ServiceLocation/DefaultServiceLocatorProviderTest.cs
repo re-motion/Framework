@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 
@@ -23,20 +24,15 @@ namespace Remotion.UnitTests.ServiceLocation
   [TestFixture]
   public class DefaultServiceLocatorProviderTest
   {
-    private DefaultServiceLocatorProvider _provider;
-
-    [SetUp]
-    public void SetUp ()
-    {
-      _provider = new DefaultServiceLocatorProvider();
-    }
-
     [Test]
     public void GetServiceLocator ()
     {
-      var sloc = _provider.GetServiceLocator(Array.AsReadOnly(new ServiceConfigurationEntry[0]));
+      var serviceConfigurationDiscoveryServiceStub = Mock.Of<IServiceConfigurationDiscoveryService>(MockBehavior.Strict);
+      var provider = new DefaultServiceLocatorProvider(serviceConfigurationDiscoveryServiceStub);
+      var sloc = provider.GetServiceLocator(Array.AsReadOnly(new ServiceConfigurationEntry[0]));
 
       Assert.That(sloc, Is.TypeOf<DefaultServiceLocator>());
+      Assert.That(((DefaultServiceLocator)sloc).ServiceConfigurationDiscoveryService, Is.SameAs(serviceConfigurationDiscoveryServiceStub));
     }
 
     [Test]
@@ -44,7 +40,9 @@ namespace Remotion.UnitTests.ServiceLocation
     {
       var entry = new ServiceConfigurationEntry(typeof(IService), new ServiceImplementationInfo(typeof(Service), LifetimeKind.InstancePerDependency));
 
-      var sloc = _provider.GetServiceLocator(Array.AsReadOnly(new[] { entry }));
+      var serviceConfigurationDiscoveryServiceStub = Mock.Of<IServiceConfigurationDiscoveryService>(MockBehavior.Strict);
+      var provider = new DefaultServiceLocatorProvider(serviceConfigurationDiscoveryServiceStub);
+      var sloc = provider.GetServiceLocator(Array.AsReadOnly(new[] { entry }));
 
       Assert.That(sloc, Is.TypeOf<DefaultServiceLocator>());
       Assert.That(sloc.GetInstance<IService>(), Is.Not.Null.And.TypeOf<Service>());

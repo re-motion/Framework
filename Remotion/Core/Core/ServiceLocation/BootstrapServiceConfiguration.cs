@@ -40,9 +40,6 @@ namespace Remotion.ServiceLocation
       // Logging
       RegisterInstanceAsSingleton<ILogManager, Log4NetLogManager>(() => new Log4NetLogManager());
 
-      // Service Location
-      RegisterImplementationAsSingleton<IServiceLocatorProvider, DefaultServiceLocatorProvider>();
-
       // Type resolution
       RegisterImplementationAsSingleton<ITypeResolutionService, DefaultTypeResolutionService>();
 
@@ -57,6 +54,10 @@ namespace Remotion.ServiceLocation
 #endif
       RegisterDecoratedImplementationAsSingleton<IAssemblyFinder, AssemblyFinder, CachingAssemblyFinderDecorator>();
       RegisterImplementationAsSingleton<ITypeDiscoveryService, AssemblyFinderTypeDiscoveryService>();
+
+      // Service Location
+      RegisterImplementationAsSingleton<IServiceLocatorProvider, DefaultServiceLocatorProvider>();
+      RegisterImplementationAsSingleton<IServiceConfigurationDiscoveryService, DefaultServiceConfigurationDiscoveryService>();
     }
 
     public IReadOnlyCollection<ServiceConfigurationEntry> GetRegistrations ()
