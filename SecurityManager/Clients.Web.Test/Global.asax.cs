@@ -21,6 +21,7 @@ using Remotion.Development.Web.ResourceHosting;
 using Remotion.Security;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Domain;
+using Remotion.SecurityManager.Persistence;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls.Rendering;
@@ -35,7 +36,9 @@ namespace Remotion.SecurityManager.Clients.Web.Test
     {
       var defaultServiceLocator = DefaultServiceLocator.Create();
 
-      var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer("Integrated Security=SSPI;Initial Catalog=RemotionSecurityManagerWebClientTest;Data Source=localhost");
+      var storageSettingsFactory =
+          StorageSettingsFactory.CreateForSqlServer<SecurityManagerSqlStorageObjectFactory>(
+              "Integrated Security=SSPI;Initial Catalog=RemotionSecurityManagerWebClientTest;Data Source=localhost");
       defaultServiceLocator.RegisterSingle(() => storageSettingsFactory);
 
       //defaultServiceLocator.Register (typeof (Remotion.Data.DomainObjects.IClientTransactionExtensionFactory), typeof (Remotion.Data.DomainObjects.UberProfIntegration.LinqToSqlExtensionFactory), LifetimeKind.Singleton);
