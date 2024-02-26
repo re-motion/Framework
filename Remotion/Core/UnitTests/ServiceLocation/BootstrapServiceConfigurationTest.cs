@@ -70,7 +70,7 @@ namespace Remotion.UnitTests.ServiceLocation
               new[]
               {
                   typeof(ILogManager),
-                  typeof(IServiceLocatorProvider),
+                  typeof(IServiceLocatorProvider), typeof(IServiceConfigurationDiscoveryService),
                   typeof(ITypeResolutionService),
                   typeof(IAppContextProvider), typeof(IAssemblyLoader), typeof(IAssemblyLoaderFilter), typeof(IRootAssemblyFinder), typeof(IAssemblyFinder),
                   typeof(ITypeDiscoveryService)
@@ -81,7 +81,7 @@ namespace Remotion.UnitTests.ServiceLocation
               new[]
               {
                   typeof(Log4NetLogManager),
-                  typeof(DefaultServiceLocatorProvider),
+                  typeof(DefaultServiceLocatorProvider), typeof(DefaultServiceConfigurationDiscoveryService),
                   typeof(DefaultTypeResolutionService),
                   typeof(AppContextProvider), typeof(FilteringAssemblyLoader), typeof(ApplicationAssemblyLoaderFilter),
 #if NETFRAMEWORK

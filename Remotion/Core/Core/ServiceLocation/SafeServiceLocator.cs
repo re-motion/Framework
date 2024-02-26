@@ -110,7 +110,7 @@ namespace Remotion.ServiceLocation
 
       // Temporarily set the bootstrapper to allow for reentrancy to SafeServiceLocator.Current.
       // Since we're called from s_defaultServiceLocator.Value's getter, we can be sure that our return value will overwrite the bootstrapper.
-      var bootstrapServiceLocatorProvider = new DefaultServiceLocatorProvider();
+      var bootstrapServiceLocatorProvider = new DefaultServiceLocatorProvider(new BootstrapServiceConfigurationDiscoveryService());
       var bootstrapServiceLocator = bootstrapServiceLocatorProvider.GetServiceLocator(bootstrapServiceLocatorEntries);
       s_fields.DefaultServiceLocator.Value = bootstrapServiceLocator;
 
