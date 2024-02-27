@@ -25,7 +25,7 @@ namespace Remotion.ServiceLocation
   /// Implementation of the <see cref="IServiceConfigurationDiscoveryService"/> used only to satisfy a mandatory parameter requirement
   /// when instantiating the <see cref="DefaultServiceLocatorProvider"/> in a bootstrapping context.
   /// </summary>
-  internal class BootstrapServiceConfigurationDiscoveryService : IServiceConfigurationDiscoveryService
+  public class BootstrapServiceConfigurationDiscoveryService : IServiceConfigurationDiscoveryService
   {
     public BootstrapServiceConfigurationDiscoveryService ()
     {
