@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel.Design;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Mixins.CodeGeneration.TypePipe;
-using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 
@@ -27,19 +27,27 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Service
   [TestFixture]
   public class ParticipantRegistrationTest
   {
+    private DefaultServiceLocator _serviceLocator;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
+    }
+
     [Test]
     public void DefaultServiceLocator_ReturnsMixinParticipant ()
     {
-      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
-      var participants = serviceLocator.GetAllInstances<IParticipant>().ToArray();
+      var participants = _serviceLocator.GetAllInstances<IParticipant>().ToArray();
       Assert.That(participants.Select(p => p.GetType()), Is.EqualTo(new[] { typeof(MixinParticipant) }));
     }
 
     [Test]
     public void DefaultServiceConfigurationDiscoveryService_ReturnsMixinParticipant ()
     {
-      var discoveryService = new DefaultServiceConfigurationDiscoveryService(ContextAwareTypeUtility.GetTypeDiscoveryService());
-      var participantService = discoveryService.GetDefaultConfiguration(typeof(IParticipant));
+      var typeDiscoveryService = _serviceLocator.GetInstance<ITypeDiscoveryService>();
+      var defaultServiceConfigurationDiscoveryService = new DefaultServiceConfigurationDiscoveryService(typeDiscoveryService);
+      var participantService = defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration(typeof(IParticipant));
 
       Assert.That(participantService, Is.Not.Null);
       Assert.That(participantService.ImplementationInfos.Select(i => i.ImplementationType), Is.EqualTo(new[] { typeof(MixinParticipant) }));

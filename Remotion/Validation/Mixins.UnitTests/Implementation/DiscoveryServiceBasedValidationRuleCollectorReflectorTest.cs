@@ -54,7 +54,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
                                       };
       _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(typeof(IValidationRuleCollector), false)).Returns(appliedWithAttributeTypes);
 
-      var typeCollectorProvider = DiscoveryServiceBasedValidationRuleCollectorReflector.Create(
+      var typeCollectorProvider = new DiscoveryServiceBasedValidationRuleCollectorReflector(
           _typeDiscoveryServiceStub.Object,
           new MixinTypeAwareValidatedTypeResolverDecorator(
               new ClassTypeAwareValidatedTypeResolverDecorator(

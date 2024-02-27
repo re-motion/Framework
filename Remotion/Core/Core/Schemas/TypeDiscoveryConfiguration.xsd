@@ -44,15 +44,6 @@
           </xs:complexType>
         </xs:element>
       </xs:choice>
-
-      <xs:attribute name="mode" default="Automatic" use="optional">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="Automatic"/>
-            <xs:enumeration value="SpecificRootAssemblies"/>
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
     </xs:complexType>
   </xs:element>
 

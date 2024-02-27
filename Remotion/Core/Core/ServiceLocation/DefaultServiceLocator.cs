@@ -16,10 +16,9 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
-using Remotion.Logging;
 using Remotion.Reflection;
-using Remotion.Reflection.TypeDiscovery;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -68,9 +67,13 @@ namespace Remotion.ServiceLocation
 
     public static DefaultServiceLocator CreateWithBootstrappedServices ()
     {
-      var defaultServiceLocator = new DefaultServiceLocator(new DefaultServiceConfigurationDiscoveryService(ContextAwareTypeUtility.GetTypeDiscoveryService()));
-
       var bootstrapServiceLocatorEntries = SafeServiceLocator.BootstrapConfiguration.GetRegistrations();
+
+      var provider = new DefaultServiceLocatorProvider(new BootstrapServiceConfigurationDiscoveryService());
+      var bootstrapServiceLocator = provider.GetServiceLocator(bootstrapServiceLocatorEntries);
+      var typeDiscoveryService = bootstrapServiceLocator.GetInstance<ITypeDiscoveryService>();
+
+      var defaultServiceLocator = new DefaultServiceLocator(new DefaultServiceConfigurationDiscoveryService(typeDiscoveryService));
       foreach (var serviceConfigurationEntry in bootstrapServiceLocatorEntries)
         defaultServiceLocator.Register(serviceConfigurationEntry);
 

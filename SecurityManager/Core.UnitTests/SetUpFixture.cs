@@ -78,7 +78,7 @@ namespace Remotion.SecurityManager.UnitTests
 
         MappingConfiguration.SetCurrent(
             MappingConfiguration.Create(
-                MappingReflector.Create(
+                new MappingReflector(
                     typeDiscoveryService,
                     SafeServiceLocator.Current.GetInstance<IClassIDProvider>(),
                     SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),
