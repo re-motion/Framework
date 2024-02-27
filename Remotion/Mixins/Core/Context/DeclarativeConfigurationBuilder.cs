@@ -25,6 +25,7 @@ using Remotion.Mixins.Context.DeclarativeAnalyzers;
 using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context
@@ -126,14 +127,9 @@ namespace Remotion.Mixins.Context
     /// <seealso cref="ContextAwareTypeUtility"/>
     public static MixinConfiguration BuildDefaultConfiguration ()
     {
-      ICollection types = GetTypeDiscoveryService().GetTypes(null, false);
+      var typeDiscoveryService = SafeServiceLocator.Current.GetInstance<ITypeDiscoveryService>();
+      ICollection types = typeDiscoveryService.GetTypes(null, false);
       return BuildConfigurationFromTypes(null, types.Cast<Type>());
-    }
-
-    // Separate method because of tests
-    private static ITypeDiscoveryService GetTypeDiscoveryService ()
-    {
-      return ContextAwareTypeUtility.GetTypeDiscoveryService();
     }
 
     private readonly MixinConfiguration? _parentConfiguration;

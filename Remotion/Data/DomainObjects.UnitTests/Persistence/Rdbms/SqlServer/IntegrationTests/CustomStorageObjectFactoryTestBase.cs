@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       SetupServiceLocator(serviceLocator);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
-      var mappingLoader = MappingReflector.Create(
+      var mappingLoader = new MappingReflector(
           new FixedTypeDiscoveryService(GetReflectedTypes()),
           new ClassIDProvider(),
           new ReflectionBasedMemberInformationNameResolver(),

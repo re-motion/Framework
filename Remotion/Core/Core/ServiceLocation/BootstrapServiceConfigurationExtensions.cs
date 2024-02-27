@@ -15,6 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using Remotion.Configuration.TypeDiscovery;
+using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
+using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -62,6 +65,23 @@ namespace Remotion.ServiceLocation
           new ServiceConfigurationEntry(
               typeof(TService),
               ServiceImplementationInfo.CreateSingle(() => instance, LifetimeKind.Singleton)));
+    }
+
+    /// <summary>
+    /// The given root assemblies are employed for type discovery.
+    /// </summary>
+    /// <param name="bootstrapServiceConfiguration"></param>
+    public static void RegisterSpecificRootAssemblies (this IBootstrapServiceConfiguration bootstrapServiceConfiguration)
+    {
+      ArgumentUtility.CheckNotNull("bootstrapServiceConfiguration", bootstrapServiceConfiguration);
+
+      var assemblyLoader = new FilteringAssemblyLoader(new LoadAllAssemblyLoaderFilter());
+      var specificRootAssemblies = TypeDiscoveryConfiguration.Current.SpecificRootAssemblies;
+      var namedFinder = specificRootAssemblies.ByName.CreateRootAssemblyFinder(assemblyLoader);
+      var filePatternFinder = specificRootAssemblies.ByFile.CreateRootAssemblyFinder(assemblyLoader);
+      var rootAssemblyFinder = new CompositeRootAssemblyFinder(new IRootAssemblyFinder[] { namedFinder, filePatternFinder });
+
+      bootstrapServiceConfiguration.Register<IRootAssemblyFinder>(rootAssemblyFinder);
     }
   }
 }

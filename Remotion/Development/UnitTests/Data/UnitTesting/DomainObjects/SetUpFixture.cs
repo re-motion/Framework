@@ -46,7 +46,7 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
 
         MappingConfiguration.SetCurrent(
             MappingConfiguration.Create(
-                MappingReflector.Create(
+                new MappingReflector(
                     typeDiscoveryService,
                     new ClassIDProvider(),
                     new ReflectionBasedMemberInformationNameResolver(),

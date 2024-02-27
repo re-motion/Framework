@@ -19,6 +19,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
+using Remotion.ServiceLocation;
 using Remotion.Validation.Attributes;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.UnitTests.TestDomain;
@@ -56,7 +57,7 @@ namespace Remotion.Validation.UnitTests.Implementation
                                       };
       _typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(typeof(IValidationRuleCollector), false)).Returns(appliedWithAttributeTypes);
 
-      var typeCollectorProvider = DiscoveryServiceBasedValidationRuleCollectorReflector.Create(
+      var typeCollectorProvider = new DiscoveryServiceBasedValidationRuleCollectorReflector(
           _typeDiscoveryServiceStub.Object,
           new ClassTypeAwareValidatedTypeResolverDecorator(
               new GenericTypeAwareValidatedTypeResolverDecorator(new NullValidatedTypeResolver())));
@@ -82,7 +83,7 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       Assert.That(
           () =>
-              DiscoveryServiceBasedValidationRuleCollectorReflector.Create(
+              new DiscoveryServiceBasedValidationRuleCollectorReflector(
                   _typeDiscoveryServiceStub.Object,
                   validatedTypeResolverStub.Object).GetCollectorsForType(
                       typeof(IValidationRuleCollector)),
@@ -111,7 +112,7 @@ namespace Remotion.Validation.UnitTests.Implementation
                   programmaticallyCollectorType
               });
 
-      var typeCollectorProvider = DiscoveryServiceBasedValidationRuleCollectorReflector.Create(
+      var typeCollectorProvider = new DiscoveryServiceBasedValidationRuleCollectorReflector(
           _typeDiscoveryServiceStub.Object,
              new ClassTypeAwareValidatedTypeResolverDecorator(
                   new GenericTypeAwareValidatedTypeResolverDecorator(new NullValidatedTypeResolver())));
@@ -138,7 +139,7 @@ namespace Remotion.Validation.UnitTests.Implementation
 
       Assert.That(
           () =>
-              DiscoveryServiceBasedValidationRuleCollectorReflector.Create(
+              new DiscoveryServiceBasedValidationRuleCollectorReflector(
                   _typeDiscoveryServiceStub.Object,
                     new ClassTypeAwareValidatedTypeResolverDecorator(
                           new GenericTypeAwareValidatedTypeResolverDecorator(new NullValidatedTypeResolver()))).GetCollectorsForType(
@@ -153,6 +154,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void GetValidationRuleCollectors_WithRemotionDiscoveryService ()
     {
       var typeCollectorProvider = new DiscoveryServiceBasedValidationRuleCollectorReflector(
+          SafeServiceLocator.Current.GetInstance<ITypeDiscoveryService>(),
           new ClassTypeAwareValidatedTypeResolverDecorator(
                   new GenericTypeAwareValidatedTypeResolverDecorator(new NullValidatedTypeResolver())));
 
@@ -178,7 +180,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       var validatedTypeResolverStub = new Mock<IValidatedTypeResolver>();
       validatedTypeResolverStub.Setup(stub => stub.GetValidatedType(typeof(CustomerValidationRuleCollector1))).Returns((Type)null);
 
-      var typeCollectorProvider = DiscoveryServiceBasedValidationRuleCollectorReflector.Create(_typeDiscoveryServiceStub.Object, validatedTypeResolverStub.Object);
+      var typeCollectorProvider = new DiscoveryServiceBasedValidationRuleCollectorReflector(_typeDiscoveryServiceStub.Object, validatedTypeResolverStub.Object);
       Assert.That(
           () => typeCollectorProvider.GetCollectorsForType(typeof(Customer)),
           Throws.InvalidOperationException
