@@ -100,7 +100,7 @@ namespace Remotion.SecurityManager.Metadata.Importer
         ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService(assemblyFinder);
         MappingConfiguration.SetCurrent(
             MappingConfiguration.Create(
-                MappingReflector.Create(
+                new MappingReflector(
                     typeDiscoveryService,
                     SafeServiceLocator.Current.GetInstance<IClassIDProvider>(),
                     SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),

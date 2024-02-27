@@ -38,12 +38,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
 
     private readonly bool _excludeGlobalTypes = !AssemblyTypeCache.IsGacAssembly(typeof(ExtensibleEnum<>).Assembly);
 
-    public ExtensibleEnumValueDiscoveryService ()
-    {
-      _typeDiscoveryService = ContextAwareTypeUtility.GetTypeDiscoveryService();
-    }
-
-    protected ExtensibleEnumValueDiscoveryService (ITypeDiscoveryService typeDiscoveryService)
+    public ExtensibleEnumValueDiscoveryService (ITypeDiscoveryService typeDiscoveryService)
     {
       ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
 

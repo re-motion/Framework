@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     {
       ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
 
-      return MappingReflector.Create(
+      return new MappingReflector(
           typeDiscoveryService,
           SafeServiceLocator.Current.GetInstance<IClassIDProvider>(),
           SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),

@@ -15,13 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel.Design;
 using System.Linq;
 using log4net.Config;
-using Remotion.Reflection;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
-namespace Core.ServiceLocation.PerformanceTestConsole
+namespace Remotion.ServiceLocation.PerformanceTestConsole
 {
   internal static class Program
   {
@@ -29,7 +28,12 @@ namespace Core.ServiceLocation.PerformanceTestConsole
     {
       Console.WriteLine("{0} - Application started", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss,fff"));
       XmlConfigurator.Configure();
-      var typeDiscoveryService = ContextAwareTypeUtility.GetTypeDiscoveryService();
+
+      var bootstrapServiceLocatorEntries = SafeServiceLocator.BootstrapConfiguration.GetRegistrations();
+      var provider = new DefaultServiceLocatorProvider(new BootstrapServiceConfigurationDiscoveryService());
+      var bootstrapServiceLocator = provider.GetServiceLocator(bootstrapServiceLocatorEntries);
+      var typeDiscoveryService = bootstrapServiceLocator.GetInstance<ITypeDiscoveryService>();
+
       var domainObjectType = Type.GetType("Remotion.Data.DomainObjects.DomainObject, Remotion.Data.DomainObjects", true, false);
       typeDiscoveryService.GetTypes(domainObjectType, false);
       typeDiscoveryService.GetTypes(domainObjectType, false);

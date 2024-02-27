@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(rootAssemblyFinder, assemblyLoader));
       ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService(assemblyFinder);
       MappingConfiguration mappingConfiguration = MappingConfiguration.Create(
-          MappingReflector.Create(
+          new MappingReflector(
               typeDiscoveryService,
               SafeServiceLocator.Current.GetInstance<IClassIDProvider>(),
               SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),
