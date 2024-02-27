@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Core.Development.Analyzers
@@ -11,6 +12,8 @@ namespace Core.Development.Analyzers
   [DiagnosticAnalyzer(LanguageNames.CSharp)]
   public class RMCORE0001_SafeContextAnalyzer : DiagnosticAnalyzer
   {
+    private record SymbolContext (ITypeSymbol? SafeContextBoundarySymbol);
+
     public static readonly DiagnosticDescriptor AlternativeDescriptor = new DiagnosticDescriptor(
         "RMCORE0001",
         "Use SafeContext instead of typical API",
@@ -38,6 +41,11 @@ namespace Core.Development.Analyzers
             if (safeContextTypeSymbol == null)
               return;
 
+            var safeContextBoundarySymbol = compilationContext.Compilation.GetTypeByMetadataName("Remotion.Context.SafeContextBoundary");
+
+            var symbolContext = new SymbolContext(
+                safeContextBoundarySymbol);
+
             var tasksTaskSymbol = compilationContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
             var parallelSymbol = compilationContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Parallel");
             var threadSymbol = compilationContext.Compilation.GetTypeByMetadataName("System.Threading.Thread");
@@ -49,13 +57,19 @@ namespace Core.Development.Analyzers
             AddMethodSymbolWithDiagnosticToList(invocationExpressionMethodsAndActions, tasksTaskSymbol, "Run", TaskRunDiagnostic);
             AddMethodSymbolWithDiagnosticToList(invocationExpressionMethodsAndActions, tasksTaskSymbol, "ContinueWith", TaskContinueWithDiagnostic);
             AddMethodSymbolWithDiagnosticToList(invocationExpressionMethodsAndActions, executionSymbol, "Run", ExecutionRunDiagnostic);
-            AddMethodSymbolWithDiagnosticToList(invocationExpressionMethodsAndActions, parallelSymbol, "For", ParallelDiagnostic);
-            AddMethodSymbolWithDiagnosticToList(invocationExpressionMethodsAndActions, parallelSymbol, "ForEach", ParallelDiagnostic);
-            AddMethodSymbolWithDiagnosticToList(invocationExpressionMethodsAndActions, parallelSymbol, "ForEachAsync", ParallelDiagnostic);
-            AddMethodSymbolWithDiagnosticToList(invocationExpressionMethodsAndActions, parallelSymbol, "Invoke", ParallelDiagnostic);
 
             compilationContext.RegisterSyntaxNodeAction(
                 ctx => AnalyzeInvocationExpression(ctx, invocationExpressionMethodsAndActions),
+                SyntaxKind.InvocationExpression);
+
+            var parallelMethodsWithActions = new List<(IMethodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol>)>();
+            AddMethodSymbolWithDiagnosticToList(parallelMethodsWithActions, parallelSymbol, "For", ParallelDiagnostic);
+            AddMethodSymbolWithDiagnosticToList(parallelMethodsWithActions, parallelSymbol, "ForEach", ParallelDiagnostic);
+            AddMethodSymbolWithDiagnosticToList(parallelMethodsWithActions, parallelSymbol, "ForEachAsync", ParallelDiagnostic);
+            AddMethodSymbolWithDiagnosticToList(parallelMethodsWithActions, parallelSymbol, "Invoke", ParallelDiagnostic);
+
+            compilationContext.RegisterSyntaxNodeAction(
+                ctx => AnalyzeParallelInvocationExpression(ctx, parallelMethodsWithActions, symbolContext),
                 SyntaxKind.InvocationExpression);
 
             var objectCreationMethodsAndActions = new List<(IMethodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol>)>();
@@ -69,7 +83,8 @@ namespace Core.Development.Analyzers
             var addMethodsWithActions = new List<(IMethodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol>)>();
             AddAddMethodSymbolWithDiagnosticToList(addMethodsWithActions, timingTimerSymbol, "Elapsed", AddElapsedTimerDiagnostic);
 
-            compilationContext.RegisterSyntaxNodeAction(ctx => AnalyzeAddAssignmentExpression(ctx, addMethodsWithActions),
+            compilationContext.RegisterSyntaxNodeAction(
+                ctx => AnalyzeAddAssignmentExpression(ctx, addMethodsWithActions),
                 SyntaxKind.AddAssignmentExpression);
           });
     }
@@ -111,6 +126,87 @@ namespace Core.Development.Analyzers
         match.CreateDiagnostic.Invoke(ctx, match.methodSymbol);
     }
 
+    private static void AnalyzeParallelInvocationExpression (
+        SyntaxNodeAnalysisContext ctx,
+        IReadOnlyCollection<(IMethodSymbol methodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol> CreateDiagnostic)> methodSymbols,
+        SymbolContext symbolContext)
+    {
+      //Check whether the invocation expression should be covered
+      var invocationSymbolInfo = ctx.SemanticModel.GetSymbolInfo(ctx.Node);
+
+      if (invocationSymbolInfo.Symbol == null)
+        return;
+
+      var invocationOriginalDefinitionSymbol = invocationSymbolInfo.Symbol.OriginalDefinition;
+
+      var match = methodSymbols.FirstOrDefault(m => SymbolEqualityComparer.Default.Equals(m.methodSymbol, invocationOriginalDefinitionSymbol));
+      if (match == default)
+        return;
+
+      // Quit if the symbol is not available
+      if (symbolContext.SafeContextBoundarySymbol == null)
+      {
+        match.CreateDiagnostic.Invoke(ctx, match.methodSymbol);
+        return;
+      }
+
+      if (UsesSafeContextBoundaryWithLocalDeclarationUsingStatement(ctx, symbolContext))
+        return;
+
+      if (UsesSafeContextBoundaryWithUsingStatement(ctx, symbolContext))
+        return;
+
+      match.CreateDiagnostic.Invoke(ctx, match.methodSymbol);
+    }
+
+    private static bool UsesSafeContextBoundaryWithUsingStatement (SyntaxNodeAnalysisContext ctx, SymbolContext symbolContext)
+    {
+      var usingStatementSyntax = ctx.Node.FirstAncestorOrSelf<UsingStatementSyntax>(
+          usingStatementSyntax =>
+          {
+            var usingExpression = usingStatementSyntax.Expression;
+            if (usingExpression == null)
+              return false;
+
+            var usingExpressionSymbolInfo = ctx.SemanticModel.GetSymbolInfo(usingExpression);
+
+            if (usingExpressionSymbolInfo.Symbol is not IMethodSymbol usingMethodSymbolInfo)
+              return false;
+
+            return SymbolEqualityComparer.Default.Equals(usingMethodSymbolInfo.ReturnType.OriginalDefinition, symbolContext.SafeContextBoundarySymbol);
+          });
+
+      return usingStatementSyntax != null;
+    }
+
+    private static bool UsesSafeContextBoundaryWithLocalDeclarationUsingStatement (SyntaxNodeAnalysisContext ctx, SymbolContext symbolContext)
+    {
+      var checkedChildrenSet = new HashSet<SyntaxNode>();
+
+      var blockSyntaxWithRequiredUsingDeclaration = ctx.Node
+          .FirstAncestorOrSelf<BlockSyntax>(blockSyntax => blockSyntax
+              .ChildNodes()
+              .Where(child => checkedChildrenSet.Add(child))
+              .OfType<LocalDeclarationStatementSyntax>()
+              .Where(statement => statement.UsingKeyword.IsKeyword())
+              .Where(statement => statement.GetLocation().SourceSpan.Start < ctx.Node.GetLocation().SourceSpan.Start)
+              .SelectMany(statement => statement.Declaration.Variables)
+              .Select(variable => variable.Initializer?.Value)
+              .OfType<InvocationExpressionSyntax>()
+              .Any(
+                  expressionSyntax =>
+                  {
+                    var usingExpressionSymbolInfo = ctx.SemanticModel.GetSymbolInfo(expressionSyntax.Expression);
+
+                    if (usingExpressionSymbolInfo.Symbol is not IMethodSymbol usingMethodSymbolInfo)
+                      return false;
+
+                    return SymbolEqualityComparer.Default.Equals(usingMethodSymbolInfo.ReturnType.OriginalDefinition, symbolContext.SafeContextBoundarySymbol);
+                  }));
+
+      return blockSyntaxWithRequiredUsingDeclaration != null;
+    }
+
     private static void AnalyzeObjectCreationExpression (
         SyntaxNodeAnalysisContext ctx,
         IReadOnlyCollection<(IMethodSymbol methodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol> CreateDiagnostic)> ctorMethodsWithDiagnostics)
@@ -150,7 +246,6 @@ namespace Core.Development.Analyzers
     {
       if (typeSymbol == null)
         return Enumerable.Empty<IMethodSymbol>();
-
 
       return typeSymbol
           .GetMembers(name)
