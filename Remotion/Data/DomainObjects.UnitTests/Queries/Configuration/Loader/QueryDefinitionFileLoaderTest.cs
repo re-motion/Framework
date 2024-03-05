@@ -58,7 +58,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
                                 TestQueryFactory.CreateOrderQueryWithCustomCollectionType(StorageSettings),
                                 TestQueryFactory.CreateOrderQueryDefinitionWithObjectListOfOrder(StorageSettings),
                                 TestQueryFactory.CreateCustomerTypeQueryDefinition(StorageSettings),
-                                TestQueryFactory.CreateOrderSumQueryDefinition(StorageSettings)
+                                TestQueryFactory.CreateOrderSumQueryDefinitionWithQueryTypeScalarReadOnly(StorageSettings),
+                                TestQueryFactory.CreateOrderSumQueryDefinitionWithQueryTypeCustomReadOnly(StorageSettings),
+                                TestQueryFactory.CreateTestQueryWithQueryTypeCollectionReadWrite(StorageSettings),
+                                TestQueryFactory.CreateTestQueryDefinitionWithQueryTypeScalarReadWrite(StorageSettings),
+                                TestQueryFactory.CreateTestQueryWithQueryTypeCustomReadWrite(StorageSettings)
                             };
 
       QueryDefinitionChecker checker = new QueryDefinitionChecker();
@@ -76,6 +80,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
     }
 
     [Test]
+    public void LoadQueryDefinitions_ScalarReadWriteQueryWithCollectionType_ThrowsQueryConfigurationException ()
+    {
+      var loader = new QueryDefinitionFileLoader(StorageSettings);
+      Assert.That(
+          () => loader.LoadQueryDefinitions(GetFullScriptPath("ScalarQueryWithCollectionTypeReadWrite.xml")),
+          Throws.InstanceOf<QueryConfigurationException>()
+              .With.Message.EqualTo("A scalar query 'OrderSumQueryReadWrite' must not specify a collectionType."));
+    }
+
+    [Test]
+    public void LoadQueryDefinitions_CustomQueryWithCollectionType_ThrowsQueryConfigurationException ()
+    {
+      var loader = new QueryDefinitionFileLoader(StorageSettings);
+      Assert.That(
+          () => loader.LoadQueryDefinitions(GetFullScriptPath("CustomQueryWithCollectionType.xml")),
+          Throws.InstanceOf<QueryConfigurationException>()
+              .With.Message.EqualTo("A custom query 'CustomQueryWithCollectionType' must not specify a collectionType."));
+    }
+
+    [Test]
+    public void LoadQueryDefinitions_CustomReadWriteQueryWithCollectionType_ThrowsQueryConfigurationException ()
+    {
+      var loader = new QueryDefinitionFileLoader(StorageSettings);
+      Assert.That(
+          () => loader.LoadQueryDefinitions(GetFullScriptPath("CustomQueryWithCollectionTypeReadWrite.xml")),
+          Throws.InstanceOf<QueryConfigurationException>()
+              .With.Message.EqualTo("A custom query 'CustomQueryWithCollectionTypeReadWrite' must not specify a collectionType."));
+    }
+
+    [Test]
     public void LoadQueryDefinitions_QueryConfigurationWithInvalidNamespace_ThrowsQueryConfigurationException ()
     {
       string configurationFile = GetFullScriptPath("QueriesWithInvalidNamespace.xml");
@@ -90,7 +124,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
       {
         string expectedMessage = string.Format(
             "Error while reading query configuration: The namespace 'http://www.re-motion.org/Data/DomainObjects/InvalidNamespace' of"
-            + " the root element is invalid. Expected namespace: 'http://www.re-motion.org/Data/DomainObjects/Queries/1.0'. File: '{0}'.",
+            + " the root element is invalid. Expected namespace: 'http://www.re-motion.org/Data/DomainObjects/Queries/2.0'. File: '{0}'.",
             Path.GetFullPath(configurationFile));
 
         Assert.That(ex.Message, Is.EqualTo(expectedMessage));

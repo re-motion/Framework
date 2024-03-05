@@ -169,7 +169,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     /// </para>
     /// </remarks>
     /// <exception cref="System.ArgumentNullException"><paramref name="query"/> is <see langword="null"/>.</exception>
-    /// <exception cref="System.ArgumentException"><paramref name="query"/> does not have a <see cref="QueryType"/> of <see cref="QueryType.Collection"/>.</exception>
+    /// <exception cref="System.ArgumentException"><paramref name="query"/> does not have a <see cref="QueryType"/> of
+    /// <see cref="QueryType.CollectionReadOnly"/> or <see cref="QueryType.CollectionReadWrite"/>.</exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
     /// The <see cref="IQuery.StorageProviderDefinition"/> of <paramref name="query"/> could not be found.
     /// </exception>
@@ -194,7 +195,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     /// <param name="query">The query to be executed.</param>
     /// <returns>The scalar query result.</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="query"/> is <see langword="null"/>.</exception>
-    /// <exception cref="System.ArgumentException"><paramref name="query"/> does not have a <see cref="QueryType"/> of <see cref="QueryType.Scalar"/>.
+    /// <exception cref="System.ArgumentException"><paramref name="query"/> does not have a <see cref="QueryType"/>
+    ///   of <see cref="QueryType.ScalarReadOnly"/> or <see cref="QueryType.ScalarReadWrite"/>.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
     /// The <see cref="IQuery.StorageProviderDefinition"/> of <paramref name="query"/> could not be found.
