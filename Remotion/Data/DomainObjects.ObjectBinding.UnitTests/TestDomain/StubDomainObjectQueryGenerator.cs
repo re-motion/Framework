@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
         QueryModel queryModel,
         IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders)
     {
-      return new StubSquenceQuery<T>(new QueryDefinition(id, storageProviderDefinition, "The Query", QueryType.Collection));
+      return new StubSquenceQuery<T>(new QueryDefinition(id, storageProviderDefinition, "The Query", QueryType.CollectionReadWrite));
     }
   }
 }

@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomQuery"));
+        var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomQueryReadOnly"));
 
         var result = ClientTransactionScope.CurrentTransaction.QueryManager.GetCustom(query, qrr => qrr.GetRawValue(0));
 

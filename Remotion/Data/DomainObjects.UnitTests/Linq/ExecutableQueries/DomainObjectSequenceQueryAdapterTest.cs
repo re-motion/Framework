@@ -41,17 +41,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
     [Test]
     public void Initialization_QueryTypeNotCollection ()
     {
-      _queryStub.Setup(stub => stub.QueryType).Returns(QueryType.Scalar);
+      _queryStub.Setup(stub => stub.QueryType).Returns(QueryType.ScalarReadOnly);
       Assert.That(
           () => new DomainObjectSequenceQueryAdapter<string>(_queryStub.Object),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo("Only collection queries can be used to load data containers.", "query"));
+              .With.ArgumentExceptionMessageEqualTo("Only readonly collection queries can be used to load data containers.", "query"));
     }
 
     [Test]
     public void Execute ()
     {
-      _queryStub.Setup(stub => stub.QueryType).Returns(QueryType.Collection);
+      _queryStub.Setup(stub => stub.QueryType).Returns(QueryType.CollectionReadOnly);
       var queryAdapter = new DomainObjectSequenceQueryAdapter<object>(_queryStub.Object);
 
       var order1 = DomainObjectMother.CreateFakeObject<Order>();

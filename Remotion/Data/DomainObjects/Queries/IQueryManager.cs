@@ -35,7 +35,8 @@ namespace Remotion.Data.DomainObjects.Queries
     ///   <paramref name="query"/> is <see langword="null"/>.
     /// </exception>
     /// <exception cref="System.ArgumentException">
-    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Scalar"/>.
+    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/>
+    ///   of <see cref="Configuration.QueryType.ScalarReadOnly"/> or <see cref="Configuration.QueryType.ScalarReadWrite"/>.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
     ///   The <see cref="IQuery.StorageProviderDefinition"/> of <paramref name="query"/> could not be found.
@@ -57,7 +58,8 @@ namespace Remotion.Data.DomainObjects.Queries
     ///   <paramref name="query"/> is <see langword="null"/>.
     /// </exception>
     /// <exception cref="System.ArgumentException">
-    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.
+    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of
+    ///   <see cref="Configuration.QueryType.CollectionReadOnly"/> or <see cref="Configuration.QueryType.CollectionReadWrite"/>.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
     ///   The <see cref="IQuery.StorageProviderDefinition"/> of <paramref name="query"/> could not be found.
@@ -88,7 +90,8 @@ namespace Remotion.Data.DomainObjects.Queries
     ///   <typeparamref name="T"/> or the configured collection type is not assignable to <see cref="ObjectList{T}"/> with the given <typeparamref name="T"/>.
     /// </exception>
     /// <exception cref="System.ArgumentException">
-    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.
+    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of
+    ///   <see cref="Configuration.QueryType.CollectionReadOnly"/> or <see cref="Configuration.QueryType.CollectionReadWrite"/>.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
     ///   The <see cref="IQuery.StorageProviderDefinition"/> of <paramref name="query"/> could not be found.

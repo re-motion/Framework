@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
     {
       ArgumentUtility.CheckNotNull("resultConversion", resultConversion);
 
-      if (query.QueryType != QueryType.Scalar)
-        throw new ArgumentException("Only scalar queries can be used to load scalar results.", "query");
+      if (query.QueryType != QueryType.ScalarReadOnly)
+        throw new ArgumentException("Only readonly scalar queries can be used to load scalar results.", "query");
 
       _resultConversion = resultConversion;
     }

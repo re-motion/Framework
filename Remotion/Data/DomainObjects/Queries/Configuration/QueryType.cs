@@ -23,19 +23,76 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
   /// </summary>
   public enum QueryType
   {
+    // We need to check for .NetFramework because the ToString() method on enums creates different values for .NetFramework and .Net if both enum variants have the same value
+    // This is ok at this point, as .NetFramework will be kicked soon anyways (RM-8683).
+#if NETFRAMEWORK
     /// <summary>
     /// Instances of a <see cref="QueryDefinition"/> return a collection of <see cref="DomainObject"/>s.
     /// </summary>
-    Collection = 0,
+    [Obsolete]
+    Collection = CollectionReadWrite,
 
     /// <summary>
     /// Instances of a <see cref="QueryDefinition"/> return only a single value.
     /// </summary>
-    Scalar = 1,
+    [Obsolete]
+    Scalar = ScalarReadWrite,
 
     /// <summary>
     /// Instances of a <see cref="QueryDefinition"/> return a sequence of arbitrary objects.
     /// </summary>
-    Custom = 2
+    [Obsolete]
+    Custom = CustomReadWrite,
+#endif
+
+    /// <summary>
+    /// Instances of a <see cref="QueryDefinition"/> return a collection of <see cref="DomainObject"/>s and can write to the domain.
+    /// </summary>
+    CollectionReadWrite = 0,
+
+    /// <summary>
+    /// Instances of a <see cref="QueryDefinition"/> return only a single value and can write to the domain.
+    /// </summary>
+    ScalarReadWrite = 1,
+
+    /// <summary>
+    /// Instances of a <see cref="QueryDefinition"/> return a sequence of arbitrary objects and can write to the domain.
+    /// </summary>
+    CustomReadWrite = 2,
+
+    /// <summary>
+    /// Instances of a <see cref="QueryDefinition"/> return a collection of <see cref="DomainObject"/>s and cannot write to the domain.
+    /// </summary>
+    CollectionReadOnly = 3,
+
+    /// <summary>
+    /// Instances of a <see cref="QueryDefinition"/> return only a single value and cannot write to the domain.
+    /// </summary>
+    ScalarReadOnly = 4,
+
+    /// <summary>
+    /// Instances of a <see cref="QueryDefinition"/> return a sequence of arbitrary objects and cannot write to the domain.
+    /// </summary>
+    CustomReadOnly = 5,
+
+#if !NETFRAMEWORK
+    /// <summary>
+    /// Instances of a <see cref="QueryDefinition"/> return a collection of <see cref="DomainObject"/>s.
+    /// </summary>
+    [Obsolete("'QueryType.Collection' has been replaced with 'QueryType.CollectionReadWrite'.", false, DiagnosticId = "RM-Bla")]
+    Collection = CollectionReadWrite,
+
+    /// <summary>
+    /// Instances of a <see cref="QueryDefinition"/> return only a single value.
+    /// </summary>
+    [Obsolete("'QueryType.Scalar' has been replaced with 'QueryType.ScalarReadWrite'.", false, DiagnosticId = "RM-Bla")]
+    Scalar = ScalarReadWrite,
+
+    /// <summary>
+    /// Instances of a <see cref="QueryDefinition"/> return a sequence of arbitrary objects.
+    /// </summary>
+    [Obsolete("'QueryType.Custom' has been replaced with 'QueryType.CustomReadWrite'.", false, DiagnosticId = "RM-Bla")]
+    Custom = CustomReadWrite,
+#endif
   }
 }
