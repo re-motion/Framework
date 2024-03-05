@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       var queryStub = new Mock<IQuery>();
       queryStub.Setup(stub => stub.StorageProviderDefinition).Returns(TestDomainStorageProviderDefinition);
-      queryStub.Setup(stub => stub.QueryType).Returns(QueryType.Collection);
+      queryStub.Setup(stub => stub.QueryType).Returns(QueryType.CollectionReadOnly);
       var commandMock = new Mock<IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>>(MockBehavior.Strict);
 
       var sequence = new VerifiableSequence();
@@ -189,7 +189,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       var queryStub = new Mock<IQuery>();
       queryStub.Setup(stub => stub.StorageProviderDefinition).Returns(TestDomainStorageProviderDefinition);
-      queryStub.Setup(stub => stub.QueryType).Returns(QueryType.Collection);
+      queryStub.Setup(stub => stub.QueryType).Returns(QueryType.CollectionReadOnly);
       var commandMock = new Mock<IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>>(MockBehavior.Strict);
 
       var sequence = new VerifiableSequence();
@@ -213,7 +213,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       var queryStub = new Mock<IQuery>();
       queryStub.Setup(stub => stub.StorageProviderDefinition).Returns(TestDomainStorageProviderDefinition);
-      queryStub.Setup(stub => stub.QueryType).Returns(QueryType.Collection);
+      queryStub.Setup(stub => stub.QueryType).Returns(QueryType.CollectionReadOnly);
       var commandMock = new Mock<IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>>(MockBehavior.Strict);
 
       var sequence = new VerifiableSequence();
@@ -242,7 +242,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       var queryStub = new Mock<IQuery>();
       queryStub.Setup(stub => stub.StorageProviderDefinition).Returns(TestDomainStorageProviderDefinition);
-      queryStub.Setup(stub => stub.QueryType).Returns(QueryType.Custom);
+      queryStub.Setup(stub => stub.QueryType).Returns(QueryType.CustomReadOnly);
       var commandMock = new Mock<IStorageProviderCommand<IEnumerable<IQueryResultRow>, IRdbmsProviderCommandExecutionContext>>(MockBehavior.Strict);
 
       var sequence = new VerifiableSequence();
@@ -272,7 +272,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       var queryStub = new Mock<IQuery>();
       queryStub.Setup(stub => stub.StorageProviderDefinition).Returns(TestDomainStorageProviderDefinition);
-      queryStub.Setup(stub => stub.QueryType).Returns(QueryType.Scalar);
+      queryStub.Setup(stub => stub.QueryType).Returns(QueryType.ScalarReadOnly);
       var commandMock = new Mock<IStorageProviderCommand<object, IRdbmsProviderCommandExecutionContext>>(MockBehavior.Strict);
 
       var sequence = new VerifiableSequence();
@@ -764,6 +764,66 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Assert.That(
           () => _provider.ExecuteNonQuery(_commandMock.Object),
           Throws.InstanceOf<ObjectDisposedException>());
+    }
+
+    [Test]
+    public void ExecuteCollectionQuery_WithScalarQuery_ThrowsArgumentException ()
+    {
+      Assert.That(
+          () => _provider.ExecuteCollectionQuery(QueryFactory.CreateQuery(Queries.GetMandatory("OrderNoSumByCustomerNameQuery"))),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Expected query type is 'CollectionReadOnly' or 'CollectionReadWrite', but was 'ScalarReadOnly'.", "query"));
+    }
+
+    [Test]
+    public void ExecuteCollectionQuery_WithCustomQuery_ThrowsArgumentException ()
+    {
+      Assert.That(
+          () => _provider.ExecuteCollectionQuery(QueryFactory.CreateQuery(Queries.GetMandatory("CustomQueryReadWrite"))),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Expected query type is 'CollectionReadOnly' or 'CollectionReadWrite', but was 'CustomReadWrite'.", "query"));
+    }
+
+    [Test]
+    public void ExecuteScalarQuery_WithCollectionQuery_ThrowsArgumentException ()
+    {
+      Assert.That(
+          () => _provider.ExecuteScalarQuery(QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"))),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Expected query type is 'ScalarReadOnly' or 'ScalarReadWrite', but was 'CollectionReadOnly'.", "query"));
+    }
+
+    [Test]
+    public void ExecuteScalarQuery_WithCustomQuery_ThrowsArgumentException ()
+    {
+      Assert.That(
+          () => _provider.ExecuteScalarQuery(QueryFactory.CreateQuery(Queries.GetMandatory("CustomQueryReadWrite"))),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Expected query type is 'ScalarReadOnly' or 'ScalarReadWrite', but was 'CustomReadWrite'.", "query"));
+    }
+
+    [Test]
+    public void ExecuteCustomQuery_WithScalarQuery_ThrowsArgumentException ()
+    {
+      Assert.That(
+          () => _provider.ExecuteCustomQuery(QueryFactory.CreateQuery(Queries.GetMandatory("BulkUpdateQuery"))),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Expected query type is 'CustomReadOnly' or 'CustomReadWrite', but was 'ScalarReadWrite'.", "query"));
+    }
+
+    [Test]
+    public void ExecuteCustomQuery_WithCollectionQuery_ThrowsArgumentException ()
+    {
+      Assert.That(
+          () => _provider.ExecuteCustomQuery(QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"))),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Expected query type is 'CustomReadOnly' or 'CustomReadWrite', but was 'CollectionReadOnly'.", "query"));
     }
   }
 }

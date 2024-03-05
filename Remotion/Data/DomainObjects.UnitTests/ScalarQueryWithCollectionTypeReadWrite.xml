@@ -16,13 +16,15 @@
  ! You should have received a copy of the GNU Lesser General Public License
  ! along with re-motion; if not, see http://www.gnu.org/licenses.
 -->
-<queries 
-    xmlns="http://www.re-motion.org/Data/DomainObjects/Queries/2.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://www.re-motion.org/Data/DomainObjects/Queries/2.0 ..\DomainObjects\Schemas\Queries.xsd">
+<queries
+  xmlns="http://www.re-motion.org/Data/DomainObjects/Queries/2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.re-motion.org/Data/DomainObjects/Queries/2.0 ..\DomainObjects\Schemas\Queries.xsd">
 
-  <query id="DummyQuery" type="scalar-readonly">
-    <statement>select 42</statement>
+  <query id="OrderSumQueryReadWrite" type="scalar-readwrite">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>select sum(quantity) from OrderView where Order_CustomerID = @customerID;</statement>
+    <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
   </query>
 
 </queries>
