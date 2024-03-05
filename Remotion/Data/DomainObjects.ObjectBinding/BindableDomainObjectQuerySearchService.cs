@@ -37,8 +37,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
         return new IBusinessObject[0];
 
       QueryDefinition definition = DomainObjectsConfiguration.Current.Query.QueryDefinitions.GetMandatory(defaultSearchArguments.SearchStatement);
-      if (definition.QueryType != QueryType.Collection)
-        throw new ArgumentException(string.Format("The query '{0}' is not a collection query.", defaultSearchArguments.SearchStatement));
+      if (definition.QueryType != QueryType.CollectionReadOnly)
+        throw new ArgumentException(string.Format("The query '{0}' is not a readonly collection query.", defaultSearchArguments.SearchStatement));
 
       var referencingDomainObject = referencingObject as DomainObject;
 

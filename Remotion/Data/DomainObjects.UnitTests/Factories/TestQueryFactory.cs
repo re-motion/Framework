@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           "OrderQueryWithCustomCollectionType",
           DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID],
           "select [Order].* from [Order] inner join [Company] where [Company].[ID] = @customerID order by [OrderNo] asc;",
-          QueryType.Collection,
+          QueryType.CollectionReadOnly,
           typeof(OrderCollection));
     }
 
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           "OrderQueryWithObjectListOfOrder",
           DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID],
           "select [Order].* from [Order] inner join [Company] where [Company].[ID] = @customerID order by [OrderNo] asc;",
-          QueryType.Collection,
+          QueryType.CollectionReadOnly,
           typeof(ObjectList<Order>));
     }
 
@@ -51,17 +51,63 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           "CustomerTypeQuery",
           DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID],
           "select [Company].* from [Company] where [CustomerType] = @customerType order by [Name] asc;",
-          QueryType.Collection,
+          QueryType.CollectionReadOnly,
           typeof(DomainObjectCollection));
     }
 
-    public static QueryDefinition CreateOrderSumQueryDefinition ()
+    public static QueryDefinition CreateOrderSumQueryDefinitionWithQueryTypeScalarReadOnly ()
     {
       return new QueryDefinition(
-          "OrderSumQuery",
+          "OrderSumQueryWithQueryTypeScalarReadOnly",
           DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID],
           "select sum(quantity) from [Order] where [CustomerID] = @customerID;",
-          QueryType.Scalar);
+          QueryType.ScalarReadOnly);
+    }
+
+    public static QueryDefinition CreateOrderSumQueryDefinitionWithQueryTypeCustomReadOnly ()
+    {
+      return new QueryDefinition(
+          "OrderSumQueryWithQueryTypeCustomReadOnly",
+          DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID],
+          "select sum(quantity) from [Order] where [CustomerID] = @customerID;",
+          QueryType.CustomReadOnly);
+    }
+
+    public static QueryDefinition CreateTestQueryDefinitionWithQueryTypeCollectionReadWrite ()
+    {
+      return new QueryDefinition(
+          "TestQueryDefinitionWithQueryTypeCollectionReadWrite",
+          DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID],
+          "select [Company].* from [Company] where [CustomerType] = @customerType order by [Name] asc;",
+          QueryType.CollectionReadWrite,
+          typeof(DomainObjectCollection));
+    }
+
+    public static QueryDefinition CreateOrderSumQueryWithQueryTypeCustomReadOnly ()
+    {
+      return new QueryDefinition(
+          "OrderSumQueryWithQueryTypeCustomReadOnly",
+          DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID],
+          "select sum(quantity) from [Order] where [CustomerID] = @customerID;",
+          QueryType.CustomReadOnly);
+    }
+
+    public static QueryDefinition CreateTestQueryDefinitionWithQueryTypeScalarReadWrite ()
+    {
+      return new QueryDefinition(
+          "TestQueryDefinitionWithQueryTypeScalarReadWrite",
+          DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID],
+          "select 0;",
+          QueryType.ScalarReadWrite);
+    }
+
+    public static QueryDefinition CreateTestQueryDefinitionWithQueryTypeCustomReadWrite ()
+    {
+      return new QueryDefinition(
+          "TestQueryDefinitionWithQueryTypeCustomReadWrite",
+          DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID],
+          "select 0;",
+          QueryType.CustomReadWrite);
     }
 
     public static QueryResult<T> CreateTestQueryResult<T> () where T : DomainObject

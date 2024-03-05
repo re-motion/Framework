@@ -16,6 +16,9 @@
     <Content Include="Database\*.sql" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Queries*.xml" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="ScalarQueryWithCollectionType.xml" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="CustomQueryWithCollectionType.xml" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="ScalarQueryWithCollectionTypeReadWrite.xml" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="CustomQueryWithCollectionTypeReadWrite.xml" CopyToOutputDirectory="PreserveNewest" />
     <EmbeddedResource Include="..\DomainObjects\Persistence\Rdbms\MappingExport\RdbmsMapping.xsd" Link="Resources\RdbmsMapping.xsd" />
     <EmbeddedResource Include="Persistence\Rdbms\SqlServer\SchemaGeneration\IntegrationTests\TestData\*.sql" />
     <EmbeddedResource Include="Resources\*.*" Exclude="**\*.cs" />

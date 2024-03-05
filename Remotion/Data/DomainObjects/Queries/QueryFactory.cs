@@ -211,7 +211,7 @@ namespace Remotion.Data.DomainObjects.Queries
       ArgumentUtility.CheckNotNull("statement", statement);
       ArgumentUtility.CheckNotNull("queryParameterCollection", queryParameterCollection);
 
-      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.Scalar);
+      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.ScalarReadOnly);
       return new Query(definition, queryParameterCollection);
     }
 
@@ -241,7 +241,7 @@ namespace Remotion.Data.DomainObjects.Queries
       ArgumentUtility.CheckNotNull("queryParameterCollection", queryParameterCollection);
       ArgumentUtility.CheckNotNull("collectionType", collectionType);
 
-      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.Collection, collectionType);
+      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.CollectionReadOnly, collectionType);
       return new Query(definition, queryParameterCollection);
     }
 
@@ -262,7 +262,7 @@ namespace Remotion.Data.DomainObjects.Queries
         string statement,
         QueryParameterCollection queryParameterCollection)
     {
-      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.Custom, null);
+      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.CustomReadOnly, null);
       return new Query(definition, queryParameterCollection);
     }
   }

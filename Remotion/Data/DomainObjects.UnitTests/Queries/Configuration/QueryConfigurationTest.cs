@@ -84,6 +84,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     }
 
     [Test]
+    public void ScalarQueryWithCollectionTypeReadWrite ()
+    {
+      QueryConfigurationLoader loader = new QueryConfigurationLoader(@"ScalarQueryWithCollectionTypeReadWrite.xml", _storageProviderDefinitionFinder);
+      Assert.That(
+          () => loader.GetQueryDefinitions(),
+          Throws.InstanceOf<QueryConfigurationException>()
+              .With.Message.EqualTo("A scalar query 'OrderSumQueryReadWrite' must not specify a collectionType."));
+    }
+
+    [Test]
     public void QueryConfigurationWithInvalidNamespace ()
     {
       string configurationFile = "QueriesWithInvalidNamespace.xml";
@@ -97,7 +107,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
       {
         string expectedMessage = string.Format(
             "Error while reading query configuration: The namespace 'http://www.re-motion.org/Data/DomainObjects/InvalidNamespace' of"
-            + " the root element is invalid. Expected namespace: 'http://www.re-motion.org/Data/DomainObjects/Queries/1.0'. File: '{0}'.",
+            + " the root element is invalid. Expected namespace: 'http://www.re-motion.org/Data/DomainObjects/Queries/2.0'. File: '{0}'.",
             Path.GetFullPath(configurationFile));
 
         Assert.That(ex.Message, Is.EqualTo(expectedMessage));
@@ -360,7 +370,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
       queries.Add(TestQueryFactory.CreateOrderQueryWithCustomCollectionType());
       queries.Add(TestQueryFactory.CreateOrderQueryDefinitionWithObjectListOfOrder());
       queries.Add(TestQueryFactory.CreateCustomerTypeQueryDefinition());
-      queries.Add(TestQueryFactory.CreateOrderSumQueryDefinition());
+      queries.Add(TestQueryFactory.CreateOrderSumQueryDefinitionWithQueryTypeScalarReadOnly());
+      queries.Add(TestQueryFactory.CreateOrderSumQueryWithQueryTypeCustomReadOnly());
+      queries.Add(TestQueryFactory.CreateTestQueryDefinitionWithQueryTypeCollectionReadWrite());
+      queries.Add(TestQueryFactory.CreateTestQueryDefinitionWithQueryTypeScalarReadWrite());
+      queries.Add(TestQueryFactory.CreateTestQueryDefinitionWithQueryTypeCustomReadWrite());
 
       return queries;
     }

@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     {
       base.SetUp();
 
-      _query1 = QueryFactory.CreateQuery(TestQueryFactory.CreateOrderSumQueryDefinition());
+      _query1 = QueryFactory.CreateQuery(TestQueryFactory.CreateOrderSumQueryDefinitionWithQueryTypeScalarReadOnly());
       _query2 = QueryFactory.CreateQuery(TestQueryFactory.CreateOrderQueryWithCustomCollectionType());
 
       _endPointDefinition1 = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof(Order).FullName + ".OrderItems");
