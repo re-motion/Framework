@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void QueryDefinition ()
     {
-      QueryDefinition queryDefinition = new QueryDefinition("queryID", TestDomainStorageProviderDefinition, "statement", QueryType.Collection, typeof(DomainObjectCollection));
+      QueryDefinition queryDefinition = new QueryDefinition("queryID", TestDomainStorageProviderDefinition, "statement", QueryType.CollectionReadOnly, typeof(DomainObjectCollection));
 
       QueryDefinition deserializedQueryDefinition = Serializer.SerializeAndDeserialize(queryDefinition);
 
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void Deserialize_WithQueryDefinitionNoLongerInRepo_ThrowsException ()
     {
-      QueryDefinition unknownQueryDefinition = new QueryDefinition("UnknownQuery", TestDomainStorageProviderDefinition, "select 42", QueryType.Scalar);
+      QueryDefinition unknownQueryDefinition = new QueryDefinition("UnknownQuery", TestDomainStorageProviderDefinition, "select 42", QueryType.ScalarReadOnly);
       QueryDefinitionRepository queryDefinitionRepository = new QueryDefinitionRepository(new[] { unknownQueryDefinition });
 
       DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();

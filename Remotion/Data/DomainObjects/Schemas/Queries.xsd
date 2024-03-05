@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xs:schema 
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-    xmlns:q="http://www.re-motion.org/Data/DomainObjects/Queries/1.0" 
+    xmlns:q="http://www.re-motion.org/Data/DomainObjects/Queries/2.0"
     xmlns:t="http://www.re-motion.org/Data/DomainObjects/Types" 
     elementFormDefault="qualified" 
     attributeFormDefault="unqualified" 
-    targetNamespace="http://www.re-motion.org/Data/DomainObjects/Queries/1.0" 
+    targetNamespace="http://www.re-motion.org/Data/DomainObjects/Queries/2.0"
     xml:lang="en">
 
   <!-- TODO: Import should contain schemaLocation to ensure application developer can check its mapping during design time. 
@@ -36,9 +36,12 @@
     <xs:attribute name="type" use="required">
       <xs:simpleType>
         <xs:restriction base="xs:string">
-          <xs:enumeration value="collection" />
-          <xs:enumeration value="scalar" />
-          <xs:enumeration value="custom" />
+          <xs:enumeration value="collection-readonly" />
+          <xs:enumeration value="scalar-readonly" />
+          <xs:enumeration value="custom-readonly" />
+          <xs:enumeration value="collection-readwrite" />
+          <xs:enumeration value="scalar-readwrite" />
+          <xs:enumeration value="custom-readwrite" />
         </xs:restriction>
       </xs:simpleType>
     </xs:attribute>
