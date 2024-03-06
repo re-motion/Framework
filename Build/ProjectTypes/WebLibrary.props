@@ -21,6 +21,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
+    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)Remotion\Web\Development.Analyzers\Web.Development.Analyzers.csproj"
                       PrivateAssets="all"
