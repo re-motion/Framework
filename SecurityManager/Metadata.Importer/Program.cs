@@ -87,7 +87,7 @@ namespace Remotion.SecurityManager.Metadata.Importer
       {
         if (!hasOriginalServiceLocator)
         {
-          var serviceLocator = DefaultServiceLocator.Create();
+          var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
           var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer(_arguments.ConnectionString);
           serviceLocator.RegisterSingle(() => storageSettingsFactory);
           ServiceLocator.SetLocatorProvider(() => serviceLocator);
@@ -100,7 +100,7 @@ namespace Remotion.SecurityManager.Metadata.Importer
         ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService(assemblyFinder);
         MappingConfiguration.SetCurrent(
             MappingConfiguration.Create(
-                MappingReflector.Create(
+                new MappingReflector(
                     typeDiscoveryService,
                     SafeServiceLocator.Current.GetInstance<IClassIDProvider>(),
                     SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),

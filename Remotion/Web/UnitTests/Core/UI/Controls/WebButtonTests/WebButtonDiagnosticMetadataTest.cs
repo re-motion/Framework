@@ -20,7 +20,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
     {
       base.SetUp();
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle<IRenderingFeatures>(() => RenderingFeatures.WithDiagnosticMetadata);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }

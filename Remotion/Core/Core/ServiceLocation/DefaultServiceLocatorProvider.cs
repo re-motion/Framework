@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -23,17 +23,25 @@ namespace Remotion.ServiceLocation
   /// <summary>
   /// Implements <see cref="IServiceLocatorProvider"/> by providing instances of <see cref="DefaultServiceLocator"/>.
   /// </summary>
+  /// <threadsafety static="true" instance="true" />
   public class DefaultServiceLocatorProvider : IServiceLocatorProvider
   {
-    public DefaultServiceLocatorProvider ()
+    public const int Position = 0;
+
+    public IServiceConfigurationDiscoveryService ServiceConfigurationDiscoveryService { get; }
+
+    public DefaultServiceLocatorProvider (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService)
     {
+      ArgumentUtility.CheckNotNull("serviceConfigurationDiscoveryService", serviceConfigurationDiscoveryService);
+
+      ServiceConfigurationDiscoveryService = serviceConfigurationDiscoveryService;
     }
 
-    public IServiceLocator GetServiceLocator (ReadOnlyCollection<ServiceConfigurationEntry> serviceConfigurationEntries)
+    public IServiceLocator GetServiceLocator (IReadOnlyCollection<ServiceConfigurationEntry> serviceConfigurationEntries)
     {
       ArgumentUtility.CheckNotNull("serviceConfigurationEntries", serviceConfigurationEntries);
 
-      var defaultServiceLocator = DefaultServiceLocator.Create();
+      var defaultServiceLocator = new DefaultServiceLocator(ServiceConfigurationDiscoveryService);
       foreach (var serviceConfigurationEntry in serviceConfigurationEntries)
         defaultServiceLocator.Register(serviceConfigurationEntry);
 

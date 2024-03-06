@@ -21,6 +21,7 @@ using System.Linq;
 using System.Reflection;
 using Moq;
 using NUnit.Framework;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.UnitTests.ServiceLocation.TestDomain;
 
@@ -389,7 +390,7 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetDefaultConfiguration_Assembly ()
     {
-      var defaultServiceConfigurationDiscoveryService = DefaultServiceConfigurationDiscoveryService.Create();
+      var defaultServiceConfigurationDiscoveryService = new DefaultServiceConfigurationDiscoveryService(_typeDiscoveryServiceStub.Object);
 
       // Because the TestDomain contains test classes with ambiguous attributes, we expect an exception here.
       Assert.That(

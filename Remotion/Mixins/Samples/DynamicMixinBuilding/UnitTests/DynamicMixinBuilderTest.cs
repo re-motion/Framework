@@ -74,7 +74,7 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
 
       // Set new default pipeline to avoid cached types to influence each other.
       var pipelineRegistry = CreatePipelineRegistry();
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       // ReSharper disable once RedundantTypeArgumentsOfMethod
       serviceLocator.RegisterSingle<IPipelineRegistry>(() => pipelineRegistry);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);

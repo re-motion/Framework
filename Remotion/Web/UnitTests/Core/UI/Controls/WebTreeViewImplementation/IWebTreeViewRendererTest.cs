@@ -29,7 +29,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTreeViewImplementation
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     }
 
     [Test]

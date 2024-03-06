@@ -296,7 +296,7 @@ public class WxeContextTest
   {
     var wxeUrlSettings = WxeUrlSettings.Create(maxLength, "WxeHandler.ashx");
 
-    var serviceLocator = DefaultServiceLocator.Create();
+    var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     serviceLocator.RegisterSingle(() => wxeUrlSettings);
     return new ServiceLocatorScope(serviceLocator);
   }

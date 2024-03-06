@@ -25,7 +25,7 @@ namespace Remotion.SecurityManager.PerformanceTests
   {
     private static void Main (string[] args)
     {
-      var defaultServiceLocator = DefaultServiceLocator.Create();
+      var defaultServiceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
 
       defaultServiceLocator.Register(
           typeof(Remotion.Data.DomainObjects.IClientTransactionExtensionFactory),

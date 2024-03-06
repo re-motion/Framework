@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,16 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
-using Remotion.ServiceLocation;
 
-namespace Remotion.UnitTests.Configuration.ServiceLocation
+namespace Remotion.Configuration.ServiceLocation
 {
-  public class FakeServiceLocatorProvider : IServiceLocatorProvider
+  [Obsolete("Use IoC bootstrapping to resolve the IServiceLocatorProvider (Version 6.0.0)", true)]
+
+  public static class ServiceLocationConfiguration
   {
-    public IServiceLocator GetServiceLocator (ReadOnlyCollection<ServiceConfigurationEntry> bootstrapConfiguration)
+    [Obsolete("Use IoC bootstrapping to resolve the IServiceLocatorProvider (Version 6.0.0)", true)]
+
+    public static IServiceLocationConfiguration Current
     {
-      throw new NotImplementedException();
+      get => throw new NotSupportedException("Use IoC bootstrapping to resolve the IServiceLocatorProvider (Version 6.0.0)");
     }
   }
 }

@@ -39,7 +39,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
       _mockWebSecurityAdapter = new Mock<IWebSecurityAdapter>(MockBehavior.Strict);
       _mockSecurableObject = new Mock<ISecurableObject>(MockBehavior.Strict);
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterMultiple<IWebSecurityAdapter>(() => _mockWebSecurityAdapter.Object);
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
       _serviceLocatorStub = new ServiceLocatorScope(serviceLocator);
@@ -82,7 +82,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
     [Test]
     public void EvaluateTrue_FromTrueAndWithoutWebSeucrityProvider ()
     {
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterMultiple<IWebSecurityAdapter>();
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
       using (new ServiceLocatorScope(serviceLocator))
@@ -101,7 +101,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
     [Test]
     public void EvaluateFalse_FromFalseAndWithoutWebSeucrityProvider ()
     {
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterMultiple<IWebSecurityAdapter>();
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
       using (new ServiceLocatorScope(serviceLocator))

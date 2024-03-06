@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
 
       var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle(() => _securityProviderStub.Object);
       serviceLocator.RegisterSingle(() => _principalProviderStub.Object);
       serviceLocator.RegisterSingle(() => storageSettings);

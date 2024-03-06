@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel.Design;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader;
@@ -44,24 +45,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    public void Initialization_DefaultTypeDiscoveryService ()
-    {
-      var reflector = new MappingReflector(
-          SafeServiceLocator.Current.GetInstance<IClassIDProvider>(),
-          SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),
-          SafeServiceLocator.Current.GetInstance<IPropertyMetadataProvider>(),
-          SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>(),
-          SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
-          SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
-          SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>());
-
-      Assert.That(reflector.TypeDiscoveryService, Is.SameAs(ContextAwareTypeUtility.GetTypeDiscoveryService()));
-    }
-
-    [Test]
     public void Initialization_MappingObjectFactory_InstanceCreator ()
     {
       var reflector = new MappingReflector(
+          SafeServiceLocator.Current.GetInstance<ITypeDiscoveryService>(),
           SafeServiceLocator.Current.GetInstance<IClassIDProvider>(),
           SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),
           SafeServiceLocator.Current.GetInstance<IPropertyMetadataProvider>(),

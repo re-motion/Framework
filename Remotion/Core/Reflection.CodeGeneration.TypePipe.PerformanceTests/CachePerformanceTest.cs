@@ -41,7 +41,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.PerformanceTests
     [SetUp]
     public void SetUp ()
     {
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer("Integrated Security=SSPI;Initial Catalog=TestDatabase;Data Source=localhost");
       serviceLocator.RegisterSingle(() => storageSettingsFactory);
 

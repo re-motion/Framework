@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel.Design;
 using NUnit.Framework;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.ExtensibleEnums.Infrastructure;
 using Remotion.ExtensibleEnums.UnitTests.TestDomain;
-using Remotion.Reflection;
 using Remotion.ServiceLocation;
 
 namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
@@ -30,12 +30,15 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
   {
     private ExtensibleEnumDefinitionCache _cache;
     private DefaultServiceLocator _serviceLocator;
+    private ITypeDiscoveryService _typeDiscoveryService;
 
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
-      _cache = new ExtensibleEnumDefinitionCache(new ExtensibleEnumValueDiscoveryService());
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
+      _typeDiscoveryService = _serviceLocator.GetInstance<ITypeDiscoveryService>();
+
+      _cache = new ExtensibleEnumDefinitionCache(new ExtensibleEnumValueDiscoveryService(_typeDiscoveryService));
     }
 
     [Test]
@@ -44,7 +47,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
       Assert.That(_cache.ValueDiscoveryService, Is.InstanceOf(typeof(ExtensibleEnumValueDiscoveryService)));
       Assert.That(
           ((ExtensibleEnumValueDiscoveryService)_cache.ValueDiscoveryService).TypeDiscoveryService,
-          Is.SameAs(ContextAwareTypeUtility.GetTypeDiscoveryService()));
+          Is.SameAs(_typeDiscoveryService));
     }
 
     [Test]

@@ -66,7 +66,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       _mockObjectSecurityStrategy = new Mock<IObjectSecurityStrategy>(MockBehavior.Strict);
       _mockFunctionalSecurityStrategy = new Mock<IFunctionalSecurityStrategy>(MockBehavior.Strict);
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle(() => _mockSecurityProvider.Object);
       serviceLocator.RegisterSingle(() => _mockPrincipalProvider.Object);
       serviceLocator.RegisterSingle(() => _mockFunctionalSecurityStrategy.Object);

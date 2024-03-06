@@ -38,25 +38,7 @@ namespace Remotion.Validation.Implementation
     private readonly Lazy<ILookup<Type, Type>> _validationCollectors;
     private readonly IValidatedTypeResolver _validatedTypeResolver;
 
-    public static IValidationRuleCollectorReflector Create (ITypeDiscoveryService typeDiscoveryService, IValidatedTypeResolver validatedTypeResolver)
-    {
-      ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
-      ArgumentUtility.CheckNotNull("validatedTypeResolver", validatedTypeResolver);
-
-      return new DiscoveryServiceBasedValidationRuleCollectorReflector(typeDiscoveryService, validatedTypeResolver);
-    }
-
-    public DiscoveryServiceBasedValidationRuleCollectorReflector (IValidatedTypeResolver validatedTypeResolver)
-        : this(ContextAwareTypeUtility.GetTypeDiscoveryService(), validatedTypeResolver)
-    {
-    }
-
-    public IValidatedTypeResolver ValidatedTypeResolver
-    {
-      get { return _validatedTypeResolver; }
-    }
-
-    protected DiscoveryServiceBasedValidationRuleCollectorReflector (
+    public DiscoveryServiceBasedValidationRuleCollectorReflector (
         ITypeDiscoveryService typeDiscoveryService,
         IValidatedTypeResolver validatedTypeResolver)
     {
@@ -66,6 +48,11 @@ namespace Remotion.Validation.Implementation
       _typeDiscoveryService = typeDiscoveryService;
       _validatedTypeResolver = validatedTypeResolver;
       _validationCollectors = new Lazy<ILookup<Type, Type>>(GetValidationCollectors, LazyThreadSafetyMode.ExecutionAndPublication);
+    }
+
+    public IValidatedTypeResolver ValidatedTypeResolver
+    {
+      get { return _validatedTypeResolver; }
     }
 
     public IEnumerable<Type> GetCollectorsForType (Type type)
