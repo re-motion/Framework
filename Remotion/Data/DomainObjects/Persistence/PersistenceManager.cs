@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -24,12 +25,17 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.FunctionalProgramming;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence
 {
   [Serializable]
-  public class PersistenceManager
+  [ImplementationFor(typeof(IPersistenceManager), Lifetime = LifetimeKind.Singleton)]
+  public class PersistenceManager : IPersistenceManager,
+#pragma warning disable SYSLIB0050
+      IObjectReference
+#pragma warning restore SYSLIB0050
   {
     private class TransactionContext : IDisposable
     {
@@ -354,5 +360,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       return result;
     }
 
+    /// <inheritdoc />
+    object IObjectReference.GetRealObject (StreamingContext context) => SafeServiceLocator.Current.GetInstance<IPersistenceManager>();
   }
 }
