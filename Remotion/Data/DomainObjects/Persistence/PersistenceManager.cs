@@ -23,7 +23,6 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
-using Remotion.Data.DomainObjects.Tracing;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
@@ -43,13 +42,9 @@ namespace Remotion.Data.DomainObjects.Persistence
     }
 
     private bool _disposed;
-    private StorageProviderManager _storageProviderManager;
 
-    public PersistenceManager (IPersistenceExtension persistenceExtension)
+    public PersistenceManager ()
     {
-      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
-
-      _storageProviderManager = new StorageProviderManager(persistenceExtension);
     }
 
     #region IDisposable Members
@@ -58,11 +53,6 @@ namespace Remotion.Data.DomainObjects.Persistence
     {
       if (!_disposed)
       {
-        if (_storageProviderManager != null)
-          _storageProviderManager.Dispose();
-
-        _storageProviderManager = null!;
-
         _disposed = true;
         GC.SuppressFinalize(this);
       }
@@ -70,23 +60,20 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     #endregion
 
-    public StorageProviderManager StorageProviderManager
-    {
-      get { return _storageProviderManager; }
-    }
-
-    public ObjectID CreateNewObjectID (ClassDefinition classDefinition)
+    public ObjectID CreateNewObjectID (StorageProviderManager storageProviderManager, ClassDefinition classDefinition)
     {
       CheckDisposed();
+      ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      StorageProvider provider = _storageProviderManager.GetMandatory(classDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
+      StorageProvider provider = storageProviderManager.GetMandatory(classDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
       return provider.CreateNewObjectID(classDefinition);
     }
 
-    public void Save (DataContainerCollection dataContainers)
+    public void Save (StorageProviderManager storageProviderManager, DataContainerCollection dataContainers)
     {
       CheckDisposed();
+      ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
       ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
 
       if (dataContainers.Count == 0)
@@ -94,7 +81,7 @@ namespace Remotion.Data.DomainObjects.Persistence
 
       var groupedDataContainers = dataContainers
           .ToLookup(dataContainer => dataContainer.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition)
-          .Select(group => new { Provider = _storageProviderManager.GetMandatory(group.Key.Name), DataContainers = group.ToArray() })
+          .Select(group => new { Provider = storageProviderManager.GetMandatory(group.Key.Name), DataContainers = group.ToArray() })
           .ToArray();
 
       var providers = groupedDataContainers.Select(group => group.Provider).ToArray();
@@ -129,34 +116,37 @@ namespace Remotion.Data.DomainObjects.Persistence
       }
     }
 
-    public ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
+    public ObjectLookupResult<DataContainer> LoadDataContainer (StorageProviderManager storageProviderManager, ObjectID id)
     {
       CheckDisposed();
+      ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
       ArgumentUtility.CheckNotNull("id", id);
 
-      var provider = _storageProviderManager.GetMandatory(id.StorageProviderDefinition.Name);
+      var provider = storageProviderManager.GetMandatory(id.StorageProviderDefinition.Name);
       var result = provider.LoadDataContainer(id);
 
       return result;
     }
 
-    public IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids)
+    public IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (StorageProviderManager storageProviderManager, IEnumerable<ObjectID> ids)
     {
       CheckDisposed();
+      ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
       ArgumentUtility.CheckNotNull("ids", ids);
 
       var idCollection = ids.ConvertToCollection();
       var idsByProvider = GroupIDsByProvider(idCollection);
 
       var unorderedResultDictionary = idsByProvider
-          .SelectMany(idGroup => _storageProviderManager.GetMandatory(idGroup.Key).LoadDataContainers(idGroup.Value))
+          .SelectMany(idGroup => storageProviderManager.GetMandatory(idGroup.Key).LoadDataContainers(idGroup.Value))
           .ToLookup(dataContainerLookupResult => dataContainerLookupResult.ObjectID);
       return idCollection.Select(id => unorderedResultDictionary[id].First());
     }
 
-    public DataContainerCollection LoadRelatedDataContainers (RelationEndPointID relationEndPointID)
+    public DataContainerCollection LoadRelatedDataContainers (StorageProviderManager storageProviderManager, RelationEndPointID relationEndPointID)
     {
       CheckDisposed();
+      ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
       ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
       if (!relationEndPointID.Definition.IsVirtual)
@@ -176,7 +166,7 @@ namespace Remotion.Data.DomainObjects.Persistence
             relationEndPointDefinition.RelationDefinition.ID);
       }
 
-      var oppositeDataContainers = LoadOppositeDataContainers(relationEndPointID);
+      var oppositeDataContainers = LoadOppositeDataContainers(storageProviderManager, relationEndPointID);
 
       if (relationEndPointDefinition.IsMandatory && oppositeDataContainers.Count == 0)
       {
@@ -189,15 +179,16 @@ namespace Remotion.Data.DomainObjects.Persistence
       return oppositeDataContainers;
     }
 
-    public DataContainer? LoadRelatedDataContainer (RelationEndPointID relationEndPointID)
+    public DataContainer? LoadRelatedDataContainer (StorageProviderManager storageProviderManager, RelationEndPointID relationEndPointID)
     {
       CheckDisposed();
+      ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
       ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
       if (!relationEndPointID.Definition.IsVirtual)
         throw new ArgumentException("LoadRelatedDataContainer can only be used with virtual end points.", "relationEndPointID");
 
-      return GetOppositeDataContainerForVirtualEndPoint(relationEndPointID);
+      return GetOppositeDataContainerForVirtualEndPoint(storageProviderManager, relationEndPointID);
     }
 
     /// <summary>
@@ -276,7 +267,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       }
     }
 
-    private DataContainer? GetOppositeDataContainerForVirtualEndPoint (RelationEndPointID relationEndPointID)
+    private DataContainer? GetOppositeDataContainerForVirtualEndPoint (StorageProviderManager storageProviderManager, RelationEndPointID relationEndPointID)
     {
       var relationEndPointDefinition = relationEndPointID.Definition;
       if (relationEndPointDefinition.Cardinality == CardinalityType.Many)
@@ -286,7 +277,7 @@ namespace Remotion.Data.DomainObjects.Persistence
             relationEndPointDefinition.RelationDefinition.ID);
       }
 
-      var oppositeDataContainers = LoadOppositeDataContainers(relationEndPointID);
+      var oppositeDataContainers = LoadOppositeDataContainers(storageProviderManager, relationEndPointID);
       if (oppositeDataContainers.Count > 1)
       {
         throw CreatePersistenceException(
@@ -311,7 +302,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       return oppositeDataContainers[0];
     }
 
-    private DataContainerCollection LoadOppositeDataContainers (RelationEndPointID relationEndPointID)
+    private DataContainerCollection LoadOppositeDataContainers (StorageProviderManager storageProviderManager, RelationEndPointID relationEndPointID)
     {
       var relationEndPointDefinition = relationEndPointID.Definition;
       Assertion.IsTrue(relationEndPointDefinition.IsVirtual, "RelationEndPointDefinition for '{0}' is not virtual.", relationEndPointID);
@@ -320,7 +311,7 @@ namespace Remotion.Data.DomainObjects.Persistence
 
       var oppositeEndPointDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition();
       var oppositeProvider =
-          _storageProviderManager.GetMandatory(oppositeEndPointDefinition.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
+          storageProviderManager.GetMandatory(oppositeEndPointDefinition.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
 
       SortExpressionDefinition? sortExpression;
       if (relationEndPointDefinition is DomainObjectCollectionRelationEndPointDefinition domainObjectCollectionRelationEndPointDefinition)
