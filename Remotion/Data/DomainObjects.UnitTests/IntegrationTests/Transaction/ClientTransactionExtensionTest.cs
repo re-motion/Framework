@@ -790,7 +790,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var extensionMock = AddExtensionToClientTransaction(_transaction);
 
       //Note: no reading notification must be performed
-      using (var persistenceManager = new PersistenceManager())
+      var persistenceManager = new PersistenceManager();
       using (var storageProviderManager = new StorageProviderManager(NullPersistenceExtension.Instance, StorageSettings))
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));

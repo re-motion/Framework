@@ -28,7 +28,8 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence
 {
-  public class PersistenceManager : IDisposable
+  [Serializable]
+  public class PersistenceManager
   {
     private class TransactionContext : IDisposable
     {
@@ -41,28 +42,12 @@ namespace Remotion.Data.DomainObjects.Persistence
       }
     }
 
-    private bool _disposed;
-
     public PersistenceManager ()
     {
     }
 
-    #region IDisposable Members
-
-    public void Dispose ()
-    {
-      if (!_disposed)
-      {
-        _disposed = true;
-        GC.SuppressFinalize(this);
-      }
-    }
-
-    #endregion
-
     public ObjectID CreateNewObjectID (StorageProviderManager storageProviderManager, ClassDefinition classDefinition)
     {
-      CheckDisposed();
       ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
@@ -72,7 +57,6 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public void Save (StorageProviderManager storageProviderManager, DataContainerCollection dataContainers)
     {
-      CheckDisposed();
       ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
       ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
 
@@ -118,7 +102,6 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public ObjectLookupResult<DataContainer> LoadDataContainer (StorageProviderManager storageProviderManager, ObjectID id)
     {
-      CheckDisposed();
       ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
       ArgumentUtility.CheckNotNull("id", id);
 
@@ -130,7 +113,6 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (StorageProviderManager storageProviderManager, IEnumerable<ObjectID> ids)
     {
-      CheckDisposed();
       ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
       ArgumentUtility.CheckNotNull("ids", ids);
 
@@ -145,7 +127,6 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public DataContainerCollection LoadRelatedDataContainers (StorageProviderManager storageProviderManager, RelationEndPointID relationEndPointID)
     {
-      CheckDisposed();
       ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
       ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
@@ -181,7 +162,6 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public DataContainer? LoadRelatedDataContainer (StorageProviderManager storageProviderManager, RelationEndPointID relationEndPointID)
     {
-      CheckDisposed();
       ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
       ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
@@ -364,12 +344,6 @@ namespace Remotion.Data.DomainObjects.Persistence
     private PersistenceException CreatePersistenceException (string message, params object?[] args)
     {
       return new PersistenceException(string.Format(message, args));
-    }
-
-    private void CheckDisposed ()
-    {
-      if (_disposed)
-        throw new ObjectDisposedException("PersistenceManager", "A disposed PersistenceManager cannot be accessed.");
     }
 
     private IEnumerable<KeyValuePair<string, List<ObjectID>>> GroupIDsByProvider (IEnumerable<ObjectID> ids)
