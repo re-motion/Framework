@@ -49,9 +49,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
   [ImplementationFor(typeof(SqlStorageObjectFactory), Lifetime = LifetimeKind.Singleton)]
   public class SqlStorageObjectFactory : IRdbmsStorageObjectFactory
   {
-    protected readonly IStorageSettings StorageSettings;
-    protected readonly ITypeConversionProvider TypeConversionProvider;
-    protected readonly IDataContainerValidator DataContainerValidator;
+    public IStorageSettings StorageSettings { get; }
+    public ITypeConversionProvider TypeConversionProvider { get; }
+    public IDataContainerValidator DataContainerValidator { get; }
 
     public SqlStorageObjectFactory (IStorageSettings storageSettings, ITypeConversionProvider typeConversionProvider, IDataContainerValidator dataContainerValidator)
     {
