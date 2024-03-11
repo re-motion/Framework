@@ -26,6 +26,7 @@ using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.TypePipe;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 {
@@ -177,6 +178,45 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
       Assert.That(orderItem2Command, Is.Not.Null);
       Assert.That(orderItem2Command.OldRelatedObject, Is.SameAs(_order1));
       Assert.That(orderItem2Command.NewRelatedObject, Is.Null);
+    }
+
+    [Test]
+    public void ExpandToAllRelatedObjects_WithSelfReferencingEndPoint ()
+    {
+      var folder = (Folder)LifetimeService.NewObject(_transaction, typeof(Folder), ParamList.Empty);
+      folder.ParentFolder = folder;
+
+      var deleteFolderCommand = new DeleteCommand(_transaction, folder, _transactionEventSinkWithMock.Object);
+      var extended = deleteFolderCommand.ExpandToAllRelatedObjects();
+
+      var commands = extended.GetNestedCommands();
+      Assert.That(commands.Count, Is.EqualTo(1)); // self
+
+      Assert.That(commands, Has.Member(deleteFolderCommand));
+    }
+
+    [Test]
+    public void ExpandToAllRelatedObjects_WithSelfReferencingEndPoint_AndOtherEndPoints ()
+    {
+      var folder = (Folder)LifetimeService.NewObject(_transaction, typeof(Folder), ParamList.Empty);
+      folder.ParentFolder = folder;
+
+      var file = (File)LifetimeService.NewObject(_transaction, typeof(File), ParamList.Empty);
+      file.ParentFolder = folder;
+
+      var deleteFolderCommand = new DeleteCommand(_transaction, folder, _transactionEventSinkWithMock.Object);
+      var extended = deleteFolderCommand.ExpandToAllRelatedObjects();
+
+      var commands = extended.GetNestedCommands();
+      Assert.That(commands.Count, Is.EqualTo(2)); // self, File
+
+      Assert.That(commands, Has.Member(deleteFolderCommand));
+
+      var fileCommand = GetEndPointModificationCommand(commands, file.ID);
+      Assert.That(fileCommand, Is.Not.Null);
+      Assert.That(fileCommand.DomainObject, Is.SameAs(file));
+      Assert.That(fileCommand.OldRelatedObject, Is.SameAs(folder));
+      Assert.That(fileCommand.NewRelatedObject, Is.Null);
     }
 
     private RelationEndPointModificationCommand GetEndPointModificationCommand (IEnumerable<IDataManagementCommand> commands, ObjectID objectID)

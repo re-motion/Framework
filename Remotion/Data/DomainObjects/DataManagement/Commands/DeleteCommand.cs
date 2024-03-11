@@ -102,6 +102,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
       var commands =
           from endPoint in _endPoints
           from oppositeEndPointID in endPoint.GetOppositeRelationEndPointIDs()
+          // Filter self-referencing endpoints. These are covered by the _endPointDeleteCommands.
+          where oppositeEndPointID.ObjectID != _deletedObject.ID
           let oppositeEndPoint = _clientTransaction.DataManager.GetRelationEndPointWithLazyLoad(oppositeEndPointID)
           select oppositeEndPoint.CreateRemoveCommand(_deletedObject);
 
