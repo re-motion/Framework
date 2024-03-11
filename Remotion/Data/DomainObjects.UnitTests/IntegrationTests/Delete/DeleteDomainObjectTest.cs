@@ -183,5 +183,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       Assert.That(newProduct.State.IsInvalid, Is.True);
       Assert.That(newProductReview.State.IsInvalid, Is.True);
     }
+
+    [Test]
+    public void DeleteFromSelfReferencingOneToManyRelation ()
+    {
+      var folder = Folder.NewObject();
+      folder.ParentFolder = folder;
+
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
+      {
+        folder.Delete();
+        Assert.That(folder.State.IsDeleted, Is.True);
+        Assert.That(folder.ParentFolder, Is.Null);
+      }
+    }
+
+    [Test]
+    public void DeleteFromSelfReferencingOneToManyRelation_WithOtherObjectsInvolved ()
+    {
+      var folder1 = Folder.NewObject();
+      folder1.ParentFolder = folder1;
+
+      var file2 = File.NewObject();
+      file2.ParentFolder = folder1;
+
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
+      {
+        folder1.Delete();
+        Assert.That(folder1.State.IsDeleted, Is.True);
+        Assert.That(file2.State.IsChanged, Is.True);
+        Assert.That(file2.ParentFolder, Is.Null);
+      }
+    }
   }
 }
