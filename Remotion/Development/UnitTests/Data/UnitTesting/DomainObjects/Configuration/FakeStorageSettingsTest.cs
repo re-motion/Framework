@@ -37,8 +37,7 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects.Configur
       Assert.That(defaultStorageProviderDefinition.ConnectionString, Is.EqualTo("DummyConnectionString"));
       Assert.That(defaultStorageProviderDefinition.Factory, Is.InstanceOf<SqlStorageObjectFactory>());
 
-      var storageSettings = PrivateInvoke.GetNonPublicField(defaultStorageProviderDefinition.Factory, typeof(SqlStorageObjectFactory), "StorageSettings");
-
+      var storageSettings = ((SqlStorageObjectFactory)defaultStorageProviderDefinition.Factory).StorageSettings;
       Assert.That(storageSettings, Is.EqualTo(result));
 
       Assert.That(result.GetStorageProviderDefinitions(), Is.EquivalentTo(new[] { defaultStorageProviderDefinition }));
