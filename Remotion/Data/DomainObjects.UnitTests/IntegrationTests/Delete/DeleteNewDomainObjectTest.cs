@@ -414,6 +414,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     }
 
     [Test]
+    public void DeleteFromSelfReferencingOneToManyRelation ()
+    {
+      var folder = Folder.NewObject();
+      folder.ParentFolder = folder;
+
+      folder.Delete();
+      Assert.That(folder.State.IsInvalid, Is.True);
+    }
+
+    [Test]
+    public void DeleteFromSelfReferencingOneToManyRelation_WithOtherObjectsInvolved ()
+    {
+      var folder1 = Folder.NewObject();
+      folder1.ParentFolder = folder1;
+
+      var file2 = File.NewObject();
+      file2.ParentFolder = folder1;
+
+      folder1.Delete();
+      Assert.That(folder1.State.IsInvalid, Is.True);
+      Assert.That(file2.State.IsNew, Is.True);
+      Assert.That(file2.ParentFolder, Is.Null);
+    }
+
+    [Test]
     public void DeleteNewObjectsInDomainObjectsCommittingEvent ()
     {
       _newOrder.Committing += (o, args) =>
