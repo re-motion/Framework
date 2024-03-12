@@ -221,7 +221,6 @@ class ListMenu
         // exit tab strip
         return;
       case 13: //enter
-      case 32: //space
         {
           event.preventDefault();
           event.stopPropagation();
