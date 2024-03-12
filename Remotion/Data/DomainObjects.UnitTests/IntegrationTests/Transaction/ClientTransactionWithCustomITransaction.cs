@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public ClientTransactionWithCustomITransaction (ITransaction wrapper)
       : base(RootClientTransactionComponentFactory.Create(
           SafeServiceLocator.Current.GetInstance<IStorageSettings>(),
-          SafeServiceLocator.Current.GetInstance<IPersistenceManager>(),
+          SafeServiceLocator.Current.GetInstance<IPersistenceService>(),
           SafeServiceLocator.Current.GetInstance<IPersistenceExtensionFactory>()))
     {
       _wrapper = wrapper;

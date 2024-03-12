@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public TestComponentFactoryWithSpecificPersistenceStrategy (IPersistenceStrategy persistenceStrategy)
         : base(
             SafeServiceLocator.Current.GetInstance<IStorageSettings>(),
-            SafeServiceLocator.Current.GetInstance<IPersistenceManager>(),
+            SafeServiceLocator.Current.GetInstance<IPersistenceService>(),
             SafeServiceLocator.Current.GetInstance<IPersistenceExtensionFactory>())
     {
       _persistenceStrategy = persistenceStrategy;
