@@ -33,9 +33,10 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Configuration
     /// <summary>
     /// Creates a <see cref="FakeStorageSettingsFactory"/> named <c>Default</c> and a <see cref="SqlStorageObjectFactory"/> with the given <paramref name="connectionString"/>.
     /// </summary>
-    public static IStorageSettings CreateForSqlServer (string connectionString, Func<IStorageSettings, SqlStorageObjectFactory>? sqlStorageObjectFactoryFactory = null)
+    public static IStorageSettings CreateForSqlServer (string connectionString, string readOnlyConnectionString, Func<IStorageSettings, SqlStorageObjectFactory>? sqlStorageObjectFactoryFactory = null)
     {
       ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
+      ArgumentUtility.CheckNotNullOrEmpty("readOnlyConnectionString", readOnlyConnectionString);
 
       var fakeStorageObjectFactoryFactory = new FakeStorageObjectFactoryFactory();
       var fakeStorageSettingsFactory = new FakeStorageSettingsFactory();
@@ -52,7 +53,7 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Configuration
 
       Assertion.IsNotNull(sqlStorageObjectFactory, "sqlStorageObjectFactoryFactory(...) was evaluated and returned null");
 
-      var providerDefinition = new RdbmsProviderDefinition("Default", sqlStorageObjectFactory, connectionString);
+      var providerDefinition = new RdbmsProviderDefinition("Default", sqlStorageObjectFactory, connectionString, readOnlyConnectionString);
 
       var storageSettings = new StorageSettings(providerDefinition, new[] { providerDefinition });
 

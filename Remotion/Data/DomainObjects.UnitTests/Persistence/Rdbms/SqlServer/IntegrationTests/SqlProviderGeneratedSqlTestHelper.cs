@@ -42,9 +42,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       _provider = RdbmsProviderObjectMother.CreateForIntegrationTest(
           storageSettings,
           rdbmsProviderDefinition,
-          (providerDefinition, persistenceListener, commandFactory) =>
+          (providerDefinition, _, commandFactory) =>
               new ObservableRdbmsProvider(
                   providerDefinition,
+                  providerDefinition.ConnectionString,
                   NullPersistenceExtension.Instance,
                   commandFactory,
                   () => new SqlConnection(),

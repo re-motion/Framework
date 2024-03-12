@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
   public class UnitTestStorageProviderStubDefinition : RdbmsProviderDefinition
   {
     public UnitTestStorageProviderStubDefinition (string storageProviderID, IReadOnlyCollection<Type> assignedStorageGroups = null)
-        : base(storageProviderID, new UnitTestStorageObjectFactoryStub(), "connectionString", assignedStorageGroups)
+        : base(storageProviderID, new UnitTestStorageObjectFactoryStub(), "connectionString", "ReadOnlyConnectionString", assignedStorageGroups)
     {
     }
 
