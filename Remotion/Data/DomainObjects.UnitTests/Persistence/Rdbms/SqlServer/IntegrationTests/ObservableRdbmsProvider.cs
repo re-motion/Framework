@@ -36,11 +36,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public ObservableRdbmsProvider (
         RdbmsProviderDefinition definition,
+        string connectionString,
         IPersistenceExtension persistenceExtension,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> storageProviderCommandFactory,
         Func<IDbConnection> connectionFactory,
         ICommandExecutionListener listener)
-        : base(definition, persistenceExtension, storageProviderCommandFactory, connectionFactory)
+        : base(definition, connectionString, persistenceExtension, storageProviderCommandFactory, connectionFactory)
     {
       ArgumentUtility.CheckNotNull("listener", listener);
       _listener = listener;

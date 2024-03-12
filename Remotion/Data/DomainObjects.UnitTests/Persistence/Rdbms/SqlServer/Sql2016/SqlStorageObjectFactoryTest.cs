@@ -132,6 +132,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       Assert.That(result, Is.TypeOf(typeof(RdbmsProvider)));
       Assert.That(result.PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
       Assert.That(result.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
+      Assert.That(result.As<RdbmsProvider>().ConnectionString, Is.SameAs(_rdbmsProviderDefinition.ConnectionString));
+
+      var commandFactory = (RdbmsProviderCommandFactory)PrivateInvoke.GetNonPublicProperty(result, "StorageProviderCommandFactory");
+      Assert.That(commandFactory.DbCommandBuilderFactory, Is.TypeOf(typeof(SqlDbCommandBuilderFactory)));
+      Assert.That(commandFactory.RdbmsPersistenceModelProvider, Is.TypeOf(typeof(RdbmsPersistenceModelProvider)));
+      Assert.That(commandFactory.ObjectReaderFactory, Is.TypeOf(typeof(ObjectReaderFactory)));
+      Assert.That(commandFactory.DataStoragePropertyDefinitionFactory, Is.TypeOf(typeof(DataStoragePropertyDefinitionFactory)));
+      var dataStoragePropertyDefinitionFactory = (DataStoragePropertyDefinitionFactory)commandFactory.DataStoragePropertyDefinitionFactory;
+      var relationStoragePropertyDefinitionFactory = (RelationStoragePropertyDefinitionFactory)dataStoragePropertyDefinitionFactory.RelationStoragePropertyDefinitionFactory;
+      Assert.That(relationStoragePropertyDefinitionFactory.ForceClassIDColumnInForeignKeyProperties, Is.False);
+    }
+
+    [Test]
+    public void CreateReadOnlyStorageProvider ()
+    {
+      var result = _sqlStorageObjectFactory.CreateReadOnlyStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
+
+      Assert.That(result, Is.TypeOf(typeof(RdbmsProvider)));
+      Assert.That(result.PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
+      Assert.That(result.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
+      Assert.That(result.As<RdbmsProvider>().ConnectionString, Is.SameAs(_rdbmsProviderDefinition.ReadOnlyConnectionString));
 
       var commandFactory = (RdbmsProviderCommandFactory)PrivateInvoke.GetNonPublicProperty(result, "StorageProviderCommandFactory");
       Assert.That(commandFactory.DbCommandBuilderFactory, Is.TypeOf(typeof(SqlDbCommandBuilderFactory)));
