@@ -67,7 +67,7 @@ public class ClientTransaction
   /// <see cref="ExtendsAttribute"/> instance for <see cref="ClientTransaction"/> or <see cref="RootPersistenceStrategy"/> to a mixin class.</remarks>
   public static ClientTransaction CreateRootTransaction ()
   {
-    var componentFactory = RootClientTransactionComponentFactory.Create(SafeServiceLocator.Current.GetInstance<IPersistenceManager>());
+    var componentFactory = RootClientTransactionComponentFactory.Create(SafeServiceLocator.Current.GetInstance<IPersistenceService>());
     return ObjectFactory.Create<ClientTransaction>(true, ParamList.Create(componentFactory));
   }
 

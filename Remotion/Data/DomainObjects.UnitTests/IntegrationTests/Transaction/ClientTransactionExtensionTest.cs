@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       factoryStub.Setup(stub => stub.CreateClientTransactionExtensions(It.IsAny<ClientTransaction>())).Returns(new[] { extensionMock.Object });
       var locatorStub = new Mock<IServiceLocator>();
       locatorStub.Setup(stub => stub.GetInstance<IClientTransactionExtensionFactory>()).Returns(factoryStub.Object);
-      locatorStub.Setup(stub => stub.GetInstance<IPersistenceManager>()).Returns(Mock.Of<IPersistenceManager>());
+      locatorStub.Setup(stub => stub.GetInstance<IPersistenceService>()).Returns(Mock.Of<IPersistenceService>());
 
       using (new ServiceLocatorScope(locatorStub.Object))
       {
@@ -778,13 +778,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var extensionMock = AddExtensionToClientTransaction(_transaction);
 
       //Note: no reading notification must be performed
-      var persistenceManager = new PersistenceManager();
+      var persistenceService = new PersistenceService();
       using (var storageProviderManager = new StorageProviderManager(NullPersistenceExtension.Instance))
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
         IRelationEndPointDefinition orderTicketEndPointDefinition =
             orderDefinition.GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
-        persistenceManager.LoadRelatedDataContainer(storageProviderManager, RelationEndPointID.Create(_order1.ID, orderTicketEndPointDefinition));
+        persistenceService.LoadRelatedDataContainer(storageProviderManager, RelationEndPointID.Create(_order1.ID, orderTicketEndPointDefinition));
       }
 
       extensionMock.Verify();

@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     private readonly ITransaction _wrapper;
 
     public ClientTransactionWithCustomITransaction (ITransaction wrapper)
-      : base(RootClientTransactionComponentFactory.Create(SafeServiceLocator.Current.GetInstance<IPersistenceManager>()))
+      : base(RootClientTransactionComponentFactory.Create(SafeServiceLocator.Current.GetInstance<IPersistenceService>()))
     {
       _wrapper = wrapper;
     }

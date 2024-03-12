@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
   public class TestableClientTransaction : ClientTransaction
   {
     public TestableClientTransaction ()
-        : this(RootClientTransactionComponentFactory.Create(SafeServiceLocator.Current.GetInstance<IPersistenceManager>()))
+        : this(RootClientTransactionComponentFactory.Create(SafeServiceLocator.Current.GetInstance<IPersistenceService>()))
     {
     }
 

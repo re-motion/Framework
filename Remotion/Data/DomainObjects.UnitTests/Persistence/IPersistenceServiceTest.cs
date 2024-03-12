@@ -22,7 +22,7 @@ using Remotion.ServiceLocation;
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 {
   [TestFixture]
-  public class IPersistenceManagerTest
+  public class IPersistenceServiceTest
   {
     private DefaultServiceLocator _serviceLocator;
 
@@ -35,19 +35,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IPersistenceManager>();
+      var service = _serviceLocator.GetInstance<IPersistenceService>();
 
-      Assert.That(factory, Is.Not.Null);
-      Assert.That(factory, Is.TypeOf(typeof(PersistenceManager)));
+      Assert.That(service, Is.Not.Null);
+      Assert.That(service, Is.TypeOf(typeof(PersistenceService)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IPersistenceManager>();
-      var factory2 = _serviceLocator.GetInstance<IPersistenceManager>();
+      var service1 = _serviceLocator.GetInstance<IPersistenceService>();
+      var service2 = _serviceLocator.GetInstance<IPersistenceService>();
 
-      Assert.That(factory1, Is.SameAs(factory2));
+      Assert.That(service1, Is.SameAs(service2));
     }
   }
 }

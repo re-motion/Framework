@@ -39,20 +39,20 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   [Serializable]
   public class RootClientTransactionComponentFactory : ClientTransactionComponentFactoryBase
   {
-    private readonly IPersistenceManager _persistenceManager;
-    public static RootClientTransactionComponentFactory Create (IPersistenceManager persistenceManager)
+    private readonly IPersistenceService _persistenceService;
+    public static RootClientTransactionComponentFactory Create (IPersistenceService persistenceService)
     {
-      ArgumentUtility.CheckNotNull("persistenceManager", persistenceManager);
+      ArgumentUtility.CheckNotNull("persistenceService", persistenceService);
       return ObjectFactory.Create<RootClientTransactionComponentFactory>(
           true,
-          ParamList.Create(persistenceManager));
+          ParamList.Create(persistenceService));
     }
 
-    protected RootClientTransactionComponentFactory (IPersistenceManager persistenceManager)
+    protected RootClientTransactionComponentFactory (IPersistenceService persistenceService)
     {
-      ArgumentUtility.CheckNotNull("persistenceManager", persistenceManager);
+      ArgumentUtility.CheckNotNull("persistenceService", persistenceService);
 
-      _persistenceManager = persistenceManager;
+      _persistenceService = persistenceService;
     }
 
     public override ITransactionHierarchyManager CreateTransactionHierarchyManager (
@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       ArgumentUtility.CheckNotNull("constructedTransaction", constructedTransaction);
       return ObjectFactory.Create<RootPersistenceStrategy>(
           true,
-          ParamList.Create(constructedTransaction.ID, _persistenceManager)
+          ParamList.Create(constructedTransaction.ID, _persistenceService)
           );
     }
 
