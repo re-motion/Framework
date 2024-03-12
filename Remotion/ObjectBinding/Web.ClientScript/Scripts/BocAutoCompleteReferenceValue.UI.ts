@@ -90,8 +90,8 @@ namespace Remotion.BocAutoCompleteReferenceValue
         dropDownButtonID: string;
         dataType: string;
         selectFirst(inputValue: string, searchTerm: Nullable<string>): boolean;
-        formatItem(item: Item, index: number, length: number, value: string, term: string): FormatResult;
-        formatMatch(item: Item, index: number, length: number): string | false;
+        formatItem(item: Item, value: string, term: string): FormatResult;
+        formatMatch(item: Item): string | false;
         formatResult?(item: Item): string;
         autoFill: boolean;
         highlight(value: string, term: string): string;
@@ -1072,7 +1072,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
             for (let i = 0, ol = this.options.data.length; i < ol; i++) {
                 let rawValue = this.options.data[i];
 
-                const value = this.options.formatMatch(rawValue, i + 1, this.options.data.length);
+                const value = this.options.formatMatch(rawValue);
                 if (value === false)
                     continue;
 
@@ -1365,7 +1365,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
             for (let i = 0; i < max; i++) {
                 if (!this.data[i])
                     continue;
-                const item = this.options.formatItem(this.data[i].data, i + 1, max, this.data[i].value, this.term);
+                const item = this.options.formatItem(this.data[i].data, this.data[i].value, this.term);
                 const termElement = document.createElement("div");
                 termElement.innerText = this.term;
                 const termAsHtml = termElement.innerHTML;
