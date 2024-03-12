@@ -29,24 +29,41 @@ namespace Remotion.Data.DomainObjects
   public static class StorageSettingsFactory
   {
     /// <summary>
-    /// Creates an <see cref="RdbmsStorageSettingsFactory"/> named <c>Default</c> and a <see cref="SqlStorageObjectFactory"/> with the given <paramref name="connectionString"/>.
+    ///   Creates an <see cref="RdbmsStorageSettingsFactory"/> named <c>Default</c> and a <see cref="SqlStorageObjectFactory"/> with the given
+    ///   <paramref name="connectionString"/> and <paramref name="readOnlyConnectionString"/>.
     /// </summary>
-    public static IStorageSettingsFactory CreateForSqlServer (string connectionString)
+    /// <param name="connectionString">The connection string for the read/write connection to the database. Must not be <see langname="null"/> or empty.</param>
+    /// <param name="readOnlyConnectionString">
+    ///   The connection string for the readonly connection to the database.
+    ///   If not specified, the <paramref name="connectionString"/> will be inferred as the value.
+    ///   Must not be empty.
+    /// </param>
+    public static IStorageSettingsFactory CreateForSqlServer (string connectionString, string? readOnlyConnectionString = null)
     {
       ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
+      ArgumentUtility.CheckNotEmpty("readOnlyConnectionString", readOnlyConnectionString);
 
-      return new RdbmsStorageSettingsFactory("Default", typeof(SqlStorageObjectFactory), connectionString);
+      return new RdbmsStorageSettingsFactory("Default", typeof(SqlStorageObjectFactory), connectionString, readOnlyConnectionString ?? connectionString);
     }
 
     /// <summary>
-    /// Creates an <see cref="RdbmsStorageSettingsFactory"/> named <c>Default</c>,
-    /// an <see cref="IStorageObjectFactory"/> of the type specified by <typeparamref name="TStorageObjectFactory"/> and the given <paramref name="connectionString"/>.
+    ///   Creates an <see cref="RdbmsStorageSettingsFactory"/> named <c>Default</c>,
+    ///   an <see cref="IStorageObjectFactory"/> of the type specified by <typeparamref name="TStorageObjectFactory"/>
+    ///   and the given <paramref name="connectionString"/> and <paramref name="readOnlyConnectionString"/>.
     /// </summary>
-    public static IStorageSettingsFactory CreateForSqlServer<TStorageObjectFactory> (string connectionString) where TStorageObjectFactory : IRdbmsStorageObjectFactory
+    /// <param name="connectionString">The connection string for the read/write connection to the database. Must not be <see langname="null"/> or empty.</param>
+    /// <param name="readOnlyConnectionString">
+    ///   The connection string for the readonly connection to the database.
+    ///   If not specified, the <paramref name="connectionString"/> will be inferred as the value.
+    ///   Must not be empty.
+    /// </param>
+    public static IStorageSettingsFactory CreateForSqlServer<TStorageObjectFactory> (string connectionString, string? readOnlyConnectionString = null)
+        where TStorageObjectFactory : IRdbmsStorageObjectFactory
     {
       ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
+      ArgumentUtility.CheckNotEmpty("readOnlyConnectionString", readOnlyConnectionString);
 
-      return new RdbmsStorageSettingsFactory("Default", typeof(TStorageObjectFactory), connectionString);
+      return new RdbmsStorageSettingsFactory("Default", typeof(TStorageObjectFactory), connectionString, readOnlyConnectionString ?? connectionString);
     }
   }
 }
