@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.ServiceLocation;
@@ -29,6 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public ClientTransactionWithCustomITransaction (ITransaction wrapper)
       : base(RootClientTransactionComponentFactory.Create(
           SafeServiceLocator.Current.GetInstance<IStorageSettings>(),
+          SafeServiceLocator.Current.GetInstance<IPersistenceManager>(),
           SafeServiceLocator.Current.GetInstance<IPersistenceExtensionFactory>()))
     {
       _wrapper = wrapper;
