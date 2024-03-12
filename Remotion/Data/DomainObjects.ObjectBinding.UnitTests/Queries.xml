@@ -18,11 +18,11 @@
 -->
 
 <queries 
-    xmlns="http://www.re-motion.org/Data/DomainObjects/Queries/1.0" 
+    xmlns="http://www.re-motion.org/Data/DomainObjects/Queries/2.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://www.re-motion.org/Data/DomainObjects/Queries/1.0 ..\DomainObjects\Schemas\Queries.xsd">
+    xsi:schemaLocation="http://www.re-motion.org/Data/DomainObjects/Queries/2.0 ..\DomainObjects\Schemas\Queries.xsd">
 
-  <query id="FakeQuery" type="collection">
+  <query id="FakeQuery" type="collection-readonly">
     <storageGroupType>Remotion.Data.DomainObjects::DBStorageGroupAttribute</storageGroupType>
     <statement>SELECT "Dummy"</statement>
     <collectionType>Remotion.Data.DomainObjects::DomainObjectCollection</collectionType>

@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateQuery_FromDefinition ()
     {
-      var definition = new QueryDefinition("Test", TestDomainStorageProviderDefinition, "y", QueryType.Collection, typeof(OrderCollection));
+      var definition = new QueryDefinition("Test", TestDomainStorageProviderDefinition, "y", QueryType.CollectionReadWrite, typeof(OrderCollection));
 
       IQuery query = QueryFactory.CreateQuery(definition);
       Assert.That(query.CollectionType, Is.EqualTo(definition.CollectionType));
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateQuery_FromDefinition_WithParameterCollection ()
     {
-      var definition = new QueryDefinition("Test", TestDomainStorageProviderDefinition, "y", QueryType.Collection, typeof(OrderCollection));
+      var definition = new QueryDefinition("Test", TestDomainStorageProviderDefinition, "y", QueryType.CollectionReadWrite, typeof(OrderCollection));
       var parameterCollection = new QueryParameterCollection();
 
       IQuery query = QueryFactory.CreateQuery(definition, parameterCollection);
@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       Assert.That(query.CollectionType, Is.Null);
       Assert.That(query.ID, Is.EqualTo(id));
       Assert.That(query.Parameters, Is.SameAs(parameterCollection));
-      Assert.That(query.QueryType, Is.EqualTo(QueryType.Scalar));
+      Assert.That(query.QueryType, Is.EqualTo(QueryType.ScalarReadOnly));
       Assert.That(query.Statement, Is.EqualTo(statement));
       Assert.That(query.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
     }
@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       Assert.That(query.ID, Is.EqualTo(id));
       Assert.That(query.CollectionType, Is.SameAs(collectionType));
       Assert.That(query.Parameters, Is.SameAs(parameterCollection));
-      Assert.That(query.QueryType, Is.EqualTo(QueryType.Collection));
+      Assert.That(query.QueryType, Is.EqualTo(QueryType.CollectionReadOnly));
       Assert.That(query.Statement, Is.EqualTo(statement));
       Assert.That(query.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
     }
@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       Assert.That(query.ID, Is.EqualTo(id));
       Assert.That(query.CollectionType, Is.Null);
       Assert.That(query.Parameters, Is.SameAs(parameterCollection));
-      Assert.That(query.QueryType, Is.EqualTo(QueryType.Custom));
+      Assert.That(query.QueryType, Is.EqualTo(QueryType.CustomReadOnly));
       Assert.That(query.Statement, Is.EqualTo(statement));
       Assert.That(query.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
     }
@@ -169,7 +169,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
         +"FROM [OrderView] AS [t0] WHERE ([t0].[OrderNo] > @1)"));
       Assert.That(query.Parameters.Count, Is.EqualTo(1));
       Assert.That(query.ID, Is.EqualTo("<dynamico queryo>"));
-      Assert.That(query.QueryType, Is.EqualTo(QueryType.Collection));
+      Assert.That(query.QueryType, Is.EqualTo(QueryType.CollectionReadOnly));
       Assert.That(query.StorageProviderDefinition, Is.EqualTo(TestDomainStorageProviderDefinition));
     }
 
