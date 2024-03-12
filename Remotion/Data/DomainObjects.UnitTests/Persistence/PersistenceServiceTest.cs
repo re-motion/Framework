@@ -33,16 +33,16 @@ using Remotion.Development.NUnit.UnitTesting;
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 {
   [TestFixture]
-  public class PersistenceManagerTest : ClientTransactionBaseTest
+  public class PersistenceServiceTest : ClientTransactionBaseTest
   {
-    private class TestablePersistenceManager : PersistenceManager
+    private class TestablePersistenceService : PersistenceService
     {
       public Action<IEnumerable<StorageProvider>> CheckProvidersCompatibleForSaveCallback { get; set; }
       public Func<IEnumerable<StorageProvider>, IDisposable> BeginTransactionCallback { get; set; }
       public Action<IEnumerable<StorageProvider>, IDisposable> CommitTransactionCallback { get; set; }
       public Action<IEnumerable<StorageProvider>, IDisposable> RollbackTransactionCallback { get; set; }
 
-      public TestablePersistenceManager ()
+      public TestablePersistenceService ()
       {
       }
 
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       }
     }
 
-    private PersistenceManager _persistenceManager;
+    private PersistenceService _persistenceService;
     private StorageProviderManager _storageProviderManager;
 
     private ObjectID _invalidOrderID1;
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     public override void SetUp ()
     {
       base.SetUp();
-      _persistenceManager = new PersistenceManager();
+      _persistenceService = new PersistenceService();
       _storageProviderManager = new StorageProviderManager(NullPersistenceExtension.Instance, StorageSettings);
 
       var guid1 = new Guid("11111111111111111111111111111111");
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void LoadDataContainer ()
     {
-      var result = _persistenceManager.LoadDataContainer(_storageProviderManager, DomainObjectIDs.Order1);
+      var result = _persistenceService.LoadDataContainer(_storageProviderManager, DomainObjectIDs.Order1);
       Assert.That(result.ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
       Assert.That(result.LocatedObject.ID, Is.EqualTo(DomainObjectIDs.Order1));
     }
@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void LoadDataContainer_WithNonExistingValue ()
     {
-      var result = _persistenceManager.LoadDataContainer(_storageProviderManager, _invalidOrderID1);
+      var result = _persistenceService.LoadDataContainer(_storageProviderManager, _invalidOrderID1);
       Assert.That(result.ObjectID, Is.EqualTo(_invalidOrderID1));
       Assert.That(result.LocatedObject, Is.Null);
     }
@@ -148,7 +148,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       ObjectLookupResult<DataContainer>[] actualResults;
       using (UnitTestStorageProviderStub.EnterMockStorageProviderScope(storageProviderMock.Object))
       {
-        actualResults = _persistenceManager.LoadDataContainers(
+        actualResults = _persistenceService.LoadDataContainers(
             _storageProviderManager,
             new[]
             {
@@ -192,7 +192,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       ObjectLookupResult<DataContainer>[] actualResults;
       using (UnitTestStorageProviderStub.EnterMockStorageProviderScope(storageProviderMock.Object))
       {
-        actualResults = _persistenceManager.LoadDataContainers(
+        actualResults = _persistenceService.LoadDataContainers(
             _storageProviderManager,
             new[]
             {
@@ -214,7 +214,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     {
       var objectIds = new[] { _invalidOrderID1, _invalidOrderID2, DomainObjectIDs.Order1 };
 
-      var dataContainers = _persistenceManager.LoadDataContainers(_storageProviderManager, objectIds).ToArray();
+      var dataContainers = _persistenceService.LoadDataContainers(_storageProviderManager, objectIds).ToArray();
 
       Assert.That(dataContainers.Length, Is.EqualTo(3));
       Assert.That(dataContainers[0].ObjectID, Is.EqualTo(_invalidOrderID1));
@@ -228,7 +228,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void LoadRelatedDataContainer ()
     {
-      DataContainer orderTicketContainer = _persistenceManager.LoadRelatedDataContainer(
+      DataContainer orderTicketContainer = _persistenceService.LoadRelatedDataContainer(
           _storageProviderManager,
           RelationEndPointID.Create(DomainObjectIDs.Order1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
 
@@ -241,7 +241,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     {
       var relationEndPointID = RelationEndPointID.Create(DomainObjectIDs.OrderTicket1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
       Assert.That(
-          () => _persistenceManager.LoadRelatedDataContainer(_storageProviderManager, relationEndPointID),
+          () => _persistenceService.LoadRelatedDataContainer(_storageProviderManager, relationEndPointID),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("LoadRelatedDataContainer can only be used with virtual end points.", "relationEndPointID"));
     }
@@ -251,7 +251,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     {
       var id = new ObjectID("ClassWithGuidKey", new Guid("{672C8754-C617-4b7a-890C-BFEF8AC86564}"));
 
-      DataContainer relatedDataContainer = _persistenceManager.LoadRelatedDataContainer(
+      DataContainer relatedDataContainer = _persistenceService.LoadRelatedDataContainer(
           _storageProviderManager,
           RelationEndPointID.Create(id, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsOptional"));
 
@@ -263,7 +263,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     {
       var id = new ObjectID("ClassWithGuidKey", new Guid("{672C8754-C617-4b7a-890C-BFEF8AC86564}"));
       Assert.That(
-          () => _persistenceManager.LoadRelatedDataContainer(
+          () => _persistenceService.LoadRelatedDataContainer(
           _storageProviderManager,
           RelationEndPointID.Create(id, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsNonOptional")),
           Throws.InstanceOf<PersistenceException>()
@@ -276,7 +276,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     public void LoadRelatedDataContainer_NonOptionalNullID_WithInheritance ()
     {
       Assert.That(
-          () => _persistenceManager.LoadRelatedDataContainer(
+          () => _persistenceService.LoadRelatedDataContainer(
           _storageProviderManager,
           RelationEndPointID.Create(DomainObjectIDs.PartnerWithoutCeo, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo")),
           Throws.InstanceOf<PersistenceException>()
@@ -290,7 +290,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     {
       var id = new ObjectID("ClassWithGuidKey", new Guid("{D0A1BDDE-B13F-47c1-98BD-EBAE21189B01}"));
 
-      DataContainer relatedContainer = _persistenceManager.LoadRelatedDataContainer(
+      DataContainer relatedContainer = _persistenceService.LoadRelatedDataContainer(
           _storageProviderManager,
           RelationEndPointID.Create(id, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsNonOptional"));
 
@@ -305,7 +305,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     {
       ObjectID id = new ObjectID("ClassWithGuidKey", new Guid("{672C8754-C617-4b7a-890C-BFEF8AC86564}"));
       Assert.That(
-          () => _persistenceManager.LoadRelatedDataContainer(
+          () => _persistenceService.LoadRelatedDataContainer(
           _storageProviderManager,
           RelationEndPointID.Create(id, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithGuidKey.ClassWithValidRelationsNonOptional")),
           Throws.InstanceOf<PersistenceException>()
@@ -318,7 +318,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     public void LoadRelatedDataContainer_ForOneToManyRelation ()
     {
       Assert.That(
-          () => _persistenceManager.LoadRelatedDataContainer(
+          () => _persistenceService.LoadRelatedDataContainer(
           _storageProviderManager,
           RelationEndPointID.Create(DomainObjectIDs.Order1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems")),
           Throws.InstanceOf<PersistenceException>()
@@ -334,7 +334,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
       RelationEndPointID endPointID = RelationEndPointID.Create(companyID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo");
       Assert.That(
-          () => _persistenceManager.LoadRelatedDataContainer(_storageProviderManager, endPointID),
+          () => _persistenceService.LoadRelatedDataContainer(_storageProviderManager, endPointID),
           Throws.InstanceOf<PersistenceException>()
               .With.Message.EqualTo(
                   "The property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Ceo.Company' of the loaded DataContainer "
@@ -348,7 +348,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
           DomainObjectIDs.ContactPersonInTwoOrganizations,
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany");
       Assert.That(
-          () => _persistenceManager.LoadRelatedDataContainer(_storageProviderManager, endPointID),
+          () => _persistenceService.LoadRelatedDataContainer(_storageProviderManager, endPointID),
           Throws.InstanceOf<PersistenceException>()
               .With.Message.EqualTo(
                   "Multiple related DataContainers where found for property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Person.AssociatedPartnerCompany' of"
@@ -358,7 +358,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void LoadRelatedDataContainers ()
     {
-      DataContainerCollection collection = _persistenceManager.LoadRelatedDataContainers(
+      DataContainerCollection collection = _persistenceService.LoadRelatedDataContainers(
           _storageProviderManager,
           RelationEndPointID.Create(DomainObjectIDs.Customer1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
@@ -372,7 +372,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     public void LoadRelatedDataContainers_ForNonVirtualEndPoint ()
     {
       Assert.That(
-          () => _persistenceManager.LoadRelatedDataContainers(
+          () => _persistenceService.LoadRelatedDataContainers(
           _storageProviderManager,
           RelationEndPointID.Create(DomainObjectIDs.Order1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer")),
           Throws.InstanceOf<PersistenceException>()
@@ -387,7 +387,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     public void LoadRelatedDataContainers_Empty_ForMandatoryRelation ()
     {
       Assert.That(
-          () => _persistenceManager.LoadRelatedDataContainers(
+          () => _persistenceService.LoadRelatedDataContainers(
           _storageProviderManager,
           RelationEndPointID.Create(DomainObjectIDs.OrderWithoutOrderItems, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems")),
           Throws.InstanceOf<PersistenceException>()
@@ -399,7 +399,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void LoadRelatedDataContainers_Empty_ForMandatoryRelationWithOptionalOppositeEndPoint ()
     {
-      DataContainerCollection orderContainers = _persistenceManager.LoadRelatedDataContainers(
+      DataContainerCollection orderContainers = _persistenceService.LoadRelatedDataContainers(
           _storageProviderManager,
           RelationEndPointID.Create(DomainObjectIDs.Customer2, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
@@ -411,7 +411,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     public void LoadRelatedDataContainers_ForOneToOneRelation ()
     {
       Assert.That(
-          () => _persistenceManager.LoadRelatedDataContainers(
+          () => _persistenceService.LoadRelatedDataContainers(
           _storageProviderManager,
           RelationEndPointID.Create(DomainObjectIDs.Order1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket")),
           Throws.InstanceOf<PersistenceException>()
@@ -427,7 +427,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
       RelationEndPointID endPointID = RelationEndPointID.Create(customerID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
       Assert.That(
-          () => _persistenceManager.LoadRelatedDataContainers(_storageProviderManager, endPointID),
+          () => _persistenceService.LoadRelatedDataContainers(_storageProviderManager, endPointID),
           Throws.InstanceOf<PersistenceException>()
               .With.Message.EqualTo(
                   "The property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' of the loaded DataContainer "
@@ -437,8 +437,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void SaveInDifferentStorageProviders_WithDefaultBehavior_ThrowsPersistenceException ()
     {
-      DataContainer orderContainer = _persistenceManager.LoadDataContainer(_storageProviderManager, DomainObjectIDs.Order1).LocatedObject;
-      DataContainer officialContainer = _persistenceManager.LoadDataContainer(_storageProviderManager, DomainObjectIDs.Official1).LocatedObject;
+      DataContainer orderContainer = _persistenceService.LoadDataContainer(_storageProviderManager, DomainObjectIDs.Order1).LocatedObject;
+      DataContainer officialContainer = _persistenceService.LoadDataContainer(_storageProviderManager, DomainObjectIDs.Official1).LocatedObject;
 
       ClientTransactionTestHelper.RegisterDataContainer(TestableClientTransaction, orderContainer);
       ClientTransactionTestHelper.RegisterDataContainer(TestableClientTransaction, officialContainer);
@@ -448,7 +448,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       SetPropertyValue(orderContainer, typeof(Order), "OrderNumber", 42);
       SetPropertyValue(officialContainer, typeof(Official), "Name", "Zaphod");
       Assert.That(
-          () => _persistenceManager.Save(_storageProviderManager, dataContainers),
+          () => _persistenceService.Save(_storageProviderManager, dataContainers),
           Throws.InstanceOf<PersistenceException>()
               .With.Message.EqualTo(
                   "Save does not support multiple storage providers."));
@@ -457,10 +457,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void SaveInDifferentStorageProviders_WithOverriddenCheck_CallsSaveOnBothStorageProviders ()
     {
-      var persistenceManager = new TestablePersistenceManager();
-      DataContainer orderContainer = persistenceManager.LoadDataContainer(_storageProviderManager, DomainObjectIDs.Order1).LocatedObject;
-      DataContainer officialContainer1 = persistenceManager.LoadDataContainer(_storageProviderManager, DomainObjectIDs.Official1).LocatedObject;
-      DataContainer officialContainer2 = persistenceManager.LoadDataContainer(_storageProviderManager, DomainObjectIDs.Official2).LocatedObject;
+      var persistenceService = new TestablePersistenceService();
+      DataContainer orderContainer = persistenceService.LoadDataContainer(_storageProviderManager, DomainObjectIDs.Order1).LocatedObject;
+      DataContainer officialContainer1 = persistenceService.LoadDataContainer(_storageProviderManager, DomainObjectIDs.Official1).LocatedObject;
+      DataContainer officialContainer2 = persistenceService.LoadDataContainer(_storageProviderManager, DomainObjectIDs.Official2).LocatedObject;
       ClientTransactionTestHelper.RegisterDataContainer(TestableClientTransaction, orderContainer);
       ClientTransactionTestHelper.RegisterDataContainer(TestableClientTransaction, officialContainer1);
       ClientTransactionTestHelper.RegisterDataContainer(TestableClientTransaction, officialContainer2);
@@ -479,7 +479,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
           .Callback((IReadOnlyCollection<DataContainer> dataContainers) => Assert.That(dataContainers, Is.EquivalentTo(secondStorageProvider)))
           .Verifiable();
       storageProviderMock.Setup(mock => mock.Commit()).Verifiable();
-      persistenceManager.CheckProvidersCompatibleForSaveCallback = providers =>
+      persistenceService.CheckProvidersCompatibleForSaveCallback = providers =>
       {
         Assert.That(
             providers.Select(p => p.GetType()),
@@ -488,7 +488,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       var dataContainers = new DataContainerCollection { officialContainer2, orderContainer, officialContainer1 };
       using (UnitTestStorageProviderStub.EnterMockStorageProviderScope(storageProviderMock.Object))
       {
-        persistenceManager.Save(_storageProviderManager, dataContainers);
+        persistenceService.Save(_storageProviderManager, dataContainers);
       }
       storageProviderMock.Verify();
     }
@@ -496,7 +496,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void SaveInDifferentStorageProviders_WithOnlyOnePersistentStorageProvider_CallsSaveOnBothStorageProviders ()
     {
-      DataContainer orderContainer = _persistenceManager.LoadDataContainer(_storageProviderManager, DomainObjectIDs.Order1).LocatedObject;
+      DataContainer orderContainer = _persistenceService.LoadDataContainer(_storageProviderManager, DomainObjectIDs.Order1).LocatedObject;
       DataContainer orderViewModelContainer =  DataContainer.CreateNew(DomainObjectIDs.OrderViewModel1);
 
       ClientTransactionTestHelper.RegisterDataContainer(TestableClientTransaction, orderContainer);
@@ -511,7 +511,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       var originalOrderTimestamp = orderContainer.Timestamp;
       var originalOrderViewModleTimestamp = orderViewModelContainer.Timestamp;
 
-      _persistenceManager.Save(_storageProviderManager, dataContainers);
+      _persistenceService.Save(_storageProviderManager, dataContainers);
 
       Assert.That(orderContainer.Timestamp, Is.Not.EqualTo(originalOrderTimestamp));
       Assert.That(orderViewModelContainer.Timestamp, Is.Not.EqualTo(originalOrderViewModleTimestamp));
@@ -520,8 +520,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void Save_WithCommit_CallsExtensionPoints ()
     {
-      var persistenceManager = new TestablePersistenceManager();
-      DataContainer officialContainer = persistenceManager.LoadDataContainer(_storageProviderManager, DomainObjectIDs.Official1).LocatedObject;
+      var persistenceService = new TestablePersistenceService();
+      DataContainer officialContainer = persistenceService.LoadDataContainer(_storageProviderManager, DomainObjectIDs.Official1).LocatedObject;
       ClientTransactionTestHelper.RegisterDataContainer(TestableClientTransaction, officialContainer);
       SetPropertyValue(officialContainer, typeof(Official), "Name", "Zaphod");
       var secondStorageProvider = new[] { officialContainer };
@@ -529,7 +529,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       var contextMock = new Mock<IDisposable>(MockBehavior.Strict);
       contextMock.Setup(mock => mock.Dispose()).Callback(() => Assert.That(isCommitCalled, Is.True)).Verifiable();
       var storageProviderMock = new Mock<StorageProvider>(MockBehavior.Strict, UnitTestStorageProviderDefinition, NullPersistenceExtension.Instance);
-      persistenceManager.BeginTransactionCallback = _ => contextMock.Object;
+      persistenceService.BeginTransactionCallback = _ => contextMock.Object;
       storageProviderMock
           .Setup(mock => mock.Save(It.IsNotNull<IReadOnlyCollection<DataContainer>>()))
           .Callback((IReadOnlyCollection<DataContainer> dataContainers) => Assert.That(dataContainers, Is.EquivalentTo(secondStorageProvider)))
@@ -538,12 +538,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
           .Setup(mock => mock.UpdateTimestamps(It.IsNotNull<IReadOnlyCollection<DataContainer>>()))
           .Callback((IReadOnlyCollection<DataContainer> dataContainers) => Assert.That(dataContainers, Is.EquivalentTo(secondStorageProvider)))
           .Verifiable();
-      persistenceManager.CommitTransactionCallback = (_, context) =>
+      persistenceService.CommitTransactionCallback = (_, context) =>
       {
         Assert.That(context, Is.SameAs(contextMock.Object));
         isCommitCalled = true;
       };
-      persistenceManager.CheckProvidersCompatibleForSaveCallback = providers =>
+      persistenceService.CheckProvidersCompatibleForSaveCallback = providers =>
       {
         Assert.That(
             providers.Select(p => p.GetType()),
@@ -552,7 +552,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       var dataContainers = new DataContainerCollection { officialContainer };
       using (UnitTestStorageProviderStub.EnterMockStorageProviderScope(storageProviderMock.Object))
       {
-        persistenceManager.Save(_storageProviderManager, dataContainers);
+        persistenceService.Save(_storageProviderManager, dataContainers);
       }
       contextMock.Verify();
       storageProviderMock.Verify();
@@ -561,8 +561,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void Save_WithRollback_CallsExtensionPoints ()
     {
-      var persistenceManager = new TestablePersistenceManager();
-      DataContainer officialContainer = persistenceManager.LoadDataContainer(_storageProviderManager, DomainObjectIDs.Official1).LocatedObject;
+      var persistenceService = new TestablePersistenceService();
+      DataContainer officialContainer = persistenceService.LoadDataContainer(_storageProviderManager, DomainObjectIDs.Official1).LocatedObject;
       ClientTransactionTestHelper.RegisterDataContainer(TestableClientTransaction, officialContainer);
       SetPropertyValue(officialContainer, typeof(Official), "Name", "Zaphod");
       var exception = new Exception();
@@ -570,16 +570,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       var contextMock = new Mock<IDisposable>(MockBehavior.Strict);
       contextMock.Setup(mock => mock.Dispose()).Callback(() => Assert.That(isRollbackCalled, Is.True)).Verifiable();
       var storageProviderMock = new Mock<StorageProvider>(MockBehavior.Strict, UnitTestStorageProviderDefinition, NullPersistenceExtension.Instance);
-      persistenceManager.BeginTransactionCallback = _ => contextMock.Object;
+      persistenceService.BeginTransactionCallback = _ => contextMock.Object;
       storageProviderMock
           .Setup(mock => mock.Save(It.IsNotNull<IReadOnlyCollection<DataContainer>>()))
           .Throws(exception);
-      persistenceManager.RollbackTransactionCallback = (_, context) =>
+      persistenceService.RollbackTransactionCallback = (_, context) =>
       {
         Assert.That(context, Is.SameAs(contextMock.Object));
         isRollbackCalled = true;
       };
-      persistenceManager.CheckProvidersCompatibleForSaveCallback = providers =>
+      persistenceService.CheckProvidersCompatibleForSaveCallback = providers =>
       {
         Assert.That(
             providers.Select(p => p.GetType()),
@@ -588,7 +588,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       var dataContainers = new DataContainerCollection { officialContainer };
       using (UnitTestStorageProviderStub.EnterMockStorageProviderScope(storageProviderMock.Object))
       {
-        Assert.That(() => persistenceManager.Save(_storageProviderManager, dataContainers), Throws.Exception.SameAs(exception));
+        Assert.That(() => persistenceService.Save(_storageProviderManager, dataContainers), Throws.Exception.SameAs(exception));
       }
       contextMock.Verify();
       storageProviderMock.Verify();
@@ -597,24 +597,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void Save_DeletedDataContainersAreIgnoredForUpdateTimestamps ()
     {
-      var dataContainer = _persistenceManager.LoadDataContainer(_storageProviderManager, DomainObjectIDs.ClassWithAllDataTypes1).LocatedObject;
+      var dataContainer = _persistenceService.LoadDataContainer(_storageProviderManager, DomainObjectIDs.ClassWithAllDataTypes1).LocatedObject;
       Assert.That(dataContainer, Is.Not.Null);
       dataContainer.Delete();
 
       var timestampBefore = dataContainer.Timestamp;
-      _persistenceManager.Save(_storageProviderManager, new DataContainerCollection { dataContainer });
+      _persistenceService.Save(_storageProviderManager, new DataContainerCollection { dataContainer });
       Assert.That(dataContainer.Timestamp, Is.SameAs(timestampBefore));
 
-      Assert.That(() => _persistenceManager.LoadDataContainer(_storageProviderManager, DomainObjectIDs.ClassWithAllDataTypes1).LocatedObject, Is.Null);
+      Assert.That(() => _persistenceService.LoadDataContainer(_storageProviderManager, DomainObjectIDs.ClassWithAllDataTypes1).LocatedObject, Is.Null);
     }
 
     [Test]
     public void CreateNewObjectID ()
     {
       ClassDefinition orderClass = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
-      ObjectID id1 = _persistenceManager.CreateNewObjectID(_storageProviderManager, orderClass);
+      ObjectID id1 = _persistenceService.CreateNewObjectID(_storageProviderManager, orderClass);
       Assert.That(id1, Is.Not.Null);
-      ObjectID id2 = _persistenceManager.CreateNewObjectID(_storageProviderManager, orderClass);
+      ObjectID id2 = _persistenceService.CreateNewObjectID(_storageProviderManager, orderClass);
       Assert.That(id2, Is.Not.Null);
       Assert.That(id2, Is.Not.EqualTo(id1));
     }
@@ -632,7 +632,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
     private DataContainer CreateDataContainer (ClassDefinition classDefinition)
     {
-      return DataContainer.CreateNew(_persistenceManager.CreateNewObjectID(_storageProviderManager, classDefinition));
+      return DataContainer.CreateNew(_persistenceService.CreateNewObjectID(_storageProviderManager, classDefinition));
     }
 
   }

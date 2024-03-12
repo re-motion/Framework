@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public TestComponentFactoryWithObjectLoaderDecorator (DecoratorFactory factory)
         : base(
             SafeServiceLocator.Current.GetInstance<IStorageSettings>(),
-            SafeServiceLocator.Current.GetInstance<IPersistenceManager>(),
+            SafeServiceLocator.Current.GetInstance<IPersistenceService>(),
             SafeServiceLocator.Current.GetInstance<IPersistenceExtensionFactory>())
     {
       _factory = factory;
