@@ -24,13 +24,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
   public class RdbmsProviderDefinition: StorageProviderDefinition
   {
     private readonly string _connectionString;
+    private readonly string _readOnlyConnectionString;
 
-    public RdbmsProviderDefinition (string name, IRdbmsStorageObjectFactory factory, string connectionString, IReadOnlyCollection<Type>? assignedStorageGroups = null)
+    public RdbmsProviderDefinition (string name, IRdbmsStorageObjectFactory factory, string connectionString, string readOnlyConnectionString, IReadOnlyCollection<Type>? assignedStorageGroups = null)
         : base(name, factory, assignedStorageGroups)
     {
       ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
+      ArgumentUtility.CheckNotNullOrEmpty("readOnlyConnectionString", readOnlyConnectionString);
 
       _connectionString = connectionString;
+      _readOnlyConnectionString = readOnlyConnectionString;
     }
 
     public new IRdbmsStorageObjectFactory Factory
@@ -41,6 +44,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     public string ConnectionString
     {
       get { return _connectionString; }
+    }
+
+    public string ReadOnlyConnectionString
+    {
+      get { return _readOnlyConnectionString; }
     }
 
     public override bool IsIdentityTypeSupported (Type identityType)
