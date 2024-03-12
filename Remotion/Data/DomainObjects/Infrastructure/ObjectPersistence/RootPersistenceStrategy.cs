@@ -37,22 +37,22 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   {
     private readonly Guid _transactionID;
     private readonly IStorageSettings _storageSettings;
-    private readonly IPersistenceManager _persistenceManager;
+    private readonly IPersistenceService _persistenceService;
     private readonly IPersistenceExtensionFactory _persistenceExtensionFactory;
 
     public RootPersistenceStrategy (
         Guid transactionID,
         IStorageSettings storageSettings,
-        IPersistenceManager persistenceManager,
+        IPersistenceService persistenceService,
         IPersistenceExtensionFactory persistenceExtensionFactory)
     {
       ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
-      ArgumentUtility.CheckNotNull("persistenceManager", persistenceManager);
+      ArgumentUtility.CheckNotNull("persistenceService", persistenceService);
       ArgumentUtility.CheckNotNull("persistenceExtensionFactory", persistenceExtensionFactory);
 
       _transactionID = transactionID;
       _storageSettings = storageSettings;
-      _persistenceManager = persistenceManager;
+      _persistenceService = persistenceService;
       _persistenceExtensionFactory = persistenceExtensionFactory;
     }
 
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       using (var storageProviderManager = CreateStorageProviderManager())
       {
-        return _persistenceManager.CreateNewObjectID(storageProviderManager, classDefinition);
+        return _persistenceService.CreateNewObjectID(storageProviderManager, classDefinition);
       }
     }
 
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       using (var storageProviderManager = CreateStorageProviderManager())
       {
-        var result = _persistenceManager.LoadDataContainer(storageProviderManager, id);
+        var result = _persistenceService.LoadDataContainer(storageProviderManager, id);
         return GetLoadedObjectDataForObjectLookupResult(result);
       }
     }
@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       using (var storageProviderManager = CreateStorageProviderManager())
       {
-        var results = _persistenceManager.LoadDataContainers(storageProviderManager, objectIDs);
+        var results = _persistenceService.LoadDataContainers(storageProviderManager, objectIDs);
         return results.Select(GetLoadedObjectDataForObjectLookupResult);
       }
     }
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       using (var storageProviderManager = CreateStorageProviderManager())
       {
-        var dataContainer = _persistenceManager.LoadRelatedDataContainer(storageProviderManager, relationEndPointID);
+        var dataContainer = _persistenceService.LoadRelatedDataContainer(storageProviderManager, relationEndPointID);
         return GetLoadedObjectDataForDataContainer(dataContainer, alreadyLoadedObjectDataProvider);
       }
     }
@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       using (var storageProviderManager = CreateStorageProviderManager())
       {
-        var dataContainers = _persistenceManager.LoadRelatedDataContainers(storageProviderManager, relationEndPointID);
+        var dataContainers = _persistenceService.LoadRelatedDataContainers(storageProviderManager, relationEndPointID);
         return dataContainers.Select(dc => GetLoadedObjectDataForDataContainer(dc, alreadyLoadedObjectDataProvider));
       }
     }
@@ -187,7 +187,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       {
         using (var storageProviderManager = CreateStorageProviderManager())
         {
-          _persistenceManager.Save(storageProviderManager, collection);
+          _persistenceService.Save(storageProviderManager, collection);
         }
       }
 

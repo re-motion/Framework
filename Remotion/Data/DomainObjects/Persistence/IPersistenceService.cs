@@ -22,7 +22,8 @@ using Remotion.Data.DomainObjects.Mapping;
 
 namespace Remotion.Data.DomainObjects.Persistence;
 
-public interface IPersistenceManager
+/// <threadsafety static="true" instance="false" />
+public interface IPersistenceService
 {
   ObjectID CreateNewObjectID (StorageProviderManager storageProviderManager, ClassDefinition classDefinition);
 
