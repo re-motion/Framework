@@ -26,8 +26,10 @@ using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Development.UnitTesting;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
@@ -35,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
   {
     public static Mock<ClientTransaction> CreateStrictMock ()
     {
-      var componentFactory = RootClientTransactionComponentFactory.Create();
+      var componentFactory = RootClientTransactionComponentFactory.Create(SafeServiceLocator.Current.GetInstance<IPersistenceManager>());
       return new Mock<ClientTransaction>(MockBehavior.Strict, componentFactory);
     }
 
@@ -179,7 +181,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static ClientTransaction CreateWithCustomListeners (params IClientTransactionListener[] listeners)
     {
-      var componentFactoryPartialMock = new Mock<RootClientTransactionComponentFactory>() { CallBase = true };
+      var componentFactoryPartialMock = new Mock<RootClientTransactionComponentFactory>(Mock.Of<IPersistenceManager>()) { CallBase = true };
       componentFactoryPartialMock
           .Protected()
           .Setup<IEnumerable<IClientTransactionListener>>("CreateListeners", true, ItExpr.IsAny<ClientTransaction>())

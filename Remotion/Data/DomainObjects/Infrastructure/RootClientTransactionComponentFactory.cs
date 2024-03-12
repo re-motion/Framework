@@ -24,6 +24,7 @@ using Remotion.Data.DomainObjects.Infrastructure.Enlistment;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Queries.EagerFetching;
 using Remotion.FunctionalProgramming;
 using Remotion.Mixins;
@@ -38,13 +39,20 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   [Serializable]
   public class RootClientTransactionComponentFactory : ClientTransactionComponentFactoryBase
   {
-    public static RootClientTransactionComponentFactory Create ()
+    private readonly IPersistenceManager _persistenceManager;
+    public static RootClientTransactionComponentFactory Create (IPersistenceManager persistenceManager)
     {
-      return ObjectFactory.Create<RootClientTransactionComponentFactory>(true, ParamList.Empty);
+      ArgumentUtility.CheckNotNull("persistenceManager", persistenceManager);
+      return ObjectFactory.Create<RootClientTransactionComponentFactory>(
+          true,
+          ParamList.Create(persistenceManager));
     }
 
-    protected RootClientTransactionComponentFactory ()
+    protected RootClientTransactionComponentFactory (IPersistenceManager persistenceManager)
     {
+      ArgumentUtility.CheckNotNull("persistenceManager", persistenceManager);
+
+      _persistenceManager = persistenceManager;
     }
 
     public override ITransactionHierarchyManager CreateTransactionHierarchyManager (
@@ -78,7 +86,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public override IPersistenceStrategy CreatePersistenceStrategy (ClientTransaction constructedTransaction)
     {
       ArgumentUtility.CheckNotNull("constructedTransaction", constructedTransaction);
-      return ObjectFactory.Create<RootPersistenceStrategy>(true, ParamList.Create(constructedTransaction.ID));
+      return ObjectFactory.Create<RootPersistenceStrategy>(
+          true,
+          ParamList.Create(constructedTransaction.ID, _persistenceManager)
+          );
     }
 
     protected override IEnumerable<IClientTransactionListener> CreateListeners (ClientTransaction constructedTransaction)

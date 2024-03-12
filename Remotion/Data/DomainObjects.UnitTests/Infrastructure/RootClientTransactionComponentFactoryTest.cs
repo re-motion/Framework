@@ -29,6 +29,7 @@ using Remotion.Data.DomainObjects.Infrastructure.Enlistment;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Queries.EagerFetching;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain;
@@ -36,6 +37,7 @@ using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 {
@@ -48,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [SetUp]
     public void SetUp ()
     {
-      _factory = RootClientTransactionComponentFactory.Create();
+      _factory = RootClientTransactionComponentFactory.Create(SafeServiceLocator.Current.GetInstance<IPersistenceManager>());
       _fakeConstructedTransaction = new TestableClientTransaction();
     }
 

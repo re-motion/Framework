@@ -20,19 +20,20 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 
-namespace Remotion.Data.DomainObjects.Persistence;
-
-public interface IPersistenceManager
+namespace Remotion.Data.DomainObjects.Persistence
 {
-  ObjectID CreateNewObjectID (StorageProviderManager storageProviderManager, ClassDefinition classDefinition);
+  public interface IPersistenceManager
+  {
+    ObjectID CreateNewObjectID (StorageProviderManager storageProviderManager, ClassDefinition classDefinition);
 
-  void Save (StorageProviderManager storageProviderManager, DataContainerCollection dataContainers);
+    void Save (StorageProviderManager storageProviderManager, DataContainerCollection dataContainers);
 
-  ObjectLookupResult<DataContainer> LoadDataContainer (StorageProviderManager storageProviderManager, ObjectID id);
+    ObjectLookupResult<DataContainer> LoadDataContainer (StorageProviderManager storageProviderManager, ObjectID id);
 
-  IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (StorageProviderManager storageProviderManager, IEnumerable<ObjectID> ids);
+    IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (StorageProviderManager storageProviderManager, IEnumerable<ObjectID> ids);
 
-  DataContainerCollection LoadRelatedDataContainers (StorageProviderManager storageProviderManager, RelationEndPointID relationEndPointID);
+    DataContainerCollection LoadRelatedDataContainers (StorageProviderManager storageProviderManager, RelationEndPointID relationEndPointID);
 
-  DataContainer? LoadRelatedDataContainer (StorageProviderManager storageProviderManager, RelationEndPointID relationEndPointID);
+    DataContainer? LoadRelatedDataContainer (StorageProviderManager storageProviderManager, RelationEndPointID relationEndPointID);
+  }
 }

@@ -20,7 +20,9 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Queries;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
@@ -29,6 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     private readonly IQueryManager _queryManager;
 
     public TestComponentFactoryWithSpecificQueryManager (IQueryManager queryManager)
+        : base(SafeServiceLocator.Current.GetInstance<IPersistenceManager>())
     {
       _queryManager = queryManager;
     }

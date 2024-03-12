@@ -36,14 +36,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   public class RootPersistenceStrategy : IFetchEnabledPersistenceStrategy
   {
     private readonly Guid _transactionID;
+    private readonly IPersistenceManager _persistenceManager;
 
-    private readonly PersistenceManager _persistenceManager;
-
-    public RootPersistenceStrategy (Guid transactionID)
+    public RootPersistenceStrategy (Guid transactionID, IPersistenceManager persistenceManager)
     {
-      _transactionID = transactionID;
+      ArgumentUtility.CheckNotNull("persistenceManager", persistenceManager);
 
-      _persistenceManager = new PersistenceManager();
+      _transactionID = transactionID;
+      _persistenceManager = persistenceManager;
     }
 
     public Guid TransactionID

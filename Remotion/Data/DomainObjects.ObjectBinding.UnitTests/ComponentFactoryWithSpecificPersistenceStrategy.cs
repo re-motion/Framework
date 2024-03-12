@@ -17,6 +17,8 @@
 using System;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
@@ -25,6 +27,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     private readonly IPersistenceStrategy _persistenceStrategy;
 
     public ComponentFactoryWithSpecificPersistenceStrategy (IPersistenceStrategy persistenceStrategy)
+        : base(SafeServiceLocator.Current.GetInstance<IPersistenceManager>())
     {
       _persistenceStrategy = persistenceStrategy;
     }
