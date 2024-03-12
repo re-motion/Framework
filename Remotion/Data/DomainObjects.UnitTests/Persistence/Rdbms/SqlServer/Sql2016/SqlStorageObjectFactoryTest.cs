@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       _foreignKeyConstraintDefinitionFactoryStub = new Mock<IForeignKeyConstraintDefinitionFactory>();
       _storagePropertyDefinitionResolverStub = new Mock<IStoragePropertyDefinitionResolver>();
 
-      _rdbmsProviderDefinition = new RdbmsProviderDefinition("TestDomain", Mock.Of<IRdbmsStorageObjectFactory>(), "ConnectionString");
+      _rdbmsProviderDefinition = new RdbmsProviderDefinition("TestDomain", Mock.Of<IRdbmsStorageObjectFactory>(), "ConnectionString", "ReadOnlyConnectionString");
       _storageSettings = new StorageSettings(_rdbmsProviderDefinition, new[] { _rdbmsProviderDefinition });
 
       _sqlStorageObjectFactory = new SqlStorageObjectFactory(

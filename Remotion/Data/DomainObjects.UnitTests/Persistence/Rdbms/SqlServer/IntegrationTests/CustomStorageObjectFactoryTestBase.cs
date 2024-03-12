@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       base.SetUp();
 
-      var storageSettings = FakeStorageSettings.CreateForSqlServer(TestDomainConnectionString, CreateSqlStorageObjectFactory);
+      var storageSettings = FakeStorageSettings.CreateForSqlServer(TestDomainConnectionString, TestDomainConnectionString, CreateSqlStorageObjectFactory);
       _storageProviderDefinition = (RdbmsProviderDefinition)storageSettings.GetDefaultStorageProviderDefinition();
       _storageObjectFactory = (SqlStorageObjectFactory)_storageProviderDefinition.Factory;
 
