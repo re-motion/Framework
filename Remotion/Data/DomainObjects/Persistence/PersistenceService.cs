@@ -30,9 +30,10 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence
 {
+  /// <threadsafety static="true" instance="false" />
   [Serializable]
-  [ImplementationFor(typeof(IPersistenceManager), Lifetime = LifetimeKind.Singleton)]
-  public class PersistenceManager : IPersistenceManager,
+  [ImplementationFor(typeof(IPersistenceService), Lifetime = LifetimeKind.Singleton)]
+  public class PersistenceService : IPersistenceService,
 #pragma warning disable SYSLIB0050
       IObjectReference
 #pragma warning restore SYSLIB0050
@@ -48,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       }
     }
 
-    public PersistenceManager ()
+    public PersistenceService ()
     {
     }
 
@@ -361,6 +362,6 @@ namespace Remotion.Data.DomainObjects.Persistence
     }
 
     /// <inheritdoc />
-    object IObjectReference.GetRealObject (StreamingContext context) => SafeServiceLocator.Current.GetInstance<IPersistenceManager>();
+    object IObjectReference.GetRealObject (StreamingContext context) => SafeServiceLocator.Current.GetInstance<IPersistenceService>();
   }
 }

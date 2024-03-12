@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public TestComponentFactoryWithSpecificQueryManager (IQueryManager queryManager)
         : base(
             SafeServiceLocator.Current.GetInstance<IStorageSettings>(),
-            SafeServiceLocator.Current.GetInstance<IPersistenceManager>(),
+            SafeServiceLocator.Current.GetInstance<IPersistenceService>(),
             SafeServiceLocator.Current.GetInstance<IPersistenceExtensionFactory>())
     {
       _queryManager = queryManager;

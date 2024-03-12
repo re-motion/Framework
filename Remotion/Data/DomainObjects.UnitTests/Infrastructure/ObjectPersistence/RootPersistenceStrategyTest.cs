@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       _rootPersistenceStrategy = new RootPersistenceStrategy(
           Guid.Empty,
           Mock.Of<IStorageSettings>(),
-          Mock.Of<IPersistenceManager>(),
+          Mock.Of<IPersistenceService>(),
           Mock.Of<IPersistenceExtensionFactory>());
     }
   }

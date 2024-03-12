@@ -42,37 +42,37 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   public class RootClientTransactionComponentFactory : ClientTransactionComponentFactoryBase
   {
     private readonly IStorageSettings _storageSettings;
-    private readonly IPersistenceManager _persistenceManager;
+    private readonly IPersistenceService _persistenceService;
     private readonly IPersistenceExtensionFactory _persistenceExtensionFactory;
 
     public static RootClientTransactionComponentFactory Create (
             IStorageSettings storageSettings,
-            IPersistenceManager persistenceManager,
+            IPersistenceService persistenceService,
             IPersistenceExtensionFactory persistenceExtensionFactory)
     {
       ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
-      ArgumentUtility.CheckNotNull("persistenceManager", persistenceManager);
+      ArgumentUtility.CheckNotNull("persistenceService", persistenceService);
       ArgumentUtility.CheckNotNull("persistenceExtensionFactory", persistenceExtensionFactory);
 
       return ObjectFactory.Create<RootClientTransactionComponentFactory>(
           true,
           ParamList.Create(
               storageSettings,
-              persistenceManager,
+              persistenceService,
               persistenceExtensionFactory));
     }
 
     protected RootClientTransactionComponentFactory (
         IStorageSettings storageSettings,
-        IPersistenceManager persistenceManager,
+        IPersistenceService persistenceService,
         IPersistenceExtensionFactory persistenceExtensionFactory)
     {
       ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
-      ArgumentUtility.CheckNotNull("persistenceManager", persistenceManager);
+      ArgumentUtility.CheckNotNull("persistenceService", persistenceService);
       ArgumentUtility.CheckNotNull("persistenceExtensionFactory", persistenceExtensionFactory);
 
       _storageSettings = storageSettings;
-      _persistenceManager = persistenceManager;
+      _persistenceService = persistenceService;
       _persistenceExtensionFactory = persistenceExtensionFactory;
     }
 
@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
           ParamList.Create(
               constructedTransaction.ID,
               _storageSettings,
-              _persistenceManager,
+              _persistenceService,
               _persistenceExtensionFactory)
           );
     }
