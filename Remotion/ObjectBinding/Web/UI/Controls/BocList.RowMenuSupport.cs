@@ -23,6 +23,7 @@ using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
+using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -60,8 +61,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       Assertion.IsTrue(_rowMenus.Length == 0);
       Assertion.IsTrue(_rowMenusPlaceHolder.Controls.Count == 0);
 
-      var postBackCollection = Context!.Request.Form;
-      var targetInfo = postBackCollection["__EVENTTARGET"];
+      var targetInfo = Page == null ? null : PageUtility.GetPostBackCollectionItem(Page, "__EVENTTARGET");
 
       var rowMenuIDPrefix = UniqueID + c_rowMenuIDPrefix;
 

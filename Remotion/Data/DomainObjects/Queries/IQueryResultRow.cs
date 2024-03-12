@@ -21,7 +21,7 @@ using Remotion.Data.DomainObjects.Queries.Configuration;
 namespace Remotion.Data.DomainObjects.Queries
 {
   /// <summary>
-  /// Represents a result row returned by a <see cref="QueryType.Custom"/> query.
+  /// Represents a result row returned by a <see cref="QueryType.CustomReadOnly"/> or <see cref="QueryType.CustomReadWrite"/> query.
   /// </summary>
   public interface IQueryResultRow
   {

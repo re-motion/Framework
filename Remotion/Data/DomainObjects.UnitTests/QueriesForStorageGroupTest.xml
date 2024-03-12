@@ -17,21 +17,21 @@
  ! along with re-motion; if not, see http://www.gnu.org/licenses.
 -->
 <queries 
-    xmlns="http://www.re-motion.org/Data/DomainObjects/Queries/1.0" 
+    xmlns="http://www.re-motion.org/Data/DomainObjects/Queries/2.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://www.re-motion.org/Data/DomainObjects/Queries/1.0 ..\DomainObjects\Schemas\Queries.xsd">
+    xsi:schemaLocation="http://www.re-motion.org/Data/DomainObjects/Queries/2.0 ..\DomainObjects\Schemas\Queries.xsd">
 
-  <query id="QueryFromCustomStorageGroup" type="scalar">
+  <query id="QueryFromCustomStorageGroup" type="scalar-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>select 42</statement>
   </query>
 
-  <query id="QueryFromUndefinedStorageGroup" type="scalar">
+  <query id="QueryFromUndefinedStorageGroup" type="scalar-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::Persistence.Configuration.StubStorageGroup1Attribute</storageGroupType>
     <statement>select 42</statement>
   </query>
 
-  <query id="QueryFromDefaultStorageProvider" type="scalar">
+  <query id="QueryFromDefaultStorageProvider" type="scalar-readonly">
     <statement>select 42</statement>
   </query>
   

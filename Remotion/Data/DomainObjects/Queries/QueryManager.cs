@@ -82,7 +82,8 @@ namespace Remotion.Data.DomainObjects.Queries
     ///   <paramref name="query"/> is <see langword="null"/>.
     /// </exception>
     /// <exception cref="System.ArgumentException">
-    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Scalar"/>.
+    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of
+    ///   of <see cref="Configuration.QueryType.ScalarReadOnly"/> or <see cref="Configuration.QueryType.ScalarReadWrite"/>.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
     ///   The <see cref="IQuery.StorageProviderDefinition"/> of <paramref name="query"/> could not be found.
@@ -97,7 +98,7 @@ namespace Remotion.Data.DomainObjects.Queries
     {
       ArgumentUtility.CheckNotNull("query", query);
 
-      if (query.QueryType != QueryType.Scalar)
+      if (query.QueryType != QueryType.ScalarReadOnly && query.QueryType != QueryType.ScalarReadWrite)
         throw new ArgumentException("A collection or custom query cannot be used with GetScalar.", "query");
 
       return _persistenceStrategy.ExecuteScalarQuery(query);
@@ -112,7 +113,8 @@ namespace Remotion.Data.DomainObjects.Queries
     ///   <paramref name="query"/> is <see langword="null"/>.
     /// </exception>
     /// <exception cref="System.ArgumentException">
-    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.
+    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of
+    ///   <see cref="Configuration.QueryType.CollectionReadOnly"/> or <see cref="Configuration.QueryType.CollectionReadWrite"/>.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
     ///   The <see cref="IQuery.StorageProviderDefinition"/> of <paramref name="query"/> could not be found.
@@ -146,7 +148,8 @@ namespace Remotion.Data.DomainObjects.Queries
     ///   <typeparamref name="T"/> or the configured collection type is not assignable to <see cref="ObjectList{T}"/> with the given <typeparamref name="T"/>.
     /// </exception>
     /// <exception cref="System.ArgumentException">
-    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.
+    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of
+    ///   <see cref="Configuration.QueryType.CollectionReadOnly"/> or <see cref="Configuration.QueryType.CollectionReadWrite"/>.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
     /// The <see cref="IQuery.StorageProviderDefinition"/> of <paramref name="query"/> could not be found.
@@ -161,7 +164,7 @@ namespace Remotion.Data.DomainObjects.Queries
     {
       ArgumentUtility.CheckNotNull("query", query);
 
-      if (query.QueryType != QueryType.Collection)
+      if (query.QueryType != QueryType.CollectionReadOnly && query.QueryType != QueryType.CollectionReadWrite)
         throw new ArgumentException("A scalar or custom query cannot be used with GetCollection.", "query");
 
       var resultArray = _objectLoader
@@ -192,7 +195,7 @@ namespace Remotion.Data.DomainObjects.Queries
       ArgumentUtility.CheckNotNull("query", query);
       ArgumentUtility.CheckNotNull("rowReader", rowReader);
 
-      if (query.QueryType != QueryType.Custom)
+      if (query.QueryType != QueryType.CustomReadOnly && query.QueryType != QueryType.CustomReadWrite)
         throw new ArgumentException("A collection or scalar query cannot be used with GetCustom.", "query");
 
       if (query.EagerFetchQueries.Count > 0)

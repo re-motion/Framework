@@ -54,7 +54,7 @@ namespace Remotion.SecurityManager.Domain
               typeof(Revision) + "." + MethodBase.GetCurrentMethod()!.Name,
               storageProviderDefinition,
               statement.ToString(),
-              QueryType.Scalar),
+              QueryType.ScalarReadOnly),
           parameters);
     }
 
@@ -128,7 +128,7 @@ namespace Remotion.SecurityManager.Domain
               typeof(Revision) + "." + MethodBase.GetCurrentMethod()!.Name,
               storageProviderDefinition,
               statement.ToString(),
-              QueryType.Scalar),
+              QueryType.ScalarReadWrite),
           parameters);
     }
 
