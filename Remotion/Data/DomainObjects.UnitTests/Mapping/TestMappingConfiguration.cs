@@ -99,10 +99,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var storageProviderDefinitionCollection = new List<StorageProviderDefinition>();
 
-      var defaultStorageProvider = new RdbmsProviderDefinition(
-          MappingReflectionTestBase.DefaultStorageProviderID,
-          sqlStorageObjectFactory,
-          connectionString: "Mapping TestDomain ConnectionString");
+      var defaultStorageProvider =
+          new RdbmsProviderDefinition(
+              MappingReflectionTestBase.DefaultStorageProviderID,
+              sqlStorageObjectFactory,
+              connectionString: "Mapping TestDomain ConnectionString",
+              readOnlyConnectionString: "Mapping TestDomain ReadOnlyConnectionString");
       storageProviderDefinitionCollection.Add(defaultStorageProvider);
 
       storageProviderDefinitionCollection.Add(
@@ -110,6 +112,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               MappingReflectionTestBase.c_testDomainProviderID,
               sqlStorageObjectFactory,
               connectionString: "Mapping TestDomain ConnectionString",
+              readOnlyConnectionString: "Mapping TestDomain ReadOnlyConnectionString",
               assignedStorageGroups: new[] { typeof(TestDomainAttribute) }));
 
       storageProviderDefinitionCollection.Add(
@@ -122,6 +125,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               TableInheritanceMappingTest.TableInheritanceTestDomainProviderID,
               sqlStorageObjectFactory,
               connectionString: "Mapping TestDomain ConnectionString",
+              readOnlyConnectionString: "Mapping TestDomain ReadOnlyConnectionString",
               assignedStorageGroups: new[] { typeof(TableInheritanceTestDomainAttribute) }));
 
       storageProviderDefinitionCollection.Add(

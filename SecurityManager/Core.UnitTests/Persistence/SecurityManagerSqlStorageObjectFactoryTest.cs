@@ -39,7 +39,12 @@ namespace Remotion.SecurityManager.UnitTests.Persistence
     [SetUp]
     public void SetUp ()
     {
-      _rdbmsProviderDefinition = new RdbmsProviderDefinition("TestDomain", Mock.Of<IRdbmsStorageObjectFactory>(MockBehavior.Strict), "ConnectionString");
+      _rdbmsProviderDefinition = new RdbmsProviderDefinition(
+          "TestDomain",
+          Mock.Of<IRdbmsStorageObjectFactory>(MockBehavior.Strict),
+          "ConnectionString",
+          "ReadOnlyConnectionString");
+
       _securityManagerSqlStorageObjectFactory = new SecurityManagerSqlStorageObjectFactory(
           Mock.Of<IStorageSettings>(MockBehavior.Strict),
           Mock.Of<ITypeConversionProvider>(MockBehavior.Strict),

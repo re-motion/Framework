@@ -118,54 +118,57 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
       var fakeStorageObjectFactoryFactory = new FakeStorageObjectFactoryFactory();
       var fakeStorageSettingsFactory = new FakeStorageSettingsFactory();
-      var fakeStorageSettingsFactoryResolver = new FakeStorageSettingsFactoryResolver(fakeStorageSettingsFactory);
+      var fakeStorageSettingsFactoryResolver = new FakeStorageSettingsFactoryResolver(storageSettingsFactory: fakeStorageSettingsFactory);
 
-      var deferredStorageSettings = new DeferredStorageSettings(fakeStorageObjectFactoryFactory, fakeStorageSettingsFactoryResolver);
+      var deferredStorageSettings = new DeferredStorageSettings(storageObjectFactoryFactory: fakeStorageObjectFactoryFactory, storageSettingsFactoryResolver: fakeStorageSettingsFactoryResolver);
 
       var sqlStorageObjectFactory = new SqlStorageObjectFactory(
-          deferredStorageSettings,
-          SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
-          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
+          storageSettings: deferredStorageSettings,
+          typeConversionProvider: SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
+          dataContainerValidator: SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
 
       var nonPersistentStorageObjectFactory = new NonPersistentStorageObjectFactory();
 
       var defaultStorageProvider = new RdbmsProviderDefinition(
-          DatabaseTest.DefaultStorageProviderID,
-          sqlStorageObjectFactory,
-          DatabaseTest.TestDomainConnectionString);
-      storageProviderDefinitionCollection.Add(defaultStorageProvider);
+          name: DatabaseTest.DefaultStorageProviderID,
+          factory: sqlStorageObjectFactory,
+          connectionString: DatabaseTest.TestDomainConnectionString,
+          readOnlyConnectionString: DatabaseTest.TestDomainConnectionString);
+      storageProviderDefinitionCollection.Add(item: defaultStorageProvider);
 
       storageProviderDefinitionCollection.Add(
-          new RdbmsProviderDefinition(
-              DatabaseTest.c_testDomainProviderID,
-              sqlStorageObjectFactory,
-              DatabaseTest.TestDomainConnectionString,
+          item: new RdbmsProviderDefinition(
+              name: DatabaseTest.c_testDomainProviderID,
+              factory: sqlStorageObjectFactory,
+              connectionString: DatabaseTest.TestDomainConnectionString,
+              readOnlyConnectionString: DatabaseTest.TestDomainConnectionString,
               assignedStorageGroups: new[] { typeof(TestDomainAttribute) }));
 
       storageProviderDefinitionCollection.Add(
-          new NonPersistentProviderDefinition(
-              DatabaseTest.c_nonPersistentTestDomainProviderID,
-              nonPersistentStorageObjectFactory,
+          item: new NonPersistentProviderDefinition(
+              name: DatabaseTest.c_nonPersistentTestDomainProviderID,
+              factory: nonPersistentStorageObjectFactory,
               assignedStorageGroups: new[] { typeof(NonPersistentTestDomainAttribute) }));
 
       storageProviderDefinitionCollection.Add(
-          new UnitTestStorageProviderStubDefinition(
-              DatabaseTest.c_unitTestStorageProviderStubID,
+          item: new UnitTestStorageProviderStubDefinition(
+              storageProviderID: DatabaseTest.c_unitTestStorageProviderStubID,
               assignedStorageGroups: new[] { typeof(StorageProviderStubAttribute) }));
 
       storageProviderDefinitionCollection.Add(
-          new RdbmsProviderDefinition(
-              TableInheritanceMappingTest.TableInheritanceTestDomainProviderID,
-              sqlStorageObjectFactory,
-              DatabaseTest.TestDomainConnectionString,
+          item: new RdbmsProviderDefinition(
+              name: TableInheritanceMappingTest.TableInheritanceTestDomainProviderID,
+              factory: sqlStorageObjectFactory,
+              connectionString: DatabaseTest.TestDomainConnectionString,
+              readOnlyConnectionString: DatabaseTest.TestDomainConnectionString,
               assignedStorageGroups: new[] { typeof(TableInheritanceTestDomainAttribute) }));
 
       var storageSettings = new StorageSettings(
-          defaultStorageProvider,
-          storageProviderDefinitionCollection);
+          defaultStorageProviderDefinition: defaultStorageProvider,
+          storageProviderDefinitions: storageProviderDefinitionCollection);
 
-      fakeStorageObjectFactoryFactory.SetUp(sqlStorageObjectFactory);
-      fakeStorageSettingsFactory.SetUp(storageSettings);
+      fakeStorageObjectFactoryFactory.SetUp(factory: sqlStorageObjectFactory);
+      fakeStorageSettingsFactory.SetUp(storageSettings: storageSettings);
 
       return fakeStorageSettingsFactory;
     }
