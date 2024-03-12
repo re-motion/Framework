@@ -253,7 +253,7 @@ namespace Remotion.SecurityManager.Persistence
     private void IncrementRevision (IRdbmsProviderCommandExecutionContext executionContext, IRevisionKey revisionKey)
     {
       var query = Revision.GetIncrementRevisionQuery(revisionKey);
-      Assertion.IsTrue(query.QueryType == QueryType.Scalar);
+      Assertion.IsTrue(query.QueryType == QueryType.ScalarReadWrite);
       var storageProviderCommand = _storageProviderCommandFactory.CreateForScalarQuery(query);
       storageProviderCommand.Execute(executionContext);
     }

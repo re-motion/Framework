@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
               StubStorageProvider.GetSecurableObjectsQueryID,
               MappingConfiguration.Current.GetTypeDefinition(typeof(SecurableObject)).StorageEntityDefinition.StorageProviderDefinition,
               "SELECT 1",
-              QueryType.Collection),
+              QueryType.CollectionReadOnly),
           new QueryParameterCollection());
     }
 

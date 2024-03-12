@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
           "OrderQuery",
           TestDomainStorageProviderDefinition,
           "select Order.* from Order inner join Customer where Customer.ID = @customerID order by OrderNo asc;",
-          QueryType.Collection,
+          QueryType.CollectionReadOnly,
           typeof(OrderCollection));
     }
 
@@ -100,11 +100,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     [Test]
     public void Merge ()
     {
-      QueryDefinition query1 = new QueryDefinition("id1", TestDomainStorageProviderDefinition, "bla", QueryType.Collection);
-      QueryDefinition query2 = new QueryDefinition("id2", TestDomainStorageProviderDefinition, "bla", QueryType.Collection);
-      QueryDefinition query3 = new QueryDefinition("id3", TestDomainStorageProviderDefinition, "bla", QueryType.Collection);
-      QueryDefinition query4 = new QueryDefinition("id4", TestDomainStorageProviderDefinition, "bla", QueryType.Collection);
-      QueryDefinition query5 = new QueryDefinition("id5", TestDomainStorageProviderDefinition, "bla", QueryType.Collection);
+      QueryDefinition query1 = new QueryDefinition("id1", TestDomainStorageProviderDefinition, "bla", QueryType.CollectionReadOnly);
+      QueryDefinition query2 = new QueryDefinition("id2", TestDomainStorageProviderDefinition, "bla", QueryType.CollectionReadOnly);
+      QueryDefinition query3 = new QueryDefinition("id3", TestDomainStorageProviderDefinition, "bla", QueryType.CollectionReadOnly);
+      QueryDefinition query4 = new QueryDefinition("id4", TestDomainStorageProviderDefinition, "bla", QueryType.CollectionReadOnly);
+      QueryDefinition query5 = new QueryDefinition("id5", TestDomainStorageProviderDefinition, "bla", QueryType.CollectionReadOnly);
 
       QueryDefinitionCollection source = new QueryDefinitionCollection();
       source.Add(query1);
@@ -132,8 +132,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     [Test]
     public void Merge_ThrowsOnDuplicates ()
     {
-      QueryDefinition query1 = new QueryDefinition("id1", TestDomainStorageProviderDefinition, "bla", QueryType.Collection);
-      QueryDefinition query2 = new QueryDefinition("id1", TestDomainStorageProviderDefinition, "bla", QueryType.Collection);
+      QueryDefinition query1 = new QueryDefinition("id1", TestDomainStorageProviderDefinition, "bla", QueryType.CollectionReadOnly);
+      QueryDefinition query2 = new QueryDefinition("id1", TestDomainStorageProviderDefinition, "bla", QueryType.CollectionReadOnly);
 
       QueryDefinitionCollection source = new QueryDefinitionCollection();
       source.Add(query1);

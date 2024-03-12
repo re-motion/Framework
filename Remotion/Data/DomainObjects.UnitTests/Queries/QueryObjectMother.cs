@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     private static QueryDefinition CreateQueryDefinition ()
     {
       return new QueryDefinition(
-          "test", DomainObjectsConfiguration.Current.Storage.DefaultStorageProviderDefinition, "Some statement", QueryType.Collection);
+          "test", DomainObjectsConfiguration.Current.Storage.DefaultStorageProviderDefinition, "Some statement", QueryType.CollectionReadOnly);
     }
   }
 }

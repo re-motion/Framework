@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           "bla",
           orderClassDefinition.StorageEntityDefinition.StorageProviderDefinition,
           "SELECT * FROM CeoView WHERE Contains ([CeoView].[Name], 'Fischer')",
-          QueryType.Collection);
+          QueryType.CollectionReadOnly);
       var query = QueryFactory.CreateQuery(queryDefinition);
 
       var orders = TestableClientTransaction.QueryManager.GetCollection<Ceo>(query).AsEnumerable();

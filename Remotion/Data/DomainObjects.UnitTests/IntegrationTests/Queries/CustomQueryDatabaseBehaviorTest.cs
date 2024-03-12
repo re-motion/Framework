@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void CompleteIteration_CompletelyExecutesQuery ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("CustomQuery");
+      var query = QueryFactory.CreateQueryFromConfiguration("CustomQueryReadOnly");
 
       QueryManager.GetCustom(query, QueryResultRowTestHelper.ExtractRawValues).ToList();
 
@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void NoIteration_DoesNotOpenConnection ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("CustomQuery");
+      var query = QueryFactory.CreateQueryFromConfiguration("CustomQueryReadOnly");
 
       QueryManager.GetCustom(query, QueryResultRowTestHelper.ExtractRawValues);
 
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void DuringIteration_QueryStaysActive ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("CustomQuery");
+      var query = QueryFactory.CreateQueryFromConfiguration("CustomQueryReadOnly");
 
       var result = QueryManager.GetCustom(query, QueryResultRowTestHelper.ExtractRawValues);
 

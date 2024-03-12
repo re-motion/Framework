@@ -140,23 +140,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
-    public void ScalarQuery ()
-    {
-      Assert.That(
-          () => Provider.ExecuteCollectionQuery(QueryFactory.CreateQueryFromConfiguration("OrderNoSumByCustomerNameQuery")),
-          Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo(
-                  "Expected query type is 'Collection', but was 'Scalar'.", "query"));
-    }
-
-    [Test]
     public void DifferentStorageProviderID ()
     {
       var definition = new QueryDefinition(
           "QueryWithDifferentStorageProviderID",
           UnitTestStorageProviderDefinition,
           "select 42",
-          QueryType.Collection);
+          QueryType.CollectionReadOnly);
       Assert.That(
           () => Provider.ExecuteCollectionQuery(QueryFactory.CreateQuery(definition)),
           Throws.ArgumentException);

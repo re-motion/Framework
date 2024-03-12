@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
 
       var queryTypeNode = queryNode.SelectSingleNode("@type", NamespaceManager);
       Assertion.DebugIsNotNull(queryTypeNode, "queryTypeNode != null");
-      string queryTypeAsString = queryTypeNode.InnerText;
+      string queryTypeAsString = queryTypeNode.InnerText.Replace("-", "");
       QueryType queryType = (QueryType)Enum.Parse(typeof(QueryType), queryTypeAsString, true);
 
       XmlNode? node = queryNode.SelectSingleNode(FormatXPath("{0}:storageGroupType"), NamespaceManager);
@@ -108,7 +108,10 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
 
       Type? collectionType = LoaderUtility.GetOptionalType(queryNode, FormatXPath("{0}:collectionType"), NamespaceManager);
 
-      if (queryType == QueryType.Scalar && collectionType != null)
+      if (queryType == QueryType.ScalarReadOnly && collectionType != null)
+        throw CreateQueryConfigurationException("A scalar query '{0}' must not specify a collectionType.", queryID);
+
+      if (queryType == QueryType.ScalarReadWrite && collectionType != null)
         throw CreateQueryConfigurationException("A scalar query '{0}' must not specify a collectionType.", queryID);
 
       return new QueryDefinition(queryID, storageProviderDefinition, statement, queryType, collectionType);

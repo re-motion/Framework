@@ -93,25 +93,6 @@ namespace Remotion.Data.DomainObjects.Persistence
       }
     }
 
-    protected virtual void CheckQuery (IQuery query, QueryType expectedQueryType, string argumentName)
-    {
-      CheckDisposed();
-      ArgumentUtility.CheckNotNull("query", query);
-
-      if (query.StorageProviderDefinition != StorageProviderDefinition)
-      {
-        throw CreateArgumentException(
-            "query",
-            "The StorageProviderID '{0}' of the provided query '{1}' does not match with this StorageProvider's ID '{2}'.",
-            query.StorageProviderDefinition.Name,
-            query.ID,
-            StorageProviderDefinition.Name);
-      }
-
-      if (query.QueryType != expectedQueryType)
-        throw CreateArgumentException(argumentName, "Expected query type is '{0}', but was '{1}'.", expectedQueryType, query.QueryType);
-    }
-
     protected bool IsDisposed
     {
       get { return _disposed; }

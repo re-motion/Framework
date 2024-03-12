@@ -131,10 +131,13 @@ public class QueryDefinition
     ArgumentUtility.CheckNotNullOrEmpty("statement", statement);
     ArgumentUtility.CheckValidEnumValue("queryType", queryType);
 
-    if (queryType == QueryType.Scalar && collectionType != null)
+    if ((queryType is QueryType.ScalarReadOnly or QueryType.ScalarReadWrite) && collectionType != null)
       throw new ArgumentException(string.Format("The scalar query '{0}' must not specify a collectionType.", queryID), "collectionType");
 
-    if (queryType == QueryType.Collection && collectionType == null)
+    if ((queryType is QueryType.CustomReadOnly or QueryType.CustomReadWrite) && collectionType != null)
+      throw new ArgumentException(string.Format("The custom query '{0}' must not specify a collectionType.", queryID), "collectionType");
+
+    if ((queryType is QueryType.CollectionReadOnly or QueryType.CollectionReadWrite) && collectionType == null)
       collectionType = typeof(DomainObjectCollection);
 
     if (collectionType != null

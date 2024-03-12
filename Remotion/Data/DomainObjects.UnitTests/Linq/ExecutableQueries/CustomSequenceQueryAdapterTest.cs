@@ -40,17 +40,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
     [Test]
     public void Initialization_QueryTypeNotCustom ()
     {
-      _queryStub.Setup(stub => stub.QueryType).Returns(QueryType.Collection);
+      _queryStub.Setup(stub => stub.QueryType).Returns(QueryType.CollectionReadOnly);
       Assert.That(
           () => new CustomSequenceQueryAdapter<string>(_queryStub.Object, _resultConversion),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo("Only custom queries can be used to load custom results.", "query"));
+              .With.ArgumentExceptionMessageEqualTo("Only custom readonly queries can be used to load custom results.", "query"));
     }
 
     [Test]
     public void Execute ()
     {
-      _queryStub.Setup(stub => stub.QueryType).Returns(QueryType.Custom);
+      _queryStub.Setup(stub => stub.QueryType).Returns(QueryType.CustomReadOnly);
       var queryAdapter = new CustomSequenceQueryAdapter<string>(_queryStub.Object, _resultConversion);
 
       var fakeResult = new[] { "t1", "t2" };

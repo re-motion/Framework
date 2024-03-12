@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
     public DomainObjectSequenceQueryAdapter (IQuery query)
         : base(ArgumentUtility.CheckNotNull("query", query))
     {
-      if (query.QueryType != QueryType.Collection)
-        throw new ArgumentException("Only collection queries can be used to load data containers.", "query");
+      if (query.QueryType != QueryType.CollectionReadOnly)
+        throw new ArgumentException("Only readonly collection queries can be used to load data containers.", "query");
     }
 
     public override IEnumerable<TItem> Execute (IQueryManager queryManager)
