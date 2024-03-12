@@ -205,7 +205,7 @@ namespace Remotion.SecurityManager.PerformanceTests
                       "id",
                       SafeServiceLocator.Current.GetInstance<IStorageSettings>().GetStorageProviderDefinition("SecurityManager"),
                       "select * from PositionView",
-                      QueryType.Collection));
+                      QueryType.CollectionReadOnly));
           ClientTransaction.Current.QueryManager.GetCollection<Position>(query);
         }
       }

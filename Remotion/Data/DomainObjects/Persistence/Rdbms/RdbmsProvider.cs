@@ -208,7 +208,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("query", query);
-      CheckQuery(query, QueryType.Collection, "query");
+      CheckQuery("query", query, QueryType.CollectionReadOnly, QueryType.CollectionReadWrite);
 
       Connect();
 
@@ -223,7 +223,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("query", query);
-      CheckQuery(query, QueryType.Custom, "query");
+      CheckQuery("query", query, QueryType.CustomReadOnly, QueryType.CustomReadWrite);
 
       Connect();
 
@@ -235,7 +235,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("query", query);
-      CheckQuery(query, QueryType.Scalar, "query");
+      CheckQuery("query", query, QueryType.ScalarReadOnly, QueryType.ScalarReadWrite);
 
       Connect();
 
@@ -417,6 +417,28 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     {
       var message = string.Format(formatString, args);
       return new RdbmsProviderException(message, innerException);
+    }
+
+    private void CheckQuery (string argumentName, IQuery query, params QueryType[] expectedQueryTypes)
+    {
+      if (query.StorageProviderDefinition != StorageProviderDefinition)
+      {
+        throw CreateArgumentException(
+            argumentName,
+            "The StorageProvider '{0}' of the provided query '{1}' does not match with this StorageProvider '{2}'.",
+            query.StorageProviderDefinition.Name,
+            query.ID,
+            StorageProviderDefinition.Name);
+      }
+
+      if (!expectedQueryTypes.Contains(query.QueryType))
+      {
+        throw CreateArgumentException(
+            argumentName,
+            "Expected query type is '{0}', but was '{1}'.",
+            string.Join("' or '", expectedQueryTypes),
+            query.QueryType);
+      }
     }
 
     private void DisposeTransaction ()

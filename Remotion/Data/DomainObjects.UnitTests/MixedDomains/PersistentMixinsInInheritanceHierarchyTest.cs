@@ -49,8 +49,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var query = new Query(new QueryDefinition("QueryOverUnionView", TestDomainStorageProviderDefinition,
-                                                    "SELECT * FROM [SingleInheritanceBaseClassView]", QueryType.Collection), new QueryParameterCollection());
+        var query = new Query(new QueryDefinition(
+                "QueryOverUnionView",
+                TestDomainStorageProviderDefinition,
+                "SELECT * FROM [SingleInheritanceBaseClassView]",
+                QueryType.CollectionReadOnly),
+            new QueryParameterCollection());
         var actualObjects = ClientTransaction.Current.QueryManager.GetCollection<SingleInheritanceBaseClass>(query);
 
         Assert.That(actualObjects.Count, Is.EqualTo(2));
@@ -105,7 +109,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var query = new Query(new QueryDefinition("QueryOverUnionView", TestDomainStorageProviderDefinition,
-                                               "SELECT * FROM [SingleInheritanceObjectWithRelationsView]", QueryType.Collection), new QueryParameterCollection());
+                                               "SELECT * FROM [SingleInheritanceObjectWithRelationsView]", QueryType.CollectionReadOnly), new QueryParameterCollection());
         var actualObjectWithRelations = ClientTransaction.Current.QueryManager.GetCollection<SingleInheritanceObjectWithRelations>(query)
           .AsEnumerable().Single();
 
@@ -138,7 +142,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var query = new Query(new QueryDefinition("QueryOverUnionView", TestDomainStorageProviderDefinition,
-                                                    "SELECT * FROM [ConcreteInheritanceBaseClassView]", QueryType.Collection), new QueryParameterCollection());
+                                                    "SELECT * FROM [ConcreteInheritanceBaseClassView]", QueryType.CollectionReadOnly), new QueryParameterCollection());
         var actualObjects = ClientTransaction.Current.QueryManager.GetCollection<ConcreteInheritanceBaseClass>(query);
 
         Assert.That(actualObjects.Count, Is.EqualTo(2));
@@ -193,7 +197,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var query = new Query(new QueryDefinition("QueryOverUnionView", TestDomainStorageProviderDefinition,
-                                               "SELECT * FROM [ConcreteInheritanceObjectWithRelationsView]", QueryType.Collection), new QueryParameterCollection());
+                                               "SELECT * FROM [ConcreteInheritanceObjectWithRelationsView]", QueryType.CollectionReadOnly), new QueryParameterCollection());
         var actualObjectWithRelations = ClientTransaction.Current.QueryManager.GetCollection<ConcreteInheritanceObjectWithRelations>(query)
           .AsEnumerable().Single();
 
