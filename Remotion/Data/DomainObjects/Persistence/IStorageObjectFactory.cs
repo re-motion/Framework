@@ -32,6 +32,8 @@ namespace Remotion.Data.DomainObjects.Persistence
   {
     StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension);
 
+    StorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension);
+
     IPersistenceModelLoader CreatePersistenceModelLoader (StorageProviderDefinition storageProviderDefinition);
 
     IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (

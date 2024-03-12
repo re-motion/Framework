@@ -31,6 +31,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
   public class RdbmsProvider : StorageProvider, IRdbmsProviderCommandExecutionContext
   {
+    private readonly string _connectionString;
     private readonly IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> _storageProviderCommandFactory;
     private readonly Func<IDbConnection> _connectionFactory;
 
@@ -39,14 +40,26 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
     public RdbmsProvider (
         RdbmsProviderDefinition definition,
+        string connectionString,
         IPersistenceExtension persistenceExtension,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> storageProviderCommandFactory,
         Func<IDbConnection> connectionFactory)
         : base(definition, persistenceExtension)
     {
+      ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
       ArgumentUtility.CheckNotNull("storageProviderCommandFactory", storageProviderCommandFactory);
       ArgumentUtility.CheckNotNull("connectionFactory", connectionFactory);
 
+      if (connectionString != definition.ConnectionString && connectionString != definition.ReadOnlyConnectionString)
+      {
+        throw CreateArgumentException(
+            "connectionString",
+            "The connection string '{0}' is not defined by provider '{1}'",
+            connectionString,
+            definition.Name);
+      }
+
+      _connectionString = connectionString;
       _storageProviderCommandFactory = storageProviderCommandFactory;
       _connectionFactory = connectionFactory;
     }
@@ -70,6 +83,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
         return _connection.State != ConnectionState.Closed;
       }
+    }
+
+    public string ConnectionString
+    {
+      get { return _connectionString; }
     }
 
     public TracingDbConnection? Connection
@@ -125,7 +143,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       {
         _connection = new TracingDbConnection(CreateConnection(), PersistenceExtension);
         if (string.IsNullOrEmpty(_connection.ConnectionString))
-          _connection.ConnectionString = StorageProviderDefinition.ConnectionString;
+          _connection.ConnectionString = ConnectionString;
 
         try
         {

@@ -82,6 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 #else
       var rdbmsProvider = new RdbmsProvider(
           providerDefinition,
+          providerDefinition.ConnectionString,
           Mock.Of<IPersistenceExtension>(),
           Mock.Of<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>>(),
           () => Mock.Of<System.Data.IDbConnection>());
