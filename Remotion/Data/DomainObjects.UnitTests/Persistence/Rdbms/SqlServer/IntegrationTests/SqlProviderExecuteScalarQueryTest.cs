@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void InvalidScalarQuery ()
     {
-      QueryDefinition definition = new QueryDefinition("InvalidQuery", TestDomainStorageProviderDefinition, "This is not T-SQL", QueryType.Scalar);
+      QueryDefinition definition = new QueryDefinition("InvalidQuery", TestDomainStorageProviderDefinition, "This is not T-SQL", QueryType.ScalarReadOnly);
       Assert.That(
           () => Provider.ExecuteScalarQuery(QueryFactory.CreateQuery(definition)),
           Throws.InstanceOf<RdbmsProviderException>());
@@ -60,16 +60,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
-    public void CollectionQuery ()
-    {
-      Assert.That(
-          () => Provider.ExecuteScalarQuery(QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"))),
-          Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo(
-                  "Expected query type is 'Scalar', but was 'Collection'.", "query"));
-    }
-
-    [Test]
     public void BulkUpdateQuery ()
     {
       var query = QueryFactory.CreateQuery(Queries.GetMandatory("BulkUpdateQuery"));
@@ -85,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           "QueryWithDifferentStorageProviderID",
           UnitTestStorageProviderDefinition,
           "select 42",
-          QueryType.Scalar);
+          QueryType.ScalarReadOnly);
       Assert.That(
           () => Provider.ExecuteScalarQuery(QueryFactory.CreateQuery(definition)),
           Throws.ArgumentException);

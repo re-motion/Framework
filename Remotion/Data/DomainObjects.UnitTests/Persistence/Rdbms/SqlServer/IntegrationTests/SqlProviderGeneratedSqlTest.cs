@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
                   "id",
                   TestDomainStorageProviderDefinition,
                   "SELECT * FROM [Order] WHERE OrderNo=@p1 OR ID=@p2 OR OfficialID=@p3 OR OfficialID=@p4",
-                  QueryType.Collection),
+                  QueryType.CollectionReadOnly),
               new QueryParameterCollection
               {
                   { "@p1", 1 },
@@ -214,7 +214,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
                   "id",
                   TestDomainStorageProviderDefinition,
                   "SELECT COUNT(*) FROM [Order] WHERE OrderNo=@p1 OR ID=@p2 OR OfficialID=@p3 OR OfficialID=@p4",
-                  QueryType.Scalar),
+                  QueryType.ScalarReadOnly),
               new QueryParameterCollection
               {
                   { "@p1", 1 },

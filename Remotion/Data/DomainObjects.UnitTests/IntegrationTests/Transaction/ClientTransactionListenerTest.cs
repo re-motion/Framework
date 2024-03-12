@@ -356,7 +356,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void FilterCustomQueryResult ()
     {
-      var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomQuery"));
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomQueryReadOnly"));
 
       TestableClientTransaction.AddListener(_strictListenerMock.Object);
 

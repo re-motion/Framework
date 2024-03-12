@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           "OrderQueryWithCustomCollectionType",
           storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
           "select [Order].* from [Order] inner join [Company] where [Company].[ID] = @customerID order by [OrderNo] asc;",
-          QueryType.Collection,
+          QueryType.CollectionReadOnly,
           typeof(OrderCollection));
     }
 
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           "OrderQueryWithObjectListOfOrder",
           storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
           "select [Order].* from [Order] inner join [Company] where [Company].[ID] = @customerID order by [OrderNo] asc;",
-          QueryType.Collection,
+          QueryType.CollectionReadOnly,
           typeof(ObjectList<Order>));
     }
 
@@ -50,17 +50,54 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           "CustomerTypeQuery",
           storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
           "select [Company].* from [Company] where [CustomerType] = @customerType order by [Name] asc;",
-          QueryType.Collection,
+          QueryType.CollectionReadOnly,
           typeof(DomainObjectCollection));
     }
 
-    public static QueryDefinition CreateOrderSumQueryDefinition (IStorageSettings storageSettings)
+    public static QueryDefinition CreateOrderSumQueryDefinitionWithQueryTypeScalarReadOnly (IStorageSettings storageSettings)
     {
       return new QueryDefinition(
-          "OrderSumQuery",
+          "OrderSumQueryWithQueryTypeScalarReadOnly",
           storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
           "select sum(quantity) from [Order] where [CustomerID] = @customerID;",
-          QueryType.Scalar);
+          QueryType.ScalarReadOnly);
+    }
+
+    public static QueryDefinition CreateOrderSumQueryDefinitionWithQueryTypeCustomReadOnly (IStorageSettings storageSettings)
+    {
+      return new QueryDefinition(
+          "OrderSumQueryWithQueryTypeCustomReadOnly",
+          storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
+          "select sum(quantity) from [Order] where [CustomerID] = @customerID;",
+          QueryType.CustomReadOnly);
+    }
+
+    public static QueryDefinition CreateTestQueryWithQueryTypeCollectionReadWrite (IStorageSettings storageSettings)
+    {
+      return new QueryDefinition(
+          "TestQueryDefinitionWithQueryTypeCollectionReadWrite",
+          storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
+          "select [Company].* from [Company] where [CustomerType] = @customerType order by [Name] asc;",
+          QueryType.CollectionReadWrite,
+          typeof(DomainObjectCollection));
+    }
+
+    public static QueryDefinition CreateTestQueryWithQueryTypeCustomReadWrite (IStorageSettings storageSettings)
+    {
+      return new QueryDefinition(
+          "TestQueryDefinitionWithQueryTypeCustomReadWrite",
+          storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
+          "select 0;",
+          QueryType.CustomReadWrite);
+    }
+
+    public static QueryDefinition CreateTestQueryDefinitionWithQueryTypeScalarReadWrite (IStorageSettings storageSettings)
+    {
+      return new QueryDefinition(
+          "TestQueryDefinitionWithQueryTypeScalarReadWrite",
+          storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
+          "select 0;",
+          QueryType.ScalarReadWrite);
     }
 
     public static QueryResult<DomainObject> CreateTestQueryResult (IStorageSettings storageSettings)

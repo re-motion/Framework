@@ -38,8 +38,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     private Mock<IObjectLoader> _objectLoaderMock;
     private Mock<IClientTransactionEventSink> _transactionEventSinkWithMock;
 
-    private IQuery _collectionQuery;
-    private IQuery _scalarQuery;
+    private IQuery _collectionQueryReadOnly;
+    private IQuery _collectionQueryReadWrite;
+    private IQuery _scalarQueryReadOnly;
+    private IQuery _scalarQueryReadWrite;
 
     private Order _fakeOrder1;
     private Order _fakeOrder2;
@@ -47,7 +49,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     private Mock<ILoadedObjectData> _loadedObjectDataStub2;
 
     Func<IQueryResultRow, object> _rowConversion;
-    private IQuery _customQuery;
+    private IQuery _customQueryReadOnly;
+    private IQuery _customQueryReadWrite;
 
     public override void SetUp ()
     {
@@ -62,9 +65,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
           _objectLoaderMock.Object,
           _transactionEventSinkWithMock.Object);
 
-      _collectionQuery = QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"));
-      _scalarQuery = QueryFactory.CreateQuery(Queries.GetMandatory("OrderNoSumByCustomerNameQuery"));
-      _customQuery = QueryFactory.CreateQuery(Queries.GetMandatory("CustomQuery"));
+      _collectionQueryReadOnly = QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"));
+      _collectionQueryReadWrite = QueryFactory.CreateQuery(Queries.GetMandatory("CollectionQueryReadWrite"));
+      _scalarQueryReadOnly = QueryFactory.CreateQuery(Queries.GetMandatory("OrderNoSumByCustomerNameQuery"));
+      _scalarQueryReadWrite = QueryFactory.CreateQuery(Queries.GetMandatory("BulkUpdateQuery"));
+      _customQueryReadOnly = QueryFactory.CreateQuery(Queries.GetMandatory("CustomQueryReadOnly"));
+      _customQueryReadWrite = QueryFactory.CreateQuery(Queries.GetMandatory("CustomQueryReadWrite"));
 
       _fakeOrder1 = DomainObjectMother.CreateFakeObject<Order>();
       _fakeOrder2 = DomainObjectMother.CreateFakeObject<Order>();
@@ -76,26 +82,61 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     }
 
     [Test]
-    public void GetScalar ()
+    public void GetScalarReadOnly ()
     {
-      _persistenceStrategyMock.Setup(mock => mock.ExecuteScalarQuery(_scalarQuery)).Returns(27).Verifiable();
+      _persistenceStrategyMock.Setup(mock => mock.ExecuteScalarQuery(_scalarQueryReadOnly)).Returns(27).Verifiable();
 
-      var result = _queryManager.GetScalar(_scalarQuery);
+      var result = _queryManager.GetScalar(_scalarQueryReadOnly);
 
       _persistenceStrategyMock.Verify();
       Assert.That(result, Is.EqualTo(27));
     }
 
     [Test]
-    public void GetScalar_WithCollectionQuery ()
+    public void GetScalarReadWrite ()
     {
-      Assert.That(
-          () => _queryManager.GetScalar(_collectionQuery),
-          Throws.ArgumentException);
+      _persistenceStrategyMock.Setup(mock => mock.ExecuteScalarQuery(_scalarQueryReadWrite)).Returns(27).Verifiable();
+
+      var result = _queryManager.GetScalar(_scalarQueryReadWrite);
+
+      _persistenceStrategyMock.Verify();
+      Assert.That(result, Is.EqualTo(27));
     }
 
     [Test]
-    public void GetCollection ()
+    public void GetScalar_WithCollectionReadOnlyQuery_ThrowsArgumentException ()
+    {
+      Assert.That(
+          () => _queryManager.GetScalar(_collectionQueryReadOnly),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("A collection or custom query cannot be used with GetScalar.", "query"));
+    }
+
+    [Test]
+    public void GetScalar_WithCollectionReadWriteQuery_ThrowsArgumentException ()
+    {
+      Assert.That(
+          () => _queryManager.GetScalar(_collectionQueryReadWrite),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("A collection or custom query cannot be used with GetScalar.", "query"));
+    }
+
+    [Test]
+    public void GetScalar_WithCustomReadOnlyQuery_ThrowsArgumentException ()
+    {
+      Assert.That(
+          () => _queryManager.GetScalar(_customQueryReadOnly),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("A collection or custom query cannot be used with GetScalar.", "query"));
+    }
+
+    [Test]
+    public void GetScalar_WithCustomReadWriteQuery_ThrowsArgumentException ()
+    {
+      Assert.That(
+          () => _queryManager.GetScalar(_customQueryReadWrite),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("A collection or custom query cannot be used with GetScalar.", "query"));
+    }
+
+    [Test]
+    public void GetCollectionReadOnly ()
     {
       _loadedObjectDataStub1.Setup(stub => stub.GetDomainObjectReference()).Returns(_fakeOrder1);
       _loadedObjectDataStub2.Setup(stub => stub.GetDomainObjectReference()).Returns(_fakeOrder2);
@@ -105,11 +146,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
           .Returns((QueryResult<Order> queryResult) => queryResult);
 
       _objectLoaderMock
-          .Setup(mock => mock.GetOrLoadCollectionQueryResult(_collectionQuery))
+          .Setup(mock => mock.GetOrLoadCollectionQueryResult(_collectionQueryReadOnly))
           .Returns(new[] { _loadedObjectDataStub1.Object, _loadedObjectDataStub2.Object })
           .Verifiable();
 
-      var result = _queryManager.GetCollection<Order>(_collectionQuery);
+      var result = _queryManager.GetCollection<Order>(_collectionQueryReadOnly);
+
+      _objectLoaderMock.Verify();
+      Assert.That(result.AsEnumerable(), Is.EqualTo(new[] { _fakeOrder1, _fakeOrder2 }));
+    }
+
+    [Test]
+    public void GetCollectionReadWrite ()
+    {
+      _loadedObjectDataStub1.Setup(stub => stub.GetDomainObjectReference()).Returns(_fakeOrder1);
+      _loadedObjectDataStub2.Setup(stub => stub.GetDomainObjectReference()).Returns(_fakeOrder2);
+
+      _transactionEventSinkWithMock
+          .Setup(stub => stub.RaiseFilterQueryResultEvent(It.IsAny<QueryResult<Order>>()))
+          .Returns((QueryResult<Order> queryResult) => queryResult);
+
+      _objectLoaderMock
+          .Setup(mock => mock.GetOrLoadCollectionQueryResult(_collectionQueryReadWrite))
+          .Returns(new[] { _loadedObjectDataStub1.Object, _loadedObjectDataStub2.Object })
+          .Verifiable();
+
+      var result = _queryManager.GetCollection<Order>(_collectionQueryReadWrite);
 
       _objectLoaderMock.Verify();
       Assert.That(result.AsEnumerable(), Is.EqualTo(new[] { _fakeOrder1, _fakeOrder2 }));
@@ -126,11 +188,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
           .Returns((QueryResult<Order> queryResult) => queryResult);
 
       _objectLoaderMock
-          .Setup(mock => mock.GetOrLoadCollectionQueryResult(_collectionQuery))
+          .Setup(mock => mock.GetOrLoadCollectionQueryResult(_collectionQueryReadOnly))
           .Returns(new[] { _loadedObjectDataStub1.Object, _loadedObjectDataStub2.Object })
           .Verifiable();
 
-      var result = _queryManager.GetCollection<Order>(_collectionQuery);
+      var result = _queryManager.GetCollection<Order>(_collectionQueryReadOnly);
 
       _objectLoaderMock.Verify();
       Assert.That(result.AsEnumerable(), Is.EqualTo(new[] { _fakeOrder1, null }));
@@ -142,12 +204,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       _loadedObjectDataStub1.Setup(stub => stub.GetDomainObjectReference()).Returns(_fakeOrder1);
 
       _objectLoaderMock
-          .Setup(mock => mock.GetOrLoadCollectionQueryResult(_collectionQuery))
+          .Setup(mock => mock.GetOrLoadCollectionQueryResult(_collectionQueryReadOnly))
           .Returns(new[] { _loadedObjectDataStub1.Object })
           .Verifiable();
 
       Assert.That(
-          () => _queryManager.GetCollection<Customer>(_collectionQuery),
+          () => _queryManager.GetCollection<Customer>(_collectionQueryReadOnly),
           Throws.TypeOf<UnexpectedQueryResultException>().With.Message.EqualTo(
             "The query returned an object of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order', but a query result of type "
             + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer' was expected."));
@@ -158,27 +220,51 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     {
       _loadedObjectDataStub1.Setup(stub => stub.GetDomainObjectReference()).Returns(_fakeOrder1);
       _objectLoaderMock
-          .Setup(mock => mock.GetOrLoadCollectionQueryResult(_collectionQuery))
+          .Setup(mock => mock.GetOrLoadCollectionQueryResult(_collectionQueryReadOnly))
           .Returns(new[] { _loadedObjectDataStub1.Object });
 
-      var filteredResult = new QueryResult<Order>(_collectionQuery, new[] { _fakeOrder2 });
+      var filteredResult = new QueryResult<Order>(_collectionQueryReadOnly, new[] { _fakeOrder2 });
       _transactionEventSinkWithMock
           .Setup(mock => mock.RaiseFilterQueryResultEvent(It.Is<QueryResult<Order>>(qr => qr.ToArray().SequenceEqual(new[] { _fakeOrder1 }))))
           .Returns(filteredResult)
           .Verifiable();
 
-      var result = _queryManager.GetCollection<Order>(_collectionQuery);
+      var result = _queryManager.GetCollection<Order>(_collectionQueryReadOnly);
 
       _transactionEventSinkWithMock.Verify();
       Assert.That(result, Is.SameAs(filteredResult));
     }
 
     [Test]
-    public void GetCollection_WithScalarQuery ()
+    public void GetCollection_WithScalarReadOnlyQuery_ThrowsArgumentException ()
     {
       Assert.That(
-          () => _queryManager.GetCollection(_scalarQuery),
-          Throws.ArgumentException);
+          () => _queryManager.GetCollection(_scalarQueryReadOnly),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("A scalar or custom query cannot be used with GetCollection.", "query"));
+    }
+
+    [Test]
+    public void GetCollection_WithScalarReadWriteQuery_ThrowsArgumentException ()
+    {
+      Assert.That(
+          () => _queryManager.GetCollection(_scalarQueryReadWrite),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("A scalar or custom query cannot be used with GetCollection.", "query"));
+    }
+
+    [Test]
+    public void GetCollection_WithCustomReadOnlyQuery_ThrowsArgumentException ()
+    {
+      Assert.That(
+          () => _queryManager.GetCollection(_customQueryReadOnly),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("A scalar or custom query cannot be used with GetCollection.", "query"));
+    }
+
+    [Test]
+    public void GetCollection_WithCustomReadWriteQuery_ThrowsArgumentException ()
+    {
+      Assert.That(
+          () => _queryManager.GetCollection(_customQueryReadWrite),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("A scalar or custom query cannot be used with GetCollection.", "query"));
     }
 
     [Test]
@@ -188,17 +274,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       _loadedObjectDataStub2.Setup(stub => stub.GetDomainObjectReference()).Returns(_fakeOrder2);
 
       _objectLoaderMock
-          .Setup(mock => mock.GetOrLoadCollectionQueryResult(_collectionQuery))
+          .Setup(mock => mock.GetOrLoadCollectionQueryResult(_collectionQueryReadOnly))
           .Returns(new[] { _loadedObjectDataStub1.Object, _loadedObjectDataStub2.Object })
           .Verifiable();
 
-      var filteredResult = new QueryResult<DomainObject>(_collectionQuery, new[] { _fakeOrder2 });
+      var filteredResult = new QueryResult<DomainObject>(_collectionQueryReadOnly, new[] { _fakeOrder2 });
       _transactionEventSinkWithMock
           .Setup(mock => mock.RaiseFilterQueryResultEvent(It.Is<QueryResult<DomainObject>>(qr => qr.ToArray().SequenceEqual(new[] { _fakeOrder1, _fakeOrder2 }))))
           .Returns(filteredResult)
           .Verifiable();
 
-      var result = _queryManager.GetCollection(_collectionQuery);
+      var result = _queryManager.GetCollection(_collectionQueryReadOnly);
 
       _objectLoaderMock.Verify();
       _transactionEventSinkWithMock.Verify();
@@ -207,10 +293,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     }
 
     [Test]
-    public void GetCustom_WithNonCustomQuery ()
+    public void GetCustom_WithCollectionReadOnlyQuery_ThrowsArgumentException ()
     {
       Assert.That(
-          () => _queryManager.GetCustom(_collectionQuery, _rowConversion),
+          () => _queryManager.GetCustom(_collectionQueryReadOnly, _rowConversion),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo("A collection or scalar query cannot be used with GetCustom.", "query"));
+    }
+
+    [Test]
+    public void GetCustom_WithCollectionReadWriteQuery_ThrowsArgumentException ()
+    {
+      Assert.That(
+          () => _queryManager.GetCustom(_collectionQueryReadWrite, _rowConversion),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo("A collection or scalar query cannot be used with GetCustom.", "query"));
+    }
+
+    [Test]
+    public void GetCustom_WithScalarReadOnlyQuery_ThrowsArgumentException ()
+    {
+      Assert.That(
+          () => _queryManager.GetCustom(_scalarQueryReadOnly, _rowConversion),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo("A collection or scalar query cannot be used with GetCustom.", "query"));
+    }
+
+    [Test]
+    public void GetCustom_WithScalarReadWriteQuery_ThrowsArgumentException ()
+    {
+      Assert.That(
+          () => _queryManager.GetCustom(_scalarQueryReadWrite, _rowConversion),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("A collection or scalar query cannot be used with GetCustom.", "query"));
     }
@@ -219,15 +332,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     public void GetCustom_WithEagerFetchQueries ()
     {
       var relationEndPointDefinitionStub = new Mock<IRelationEndPointDefinition>();
-      _customQuery.EagerFetchQueries.Add(relationEndPointDefinitionStub.Object, _scalarQuery);
+      _customQueryReadOnly.EagerFetchQueries.Add(relationEndPointDefinitionStub.Object, _scalarQueryReadOnly);
       Assert.That(
-          () => _queryManager.GetCustom(_customQuery, _rowConversion),
+          () => _queryManager.GetCustom(_customQueryReadOnly, _rowConversion),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("A custom query cannot have eager fetch queries defined.", "query"));
     }
 
     [Test]
-    public void GetCustom ()
+    public void GetCustomReadOnly ()
     {
       var fakeRow1 = new Mock<IQueryResultRow>();
       fakeRow1.Setup(stub => stub.GetRawValue(0)).Returns("Fake1");
@@ -237,16 +350,43 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var fakeResult = new[] { fakeRow1.Object, fakeRow2.Object };
 
       _persistenceStrategyMock
-          .Setup(mock => mock.ExecuteCustomQuery(_customQuery))
+          .Setup(mock => mock.ExecuteCustomQuery(_customQueryReadOnly))
           .Returns(fakeResult)
           .Verifiable();
 
       _transactionEventSinkWithMock
-          .Setup(stub => stub.RaiseFilterCustomQueryResultEvent(_customQuery, new object[] { "Fake1", "Fake2" }))
+          .Setup(stub => stub.RaiseFilterCustomQueryResultEvent(_customQueryReadOnly, new object[] { "Fake1", "Fake2" }))
           .Returns((IQuery _, IEnumerable<object> results) => results)
           .Verifiable();
 
-      var result = _queryManager.GetCustom(_customQuery, _rowConversion);
+      var result = _queryManager.GetCustom(_customQueryReadOnly, _rowConversion);
+
+      _persistenceStrategyMock.Verify();
+      _transactionEventSinkWithMock.Verify();
+      Assert.That(result.ToArray(), Is.EqualTo(new[] { "Fake1", "Fake2" }));
+    }
+
+    [Test]
+    public void GetCustomReadWrite ()
+    {
+      var fakeRow1 = new Mock<IQueryResultRow>();
+      fakeRow1.Setup(stub => stub.GetRawValue(0)).Returns("Fake1");
+      var fakeRow2 = new Mock<IQueryResultRow>();
+      fakeRow2.Setup(stub => stub.GetRawValue(0)).Returns("Fake2");
+
+      var fakeResult = new[] { fakeRow1.Object, fakeRow2.Object };
+
+      _persistenceStrategyMock
+          .Setup(mock => mock.ExecuteCustomQuery(_customQueryReadWrite))
+          .Returns(fakeResult)
+          .Verifiable();
+
+      _transactionEventSinkWithMock
+          .Setup(stub => stub.RaiseFilterCustomQueryResultEvent(_customQueryReadWrite, new object[] { "Fake1", "Fake2" }))
+          .Returns((IQuery _, IEnumerable<object> results) => results)
+          .Verifiable();
+
+      var result = _queryManager.GetCustom(_customQueryReadWrite, _rowConversion);
 
       _persistenceStrategyMock.Verify();
       _transactionEventSinkWithMock.Verify();

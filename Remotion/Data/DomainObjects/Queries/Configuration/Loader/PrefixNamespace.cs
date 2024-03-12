@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
     // static members and constants
 
     public static readonly PrefixNamespace QueryConfigurationNamespace = new PrefixNamespace(
-        "q", "http://www.re-motion.org/Data/DomainObjects/Queries/1.0");
+        "q", "http://www.re-motion.org/Data/DomainObjects/Queries/2.0");
 
     // member fields
 

@@ -18,11 +18,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using JetBrains.Annotations;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Linq.ExecutableQueries;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
@@ -31,6 +33,7 @@ using Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Error.SortExpression
 using Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.SortExpressionForPropertyOnDerivedType;
 using Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Linq;
 using Remotion.Linq.Clauses;
@@ -47,6 +50,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
   [TestFixture]
   public class DomainObjectQueryGeneratorTest : StandardMappingTest
   {
+    private class TestableDomainObjectQueryGenerator : DomainObjectQueryGenerator
+    {
+      public new IQuery CreateQuery (
+          string id,
+          StorageProviderDefinition storageProviderDefinition,
+          string statement,
+          CommandParameter[] commandParameters,
+          QueryType queryType,
+          Type selectedEntityType)
+      {
+        return base.CreateQuery(id, storageProviderDefinition, statement, commandParameters, queryType, selectedEntityType);
+      }
+
+      public TestableDomainObjectQueryGenerator ([NotNull] ISqlQueryGenerator sqlQueryGenerator, [NotNull] ITypeConversionProvider typeConversionProvider, [NotNull] IStorageTypeInformationProvider storageTypeInformationProvider, [NotNull] IMappingConfiguration mappingConfiguration)
+          : base(sqlQueryGenerator, typeConversionProvider, storageTypeInformationProvider, mappingConfiguration)
+      {
+      }
+    }
+
     private Mock<ISqlQueryGenerator> _sqlQueryGeneratorMock;
     private ITypeConversionProvider _typeConversionProvider;
     private Mock<IStorageTypeInformationProvider> _storageTypeInformationProviderStub;
@@ -94,7 +116,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       Assert.That(result.ID, Is.EqualTo("id"));
       Assert.That(result.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
       Assert.That(result.Statement, Is.EqualTo("SELECT x"));
-      Assert.That(result.QueryType, Is.EqualTo(QueryType.Scalar));
+      Assert.That(result.QueryType, Is.EqualTo(QueryType.ScalarReadOnly));
       Assert.That(result.CollectionType, Is.Null);
       Assert.That(result.EagerFetchQueries, Is.Empty);
 
@@ -143,7 +165,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       Assert.That(result.ID, Is.EqualTo("id"));
       Assert.That(result.StorageProviderDefinition, Is.EqualTo(TestDomainStorageProviderDefinition));
       Assert.That(result.Statement, Is.EqualTo("SELECT x"));
-      Assert.That(result.QueryType, Is.EqualTo(QueryType.Collection));
+      Assert.That(result.QueryType, Is.EqualTo(QueryType.CollectionReadOnly));
       Assert.That(result.CollectionType, Is.EqualTo(typeof(ObjectList<Order>)));
       Assert.That(result.EagerFetchQueries, Is.Empty);
     }
@@ -162,7 +184,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
 
       _sqlQueryGeneratorMock.Verify();
       Assert.That(result, Is.TypeOf(typeof(DomainObjectSequenceQueryAdapter<IOrder>)));
-      Assert.That(result.QueryType, Is.EqualTo(QueryType.Collection));
+      Assert.That(result.QueryType, Is.EqualTo(QueryType.CollectionReadOnly));
       Assert.That(result.CollectionType, Is.EqualTo(typeof(ObjectList<Order>)));
     }
 
@@ -552,7 +574,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       Assert.That(result.ID, Is.EqualTo("id"));
       Assert.That(result.StorageProviderDefinition, Is.EqualTo(_customerClassDefinition.StorageEntityDefinition.StorageProviderDefinition));
       Assert.That(result.Statement, Is.EqualTo("SELECT x"));
-      Assert.That(result.QueryType, Is.EqualTo(QueryType.Custom));
+      Assert.That(result.QueryType, Is.EqualTo(QueryType.CustomReadOnly));
       Assert.That(result.CollectionType, Is.Null);
       Assert.That(result.EagerFetchQueries, Is.Empty);
 
@@ -597,6 +619,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
                   "Only queries returning DomainObjects can perform eager fetching."));
+    }
+
+    [Test]
+    [TestCase(QueryType.CollectionReadWrite)]
+    [TestCase(QueryType.ScalarReadWrite)]
+    [TestCase(QueryType.CustomReadWrite)]
+    public void CreateReadWriteQuery_ThrowsArgumentException (QueryType queryType)
+    {
+      var generator = new TestableDomainObjectQueryGenerator(
+          _sqlQueryGeneratorMock.Object,
+          _typeConversionProvider,
+          _storageTypeInformationProviderStub.Object,
+          Configuration);
+
+
+      Assert.That(() => generator.CreateQuery(
+          "dummyId",
+          TestDomainStorageProviderDefinition,
+          "select 42",
+          new CommandParameter[0],
+          queryType,
+          typeof(Customer)),
+          Throws.ArgumentException.With
+              .ArgumentExceptionMessageEqualTo("The requested query type '{0}' cannot be used with LiNQ. Only read-only query types are supported.", "queryType")
+          );
     }
 
     private SqlQueryGeneratorResult CreateSqlQueryGeneratorResult (
