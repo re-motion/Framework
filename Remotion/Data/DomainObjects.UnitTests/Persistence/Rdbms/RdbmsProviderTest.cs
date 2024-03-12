@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
           _commandFactoryMock.Object,
           () => _connectionCreatorMock.Object.CreateConnection());
 
-      Assert.That(rdbmsProvider, Is.InstanceOf<RdbmsProvider>());
+      Assert.That(rdbmsProvider.ConnectionString, Is.EqualTo("dummyConnectionString"));
     }
 
     [Test]
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
           _commandFactoryMock.Object,
           () => _connectionCreatorMock.Object.CreateConnection());
 
-      Assert.That(rdbmsProvider, Is.InstanceOf<RdbmsProvider>());
+      Assert.That(rdbmsProvider.ConnectionString, Is.EqualTo("dummyReadOnlyConnectionString"));
     }
 
     [Test]
@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Assert.That(
           rdbmsCtorCall,
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
-              "The connection string 'incorrectConnectionString' is not defined by provider 'RdbmsProviderDefinition: 'dummyProviderDefinition''",
+              "The connection string 'incorrectConnectionString' is not defined by provider 'dummyProviderDefinition'",
               "connectionString"));
     }
 
@@ -556,6 +556,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       var providerWithDifferentID = new RdbmsProvider(
           new RdbmsProviderDefinition("Test", sqlStorageObjectFactory, TestDomainConnectionString, TestDomainConnectionString),
+          TestDomainConnectionString,
           NullPersistenceExtension.Instance,
           _commandFactoryMock.Object,
           () => new SqlConnection());

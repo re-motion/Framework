@@ -39,6 +39,11 @@ public class StorageObjectFactoryStub: IRdbmsStorageObjectFactory
     throw new System.NotImplementedException();
   }
 
+  public StorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+  {
+    throw new System.NotImplementedException();
+  }
+
   public IPersistenceModelLoader CreatePersistenceModelLoader (StorageProviderDefinition storageProviderDefinition)
   {
     throw new System.NotImplementedException();
