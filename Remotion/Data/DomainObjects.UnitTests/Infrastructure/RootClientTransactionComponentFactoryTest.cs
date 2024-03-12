@@ -28,6 +28,7 @@ using Remotion.Data.DomainObjects.Infrastructure.Enlistment;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries.EagerFetching;
 using Remotion.Data.DomainObjects.Tracing;
@@ -51,6 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       _factory = RootClientTransactionComponentFactory.Create(
           SafeServiceLocator.Current.GetInstance<IStorageSettings>(),
+          SafeServiceLocator.Current.GetInstance<IPersistenceManager>(),
           SafeServiceLocator.Current.GetInstance<IPersistenceExtensionFactory>());
       _fakeConstructedTransaction = new TestableClientTransaction();
     }
