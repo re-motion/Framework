@@ -494,34 +494,21 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
 
-      var searchResults = bocAutoComplete.GetSearchServiceResults("D", 1);
+      var searchResults = bocAutoComplete.GetSearchServiceResults("D", 0, 1);
       Assert.That(searchResults.Count, Is.EqualTo(1));
       Assert.That(searchResults[0].UniqueIdentifier, Is.EqualTo("a2752869-e46b-4cfa-b89f-0b824e42b250"));
       Assert.That(searchResults[0].DisplayName, Is.EqualTo("D, "));
       Assert.That(searchResults[0].IconUrl, Does.EndWith("/Remotion.ObjectBinding.Sample.Person.gif"));
 
-      searchResults = bocAutoComplete.GetSearchServiceResults("D", 5);
+      searchResults = bocAutoComplete.GetSearchServiceResults("D", 0, 5);
       Assert.That(searchResults.Count, Is.EqualTo(4));
       Assert.That(searchResults[0].DisplayName, Is.EqualTo("D, "));
 
-      searchResults = bocAutoComplete.GetSearchServiceResults("unexistentValue", 5);
+      var offsetSearchResults = bocAutoComplete.GetSearchServiceResults("D", 1, 4);
+      Assert.That(offsetSearchResults, Is.EqualTo(searchResults.Skip(1)));
+
+      searchResults = bocAutoComplete.GetSearchServiceResults("unexistentValue", 0, 5);
       Assert.That(searchResults.Count, Is.EqualTo(0));
-    }
-
-    [Test]
-    public void TestGetExactSearchServiceResult ()
-    {
-      var home = Start();
-
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
-
-      var searchResult = bocAutoComplete.GetExactSearchServiceResult("D, ");
-      Assert.That(searchResult.UniqueIdentifier, Is.EqualTo("a2752869-e46b-4cfa-b89f-0b824e42b250"));
-      Assert.That(searchResult.DisplayName, Is.EqualTo("D, "));
-      Assert.That(searchResult.IconUrl, Does.EndWith("/Remotion.ObjectBinding.Sample.Person.gif"));
-
-      searchResult = bocAutoComplete.GetExactSearchServiceResult("D");
-      Assert.That(searchResult, Is.Null);
     }
 
     [Test]
@@ -531,7 +518,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
 
-      Assert.That(() => bocAutoComplete.GetSearchServiceResults("throw", 1), Throws.Exception.InstanceOf<WebServiceExecutionException>());
+      Assert.That(() => bocAutoComplete.GetSearchServiceResults("throw", 0, 1), Throws.Exception.InstanceOf<WebServiceExecutionException>());
     }
 
     [Test]

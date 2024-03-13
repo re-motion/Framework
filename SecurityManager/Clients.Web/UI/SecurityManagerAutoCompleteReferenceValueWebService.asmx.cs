@@ -82,6 +82,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
     [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
     public BocAutoCompleteReferenceValueSearchResult Search (
         string searchString,
+        int completionSetOffset,
         int? completionSetCount,
         string? businessObjectClass,
         string? businessObjectProperty,
@@ -103,7 +104,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI
         var referencingObject = businessObjectClassWithIdentity.GetObject(businessObject);
         var result = referenceProperty.SearchAvailableObjects(referencingObject, securityManagerSearchArguments);
         var resultArray = result.Cast<IBusinessObjectWithIdentity>().Select(o => new BusinessObjectWithIdentityProxy(o)).ToArray();
-        return BocAutoCompleteReferenceValueSearchResult.CreateForValueList(resultArray);
+        // TODO RM-9205: Support auto complete result offset (completionSetOffset)
+        return BocAutoCompleteReferenceValueSearchResult.CreateForValueList(resultArray, false);
       }
     }
 
@@ -116,7 +118,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
         string? businessObject,
         string? args)
     {
-      var resultWithValueList = Search(searchString, 2, businessObjectClass, businessObjectProperty, businessObject, args);
+      var resultWithValueList = Search(searchString, 0, 2, businessObjectClass, businessObjectProperty, businessObject, args);
       var result = ((BocAutoCompleteReferenceValueSearchResultWithValueList)resultWithValueList).Values;
       var hasSingleMatch = result.Length == 1;
       if (hasSingleMatch)
