@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
@@ -68,6 +69,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
     public BocAutoCompleteReferenceValueSearchResult Search (
         string searchString,
+        int completionSetOffset,
         int? completionSetCount,
         string businessObjectClass,
         string businessObjectProperty,
@@ -76,6 +78,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     {
       if (searchString == "throw")
         throw new InvalidOperationException("I'm always going to throw an exception if you search for 'throw'!");
+
+      if (searchString == "testlist")
+      {
+        var count = completionSetCount ?? 10;
+        var resultItems = Enumerable.Range(0, 20)
+            .Skip(completionSetOffset)
+            .Take(count)
+            .Select(e => new BusinessObjectWithIdentityProxy { DisplayName = $"Person {e}", UniqueIdentifier = e.ToString() })
+            .ToArray();
+        return BocAutoCompleteReferenceValueSearchResult.CreateForValueList(resultItems, completionSetOffset + count < 20);
+      }
 
       var persons = new List<BusinessObjectWithIdentityProxy>();
       foreach (var person in XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof(Person)))
@@ -90,7 +103,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
       filteredPersons.Sort((left, right) => string.Compare(left.DisplayName, right.DisplayName, StringComparison.OrdinalIgnoreCase));
 
-      return BocAutoCompleteReferenceValueSearchResult.CreateForValueList(filteredPersons.Take(completionSetCount ?? int.MaxValue).ToArray());
+      var resultArray = filteredPersons.Skip(completionSetOffset).Take(completionSetCount ?? int.MaxValue).ToArray();
+      var hasMoreSearchResults = completionSetCount.HasValue && resultArray.Length >= completionSetCount.Value;
+      return BocAutoCompleteReferenceValueSearchResult.CreateForValueList(resultArray, hasMoreSearchResults);
     }
 
     [WebMethod]
@@ -105,7 +120,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
       if (searchString == "throw")
         throw new InvalidOperationException("I'm always going to throw an exception if you search for 'throw'!");
 
-      var resultWithValueList = Search(searchString, 2, businessObjectClass, businessObjectProperty, businessObject, args);
+      var resultWithValueList = Search(searchString, 0, 2, businessObjectClass, businessObjectProperty, businessObject, args);
       var result = ((BocAutoCompleteReferenceValueSearchResultWithValueList)resultWithValueList).Values;
       if (result.Length == 0)
         return null;

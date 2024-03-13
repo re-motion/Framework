@@ -42,6 +42,13 @@ namespace Remotion.BocAutoCompleteReferenceValue
     {
         Type: 'ValueList';
         Values: Remotion.BocAutoCompleteReferenceValue.Item[];
+        HasMoreSearchResults: boolean;
+    }
+
+    export interface BocAutoCompleteReferenceValueCacheableSearchResult
+    {
+        cacheRow: CacheRow;
+        hasMoreSearchResults: boolean;
     }
 
     export type Item = {
@@ -97,7 +104,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
         highlight(value: string, term: string): string;
         scroll: boolean;
         repositionInterval: number;
-        parse(data: BocAutoCompleteReferenceValueSearchResult): Remotion.BocAutoCompleteReferenceValue.CacheRow;
+        parse(data: BocAutoCompleteReferenceValueSearchResult): BocAutoCompleteReferenceValueCacheableSearchResult;
         handleRequestError(err: Sys.Net.WebServiceError): void;
         clearRequestError(err?: Sys.Net.WebServiceError): void;
         serviceUrl: string;
@@ -795,7 +802,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                 if (dropDownTriggered)
                     searchString = options.searchStringValidationParams.getDropDownSearchString(searchString);
 
-                const successHandler = function (q: string, data: Nullable<CacheRow>) {
+                const successHandler = function (q: string, data: BocAutoCompleteReferenceValueCacheableSearchResult) {
                     stopLoading();
                     receiveData (q, data);
                     if (!select.visible() && options.noDataFoundMessage) {
@@ -811,7 +818,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                     closeDropDownListAndSetValue(state.previousValue, false);
                 };
 
-                requestData(searchString, successHandler, failureHandler);
+                requestData(searchString, 0, successHandler, failureHandler);
             } else {
                 stopLoading();
                 select.hide();
@@ -886,12 +893,12 @@ namespace Remotion.BocAutoCompleteReferenceValue
             state.lastKeyPressValue = null;
         };
 
-        function receiveData(q: string, data: Nullable<CacheRow>): void {
+        function receiveData(q: string, data: BocAutoCompleteReferenceValueCacheableSearchResult): void {
             informationPopUp.hide();
             if (data && hasFocus) {
                 select.display(data, q);
-                if (data.length) {
-                    autoFill(q, data[0].result);
+                if (data.cacheRow.length) {
+                    autoFill(q, data.cacheRow[0].result);
                     select.show();
                     if (options.selectFirst (input.value, q)) {
                         select.selectItem (0);
@@ -904,7 +911,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
             }
         };
 
-        function requestData(term: string, success: (term: string, result: Nullable<CacheRow>) => void, failure: (term: string) => void) {
+        function requestData(term: string, offset: number, success: (term: string, result: BocAutoCompleteReferenceValueCacheableSearchResult) => void, failure: (term: string) => void) {
             // re-motion: cancel an already running request
             abortRequest();
 
@@ -917,10 +924,10 @@ namespace Remotion.BocAutoCompleteReferenceValue
 
             options.clearRequestError();
 
-            const data = cache.load(term);
-            // recieve the cached data
-            if (data && data.length) {
-                success(term, data);
+            const cachedSearchResult = cache.load(term, offset);
+            // receive the cached data
+            if (cachedSearchResult && cachedSearchResult.cacheRow.length) {
+                success(term, cachedSearchResult);
 
                 // re-motion: if a webservice url and a method name have been supplied, try loading the data now
             } else if ((typeof options.serviceUrl == "string") && (options.serviceUrl.length > 0)
@@ -933,6 +940,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                 //           under "JSON, objects, and strings: oh my!" for details.
                 const params: Dictionary<unknown> = {
                     searchString: term,
+                    completionSetOffset: offset,
                     completionSetCount: options.max
                 };
                 for (const propertyName in options.extraParams)
@@ -942,7 +950,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                                             function(result: BocAutoCompleteReferenceValueSearchResult) {
                                                 executingRequest = null;
                                                 const parsed = options.parse(result);
-                                                cache.add(term, parsed);
+                                                cache.add(term, offset, parsed);
                                                 success(term, parsed);
                                             } as any,
                                             function(err: Sys.Net.WebServiceError) {
@@ -987,9 +995,9 @@ namespace Remotion.BocAutoCompleteReferenceValue
                                                         executingRequest = null;
                                                         let parsed: Nullable<CacheRowEntry> = null;
                                                         if (result != null) {
-                                                            const resultArray: BocAutoCompleteReferenceValueSearchResultWithValueList = { Type: "ValueList", Values: [result] };
+                                                            const resultArray: BocAutoCompleteReferenceValueSearchResultWithValueList = { Type: "ValueList", Values: [result], HasMoreSearchResults: false };
                                                             const parsedArray = options.parse(resultArray);
-                                                            parsed = parsedArray[0];
+                                                            parsed = parsedArray.cacheRow![0];
                                                         }
                                                         success(term, parsed);
                                                     } as any,
@@ -1037,25 +1045,37 @@ namespace Remotion.BocAutoCompleteReferenceValue
 
     export class Cache {
         private readonly options: Options;
-        private readonly data = new Map<string, CacheRow>();
+        private readonly data = new Map<string, BocAutoCompleteReferenceValueCacheableSearchResult>();
 
         constructor(options: Options) {
             this.options = options;
         }
 
-        public add(q: string, value: CacheRow): void {
+        public add(q: string, offset: number, value: BocAutoCompleteReferenceValueCacheableSearchResult): void {
             if (this.data.size > this.options.cacheLength) {
                 this.flush();
             }
 
-            this.data.set(q, value);
+            if (offset === 0) {
+                this.data.set(q, value);
+            } else {
+                const existingData = this.data.get(q);
+                if (existingData && existingData.cacheRow.length === offset) {
+                    existingData.cacheRow.push(...value.cacheRow);
+                    existingData.hasMoreSearchResults = value.hasMoreSearchResults;
+                }
+                // ignore offset data that does not append to an existing cache line
+            }
         }
 
         public flush(): void {
             this.data.clear();
         }
 
-        public load(q: string): Nullable<CacheRow> {
+        public load(q: string, offset: number): Nullable<BocAutoCompleteReferenceValueCacheableSearchResult> {
+            if (offset !== 0)
+                return null;
+
             return this.data.get(q) || null;
         }
     }
@@ -1372,9 +1392,9 @@ namespace Remotion.BocAutoCompleteReferenceValue
             return -1;
         }
 
-        public display(d: CacheRow, q: string): void {
+        public display(d: BocAutoCompleteReferenceValueCacheableSearchResult, q: string): void {
             this.init();
-            this.data = d;
+            this.data = d.cacheRow;
             this.term = q;
             this.fillList();
         }

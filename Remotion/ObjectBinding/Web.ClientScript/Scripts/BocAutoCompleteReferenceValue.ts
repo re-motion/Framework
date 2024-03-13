@@ -142,7 +142,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
           {
             const valueList = data as Remotion.BocAutoCompleteReferenceValue.BocAutoCompleteReferenceValueSearchResultWithValueList;
 
-            return valueList.Values.map(function (row)
+            const cacheRow = valueList.Values.map(function (row)
             {
               row.IsAnnotation = row.UniqueIdentifier === nullValueString;
 
@@ -152,6 +152,11 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
                 result: row.IsAnnotation ? '' : row.DisplayName
               };
             });
+
+            return {
+              cacheRow,
+              hasMoreSearchResults: valueList.HasMoreSearchResults
+            };
           }
           else
           {

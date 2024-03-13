@@ -57,5 +57,42 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       get { return _iconUrl; }
     }
+
+    protected bool Equals (SearchServiceResultItem other)
+    {
+      return _uniqueIdentifier == other._uniqueIdentifier && _displayName == other._displayName && _iconUrl == other._iconUrl;
+    }
+
+    public override bool Equals (object? obj)
+    {
+      if (ReferenceEquals(null, obj))
+        return false;
+      if (ReferenceEquals(this, obj))
+        return true;
+      if (obj.GetType() != this.GetType())
+        return false;
+      return Equals((SearchServiceResultItem)obj);
+    }
+
+    public override int GetHashCode ()
+    {
+      unchecked
+      {
+        var hashCode = _uniqueIdentifier.GetHashCode();
+        hashCode = (hashCode * 397) ^ _displayName.GetHashCode();
+        hashCode = (hashCode * 397) ^ (_iconUrl != null ? _iconUrl.GetHashCode() : 0);
+        return hashCode;
+      }
+    }
+
+    public static bool operator == (SearchServiceResultItem? left, SearchServiceResultItem? right)
+    {
+      return Equals(left, right);
+    }
+
+    public static bool operator != (SearchServiceResultItem? left, SearchServiceResultItem? right)
+    {
+      return !Equals(left, right);
+    }
   }
 }
