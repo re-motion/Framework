@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
@@ -23,6 +24,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
   public static class QueryObjectMother
   {
+    public static IReadOnlyDictionary<string, object> EmptyMetadata { get; } = new Dictionary<string, object>();
+
     public static IQuery Create ()
     {
       return new Query(CreateQueryDefinition(), new QueryParameterCollection());

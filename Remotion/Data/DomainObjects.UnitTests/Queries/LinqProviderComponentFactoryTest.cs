@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -123,7 +124,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateQueryExecutor ()
     {
-      var executor = _factory.CreateQueryExecutor(TestDomainStorageProviderDefinition);
+      var metadata = new Dictionary<string, object>
+                     {
+                       { "dummyKey", "dummyValue" }
+                     };
+
+      var executor = _factory.CreateQueryExecutor(TestDomainStorageProviderDefinition, "dummyID", metadata);
 
       Assert.That(executor, Is.TypeOf<DomainObjectQueryExecutor>());
 
@@ -132,12 +138,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       Assert.That(
           ((DomainObjectQueryGenerator)domainObjectQueryExecutor.QueryGenerator).MappingConfiguration,
           Is.SameAs(MappingConfiguration.Current));
+      Assert.That(domainObjectQueryExecutor.ID, Is.EqualTo("dummyID"));
+      Assert.That(domainObjectQueryExecutor.Metadata, Is.SameAs(metadata));
     }
 
     [Test]
     public void CreateQueryExecutor_MethodCallTransformerProvider ()
     {
-      var executor = _factory.CreateQueryExecutor(TestDomainStorageProviderDefinition);
+      var executor = _factory.CreateQueryExecutor(TestDomainStorageProviderDefinition, "id", QueryObjectMother.EmptyMetadata);
       var provider = GetMethodCallTransformerProviderFromExecutor(executor);
 
       var toStringMethod = ToStringMethodCallTransformer.SupportedMethods[0];
@@ -154,7 +162,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateQueryExecutor_ResultOperatorHandlerRegistry ()
     {
-      var executor = _factory.CreateQueryExecutor(TestDomainStorageProviderDefinition);
+      var executor = _factory.CreateQueryExecutor(TestDomainStorageProviderDefinition, "id", QueryObjectMother.EmptyMetadata);
       var nodeTypeRegistry = GetResultOperatorHandlerRegistryFromExecutor(executor);
 
       Assert.That(nodeTypeRegistry.GetItem(typeof(CountResultOperator)), Is.TypeOf(typeof(CountResultOperatorHandler)));
