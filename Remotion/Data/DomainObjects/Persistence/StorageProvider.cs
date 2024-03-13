@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Persistence
   /// determine the calling <see cref="RootPersistenceStrategy"/> as that property is not guaranteed to be 
   /// set by the caller.
   /// </remarks>
-  public abstract class StorageProvider : IDisposable
+  public abstract class StorageProvider : IStorageProvider
   {
     private StorageProviderDefinition _storageProviderDefinition;
     private bool _disposed;
