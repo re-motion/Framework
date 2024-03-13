@@ -103,7 +103,6 @@ namespace Remotion.BocAutoCompleteReferenceValue
         serviceUrl: string;
         serviceMethodSearch: string;
         serviceMethodSearchExact: string;
-        data: Nullable<Item[]>;
     };
 
     // This type contains the properties that are required to be passed into the .autocomplete() function
@@ -234,7 +233,6 @@ namespace Remotion.BocAutoCompleteReferenceValue
             serviceUrl: serviceUrl,
             serviceMethodSearch: serviceMethodSearch,
             serviceMethodSearchExact: serviceMethodSearchExact,
-            data: null,
         }, initialOptions as RequiredOptions);
 
         // if highlight is set to false, replace it with a do-nothing function
@@ -595,10 +593,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
             },
             setOptions: function(newOptions: Options): AutoCompletePublicApi {
                 Object.assign(options, newOptions);
-                // if we've updated the data, repopulate
-                if ("data" in newOptions)
-                    cache.populate();
-                
+
                 return this;
             },
             showInformationPopUp: function (message: string): AutoCompletePublicApi {
@@ -1039,94 +1034,29 @@ namespace Remotion.BocAutoCompleteReferenceValue
         result: string;
     };
     export type CacheRow = CacheRowEntry[];
-    export type CacheLookup = { [firstChar: string]: CacheRow | undefined };
 
     export class Cache {
         private readonly options: Options;
-
-        private data: CacheLookup = {};
-        private length: number = 0;
-        public add(q: string, value: CacheRow): void {
-            if (this.length > this.options.cacheLength) {
-                this.flush();
-            }
-            if (!this.data[q]) {
-                this.length++;
-            }
-            this.data[q] = value;
-        }
-
-        public populate(): Optional<boolean> {
-            if (!this.options.data) return false;
-            // track the matches
-            const stMatchSets: Dictionary<CacheRow> = {};
-            let nullData = 0;
-
-            // no url was specified, we need to adjust the cache length to make sure it fits the local data store
-            if (!this.options.serviceUrl) this.options.cacheLength = 1;
-
-            // track all options for empty search strings
-            stMatchSets[""] = [];
-
-            // loop through the array and create a lookup structure
-            for (let i = 0, ol = this.options.data.length; i < ol; i++) {
-                let rawValue = this.options.data[i];
-
-                const value = this.options.formatMatch(rawValue);
-                if (value === false)
-                    continue;
-
-                const firstChar = value.charAt(0).toLowerCase();
-                // if no lookup array for this character exists, look it up now
-                if (!stMatchSets[firstChar])
-                    stMatchSets[firstChar] = [];
-
-                // if the match is a string
-                const row: CacheRowEntry = {
-                    value: value,
-                    data: rawValue,
-                    result: this.options.formatResult && this.options.formatResult(rawValue) || value
-                };
-
-                // push the current match into the set list
-                stMatchSets[firstChar]!.push(row);
-
-                // keep track of empty search string items
-                if (nullData++ < this.options.max) {
-                    stMatchSets[""].push(row);
-                }
-            };
-
-            // add the data items to the cache
-            for (const [key, value] of Object.entries(stMatchSets)) {
-                // increase the cache size
-                this.options.cacheLength++;
-                // add to the cache
-                this.add(key, value!);
-            }
-        }
-
-        public flush(): void {
-            this.data = {};
-            this.length = 0;
-        }
-
-        public load(q: string): Nullable<CacheRow> {
-            if (!this.options.cacheLength || !this.length)
-                return null;
-
-            // if the exact item exists, use it
-            if (this.data[q]) {
-                return this.data[q]!;
-            }
-            return null;
-        }
+        private readonly data = new Map<string, CacheRow>();
 
         constructor(options: Options) {
             this.options = options;
+        }
 
-            // populate any existing data
-            setTimeout(this.populate.bind(this), 25);
+        public add(q: string, value: CacheRow): void {
+            if (this.data.size > this.options.cacheLength) {
+                this.flush();
+            }
+
+            this.data.set(q, value);
+        }
+
+        public flush(): void {
+            this.data.clear();
+        }
+
+        public load(q: string): Nullable<CacheRow> {
+            return this.data.get(q) || null;
         }
     }
 
