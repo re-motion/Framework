@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries.Configuration;
@@ -31,6 +32,11 @@ namespace Remotion.Data.DomainObjects.Queries
     /// Gets a unique identifier for the query.
     /// </summary>
     string ID { get; }
+
+    /// <summary>
+    /// Gets metadata associated with the query. If provided, this information can be used for diagnostic and query-hint purposes.
+    /// </summary>
+    IReadOnlyDictionary<string, object> Metadata { get; }
 
     /// <summary>
     /// Gets the statement of the query.

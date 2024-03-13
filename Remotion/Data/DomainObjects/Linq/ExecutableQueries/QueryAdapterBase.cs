@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
@@ -47,6 +48,11 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
     public string ID
     {
       get { return _query.ID; }
+    }
+
+    public IReadOnlyDictionary<string, object> Metadata
+    {
+      get { return _query.Metadata; }
     }
 
     public string Statement
