@@ -1271,6 +1271,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
+    [Obsolete("Context menu is not compatible with keyboard navigation. See RM-9153", false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [Browsable(false)]
     public WebTreeViewMenuItemProvider? MenuItemProvider

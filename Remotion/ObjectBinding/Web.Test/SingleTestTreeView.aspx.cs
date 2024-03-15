@@ -161,8 +161,10 @@ namespace OBWTest
 
       WebTreeView.SetEvaluateTreeNodeDelegate(new EvaluateWebTreeNode(EvaluateTreeNode));
 
+#pragma warning disable CS0618 // Type or member is obsolete
       WebTreeView.MenuItemProvider = new TestWebTreeViewMenuItemProvider();
       PersonTreeViewWithMenus.MenuItemProvider = new TestBocTreeViewMenuItemProvider();
+#pragma warning restore CS0618 // Type or member is obsolete
     }
 
     private void EvaluateTreeNode (WebTreeNode node)

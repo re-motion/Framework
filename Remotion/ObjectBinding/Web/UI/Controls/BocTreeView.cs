@@ -1012,6 +1012,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return (BocTreeNode?)_treeView.SelectedNode; }
     }
 
+    [Obsolete("Context menu is not compatible with keyboard navigation. See RM-9153", false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [Browsable(false)]
     public BocTreeViewMenuItemProvider? MenuItemProvider
