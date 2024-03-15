@@ -48,7 +48,7 @@ ul.treeViewRoot ul.treeViewTopLevelNodeChildren
 }
 
 ul.treeViewRoot span.treeViewNodeHeadSelected a:focus,
-ul.treeViewRoot li[role=treeitem]
+ul.treeViewRoot a[role=treeitem]
 {
   outline: none;
 }
@@ -60,20 +60,20 @@ ul.treeViewRoot li > span.treeViewNode
   border-radius: var(--remotion-themed-border-radius);
 }
 
-ul.treeViewRoot li[aria-selected=true] > span.treeViewNode
+ul.treeViewRoot span.treeViewNode:has(a[aria-selected=true])
 {
   background-color: var(--color-highlight);
   border-color: var(--color-highlight);
 }
 
-ul.treeViewRoot li > span.treeViewNode:hover
+ul.treeViewRoot span.treeViewNode:hover
 {
   background-color: var(--remotion-themed-background-color-hover);
   border: var(--remotion-themed-border-hover);
   box-shadow: var(--remotion-themed-box-shadow-hover);
 }
 
-ul.treeViewRoot li:focus > span.treeViewNode
+ul.treeViewRoot span.treeViewNode:has(a:focus)
 {
   outline: var(--remotion-themed-outline-focus);
   outline-offset: var(--remotion-themed-outline-offset-focus);
@@ -82,7 +82,7 @@ ul.treeViewRoot li:focus > span.treeViewNode
   box-shadow: var(--remotion-themed-box-shadow-focus);
 }
 
-ul.treeViewRoot li:focus > span.treeViewNode:hover
+ul.treeViewRoot span.treeViewNode:hover:has(a:focus)
 {
   outline: var(--remotion-themed-outline-focus-hover);
   outline-offset: var(--remotion-themed-outline-offset-focus-hover);
@@ -91,7 +91,7 @@ ul.treeViewRoot li:focus > span.treeViewNode:hover
   box-shadow: var(--remotion-themed-box-shadow-focus-hover);
 }
 
-ul.treeViewRoot li[aria-selected=true]:focus > span.treeViewNode
+ul.treeViewRoot span.treeViewNode:has(a[aria-selected=true]:focus)
 {
   outline: var(--remotion-themed-outline-focus);
   outline-offset: var(--remotion-themed-outline-offset-focus);
@@ -100,7 +100,7 @@ ul.treeViewRoot li[aria-selected=true]:focus > span.treeViewNode
   box-shadow: var(--remotion-themed-box-shadow-focus);
 }
 
-ul.treeViewRoot li[aria-selected=true]:focus > span.treeViewNode:hover
+ul.treeViewRoot span.treeViewNode:hover:has(a[aria-selected=true]:focus)
 {
   outline: var(--remotion-themed-outline-focus-hover);
   outline-offset: var(--remotion-themed-outline-offset-focus-hover);
@@ -174,8 +174,8 @@ ul.treeViewRoot span.treeViewNode span.treeViewNodeBadge
   align-self: start;
 }
 
-ul.treeViewRoot li:focus > ul > li:first-of-type span.treeViewNode:not(:hover) span.treeViewNodeBadge,
-ul.treeViewRoot li:focus + li span.treeViewNode:not(:hover) span.treeViewNodeBadge
+ul.treeViewRoot li:has(a:focus) > ul > li:first-of-type span.treeViewNode:not(:hover) span.treeViewNodeBadge,
+ul.treeViewRoot li:has(a:focus) + li span.treeViewNode:not(:hover) span.treeViewNodeBadge
 {
   /* Simulate continued box-shadow from previous element due to the badge-element hiding the shadow-effect. */
   --rounding-value: 0.5px;
@@ -183,8 +183,8 @@ ul.treeViewRoot li:focus + li span.treeViewNode:not(:hover) span.treeViewNodeBad
   box-shadow: inset 0 calc(1px + var(--treeview-node-padding-vertical) + var(--rounding-value)) 5px -5px rgba(0, 0, 0, 0.3);
 }
 
-ul.treeViewRoot li[aria-selected=true] > span.treeViewNode span.treeViewNodeBadge,
-ul.treeViewRoot li[aria-selected=true]:focus > span.treeViewNode span.treeViewNodeBadge
+ul.treeViewRoot span.treeViewNode:has(a[aria-selected=true]) span.treeViewNodeBadge,
+ul.treeViewRoot span.treeViewNode:has(a[aria-selected=true]:focus) span.treeViewNodeBadge
 {
   background-color: var(--color-highlight);
 }
@@ -194,12 +194,12 @@ ul.treeViewRoot span.treeViewNode:hover span.treeViewNodeBadge
   background-color: var(--remotion-themed-background-color-hover);
 }
 
-ul.treeViewRoot li:focus > span.treeViewNode span.treeViewNodeBadge
+ul.treeViewRoot span.treeViewNode:has(a:focus) span.treeViewNodeBadge
 {
   background-color: var(--remotion-themed-background-color-focus);
 }
 
-ul.treeViewRoot li:focus > span.treeViewNode:hover span.treeViewNodeBadge
+ul.treeViewRoot span.treeViewNode:hover:has(a:focus) span.treeViewNodeBadge
 {
   background-color: var(--remotion-themed-background-color-focus-hover);
 }

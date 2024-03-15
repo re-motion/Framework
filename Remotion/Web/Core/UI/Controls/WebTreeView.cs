@@ -659,20 +659,11 @@ namespace Remotion.Web.UI.Controls
         }
 
         writer.AddAttribute(HtmlTextWriterAttribute.Id, "Node_" + nodeID);
-        writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.TreeItem);
-        if (hasChildren || !node.IsEvaluated)
-        {
-          writer.AddAttribute(
-              HtmlTextWriterAttribute2.AriaExpanded,
-              node.IsExpanded ? HtmlAriaExpandedAttributeValue.True : HtmlAriaExpandedAttributeValue.False);
-        }
-        if (node.IsSelected)
-        {
-          writer.AddAttribute(HtmlTextWriterAttribute2.AriaSelected, HtmlAriaSelectedAttributeValue.True);
-        }
-        writer.AddAttribute("tabindex", _focusededNode == node ? "0" : "-1");
+
         if (EnableTopLevelGrouping && isTopLevel && !isLastNode && nodes[i].Category != nodes[i + 1].Category)
           writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeCategorySeparator);
+
+        writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
 
         writer.RenderBeginTag(HtmlTextWriterTag.Li); // Begin node block
 
@@ -681,7 +672,7 @@ namespace Remotion.Web.UI.Controls
 
         RenderNodeHead(writer, node, isFirstNode, isLastNode, hasExpander, node.IsSelected, nodePath, nodeID, nestingDepth);
         if (hasChildren && node.IsExpanded)
-          RenderNodeChildren(writer, node, isLastNode, hasExpander, nodeIDAlgorithm, nestingDepth);
+          RenderNodeChildren(writer, node, isLastNode, hasExpander, nodeID, nodeIDAlgorithm, nestingDepth);
 
         writer.RenderEndTag(); // End node block
       }
@@ -782,6 +773,7 @@ namespace Remotion.Web.UI.Controls
         writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeHeadSelected);
       else
         writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeHead);
+
       if (!node.ToolTip.IsEmpty)
         node.ToolTip.AddAttributeTo(writer, HtmlTextWriterAttribute.Title);
 
@@ -794,8 +786,23 @@ namespace Remotion.Web.UI.Controls
       if (_renderingFeatures.EnableDiagnosticMetadata)
         writer.AddAttribute(DiagnosticMetadataAttributes.TriggersPostBack, "true");
       writer.AddAttribute(HtmlTextWriterAttribute.Id, "Head_" + nodeID);
-      writer.AddAttribute("tabindex", "-1");
-      writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
+      writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.TreeItem);
+      writer.AddAttribute("tabindex", _focusededNode == node ? "0" : "-1");
+
+      if(node.IsSelected)
+        writer.AddAttribute(HtmlTextWriterAttribute2.AriaSelected, HtmlAriaSelectedAttributeValue.True);
+
+      bool hasChildren = node.Children.Count > 0;
+      bool isEvaluated = node.IsEvaluated;
+      if (hasChildren || !isEvaluated)
+      {
+        writer.AddAttribute(
+            HtmlTextWriterAttribute2.AriaExpanded,
+            node.IsExpanded ? HtmlAriaExpandedAttributeValue.True : HtmlAriaExpandedAttributeValue.False);
+      }
+      if (node.IsExpanded)
+        writer.AddAttribute(HtmlTextWriterAttribute2.AriaOwns, CreateNodeChildrenID(nodeID));
+
       writer.RenderBeginTag(HtmlTextWriterTag.A);
       if (_treeNodeRenderMethod == null)
       {
@@ -810,11 +817,27 @@ namespace Remotion.Web.UI.Controls
           node.Text.WriteTo(writer);
           writer.RenderEndTag();
         }
+
+        RenderNodeLabelScreenReaderText(writer, node);
       }
       else
         _treeNodeRenderMethod.Invoke(writer, node);
       writer.RenderEndTag();
 
+      writer.RenderEndTag();
+    }
+
+    /// <summary> Renders the <paramref name="node"/>'s screenReader text (if there is one) onto the <paremref name="writer"/>. </summary>
+    private void RenderNodeLabelScreenReaderText (HtmlTextWriter writer, WebTreeNode node)
+    {
+      var badge = node.Badge;
+      if (badge == null || badge.Value.IsEmpty || badge.Description.IsEmpty)
+        return;
+
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassScreenReaderText);
+      writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      writer.Write(".");
+      badge.Description.WriteTo(writer);
       writer.RenderEndTag();
     }
 
@@ -827,6 +850,7 @@ namespace Remotion.Web.UI.Controls
 
       badge.Description.AddAttributeTo(writer, HtmlTextWriterAttribute.Title);
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeBadge);
+      //The screenreader text has been moved  inside the <a> element, as that is the treeitem which is read out to the screenreader.
       writer.AddAttribute(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
       writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
@@ -835,15 +859,6 @@ namespace Remotion.Web.UI.Controls
       writer.RenderEndTag();
 
       writer.RenderEndTag();
-
-      if (!badge.Description.IsEmpty)
-      {
-        writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassScreenReaderText);
-        writer.RenderBeginTag(HtmlTextWriterTag.Span);
-        writer.Write(".");
-        badge.Description.WriteTo(writer);
-        writer.RenderEndTag();
-      }
     }
 
     private string GetClickCommandArgument (string nodePath)
@@ -852,7 +867,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Renders the <paramref name="node"/>'s children onto the <paremref name="writer"/>. </summary>
-    private void RenderNodeChildren (HtmlTextWriter writer, WebTreeNode node, bool isLastNode, bool hasExpander, HashAlgorithm nodeIDAlgorithm, int nestingDepth)
+    private void RenderNodeChildren (HtmlTextWriter writer, WebTreeNode node, bool isLastNode, bool hasExpander, string nodeID, HashAlgorithm nodeIDAlgorithm, int nestingDepth)
     {
       if (!hasExpander)
         writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTopLevelNodeChildren);
@@ -861,11 +876,17 @@ namespace Remotion.Web.UI.Controls
       else
         writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeChildren);
       writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Group);
+      writer.AddAttribute(HtmlTextWriterAttribute.Id, CreateNodeChildrenID(nodeID));
       writer.RenderBeginTag(HtmlTextWriterTag.Ul); // Begin child nodes
 
       RenderNodes(writer, node.Children, false, nodeIDAlgorithm, nestingDepth + 1);
 
       writer.RenderEndTag(); // End child nodes
+    }
+
+    private string CreateNodeChildrenID (string nodeID)
+    {
+      return $"Node_{nodeID}_Children";
     }
 
     /// <summary> Renders a dummy tree for design mode. </summary>

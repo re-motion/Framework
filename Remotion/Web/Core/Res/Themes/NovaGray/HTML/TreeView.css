@@ -34,7 +34,7 @@ ul.treeViewNodeChildrenNoLines
   list-style: none;
 }
 
-ul.treeViewRoot li
+ul.treeViewRoot a
 {
   outline: none;
 }
@@ -126,9 +126,9 @@ span.treeViewNodeHeadSelected a
   color: Black;
 }
 
-li:focus > span.treeViewNode span.treeViewNodeHead a,
+span.treeViewNodeHead a:focus,
 span.treeViewNodeHead a:hover,
-li:focus > span.treeViewNode span.treeViewNodeHeadSelected a,
+span.treeViewNodeHeadSelected a:focus,
 span.treeViewNodeHeadSelected a:hover
 {
   padding: 1px;
@@ -146,9 +146,9 @@ span.treeViewNodeHeadSelected a:focus
   outline: none;
 }
 
-li:focus > span.treeViewNode span.treeViewNodeHead a > span,
-li:focus > span.treeViewNode span.treeViewNodeHead a:hover > span,
-li:focus > span.treeViewNode span.treeViewNodeHeadSelected a > span
+span.treeViewNodeHead a:focus > span,
+span.treeViewNodeHead a:focus:hover > span,
+span.treeViewNodeHeadSelected a:focus > span
 {
   text-decoration: underline;
 }
