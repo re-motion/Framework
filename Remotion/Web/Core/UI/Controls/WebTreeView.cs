@@ -659,18 +659,7 @@ namespace Remotion.Web.UI.Controls
         }
 
         writer.AddAttribute(HtmlTextWriterAttribute.Id, "Node_" + nodeID);
-        writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.TreeItem);
-        if (hasChildren || !node.IsEvaluated)
-        {
-          writer.AddAttribute(
-              HtmlTextWriterAttribute2.AriaExpanded,
-              node.IsExpanded ? HtmlAriaExpandedAttributeValue.True : HtmlAriaExpandedAttributeValue.False);
-        }
-        if (node.IsSelected)
-        {
-          writer.AddAttribute(HtmlTextWriterAttribute2.AriaSelected, HtmlAriaSelectedAttributeValue.True);
-        }
-        writer.AddAttribute("tabindex", _focusededNode == node ? "0" : "-1");
+
         if (EnableTopLevelGrouping && isTopLevel && !isLastNode && nodes[i].Category != nodes[i + 1].Category)
           writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeCategorySeparator);
 
@@ -681,7 +670,7 @@ namespace Remotion.Web.UI.Controls
 
         RenderNodeHead(writer, node, isFirstNode, isLastNode, hasExpander, node.IsSelected, nodePath, nodeID, nestingDepth);
         if (hasChildren && node.IsExpanded)
-          RenderNodeChildren(writer, node, isLastNode, hasExpander, nodeIDAlgorithm, nestingDepth);
+          RenderNodeChildren(writer, node, isLastNode, hasExpander, nodeID, nodeIDAlgorithm, nestingDepth);
 
         writer.RenderEndTag(); // End node block
       }
@@ -779,9 +768,14 @@ namespace Remotion.Web.UI.Controls
     private void RenderNodeLabel (HtmlTextWriter writer, WebTreeNode node, string nodePath, string nodeID)
     {
       if (node.IsSelected)
+      {
         writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeHeadSelected);
+      }
       else
+      {
         writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeHead);
+      }
+
       if (!node.ToolTip.IsEmpty)
         node.ToolTip.AddAttributeTo(writer, HtmlTextWriterAttribute.Title);
 
@@ -794,8 +788,23 @@ namespace Remotion.Web.UI.Controls
       if (_renderingFeatures.EnableDiagnosticMetadata)
         writer.AddAttribute(DiagnosticMetadataAttributes.TriggersPostBack, "true");
       writer.AddAttribute(HtmlTextWriterAttribute.Id, "Head_" + nodeID);
-      writer.AddAttribute("tabindex", "-1");
-      writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
+      writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.TreeItem);
+      writer.AddAttribute("tabindex", _focusededNode == node ? "0" : "-1");
+
+      if(node.IsSelected)
+        writer.AddAttribute(HtmlTextWriterAttribute2.AriaSelected, HtmlAriaSelectedAttributeValue.True);
+
+      bool hasChildren = node.Children.Count > 0;
+      bool isEvaluated = node.IsEvaluated;
+      if (hasChildren || !isEvaluated)
+      {
+        writer.AddAttribute(
+            HtmlTextWriterAttribute2.AriaExpanded,
+            node.IsExpanded ? HtmlAriaExpandedAttributeValue.True : HtmlAriaExpandedAttributeValue.False);
+      }
+      if (node.IsExpanded)
+        writer.AddAttribute(HtmlTextWriterAttribute2.AriaOwns, CreateSubTreeNodeID(nodeID));
+
       writer.RenderBeginTag(HtmlTextWriterTag.A);
       if (_treeNodeRenderMethod == null)
       {
@@ -852,7 +861,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Renders the <paramref name="node"/>'s children onto the <paremref name="writer"/>. </summary>
-    private void RenderNodeChildren (HtmlTextWriter writer, WebTreeNode node, bool isLastNode, bool hasExpander, HashAlgorithm nodeIDAlgorithm, int nestingDepth)
+    private void RenderNodeChildren (HtmlTextWriter writer, WebTreeNode node, bool isLastNode, bool hasExpander, string parentNodeID, HashAlgorithm nodeIDAlgorithm, int nestingDepth)
     {
       if (!hasExpander)
         writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTopLevelNodeChildren);
@@ -861,11 +870,17 @@ namespace Remotion.Web.UI.Controls
       else
         writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeChildren);
       writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Group);
+      writer.AddAttribute(HtmlTextWriterAttribute.Id, CreateSubTreeNodeID(parentNodeID));
       writer.RenderBeginTag(HtmlTextWriterTag.Ul); // Begin child nodes
 
       RenderNodes(writer, node.Children, false, nodeIDAlgorithm, nestingDepth + 1);
 
       writer.RenderEndTag(); // End child nodes
+    }
+
+    private string CreateSubTreeNodeID (string nodeID)
+    {
+      return $"Node_{nodeID}_SubTree";
     }
 
     /// <summary> Renders a dummy tree for design mode. </summary>
