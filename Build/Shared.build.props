@@ -48,6 +48,7 @@
   <PropertyGroup>
     <ProjectFeaturesRoot>$(MSBuildThisFileDirectory)ProjectFeatures\</ProjectFeaturesRoot>
     <!-- Enable source link for .NET Core but not for .NET Framework -->
+    <SuppressImplicitGitSourceLink Condition="'$(TargetFramework)' == 'net48'">true</SuppressImplicitGitSourceLink>
     <UseSourceLink Condition="'$(UseSourceLink)' == '' AND '$(TargetFramework)' == 'net48'">false</UseSourceLink>
     <UseSourceLink Condition="'$(UseSourceLink)' == ''">true</UseSourceLink>
   </PropertyGroup>
