@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Development.UnitTesting;
@@ -33,6 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         : this(
             RootClientTransactionComponentFactory.Create(
                 SafeServiceLocator.Current.GetInstance<IStorageSettings>(),
+                SafeServiceLocator.Current.GetInstance<IPersistenceService>(),
                 SafeServiceLocator.Current.GetInstance<IPersistenceExtensionFactory>()))
     {
     }

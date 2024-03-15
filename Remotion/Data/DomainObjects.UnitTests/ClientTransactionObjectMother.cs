@@ -26,6 +26,7 @@ using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Tracing;
@@ -40,6 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var componentFactory = RootClientTransactionComponentFactory.Create(
           SafeServiceLocator.Current.GetInstance<IStorageSettings>(),
+          SafeServiceLocator.Current.GetInstance<IPersistenceService>(),
           SafeServiceLocator.Current.GetInstance<IPersistenceExtensionFactory>());
       return new Mock<ClientTransaction>(MockBehavior.Strict, componentFactory);
     }
@@ -184,7 +186,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static ClientTransaction CreateWithCustomListeners (params IClientTransactionListener[] listeners)
     {
-      var componentFactoryPartialMock = new Mock<RootClientTransactionComponentFactory>(Mock.Of<IStorageSettings>(), Mock.Of<IPersistenceExtensionFactory>()) { CallBase = true };
+      var componentFactoryPartialMock = new Mock<RootClientTransactionComponentFactory>(Mock.Of<IStorageSettings>(), Mock.Of<IPersistenceService>(), Mock.Of<IPersistenceExtensionFactory>()) { CallBase = true };
       componentFactoryPartialMock
           .Protected()
           .Setup<IEnumerable<IClientTransactionListener>>("CreateListeners", true, ItExpr.IsAny<ClientTransaction>())

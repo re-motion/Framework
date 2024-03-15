@@ -15,28 +15,39 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Moq;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Persistence;
-using Remotion.Data.DomainObjects.Persistence.Configuration;
-using Remotion.Data.DomainObjects.Tracing;
+using Remotion.ServiceLocation;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 {
   [TestFixture]
-  public class RootPersistenceStrategyTest
+  public class IPersistenceServiceTest
   {
-    private RootPersistenceStrategy _rootPersistenceStrategy;
+    private DefaultServiceLocator _serviceLocator;
 
     [SetUp]
     public void SetUp ()
     {
-      _rootPersistenceStrategy = new RootPersistenceStrategy(
-          Guid.Empty,
-          Mock.Of<IStorageSettings>(),
-          Mock.Of<IPersistenceService>(),
-          Mock.Of<IPersistenceExtensionFactory>());
+      _serviceLocator = DefaultServiceLocator.Create();
+    }
+
+    [Test]
+    public void GetInstance_Once ()
+    {
+      var service = _serviceLocator.GetInstance<IPersistenceService>();
+
+      Assert.That(service, Is.Not.Null);
+      Assert.That(service, Is.TypeOf(typeof(PersistenceService)));
+    }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var service1 = _serviceLocator.GetInstance<IPersistenceService>();
+      var service2 = _serviceLocator.GetInstance<IPersistenceService>();
+
+      Assert.That(service1, Is.SameAs(service2));
     }
   }
 }

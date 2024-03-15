@@ -24,13 +24,13 @@ using Remotion.Data.DomainObjects.Infrastructure.Enlistment;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries.EagerFetching;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.FunctionalProgramming;
 using Remotion.Mixins;
 using Remotion.TypePipe;
-using Remotion.TypePipe.Implementation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
@@ -42,26 +42,37 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   public class RootClientTransactionComponentFactory : ClientTransactionComponentFactoryBase
   {
     private readonly IStorageSettings _storageSettings;
+    private readonly IPersistenceService _persistenceService;
     private readonly IPersistenceExtensionFactory _persistenceExtensionFactory;
 
-    public static RootClientTransactionComponentFactory Create (IStorageSettings storageSettings, IPersistenceExtensionFactory persistenceExtensionFactory)
+    public static RootClientTransactionComponentFactory Create (
+            IStorageSettings storageSettings,
+            IPersistenceService persistenceService,
+            IPersistenceExtensionFactory persistenceExtensionFactory)
     {
       ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
+      ArgumentUtility.CheckNotNull("persistenceService", persistenceService);
       ArgumentUtility.CheckNotNull("persistenceExtensionFactory", persistenceExtensionFactory);
 
       return ObjectFactory.Create<RootClientTransactionComponentFactory>(
           true,
-          new ParamListImplementation<IStorageSettings, IPersistenceExtensionFactory>(
+          ParamList.Create(
               storageSettings,
+              persistenceService,
               persistenceExtensionFactory));
     }
 
-    protected RootClientTransactionComponentFactory (IStorageSettings storageSettings, IPersistenceExtensionFactory persistenceExtensionFactory)
+    protected RootClientTransactionComponentFactory (
+        IStorageSettings storageSettings,
+        IPersistenceService persistenceService,
+        IPersistenceExtensionFactory persistenceExtensionFactory)
     {
       ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
+      ArgumentUtility.CheckNotNull("persistenceService", persistenceService);
       ArgumentUtility.CheckNotNull("persistenceExtensionFactory", persistenceExtensionFactory);
 
       _storageSettings = storageSettings;
+      _persistenceService = persistenceService;
       _persistenceExtensionFactory = persistenceExtensionFactory;
     }
 
@@ -101,6 +112,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
           ParamList.Create(
               constructedTransaction.ID,
               _storageSettings,
+              _persistenceService,
               _persistenceExtensionFactory)
           );
     }
