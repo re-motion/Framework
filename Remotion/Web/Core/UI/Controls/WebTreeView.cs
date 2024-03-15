@@ -663,6 +663,8 @@ namespace Remotion.Web.UI.Controls
         if (EnableTopLevelGrouping && isTopLevel && !isLastNode && nodes[i].Category != nodes[i + 1].Category)
           writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeCategorySeparator);
 
+        writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
+
         writer.RenderBeginTag(HtmlTextWriterTag.Li); // Begin node block
 
         if (!isTopLevel && !string.IsNullOrEmpty(node.Category))
