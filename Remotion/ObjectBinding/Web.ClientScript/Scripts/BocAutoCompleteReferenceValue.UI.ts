@@ -86,7 +86,10 @@ namespace Remotion.BocAutoCompleteReferenceValue
         dropDownDisplayDelay: number;
         dropDownRefreshDelay: number;
         selectionUpdateDelay: number;
+        loadingMatchesMessageDelay: number;
         noDataFoundMessage: string;
+        loadingMoreMatchesMessage: string;
+        loadedMoreMatchesMessage: string;
         matchContains: boolean;
         cacheLength: number;
         max: number;
@@ -98,6 +101,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
         dataType: string;
         selectFirst(inputValue: string, searchTerm: Nullable<string>): boolean;
         formatItem(item: Item, value: string, term: string): FormatResult;
+        formatPlaceholderElement(placeholderElement: HTMLElement): void;
         formatMatch(item: Item): string | false;
         formatResult?(item: Item): string;
         autoFill: boolean;
@@ -124,7 +128,10 @@ namespace Remotion.BocAutoCompleteReferenceValue
             dropDownTriggerRegexFailedMessage: string;
             getDropDownSearchString?(searchString: string): string;
         },
+        loadingMoreMatchesMessage: Options["loadingMoreMatchesMessage"];
+        loadedMoreMatchesMessage: Options["loadedMoreMatchesMessage"];
         formatItem: Options["formatItem"];
+        formatPlaceholderElement: Options["formatPlaceholderElement"];
         formatMatch: Options["formatMatch"];
         selectListID: Options["selectListID"];
         informationPopUpID: Options["informationPopUpID"];
@@ -207,6 +214,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
         dropDownDisplayDelay: 400,
         dropDownRefreshDelay: 400,
         selectionUpdateDelay: 400,
+        loadingMatchesMessageDelay: 1000,
         noDataFoundMessage: '',
         matchContains: false,
         cacheLength: 10,
@@ -305,7 +313,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
             lastKeyPressValue: null as Nullable<string>
         };
 
-        const select = new Select(options, input, selectCurrent, state);
+        const select = new Select(options, input, selectCurrent, requestMoreData, state);
         // Perform initialize on load to ensure that screenreader can recognize the BocAutoCompleteReferenceValue as a combobox.
         // With IE 11 / JAWS 18, the input element is announced as an 'edit' input element until there is a listbox element available as well,
         // Chrome 63 does not show this behavior, so it's just some weird issue that needs to be worked around.
@@ -317,9 +325,6 @@ namespace Remotion.BocAutoCompleteReferenceValue
             // track last key pressed
             state.lastKeyPressCode = event.keyCode;
             clearTimeout(timeout);
-            // re-motion: cancel an already running request
-            stopLoading();
-            abortRequest();
             if (state.lastKeyPressValue !== null && state.lastKeyPressValue != input.value) {
                 invalidateResult();
             }
@@ -378,6 +383,9 @@ namespace Remotion.BocAutoCompleteReferenceValue
                 case KEY.RETURN:
                 case KEY.TAB:
                 case KEY.ESC:
+                    // re-motion: cancel an already running request
+                    stopLoading();
+                    abortRequest();
                     // re-motion: block event bubbling
                     event.stopPropagation();
                     const wasVisible = select.visible();
@@ -420,6 +428,9 @@ namespace Remotion.BocAutoCompleteReferenceValue
                     }
 
                 default:
+                    // re-motion: cancel an already running request
+                    stopLoading();
+                    abortRequest();
                     // allow default for remaining keys.
                     return;
             }
@@ -785,6 +796,20 @@ namespace Remotion.BocAutoCompleteReferenceValue
             return true;
         }
 
+        function requestMoreData(term: string, offset: number): Promise<BocAutoCompleteReferenceValueCacheableSearchResult> {
+            return new Promise((resolve, reject) => {
+                const successHandler = (term: string, result: BocAutoCompleteReferenceValueCacheableSearchResult) => {
+                    resolve(result);
+                };
+                const failureHandler = (error: string) => {
+                    select.hide();
+                    reject();
+                };
+
+                requestData(term, offset, successHandler, failureHandler);
+            });
+        }
+
         function onChange(dropDownTriggered: boolean, currentValue: string): void {
             informationPopUp.hide();
 
@@ -1091,14 +1116,21 @@ namespace Remotion.BocAutoCompleteReferenceValue
         private readonly options: Options;
         private readonly input: HTMLInputElement;
         private readonly select: (value: boolean) => void;
+        private readonly loadMoreData: (term: string, offset: number) => Promise<BocAutoCompleteReferenceValueCacheableSearchResult>
         private readonly config: SelectConfig;
 
         private readonly ac_data: WeakMap<HTMLElement, CacheRowEntry> = new WeakMap();
 
-        constructor(options: Options, input: HTMLInputElement, select: (value: boolean) => void, config: SelectConfig) {
+        constructor(
+            options: Options,
+            input: HTMLInputElement,
+            select: (value: boolean) => void,
+            loadMoreData: (term: string, offset: number) => Promise<BocAutoCompleteReferenceValueCacheableSearchResult>,
+            config: SelectConfig) {
             this.options = options;
             this.input = input;
             this.select = select;
+            this.loadMoreData = loadMoreData;
             this.config = config;
         }
 
@@ -1112,7 +1144,11 @@ namespace Remotion.BocAutoCompleteReferenceValue
         private term: string = "";
         private needsInit: boolean = true;
         private element: Nullable<HTMLElement> = undefined!;
+        private announcementElement: HTMLElement = undefined!;
+        private queuedLoadingAnnouncementTimeout: Nullable<number> = null;
+        private placeholderItem: Nullable<HTMLLIElement> = null;
         private list: HTMLElement = undefined!;
+        private isLoadingMoreData = false;
 
         // Create results
         public init() {
@@ -1123,6 +1159,11 @@ namespace Remotion.BocAutoCompleteReferenceValue
             this.element.setAttribute('class', this.options.resultsClass);
             this.element.style.position = 'fixed';
             LayoutUtility.Hide(this.element);
+
+            this.announcementElement = document.createElement("span");
+            this.announcementElement.role = "status";
+            this.announcementElement.classList.add("screenReaderText");
+            this.element.appendChild(this.announcementElement);
 
             this.input.closest('div, td, th, body')!.appendChild(this.element);
 
@@ -1144,6 +1185,14 @@ namespace Remotion.BocAutoCompleteReferenceValue
             const innerDiv = document.createElement("div");
             this.element.appendChild(innerDiv);
             innerDiv.addEventListener('scroll', () => {
+                // If more data is available, the bottom element will be the placeholder. Start loading new elements
+                // when the placeholder is getting scrolled into view.
+                const heightPerListItem = Math.max(1, innerDiv.clientHeight / this.listItems.length);
+                const scrolledToLastRealElement = Math.abs(innerDiv.scrollHeight - innerDiv.clientHeight - innerDiv.scrollTop) <= heightPerListItem;
+                if (scrolledToLastRealElement && this.visible()) {
+                    this.loadMoreDataIfAvailable();
+                }
+
                 this.config.mouseDownOnSelect = true;
                 if (revertInputStatusTimeout) 
                     clearTimeout(revertInputStatusTimeout);
@@ -1207,6 +1256,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                 Sys.WebForms.PageRequestManager.getInstance().remove_beginRequest(beginRequestHandler);
                 this.element!.remove();
                 this.element = null;
+                this.clearAnnouncements();
                 this.needsInit = true;
             }
             Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(beginRequestHandler);
@@ -1267,6 +1317,10 @@ namespace Remotion.BocAutoCompleteReferenceValue
                         resultsElement.scrollTop = offset;
                     }
                 }
+
+                if (position === this.listItems.length - 1) {
+                    this.loadMoreDataIfAvailable();
+                }
             }
         }
 
@@ -1296,6 +1350,27 @@ namespace Remotion.BocAutoCompleteReferenceValue
 
         private repositionTimer: Nullable<number> = null;
 
+        private loadMoreDataIfAvailable() {
+            if (!this.placeholderItem || this.isLoadingMoreData)
+                return;
+
+            this.clearAnnouncements();
+
+            const loadingPromise = this.loadMoreData(this.term, this.listItems.length);
+            this.addLoadingAnnouncement();
+            this.isLoadingMoreData = true;
+            this.placeholderItem.classList.add("ac_placeholder_loading");
+            loadingPromise.then(searchResult => {
+                this.addListItems(searchResult.cacheRow, searchResult.hasMoreSearchResults);
+                this.isLoadingMoreData = false;
+                this.addLoadedAnnouncement();
+            }, _ => {
+                // Ignore the error and reset to allow triggering a load again. If there has been an error during the
+                // request, the select box is closed and an information popup is shown so we don't have to handle it here.
+                this.isLoadingMoreData = false;
+            });
+        }
+
         private applyPositionToDropDown(): void {
             NotNullAssert(this.element);
             const reference = this.input.closest('.' + this.options.inputAreaClass) as HTMLElement;
@@ -1306,47 +1381,84 @@ namespace Remotion.BocAutoCompleteReferenceValue
             applyPositionToPopUp(reference, this.element, positionOptions);
         }
 
-        private fillList(): void {
+        private addListItems(items: CacheRow, hasMoreData: boolean): void {
             NotNullAssert(this.data);
             NotNullAssert(this.element);
 
-            this.list.innerHTML = '';
-            const max = this.data.length;
-            for (let i = 0; i < max; i++) {
-                if (!this.data[i])
-                    continue;
-                const item = this.options.formatItem(this.data[i].data, this.data[i].value, this.term);
-                const termElement = document.createElement("div");
-                termElement.innerText = this.term;
-                const termAsHtml = termElement.innerHTML;
+            this.removePlaceholder();
 
-                const li = document.createElement("li");
-                li.setAttribute("role", "option");
-                li.setAttribute("aria-selected", "false");
-                li.setAttribute("id", this.options.selectListID + "_" + i);
-                li.setAttribute("aria-setsize", "" + max);
-                li.setAttribute("aria-posinset", "" + (i + 1));
+            const escapeHelper = document.createElement("div");
+            escapeHelper.innerText = this.term;
+            const escapedTerm = escapeHelper.innerHTML;
 
-                li.innerHTML = this.options.highlight (item.html, termAsHtml);
-                li.classList.add(i % 2 === 0 ? "ac_even" : "ac_odd")
+            const initialInsert = this.data.length === 0;
+            for (const item of items) {
+                const index = this.data.length;
+                this.data.push(item);
 
-                if (item.class != null)
-                    li.classList.add(item.class);
-                if (item.isAnnotation) {
-                    li.dataset['isAnnotation'] = 'true';
-                    li.classList.add('ac_disabled');
-                }
+                const formatResult = this.options.formatItem(item.data, item.value, this.term);
+                const li = this.createListItem(formatResult, index, escapedTerm);
                 this.list.appendChild(li);
-                this.ac_data.set(li, this.data[i]);
+                this.listItems.push(li);
+                this.ac_data.set(li, item);
             }
-            this.listItems = Array.from(this.list.querySelectorAll("li"));
-            if (this.options.selectFirst(this.input.value, this.term) && this.listItems.length > 0) {
+
+            if (hasMoreData) {
+                const placeholder = document.createElement("li");
+                placeholder.role = "option";
+                placeholder.ariaSelected = "false";
+                placeholder.id = `${this.options.selectListID}_placeholder`;
+
+                placeholder.dataset["isAnnotation"] = "true";
+                placeholder.addEventListener("click", () => this.loadMoreDataIfAvailable());
+                this.options.formatPlaceholderElement(placeholder);
+
+                this.list.appendChild(placeholder);
+                this.placeholderItem = placeholder;
+            }
+
+            [...this.listItems].forEach((e, i) => {
+                e.ariaSetSize = hasMoreData
+                    ? "-1"
+                    : "" + this.listItems.length;
+                e.ariaPosInSet = "" + (i + 1);
+            })
+
+            if (initialInsert && this.options.selectFirst(this.input.value, this.term) && this.listItems.length > 0) {
                 const activeItem = this.listItems[0];
                 this.input.setAttribute("aria-activedescendant", activeItem.id);
                 activeItem.classList.add (this.CLASSES.ACTIVE);
                 activeItem.setAttribute ("aria-selected", "true");
                 this.active = 0;
             }
+        }
+
+        private removePlaceholder() {
+            if (this.placeholderItem) {
+                this.placeholderItem.remove();
+                this.placeholderItem = null;
+            }
+        }
+
+        private createListItem(formatResult: FormatResult, index: number, escapedTerm: Nullable<string>){
+            const li = document.createElement("li");
+            li.role = "option";
+            li.ariaSelected = "false";
+            li.id = `${this.options.selectListID}_${index}`;
+
+            li.innerHTML = escapedTerm
+                ? this.options.highlight(formatResult.html, escapedTerm)
+                : formatResult.html;
+            li.classList.add(index % 2 === 0 ? "ac_even" : "ac_odd");
+
+            if (formatResult.class != null)
+                li.classList.add(formatResult.class);
+            if (formatResult.isAnnotation) {
+                li.dataset['isAnnotation'] = 'true';
+                li.classList.add('ac_disabled');
+            }
+
+            return li;
         }
 
         // re-motion: Gets the index of first item matching the term. The lookup starts with the active item, 
@@ -1394,9 +1506,11 @@ namespace Remotion.BocAutoCompleteReferenceValue
 
         public display(d: BocAutoCompleteReferenceValueCacheableSearchResult, q: string): void {
             this.init();
-            this.data = d.cacheRow;
+            this.data = [];
             this.term = q;
-            this.fillList();
+            this.listItems = [];
+            this.list.innerHTML = '';
+            this.addListItems(d.cacheRow, d.hasMoreSearchResults);
         }
 
         public getElement(): Nullable<HTMLElement> {
@@ -1432,6 +1546,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                 clearTimeout(this.repositionTimer);
             this.input.setAttribute("aria-expanded", "false");
             this.input.setAttribute("aria-activedescendant", "");
+            this.clearAnnouncements();
             this.element && LayoutUtility.Hide(this.element);
             if (this.listItems) {
                 for (const listItem of this.listItems) {
@@ -1537,6 +1652,33 @@ namespace Remotion.BocAutoCompleteReferenceValue
 
         public unbind(): void {
             this.element && this.element.remove();
+        }
+
+        private addLoadingAnnouncement() {
+            this.clearQueuedLoadingAnnouncement();
+            this.queuedLoadingAnnouncementTimeout = setTimeout(() => {
+                if (this.visible()) {
+                    this.announcementElement.innerText = this.options.loadingMoreMatchesMessage;
+                }
+            }, this.options.loadingMatchesMessageDelay);
+        }
+
+        private addLoadedAnnouncement() {
+            this.clearQueuedLoadingAnnouncement();
+            if (this.visible()) {
+                this.announcementElement.innerText = this.options.loadedMoreMatchesMessage;
+            }
+        }
+
+        private clearAnnouncements() {
+            this.announcementElement.innerText = "";
+        }
+
+        private clearQueuedLoadingAnnouncement() {
+            if (this.queuedLoadingAnnouncementTimeout !== null) {
+                clearTimeout(this.queuedLoadingAnnouncementTimeout);
+                this.queuedLoadingAnnouncementTimeout = null;
+            }
         }
     };
 

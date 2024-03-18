@@ -20,6 +20,8 @@ type BocReferenceValueBase_Resources = {
   LoadDataFailedErrorMessage: string;
   SearchStringForDropDownDoesNotMatchRegexMessage: string;
   NoDataFoundMessage: string;
+  LoadingMoreMatchesMessage: string;
+  LoadedMoreMatchesMessage: string;
 };
 
 type BocReferenceValueBase_SearchStringValidationInfo = {

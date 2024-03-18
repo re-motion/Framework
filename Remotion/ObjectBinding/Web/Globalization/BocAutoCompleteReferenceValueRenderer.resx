@@ -129,6 +129,12 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.SearchStringForDropDownDoesNotMatchRegexMessage" xml:space="preserve">
     <value>Your input does not match the specified format.</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.LoadingMoreMatchesMessage" xml:space="preserve">
+    <value>Loading more matches.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.LoadedMoreMatchesMessage" xml:space="preserve">
+    <value>More matches were loaded.</value>
+  </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.ScreenReaderLabelForComboboxReadOnly" xml:space="preserve">
       <value>read only combobox</value>
   </data>

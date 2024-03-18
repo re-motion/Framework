@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using NUnit.Framework;
@@ -585,9 +586,67 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That(home.Scope.FindIdEndingWith("BOUINormalLabel").Text, Is.EqualTo(daLabel));
     }
 
+    [Test]
+    public void TestLoadMoreResults ()
+    {
+      var home = Start();
+
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
+
+      var searchBox = bocAutoComplete.OpenSearchResults("testlist");
+      Assert.That(searchBox.IsVisible, Is.True);
+
+      var searchResults = searchBox.GetItems(e => e.Length > 0);
+      Assert.That(
+          searchResults.Select(e => e.Text),
+          Is.EqualTo(CreatePersonItemsTexts(5, true)));
+
+      // Explicit click on the placeholder to load more items
+      searchResults[searchResults.Length - 1].Click();
+
+      searchResults = searchBox.GetItems(e => e.Length >= 10);
+      Assert.That(
+          searchResults.Select(e => e.Text),
+          Is.EqualTo(CreatePersonItemsTexts(10, true)));
+
+      // Explicit expand again as the results aren't long enough to cause a scrollbar
+      searchResults[searchResults.Length - 1].Click();
+
+      // Scroll second to last element into view to load more items
+      searchResults = searchBox.GetItems(e => e.Length >= 15);
+      searchResults[searchResults.Length - 2].ScrollIntoView();
+
+      var moreExpandedResults = searchBox.GetItems(e =>
+      {
+        if (e.Length >= 20)
+          return true;
+
+        // The initial ScrollIntoView might not work correctly, probably because the layout was not
+        // updated yet. As such, we retry here again to trigger the load on scroll.
+        searchResults[searchResults.Length - 2].ScrollIntoView();
+
+        return false;
+      });
+      Assert.That(
+          moreExpandedResults.Select(e => e.Text),
+          Is.EqualTo(CreatePersonItemsTexts(20, false)));
+    }
+
     private WxePageObject Start ()
     {
       return Start("BocAutoCompleteReferenceValue");
+    }
+
+    private string[] CreatePersonItemsTexts (int count, bool addPlaceholder)
+    {
+      var results = new List<string>();
+      for (var i = 0; i < count; i++)
+        results.Add($"testlist Person {i}");
+
+      if (addPlaceholder)
+        results.Add("...");
+
+      return results.ToArray();
     }
 
     private class DerivedBocAutoCompleteReferenceValueControlObject : BocAutoCompleteReferenceValueControlObject
