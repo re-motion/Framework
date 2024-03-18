@@ -167,6 +167,9 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
         {
           const row = document.createElement('li');
 
+          const imgContainer = document.createElement('div');
+          row.append(imgContainer);
+
           if (item.IconUrl != '')
           {
             const img = document.createElement('img');
@@ -174,10 +177,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
             img.alt = '';
             img.setAttribute('aria-hidden', 'true');
 
-            const imgContainer = document.createElement('div');
             imgContainer.appendChild(img);
-
-            row.append(imgContainer);
           }
 
           const displayName = document.createElement('span');

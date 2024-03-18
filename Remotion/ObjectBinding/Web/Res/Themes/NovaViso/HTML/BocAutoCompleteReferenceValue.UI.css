@@ -98,6 +98,14 @@
   background-repeat: no-repeat;
 }
 
+.ac_placeholder_loading > div:first-child
+{
+  background-image: url('../Image/sprite.svg#AutoCompleteReferenceValueRequestInProgressIndicator');
+  background-size: var(--remotion-themed-line-height) var(--remotion-themed-line-height);
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
 .ac_informationPopUp
 {
   /* position and dimension are set via javascript */
