@@ -35,7 +35,7 @@ namespace Remotion.Web.IntegrationTests.ListMenu
 
       var result = analyzer.Analyze(listMenu);
       // TODO RM-7342 remove ignore once issue is resolved
-      var violations = result.Violations.IgnoreByRuleIDAndXPath(AccessibilityRuleID.LinkName, "/a[@id='body_MyListMenu_MenuItem_4_Command']");
+      var violations = result.Violations.IgnoreByRuleIDAndXPath(AccessibilityRuleID.ButtonName, "/a[@id='body_MyListMenu_MenuItem_4_Command']");
 
       Assert.That(violations, Is.Empty);
     }
