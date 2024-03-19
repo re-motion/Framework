@@ -176,7 +176,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       _control.Setup(stub => stub.LineBreaks).Returns(ListMenuLineBreaks.BetweenGroups);
 
       var table = GetAssertedTable();
-      table.AssertAttributeValueEquals("role", "menu");
+      table.AssertAttributeValueEquals("role", "toolbar");
 
       var tbody = table.GetAssertedChildElement("tbody", 0);
       tbody.AssertAttributeValueEquals("role", "none");
@@ -192,7 +192,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       span.AssertAttributeValueEquals("role", "none");
 
       var a = span.GetAssertedChildElement("a", 0);
-      a.AssertAttributeValueEquals("role","menuitem");
+      a.AssertNoAttribute("role");
     }
 
     [Test]
@@ -310,7 +310,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       var wrapper = GetAssertedWrapper();
 
       var table = _htmlHelper.GetAssertedChildElement(wrapper, "table", 0);
-      table.AssertAttributeValueEquals("role", "menu");
+      table.AssertAttributeValueEquals("role", "toolbar");
       return table;
     }
 
@@ -377,7 +377,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       span.AssertChildElementCount(1);
 
       var anchor = span.GetAssertedChildElement("a", 0);
-      anchor.AssertAttributeValueEquals("role", "menuitem");
+      anchor.AssertNoAttribute("role");
       anchor.AssertAttributeValueEquals("tabindex", tabIndex);
       return anchor;
     }
