@@ -174,8 +174,8 @@ ul.treeViewRoot span.treeViewNode span.treeViewNodeBadge
   align-self: start;
 }
 
-ul.treeViewRoot li:has(a:focus) > ul > li:first-of-type span.treeViewNode:not(:hover) span.treeViewNodeBadge,
-ul.treeViewRoot li:has(a:focus) + li span.treeViewNode:not(:hover) span.treeViewNodeBadge
+ul.treeViewRoot li:has(> span.treeViewNode span[class^="treeViewNodeHead"] a[role=treeitem]:focus) > ul > li:first-of-type > span.treeViewNode:not(:hover) span.treeViewNodeBadge,
+ul.treeViewRoot li:has(> span.treeViewNode span[class^="treeViewNodeHead"] a[role=treeitem]:focus) + li:first-of-type > span.treeViewNode:not(:hover) span.treeViewNodeBadge
 {
   /* Simulate continued box-shadow from previous element due to the badge-element hiding the shadow-effect. */
   --rounding-value: 0.5px;
