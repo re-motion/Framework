@@ -562,10 +562,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void NewObject ()
     {
-      var typeDefinition = GetTypeDefinition(typeof(Order));
+      var classDefinition = GetClassDefinition(typeof(Order));
       var constructorParameters = ParamList.Create(_fakeDomainObject1);
       _objectLifetimeAgentMock
-          .Setup(mock => mock.NewObject(typeDefinition, constructorParameters))
+          .Setup(mock => mock.NewObject(classDefinition, constructorParameters))
           .Returns(_fakeDomainObject1)
           .Verifiable();
 

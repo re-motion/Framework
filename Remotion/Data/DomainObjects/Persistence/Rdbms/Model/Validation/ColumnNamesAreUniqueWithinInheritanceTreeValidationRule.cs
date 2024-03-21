@@ -38,11 +38,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
       _rdbmsPersistenceModelProvider = rdbmsPersistenceModelProvider;
     }
 
-    public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
+    public IEnumerable<MappingValidationResult> Validate (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
       var validationResults = new List<MappingValidationResult>();
+      if (typeDefinition is not ClassDefinition classDefinition) // TODO R2I Persistence: Support TypeDefinition
+        return validationResults;
+
       if (classDefinition.BaseClass == null) //if class definition is inheritance root class
       {
         var derivedPropertyDefinitions = classDefinition.GetAllDerivedClasses()
@@ -77,9 +80,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
                 "Property '{0}' of class '{1}' must not define storage specific name '{2}',"
                 + " because class '{3}' in same inheritance hierarchy already defines property '{4}' with the same storage specific name.",
                 differentProperty.PropertyInfo.Name,
-                differentProperty.ClassDefinition.ClassType.Name,
+                differentProperty.TypeDefinition.Type.Name,
                 columnName,
-                referenceProperty.ClassDefinition.ClassType.Name,
+                referenceProperty.TypeDefinition.Type.Name,
                 referenceProperty.PropertyInfo.Name);
           }
         }

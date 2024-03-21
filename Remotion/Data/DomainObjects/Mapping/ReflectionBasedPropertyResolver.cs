@@ -25,16 +25,19 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Mapping
 {
   /// <summary>
-  /// Provides functionality to resolve <see cref="PropertyInfo"/> objects into child objects of <see cref="ClassDefinition"/>.
+  /// Provides functionality to resolve <see cref="PropertyInfo"/> objects into child objects of <see cref="TypeDefinition"/>.
   /// </summary>
   public static class ReflectionBasedPropertyResolver
   {
-    public static T? ResolveDefinition<T> (IPropertyInformation propertyInformation, ClassDefinition classDefinition, Func<string, T?> definitionGetter)
+    public static T? ResolveDefinition<T> (IPropertyInformation propertyInformation, TypeDefinition typeDefinition, Func<string, T?> definitionGetter)
         where T : class
     {
       ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
       ArgumentUtility.CheckNotNull("definitionGetter", definitionGetter);
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
+
+      if (typeDefinition is not ClassDefinition classDefinition) // TODO R2I Mapping: Interface support in reflection loader
+        throw new InvalidOperationException("TODO Relations to Interfaces: Only class definitions are supported at this time.");
 
       var matchingImplementations = GetMatchingDefinitions(propertyInformation, classDefinition, definitionGetter);
 
@@ -44,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         var message = string.Format(
             "The property '{0}' is ambiguous, it is implemented by the following types valid in the context of class '{1}': {2}.",
             propertyInformation.Name,
-            classDefinition.ClassType.Name,
+            classDefinition.Type.Name,
             string.Join(", ", implementingTypeNames));
         throw new InvalidOperationException(message);
       }
@@ -52,7 +55,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       return matchingImplementations.Select(tuple => tuple.Item2).SingleOrDefault();
     }
 
-    private static List<ValueTuple<IPropertyInformation, T>> GetMatchingDefinitions<T> (
+    private static List<(IPropertyInformation, T)> GetMatchingDefinitions<T> (
         IPropertyInformation propertyInformation,
         ClassDefinition classDefinition,
         Func<string, T?> definitionGetter) where T: class
@@ -86,8 +89,8 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       Assertion.IsTrue(interfaceProperty.DeclaringType!.IsInterface);
 
-      if (interfaceProperty.DeclaringType.IsAssignableFrom(TypeAdapter.Create(classDefinition.ClassType)))
-        yield return classDefinition.ClassType;
+      if (interfaceProperty.DeclaringType.IsAssignableFrom(TypeAdapter.Create(classDefinition.Type)))
+        yield return classDefinition.Type;
 
       var implementingPersistentMixins =
           from cd in classDefinition.CreateSequence(cd => cd.BaseClass)

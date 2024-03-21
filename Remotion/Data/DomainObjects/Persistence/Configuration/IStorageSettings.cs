@@ -40,15 +40,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     IReadOnlyCollection<StorageProviderDefinition> GetStorageProviderDefinitions ();
 
     /// <summary>
-    /// Gets the <see cref="StorageProviderDefinition"/> for the given <paramref name="classDefinition"/>.
+    /// Gets the <see cref="StorageProviderDefinition"/> for the given <paramref name="typeDefinition"/>.
     /// </summary>
-    /// <param name="classDefinition">A <see cref="ClassDefinition"/>. Must not be <see langword="null"/>.</param>
+    /// <param name="typeDefinition">A <see cref="TypeDefinition"/>. Must not be <see langword="null"/>.</param>
     /// <returns>
-    /// The <see cref="StorageProviderDefinition"/> associated via the <paramref name="classDefinition"/>'s storage group
-    /// or the default <see cref="StorageProviderDefinition"/> if the <see cref="ClassDefinition"/> is not assigned to a storage group.
+    /// The <see cref="StorageProviderDefinition"/> associated via the <paramref name="typeDefinition"/>'s storage group
+    /// or the default <see cref="StorageProviderDefinition"/> if the <see cref="TypeDefinition"/> is not assigned to a storage group.
     /// </returns>
-    /// <exception cref="ConfigurationException">Thrown if no <see cref="StorageProviderDefinition"/> could be resolved for the <paramref name="classDefinition"/>.</exception>
-    StorageProviderDefinition GetStorageProviderDefinition (ClassDefinition classDefinition);
+    /// <exception cref="ConfigurationException">Thrown if no <see cref="StorageProviderDefinition"/> could be resolved for the <paramref name="typeDefinition"/>.</exception>
+    StorageProviderDefinition GetStorageProviderDefinition (TypeDefinition typeDefinition);
 
     /// <summary>
     /// Gets the <see cref="StorageProviderDefinition"/> for the given <paramref name="storageGroupTypeOrNull"/>.

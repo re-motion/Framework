@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -47,14 +48,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void GetStorageProviderDefinition_NoStorageEntity ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
 
       Assert.That(
-          () => _finder.GetStorageProviderDefinition(classDefinition, null),
-          Throws.InvalidOperationException.With.Message.EqualTo("Cannot obtain storage provider for ClassDefinitions without storage entities. "));
+          () => _finder.GetStorageProviderDefinition(typeDefinition, null),
+          Throws.InvalidOperationException.With.Message.EqualTo("Cannot obtain storage provider for TypeDefinitions without storage entities. "));
       Assert.That(
-          () => _finder.GetStorageProviderDefinition(classDefinition, "Context"),
-          Throws.InvalidOperationException.With.Message.EqualTo("Cannot obtain storage provider for ClassDefinitions without storage entities. Context"));
+          () => _finder.GetStorageProviderDefinition(typeDefinition, "Context"),
+          Throws.InvalidOperationException.With.Message.EqualTo("Cannot obtain storage provider for TypeDefinitions without storage entities. Context"));
     }
   }
 }

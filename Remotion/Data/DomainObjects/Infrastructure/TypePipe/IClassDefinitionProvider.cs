@@ -15,29 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
   /// <summary>
-  /// Implements <see cref="ITypeDefinitionProvider"/> by retrieving the <see cref="ClassDefinition"/> of the domain object type from the current 
-  /// mapping configuration.
+  /// Defines an interface for classes retrieving the non-abstract <see cref="ClassDefinition"/> for a domain object type.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor(typeof(ITypeDefinitionProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
-  public class TypeDefinitionProvider : ITypeDefinitionProvider
+  public interface IClassDefinitionProvider
   {
-    public ClassDefinition? GetTypeDefinition (Type domainObjectType)
-    {
-      ArgumentUtility.CheckNotNull("domainObjectType", domainObjectType);
-
-      var mappingConfiguration = MappingConfiguration.Current;
-      if (!mappingConfiguration.ContainsTypeDefinition(domainObjectType))
-        return null;
-
-      return mappingConfiguration.GetTypeDefinition(domainObjectType);
-    }
+    [CanBeNull]
+    ClassDefinition? GetClassDefinition (Type domainObjectType);
   }
 }

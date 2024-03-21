@@ -521,7 +521,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Assert.That(
           () => providerWithDifferentID.LoadDataContainersByRelatedID(relationEndPointDefinition, null, objectID),
           Throws.Exception.TypeOf<ArgumentException>().With.ArgumentExceptionMessageEqualTo(
-              "The StorageProvider 'TestDomain' of the provided ClassDefinition does not match with this StorageProvider 'Test'.", "classDefinition"));
+              "The StorageProvider 'TestDomain' of the provided TypeDefinition does not match with this StorageProvider 'Test'.", "relationEndPointDefinition.TypeDefinition"));
     }
 
     [Test]

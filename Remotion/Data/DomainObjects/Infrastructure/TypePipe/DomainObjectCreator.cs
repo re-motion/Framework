@@ -61,10 +61,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
 
       var objectID = objectInitializationContext.ObjectID;
-      CheckDomainTypeAndClassDefinition(objectID.ClassDefinition.ClassType);
+      CheckDomainTypeAndClassDefinition(objectID.ClassDefinition.Type);
       objectID.ClassDefinition.ValidateCurrentMixinConfiguration();
 
-      var concreteType = Pipeline.ReflectionService.GetAssembledType(objectID.ClassDefinition.ClassType);
+      var concreteType = Pipeline.ReflectionService.GetAssembledType(objectID.ClassDefinition.Type);
 #if NETFRAMEWORK
       var instance = (DomainObject)FormatterServices.GetSafeUninitializedObject(concreteType);
 #else
@@ -91,9 +91,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       ArgumentUtility.CheckNotNull("constructorParameters", constructorParameters);
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
 
-      var domainObjectType = objectInitializationContext.ObjectID.ClassDefinition.ClassType;
+      var domainObjectType = objectInitializationContext.ObjectID.ClassDefinition.Type;
       CheckDomainTypeAndClassDefinition(domainObjectType);
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(domainObjectType);
+      var classDefinition = MappingConfiguration.Current.GetClassDefinition(domainObjectType);
       classDefinition.ValidateCurrentMixinConfiguration();
 
       using (clientTransaction.EnterNonDiscardingScope())
@@ -115,13 +115,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
         throw new NonInterceptableTypeException(message, domainObjectType);
       }
 
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(domainObjectType);
+      var classDefinition = MappingConfiguration.Current.GetClassDefinition(domainObjectType);
       if (classDefinition.IsAbstract)
       {
         var message1 = string.Format(
             "Cannot instantiate type '{0}' as it is abstract; for classes with automatic properties, InstantiableAttribute must be used.",
-            classDefinition.ClassType.GetFullNameSafe());
-        throw new NonInterceptableTypeException(message1, classDefinition.ClassType);
+            classDefinition.Type.GetFullNameSafe());
+        throw new NonInterceptableTypeException(message1, classDefinition.Type);
       }
     }
   }

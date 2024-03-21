@@ -374,12 +374,15 @@ namespace Remotion.Data.DomainObjects
     /// Gets the declaring domain object type for the given property.
     /// </summary>
     /// <param name="propertyInfo">The <see cref="IPropertyInformation"/> to analyze.</param>
-    /// <param name="classDefinition">The <see cref="ClassDefinition"/> of the given <see cref="IPropertyInformation"/></param>
+    /// <param name="typeDefinition"></param>
     /// <returns>the declaring domain object type for the given property.</returns>
-    public static Type GetDeclaringDomainObjectTypeForProperty (IPropertyInformation propertyInfo, ClassDefinition classDefinition)
+    public static Type GetDeclaringDomainObjectTypeForProperty (IPropertyInformation propertyInfo, TypeDefinition typeDefinition)
     {
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
+
+      if (typeDefinition is not ClassDefinition classDefinition)
+        return propertyInfo.DeclaringType!.ConvertToRuntimeType();
 
       var persistentMixin = GetPersistentMixinTypeForProperty(propertyInfo, classDefinition);
       if (persistentMixin != null)
@@ -396,15 +399,18 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Checks if the given <see cref="PropertyInfo"/> on the given <see cref="ClassDefinition"/> is a mixed property.
+    /// Checks if the given <see cref="PropertyInfo"/> on the given <see cref="TypeDefinition"/> is a mixed property.
     /// </summary>
     /// <param name="propertyInfo">The <see cref="IPropertyInformation"/> to analyze.</param>
-    /// <param name="classDefinition">The <see cref="ClassDefinition"/> of the given <see cref="IPropertyInformation"/></param>
+    /// <param name="typeDefinition">The <see cref="TypeDefinition"/> of the given <see cref="IPropertyInformation"/></param>
     /// <returns><see langword="true" /> if the given <see cref="PropertyInfo"/> is a mixed property.</returns>
-    public static bool IsMixedProperty (IPropertyInformation propertyInfo, ClassDefinition classDefinition)
+    public static bool IsMixedProperty (IPropertyInformation propertyInfo, TypeDefinition typeDefinition)
     {
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
+
+      if (typeDefinition is not ClassDefinition classDefinition)
+        return false;
 
       return GetPersistentMixinTypeForProperty(propertyInfo, classDefinition) != null;
     }

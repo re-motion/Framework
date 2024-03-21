@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      var tableAttribute = AttributeUtility.GetCustomAttribute<DBTableAttribute>(classDefinition.ClassType, false);
+      var tableAttribute = AttributeUtility.GetCustomAttribute<DBTableAttribute>(classDefinition.Type, false);
       if (tableAttribute == null)
         return null;
 

@@ -645,7 +645,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void CreateNewObjectID ()
     {
-      ClassDefinition orderClass = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
+      ClassDefinition orderClass = MappingConfiguration.Current.GetClassDefinition(typeof(Order));
       ObjectID id1 = _persistenceManager.CreateNewObjectID(orderClass);
       Assert.That(id1, Is.Not.Null);
       ObjectID id2 = _persistenceManager.CreateNewObjectID(orderClass);
@@ -656,7 +656,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void CreateNewDataContainer ()
     {
-      ClassDefinition orderClass = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
+      ClassDefinition orderClass = MappingConfiguration.Current.GetClassDefinition(typeof(Order));
       DataContainer container = CreateDataContainer(orderClass);
 
       Assert.That(container, Is.Not.Null);

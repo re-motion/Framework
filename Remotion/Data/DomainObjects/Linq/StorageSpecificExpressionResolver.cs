@@ -54,12 +54,12 @@ namespace Remotion.Data.DomainObjects.Linq
       get { return _rdbmsPersistenceModelProvider; }
     }
 
-    public SqlEntityDefinitionExpression ResolveEntity (ClassDefinition classDefinition, string tableAlias)
+    public SqlEntityDefinitionExpression ResolveEntity (TypeDefinition typeDefinition, string tableAlias)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNullOrEmpty("tableAlias", tableAlias);
 
-      var entityDefinition = _rdbmsPersistenceModelProvider.GetEntityDefinition(classDefinition);
+      var entityDefinition = _rdbmsPersistenceModelProvider.GetEntityDefinition(typeDefinition);
       var idColumnDefinition = GetSingleColumnForLookup(entityDefinition.ObjectIDProperty);
 
       var tableColumns = (from storageProperty in entityDefinition.GetAllProperties()
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.Linq
                          ).ToArray();
 
       return new SqlEntityDefinitionExpression(
-          classDefinition.ClassType,
+          typeDefinition.Type,
           tableAlias,
           null,
           e => GetColumnFromEntity(idColumnDefinition, e),
@@ -84,31 +84,31 @@ namespace Remotion.Data.DomainObjects.Linq
       return ResolveStorageProperty(originatingEntity, storagePropertyDefinition);
     }
 
-    public Expression ResolveIDProperty (SqlEntityExpression originatingEntity, ClassDefinition classDefinition)
+    public Expression ResolveIDProperty (SqlEntityExpression originatingEntity, TypeDefinition typeDefinition)
     {
       ArgumentUtility.CheckNotNull("originatingEntity", originatingEntity);
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      var entityDefinition = _rdbmsPersistenceModelProvider.GetEntityDefinition(classDefinition);
+      var entityDefinition = _rdbmsPersistenceModelProvider.GetEntityDefinition(typeDefinition);
       var valueExpression = ResolveStorageProperty(originatingEntity, entityDefinition.ObjectIDProperty.ValueProperty);
       var classIDExpression = ResolveStorageProperty(originatingEntity, entityDefinition.ObjectIDProperty.ClassIDProperty);
 
       return CreateCompoundObjectIDExpression(classIDExpression, valueExpression);
     }
 
-    public IResolvedTableInfo ResolveTable (ClassDefinition classDefinition, string tableAlias)
+    public IResolvedTableInfo ResolveTable (TypeDefinition typeDefinition, string tableAlias)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNullOrEmpty("tableAlias", tableAlias);
 
       var viewName = InlineRdbmsStorageEntityDefinitionVisitor.Visit<string>(
-          _rdbmsPersistenceModelProvider.GetEntityDefinition(classDefinition),
+          _rdbmsPersistenceModelProvider.GetEntityDefinition(typeDefinition),
           (table, continuation) => GetFullyQualifiedEntityName(table.ViewName),
           (filterView, continuation) => GetFullyQualifiedEntityName(filterView.ViewName),
           (unionView, continuation) => GetFullyQualifiedEntityName(unionView.ViewName),
           (emptyView, continuation) => GetFullyQualifiedEntityName(emptyView.ViewName));
 
-      return new ResolvedSimpleTableInfo(classDefinition.ClassType, viewName, tableAlias);
+      return new ResolvedSimpleTableInfo(typeDefinition.Type, viewName, tableAlias);
     }
 
     public ResolvedJoinInfo ResolveJoin (
@@ -120,8 +120,8 @@ namespace Remotion.Data.DomainObjects.Linq
 
       var leftKey = GetJoinColumn(leftEndPoint, originatingEntity);
 
-      var resolvedSimpleTableInfo = ResolveTable(rightEndPoint.ClassDefinition, tableAlias);
-      var rightEntity = ResolveEntity(rightEndPoint.ClassDefinition, tableAlias);
+      var resolvedSimpleTableInfo = ResolveTable(rightEndPoint.TypeDefinition, tableAlias);
+      var rightEntity = ResolveEntity(rightEndPoint.TypeDefinition, tableAlias);
 
       Expression rightKey = GetJoinColumn(rightEndPoint, rightEntity);
 

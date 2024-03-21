@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public int Count => 0;
 
-    public Type RequiredItemType => _associatedEndPointID.Definition.GetOppositeEndPointDefinition().ClassDefinition.ClassType;
+    public Type RequiredItemType => _associatedEndPointID.Definition.GetOppositeEndPointDefinition().TypeDefinition.Type;
 
     public bool IsReadOnly => false;
 

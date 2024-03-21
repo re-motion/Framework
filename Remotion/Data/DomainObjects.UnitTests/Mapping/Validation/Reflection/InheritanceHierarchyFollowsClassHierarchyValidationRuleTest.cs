@@ -25,6 +25,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
   [TestFixture]
   public class InheritanceHierarchyFollowsClassHierarchyValidationRuleTest : ValidationRuleTestBase
   {
+    // TODO R2I extend for interfaces
+    // TODO R2I also handle InterfaceDefinitionWithUnresolvedType
     private InheritanceHierarchyFollowsClassHierarchyValidationRule _validationRule;
 
     [SetUp]
@@ -36,36 +38,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void ClassDefinitionWithoutBaseClass ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseOfBaseValidationDomainObjectClass));
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseOfBaseValidationDomainObjectClass));
 
-      var validationResult = _validationRule.Validate(classDefinition);
+      var validationResult = _validationRule.Validate(typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
-    public void ClassDefinitionWithBaseClass_ClassTypeIsDerivedFromBaseClassType ()
+    public void ClassDefinitionWithBaseClass_TypeIsDerivedFromBaseType ()
     {
       var baseType = typeof(BaseOfBaseValidationDomainObjectClass);
       var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: baseType);
       var derivedType = typeof(BaseValidationDomainObjectClass);
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: derivedType, baseClass: baseClassDefinition);
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: derivedType, baseClass: baseClassDefinition);
 
-      var validationResult = _validationRule.Validate(classDefinition);
+      var validationResult = _validationRule.Validate(typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
-    public void ClassDefinitionWithBaseClass_ClassTypeIsNotDerivedFromBaseClassType ()
+    public void ClassDefinitionWithBaseClass_TypeIsNotDerivedFromBaseType ()
     {
       var baseType = typeof(BaseOfBaseValidationDomainObjectClass);
       var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Base", baseType);
-      var derivedType = typeof(BaseValidationDomainObjectClass);
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(id: "Derived", classType: derivedType, baseClass: baseClassDefinition);
-      PrivateInvoke.SetNonPublicField(classDefinition, "_classType", typeof(ClassOutOfInheritanceHierarchy));
+      var derivedType = typeof(ClassOutOfInheritanceHierarchy);
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(id: "Derived", classType: derivedType, baseClass: baseClassDefinition);
 
-      var validationResult = _validationRule.Validate(classDefinition);
+      var validationResult = _validationRule.Validate(typeDefinition);
 
       Assert.That(validationResult.IsValid, Is.False);
       var expectedMessage =

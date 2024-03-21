@@ -22,18 +22,18 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
   /// <summary>
   /// Validates that a class definition type is not generic.
   /// </summary>
-  public class DomainObjectTypeIsNotGenericValidationRule : IClassDefinitionValidationRule
+  public class DomainObjectTypeIsNotGenericValidationRule : ITypeDefinitionValidationRule
   {
     public DomainObjectTypeIsNotGenericValidationRule ()
     {
 
     }
 
-    public MappingValidationResult Validate (ClassDefinition classDefinition)
+    public MappingValidationResult Validate (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      return Validate(classDefinition.ClassType);
+      return Validate(typeDefinition.Type);
     }
 
     private MappingValidationResult Validate (Type type)

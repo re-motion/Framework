@@ -33,14 +33,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   [TestFixture]
   public class ClassReflectorTest : MappingReflectionTestBase
   {
-    private ClassDefinitionChecker _classDefinitionChecker;
+    private TypeDefinitionChecker _typeDefinitionChecker;
     private RelationEndPointDefinitionChecker _endPointDefinitionChecker;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _classDefinitionChecker = new ClassDefinitionChecker();
+      _typeDefinitionChecker = new TypeDefinitionChecker();
       _endPointDefinitionChecker = new RelationEndPointDefinitionChecker();
     }
 
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var actual = classReflector.GetMetadata(null);
 
       Assert.That(actual, Is.Not.Null);
-      _classDefinitionChecker.Check(expected, actual);
+      _typeDefinitionChecker.Check(expected, actual);
       _endPointDefinitionChecker.Check(expected.MyRelationEndPointDefinitions, actual.MyRelationEndPointDefinitions, false);
     }
 
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var actual = classReflector.GetMetadata(baseClassDefinition);
 
       Assert.That(actual, Is.Not.Null);
-      _classDefinitionChecker.Check(expected, actual);
+      _typeDefinitionChecker.Check(expected, actual);
       _endPointDefinitionChecker.Check(expected.MyRelationEndPointDefinitions, actual.MyRelationEndPointDefinitions, false);
     }
 
@@ -171,7 +171,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation>(pi => pi.Name == "BidirectionalOneToManyForVirtualCollection")))
           .Returns(true);
 
-      var classDefinitionFake = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClassWithRealRelationEndPoints));
+      var classDefinitionFake = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClassWithRealRelationEndPoints));
 
       SortExpressionDefinitionProviderStub
           .Setup(_ => _.GetSortExpression(It.IsAny<IPropertyInformation>(), It.IsAny<ClassDefinition>(), null))
@@ -200,13 +200,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       foreach (var actualEndPoint in actual.MyRelationEndPointDefinitions)
       {
         var endPointStub = new Mock<IRelationEndPointDefinition>();
-        endPointStub.Setup(stub => stub.ClassDefinition).Returns(classDefinitionFake);
+        endPointStub.Setup(stub => stub.TypeDefinition).Returns(classDefinitionFake);
         ((IRelationEndPointDefinitionSetter)actualEndPoint).SetRelationDefinition(
             new RelationDefinition("fake: " + actualEndPoint.PropertyName, actualEndPoint, endPointStub.Object));
       }
 
       Assert.That(actual, Is.Not.Null);
-      _classDefinitionChecker.Check(expected, actual);
+      _typeDefinitionChecker.Check(expected, actual);
       _endPointDefinitionChecker.Check(expected.MyRelationEndPointDefinitions, actual.MyRelationEndPointDefinitions, false);
     }
 
@@ -518,11 +518,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               false,
               CreateSortExpressionDefinition("NoAttributeForVirtualCollection")));
 
-      var classDefinitionFake = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClassWithRealRelationEndPoints));
+      var classDefinitionFake = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClassWithRealRelationEndPoints));
       foreach (var endPoint in endPoints)
       {
         var endPointStub = new Mock<IRelationEndPointDefinition>();
-        endPointStub.Setup(stub => stub.ClassDefinition).Returns(classDefinitionFake);
+        endPointStub.Setup(stub => stub.TypeDefinition).Returns(classDefinitionFake);
         ((IRelationEndPointDefinitionSetter)endPoint).SetRelationDefinition(new RelationDefinition("fake: " + endPoint.PropertyName, endPoint, endPointStub.Object));
       }
 
@@ -603,13 +603,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return PropertyInfoAdapter.Create(propertyInfo);
     }
 
-    private ClassDefinition CreateClassDefinition (string id, Type classType, bool isAbstract, ClassDefinition baseClass = null)
+    private ClassDefinition CreateClassDefinition (string id, Type classType, bool isAbstract, ClassDefinition baseClass = null, params InterfaceDefinition[] implementedInterfaces)
     {
         return new ClassDefinition(
                 id,
                 classType,
                 isAbstract,
                 baseClass,
+                implementedInterfaces,
                 null,
                 DefaultStorageClass.Persistent,
                 new PersistentMixinFinderStub(classType),
@@ -618,12 +619,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private PropertyDefinition CreatePersistentPropertyDefinition (
         ClassDefinition classDefinition,
-        Type declaringClassType,
+        Type declaringType,
         string propertyName,
         bool isNullable,
         int? maxLength)
     {
-      var propertyInfoAdapter = PropertyInfoAdapter.Create(declaringClassType.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance));
+      var propertyInfoAdapter = PropertyInfoAdapter.Create(declaringType.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance));
       var fullName = MappingConfiguration.Current.NameResolver.GetPropertyName(propertyInfoAdapter);
       return new PropertyDefinition(
           classDefinition,

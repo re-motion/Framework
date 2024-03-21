@@ -26,11 +26,17 @@ namespace Remotion.Data.DomainObjects.Mapping
   [Serializable]
   public class PropertyDefinitionCollection : CommonCollection, IEnumerable<PropertyDefinition>
   {
-    public static PropertyDefinitionCollection CreateForAllProperties (ClassDefinition classDefinition, bool makeCollectionReadOnly)
+    public static PropertyDefinitionCollection CreateForAllProperties (TypeDefinition typeDefinition, bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      return new PropertyDefinitionCollection(
-          classDefinition.CreateSequence(cd => cd.BaseClass).SelectMany(cd => cd.MyPropertyDefinitions), makeCollectionReadOnly);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
+
+      var properties = new List<PropertyDefinition>();
+      InlineTypeDefinitionWalker.WalkAncestors(
+          typeDefinition,
+          classDefinition => properties.AddRange(classDefinition.MyPropertyDefinitions),
+          interfaceDefinition => properties.AddRange(interfaceDefinition.MyPropertyDefinitions));
+
+      return new PropertyDefinitionCollection(properties, makeCollectionReadOnly);
     }
 
     public PropertyDefinitionCollection ()

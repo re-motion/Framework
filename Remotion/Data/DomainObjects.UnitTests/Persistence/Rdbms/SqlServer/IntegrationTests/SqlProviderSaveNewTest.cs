@@ -375,7 +375,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     private DataContainer CreateNewDataContainer (Type type)
     {
-      return DataContainer.CreateNew(Provider.CreateNewObjectID(MappingConfiguration.Current.GetTypeDefinition(type)));
+      return DataContainer.CreateNew(Provider.CreateNewObjectID(MappingConfiguration.Current.GetClassDefinition(type)));
     }
 
   }

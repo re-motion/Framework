@@ -14,19 +14,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using JetBrains.Annotations;
-using Remotion.Data.DomainObjects.Mapping;
-
-namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
+namespace Remotion.Data.DomainObjects.Mapping
 {
   /// <summary>
-  /// Defines an interface for classes retrieving the non-abstract <see cref="ClassDefinition"/> for a domain object type.
+  /// Provides a method to dispatch on <see cref="TypeDefinition"/> implementations returning a result of <typeparamref name="T"/>.
   /// </summary>
-  /// <threadsafety static="true" instance="true"/>
-  public interface ITypeDefinitionProvider
+  public interface ITypeDefinitionVisitor<out T>
   {
-    [CanBeNull]
-    ClassDefinition? GetTypeDefinition (Type domainObjectType);
+    T? VisitClassDefinition (ClassDefinition classDefinition);
+
+    T? VisitInterfaceDefinition (InterfaceDefinition interfaceDefinition);
   }
 }

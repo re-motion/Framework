@@ -307,13 +307,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
     public virtual IStorageProviderSerializer CreateStorageProviderSerializer (IEnumSerializer enumSerializer)
     {
       ArgumentUtility.CheckNotNull("enumSerializer", enumSerializer);
-      return new StorageProviderSerializer(CreateClassSerializer(enumSerializer));
+      return new StorageProviderSerializer(CreateTypeSerializer(enumSerializer));
     }
 
-    public virtual IClassSerializer CreateClassSerializer (IEnumSerializer enumSerializer)
+    public virtual ITypeSerializer CreateTypeSerializer (IEnumSerializer enumSerializer)
     {
       ArgumentUtility.CheckNotNull("enumSerializer", enumSerializer);
-      return new ClassSerializer(CreateTableSerializer(enumSerializer));
+      return new TypeSerializer(CreateTableSerializer(enumSerializer));
     }
 
     public virtual ITableSerializer CreateTableSerializer (IEnumSerializer enumSerializer)

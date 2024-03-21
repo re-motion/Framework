@@ -32,11 +32,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
     {
     }
 
-    public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
+    public IEnumerable<MappingValidationResult> Validate (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      if (classDefinition.BaseClass != null && classDefinition.HasStorageEntityDefinitionBeenSet && classDefinition.StorageEntityDefinition is TableDefinition)
+      if (typeDefinition is not ClassDefinition classDefinition)
+      {
+        yield return MappingValidationResult.CreateValidResult();
+      }
+      else if (classDefinition.BaseClass != null && classDefinition.HasStorageEntityDefinitionBeenSet && classDefinition.StorageEntityDefinition is TableDefinition)
       {
         var baseClasses = classDefinition.BaseClass.CreateSequence(cd => cd.BaseClass);
         foreach (ClassDefinition baseClass in baseClasses)
@@ -45,10 +49,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
           if (baseClass.StorageEntityDefinition is TableDefinition)
           {
             yield return MappingValidationResult.CreateInvalidResultForType(
-                classDefinition.ClassType,
+                classDefinition.Type,
                 "Class '{0}' must not define a table when its base class '{1}' also defines one.",
-                classDefinition.ClassType.Name,
-                baseClass.ClassType.Name);
+                classDefinition.Type.Name,
+                baseClass.Type.Name);
           }
         }
       }

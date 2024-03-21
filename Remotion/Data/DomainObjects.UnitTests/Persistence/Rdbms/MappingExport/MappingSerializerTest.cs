@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
       enumSerializerStub.Setup(_ => _.Serialize()).Returns(new XElement[0]);
 
       var expected = new XElement("storageProvider");
-      storageProviderSerializerStub.Setup(_ => _.Serialize(It.IsAny<IEnumerable<ClassDefinition>>(), It.IsAny<RdbmsProviderDefinition>())).Returns(expected);
+      storageProviderSerializerStub.Setup(_ => _.Serialize(It.IsAny<IEnumerable<TypeDefinition>>(), It.IsAny<RdbmsProviderDefinition>())).Returns(expected);
 
       var actual = _mappingSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinitions());
 
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
       var storageProviderElement = new XElement("storageProvider");
       var enumTypeElement = new XElement("enumType");
 
-      storageProviderSerializerStub.Setup(_ => _.Serialize(It.IsAny<IEnumerable<ClassDefinition>>(), It.IsAny<RdbmsProviderDefinition>())).Returns(storageProviderElement);
+      storageProviderSerializerStub.Setup(_ => _.Serialize(It.IsAny<IEnumerable<TypeDefinition>>(), It.IsAny<RdbmsProviderDefinition>())).Returns(storageProviderElement);
       enumSerializerStub.Setup(_ => _.Serialize()).Returns(new[] { enumTypeElement });
 
       var actual = _mappingSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinitions());
@@ -118,10 +118,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     }
 
     [Test]
-    public void Serialize_GroupsClassDefinitionsByStorageProvider ()
+    public void Serialize_GroupsTypeDefinitionsByStorageProvider ()
     {
-      var classDefinitions = MappingConfiguration.Current.GetTypeDefinitions();
-      var storageProviders = classDefinitions
+      var typeDefinitions = MappingConfiguration.Current.GetTypeDefinitions();
+      var storageProviders = typeDefinitions
           .Select(c => c.StorageEntityDefinition.StorageProviderDefinition).Distinct().OfType<RdbmsProviderDefinition>().ToArray();
 
       var enumSerializerStub = new Mock<IEnumSerializer>();
@@ -136,12 +136,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
         _storageProviderSerializerFactoryStub.Setup(_ => _(rdbmsProviderDefinition, enumSerializerStub.Object)).Returns(storageProviderSerializerMock.Object);
 
         storageProviderSerializerMock
-            .Setup(_ => _.Serialize(It.IsAny<IEnumerable<ClassDefinition>>(), rdbmsProviderDefinition))
+            .Setup(_ => _.Serialize(It.IsAny<IEnumerable<TypeDefinition>>(), rdbmsProviderDefinition))
             .Returns(new XElement("storageProvider"))
             .Verifiable();
       }
 
-      _mappingSerializer.Serialize(classDefinitions);
+      _mappingSerializer.Serialize(typeDefinitions);
     }
   }
 }

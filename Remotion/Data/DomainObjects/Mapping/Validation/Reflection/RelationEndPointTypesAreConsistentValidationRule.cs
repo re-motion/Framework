@@ -53,16 +53,16 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
             && relationAttribute != null)
         {
           var oppositePropertyInfo = oppositeEndPointDefinition.PropertyInfo;
-          var classDefinition = relationEndPointDefinition.ClassDefinition;
+          var typeDefinition = relationEndPointDefinition.TypeDefinition;
           var oppositeDomainObjectType = ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(oppositePropertyInfo);
           var declaringDomainObjectTypeForProperty =
-              ReflectionUtility.GetDeclaringDomainObjectTypeForProperty(relationEndPointDefinition.PropertyInfo, classDefinition);
-          bool isPropertyDeclaredByThisClassDefinition = declaringDomainObjectTypeForProperty == classDefinition.ClassType;
-          if (isPropertyDeclaredByThisClassDefinition)
+              ReflectionUtility.GetDeclaringDomainObjectTypeForProperty(relationEndPointDefinition.PropertyInfo, typeDefinition);
+          bool isPropertyDeclaredByThisTypeDefinition = declaringDomainObjectTypeForProperty == typeDefinition.Type;
+          if (isPropertyDeclaredByThisTypeDefinition)
           {
-            // Case where property is declared on this ClassDefinition => it is declared below/on the inheritance root
-            // In this case, the opposite property's return type must exactly match this ClassDefinition's type.
-            if (classDefinition.ClassType != oppositeDomainObjectType)
+            // Case where property is declared on this TypeDefinition => it is declared below/on the inheritance root
+            // In this case, the opposite property's return type must exactly match this TypeDefinition's type.
+            if (typeDefinition.Type != oppositeDomainObjectType)
             {
               return MappingValidationResult.CreateInvalidResultForProperty(
                   relationEndPointDefinition.PropertyInfo,
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
           }
           else
           {
-            // Case where property is not declared on this ClassDefinition => it must be declared above the inheritance root
+            // Case where property is not declared on this TypeDefinition => it must be declared above the inheritance root
             // In this case, the opposite property's return type must be assignable to the type declaring the property. This enables the following 
             // scenario:
             // - ClassAboveInheritanceRoot has a relation property P1 to RelationTarget

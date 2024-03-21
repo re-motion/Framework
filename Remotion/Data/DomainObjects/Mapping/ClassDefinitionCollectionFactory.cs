@@ -50,20 +50,20 @@ namespace Remotion.Data.DomainObjects.Mapping
 
       SetDerivedClasses(classDefinitions.Values);
 
-      return classDefinitions.Values.ToArray();
+      return classDefinitions.Values.ToArray(); // TODO R2I Create InterfaceCollection
     }
 
-    public ClassDefinition GetClassDefinition (IDictionary<Type, ClassDefinition> classDefinitions, Type classType)
+    public ClassDefinition GetClassDefinition (IDictionary<Type, ClassDefinition> classDefinitions, Type type)
     {
       ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
-      ArgumentUtility.CheckNotNull("classType", classType);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      if (classDefinitions.ContainsKey(classType))
-        return classDefinitions[classType];
+      if (classDefinitions.ContainsKey(type))
+        return classDefinitions[type];
 
-      var baseClassDefinition = GetBaseClassDefinition(classDefinitions, classType);
-      var classDefinition = _mappingObjectFactory.CreateClassDefinition(classType, baseClassDefinition);
-      classDefinitions.Add(classDefinition.ClassType, classDefinition);
+      var baseClassDefinition = GetBaseClassDefinition(classDefinitions, type);
+      var classDefinition = _mappingObjectFactory.CreateClassDefinition(type, baseClassDefinition);
+      classDefinitions.Add(classDefinition.Type, classDefinition);
 
       return classDefinition;
     }

@@ -295,8 +295,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
               .With.Message.EqualTo(
                   "Cannot register relation end-point "
                   + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' for domain object "
-                  + "'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid'. The end-point belongs to an object of class 'Customer' but the domain object "
-                  + "has class 'OrderItem'."));
+                  + "'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid'. The end-point belongs to an object of type "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer' but the domain object "
+                  + "has type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem'."));
     }
 
     [Test]

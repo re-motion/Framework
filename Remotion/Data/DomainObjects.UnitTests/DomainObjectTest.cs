@@ -580,7 +580,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     private Type GetConcreteType (Type requestedType)
     {
-      var pipeline = ((DomainObjectCreator)GetTypeDefinition(requestedType).InstanceCreator).PipelineRegistry.DefaultPipeline;
+      var pipeline = ((DomainObjectCreator)GetClassDefinition(requestedType).InstanceCreator).PipelineRegistry.DefaultPipeline;
       var type = pipeline.ReflectionService.GetAssembledType(requestedType);
       return type;
     }

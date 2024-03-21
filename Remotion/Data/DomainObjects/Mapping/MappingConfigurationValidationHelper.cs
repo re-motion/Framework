@@ -45,41 +45,48 @@ namespace Remotion.Data.DomainObjects.Mapping
       _persistenceModelValidatorFactory = persistenceModelValidatorFactory;
     }
 
-    public void VerifyPersistenceModelApplied (ClassDefinition classDefinition)
+    public void VerifyPersistenceModelApplied (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      if (!classDefinition.HasStorageEntityDefinitionBeenSet)
+      if (!typeDefinition.HasStorageEntityDefinitionBeenSet)
       {
-        var message = String.Format("The persistence model loader did not assign a storage entity to class '{0}'.", classDefinition.ID);
+        var message = String.Format("The persistence model loader did not assign a storage entity to type '{0}'.", typeDefinition.Type.GetFullNameSafe());
         throw new InvalidOperationException(message);
       }
 
-      foreach (PropertyDefinition propDef in classDefinition.MyPropertyDefinitions)
+      foreach (PropertyDefinition propDef in typeDefinition.MyPropertyDefinitions)
       {
         if (propDef.StorageClass == StorageClass.Persistent && propDef.StoragePropertyDefinition == null)
         {
           var message = String.Format(
-              "The persistence model loader did not assign a storage property to property '{0}' of class '{1}'.",
+              "The persistence model loader did not assign a storage property to property '{0}' of type '{1}'.",
               propDef.PropertyName,
-              classDefinition.ID);
+              typeDefinition.Type.GetFullNameSafe());
           throw new InvalidOperationException(message);
         }
       }
 
-      foreach (var derivedClass in classDefinition.DerivedClasses)
-        VerifyPersistenceModelApplied(derivedClass);
+      if (typeDefinition is ClassDefinition classDefinition)
+      {
+        foreach (var derivedClass in classDefinition.DerivedClasses)
+          VerifyPersistenceModelApplied(derivedClass);
+      }
+      else
+      {
+        throw new NotSupportedException("Only class definitions are supported"); // TODO R2I Mapping: Add support for interfaces
+      }
     }
 
-    public void ValidateClassDefinitions (IEnumerable<ClassDefinition> typeDefinitions)
+    public void ValidateTypeDefinitions (IEnumerable<TypeDefinition> typeDefinitions)
     {
       ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
 
-      var typeDefinitionValidator = _mappingValidatorFactory.CreateClassDefinitionValidator();
+      var typeDefinitionValidator = _mappingValidatorFactory.CreateTypeDefinitionValidator();
       AnalyzeMappingValidationResults(typeDefinitionValidator.Validate(typeDefinitions));
     }
 
-    public void ValidatePropertyDefinitions (IEnumerable<ClassDefinition> typeDefinitions)
+    public void ValidatePropertyDefinitions (IEnumerable<TypeDefinition> typeDefinitions)
     {
       ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
 
@@ -103,13 +110,13 @@ namespace Remotion.Data.DomainObjects.Mapping
       AnalyzeMappingValidationResults(sortExpressionValidator.Validate(relationDefinitions));
     }
 
-    public void ValidatePersistenceMapping (ClassDefinition rootClass)
+    public void ValidatePersistenceMapping (TypeDefinition rootType)
     {
-      ArgumentUtility.CheckNotNull("rootClass", rootClass);
+      ArgumentUtility.CheckNotNull("rootType", rootType);
 
-      var validator = _persistenceModelValidatorFactory.CreatePersistenceMappingValidator(rootClass);
-      var classDefinitionsToValidate = new[] { rootClass }.Concat(rootClass.GetAllDerivedClasses());
-      AnalyzeMappingValidationResults(validator.Validate(classDefinitionsToValidate));
+      var validator = _persistenceModelValidatorFactory.CreatePersistenceMappingValidator(rootType);
+      var typeDefinitionsToValidate = TypeDefinitionHierarchy.GetDescendantsAndSelf(rootType);
+      AnalyzeMappingValidationResults(validator.Validate(typeDefinitionsToValidate));
     }
 
     public void AnalyzeMappingValidationResults (IEnumerable<MappingValidationResult> mappingValidationResults)
@@ -121,11 +128,11 @@ namespace Remotion.Data.DomainObjects.Mapping
         throw CreateMappingException(mappingValidationResultsArray);
     }
 
-    public void ValidateDuplicateClassIDs (IEnumerable<ClassDefinition> classDefinitions)
+    public void ValidateDuplicateClassIDs (IEnumerable<TypeDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
 
-      var duplicateGroups = from cd in classDefinitions
+      var duplicateGroups = from cd in typeDefinitions.OfType<ClassDefinition>()
                             group cd by cd.ID
                             into cdGroups
                             where cdGroups.Count() > 1
@@ -136,11 +143,11 @@ namespace Remotion.Data.DomainObjects.Mapping
         throw CreateMappingException(
             "Class '{0}' and '{1}' both have the same class ID '{2}'. Use the ClassIDAttribute to define unique IDs for these "
             + "classes. The assemblies involved are '{3}' and '{4}'.",
-            duplicates[0].ClassType.GetFullNameSafe(),
-            duplicates[1].ClassType.GetFullNameSafe(),
+            duplicates[0].Type.GetFullNameSafe(),
+            duplicates[1].Type.GetFullNameSafe(),
             duplicates[0].ID,
-            duplicates[0].ClassType.Assembly.GetFullNameSafe(),
-            duplicates[1].ClassType.Assembly.GetFullNameSafe());
+            duplicates[0].Type.Assembly.GetFullNameSafe(),
+            duplicates[1].Type.Assembly.GetFullNameSafe());
       }
     }
 

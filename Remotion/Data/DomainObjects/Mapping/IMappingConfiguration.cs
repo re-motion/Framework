@@ -24,12 +24,10 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// </summary>
   public interface IMappingConfiguration
   {
-    ClassDefinition[] GetTypeDefinitions ();
-    bool ContainsTypeDefinition (Type classType);
-    ClassDefinition GetTypeDefinition (Type classType);
-    ClassDefinition GetTypeDefinition (Type classType, Func<Type, Exception> missingTypeDefinitionExceptionFactory);
+    TypeDefinition[] GetTypeDefinitions ();
+    bool ContainsTypeDefinition (Type type);
+    TypeDefinition GetTypeDefinition (Type type, Func<Type, Exception> missingTypeDefinitionExceptionFactory);
     bool ContainsClassDefinition (string classID);
-    ClassDefinition GetClassDefinition (string classID);
     ClassDefinition GetClassDefinition (string classID, Func<string, Exception> missingClassDefinitionExceptionFactory);
 
     bool ResolveTypes { get; }

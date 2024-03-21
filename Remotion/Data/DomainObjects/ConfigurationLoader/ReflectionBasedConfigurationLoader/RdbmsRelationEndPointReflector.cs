@@ -27,13 +27,13 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   public class RdbmsRelationEndPointReflector : RelationEndPointReflector<DBBidirectionalRelationAttribute>
   {
     public RdbmsRelationEndPointReflector (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         IPropertyInformation propertyInfo,
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider,
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider)
-        : base(classDefinition, propertyInfo, nameResolver, propertyMetadataProvider, domainModelConstraintProvider, sortExpressionDefinitionProvider)
+        : base(typeDefinition, propertyInfo, nameResolver, propertyMetadataProvider, domainModelConstraintProvider, sortExpressionDefinitionProvider)
     {
     }
 

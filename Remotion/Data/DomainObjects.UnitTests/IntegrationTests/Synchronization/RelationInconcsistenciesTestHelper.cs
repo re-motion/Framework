@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var domainObject = LifetimeService.NewObject(ClientTransaction.Current, endPointDefinition.ClassDefinition.ClassType, ParamList.Empty);
+        var domainObject = LifetimeService.NewObject(ClientTransaction.Current, endPointDefinition.TypeDefinition.Type, ParamList.Empty);
         SetForeignKeyProperty(domainObject, endPointDefinition, relatedID);
         ClientTransaction.Current.Commit();
 

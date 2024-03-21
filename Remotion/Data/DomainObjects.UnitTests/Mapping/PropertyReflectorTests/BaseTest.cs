@@ -33,34 +33,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       ArgumentUtility.CheckNotNullOrEmpty("property", property);
 
       Type type = typeof(T);
-      ClassDefinition classDefinition;
+      TypeDefinition typeDefinition;
       if (ReflectionUtility.IsDomainObject(type))
       {
-        classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: type, isAbstract: true);
+        typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: type, isAbstract: true);
       }
       else
       {
-        classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: type, isAbstract: false);
+        typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: type, isAbstract: false);
       }
 
-      return CreatePropertyReflector<T>(property, classDefinition, domainModelConstraintProvider, propertyDefaultValueProvider);
+      return CreatePropertyReflector<T>(property, typeDefinition, domainModelConstraintProvider, propertyDefaultValueProvider);
     }
 
     protected PropertyReflector CreatePropertyReflector<T> (
         string property,
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         IDomainModelConstraintProvider domainModelConstraintProvider,
         IPropertyDefaultValueProvider propertyDefaultValueProvider)
     {
       ArgumentUtility.CheckNotNullOrEmpty("property", property);
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
       Type type = typeof(T);
       var propertyInfo = PropertyInfoAdapter.Create(
           type.GetProperty(property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic));
 
       return new PropertyReflector(
-          classDefinition,
+          typeDefinition,
           propertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,

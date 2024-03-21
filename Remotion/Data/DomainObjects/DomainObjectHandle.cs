@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects
     public DomainObjectHandle (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
-      if (objectID.ClassDefinition.ClassType != typeof(T))
+      if (objectID.ClassDefinition.Type != typeof(T))
       {
         var message = string.Format("The class type of ObjectID '{0}' doesn't match the handle type '{1}'.", objectID, typeof(T));
         throw new ArgumentException(message, "objectID");

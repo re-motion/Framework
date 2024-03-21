@@ -23,10 +23,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 {
   /// <summary>
   /// <see cref="IRdbmsStorageEntityDefinitionProvider"/> provides a strategy to get all <see cref="IRdbmsStorageEntityDefinition"/> objects for a collection of 
-  /// <see cref="ClassDefinition"/> instances. Reimplement this interface to influence which entities are processed by <see cref="ScriptGenerator"/>.
+  /// <see cref="TypeDefinition"/> instances. Reimplement this interface to influence which entities are processed by <see cref="ScriptGenerator"/>.
   /// </summary>
   public interface IRdbmsStorageEntityDefinitionProvider
   {
-    IEnumerable<IRdbmsStorageEntityDefinition> GetEntityDefinitions (IEnumerable<ClassDefinition> classDefinitions);
+    IEnumerable<IRdbmsStorageEntityDefinition> GetEntityDefinitions (IEnumerable<TypeDefinition> typeDefinitions);
   }
 }

@@ -27,27 +27,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
   public class RelationEndPointNamesAreConsistentValidationRuleTest : ValidationRuleTestBase
   {
     private RelationEndPointNamesAreConsistentValidationRule _validationRule;
-    private ClassDefinition _classDefinition1;
-    private ClassDefinition _classDefinition2;
+    private TypeDefinition _typeDefinition1;
+    private TypeDefinition _typeDefinition2;
 
     [SetUp]
     public void SetUp ()
     {
       _validationRule = new RelationEndPointNamesAreConsistentValidationRule();
-      _classDefinition1 = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(RelationEndPointPropertyClass1));
-      _classDefinition2 = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(RelationEndPointPropertyClass2));
+      _typeDefinition1 = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(RelationEndPointPropertyClass1));
+      _typeDefinition2 = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(RelationEndPointPropertyClass2));
     }
 
     [Test]
     public void ValidRelation ()
     {
       var endPointDefinition1 = new VirtualObjectRelationEndPointDefinition(
-          _classDefinition1,
+          _typeDefinition1,
           "RelationProperty2",
           false,
           PropertyInfoAdapter.Create(typeof(RelationEndPointPropertyClass1).GetProperty("RelationProperty2")));
       var endPointDefinition2 = new VirtualObjectRelationEndPointDefinition(
-          _classDefinition2,
+          _typeDefinition2,
           "RelationProperty2",
           false,
           PropertyInfoAdapter.Create(typeof(RelationEndPointPropertyClass2).GetProperty("RelationProperty2")));
@@ -61,9 +61,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void LeftEndPointIsAnonymous ()
     {
-      var endPointDefinition1 = new AnonymousRelationEndPointDefinition(_classDefinition1);
+      var endPointDefinition1 = new AnonymousRelationEndPointDefinition(_typeDefinition1);
       var endPointDefinition2 = new VirtualObjectRelationEndPointDefinition(
-          _classDefinition2,
+          _typeDefinition2,
           "RelationProperty2",
           false,
           PropertyInfoAdapter.Create(typeof(RelationEndPointPropertyClass2).GetProperty("RelationProperty2")));
@@ -78,11 +78,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     public void RightEndPointIsAnonymous ()
     {
       var endPointDefinition1 = new VirtualObjectRelationEndPointDefinition(
-          _classDefinition1,
+          _typeDefinition1,
           "RelationProperty2",
           false,
           PropertyInfoAdapter.Create(typeof(RelationEndPointPropertyClass1).GetProperty("RelationProperty2")));
-      var endPointDefinition2 = new AnonymousRelationEndPointDefinition(_classDefinition2);
+      var endPointDefinition2 = new AnonymousRelationEndPointDefinition(_typeDefinition2);
 
       var relationDefinition = CreateRelationDefinitionAndSetBackReferences("Test", endPointDefinition1, endPointDefinition2);
 
@@ -94,12 +94,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     public void OppositeRelationPropertyHasNoBidirectionalRelationAttributeDefined ()
     {
       var endPointDefinition1 = new VirtualObjectRelationEndPointDefinition(
-          _classDefinition1,
+          _typeDefinition1,
           "RelationProperty1",
           false,
          PropertyInfoAdapter.Create(typeof(RelationEndPointPropertyClass1).GetProperty("RelationProperty1")));
       var endPointDefinition2 = new VirtualObjectRelationEndPointDefinition(
-          _classDefinition2,
+          _typeDefinition2,
           "RelationPopertyWithoutBidirectionalRelationAttribute",
           false,
           PropertyInfoAdapter.Create(typeof(RelationEndPointPropertyClass2).GetProperty("RelationPopertyWithoutBidirectionalRelationAttribute")));
@@ -121,12 +121,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     public void OppositeRelationPropertyNameDoesNotMatch ()
     {
       var endPointDefinition1 = new VirtualObjectRelationEndPointDefinition(
-          _classDefinition1,
+          _typeDefinition1,
           "RelationProperty3",
           false,
           PropertyInfoAdapter.Create(typeof(RelationEndPointPropertyClass1).GetProperty("RelationProperty3")));
       var endPointDefinition2 = new VirtualObjectRelationEndPointDefinition(
-          _classDefinition2,
+          _typeDefinition2,
           "RelationPopertyWithNonMatchingPropertyName",
           false,
           PropertyInfoAdapter.Create(typeof(RelationEndPointPropertyClass2).GetProperty("RelationPopertyWithNonMatchingPropertyName")));

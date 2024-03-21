@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   public static class RelationEndPointReflector
   {
     public static RdbmsRelationEndPointReflector CreateRelationEndPointReflector (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         IPropertyInformation propertyInfo,
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider,
@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider)
     {
       return new RdbmsRelationEndPointReflector(
-          classDefinition,
+          typeDefinition,
           propertyInfo,
           nameResolver,
           propertyMetadataProvider,
@@ -57,13 +57,13 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     private readonly ISortExpressionDefinitionProvider _sortExpressionDefinitionProvider;
 
     protected RelationEndPointReflector (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         IPropertyInformation propertyInfo,
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider,
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider)
-        : base(classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
+        : base(typeDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
     {
       ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
       ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
@@ -77,28 +77,28 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     public IRelationEndPointDefinition GetMetadata ()
     {
       if (IsVirtualEndRelationEndpoint())
-        return CreateVirtualRelationEndPointDefinition(ClassDefinition);
+        return CreateVirtualRelationEndPointDefinition(TypeDefinition);
       else
-        return CreateRelationEndPointDefinition(ClassDefinition);
+        return CreateRelationEndPointDefinition(TypeDefinition);
     }
 
-    private IRelationEndPointDefinition CreateRelationEndPointDefinition (ClassDefinition classDefinition)
+    private IRelationEndPointDefinition CreateRelationEndPointDefinition (TypeDefinition typeDefinition)
     {
       var propertyName = GetPropertyName();
 
-      PropertyDefinition propertyDefinition = classDefinition.GetMandatoryPropertyDefinition(propertyName);
+      PropertyDefinition propertyDefinition = typeDefinition.GetMandatoryPropertyDefinition(propertyName);
       if (!propertyDefinition.IsObjectID)
-        return new TypeNotObjectIDRelationEndPointDefinition(classDefinition, propertyName, propertyDefinition.PropertyInfo.PropertyType);
+        return new TypeNotObjectIDRelationEndPointDefinition(typeDefinition, propertyName, propertyDefinition.PropertyInfo.PropertyType);
       else
         return new RelationEndPointDefinition(propertyDefinition, IsMandatory());
     }
 
-    private IRelationEndPointDefinition CreateVirtualRelationEndPointDefinition (ClassDefinition classDefinition)
+    private IRelationEndPointDefinition CreateVirtualRelationEndPointDefinition (TypeDefinition typeDefinition)
     {
       if (ReflectionUtility.IsDomainObject(PropertyInfo.PropertyType))
       {
         var relationEndPointDefinition = new VirtualObjectRelationEndPointDefinition(
-            classDefinition,
+            typeDefinition,
             GetPropertyName(),
             IsMandatory(),
             PropertyInfo);
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       {
         var deferredRelationEndPointDefinition = new DeferredRelationEndPointDefinition();
         var relationEndPointDefinition = new DomainObjectCollectionRelationEndPointDefinition(
-            classDefinition,
+            typeDefinition,
             GetPropertyName(),
             IsMandatory(),
             GetSortExpressionDefinition(deferredRelationEndPointDefinition),
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       {
         var deferredRelationEndPointDefinition = new DeferredRelationEndPointDefinition();
         var relationEndPointDefinition = new VirtualCollectionRelationEndPointDefinition(
-            classDefinition,
+            typeDefinition,
             GetPropertyName(),
             IsMandatory(),
             GetSortExpressionDefinition(deferredRelationEndPointDefinition),
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       }
       else
       {
-        return new TypeNotCompatibleWithVirtualRelationEndPointDefinition(classDefinition, GetPropertyName(), PropertyInfo.PropertyType);
+        return new TypeNotCompatibleWithVirtualRelationEndPointDefinition(typeDefinition, GetPropertyName(), PropertyInfo.PropertyType);
       }
     }
 
@@ -159,8 +159,8 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
           {
             var relationEndPointDefinition = deferredRelationEndPointDefinition.Value;
             Assertion.IsNotNull(relationEndPointDefinition, "RelationEndPointDefinition was not initialized.");
-            var oppositeClassDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition().ClassDefinition;
-            return sortExpressionDefinitionProvider.GetSortExpression(propertyInfo, oppositeClassDefinition, sortExpressionText);
+            var oppositeTypeDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition().TypeDefinition;
+            return sortExpressionDefinitionProvider.GetSortExpression(propertyInfo, oppositeTypeDefinition, sortExpressionText);
           }, LazyThreadSafetyMode.ExecutionAndPublication);
     }
   }

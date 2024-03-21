@@ -59,11 +59,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     public IReadOnlyCollection<StorageProviderDefinition> GetStorageProviderDefinitions () => _storageProviderDefinitions;
 
     /// <inheritdoc />
-    public StorageProviderDefinition GetStorageProviderDefinition (ClassDefinition classDefinition)
+    public StorageProviderDefinition GetStorageProviderDefinition (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      var storageGroupTypeOrNull = classDefinition.StorageGroupType;
+      var storageGroupTypeOrNull = typeDefinition.StorageGroupType;
 
       return GetStorageProviderDefinition(storageGroupTypeOrNull);
     }

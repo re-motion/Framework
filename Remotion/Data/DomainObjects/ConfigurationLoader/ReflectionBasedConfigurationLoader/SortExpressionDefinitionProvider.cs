@@ -37,18 +37,18 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public SortExpressionDefinition? GetSortExpression (
         IPropertyInformation propertyInfo,
-        ClassDefinition referencedClassDefinition,
+        TypeDefinition referencedTypeDefinition,
         string? sortExpressionText)
     {
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull("referencedClassDefinition", referencedClassDefinition);
+      ArgumentUtility.CheckNotNull("referencedTypeDefinition", referencedTypeDefinition);
 
       if (sortExpressionText == null)
         return null;
 
       try
       {
-        var parser = new SortExpressionParser(referencedClassDefinition);
+        var parser = new SortExpressionParser(referencedTypeDefinition);
         return parser.Parse(sortExpressionText);
       }
       catch (MappingException ex)

@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects
       /// Represents a <see cref="DataContainer"/> where at least one <see cref="PropertyDefinition"/> with
       /// <see cref="PropertyDefinition.StorageClass"/>.<see cref="StorageClass.Persistent"/> has a <see cref="PropertyValue"/> with <see cref="PropertyValue.Value"/> not equal to
       /// <see cref="PropertyValue.OriginalValue"/> or the <see cref="DataContainer"/>.<see cref="DataContainer.HasBeenMarkedChanged"/> flag has been set for a
-      /// <see cref="DomainObject"/> with the <see cref="ClassDefinition"/>.<see cref="ClassDefinitionExtensions.IsNonPersistent"/> flag set to <see langword="false" />.
+      /// <see cref="DomainObject"/> with the <see cref="ClassDefinition"/>.<see cref="TypeDefinitionExtensions.IsNonPersistent"/> flag set to <see langword="false" />.
       /// </summary>
       PersistentDataChanged = 1 << 7,
 
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects
       /// Represents a <see cref="DataContainer"/> where at least one <see cref="PropertyDefinition"/> with
       /// <see cref="PropertyDefinition.StorageClass"/>.<see cref="StorageClass.Transaction"/> has a <see cref="PropertyValue"/> with <see cref="PropertyValue.Value"/> not equal to
       /// <see cref="PropertyValue.OriginalValue"/> or the <see cref="DataContainer"/>.<see cref="DataContainer.HasBeenMarkedChanged"/> flag has been set for a
-      /// <see cref="DomainObject"/> with the <see cref="ClassDefinition"/>.<see cref="ClassDefinitionExtensions.IsNonPersistent"/> flag set to <see langword="true" />.
+      /// <see cref="DomainObject"/> with the <see cref="ClassDefinition"/>.<see cref="TypeDefinitionExtensions.IsNonPersistent"/> flag set to <see langword="true" />.
       /// </summary>
       NonPersistentDataChanged = 1 << 8,
 

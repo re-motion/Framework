@@ -52,9 +52,9 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
       {
         return MappingValidationResult.CreateInvalidResultForProperty(
             virtualObjectRelationEndPointDefinition.PropertyInfo,
-            "Property '{0}' of class '{1}' must not specify a SortExpression, because cardinality is equal to 'one'.",
+            "Property '{0}' of type '{1}' must not specify a SortExpression, because cardinality is equal to 'one'.",
             virtualObjectRelationEndPointDefinition.PropertyInfo.Name,
-            virtualObjectRelationEndPointDefinition.ClassDefinition.ClassType.Name);
+            virtualObjectRelationEndPointDefinition.TypeDefinition.Type.Name);
       }
       return MappingValidationResult.CreateValidResult();
     }

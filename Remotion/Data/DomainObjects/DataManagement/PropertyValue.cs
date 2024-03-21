@@ -78,9 +78,9 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
       if (!IsTypeSupported(definition.PropertyType))
       {
-        var message = string.Format("The property '{0}' (declared on class '{1}') is invalid because its values cannot be copied. Only value types, "
+        var message = string.Format("The property '{0}' (declared on type '{1}') is invalid because its values cannot be copied. Only value types, "
             + "strings, the Type type, byte arrays, types implementing IStructuralEquatable, and ObjectIDs are currently supported, but the property's type is '{2}'.",
-            definition.PropertyName, definition.ClassDefinition.ID, definition.PropertyType.GetFullNameSafe());
+            definition.PropertyName, definition.TypeDefinition.Type.GetFullNameSafe(), definition.PropertyType.GetFullNameSafe());
         throw new NotSupportedException(message);
       }
 

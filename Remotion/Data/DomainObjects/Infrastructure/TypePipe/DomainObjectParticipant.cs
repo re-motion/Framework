@@ -54,9 +54,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     }
 
     [Obsolete("Use constructor instead. (Version 1.17.13")]
-    public static DomainObjectParticipant Create (ITypeDefinitionProvider typeDefinitionProvider, IInterceptedPropertyFinder interceptedPropertyFinder)
+    public static DomainObjectParticipant Create (IClassDefinitionProvider classDefinitionProvider, IInterceptedPropertyFinder interceptedPropertyFinder)
     {
-      return new DomainObjectParticipant(typeDefinitionProvider, interceptedPropertyFinder);
+      return new DomainObjectParticipant(classDefinitionProvider, interceptedPropertyFinder);
     }
 
     private static readonly Type s_domainObjectBaseType = typeof(DomainObject);
@@ -72,15 +72,15 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       return method;
     }
 
-    private readonly ITypeDefinitionProvider _typeDefinitionProvider;
+    private readonly IClassDefinitionProvider _classDefinitionProvider;
     private readonly IInterceptedPropertyFinder _interceptedPropertyFinder;
 
-    public DomainObjectParticipant (ITypeDefinitionProvider typeDefinitionProvider, IInterceptedPropertyFinder interceptedPropertyFinder)
+    public DomainObjectParticipant (IClassDefinitionProvider classDefinitionProvider, IInterceptedPropertyFinder interceptedPropertyFinder)
     {
-      ArgumentUtility.CheckNotNull("typeDefinitionProvider", typeDefinitionProvider);
+      ArgumentUtility.CheckNotNull("classDefinitionProvider", classDefinitionProvider);
       ArgumentUtility.CheckNotNull("interceptedPropertyFinder", interceptedPropertyFinder);
 
-      _typeDefinitionProvider = typeDefinitionProvider;
+      _classDefinitionProvider = classDefinitionProvider;
       _interceptedPropertyFinder = interceptedPropertyFinder;
     }
 
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       var proxyType = proxyTypeAssemblyContext.ProxyType;
       var domainObjectType = proxyTypeAssemblyContext.RequestedType;
 
-      var classDefinition = _typeDefinitionProvider.GetTypeDefinition(domainObjectType);
+      var classDefinition = _classDefinitionProvider.GetClassDefinition(domainObjectType);
       if (classDefinition == null || classDefinition.IsAbstract)
         return;
 
@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       if (!s_domainObjectBaseType.IsTypePipeAssignableFrom(nonSubclassableRequestedType))
         return;
 
-      var classDefinition = _typeDefinitionProvider.GetTypeDefinition(nonSubclassableRequestedType);
+      var classDefinition = _classDefinitionProvider.GetClassDefinition(nonSubclassableRequestedType);
       if (classDefinition != null && !classDefinition.IsAbstract)
       {
         var message = string.Format("The requested type '{0}' is derived from DomainObject but cannot be subclassed.", nonSubclassableRequestedType.Name);

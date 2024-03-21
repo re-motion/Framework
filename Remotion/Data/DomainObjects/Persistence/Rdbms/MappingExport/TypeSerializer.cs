@@ -23,22 +23,25 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
   /// <summary>
-  /// Default implementation for <see cref="IClassSerializer"/>
+  /// Default implementation for <see cref="ITypeSerializer"/>
   /// </summary>
-  public class ClassSerializer : IClassSerializer
+  public class TypeSerializer : ITypeSerializer
   {
     private readonly ITableSerializer _tableSerializer;
 
-    public ClassSerializer (ITableSerializer tableSerializer)
+    public TypeSerializer (ITableSerializer tableSerializer)
     {
       ArgumentUtility.CheckNotNull("tableSerializer", tableSerializer);
 
       _tableSerializer = tableSerializer;
     }
 
-    public XElement Serialize (ClassDefinition classDefinition)
+    public XElement Serialize (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
+
+      if (typeDefinition is not ClassDefinition classDefinition)
+        throw new NotSupportedException("Only class definitions are supported"); // TODO R2I Mapping: Add support for interfaces
 
       return new XElement(
           Constants.Namespace + "class",

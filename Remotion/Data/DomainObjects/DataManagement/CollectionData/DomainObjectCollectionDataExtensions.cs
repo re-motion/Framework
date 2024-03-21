@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
         if (domainObject == null)
           throw ArgumentUtility.CreateArgumentItemNullException("domainObjects", index);
         if (requiredItemType != null && !requiredItemType.IsInstanceOfType(domainObject))
-          throw ArgumentUtility.CreateArgumentItemTypeException("domainObjects", index, requiredItemType, domainObject.ID.ClassDefinition.ClassType);
+          throw ArgumentUtility.CreateArgumentItemTypeException("domainObjects", index, requiredItemType, domainObject.ID.ClassDefinition.Type);
         if (data.ContainsObjectID(domainObject.ID))
         {
           throw new ArgumentException(

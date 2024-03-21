@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       IExecutableQuery<IEnumerable<T>> CreateSequenceQuery<T> (
         string id,
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         QueryModel queryModel,
         IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders);
       IExecutableQuery<T> CreateScalarQuery<T> (string id, StorageProviderDefinition storageProviderDefinition, QueryModel queryModel);
@@ -48,12 +48,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     [OverrideTarget]
     public IExecutableQuery<IEnumerable<T>> CreateSequenceQuery<T> (
         string id,
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         QueryModel queryModel,
         IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders)
     {
       CreateSequenceQueryFromModelCalled = true;
-      return Next.CreateSequenceQuery<T>(id, classDefinition, queryModel, fetchQueryModelBuilders);
+      return Next.CreateSequenceQuery<T>(id, typeDefinition, queryModel, fetchQueryModelBuilders);
     }
 
     [OverrideTarget]

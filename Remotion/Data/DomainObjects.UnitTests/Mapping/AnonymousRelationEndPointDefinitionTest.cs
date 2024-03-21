@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   [TestFixture]
   public class AnonymousRelationEndPointDefinitionTest : MappingReflectionTestBase
   {
-    private ClassDefinition _clientDefinition;
+    private TypeDefinition _clientDefinition;
     private AnonymousRelationEndPointDefinition _definition;
 
     public override void SetUp ()
@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void Initialize ()
     {
       Assert.IsInstanceOf<IRelationEndPointDefinition>(_definition);
-      Assert.That(_definition.ClassDefinition, Is.SameAs(_clientDefinition));
+      Assert.That(_definition.TypeDefinition, Is.SameAs(_clientDefinition));
       Assert.That(_definition.Cardinality, Is.EqualTo(CardinalityType.Many));
       Assert.That(_definition.IsMandatory, Is.EqualTo(false));
       Assert.That(_definition.IsVirtual, Is.EqualTo(true));

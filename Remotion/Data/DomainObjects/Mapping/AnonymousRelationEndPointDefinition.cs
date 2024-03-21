@@ -28,12 +28,12 @@ namespace Remotion.Data.DomainObjects.Mapping
   public class AnonymousRelationEndPointDefinition : IRelationEndPointDefinition, IRelationEndPointDefinitionSetter
   {
     private RelationDefinition? _relationDefinition;
-    private readonly ClassDefinition _classDefinition;
+    private readonly TypeDefinition _typeDefinition;
 
-    public AnonymousRelationEndPointDefinition (ClassDefinition classDefinition)
+    public AnonymousRelationEndPointDefinition (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      _classDefinition = classDefinition;
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
+      _typeDefinition = typeDefinition;
     }
 
     public RelationDefinition RelationDefinition
@@ -45,9 +45,9 @@ namespace Remotion.Data.DomainObjects.Mapping
       }
     }
 
-    public ClassDefinition ClassDefinition
+    public TypeDefinition TypeDefinition
     {
-      get { return _classDefinition; }
+      get { return _typeDefinition; }
     }
 
     public string? PropertyName

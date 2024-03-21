@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
 {
   /// <summary>
   /// The <see cref="SortExpressionValidator"/> validates the sort expression text of the <see cref="DBBidirectionalRelationAttribute"/> 
-  /// on the <see cref="PropertyInfo"/> of the <see cref="ClassDefinition"/>s.
+  /// on the <see cref="PropertyInfo"/> of the <see cref="TypeDefinition"/>s.
   /// </summary>
   public class SortExpressionValidator : ISortExpressionValidator
   {

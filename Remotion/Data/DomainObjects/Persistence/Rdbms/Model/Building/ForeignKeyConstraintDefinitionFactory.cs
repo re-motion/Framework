@@ -69,29 +69,32 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
           .Concat(classDefinition.GetAllDerivedClasses());
 
       return (from classDefinitionInHierarchy in allClassDefinitionsInHierarchy
-          from endPointDefinition in classDefinitionInHierarchy.MyRelationEndPointDefinitions
-          where !endPointDefinition.IsVirtual
-          let referencedClassDefinition = endPointDefinition.ClassDefinition
-              .GetMandatoryRelationEndPointDefinition(
-                  Assertion.IsNotNull(endPointDefinition.PropertyName, "endPointDefinition.PropertyName != null when endPointDefinition.IsVirtual == false"))
-              .GetOppositeClassDefinition()
-          let propertyDefinition = ((RelationEndPointDefinition)endPointDefinition).PropertyDefinition
-          where propertyDefinition.StorageClass == StorageClass.Persistent
-          let referencingStorageProperty =
-              (IObjectIDStoragePropertyDefinition)_persistenceModelProvider.GetStoragePropertyDefinition(propertyDefinition)
-          where referencingStorageProperty.CanCreateForeignKeyConstraint
-          let referencedTableName = FindTableName(referencedClassDefinition)
-          where referencedTableName != null
-          let referencedStoragePropertyDefinition = _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition()
-          select referencingStorageProperty.CreateForeignKeyConstraint(
-              referencingColumns => _storageNameProvider.GetForeignKeyConstraintName(classDefinition, referencingColumns),
-              referencedTableName,
-              referencedStoragePropertyDefinition)
-          ).ToList();
+              from endPointDefinition in classDefinitionInHierarchy.MyRelationEndPointDefinitions
+              where !endPointDefinition.IsVirtual
+              let referencedClassDefinition = endPointDefinition.TypeDefinition
+                  .GetMandatoryRelationEndPointDefinition(
+                      Assertion.IsNotNull(endPointDefinition.PropertyName, "endPointDefinition.PropertyName != null when endPointDefinition.IsVirtual == false"))
+                  .GetOppositeTypeDefinition()
+              let propertyDefinition = ((RelationEndPointDefinition)endPointDefinition).PropertyDefinition
+              where propertyDefinition.StorageClass == StorageClass.Persistent
+              let referencingStorageProperty =
+                  (IObjectIDStoragePropertyDefinition)_persistenceModelProvider.GetStoragePropertyDefinition(propertyDefinition)
+              where referencingStorageProperty.CanCreateForeignKeyConstraint
+              let referencedTableName = FindTableName(referencedClassDefinition)
+              where referencedTableName != null
+              let referencedStoragePropertyDefinition = _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition()
+              select referencingStorageProperty.CreateForeignKeyConstraint(
+                  referencingColumns => _storageNameProvider.GetForeignKeyConstraintName(classDefinition, referencingColumns),
+                  referencedTableName,
+                  referencedStoragePropertyDefinition)
+             ).ToList();
     }
 
-    private EntityNameDefinition? FindTableName (ClassDefinition classDefinition)
+    private EntityNameDefinition? FindTableName (TypeDefinition typeDefinition)
     {
+      if (typeDefinition is not ClassDefinition classDefinition) // TODO R2I Persistence: check if this makes sense after refactoring GetTableName
+        return null;
+
       var tableName = classDefinition
           .CreateSequence(cd => cd.BaseClass)
           .Select(cd => _storageNameProvider.GetTableName(cd))

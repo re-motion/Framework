@@ -42,21 +42,29 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
       _propertyMetadataProvider = propertyMetadataProvider;
     }
 
-    public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
+    public IEnumerable<MappingValidationResult> Validate (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      if (!classDefinition.IsClassTypeResolved)
-        throw new InvalidOperationException("Class type of '" + classDefinition.ID + "' is not resolved.");
+      if (!typeDefinition.IsTypeResolved)
+        throw new InvalidOperationException("Type '" + typeDefinition.Type.GetFullNameSafe() + "' is not resolved.");
 
-      bool isInheritanceRoot = classDefinition.BaseClass == null;
-      var propertyFinder = new AllMappingPropertiesFinder(
-          classDefinition.ClassType,
-          isInheritanceRoot,
-          true,
-          _nameResolver,
-          classDefinition.PersistentMixinFinder,
-          _propertyMetadataProvider);
+      AllMappingPropertiesFinder propertyFinder;
+      if (typeDefinition is ClassDefinition classDefinition)
+      {
+        var isInheritanceRoot = classDefinition.BaseClass == null;
+        propertyFinder = new AllMappingPropertiesFinder(
+            classDefinition.Type,
+            isInheritanceRoot,
+            true,
+            _nameResolver,
+            classDefinition.PersistentMixinFinder,
+            _propertyMetadataProvider);
+      }
+      else
+      {
+        throw new NotSupportedException("Only class definitions are supported."); // TODO R2I Mapping: property finder support for interfaces
+      }
       var propertyInfos = propertyFinder.FindPropertyInfos();
 
       return from IPropertyInformation propertyInfo in propertyInfos

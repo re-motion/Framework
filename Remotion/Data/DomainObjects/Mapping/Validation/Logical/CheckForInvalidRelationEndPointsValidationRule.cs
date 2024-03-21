@@ -33,18 +33,18 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
         if (endPointDefinition is PropertyNotFoundRelationEndPointDefinition propertyNotFoundRelationEndPointDefinition)
         {
           return MappingValidationResult.CreateInvalidResultForType(
-              propertyNotFoundRelationEndPointDefinition.ClassDefinition.ClassType,
-              "Property '{0}' on class '{1}' could not be found.",
+              propertyNotFoundRelationEndPointDefinition.TypeDefinition.Type,
+              "Property '{0}' on type '{1}' could not be found.",
               propertyNotFoundRelationEndPointDefinition.PropertyName,
-              propertyNotFoundRelationEndPointDefinition.ClassDefinition.ClassType.Name);
+              propertyNotFoundRelationEndPointDefinition.TypeDefinition.Type.Name);
         }
         else if (endPointDefinition is TypeNotObjectIDRelationEndPointDefinition typeNotObjectIDRelationEndPointDefinition)
         {
           return MappingValidationResult.CreateInvalidResultForType(
-              typeNotObjectIDRelationEndPointDefinition.ClassDefinition.ClassType,
-            "Relation property '{0}' on class '{1}' is of type '{2}', but non-virtual relation properties must be of type '{3}'.",
+              typeNotObjectIDRelationEndPointDefinition.TypeDefinition.Type,
+            "Relation property '{0}' on type '{1}' is of type '{2}', but non-virtual relation properties must be of type '{3}'.",
             typeNotObjectIDRelationEndPointDefinition.PropertyName,
-            typeNotObjectIDRelationEndPointDefinition.ClassDefinition.ClassType.Name,
+            typeNotObjectIDRelationEndPointDefinition.TypeDefinition.Type.Name,
             typeNotObjectIDRelationEndPointDefinition.PropertyInfo.PropertyType.Name,
             typeof(ObjectID).Name);
         }
@@ -54,10 +54,10 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
           Assertion.DebugIsNotNull(endPointDefinition.PropertyInfo, "endPointDefinition.PropertyInfo != null when endPointDefinition.IsAnonymous == false");
 
           return MappingValidationResult.CreateInvalidResultForType(
-              endPointDefinition.ClassDefinition.ClassType,
-              "Relation property '{0}' on class '{1}' is of type '{2}', but virtual relation properties must be of type '{3}', '{4}', or '{5}'.",
+              endPointDefinition.TypeDefinition.Type,
+              "Relation property '{0}' on type '{1}' is of type '{2}', but virtual relation properties must be of type '{3}', '{4}', or '{5}'.",
               endPointDefinition.PropertyName,
-              endPointDefinition.ClassDefinition.ClassType.Name,
+              endPointDefinition.TypeDefinition.Type.Name,
               endPointDefinition.PropertyInfo.PropertyType.Name,
               typeof(DomainObject).Name,
               typeof(ObjectList<>).Name,

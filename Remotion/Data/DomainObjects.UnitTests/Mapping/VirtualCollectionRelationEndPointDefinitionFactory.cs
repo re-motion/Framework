@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   public static class VirtualCollectionRelationEndPointDefinitionFactory
   {
     public static VirtualCollectionRelationEndPointDefinition Create (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         string propertyName,
         bool isMandatory,
         Type propertyType,
@@ -34,19 +34,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var propertyInformationStub = new Mock<IPropertyInformation>();
       propertyInformationStub.Setup(stub => stub.Name).Returns(propertyName);
       propertyInformationStub.Setup(stub => stub.PropertyType).Returns(propertyType);
-      propertyInformationStub.Setup(stub => stub.DeclaringType).Returns(TypeAdapter.Create(classDefinition.ClassType));
+      propertyInformationStub.Setup(stub => stub.DeclaringType).Returns(TypeAdapter.Create(typeDefinition.Type));
 
       return new VirtualCollectionRelationEndPointDefinition(
-          classDefinition, propertyName, isMandatory, sortExpressionDefinition, propertyInformationStub.Object);
+          typeDefinition, propertyName, isMandatory, sortExpressionDefinition, propertyInformationStub.Object);
     }
 
     public static VirtualCollectionRelationEndPointDefinition Create (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         string propertyName,
         bool isMandatory,
         Type propertyType)
     {
-      return Create(classDefinition, propertyName, isMandatory, propertyType, new Lazy<SortExpressionDefinition>(() => null));
+      return Create(typeDefinition, propertyName, isMandatory, propertyType, new Lazy<SortExpressionDefinition>(() => null));
     }
   }
 }

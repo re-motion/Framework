@@ -53,9 +53,9 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
       {
         return MappingValidationResult.CreateInvalidResultForProperty(
             relationEndPointDefinition.PropertyInfo,
-            "Virtual property '{0}' of class '{1}' is of type '{2}', but must be assignable to '{3}' or '{4}' or be of type '{5}'.",
+            "Virtual property '{0}' of type '{1}' is of type '{2}', but must be assignable to '{3}' or '{4}' or be of type '{5}'.",
             relationEndPointDefinition.PropertyInfo.Name,
-            relationEndPointDefinition.ClassDefinition.ClassType.Name,
+            relationEndPointDefinition.TypeDefinition.Type.Name,
             relationEndPointDefinition.PropertyInfo.PropertyType.Name,
             typeof(DomainObject).Name,
             typeof(ObjectList<>).Name,

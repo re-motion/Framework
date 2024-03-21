@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       objectID = objectID ?? new ObjectID(typeof(Order), Guid.NewGuid());
       shortPropertyName = shortPropertyName ?? "OrderItems";
-      return RelationEndPointID.Create(objectID, objectID.ClassDefinition.ClassType, shortPropertyName);
+      return RelationEndPointID.Create(objectID, objectID.ClassDefinition.Type, shortPropertyName);
     }
 
     public static RelationEndPointID CreateAnonymousEndPointID ()

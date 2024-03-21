@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.Validation;
+using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validation
 {
@@ -118,6 +119,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
           "Class 'DerivedValidationDomainObjectClass' must not define a table when its base class 'BaseOfBaseValidationDomainObjectClass' also defines one.\r\n\r\n"
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
+    }
+
+    [Test]
+    public void IgnoresArgumentsOfTypeOtherThanClassDefinition ()
+    {
+      var typeDefinitionForUnresolvedRelationPropertyType = new TypeDefinitionForUnresolvedRelationPropertyType(typeof(string), new NullPropertyInformation());
+      var validationResult = _validationRule.Validate(typeDefinitionForUnresolvedRelationPropertyType);
+
+      AssertMappingValidationResult(validationResult, true, null);
     }
   }
 }

@@ -47,14 +47,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
       _scriptToStringConverter = scriptToStringConverter;
     }
 
-    public IEnumerable<Script> GetScripts (IEnumerable<ClassDefinition> classDefinitions)
+    public IEnumerable<Script> GetScripts (IEnumerable<TypeDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
 
       var classDefinitionsByStorageProvider =
-          from cd in classDefinitions
-          where cd.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition
-          group cd by cd.StorageEntityDefinition.StorageProviderDefinition
+          from td in typeDefinitions
+          where td.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition
+          group td by td.StorageEntityDefinition.StorageProviderDefinition
           into g
             select new { StorageProviderDefinition = (RdbmsProviderDefinition)g.Key, ClassDefinitions = g };
 

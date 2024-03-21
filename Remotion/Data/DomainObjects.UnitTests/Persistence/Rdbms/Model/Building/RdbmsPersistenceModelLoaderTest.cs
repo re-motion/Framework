@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       Assert.That(validator.ValidationRules[2], Is.TypeOf(typeof(ClassAboveTableIsAbstractValidationRule)));
       Assert.That(validator.ValidationRules[3], Is.TypeOf(typeof(ColumnNamesAreUniqueWithinInheritanceTreeValidationRule)));
       Assert.That(validator.ValidationRules[4], Is.TypeOf(typeof(PropertyTypeIsSupportedByStorageProviderValidationRule)));
-      Assert.That(validator.ValidationRules[5], Is.TypeOf(typeof(RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule)));
+      Assert.That(validator.ValidationRules[5], Is.TypeOf(typeof(RelationPropertyStorageClassMatchesReferencedTypeDefinitionStorageClassValidationRule)));
     }
 
     [Test]
@@ -255,7 +255,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           () => _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedDerivedClassDefinition),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "The storage entity definition of class 'Derived2Class' does not implement interface 'IRdbmsStorageEntityDefinition'."));
+                  "The storage entity definition of type 'Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.RdbmsPersistenceModelLoaderTestDomain.Derived2Class' "
+                  + "does not implement interface 'IRdbmsStorageEntityDefinition'."));
     }
 
     [Test]
@@ -267,7 +268,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           () => _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedDerivedClassDefinition),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "The property definition 'DerivedDerivedProperty' of class 'DerivedDerivedClass' does not implement interface 'IRdbmsStoragePropertyDefinition'."));
+                  "The property definition 'DerivedDerivedProperty' of type "
+                  + "'Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.RdbmsPersistenceModelLoaderTestDomain.DerivedDerivedClass' "
+                  + "does not implement interface 'IRdbmsStoragePropertyDefinition'."));
     }
   }
 }

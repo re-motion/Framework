@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
   public class MappingAttributesAreSupportedForPropertyTypeValidationRuleTest : ValidationRuleTestBase
   {
     private MappingAttributesAreSupportedForPropertyTypeValidationRule _validtionRule;
-    private ClassDefinition _classDefinition;
+    private TypeDefinition _typeDefinition;
     private Type _validType;
     private Type _invalidType;
 
@@ -37,17 +37,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       _validtionRule = new MappingAttributesAreSupportedForPropertyTypeValidationRule();
       _validType = typeof(ClassWithValidPropertyAttributes);
       _invalidType = typeof(ClassWithInvalidPropertyAttributes);
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: _validType);
+      _typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithDefaultProperties(classType: _validType);
     }
 
     [Test]
     public void ValidPropertyWithStringPropertyAttribute ()
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_classDefinition, _validType, "StringProperty");
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly();
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_typeDefinition, _validType, "StringProperty");
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validtionRule.Validate(_classDefinition);
+      var validationResult = _validtionRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -55,11 +55,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void InvalidPropertyWithStringPropertyAttribute ()
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_classDefinition, _invalidType, "IntPropertyWithStringPropertyAttribute");
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly();
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_typeDefinition, _invalidType, "IntPropertyWithStringPropertyAttribute");
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validtionRule.Validate(_classDefinition);
+      var validationResult = _validtionRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, false,
         "The 'StringPropertyAttribute' may be only applied to properties of type 'String'.\r\n\r\n"
@@ -71,11 +71,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void ValidPropertyWithBinaryPropertyAttribute ()
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_classDefinition, _validType, "BinaryProperty");
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly();
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_typeDefinition, _validType, "BinaryProperty");
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validtionRule.Validate(_classDefinition);
+      var validationResult = _validtionRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -83,11 +83,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void InvalidPropertyWithBinaryPropertyAttribute ()
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_classDefinition, _invalidType, "BoolPropertyWithBinaryPropertyAttribute");
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly();
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_typeDefinition, _invalidType, "BoolPropertyWithBinaryPropertyAttribute");
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validtionRule.Validate(_classDefinition);
+      var validationResult = _validtionRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, false, "The 'BinaryPropertyAttribute' may be only applied to properties of type 'Byte[]'.\r\n\r\n"
         + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
@@ -98,11 +98,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void ValidPropertyWithExtensibleEnumPropertyAttribute ()
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_classDefinition, _validType, "ExtensibleEnumProperty");
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
-      _classDefinition.SetReadOnly();
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_typeDefinition, _validType, "ExtensibleEnumProperty");
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validtionRule.Validate(_classDefinition);
+      var validationResult = _validtionRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -110,11 +110,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void InvalidPropertyWithExtensibleEnumPropertyAttribute ()
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_classDefinition, _invalidType, "StringPropertyWithExtensibleEnumPropertyAttribute");
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly();
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_typeDefinition, _invalidType, "StringPropertyWithExtensibleEnumPropertyAttribute");
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validtionRule.Validate(_classDefinition);
+      var validationResult = _validtionRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, false, "The 'ExtensibleEnumPropertyAttribute' may be only applied to properties of type 'IExtensibleEnum'.\r\n\r\n"
         + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
@@ -125,11 +125,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void ValidPropertyWithMandatoryPropertyAttribute ()
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_classDefinition, _validType, "MandatoryProperty");
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly();
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_typeDefinition, _validType, "MandatoryProperty");
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validtionRule.Validate(_classDefinition);
+      var validationResult = _validtionRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -137,11 +137,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void InvalidPropertyWithMandatoryPropertyAttribute ()
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_classDefinition, _invalidType, "StringPropertyWithMandatoryPropertyAttribute");
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly();
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_typeDefinition, _invalidType, "StringPropertyWithMandatoryPropertyAttribute");
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validtionRule.Validate(_classDefinition);
+      var validationResult = _validtionRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, false,
         "The 'MandatoryAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
@@ -154,13 +154,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     public void ValidDomainObjectPropertyWithBidirectionalRelationAttribute ()
     {
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(
-          _classDefinition,
+          _typeDefinition,
           _validType,
           "DomainObjectBidirectionalRelationProperty");
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
-      _classDefinition.SetReadOnly();
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validtionRule.Validate(_classDefinition);
+      var validationResult = _validtionRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -169,13 +169,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     public void ValidDomainObjectCollectionPropertyWithBidirectionalRelationAttribute ()
     {
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(
-          _classDefinition,
+          _typeDefinition,
           _validType,
           "DomainObjectCollectionBidirectionalRelationProperty");
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
-      _classDefinition.SetReadOnly();
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validtionRule.Validate(_classDefinition);
+      var validationResult = _validtionRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -184,13 +184,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     public void ValidVirtualCollectionPropertyWithBidirectionalRelationAttribute ()
     {
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(
-          _classDefinition,
+          _typeDefinition,
           _validType,
           "VirtualCollectionBidirectionalRelationProperty");
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
-      _classDefinition.SetReadOnly();
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validtionRule.Validate(_classDefinition);
+      var validationResult = _validtionRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -198,11 +198,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void InvalidPropertyWithBidirectionalRelationAttribute ()
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_classDefinition, _invalidType, "StringPropertyWithBidirectionalRelationAttribute");
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly();
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_typeDefinition, _invalidType, "StringPropertyWithBidirectionalRelationAttribute");
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validtionRule.Validate(_classDefinition);
+      var validationResult = _validtionRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, false,
         "The 'DBBidirectionalRelationAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
@@ -214,14 +214,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void SeveralInvalidProperties ()
     {
-      var propertyDefinition1 = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_classDefinition, _invalidType, "StringPropertyWithMandatoryPropertyAttribute");
-      var propertyDefinition2 = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_classDefinition, _invalidType, "StringPropertyWithExtensibleEnumPropertyAttribute");
-      var propertyDefinition3 = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_classDefinition, _invalidType, "BoolPropertyWithBinaryPropertyAttribute");
+      var propertyDefinition1 = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_typeDefinition, _invalidType, "StringPropertyWithMandatoryPropertyAttribute");
+      var propertyDefinition2 = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_typeDefinition, _invalidType, "StringPropertyWithExtensibleEnumPropertyAttribute");
+      var propertyDefinition3 = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_typeDefinition, _invalidType, "BoolPropertyWithBinaryPropertyAttribute");
 
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition1, propertyDefinition2, propertyDefinition3}, true));
-      _classDefinition.SetReadOnly();
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition1, propertyDefinition2, propertyDefinition3}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validtionRule.Validate(_classDefinition).ToArray();
+      var validationResult = _validtionRule.Validate(_typeDefinition).ToArray();
 
       var expectedMessage1 = "The 'MandatoryAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
         + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."

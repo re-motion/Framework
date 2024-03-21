@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       Assert.IsInstanceOf(
           typeof(RdbmsRelationEndPointReflector),
           RelationEndPointReflector.CreateRelationEndPointReflector(
-              ClassDefinitionObjectMother.CreateClassDefinition(classType: type),
+              TypeDefinitionObjectMother.CreateClassDefinition(classType: type),
               propertyInfo,
               Configuration.NameResolver,
               PropertyMetadataProvider,
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       var type = typeof(ClassWithRealRelationEndPoints);
       var propertyInfo = PropertyInfoAdapter.Create(type.GetProperty("NoAttributeForDomainObjectCollection"));
       var relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector(
-          ClassDefinitionObjectMother.CreateClassDefinition(classType: type),
+          TypeDefinitionObjectMother.CreateClassDefinition(classType: type),
           propertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       var type = typeof(ClassWithInvalidUnidirectionalRelation);
       var propertyInfo = PropertyInfoAdapter.Create(type.GetProperty("LeftSideForDomainObjectCollection"));
       var relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector(
-          ClassDefinitionObjectMother.CreateClassDefinition(classType: type),
+          TypeDefinitionObjectMother.CreateClassDefinition(classType: type),
           propertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       var type = typeof(ClassWithInvalidUnidirectionalRelation);
       var propertyInfo = PropertyInfoAdapter.Create(type.GetProperty("LeftSideForVirtualCollection"));
       var relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector(
-          ClassDefinitionObjectMother.CreateClassDefinition(classType: type),
+          TypeDefinitionObjectMother.CreateClassDefinition(classType: type),
           propertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       var type = typeof(ClassWithRealRelationEndPoints);
       var propertyInfo = PropertyInfoAdapter.Create(type.GetProperty("Unidirectional"));
       var relationEndPointReflector = new RdbmsRelationEndPointReflector(
-          ClassDefinitionObjectMother.CreateClassDefinition(classType: type),
+          TypeDefinitionObjectMother.CreateClassDefinition(classType: type),
           propertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,
@@ -111,16 +111,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     [Test]
     public void GetMetadata_NonVirtualEndPoint_PropertyTypeIsNotObjectID ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(ClassWithRealRelationEndPoints));
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(ClassWithRealRelationEndPoints));
       var propertyDefinition =
-          PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "Unidirectional", typeof(string));
-      classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
+          PropertyDefinitionObjectMother.CreateForFakePropertyInfo(typeDefinition, "Unidirectional", typeof(string));
+      typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
 
       var mappingNameResolverMock = new Mock<IMemberInformationNameResolver>();
       mappingNameResolverMock.Setup(mock => mock.GetPropertyName(propertyDefinition.PropertyInfo)).Returns(propertyDefinition.PropertyName);
 
       var relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector(
-          classDefinition,
+          typeDefinition,
           propertyDefinition.PropertyInfo,
           mappingNameResolverMock.Object,
           PropertyMetadataProvider,
@@ -135,16 +135,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     [Test]
     public void GetMetadata_VirtualEndPoint_PropertyTypeIsNotCompatible ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(ClassWithVirtualRelationEndPoints));
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(ClassWithVirtualRelationEndPoints));
       var propertyDefinition =
-          PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "BidirectionalOneToManyForDomainObjectCollection", typeof(string));
-      classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
+          PropertyDefinitionObjectMother.CreateForFakePropertyInfo(typeDefinition, "BidirectionalOneToManyForDomainObjectCollection", typeof(string));
+      typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
 
       var mappingNameResolverMock = new Mock<IMemberInformationNameResolver>();
       mappingNameResolverMock.Setup(mock => mock.GetPropertyName(propertyDefinition.PropertyInfo)).Returns(propertyDefinition.PropertyName);
 
       var relationEndPointReflectorPartialMock = new Mock<RelationEndPointReflector<BidirectionalRelationAttribute>>(
-          classDefinition,
+          typeDefinition,
           propertyDefinition.PropertyInfo,
           mappingNameResolverMock.Object,
           PropertyMetadataProvider,

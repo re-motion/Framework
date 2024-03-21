@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       var propertyObjects = PropertyAccessorData.GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
       Assert.That(propertyObjects.Item1, Is.Not.Null);
-      Assert.That(propertyObjects.Item1.ClassDefinition, Is.SameAs(classDefinition));
+      Assert.That(propertyObjects.Item1.TypeDefinition, Is.SameAs(classDefinition));
       Assert.That(propertyObjects.Item1.PropertyName, Is.EqualTo(propertyIdentifier));
       Assert.That(propertyObjects.Item2, Is.Null);
     }
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       var propertyObjects = PropertyAccessorData.GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
       Assert.That(propertyObjects.Item2, Is.Not.Null);
-      Assert.That(propertyObjects.Item2.ClassDefinition, Is.SameAs(classDefinition));
+      Assert.That(propertyObjects.Item2.TypeDefinition, Is.SameAs(classDefinition));
       Assert.That(propertyObjects.Item2.PropertyName, Is.EqualTo(propertyIdentifier));
     }
 
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       var propertyObjects = PropertyAccessorData.GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
       Assert.That(propertyObjects.Item2, Is.Not.Null);
-      Assert.That(propertyObjects.Item2.ClassDefinition, Is.SameAs(classDefinition));
+      Assert.That(propertyObjects.Item2.TypeDefinition, Is.SameAs(classDefinition));
       Assert.That(propertyObjects.Item2.PropertyName, Is.EqualTo(propertyIdentifier));
     }
 
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       var propertyObjects = PropertyAccessorData.GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
       Assert.That(propertyObjects.Item2, Is.Not.Null);
-      Assert.That(propertyObjects.Item2.ClassDefinition, Is.SameAs(classDefinition));
+      Assert.That(propertyObjects.Item2.TypeDefinition, Is.SameAs(classDefinition));
       Assert.That(propertyObjects.Item2.PropertyName, Is.EqualTo(propertyIdentifier));
     }
 
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       var propertyObjects = PropertyAccessorData.GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
       Assert.That(propertyObjects.Item2, Is.Not.Null);
-      Assert.That(propertyObjects.Item2.ClassDefinition, Is.SameAs(classDefinition));
+      Assert.That(propertyObjects.Item2.TypeDefinition, Is.SameAs(classDefinition));
       Assert.That(propertyObjects.Item2.PropertyName, Is.EqualTo(propertyIdentifier));
     }
 
@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       PropertyAccessorData accessor = CreateAccessorData(typeof(IndustrialSector), "Companies");
 
-      Assert.That(accessor.ClassDefinition, Is.SameAs(MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector))));
+      Assert.That(accessor.TypeDefinition, Is.SameAs(MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector))));
       Assert.That(accessor.PropertyIdentifier, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies"));
       Assert.That(accessor.PropertyDefinition, Is.Null);
       Assert.That(accessor.RelationEndPointDefinition, Is.Not.Null);
@@ -315,9 +315,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(data1.GetHashCode(), Is.EqualTo(data2.GetHashCode()));
     }
 
-    private static string GetPropertyIdentifier (ClassDefinition classDefinition, string shortPropertyName)
+    private static string GetPropertyIdentifier (TypeDefinition typeDefinition, string shortPropertyName)
     {
-      return classDefinition.ClassType.FullName + "." + shortPropertyName;
+      return typeDefinition.Type.FullName + "." + shortPropertyName;
     }
 
     private PropertyAccessorData CreateAccessorData (Type type, string shortIdentifier)

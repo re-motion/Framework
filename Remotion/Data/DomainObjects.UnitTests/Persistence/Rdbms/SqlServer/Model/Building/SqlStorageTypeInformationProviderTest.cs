@@ -703,9 +703,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
 
     private PropertyDefinition CreatePropertyDefinition (Type propertyType, bool isNullable, int? maxLength = null)
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition();
       return PropertyDefinitionObjectMother.CreateForFakePropertyInfo(
-          classDefinition,
+          typeDefinition,
           "Name",
           false,
           propertyType,

@@ -46,9 +46,9 @@ public class SerializableStorageSettings : IStorageSettings,
     return _storageSettingsImplementation.GetStorageProviderDefinitions();
   }
 
-  public StorageProviderDefinition GetStorageProviderDefinition (ClassDefinition classDefinition)
+  public StorageProviderDefinition GetStorageProviderDefinition (TypeDefinition typeDefinition)
   {
-    return _storageSettingsImplementation.GetStorageProviderDefinition(classDefinition);
+    return _storageSettingsImplementation.GetStorageProviderDefinition(typeDefinition);
   }
 
   public StorageProviderDefinition GetStorageProviderDefinition (Type storageGroupTypeOrNull)

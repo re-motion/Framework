@@ -24,18 +24,18 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
   /// <summary>
   /// Validates that the domain object does not have a legacy infrastructure constructor taking a single data container argument.
   /// </summary>
-  public class DomainObjectTypeDoesNotHaveLegacyInfrastructureConstructorValidationRule : IClassDefinitionValidationRule
+  public class DomainObjectTypeDoesNotHaveLegacyInfrastructureConstructorValidationRule : ITypeDefinitionValidationRule
   {
     public DomainObjectTypeDoesNotHaveLegacyInfrastructureConstructorValidationRule ()
     {
 
     }
 
-    public MappingValidationResult Validate (ClassDefinition classDefinition)
+    public MappingValidationResult Validate (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      return Validate(classDefinition.ClassType);
+      return Validate(typeDefinition.Type);
     }
 
     private MappingValidationResult Validate (Type type)

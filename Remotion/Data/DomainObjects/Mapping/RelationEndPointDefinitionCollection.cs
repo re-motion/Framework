@@ -26,13 +26,17 @@ namespace Remotion.Data.DomainObjects.Mapping
   [Serializable]
   public class RelationEndPointDefinitionCollection : CommonCollection, IEnumerable<IRelationEndPointDefinition>
   {
-    public static RelationEndPointDefinitionCollection CreateForAllRelationEndPoints (ClassDefinition classDefinition, bool makeCollectionReadOnly)
+    public static RelationEndPointDefinitionCollection CreateForAllRelationEndPoints (TypeDefinition typeDefinition, bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      return
-          new RelationEndPointDefinitionCollection(
-              classDefinition.CreateSequence(cd => cd.BaseClass).SelectMany(cd => cd.MyRelationEndPointDefinitions), makeCollectionReadOnly);
+      var endPoints = new List<IRelationEndPointDefinition>();
+      InlineTypeDefinitionWalker.WalkAncestors(
+          typeDefinition,
+          classDefinition => endPoints.AddRange(classDefinition.MyRelationEndPointDefinitions),
+          interfaceDefinition => endPoints.AddRange(interfaceDefinition.MyRelationEndPointDefinitions));
+
+      return new RelationEndPointDefinitionCollection(endPoints, makeCollectionReadOnly);
     }
 
     public RelationEndPointDefinitionCollection ()

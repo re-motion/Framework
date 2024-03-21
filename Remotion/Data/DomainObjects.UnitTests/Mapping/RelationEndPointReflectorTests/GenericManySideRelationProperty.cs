@@ -28,13 +28,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
   [TestFixture]
   public class GenericManySideRelationProperty : MappingReflectionTestBase
   {
-    private ClassDefinition _classDefinition;
+    private TypeDefinition _typeDefinition;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClosedGenericClassWithRealRelationEndPoints));
+      _typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClosedGenericClassWithRealRelationEndPoints));
     }
 
     [Test]
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       Assert.IsInstanceOf(typeof(RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition)actual;
-      Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
+      Assert.That(relationEndPointDefinition.TypeDefinition, Is.SameAs(_typeDefinition));
       Assert.That(relationEndPointDefinition.PropertyDefinition, Is.SameAs(GetPropertyDefinition("BaseUnidirectional")));
       Assert.That(relationEndPointDefinition.HasRelationDefinitionBeenSet, Is.False);
     }
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       Assert.IsInstanceOf(typeof(RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition)actual;
-      Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
+      Assert.That(relationEndPointDefinition.TypeDefinition, Is.SameAs(_typeDefinition));
       Assert.That(relationEndPointDefinition.PropertyDefinition, Is.SameAs(GetPropertyDefinition("BaseBidirectionalOneToOne")));
       Assert.That(relationEndPointDefinition.HasRelationDefinitionBeenSet, Is.False);
     }
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       Assert.IsInstanceOf(typeof(RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition)actual;
-      Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
+      Assert.That(relationEndPointDefinition.TypeDefinition, Is.SameAs(_typeDefinition));
       Assert.That(relationEndPointDefinition.PropertyDefinition, Is.SameAs(GetPropertyDefinition("BaseBidirectionalOneToMany")));
       Assert.That(relationEndPointDefinition.HasRelationDefinitionBeenSet, Is.False);
     }
@@ -120,10 +120,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     {
       PropertyReflector propertyReflector = CreatePropertyReflector(propertyName);
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
 
       return new RdbmsRelationEndPointReflector(
-          _classDefinition,
+          _typeDefinition,
           propertyReflector.PropertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,
@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
           PropertyInfoAdapter.Create(type.GetProperty(property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic));
 
       return new PropertyReflector(
-          _classDefinition,
+          _typeDefinition,
           propertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,
@@ -148,7 +148,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
     private PropertyDefinition GetPropertyDefinition (string propertyName)
     {
-      return _classDefinition.MyPropertyDefinitions[
+      return _typeDefinition.MyPropertyDefinitions[
           string.Format("{0}.{1}", typeof(GenericClassWithRealRelationEndPointsNotInMapping<>).FullName, propertyName)];
     }
   }

@@ -214,11 +214,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       ArgumentUtility.CheckNotNull("info", info);
 
       var objectID = (ObjectID?)info.GetValue("ObjectID", typeof(ObjectID));
-      var classDefinitionID = info.GetString("ClassID")!;
+      var typeAssemblyQualifiedName = info.GetString("Type")!;
       var propertyName = info.GetString("PropertyName")!;
 
-      var classDefinition = MappingConfiguration.Current.GetClassDefinition(classDefinitionID);
-      var relationEndPointDefinition = classDefinition.GetMandatoryRelationEndPointDefinition(propertyName);
+      var type = Type.GetType(typeAssemblyQualifiedName, throwOnError: true, ignoreCase: false)!;
+      var typeDefinition = MappingConfiguration.Current.GetTypeDefinition(type);
+      var relationEndPointDefinition = typeDefinition.GetMandatoryRelationEndPointDefinition(propertyName);
 
       _objectID = objectID;
       _definition = relationEndPointDefinition;
@@ -232,19 +233,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       ArgumentUtility.CheckNotNull("info", info);
 
       info.AddValue("ObjectID", _objectID);
-      info.AddValue("ClassID", _definition.ClassDefinition.ID);
+      info.AddValue("Type", _definition.TypeDefinition.Type.AssemblyQualifiedName);
       info.AddValue("PropertyName", _definition.PropertyName);
     }
 
     // ReSharper disable UnusedMember.Local
     private RelationEndPointID (FlattenedDeserializationInfo info)
     {
-      var classDefinitionID = info.GetValueForHandle<string>();
+      var type = info.GetValue<Type>();
       var propertyName = info.GetValueForHandle<string>();
       var objectID = info.GetNullableValueForHandle<ObjectID>();
 
-      var classDefinition = MappingConfiguration.Current.GetClassDefinition(classDefinitionID);
-      var relationEndPointDefinition = classDefinition.GetMandatoryRelationEndPointDefinition(propertyName);
+      var typeDefinition = MappingConfiguration.Current.GetTypeDefinition(type);
+      var relationEndPointDefinition = typeDefinition.GetMandatoryRelationEndPointDefinition(propertyName);
 
       _objectID = objectID;
       _definition = relationEndPointDefinition;
@@ -253,7 +254,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      info.AddHandle(_definition.ClassDefinition.ID);
+      info.AddValue(_definition.TypeDefinition.Type);
       info.AddHandle(_definition.PropertyName);
       info.AddHandle(_objectID);
     }

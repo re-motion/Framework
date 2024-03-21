@@ -58,8 +58,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void CreateForeignKeyConstraints ()
     {
-      var orderClassDefinition = Configuration.GetTypeDefinition(typeof(Order));
-      var customerClassDefintion = Configuration.GetTypeDefinition(typeof(Customer));
+      var orderClassDefinition = Configuration.GetClassDefinition(typeof(Order));
+      var customerClassDefintion = Configuration.GetClassDefinition(typeof(Customer));
 
       _infrastructureStoragePropertyDefintionProviderMock
           .Setup(mock => mock.GetObjectIDStoragePropertyDefinition())

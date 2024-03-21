@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     {
       using (MixinConfiguration.BuildFromActive().ForClass(typeof(StorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
       {
-        ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
+        TypeDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
         StorageProvider provider =
             new StorageProviderManager(NullPersistenceExtension.Instance, StorageSettings).GetMandatory(orderDefinition.StorageEntityDefinition.StorageProviderDefinition);
         Assert.That(Mixin.Get<StorageProviderWithFixedGuidMixin>(provider), Is.Not.Null);
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     {
       using (MixinConfiguration.BuildFromActive().ForClass(typeof(StorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
       {
-        ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
+        ClassDefinition orderDefinition = MappingConfiguration.Current.GetClassDefinition(typeof(Order));
         StorageProvider provider =
             new StorageProviderManager(NullPersistenceExtension.Instance, StorageSettings)
                 .GetMandatory(orderDefinition.StorageEntityDefinition.StorageProviderDefinition);
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     {
       using (MixinConfiguration.BuildFromActive().ForClass(typeof(StorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
       {
-        ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
+        ClassDefinition orderDefinition = MappingConfiguration.Current.GetClassDefinition(typeof(Order));
         StorageProvider provider =
             new StorageProviderManager(NullPersistenceExtension.Instance, StorageSettings)
                 .GetMandatory(orderDefinition.StorageEntityDefinition.StorageProviderDefinition);

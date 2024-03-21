@@ -31,24 +31,24 @@ namespace Remotion.Data.DomainObjects.Mapping
   {
     private readonly string _propertyName;
     private RelationDefinition? _relationDefinition;
-    private readonly ClassDefinition _classDefinition;
+    private readonly TypeDefinition _typeDefinition;
     private readonly bool _isMandatory;
     private readonly Lazy<SortExpressionDefinition?> _sortExpression;
     private readonly IPropertyInformation _propertyInfo;
 
     public DomainObjectCollectionRelationEndPointDefinition (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         string propertyName,
         bool isMandatory,
         Lazy<SortExpressionDefinition?> sortExpression,
         IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
       ArgumentUtility.CheckNotNull("sortExpression", sortExpression);
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
-      _classDefinition = classDefinition;
+      _typeDefinition = typeDefinition;
       _isMandatory = isMandatory;
       _propertyName = propertyName;
       _sortExpression = sortExpression;
@@ -75,9 +75,9 @@ namespace Remotion.Data.DomainObjects.Mapping
       }
     }
 
-    public ClassDefinition ClassDefinition
+    public TypeDefinition TypeDefinition
     {
-      get { return _classDefinition; }
+      get { return _typeDefinition; }
     }
 
     public bool IsMandatory

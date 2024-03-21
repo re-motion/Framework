@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   public class PropertyDefinition
   {
     private readonly string _propertyName;
-    private readonly ClassDefinition _classDefinition;
+    private readonly TypeDefinition _typeDefinition;
     private readonly int? _maxLength;
     private readonly StorageClass _storageClass;
     private IStoragePropertyDefinition? _storagePropertyDefinition;
@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     private readonly object? _defaultValue;
 
     public PropertyDefinition (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         IPropertyInformation propertyInfo,
         string propertyName,
         bool isObjectID,
@@ -47,11 +47,11 @@ namespace Remotion.Data.DomainObjects.Mapping
         StorageClass storageClass,
         object? defaultValue)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
-      _classDefinition = classDefinition;
+      _typeDefinition = typeDefinition;
       _propertyInfo = propertyInfo;
       _propertyType = isObjectID ? typeof(ObjectID) : propertyInfo.PropertyType;
       _propertyName = propertyName;
@@ -63,9 +63,9 @@ namespace Remotion.Data.DomainObjects.Mapping
       _defaultValue = defaultValue;
     }
 
-    public ClassDefinition ClassDefinition
+    public TypeDefinition TypeDefinition
     {
-      get { return _classDefinition; }
+      get { return _typeDefinition; }
     }
 
     public string PropertyName
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         if (StorageClass != StorageClass.Persistent)
           throw new InvalidOperationException("Cannot access property 'storagePropertyDefinition' for non-persistent property definitions.");
 
-        Assertion.IsNotNull(_storagePropertyDefinition, "StoragePropertyDefinition has not been set for property '{0}' of class '{1}'.", PropertyName, _classDefinition.ID);
+        Assertion.IsNotNull(_storagePropertyDefinition, "StoragePropertyDefinition has not been set for property '{0}' of type '{1}'.", PropertyName, _typeDefinition.Type.GetFullNameSafe());
         return _storagePropertyDefinition;
       }
     }

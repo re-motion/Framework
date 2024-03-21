@@ -22,7 +22,7 @@ using Remotion.ServiceLocation;
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 {
   [TestFixture]
-  public class ITypeDefinitionProviderTest
+  public class IClassDefinitionProviderTest
   {
     private DefaultServiceLocator _serviceLocator;
 
@@ -35,16 +35,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     [Test]
     public void GetInstance_Once ()
     {
-      var instance = _serviceLocator.GetInstance<ITypeDefinitionProvider>();
+      var instance = _serviceLocator.GetInstance<IClassDefinitionProvider>();
 
-      Assert.That(instance, Is.TypeOf<TypeDefinitionProvider>());
+      Assert.That(instance, Is.TypeOf<ClassDefinitionProvider>());
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var instance1 = _serviceLocator.GetInstance<ITypeDefinitionProvider>();
-      var instance2 = _serviceLocator.GetInstance<ITypeDefinitionProvider>();
+      var instance1 = _serviceLocator.GetInstance<IClassDefinitionProvider>();
+      var instance2 = _serviceLocator.GetInstance<IClassDefinitionProvider>();
 
       Assert.That(instance1, Is.SameAs(instance2));
     }

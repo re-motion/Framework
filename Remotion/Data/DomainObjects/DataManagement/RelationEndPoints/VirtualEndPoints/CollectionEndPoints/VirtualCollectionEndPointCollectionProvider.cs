@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     private IObjectList<IDomainObject> GetCollectionWithoutCache (RelationEndPointID endPointID)
     {
-      var requiredItemType = endPointID.Definition.GetOppositeEndPointDefinition().ClassDefinition.ClassType;
+      var requiredItemType = endPointID.Definition.GetOppositeEndPointDefinition().TypeDefinition.Type;
       var dataStrategy = new EndPointDelegatingVirtualCollectionData(endPointID, requiredItemType, _virtualEndPointProvider);
       return ObjectListFactory.Create(dataStrategy);
     }

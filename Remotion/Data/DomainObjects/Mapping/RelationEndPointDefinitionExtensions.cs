@@ -35,10 +35,10 @@ namespace Remotion.Data.DomainObjects.Mapping
     }
 
     [JetBrains.Annotations.NotNull]
-    public static ClassDefinition GetOppositeClassDefinition (this IRelationEndPointDefinition relationEndPointDefinition)
+    public static TypeDefinition GetOppositeTypeDefinition (this IRelationEndPointDefinition relationEndPointDefinition)
     {
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
-      return relationEndPointDefinition.GetOppositeEndPointDefinition().ClassDefinition;
+      return relationEndPointDefinition.GetOppositeEndPointDefinition().TypeDefinition;
     }
   }
 }

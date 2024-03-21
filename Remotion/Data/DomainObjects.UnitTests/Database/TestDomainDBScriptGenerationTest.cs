@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Database
 
       var typeDefinitions = MappingConfiguration.Current.GetTypeDefinitions()
           .Where(e => e.StorageEntityDefinition.StorageProviderID is c_testDomainProviderID or TableInheritanceMappingTest.TableInheritanceTestDomainProviderID)
-          .Where(e => !Attribute.IsDefined(e.ClassType, typeof(ExcludeFromTestDomainDBAttribute)));
+          .Where(e => !Attribute.IsDefined(e.Type, typeof(ExcludeFromTestDomainDBAttribute)));
 
       return scriptGenerator.GetScripts(typeDefinitions)
           .Select(e => new Script(e.StorageProviderDefinition, PatchGeneratedScript(e.SetUpScript), PatchGeneratedScript(e.TearDownScript)));

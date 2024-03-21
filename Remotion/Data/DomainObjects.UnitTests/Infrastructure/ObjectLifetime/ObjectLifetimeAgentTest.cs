@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     private DomainObject _domainObject2;
     private DataContainer _dataContainer2;
     private Mock<IDomainObjectCreator> _domainObjectCreatorMock;
-    private ClassDefinition _typeDefinitionWithCreatorMock;
+    private ClassDefinition _classDefinitionWithCreatorMock;
     private ObjectID _objectIDWithCreatorMock;
 
     public override void SetUp ()
@@ -89,12 +89,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       _dataContainer2 = DataContainerObjectMother.CreateExisting(_domainObject2);
 
       _domainObjectCreatorMock = new Mock<IDomainObjectCreator>(MockBehavior.Strict);
-      _typeDefinitionWithCreatorMock = ClassDefinitionObjectMother.CreateClassDefinitionWithTable(
+      _classDefinitionWithCreatorMock = ClassDefinitionObjectMother.CreateClassDefinitionWithTable(
           TestDomainStorageProviderDefinition,
           classType: typeof(OrderItem),
           instanceCreator: _domainObjectCreatorMock.Object);
 
-      _objectIDWithCreatorMock = new ObjectID(_typeDefinitionWithCreatorMock, Guid.NewGuid());
+      _objectIDWithCreatorMock = new ObjectID(_classDefinitionWithCreatorMock, Guid.NewGuid());
     }
 
     [Test]
@@ -102,8 +102,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     {
       var constructorParameters = ParamList.Create("Some Product");
 
-      _eventSinkWithMock.Setup(mock => mock.RaiseNewObjectCreatingEvent(_typeDefinitionWithCreatorMock.ClassType)).Verifiable();
-      _persistenceStrategyMock.Setup(mock => mock.CreateNewObjectID(_typeDefinitionWithCreatorMock)).Returns(_objectID1).Verifiable();
+      _eventSinkWithMock.Setup(mock => mock.RaiseNewObjectCreatingEvent(_classDefinitionWithCreatorMock.Type)).Verifiable();
+      _persistenceStrategyMock.Setup(mock => mock.CreateNewObjectID(_classDefinitionWithCreatorMock)).Returns(_objectID1).Verifiable();
 
       _domainObjectCreatorMock
           .Setup(
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
           .Returns(_domainObject1)
           .Verifiable();
 
-      var result = _agent.NewObject(_typeDefinitionWithCreatorMock, constructorParameters);
+      var result = _agent.NewObject(_classDefinitionWithCreatorMock, constructorParameters);
 
       _eventSinkWithMock.Verify();
       _persistenceStrategyMock.Verify();
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
           .Returns(_domainObject1)
           .Verifiable();
 
-      agent.NewObject(_typeDefinitionWithCreatorMock, ParamList.Empty);
+      agent.NewObject(_classDefinitionWithCreatorMock, ParamList.Empty);
 
       _domainObjectCreatorMock.Verify();
     }
@@ -151,9 +151,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     [Test]
     public void NewObject_AbstractClass ()
     {
-      var typeDefinition = GetTypeDefinition(typeof(AbstractClass));
+      var classDefinition = GetClassDefinition(typeof(AbstractClass));
       Assert.That(
-          () => _agent.NewObject(typeDefinition, ParamList.Empty),
+          () => _agent.NewObject(classDefinition, ParamList.Empty),
           Throws.InvalidOperationException.With.Message.EqualTo(
               "Cannot instantiate type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.AbstractClass' because it is abstract. "
               + "For classes with automatic properties, InstantiableAttribute must be used."));
@@ -166,8 +166,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
 
       var constructorParameters = ParamList.Empty;
 
-      _eventSinkWithMock.Setup(stub => stub.RaiseNewObjectCreatingEvent(_typeDefinitionWithCreatorMock.ClassType));
-      _persistenceStrategyMock.Setup(stub => stub.CreateNewObjectID(_typeDefinitionWithCreatorMock)).Returns(_objectID1);
+      _eventSinkWithMock.Setup(stub => stub.RaiseNewObjectCreatingEvent(_classDefinitionWithCreatorMock.Type));
+      _persistenceStrategyMock.Setup(stub => stub.CreateNewObjectID(_classDefinitionWithCreatorMock)).Returns(_objectID1);
 
       var exception = new Exception("Test");
       _domainObjectCreatorMock
@@ -185,7 +185,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       var deleteCommandMock = SetupDeleteExpectations(sequence, _dataManagerMock, _domainObject1);
       _enlistedDomainObjectManagerMock.Setup(mock => mock.DisenlistDomainObject(_domainObject1)).Verifiable();
 
-      Assert.That(() => _agent.NewObject(_typeDefinitionWithCreatorMock, constructorParameters), Throws.Exception.SameAs(exception));
+      Assert.That(() => _agent.NewObject(_classDefinitionWithCreatorMock, constructorParameters), Throws.Exception.SameAs(exception));
 
       _domainObjectCreatorMock.Verify();
       _dataManagerMock.Verify();
@@ -201,8 +201,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
 
       var constructorParameters = ParamList.Empty;
 
-      _eventSinkWithMock.Setup(stub => stub.RaiseNewObjectCreatingEvent(_typeDefinitionWithCreatorMock.ClassType));
-      _persistenceStrategyMock.Setup(stub => stub.CreateNewObjectID(_typeDefinitionWithCreatorMock)).Returns(_objectID1);
+      _eventSinkWithMock.Setup(stub => stub.RaiseNewObjectCreatingEvent(_classDefinitionWithCreatorMock.Type));
+      _persistenceStrategyMock.Setup(stub => stub.CreateNewObjectID(_classDefinitionWithCreatorMock)).Returns(_objectID1);
 
       var exceptionInCreate = new Exception("Test");
       _domainObjectCreatorMock
@@ -220,7 +220,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       var deleteCommandMock = SetupDeleteExpectationsWithException(sequence, _dataManagerMock, _domainObject1, exceptionInDelete);
 
       Assert.That(
-          () => _agent.NewObject(_typeDefinitionWithCreatorMock, constructorParameters),
+          () => _agent.NewObject(_classDefinitionWithCreatorMock, constructorParameters),
           Throws.TypeOf<ObjectCleanupException>()
               .With.Message.EqualTo(
                   "While cleaning up an object of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' that threw an exception of type "
@@ -244,8 +244,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     {
       var constructorParameters = ParamList.Empty;
 
-      _eventSinkWithMock.Setup(stub => stub.RaiseNewObjectCreatingEvent(_typeDefinitionWithCreatorMock.ClassType));
-      _persistenceStrategyMock.Setup(stub => stub.CreateNewObjectID(_typeDefinitionWithCreatorMock)).Returns(_objectID1);
+      _eventSinkWithMock.Setup(stub => stub.RaiseNewObjectCreatingEvent(_classDefinitionWithCreatorMock.Type));
+      _persistenceStrategyMock.Setup(stub => stub.CreateNewObjectID(_classDefinitionWithCreatorMock)).Returns(_objectID1);
 
       var exception = new Exception("Test");
       // No object is registered before the exception is thrown
@@ -254,7 +254,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
           .Throws(exception)
           .Verifiable();
 
-      Assert.That(() => _agent.NewObject(_typeDefinitionWithCreatorMock, constructorParameters), Throws.Exception.SameAs(exception));
+      Assert.That(() => _agent.NewObject(_classDefinitionWithCreatorMock, constructorParameters), Throws.Exception.SameAs(exception));
 
       _domainObjectCreatorMock.Verify();
     }

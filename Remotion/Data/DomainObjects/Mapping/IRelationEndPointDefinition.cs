@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 public interface IRelationEndPointDefinition
 {
   RelationDefinition RelationDefinition { get; }
-  ClassDefinition ClassDefinition { get; }
+  TypeDefinition TypeDefinition { get; }
   string? PropertyName { get; }
   IPropertyInformation? PropertyInfo { get; }
   bool IsMandatory { get; }

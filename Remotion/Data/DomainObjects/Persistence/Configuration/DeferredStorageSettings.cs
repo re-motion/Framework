@@ -64,11 +64,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
           LazyThreadSafetyMode.ExecutionAndPublication);
     }
 
-    public StorageProviderDefinition GetStorageProviderDefinition (ClassDefinition classDefinition)
+    public StorageProviderDefinition GetStorageProviderDefinition (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      return _storageSettings.Value.GetStorageProviderDefinition(classDefinition);
+      return _storageSettings.Value.GetStorageProviderDefinition(typeDefinition);
     }
 
     public StorageProviderDefinition GetStorageProviderDefinition (Type? storageGroupTypeOrNull)
