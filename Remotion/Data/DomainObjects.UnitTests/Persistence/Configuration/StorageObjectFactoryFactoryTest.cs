@@ -58,6 +58,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
         throw new System.NotImplementedException();
       }
 
+      public StorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+      {
+        throw new NotImplementedException();
+      }
+
       public IPersistenceModelLoader CreatePersistenceModelLoader (StorageProviderDefinition storageProviderDefinition)
       {
         throw new System.NotImplementedException();

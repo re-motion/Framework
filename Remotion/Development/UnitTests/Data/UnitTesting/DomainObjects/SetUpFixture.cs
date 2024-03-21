@@ -37,7 +37,7 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
     {
       try
       {
-        var storageSettings = FakeStorageSettings.CreateForSqlServer("ConnectionString");
+        var storageSettings = FakeStorageSettings.CreateForSqlServer("ConnectionString", "ReadOnlyConnectionString");
 
         var rootAssemblyFinder = new FixedRootAssemblyFinder(new RootAssembly(typeof(TestDomainObject).Assembly, true));
         var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);

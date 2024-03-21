@@ -74,6 +74,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
       return CreateStorageProvider(persistenceExtension, rdbmsProviderDefinition, commandFactory);
     }
 
+    public StorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+    {
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      var rdbmsProviderDefinition =
+          ArgumentUtility.CheckNotNullAndType<RdbmsProviderDefinition>("storageProviderDefinition", storageProviderDefinition);
+
+      var commandFactory = CreateStorageProviderCommandFactory(rdbmsProviderDefinition);
+      return CreateReadOnlyStorageProvider(persistenceExtension, rdbmsProviderDefinition, commandFactory);
+    }
+
     public virtual IPersistenceModelLoader CreatePersistenceModelLoader (
         StorageProviderDefinition storageProviderDefinition)
     {
@@ -407,7 +417,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
           new SqlCommentScriptElementFactory());
     }
 
-
     protected virtual StorageProvider CreateStorageProvider (
         IPersistenceExtension persistenceExtension,
         RdbmsProviderDefinition rdbmsProviderDefinition,
@@ -420,6 +429,25 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
       return ObjectFactory.Create<RdbmsProvider>(
           ParamList.Create(
               rdbmsProviderDefinition,
+              rdbmsProviderDefinition.ConnectionString,
+              persistenceExtension,
+              commandFactory,
+              (Func<IDbConnection>)(() => new SqlConnection())));
+    }
+
+    protected virtual StorageProvider CreateReadOnlyStorageProvider (
+        IPersistenceExtension persistenceExtension,
+        RdbmsProviderDefinition rdbmsProviderDefinition,
+        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory)
+    {
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("commandFactory", commandFactory);
+      ArgumentUtility.CheckNotNull("rdbmsProviderDefinition", rdbmsProviderDefinition);
+
+      return ObjectFactory.Create<RdbmsProvider>(
+          ParamList.Create(
+              rdbmsProviderDefinition,
+              rdbmsProviderDefinition.ReadOnlyConnectionString,
               persistenceExtension,
               commandFactory,
               (Func<IDbConnection>)(() => new SqlConnection())));
