@@ -35,6 +35,22 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       Assert.That(rdbmsStorageSettingsFactory.ProviderName, Is.EqualTo("Default"));
       Assert.That(rdbmsStorageSettingsFactory.ConnectionString, Is.EqualTo("dummyConnectionString"));
+      Assert.That(rdbmsStorageSettingsFactory.ReadOnlyConnectionString, Is.EqualTo("dummyConnectionString"));
+      Assert.That(rdbmsStorageSettingsFactory.StorageObjectFactoryType, Is.EqualTo(typeof(SqlStorageObjectFactory)));
+    }
+
+    [Test]
+    public void Create_WithReadOnlyConnectionString ()
+    {
+      var result = StorageSettingsFactory.CreateForSqlServer("dummyConnectionString", "dummyReadOnlyConnectionString");
+
+      Assert.That(result, Is.InstanceOf<RdbmsStorageSettingsFactory>());
+
+      var rdbmsStorageSettingsFactory = (RdbmsStorageSettingsFactory)result;
+
+      Assert.That(rdbmsStorageSettingsFactory.ProviderName, Is.EqualTo("Default"));
+      Assert.That(rdbmsStorageSettingsFactory.ConnectionString, Is.EqualTo("dummyConnectionString"));
+      Assert.That(rdbmsStorageSettingsFactory.ReadOnlyConnectionString, Is.EqualTo("dummyReadOnlyConnectionString"));
       Assert.That(rdbmsStorageSettingsFactory.StorageObjectFactoryType, Is.EqualTo(typeof(SqlStorageObjectFactory)));
     }
 
@@ -49,6 +65,22 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       Assert.That(rdbmsStorageSettingsFactory.ProviderName, Is.EqualTo("Default"));
       Assert.That(rdbmsStorageSettingsFactory.ConnectionString, Is.EqualTo("dummyConnectionString"));
+      Assert.That(rdbmsStorageSettingsFactory.ReadOnlyConnectionString, Is.EqualTo("dummyConnectionString"));
+      Assert.That(rdbmsStorageSettingsFactory.StorageObjectFactoryType, Is.EqualTo(typeof(UnitTestStorageObjectFactoryStub)));
+    }
+
+    [Test]
+    public void Create_WithTypeAndReadOnlyConnectionString ()
+    {
+      var result = StorageSettingsFactory.CreateForSqlServer<UnitTestStorageObjectFactoryStub>("dummyConnectionString", "dummyReadOnlyConnectionString");
+
+      Assert.That(result, Is.InstanceOf<RdbmsStorageSettingsFactory>());
+
+      var rdbmsStorageSettingsFactory = (RdbmsStorageSettingsFactory)result;
+
+      Assert.That(rdbmsStorageSettingsFactory.ProviderName, Is.EqualTo("Default"));
+      Assert.That(rdbmsStorageSettingsFactory.ConnectionString, Is.EqualTo("dummyConnectionString"));
+      Assert.That(rdbmsStorageSettingsFactory.ReadOnlyConnectionString, Is.EqualTo("dummyReadOnlyConnectionString"));
       Assert.That(rdbmsStorageSettingsFactory.StorageObjectFactoryType, Is.EqualTo(typeof(UnitTestStorageObjectFactoryStub)));
     }
   }

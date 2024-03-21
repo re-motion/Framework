@@ -31,6 +31,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
   [TestFixture]
   public class StorageProviderDefinitionTest
   {
+    public class StorageObjectFactoryFake : IStorageObjectFactory
+    {
+      public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+      {
+        throw new NotImplementedException();
+      }
+
+      public StorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+      {
+        throw new NotImplementedException();
+      }
+
+      public IPersistenceModelLoader CreatePersistenceModelLoader (
+          StorageProviderDefinition storageProviderDefinition)
+      {
+        throw new NotImplementedException();
+      }
+
+      public IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (
+          StorageProviderDefinition storageProviderDefinition,
+          IMethodCallTransformerProvider methodCallTransformerProvider,
+          ResultOperatorHandlerRegistry resultOperatorHandlerRegistry,
+          IMappingConfiguration mappingConfiguration)
+      {
+        throw new NotImplementedException();
+      }
+    }
+
     private Mock<IStorageObjectFactory> _storageObjectFactoryStub;
 
     [SetUp]
@@ -54,29 +82,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
       var providerDefinition = new TestableStorageProviderDefinition("TestProvider", _storageObjectFactoryStub.Object);
 
       Assert.That(providerDefinition.ToString(), Is.EqualTo("TestableStorageProviderDefinition: 'TestProvider'"));
-    }
-
-    public class StorageObjectFactoryFake : IStorageObjectFactory
-    {
-      public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
-      {
-        throw new NotImplementedException();
-      }
-
-      public IPersistenceModelLoader CreatePersistenceModelLoader (
-          StorageProviderDefinition storageProviderDefinition)
-      {
-        throw new NotImplementedException();
-      }
-
-      public IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (
-          StorageProviderDefinition storageProviderDefinition,
-          IMethodCallTransformerProvider methodCallTransformerProvider,
-          ResultOperatorHandlerRegistry resultOperatorHandlerRegistry,
-          IMappingConfiguration mappingConfiguration)
-      {
-        throw new NotImplementedException();
-      }
     }
 
     private class DerivedStorageObjectFactoryFake : StorageObjectFactoryFake { }

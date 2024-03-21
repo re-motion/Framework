@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
       var storageObjectFactoryFactory = new FakeStorageObjectFactoryFactory();
       storageObjectFactoryFactory.SetUp(new UnitTestStorageObjectFactoryStub());
 
-      var factory = new RdbmsStorageSettingsFactory("dummyProvider", typeof(UnitTestStorageObjectFactoryStub), "connectionString");
+      var factory = new RdbmsStorageSettingsFactory("dummyProvider", typeof(UnitTestStorageObjectFactoryStub), "connectionString", "readOnlyConnectionString");
 
       var storageSettings = factory.Create(storageObjectFactoryFactory);
 
@@ -39,6 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
       Assert.That(defaultProvider.Name, Is.EqualTo("dummyProvider"));
       Assert.That(defaultProvider.Factory, Is.InstanceOf<UnitTestStorageObjectFactoryStub>());
       Assert.That(((RdbmsProviderDefinition)defaultProvider).ConnectionString, Is.EqualTo("connectionString"));
+      Assert.That(((RdbmsProviderDefinition)defaultProvider).ReadOnlyConnectionString, Is.EqualTo("readOnlyConnectionString"));
 
       Assert.That(storageSettings.GetStorageProviderDefinitions(), Is.EquivalentTo(new[] { defaultProvider }));
     }
