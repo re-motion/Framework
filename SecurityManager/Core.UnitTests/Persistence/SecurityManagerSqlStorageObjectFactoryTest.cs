@@ -17,14 +17,13 @@
 using System;
 using Moq;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.Validation;
+using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 using Remotion.SecurityManager.Persistence;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.UnitTests.Persistence
@@ -39,7 +38,12 @@ namespace Remotion.SecurityManager.UnitTests.Persistence
     [SetUp]
     public void SetUp ()
     {
-      _rdbmsProviderDefinition = new RdbmsProviderDefinition("TestDomain", Mock.Of<IRdbmsStorageObjectFactory>(MockBehavior.Strict), "ConnectionString");
+      _rdbmsProviderDefinition = new RdbmsProviderDefinition(
+          "TestDomain",
+          Mock.Of<IRdbmsStorageObjectFactory>(MockBehavior.Strict),
+          "ConnectionString",
+          "ReadOnlyConnectionString");
+
       _securityManagerSqlStorageObjectFactory = new SecurityManagerSqlStorageObjectFactory(
           Mock.Of<IStorageSettings>(MockBehavior.Strict),
           Mock.Of<ITypeConversionProvider>(MockBehavior.Strict),
@@ -55,16 +59,40 @@ namespace Remotion.SecurityManager.UnitTests.Persistence
       Assert.That(result, Is.TypeOf(typeof(SecurityManagerRdbmsProvider)));
       Assert.That(result.PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
       Assert.That(result.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
+      Assert.That(result.As<SecurityManagerRdbmsProvider>().ConnectionString, Is.EqualTo(_rdbmsProviderDefinition.ConnectionString));
     }
 
     [Test]
     public void CreateStorageProviderWithMixin ()
     {
       using (
+          MixinConfiguration.BuildFromActive().ForClass(typeof(RdbmsProvider)).Clear().AddMixins(typeof(SecurityManagerRdbmsProviderTestMixin)).EnterScope())
+      {
+        var result = _securityManagerSqlStorageObjectFactory.CreateStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
+
+        Assert.That(Mixin.Get<SecurityManagerRdbmsProviderTestMixin>(result), Is.Not.Null);
+      }
+    }
+
+    [Test]
+    public void CreateReadOnlyStorageProvider ()
+    {
+      var result = _securityManagerSqlStorageObjectFactory.CreateReadOnlyStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
+
+      Assert.That(result, Is.TypeOf(typeof(SecurityManagerRdbmsProvider)));
+      Assert.That(result.PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
+      Assert.That(result.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
+      Assert.That(result.As<SecurityManagerRdbmsProvider>().ConnectionString, Is.EqualTo(_rdbmsProviderDefinition.ReadOnlyConnectionString));
+    }
+
+    [Test]
+    public void CreateReadOnlyStorageProviderWithMixin ()
+    {
+      using (
           MixinConfiguration.BuildFromActive().ForClass(typeof(RdbmsProvider)).Clear().AddMixins(typeof(SecurityManagerRdbmsProviderTestMixin)).
               EnterScope())
       {
-        var result = _securityManagerSqlStorageObjectFactory.CreateStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
+        var result = _securityManagerSqlStorageObjectFactory.CreateReadOnlyStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
 
         Assert.That(Mixin.Get<SecurityManagerRdbmsProviderTestMixin>(result), Is.Not.Null);
       }

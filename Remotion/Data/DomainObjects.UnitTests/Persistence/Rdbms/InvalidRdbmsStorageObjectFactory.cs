@@ -42,6 +42,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       throw new NotImplementedException();
     }
 
+    public StorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+    {
+      throw new NotImplementedException();
+    }
+
     public IPersistenceModelLoader CreatePersistenceModelLoader (
         StorageProviderDefinition storageProviderDefinition)
     {

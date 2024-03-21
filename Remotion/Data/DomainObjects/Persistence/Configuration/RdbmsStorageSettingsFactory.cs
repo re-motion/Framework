@@ -29,16 +29,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
   {
     public string ProviderName { get; }
     public string ConnectionString { get; }
+    public string ReadOnlyConnectionString { get; }
     public Type StorageObjectFactoryType { get; }
 
-    public RdbmsStorageSettingsFactory (string providerName, Type storageObjectFactoryType, string connectionString)
+    public RdbmsStorageSettingsFactory (string providerName, Type storageObjectFactoryType, string connectionString, string readOnlyConnectionString)
     {
       ArgumentUtility.CheckNotNullOrEmpty("providerName", providerName);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("storageObjectFactoryType", storageObjectFactoryType, typeof(IRdbmsStorageObjectFactory));
       ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
+      ArgumentUtility.CheckNotNullOrEmpty("readOnlyConnectionString", readOnlyConnectionString);
 
       ProviderName = providerName;
       ConnectionString = connectionString;
+      ReadOnlyConnectionString = readOnlyConnectionString;
       StorageObjectFactoryType = storageObjectFactoryType;
     }
 
@@ -61,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
           "typeof(IRdbmsStorageObjectFactory).IsAssignableFrom(StorageObjectFactoryType)");
 
       var rdbmsStorageObjectFactory = (IRdbmsStorageObjectFactory)storageObjectFactory;
-      var providerDefinition = new RdbmsProviderDefinition(ProviderName, rdbmsStorageObjectFactory, ConnectionString);
+      var providerDefinition = new RdbmsProviderDefinition(ProviderName, rdbmsStorageObjectFactory, ConnectionString, ReadOnlyConnectionString);
 
       return new StorageSettings(providerDefinition, new [] { providerDefinition });
     }
