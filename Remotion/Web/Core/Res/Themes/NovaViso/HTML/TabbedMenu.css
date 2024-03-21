@@ -128,6 +128,8 @@ div.tabbedMainMenu span.tabStripTabSelected a:focus span.anchorBody,
 div.tabbedSubMenu span.tabStripTab a:focus span.anchorBody,
 div.tabbedSubMenu span.tabStripTabSelected a:focus span.anchorBody
 {
+  outline: var(--remotion-themed-outline-focus);
+  outline-offset: var(--remotion-themed-outline-offset-focus);
   background-color: var(--remotion-themed-background-color-focus);
   border: var(--remotion-themed-border-focus);
   box-shadow: var(--remotion-themed-box-shadow-focus);

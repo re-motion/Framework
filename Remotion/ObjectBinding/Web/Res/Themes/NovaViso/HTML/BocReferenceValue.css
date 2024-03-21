@@ -128,7 +128,8 @@
 
 .bocReferenceValue.readOnly span.content:focus-within
 {
-  outline: none;
+  outline: var(--remotion-themed-outline-readonly-focus);
+  outline-offset: var(--remotion-themed-outline-offset-readonly-focus);
   border: var(--remotion-themed-border-readonly-focus);
   background-color: var(--remotion-themed-background-color-readonly-focus);
   box-shadow: var(--remotion-themed-box-shadow-readonly-focus);

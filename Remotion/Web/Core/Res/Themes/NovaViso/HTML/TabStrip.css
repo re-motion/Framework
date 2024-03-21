@@ -102,7 +102,8 @@
 .tabStrip .tabStripTab:not(.disabled) a:focus,
 .tabStrip .tabStripTabSelected:not(.disabled) a:focus
 {
-  outline: none;
+  outline: var(--remotion-themed-outline-focus);
+  outline-offset: var(--remotion-themed-outline-offset-focus);
   border: var(--remotion-themed-border-focus);
   box-shadow: var(--remotion-themed-box-shadow-focus);
 }
@@ -120,6 +121,8 @@
 .tabStrip .tabStripTab:not(.disabled) a:focus:hover,
 .tabStrip .tabStripTabSelected:not(.disabled) a:focus:hover
 {
+  outline: var(--remotion-themed-outline-focus-hover);
+  outline-offset: var(--remotion-themed-outline-offset-focus-hover);
   background-color: var(--remotion-themed-background-color-focus-hover);
   border: var(--remotion-themed-border-focus-hover);
   box-shadow: var(--remotion-themed-box-shadow-focus-hover);

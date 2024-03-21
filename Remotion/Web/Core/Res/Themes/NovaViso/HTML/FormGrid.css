@@ -145,6 +145,8 @@
 .formGridMarkersCell a[aria-label]:not([title]):focus img,
 .formGridMarkersCell a[aria-label]:not([title]):focus img
 {
+  outline: var(--remotion-themed-outline-focus);
+  outline-offset: var(--remotion-themed-outline-offset-focus);
   background-color: var(--remotion-themed-background-color-focus);
   border: var(--remotion-themed-border-focus);
   box-shadow: var(--remotion-themed-box-shadow-focus);

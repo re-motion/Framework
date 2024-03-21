@@ -47,8 +47,16 @@ button.webButton.primary:not(:disabled):hover
 
 button.webButton.primary:not(:disabled):focus
 {
+  outline: var(--remotion-themed-outline-focus);
+  outline-color: var(--color-primary-text);
+  outline-offset: var(--remotion-themed-outline-offset-focus);
   background-color: var(--color-primary);
-  border-color: var(--color-primary-text);
+}
+
+button.webButton.primary:not(:disabled):hover:focus
+{
+  background-color: var(--color-primary-highlight);
+  border-color: var(--color-primary-highlight);
 }
 
 button.webButton.primary:disabled

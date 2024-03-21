@@ -42,6 +42,8 @@ span.DropDownMenuSelect:not(.disabled):hover
 
 span.DropDownMenuSelect:not(.disabled):focus-within
 {
+  outline: var(--remotion-themed-outline-focus);
+  outline-offset: var(--remotion-themed-outline-offset-focus);
   background-color: var(--remotion-themed-background-color-focus);
   border: var(--remotion-themed-border-focus);
   box-shadow: var(--remotion-themed-box-shadow-focus);
@@ -49,6 +51,8 @@ span.DropDownMenuSelect:not(.disabled):focus-within
 
 span.DropDownMenuSelect:not(.disabled):focus-within:hover
 {
+  outline: var(--remotion-themed-outline-focus-hover);
+  outline-offset: var(--remotion-themed-outline-offset-focus-hover);
   background-color: var(--remotion-themed-background-color-focus-hover);
   border: var(--remotion-themed-border-focus-hover);
   box-shadow: var(--remotion-themed-box-shadow-focus-hover);
@@ -87,15 +91,17 @@ span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled):hover
 span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled):focus,
 span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled):focus-within
 {
+  outline: var(--remotion-themed-outline-focus);
+  outline-color: var(--color-primary-text);
+  outline-offset: var(--remotion-themed-outline-offset-focus);
   background-color: var(--color-primary);
-  border-color: var(--color-primary-text);
 }
 
 span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled):focus:hover,
 span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled):focus-within:hover
 {
   background-color: var(--color-primary-highlight);
-  border-color: var(--color-primary-text);
+  border-color: var(--color-primary-highlight);
 }
 
 span.DropDownMenuContainer.primary span.DropDownMenuSelect:not(.disabled) a.DropDownMenuButton img
@@ -253,6 +259,8 @@ ul.DropDownMenuOptions li a > span:last-of-type
 ul.DropDownMenuOptions li.selected a:hover:not(li.DropDownMenuItemDisabled a),
 ul.DropDownMenuOptions li.selected a:focus:not(li.DropDownMenuItemDisabled a)
 {
+  outline: var(--remotion-themed-outline-focus);
+  outline-offset: var(--remotion-themed-outline-offset-focus);
   background-color: var(--remotion-themed-background-color-hover);
   border: var(--remotion-themed-border-hover);
   box-shadow: var(--remotion-themed-box-shadow-hover);

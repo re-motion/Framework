@@ -87,7 +87,8 @@ span.bocDateValue.disabled a
 .bocDateValue.readOnly input:read-only:focus-visible + span,
 .bocDateTimeValue.readOnly input:read-only:focus-visible + span
 {
-  outline: none;
+  outline: var(--remotion-themed-outline-readonly-focus);
+  outline-offset: var(--remotion-themed-outline-offset-readonly-focus);
   border: var(--remotion-themed-border-readonly-focus);
   background-color: var(--remotion-themed-background-color-readonly-focus);
   box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
