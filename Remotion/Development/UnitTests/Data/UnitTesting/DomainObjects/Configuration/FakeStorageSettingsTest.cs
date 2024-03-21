@@ -27,7 +27,7 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects.Configur
     [Test]
     public void CreateForSqlServer ()
     {
-      var result = FakeStorageSettings.CreateForSqlServer("DummyConnectionString");
+      var result = FakeStorageSettings.CreateForSqlServer("DummyConnectionString", "DummyReadOnlyConnectionString");
 
       Assert.That(result, Is.InstanceOf<DeferredStorageSettings>());
       Assert.That(result.GetDefaultStorageProviderDefinition(), Is.InstanceOf<RdbmsProviderDefinition>());

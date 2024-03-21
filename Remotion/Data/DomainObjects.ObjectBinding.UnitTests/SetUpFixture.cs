@@ -33,7 +33,11 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       try
       {
-        var storageProviderDefinition = new RdbmsProviderDefinition(StubStorageProvider.StorageProviderID, new StubStorageFactory(), "NonExistingRdbms");
+        var storageProviderDefinition = new RdbmsProviderDefinition(
+            StubStorageProvider.StorageProviderID,
+            new StubStorageFactory(),
+            "NonExistingRdbms",
+            "NonExistingReadOnlyRdbms");
 
         var storageSettings = new SerializableStorageSettings(new StorageSettings(storageProviderDefinition, new[] { storageProviderDefinition }));
 

@@ -33,7 +33,12 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
     {
       try
       {
-        var storageProviderDefinition = new RdbmsProviderDefinition(StubStorageProvider.StorageProviderID, new StubStorageFactory(), "NonExistingRdbms");
+        var storageProviderDefinition = new RdbmsProviderDefinition(
+            StubStorageProvider.StorageProviderID,
+            new StubStorageFactory(),
+            "NonExistingRdbms",
+            "NonExistingReadOnlyRdbms");
+
         var storageSettings = new StorageSettings(storageProviderDefinition, new[] { storageProviderDefinition });
 
         var defaultServiceLocator = DefaultServiceLocator.Create();

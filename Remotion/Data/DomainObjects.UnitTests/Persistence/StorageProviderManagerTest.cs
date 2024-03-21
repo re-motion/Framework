@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     public void GetMandatory_WithProviderInstanceNotPartOfStorageSettings ()
     {
       var rdbmsStorageObjectFactoryStub = new Mock<IRdbmsStorageObjectFactory>();
-      var providerDefinition = new RdbmsProviderDefinition(c_testDomainProviderID, rdbmsStorageObjectFactoryStub.Object, "connection string");
+      var providerDefinition = new RdbmsProviderDefinition(c_testDomainProviderID, rdbmsStorageObjectFactoryStub.Object, "connection string", "readonly connection string");
 
 #if DEBUG
       rdbmsStorageObjectFactoryStub
@@ -82,6 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 #else
       var rdbmsProvider = new RdbmsProvider(
           providerDefinition,
+          providerDefinition.ConnectionString,
           Mock.Of<IPersistenceExtension>(),
           Mock.Of<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>>(),
           () => Mock.Of<System.Data.IDbConnection>());
