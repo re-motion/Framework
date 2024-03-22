@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
@@ -25,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Persistence
 public class StorageProviderManager : IDisposable
 {
   private bool _disposed;
-  private StorageProviderCollection? _storageProviders;
+  private Dictionary<string, StorageProvider>? _storageProviders;
   private readonly IPersistenceExtension _persistenceExtension;
   private readonly IStorageSettings _storageSettings;
 
@@ -34,7 +35,7 @@ public class StorageProviderManager : IDisposable
     ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
     ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
 
-    _storageProviders = new StorageProviderCollection();
+    _storageProviders = new Dictionary<string, StorageProvider>();
     _persistenceExtension = persistenceExtension;
     _storageSettings = storageSettings;
   }
@@ -45,13 +46,13 @@ public class StorageProviderManager : IDisposable
   {
     if (!_disposed)
     {
-      if (_storageProviders != null)
-        _storageProviders.Dispose();
+      foreach (var keyValue in _storageProviders!)
+      {
+        keyValue.Value.Dispose();
+      }
 
       _storageProviders = null;
-
       _disposed = true;
-      GC.SuppressFinalize(this);
     }
   }
 
@@ -62,8 +63,8 @@ public class StorageProviderManager : IDisposable
     CheckDisposed();
     ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
 
-    if (_storageProviders.Contains(storageProviderID))
-      return _storageProviders[storageProviderID]!;
+    if (_storageProviders.TryGetValue(storageProviderID, out var storageProvider))
+      return storageProvider!;
 
     var providerDefinition = _storageSettings.GetStorageProviderDefinition(storageProviderID);
     var provider = providerDefinition.Factory.CreateStorageProvider(providerDefinition, _persistenceExtension);
@@ -71,7 +72,7 @@ public class StorageProviderManager : IDisposable
     if (provider == null)
       throw CreatePersistenceException("Storage provider '{0}' could not be created.", storageProviderID);
 
-    _storageProviders.Add(provider);
+    _storageProviders.Add(storageProviderID, provider);
 
     return provider;
   }
@@ -89,20 +90,20 @@ public class StorageProviderManager : IDisposable
     }
 #endif
 
-    if (_storageProviders.Contains(providerDefinition.Name))
-      return _storageProviders[providerDefinition.Name]!;
+    if (_storageProviders.TryGetValue(providerDefinition.Name, out var storageProvider))
+      return storageProvider!;
 
     var provider = providerDefinition.Factory.CreateStorageProvider(providerDefinition, _persistenceExtension);
 
     if (provider == null)
       throw CreatePersistenceException("Storage provider '{0}' could not be created.", providerDefinition.Name);
 
-    _storageProviders.Add(provider);
+    _storageProviders.Add(providerDefinition.Name, provider);
 
     return provider;
   }
 
-  public StorageProviderCollection StorageProviders
+  public IReadOnlyDictionary<string, StorageProvider> StorageProviders
   {
     get
     {
