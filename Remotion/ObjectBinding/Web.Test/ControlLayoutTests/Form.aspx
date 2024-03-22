@@ -303,6 +303,34 @@
               <remotion:WebButton ID="WebButtonWithImage" runat="server" Text="Button" Icon-Url="Images/NullIcon.gif" />
               <remotion:WebButton ID="WebButtonDisabled" runat="server" Text="Button" Icon-Url="Images/NullIcon.gif" />
               M
+              <remotion:WebButton runat="server" Text="Standard" ButtonType="Standard" />
+              M
+              <remotion:WebButton runat="server" Text="Primary" ButtonType="Primary" />
+              M
+              <remotion:WebButton runat="server" Text="Supplemental" ButtonType="Supplemental" />
+              M
+            </td>
+            <td>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              DropDownMenu
+            </td>
+            <td>
+              M
+              <remotion:DropDownMenu runat="server" TitleText="Standard" ButtonType="Standard" />
+              M
+              <remotion:DropDownMenu runat="server" ButtonType="Standard" />
+              M
+              <remotion:DropDownMenu runat="server" TitleText="Primary" ButtonType="Primary" />
+              M
+              <remotion:DropDownMenu runat="server" ButtonType="Primary" />
+              M
+              <remotion:DropDownMenu runat="server" TitleText="Supplemental" ButtonType="Supplemental" />
+              M
+              <remotion:DropDownMenu runat="server" ButtonType="Supplemental" />
+              M
             </td>
             <td>
             </td>

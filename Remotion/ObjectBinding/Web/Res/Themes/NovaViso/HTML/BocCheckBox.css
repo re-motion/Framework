@@ -25,11 +25,13 @@
   height: var(--remotion-themed-img-width);
   width: var(--remotion-themed-img-width);
   border: unset;
+  outline: unset;
 }
 
 .bocCheckBox:not(.readOnly) input:focus + span::before
 {
   border: unset;
+  outline: unset;
   box-shadow: unset;
 }
 
@@ -47,6 +49,8 @@
 
 .bocCheckBox:not(.readOnly, .disabled):focus-within
 {
+  outline: var(--remotion-themed-outline-focus);
+  outline-offset: var(--remotion-themed-outline-offset-focus);
   background-color: var(--remotion-themed-background-color-focus);
   border: var(--remotion-themed-border-focus);
   box-shadow: var(--remotion-themed-box-shadow-focus);
@@ -54,6 +58,8 @@
 
 .bocCheckBox.readOnly:focus-within
 {
+  outline: var(--remotion-themed-outline-readonly-focus);
+  outline-offset: var(--remotion-themed-outline-offset-readonly-focus);
   border: var(--remotion-themed-border-readonly-focus);
   background-color: var(--remotion-themed-background-color-readonly-focus);
   box-shadow: var(--remotion-themed-box-shadow-readonly-focus);

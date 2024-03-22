@@ -50,7 +50,8 @@ span.bocTextValue textarea
 .bocTextValue.readOnly .content input:read-only:focus-visible + span,
 .bocTextValue.readOnly .content textarea:read-only:focus-visible + span
 {
-  outline: none;
+  outline: var(--remotion-themed-outline-readonly-focus);
+  outline-offset: var(--remotion-themed-outline-offset-readonly-focus);
   border: var(--remotion-themed-border-readonly-focus);
   background-color: var(--remotion-themed-background-color-readonly-focus);
   box-shadow: var(--remotion-themed-box-shadow-readonly-focus);

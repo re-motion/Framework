@@ -203,7 +203,8 @@ div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement 
 div.bocList table.bocListTable th.bocListTitleCell > a:focus,
 div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > a:focus
 {
-  outline: none;
+  outline: var(--remotion-themed-outline-focus);
+  outline-offset: var(--remotion-themed-outline-offset-focus);
   color: var(--color-standard-text);
   background-color: var(--remotion-themed-background-color-focus);
   border: var(--remotion-themed-border-focus);
@@ -213,6 +214,8 @@ div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement 
 div.bocList table.bocListTable th.bocListTitleCell > a:focus:hover,
 div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > a:focus:hover
 {
+  outline: var(--remotion-themed-outline-focus-hover);
+  outline-offset: var(--remotion-themed-outline-offset-focus-hover);
   color: var(--color-standard-text);
   background-color: var(--remotion-themed-background-color-focus-hover);
   border: var(--remotion-themed-border-focus-hover);
@@ -340,7 +343,8 @@ div.bocList div.bocListTableBlock div.bocListNavigator a[href]:hover
 
 div.bocList div.bocListTableBlock div.bocListNavigator a[href]:focus
 {
-  outline: none;
+  outline: var(--remotion-themed-outline-focus);
+  outline-offset: var(--remotion-themed-outline-offset-focus);
   background-color: var(--remotion-themed-background-color-focus);
   border: var(--remotion-themed-border-focus);
   box-shadow: var(--remotion-themed-box-shadow-focus);
@@ -348,6 +352,8 @@ div.bocList div.bocListTableBlock div.bocListNavigator a[href]:focus
 
 div.bocList div.bocListTableBlock div.bocListNavigator a[href]:focus:hover
 {
+  outline: var(--remotion-themed-outline-focus-hover);
+  outline-offset: var(--remotion-themed-outline-offset-focus-hover);
   background-color: var(--remotion-themed-background-color-focus-hover);
   border: var(--remotion-themed-border-focus-hover);
   box-shadow: var(--remotion-themed-box-shadow-focus-hover);
@@ -376,7 +382,8 @@ div.bocList .bocListCellStructureElement > .validationErrorMarker
 div.bocList .bocListCellStructureElement > .validationErrorMarker:focus-within,
 div.bocList .bocListContent > .validationErrorMarker:focus-within
 {
-  outline: none;
+  outline: var(--remotion-themed-outline-focus);
+  outline-offset: var(--remotion-themed-outline-offset-focus);
   background-color: var(--remotion-themed-background-color-focus);
   border: var(--remotion-themed-border-focus);
   box-shadow: var(--remotion-themed-box-shadow-focus);

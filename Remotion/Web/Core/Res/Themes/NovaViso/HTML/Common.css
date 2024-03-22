@@ -65,6 +65,13 @@
   --remotion-themed-box-shadow-focus-hover: var(--remotion-themed-box-shadow-focus);
   --remotion-themed-box-shadow-readonly-focus: var(--remotion-themed-box-shadow-focus);
   --remotion-themed-box-shadow-hover: unset;
+  --remotion-themed-outline-width: 1px;
+  --remotion-themed-outline-focus: var(--remotion-themed-outline-width) solid var(--color-primary);
+  --remotion-themed-outline-focus-hover: var(--remotion-themed-outline-focus);
+  --remotion-themed-outline-readonly-focus: var(--remotion-themed-outline-focus);
+  --remotion-themed-outline-offset-focus: calc((var(--remotion-themed-border-width) + var(--remotion-themed-outline-width)) * -1);
+  --remotion-themed-outline-offset-focus-hover: var(--remotion-themed-outline-offset-focus);
+  --remotion-themed-outline-offset-readonly-focus: var(--remotion-themed-outline-offset-focus);
   --remotion-themed-scrollbar-width: 10px;
   --remotion-themed-scrollbar-border-radius: 10px;
   --remotion-themed-scrollbar-style: thin;
@@ -352,7 +359,8 @@ button:not(:disabled).remotion-themed:focus,
 .remotion-themed select:not(:disabled):focus,
 .remotion-themed button:not(:disabled):focus
 {
-  outline: none;
+  outline: var(--remotion-themed-outline-focus);
+  outline-offset: var(--remotion-themed-outline-offset-focus);
   background-color: var(--remotion-themed-background-color-focus);
   border: var(--remotion-themed-border-focus);
   box-shadow: var(--remotion-themed-box-shadow-focus);
@@ -363,6 +371,8 @@ button:not(:disabled).remotion-themed:focus,
 .remotion-themed input[type=radio]:focus + label::before,
 .remotion-themed input[type=radio]:focus + span::before
 {
+  outline: var(--remotion-themed-outline-focus);
+  outline-offset: var(--remotion-themed-outline-offset-focus);
   border: var(--remotion-themed-border-focus);
   box-shadow: var(--remotion-themed-box-shadow-focus);
 }
@@ -376,6 +386,8 @@ button:not(:disabled).remotion-themed:focus:hover,
 .remotion-themed select:not(:disabled):focus:hover,
 .remotion-themed button:not(:disabled):focus:hover
 {
+  outline: var(--remotion-themed-outline-focus-hover);
+  outline-offset: var(--remotion-themed-outline-offset-focus-hover);
   background-color: var(--remotion-themed-background-color-focus-hover);
   border: var(--remotion-themed-border-focus-hover);
   box-shadow: var(--remotion-themed-box-shadow-focus-hover);
