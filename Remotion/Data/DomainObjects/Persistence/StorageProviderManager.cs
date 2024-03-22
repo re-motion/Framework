@@ -15,8 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Utilities;
 
@@ -25,14 +27,14 @@ namespace Remotion.Data.DomainObjects.Persistence
 public class StorageProviderManager : IDisposable
 {
   private bool _disposed;
-  private StorageProviderCollection? _storageProviders;
+  private Dictionary<string, StorageProvider?>? _storageProviders;
   private readonly IPersistenceExtension _persistenceExtension;
 
   public StorageProviderManager (IPersistenceExtension persistenceExtension)
   {
     ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
 
-    _storageProviders = new StorageProviderCollection();
+    _storageProviders = new Dictionary<string, StorageProvider?>();
     _persistenceExtension = persistenceExtension;
   }
 
@@ -42,13 +44,13 @@ public class StorageProviderManager : IDisposable
   {
     if (!_disposed)
     {
-      if (_storageProviders != null)
-        _storageProviders.Dispose();
+      foreach (var keyValue in _storageProviders!)
+      {
+        keyValue.Value?.Dispose();
+      }
 
       _storageProviders = null;
-
       _disposed = true;
-      GC.SuppressFinalize(this);
     }
   }
 
@@ -76,19 +78,19 @@ public class StorageProviderManager : IDisposable
       CheckDisposed();
       ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
 
-      if (_storageProviders.Contains(storageProviderID))
-        return _storageProviders[storageProviderID];
+      if (_storageProviders.TryGetValue(storageProviderID, out var storageProvider))
+        return storageProvider;
 
       var providerDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory(storageProviderID);
       var provider = providerDefinition.Factory.CreateStorageProvider(providerDefinition, _persistenceExtension);
 
-      _storageProviders.Add(provider);
+      _storageProviders.Add(storageProviderID, provider);
 
       return provider;
     }
   }
 
-  public StorageProviderCollection StorageProviders
+  public IReadOnlyDictionary<string, StorageProvider?> StorageProviders
   {
     get
     {
