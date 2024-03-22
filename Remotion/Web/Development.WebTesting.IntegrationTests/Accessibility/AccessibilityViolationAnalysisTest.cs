@@ -46,10 +46,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
               new[]
               {
                   AccessibilityRequirementID.AriaLabel,
-                  AccessibilityRequirementID.AriaLabeledBy,
+                  AccessibilityRequirementID.AriaLabelledBy,
                   AccessibilityRequirementID.ExplicitLabel,
                   AccessibilityRequirementID.ImplicitLabel,
-                  AccessibilityRequirementID.NonEmptyTitle
+                  AccessibilityRequirementID.NonEmptyPlaceholder,
+                  AccessibilityRequirementID.NonEmptyTitle,
+                  AccessibilityRequirementID.PresentationalRole
               }));
       Assert.That(violation.None, Has.Length.EqualTo(0));
       Assert.That(violation.TargetPath.Single().CssSelector, Is.EqualTo("html > body > #labels > #input"));
@@ -59,9 +61,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
       Assert.That(violation.Rule.ID, Is.EqualTo(AccessibilityRuleID.Label));
       Assert.That(violation.Rule.Description, Is.EqualTo("Ensures every form element has a label"));
       Assert.That(violation.Rule.Impact, Is.EqualTo(AccessibilityTestImpact.Critical));
-      Assert.That(violation.Rule.SuccessCriteria, Has.Length.EqualTo(3));
+      Assert.That(violation.Rule.SuccessCriteria, Has.Length.EqualTo(2));
       Assert.That(violation.Rule.SuccessCriteria, Contains.Item(AccessibilityTestSuccessCriteria.Wcag_4_1_2));
-      Assert.That(violation.Rule.SuccessCriteria, Contains.Item(AccessibilityTestSuccessCriteria.Wcag_1_3_1));
       Assert.That(violation.Rule.SuccessCriteria, Contains.Item(AccessibilityTestSuccessCriteria.Section508_22_n));
       Assert.That(violation.TargetPath.Single().XPath, Is.EqualTo("/input[@id='input']"));
     }
@@ -83,10 +84,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
               {
                   AccessibilityRequirementID.HasAlt,
                   AccessibilityRequirementID.AriaLabel,
-                  AccessibilityRequirementID.AriaLabeledBy,
+                  AccessibilityRequirementID.AriaLabelledBy,
                   AccessibilityRequirementID.NonEmptyTitle,
-                  AccessibilityRequirementID.RolePresentation,
-                  AccessibilityRequirementID.RoleNone
+                  AccessibilityRequirementID.PresentationalRole,
               }));
       Assert.That(violation.None, Has.Length.EqualTo(0));
       Assert.That(violation.TargetPath.Single().CssSelector, Is.EqualTo("html > body > #testImage"));
@@ -118,9 +118,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
               {
                   AccessibilityRequirementID.ButtonHasVisibleText,
                   AccessibilityRequirementID.AriaLabel,
-                  AccessibilityRequirementID.AriaLabeledBy,
-                  AccessibilityRequirementID.RolePresentation,
-                  AccessibilityRequirementID.RoleNone,
+                  AccessibilityRequirementID.AriaLabelledBy,
+                  AccessibilityRequirementID.PresentationalRole,
                   AccessibilityRequirementID.NonEmptyTitle,
               }));
       Assert.That(violation.None, Has.Length.EqualTo(0));
@@ -154,7 +153,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
       Assert.That(violation.Html, Is.EqualTo("<h1 style=\"color: #000080\">Hello World!</h1>"));
       Assert.That(violation.Rule.ID, Is.EqualTo(AccessibilityRuleID.ColorContrast));
       Assert.That(violation.Rule.Impact, Is.EqualTo(AccessibilityTestImpact.Serious));
-      Assert.That(violation.Rule.Description, Is.EqualTo("Ensures the contrast between foreground and background colors meets WCAG 2 AA contrast ratio thresholds"));
+      Assert.That(violation.Rule.Description, Is.EqualTo("Ensures the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds"));
       Assert.That(violation.Rule.Impact, Is.EqualTo(AccessibilityTestImpact.Serious));
       Assert.That(violation.Rule.SuccessCriteria, Has.Length.EqualTo(1));
       Assert.That(violation.Rule.SuccessCriteria, Contains.Item(AccessibilityTestSuccessCriteria.Wcag_1_4_3));

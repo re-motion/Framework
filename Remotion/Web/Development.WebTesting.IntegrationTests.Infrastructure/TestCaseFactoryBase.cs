@@ -21,7 +21,6 @@ using System.Reflection;
 using System.Runtime.ExceptionServices;
 using JetBrains.Annotations;
 using NUnit.Framework;
-using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.PageObjects;

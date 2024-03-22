@@ -15,41 +15,30 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Specialized;
-using System.Configuration;
-using System.Linq;
-using Remotion.Configuration;
-using Remotion.Mixins;
-using Remotion.ServiceLocation;
+using System.Collections.Generic;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {
   /// <summary>
-  /// Defines the configuration for a specific <see cref="StorageProvider"/>. Subclasses of <see cref="StorageProviderDefinition"/> can be 
-  /// instantiated from a config file entry.
+  /// Defines the configuration for a specific <see cref="StorageProvider"/>. Use <see cref="StorageSettingsFactory"/> to create instances.
   /// </summary>
-  public abstract class StorageProviderDefinition: ExtendedProviderBase
+  public abstract class StorageProviderDefinition
   {
+    public string Name { get; }
+
+    public IReadOnlyCollection<Type> AssignedStorageGroups { get; }
+
     private readonly IStorageObjectFactory _factory;
 
-    protected StorageProviderDefinition (string name, NameValueCollection config)
-        : base(name, config)
+    protected StorageProviderDefinition (string name, IStorageObjectFactory factory, IReadOnlyCollection<Type>? assignedStorageGroups = null)
     {
       ArgumentUtility.CheckNotNullOrEmpty("name", name);
-      ArgumentUtility.CheckNotNull("config", config);
-
-      var factoryTypeName = GetAndRemoveNonEmptyStringAttribute(config, "factoryType", name, required: true)!;
-      var configuredFactoryType = TypeUtility.GetType(factoryTypeName, throwOnError: true)!;
-      _factory = CreateStorageObjectFactory(configuredFactoryType);
-    }
-
-    protected StorageProviderDefinition (string name, IStorageObjectFactory factory)
-        : base(name, new NameValueCollection())
-    {
       ArgumentUtility.CheckNotNull("factory", factory);
 
+      Name = name;
       _factory = factory;
+      AssignedStorageGroups = assignedStorageGroups ?? Array.Empty<Type>();
     }
 
     public abstract bool IsIdentityTypeSupported (Type identityType);
@@ -68,50 +57,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     public override string ToString ()
     {
       return string.Format("{0}: '{1}'", GetType().Name, Name);
-    }
-
-    private IStorageObjectFactory CreateStorageObjectFactory (Type configuredFactoryType)
-    {
-      try
-      {
-        var registeredService = (IStorageObjectFactory?)SafeServiceLocator.Current.GetService(configuredFactoryType);
-        if (registeredService != null)
-          return registeredService;
-      }
-      catch (ActivationException ex)
-      {
-        var message = string.Format(
-            "The factory type '{0}' specified in the configuration of the '{1}' StorageProvider definition cannot be resolved: {2}",
-            configuredFactoryType,
-            Name,
-            ex.Message);
-        throw new ConfigurationErrorsException(message, ex);
-      }
-
-      if (configuredFactoryType.IsAbstract)
-      {
-        var message = string.Format(
-            "The factory type '{0}' specified in the configuration of the '{1}' StorageProvider definition cannot be instantiated because it is "
-            + "abstract. Either register an implementation of '{2}' in the configured service locator, or specify a non-abstract type.",
-            configuredFactoryType,
-            Name,
-            configuredFactoryType.Name);
-        throw new ConfigurationErrorsException(message);
-      }
-
-      try
-      {
-        return (IStorageObjectFactory)ObjectFactory.Create(configuredFactoryType);
-      }
-      catch (Exception ex)
-      {
-        var message = string.Format(
-            "The factory type '{0}' specified in the configuration of the '{1}' StorageProvider definition cannot be instantiated: {2}",
-            configuredFactoryType,
-            Name,
-            ex.Message);
-        throw new ConfigurationErrorsException(message, ex);
-      }
     }
   }
 }

@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Web;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Web.UI.Controls
 {

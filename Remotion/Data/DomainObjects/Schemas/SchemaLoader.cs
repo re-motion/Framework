@@ -16,7 +16,8 @@
 // 
 using System;
 using System.Xml.Schema;
-using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.Queries.Configuration.Loader;
 using Remotion.Utilities;
 using Remotion.Xml;
 

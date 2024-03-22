@@ -20,7 +20,6 @@ using System.ComponentModel;
 using System.Reflection;
 using Remotion.Collections;
 using Remotion.Reflection;
-using Remotion.Security.Configuration;
 using Remotion.Security.Metadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -44,9 +43,6 @@ namespace Remotion.Security
 
     public static SecurityClient CreateSecurityClientFromConfiguration ()
     {
-      if (SecurityConfiguration.Current.DisableAccessChecks)
-        return SecurityClient.Null;
-
       var serviceLocator = SafeServiceLocator.Current;
 
       var securityProvider = serviceLocator.GetInstance<ISecurityProvider>();

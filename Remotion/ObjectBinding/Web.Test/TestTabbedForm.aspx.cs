@@ -20,7 +20,6 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using OBWTest.IndividualControlTests;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Validation;

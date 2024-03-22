@@ -246,7 +246,7 @@ ul.DropDownMenuOptions li a > span:last-of-type
   grid-area: span;
   align-self: center;
   padding-left: var(--remotion-themed-spacing);
-  overflow: hidden;
+  overflow: clip;
   text-overflow: ellipsis;
 }
 
@@ -276,7 +276,7 @@ span.DropDownMenuSeparator
 
 div.DropDownMenuStatus
 {
-  overflow: hidden;
+  overflow: clip;
   z-index: var(--z-index-max);
   /* position and dimension are set via javascript */
   max-height: 4em;

@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Linq;
-using System.Text;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -78,10 +77,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      string scriptFileKey = typeof(BocCheckBoxRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(BocCheckBoxRenderer), ResourceType.Html, "BocCheckbox.js");
-      htmlHeadAppender.RegisterJavaScriptInclude(scriptFileKey, scriptUrl);
-
+      htmlHeadAppender.RegisterObjectBindingWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();
 
       string styleFileKey = typeof(BocCheckBoxRenderer).GetFullNameChecked() + "_Style";

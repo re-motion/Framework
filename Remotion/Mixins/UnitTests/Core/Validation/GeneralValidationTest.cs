@@ -27,7 +27,6 @@ using Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain;
 using Remotion.Mixins.Validation;
 using Remotion.Mixins.Validation.Rules;
 using Remotion.Reflection;
-using Remotion.Reflection.TypeDiscovery;
 
 namespace Remotion.Mixins.UnitTests.Core.Validation
 {

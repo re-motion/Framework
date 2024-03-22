@@ -17,17 +17,14 @@
 
 using System;
 using System.Linq;
-using Moq;
-using Remotion.Configuration;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
+using Remotion.Development.Data.UnitTesting.DomainObjects.Configuration;
+using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Data.SqlClient;
 using Remotion.Development.UnitTesting.Reflection.TypeDiscovery;
 using Remotion.Reflection;
@@ -42,6 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     private SqlStorageObjectFactory _storageObjectFactory;
     private RdbmsProviderDefinition _storageProviderDefinition;
     private MappingConfiguration _mappingConfiguration;
+    private ServiceLocatorScope _serviceLocatorScope;
 
     protected CustomStorageObjectFactoryTestBase (string createTestDataFileName)
         : base(new DatabaseAgent(TestDomainConnectionString), createTestDataFileName)
@@ -51,7 +49,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     public override void SetUp ()
     {
       base.SetUp();
-      var mappingLoader = new MappingReflector(
+
+      var storageSettings = FakeStorageSettings.CreateForSqlServer(TestDomainConnectionString, CreateSqlStorageObjectFactory);
+      _storageProviderDefinition = (RdbmsProviderDefinition)storageSettings.GetDefaultStorageProviderDefinition();
+      _storageObjectFactory = (SqlStorageObjectFactory)_storageProviderDefinition.Factory;
+
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterSingle<IStorageSettings>(() => storageSettings);
+      SetupServiceLocator(serviceLocator);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
+
+      var mappingLoader = MappingReflector.Create(
           new FixedTypeDiscoveryService(GetReflectedTypes()),
           new ClassIDProvider(),
           new ReflectionBasedMemberInformationNameResolver(),
@@ -60,29 +68,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           new PropertyDefaultValueProvider(),
           new SortExpressionDefinitionProvider(),
           SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>());
-      _storageObjectFactory = CreateSqlStorageObjectFactory();
-      var storageProviderDefinitionFinderStub = new Mock<IStorageProviderDefinitionFinder>();
-      _storageProviderDefinition = new RdbmsProviderDefinition("test", _storageObjectFactory, DatabaseTest.TestDomainConnectionString);
-      storageProviderDefinitionFinderStub
-          .Setup(stub => stub.GetStorageProviderDefinition(It.IsAny<ClassDefinition>(), It.IsAny<string>()))
-          .Returns(_storageProviderDefinition);
-      var persistenceModelLoader = _storageObjectFactory.CreatePersistenceModelLoader(_storageProviderDefinition, storageProviderDefinitionFinderStub.Object);
-      _mappingConfiguration = new MappingConfiguration(mappingLoader, persistenceModelLoader);
-
+      var persistenceModelLoader = _storageObjectFactory.CreatePersistenceModelLoader(_storageProviderDefinition);
+      _mappingConfiguration = MappingConfiguration.Create(mappingLoader, persistenceModelLoader);
       MappingConfiguration.SetCurrent(_mappingConfiguration);
+    }
 
-      DomainObjectsConfiguration.SetCurrent(
-          new FakeDomainObjectsConfiguration(
-              null,
-              new StorageConfiguration(
-                  new ProviderCollection<StorageProviderDefinition> { _storageProviderDefinition },
-                  _storageProviderDefinition),
-              null));
+    protected virtual void SetupServiceLocator (DefaultServiceLocator serviceLocator)
+    {
     }
 
     public override void TearDown ()
     {
       MappingConfiguration.SetCurrent(null);
+      _serviceLocatorScope.Dispose();
+
       base.TearDown();
     }
 
@@ -101,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       get { return _storageProviderDefinition; }
     }
 
-    protected abstract SqlStorageObjectFactory CreateSqlStorageObjectFactory ();
+    protected abstract SqlStorageObjectFactory CreateSqlStorageObjectFactory (IStorageSettings storageSettings);
 
     protected virtual Type[] GetReflectedTypes ()
     {

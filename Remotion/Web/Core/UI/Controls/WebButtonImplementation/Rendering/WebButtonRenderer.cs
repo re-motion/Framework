@@ -42,10 +42,7 @@ namespace Remotion.Web.UI.Controls.WebButtonImplementation.Rendering
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      string scriptKey = typeof(WebButtonRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(WebButtonRenderer), ResourceType.Html, "WebButton.js");
-      htmlHeadAppender.RegisterJavaScriptInclude(scriptKey, scriptUrl);
-
+      htmlHeadAppender.RegisterWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();
 
       string styleKey = typeof(WebButtonRenderer).GetFullNameChecked() + "_Style";

@@ -19,17 +19,26 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.Tracing;
+using Remotion.Data.DomainObjects.Validation;
 using Remotion.Mixins;
+using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Persistence
 {
- public class SecurityManagerSqlStorageObjectFactory : SqlStorageObjectFactory
+  [ImplementationFor(typeof(SecurityManagerSqlStorageObjectFactory), Lifetime = LifetimeKind.Singleton)]
+  public class SecurityManagerSqlStorageObjectFactory : SqlStorageObjectFactory
   {
+    public SecurityManagerSqlStorageObjectFactory (IStorageSettings storageSettings, ITypeConversionProvider typeConversionProvider, IDataContainerValidator dataContainerValidator)
+        : base(storageSettings, typeConversionProvider, dataContainerValidator)
+    {
+    }
+
     protected override StorageProvider CreateStorageProvider (
         IPersistenceExtension persistenceExtension,
         RdbmsProviderDefinition storageProviderDefinition,

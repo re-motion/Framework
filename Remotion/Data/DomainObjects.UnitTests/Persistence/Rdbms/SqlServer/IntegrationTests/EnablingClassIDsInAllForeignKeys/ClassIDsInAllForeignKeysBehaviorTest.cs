@@ -17,10 +17,14 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.EnablingClassIDsInAllForeignKeys.TestDomain;
+using Remotion.Data.DomainObjects.Validation;
+using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.EnablingClassIDsInAllForeignKeys
 {
@@ -32,9 +36,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
     }
 
-    protected override SqlStorageObjectFactory CreateSqlStorageObjectFactory ()
+    protected override SqlStorageObjectFactory CreateSqlStorageObjectFactory (IStorageSettings storageSettings)
     {
-      return new ExtendedStorageObjectFactory();
+      return new ExtendedStorageObjectFactory(
+          storageSettings,
+          SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
+          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
     }
 
     [Test]

@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
     private const string c_edgeExecutableName = "msedge.exe";
     private const string c_zipFileName = "msedgedriver.zip";
 
-    private static readonly Version s_minimumSupportedEdgeVersion = new Version(110, 0);
+    private static readonly Version s_minimumSupportedEdgeVersion = new Version(119, 0);
 
     /// <summary>
     /// Returns the <see cref="EdgeExecutable"/> that contains the installed Edge browser location, the corresponding msedgedriver location,
@@ -159,12 +159,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
 
       try
       {
-#pragma warning disable SYSLIB0014
-        using (var webClient = new WebClient()) // TODO RM-8492: Replace with HttpClient
-#pragma warning restore SYSLIB0014
-        {
-          webClient.DownloadFile(url, fullZipPath);
-        }
+        FileDownloadUtility.DownloadFileWithRetry(url, fullZipPath);
       }
       catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
       {

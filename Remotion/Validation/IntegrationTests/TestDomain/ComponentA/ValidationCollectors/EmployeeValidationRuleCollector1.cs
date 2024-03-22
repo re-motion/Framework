@@ -19,7 +19,6 @@ using System.Linq;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
-using Remotion.Validation.IntegrationTests.TestDomain.Validators;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationCollectors

@@ -15,26 +15,39 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using Remotion.Utilities;
 
 namespace Remotion.Web
 {
   public class ResourceType
   {
-    public static readonly ResourceType Image = new ResourceType("Image");
-    public static readonly ResourceType Html = new ResourceType("Html");
-    public static readonly ResourceType UI = new ResourceType("UI");
-    public static readonly ResourceType HelpPage = new ResourceType("HelpPage");
+    public static readonly ResourceType Image = new ResourceType("Image", true);
+    public static readonly ResourceType Html = new ResourceType("Html", true);
+    public static readonly ResourceType UI = new ResourceType("UI", false);
+    public static readonly ResourceType HelpPage = new ResourceType("HelpPage", false);
+
+    internal static readonly IReadOnlyList<ResourceType> CacheableResourceTypes = new[] { Image, Html };
 
     private readonly string _name;
+    private readonly bool _isCacheable;
 
-    public ResourceType (string name)
+    public ResourceType (string name, bool isCacheable)
     {
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+
       _name = name;
+      _isCacheable = isCacheable;
     }
 
     public string Name
     {
       get { return _name; }
+    }
+
+    public bool IsCacheable
+    {
+      get { return _isCacheable; }
     }
   }
 }

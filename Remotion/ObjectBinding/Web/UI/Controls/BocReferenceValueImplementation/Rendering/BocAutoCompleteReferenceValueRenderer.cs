@@ -94,7 +94,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      RegisterBrowserCompatibilityScript(htmlHeadAppender);
       RegisterJavaScriptFiles(htmlHeadAppender);
       RegisterStylesheets(htmlHeadAppender);
     }
@@ -121,28 +120,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       var hasAutoPostBack = renderingContext.Control.TextBoxStyle.AutoPostBack.HasValue && renderingContext.Control.TextBoxStyle.AutoPostBack.Value;
       renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.TriggersPostBack, hasAutoPostBack.ToString().ToLower());
-    }
-
-    protected override sealed void RegisterJavaScriptFiles (HtmlHeadAppender htmlHeadAppender)
-    {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
-
-      base.RegisterJavaScriptFiles(htmlHeadAppender);
-
-      htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
-
-      string autocompleteScriptKey = typeof(BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_AutoCompleteScript";
-      htmlHeadAppender.RegisterJavaScriptInclude(
-          autocompleteScriptKey,
-          ResourceUrlFactory.CreateResourceUrl(
-              typeof(BocAutoCompleteReferenceValueRenderer),
-              ResourceType.Html,
-              "BocAutoCompleteReferenceValue.UI.js"));
-
-      string scriptKey = typeof(BocAutoCompleteReferenceValueRenderer).GetFullNameChecked() + "_Script";
-      htmlHeadAppender.RegisterJavaScriptInclude(
-          scriptKey,
-          ResourceUrlFactory.CreateResourceUrl(typeof(BocAutoCompleteReferenceValueRenderer), ResourceType.Html, "BocAutoCompleteReferenceValue.js"));
     }
 
     private void RegisterStylesheets (HtmlHeadAppender htmlHeadAppender)
@@ -183,11 +160,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       var script = new StringBuilder(1000);
       script.Append("new BocAutoCompleteReferenceValue(");
       script.AppendFormat("'{0}', ", renderingContext.Control.ClientID);
-      script.AppendFormat(
-          "'#{0} span[{1}={2}]', ",
-          renderingContext.Control.ClientID,
-          HtmlTextWriterAttribute2.Role,
-          HtmlRoleAttributeValue.Combobox);
       script.AppendFormat("'#{0}', ", renderingContext.Control.GetTextValueName());
       script.AppendFormat("'#{0}', ", renderingContext.Control.GetKeyValueName());
       script.AppendFormat("'#{0}',", GetDropDownButtonName(renderingContext));
@@ -328,12 +300,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       ValidationErrorRenderer.SetValidationErrorsReferenceOnControl(textBox, validationErrorsID, validationErrors);
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassInput + " " + CssClassThemed);
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaHasPopup, GetAriaHasPopupForCombobox());
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaExpanded, HtmlAriaExpandedAttributeValue.False);
-
-      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      LabelReferenceRenderer.AddLabelsReference(renderingContext.Writer, labelIDs);
 
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
@@ -398,7 +364,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       textBox.Page = renderingContext.Control.Page!.WrappedInstance;
       textBox.ApplyStyle(renderingContext.Control.CommonStyle);
       renderingContext.Control.TextBoxStyle.ApplyStyle(textBox);
+
+      textBox.Attributes.Add(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
       textBox.Attributes.Add(HtmlTextWriterAttribute2.AriaAutoComplete, HtmlAriaAutoCompleteAttributeValue.Both);
+      textBox.Attributes.Add(HtmlTextWriterAttribute2.AriaExpanded, HtmlAriaExpandedAttributeValue.False);
+      textBox.Attributes.Add(HtmlTextWriterAttribute2.AriaHasPopup, GetAriaHasPopupForCombobox());
+      textBox.Attributes.Add(HtmlTextWriterAttribute2.AriaActiveDescendant, "");
+
+      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+      LabelReferenceRenderer.SetLabelReferenceOnControl(textBox, labelIDs);
+
       textBox.Attributes.Add("autocomplete", "off");
 
       if (renderingContext.Control.IsRequired)

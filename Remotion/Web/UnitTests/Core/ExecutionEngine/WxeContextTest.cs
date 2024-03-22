@@ -19,12 +19,15 @@ using System.Collections.Specialized;
 using System.Text;
 using System.Web;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.Development.Web.UnitTesting.ExecutionEngine;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.UrlMapping;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
+using Remotion.Web.UnitTests.Core.Utilities;
 using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine
@@ -34,47 +37,43 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 public class WxeContextTest
 {
   private HttpContext _currentHttpContext;
-  private WxeContextMock _currentWxeContext;
   private Type _functionType;
   private string _functionTypeName;
   private string _resource;
+  private NameValueCollection _queryString;
 
   [SetUp]
   public virtual void SetUp ()
   {
-    NameValueCollection queryString = new NameValueCollection();
-    queryString.Add(WxeHandler.Parameters.ReturnUrl, "/Root.wxe");
+    _queryString = new NameValueCollection();
+    _queryString.Add(WxeHandler.Parameters.ReturnUrl, "/Root.wxe");
 
-    _currentHttpContext = WxeContextMock.CreateHttpContext(queryString);
+    _currentHttpContext = WxeContextFactory.CreateHttpContext(_queryString);
 
     _functionType = typeof(TestFunction);
     _functionTypeName = TypeUtility.GetPartialAssemblyQualifiedName(_functionType);
     _resource = "~/Test.wxe";
 
+    UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
     UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(_functionType, _resource));
-
-    _currentWxeContext = new WxeContextMock(_currentHttpContext, queryString);
-    WxeContext.SetCurrent(_currentWxeContext);
-
-    WebConfigurationMock.Current = new Remotion.Web.Configuration.WebConfiguration();
-    WebConfigurationMock.Current.ExecutionEngine.MaximumUrlLength = 100;
-
   }
 
   [TearDown]
   public virtual void TearDown ()
   {
     WebConfigurationMock.Current = null;
-    Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent(null);
+    UrlMappingConfiguration.SetCurrent(null);
+    WxeContext.SetCurrent(null!);
   }
 
   [Test]
   public void GetStaticPermanentUrlWithDefaultWxeHandlerWithoutMappingForFunctionType ()
   {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();
-    Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent(null);
+    UrlMappingConfiguration.SetCurrent(null);
 
-    string wxeHandler = Remotion.Web.Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
+    using var _ = CreateWxeUrlSettingsScopeWithDefaultWxeHandler();
+
+    string wxeHandler = SafeServiceLocator.Current.GetInstance<WxeUrlSettings>().DefaultWxeHandler;
     string expectedUrl = UrlUtility.ResolveUrlCaseSensitive(new HttpContextWrapper(_currentHttpContext), wxeHandler);
     NameValueCollection expectedQueryString = new NameValueCollection();
     expectedQueryString.Add(WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
@@ -88,8 +87,6 @@ public class WxeContextTest
   [Test]
   public void GetStaticPermanentUrlWithDefaultWxeHandlerForMappedFunctionType ()
   {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();
-
     string expectedUrl = UrlUtility.ResolveUrlCaseSensitive(new HttpContextWrapper(_currentHttpContext), _resource);
     string permanentUrl = WxeContext.GetPermanentUrl(new HttpContextWrapper(_currentHttpContext), _functionType, new NameValueCollection());
     Assert.That(permanentUrl, Is.Not.Null);
@@ -128,6 +125,8 @@ public class WxeContextTest
   [Test]
   public void GetStaticPermanentUrlWithQueryStringExceedingMaxLength ()
   {
+    using var _ = CreateWxeUrlSettingsScopeWithDefaultWxeHandler(maxLength: 100);
+
     string parameterName = "Param";
     string parameterValue = "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ";
 
@@ -141,8 +140,10 @@ public class WxeContextTest
   [Test]
   public void GetStaticPermanentUrlWithoutWxeHandler ()
   {
+    using var _ = CreateWxeUrlSettingsScopeWithDefaultWxeHandler(maxLength: 100);
+
     WebConfigurationMock.Current = null;
-    Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent(null);
+    UrlMappingConfiguration.SetCurrent(null);
     Assert.That(
         () => WxeContext.GetPermanentUrl(new HttpContextWrapper(_currentHttpContext), _functionType, new NameValueCollection()),
         Throws.InstanceOf<WxeException>());
@@ -151,8 +152,10 @@ public class WxeContextTest
   [Test]
   public void GetPermanentUrlWithEmptyQueryString ()
   {
+    var wxeContext = CreateWxeContext();
+
     string expectedUrl = UrlUtility.ResolveUrlCaseSensitive(new HttpContextWrapper(_currentHttpContext), _resource);
-    string permanentUrl = _currentWxeContext.GetPermanentUrl(_functionType, new NameValueCollection(), false);
+    string permanentUrl = wxeContext.GetPermanentUrl(_functionType, new NameValueCollection(), false);
     Assert.That(permanentUrl, Is.Not.Null);
     Assert.That(permanentUrl, Is.EqualTo(expectedUrl));
   }
@@ -160,6 +163,8 @@ public class WxeContextTest
   [Test]
   public void GetPermanentUrlWithQueryString ()
   {
+    var wxeContext = CreateWxeContext();
+
     string parameterName = "Param";
     string parameterValue = "Hello World!";
 
@@ -171,7 +176,7 @@ public class WxeContextTest
     string expectedUrl = UrlUtility.ResolveUrlCaseSensitive(new HttpContextWrapper(_currentHttpContext), _resource);
     expectedUrl += UrlUtility.FormatQueryString(expectedQueryString);
 
-    string permanentUrl = _currentWxeContext.GetPermanentUrl(_functionType, queryString, false);
+    string permanentUrl = wxeContext.GetPermanentUrl(_functionType, queryString, false);
 
     Assert.That(permanentUrl, Is.Not.Null);
     Assert.That(permanentUrl, Is.EqualTo(expectedUrl));
@@ -184,15 +189,20 @@ public class WxeContextTest
     string parameterValue = "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ";
 
     NameValueCollection queryString = new NameValueCollection();
+
+    var wxeContext = CreateWxeContext(100);
+
     queryString.Add(parameterName, parameterValue);
     Assert.That(
-        () => _currentWxeContext.GetPermanentUrl(_functionType, queryString, false),
+        () => wxeContext.GetPermanentUrl(_functionType, queryString, false),
         Throws.InstanceOf<WxePermanentUrlTooLongException>());
   }
 
   [Test]
   public void GetPermanentUrlWithQueryStringAndParentPermanentUrl ()
   {
+    var wxeContext = CreateWxeContext();
+
     string parameterName = "Param";
     string parameterValue = "Hello World!";
 
@@ -209,7 +219,7 @@ public class WxeContextTest
     string expectedUrl = UrlUtility.ResolveUrlCaseSensitive(new HttpContextWrapper(_currentHttpContext), _resource);
     expectedUrl += UrlUtility.FormatQueryString(expectedQueryString);
 
-    string permanentUrl = _currentWxeContext.GetPermanentUrl(_functionType, queryString, true);
+    string permanentUrl = wxeContext.GetPermanentUrl(_functionType, queryString, true);
 
     Assert.That(permanentUrl, Is.Not.Null);
     Assert.That(permanentUrl, Is.EqualTo(expectedUrl));
@@ -218,6 +228,8 @@ public class WxeContextTest
   [Test]
   public void GetPermanentUrlWithParentPermanentUrlAndRemoveBothReturnUrls ()
   {
+    var wxeContext = CreateWxeContext();
+
     string parameterName = "Param";
     string parameterValue = "123456789 123456789 123456789 123456789 123456789 123456789 ";
 
@@ -230,7 +242,7 @@ public class WxeContextTest
     string expectedUrl = UrlUtility.ResolveUrlCaseSensitive(new HttpContextWrapper(_currentHttpContext), _resource);
     expectedUrl += UrlUtility.FormatQueryString(expectedQueryString);
 
-    string permanentUrl = _currentWxeContext.GetPermanentUrl(_functionType, queryString, false);
+    string permanentUrl = wxeContext.GetPermanentUrl(_functionType, queryString, false);
 
     Assert.That(permanentUrl, Is.Not.Null);
     Assert.That(permanentUrl, Is.EqualTo(expectedUrl));
@@ -239,6 +251,8 @@ public class WxeContextTest
   [Test]
   public void GetPermanentUrlWithParentPermanentUrlAndRemoveInnermostReturnUrl ()
   {
+    var wxeContext = CreateWxeContext(100, "DefaultWxeHandler.ashx");
+
     string parameterName = "Param";
     string parameterValue = "123456789 123456789 123456789 123456789 ";
 
@@ -256,7 +270,7 @@ public class WxeContextTest
     string expectedUrl = UrlUtility.ResolveUrlCaseSensitive(new HttpContextWrapper(_currentHttpContext), _resource);
     expectedUrl += UrlUtility.FormatQueryString(expectedQueryString);
 
-    string permanentUrl = _currentWxeContext.GetPermanentUrl(_functionType, queryString, true);
+    string permanentUrl = wxeContext.GetPermanentUrl(_functionType, queryString, true);
 
     Assert.That(permanentUrl, Is.Not.Null);
     Assert.That(permanentUrl, Is.EqualTo(expectedUrl));
@@ -268,13 +282,34 @@ public class WxeContextTest
     string parameterName = "Param";
     string parameterValue = "Hello World!";
 
+    var wxeContext = CreateWxeContext();
+
     NameValueCollection queryString = new NameValueCollection();
     queryString.Add(parameterName, parameterValue);
     queryString.Add(WxeHandler.Parameters.ReturnUrl, "");
     Assert.That(
-        () => _currentWxeContext.GetPermanentUrl(_functionType, queryString, true),
+        () => wxeContext.GetPermanentUrl(_functionType, queryString, true),
         Throws.ArgumentException);
   }
-}
 
+  private ServiceLocatorScope CreateWxeUrlSettingsScopeWithDefaultWxeHandler (int maxLength = 1024)
+  {
+    var wxeUrlSettings = WxeUrlSettings.Create(maxLength, "WxeHandler.ashx");
+
+    var serviceLocator = DefaultServiceLocator.Create();
+    serviceLocator.RegisterSingle(() => wxeUrlSettings);
+    return new ServiceLocatorScope(serviceLocator);
+  }
+
+  private WxeContext CreateWxeContext (int? maximumUrlLength = null, string defaultWxeHandler = null)
+  {
+    return new WxeContext(
+        new HttpContextWrapper(_currentHttpContext),
+        new WxeFunctionStateManager(new HttpSessionStateWrapper(_currentHttpContext.Session)),
+        new WxeFunctionState(new TestFunction(), 20, false),
+        _queryString,
+        WxeUrlSettings.Create(maximumUrlLength: maximumUrlLength, defaultWxeHandler: defaultWxeHandler),
+        new WxeLifetimeManagementSettings());
+  }
+}
 }

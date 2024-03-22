@@ -15,10 +15,10 @@
  <!-- Edge             + NET50  + Release + x64 + NoDB + Win_NET50  + EnforcedLocalMachine;-->
     </WebtestingTestConfiguration>
     <DatabaseTestConfiguration Condition="'$(DatabaseTestConfiguration)' == ''">
-      Win_NET48 + NET48 + NoBrowser + SqlServer2014 + Debug   + x86;
-      Win_NET48 + NET48 + NoBrowser + SqlServer2014 + Release + x86;
-      Win_NET48 + NET48 + NoBrowser + SqlServer2014 + Debug   + x64;
-      Win_NET48 + NET48 + NoBrowser + SqlServer2014 + Release + x64;
+      Win_NET48 + NET48 + NoBrowser + SqlServer2016 + Debug   + x86;
+      Win_NET48 + NET48 + NoBrowser + SqlServer2016 + Release + x86;
+      Win_NET48 + NET48 + NoBrowser + SqlServer2016 + Debug   + x64;
+      Win_NET48 + NET48 + NoBrowser + SqlServer2016 + Release + x64;
 
       <!-- Local-->
       LocalMachine  + NET48  + NoBrowser + SqlServerDefault + Debug + x86;
@@ -27,12 +27,11 @@
       Win_NET481 + NET481 + NoBrowser + SqlServer2022 + Release + x64;
       Win_NET481 + NET48  + NoBrowser + SqlServer2019 + Release + x64;
       Win_NET48  + NET48  + NoBrowser + SqlServer2017 + Release + x64;
-      Win_NET48  + NET48  + NoBrowser + SqlServer2016 + Release + x64;
+ <!-- Win_NET48  + NET48  + NoBrowser + SqlServer2016 + Release + x64;-->
  <!-- Win_NET50  + NET50  + NoBrowser + SqlServer2022 + Release + x64;-->
  <!-- Win_NET50  + NET50  + NoBrowser + SqlServer2019 + Release + x64;-->
  <!-- Win_NET50  + NET50  + NoBrowser + SqlServer2017 + Release + x64;-->
  <!-- Win_NET50  + NET50  + NoBrowser + SqlServer2016 + Release + x64;-->
- <!-- Win_NET50  + NET50  + NoBrowser + SqlServer2014 + Release + x64;-->
     </DatabaseTestConfiguration>
     <NormalTestConfiguration Condition="'$(NormalTestConfiguration)' == ''">
       Win_NET48   + NET48   + NoBrowser + NoDB + Debug   + x86;
@@ -241,6 +240,9 @@
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Validation.UnitTests\ObjectBinding.Web.Validation.UnitTests.csproj">
       <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Preview.UnitTests\ObjectBinding.Web.Preview.UnitTests.csproj">
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
+    </UnitTestProjectFiles>
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\ObjectBinding\Web.Development.WebTesting.IntegrationTests\ObjectBinding.Web.Development.WebTesting.IntegrationTests.csproj">
       <TestConfiguration>$(WebtestingTestConfiguration)</TestConfiguration>
       <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>
@@ -283,6 +285,11 @@
       <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>
     </IntegrationTestProjectFiles>
 
+    <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\Development.WebTesting.IntegrationTests.RequireUI\Web.Development.WebTesting.IntegrationTests.RequireUI.csproj">
+      <TestConfiguration>$(WebtestingTestConfiguration)</TestConfiguration>
+      <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>
+    </IntegrationTestProjectFiles>
+
     <IntegrationTestProjectFiles Include="$(SolutionDirectory)\Remotion\Web\IntegrationTests\Web.IntegrationTests.csproj">
       <TestConfiguration>$(WebtestingTestConfiguration)</TestConfiguration>
       <TestSetupBuildFile>$(TestSetupBuildFileForWebTest)</TestSetupBuildFile>
@@ -297,6 +304,9 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\SecurityManager\Clients.Web\SecurityManager.Clients.Web.csproj">
       <ExcludeFromDocumentation>True</ExcludeFromDocumentation>
     </ReleaseProjectFiles>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\SecurityManager\Clients.Web.UnitTests\SecurityManager.Clients.Web.UnitTests.csproj">
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
+    </UnitTestProjectFiles>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\SecurityManager\Core\SecurityManager.Core.csproj">
       <ExcludeFromDocumentation>True</ExcludeFromDocumentation>
     </ReleaseProjectFiles>

@@ -600,17 +600,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         eventHandler(this, EventArgs.Empty);
     }
 
-    /// <summary> Checks whether the control conforms to the required WAI level. </summary>
-    /// <exception cref="Remotion.Web.UI.WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
-    protected virtual void EvaluateWaiConformity ()
-    {
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-      {
-        if (ListControlStyle.AutoPostBack == true)
-          WcagHelper.Instance.HandleWarning(1, this, "ListControlStyle.AutoPostBack");
-      }
-    }
-
     protected override void OnPreRender (EventArgs e)
     {
       EnsureChildControls();
@@ -618,7 +607,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       LoadResources(GetResourceManager(), GlobalizationService);
 
-      EvaluateWaiConformity();
     }
 
     /// <summary> Gets a <see cref="HtmlTextWriterTag.Div"/> as the <see cref="WebControl.TagKey"/>. </summary>

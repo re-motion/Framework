@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -37,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
       extensionMock.Setup(stub => stub.Key).Returns(extensionKey);
       extensionMock
           .Setup(mock => mock.FilterQueryResult(TestableClientTransaction, It.IsAny<QueryResult<DomainObject>>()))
-          .Returns(TestQueryFactory.CreateTestQueryResult<DomainObject>())
+          .Returns(TestQueryFactory.CreateTestQueryResult(StorageSettings))
           .Verifiable();
 
       TestableClientTransaction.Extensions.Add(extensionMock.Object);

@@ -26,9 +26,11 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.Tracing;
+using Remotion.Data.DomainObjects.Validation;
 using Remotion.Linq.SqlBackend.SqlPreparation;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
@@ -43,13 +45,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
       return new StubStorageProvider(storageProviderDefinition, persistenceExtension);
     }
 
-    public IPersistenceModelLoader CreatePersistenceModelLoader (
-        StorageProviderDefinition storageProviderDefinition,
-        IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
+    public IPersistenceModelLoader CreatePersistenceModelLoader (StorageProviderDefinition storageProviderDefinition)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
-      return new SqlStorageObjectFactory().CreatePersistenceModelLoader(storageProviderDefinition, storageProviderDefinitionFinder);
+      var typeConversionProvider = SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>();
+      var dataContainerValidator = SafeServiceLocator.Current.GetInstance<IDataContainerValidator>();
+      var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
+
+      var storageObjectFactory = new SqlStorageObjectFactory(storageSettings, typeConversionProvider, dataContainerValidator);
+      return storageObjectFactory.CreatePersistenceModelLoader(storageProviderDefinition);
     }
 
     public IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (

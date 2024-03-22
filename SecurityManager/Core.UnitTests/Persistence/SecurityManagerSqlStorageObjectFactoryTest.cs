@@ -17,10 +17,15 @@
 using System;
 using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
+using Remotion.Data.DomainObjects.Validation;
 using Remotion.Mixins;
 using Remotion.SecurityManager.Persistence;
+using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.UnitTests.Persistence
 {
@@ -34,8 +39,11 @@ namespace Remotion.SecurityManager.UnitTests.Persistence
     [SetUp]
     public void SetUp ()
     {
-      _rdbmsProviderDefinition = new RdbmsProviderDefinition("TestDomain", new SecurityManagerSqlStorageObjectFactory(), "ConnectionString");
-      _securityManagerSqlStorageObjectFactory = new SecurityManagerSqlStorageObjectFactory();
+      _rdbmsProviderDefinition = new RdbmsProviderDefinition("TestDomain", Mock.Of<IRdbmsStorageObjectFactory>(MockBehavior.Strict), "ConnectionString");
+      _securityManagerSqlStorageObjectFactory = new SecurityManagerSqlStorageObjectFactory(
+          Mock.Of<IStorageSettings>(MockBehavior.Strict),
+          Mock.Of<ITypeConversionProvider>(MockBehavior.Strict),
+          Mock.Of<IDataContainerValidator>(MockBehavior.Strict));
       _persistenceExtensionStub = new Mock<IPersistenceExtension>();
     }
 

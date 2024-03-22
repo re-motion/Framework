@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
     /// <summary>
     /// First Firefox version supported by <see cref="FirefoxBinariesProvider"/>.
     /// </summary>
-    private static readonly Version s_minimumSupportedFirefoxVersion = new Version(111, 0);
+    private static readonly Version s_minimumSupportedFirefoxVersion = new Version(121, 0);
 
     [NotNull]
     public FirefoxExecutable GetInstalledExecutable ()
@@ -159,19 +159,13 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
       Directory.CreateDirectory(tempPath);
 
       var fullZipPath = Path.Combine(Path.GetTempPath(), c_driverZipFileName);
-
-#pragma warning disable SYSLIB0014
-      using (var webClient = new WebClient()) // TODO RM-8492: Replace with HttpClient
-#pragma warning restore SYSLIB0014
+      try
       {
-        try
-        {
-          webClient.DownloadFile(downloadUrl, fullZipPath);
-        }
-        catch (WebException ex)
-        {
-          throw new WebException($"Could not download the latest geckodriver from '{downloadUrl}': {ex.Message}", ex.Status);
-        }
+        FileDownloadUtility.DownloadFileWithRetry(downloadUrl, fullZipPath);
+      }
+      catch (WebException ex)
+      {
+        throw new WebException($"Could not download the latest geckodriver from '{downloadUrl}': {ex.Message}", ex.Status);
       }
 
       ZipFile.ExtractToDirectory(fullZipPath, tempPath);

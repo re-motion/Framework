@@ -20,15 +20,12 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Caching;
-using System.Web.Configuration;
 using System.Web.Hosting;
-using Remotion.Development.UnitTesting;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Web.Configuration;
+using Remotion.Web.Resources;
 
 namespace Remotion.Development.Web.ResourceHosting
 {
@@ -59,7 +56,8 @@ namespace Remotion.Development.Web.ResourceHosting
     {
       ArgumentUtility.CheckNotNull("mappings", mappings);
 
-      _resourceRoot = VirtualPathUtility.AppendTrailingSlash(CombineVirtualPath("~/", WebConfiguration.Current.Resources.Root));
+      var resourceRoot = SafeServiceLocator.Current.GetInstance<ResourceRoot>();
+      _resourceRoot = VirtualPathUtility.AppendTrailingSlash(CombineVirtualPath("~/", resourceRoot.Value));
 
       _resourcePathMappings = new Dictionary<string, ResourcePathMapping>(StringComparer.OrdinalIgnoreCase);
       foreach (var mapping in mappings)

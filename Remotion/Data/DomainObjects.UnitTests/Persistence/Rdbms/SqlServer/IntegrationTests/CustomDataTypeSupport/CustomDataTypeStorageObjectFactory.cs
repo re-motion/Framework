@@ -15,16 +15,27 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Persistence;
+using JetBrains.Annotations;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
+using Remotion.Data.DomainObjects.Validation;
 using Remotion.Linq.SqlBackend.MappingResolution;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport
 {
   public class CustomDataTypeStorageObjectFactory : SqlStorageObjectFactory
   {
+    public CustomDataTypeStorageObjectFactory (
+        [NotNull] IStorageSettings storageSettings,
+        [NotNull] ITypeConversionProvider typeConversionProvider,
+        [NotNull] IDataContainerValidator dataContainerValidator)
+        : base(storageSettings, typeConversionProvider, dataContainerValidator)
+    {
+    }
+
     public override IStorageTypeInformationProvider CreateStorageTypeInformationProvider (RdbmsProviderDefinition rdmsStorageProviderDefinition)
     {
       return new CustomDataTypeStorageTypeInformationProviderDecorator(
@@ -34,15 +45,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     protected override IDataStoragePropertyDefinitionFactory CreateDataStoragePropertyDefinitionFactory (
         RdbmsProviderDefinition storageProviderDefinition,
         IStorageTypeInformationProvider storageTypeInformationProvider,
-        IStorageNameProvider storageNameProvider,
-        IStorageProviderDefinitionFinder providerDefinitionFinder)
+        IStorageNameProvider storageNameProvider)
     {
       return new CustomDataTypeStorageProeprtyDefinitionFactoryDecorator(
           base.CreateDataStoragePropertyDefinitionFactory(
               storageProviderDefinition,
               storageTypeInformationProvider,
-              storageNameProvider,
-              providerDefinitionFinder),
+              storageNameProvider),
           storageNameProvider);
     }
 

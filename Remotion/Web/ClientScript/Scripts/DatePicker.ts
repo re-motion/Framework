@@ -44,7 +44,7 @@ class DatePicker
     const container = ElementResolverUtility.ResolveSingle(containerOrSelector);
     const target = ElementResolverUtility.ResolveSingle(targetOrSelector);
 
-    var datePickerID = container.id + '_DatePicker';
+    const datePickerID = container.id + '_DatePicker';
     //  Tried to open the already open date picker?
     //  Close it and return.
     if (DatePicker.CloseVisibleDatePickerFrame (datePickerID))
@@ -53,15 +53,13 @@ class DatePicker
     if (target.disabled || target.readOnly)
       return;
 
-    var datePicker = DatePicker.Create(datePickerID, button, target, src, width, height);
+    const datePicker = DatePicker.Create(datePickerID, button, target, src, width, height);
 
-    var targetDocument = null;
-    if (TypeUtility.IsDefined(target.ownerDocument))
-      targetDocument = target.ownerDocument;
-    var clickHandler: Nullable<EventHandler<MouseEvent>> = null;
-    if (targetDocument != null)
+    const targetDocument = target.ownerDocument;
+    let clickHandler: Nullable<EventHandler<MouseEvent>> = null;
+    if (targetDocument)
     {
-      var isEventAfterDatePickerButtonClick = true;
+      let isEventAfterDatePickerButtonClick = true;
       clickHandler = function (event: MouseEvent)
       {
         if (isEventAfterDatePickerButtonClick)
@@ -82,12 +80,12 @@ class DatePicker
 
   private static CloseVisibleDatePickerFrame (newDatePickerID: string): boolean
   {
-    var isSameDatePicker = false;
-    var newDatePicker = document.getElementById(newDatePickerID);
+    let isSameDatePicker = false;
+    const newDatePicker = document.getElementById(newDatePickerID);
     if (newDatePicker && LayoutUtility.IsVisible(newDatePicker))
       isSameDatePicker = true;
 
-      DatePicker.CloseDatePicker(isSameDatePicker);
+    DatePicker.CloseDatePicker(isSameDatePicker);
 
     return isSameDatePicker;
   }
@@ -97,7 +95,7 @@ class DatePicker
     if (DatePicker._datePicker_current == null)
       return;
 
-    var current = DatePicker._datePicker_current;
+    const current = DatePicker._datePicker_current;
     DatePicker._datePicker_current = null;
 
     if (setFocusOnTarget)
@@ -114,13 +112,13 @@ class DatePicker
 
   public static UpdateValue(value: string): void
   {
-    var current = DatePicker._datePicker_current;
+    const current = DatePicker._datePicker_current;
     if (current == null)
       return;
 
     DatePicker.CloseDatePicker(true);
 
-    var isValueChanged = current.Target.value != value;
+    const isValueChanged = current.Target.value != value;
     if (isValueChanged)
     {
       current.Target.value = value;
@@ -130,16 +128,16 @@ class DatePicker
 
   private static Create(datePickerID: string, button: HTMLElement, target: HTMLInputElement, src: string, width: string, height: string): HTMLElement
   {
-    var datePicker = document.createElement('div');
+    const datePicker = document.createElement('div');
     datePicker.setAttribute('id', datePickerID);
     datePicker.classList.add('DatePicker');
     datePicker.style.width = width;
     datePicker.style.height = height;
     datePicker.style.visibility = 'hidden';
 
-    var frame = window.document.createElement("iframe");
+    const frame = window.document.createElement("iframe");
     datePicker.append(frame);
-    var queryStringConcatenator = src.indexOf ('?') === -1 ? '?' : (src.endsWith('?') ? '' : '&');
+    const queryStringConcatenator = src.indexOf ('?') === -1 ? '?' : (src.endsWith('?') ? '' : '&');
     frame.src = src + queryStringConcatenator + 'DateValueField=' + target.value;
     frame.frameBorder = 'no';
     frame.scrolling = 'no';
@@ -152,7 +150,7 @@ class DatePicker
 
     if (DatePicker._datePicker_repositionTimer) 
       clearTimeout(DatePicker._datePicker_repositionTimer);
-    var repositionHandler = function ()
+    const repositionHandler = function ()
     {
       if (DatePicker._datePicker_repositionTimer)
         clearTimeout (DatePicker._datePicker_repositionTimer);
@@ -172,20 +170,20 @@ class DatePicker
 
   private static ApplyPosition (datePicker: HTMLElement, button: HTMLElement): void
   {
-    var left = LayoutUtility.GetOffset(button).left - window.pageXOffset;
-    var top = LayoutUtility.GetOffset(button).top - window.pageYOffset;
+    const left = LayoutUtility.GetOffset(button).left - window.pageXOffset;
+    const top = LayoutUtility.GetOffset(button).top - window.pageYOffset;
 
     //  Adjust position so the date picker is shown below 
     //  and aligned with the right border of the button.
     datePicker.style.left = Math.max (0, left - LayoutUtility.GetWidth(datePicker) + LayoutUtility.GetWidth(button)) + 'px';
     datePicker.style.top = Math.max (0, top + LayoutUtility.GetHeight(button)) + 'px';
-    var datePickerLeft = LayoutUtility.GetOffset(datePicker).left - window.pageXOffset;
-    var datePickerTop = LayoutUtility.GetOffset(datePicker).top - window.pageYOffset;
-    var datePickerWidth = LayoutUtility.GetWidth(datePicker);
-    var datePickerHeight = LayoutUtility.GetHeight(datePicker);
+    let datePickerLeft = LayoutUtility.GetOffset(datePicker).left - window.pageXOffset;
+    let datePickerTop = LayoutUtility.GetOffset(datePicker).top - window.pageYOffset;
+    const datePickerWidth = LayoutUtility.GetWidth(datePicker);
+    const datePickerHeight = LayoutUtility.GetHeight(datePicker);
 
-    var visibleBodyWidth = document.documentElement.clientWidth;
-    var visibleBodyHeight = document.documentElement.clientHeight;
+    const visibleBodyWidth = document.documentElement.clientWidth;
+    const visibleBodyHeight = document.documentElement.clientHeight;
 
     //  Move the popup to the top of the button if there is not enough space below
     datePickerTop = visibleBodyHeight < datePickerTop + datePickerHeight

@@ -16,8 +16,8 @@
 // 
 using System;
 using Remotion.Configuration;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.UnitTesting.Data.SqlClient;
@@ -37,36 +37,40 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
     }
 
-    protected RdbmsProviderDefinition TableInheritanceTestDomainStorageProviderDefinition
+    protected IStorageSettings StorageSettings
     {
-      get
-      {
-        return (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[TableInheritanceTestDomainProviderID];
-      }
+      get { return TableInheritanceConfiguration.Instance.GetStorageSettings(); }
     }
 
+    protected RdbmsProviderDefinition TableInheritanceTestDomainStorageProviderDefinition
+    {
+      get { return (RdbmsProviderDefinition)StorageSettings.GetStorageProviderDefinition(TableInheritanceTestDomainProviderID); }
+    }
 
     public override void OneTimeSetUp ()
     {
       base.OneTimeSetUp();
-      DomainObjectsConfiguration.SetCurrent(TableInheritanceConfiguration.Instance.GetDomainObjectsConfiguration());
+
       MappingConfiguration.SetCurrent(StandardConfiguration.Instance.GetMappingConfiguration());
-      ConfigurationWrapper.SetCurrent(null);
     }
 
     public override void SetUp ()
     {
       base.SetUp();
-      DomainObjectsConfiguration.SetCurrent(TableInheritanceConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent(TableInheritanceConfiguration.Instance.GetMappingConfiguration());
-      ConfigurationWrapper.SetCurrent(null);
       _transactionScope = ClientTransaction.CreateRootTransaction().EnterDiscardingScope();
     }
 
     public override void TearDown ()
     {
       _transactionScope.Leave();
+      MappingConfiguration.SetCurrent(null);
       base.TearDown();
+    }
+
+    public override void TestFixtureTearDown ()
+    {
+      MappingConfiguration.SetCurrent(null);
     }
 
     protected TableInheritanceDomainObjectIDs DomainObjectIDs

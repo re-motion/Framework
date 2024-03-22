@@ -26,11 +26,18 @@ namespace Remotion.Web.UnitTests.Core.Resources
   [TestFixture]
   public class ResourcePathBuilderTest
   {
+    private Mock<IStaticResourceCacheKeyProvider> _staticResourceCacheKeyProviderStub;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _staticResourceCacheKeyProviderStub = new Mock<IStaticResourceCacheKeyProvider>();
+    }
+
     [Test]
     public void BuildAbsolutePath_MultiplePathParts_ResultingPathDoesNotEndWithTrailingSlash ()
     {
       var builder = CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir");
-
       Assert.That(
           builder.BuildAbsolutePath(GetType().Assembly, "part1", "part2"),
           Is.EqualTo("/appDir/resourceRoot/Remotion.Web.UnitTests/part1/part2"));
@@ -79,7 +86,7 @@ namespace Remotion.Web.UnitTests.Core.Resources
     [Test]
     public void BuildAbsolutePath_MultipleCalls_DoesNotCacheHttpContext ()
     {
-      var builder = (TestableResourcePathBuilder)CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir");
+      var builder = CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir");
 
       builder.BuildAbsolutePath(GetType().Assembly, "part1");
       Mock.Get(builder.HttpContextProvider).Verify(_ => _.GetCurrentHttpContext());
@@ -88,7 +95,89 @@ namespace Remotion.Web.UnitTests.Core.Resources
       Mock.Get(builder.HttpContextProvider).Verify(_ => _.GetCurrentHttpContext(), Times.Exactly(2));
     }
 
-    private ResourcePathBuilder CreateResourcePathBuilder (Uri url, string applicationPath)
+    [Test]
+    public void BuildAbsolutePath_WithCachingButWithoutCacheKey_FallsBackToDefaultUrlFormat ()
+    {
+      var builder = CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir", cacheable: true);
+      Assert.That(
+          builder.BuildAbsolutePath(GetType().Assembly, "part1"),
+          Is.EqualTo("/appDir/resourceRoot/Remotion.Web.UnitTests/part1"));
+    }
+
+    [Test]
+    public void BuildAbsolutePath_WithCachingAndMultiplePathParts_ResultingPathDoesNotEndWithTrailingSlash ()
+    {
+      _staticResourceCacheKeyProviderStub.Setup(_ => _.GetStaticResourceCacheKey()).Returns("fakeCacheKey");
+
+      var builder = CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir", cacheable: true);
+      Assert.That(
+          builder.BuildAbsolutePath(GetType().Assembly, "part1", "part2"),
+          Is.EqualTo("/appDir/resourceRoot/cache_fakeCacheKey/Remotion.Web.UnitTests/part1/part2"));
+    }
+
+    [Test]
+    public void BuildAbsolutePath_WithCachingMiddlePartBeginsIsDot_SkipsPart ()
+    {
+      _staticResourceCacheKeyProviderStub.Setup(_ => _.GetStaticResourceCacheKey()).Returns("fakeCacheKey");
+
+      var builder = CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir", cacheable: true);
+
+      Assert.That(
+          builder.BuildAbsolutePath(GetType().Assembly, ".", "part2"),
+          Is.EqualTo("/appDir/resourceRoot/cache_fakeCacheKey/Remotion.Web.UnitTests/part2"));
+    }
+
+    [Test]
+    public void BuildAbsolutePath_WithCachingAndLastPathPartIsDot_SkipsPart ()
+    {
+      _staticResourceCacheKeyProviderStub.Setup(_ => _.GetStaticResourceCacheKey()).Returns("fakeCacheKey");
+
+      var builder = CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir", cacheable: true);
+
+      Assert.That(
+          builder.BuildAbsolutePath(GetType().Assembly, "part1", "."),
+          Is.EqualTo("/appDir/resourceRoot/cache_fakeCacheKey/Remotion.Web.UnitTests/part1"));
+    }
+
+    [Test]
+    public void BuildAbsolutePath_WithCachingAndEmptyPathParts_ResultingPathDoesNotEndWithTrailingSlash ()
+    {
+      _staticResourceCacheKeyProviderStub.Setup(_ => _.GetStaticResourceCacheKey()).Returns("fakeCacheKey");
+
+      var builder = CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir", cacheable: true);
+
+      Assert.That(
+          builder.BuildAbsolutePath(GetType().Assembly, new string[0]),
+          Is.EqualTo("/appDir/resourceRoot/cache_fakeCacheKey/Remotion.Web.UnitTests"));
+    }
+
+    [Test]
+    public void BuildAbsolutePath_WithCachingAndUsesVirtualApplicationPathFromUrl ()
+    {
+      _staticResourceCacheKeyProviderStub.Setup(_ => _.GetStaticResourceCacheKey()).Returns("fakeCacheKey");
+
+      var builder = CreateResourcePathBuilder(new Uri("http://localhost/AppdiR/file"), "/appDir", cacheable: true);
+
+      Assert.That(
+          builder.BuildAbsolutePath(GetType().Assembly, "part"),
+          Is.EqualTo("/AppdiR/resourceRoot/cache_fakeCacheKey/Remotion.Web.UnitTests/part"));
+    }
+
+    [Test]
+    public void BuildAbsolutePath_WithCachingAndMultipleCalls_DoesNotCacheHttpContext ()
+    {
+      _staticResourceCacheKeyProviderStub.Setup(_ => _.GetStaticResourceCacheKey()).Returns("fakeCacheKey");
+
+      var builder = CreateResourcePathBuilder(new Uri("http://localhost/appDir/file"), "/appDir", cacheable: true);
+
+      builder.BuildAbsolutePath(GetType().Assembly, "part1");
+      Mock.Get(builder.HttpContextProvider).Verify(_ => _.GetCurrentHttpContext());
+
+      builder.BuildAbsolutePath(GetType().Assembly, "part1");
+      Mock.Get(builder.HttpContextProvider).Verify(_ => _.GetCurrentHttpContext(), Times.Exactly(2));
+    }
+
+    private ResourcePathBuilder CreateResourcePathBuilder (Uri url, string applicationPath, bool cacheable = false)
     {
       var httpRequestStub = new Mock<HttpRequestBase>();
       httpRequestStub.Setup(_ => _.Url).Returns(url);
@@ -100,7 +189,11 @@ namespace Remotion.Web.UnitTests.Core.Resources
       var httpContextProviderStub = new Mock<IHttpContextProvider>();
       httpContextProviderStub.Setup(_ => _.GetCurrentHttpContext()).Returns(httpContextStub.Object);
 
-      return new TestableResourcePathBuilder(httpContextProviderStub.Object, "resourceRoot");
+      var httpContextProvider = httpContextProviderStub.Object;
+      var fakeResourceRoot = new FakeResourceRoot("resourceRoot");
+      return cacheable
+          ? new CacheableResourcePathBuilder(_staticResourceCacheKeyProviderStub.Object, httpContextProvider, fakeResourceRoot)
+          : new ResourcePathBuilder(httpContextProvider, fakeResourceRoot);
     }
   }
 }

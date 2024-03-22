@@ -27,12 +27,10 @@ using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Globalization;
 using Remotion.Web.UI;
-using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
 
@@ -109,8 +107,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull("writer", writer);
 
-      EvaluateWaiConformity();
-
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));
     }
@@ -155,20 +151,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (! IsReadOnly && Enabled)
         OnCheckedChanged();
-    }
-
-    /// <summary> Checks whether the control conforms to the required WAI level. </summary>
-    /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
-    protected virtual void EvaluateWaiConformity ()
-    {
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-      {
-        if (_showDescription == true)
-          WcagHelper.Instance.HandleError(1, this, "ShowDescription");
-
-        if (IsAutoPostBackEnabled)
-          WcagHelper.Instance.HandleWarning(1, this, "AutoPostBack");
-      }
     }
 
     protected override void OnPreRender (EventArgs e)
@@ -419,7 +401,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     protected bool IsDescriptionEnabled
     {
-      get { return !WcagHelper.Instance.IsWaiConformanceLevelARequired() && _showDescription == true; }
+      get { return _showDescription == true; }
     }
 
     string IBocCheckBox.GetValueName ()

@@ -19,6 +19,7 @@ using System.Globalization;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
@@ -35,6 +36,24 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.PerformanceTests
   [TestFixture]
   public class CachePerformanceTest
   {
+    private ServiceLocatorScope _serviceLocatorScope;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      var serviceLocator = DefaultServiceLocator.Create();
+      var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer("Integrated Security=SSPI;Initial Catalog=TestDatabase;Data Source=localhost");
+      serviceLocator.RegisterSingle(() => storageSettingsFactory);
+
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
+    }
+
+    [TearDown]
+    public void TearDown ()
+    {
+      _serviceLocatorScope.Dispose();
+    }
+
     [Test]
     public void TypePipe ()
     {

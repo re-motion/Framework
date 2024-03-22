@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
-using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Web.Resources;
 
 namespace Remotion.Web.UnitTests.Core.Resources
@@ -26,35 +26,62 @@ namespace Remotion.Web.UnitTests.Core.Resources
   {
     private ResourceTheme _resourceTheme;
     private IResourceUrlFactory _factory;
-    private FakeResourcePathBuilder _resourcePathBuilder;
+    private IResourcePathBuilder _resourcePathBuilder;
+    private ICacheableResourcePathBuilder _cacheableResourcePathBuilder;
 
     [SetUp]
     public void SetUp ()
     {
-      _resourcePathBuilder = new FakeResourcePathBuilder();
+      _resourcePathBuilder = Mock.Of<IResourcePathBuilder>();
+      _cacheableResourcePathBuilder = Mock.Of<ICacheableResourcePathBuilder>();
       _resourceTheme = new ResourceTheme("TestTheme");
-      _factory = new ResourceUrlFactory(_resourcePathBuilder, _resourceTheme);
+      _factory = new ResourceUrlFactory(_resourcePathBuilder, _cacheableResourcePathBuilder, _resourceTheme);
     }
 
     [Test]
-    public void CreateResourceUrl ()
+    public void CreateResourceUrl_WithNonCacheableResourceType_UsesCacheableResourcePathBuilder ()
+    {
+      var resourceUrl = _factory.CreateResourceUrl(typeof(ResourceUrlFactoryTest), ResourceType.HelpPage, "theRelativeUrl.img");
+
+      Assert.That(resourceUrl, Is.InstanceOf(typeof(ResourceUrl)));
+      Assert.That(((ResourceUrl)resourceUrl).ResourcePathBuilder, Is.SameAs(_resourcePathBuilder));
+      Assert.That(((ResourceUrl)resourceUrl).DefiningType, Is.EqualTo(typeof(ResourceUrlFactoryTest)));
+      Assert.That(((ResourceUrl)resourceUrl).ResourceType, Is.EqualTo(ResourceType.HelpPage));
+      Assert.That(((ResourceUrl)resourceUrl).RelativeUrl, Is.EqualTo("theRelativeUrl.img"));
+    }
+
+    [Test]
+    public void CreateThemedResourceUrl_WithNonCacheableResourceType_UsesCacheableResourcePathBuilder ()
+    {
+      var resourceUrl = _factory.CreateThemedResourceUrl(typeof(ResourceUrlFactoryTest), ResourceType.HelpPage, "theRelativeUrl.img");
+
+      Assert.That(resourceUrl, Is.InstanceOf(typeof(ThemedResourceUrl)));
+      Assert.That(((ThemedResourceUrl)resourceUrl).ResourcePathBuilder, Is.SameAs(_resourcePathBuilder));
+      Assert.That(((ThemedResourceUrl)resourceUrl).DefiningType, Is.EqualTo(typeof(ResourceUrlFactoryTest)));
+      Assert.That(((ThemedResourceUrl)resourceUrl).ResourceType, Is.EqualTo(ResourceType.HelpPage));
+      Assert.That(((ThemedResourceUrl)resourceUrl).ResourceTheme, Is.SameAs(_resourceTheme));
+      Assert.That(((ThemedResourceUrl)resourceUrl).RelativeUrl, Is.EqualTo("theRelativeUrl.img"));
+    }
+
+    [Test]
+    public void CreateResourceUrl_WithCacheableResourceType_UsesCacheableResourcePathBuilder ()
     {
       var resourceUrl = _factory.CreateResourceUrl(typeof(ResourceUrlFactoryTest), ResourceType.Image, "theRelativeUrl.img");
 
       Assert.That(resourceUrl, Is.InstanceOf(typeof(ResourceUrl)));
-      Assert.That(((ResourceUrl)resourceUrl).ResourcePathBuilder, Is.SameAs(_resourcePathBuilder));
+      Assert.That(((ResourceUrl)resourceUrl).ResourcePathBuilder, Is.SameAs(_cacheableResourcePathBuilder));
       Assert.That(((ResourceUrl)resourceUrl).DefiningType, Is.EqualTo(typeof(ResourceUrlFactoryTest)));
       Assert.That(((ResourceUrl)resourceUrl).ResourceType, Is.EqualTo(ResourceType.Image));
       Assert.That(((ResourceUrl)resourceUrl).RelativeUrl, Is.EqualTo("theRelativeUrl.img"));
     }
 
     [Test]
-    public void CreateThemedResourceUrl ()
+    public void CreateThemedResourceUrl_WithCacheableResourceType_UsesCacheableResourcePathBuilder ()
     {
       var resourceUrl = _factory.CreateThemedResourceUrl(typeof(ResourceUrlFactoryTest), ResourceType.Image, "theRelativeUrl.img");
 
       Assert.That(resourceUrl, Is.InstanceOf(typeof(ThemedResourceUrl)));
-      Assert.That(((ThemedResourceUrl)resourceUrl).ResourcePathBuilder, Is.SameAs(_resourcePathBuilder));
+      Assert.That(((ThemedResourceUrl)resourceUrl).ResourcePathBuilder, Is.SameAs(_cacheableResourcePathBuilder));
       Assert.That(((ThemedResourceUrl)resourceUrl).DefiningType, Is.EqualTo(typeof(ResourceUrlFactoryTest)));
       Assert.That(((ThemedResourceUrl)resourceUrl).ResourceType, Is.EqualTo(ResourceType.Image));
       Assert.That(((ThemedResourceUrl)resourceUrl).ResourceTheme, Is.SameAs(_resourceTheme));

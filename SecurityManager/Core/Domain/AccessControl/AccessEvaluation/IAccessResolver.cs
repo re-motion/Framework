@@ -18,7 +18,6 @@
 using System;
 using Remotion.Data.DomainObjects;
 using Remotion.Security;
-using Remotion.ServiceLocation;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {

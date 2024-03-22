@@ -15,9 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Diagnostics;
 using System.Runtime.Serialization;
-using System.Web;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;

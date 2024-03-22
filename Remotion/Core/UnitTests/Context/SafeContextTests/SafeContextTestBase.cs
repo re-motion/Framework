@@ -15,11 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.ComponentModel.Design;
 using System.Threading;
 using Moq;
 using NUnit.Framework;
-using Remotion.Configuration.TypeDiscovery;
 using Remotion.Context;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;

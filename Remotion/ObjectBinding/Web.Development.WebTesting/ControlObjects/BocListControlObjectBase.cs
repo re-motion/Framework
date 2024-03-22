@@ -20,7 +20,6 @@ using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
 using log4net;
-using OpenQA.Selenium;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -101,7 +100,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     protected BocListControlObjectBase ([NotNull] ControlObjectContext context)
         : base(context)
     {
-      _log = LogManager.GetLogger(GetType());
+      _log = LogManager.GetLogger(typeof(BocListControlObjectBase<TRowControlObject, TCellControlObject>).Assembly, GetType());
       _accessor = new BocListRowControlObjectHostAccessor(this);
 
       EnsureBocListHasBeenFullyInitialized();

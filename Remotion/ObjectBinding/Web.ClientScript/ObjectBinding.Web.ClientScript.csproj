@@ -9,11 +9,20 @@
     <Description>Client Scripts for re-motion's ObjectBinding web controls.</Description>
     <AssemblyName>Remotion.ObjectBinding.Web.ClientScript</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
+    <TypeScriptBuildMode>true</TypeScriptBuildMode>
   </PropertyGroup>
   <ItemGroup>
     <TypeScriptCompile Include="..\..\Web\ClientScript\Scripts\typings\common.d.ts">
       <Link>Scripts\typings\common.d.ts</Link>
     </TypeScriptCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Remotion.ThirdPartyDependency.JQuery.Autocomplete" Version="1.1.0-pre" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Web\ClientScript\README.md">
+      <Link>README.md</Link>
+    </Content>
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

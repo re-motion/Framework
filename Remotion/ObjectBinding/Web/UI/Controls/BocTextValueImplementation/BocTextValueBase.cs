@@ -228,17 +228,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
         eventHandler(this, EventArgs.Empty);
     }
 
-    /// <summary> Checks whether the control conforms to the required WAI level. </summary>
-    /// <exception cref="Remotion.Web.UI.WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
-    protected virtual void EvaluateWaiConformity ()
-    {
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-      {
-        if (TextBoxStyle.AutoPostBack == true)
-          WcagHelper.Instance.HandleWarning(1, this, "TextBoxStyle.AutoPostBack");
-      }
-    }
-
     /// <summary> 
     ///   Returns the <see cref="Control.ClientID"/> values of all controls whose value can be modified in the user 
     ///   interface.
@@ -278,7 +267,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
 
       LoadResources(GetResourceManager(), GlobalizationService);
 
-      EvaluateWaiConformity();
     }
 
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>

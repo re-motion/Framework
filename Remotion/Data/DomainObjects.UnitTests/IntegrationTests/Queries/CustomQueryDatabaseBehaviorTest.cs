@@ -34,18 +34,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
 
     public override void SetUp ()
     {
-      base.SetUp();
-
       var persistenceExtensionFactoryStub = new Mock<IPersistenceExtensionFactory>();
       _persistenceExtensionMock = new Mock<IPersistenceExtension>();
 
       persistenceExtensionFactoryStub
-          .Setup(stub => stub.CreatePersistenceExtensions(TestableClientTransaction.ID))
+          .Setup(stub => stub.CreatePersistenceExtensions(It.Is<Guid>(value => value == TestableClientTransaction.ID)))
           .Returns(new[] { _persistenceExtensionMock.Object });
 
       var locator = DefaultServiceLocator.Create();
-      locator.RegisterSingle<IPersistenceExtensionFactory>(() => persistenceExtensionFactoryStub.Object);
+      locator.RegisterSingle(() => persistenceExtensionFactoryStub.Object);
+      RegisterStandardConfiguration(locator);
       _serviceLocatorScope = new ServiceLocatorScope(locator);
+
+      base.SetUp();
+
+      Assert.That(SafeServiceLocator.Current, Is.SameAs(locator));
     }
 
     public override void TearDown ()
@@ -57,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void CompleteIteration_CompletelyExecutesQuery ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("CustomQuery");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomQuery"));
 
       QueryManager.GetCustom(query, QueryResultRowTestHelper.ExtractRawValues).ToList();
 
@@ -73,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void NoIteration_DoesNotOpenConnection ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("CustomQuery");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomQuery"));
 
       QueryManager.GetCustom(query, QueryResultRowTestHelper.ExtractRawValues);
 
@@ -89,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void DuringIteration_QueryStaysActive ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("CustomQuery");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomQuery"));
 
       var result = QueryManager.GetCustom(query, QueryResultRowTestHelper.ExtractRawValues);
 

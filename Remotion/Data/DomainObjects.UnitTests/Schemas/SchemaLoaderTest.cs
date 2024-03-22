@@ -17,7 +17,7 @@
 using System;
 using System.Xml.Schema;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Queries.Configuration.Loader;
 using Remotion.Data.DomainObjects.Schemas;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Schemas

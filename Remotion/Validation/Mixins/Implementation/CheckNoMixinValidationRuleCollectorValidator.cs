@@ -15,12 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Mixins;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
-using TypeExtensions = Remotion.Reflection.TypeExtensions;
 
 namespace Remotion.Validation.Mixins.Implementation
 {

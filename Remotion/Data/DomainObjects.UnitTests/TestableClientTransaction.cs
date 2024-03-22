@@ -15,19 +15,25 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Development.UnitTesting;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
   [Serializable]
   public class TestableClientTransaction : ClientTransaction
   {
-    public TestableClientTransaction () : this(RootClientTransactionComponentFactory.Create())
+    public TestableClientTransaction ()
+        : this(
+            RootClientTransactionComponentFactory.Create(
+                SafeServiceLocator.Current.GetInstance<IStorageSettings>(),
+                SafeServiceLocator.Current.GetInstance<IPersistenceExtensionFactory>()))
     {
     }
 

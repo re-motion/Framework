@@ -16,8 +16,10 @@
 // 
 using System;
 using System.IO;
+using System.Threading;
 using JetBrains.Annotations;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
 {
@@ -75,9 +77,17 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     {
       ArgumentUtility.CheckNotNull("newFilePath", newFilePath);
 
-      File.Move(_fullFilePath, newFilePath);
+      // In racy cases the file we are trying to move is still used, resulting in an IOException.
+      // So we retry the move a couple of times, allowing the browser to finish the download.
+      return RetryUntilTimeout.Run(
+          () =>
+          {
+            File.Move(_fullFilePath, newFilePath);
 
-      return new DownloadedFile(newFilePath, _fileName);
+            return new DownloadedFile(newFilePath, _fileName);
+          },
+          TimeSpan.FromMilliseconds(500),
+          TimeSpan.FromMilliseconds(50));
     }
 
     /// <summary>

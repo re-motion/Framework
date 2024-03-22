@@ -15,12 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 

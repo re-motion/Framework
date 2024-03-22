@@ -24,6 +24,11 @@ namespace Remotion.Development.Web.UnitTesting.Resources
   /// </summary>
   public class FakeResourcePathBuilder : ResourcePathBuilderBase
   {
+    public FakeResourcePathBuilder ()
+        : base(new NullStaticResourceCacheKeyProvider())
+    {
+    }
+
     protected override string GetResourceRoot ()
     {
       return "/fake";

@@ -18,6 +18,7 @@ using System;
 using System.Data.SqlClient;
 using System.Linq;
 using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
@@ -33,9 +34,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
   public static class RdbmsProviderObjectMother
   {
     public static RdbmsProvider CreateForIntegrationTest (
+        IStorageSettings storageSettings,
         RdbmsProviderDefinition storageProviderDefinition,
         Func<RdbmsProviderDefinition, IPersistenceExtension, IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>, RdbmsProvider> ctorCall = null)
     {
+      if (!storageSettings.GetStorageProviderDefinitions().Contains(storageProviderDefinition))
+        throw new ArgumentException($"RdbmsProviderDefinition '{storageProviderDefinition.Name}' is not part of the storage settings.", nameof(storageProviderDefinition));
+
       var storageTypeInformationProvider =
           new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(new SqlStorageTypeInformationProvider());
       var dbCommandBuilderFactory = new SqlDbCommandBuilderFactory(new SqlDialect());
@@ -50,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
               false,
               storageNameProvider,
               storageTypeInformationProvider,
-              new StorageEntityBasedStorageProviderDefinitionFinder()));
+              storageSettings));
       var dataContainerValidator = new CompoundDataContainerValidator(Enumerable.Empty<IDataContainerValidator>());
       var objectReaderFactory = new ObjectReaderFactory(
           rdbmsPersistenceModelProvider,

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using JetBrains.Annotations;
 using Remotion.Utilities;
@@ -32,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
 
     /// <param name="testSiteLayoutConfiguration">The configuration of the layout of the used test site.</param>
     /// <param name="port">Port to be used.</param>
-    public IisExpressHostingStrategy ([NotNull] TestSiteLayoutConfiguration testSiteLayoutConfiguration, int port)
+    public IisExpressHostingStrategy ([NotNull] ITestSiteLayoutConfiguration testSiteLayoutConfiguration, int port)
     {
       ArgumentUtility.CheckNotNull("testSiteLayoutConfiguration", testSiteLayoutConfiguration);
 
@@ -45,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     /// <param name="testSiteLayoutConfiguration">The configuration of the layout of the used test site.</param>
     /// <param name="properties">The configuration properties.</param>
     [UsedImplicitly]
-    public IisExpressHostingStrategy ([NotNull] TestSiteLayoutConfiguration testSiteLayoutConfiguration, [NotNull] NameValueCollection properties)
+    public IisExpressHostingStrategy ([NotNull] ITestSiteLayoutConfiguration testSiteLayoutConfiguration, [NotNull] IReadOnlyDictionary<string, string> properties)
         : this(testSiteLayoutConfiguration, int.Parse(ArgumentUtility.CheckNotNull("properties", properties)["port"]!))
     {
       // TODO RM-8113: Guard used properties against null values.

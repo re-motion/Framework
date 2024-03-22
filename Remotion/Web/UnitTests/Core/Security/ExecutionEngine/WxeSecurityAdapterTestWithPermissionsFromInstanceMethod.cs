@@ -15,12 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Security;
-using Remotion.Security.Metadata;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Security.ExecutionEngine;

@@ -61,12 +61,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
-
-      string scriptFileKey = typeof(ListMenuRenderer).GetFullNameChecked() + "_Script";
-      var scriptFileUrl = ResourceUrlFactory.CreateResourceUrl(typeof(ListMenuRenderer), ResourceType.Html, "ListMenu.js");
-      htmlHeadAppender.RegisterJavaScriptInclude(scriptFileKey, scriptFileUrl);
-
+      htmlHeadAppender.RegisterWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();
 
       string styleSheetKey = typeof(ListMenuRenderer).GetFullNameChecked() + "_Style";
@@ -80,8 +75,13 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
       RegisterMenuItems(renderingContext);
 
+      var headingID = renderingContext.Control.ClientID + "_Heading";
+      var hasHeading = !renderingContext.Control.Heading.IsEmpty;
+
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassListMenu);
+      if (hasHeading)
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaLabelledBy, headingID);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Region);
 
       if (IsDiagnosticMetadataRenderingEnabled)
@@ -89,15 +89,15 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-      var headingID = renderingContext.Control.ClientID + "_Heading";
-      var hasHeading = !renderingContext.Control.Heading.IsEmpty;
-
       if (hasHeading)
       {
         var heading = renderingContext.Control.Heading;
         var tag = GetTagFromHeadingLevel(renderingContext.Control.HeadingLevel);
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, headingID);
-        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassDefinition.ScreenReaderText);
+        if (tag == HtmlTextWriterTag.Span)
+          renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+        else
+          renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassDefinition.ScreenReaderText);
         renderingContext.Writer.RenderBeginTag(tag);
         heading.WriteTo(renderingContext.Writer);
         renderingContext.Writer.RenderEndTag();
@@ -109,10 +109,14 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Table);
 
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Tbody);
+
       var isFirst = true;
       var groupedMenuItems = GetVisibleMenuItemsInGroups(renderingContext);
       foreach (var menuItemsInGroup in groupedMenuItems)
       {
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Tr);
         renderingContext.Writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "100%");
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, "listMenuRow");
@@ -157,8 +161,9 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       //  if (isFirstItem)
       //    isFirstItem = false;
       //}
-      renderingContext.Writer.RenderEndTag();
-      renderingContext.Writer.RenderEndTag();
+      renderingContext.Writer.RenderEndTag(); //tbody
+      renderingContext.Writer.RenderEndTag(); //table
+      renderingContext.Writer.RenderEndTag(); //div
     }
 
     protected override void AddDiagnosticMetadataAttributes (RenderingContext<IListMenu> renderingContext)
@@ -206,6 +211,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, GetMenuItemClientID(renderingContext, index));
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, "listMenuItem");
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
       var attributes = new NameValueCollection();

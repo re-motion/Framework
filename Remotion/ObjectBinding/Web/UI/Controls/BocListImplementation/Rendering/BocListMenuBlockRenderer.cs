@@ -16,20 +16,14 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using Remotion.Globalization;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Globalization;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
-using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {

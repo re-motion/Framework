@@ -19,9 +19,12 @@ using System;
 namespace Remotion.Web.Development.WebTesting.Accessibility
 {
   /// <summary>
-  /// Detailed information about the rule IDs:
-  /// https://github.com/dequelabs/axe-core/blob/1f602c944097174c38e3130107b225e116f4b7e1/doc/rule-descriptions.md
+  /// Rule IDs of aXe Core.
   /// </summary>
+  /// <remarks>
+  /// A list of all all rules can be found at <see href="https://github.com/dequelabs/axe-core/blob/master/doc/rule-descriptions.md"/>.
+  /// </remarks>
+
   public enum AccessibilityRuleID
   {
     Unknown,
@@ -47,10 +50,29 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     AriaAllowedRole,
 
     /// <summary>
-    /// Ensures unsupported DPUB roles are only used on elements with implicit fallback roles.
+    /// Ensure aria-braillelabel and aria-brailleroledescription have a non-braille equivalent.
     /// </summary>
-    [Obsolete("Deprecated with aXe v3.5. (Version 5.0.0-alpha.2)")]
-    AriaDpubRoleFallback,
+    AriaBrailleEquivalent,
+
+    /// <summary>
+    /// Ensures every ARIA button, link and menuitem has an accessible name.
+    /// </summary>
+    AriaCommandName,
+
+    /// <summary>
+    /// Ensures ARIA attributes are used as described in the specification of the element's role.
+    /// </summary>
+    AriaConditionalAttr,
+
+    /// <summary>
+    /// Ensures elements do not use deprecated roles
+    /// </summary>
+    AriaDeprecatedRole,
+
+    /// <summary>
+    /// Ensures every ARIA dialog and alertdialog node has an accessible name.
+    /// </summary>
+    AriaDialogName,
 
     /// <summary>
     /// Ensures aria-hidden='true' is not present on the document body.
@@ -68,6 +90,21 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     AriaInputFieldName,
 
     /// <summary>
+    /// Ensures every ARIA meter node has an accessible name.
+    /// </summary>
+    AriaMeterName,
+
+    /// <summary>
+    /// Ensures every ARIA progressbar node has an accessible name.
+    /// </summary>
+    AriaProgressbarName,
+
+    /// <summary>
+    /// Ensures ARIA attributes are not prohibited for an element's role.
+    /// </summary>
+    AriaProhibitedAttr,
+
+    /// <summary>
     /// Ensures elements with ARIA roles have all required ARIA attributes.
     /// </summary>
     AriaRequiredAttr,
@@ -83,19 +120,29 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     AriaRequiredParent,
 
     /// <summary>
-    /// Ensures that the aria-roledescription attribute is only used on elements with an implicit or explicit role values
-    /// </summary>
-    AriaRoleDescription,
-
-    /// <summary>
     /// Ensures all elements with a role attribute use a valid value.
     /// </summary>
     AriaRoles,
 
     /// <summary>
+    /// Ensures role="text" is used on elements with no focusable descendants.
+    /// </summary>
+    AriaText,
+
+    /// <summary>
     /// Ensures every ARIA toggle field has an accessible name.
     /// </summary>
     AriaToggleFieldName,
+
+    /// <summary>
+    /// Ensures every ARIA tooltip node has an accessible name.
+    /// </summary>
+    AriaTooltipName,
+
+    /// <summary>
+    /// Ensures every ARIA treeitem node has an accessible name.
+    /// </summary>
+    AriaTreeitemName,
 
     /// <summary>
     /// Ensures all ARIA attributes have valid values.
@@ -106,11 +153,6 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     ///  	Ensures attributes that begin with aria- are valid ARIA attributes.
     /// </summary>
     AriaValidAttr,
-
-    /// <summary>
-    /// Ensures &lt;audio&gt; elements have captions.
-    /// </summary>
-    AudioCaption,
 
     /// <summary>
     /// Ensure the autocomplete attribute is correct and suitable for the form field.
@@ -138,15 +180,14 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     Bypass,
 
     /// <summary>
-    /// Ensures related &lt;input type="checkbox"&gt; elements have a group and that the group designation is consistent.
-    /// </summary>
-    [Obsolete("Deprecated with aXe v3.4. (Version 5.0.0-alpha.2)")]
-    CheckboxGroup,
-
-    /// <summary>
     /// Ensures the contrast between foreground and background colors meets WCAG 2 AA contrast ratio thresholds.
     /// </summary>
     ColorContrast,
+
+    /// <summary>
+    /// Ensures the contrast between foreground and background colors meets WCAG 2 AAA enhanced contrast ratio thresholds.
+    /// </summary>
+    ColorContrastEnhanced,
 
     /// <summary>
     /// Ensures content is not locked to any specific display orientation, and the content is operable in all display orientations.
@@ -169,24 +210,19 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     DocumentTitle,
 
     /// <summary>
-    /// Ensures every id attribute value of active elements is unique.
-    /// </summary>
-    DuplicateIdActive,
-
-    /// <summary>
     /// Ensures every id attribute value used in ARIA and in labels is unique.
     /// </summary>
     DuplicateIdAria,
 
     /// <summary>
-    /// Ensures every id attribute value is unique.
-    /// </summary>
-    DuplicateId,
-
-    /// <summary>
     /// Ensures headings have discernible text.
     /// </summary>
     EmptyHeading,
+
+    /// <summary>
+    /// Ensures table headers have discernible text.
+    /// </summary>
+    EmptyTableHeader,
 
     /// <summary>
     /// Ensures elements in the focus order have an appropriate role.
@@ -197,6 +233,11 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// Ensures form field does not have multiple label elements.
     /// </summary>
     FormFieldMultipleLabels,
+
+    /// <summary>
+    /// Ensures &lt;frame&gt; and &lt;iframe&gt; elements with focusable content do not have tabindex=-1.
+    /// </summary>
+    FrameFocusableContent,
 
     /// <summary>
     /// Ensures &lt;iframe&gt; and &lt;frame&gt; elements contain the axe-core script.
@@ -324,12 +365,6 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     LandmarkUnique,
 
     /// <summary>
-    /// Ensures presentational &lt;table&gt; elements do not use &lt;th&gt;, &lt;caption&gt; elements or the summary attribute.
-    /// </summary>
-    [Obsolete("Deprecated with aXe v3.5. (Version 5.0.0-alpha.2)")]
-    LayoutTable,
-
-    /// <summary>
     /// Links can be distinguished without relying on color.
     /// </summary>
     LinkInTextBlock,
@@ -360,6 +395,11 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     MetaRefresh,
 
     /// <summary>
+    /// Ensures &lt;meta http-equiv="refresh"&gt; is not used for delayed refresh.
+    /// </summary>
+    MetaRefreshNoExceptions,
+
+    /// <summary>
     /// Ensures &lt;meta name="viewport"&gt; can scale a significant amount.
     /// </summary>
     MetaViewportLarge,
@@ -370,10 +410,13 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     MetaViewport,
 
     /// <summary>
-    /// Ensures &lt;video&gt; or &lt;audio&gt; elements do not autoplay audio for more than three seconds without a control mechanism to stop or mute the audio.
-    /// Currently still experimental, only available in axe coconut and needs to be enabled with the "experimental" tag in the runOnly option.
+    /// Ensures interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies.
     /// </summary>
-    [Obsolete("Experimental in aXe v3.5. (Version 5.0.0-alpha.2)")]
+    NestedInteractive,
+
+    /// <summary>
+    /// Ensures &lt;video&gt; or &lt;audio&gt; elements do not autoplay audio for more than three seconds without a control mechanism to stop or mute the audio.
+    /// </summary>
     NoAutoplayAudio,
 
     /// <summary>
@@ -392,10 +435,9 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     PageHasHeadingOne,
 
     /// <summary>
-    /// Ensures related &lt;input type="radio"&gt; elements have a group and that the group designation is consistent.
+    /// Elements marked as presentational should not have global ARIA or tabindex to ensure all screen readers ignore them.
     /// </summary>
-    [Obsolete("Deprecated with aXe v3.4. (Version 5.0.0-alpha.2)")]
-    RadioGroup,
+    PresentationRoleConflict,
 
     /// <summary>
     /// Ensures all page content is contained by landmarks.
@@ -416,6 +458,11 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// Elements that have scrollable content should be accessible by keyboard.
     /// </summary>
     ScrollableRegionFocusable,
+
+    /// <summary>
+    /// Ensures select element has an accessible name.
+    /// </summary>
+    SelectName,
 
     /// <summary>
     /// Ensures that server-side image maps are not used.
@@ -448,6 +495,14 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     TableFakeCaption,
 
     /// <summary>
+    /// Ensure touch target have sufficient size and space.
+    /// </summary>
+    /// <remarks>
+    /// This rule is a wcag2.2 rule, which as of aXe core 4.8.1 (remotion 6.0.0-alpha.3) are not enabled by default.
+    /// </remarks>
+    TargetSize,
+
+    /// <summary>
     /// Ensure that each non-empty data cell in a large table has one or more table headers.
     /// </summary>
     TdHasHeader,
@@ -470,12 +525,6 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <summary>
     /// Ensures &lt;video&gt; elements have captions.
     /// </summary>
-    VideoCaption,
-
-    /// <summary>
-    /// Ensures &lt;video&gt; elements have audio descriptions.
-    /// </summary>
-    [Obsolete("Deprecated with aXe v3.4. (Version 5.0.0-alpha.2)")]
-    VideoDescription
+    VideoCaption
   }
 }

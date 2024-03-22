@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using System.Web.UI;
 using JetBrains.Annotations;
+using Remotion.Web.Resources;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web
@@ -33,8 +34,7 @@ namespace Remotion.Web
     ///   <para>
     ///     Uses the URL &lt;resource root&gt;/&lt;definingType.Assembly&gt;/&lt;ResourceType&gt;/relativeUrl.
     ///   </para><para>
-    ///     The <b>resource root</b> is loaded from the application configuration,
-    ///     <see cref="Remotion.Web.Configuration.WebConfiguration.Resources">WebConfiguration.Resources</see>, and 
+    ///     The <b>resource root</b> is loaded from the application configuration, <see cref="ResourceRoot"/>, and
     ///     defaults to <c>/&lt;AppDir&gt;/res</c>, e.g. <c>/WebApplication/res/Remotion.Web/Image/Help.gif</c>.
     ///   </para><para>
     ///     During design time, the <b>resource root</b> is mapped to the environment variable

@@ -29,7 +29,6 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.Collections;
-using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
@@ -456,7 +455,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         var columns = EnsureColumnsGot();
         EnsureEditModeRestored();
-        EnsureRowMenusInitialized();
+        InitializeRowMenuFromPostback();
         EnsureCustomColumnsInitialized(columns);
       }
     }
@@ -982,54 +981,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         validator.ErrorMessage = errorMessage.GetValue();
     }
 
-    /// <summary> Checks whether the control conforms to the required WAI level. </summary>
-    /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
-    protected virtual void EvaluateWaiConformity (IReadOnlyList<BocColumnDefinition> columns)
-    {
-      ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
-
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-      {
-        if (ShowOptionsMenu)
-          WcagHelper.Instance.HandleError(1, this, "ShowOptionsMenu");
-        if (ShowListMenu)
-          WcagHelper.Instance.HandleError(1, this, "ShowListMenu");
-        if (ShowAvailableViewsList)
-          WcagHelper.Instance.HandleError(1, this, "ShowAvailableViewsList");
-        bool isPagingEnabled = _pageSize != null && _pageSize.Value != 0;
-        if (isPagingEnabled)
-          WcagHelper.Instance.HandleError(1, this, "PageSize");
-        if (EnableSorting)
-          WcagHelper.Instance.HandleWarning(1, this, "EnableSorting");
-        if (RowMenuDisplay == RowMenuDisplay.Automatic)
-          WcagHelper.Instance.HandleError(1, this, "RowMenuDisplay");
-
-        for (int i = 0; i < columns.Count; i++)
-        {
-          if (columns[i] is BocRowEditModeColumnDefinition)
-            WcagHelper.Instance.HandleError(1, this, string.Format("Columns[{0}]", i));
-
-          BocCommandEnabledColumnDefinition? commandColumn = columns[i] as BocCommandEnabledColumnDefinition;
-          if (commandColumn != null)
-          {
-            bool hasPostBackColumnCommand = commandColumn.Command != null
-                                            && (commandColumn.Command.Type == CommandType.Event
-                                                || commandColumn.Command.Type == CommandType.WxeFunction);
-            if (hasPostBackColumnCommand)
-              WcagHelper.Instance.HandleError(1, this, string.Format("Columns[{0}].Command", i));
-          }
-
-          if (columns[i] is BocDropDownMenuColumnDefinition)
-            WcagHelper.Instance.HandleError(1, this, string.Format("Columns[{0}]", i));
-        }
-      }
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelDoubleARequired())
-      {
-        if (IsSelectionEnabled && ! IsIndexEnabled)
-          WcagHelper.Instance.HandleError(2, this, "Selection");
-      }
-    }
-
     public override void PrepareValidation ()
     {
       base.PrepareValidation();
@@ -1165,7 +1116,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       CreateAvailableViewsList();
 
       var renderColumns = EnsureColumnsGot();
-      EvaluateWaiConformity(renderColumns);
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer, GetColumnRenderers(renderColumns)));
@@ -1218,9 +1168,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get
       {
-        if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
-          return false;
-
         if (! IsBrowserCapableOfScripting)
           return false;
 
@@ -1256,9 +1203,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get
       {
-        if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
-          return false;
-
         if (! IsBrowserCapableOfScripting)
           return false;
 
@@ -1281,9 +1225,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get
       {
-        if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
-          return false;
-
         if (! IsBrowserCapableOfScripting)
           return false;
 
@@ -1647,7 +1588,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private BocColumnRenderer[] GetColumnRenderers (IReadOnlyList<BocColumnDefinition> columns)
     {
-      var columnRendererBuilder = new BocColumnRendererArrayBuilder(columns, ServiceLocator, WcagHelper.Instance);
+      var columnRendererBuilder = new BocColumnRendererArrayBuilder(columns, ServiceLocator);
       columnRendererBuilder.IsListReadOnly = IsReadOnly;
       columnRendererBuilder.EnableIcon = EnableIcon;
       columnRendererBuilder.IsListEditModeActive = _editModeController.IsListEditModeActive;
@@ -3297,7 +3238,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary>
-    ///   Gets or sets a flag that indicates whether the control automatically generates a column 
+    ///   Gets or sets a flag that indicates whether the control automatically generates a column
     ///   for each property of the bound object.
     /// </summary>
     /// <value> <see langword="true"/> show all properties of the bound business object. </value>
@@ -3311,12 +3252,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary>
-    ///   Gets or sets a flag that indicates whether to display an icon in front of the first value 
-    ///   column.
+    ///   Gets or sets a flag that indicates whether to display an icon for the row's business object.
     /// </summary>
+    /// <remarks>
+    ///   Customize which <see cref="BocValueColumnDefinition"/> displays the icon via the <see cref="IBocColumnDefinitionWithRowIconSupport.RowIconMode"/> flag.
+    /// </remarks>
     /// <value> <see langword="true"/> to enable the icon. </value>
     [Category("Appearance")]
-    [Description("Enables the icon in front of the first value column.")]
+    [Description("Enables the icon for the row's business object.")]
     [DefaultValue(true)]
     public virtual bool EnableIcon
     {
@@ -3525,7 +3468,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected bool AreDataRowsClickSensitive ()
     {
       return HasClientScript
-             && ! WcagHelper.Instance.IsWaiConformanceLevelARequired()
              && IsBrowserCapableOfScripting;
     }
 
@@ -3562,7 +3504,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [MemberNotNullWhen(true, nameof(PageSize))]
     protected bool IsPagingEnabled
     {
-      get { return ! WcagHelper.Instance.IsWaiConformanceLevelARequired() && _pageSize != null && _pageSize.Value != 0; }
+      get { return _pageSize != null && _pageSize.Value != 0; }
     }
 
     bool IBocList.IsPagingEnabled

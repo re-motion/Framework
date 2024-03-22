@@ -19,7 +19,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Linq;
 using Remotion.Linq.Parsing.Structure;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.Queries
 {

@@ -54,8 +54,7 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
       ArgumentUtility.CheckNotNull("control", control);
 
-      htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
-
+      htmlHeadAppender.RegisterWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();
 
       string keyStyle = typeof(TabbedMultiViewRenderer).GetFullNameChecked() + "_Style";

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Web.UI;
 using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;

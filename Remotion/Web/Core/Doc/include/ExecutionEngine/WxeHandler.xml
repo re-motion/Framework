@@ -45,8 +45,8 @@
       Thrown if the timeouts are not valid. 
     </exception>
     <remarks> 
-      For the timeouts to be valid, the <see cref="ExecutionEngineConfiguration.RefreshInterval"/> 
-      must be less than both the <see cref="ExecutionEngineConfiguration.FunctionTimeout"/> and the 
+      For the timeouts to be valid, the <see cref="IWxeLifetimeManagementSettings.RefreshInterval"/>
+      must be less than both the <see cref="IWxeLifetimeManagementSettings.FunctionTimeout"/> and the
       <see cref="HttpSessionState.Timeout"/>.
     </remarks>
   </CheckTimeoutConfiguration>

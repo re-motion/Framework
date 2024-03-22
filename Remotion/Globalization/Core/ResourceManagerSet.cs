@@ -17,11 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using Remotion.Collections;
 using Remotion.Logging;
 using Remotion.Utilities;
 

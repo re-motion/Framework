@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Reflection;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Web.Resources
 {
@@ -28,12 +27,8 @@ namespace Remotion.Web.Resources
   ///     The default implementation (<see cref="ResourcePathBuilder"/>) builds paths in the following format:
   ///     &lt;resource root&gt;/&lt;Assembly-Name&gt;/part-1/.../part-n.
   ///   </para><para>
-  ///     The <b>resource root</b> is loaded from the application configuration,
-  ///     <see cref="Remotion.Web.Configuration.WebConfiguration.Resources">WebConfiguration.Resources</see>, and 
+  ///     The <b>resource root</b> is loaded from the application configuration, <see cref="ResourceRoot"/>, and
   ///     defaults to <c>/&lt;AppDir&gt;/res</c>, e.g. <c>/WebApplication/res/Remotion.Web/Html/Utilities.js</c>.
-  ///   </para><para>
-  ///     The <b>resource root</b> is mapped to the environment variable <c>REMOTIONRESOURCES</c>,
-  ///     or if the variable does not exist, <c>C:\Remotion.Resources</c>.
   ///   </para>
   /// </remarks>
   /// <seealso cref="ResourcePathBuilder"/>

@@ -44,12 +44,10 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
         Placeholder = "directory")]
     public string BaseDirectory = Environment.CurrentDirectory;
 
-    [CommandLineStringArgument("config", true,
-        Description =
-            "The config file holding the application's configuration. "
-            + "Unless the path is rooted, the config file is located relative to the current directory.",
-        Placeholder = "app.config")]
-    public string ConfigFile = string.Empty;
+    [CommandLineStringArgument("connectionString", false,
+        Description = "The SQL Server connection string.",
+        Placeholder = "Integrated Security=SSPI;Initial Catalog=DemoDB;Data Source=localhost")]
+    public string ConnectionString = string.Empty;
 
     [CommandLineStringArgument("schemaDirectory", true,
         Description = "Create schema file(s) in this directory (default: current).",
@@ -60,12 +58,6 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
         Description = "The output filename for the mapping export.",
         Placeholder = "filename")]
     public string MappingExportOutputFileName = string.Empty;
-
-    //TODO: remove parameter (1.13.84)
-    [CommandLineStringArgument("schemaBuilder", true,
-        Description = "This parameter is obsolete and should no longer be used. (The schema file builder is now retrieved from the storage provider definition.)",
-        Placeholder = "Namespace.ClassName,AssemblyName")]
-    public string SchemaFileBuilderTypeName;
 
     [CommandLineFlagArgument("verbose", false,
         Description = "Verbose output")]

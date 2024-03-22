@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -28,8 +27,6 @@ using Remotion.Utilities;
 using Remotion.Utilities.ReSharperAnnotations;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation;
-using Remotion.Validation.MetaValidation.Rules.Custom;
-using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Data.DomainObjects.Validation

@@ -17,7 +17,6 @@
 using System;
 using System.Collections;
 using System.Web.UI;
-using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.UI.Controls;

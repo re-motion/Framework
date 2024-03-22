@@ -21,16 +21,13 @@ using System.Web.UI;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Configuration;
-using Remotion.Development.Web.UnitTesting.UI;
 using Remotion.Development.Web.UnitTesting.UI.Controls;
-using Remotion.Web.UI;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
 
 public class BocTest
 {
-  private WcagHelperMock _wcagHelperMock;
   private Page _page;
   private NamingContainerMock _namingContainer;
   private ControlInvoker _invoker;
@@ -42,8 +39,6 @@ public class BocTest
   [SetUp]
   public virtual void SetUp ()
   {
-    _wcagHelperMock = new WcagHelperMock();
-    WcagHelper.SetInstance(_wcagHelperMock);
 
     _page = new Page();
 
@@ -65,14 +60,8 @@ public class BocTest
   [TearDown]
   public virtual void TearDown ()
   {
-    WcagHelper.SetInstance(null);
     HttpContextHelper.SetCurrent(null);
     WebConfigurationMock.Current = null;
-  }
-
-  protected WcagHelperMock WcagHelperMock
-  {
-    get { return _wcagHelperMock; }
   }
 
   public Page Page

@@ -17,16 +17,13 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
-using Remotion.Development.Web.UnitTesting.UI;
 using Remotion.Development.Web.UnitTesting.UI.Controls;
-using Remotion.Web.UI;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls
 {
 
   public class WebControlTest
   {
-    private WcagHelperMock _wcagHelperMock;
     private PageMock _page;
     private NamingContainerMock _namingContainer;
     private ControlInvoker _namingContainerInvoker;
@@ -34,8 +31,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     [SetUp]
     public virtual void SetUp ()
     {
-      _wcagHelperMock = new WcagHelperMock();
-      WcagHelper.SetInstance(_wcagHelperMock);
       SetUpContext();
       SetUpPage();
     }
@@ -60,7 +55,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       TearDownPage();
       TearDownContext();
-      WcagHelper.SetInstance(null);
     }
 
     protected virtual void TearDownContext ()
@@ -70,11 +64,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
     protected virtual void TearDownPage ()
     {
-    }
-
-    protected WcagHelperMock WcagHelperMock
-    {
-      get { return _wcagHelperMock; }
     }
 
     public PageMock Page

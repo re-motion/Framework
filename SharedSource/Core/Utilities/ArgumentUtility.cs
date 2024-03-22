@@ -20,7 +20,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+#if !DEBUG
 using System.Runtime.CompilerServices;
+#endif
 using JetBrains.Annotations;
 #nullable enable
 // ReSharper disable once CheckNamespace

@@ -5,8 +5,9 @@
 
     "noEmit": true,
     "strict": true,
-    "alwaysStrict" : false,
-    "noImplicitUseStrict" : true,
+
+    "composite": true,
+    "baseUrl": "./Scripts/",
 
     "allowJs": true
   },

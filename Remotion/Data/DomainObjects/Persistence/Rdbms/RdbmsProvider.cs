@@ -22,7 +22,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
@@ -442,7 +441,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       {
         throw CreateArgumentException(
             argumentName,
-            "The StorageProviderID '{0}' of the provided ObjectID '{1}' does not match with this StorageProvider's ID '{2}'.",
+            "The StorageProvider '{0}' of the provided ObjectID '{1}' does not match with this StorageProvider '{2}'.",
             id.StorageProviderDefinition.Name,
             id,
             StorageProviderDefinition.Name);
@@ -456,7 +455,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       {
         throw CreateArgumentException(
             argumentName,
-            "The StorageProviderID '{0}' of the provided ClassDefinition does not match with this StorageProvider's ID '{1}'.",
+            "The StorageProvider '{0}' of the provided ClassDefinition does not match with this StorageProvider '{1}'.",
             classDefinition.StorageEntityDefinition.StorageProviderDefinition.Name,
             StorageProviderDefinition.Name);
       }

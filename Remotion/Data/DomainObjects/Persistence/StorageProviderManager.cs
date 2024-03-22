@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Utilities;
 
@@ -27,13 +27,16 @@ public class StorageProviderManager : IDisposable
   private bool _disposed;
   private StorageProviderCollection? _storageProviders;
   private readonly IPersistenceExtension _persistenceExtension;
+  private readonly IStorageSettings _storageSettings;
 
-  public StorageProviderManager (IPersistenceExtension persistenceExtension)
+  public StorageProviderManager (IPersistenceExtension persistenceExtension, IStorageSettings storageSettings)
   {
     ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+    ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
 
     _storageProviders = new StorageProviderCollection();
     _persistenceExtension = persistenceExtension;
+    _storageSettings = storageSettings;
   }
 
   #region IDisposable Members
@@ -59,33 +62,44 @@ public class StorageProviderManager : IDisposable
     CheckDisposed();
     ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
 
-    StorageProvider? provider = this[storageProviderID];
+    if (_storageProviders.Contains(storageProviderID))
+      return _storageProviders[storageProviderID]!;
+
+    var providerDefinition = _storageSettings.GetStorageProviderDefinition(storageProviderID);
+    var provider = providerDefinition.Factory.CreateStorageProvider(providerDefinition, _persistenceExtension);
+
     if (provider == null)
-    {
-      throw CreatePersistenceException(
-        "Storage Provider with ID '{0}' could not be created.", storageProviderID);
-    }
+      throw CreatePersistenceException("Storage provider '{0}' could not be created.", storageProviderID);
+
+    _storageProviders.Add(provider);
 
     return provider;
   }
 
-  public StorageProvider? this [string storageProviderID]
+  public StorageProvider GetMandatory (StorageProviderDefinition providerDefinition)
   {
-    get
+    CheckDisposed();
+    ArgumentUtility.CheckNotNull("providerDefinition", providerDefinition);
+
+#if DEBUG
+    if (providerDefinition != _storageSettings.GetStorageProviderDefinition(providerDefinition.Name))
     {
-      CheckDisposed();
-      ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
-
-      if (_storageProviders.Contains(storageProviderID))
-        return _storageProviders[storageProviderID];
-
-      var providerDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory(storageProviderID);
-      var provider = providerDefinition.Factory.CreateStorageProvider(providerDefinition, _persistenceExtension);
-
-      _storageProviders.Add(provider);
-
-      return provider;
+      throw new InvalidOperationException(
+          $"Supplied provider definition '{providerDefinition.Name}' does not match the provider definition with the same name in the IStorageSettings object.");
     }
+#endif
+
+    if (_storageProviders.Contains(providerDefinition.Name))
+      return _storageProviders[providerDefinition.Name]!;
+
+    var provider = providerDefinition.Factory.CreateStorageProvider(providerDefinition, _persistenceExtension);
+
+    if (provider == null)
+      throw CreatePersistenceException("Storage provider '{0}' could not be created.", providerDefinition.Name);
+
+    _storageProviders.Add(provider);
+
+    return provider;
   }
 
   public StorageProviderCollection StorageProviders

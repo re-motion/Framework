@@ -17,7 +17,6 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Remotion.Utilities;
 
 #nullable enable
 // ReSharper disable once CheckNamespace

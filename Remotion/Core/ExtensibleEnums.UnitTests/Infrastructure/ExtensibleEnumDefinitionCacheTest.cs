@@ -21,7 +21,6 @@ using Remotion.Development.UnitTesting;
 using Remotion.ExtensibleEnums.Infrastructure;
 using Remotion.ExtensibleEnums.UnitTests.TestDomain;
 using Remotion.Reflection;
-using Remotion.Reflection.TypeDiscovery;
 using Remotion.ServiceLocation;
 
 namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure

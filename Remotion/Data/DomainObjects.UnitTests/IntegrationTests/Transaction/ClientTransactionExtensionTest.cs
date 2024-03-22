@@ -27,6 +27,7 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
@@ -79,9 +80,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var extensionMock = AddExtensionToClientTransaction(_transaction);
 
       var factoryStub = new Mock<IClientTransactionExtensionFactory>();
-      factoryStub.Setup(stub => stub.CreateClientTransactionExtensions(It.IsAny<ClientTransaction>())).Returns(new[] { extensionMock.Object });
-      var locatorStub = new Mock<IServiceLocator>();
-      locatorStub.Setup(stub => stub.GetInstance<IClientTransactionExtensionFactory>()).Returns(factoryStub.Object);
+      factoryStub
+          .Setup(stub => stub.CreateClientTransactionExtensions(It.IsAny<ClientTransaction>()))
+          .Returns(new[] { extensionMock.Object });
+
+      var locatorStub = new Mock<IServiceLocator>(MockBehavior.Strict);
+      locatorStub
+          .Setup(stub => stub.GetInstance<IClientTransactionExtensionFactory>())
+          .Returns(factoryStub.Object);
+      locatorStub
+          .Setup(stub => stub.GetInstance<IStorageSettings>())
+          .Returns(Mock.Of<IStorageSettings>());
+      locatorStub
+          .Setup(stub => stub.GetInstance<IPersistenceExtensionFactory>())
+          .Returns(Mock.Of<IPersistenceExtensionFactory>());
+
 
       using (new ServiceLocatorScope(locatorStub.Object))
       {
@@ -777,7 +790,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var extensionMock = AddExtensionToClientTransaction(_transaction);
 
       //Note: no reading notification must be performed
-      using (var persistenceManager = new PersistenceManager(NullPersistenceExtension.Instance))
+      using (var persistenceManager = new PersistenceManager(NullPersistenceExtension.Instance, StorageSettings))
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
         IRelationEndPointDefinition orderTicketEndPointDefinition =
@@ -1104,7 +1117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void FilterQueryResult ()
     {
-      IQuery query = QueryFactory.CreateQueryFromConfiguration("OrderQuery");
+      IQuery query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"));
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer1);
 
       using (_transaction.EnterNonDiscardingScope())
@@ -1114,7 +1127,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       var extensionMock = AddExtensionToClientTransaction(_transaction);
 
-      QueryResult<DomainObject> newQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject>();
+      QueryResult<DomainObject> newQueryResult = TestQueryFactory.CreateTestQueryResult(StorageSettings);
       extensionMock
           .Setup(mock => mock.FilterQueryResult(_transaction, It.Is<QueryResult<DomainObject>>(qr => qr.Count == 2 && qr.Query == query)))
           .Returns(newQueryResult)
@@ -1132,10 +1145,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void FilterQueryResultWithLoad ()
     {
-      IQuery query = QueryFactory.CreateQueryFromConfiguration("OrderQuery");
+      IQuery query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"));
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer4);
 
-      QueryResult<DomainObject> newQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject>();
+      QueryResult<DomainObject> newQueryResult = TestQueryFactory.CreateTestQueryResult(StorageSettings);
 
       var extensionMock = AddExtensionToClientTransaction(_transaction);
 
@@ -1168,7 +1181,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       var extensionMock = AddExtensionToClientTransaction(_transaction);
 
-      IQuery query = QueryFactory.CreateQueryFromConfiguration("OrderQuery");
+      IQuery query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"));
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer4);
 
       var filteringExtension = new Mock<ClientTransactionExtensionWithQueryFiltering>(MockBehavior.Strict);
@@ -1179,8 +1192,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _transaction.Extensions.Add(lastExtension.Object);
       lastExtension.Reset();
 
-      QueryResult<DomainObject> newQueryResult1 = TestQueryFactory.CreateTestQueryResult<DomainObject>(query, new[] { _order1 });
-      QueryResult<DomainObject> newQueryResult2 = TestQueryFactory.CreateTestQueryResult<DomainObject>(query);
+      QueryResult<DomainObject> newQueryResult1 = TestQueryFactory.CreateTestQueryResult(StorageSettings, query, new[] { _order1 });
+      QueryResult<DomainObject> newQueryResult2 = TestQueryFactory.CreateTestQueryResult(StorageSettings, query);
 
       var sequence = new VerifiableSequence();
       extensionMock

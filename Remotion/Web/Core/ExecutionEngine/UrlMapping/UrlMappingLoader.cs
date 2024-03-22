@@ -15,137 +15,69 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Reflection;
-using System.Web;
-using System.Xml;
-using System.Xml.Schema;
+using System.Collections.Generic;
+using System.Linq;
 using Remotion.Utilities;
-using Remotion.Web.Schemas;
-using Remotion.Xml;
 
 namespace Remotion.Web.ExecutionEngine.UrlMapping
 {
   public class UrlMappingLoader
   {
-    // types
+    private readonly IUrlMappingFileFinder _urlMappingFileFinder;
+    private readonly IUrlMappingFileLoader _urlMappingFileLoader;
 
-    // static members and constants
-
-    // member fields
-
-    private string? _configurationFile;
-    private Type? _type;
-    private XmlSchemaSet? _schemas;
-
-    // construction and disposing
-
-    public UrlMappingLoader (string configurationFile, Type type)
+    public UrlMappingLoader (IUrlMappingFileFinder urlMappingFileFinder, IUrlMappingFileLoader urlMappingFileLoader)
     {
-      Initialize(configurationFile, type, new UrlMappingSchema());
-    }
+      ArgumentUtility.CheckNotNull(nameof(urlMappingFileFinder), urlMappingFileFinder);
+      ArgumentUtility.CheckNotNull(nameof(urlMappingFileLoader), urlMappingFileLoader);
 
-    // methods and properties
+      _urlMappingFileFinder = urlMappingFileFinder;
+      _urlMappingFileLoader = urlMappingFileLoader;
+    }
 
     public UrlMappingConfiguration CreateUrlMappingConfiguration ()
     {
-      return (UrlMappingConfiguration)LoadConfiguration(_configurationFile!, _type!, _schemas!);
-    }
+      var urlMappingConfiguration = new UrlMappingConfiguration();
 
-    [MemberNotNull(nameof(_configurationFile))]
-    [MemberNotNull(nameof(_type))]
-    [MemberNotNull(nameof(_schemas))]
-    protected void Initialize (string configurationFile, Type type, params SchemaLoaderBase[] schemas)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty("configurationFile", configurationFile);
-      ArgumentUtility.CheckNotNull("type", type);
+      var entries = _urlMappingFileFinder.GetUrlMappingFilePaths()
+          .SelectMany(file => _urlMappingFileLoader.LoadUrlMappingEntries(file).Select(entry => (file, entry)));
 
-      _configurationFile = GetMappingFilePath(configurationFile);
-      if (!File.Exists(_configurationFile))
-        throw new FileNotFoundException(string.Format("Configuration file '{0}' could not be found.", configurationFile), "configurationFile");
-
-      _type = type;
-      _schemas = GetSchemas(schemas);
-    }
-
-    private string GetMappingFilePath (string configurationFile)
-    {
-      if (configurationFile.StartsWith("~/"))
-        return HttpContext.Current.Server.MapPath(configurationFile);
-
-      if (!Path.IsPathRooted(configurationFile))
-        return Path.Combine(GetExecutingAssemblyPath(), configurationFile);
-
-      return configurationFile;
-    }
-
-    protected virtual object LoadConfiguration (string configurationFile, Type type, XmlSchemaSet schemas)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty("configurationFile", configurationFile);
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("schemas", schemas);
-
-      using (XmlTextReader reader = new XmlTextReader(configurationFile))
+      var entryIDToResourceLookup = new Dictionary<string, (string file, string resource)>();
+      var resourceToEntryLookup = new Dictionary<string, (string file, UrlMappingEntry entry)>();
+      foreach (var (filePath, urlMappingEntry) in entries)
       {
-        return XmlSerializationUtility.DeserializeUsingSchema(reader, type, schemas);
+        if (urlMappingEntry.ID != null)
+        {
+          if (entryIDToResourceLookup.TryGetValue(urlMappingEntry.ID, out var existingResource) && urlMappingEntry.Resource != existingResource.resource)
+          {
+            throw new InvalidOperationException(
+                $"Two URL mapping entries from files '{filePath}' and '{existingResource.file}' have the same ID '{urlMappingEntry.ID}', "
+                + $"but they point to different resources: '{existingResource.resource}' and '{urlMappingEntry.Resource}'.");
+          }
+
+          if (existingResource.resource == null)
+            entryIDToResourceLookup[urlMappingEntry.ID] = (filePath, urlMappingEntry.Resource);
+        }
+
+        if (resourceToEntryLookup.TryGetValue(urlMappingEntry.Resource, out var existingEntryInfo))
+        {
+          if (!existingEntryInfo.entry.FunctionType.IsAssignableFrom(urlMappingEntry.FunctionType))
+          {
+            throw new InvalidOperationException(
+                $"URL mapping entry for resource '{urlMappingEntry.Resource}' from the file '{filePath}' "
+                + $"cannot override the existing URL mapping entry from the file '{existingEntryInfo.file}' as the function type "
+                + $"'{urlMappingEntry.FunctionType}' is not assignable to the existing "
+                + $"function type '{existingEntryInfo.entry.FunctionType}'.");
+          }
+
+          urlMappingConfiguration.Mappings.Remove(existingEntryInfo.entry);
+        }
+
+        resourceToEntryLookup[urlMappingEntry.Resource] = (filePath, urlMappingEntry);
+        urlMappingConfiguration.Mappings.Add(urlMappingEntry);
       }
-      //    try
-      //    {
-      //    return XmlSerializationUtility.DeserializeUsingSchema (reader, _configurationFile, _type, _schemas);
-      //    }
-      //    catch (XmlSchemaException e)
-      //    {
-      //      throw CreateMappingException (e, "Error while reading mapping: {0}", e.Message);
-      //    }
-      //    catch (XmlException e)
-      //    {
-      //      throw CreateMappingException (e, "Error while reading mapping: {0}", e.Message);
-      //    }
-    }
 
-    protected virtual XmlSchemaSet GetSchemas (SchemaLoaderBase[] schemas)
-    {
-      ArgumentUtility.CheckNotNullOrItemsNull("schemas", schemas);
-
-      XmlSchemaSet schemaSet = new XmlSchemaSet();
-      foreach (SchemaLoaderBase schema in schemas)
-        schemaSet.Add(schema.LoadSchemaSet());
-      return schemaSet;
-    }
-
-    public string? ConfigurationFile
-    {
-      get { return _configurationFile; }
-    }
-
-    public Type? Type
-    {
-      get { return _type; }
-    }
-
-    public XmlSchemaSet? Schemas
-    {
-      get { return _schemas; }
-    }
-
-    private string GetExecutingAssemblyPath ()
-    {
-      var assembly = typeof(UrlMappingLoader).Assembly;
-#if NETFRAMEWORK
-      AssemblyName assemblyName = assembly.GetName(copiedName: false);
-
-      Uri codeBaseUri = new Uri(assemblyName.EscapedCodeBase!);
-      return Path.GetDirectoryName(codeBaseUri.LocalPath)!; // TODO RM-8118: Add notnull assertion
-#else
-      var assemblyLocation = assembly.Location;
-      if (string.IsNullOrEmpty(assemblyLocation))
-        throw new InvalidOperationException(string.Format("Assembly '{0}' does not have a location. It was likely loaded from a byte array.", assembly.FullName));
-
-      var assemblyDirectory = Path.GetDirectoryName(assemblyLocation);
-      Assertion.IsNotNull(assemblyDirectory, "Assembly location '{0}' does not contain a valid directory name.", assemblyLocation);
-      return assemblyDirectory;
-#endif
+      return urlMappingConfiguration;
     }
   }
 }

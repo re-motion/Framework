@@ -18,17 +18,18 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using Remotion.Collections;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Logging;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {
+  [ImplementationFor(typeof(IMappingConfiguration), Lifetime = LifetimeKind.Singleton)]
   public class MappingConfiguration : IMappingConfiguration
   {
     /// <summary>Workaround to allow reflection to reset the fields since setting a static readonly field is not supported in .NET 3.0 and later.</summary>
@@ -36,9 +37,24 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       // ReSharper disable once MemberHidesStaticFromOuterClass
       public readonly DoubleCheckedLockingContainer<IMappingConfiguration> Current = new DoubleCheckedLockingContainer<IMappingConfiguration>(
-          () => new MappingConfiguration(
-              DomainObjectsConfiguration.Current.MappingLoader.CreateMappingLoader(),
-              new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
+          () => SafeServiceLocator.Current.GetInstance<IMappingConfiguration>());
+    }
+
+    private class Mapping
+    {
+      public readonly ReadOnlyDictionary<Type, ClassDefinition> TypeDefinitions;
+      public readonly ReadOnlyDictionary<string, ClassDefinition> ClassDefinitions;
+      public readonly ReadOnlyDictionary<string, RelationDefinition> RelationDefinitions;
+
+      public Mapping (
+          ReadOnlyDictionary<Type, ClassDefinition> typeDefinitions,
+          ReadOnlyDictionary<string, ClassDefinition> classDefinitions,
+          ReadOnlyDictionary<string, RelationDefinition> relationDefinitions)
+      {
+        TypeDefinitions = typeDefinitions;
+        ClassDefinitions = classDefinitions;
+        RelationDefinitions = relationDefinitions;
+      }
     }
 
     private static readonly Fields s_fields = new Fields();
@@ -60,6 +76,20 @@ namespace Remotion.Data.DomainObjects.Mapping
       s_fields.Current.Value = mappingConfiguration!;
     }
 
+    /// <summary>
+    /// Creates a fully initialized <see cref="MappingConfiguration"/>
+    /// </summary>
+    public static MappingConfiguration Create (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader)
+    {
+      ArgumentUtility.CheckNotNull("mappingLoader", mappingLoader);
+      ArgumentUtility.CheckNotNull("persistenceModelLoader", persistenceModelLoader);
+
+      var mappingConfiguration = new MappingConfiguration(mappingLoader, persistenceModelLoader);
+      mappingConfiguration.EnsureInitialized();
+
+      return mappingConfiguration;
+    }
+
     private static ArgumentException CreateArgumentException (Exception? innerException, string argumentName, string message, params object[] args)
     {
       return new ArgumentException(string.Format(message, args), argumentName, innerException);
@@ -72,9 +102,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     // member fields
 
-    private readonly ReadOnlyDictionary<Type, ClassDefinition> _typeDefinitions;
-    private readonly ReadOnlyDictionary<string, ClassDefinition> _classDefinitions;
-    private readonly ReadOnlyDictionary<string, RelationDefinition> _relationDefinitions;
+    private readonly Lazy<Mapping> _mapping;
     private readonly bool _resolveTypes;
     private readonly IMemberInformationNameResolver _nameResolver;
 
@@ -85,6 +113,14 @@ namespace Remotion.Data.DomainObjects.Mapping
       ArgumentUtility.CheckNotNull("mappingLoader", mappingLoader);
       ArgumentUtility.CheckNotNull("persistenceModelLoader", persistenceModelLoader);
 
+      _resolveTypes = mappingLoader.ResolveTypes;
+      _nameResolver = mappingLoader.NameResolver;
+
+      _mapping = new Lazy<Mapping>(() => InitializeMapping(mappingLoader, persistenceModelLoader), LazyThreadSafetyMode.ExecutionAndPublication);
+    }
+
+    private Mapping InitializeMapping (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader)
+    {
       s_log.Info("Building mapping configuration...");
 
       using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to build and validate mapping configuration: {elapsed}."))
@@ -92,32 +128,40 @@ namespace Remotion.Data.DomainObjects.Mapping
         var mappingConfigurationValidationHelper = new MappingConfigurationValidationHelper(mappingLoader, persistenceModelLoader);
 
         var typeDefinitions = mappingLoader.GetClassDefinitions();
-        _typeDefinitions = new ReadOnlyDictionary<Type, ClassDefinition>(typeDefinitions.ToDictionary(td => td.ClassType));
+        var typeDefinitionsDictionary = new ReadOnlyDictionary<Type, ClassDefinition>(typeDefinitions.ToDictionary(td => td.ClassType));
         mappingConfigurationValidationHelper.ValidateDuplicateClassIDs(typeDefinitions.OfType<ClassDefinition>());
-        _classDefinitions = new ReadOnlyDictionary<string, ClassDefinition>(typeDefinitions.ToDictionary(cd => cd.ID));
+        var classDefinitionsDictionary = new ReadOnlyDictionary<string, ClassDefinition>(typeDefinitions.ToDictionary(cd => cd.ID));
 
-        mappingConfigurationValidationHelper.ValidateClassDefinitions(_typeDefinitions.Values);
-        mappingConfigurationValidationHelper.ValidatePropertyDefinitions(_typeDefinitions.Values);
+        mappingConfigurationValidationHelper.ValidateClassDefinitions(typeDefinitionsDictionary.Values);
+        mappingConfigurationValidationHelper.ValidatePropertyDefinitions(typeDefinitionsDictionary.Values);
 
-        var relationDefinitions = mappingLoader.GetRelationDefinitions(_typeDefinitions);
-        _relationDefinitions = new ReadOnlyDictionary<string, RelationDefinition>(relationDefinitions.ToDictionary(rd => rd.ID));
+        var relationDefinitions = mappingLoader.GetRelationDefinitions(typeDefinitionsDictionary);
+        var relationDefinitionsDictionary = new ReadOnlyDictionary<string, RelationDefinition>(relationDefinitions.ToDictionary(rd => rd.ID));
 
-        mappingConfigurationValidationHelper.ValidateRelationDefinitions(_relationDefinitions.Values);
+        mappingConfigurationValidationHelper.ValidateRelationDefinitions(relationDefinitionsDictionary.Values);
 
-        foreach (var rootClass in GetInheritanceRootClasses(_typeDefinitions.Values))
+        foreach (var rootClass in GetInheritanceRootClasses(typeDefinitionsDictionary.Values))
         {
           persistenceModelLoader.ApplyPersistenceModelToHierarchy(rootClass);
           mappingConfigurationValidationHelper.VerifyPersistenceModelApplied(rootClass);
           mappingConfigurationValidationHelper.ValidatePersistenceMapping(rootClass);
         }
 
-        _resolveTypes = mappingLoader.ResolveTypes;
-        _nameResolver = mappingLoader.NameResolver;
+        foreach (var typeDefinition in typeDefinitionsDictionary.Values)
+          typeDefinition.SetReadOnly();
 
-        SetMappingReadOnly();
+        mappingConfigurationValidationHelper.ValidateSortExpression(relationDefinitionsDictionary.Values);
 
-        mappingConfigurationValidationHelper.ValidateSortExpression(_relationDefinitions.Values);
+        return new Mapping(typeDefinitionsDictionary, classDefinitionsDictionary, relationDefinitionsDictionary);
       }
+    }
+
+    /// <summary>
+    /// Forces the lazy-initialized mapping to be evaluated. 
+    /// </summary>
+    public void EnsureInitialized ()
+    {
+      Assertion.IsNotNull(_mapping.Value);
     }
 
     /// <summary>
@@ -130,14 +174,14 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public ClassDefinition[] GetTypeDefinitions ()
     {
-      return _typeDefinitions.Values.ToArray();
+      return _mapping.Value.TypeDefinitions.Values.ToArray();
     }
 
     public bool ContainsTypeDefinition (Type classType)
     {
       ArgumentUtility.CheckNotNull("classType", classType);
 
-      return _typeDefinitions.ContainsKey(classType);
+      return _mapping.Value.TypeDefinitions.ContainsKey(classType);
     }
 
     public ClassDefinition GetTypeDefinition (Type classType)
@@ -152,7 +196,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       ArgumentUtility.CheckNotNull("classType", classType);
       ArgumentUtility.CheckNotNull("missingTypeDefinitionExceptionFactory", missingTypeDefinitionExceptionFactory);
 
-      var classDefinition = _typeDefinitions.GetValueOrDefault(classType);
+      var classDefinition = _mapping.Value.TypeDefinitions.GetValueOrDefault(classType);
       if (classDefinition == null)
         throw missingTypeDefinitionExceptionFactory(classType);
 
@@ -163,7 +207,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       ArgumentUtility.CheckNotNull("classID", classID);
 
-      return _classDefinitions.ContainsKey(classID);
+      return _mapping.Value.ClassDefinitions.ContainsKey(classID);
     }
 
     public ClassDefinition GetClassDefinition (string classID)
@@ -178,7 +222,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       ArgumentUtility.CheckNotNullOrEmpty("classID", classID);
       ArgumentUtility.CheckNotNull("missingClassDefinitionExceptionFactory", missingClassDefinitionExceptionFactory);
 
-      var classDefinition = _classDefinitions.GetValueOrDefault(classID);
+      var classDefinition = _mapping.Value.ClassDefinitions.GetValueOrDefault(classID);
       if (classDefinition == null)
         throw missingClassDefinitionExceptionFactory(classID);
 
@@ -201,12 +245,6 @@ namespace Remotion.Data.DomainObjects.Mapping
       }
 
       return rootClasses;
-    }
-
-    private void SetMappingReadOnly ()
-    {
-      foreach (var classDefinition in _typeDefinitions.Values)
-        classDefinition.SetReadOnly();
     }
 
     private MappingException CreateMappingException (string message, params object[] args)

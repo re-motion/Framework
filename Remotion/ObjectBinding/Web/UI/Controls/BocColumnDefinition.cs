@@ -16,7 +16,6 @@
 // 
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;

@@ -22,7 +22,6 @@ using Coypu;
 using JetBrains.Annotations;
 using log4net;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Accessibility;
@@ -163,9 +162,9 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// SetUp method for each web test fixture.
     /// </summary>
-    /// <param name="maximizeWindow">Specifies whether the main browser session's window should be maximized.</param>
+    /// <param name="windowSize">Specifies the main browser session's window size. Maximizes the window if left <see langword="null"/>.</param>
     /// <param name="configurationOverride">Specifies additional options applied when creating the browser.</param>
-    public void OnFixtureSetUp (bool maximizeWindow = true, [CanBeNull] DriverConfigurationOverride? configurationOverride = null)
+    public void OnFixtureSetUp (WindowSize? windowSize = null, [CanBeNull] DriverConfigurationOverride? configurationOverride = null)
     {
       s_log.InfoFormat("WebTestHelper.OnFixtureSetup() has been called.");
       s_log.InfoFormat("Remotion version: " + typeof(WebTestHelper).Assembly.GetName().Version);
@@ -179,7 +178,7 @@ namespace Remotion.Web.Development.WebTesting
       // See RM-6731.
       EnsureAllBrowserWindowsAreClosed();
 
-      _mainBrowserSession = CreateNewBrowserSession(maximizeWindow, configurationOverride);
+      _mainBrowserSession = CreateNewBrowserSession(windowSize, configurationOverride);
       s_log.InfoFormat("Browser: {0}, version {1}", _mainBrowserSession.Driver.GetBrowserName(), _mainBrowserSession.Driver.GetBrowserVersion());
       s_log.InfoFormat("WebDriver version: {0}", _mainBrowserSession.Driver.GetWebDriverVersion());
 
@@ -206,10 +205,10 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Creates a new browser session using the configured settings from <see cref="WebTestConfigurationFactory"/>.
     /// </summary>
-    /// <param name="maximizeWindow">Specified whether the new browser session's window should be maximized.</param>
+    /// <param name="windowSize">Specifies the main browser session's window size. Maximizes the window if left <see langword="null"/>.</param>
     /// <param name="configurationOverride">Specifies additional options applied when creating the browser.</param>
     /// <returns>The new browser session.</returns>
-    public IBrowserSession CreateNewBrowserSession (bool maximizeWindow = true, [CanBeNull] DriverConfigurationOverride? configurationOverride = null)
+    public IBrowserSession CreateNewBrowserSession (WindowSize? windowSize = null, [CanBeNull] DriverConfigurationOverride? configurationOverride = null)
     {
       using (new PerformanceTimer(s_log, string.Format("Created new {0} browser session.", _browserConfiguration.BrowserName)))
       {
@@ -218,8 +217,12 @@ namespace Remotion.Web.Development.WebTesting
         var browserResult = _browserConfiguration.BrowserFactory.CreateBrowser(mergedDriverConfiguration);
         _browserSessions.Add(browserResult);
 
-        if (maximizeWindow)
+        windowSize ??= mergedDriverConfiguration.Headless ? new WindowSize(1280, 900) : WindowSize.Maximized;
+
+        if (windowSize.IsMaximized)
           browserResult.Window.MaximiseWindow();
+        else
+          browserResult.Driver.ResizeTo(new Size(windowSize.Width, windowSize.Height), browserResult.Window);
 
         return browserResult;
       }
@@ -385,7 +388,7 @@ namespace Remotion.Web.Development.WebTesting
           _accessibilityConfiguration,
           new AxeSourceProvider(),
           new AccessibilityResultMapper(),
-          LogManager.GetLogger(typeof(AccessibilityAnalyzer)));
+          LogManager.GetLogger(typeof(WebTestHelper).Assembly, typeof(AccessibilityAnalyzer)));
     }
 
     /// <summary>

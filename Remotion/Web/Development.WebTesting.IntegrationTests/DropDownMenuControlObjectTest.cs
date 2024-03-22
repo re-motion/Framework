@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Drawing;
-using System.Threading;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation;
@@ -35,7 +34,6 @@ using Remotion.Web.Development.WebTesting.Utilities;
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
-  [RequiresUserInterface]
   public class DropDownMenuControlObjectTest : IntegrationTest
   {
     // Note: the <see cref="T:DropDownMenu.Mode"/>=<see cref="T:MenuMode.ContextMenu"/> option is tested indirectly by the BocTreeViewControlObjectTest.

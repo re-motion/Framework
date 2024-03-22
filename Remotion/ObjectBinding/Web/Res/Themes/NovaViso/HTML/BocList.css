@@ -31,7 +31,7 @@ div.bocList div.bocListTableBlock div.bocListTableContainer
 {
   grid-row: 1 / span 2;
   position: relative;
-  overflow: hidden;
+  overflow: clip;
 }
 
 div.bocList.hasDimensions  div.bocListTableBlock div.bocListTableContainer
@@ -57,19 +57,6 @@ div.bocList.hasDimensions div.bocListTableBlock div.bocListTableContainer div.bo
   bottom: 0;
   right: 0;
   border-top: var(--boclist-tableheader-border);
-}
-
-div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListTableScrollContainer::-webkit-scrollbar-thumb
-{
-  background: var(--remotion-themed-scrollbar-color-thumb);
-  border-radius: var(--remotion-themed-scrollbar-border-radius);
-}
-
-div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListTableScrollContainer::-webkit-scrollbar
-{
-  background: var(--remotion-themed-scrollbar-color-track);
-  width: var(--remotion-themed-scrollbar-width);
-  height: var(--remotion-themed-scrollbar-width);
 }
 /*endregion*/
 
@@ -299,7 +286,7 @@ div.bocList div.bocListTableBlock.hasMenuBlock
 /*region bocListNavigator*/
 div.bocList div.bocListTableBlock div.bocListNavigator
 {
-  overflow: hidden;
+  overflow: clip;
   padding: var(--remotion-themed-spacing-small);
   display: flex;
   align-items: center;
@@ -373,15 +360,26 @@ div.bocList div.bocListTableBlock div.bocListNavigator a:not([href]) img
 /*endregion*/
 
 /*region validation marker*/
-div.bocList .bocListCellStructureElement > .validationErrorMarker
-{
-  margin-top: calc(var(--remotion-themed-spacing) / 2);
-}
-
 div.bocList .bocListCellStructureElement > .validationErrorMarker,
 div.bocList .bocListContent > .validationErrorMarker
 {
   border: var(--remotion-themed-border-placeholder);
+  border-radius: var(--remotion-themed-border-radius);
+}
+
+div.bocList .bocListCellStructureElement > .validationErrorMarker
+{
+  /* .bocListContent already comes with padding so we only need this for .bocListCellStructureElement */
+  padding: calc(var(--remotion-themed-spacing) / 2);
+}
+
+div.bocList .bocListCellStructureElement > .validationErrorMarker:focus-within,
+div.bocList .bocListContent > .validationErrorMarker:focus-within
+{
+  outline: none;
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
 }
 
 /*endregion*/
@@ -418,19 +416,6 @@ div.bocList div.bocListTableBlock tr.bocListValidationRow div
   overflow-x: auto;
   scrollbar-width: var(--remotion-themed-scrollbar-style);
   scrollbar-color: var(--remotion-themed-scrollbar-color);
-}
-
-div.bocList div.bocListTableBlock tr.bocListValidationRow div::-webkit-scrollbar
-{
-  background: var(--remotion-themed-scrollbar-color-track);
-  width: var(--remotion-themed-scrollbar-width);
-  height: var(--remotion-themed-scrollbar-width);
-}
-
-div.bocList div.bocListTableBlock tr.bocListValidationRow div::-webkit-scrollbar-thumb
-{
-   background: var(--remotion-themed-scrollbar-color-thumb);
-   border-radius: var(--remotion-themed-scrollbar-border-radius);
 }
 
 div.bocList div.bocListTableBlock tr.bocListValidationRow div div

@@ -19,11 +19,11 @@ using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Security.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
 using Remotion.Security;
 using Remotion.Security.Metadata;
@@ -98,10 +98,13 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
 
     public void SetupSecurityIoCConfiguration ()
     {
+      var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
+
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle(() => _mockSecurityProvider.Object);
       serviceLocator.RegisterSingle(() => _stubPrincipalProvider.Object);
       serviceLocator.RegisterSingle(() => _mockMemberResolver.Object);
+      serviceLocator.RegisterSingle(() => storageSettings);
       serviceLocator.RegisterSingle(() => _mockPermissionReflector.Object);
       serviceLocator.RegisterSingle(() => _mockFunctionalSecurityStrategy.Object);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);

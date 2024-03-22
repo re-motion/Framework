@@ -19,7 +19,6 @@ using System.Configuration;
 using System.Configuration.Provider;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Configuration;
 
 namespace Remotion.UnitTests.Configuration

@@ -27,7 +27,6 @@ using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Services;
-using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 using Remotion.Web.Utilities;
@@ -88,14 +87,6 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     Controls.Add(_dropDownMenu);
     _dropDownMenu.EventCommandClick += new WebMenuItemClickEventHandler(DropDownMenu_EventCommandClick);
     _dropDownMenu.WxeFunctionCommandClick += new WebMenuItemClickEventHandler(DropDownMenu_WxeFunctionCommandClick);
-  }
-
-  /// <summary> Checks whether the control conforms to the required WAI level. </summary>
-  /// <exception cref="Remotion.Web.UI.WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
-  protected virtual void EvaluateWaiConformity ()
-  {
-    if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-      WcagHelper.Instance.HandleError(1, this);
   }
 
   protected override void OnPreRender (EventArgs e)
@@ -215,7 +206,6 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
   protected override void Render (HtmlTextWriter writer)
   {
-    EvaluateWaiConformity();
 
     if (!string.IsNullOrEmpty(ControlServicePath))
     {

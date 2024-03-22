@@ -16,9 +16,9 @@
 // 
 using System;
 using System.Runtime.Serialization;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries.Configuration
@@ -165,7 +165,8 @@ public class QueryDefinition
     if (!_ispartOfQueryConfiguration)
     {
        var storageProviderID = info.GetString("StorageProviderID")!;
-      _storageProviderDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory(storageProviderID);
+       var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
+       _storageProviderDefinition = storageSettings.GetStorageProviderDefinition(storageProviderID);
       _statement = info.GetString("Statement")!;
       _queryType = (QueryType)info.GetValue("QueryType", typeof(QueryType))!;
       _collectionType = (Type?)info.GetValue("CollectionType", typeof(Type));
@@ -256,7 +257,7 @@ public class QueryDefinition
   {
     info.AddValue("ID", _id);
 
-    bool isPartOfQueryConfiguration = DomainObjectsConfiguration.Current.Query.QueryDefinitions.Contains(this);
+    bool isPartOfQueryConfiguration = SafeServiceLocator.Current.GetInstance<IQueryDefinitionRepository>().Contains(_id);
     info.AddValue("IsPartOfQueryConfiguration", isPartOfQueryConfiguration);
 
     if (!isPartOfQueryConfiguration)
@@ -281,7 +282,7 @@ public class QueryDefinition
   object IObjectReference.GetRealObject (StreamingContext context)
   {
     if (_ispartOfQueryConfiguration)
-      return DomainObjectsConfiguration.Current.Query.QueryDefinitions.GetMandatory(_id);
+      return SafeServiceLocator.Current.GetInstance<IQueryDefinitionRepository>().GetMandatory(_id);
     else
       return this;
   }

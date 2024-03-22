@@ -112,12 +112,14 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
 
       XmlNode table = GetAssertedTable();
 
+      var tbody = table.GetAssertedChildElement("tbody", 0);
+
       for (int itemIndex = 0; itemIndex < 5; itemIndex++)
       {
         if (itemIndex == 3)
           continue;
 
-        var tr = table.GetAssertedChildElement("tr", itemIndex < 3 ? itemIndex : itemIndex - 1);
+        var tr = tbody.GetAssertedChildElement("tr", itemIndex < 3 ? itemIndex : itemIndex - 1);
         tr.AssertChildElementCount(1);
         var td = GetAssertedCell(tr, 0, 1);
         AssertMenuItem(td, itemIndex, 0, itemIndex == 0 ? "0" : "-1");
@@ -131,14 +133,16 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       _control.Setup(stub => stub.LineBreaks).Returns(ListMenuLineBreaks.BetweenGroups);
 
       var table = GetAssertedTable();
-      var tr1 = table.GetAssertedChildElement("tr", 0);
+      var tbody = table.GetAssertedChildElement("tbody", 0);
+
+      var tr1 = tbody.GetAssertedChildElement("tr", 0);
       tr1.AssertChildElementCount(1);
       var td1 = GetAssertedCell(tr1, 0, 2);
 
       AssertMenuItem(td1, 0, 0, "0");
       AssertMenuItem(td1, 1, 1, "-1");
 
-      var tr2 = table.GetAssertedChildElement("tr", 1);
+      var tr2 = tbody.GetAssertedChildElement("tr", 1);
       tr2.AssertChildElementCount(1);
 
       var td2 = GetAssertedCell(tr2, 0, 2);
@@ -154,12 +158,41 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       _control.Setup(stub => stub.LineBreaks).Returns(ListMenuLineBreaks.None);
 
       var table = GetAssertedTable();
-      var tr = table.GetAssertedChildElement("tr", 0);
+
+      var tbody = table.GetAssertedChildElement("tbody", 0);
+
+      var tr = tbody.GetAssertedChildElement("tr", 0);
       tr.AssertChildElementCount(1);
 
       var td = GetAssertedCell(tr, 0, 4);
       for (int iColumn = 0; iColumn < 4; iColumn++)
         AssertMenuItem(td, iColumn < 3 ? iColumn : iColumn + 1, iColumn, iColumn == 0 ? "0" : "-1");
+    }
+
+    [Test]
+    public void Render_HasRoleNoneOnAllChildElementsBetweenRoleMenuAndRoleMenuItem ()
+    {
+      SetUpGetPostBackLinkExpectations(false);
+      _control.Setup(stub => stub.LineBreaks).Returns(ListMenuLineBreaks.BetweenGroups);
+
+      var table = GetAssertedTable();
+      table.AssertAttributeValueEquals("role", "menu");
+
+      var tbody = table.GetAssertedChildElement("tbody", 0);
+      tbody.AssertAttributeValueEquals("role", "none");
+
+      var tr = tbody.GetAssertedChildElement("tr", 0);
+      tr.AssertAttributeValueEquals("role", "none");
+      tr.AssertChildElementCount(1);
+
+      var td = tr.GetAssertedChildElement("td", 0);
+      td.AssertAttributeValueEquals("role", "none");
+
+      var span = td.GetAssertedChildElement("span", 0);
+      span.AssertAttributeValueEquals("role", "none");
+
+      var a = span.GetAssertedChildElement("a", 0);
+      a.AssertAttributeValueEquals("role","menuitem");
     }
 
     [Test]
@@ -175,7 +208,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       AddMenuItem("item html", "category 1", htmlItemContent, WebMenuItemStyle.Text, RequiredSelection.Any, CommandType.None);
 
       var table = GetAssertedTable();
-      var tr = table.GetAssertedChildElement("tr", 0);
+      var tbody = table.GetAssertedChildElement("tbody", 0);
+      tbody.AssertChildElementCount(1);
+
+      var tr = tbody.GetAssertedChildElement("tr", 0);
       tr.AssertChildElementCount(1);
 
       var td = GetAssertedCell(tr, 0, 2);
@@ -205,6 +241,54 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       var wrapper = GetAssertedWrapper();
       wrapper.AssertAttributeValueEquals(DiagnosticMetadataAttributes.ControlType, "ListMenu");
       wrapper.AssertAttributeValueEquals(DiagnosticMetadataAttributes.IsDisabled, (!_control.Object.Enabled).ToString().ToLower());
+    }
+
+    [Test]
+    public void Render_WithNoHeading_NoHeaderAndNoLabelledBy ()
+    {
+      SetUpGetPostBackLinkExpectations(true);
+
+      _control.Setup(e => e.Heading).Returns(WebString.Empty);
+      var wrapper = GetAssertedWrapper();
+
+      wrapper.AssertNoAttribute("aria-labelledby");
+      wrapper.AssertChildElementCount(1);
+    }
+
+    [Test]
+    public void Render_WithHeadingButNoHeadingLevel_RendersAndLinksSpan ()
+    {
+      SetUpGetPostBackLinkExpectations(true);
+
+      _control.Setup(e => e.Heading).Returns(WebString.CreateFromText("My heading"));
+      _control.Setup(e => e.HeadingLevel).Returns((HeadingLevel?)null);
+      var wrapper = GetAssertedWrapper();
+
+      wrapper.AssertAttributeValueEquals("aria-labelledby", "MyListMenu_Heading");
+
+      var span = wrapper.GetAssertedChildElement("span", 0);
+      span.AssertAttributeValueEquals("id", "MyListMenu_Heading");
+      span.AssertNoAttribute("class");
+      span.AssertAttributeValueEquals("hidden", "hidden");
+      Assert.That(span.InnerText, Is.EqualTo("My heading"));
+    }
+
+    [Test]
+    public void Render_WithHeadingAndHeadingLevel_RendersAndLinksHxElement ()
+    {
+      SetUpGetPostBackLinkExpectations(true);
+
+      _control.Setup(e => e.Heading).Returns(WebString.CreateFromText("My heading"));
+      _control.Setup(e => e.HeadingLevel).Returns(HeadingLevel.H2);
+      var wrapper = GetAssertedWrapper();
+
+      wrapper.AssertAttributeValueEquals("aria-labelledby", "MyListMenu_Heading");
+
+      var h2 = wrapper.GetAssertedChildElement("h2", 0);
+      h2.AssertAttributeValueEquals("id", "MyListMenu_Heading");
+      h2.AssertAttributeValueEquals("class", "screenReaderText");
+      h2.AssertNoAttribute("hidden");
+      h2.AssertTextNode("My heading", 0);
     }
 
     private XmlNode GetAssertedWrapper ()

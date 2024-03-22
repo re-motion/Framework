@@ -16,11 +16,9 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Remotion.Globalization;
 using Remotion.Utilities;
 using Remotion.Web;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering

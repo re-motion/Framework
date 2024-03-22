@@ -85,7 +85,6 @@ namespace Remotion.BocAutoCompleteReferenceValue
         max: number;
         isAutoPostBackEnabled: boolean;
         extraParams: Dictionary<unknown>;
-        combobox: HTMLElement;
         selectListID: string;
         informationPopUpID: string;
         dropDownButtonID: string;
@@ -121,8 +120,10 @@ namespace Remotion.BocAutoCompleteReferenceValue
         },
         formatItem: Options["formatItem"];
         formatMatch: Options["formatMatch"];
+        selectListID: Options["selectListID"];
+        informationPopUpID: Options["informationPopUpID"];
+        dropDownButtonID: Options["dropDownButtonID"];
         parse: Options["parse"];
-        combobox: Options["combobox"];
     };
 
     export type PositioningOptions = {
@@ -234,11 +235,6 @@ namespace Remotion.BocAutoCompleteReferenceValue
             serviceMethodSearch: serviceMethodSearch,
             serviceMethodSearchExact: serviceMethodSearchExact,
             data: null,
-            combobox: null,
-            selectListID: null,
-            informationPopUpID: null,
-            // re-motion: clicking this control will display the dropdown list with an assumed input of '' (regardless of textbox value)
-            dropDownButtonID: null
         }, initialOptions as RequiredOptions);
 
         // if highlight is set to false, replace it with a do-nothing function
@@ -492,7 +488,13 @@ namespace Remotion.BocAutoCompleteReferenceValue
                             const selectedItem = select.selected(true);
                             const isAnnotationSelected = selectedItem != null && selectedItem.data.IsAnnotation === true;
                             if (isAnnotationSelected)
+                            {
                                 index = select.findItemPositionWhere (function (data) { return data === selectedItem });
+                            }                            
+                            else
+                            {
+                                index = 0;
+                            }
                         }
 
                         select.selectItem (index);
@@ -532,7 +534,9 @@ namespace Remotion.BocAutoCompleteReferenceValue
                 } else {
                     clearTimeout(timeout);
                     const lastKeyPressCode = state.lastKeyPressCode;
-                    invalidateResult();
+                    if (state.previousValue !== input.value) {
+                        invalidateResult();
+                    }
                     acceptInput(lastKeyPressCode, focusInputAfterSelection);
                 }
             }
@@ -1166,19 +1170,13 @@ namespace Remotion.BocAutoCompleteReferenceValue
                 return;
 
             this.element = document.createElement("div");
-            this.element.setAttribute('role', 'listbox');
-            this.element.setAttribute('id', this.options.selectListID);
             this.element.setAttribute('class', this.options.resultsClass);
             this.element.style.position = 'fixed';
             LayoutUtility.Hide(this.element);
 
             this.input.closest('div, td, th, body')!.appendChild(this.element);
 
-            this.options.combobox.setAttribute('aria-owns', this.options.selectListID);
-            const isAria11 = this.options.combobox !== this.input;
-            if (isAria11) {
-                this.options.combobox.setAttribute('aria-controls', this.options.selectListID);
-            }
+            this.input.setAttribute('aria-controls', this.options.selectListID);
 
             const elementStyle = window.getComputedStyle(this.element);
             this.element.dataset['originalMaxHeight'] = "" + parseInt(elementStyle.maxHeight, 10);
@@ -1209,6 +1207,8 @@ namespace Remotion.BocAutoCompleteReferenceValue
             });
 
             this.list = document.createElement("ul");
+            this.list.setAttribute('role', 'listbox');
+            this.list.setAttribute('id', this.options.selectListID);
             innerDiv.appendChild(this.list);
 
             this.list.addEventListener('mouseover', (event) => {
@@ -1480,8 +1480,8 @@ namespace Remotion.BocAutoCompleteReferenceValue
         public hide() {
             if (this.repositionTimer) 
                 clearTimeout(this.repositionTimer);
-            this.options.combobox.setAttribute("aria-expanded", "false");
-            this.input.removeAttribute("aria-activedescendant");
+            this.input.setAttribute("aria-expanded", "false");
+            this.input.setAttribute("aria-activedescendant", "");
             this.element && LayoutUtility.Hide(this.element);
             if (this.listItems) {
                 for (const listItem of this.listItems) {
@@ -1520,7 +1520,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
             this.applyPositionToDropDown();
             
             LayoutUtility.Show(this.element);
-            this.options.combobox.setAttribute("aria-expanded", "true");
+            this.input.setAttribute("aria-expanded", "true");
             
             // re-motion: reposition element 
             if (this.repositionTimer) 
@@ -1617,8 +1617,8 @@ namespace Remotion.BocAutoCompleteReferenceValue
             LayoutUtility.Hide(this.element);
             this.input.closest('div, td, th, body')!.appendChild(this.element);
 
-            if (this.options.combobox.getAttribute('aria-labelledby') !== null) {
-                this.element.setAttribute("aria-labelledby", this.options.combobox.getAttribute('aria-labelledby')!);
+            if (this.input.getAttribute('aria-labelledby') !== null) {
+                this.element.setAttribute("aria-labelledby", this.input.getAttribute('aria-labelledby')!);
             }
 
             const elementStyle = window.getComputedStyle(this.element);

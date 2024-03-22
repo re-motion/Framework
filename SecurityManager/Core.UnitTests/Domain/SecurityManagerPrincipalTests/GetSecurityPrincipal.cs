@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Development.UnitTesting;
 using Remotion.Security;
+using Remotion.Security.Development;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
@@ -179,21 +180,25 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
       var securityProviderStub = new Mock<ISecurityProvider>();
       securityProviderStub.Setup(stub => stub.IsNull).Returns(false);
 
-      var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle(() => securityProviderStub);
-      ISecurityManagerPrincipal refreshedInstance;
-      using (new ServiceLocatorScope(serviceLocator))
-      {
-        IncrementDomainRevision();
-        refreshedInstance = principal.GetRefreshedInstance();
-        Assert.That(refreshedInstance, Is.Not.SameAs(principal));
-      }
+      IncrementDomainRevision();
 
-      ISecurityPrincipal securityPrincipal = refreshedInstance.GetSecurityPrincipal();
-      Assert.That(securityPrincipal.IsNull, Is.False);
-      Assert.That(securityPrincipal.User, Is.EqualTo("substituting.user"));
-      Assert.That(securityPrincipal.Roles, Is.Not.Empty);
-      Assert.That(securityPrincipal.SubstitutedUser, Is.Not.Null);
+      var securityProvider = (FakeSecurityProvider)SafeServiceLocator.Current.GetInstance<ISecurityProvider>();
+      securityProvider.SetCustomSecurityProvider(securityProviderStub.Object);
+      try
+      {
+        var refreshedInstance = principal.GetRefreshedInstance();
+        Assert.That(refreshedInstance, Is.Not.SameAs(principal));
+
+        ISecurityPrincipal securityPrincipal = refreshedInstance.GetSecurityPrincipal();
+        Assert.That(securityPrincipal.IsNull, Is.False);
+        Assert.That(securityPrincipal.User, Is.EqualTo("substituting.user"));
+        Assert.That(securityPrincipal.Roles, Is.Not.Empty);
+        Assert.That(securityPrincipal.SubstitutedUser, Is.Not.Null);
+      }
+      finally
+      {
+        securityProvider.ResetCustomSecurityProvider();
+      }
     }
   }
 }

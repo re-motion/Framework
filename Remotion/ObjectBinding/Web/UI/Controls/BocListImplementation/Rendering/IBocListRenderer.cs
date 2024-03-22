@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
-using Remotion.ServiceLocation;
 using Remotion.Web.UI;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering

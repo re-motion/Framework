@@ -15,8 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Configuration;
-using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -25,71 +24,68 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
   public static class TestQueryFactory
   {
-    public static QueryDefinition CreateOrderQueryWithCustomCollectionType ()
+    public static QueryDefinition CreateOrderQueryWithCustomCollectionType (IStorageSettings storageSettings)
     {
       return new QueryDefinition(
           "OrderQueryWithCustomCollectionType",
-          DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID],
+          storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
           "select [Order].* from [Order] inner join [Company] where [Company].[ID] = @customerID order by [OrderNo] asc;",
           QueryType.Collection,
           typeof(OrderCollection));
     }
 
-    public static QueryDefinition CreateOrderQueryDefinitionWithObjectListOfOrder ()
+    public static QueryDefinition CreateOrderQueryDefinitionWithObjectListOfOrder (IStorageSettings storageSettings)
     {
       return new QueryDefinition(
           "OrderQueryWithObjectListOfOrder",
-          DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID],
+          storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
           "select [Order].* from [Order] inner join [Company] where [Company].[ID] = @customerID order by [OrderNo] asc;",
           QueryType.Collection,
           typeof(ObjectList<Order>));
     }
 
-    public static QueryDefinition CreateCustomerTypeQueryDefinition ()
+    public static QueryDefinition CreateCustomerTypeQueryDefinition (IStorageSettings storageSettings)
     {
       return new QueryDefinition(
           "CustomerTypeQuery",
-          DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID],
+          storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
           "select [Company].* from [Company] where [CustomerType] = @customerType order by [Name] asc;",
           QueryType.Collection,
           typeof(DomainObjectCollection));
     }
 
-    public static QueryDefinition CreateOrderSumQueryDefinition ()
+    public static QueryDefinition CreateOrderSumQueryDefinition (IStorageSettings storageSettings)
     {
       return new QueryDefinition(
           "OrderSumQuery",
-          DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[DatabaseTest.c_testDomainProviderID],
+          storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
           "select sum(quantity) from [Order] where [CustomerID] = @customerID;",
           QueryType.Scalar);
     }
 
-    public static QueryResult<T> CreateTestQueryResult<T> () where T : DomainObject
+    public static QueryResult<DomainObject> CreateTestQueryResult (IStorageSettings storageSettings)
     {
-      var collection = new T[0];
-      return CreateTestQueryResult(collection);
+      var collection = new DomainObject[0];
+      return CreateTestQueryResult(storageSettings, collection);
     }
 
-    public static QueryResult<T> CreateTestQueryResult<T> (T[] collection) where T: DomainObject
+    public static QueryResult<DomainObject> CreateTestQueryResult (IStorageSettings storageSettings, DomainObject[] collection)
     {
-      var storageProviderDefinition =
-          MappingConfiguration.Current.ContainsTypeDefinition(typeof(T))
-              ? MappingConfiguration.Current.GetTypeDefinition(typeof(T)).StorageEntityDefinition.StorageProviderDefinition
-              : DomainObjectsConfiguration.Current.Storage.DefaultStorageProviderDefinition;
+      var storageProviderDefinition = storageSettings.GetDefaultStorageProviderDefinition();
       var query = QueryFactory.CreateCollectionQuery(
           "test", storageProviderDefinition, "TEST", new QueryParameterCollection(), typeof(DomainObjectCollection));
-      return CreateTestQueryResult(query, collection);
+      return CreateTestQueryResult(storageSettings, query, collection);
     }
 
-    public static QueryResult<T> CreateTestQueryResult<T> (IQuery query) where T : DomainObject
+    public static QueryResult<DomainObject> CreateTestQueryResult (IStorageSettings storageSettings, IQuery query)
     {
-      var collection = new T[0];
-      return CreateTestQueryResult(query, collection);
+      var collection = new DomainObject[0];
+      return CreateTestQueryResult(storageSettings, query, collection);
     }
 
-    public static QueryResult<T> CreateTestQueryResult<T> (IQuery query, T[] collection) where T : DomainObject
+    public static QueryResult<DomainObject> CreateTestQueryResult (IStorageSettings storageSettings, IQuery query, DomainObject[] collection)
     {
-      return new QueryResult<T>(query, collection);
+      return new QueryResult<DomainObject>(query, collection);
     }
   }
 }

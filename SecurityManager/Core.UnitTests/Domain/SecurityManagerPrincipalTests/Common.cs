@@ -21,9 +21,9 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Context;
 using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Development.UnitTesting;
 using Remotion.Security;
-using Remotion.Security.Configuration;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
@@ -139,6 +139,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
 
       Assert.That(deserializedPrincipal.Substitution.ID, Is.EqualTo(principal.Substitution.ID));
       Assert.That(deserializedPrincipal.Substitution, Is.Not.SameAs(principal.Substitution));
+
+      Assert.That(() => deserializedPrincipal.GetTenants(true), Throws.Nothing);
+      Assert.That(() => deserializedPrincipal.GetTenants(false), Throws.Nothing);
+      Assert.That(() => deserializedPrincipal.GetTenants(false), Is.Not.Empty);
+      Assert.That(() => deserializedPrincipal.GetActiveSubstitutions(), Throws.Nothing);
+      Assert.That(() => deserializedPrincipal.GetActiveSubstitutions(), Is.Not.Empty);
     }
 
     [Test]
@@ -165,9 +171,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
           .Setup(_ => _.GetAccess(It.IsAny<ISecurityContext>(), It.IsAny<ISecurityPrincipal>()))
           .Returns(new AccessType[0]);
 
+      var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
+
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle(() => securityProviderStub.Object);
       serviceLocator.RegisterSingle<IPrincipalProvider>(() => new NullPrincipalProvider());
+      serviceLocator.RegisterSingle(() => storageSettings);
       using (new ServiceLocatorScope(serviceLocator))
       {
         var principal = CreateSecurityManagerPrincipal(tenant, user, null, substitution);

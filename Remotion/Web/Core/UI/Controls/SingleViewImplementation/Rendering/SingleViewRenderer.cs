@@ -46,8 +46,7 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
       ArgumentUtility.CheckNotNull("control", control);
 
-      htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
-
+      htmlHeadAppender.RegisterWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();
 
       string keyStyle = typeof(SingleViewRenderer).GetFullNameChecked() + "_Style";

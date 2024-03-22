@@ -16,10 +16,8 @@
 // 
 using System;
 using System.Collections.Concurrent;
-using Remotion.Collections;
 using Remotion.Collections.DataStore;
 using Remotion.Mixins;
-using Remotion.Reflection;
 using Remotion.TypePipe;
 using Remotion.Utilities;
 using TypeExtensions = Remotion.Reflection.TypeExtensions;

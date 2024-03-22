@@ -2,7 +2,7 @@
 
   <!-- Settings for projects that continue to use classic csproj files (WebForms projects) -->
   <PropertyGroup>
-    <LangVersion>9</LangVersion>
+    <LangVersion>12</LangVersion>
     <DebugType>full</DebugType>
   </PropertyGroup>
 
@@ -14,5 +14,9 @@
     <MSBuildPath Condition="!Exists($(MSBuildPath))">C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild</MSBuildPath>
     <MSBuildPath Condition="!Exists($(MSBuildPath))"></MSBuildPath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)..\SharedSource\Core\RuntimeTypes\*.cs" Link="SharedSource\RuntimeTypes\%(Filename)%(Extension)" />
+  </ItemGroup>
 
 </Project>

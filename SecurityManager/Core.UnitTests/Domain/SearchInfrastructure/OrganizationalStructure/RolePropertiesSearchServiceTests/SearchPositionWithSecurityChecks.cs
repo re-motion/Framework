@@ -24,7 +24,6 @@ using Remotion.Data.DomainObjects.Security;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding;
 using Remotion.Security;
-using Remotion.Security.Configuration;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure;

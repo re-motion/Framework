@@ -18,7 +18,6 @@ using System;
 using System.Runtime.Serialization;
 using Remotion.Mixins;
 using Remotion.Utilities;
-using TypeExtensions = Remotion.Reflection.TypeExtensions;
 
 namespace Remotion.ObjectBinding.BindableObject
 {

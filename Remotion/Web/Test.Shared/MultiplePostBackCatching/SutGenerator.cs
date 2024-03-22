@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Utilities;
-using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.PostBackTargets;
 
 namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
@@ -66,8 +65,6 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
     public Control[] CreateSut ()
     {
-      Assertion.IsFalse(WcagHelper.Instance.IsWaiConformanceLevelARequired());
-
       List<Control> controls = new List<Control>();
 
       _label = new Label();

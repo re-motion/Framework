@@ -15,15 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.RuleCollectors;

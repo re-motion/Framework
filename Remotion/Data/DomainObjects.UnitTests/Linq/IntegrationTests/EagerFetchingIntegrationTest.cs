@@ -28,7 +28,6 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using EagerFetching_BaseClass = Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.EagerFetching.BaseClass;
 using EagerFetching_DerivedClass1 = Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.EagerFetching.DerivedClass1;
 using EagerFetching_DerivedClass2 = Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.EagerFetching.DerivedClass2;
-using EagerFetching_RelationTarget = Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.EagerFetching.RelationTarget;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
 {

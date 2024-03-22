@@ -19,26 +19,48 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Data.DomainObjects.Mapping.Validation.Logical;
 using Remotion.Data.DomainObjects.Mapping.Validation.Reflection;
 using Remotion.Logging;
 using Remotion.Reflection;
-using Remotion.Reflection.TypeDiscovery;
 using Remotion.ServiceLocation;
-using Remotion.TypePipe;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
+  [ImplementationFor(typeof(IMappingLoader), Lifetime = LifetimeKind.Singleton)]
   public class MappingReflector : IMappingLoader
   {
-    public static DomainObjectCreator CreateDomainObjectCreator ()
+    public static MappingReflector Create (
+        ITypeDiscoveryService typeDiscoveryService,
+        IClassIDProvider classIDProvider,
+        IMemberInformationNameResolver nameResolver,
+        IPropertyMetadataProvider propertyMetadataProvider,
+        IDomainModelConstraintProvider domainModelConstraintProvider,
+        IPropertyDefaultValueProvider propertyDefaultValueProvider,
+        ISortExpressionDefinitionProvider sortExpressionDefinitionProvider,
+        IDomainObjectCreator domainObjectCreator)
     {
-      var pipelineRegistry = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>();
-      return new DomainObjectCreator(pipelineRegistry);
+      ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
+      ArgumentUtility.CheckNotNull("classIDProvider", classIDProvider);
+      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
+      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull("propertyDefaultValueProvider", propertyDefaultValueProvider);
+      ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
+      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
+      ArgumentUtility.CheckNotNull("domainObjectCreator", domainObjectCreator);
+
+      return new MappingReflector(
+          typeDiscoveryService,
+          classIDProvider,
+          nameResolver,
+          propertyMetadataProvider,
+          domainModelConstraintProvider,
+          propertyDefaultValueProvider,
+          sortExpressionDefinitionProvider,
+          domainObjectCreator);
     }
 
     private static readonly ILog s_log = LogManager.GetLogger(typeof(MappingReflector));
@@ -51,21 +73,27 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     private readonly ISortExpressionDefinitionProvider _sortExpressionDefinitionProvider;
     private readonly IPropertyDefaultValueProvider _propertyDefaultValueProvider;
 
-    // This ctor is required when the MappingReflector is instantiated as a configuration element from a config file.
-    public MappingReflector ()
+    public MappingReflector (
+        IClassIDProvider classIDProvider,
+        IMemberInformationNameResolver nameResolver,
+        IPropertyMetadataProvider propertyMetadataProvider,
+        IDomainModelConstraintProvider domainModelConstraintProvider,
+        IPropertyDefaultValueProvider propertyDefaultValueProvider,
+        ISortExpressionDefinitionProvider sortExpressionDefinitionProvider,
+        IDomainObjectCreator domainObjectCreator)
         : this(
             ContextAwareTypeUtility.GetTypeDiscoveryService(),
-            new ClassIDProvider(),
-            SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),
-            new PropertyMetadataReflector(),
-            SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>(),
-            SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
-            SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
-            CreateDomainObjectCreator())
+            classIDProvider,
+            nameResolver,
+            propertyMetadataProvider,
+            domainModelConstraintProvider,
+            propertyDefaultValueProvider,
+            sortExpressionDefinitionProvider,
+            domainObjectCreator)
     {
     }
 
-    public MappingReflector (
+    private MappingReflector (
         ITypeDiscoveryService typeDiscoveryService,
         IClassIDProvider classIDProvider,
         IMemberInformationNameResolver nameResolver,

@@ -18,14 +18,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -35,7 +33,6 @@ using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.ServiceLocation;
 using Remotion.Web.Services;
 using Remotion.Web.UI;
-using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -90,27 +87,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       ((IBusinessObject)_businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IGetObjectService>(new GetObjectService(TypeWithReference.Create()));
       ((IBusinessObject)_businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IBusinessObjectWebUIService>(new ReflectionBusinessObjectWebUIService());
-    }
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelUndefined ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
-      _control.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelA ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _control.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.True);
-      Assert.That(WcagHelperMock.Control, Is.EqualTo(_control));
     }
 
     [Test]

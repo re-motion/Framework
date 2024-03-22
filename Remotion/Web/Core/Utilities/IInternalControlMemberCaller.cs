@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Web.Utilities
 {

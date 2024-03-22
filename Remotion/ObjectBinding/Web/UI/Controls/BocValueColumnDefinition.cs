@@ -26,7 +26,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> A column definition for displaying data and an optional command. </summary>
-  public abstract class BocValueColumnDefinition : BocCommandEnabledColumnDefinition, IBocSortableColumnDefinition, IBocColumnDefinitionWithRowHeaderSupport, IBocColumnDefinitionWithValidationSupport
+  public abstract class BocValueColumnDefinition : BocCommandEnabledColumnDefinition, IBocSortableColumnDefinition, IBocColumnDefinitionWithRowHeaderSupport, IBocColumnDefinitionWithValidationSupport, IBocColumnDefinitionWithRowIconSupport
   {
     private bool _enforceWidth;
     private bool _isSortable = true;
@@ -95,6 +95,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _isRowHeader; }
       set { _isRowHeader = value; }
     }
+
+    /// <summary> Gets or sets a value that that determines when the row icon be displayed in this column. </summary>
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behaviour")]
+    [Description("An enum determining row icon behaviour for this column.")]
+    [DefaultValue(Controls.RowIconMode.Automatic)]
+    [NotifyParentProperty(true)]
+    public RowIconMode RowIconMode { get; set; } = RowIconMode.Automatic;
 
     /// <summary> Gets the human readable name of this type. </summary>
     protected override string DisplayedTypeName

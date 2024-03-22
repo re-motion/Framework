@@ -17,7 +17,6 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Utilities
 {

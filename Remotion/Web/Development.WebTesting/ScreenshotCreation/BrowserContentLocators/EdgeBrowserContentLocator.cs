@@ -51,15 +51,17 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
     /// </summary>
     private static string[] s_edgePaneElementClassNamesStack = new[]
                                                                {
-                                                                   "BrowserRootView",
-                                                                   "NonClientView",
-                                                                   "GlassBrowserFrameView",
-                                                                   "BrowserView",
-                                                                   "SidebarContentsSplitView",
-                                                                   "SidebarContentsSplitView",
-                                                                   "SidebarContentsSplitView",
-                                                                   "SidebarContentsSplitView",
-                                                                   "View"
+                                                                 "BrowserRootView",
+                                                                 "NonClientView",
+                                                                 "BrowserFrameViewWin",
+                                                                 "BrowserView",
+                                                                 "SidebarContentsSplitView",
+                                                                 "SidebarContentsSplitView",
+                                                                 "SidebarContentsSplitView",
+                                                                 "SidebarContentsSplitView",
+                                                                 "SidebarContentsSplitView",
+                                                                 "SplitWindowContainerView",
+                                                                 "View"
                                                                };
 
     public EdgeBrowserContentLocator ()
@@ -129,11 +131,13 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       if (rawBounds == Rect.Empty)
         throw new InvalidOperationException("Could not resolve the bounds of the Edge browser window.");
 
+      //We need to add to these bounds due to the rounded corners and added border in edge
+      //Less Height reduction due to possible rounding errors
       return new Rectangle(
-          (int)Math.Round(rawBounds.X),
-          (int)Math.Round(rawBounds.Y),
-          (int)Math.Round(rawBounds.Width),
-          (int)Math.Round(rawBounds.Height));
+          (int)Math.Round(rawBounds.X + 4),
+          (int)Math.Round(rawBounds.Y + 2),
+          (int)Math.Round(rawBounds.Width - 3),
+          (int)Math.Round(rawBounds.Height - 1));
     }
 
     private AutomationElement? GetContentElement (AutomationElement window)

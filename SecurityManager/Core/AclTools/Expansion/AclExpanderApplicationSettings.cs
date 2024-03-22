@@ -23,6 +23,9 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 {
   public class AclExpanderApplicationSettings : ConsoleApplicationSettings
   {
+    [CommandLineStringArgument("connectionString", false, Placeholder = "Integrated Security=SSPI;Initial Catalog=DemoDB;Data Source=localhost", Description = "The SQL Server connection string.")]
+    public string ConnectionString = string.Empty;
+
     [CommandLineStringArgument("user", true, Placeholder = "accountants/john.doe", Description = "Fully qualified name of user(s) to query access types for.")]
     public string? UserName;
 

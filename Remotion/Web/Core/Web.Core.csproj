@@ -12,6 +12,9 @@
     <NoWarn>$(NoWarn);0419</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Development.Analyzers\WebDiagnosticIds.cs">
+      <Link>WebDiagnosticIds.cs</Link>
+    </Compile>
     <EmbeddedResource Include="UI\SmartPageImplementation\Generic_Error_Async_Remote.htm" />
     <Content Include="..\ClientScript\bin\$(Configuration)\dist\*" LinkBase="Res.ClientScript\HTML" CopyToOutputDirectory="Never">
       <Pack>true</Pack>
@@ -34,6 +37,12 @@
   <ItemGroup>
     <None Include="..\Development.Analyzers\bin\$(Configuration)\netstandard2.0\Remotion.Web.Development.Analyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Update="..\..\Remotion LGPL.licenseheader" Pack="true" PackagePath="res/" Visible="false" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Remotion.ThirdPartyDependency.RobotoFonts" Version="2.137.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
+    <PackageReference Include="Remotion.ThirdPartyDependency.System.Web" Version="4.8.0" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

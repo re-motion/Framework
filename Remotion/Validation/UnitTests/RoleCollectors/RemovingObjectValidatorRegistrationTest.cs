@@ -19,7 +19,6 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
-using Remotion.Validation.UnitTests.TestDomain.Validators;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.UnitTests.RoleCollectors

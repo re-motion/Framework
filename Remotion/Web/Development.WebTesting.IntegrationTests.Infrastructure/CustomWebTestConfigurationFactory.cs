@@ -20,10 +20,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Coypu.Drivers;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox;
@@ -32,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {
   public class CustomWebTestConfigurationFactory : WebTestConfigurationFactory
   {
-    protected override IChromeConfiguration CreateChromeConfiguration (WebTestConfigurationSection configSettings)
+    protected override IChromeConfiguration CreateChromeConfiguration (IWebTestSettings configSettings)
     {
       var chromeVersionArchivePath = ConfigurationManager.AppSettings["ChromeVersionArchive"];
 
@@ -51,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       return new ChromeConfiguration(configSettings, chromeExecutable);
     }
 
-    protected override IEdgeConfiguration CreateEdgeConfiguration (WebTestConfigurationSection configSettings)
+    protected override IEdgeConfiguration CreateEdgeConfiguration (IWebTestSettings configSettings)
     {
       var edgeVersionArchivePath = ConfigurationManager.AppSettings["EdgeVersionArchive"];
 
@@ -70,7 +68,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       return new EdgeConfiguration(configSettings, edgeExecutable);
     }
 
-    protected override IFirefoxConfiguration CreateFirefoxConfiguration (WebTestConfigurationSection configSettings)
+    protected override IFirefoxConfiguration CreateFirefoxConfiguration (IWebTestSettings configSettings)
     {
       var firefoxVersionArchivePath = ConfigurationManager.AppSettings["FirefoxVersionArchive"];
 

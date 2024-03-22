@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
-using Remotion.Globalization;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 

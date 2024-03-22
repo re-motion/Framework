@@ -25,6 +25,10 @@ using Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
 {
+  /// <remarks>
+  /// If these tests fail after an upgrade of aXe core, new tags might have been added to the rules.
+  /// This information can be found at <see href="https://github.com/dequelabs/axe-core/blob/master/doc/rule-descriptions.md"/>.
+  /// </remarks>
   [TestFixture]
   public class AccessibilityAnalyzerTest : IntegrationTest
   {
@@ -43,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
     [Test]
     public void Analyze_IgnoreRule ()
     {
-      Start<HtmlPageObject>("Accessibility/FormElementWithoutLabelAndDoubleIDAndWithoutDocumentTitle.html");
+      Start<HtmlPageObject>("Accessibility/FormElementWithoutLabelAndImageWithoutAltAndWithoutDocumentTitle.html");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
       analyzer.IgnoreRule(AccessibilityRuleID.Label);
@@ -51,17 +55,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
 
       Assert.That(result.Violations.Count, Is.EqualTo(2));
       Assert.That(result.Violations.First().Rule.ID, Is.EqualTo(AccessibilityRuleID.DocumentTitle));
-      Assert.That(result.Violations.ElementAt(1).Rule.ID, Is.EqualTo(AccessibilityRuleID.DuplicateIdActive));
+      Assert.That(result.Violations.ElementAt(1).Rule.ID, Is.EqualTo(AccessibilityRuleID.ImageAlt));
     }
 
     [Test]
     public void Analyze_IgnoreMultipleRules ()
     {
-      Start<HtmlPageObject>("Accessibility/FormElementWithoutLabelAndDoubleIDAndWithoutDocumentTitle.html");
+      Start<HtmlPageObject>("Accessibility/FormElementWithoutLabelAndImageWithoutAltAndWithoutDocumentTitle.html");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
       analyzer.IgnoreRule(AccessibilityRuleID.Label);
-      analyzer.IgnoreRule(AccessibilityRuleID.DuplicateIdActive);
+      analyzer.IgnoreRule(AccessibilityRuleID.ImageAlt);
       var result = analyzer.Analyze();
 
       Assert.That(result.Violations.Count, Is.EqualTo(1));

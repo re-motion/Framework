@@ -15,13 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Configuration;
-using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 {
@@ -68,9 +68,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    public void QueryDefinitionInQueryConfiguration ()
+    public void Deserialize_WithQueryDefinitionFromRepo_ReturnsSameInstance ()
     {
-      QueryDefinition queryDefinition = DomainObjectsConfiguration.Current.Query.QueryDefinitions["OrderQuery"];
+      var queryDefinitionRepository = Queries;
+
+      DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
+      defaultServiceLocator.RegisterSingle<IQueryDefinitionRepository>(() => queryDefinitionRepository);
+      RegisterStandardConfiguration(defaultServiceLocator);
+      using var scope = new ServiceLocatorScope(defaultServiceLocator);
+
+      QueryDefinition queryDefinition = queryDefinitionRepository.GetMandatory("OrderQuery");
 
       QueryDefinition deserializedQueryDefinition = Serializer.SerializeAndDeserialize(queryDefinition);
 
@@ -78,18 +85,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    public void UnknownQueryDefinitionInQueryConfiguration ()
+    public void Deserialize_WithQueryDefinitionNoLongerInRepo_ThrowsException ()
     {
       QueryDefinition unknownQueryDefinition = new QueryDefinition("UnknownQuery", TestDomainStorageProviderDefinition, "select 42", QueryType.Scalar);
-      DomainObjectsConfiguration.Current.Query.QueryDefinitions.Add(unknownQueryDefinition);
+      QueryDefinitionRepository queryDefinitionRepository = new QueryDefinitionRepository(new[] { unknownQueryDefinition });
 
-      var serialized = Serializer.Serialize(unknownQueryDefinition);
-      DomainObjectsConfiguration.SetCurrent(
-          new FakeDomainObjectsConfiguration(
-              DomainObjectsConfiguration.Current.MappingLoader,
-              DomainObjectsConfiguration.Current.Storage,
-              new QueryConfiguration()));
+      DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
+      defaultServiceLocator.RegisterSingle<IQueryDefinitionRepository>(() => queryDefinitionRepository);
+      RegisterStandardConfiguration(defaultServiceLocator);
 
+      // We serialize the QueryDefinition while it exists in the repo (serialization accesses the repo using DI)
+      // to have the IsPartOfQueryConfiguration flag set
+      byte[] serialized;
+      using (new ServiceLocatorScope(defaultServiceLocator))
+      {
+        serialized = Serializer.Serialize(unknownQueryDefinition);
+      }
+
+      // During deserialization it is no longer in the repo and thus should throw because IsPartOfQueryConfiguration is set
       Assert.That(
           () => Serializer.Deserialize(serialized),
           Throws.InstanceOf<QueryConfigurationException>()
@@ -97,27 +110,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     }
 
     [Test]
-    public void QueryDefinitionCollection ()
+    public void DeserializeList_WithQueryDefinitionsFromRepo_ReturnsSameInstances ()
     {
-      QueryDefinitionCollection queryDefinitions = new QueryDefinitionCollection();
-      queryDefinitions.Add(DomainObjectsConfiguration.Current.Query.QueryDefinitions[0]);
-      queryDefinitions.Add(DomainObjectsConfiguration.Current.Query.QueryDefinitions[1]);
+      var queryDefinitionRepository = Queries;
 
-      QueryDefinitionCollection deserializedQueryDefinitions = Serializer.SerializeAndDeserialize(queryDefinitions);
+      DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
+      defaultServiceLocator.RegisterSingle<IQueryDefinitionRepository>(() => queryDefinitionRepository);
+      RegisterStandardConfiguration(defaultServiceLocator);
+      using var scope = new ServiceLocatorScope(defaultServiceLocator);
+
+      var queryDefinitions = new List<QueryDefinition>();
+      queryDefinitions.Add(queryDefinitionRepository.GetMandatory("QueryWithoutParameter"));
+      queryDefinitions.Add(queryDefinitionRepository.GetMandatory("OrderNoSumByCustomerNameQuery"));
+
+      var deserializedQueryDefinitions = Serializer.SerializeAndDeserialize(queryDefinitions);
       AreEqual(queryDefinitions, deserializedQueryDefinitions);
-      Assert.That(DomainObjectsConfiguration.Current.Query.QueryDefinitions[0], Is.SameAs(deserializedQueryDefinitions[0]));
-      Assert.That(DomainObjectsConfiguration.Current.Query.QueryDefinitions[1], Is.SameAs(deserializedQueryDefinitions[1]));
+      Assert.That(queryDefinitionRepository.GetMandatory("QueryWithoutParameter"), Is.SameAs(deserializedQueryDefinitions[0]));
+      Assert.That(queryDefinitionRepository.GetMandatory("OrderNoSumByCustomerNameQuery"), Is.SameAs(deserializedQueryDefinitions[1]));
     }
 
     [Test]
     public void Query ()
     {
-      var query = (Query)QueryFactory.CreateQueryFromConfiguration("OrderQuery");
+      var queryDefinitionRepository = Queries;
+
+      DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
+      defaultServiceLocator.RegisterSingle<IQueryDefinitionRepository>(() => queryDefinitionRepository);
+      RegisterStandardConfiguration(defaultServiceLocator);
+      using var scope = new ServiceLocatorScope(defaultServiceLocator);
+
+      var query = (Query)QueryFactory.CreateQuery(queryDefinitionRepository.GetMandatory("OrderQuery"));
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer1);
 
       var deserializedQuery = Serializer.SerializeAndDeserialize(query);
       AreEqual(query, deserializedQuery);
-      Assert.That(deserializedQuery.Definition, Is.SameAs(DomainObjectsConfiguration.Current.Query.QueryDefinitions["OrderQuery"]));
+      Assert.That(deserializedQuery.Definition, Is.SameAs(queryDefinitionRepository.GetMandatory("OrderQuery")));
     }
 
     private void AreEqual (Query expected, Query actual)
@@ -130,7 +157,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       AreEqual(expected.Parameters, actual.Parameters);
     }
 
-    private void AreEqual (QueryDefinitionCollection expected, QueryDefinitionCollection actual)
+    private void AreEqual (IReadOnlyList<QueryDefinition> expected, IReadOnlyList<QueryDefinition> actual)
     {
       Assert.That(ReferenceEquals(expected, actual), Is.False);
       Assert.That(actual, Is.Not.Null);

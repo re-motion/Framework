@@ -15,9 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.CodeDom.Compiler;
 using System.Web;
-using System.Web.UI;
 using Remotion.ServiceLocation;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 

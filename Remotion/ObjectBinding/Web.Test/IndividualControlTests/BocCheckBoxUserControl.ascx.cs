@@ -17,7 +17,6 @@
 using System;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;

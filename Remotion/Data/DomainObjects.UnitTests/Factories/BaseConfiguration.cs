@@ -20,28 +20,52 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Remotion.Configuration;
-using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Mapping.Configuration;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
+using Remotion.Data.DomainObjects.Validation;
+using Remotion.Development.Data.UnitTesting.DomainObjects.Configuration;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
+using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
-  public abstract class BaseConfiguration
+  public sealed class BaseConfiguration
   {
     private const string c_databaseDisabledConnectionString = "DATABASE_DISABLED_IN_UNITEST";
+
+    private static BaseConfiguration s_instance;
+
+    public static BaseConfiguration Instance
+    {
+      get
+      {
+        if (s_instance == null)
+        {
+          Debugger.Break();
+          throw new InvalidOperationException("BaseConfiguration has not been Initialized by invoking Initialize()");
+        }
+        return s_instance;
+      }
+    }
+
+    public static void EnsureInitialized ()
+    {
+      if (s_instance != null)
+        return;
+
+      s_instance = new BaseConfiguration();
+      s_instance.DisableDatabaseAccess();
+    }
 
     public static ITypeDiscoveryService GetTypeDiscoveryService (params Assembly[] rootAssemblies)
     {
@@ -52,11 +76,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
       var whitelistedNamespaces = new[]
                                   {
-                                      "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.ReflectionBasedPropertyResolver",
-                                      "Remotion.Data.DomainObjects.UnitTests.TestDomain",
-                                      "Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain",
-                                      "Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain",
-                                      "Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain"
+                                    "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.ReflectionBasedPropertyResolver",
+                                    "Remotion.Data.DomainObjects.UnitTests.TestDomain",
+                                    "Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain",
+                                    "Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain",
+                                    "Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain"
                                   };
       return new FilteringTypeDiscoveryService(
           typeDiscoveryService,
@@ -70,46 +94,87 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           });
     }
 
-    private readonly StorageConfiguration _storageConfiguration;
-    private readonly MappingLoaderConfiguration _mappingLoaderConfiguration;
-    private readonly QueryConfiguration _queryConfiguration;
+    private readonly IStorageSettings _storageSettings;
     private readonly MappingConfiguration _mappingConfiguration;
+    private readonly FakeStorageSettingsFactory _storageSettingsFactory;
 
     private readonly Dictionary<RdbmsProviderDefinition, string> _originalConnectionStrings = new();
 
-    protected BaseConfiguration ()
+    private BaseConfiguration ()
     {
-      ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = StorageProviderDefinitionObjectMother.CreateTestDomainStorageProviders();
-
-      _storageConfiguration = new StorageConfiguration(
-          storageProviderDefinitionCollection,
-          storageProviderDefinitionCollection[DatabaseTest.DefaultStorageProviderID]);
-
-      _storageConfiguration.StorageGroups.Add(
-          new StorageGroupElement(
-              new TestDomainAttribute(),
-              DatabaseTest.c_testDomainProviderID));
-      _storageConfiguration.StorageGroups.Add(
-          new StorageGroupElement(
-              new NonPersistentTestDomainAttribute(),
-              DatabaseTest.c_nonPersistentTestDomainProviderID));
-      _storageConfiguration.StorageGroups.Add(
-          new StorageGroupElement(
-              new StorageProviderStubAttribute(),
-              DatabaseTest.c_unitTestStorageProviderStubID));
-      _storageConfiguration.StorageGroups.Add(
-          new StorageGroupElement(
-              new TableInheritanceTestDomainAttribute(),
-              TableInheritanceMappingTest.TableInheritanceTestDomainProviderID));
-
-      _mappingLoaderConfiguration = new MappingLoaderConfiguration();
-      _queryConfiguration = new QueryConfiguration("QueriesForStandardMapping.xml");
+      _storageSettingsFactory = CreateStorageSettings();
+      _storageSettings = _storageSettingsFactory.StorageSettings;
 
       var typeDiscoveryService = GetTypeDiscoveryService(GetType().Assembly);
 
-      _mappingConfiguration = new MappingConfiguration(
-          MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
-          new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(_storageConfiguration)));
+      _mappingConfiguration = MappingConfiguration.Create(
+            MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
+            new PersistenceModelLoader(_storageSettings));
+    }
+
+    private FakeStorageSettingsFactory CreateStorageSettings ()
+    {
+      var storageProviderDefinitionCollection = new List<StorageProviderDefinition>();
+
+      var fakeStorageObjectFactoryFactory = new FakeStorageObjectFactoryFactory();
+      var fakeStorageSettingsFactory = new FakeStorageSettingsFactory();
+      var fakeStorageSettingsFactoryResolver = new FakeStorageSettingsFactoryResolver(fakeStorageSettingsFactory);
+
+      var deferredStorageSettings = new DeferredStorageSettings(fakeStorageObjectFactoryFactory, fakeStorageSettingsFactoryResolver);
+
+      var sqlStorageObjectFactory = new SqlStorageObjectFactory(
+          deferredStorageSettings,
+          SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
+          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
+
+      var nonPersistentStorageObjectFactory = new NonPersistentStorageObjectFactory();
+
+      var defaultStorageProvider = new RdbmsProviderDefinition(
+          DatabaseTest.DefaultStorageProviderID,
+          sqlStorageObjectFactory,
+          DatabaseTest.TestDomainConnectionString);
+      storageProviderDefinitionCollection.Add(defaultStorageProvider);
+
+      storageProviderDefinitionCollection.Add(
+          new RdbmsProviderDefinition(
+              DatabaseTest.c_testDomainProviderID,
+              sqlStorageObjectFactory,
+              DatabaseTest.TestDomainConnectionString,
+              assignedStorageGroups: new[] { typeof(TestDomainAttribute) }));
+
+      storageProviderDefinitionCollection.Add(
+          new NonPersistentProviderDefinition(
+              DatabaseTest.c_nonPersistentTestDomainProviderID,
+              nonPersistentStorageObjectFactory,
+              assignedStorageGroups: new[] { typeof(NonPersistentTestDomainAttribute) }));
+
+      storageProviderDefinitionCollection.Add(
+          new UnitTestStorageProviderStubDefinition(
+              DatabaseTest.c_unitTestStorageProviderStubID,
+              assignedStorageGroups: new[] { typeof(StorageProviderStubAttribute) }));
+
+      storageProviderDefinitionCollection.Add(
+          new RdbmsProviderDefinition(
+              TableInheritanceMappingTest.TableInheritanceTestDomainProviderID,
+              sqlStorageObjectFactory,
+              DatabaseTest.TestDomainConnectionString,
+              assignedStorageGroups: new[] { typeof(TableInheritanceTestDomainAttribute) }));
+
+      var storageSettings = new StorageSettings(
+          defaultStorageProvider,
+          storageProviderDefinitionCollection);
+
+      fakeStorageObjectFactoryFactory.SetUp(sqlStorageObjectFactory);
+      fakeStorageSettingsFactory.SetUp(storageSettings);
+
+      return fakeStorageSettingsFactory;
+    }
+
+    public void Register (DefaultServiceLocator defaultServiceLocator)
+    {
+      Assertion.IsNotNull(_storageSettingsFactory);
+
+      defaultServiceLocator.RegisterSingle<IStorageSettingsFactory>(() => _storageSettingsFactory);
     }
 
     public MappingConfiguration GetMappingConfiguration ()
@@ -117,19 +182,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       return _mappingConfiguration;
     }
 
-    public StorageConfiguration GetPersistenceConfiguration ()
+    public IStorageSettings GetStorageSettings ()
     {
-      return _storageConfiguration;
-    }
-
-    public FakeDomainObjectsConfiguration GetDomainObjectsConfiguration ()
-    {
-      return new FakeDomainObjectsConfiguration(_mappingLoaderConfiguration, _storageConfiguration, _queryConfiguration);
+      return _storageSettings;
     }
 
     public void DisableDatabaseAccess ()
     {
-      foreach (var rdbmsProviderDefinition in _storageConfiguration.StorageProviderDefinitions.OfType<RdbmsProviderDefinition>())
+      foreach (var rdbmsProviderDefinition in _storageSettings.GetStorageProviderDefinitions().OfType<RdbmsProviderDefinition>())
       {
         var connectionString = rdbmsProviderDefinition.ConnectionString;
         var isConnectionStringSet = connectionString != c_databaseDisabledConnectionString;
@@ -143,7 +203,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
     public void EnableDatabaseAccess ()
     {
-      foreach (var rdbmsProviderDefinition in _storageConfiguration.StorageProviderDefinitions.OfType<RdbmsProviderDefinition>())
+      foreach (var rdbmsProviderDefinition in _storageSettings.GetStorageProviderDefinitions().OfType<RdbmsProviderDefinition>())
       {
         if (_originalConnectionStrings.TryGetValue(rdbmsProviderDefinition, out var originalConnectionString))
           PrivateInvoke.SetNonPublicField(rdbmsProviderDefinition, "_connectionString", originalConnectionString);

@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Reflection;
-using Remotion.Utilities;
 
 // ReSharper disable once CheckNamespace
 namespace Remotion.ExtensibleEnums

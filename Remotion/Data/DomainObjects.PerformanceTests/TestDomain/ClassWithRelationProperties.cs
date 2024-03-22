@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.ObjectBinding;
 
 namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain

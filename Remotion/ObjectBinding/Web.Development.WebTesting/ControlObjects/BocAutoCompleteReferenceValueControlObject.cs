@@ -24,7 +24,6 @@ using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
-using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebTestActions;
 using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 
@@ -270,10 +269,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     protected override ElementScope GetLabeledElementScope ()
     {
-      if (IsReadOnly())
-        return Scope.FindChild("TextValue");
-      else
-        return Scope.FindChild("TextValue").FindXPath("..");
+      return Scope.FindChild("TextValue");
     }
 
     private SearchServiceResultItem GetFirstAutoCompleteResult ([NotNull] string filter)

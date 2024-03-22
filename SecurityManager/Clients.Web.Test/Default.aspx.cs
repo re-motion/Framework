@@ -22,7 +22,6 @@ using System.Web.UI;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Security;
-using Remotion.Security.Configuration;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Clients.Web.Test.Domain;
 using Remotion.SecurityManager.Domain;

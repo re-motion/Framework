@@ -48,19 +48,6 @@ div.tabbedMultiViewActiveView > div.contentBorder
   height: 100%;
 }
 
-div.tabbedMultiViewActiveView > div.contentBorder::-webkit-scrollbar-thumb
-{
-  background-color: var(--remotion-themed-scrollbar-color-thumb);
-  border-radius: var(--remotion-themed-scrollbar-border-radius);
-}
-
-div.tabbedMultiViewActiveView > div.contentBorder::-webkit-scrollbar
-{
-  background-color: var(--remotion-themed-scrollbar-color-track);
-  width: var(--remotion-themed-scrollbar-width);
-  height: var(--remotion-themed-scrollbar-width);
-}
-
 div.tabbedMultiViewActiveView > div.contentBorder:focus-visible
 {
   outline: none;

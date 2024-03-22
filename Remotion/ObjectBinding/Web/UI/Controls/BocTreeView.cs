@@ -30,7 +30,6 @@ using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Services;
-using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
@@ -155,14 +154,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    /// <summary> Checks whether the control conforms to the required WAI level. </summary>
-    /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
-    protected virtual void EvaluateWaiConformity ()
-    {
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-        WcagHelper.Instance.HandleError(1, this);
-    }
-
     IEnumerable<string> IControlWithLabel.GetLabelIDs ()
     {
       return GetLabelIDs();
@@ -193,7 +184,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      EvaluateWaiConformity();
 
       base.Render(writer);
     }

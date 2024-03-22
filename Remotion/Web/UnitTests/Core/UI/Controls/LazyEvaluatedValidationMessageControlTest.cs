@@ -17,11 +17,9 @@
 //
 using System;
 using System.Web.UI;
-using System.Xml;
 using JetBrains.Annotations;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls

@@ -58,7 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
-    <Content Include="UrlMapping.xml" />
+    <Content Include="UrlMapping.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -71,6 +73,7 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="UrlMappingFileFinder.cs" />
     <Compile Include="Domain\BaseObject.cs" />
     <Compile Include="Domain\BaseSecurableObject.cs" />
     <Compile Include="Domain\Confidentiality.cs" />
@@ -106,6 +109,10 @@
       <Project>{81E5BEC0-B845-4470-BD19-9FCB121CB413}</Project>
       <Name>Data.DomainObjects.UberProfIntegration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\Data\DomainObjects.Validation\Data.DomainObjects.Validation.csproj">
+      <Project>{04fa07e3-b868-4846-a5e2-4d375f607c22}</Project>
+      <Name>Data.DomainObjects.Validation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Remotion\Data\DomainObjects\Data.DomainObjects.csproj">
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
       <Name>Data.DomainObjects</Name>
@@ -132,6 +139,14 @@
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
       <Name>ObjectBinding.Core</Name>
       <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\ObjectBinding\Validation\ObjectBinding.Validation.csproj">
+      <Project>{a00dd42f-48b0-4e49-b79a-9cd7f401a9f1}</Project>
+      <Name>ObjectBinding.Validation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Remotion\ObjectBinding\Web.Validation\ObjectBinding.Web.Validation.csproj">
+      <Project>{1abecbff-e3bc-4d02-af23-52094cee41de}</Project>
+      <Name>ObjectBinding.Web.Validation</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Remotion\ObjectBinding\Web\ObjectBinding.Web.csproj">
       <Project>{390FBB93-A757-47A7-B769-A64A7465FF84}</Project>

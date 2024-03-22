@@ -33,7 +33,6 @@ using Remotion.Web;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Globalization;
 using Remotion.Web.Services;
-using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Globalization;
@@ -281,8 +280,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       get
       {
-        return ! WcagHelper.Instance.IsWaiConformanceLevelARequired()
-               && _showOptionsMenu && (OptionsMenuItems.Count > 0)
+        return _showOptionsMenu
+               && (OptionsMenuItems.Count > 0)
                && OptionsMenu.IsBrowserCapableOfScripting;
       }
     }

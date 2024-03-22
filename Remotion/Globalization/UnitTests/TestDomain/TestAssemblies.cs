@@ -18,8 +18,6 @@ using System;
 using System.IO;
 using System.Reflection;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
-using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Compilation;
 
 namespace Remotion.Globalization.UnitTests.TestDomain

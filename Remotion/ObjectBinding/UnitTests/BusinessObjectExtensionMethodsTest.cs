@@ -17,10 +17,6 @@
 using System;
 using Moq;
 using NUnit.Framework;
-using Remotion.Mixins;
-using Remotion.ObjectBinding.BindableObject;
-using Remotion.ObjectBinding.BindableObject.Properties;
-using Remotion.ObjectBinding.UnitTests.TestDomain;
 
 namespace Remotion.ObjectBinding.UnitTests
 {

@@ -21,6 +21,7 @@ using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
@@ -31,6 +32,41 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   [TestFixture]
   public class WebTestHelperTest
   {
+    private static readonly HashSet<string> s_relevantProcessNames = new()
+                                                                     {
+                                                                         "chromedriver",
+                                                                         "chrome",
+                                                                         "msedgedriver",
+                                                                         "edge",
+                                                                         "geckodriver",
+                                                                         "firefox"
+                                                                     };
+
+    /// <summary>
+    /// Filter for the driver process names that might be left open if something went wrong.
+    /// Used to close/kill leftover processes after the execution of each test.
+    /// </summary>
+    private static bool RelevantProcessFilter (Process process)
+    {
+      return s_relevantProcessNames.Contains(process.ProcessName);
+    }
+
+    private ProcessSnapshot _beforeTestProcessSnapshot;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _beforeTestProcessSnapshot = ProcessSnapshot.CreateWithFilter(RelevantProcessFilter);
+    }
+
+    [TearDown]
+    public void TearDown ()
+    {
+      var afterTestsProcessSnapshot = ProcessSnapshot.CreateWithFilter(RelevantProcessFilter);
+      var processesStillOpenSnapshot = _beforeTestProcessSnapshot.Difference(afterTestsProcessSnapshot);
+      ProcessUtils.GracefulProcessShutdown(processesStillOpenSnapshot.Processes, TimeSpan.FromSeconds(10));
+    }
+
     [Test]
     public void WebTestHelper_OnTestFixtureTearDown_ClosesMainBrowserSessionProcesses ([Values(true, false)] bool testSuccess)
     {
@@ -91,7 +127,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       SetupWebTestHelper(webTestHelper);
 
       for (var i = 0; i < browserSessions; i++)
-        webTestHelper.CreateNewBrowserSession(false);
+        webTestHelper.CreateNewBrowserSession(new WindowSize(500, 500));
 
       var afterStart = ProcessSnapshot.CreateWithFilter(filter);
       ShutdownWebTestHelper(webTestHelper, testSuccess);
@@ -201,6 +237,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
         _processes = processes;
         _processCount = _processes.GroupBy(p => p.ProcessName).ToDictionary(g => g.Key, g => g.Count());
       }
+
+      public IReadOnlyList<Process> Processes => _processes;
 
       /// <summary>
       /// Returns a new <see cref="ProcessSnapshot"/> containing all processes that are in <paramref name="snapshot"/> but not in <c>this</c>.

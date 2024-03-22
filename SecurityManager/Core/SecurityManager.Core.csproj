@@ -12,7 +12,6 @@
     <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Configuration\SecurityManagerConfiguration.xsd" />
     <EmbeddedResource Include="AclTools\Expansion\AclExpansion.css" />
   </ItemGroup>
   <ItemGroup>
@@ -35,11 +34,6 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <Reference Include="System.Configuration" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="dbschema.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <PropertyGroup>
 <!--    <PostBuildEvent>cd ..\..\..\;.\GenerateSetupDBScript.cmd $(ConfigurationName)</PostBuildEvent>-->

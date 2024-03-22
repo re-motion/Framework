@@ -20,7 +20,6 @@ using System.Reflection;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
-using static Remotion.Utilities.Assertion;
 
 namespace Remotion.Web.ExecutionEngine
 {

@@ -2,7 +2,7 @@
 
 .ac_results 
 {
-  overflow: hidden;
+  overflow: clip;
   z-index: 2147483647;
   /* position and dimension are set via javascript */
   max-height: 20em;
@@ -123,7 +123,7 @@
 
 .ac_informationPopUp 
 {
-  overflow: hidden;
+  overflow: clip;
   white-space: normal;
   z-index: 2147483647;
   /* position and dimension are set via javascript */

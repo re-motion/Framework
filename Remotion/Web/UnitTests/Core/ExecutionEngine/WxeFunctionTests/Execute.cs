@@ -22,7 +22,6 @@ using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
-using Remotion.Web.UnitTests.Core.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
 {
@@ -36,8 +35,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     public void SetUp ()
     {
       TestFunction rootFunction = new TestFunction();
-      WxeContextFactory contextFactory = new WxeContextFactory();
-      _context = contextFactory.CreateContext(rootFunction);
+      _context = WxeContextFactory.Create(rootFunction);
 
       _executionListenerMock = new Mock<IWxeFunctionExecutionListener>(MockBehavior.Strict);
     }

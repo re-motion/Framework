@@ -15,18 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.ObjectBinding;
-using Remotion.ObjectBinding.BindableObject;
-using Remotion.ObjectBinding.BindableObject.Properties;
-using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
-using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Web;
-using Remotion.Web.Configuration;
 using Remotion.Web.UI.Controls;
 
 namespace OBWTest.UI
@@ -38,49 +30,8 @@ namespace OBWTest.UI
   {
     private const string c_mainContentScrollableKey = "MainContentScrollableKey";
 
-    public enum WaiConformanceLevel
-    {
-      Undefined = 0,
-      A = 1,
-      DoubleA = 3,
-      TripleA = 7
-    }
-
-    protected BocEnumValue WaiConformanceLevelField;
     protected TabbedMenu TabbedMenu;
     protected CheckBox MainContentScrollableCheckBox;
-
-    public WaiConformanceLevel ConformanceLevel
-    {
-      get { return (WaiConformanceLevel)WebConfiguration.Current.Wcag.ConformanceLevel; }
-      set { WebConfiguration.Current.Wcag.ConformanceLevel = (Remotion.Web.Configuration.WaiConformanceLevel)value; }
-    }
-
-    protected override void OnLoad (EventArgs e)
-    {
-      base.OnLoad(e);
-
-      Type itemType = GetType();
-      PropertyInfo propertyInfo = itemType.GetProperty("ConformanceLevel");
-      EnumerationProperty property = new EnumerationProperty(
-          new PropertyBase.Parameters(
-              (BindableObjectProvider)BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>(),
-              PropertyInfoAdapter.Create(propertyInfo),
-              propertyInfo.PropertyType,
-              new Lazy<Type>(() => propertyInfo.PropertyType),
-              null,
-              true,
-              false,
-              false,
-              new BindableObjectDefaultValueStrategy(),
-              SafeServiceLocator.Current.GetInstance<IBindablePropertyReadAccessStrategy>(),
-              SafeServiceLocator.Current.GetInstance<IBindablePropertyWriteAccessStrategy>(),
-              SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
-              SafeServiceLocator.Current.GetInstance<IBusinessObjectPropertyConstraintProvider>()));
-
-      WaiConformanceLevelField.Property = property;
-      WaiConformanceLevelField.LoadUnboundValue(ConformanceLevel, IsPostBack);
-    }
 
     protected override void OnPreRender (EventArgs e)
     {
@@ -96,38 +47,10 @@ namespace OBWTest.UI
         (Page.Master as StandardMode)?.SetPageContentScrollable();
     }
 
-    private void WaiConformanceLevelField_SelectionChanged (object sender, EventArgs e)
-    {
-      ConformanceLevel = (WaiConformanceLevel)WaiConformanceLevelField.Value;
-      WaiConformanceLevelField.IsDirty = false;
-    }
-
     protected void MainContentScrollableCheckBox_OnCheckedChanged (object sender, EventArgs e)
     {
       var mainContentScrollable = MainContentScrollableCheckBox.Checked;
       Session[c_mainContentScrollableKey] = mainContentScrollable;
     }
-
-    #region Web Form Designer generated code
-
-    protected override void OnInit (EventArgs e)
-    {
-      //
-      // CODEGEN: This call is required by the ASP.NET Web Form Designer.
-      //
-      InitializeComponent();
-      base.OnInit(e);
-    }
-
-    /// <summary>
-    ///		Required method for Designer support - do not modify
-    ///		the contents of this method with the code editor.
-    /// </summary>
-    private void InitializeComponent ()
-    {
-      this.WaiConformanceLevelField.SelectionChanged += new System.EventHandler(this.WaiConformanceLevelField_SelectionChanged);
-    }
-
-    #endregion
   }
 }

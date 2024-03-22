@@ -21,7 +21,6 @@ using Remotion.Mixins;
 using Remotion.TypePipe;
 using Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentA;
 using Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentB;
-using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Mixins.IntegrationTests
 {

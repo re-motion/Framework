@@ -16,10 +16,17 @@
 // 
 using System;
 using System.Diagnostics;
+using System.IO;
+using NUnit.Framework;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Data.DomainObjects.Queries.Configuration.Loader;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
-  public class StandardConfiguration: BaseConfiguration
+  public sealed class StandardConfiguration
   {
     private static StandardConfiguration s_instance;
 
@@ -41,20 +48,57 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       if (s_instance != null)
         return;
 
+      BaseConfiguration.EnsureInitialized();
+
       s_instance = new StandardConfiguration();
       s_instance.DisableDatabaseAccess();
     }
 
     private readonly DomainObjectIDs _domainObjectIDs;
+    private readonly IQueryDefinitionRepository _queries;
 
     private StandardConfiguration ()
     {
       _domainObjectIDs = new DomainObjectIDs(GetMappingConfiguration());
+      var queryDefinitionFileLoader = new QueryDefinitionFileLoader(GetStorageSettings());
+      _queries = new QueryDefinitionRepository(
+          queryDefinitionFileLoader.LoadQueryDefinitions(
+              Path.Combine(TestContext.CurrentContext.TestDirectory, "QueriesForStandardMapping.xml")));
     }
 
     public DomainObjectIDs GetDomainObjectIDs ()
     {
       return _domainObjectIDs;
+    }
+
+    public IQueryDefinitionRepository GetQueries ()
+    {
+      return _queries;
+    }
+
+    public void Register (DefaultServiceLocator defaultServiceLocator)
+    {
+      BaseConfiguration.Instance.Register(defaultServiceLocator);
+    }
+
+    public IStorageSettings GetStorageSettings ()
+    {
+      return BaseConfiguration.Instance.GetStorageSettings();
+    }
+
+    public MappingConfiguration GetMappingConfiguration ()
+    {
+      return BaseConfiguration.Instance.GetMappingConfiguration();
+    }
+
+    public void DisableDatabaseAccess ()
+    {
+      BaseConfiguration.Instance.DisableDatabaseAccess();
+    }
+
+    public void EnableDatabaseAccess ()
+    {
+      BaseConfiguration.Instance.EnableDatabaseAccess();
     }
   }
 }

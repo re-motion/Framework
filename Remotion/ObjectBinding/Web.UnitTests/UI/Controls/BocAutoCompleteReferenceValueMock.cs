@@ -27,11 +27,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
     }
 
-    public new void EvaluateWaiConformity ()
-    {
-      base.EvaluateWaiConformity();
-    }
-
     public new object SaveControlState ()
     {
       return base.SaveControlState();

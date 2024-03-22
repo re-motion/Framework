@@ -22,19 +22,17 @@ using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 
-
 namespace Remotion.Data.DomainObjects.Persistence
 {
   /// <summary>
   /// <see cref="IStorageObjectFactory"/> defines the API for all storage object factories.
   /// </summary>
+  /// <threadsafety static="true" instance="true"/>
   public interface IStorageObjectFactory
   {
     StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension);
 
-    IPersistenceModelLoader CreatePersistenceModelLoader (
-        StorageProviderDefinition storageProviderDefinition,
-        IStorageProviderDefinitionFinder storageProviderDefinitionFinder);
+    IPersistenceModelLoader CreatePersistenceModelLoader (StorageProviderDefinition storageProviderDefinition);
 
     IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (
         StorageProviderDefinition storageProviderDefinition,

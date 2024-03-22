@@ -20,7 +20,6 @@ using System.Web.UI.WebControls;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
@@ -32,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
   [TestFixture]
   public class BocCheckBoxTest: BocTest
   {
-    private BocCheckBoxMock _bocCheckBox;
+    private BocCheckBox _bocCheckBox;
     private TypeWithBoolean _businessObject;
     private IBusinessObjectDataSource _dataSource;
     private IBusinessObjectBooleanProperty _propertyBooleanValue;
@@ -47,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public override void SetUp ()
     {
       base.SetUp();
-      _bocCheckBox = new BocCheckBoxMock();
+      _bocCheckBox = new BocCheckBox();
       _bocCheckBox.ID = "BocCheckBox";
       NamingContainer.Controls.Add(_bocCheckBox);
 
@@ -59,43 +58,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _dataSource = new StubDataSource(((IBusinessObject)_businessObject).BusinessObjectClass);
       _dataSource.BusinessObject = (IBusinessObject)_businessObject;
     }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelUndefined ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
-      _bocCheckBox.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-    [Test]
-    public void EvaluateWaiConformityLevelA ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-      _bocCheckBox.AutoPostBack = true;
-      _bocCheckBox.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelAWithAutoPostBackTrue ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocCheckBox.AutoPostBack = true;
-      _bocCheckBox.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.True);
-      Assert.That(WcagHelperMock.Priority, Is.EqualTo(1));
-      Assert.That(WcagHelperMock.Control, Is.SameAs(_bocCheckBox));
-      Assert.That(WcagHelperMock.Property, Is.EqualTo("AutoPostBack"));
-    }
-
 
     [Test]
     public void GetTrackedClientIDsInReadOnlyMode ()

@@ -27,7 +27,6 @@ using Remotion.SecurityManager.Clients.Web.WxeFunctions;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.Utilities;
-using Remotion.Web;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Globalization;
 using Remotion.Web.UI;

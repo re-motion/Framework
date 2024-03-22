@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Configuration;
-using System.Reflection;
 using System.Xml;
 using System.Xml.Serialization;
 using Remotion.Web.Schemas;
@@ -35,8 +34,8 @@ public class WebConfiguration: IConfigurationSectionHandler
   public const string ElementName = "remotion.web";
 
   /// <summary> The namespace of the configuration section schema. </summary>
-  /// <remarks> <c>http://www.re-motion.org/web/configuration</c> </remarks>
-  public const string SchemaUri = "http://www.re-motion.org/web/configuration";
+  /// <remarks> <c>http://www.re-motion.org/web/configuration/v2</c> </remarks>
+  public const string SchemaUri = "http://www.re-motion.org/web/configuration/v2";
 
   private static readonly DoubleCheckedLockingContainer<WebConfiguration> s_current =
       new DoubleCheckedLockingContainer<WebConfiguration>(CreateConfig);
@@ -68,9 +67,6 @@ public class WebConfiguration: IConfigurationSectionHandler
   }
 
   private ExecutionEngineConfiguration _executionEngine = new ExecutionEngineConfiguration();
-  private WcagConfiguration _wcag = new WcagConfiguration();
-  private ResourceConfiguration _resources = new ResourceConfiguration();
-  private SmartNavigationConfiguration _smartNavigation = new SmartNavigationConfiguration();
 
   /// <summary> Gets or sets the <see cref="ExecutionEngineConfiguration"/> entry. </summary>
   [XmlElement("executionEngine")]
@@ -78,30 +74,6 @@ public class WebConfiguration: IConfigurationSectionHandler
   {
     get { return _executionEngine; }
     set { _executionEngine = value; }
-  }
-
-  /// <summary> Gets or sets the <see cref="WcagConfiguration"/> entry. </summary>
-  [XmlElement("wcag")]
-  public WcagConfiguration Wcag
-  {
-    get { return _wcag; }
-    set { _wcag = value; }
-  }
-
-  /// <summary> Gets or sets the <see cref="ResourceConfiguration"/> entry. </summary>
-  [XmlElement("resources")]
-  public ResourceConfiguration Resources
-  {
-    get { return _resources; }
-    set { _resources = value; }
-  }
-
-  /// <summary> Gets or sets the <see cref="SmartNavigationConfiguration"/> entry. </summary>
-  [XmlElement("smartNavigation")]
-  public SmartNavigationConfiguration SmartNavigation
-  {
-    get { return _smartNavigation; }
-    set { _smartNavigation = value; }
   }
 
   object IConfigurationSectionHandler.Create (object parent, object configContext, XmlNode section)

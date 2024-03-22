@@ -2,7 +2,6 @@
 using System.IO;
 using System.Web.UI;
 using NUnit.Framework;
-using Remotion.Context;
 
 namespace Remotion.Web.UnitTests.Core
 {

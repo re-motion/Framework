@@ -17,29 +17,28 @@
 using System;
 using System.ComponentModel.Design;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
   public static class MappingReflectorObjectMother
   {
-    public static readonly DomainObjectCreator DomainObjectCreator = MappingReflector.CreateDomainObjectCreator();
-
     public static MappingReflector CreateMappingReflector (ITypeDiscoveryService typeDiscoveryService)
     {
       ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
 
-      return new MappingReflector(
+      return MappingReflector.Create(
           typeDiscoveryService,
-          new ClassIDProvider(),
-          new ReflectionBasedMemberInformationNameResolver(),
-          new PropertyMetadataReflector(),
-          new DomainModelConstraintProvider(),
-          new PropertyDefaultValueProvider(),
-          new SortExpressionDefinitionProvider(),
-          DomainObjectCreator);
+          SafeServiceLocator.Current.GetInstance<IClassIDProvider>(),
+          SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),
+          SafeServiceLocator.Current.GetInstance<IPropertyMetadataProvider>(),
+          SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>(),
+          SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
+          SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
+          SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>());
     }
   }
 }

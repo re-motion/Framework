@@ -17,9 +17,9 @@
 using System;
 using Moq;
 using NUnit.Framework;
-using Remotion.Collections;
 using Remotion.Collections.Caching;
 using Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.Security;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Security;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding;
@@ -54,9 +54,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
 
       _clientTransaction.EnterNonDiscardingScope();
 
+      var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
+
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle(() => _securityProviderStub.Object);
       serviceLocator.RegisterSingle(() => _principalProviderStub.Object);
+      serviceLocator.RegisterSingle(() => storageSettings);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }
 

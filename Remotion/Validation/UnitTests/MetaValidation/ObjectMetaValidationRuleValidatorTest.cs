@@ -15,18 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using Remotion.Logging;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
-using Remotion.Validation.UnitTests.TestHelpers;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.UnitTests.MetaValidation

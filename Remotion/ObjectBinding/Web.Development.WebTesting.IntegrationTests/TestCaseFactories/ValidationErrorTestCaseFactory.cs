@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestPageParameters;

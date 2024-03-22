@@ -18,10 +18,8 @@ using System;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
@@ -55,11 +53,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       var storageNameProvider = new ReflectionBasedStorageNameProvider();
       var infrastructureStoragePropertyDefinitionProvider =
           new InfrastructureStoragePropertyDefinitionProvider(storageTypeInformationProvider, storageNameProvider);
-      var storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage);
       var dataStoragePropertyDefinitionFactory = new DataStoragePropertyDefinitionFactory(
           new ValueStoragePropertyDefinitionFactory(storageTypeInformationProvider, storageNameProvider),
           new RelationStoragePropertyDefinitionFactory(
-              TestDomainStorageProviderDefinition, false, storageNameProvider, storageTypeInformationProvider, storageProviderDefinitionFinder));
+              TestDomainStorageProviderDefinition, false, storageNameProvider, storageTypeInformationProvider, StorageSettings));
       _factory = new RdbmsProviderCommandFactory(
           TestDomainStorageProviderDefinition,
           new SqlDbCommandBuilderFactory(new SqlDialect()),

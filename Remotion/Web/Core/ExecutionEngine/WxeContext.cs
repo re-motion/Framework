@@ -21,6 +21,7 @@ using System.Web;
 using System.Web.UI;
 using Remotion.Context;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.UrlMapping;
 using Remotion.Web.Utilities;
@@ -59,26 +60,28 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks> Call this method only from pages not implementing <see cref="IWxePage"/>. </remarks>
     /// <exception cref="WxeException">
     ///   Thrown if no mapping for the <paramref name="functionType"/> has been defined, and the 
-    ///   <see cref="Remotion.Web.Configuration.ExecutionEngineConfiguration.DefaultWxeHandler"/> is not set. 
+    ///   <see cref="Remotion.Web.ExecutionEngine.WxeUrlSettings.DefaultWxeHandler"/> is not set.
     /// </exception>
     /// <include file='..\doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="httpContext" or @name="functionType" or @name="urlParameters"]' />
     public static string GetPermanentUrl (HttpContextBase httpContext, Type functionType, NameValueCollection urlParameters)
     {
-      return GetPermanentUrl(httpContext, functionType, urlParameters, false);
+      var wxeUrlSettings = SafeServiceLocator.Current.GetInstance<WxeUrlSettings>();
+      return GetPermanentUrl(httpContext, functionType, urlParameters, false, wxeUrlSettings);
     }
 
     /// <summary> 
     ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
     ///   and using the <paramref name="urlParameters"/>.
     /// </summary>
-    /// <include file='..\doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="httpContext" or @name="functionType" or @name="urlParameters" or @name="fallbackOnCurrentUrl"]' />
-    protected static string GetPermanentUrl (HttpContextBase httpContext, Type functionType, NameValueCollection urlParameters, bool fallbackOnCurrentUrl)
+    /// <include file='..\doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="httpContext" or @name="functionType" or @name="urlParameters" or @name="fallbackOnCurrentUrl" or @name="wxeUrlSettings"]' />
+    protected static string GetPermanentUrl (HttpContextBase httpContext, Type functionType, NameValueCollection urlParameters, bool fallbackOnCurrentUrl, WxeUrlSettings wxeUrlSettings)
     {
       ArgumentUtility.CheckNotNull("httpContext", httpContext);
       ArgumentUtility.CheckNotNull("functionType", functionType);
       if (!typeof(WxeFunction).IsAssignableFrom(functionType))
         throw new ArgumentException(string.Format("The functionType '{0}' must be derived from WxeFunction.", functionType), "functionType");
       ArgumentUtility.CheckNotNull("urlParameters", urlParameters);
+      ArgumentUtility.CheckNotNull("wxeUrlSettings", wxeUrlSettings);
 
       NameValueCollection internalUrlParameters = NameValueCollectionUtility.Clone(urlParameters);
       UrlMapping.UrlMappingEntry? mappingEntry = UrlMapping.UrlMappingConfiguration.Current.Mappings[functionType];
@@ -91,8 +94,7 @@ namespace Remotion.Web.ExecutionEngine
       string path;
       if (mappingEntry == null)
       {
-        string defaultWxeHandler = Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
-        if (string.IsNullOrEmpty(defaultWxeHandler))
+        if (string.IsNullOrEmpty(wxeUrlSettings.DefaultWxeHandler))
         {
           if (fallbackOnCurrentUrl)
             path = httpContext.Request.Url.AbsolutePath;
@@ -104,7 +106,7 @@ namespace Remotion.Web.ExecutionEngine
         }
         else
         {
-          path = defaultWxeHandler;
+          path = wxeUrlSettings.DefaultWxeHandler;
         }
       }
       else
@@ -115,15 +117,15 @@ namespace Remotion.Web.ExecutionEngine
       string permanentUrl = UrlUtility.ResolveUrlCaseSensitive(httpContext, path)
                             + UrlUtility.FormatQueryString(internalUrlParameters, httpContext.Response.ContentEncoding);
 
-      int maxLength = Configuration.WebConfiguration.Current.ExecutionEngine.MaximumUrlLength;
-      if (permanentUrl.Length > maxLength)
+      var maximumUrlLength = wxeUrlSettings.MaximumUrlLength;
+      if (permanentUrl.Length > maximumUrlLength)
       {
         throw new WxePermanentUrlTooLongException(
             string.Format(
                 "Error while creating the permanent URL for WXE function '{0}'. "
                 + "The URL exceeds the maximum length of {1} bytes. Generated URL: {2}",
                 functionType.Name,
-                maxLength,
+                maximumUrlLength,
                 permanentUrl));
       }
 
@@ -215,16 +217,29 @@ namespace Remotion.Web.ExecutionEngine
     private readonly WxeFunctionState _functionState;
     private readonly NameValueCollection _queryString;
 
-    public WxeContext (HttpContextBase context, WxeFunctionStateManager functionStateManager, WxeFunctionState functionState, NameValueCollection queryString)
+    private readonly WxeUrlSettings _wxeUrlSettings;
+    private readonly IWxeLifetimeManagementSettings _wxeLifetimeManagementSettings;
+
+    public WxeContext (
+        HttpContextBase context,
+        WxeFunctionStateManager functionStateManager,
+        WxeFunctionState functionState,
+        NameValueCollection queryString,
+        WxeUrlSettings wxeUrlSettings,
+        IWxeLifetimeManagementSettings wxeLifetimeManagementSettings)
     {
       ArgumentUtility.CheckNotNull("context", context);
       ArgumentUtility.CheckNotNull("functionStateManager", functionStateManager);
       ArgumentUtility.CheckNotNull("functionState", functionState);
+      ArgumentUtility.CheckNotNull("wxeUrlSettings", wxeUrlSettings);
+      ArgumentUtility.CheckNotNull("wxeLifetimeManagementSettings", wxeLifetimeManagementSettings);
 
       _httpContext = context;
       _functionStateManager = functionStateManager;
 
       _functionState = functionState;
+      _wxeUrlSettings = wxeUrlSettings;
+      _wxeLifetimeManagementSettings = wxeLifetimeManagementSettings;
 
       if (queryString == null)
       {
@@ -357,19 +372,19 @@ namespace Remotion.Web.ExecutionEngine
     {
       ArgumentUtility.CheckNotNull("urlParameters", urlParameters);
 
-      string permanentUrl = WxeContext.GetPermanentUrl(_httpContext, functionType, urlParameters, true);
+      string permanentUrl = GetPermanentUrl(_httpContext, functionType, urlParameters, true, _wxeUrlSettings);
 
       if (useParentPermanentUrl)
       {
         if (urlParameters[WxeHandler.Parameters.ReturnUrl] != null)
           throw new ArgumentException("The 'urlParameters' collection must not contain a 'ReturnUrl' parameter when creating a parent permanent URL.", "urlParameters");
 
-        int maxLength = Configuration.WebConfiguration.Current.ExecutionEngine.MaximumUrlLength;
+        var maximumUrlLength = _wxeUrlSettings.MaximumUrlLength;
 
         string currentFunctionUrl = UrlUtility.AddParameters(_httpContext.Request.Url.AbsolutePath, _queryString, _httpContext.Response.ContentEncoding);
         StringCollection parentPermanentUrls = ExtractReturnUrls(currentFunctionUrl);
 
-        int count = GetMergeablePermanentUrlCount(permanentUrl, parentPermanentUrls, maxLength);
+        int count = GetMergeablePermanentUrlCount(permanentUrl, parentPermanentUrls, maximumUrlLength);
         string? parentPermanentUrl = FormatParentPermanentUrl(parentPermanentUrls, count);
 
         if (!string.IsNullOrEmpty(parentPermanentUrl))
@@ -409,7 +424,7 @@ namespace Remotion.Web.ExecutionEngine
     internal string GetFunctionTokenForExternalFunction (WxeFunction function, bool returnFromExecute)
     {
       bool enableCleanUp = !returnFromExecute;
-      WxeFunctionState functionState = new WxeFunctionState(function, enableCleanUp);
+      WxeFunctionState functionState = new WxeFunctionState(function, _wxeLifetimeManagementSettings.FunctionTimeout, enableCleanUp);
       _functionStateManager.Add(functionState);
       return functionState.FunctionToken;
     }

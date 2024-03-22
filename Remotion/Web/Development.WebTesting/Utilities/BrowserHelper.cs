@@ -19,7 +19,6 @@ using System.Drawing;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Internal;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
@@ -39,6 +38,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     /// <summary>
     /// Returns the window bounds of the window associated with the specified <paramref name="browserWindow"/>.
+    /// Requires UI.
     /// </summary>
     public Rectangle GetBrowserContentBounds ([NotNull] BrowserWindow browserWindow)
     {
@@ -49,6 +49,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     /// <summary>
     /// Returns the window bounds of the window associated with the specified <paramref name="browserSession"/>.
+    /// Requires UI.
     /// </summary>
     public Rectangle GetBrowserContentBounds ([NotNull] IBrowserSession browserSession)
     {
@@ -59,6 +60,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     /// <summary>
     /// Returns the window bounds of the window associated with the specified <paramref name="controlObject"/>.
+    /// Requires UI.
     /// </summary>
     public Rectangle GetBrowserContentBounds ([NotNull] ControlObject controlObject)
     {
@@ -69,6 +71,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     /// <summary>
     /// Returns the window bounds of the window associated with the specified <paramref name="element"/>.
+    /// Requires UI.
     /// </summary>
     public Rectangle GetBrowserContentBounds ([NotNull] ElementScope element)
     {
@@ -79,6 +82,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     /// <summary>
     /// Returns the window bounds of the window associated with the specified <paramref name="webElement"/>.
+    /// Requires UI.
     /// </summary>
     public Rectangle GetBrowserContentBounds ([NotNull] IWebElement webElement)
     {
@@ -89,6 +93,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     /// <summary>
     /// Returns the window bounds of the window associated with the specified <paramref name="webDriver"/>.
+    /// Requires UI.
     /// </summary>
     public Rectangle GetBrowserContentBounds ([NotNull] IWebDriver webDriver)
     {
@@ -99,6 +104,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     /// <summary>
     /// Returns the offset between window position and browser content position of the window associated with the specified <paramref name="browserWindow"/>.
+    /// Requires UI.
     /// </summary>
     public Size GetBrowserContentOffset ([NotNull] BrowserWindow browserWindow)
     {
@@ -109,6 +115,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     /// <summary>
     /// Returns the offset between window position and browser content position of the window associated with the specified <paramref name="browserSession"/>.
+    /// Requires UI.
     /// </summary>
     public Size GetBrowserContentOffset ([NotNull] IBrowserSession browserSession)
     {
@@ -119,6 +126,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     /// <summary>
     /// Returns the offset between window position and browser content position of the window associated with the specified <paramref name="controlObject"/>.
+    /// Requires UI.
     /// </summary>
     public Size GetBrowserContentOffset ([NotNull] ControlObject controlObject)
     {
@@ -129,6 +137,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     /// <summary>
     /// Returns the offset between window position and browser content position of the window associated with the specified <paramref name="element"/>.
+    /// Requires UI.
     /// </summary>
     public Size GetBrowserContentOffset ([NotNull] ElementScope element)
     {
@@ -139,6 +148,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     /// <summary>
     /// Returns the offset between window position and browser content position of the window associated with the specified <paramref name="webElement"/>.
+    /// Requires UI.
     /// </summary>
     public Size GetBrowserContentOffset ([NotNull] IWebElement webElement)
     {
@@ -149,6 +159,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     /// <summary>
     /// Returns the offset between window position and browser content position of the window associated with the specified <paramref name="webDriver"/>.
+    /// Requires UI.
     /// </summary>
     public Size GetBrowserContentOffset ([NotNull] IWebDriver webDriver)
     {
@@ -246,6 +257,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     /// <summary>
     /// Resizes the browser window so that the browser content matches the specified <paramref name="size"/>.
+    /// Requires UI.
     /// </summary>
     public void ResizeBrowserContentTo ([NotNull] BrowserWindow window, Size size)
     {

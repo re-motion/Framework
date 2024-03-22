@@ -22,7 +22,6 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Development.Moq.UnitTesting;
-using Remotion.Development.UnitTesting;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement

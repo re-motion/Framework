@@ -15,18 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
-using Moq;
 using NUnit.Framework;
 using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Validation.Implementation;
-using Remotion.Validation.Merging;
 using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestDomain.Collectors;
-using Remotion.Validation.UnitTests.TestDomain.Validators;
-using Remotion.Validation.UnitTests.TestHelpers;
-using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.UnitTests.RoleCollectors
 {

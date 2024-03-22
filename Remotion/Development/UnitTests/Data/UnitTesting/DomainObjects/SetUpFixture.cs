@@ -17,18 +17,10 @@
 using System;
 using System.ComponentModel.Design;
 using NUnit.Framework;
-using Remotion.Configuration;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Remotion.Data.DomainObjects.Development;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Mapping.Configuration;
-using Remotion.Data.DomainObjects.Persistence;
-using Remotion.Data.DomainObjects.Persistence.Configuration;
-using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
-using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Development.Data.UnitTesting.DomainObjects.Configuration;
 using Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects.TestDomain;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
@@ -45,15 +37,7 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
     {
       try
       {
-        ProviderCollection<StorageProviderDefinition> providers = new ProviderCollection<StorageProviderDefinition>();
-        providers.Add(new RdbmsProviderDefinition("Development.Data.DomainObjects", new SqlStorageObjectFactory(), "ConnectionString"));
-        StorageConfiguration storageConfiguration = new StorageConfiguration(providers, providers["Development.Data.DomainObjects"]);
-
-        DomainObjectsConfiguration.SetCurrent(
-            new FakeDomainObjectsConfiguration(
-                new MappingLoaderConfiguration(),
-                storageConfiguration,
-                new QueryConfiguration()));
+        var storageSettings = FakeStorageSettings.CreateForSqlServer("ConnectionString");
 
         var rootAssemblyFinder = new FixedRootAssemblyFinder(new RootAssembly(typeof(TestDomainObject).Assembly, true));
         var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
@@ -61,8 +45,8 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
         ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService(assemblyFinder);
 
         MappingConfiguration.SetCurrent(
-            new MappingConfiguration(
-                new MappingReflector(
+            MappingConfiguration.Create(
+                MappingReflector.Create(
                     typeDiscoveryService,
                     new ClassIDProvider(),
                     new ReflectionBasedMemberInformationNameResolver(),
@@ -71,7 +55,7 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
                     new PropertyDefaultValueProvider(),
                     new SortExpressionDefinitionProvider(),
                     new ThrowingDomainObjectCreator()),
-                new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
+                new PersistenceModelLoader(storageSettings)));
       }
       catch (Exception e)
       {

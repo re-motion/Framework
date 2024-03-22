@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
@@ -22,6 +23,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   /// <summary>
   /// The <see cref="ClassIDProvider"/> provides the class-id for a given <see cref="Type"/>.
   /// </summary>
+  [ImplementationFor(typeof(IClassIDProvider), Lifetime = LifetimeKind.Singleton)]
   public class ClassIDProvider : IClassIDProvider
   {
     public string GetClassID (Type type)

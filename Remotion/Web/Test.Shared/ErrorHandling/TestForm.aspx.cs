@@ -21,7 +21,6 @@ using System.Web;
 using System.Web.Hosting;
 using System.Web.UI;
 using Remotion.ServiceLocation;
-using Remotion.Web.Resources;
 using Remotion.Web.UI;
 
 namespace Remotion.Web.Test.Shared.ErrorHandling

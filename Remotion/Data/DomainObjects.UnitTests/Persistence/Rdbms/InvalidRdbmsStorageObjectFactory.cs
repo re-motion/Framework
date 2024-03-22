@@ -43,8 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     public IPersistenceModelLoader CreatePersistenceModelLoader (
-        StorageProviderDefinition storageProviderDefinition,
-        IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
+        StorageProviderDefinition storageProviderDefinition)
     {
       throw new NotImplementedException();
     }
@@ -75,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     public IDataStoragePropertyDefinitionFactory CreateDataStoragePropertyDefinitionFactory (
         StorageProviderDefinition storageProviderDefinition,
-        IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
+        IStorageSettings storageSettings)
     {
       throw new NotImplementedException();
     }
@@ -87,7 +86,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     public IRelationStoragePropertyDefinitionFactory CreateRelationStoragePropertyDefinitionFactory (
         StorageProviderDefinition storageProviderDefinition,
-        IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
+        IStorageSettings storageSettings)
     {
       throw new NotImplementedException();
     }
@@ -122,7 +121,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       throw new NotImplementedException();
     }
 
-    public IStorageProviderDefinitionFinder CreateStorageProviderDefinitionFinder ()
+    public IStorageSettings CreateStorageProviderDefinitionFinder ()
     {
       throw new NotImplementedException();
     }

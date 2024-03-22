@@ -16,9 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
@@ -31,7 +29,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
   public class RdbmsPersistenceModelLoaderIntegrationTest : StandardMappingTest
   {
     private RdbmsProviderDefinition _storageProviderDefinition;
-    private StorageGroupBasedStorageProviderDefinitionFinder _storageProviderDefinitionFinder;
 
     private RdbmsPersistenceModelLoader _rdbmsPersistenceModelLoader;
 
@@ -52,13 +49,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     {
       base.SetUp();
 
-      _storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage);
-      _storageProviderDefinition = (RdbmsProviderDefinition)_storageProviderDefinitionFinder.GetStorageProviderDefinition(
-          storageGroupTypeOrNull: null, errorMessageContext: "SetUp");
+      _storageProviderDefinition = (RdbmsProviderDefinition)StorageSettings.GetStorageProviderDefinition(storageGroupTypeOrNull: null);
 
       var factory = _storageProviderDefinition.Factory;
-      _rdbmsPersistenceModelLoader =
-          (RdbmsPersistenceModelLoader)factory.CreatePersistenceModelLoader(_storageProviderDefinition, _storageProviderDefinitionFinder);
+      _rdbmsPersistenceModelLoader = (RdbmsPersistenceModelLoader)factory.CreatePersistenceModelLoader(_storageProviderDefinition);
 
       _testModel = new RdbmsPersistenceModelLoaderTestHelper();
 

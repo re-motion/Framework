@@ -19,7 +19,6 @@ using System.Linq;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;

@@ -17,7 +17,6 @@
 using System;
 using System.Web.UI;
 using System.Xml;
-using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;

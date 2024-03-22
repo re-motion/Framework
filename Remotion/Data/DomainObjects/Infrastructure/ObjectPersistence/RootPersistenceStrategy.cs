@@ -21,10 +21,10 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
@@ -36,10 +36,18 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   public class RootPersistenceStrategy : IFetchEnabledPersistenceStrategy
   {
     private readonly Guid _transactionID;
+    private readonly IStorageSettings _storageSettings;
+    private readonly IPersistenceExtensionFactory _persistenceExtensionFactory;
 
-    public RootPersistenceStrategy (Guid transactionID)
+    public RootPersistenceStrategy (Guid transactionID, IStorageSettings storageSettings, IPersistenceExtensionFactory persistenceExtensionFactory)
     {
+      ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
+      ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
+      ArgumentUtility.CheckNotNull("persistenceExtensionFactory", persistenceExtensionFactory);
+
       _transactionID = transactionID;
+      _storageSettings = storageSettings;
+      _persistenceExtensionFactory = persistenceExtensionFactory;
     }
 
     public Guid TransactionID
@@ -196,17 +204,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     protected virtual PersistenceManager CreatePersistenceManager ()
     {
-      return new PersistenceManager(CreatePersistenceExtension());
+      return new PersistenceManager(CreatePersistenceExtension(), _storageSettings);
     }
 
     private StorageProviderManager CreateStorageProviderManager ()
     {
-      return new StorageProviderManager(CreatePersistenceExtension());
+      return new StorageProviderManager(CreatePersistenceExtension(), _storageSettings);
     }
 
     protected IPersistenceExtension CreatePersistenceExtension ()
     {
-      var listenerFactory = SafeServiceLocator.Current.GetInstance<IPersistenceExtensionFactory>();
+      var listenerFactory = _persistenceExtensionFactory;
       return new CompoundPersistenceExtension(listenerFactory.CreatePersistenceExtensions(_transactionID));
     }
 

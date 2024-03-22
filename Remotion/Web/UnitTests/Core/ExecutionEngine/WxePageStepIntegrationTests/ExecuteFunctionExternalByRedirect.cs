@@ -60,7 +60,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
 
       _httpContextMock = new Mock<HttpContextBase>();
       _pageExecutorMock = new Mock<IWxePageExecutor>(MockBehavior.Strict);
-      _functionState = new WxeFunctionState(_rootFunction, true);
+      _functionState = new WxeFunctionState(_rootFunction, 20, true);
 
       _pageStep = new Mock<WxePageStep>("ThePage") { CallBase = true };
       _pageStep.Object.SetPageExecutor(_pageExecutorMock.Object);
@@ -70,6 +70,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       _postBackCollection = new NameValueCollection { { "Key", "Value" } };
       _wxeHandler = new WxeHandler();
 
+      UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
       UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(_rootFunction.GetType(), "~/root.wxe"));
       UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(_subFunction.Object.GetType(), "~/sub.wxe"));
 
@@ -86,8 +87,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       _requestMock.Setup(stub => stub.ApplicationPath).Returns("/AppDir");
       _httpContextMock.Setup(stub => stub.Request).Returns(_requestMock.Object);
 
-      _wxeContext = new WxeContext(_httpContextMock.Object, _functionStateManager, _functionState, new NameValueCollection());
-      WxeContextMock.SetCurrent(_wxeContext);
+      _wxeContext = new WxeContext(
+          _httpContextMock.Object,
+          _functionStateManager,
+          _functionState,
+          new NameValueCollection(),
+          new WxeUrlSettings(),
+          new WxeLifetimeManagementSettings());
+      WxeContext.SetCurrent(_wxeContext);
     }
 
     [Test]

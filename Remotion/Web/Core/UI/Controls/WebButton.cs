@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
@@ -298,20 +297,8 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    /// <summary> Checks whether the control conforms to the required WAI level. </summary>
-    /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
-    protected virtual void EvaluateWaiConformity ()
-    {
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-      {
-        if (!_useLegacyButton)
-          WcagHelper.Instance.HandleError(1, this, "UseLegacyButton");
-      }
-    }
-
     protected override void RenderContents (HtmlTextWriter writer)
     {
-      EvaluateWaiConformity();
 
       if (IsLegacyButtonEnabled)
         return;
@@ -410,7 +397,7 @@ namespace Remotion.Web.UI.Controls
 
     protected bool IsLegacyButtonEnabled
     {
-      get { return WcagHelper.Instance.IsWaiConformanceLevelARequired() || _useLegacyButton; }
+      get { return _useLegacyButton; }
     }
 
     [Category("Behavior")]

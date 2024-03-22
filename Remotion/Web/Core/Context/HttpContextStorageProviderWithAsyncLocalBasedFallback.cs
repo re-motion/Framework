@@ -20,7 +20,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Web;
 using Remotion.Context;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Context

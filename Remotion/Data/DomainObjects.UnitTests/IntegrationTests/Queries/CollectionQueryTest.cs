@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void CollectionQuery ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("CustomerTypeQuery");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomerTypeQuery"));
       query.Parameters.Add("@customerType", Customer.CustomerType.Standard);
 
       var customers = QueryManager.GetCollection(query);
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void CollectionQuery_WithObjectList ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("CustomerTypeQuery");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomerTypeQuery"));
       query.Parameters.Add("@customerType", Customer.CustomerType.Standard);
 
       var customers = QueryManager.GetCollection<Customer>(query).ToObjectList();
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void CollectionQuery_WithObjectList_WorksWhenAssignableCollectionType ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("OrderByOfficialQuery");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderByOfficialQuery"));
       query.Parameters.Add("@officialID", DomainObjectIDs.Official1);
 
       var orders = QueryManager.GetCollection<Order>(query).ToCustomCollection();
@@ -130,7 +130,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void CollectionQuery_WithObjectList_ThrowsWhenInvalidT ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("CustomerTypeQuery");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomerTypeQuery"));
       query.Parameters.Add("@customerType", Customer.CustomerType.Standard);
       Assert.That(
           () => QueryManager.GetCollection<Order>(query),
@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void CollectionQuery_WithObjectList_WorksWhenUnassignableCollectionType ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("QueryWithSpecificCollectionType");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("QueryWithSpecificCollectionType"));
 
       var result = QueryManager.GetCollection<Order>(query);
       Assert.That(result.Count, Is.GreaterThan(0));
@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void GetStoredProcedureResult ()
     {
-      var orders = (OrderCollection)QueryManager.GetCollection(QueryFactory.CreateQueryFromConfiguration("StoredProcedureQuery")).ToCustomCollection();
+      var orders = (OrderCollection)QueryManager.GetCollection(QueryFactory.CreateQuery(Queries.GetMandatory("StoredProcedureQuery"))).ToCustomCollection();
 
       Assert.IsNotNull(orders, "OrderCollection is null");
       Assert.AreEqual(2, orders.Count, "Order count");
@@ -165,7 +165,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void GetStoredProcedureResultWithParameter ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration("StoredProcedureQueryWithParameter");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("StoredProcedureQueryWithParameter"));
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer1.Value);
       var orders = (OrderCollection)QueryManager.GetCollection(query).ToCustomCollection();
 
@@ -180,7 +180,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     {
       DomainObjectIDs.Order1.GetObject<Order>(); // ensure Order1 already exists in transaction
 
-      var orders = (OrderCollection)QueryManager.GetCollection(QueryFactory.CreateQueryFromConfiguration("StoredProcedureQuery")).ToCustomCollection();
+      var orders = (OrderCollection)QueryManager.GetCollection(QueryFactory.CreateQuery(Queries.GetMandatory("StoredProcedureQuery"))).ToCustomCollection();
       Assert.AreEqual(2, orders.Count, "Order count");
 
       foreach (Order order in orders)
@@ -236,12 +236,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
       var listenerMock = new Mock<IClientTransactionListener>();
       listenerMock
           .Setup(mock => mock.FilterQueryResult(TestableClientTransaction, It.IsAny<QueryResult<DomainObject>>()))
-          .Returns(TestQueryFactory.CreateTestQueryResult<DomainObject>())
+          .Returns(TestQueryFactory.CreateTestQueryResult(StorageSettings))
           .Callback((ClientTransaction clientTransaction, QueryResult<DomainObject> queryResult) => DomainObjectIDs.OrderItem1.GetObject<OrderItem>())
           .Verifiable();
       TestableClientTransaction.AddListener(listenerMock.Object);
 
-      var query = QueryFactory.CreateQueryFromConfiguration("OrderQuery");
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderQuery"));
       query.Parameters.Add("customerID", DomainObjectIDs.Customer1);
       TestableClientTransaction.QueryManager.GetCollection(query);
 

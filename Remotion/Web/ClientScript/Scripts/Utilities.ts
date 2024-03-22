@@ -61,20 +61,20 @@ class TypeUtility
     return TypeUtility.IsDefined(value) && value == null;
   };
 
-  public static HasProperty<TTarget, TKey extends string>(target: TTarget, key: TKey): target is TTarget & Record<TKey, unknown>
+  public static HasProperty<TTarget extends object, TKey extends string>(target: TTarget, key: TKey): target is TTarget & Record<TKey, unknown>
   {
     return key in target;
   }
 
-  public static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "string"): target is TTarget & Record<TKey, string>;
-  public static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "number"): target is TTarget & Record<TKey, number>;
-  public static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "bigint"): target is TTarget & Record<TKey, bigint>;
-  public static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "boolean"): target is TTarget & Record<TKey, boolean>;
-  public static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "symbol"): target is TTarget & Record<TKey, symbol>;
-  public static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "undefined"): target is TTarget & Record<TKey, undefined>;
-  public static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "object"): target is TTarget & Record<TKey, object>;
-  public static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: "function"): target is TTarget & Record<TKey, Function>;
-  public static HasPropertyOfType<TTarget, TKey extends string>(target: TTarget, key: TKey, type?: string): target is TTarget & Record<TKey, unknown>
+  public static HasPropertyOfType<TTarget extends object, TKey extends string>(target: TTarget, key: TKey, type?: "string"): target is TTarget & Record<TKey, string>;
+  public static HasPropertyOfType<TTarget extends object, TKey extends string>(target: TTarget, key: TKey, type?: "number"): target is TTarget & Record<TKey, number>;
+  public static HasPropertyOfType<TTarget extends object, TKey extends string>(target: TTarget, key: TKey, type?: "bigint"): target is TTarget & Record<TKey, bigint>;
+  public static HasPropertyOfType<TTarget extends object, TKey extends string>(target: TTarget, key: TKey, type?: "boolean"): target is TTarget & Record<TKey, boolean>;
+  public static HasPropertyOfType<TTarget extends object, TKey extends string>(target: TTarget, key: TKey, type?: "symbol"): target is TTarget & Record<TKey, symbol>;
+  public static HasPropertyOfType<TTarget extends object, TKey extends string>(target: TTarget, key: TKey, type?: "undefined"): target is TTarget & Record<TKey, undefined>;
+  public static HasPropertyOfType<TTarget extends object, TKey extends string>(target: TTarget, key: TKey, type?: "object"): target is TTarget & Record<TKey, object>;
+  public static HasPropertyOfType<TTarget extends object, TKey extends string>(target: TTarget, key: TKey, type?: "function"): target is TTarget & Record<TKey, Function>;
+  public static HasPropertyOfType<TTarget extends object, TKey extends string>(target: TTarget, key: TKey, type?: string): target is TTarget & Record<TKey, unknown>
   {
     return TypeUtility.HasProperty(target, key) && typeof target[key] === type;
   }
@@ -195,7 +195,7 @@ class PageUtility
   {
     ArgumentUtility.CheckNotNull('element', element);
 
-    var html = window.document.body.parentNode;
+    const html = window.document.body.parentNode;
     let node: Nullable<Node & ParentNode> = element;
     while (node)
     {
@@ -252,8 +252,8 @@ class WebServiceUtility
       },
       function (err: Sys.Net.WebServiceError, userContext: never, methodName: string) {
         executingRequest = null;
-        var isTimedOut = err.get_timedOut();
-        var isAborting = !isTimedOut && err.get_statusCode() === -1;
+        const isTimedOut = err.get_timedOut();
+        const isAborting = !isTimedOut && err.get_statusCode() === -1;
         if (!isAborting)
         {
           onError (err);

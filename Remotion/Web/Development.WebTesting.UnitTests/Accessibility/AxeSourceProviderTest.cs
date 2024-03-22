@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
     [Test]
     public void GetSource_ReturnsJsSource ()
     {
-      var expected = "/*! axe v3.5.6\n";
+      var expected = "/*! axe v4.8.2\n";
       var axeSourceProvider = new AxeSourceProvider();
 
       var result = axeSourceProvider.GetSource();

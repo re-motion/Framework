@@ -23,7 +23,6 @@ using System.Web.UI;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Compilation;
-using Remotion.Web.Configuration;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.SmartPageImplementation;
@@ -510,16 +509,12 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
   /// <summary> Gets the evaluated value for the <see cref="EnableSmartScrolling"/> property. </summary>
   /// <value> 
-  ///   <see langword="false"/> if <see cref="EnableSmartScrolling"/> is <see langword="false"/>
-  ///   or the <see cref="SmartNavigationConfiguration.EnableScrolling"/> configuration setting is 
-  ///   <see langword="false"/>.
+  ///   <see langword="false"/> if <see cref="EnableSmartScrolling"/> is <see langword="false"/>.
   /// </value>
   protected virtual bool IsSmartScrollingEnabled
   {
     get
     {
-      if (! WebConfiguration.Current.SmartNavigation.EnableScrolling)
-        return false;
       return _enableSmartScrolling != false;
     }
   }
@@ -550,16 +545,12 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
   /// <summary> Gets the evaluated value for the <see cref="EnableSmartFocusing"/> property. </summary>
   /// <value> 
-  ///   <see langword="false"/> if <see cref="EnableSmartFocusing"/> is <see langword="false"/>
-  ///   or the <see cref="SmartNavigationConfiguration.EnableFocusing"/> configuration setting is 
-  ///   <see langword="false"/>.
+  ///   <see langword="false"/> if <see cref="EnableSmartFocusing"/> is <see langword="false"/>.
   /// </value>
   protected virtual bool IsSmartFocusingEnabled
   {
     get
     {
-      if (! WebConfiguration.Current.SmartNavigation.EnableFocusing)
-        return false;
       return _enableSmartFocusing != false;
     }
   }

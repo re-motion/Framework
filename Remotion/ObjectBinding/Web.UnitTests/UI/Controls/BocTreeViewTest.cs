@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
 
@@ -29,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
   [TestFixture]
   public class BocTreeViewTest : BocTest
   {
-    private BocTreeViewMock _bocTreeView;
+    private BocTreeView _bocTreeView;
     private TypeWithReference _businessObject;
     private BusinessObjectReferenceDataSource _dataSource;
 
@@ -42,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public override void SetUp ()
     {
       base.SetUp();
-      _bocTreeView = new BocTreeViewMock();
+      _bocTreeView = new BocTreeView();
       _bocTreeView.ID = "BocTreeView";
       NamingContainer.Controls.Add(_bocTreeView);
 
@@ -50,40 +49,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       _dataSource = new BusinessObjectReferenceDataSource();
       _dataSource.BusinessObject = (IBusinessObject)_businessObject;
-    }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelUndefined ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
-      _bocTreeView.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-    [Test]
-    public void EvaluateWaiConformityLevelA ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-      _bocTreeView.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelA ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocTreeView.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasError, Is.True);
-      Assert.That(WcagHelperMock.Priority, Is.EqualTo(1));
-      Assert.That(WcagHelperMock.Control, Is.SameAs(_bocTreeView));
-      Assert.That(WcagHelperMock.Property, Is.Null);
     }
 
     [Test]

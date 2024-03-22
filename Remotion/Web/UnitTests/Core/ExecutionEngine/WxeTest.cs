@@ -26,14 +26,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
   public class WxeTest
   {
     private HttpContext _currentHttpContext;
-    private WxeContextMock _currentWxeContext;
+    private WxeContext _currentWxeContext;
 
     public HttpContext CurrentHttpContext
     {
       get { return _currentHttpContext; }
     }
 
-    public WxeContextMock CurrentWxeContext
+    public WxeContext CurrentWxeContext
     {
       get { return _currentWxeContext; }
     }
@@ -44,7 +44,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       _currentHttpContext = HttpContextHelper.CreateHttpContext("GET", "default.html", null);
       HttpContextHelper.SetCurrent(_currentHttpContext);
 
-      _currentWxeContext = new WxeContextMock(_currentHttpContext);
+      _currentWxeContext = WxeContextFactory.Create(_currentHttpContext, new WxeUrlSettings(), new WxeLifetimeManagementSettings());
       WxeContext.SetCurrent(_currentWxeContext);
     }
 

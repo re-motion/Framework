@@ -17,11 +17,9 @@
 using System;
 using Moq;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Remotion.FunctionalProgramming;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {

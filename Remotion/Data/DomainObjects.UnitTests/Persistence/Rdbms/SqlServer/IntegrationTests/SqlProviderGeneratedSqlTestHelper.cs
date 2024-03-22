@@ -21,6 +21,7 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
 
@@ -28,15 +29,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 {
   public class SqlProviderGeneratedSqlTestHelper : IDisposable
   {
+    private IStorageSettings _storageSettings;
     private readonly RdbmsProviderDefinition _rdbmsProviderDefinition;
     private readonly Mock<ObservableRdbmsProvider.ICommandExecutionListener> _executionListenerStrictMock;
     private readonly RdbmsProvider _provider;
 
-    public SqlProviderGeneratedSqlTestHelper (RdbmsProviderDefinition rdbmsProviderDefinition)
+    public SqlProviderGeneratedSqlTestHelper (IStorageSettings storageSettings, RdbmsProviderDefinition rdbmsProviderDefinition)
     {
+      _storageSettings = storageSettings;
       _rdbmsProviderDefinition = rdbmsProviderDefinition;
       _executionListenerStrictMock = new Mock<ObservableRdbmsProvider.ICommandExecutionListener>(MockBehavior.Strict);
       _provider = RdbmsProviderObjectMother.CreateForIntegrationTest(
+          storageSettings,
           rdbmsProviderDefinition,
           (providerDefinition, persistenceListener, commandFactory) =>
               new ObservableRdbmsProvider(
@@ -165,7 +169,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public DataContainer LoadDataContainerInSeparateProvider (ObjectID objectID)
     {
-      using (var provider = RdbmsProviderObjectMother.CreateForIntegrationTest(_rdbmsProviderDefinition))
+      using (var provider = RdbmsProviderObjectMother.CreateForIntegrationTest(_storageSettings, _rdbmsProviderDefinition))
       {
         return provider.LoadDataContainer(objectID).LocatedObject;
       }

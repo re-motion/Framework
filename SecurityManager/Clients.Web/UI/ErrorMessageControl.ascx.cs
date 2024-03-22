@@ -17,7 +17,6 @@
 // 
 using System;
 using System.Web.UI;
-using Remotion.Globalization.Implementation;
 using Remotion.Web.Compilation;
 
 namespace Remotion.SecurityManager.Clients.Web.UI

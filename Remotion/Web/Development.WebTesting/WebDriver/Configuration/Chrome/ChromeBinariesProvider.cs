@@ -20,8 +20,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Json;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
@@ -48,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     /// <summary>
     /// First Chrome version supported by <see cref="ChromeBinariesProvider"/>.
     /// </summary>
-    private static readonly Version s_minimumSupportedChromeVersion = new Version(110, 0);
+    private static readonly Version s_minimumSupportedChromeVersion = new Version(121, 0);
 
     /// <summary>
     /// Returns the <see cref="ChromeExecutable"/> that contains the installed Chrome browser location, the corresponding ChromeDriver location,
@@ -160,12 +158,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
       try
       {
-#pragma warning disable SYSLIB0014
-        using (var webClient = new WebClient()) // TODO RM-8492: Replace with HttpClient
-#pragma warning restore SYSLIB0014
-        {
-          return webClient.DownloadString(chromeDriverVersionUrl);
-        }
+        return FileDownloadUtility.DownloadStringWithRetry(chromeDriverVersionUrl.ToString());
       }
       catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
       {
@@ -219,12 +212,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
       try
       {
-#pragma warning disable SYSLIB0014
-        using (var webClient = new WebClient()) // TODO RM-8492: Replace with HttpClient
-#pragma warning restore SYSLIB0014
-        {
-          webClient.DownloadFile(url, fullZipPath);
-        }
+        FileDownloadUtility.DownloadFileWithRetry(url, fullZipPath);
       }
       catch (WebException ex)
       {
@@ -246,12 +234,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       string jsonString;
       try
       {
-#pragma warning disable SYSLIB0014
-        using (var webClient = new WebClient()) // TODO RM-8492: Replace with HttpClient
-#pragma warning restore SYSLIB0014
-        {
-          jsonString = webClient.DownloadString(c_chromeJsonApiUrl);
-        }
+        jsonString = FileDownloadUtility.DownloadStringWithRetry(c_chromeJsonApiUrl);
       }
       catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
       {

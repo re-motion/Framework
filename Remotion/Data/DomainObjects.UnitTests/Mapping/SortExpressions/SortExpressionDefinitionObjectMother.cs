@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
 {

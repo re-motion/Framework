@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
           .Callback((ClientTransaction transaction) => transaction.Extensions.Add(extensionStub.Object))
           .Verifiable();
 
-      ITransaction transaction = factory.Object.CreateRootTransaction();
+      ITransaction transaction = ((ITransactionFactory)factory.Object).CreateRootTransaction();
 
       var clientTransaction = transaction.To<ClientTransaction>();
       Assert.That(clientTransaction.Extensions, Has.Member(extensionStub.Object));
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
           .Callback((ClientTransaction transaction) => transaction.Extensions.Add(extensionStub.Object))
           .Verifiable();
 
-      ITransaction rootTransaction = factory.Object.CreateRootTransaction();
+      ITransaction rootTransaction = ((ITransactionFactory)factory.Object).CreateRootTransaction();
       ITransaction childTransaction = rootTransaction.CreateChild();
 
       Assert.That(rootTransaction.To<ClientTransaction>().Extensions, Has.Member(extensionStub.Object));

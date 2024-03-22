@@ -16,7 +16,6 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects;
@@ -26,8 +25,8 @@ using Remotion.Security;
 using Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure;
-using Remotion.SecurityManager.Configuration;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Globalization;
@@ -61,7 +60,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       GroupList.LoadUnboundValue(GetValues(), IsPostBack);
 
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
-      Type groupType = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.GetGroupType();
+      Type groupType = SafeServiceLocator.Current.GetInstance<IOrganizationalStructureFactory>().GetGroupType();
       NewGroupButton.Visible = securityClient.HasConstructorAccess(groupType);
     }
 

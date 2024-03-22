@@ -15,9 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Net.Mime;
 using System.Web;
-using System.Web.UI.HtmlControls;
 using System.Xml;
 using Moq;
 using NUnit.Framework;

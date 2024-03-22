@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -506,14 +505,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     private void AssertDropDownListSpan (XmlNode contentSpan, AutoPostBack autoPostBack)
     {
       var inputSpan = contentSpan.GetAssertedChildElement("span", 0);
-      inputSpan.AssertAttributeValueEquals("role", "combobox");
-      inputSpan.AssertAttributeValueEquals(StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
-      inputSpan.AssertAttributeValueEquals(StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
-
-      inputSpan.AssertAttributeValueEquals("aria-expanded", "false");
-      inputSpan.AssertAttributeValueEquals("aria-haspopup", "listbox");
       inputSpan.AssertChildElementCount(1);
+
       var inputField = inputSpan.GetAssertedChildElement("input", 0);
+      inputField.AssertAttributeValueEquals("role", "combobox");
+      inputField.AssertAttributeValueEquals(StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      inputField.AssertAttributeValueEquals(StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      inputField.AssertAttributeValueEquals("aria-expanded", "false");
+      inputField.AssertAttributeValueEquals("aria-haspopup", "listbox");
       inputField.AssertAttributeValueEquals("type", "stub");
       inputField.AssertAttributeValueEquals(StubValidationErrorRenderer.ValidationErrorsIDAttribute, Control.Object.ClientID + "_ValidationErrors");
       inputField.AssertAttributeValueEquals(StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);

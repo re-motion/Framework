@@ -16,18 +16,13 @@
 // 
 using System;
 using System.Linq;
-using Remotion.Configuration;
-using Remotion.Data.DomainObjects.Configuration;
-using Remotion.Data.DomainObjects.Development;
+using Remotion.Data.DomainObjects.ConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
-using Remotion.Data.DomainObjects.Persistence.Configuration;
-using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
-using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Logging;
+using Remotion.ServiceLocation;
 using Remotion.Tools;
 #if NETFRAMEWORK
 using System.IO;
@@ -53,18 +48,6 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
       appDomainSetup.ApplicationName = "RdbmsTools";
       appDomainSetup.ApplicationBase = rdbmsToolsParameters.BaseDirectory;
 
-      if (!string.IsNullOrEmpty(rdbmsToolsParameters.ConfigFile))
-      {
-        appDomainSetup.ConfigurationFile = Path.GetFullPath(rdbmsToolsParameters.ConfigFile);
-        if (!File.Exists(appDomainSetup.ConfigurationFile))
-        {
-          throw new FileNotFoundException(
-              string.Format(
-                  "The configuration file supplied by the 'config' parameter was not found.\r\nFile: {0}",
-                  appDomainSetup.ConfigurationFile),
-              appDomainSetup.ConfigurationFile);
-        }
-      }
       return appDomainSetup;
     }
 #endif
@@ -75,7 +58,7 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
 #if NETFRAMEWORK
         : base(CreateAppDomainSetup(rdbmsToolsParameters))
 #else
-        : base(rdbmsToolsParameters.BaseDirectory, rdbmsToolsParameters.ConfigFile)
+        : base(rdbmsToolsParameters.BaseDirectory, null)
 #endif
     {
       _rdbmsToolsParameters = rdbmsToolsParameters;
@@ -92,13 +75,6 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
 
       InitializeConfiguration();
 
-      if (!string.IsNullOrEmpty(_rdbmsToolsParameters.SchemaFileBuilderTypeName))
-      {
-        throw new NotSupportedException(
-            "The schemaBuilder parameter is obsolete and should no longer be used. "
-            + "(The schema file builder is now retrieved from the storage provider definition.)");
-      }
-
       if ((_rdbmsToolsParameters.Mode & OperationMode.BuildSchema) != 0)
         BuildSchema();
 
@@ -108,30 +84,18 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
 
     protected virtual void InitializeConfiguration ()
     {
-      DomainObjectsConfiguration.SetCurrent(
-          new FakeDomainObjectsConfiguration(
-              DomainObjectsConfiguration.Current.MappingLoader, GetPersistenceConfiguration(), new QueryConfiguration()));
-
-      MappingConfiguration.SetCurrent(
-          new MappingConfiguration(
-              DomainObjectsConfiguration.Current.MappingLoader.CreateMappingLoader(),
-              new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
-    }
-
-    protected StorageConfiguration GetPersistenceConfiguration ()
-    {
-      StorageConfiguration storageConfiguration = DomainObjectsConfiguration.Current.Storage;
-      if (storageConfiguration.StorageProviderDefinitions.Count == 0)
+      if (ServiceLocator.IsLocationProviderSet == false)
       {
-        ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = new ProviderCollection<StorageProviderDefinition>();
-        RdbmsProviderDefinition providerDefinition = new RdbmsProviderDefinition(
-            "Default", new SqlStorageObjectFactory(), "Initial Catalog=DatabaseName;");
-        storageProviderDefinitionCollection.Add(providerDefinition);
-
-        storageConfiguration = new StorageConfiguration(storageProviderDefinitionCollection, providerDefinition);
+        var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer(_rdbmsToolsParameters.ConnectionString);
+        var serviceLocator = DefaultServiceLocator.Create();
+        serviceLocator.RegisterSingle(() => storageSettingsFactory);
+        ServiceLocator.SetLocatorProvider(() => serviceLocator);
       }
 
-      return storageConfiguration;
+      MappingConfiguration.SetCurrent(
+          MappingConfiguration.Create(
+              SafeServiceLocator.Current.GetInstance<IMappingLoader>(),
+              SafeServiceLocator.Current.GetInstance<IPersistenceModelLoader>()));
     }
 
     protected virtual void BuildSchema ()

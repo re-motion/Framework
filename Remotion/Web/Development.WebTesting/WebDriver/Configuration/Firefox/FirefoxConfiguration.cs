@@ -53,15 +53,15 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
     /// <inheritdoc />
     public override IDownloadHelper DownloadHelper { get; }
 
-    public FirefoxConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
-        : this(webTestConfigurationSection, s_firefoxExecutable.Value)
+    public FirefoxConfiguration ([NotNull] IWebTestSettings webTestSettings)
+        : this(webTestSettings, s_firefoxExecutable.Value)
     {
     }
 
     public FirefoxConfiguration (
-        [NotNull] WebTestConfigurationSection webTestConfigurationSection,
+        [NotNull] IWebTestSettings webTestSettings,
         [NotNull] FirefoxExecutable firefoxExecutable)
-        : base(webTestConfigurationSection)
+        : base(webTestSettings)
     {
       ArgumentUtility.CheckNotNull("firefoxExecutable", firefoxExecutable);
 
@@ -74,10 +74,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
       DownloadHelper = new DefaultDownloadHelper(
           DownloadDirectory,
           c_partialFileDownloadExtension,
-          webTestConfigurationSection.DownloadStartedTimeout,
-          webTestConfigurationSection.DownloadUpdatedTimeout,
+          webTestSettings.DownloadStartedTimeout,
+          webTestSettings.DownloadUpdatedTimeout,
           downloadStartedGracePeriod,
-          webTestConfigurationSection.CleanUpUnmatchedDownloadedFiles);
+          webTestSettings.CleanUpUnmatchedDownloadedFiles);
     }
 
     /// <inheritdoc />

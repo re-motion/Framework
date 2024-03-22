@@ -17,7 +17,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using log4net;
 using log4net.Appender;

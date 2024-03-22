@@ -20,7 +20,6 @@ using System.Web.UI.WebControls;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation;
@@ -32,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
   [TestFixture]
   public class BocDateTimeValueTest: BocTest
   {
-    private BocDateTimeValueMock _bocDateTimeValue;
+    private BocDateTimeValue _bocDateTimeValue;
     private TypeWithDateTime _businessObject;
     private IBusinessObjectDataSource _dataSource;
     private IBusinessObjectDateTimeProperty _propertyDateTimeValue;
@@ -47,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public override void SetUp ()
     {
       base.SetUp();
-      _bocDateTimeValue = new BocDateTimeValueMock();
+      _bocDateTimeValue = new BocDateTimeValue();
       _bocDateTimeValue.ID = "BocDateTimeValue";
       NamingContainer.Controls.Add(_bocDateTimeValue);
 
@@ -58,81 +57,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       _dataSource = new StubDataSource(((IBusinessObject)_businessObject).BusinessObjectClass);
       _dataSource.BusinessObject = (IBusinessObject)_businessObject;
-    }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelUndefined ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
-      _bocDateTimeValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-    [Test]
-    public void EvaluateWaiConformityLevelA ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-      _bocDateTimeValue.DateTextBoxStyle.AutoPostBack = true;
-      _bocDateTimeValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelDoubleAWithTimeTextBoxActive ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelDoubleA();
-      _bocDateTimeValue.ValueType = BocDateTimeValueType.DateTime;
-      _bocDateTimeValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasError, Is.True);
-      Assert.That(WcagHelperMock.Priority, Is.EqualTo(2));
-      Assert.That(WcagHelperMock.Control, Is.SameAs(_bocDateTimeValue));
-      Assert.That(WcagHelperMock.Property, Is.EqualTo("ActualValueType"));
-    }
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelAWithDateTimeTextBoxStyleAutoPostBackTrue ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocDateTimeValue.DateTimeTextBoxStyle.AutoPostBack = true;
-      _bocDateTimeValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.True);
-      Assert.That(WcagHelperMock.Priority, Is.EqualTo(1));
-      Assert.That(WcagHelperMock.Control, Is.SameAs(_bocDateTimeValue));
-      Assert.That(WcagHelperMock.Property, Is.EqualTo("DateTimeTextBoxStyle.AutoPostBack"));
-    }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelAWithDateTextBoxStyleAutoPostBackTrue ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocDateTimeValue.DateTextBoxStyle.AutoPostBack = true;
-      _bocDateTimeValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.True);
-      Assert.That(WcagHelperMock.Priority, Is.EqualTo(1));
-      Assert.That(WcagHelperMock.Control, Is.SameAs(_bocDateTimeValue));
-      Assert.That(WcagHelperMock.Property, Is.EqualTo("DateTextBoxStyle.AutoPostBack"));
-    }
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelAWithTimeTextBoxStyleAutoPostBackTrue ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocDateTimeValue.TimeTextBoxStyle.AutoPostBack = true;
-      _bocDateTimeValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.True);
-      Assert.That(WcagHelperMock.Priority, Is.EqualTo(1));
-      Assert.That(WcagHelperMock.Control, Is.SameAs(_bocDateTimeValue));
-      Assert.That(WcagHelperMock.Property, Is.EqualTo("TimeTextBoxStyle.AutoPostBack"));
     }
 
     [Test]

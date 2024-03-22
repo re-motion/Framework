@@ -25,7 +25,6 @@ using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
-using Remotion.Web.Utilities;
 
 namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 {

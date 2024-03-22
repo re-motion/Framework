@@ -20,7 +20,6 @@ using System.Web.UI.WebControls;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
@@ -32,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
   [TestFixture]
   public class BocBooleanValueTest : BocTest
   {
-    private BocBooleanValueMock _bocBooleanValue;
+    private BocBooleanValue _bocBooleanValue;
     private TypeWithBoolean _businessObject;
     private IBusinessObjectDataSource _dataSource;
     private IBusinessObjectBooleanProperty _propertyBooleanValue;
@@ -47,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public override void SetUp ()
     {
       base.SetUp();
-      _bocBooleanValue = new BocBooleanValueMock();
+      _bocBooleanValue = new BocBooleanValue();
       _bocBooleanValue.ID = "BocBooleanValue";
       NamingContainer.Controls.Add(_bocBooleanValue);
 
@@ -61,41 +60,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _dataSource = new StubDataSource(((IBusinessObject)_businessObject).BusinessObjectClass);
       _dataSource.BusinessObject = (IBusinessObject)_businessObject;
     }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelUndefined ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
-      _bocBooleanValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-    [Test]
-    public void EvaluateWaiConformityLevelA ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-      _bocBooleanValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelA ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocBooleanValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasError, Is.True);
-      Assert.That(WcagHelperMock.Priority, Is.EqualTo(1));
-      Assert.That(WcagHelperMock.Control, Is.SameAs(_bocBooleanValue));
-      Assert.That(WcagHelperMock.Property, Is.Null);
-    }
-
 
     [Test]
     public void GetTrackedClientIDsInReadOnlyMode ()

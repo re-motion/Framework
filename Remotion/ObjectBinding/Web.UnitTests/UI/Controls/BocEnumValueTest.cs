@@ -20,7 +20,6 @@ using System.Web.UI.WebControls;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validation;
@@ -34,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
   [TestFixture]
   public class BocEnumValueTest : BocTest
   {
-    private BocEnumValueMock _bocEnumValue;
+    private BocEnumValue _bocEnumValue;
     private TypeWithEnum _businessObject;
     private IBusinessObjectDataSource _dataSource;
     private IBusinessObjectEnumerationProperty _propertyEnumValue;
@@ -48,7 +47,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public override void SetUp ()
     {
       base.SetUp();
-      _bocEnumValue = new BocEnumValueMock();
+      _bocEnumValue = new BocEnumValue();
       _bocEnumValue.ID = "BocEnumValue";
       NamingContainer.Controls.Add(_bocEnumValue);
 
@@ -59,42 +58,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       _dataSource = new StubDataSource(((IBusinessObject)_businessObject).BusinessObjectClass);
       _dataSource.BusinessObject = (IBusinessObject)_businessObject;
-    }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelUndefined ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
-      _bocEnumValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-    [Test]
-    public void EvaluateWaiConformityLevelA ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-      _bocEnumValue.ListControlStyle.AutoPostBack = true;
-      _bocEnumValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelAWithListControlStyleAutoPostBackTrue ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocEnumValue.ListControlStyle.AutoPostBack = true;
-      _bocEnumValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.True);
-      Assert.That(WcagHelperMock.Priority, Is.EqualTo(1));
-      Assert.That(WcagHelperMock.Control, Is.SameAs(_bocEnumValue));
-      Assert.That(WcagHelperMock.Property, Is.EqualTo("ListControlStyle.AutoPostBack"));
     }
 
     [Test]

@@ -20,7 +20,6 @@ using System.Web.UI.WebControls;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
@@ -32,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
   [TestFixture]
   public class BocMultilineTextValueTest : BocTest
   {
-    private BocMultilineTextValueMock _bocMultilineTextValue;
+    private BocMultilineTextValue _bocMultilineTextValue;
     private TypeWithString _businessObject;
     private IBusinessObjectDataSource _dataSource;
     private IBusinessObjectStringProperty _propertyStringArray;
@@ -46,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public override void SetUp ()
     {
       base.SetUp();
-      _bocMultilineTextValue = new BocMultilineTextValueMock();
+      _bocMultilineTextValue = new BocMultilineTextValue();
       _bocMultilineTextValue.ID = "BocMultilineTextValue";
       NamingContainer.Controls.Add(_bocMultilineTextValue);
 
@@ -57,42 +56,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       _dataSource = new StubDataSource(((IBusinessObject)_businessObject).BusinessObjectClass);
       _dataSource.BusinessObject = (IBusinessObject)_businessObject;
-    }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelUndefined ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
-      _bocMultilineTextValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-    [Test]
-    public void EvaluateWaiConformityLevelA ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-      _bocMultilineTextValue.TextBoxStyle.AutoPostBack = true;
-      _bocMultilineTextValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelAWithTextBoxStyleAutoPostBackTrue ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocMultilineTextValue.TextBoxStyle.AutoPostBack = true;
-      _bocMultilineTextValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.True);
-      Assert.That(WcagHelperMock.Priority, Is.EqualTo(1));
-      Assert.That(WcagHelperMock.Control, Is.SameAs(_bocMultilineTextValue));
-      Assert.That(WcagHelperMock.Property, Is.EqualTo("TextBoxStyle.AutoPostBack"));
     }
 
     [Test]

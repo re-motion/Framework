@@ -16,12 +16,9 @@
 // 
 using System;
 using System.Linq;
-using System.Text;
-using System.Web;
 using JetBrains.Annotations;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Web.Configuration;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.Utilities;
 using VirtualPathUtility = System.Web.VirtualPathUtility;
@@ -35,22 +32,23 @@ namespace Remotion.Web.Resources
   [ImplementationFor(typeof(IResourcePathBuilder), Lifetime = LifetimeKind.Singleton)]
   public class ResourcePathBuilder : ResourcePathBuilderBase
   {
-    private readonly IHttpContextProvider _httpContextProvider;
-    private readonly string _configuredResourceRoot;
+    public IHttpContextProvider HttpContextProvider { get; }
+    public ResourceRoot ResourceRoot { get; }
 
     [UsedImplicitly]
-    public ResourcePathBuilder (IHttpContextProvider httpContextProvider)
-      : this(httpContextProvider, WebConfiguration.Current.Resources.Root)
+    public ResourcePathBuilder (IHttpContextProvider httpContextProvider, ResourceRoot resourceRoot)
+        : this(new NullStaticResourceCacheKeyProvider(), httpContextProvider, resourceRoot)
     {
     }
 
-    protected ResourcePathBuilder (IHttpContextProvider httpContextProvider, string configuredResourceRoot)
+    protected ResourcePathBuilder (IStaticResourceCacheKeyProvider staticResourceCacheKeyProvider, IHttpContextProvider httpContextProvider, ResourceRoot resourceRoot)
+        : base(staticResourceCacheKeyProvider)
     {
       ArgumentUtility.CheckNotNull("httpContextProvider", httpContextProvider);
-      ArgumentUtility.CheckNotNull("configuredResourceRoot", configuredResourceRoot);
+      ArgumentUtility.CheckNotNull("resourceRoot", resourceRoot);
 
-      _httpContextProvider = httpContextProvider;
-      _configuredResourceRoot = configuredResourceRoot;
+      HttpContextProvider = httpContextProvider;
+      ResourceRoot = resourceRoot;
     }
 
     protected override string BuildPath (string[] completePath)
@@ -65,7 +63,7 @@ namespace Remotion.Web.Resources
       var applicationPath = GetApplicationPath();
       Assertion.IsTrue(VirtualPathUtility.IsAbsolute(applicationPath));
 
-      return CombineVirtualPaths(applicationPath, _configuredResourceRoot);
+      return CombineVirtualPaths(applicationPath, ResourceRoot.Value);
     }
 
     private string CombineVirtualPaths (string left, string right)
@@ -75,7 +73,7 @@ namespace Remotion.Web.Resources
 
     private string GetApplicationPath ()
     {
-      var context = _httpContextProvider.GetCurrentHttpContext();
+      var context = HttpContextProvider.GetCurrentHttpContext();
       return UrlUtility.ResolveUrlCaseSensitive(context, "~/");
     }
   }

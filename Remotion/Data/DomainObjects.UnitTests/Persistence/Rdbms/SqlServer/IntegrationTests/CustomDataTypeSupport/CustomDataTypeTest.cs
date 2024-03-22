@@ -18,45 +18,41 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.Database;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport.TestDomain;
 using Remotion.Data.DomainObjects.Validation;
-using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport
 {
   [TestFixture]
   public class CustomDataTypeTest : CustomStorageObjectFactoryTestBase
   {
-    private ServiceLocatorScope _serviceLocatorScope;
 
     public CustomDataTypeTest ()
         : base(CreateEmptyTestDataFileName)
     {
     }
 
-    protected override SqlStorageObjectFactory CreateSqlStorageObjectFactory ()
+    protected override SqlStorageObjectFactory CreateSqlStorageObjectFactory (IStorageSettings storageSettings)
     {
-      return new CustomDataTypeStorageObjectFactory();
+      return new CustomDataTypeStorageObjectFactory(
+          storageSettings,
+          SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
+          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
     }
 
-    public override void OneTimeSetUp ()
+    protected override void SetupServiceLocator (DefaultServiceLocator serviceLocator)
     {
-      base.OneTimeSetUp();
-      var serviceLocator = DefaultServiceLocator.Create();
+      base.SetupServiceLocator(serviceLocator);
+
       serviceLocator.RegisterSingle<IPersistableDataValidator>(() => new SimpleDataTypePropertyMaxLengthValidator());
       serviceLocator.RegisterSingle<IDataContainerValidator>(() => new SimpleDataTypePropertyMaxLengthValidator());
-      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
-    }
-
-    public override void TestFixtureTearDown ()
-    {
-      _serviceLocatorScope.Dispose();
-      base.TestFixtureTearDown();
     }
 
     [Test]

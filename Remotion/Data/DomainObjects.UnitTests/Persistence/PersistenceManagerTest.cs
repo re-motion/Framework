@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -41,8 +42,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       public Action<IEnumerable<StorageProvider>, IDisposable> CommitTransactionCallback { get; set; }
       public Action<IEnumerable<StorageProvider>, IDisposable> RollbackTransactionCallback { get; set; }
 
-      public TestablePersistenceManager (IPersistenceExtension persistenceExtension)
-          : base(persistenceExtension)
+      public TestablePersistenceManager (IPersistenceExtension persistenceExtension, IStorageSettings storageSettings)
+          : base(persistenceExtension, storageSettings)
       {
       }
 
@@ -94,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     public override void SetUp ()
     {
       base.SetUp();
-      _persistenceManager = new PersistenceManager(NullPersistenceExtension.Instance);
+      _persistenceManager = new PersistenceManager(NullPersistenceExtension.Instance, StorageSettings);
 
       var guid1 = new Guid("11111111111111111111111111111111");
       var guid2 = new Guid("22222222222222222222222222222222");
@@ -112,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     public void Initialize ()
     {
       var persistenceTracer = new Mock<IPersistenceExtension>();
-      using (var persistenceManager = new PersistenceManager(persistenceTracer.Object))
+      using (var persistenceManager = new PersistenceManager(persistenceTracer.Object, StorageSettings))
       {
         Assert.That(persistenceManager.StorageProviderManager, Is.Not.Null);
 
@@ -456,7 +457,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void SaveInDifferentStorageProviders_WithOverriddenCheck_CallsSaveOnBothStorageProviders ()
     {
-      using (var persistenceManager = new TestablePersistenceManager(NullPersistenceExtension.Instance))
+      using (var persistenceManager = new TestablePersistenceManager(NullPersistenceExtension.Instance, StorageSettings))
       {
         DataContainer orderContainer = persistenceManager.LoadDataContainer(DomainObjectIDs.Order1).LocatedObject;
         DataContainer officialContainer1 = persistenceManager.LoadDataContainer(DomainObjectIDs.Official1).LocatedObject;
@@ -530,7 +531,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void Save_WithCommit_CallsExtensionPoints ()
     {
-      using (var persistenceManager = new TestablePersistenceManager(NullPersistenceExtension.Instance))
+      using (var persistenceManager = new TestablePersistenceManager(NullPersistenceExtension.Instance, StorageSettings))
       {
         DataContainer officialContainer = persistenceManager.LoadDataContainer(DomainObjectIDs.Official1).LocatedObject;
 
@@ -583,7 +584,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void Save_WithRollback_CallsExtensionPoints ()
     {
-      using (var persistenceManager = new TestablePersistenceManager(NullPersistenceExtension.Instance))
+      using (var persistenceManager = new TestablePersistenceManager(NullPersistenceExtension.Instance, StorageSettings))
       {
         DataContainer officialContainer = persistenceManager.LoadDataContainer(DomainObjectIDs.Official1).LocatedObject;
 

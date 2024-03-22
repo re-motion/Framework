@@ -17,7 +17,6 @@
 using System;
 using Moq;
 using NUnit.Framework;
-using Remotion.Collections;
 using Remotion.Collections.Caching;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;

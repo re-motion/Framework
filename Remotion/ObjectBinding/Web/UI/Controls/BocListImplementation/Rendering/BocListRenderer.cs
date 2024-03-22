@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using Remotion.Globalization;
@@ -121,17 +120,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
-
+      htmlHeadAppender.RegisterObjectBindingWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();
 
       string styleFileKey = typeof(BocListRenderer).GetFullNameChecked() + "_Style";
       var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(BocListRenderer), ResourceType.Html, "BocList.css");
       htmlHeadAppender.RegisterStylesheetLink(styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
-
-      string scriptFileKey = typeof(BocListRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(BocListRenderer), ResourceType.Html, "BocList.js");
-      htmlHeadAppender.RegisterJavaScriptInclude(scriptFileKey, scriptUrl);
 
       editableRowControlFactory.RegisterHtmlHeadContents(htmlHeadAppender);
     }

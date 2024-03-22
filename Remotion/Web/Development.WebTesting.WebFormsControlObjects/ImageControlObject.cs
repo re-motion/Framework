@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Web.Development.WebTesting.ControlObjects;
 
 namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
 {

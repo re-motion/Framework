@@ -22,7 +22,6 @@ using System.Web.UI.WebControls;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -33,7 +32,6 @@ using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Services;
-using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -89,79 +87,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       ((IBusinessObject)_businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IGetObjectService>(new GetObjectService(TypeWithReference.Create()));
       ((IBusinessObject)_businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IBusinessObjectWebUIService>(new ReflectionBusinessObjectWebUIService());
     }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelUndefined ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
-      _bocReferenceValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-    [Test]
-    public void EvaluateWaiConformityLevelA ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-      _bocReferenceValue.ShowOptionsMenu = true;
-      _bocReferenceValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.False);
-      Assert.That(WcagHelperMock.HasError, Is.False);
-    }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelAWithAutoPostBackTrue ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocReferenceValue.DropDownListStyle.AutoPostBack = true;
-      _bocReferenceValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasWarning, Is.True);
-      Assert.That(WcagHelperMock.Priority, Is.EqualTo(1));
-      Assert.That(WcagHelperMock.Control, Is.SameAs(_bocReferenceValue));
-      Assert.That(WcagHelperMock.Property, Is.EqualTo("DropDownListStyle.AutoPostBack"));
-    }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugExceptionLevelAWithShowOptionsMenuTrue ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocReferenceValue.ShowOptionsMenu = true;
-      _bocReferenceValue.EvaluateWaiConformity();
-
-      Assert.That(WcagHelperMock.HasError, Is.True);
-      Assert.That(WcagHelperMock.Priority, Is.EqualTo(1));
-      Assert.That(WcagHelperMock.Control, Is.SameAs(_bocReferenceValue));
-      Assert.That(WcagHelperMock.Property, Is.EqualTo("ShowOptionsMenu"));
-    }
-
-
-    [Test]
-    public void IsOptionsMenuInvisibleWithWcagOverride ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-      _bocReferenceValue.ShowOptionsMenu = true;
-      _bocReferenceValue.OptionsMenuItems.Add(new WebMenuItem());
-      Assert.That(_bocReferenceValue.HasOptionsMenu, Is.False);
-    }
-
-    [Test]
-    public void IsOptionsMenuVisibleWithoutWcagOverride ()
-    {
-      ControlInvoker invoker = new ControlInvoker(_bocReferenceValue);
-      invoker.InitRecursive();
-
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
-      _bocReferenceValue.ShowOptionsMenu = true;
-      _bocReferenceValue.OptionsMenuItems.Add(new WebMenuItem());
-      Assert.That(_bocReferenceValue.HasOptionsMenu, Is.True);
-    }
-
 
     [Test]
     public void GetTrackedClientIDsInReadOnlyMode ()

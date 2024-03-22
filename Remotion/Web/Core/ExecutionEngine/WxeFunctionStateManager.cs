@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web;
 using System.Web.SessionState;
@@ -102,12 +103,14 @@ namespace Remotion.Web.ExecutionEngine
       ArgumentUtility.CheckNotNull("session", session);
       _session = session;
 
-      _functionStates = (Dictionary<string, WxeFunctionStateMetaData>)_session[s_sessionKeyForFunctionStates];
-      if (_functionStates == null)
+      var functionStates = (Dictionary<string, WxeFunctionStateMetaData>?)_session[s_sessionKeyForFunctionStates];
+      if (functionStates == null)
       {
-        _functionStates = new Dictionary<string, WxeFunctionStateMetaData>();
-        _session[s_sessionKeyForFunctionStates] = _functionStates;
+        functionStates = new Dictionary<string, WxeFunctionStateMetaData>();
+        _session[s_sessionKeyForFunctionStates] = functionStates;
       }
+
+      _functionStates = functionStates;
       // WxeFunctionStateManager must be synchronized accross access from multiple requests in case the WxeFunctionStateManager is accessed from a ReadOnlySession.
       // Note that this will not guard against access from ReadOnlySessions that use serialization, but this is not an issue as a ReadOnlySession 
       // does include a write-back.
@@ -125,7 +128,12 @@ namespace Remotion.Web.ExecutionEngine
         {
           if (IsExpired(functionToken))
           {
-            WxeFunctionState functionState = GetItem(functionToken);
+            WxeFunctionState? functionState = GetItem(functionToken);
+            Assertion.IsNotNull(
+                functionState,
+                "WxeFunctionStateManager.GetItem(...) returned null for WXE function token '{0}' even though the token is still registered in the WxeFunctionStateManager.",
+                functionToken);
+
             Abort(functionState);
           }
         }
@@ -152,12 +160,45 @@ namespace Remotion.Web.ExecutionEngine
       }
     }
 
-    /// <summary> Gets the <see cref="WxeFunctionState"/> for the specifed <paramref name="functionToken"/>. </summary>
+    /// <summary> Gets the <see cref="WxeFunctionState"/> for the specified <paramref name="functionToken"/>. </summary>
+    /// <param name="functionToken"> 
+    ///   The token to look-up the <see cref="WxeFunctionState"/>. Must not be <see langword="null"/> or empty or empty.
+    /// </param>
+    /// <param name="functionState">
+    ///   Contains the <see cref="WxeFunctionState"/> for the <paramref name="functionToken"/> or <see langword="null"/> if no <see cref="WxeFunctionState"/> exists
+    ///   for the requested <paramref name="functionToken"/> or the <see cref="WxeFunctionState"/> has already expired. 
+    /// </param>
+    /// <returns>
+    ///   <see langword="true"/> if the <see cref="WxeFunctionStateManager"/> contains a live <see cref="WxeFunctionState"/> for the requested <paramref name="functionToken"/>,
+    ///   otherwise <see langword="false"/>.
+    /// </returns>
+    public bool TryGetLiveValue (string functionToken,  [MaybeNullWhen(false)] out WxeFunctionState functionState)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty("functionToken", functionToken);
+
+      lock (_lockObject)
+      {
+        if (IsExpired(functionToken))
+        {
+          functionState = null;
+          return false;
+        }
+        else
+        {
+          functionState = GetItem(functionToken);
+          return functionState != null;
+        }
+      }
+    }
+
+    /// <summary> Gets the <see cref="WxeFunctionState"/> for the specified <paramref name="functionToken"/>. </summary>
     /// <param name="functionToken"> 
     ///   The token to look-up the <see cref="WxeFunctionState"/>. Must not be <see langword="null"/> or empty.
     /// </param>
-    /// <returns> The <see cref="WxeFunctionState"/> for the specified <paramref name="functionToken"/>. </returns>
-    public WxeFunctionState GetItem (string functionToken)
+    /// <returns>
+    /// The <see cref="WxeFunctionState"/> for the specified <paramref name="functionToken"/> or <see langword="null"/> if the <see cref="WxeFunctionState"/> does not exist.
+    /// </returns>
+    public WxeFunctionState? GetItem (string functionToken)
     {
       ArgumentUtility.CheckNotNullOrEmpty("functionToken", functionToken);
 
@@ -169,10 +210,10 @@ namespace Remotion.Web.ExecutionEngine
         stopwatch.Start();
       }
 
-      WxeFunctionState functionState;
+      WxeFunctionState? functionState;
       lock (_lockObject)
       {
-        functionState = (WxeFunctionState)_session[GetSessionKeyForFunctionState(functionToken)];
+        functionState = (WxeFunctionState?)_session[GetSessionKeyForFunctionState(functionToken)];
       }
 
       if (hasOutOfProcessSession)

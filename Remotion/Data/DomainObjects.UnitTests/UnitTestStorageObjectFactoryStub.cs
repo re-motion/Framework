@@ -25,16 +25,18 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.Tracing;
+using Remotion.Data.DomainObjects.Validation;
 using Remotion.Linq.SqlBackend.SqlPreparation;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
   public class UnitTestStorageObjectFactoryStub : IRdbmsStorageObjectFactory
   {
-    public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+  public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
     {
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
@@ -46,12 +48,16 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     public IPersistenceModelLoader CreatePersistenceModelLoader (
-        StorageProviderDefinition storageProviderDefinition,
-        IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
+        StorageProviderDefinition storageProviderDefinition)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
-      return new SqlStorageObjectFactory().CreatePersistenceModelLoader(storageProviderDefinition, storageProviderDefinitionFinder);
+      var typeConversionProvider = SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>();
+      var dataContainerValidator = SafeServiceLocator.Current.GetInstance<IDataContainerValidator>();
+      var storageSettings = new StorageSettings(storageProviderDefinition, new[] { storageProviderDefinition });
+
+      var storageObjectFactory = new SqlStorageObjectFactory(storageSettings, typeConversionProvider, dataContainerValidator);
+      return storageObjectFactory.CreatePersistenceModelLoader(storageProviderDefinition);
     }
 
     public IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (

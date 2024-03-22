@@ -17,10 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 
 namespace Remotion.Web.Development.WebTesting.Accessibility
 {

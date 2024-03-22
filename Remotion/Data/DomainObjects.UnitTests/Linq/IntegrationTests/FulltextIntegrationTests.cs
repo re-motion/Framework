@@ -81,10 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
       Assert.That(
           () => ceos.ToArray(),
           Throws.TypeOf<RdbmsProviderException>()
-              // SQL Server 2008 - SQL Server 2014
-              .With.Message.EndsWith("The argument type \"nvarchar(max)\" is invalid for argument 2 of \"CONTAINS\".")
-              // SQL Server 2005
-              .Or.Message.EndsWith("Argument data type nvarchar(max) is invalid for argument 2 of CONTAINS function."));
+              .With.Message.EndsWith("The argument type \"nvarchar(max)\" is invalid for argument 2 of \"CONTAINS\"."));
     }
 
     private void WaitForIndices ()

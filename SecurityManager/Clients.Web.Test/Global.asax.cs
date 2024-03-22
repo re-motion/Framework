@@ -16,13 +16,14 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using Remotion.Data.DomainObjects;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Security;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Domain;
+using Remotion.SecurityManager.Persistence;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Web;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.SecurityManager.Clients.Web.Test
@@ -34,6 +35,11 @@ namespace Remotion.SecurityManager.Clients.Web.Test
     protected void Application_Start (object sender, EventArgs e)
     {
       var defaultServiceLocator = DefaultServiceLocator.Create();
+
+      var storageSettingsFactory =
+          StorageSettingsFactory.CreateForSqlServer<SecurityManagerSqlStorageObjectFactory>(
+              "Integrated Security=SSPI;Initial Catalog=RemotionSecurityManagerWebClientTest;Data Source=localhost");
+      defaultServiceLocator.RegisterSingle(() => storageSettingsFactory);
 
       //defaultServiceLocator.Register (typeof (Remotion.Data.DomainObjects.IClientTransactionExtensionFactory), typeof (Remotion.Data.DomainObjects.UberProfIntegration.LinqToSqlExtensionFactory), LifetimeKind.Singleton);
       //defaultServiceLocator.Register (typeof (Remotion.Data.DomainObjects.Tracing.IPersistenceExtensionFactory), typeof (Remotion.Data.DomainObjects.UberProfIntegration.LinqToSqlExtensionFactory), LifetimeKind.Singleton);

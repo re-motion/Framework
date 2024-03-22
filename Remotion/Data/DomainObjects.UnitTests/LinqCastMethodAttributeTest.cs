@@ -17,9 +17,7 @@
 using System;
 using System.Linq.Expressions;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.UnitTests.Linq;
 using Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain;
-using Remotion.Linq.Development.UnitTesting;
 using Remotion.Linq.SqlBackend.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests

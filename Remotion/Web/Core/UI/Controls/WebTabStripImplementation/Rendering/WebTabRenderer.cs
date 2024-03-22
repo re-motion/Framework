@@ -18,7 +18,6 @@ using System;
 using System.Collections.Specialized;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using JetBrains.Annotations;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
