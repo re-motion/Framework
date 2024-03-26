@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
     /// to pass all generic arguments to <see cref="DelegateBasedCommand{TIn,TOut}"/>'s constructor by hand.
     /// </summary>
     public static DelegateBasedCommand<TIn, TOut> Create<TIn, TOut> (
-        IStorageProviderCommand<TIn> command,
+        IRdbmsProviderCommand<TIn> command,
         Func<TIn, TOut> operation)
     {
       return new DelegateBasedCommand<TIn, TOut>(command, operation);
@@ -39,15 +39,15 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
   }
 
   /// <summary>
-  /// The <see cref="DelegateBasedCommand{TIn,TOut}"/> executes an <see cref="IStorageProviderCommand{T}"/>
+  /// The <see cref="DelegateBasedCommand{TIn,TOut}"/> executes an <see cref="IRdbmsProviderCommand{T}"/>
   /// and applies a specified operation-transformation to the result.
   /// </summary>
-  public class DelegateBasedCommand<TIn, TOut> : IStorageProviderCommand<TOut>
+  public class DelegateBasedCommand<TIn, TOut> : IRdbmsProviderCommand<TOut>
   {
-    private readonly IStorageProviderCommand<TIn> _command;
+    private readonly IRdbmsProviderCommand<TIn> _command;
     private readonly Func<TIn, TOut> _operation;
 
-    public DelegateBasedCommand (IStorageProviderCommand<TIn> command, Func<TIn, TOut> operation)
+    public DelegateBasedCommand (IRdbmsProviderCommand<TIn> command, Func<TIn, TOut> operation)
     {
       ArgumentUtility.CheckNotNull("command", command);
       ArgumentUtility.CheckNotNull("operation", operation);
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       _operation = operation;
     }
 
-    public IStorageProviderCommand<TIn> Command
+    public IRdbmsProviderCommand<TIn> Command
     {
       get { return _command; }
     }

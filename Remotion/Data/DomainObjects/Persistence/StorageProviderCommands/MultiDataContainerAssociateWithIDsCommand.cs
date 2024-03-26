@@ -25,19 +25,19 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
 {
   /// <summary>
-  /// Executes a given <see cref="IStorageProviderCommand{T}"/> and associates the resulting <see cref="DataContainer"/> instances
+  /// Executes a given <see cref="IRdbmsProviderCommand{T}"/> and associates the resulting <see cref="DataContainer"/> instances
   /// with a given list of <see cref="ObjectID"/> values. If any <see cref="DataContainer"/> has a non-matching <see cref="ObjectID"/>, an exception
   /// is thrown.
   /// </summary>
   public class MultiDataContainerAssociateWithIDsCommand
-      : IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>>
+      : IRdbmsProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>>
   {
     private readonly ObjectID[] _objectIDs;
-    private readonly IStorageProviderCommand<IEnumerable<DataContainer?>> _command;
+    private readonly IRdbmsProviderCommand<IEnumerable<DataContainer?>> _command;
 
     public MultiDataContainerAssociateWithIDsCommand (
         IEnumerable<ObjectID> objectIDs,
-        IStorageProviderCommand<IEnumerable<DataContainer?>> command)
+        IRdbmsProviderCommand<IEnumerable<DataContainer?>> command)
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
       ArgumentUtility.CheckNotNull("command", command);
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       get { return _objectIDs; }
     }
 
-    public IStorageProviderCommand<IEnumerable<DataContainer?>> Command
+    public IRdbmsProviderCommand<IEnumerable<DataContainer?>> Command
     {
       get { return _command; }
     }

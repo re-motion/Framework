@@ -15,14 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Persistence.Rdbms;
 
-namespace Remotion.Data.DomainObjects.Persistence
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
   /// <summary>
   /// Represents a command without a return value to be executed by a storage provider.
   /// </summary>
-  public interface IStorageProviderCommand
+  public interface IRdbmsProviderCommand
   {
     void Execute (IRdbmsProviderCommandExecutionContext executionContext);
   }
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Persistence
   /// <summary>
   /// Represents a command with a return value to be executed by a storage provider.
   /// </summary>
-  public interface IStorageProviderCommand<out T>
+  public interface IRdbmsProviderCommand<out T>
   {
     T Execute (IRdbmsProviderCommandExecutionContext executionContext);
   }

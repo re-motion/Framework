@@ -75,13 +75,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       get { return _storageProviderCommandFactory; }
     }
 
-    public virtual IStorageProviderCommand<IEnumerable<DataContainer>> CreateForRelationLookup (
+    public virtual IRdbmsProviderCommand<IEnumerable<DataContainer>> CreateForRelationLookup (
         RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition? sortExpressionDefinition)
     {
       ArgumentUtility.CheckNotNull("foreignKeyEndPoint", foreignKeyEndPoint);
       ArgumentUtility.CheckNotNull("foreignKeyValue", foreignKeyValue);
 
-      return InlineRdbmsStorageEntityDefinitionVisitor.Visit<IStorageProviderCommand<IEnumerable<DataContainer>>>(
+      return InlineRdbmsStorageEntityDefinitionVisitor.Visit<IRdbmsProviderCommand<IEnumerable<DataContainer>>>(
           _rdbmsPersistenceModelProvider.GetEntityDefinition(foreignKeyEndPoint.ClassDefinition),
           (table, continuation) => CreateForDirectRelationLookup(table, foreignKeyEndPoint, foreignKeyValue, sortExpressionDefinition),
           (filterView, continuation) => continuation(filterView.BaseEntity),
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           (emptyView, continuation) => CreateForEmptyRelationLookup());
     }
 
-    protected virtual IStorageProviderCommand<IEnumerable<DataContainer>> CreateForDirectRelationLookup (
+    protected virtual IRdbmsProviderCommand<IEnumerable<DataContainer>> CreateForDirectRelationLookup (
         TableDefinition tableDefinition,
         RelationEndPointDefinition foreignKeyEndPoint,
         ObjectID foreignKeyValue,
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
               }));
     }
 
-    protected virtual IStorageProviderCommand<IEnumerable<DataContainer>> CreateForIndirectRelationLookup (
+    protected virtual IRdbmsProviderCommand<IEnumerable<DataContainer>> CreateForIndirectRelationLookup (
         UnionViewDefinition unionViewDefinition,
         RelationEndPointDefinition foreignKeyEndPoint,
         ObjectID foreignKeyValue,
