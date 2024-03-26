@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
           providerDefinition,
           providerDefinition.ReadOnlyConnectionString,
           Mock.Of<IPersistenceExtension>(),
-          Mock.Of<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>>(),
+          Mock.Of<IRdbmsProviderCommandFactory>(),
           () => Mock.Of<System.Data.IDbConnection>());
 
       rdbmsStorageObjectFactoryStub
