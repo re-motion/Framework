@@ -103,7 +103,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
         renderingContext.Writer.RenderEndTag();
       }
 
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Menu);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Toolbar);
       if(hasHeading)
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaLabelledBy, headingID);
 
@@ -215,7 +215,6 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
       var attributes = new NameValueCollection();
-      attributes.Add(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.MenuItem);
       if (renderingContext.Control.Enabled)
         attributes.Add("tabindex", isFirst ? "0" : "-1");
 
