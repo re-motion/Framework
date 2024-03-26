@@ -25,27 +25,27 @@ using Remotion.Data.DomainObjects.Queries;
 namespace Remotion.Data.DomainObjects.Persistence
 {
   /// <summary>
-  /// Defines an interface for classes instantiating <see cref="IStorageProviderCommand"/> instances for the basic storage provider operations.
+  /// Defines an interface for classes instantiating <see cref="IRdbmsProviderCommand"/> instances for the basic storage provider operations.
   /// <see cref="StorageProvider"/> uses this factory interface when the respective provider methods are called.
   /// </summary>
   public interface IStorageProviderCommandFactory<in TExecutionContext>
   {
-    IStorageProviderCommand<ObjectLookupResult<DataContainer>> CreateForSingleIDLookup (ObjectID objectID);
+    IRdbmsProviderCommand<ObjectLookupResult<DataContainer>> CreateForSingleIDLookup (ObjectID objectID);
 
-    IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>> CreateForSortedMultiIDLookup (
+    IRdbmsProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>> CreateForSortedMultiIDLookup (
         IEnumerable<ObjectID> objectIDs);
 
-    IStorageProviderCommand<IEnumerable<DataContainer>> CreateForRelationLookup (
+    IRdbmsProviderCommand<IEnumerable<DataContainer>> CreateForRelationLookup (
         RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition? sortExpressionDefinition);
 
-    IStorageProviderCommand<IEnumerable<DataContainer?>> CreateForDataContainerQuery (IQuery query);
-    IStorageProviderCommand<IEnumerable<IQueryResultRow>> CreateForCustomQuery (IQuery query);
+    IRdbmsProviderCommand<IEnumerable<DataContainer?>> CreateForDataContainerQuery (IQuery query);
+    IRdbmsProviderCommand<IEnumerable<IQueryResultRow>> CreateForCustomQuery (IQuery query);
 
-    IStorageProviderCommand<object?> CreateForScalarQuery (IQuery query);
+    IRdbmsProviderCommand<object?> CreateForScalarQuery (IQuery query);
 
-    IStorageProviderCommand<IEnumerable<ObjectLookupResult<object>>> CreateForMultiTimestampLookup (
+    IRdbmsProviderCommand<IEnumerable<ObjectLookupResult<object>>> CreateForMultiTimestampLookup (
         IEnumerable<ObjectID> objectIDs);
 
-    IStorageProviderCommand CreateForSave (IEnumerable<DataContainer> dataContainers);
+    IRdbmsProviderCommand CreateForSave (IEnumerable<DataContainer> dataContainers);
   }
 }
