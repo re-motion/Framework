@@ -20,10 +20,10 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms;
 namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
 {
   /// <summary>
-  /// Implements <see cref="IStorageProviderCommand{T}"/> by always returning the same, fixed value.
+  /// Implements <see cref="IRdbmsProviderCommand{T}"/> by always returning the same, fixed value.
   /// </summary>
   /// <typeparam name="T">The type of the value to return.</typeparam>
-  public class FixedValueCommand<T> : IStorageProviderCommand<T>
+  public class FixedValueCommand<T> : IRdbmsProviderCommand<T>
   {
     private readonly T _value;
 

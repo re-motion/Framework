@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
     public void Execute ()
     {
       var executionContext = new Mock<IRdbmsProviderCommandExecutionContext>();
-      var innerCommandStub = new Mock<IStorageProviderCommand<string>>();
+      var innerCommandStub = new Mock<IRdbmsProviderCommand<string>>();
       var delegateBasedCommand = new DelegateBasedCommand<string, int>(innerCommandStub.Object, s => s.Length);
 
       innerCommandStub.Setup(stub => stub.Execute(executionContext.Object)).Returns("Test1");
@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
     [Test]
     public void Create ()
     {
-      var innerCommandStub = new Mock<IStorageProviderCommand<string>>();
+      var innerCommandStub = new Mock<IRdbmsProviderCommand<string>>();
       Func<string, int> operation = s => s.Length;
       var instance = DelegateBasedCommand.Create(innerCommandStub.Object, operation);
 

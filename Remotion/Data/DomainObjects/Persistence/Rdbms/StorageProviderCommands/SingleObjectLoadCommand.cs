@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
   /// Executes the command created by the given <see cref="IDbCommandBuilder"/> and parses the result into a single object using the specified
   /// <see cref="IObjectReader{T}"/>.
   /// </summary>
-  public class SingleObjectLoadCommand<T> : IStorageProviderCommand<T?>
+  public class SingleObjectLoadCommand<T> : IRdbmsProviderCommand<T?>
   {
     private readonly IDbCommandBuilder _dbCommandBuilder;
     private readonly IObjectReader<T> _objectReader;
