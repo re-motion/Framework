@@ -16,10 +16,9 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
   /// <summary>
   /// Executes a given <see cref="IRdbmsProviderCommand{T}"/> and associates the result with a given <see cref="ObjectID"/>, 

@@ -15,9 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Persistence.Rdbms;
 
-namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
   /// <summary>
   /// Implements <see cref="IRdbmsProviderCommand{T}"/> by always returning the same, fixed value.

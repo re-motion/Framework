@@ -18,9 +18,9 @@ using System;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Persistence.StorageProviderCommands;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderCommands
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProviderCommands
 {
   [TestFixture]
   public class FixedValueCommandTest

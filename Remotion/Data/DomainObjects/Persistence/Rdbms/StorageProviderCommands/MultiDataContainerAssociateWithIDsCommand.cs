@@ -19,10 +19,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
   /// <summary>
   /// Executes a given <see cref="IRdbmsProviderCommand{T}"/> and associates the resulting <see cref="DataContainer"/> instances
