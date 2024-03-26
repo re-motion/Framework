@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.StorageProviderCommands;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderCommands
@@ -27,9 +29,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
     public void Execute ()
     {
       var value = new object();
-      var command = new FixedValueCommand<object, object>(value);
+      var command = new FixedValueCommand<object>(value);
 
-      var result = command.Execute(new object());
+      var executionContext = new Mock<IRdbmsProviderCommandExecutionContext>();
+      var result = command.Execute(executionContext.Object);
 
       Assert.That(result, Is.SameAs(value));
     }

@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
   /// Executes the command created by the given <see cref="IDbCommandBuilder"/> and parses the result into a sequence of <see cref="ObjectID"/>
   /// instances.
   /// </summary>
-  public class MultiObjectIDLoadCommand : IStorageProviderCommand<IEnumerable<ObjectID?>, IRdbmsProviderCommandExecutionContext>
+  public class MultiObjectIDLoadCommand : IStorageProviderCommand<IEnumerable<ObjectID?>>
   {
     private readonly IEnumerable<IDbCommandBuilder> _dbCommandBuilders;
     private readonly IObjectReader<ObjectID?> _objectIDReader;

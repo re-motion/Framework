@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
   /// Executes the command created by the given <see cref="IDbCommandBuilder"/> and parses the result into a sequence of objects using the specified
   /// <see cref="IObjectReader{T}"/>.
   /// </summary>
-  public class MultiObjectLoadCommand<T> : IStorageProviderCommand<IEnumerable<T>, IRdbmsProviderCommandExecutionContext>
+  public class MultiObjectLoadCommand<T> : IStorageProviderCommand<IEnumerable<T>>
   {
     private readonly Tuple<IDbCommandBuilder, IObjectReader<T>>[] _dbCommandBuildersAndReaders;
 

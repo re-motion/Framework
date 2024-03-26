@@ -29,7 +29,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
   /// <summary>
-  /// Creates <see cref="IStorageProviderCommand{TExecutionContext}"/> instances for use with <see cref="RdbmsProvider"/>.
+  /// Creates <see cref="IStorageProviderCommand"/> instances for use with <see cref="RdbmsProvider"/>.
   /// </summary>
   public class RdbmsProviderCommandFactory : IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>
   {
@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       get { return _queryCommandFactory; }
     }
 
-    public IStorageProviderCommand<ObjectLookupResult<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForSingleIDLookup (
+    public IStorageProviderCommand<ObjectLookupResult<DataContainer>> CreateForSingleIDLookup (
         ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
@@ -133,7 +133,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       return _lookupCommandFactory.CreateForSingleIDLookup(objectID);
     }
 
-    public IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IRdbmsProviderCommandExecutionContext> CreateForSortedMultiIDLookup (
+    public IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>> CreateForSortedMultiIDLookup (
         IEnumerable<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       return _lookupCommandFactory.CreateForSortedMultiIDLookup(objectIDs);
     }
 
-    public IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForRelationLookup (
+    public IStorageProviderCommand<IEnumerable<DataContainer>> CreateForRelationLookup (
         RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition? sortExpressionDefinition)
     {
       ArgumentUtility.CheckNotNull("foreignKeyEndPoint", foreignKeyEndPoint);
@@ -150,25 +150,25 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       return _relationLookupCommandFactory.CreateForRelationLookup(foreignKeyEndPoint, foreignKeyValue, sortExpressionDefinition);
     }
 
-    public IStorageProviderCommand<IEnumerable<DataContainer?>, IRdbmsProviderCommandExecutionContext> CreateForDataContainerQuery (IQuery query)
+    public IStorageProviderCommand<IEnumerable<DataContainer?>> CreateForDataContainerQuery (IQuery query)
     {
       ArgumentUtility.CheckNotNull("query", query);
       return _queryCommandFactory.CreateForDataContainerQuery(query);
     }
 
-    public IStorageProviderCommand<IEnumerable<IQueryResultRow>, IRdbmsProviderCommandExecutionContext> CreateForCustomQuery (IQuery query)
+    public IStorageProviderCommand<IEnumerable<IQueryResultRow>> CreateForCustomQuery (IQuery query)
     {
       ArgumentUtility.CheckNotNull("query", query);
       return _queryCommandFactory.CreateForCustomQuery(query);
     }
 
-    public IStorageProviderCommand<object?, IRdbmsProviderCommandExecutionContext> CreateForScalarQuery (IQuery query)
+    public IStorageProviderCommand<object?> CreateForScalarQuery (IQuery query)
     {
       ArgumentUtility.CheckNotNull("query", query);
       return _queryCommandFactory.CreateForScalarQuery(query);
     }
 
-    public IStorageProviderCommand<IEnumerable<ObjectLookupResult<object>>, IRdbmsProviderCommandExecutionContext> CreateForMultiTimestampLookup (
+    public IStorageProviderCommand<IEnumerable<ObjectLookupResult<object>>> CreateForMultiTimestampLookup (
         IEnumerable<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
@@ -176,7 +176,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       return _lookupCommandFactory.CreateForMultiTimestampLookup(objectIDs);
     }
 
-    public IStorageProviderCommand<IRdbmsProviderCommandExecutionContext> CreateForSave (IEnumerable<DataContainer> dataContainers)
+    public IStorageProviderCommand CreateForSave (IEnumerable<DataContainer> dataContainers)
     {
       ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
 

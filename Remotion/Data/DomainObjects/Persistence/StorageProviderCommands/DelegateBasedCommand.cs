@@ -15,38 +15,39 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
 {
   /// <summary>
-  /// Creates instances of <see cref="DelegateBasedCommand{TIn,TOut,TExecutionContext}"/>. Use this factory class to avoid having
-  /// to pass all generic arguments to <see cref="DelegateBasedCommand{TIn,TOut,TExecutionContext}"/>'s constructor by hand.
+  /// Creates instances of <see cref="DelegateBasedCommand{TIn,TOut}"/>. Use this factory class to avoid having
+  /// to pass all generic arguments to <see cref="DelegateBasedCommand{TIn,TOut}"/>'s constructor by hand.
   /// </summary>
   public static class DelegateBasedCommand
   {
     /// <summary>
-    /// Creates instances of <see cref="DelegateBasedCommand{TIn,TOut,TExecutionContext}"/>. Use this factory method to avoid having
-    /// to pass all generic arguments to <see cref="DelegateBasedCommand{TIn,TOut,TExecutionContext}"/>'s constructor by hand.
+    /// Creates instances of <see cref="DelegateBasedCommand{TIn,TOut}"/>. Use this factory method to avoid having
+    /// to pass all generic arguments to <see cref="DelegateBasedCommand{TIn,TOut}"/>'s constructor by hand.
     /// </summary>
-    public static DelegateBasedCommand<TIn, TOut, TExecutionContext> Create<TIn, TOut, TExecutionContext> (
-        IStorageProviderCommand<TIn, TExecutionContext> command,
+    public static DelegateBasedCommand<TIn, TOut> Create<TIn, TOut> (
+        IStorageProviderCommand<TIn> command,
         Func<TIn, TOut> operation)
     {
-      return new DelegateBasedCommand<TIn, TOut, TExecutionContext>(command, operation);
+      return new DelegateBasedCommand<TIn, TOut>(command, operation);
     }
   }
 
   /// <summary>
-  /// The <see cref="DelegateBasedCommand{TIn,TOut,TExecutionContext}"/> executes an <see cref="IStorageProviderCommand{T, TExecutionContext}"/>
+  /// The <see cref="DelegateBasedCommand{TIn,TOut}"/> executes an <see cref="IStorageProviderCommand{T}"/>
   /// and applies a specified operation-transformation to the result.
   /// </summary>
-  public class DelegateBasedCommand<TIn, TOut, TExecutionContext> : IStorageProviderCommand<TOut, TExecutionContext>
+  public class DelegateBasedCommand<TIn, TOut> : IStorageProviderCommand<TOut>
   {
-    private readonly IStorageProviderCommand<TIn, TExecutionContext> _command;
+    private readonly IStorageProviderCommand<TIn> _command;
     private readonly Func<TIn, TOut> _operation;
 
-    public DelegateBasedCommand (IStorageProviderCommand<TIn, TExecutionContext> command, Func<TIn, TOut> operation)
+    public DelegateBasedCommand (IStorageProviderCommand<TIn> command, Func<TIn, TOut> operation)
     {
       ArgumentUtility.CheckNotNull("command", command);
       ArgumentUtility.CheckNotNull("operation", operation);
@@ -55,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       _operation = operation;
     }
 
-    public IStorageProviderCommand<TIn, TExecutionContext> Command
+    public IStorageProviderCommand<TIn> Command
     {
       get { return _command; }
     }
@@ -65,7 +66,7 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       get { return _operation; }
     }
 
-    public TOut Execute (TExecutionContext executionContext)
+    public TOut Execute (IRdbmsProviderCommandExecutionContext executionContext)
     {
       var executionResult = _command.Execute(executionContext);
       return _operation(executionResult);
