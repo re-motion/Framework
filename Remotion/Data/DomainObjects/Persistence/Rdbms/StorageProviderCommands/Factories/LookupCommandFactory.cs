@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       get { return _tableDefinitionFinder; }
     }
 
-    public virtual IStorageProviderCommand<ObjectLookupResult<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForSingleIDLookup (ObjectID objectID)
+    public virtual IStorageProviderCommand<ObjectLookupResult<DataContainer>> CreateForSingleIDLookup (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -85,10 +85,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       var dbCommandBuilder = _dbCommandBuilderFactory.CreateForSelect(tableDefinition, selectedColumns, comparedColumns, Array.Empty<OrderedColumn>());
 
       var loadCommand = new SingleObjectLoadCommand<DataContainer?>(dbCommandBuilder, dataContainerReader);
-      return new SingleDataContainerAssociateWithIDCommand<IRdbmsProviderCommandExecutionContext>(objectID, loadCommand);
+      return new SingleDataContainerAssociateWithIDCommand(objectID, loadCommand);
     }
 
-    public virtual IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IRdbmsProviderCommandExecutionContext> CreateForSortedMultiIDLookup (
+    public virtual IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>> CreateForSortedMultiIDLookup (
         IEnumerable<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       return new MultiDataContainerAssociateWithIDsCommand(objectIDList, loadCommand);
     }
 
-    public virtual IStorageProviderCommand<IEnumerable<ObjectLookupResult<object>>, IRdbmsProviderCommandExecutionContext> CreateForMultiTimestampLookup (
+    public virtual IStorageProviderCommand<IEnumerable<ObjectLookupResult<object>>> CreateForMultiTimestampLookup (
         IEnumerable<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);

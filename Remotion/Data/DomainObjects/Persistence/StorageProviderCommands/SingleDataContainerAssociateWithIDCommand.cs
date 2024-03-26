@@ -16,21 +16,21 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
 {
   /// <summary>
-  /// Executes a given <see cref="IStorageProviderCommand{T,TExecutionContext}"/> and associates the result with a given <see cref="ObjectID"/>, 
+  /// Executes a given <see cref="IStorageProviderCommand{T}"/> and associates the result with a given <see cref="ObjectID"/>, 
   /// checking whether the return value actually matches the expected <see cref="ObjectID"/>.
   /// </summary>
-  public class SingleDataContainerAssociateWithIDCommand<TExecutionContext> : IStorageProviderCommand<ObjectLookupResult<DataContainer>, TExecutionContext>
-      where TExecutionContext: notnull
+  public class SingleDataContainerAssociateWithIDCommand : IStorageProviderCommand<ObjectLookupResult<DataContainer>>
   {
     private readonly ObjectID _expectedObjectID;
-    private readonly IStorageProviderCommand<DataContainer?, TExecutionContext> _innerCommand;
+    private readonly IStorageProviderCommand<DataContainer?> _innerCommand;
 
-    public SingleDataContainerAssociateWithIDCommand (ObjectID expectedObjectID, IStorageProviderCommand<DataContainer?, TExecutionContext> innerCommand)
+    public SingleDataContainerAssociateWithIDCommand (ObjectID expectedObjectID, IStorageProviderCommand<DataContainer?> innerCommand)
     {
       ArgumentUtility.CheckNotNull("expectedObjectID", expectedObjectID);
       ArgumentUtility.CheckNotNull("innerCommand", innerCommand);
@@ -44,12 +44,12 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       get { return _expectedObjectID; }
     }
 
-    public IStorageProviderCommand<DataContainer?, TExecutionContext> InnerCommand
+    public IStorageProviderCommand<DataContainer?> InnerCommand
     {
       get { return _innerCommand; }
     }
 
-    public ObjectLookupResult<DataContainer> Execute (TExecutionContext executionContext)
+    public ObjectLookupResult<DataContainer> Execute (IRdbmsProviderCommandExecutionContext executionContext)
     {
       ArgumentUtility.CheckNotNull("executionContext", executionContext);
 

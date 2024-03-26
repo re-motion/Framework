@@ -25,27 +25,27 @@ using Remotion.Data.DomainObjects.Queries;
 namespace Remotion.Data.DomainObjects.Persistence
 {
   /// <summary>
-  /// Defines an interface for classes instantiating <see cref="IStorageProviderCommand{T} "/> instances for the basic storage provider operations.
+  /// Defines an interface for classes instantiating <see cref="IStorageProviderCommand"/> instances for the basic storage provider operations.
   /// <see cref="StorageProvider"/> uses this factory interface when the respective provider methods are called.
   /// </summary>
   public interface IStorageProviderCommandFactory<in TExecutionContext>
   {
-    IStorageProviderCommand<ObjectLookupResult<DataContainer>, TExecutionContext> CreateForSingleIDLookup (ObjectID objectID);
+    IStorageProviderCommand<ObjectLookupResult<DataContainer>> CreateForSingleIDLookup (ObjectID objectID);
 
-    IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>, TExecutionContext> CreateForSortedMultiIDLookup (
+    IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>> CreateForSortedMultiIDLookup (
         IEnumerable<ObjectID> objectIDs);
 
-    IStorageProviderCommand<IEnumerable<DataContainer>, TExecutionContext> CreateForRelationLookup (
+    IStorageProviderCommand<IEnumerable<DataContainer>> CreateForRelationLookup (
         RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition? sortExpressionDefinition);
 
-    IStorageProviderCommand<IEnumerable<DataContainer?>, TExecutionContext> CreateForDataContainerQuery (IQuery query);
-    IStorageProviderCommand<IEnumerable<IQueryResultRow>, TExecutionContext> CreateForCustomQuery (IQuery query);
+    IStorageProviderCommand<IEnumerable<DataContainer?>> CreateForDataContainerQuery (IQuery query);
+    IStorageProviderCommand<IEnumerable<IQueryResultRow>> CreateForCustomQuery (IQuery query);
 
-    IStorageProviderCommand<object?, IRdbmsProviderCommandExecutionContext> CreateForScalarQuery (IQuery query);
+    IStorageProviderCommand<object?> CreateForScalarQuery (IQuery query);
 
-    IStorageProviderCommand<IEnumerable<ObjectLookupResult<object>>, TExecutionContext> CreateForMultiTimestampLookup (
+    IStorageProviderCommand<IEnumerable<ObjectLookupResult<object>>> CreateForMultiTimestampLookup (
         IEnumerable<ObjectID> objectIDs);
 
-    IStorageProviderCommand<TExecutionContext> CreateForSave (IEnumerable<DataContainer> dataContainers);
+    IStorageProviderCommand CreateForSave (IEnumerable<DataContainer> dataContainers);
   }
 }

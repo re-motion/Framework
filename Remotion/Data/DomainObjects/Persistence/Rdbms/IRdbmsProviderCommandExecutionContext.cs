@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
   /// <summary>
   /// <see cref="IRdbmsProviderCommandExecutionContext"/> defines methods for creating and executing <see cref="IDbCommand"/> instances. These are
-  /// used by RDBMS-specific implementations of <see cref="IStorageProviderCommand{T,TExecutionContext}"/> and <see cref="IDbCommandBuilder"/>.
+  /// used by RDBMS-specific implementations of <see cref="IStorageProviderCommand{T}"/> and <see cref="IDbCommandBuilder"/>.
   /// </summary>
   public interface IRdbmsProviderCommandExecutionContext
   {
