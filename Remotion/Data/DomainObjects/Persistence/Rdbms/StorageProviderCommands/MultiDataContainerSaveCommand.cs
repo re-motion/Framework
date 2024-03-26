@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
   /// The <see cref="MultiDataContainerSaveCommand"/> saves a sequence of <see cref="DataContainer"/> instances by executing the given
   /// <see cref="IDbCommand"/> instances.
   /// </summary>
-  public class MultiDataContainerSaveCommand : IStorageProviderCommand<IRdbmsProviderCommandExecutionContext>
+  public class MultiDataContainerSaveCommand : IStorageProviderCommand
   {
     private readonly Tuple<ObjectID, IDbCommandBuilder>[] _tuples;
 

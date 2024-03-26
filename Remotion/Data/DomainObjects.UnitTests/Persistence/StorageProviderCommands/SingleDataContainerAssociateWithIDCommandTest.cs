@@ -19,6 +19,7 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.StorageProviderCommands;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement;
 
@@ -28,22 +29,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
   public class SingleDataContainerAssociateWithIDCommandTest : StandardMappingTest
   {
     private ObjectID _expectedID;
-    private Mock<IStorageProviderCommand<DataContainer, object>> _innerCommandMock;
+    private Mock<IStorageProviderCommand<DataContainer>> _innerCommandMock;
 
-    private SingleDataContainerAssociateWithIDCommand<object> _associateCommand;
+    private SingleDataContainerAssociateWithIDCommand _associateCommand;
 
-    private object _fakeContext;
+    private IRdbmsProviderCommandExecutionContext _fakeContext;
 
     public override void SetUp ()
     {
       base.SetUp();
 
       _expectedID = DomainObjectIDs.Order1;
-      _innerCommandMock = new Mock<IStorageProviderCommand<DataContainer, object>>(MockBehavior.Strict);
+      _innerCommandMock = new Mock<IStorageProviderCommand<DataContainer>>(MockBehavior.Strict);
 
-      _associateCommand = new SingleDataContainerAssociateWithIDCommand<object>(_expectedID, _innerCommandMock.Object);
+      _associateCommand = new SingleDataContainerAssociateWithIDCommand(_expectedID, _innerCommandMock.Object);
 
-      _fakeContext = "context";
+      _fakeContext = new Mock<IRdbmsProviderCommandExecutionContext>().Object;
     }
 
     [Test]

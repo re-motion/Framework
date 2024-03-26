@@ -106,9 +106,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _objectReaderFactoryStrictMock.Verify();
 
-      Assert.That(result, Is.TypeOf<SingleDataContainerAssociateWithIDCommand<IRdbmsProviderCommandExecutionContext>>());
+      Assert.That(result, Is.TypeOf<SingleDataContainerAssociateWithIDCommand>());
 
-      var associateCommand = (SingleDataContainerAssociateWithIDCommand<IRdbmsProviderCommandExecutionContext>)result;
+      var associateCommand = (SingleDataContainerAssociateWithIDCommand)result;
       Assert.That(associateCommand.ExpectedObjectID, Is.EqualTo(_objectID1));
       Assert.That(associateCommand.InnerCommand, Is.TypeOf(typeof(SingleObjectLoadCommand<DataContainer>)));
 
@@ -301,13 +301,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       return new ObjectID(classDefinition, Guid.NewGuid());
     }
 
-    private IStorageProviderCommand<TIn, IRdbmsProviderCommandExecutionContext> CheckDelegateBasedCommandAndReturnInnerCommand<TIn, TResult> (
-        IStorageProviderCommand<TResult, IRdbmsProviderCommandExecutionContext> command)
+    private IStorageProviderCommand<TIn> CheckDelegateBasedCommandAndReturnInnerCommand<TIn, TResult> (
+        IStorageProviderCommand<TResult> command)
     {
       Assert.That(
           command,
-          Is.TypeOf(typeof(DelegateBasedCommand<TIn, TResult, IRdbmsProviderCommandExecutionContext>)));
-      return ((DelegateBasedCommand<TIn, TResult, IRdbmsProviderCommandExecutionContext>)command).Command;
+          Is.TypeOf(typeof(DelegateBasedCommand<TIn, TResult>)));
+      return ((DelegateBasedCommand<TIn, TResult>)command).Command;
     }
   }
 }
