@@ -313,6 +313,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
             if (Helper.BrowserConfiguration.IsChromium())
               Thread.Sleep(100);
 
+            // Due to race conditions, we need to wait for the Browser to fully finish drawing it's contents before we take the screenshot.
+            // More infos in RM-9140
+            if (GetType().Assembly.ToString().Contains("RequireUI"))
+              Thread.Sleep(2000);
+
             ScreenshotTestingDelegate<IFluentScreenshotElement<ElementScope>> test =
                 (builder, target) => { builder.Crop(target, new WebPadding(1)); };
 
