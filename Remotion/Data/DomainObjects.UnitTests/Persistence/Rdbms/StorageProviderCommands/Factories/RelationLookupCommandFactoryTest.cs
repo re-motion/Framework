@@ -298,8 +298,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       return new ObjectID(classDefinition, Guid.NewGuid());
     }
 
-    private IStorageProviderCommand<TIn> CheckDelegateBasedCommandAndReturnInnerCommand<TIn, TResult> (
-        IStorageProviderCommand<TResult> command)
+    private IRdbmsProviderCommand<TIn> CheckDelegateBasedCommandAndReturnInnerCommand<TIn, TResult> (
+        IRdbmsProviderCommand<TResult> command)
     {
       Assert.That(
           command,

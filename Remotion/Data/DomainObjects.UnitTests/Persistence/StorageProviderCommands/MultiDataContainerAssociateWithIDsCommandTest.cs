@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
   [TestFixture]
   public class MultiDataContainerAssociateWithIDsCommandTest : StandardMappingTest
   {
-    private Mock<IStorageProviderCommand<IEnumerable<DataContainer>>> _commandStub;
+    private Mock<IRdbmsProviderCommand<IEnumerable<DataContainer>>> _commandStub;
     private Mock<IRdbmsProviderCommandExecutionContext> _executionContext;
     private DataContainer _order1Container;
     private DataContainer _order2Container;
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
     {
       base.SetUp();
 
-      _commandStub = new Mock<IStorageProviderCommand<IEnumerable<DataContainer>>>();
+      _commandStub = new Mock<IRdbmsProviderCommand<IEnumerable<DataContainer>>>();
       _executionContext = new Mock<IRdbmsProviderCommandExecutionContext>();
 
       _order1Container = DataContainerObjectMother.Create(DomainObjectIDs.Order1);
