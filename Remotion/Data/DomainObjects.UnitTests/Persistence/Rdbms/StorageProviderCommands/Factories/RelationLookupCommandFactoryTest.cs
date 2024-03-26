@@ -285,8 +285,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       var result = _factory.CreateForRelationLookup(relationEndPointDefinition, _foreignKeyValue, null);
 
-      Assert.That(result, Is.TypeOf(typeof(FixedValueCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>)));
-      var fixedValueCommand = (FixedValueCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>)result;
+      Assert.That(result, Is.TypeOf(typeof(FixedValueCommand<IEnumerable<DataContainer>>)));
+      var fixedValueCommand = (FixedValueCommand<IEnumerable<DataContainer>>)result;
       Assert.That(fixedValueCommand.Value, Is.EqualTo(Enumerable.Empty<DataContainer>()));
     }
 
@@ -298,13 +298,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       return new ObjectID(classDefinition, Guid.NewGuid());
     }
 
-    private IStorageProviderCommand<TIn, IRdbmsProviderCommandExecutionContext> CheckDelegateBasedCommandAndReturnInnerCommand<TIn, TResult> (
-        IStorageProviderCommand<TResult, IRdbmsProviderCommandExecutionContext> command)
+    private IStorageProviderCommand<TIn> CheckDelegateBasedCommandAndReturnInnerCommand<TIn, TResult> (
+        IStorageProviderCommand<TResult> command)
     {
       Assert.That(
           command,
-          Is.TypeOf(typeof(DelegateBasedCommand<TIn, TResult, IRdbmsProviderCommandExecutionContext>)));
-      return ((DelegateBasedCommand<TIn, TResult, IRdbmsProviderCommandExecutionContext>)command).Command;
+          Is.TypeOf(typeof(DelegateBasedCommand<TIn, TResult>)));
+      return ((DelegateBasedCommand<TIn, TResult>)command).Command;
     }
 
     private SortedPropertySpecification CreateSortedPropertySpecification (
