@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Remotion.Data.DomainObjects.Linq;
@@ -65,14 +66,18 @@ namespace Remotion.Data.DomainObjects.Queries
       return CreateQueryParser(expressionTreeParser);
     }
 
-    public virtual IQueryExecutor CreateQueryExecutor (StorageProviderDefinition providerDefinition)
+    public virtual IQueryExecutor CreateQueryExecutor (StorageProviderDefinition providerDefinition, string id, IReadOnlyDictionary<string, object> metadata)
     {
+      ArgumentUtility.CheckNotNull("providerDefinition", providerDefinition);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNull("metadata", metadata);
+
       var queryGenerator = providerDefinition.Factory.CreateDomainObjectQueryGenerator(
           providerDefinition,
           _methodCallTransformerProvider,
           _resultOperatorHandlerRegistry,
           MappingConfiguration.Current);
-      return new DomainObjectQueryExecutor(providerDefinition, queryGenerator);
+      return new DomainObjectQueryExecutor(providerDefinition, queryGenerator, id, metadata);
     }
 
     protected virtual IMethodCallTransformerProvider CreateMethodCallTransformerProvider ()
