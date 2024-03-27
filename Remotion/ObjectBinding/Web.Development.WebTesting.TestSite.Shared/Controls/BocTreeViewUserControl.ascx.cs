@@ -29,10 +29,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     protected override void OnInit (EventArgs e)
     {
       base.OnInit(e);
+#pragma warning disable CS0618 // Type or member is obsolete
       Normal.MenuItemProvider = new TestBocTreeViewContextMenu();
       ContextMenu_Delayed.MenuItemProvider = new TestBocTreeViewContextMenu();
       ContextMenu_DelayedLongerThanTimeout.MenuItemProvider = new TestBocTreeViewContextMenu();
       ContextMenu_Error.MenuItemProvider = new TestBocTreeViewContextMenu();
+#pragma warning restore CS0618 // Type or member is obsolete
     }
 
     protected override void OnPreRender (EventArgs e)
