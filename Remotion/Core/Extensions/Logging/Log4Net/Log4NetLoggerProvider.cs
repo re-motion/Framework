@@ -15,25 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using System.Reflection;
-using log4net.Appender;
-using log4net.Config;
-using log4net.Core;
-using log4net.Layout;
-using log4net.Repository.Hierarchy;
-using Microsoft.Extensions.Logging;
-using Remotion.Reflection;
 using Remotion.Utilities;
+using MicrosoftLogging = Microsoft.Extensions.Logging;
 
 namespace Remotion.Logging.Log4Net;
 
-public class Log4NetLoggerProvider : ILoggerProvider
+public class Log4NetLoggerProvider : MicrosoftLogging.ILoggerProvider
 {
-  public Microsoft.Extensions.Logging.ILogger CreateLogger (string categoryName)
+  public MicrosoftLogging.ILogger CreateLogger (string categoryName)
   {
     ArgumentUtility.CheckNotNull("categoryName", categoryName);
 
-    return new Log4NetLogger();
+    return new Log4NetLogger(categoryName);
   }
 
   public void Dispose ()
