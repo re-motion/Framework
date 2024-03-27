@@ -142,7 +142,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
           {
             const valueList = data as Remotion.BocAutoCompleteReferenceValue.BocAutoCompleteReferenceValueSearchResultWithValueList;
 
-            return valueList.Values.map(function (row)
+            const cacheRow = valueList.Values.map(function (row)
             {
               row.IsAnnotation = row.UniqueIdentifier === nullValueString;
 
@@ -152,6 +152,11 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
                 result: row.IsAnnotation ? '' : row.DisplayName
               };
             });
+
+            return {
+              cacheRow,
+              hasMoreSearchResults: valueList.HasMoreSearchResults
+            };
           }
           else
           {
@@ -162,6 +167,9 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
         {
           const row = document.createElement('li');
 
+          const imgContainer = document.createElement('div');
+          row.append(imgContainer);
+
           if (item.IconUrl != '')
           {
             const img = document.createElement('img');
@@ -169,10 +177,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
             img.alt = '';
             img.setAttribute('aria-hidden', 'true');
 
-            const imgContainer = document.createElement('div');
             imgContainer.appendChild(img);
-
-            row.append(imgContainer);
           }
 
           const displayName = document.createElement('span');

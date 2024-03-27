@@ -253,3 +253,11 @@ span.bocAutoCompleteReferenceValueInput input
   padding-left: 1px;
   padding-right: 1px;
 }
+
+.ac_placeholder_loading > div:first-child
+{
+  background-image: url('../Image/AutoCompleteReferenceValueRequestInProgressIndicator.gif');
+  background-size: var(--remotion-themed-line-height) var(--remotion-themed-line-height);
+  background-position: center center;
+  background-repeat: no-repeat;
+}
