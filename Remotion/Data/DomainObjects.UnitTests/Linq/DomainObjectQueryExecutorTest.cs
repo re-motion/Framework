@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Linq.ExecutableQueries;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.UnitTests.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Linq;
@@ -51,7 +52,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       base.SetUp();
 
       _queryGeneratorMock = new Mock<IDomainObjectQueryGenerator>(MockBehavior.Default);
-      _queryExecutor = new DomainObjectQueryExecutor(TestDomainStorageProviderDefinition, _queryGeneratorMock.Object);
+
+      _queryExecutor = new DomainObjectQueryExecutor(TestDomainStorageProviderDefinition, _queryGeneratorMock.Object, "<dynamic query>", QueryObjectMother.EmptyMetadata);
 
       _queryManagerMock = new Mock<IQueryManager>(MockBehavior.Strict);
       var transaction = ClientTransactionObjectMother.CreateTransactionWithQueryManager<ClientTransaction>(_queryManagerMock.Object);
@@ -71,10 +73,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
+    public void Initialize ()
+    {
+      var executor = new DomainObjectQueryExecutor(TestDomainStorageProviderDefinition, _queryGeneratorMock.Object, "dummyID", QueryObjectMother.EmptyMetadata);
+
+      Assert.That(executor.Metadata, Is.SameAs(QueryObjectMother.EmptyMetadata));
+      Assert.That(executor.ID, Is.EqualTo("dummyID"));
+      Assert.That(executor.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
+      Assert.That(executor.QueryGenerator, Is.SameAs(_queryGeneratorMock.Object));
+    }
+
+    [Test]
     public void ExecuteScalar ()
     {
       _queryGeneratorMock
-          .Setup(mock => mock.CreateScalarQuery<int>("<dynamic query>", TestDomainStorageProviderDefinition, _someQueryModel))
+          .Setup(mock => mock.CreateScalarQuery<int>("<dynamic query>", TestDomainStorageProviderDefinition, _someQueryModel, QueryObjectMother.EmptyMetadata))
           .Returns(_scalarExecutableQueryMock.Object)
           .Verifiable();
 
@@ -119,7 +132,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
                   "<dynamic query>",
                   TestDomainStorageProviderDefinition,
                   _someQueryModel,
-                  It.Is<IEnumerable<FetchQueryModelBuilder>>(p => p.Count() == 0)))
+                  It.Is<IEnumerable<FetchQueryModelBuilder>>(p => p.Count() == 0),
+                  QueryObjectMother.EmptyMetadata))
           .Returns(_collectionExecutableQueryMock.Object)
           .Verifiable();
 
@@ -169,7 +183,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
                   "<dynamic query>",
                   TestDomainStorageProviderDefinition,
                   _someQueryModel,
-                  It.Is<IEnumerable<FetchQueryModelBuilder>>(p => p.Count() == 0)))
+                  It.Is<IEnumerable<FetchQueryModelBuilder>>(p => p.Count() == 0),
+                  QueryObjectMother.EmptyMetadata))
           .Returns(_collectionExecutableQueryMock.Object)
           .Verifiable();
 
@@ -192,7 +207,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
                   "<dynamic query>",
                   TestDomainStorageProviderDefinition,
                   _someQueryModel,
-                  It.Is<IEnumerable<FetchQueryModelBuilder>>(p => p.Count() == 0)))
+                  It.Is<IEnumerable<FetchQueryModelBuilder>>(p => p.Count() == 0),
+                  QueryObjectMother.EmptyMetadata))
           .Returns(_collectionExecutableQueryMock.Object)
           .Verifiable();
 
@@ -213,7 +229,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
                   "<dynamic query>",
                   TestDomainStorageProviderDefinition,
                   _someQueryModel,
-                  It.Is<IEnumerable<FetchQueryModelBuilder>>(p => p.Count() == 0)))
+                  It.Is<IEnumerable<FetchQueryModelBuilder>>(p => p.Count() == 0),
+                  QueryObjectMother.EmptyMetadata))
           .Returns(_collectionExecutableQueryMock.Object)
           .Verifiable();
 
@@ -234,7 +251,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
                   "<dynamic query>",
                   TestDomainStorageProviderDefinition,
                   _someQueryModel,
-                  It.Is<IEnumerable<FetchQueryModelBuilder>>(p => p.Count() == 0)))
+                  It.Is<IEnumerable<FetchQueryModelBuilder>>(p => p.Count() == 0),
+                  QueryObjectMother.EmptyMetadata))
           .Returns(_collectionExecutableQueryMock.Object)
           .Verifiable();
 
@@ -274,10 +292,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
                   It.IsAny<string>(),
                   It.IsAny<StorageProviderDefinition>(),
                   queryModel,
-                  It.IsAny<IEnumerable<FetchQueryModelBuilder>>()))
+                  It.IsAny<IEnumerable<FetchQueryModelBuilder>>(),
+                  QueryObjectMother.EmptyMetadata))
           .Returns(fakeResult)
           .Callback(
-              (string id, StorageProviderDefinition _, QueryModel _, IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders) =>
+              (string id, StorageProviderDefinition _, QueryModel _, IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders, IReadOnlyDictionary<string, object> _) =>
               {
                 Assert.That(queryModel.ResultOperators, Is.EqualTo(new[] { nonTrailingFetchRequest, someResultOperator }));
 

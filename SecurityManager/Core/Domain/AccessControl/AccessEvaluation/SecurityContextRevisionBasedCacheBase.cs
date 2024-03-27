@@ -84,7 +84,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
             "<dynamic query>",
             queryExecutor.StorageProviderDefinition,
             queryModel,
-            Enumerable.Empty<FetchQueryModelBuilder>());
+            Enumerable.Empty<FetchQueryModelBuilder>(),
+            queryExecutor.Metadata);
       }
     }
   }

@@ -38,10 +38,11 @@ namespace Remotion.Data.DomainObjects.Linq
     /// <param name="id">The identifier for the resulting query.</param>
     /// <param name="storageProviderDefinition">The <see cref="StorageProvider"/> for the query.</param>
     /// <param name="queryModel">The <see cref="QueryModel"/> describing the query.</param>
+    /// <param name="metadata">The metadata for the query. This parameter can be used to e.g. provide diagnostic information or query hints to the system.</param>
     /// <returns>
     /// An <see cref="IExecutableQuery{T}"/> object corresponding to the given <paramref name="queryModel"/> that returns a scalar value when it is executed.
     /// </returns>
-    IExecutableQuery<T> CreateScalarQuery<T> (string id, StorageProviderDefinition storageProviderDefinition, QueryModel queryModel);
+    IExecutableQuery<T> CreateScalarQuery<T> (string id, StorageProviderDefinition storageProviderDefinition, QueryModel queryModel, IReadOnlyDictionary<string, object> metadata);
 
     /// <summary>
     /// Creates an <see cref="IExecutableQuery{T}"/> collection for a given <see cref="ClassDefinition"/> based on the given <see cref="QueryModel"/>.
@@ -51,6 +52,7 @@ namespace Remotion.Data.DomainObjects.Linq
     /// <param name="queryModel">The <see cref="QueryModel"/> describing the query.</param>
     /// <param name="fetchQueryModelBuilders">
     /// A number of <see cref="FetchQueryModelBuilder"/> instances for the fetch requests to be executed together with the query.</param>
+    /// <param name="metadata">The metadata for the query. This parameter can be used to e.g. provide diagnostic information or query hints to the system.</param>
     /// <returns>
     /// An <see cref="IExecutableQuery{T}"/> collection corresponding to the given <paramref name="queryModel"/>.
     /// </returns>
@@ -58,7 +60,8 @@ namespace Remotion.Data.DomainObjects.Linq
         string id,
         StorageProviderDefinition storageProviderDefinition,
         QueryModel queryModel,
-        IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders);
+        IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders,
+        IReadOnlyDictionary<string, object> metadata);
 
 
   }
