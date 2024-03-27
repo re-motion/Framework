@@ -15,23 +15,23 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using Microsoft.Extensions.Logging;
-using NUnit.Framework;
-using Remotion.Logging.Log4Net;
+using Remotion.Utilities;
 
-namespace Remotion.Extensions.UnitTests.Logging.Log4NetTests;
+namespace Remotion.Logging.Log4Net;
 
-public class Log4NetLoggerProviderTest
+/// <summary>
+/// Implements <see cref="Microsoft.Extensions.Logging.ILoggerProvider"/> to provide an implementation with log4net.
+/// </summary>
+public class Log4NetLoggerProvider : Microsoft.Extensions.Logging.ILoggerProvider
 {
-  [Test]
-  public void CreateLogger_WithValidCategoryName_ReturnsLoggerInstance ()
+  public Microsoft.Extensions.Logging.ILogger CreateLogger (string categoryName)
   {
-    var loggerProvider = new Log4NetLoggerProvider();
-    var categoryName = "TestCategory";
+    ArgumentUtility.CheckNotNullOrEmpty("categoryName", categoryName);
 
-    var logger = loggerProvider.CreateLogger(categoryName);
+    return new Log4NetLogger(log4net.LogManager.GetLogger(categoryName).Logger);
+  }
 
-    Assert.That(logger, Is.Not.Null);
-    Assert.That(logger, Is.InstanceOf<Log4NetLogger>());
+  public void Dispose ()
+  {
   }
 }

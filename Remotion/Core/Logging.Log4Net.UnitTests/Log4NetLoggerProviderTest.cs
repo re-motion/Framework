@@ -15,27 +15,23 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using log4net.Core;
-using Microsoft.Extensions.Logging;
+using NUnit.Framework;
+using Remotion.Development.UnitTesting;
 
-namespace Remotion.Logging.Log4Net;
+namespace Remotion.Logging.Log4Net.UnitTests;
 
-public class Log4NetLogger
-    : Microsoft.Extensions.Logging.ILogger
+public class Log4NetLoggerProviderTest
 {
-  public void Log<TState> (Microsoft.Extensions.Logging.LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+  [Test]
+  public void CreateLogger_WithValidCategoryName_ReturnsLoggerInstance ()
   {
-    throw new NotImplementedException();
-  }
+    var loggerProvider = new Log4NetLoggerProvider();
+    var categoryName = "TestCategory";
 
-  public bool IsEnabled (Microsoft.Extensions.Logging.LogLevel logLevel)
-  {
-    throw new NotImplementedException();
-  }
+    var logger = loggerProvider.CreateLogger(categoryName);
 
-  public IDisposable? BeginScope<TState> (TState state)
-      where TState : notnull
-  {
-    throw new NotImplementedException();
+    Assert.That(logger, Is.InstanceOf<Log4NetLogger>());
+    var secondLogger = loggerProvider.CreateLogger(categoryName);
+    Assert.That(logger.As<Log4NetLogger>().Logger, Is.SameAs(secondLogger.As<Log4NetLogger>().Logger));
   }
 }
