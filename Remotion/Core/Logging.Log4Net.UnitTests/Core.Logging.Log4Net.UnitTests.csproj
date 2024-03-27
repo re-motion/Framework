@@ -2,12 +2,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectType>Test</ProjectType>
-    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <Import Project="..\..\..\Build\Shared.build.props" />
   <PropertyGroup>
-    <AssemblyTitle>Remotion Extensions Library Unit Tests</AssemblyTitle>
-    <AssemblyName>Remotion.Extensions.UnitTests</AssemblyName>
+    <AssemblyTitle>Remotion Logging Log4Net Unit Tests</AssemblyTitle>
+    <AssemblyName>Remotion.Logging.Log4Net.UnitTests</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
@@ -15,9 +14,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
-    <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj" />
     <ProjectReference Include="..\Core\Core.Core.csproj" />
-    <ProjectReference Include="..\Extensions\Core.Extensions.csproj" />
     <ProjectReference Include="..\Logging.Log4Net\Core.Logging.Log4Net.csproj" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
