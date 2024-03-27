@@ -15,9 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Extensions.Logging;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using MicrosoftLogging = Microsoft.Extensions.Logging;
 
 namespace Remotion.Logging
 {
@@ -51,6 +53,16 @@ namespace Remotion.Logging
           exceptionObject,
           s_globalizationService.Value.GetEnumerationValueDisplayName(messageEnum),
           args);
+    }
+
+    /// <summary>
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the specified <paramref name="logLevel"/>.
+    /// </summary>
+    public static void LogFormat (this ILogger logger, MicrosoftLogging.LogLevel logLevel, Enum messageEnum, Exception? exceptionObject, params object[] args)
+    {
+      ArgumentUtility.CheckNotNull("logger", logger);
+
+      logger.Log(logLevel,s_globalizationService.Value.GetEnumerationValueDisplayName(messageEnum), exceptionObject, args);
     }
 
     /// <summary>

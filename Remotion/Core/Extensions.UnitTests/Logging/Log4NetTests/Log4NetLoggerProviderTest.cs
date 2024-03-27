@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Remotion.Logging.Log4Net;
 
@@ -31,7 +30,6 @@ public class Log4NetLoggerProviderTest
 
     var logger = loggerProvider.CreateLogger(categoryName);
 
-    Assert.That(logger, Is.Not.Null);
     Assert.That(logger, Is.InstanceOf<Log4NetLogger>());
   }
 }
