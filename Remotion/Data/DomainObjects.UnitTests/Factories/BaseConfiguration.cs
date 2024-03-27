@@ -153,7 +153,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       storageProviderDefinitionCollection.Add(
           new UnitTestStorageProviderStubDefinition(
               DatabaseTest.c_unitTestStorageProviderStubID,
-              new[] { typeof(StorageProviderStubAttribute) }));
+              assignedStorageGroups: new[] { typeof(StorageProviderStubAttribute) }));
 
       storageProviderDefinitionCollection.Add(
           new RdbmsProviderDefinition(
