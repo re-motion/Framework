@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Queries.EagerFetching;
@@ -66,6 +67,11 @@ namespace Remotion.Data.DomainObjects.Queries
     public QueryDefinition Definition
     {
       get { return _definition; }
+    }
+
+    public IReadOnlyDictionary<string, object> Metadata
+    {
+      get { return _definition.Metadata; }
     }
 
     /// <summary>
