@@ -97,6 +97,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       locatorStub
           .Setup(stub => stub.GetInstance<IPersistenceExtensionFactory>())
           .Returns(Mock.Of<IPersistenceExtensionFactory>());
+      locatorStub
+          .Setup(stub => stub.GetInstance<IStorageAccessResolver>())
+          .Returns(Mock.Of<IStorageAccessResolver>());
 
 
       using (new ServiceLocatorScope(locatorStub.Object))
