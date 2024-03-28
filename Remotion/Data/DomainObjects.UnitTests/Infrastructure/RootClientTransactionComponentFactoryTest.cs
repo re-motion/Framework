@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [SetUp]
     public void SetUp ()
     {
-      _factory = RootClientTransactionComponentFactory.Create(SafeServiceLocator.Current.GetInstance<IPersistenceService>());
+      _factory = RootClientTransactionComponentFactory.Create(SafeServiceLocator.Current.GetInstance<IPersistenceService>(), SafeServiceLocator.Current.GetInstance<IStorageAccessResolver>());
       _fakeConstructedTransaction = new TestableClientTransaction();
     }
 

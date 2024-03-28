@@ -27,7 +27,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     private readonly IPersistenceStrategy _persistenceStrategy;
 
     public ComponentFactoryWithSpecificPersistenceStrategy (IPersistenceStrategy persistenceStrategy)
-        : base(SafeServiceLocator.Current.GetInstance<IPersistenceService>())
+        : base(SafeServiceLocator.Current.GetInstance<IPersistenceService>(),
+            SafeServiceLocator.Current.GetInstance<IStorageAccessResolver>())
     {
       _persistenceStrategy = persistenceStrategy;
     }

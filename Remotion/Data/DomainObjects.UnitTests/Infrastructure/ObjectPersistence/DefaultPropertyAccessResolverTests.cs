@@ -53,14 +53,13 @@ public class DefaultPropertyAccessResolverTests
   public void ResolveStorageAccessForQuery_ReturnsReadWrite (QueryType queryType, Type collectionType)
   {
     var query = new Mock<IQuery>();
+    query.Setup(q => q.QueryType).Throws(new InvalidOperationException("This should not be required in this method."));
+    query.Setup(q => q.CollectionType).Throws(new InvalidOperationException("This should not be required in this method."));
+    query.Setup(q => q.Metadata).Throws(new InvalidOperationException("This should not be required in this method."));
 
     var storageAccessResolver = new DefaultStorageAccessResolver();
     var result = storageAccessResolver.ResolveStorageAccessForQuery(query.Object);
     Assert.That(result, Is.EqualTo(StorageAccessType.ReadWrite));
-
-    query.Verify(q => q.QueryType, Times.Never);
-    query.Verify(q => q.CollectionType, Times.Never);
-    query.Verify(q => q.Metadata, Times.Never);
   }
 }
 }
