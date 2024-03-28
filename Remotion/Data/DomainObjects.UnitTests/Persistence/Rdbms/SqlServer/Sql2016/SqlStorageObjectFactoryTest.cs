@@ -19,6 +19,7 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
@@ -130,8 +131,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       var result = _sqlStorageObjectFactory.CreateStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
 
       Assert.That(result, Is.TypeOf(typeof(RdbmsProvider)));
-      Assert.That(result.PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
-      Assert.That(result.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
+      Assert.That(result.As<RdbmsProvider>().PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
+      Assert.That(result.As<RdbmsProvider>().StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
       Assert.That(result.As<RdbmsProvider>().ConnectionString, Is.SameAs(_rdbmsProviderDefinition.ConnectionString));
 
       var commandFactory = (RdbmsProviderCommandFactory)PrivateInvoke.GetNonPublicProperty(result, "StorageProviderCommandFactory");
@@ -150,8 +151,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       var result = _sqlStorageObjectFactory.CreateReadOnlyStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
 
       Assert.That(result, Is.TypeOf(typeof(RdbmsProvider)));
-      Assert.That(result.PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
-      Assert.That(result.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
+      Assert.That(result.As<RdbmsProvider>().PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
+      Assert.That(result.As<RdbmsProvider>().StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
       Assert.That(result.As<RdbmsProvider>().ConnectionString, Is.SameAs(_rdbmsProviderDefinition.ReadOnlyConnectionString));
 
       var commandFactory = (RdbmsProviderCommandFactory)PrivateInvoke.GetNonPublicProperty(result, "StorageProviderCommandFactory");
