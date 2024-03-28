@@ -120,7 +120,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
               constructedTransaction.ID,
               _storageSettings,
               _persistenceService,
-              _persistenceExtensionFactory)
+              _persistenceExtensionFactory,
+              _storageAccessResolver)
           );
     }
 

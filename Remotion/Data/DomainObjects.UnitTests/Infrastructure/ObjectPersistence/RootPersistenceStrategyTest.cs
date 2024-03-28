@@ -36,7 +36,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           Guid.Empty,
           Mock.Of<IStorageSettings>(),
           Mock.Of<IPersistenceService>(),
-          Mock.Of<IPersistenceExtensionFactory>());
+          Mock.Of<IPersistenceExtensionFactory>(),
+          Mock.Of<IStorageAccessResolver>());
     }
   }
 }
