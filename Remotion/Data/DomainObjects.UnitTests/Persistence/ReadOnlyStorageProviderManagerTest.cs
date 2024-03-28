@@ -27,9 +27,9 @@ using Remotion.Development.UnitTesting;
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 {
   [TestFixture]
-  public class StorageProviderManagerTest : StandardMappingTest
+  public class ReadOnlyStorageProviderManagerTest : StandardMappingTest
   {
-    private StorageProviderManager _storageProviderManager;
+    private ReadOnlyStorageProviderManager _readOnlyStorageProviderManager;
     private IPersistenceExtension _persistenceExtension;
 
     public override void SetUp ()
@@ -37,20 +37,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       base.SetUp();
 
       _persistenceExtension = Mock.Of<IPersistenceExtension>();
-      _storageProviderManager = new StorageProviderManager(_persistenceExtension, StorageSettings);
-      Assert.That(_storageProviderManager.PersistenceExtension, Is.SameAs(_persistenceExtension));
+      _readOnlyStorageProviderManager = new ReadOnlyStorageProviderManager(_persistenceExtension, StorageSettings);
+      Assert.That(_readOnlyStorageProviderManager.PersistenceExtension, Is.SameAs(_persistenceExtension));
     }
 
     public override void TearDown ()
     {
       base.TearDown();
-      _storageProviderManager.Dispose();
+      _readOnlyStorageProviderManager.Dispose();
     }
 
     [Test]
     public void GetMandatory_WithProviderID ()
     {
-      var provider = _storageProviderManager.GetMandatory(c_testDomainProviderID);
+      var provider = _readOnlyStorageProviderManager.GetMandatory(c_testDomainProviderID);
 
       Assert.That(provider, Is.Not.Null);
       Assert.That(provider.GetType(), Is.EqualTo(typeof(RdbmsProvider)));
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     public void GetMandatory_WithProviderInstance ()
     {
       var providerDefinition = StorageSettings.GetStorageProviderDefinitions().OfType<RdbmsProviderDefinition>().First();
-      var provider = _storageProviderManager.GetMandatory(providerDefinition);
+      var provider = _readOnlyStorageProviderManager.GetMandatory(providerDefinition);
 
       Assert.That(provider.GetType(), Is.EqualTo(typeof(RdbmsProvider)));
       Assert.That(provider.As<RdbmsProvider>().StorageProviderDefinition, Is.SameAs(providerDefinition));
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
           .Throws(new AssertionException("Should not be called"));
 
       Assert.That(
-          () => _storageProviderManager.GetMandatory(providerDefinition),
+          () => _readOnlyStorageProviderManager.GetMandatory(providerDefinition),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   $"Supplied provider definition '{c_testDomainProviderID}' does not match the provider definition with the same name in the IStorageSettings object."));
@@ -104,8 +104,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void GetMandatory_WithProviderID_ReturnsSameInstanceTwice ()
     {
-      var provider1 = _storageProviderManager.GetMandatory(c_testDomainProviderID);
-      var provider2 = _storageProviderManager.GetMandatory(c_testDomainProviderID);
+      var provider1 = _readOnlyStorageProviderManager.GetMandatory(c_testDomainProviderID);
+      var provider2 = _readOnlyStorageProviderManager.GetMandatory(c_testDomainProviderID);
 
       Assert.That(provider2, Is.SameAs(provider1));
     }
@@ -115,28 +115,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     {
       RdbmsProvider provider = null;
 
-      using (_storageProviderManager)
+      using (_readOnlyStorageProviderManager)
       {
-        provider = (RdbmsProvider)_storageProviderManager.GetMandatory(c_testDomainProviderID);
+        provider = (RdbmsProvider)_readOnlyStorageProviderManager.GetMandatory(c_testDomainProviderID);
         provider.LoadDataContainer(DomainObjectIDs.Order1);
 
         Assert.That(provider.IsConnected, Is.True);
       }
 
       Assert.That(provider.IsConnected, Is.False);
-    }
-
-    [Test]
-    public void GetMandatory_BothMethods_ReturnSameInstance ()
-    {
-      var storageProviderDefinition = StorageSettings.GetStorageProviderDefinition(c_testDomainProviderID);
-      using (_storageProviderManager)
-      {
-        var provider = _storageProviderManager.GetMandatory(storageProviderDefinition);
-        var readOnlyProvider = ((IReadOnlyStorageProviderManager)_storageProviderManager).GetMandatory(storageProviderDefinition);
-
-        Assert.That(provider, Is.SameAs(readOnlyProvider));
-      }
     }
   }
 }
