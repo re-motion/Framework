@@ -74,13 +74,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       get { return _rdbmsProviderCommandFactory; }
     }
 
-    public virtual IRdbmsProviderCommand<IEnumerable<DataContainer>> CreateForRelationLookup (
+    public virtual IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer>> CreateForRelationLookup (
         RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition? sortExpressionDefinition)
     {
       ArgumentUtility.CheckNotNull("foreignKeyEndPoint", foreignKeyEndPoint);
       ArgumentUtility.CheckNotNull("foreignKeyValue", foreignKeyValue);
 
-      return InlineRdbmsStorageEntityDefinitionVisitor.Visit<IRdbmsProviderCommand<IEnumerable<DataContainer>>>(
+      return InlineRdbmsStorageEntityDefinitionVisitor.Visit<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer>>>(
           _rdbmsPersistenceModelProvider.GetEntityDefinition(foreignKeyEndPoint.ClassDefinition),
           (table, continuation) => CreateForDirectRelationLookup(table, foreignKeyEndPoint, foreignKeyValue, sortExpressionDefinition),
           (filterView, continuation) => continuation(filterView.BaseEntity),
@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           (emptyView, continuation) => CreateForEmptyRelationLookup());
     }
 
-    protected virtual IRdbmsProviderCommand<IEnumerable<DataContainer>> CreateForDirectRelationLookup (
+    protected virtual IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer>> CreateForDirectRelationLookup (
         TableDefinition tableDefinition,
         RelationEndPointDefinition foreignKeyEndPoint,
         ObjectID foreignKeyValue,
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           selectedColumns,
           GetComparedColumns(foreignKeyEndPoint, foreignKeyValue),
           GetOrderedColumns(sortExpression));
-      return DelegateBasedCommand.Create(
+      return DelegateBasedCommand.CreateForReadOnly(
           new MultiObjectLoadCommand<DataContainer?>(new[] { Tuple.Create(dbCommandBuilder, dataContainerReader) }),
           lookupResults => lookupResults.Select(
               result =>
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
               }));
     }
 
-    protected virtual IRdbmsProviderCommand<IEnumerable<DataContainer>> CreateForIndirectRelationLookup (
+    protected virtual IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer>> CreateForIndirectRelationLookup (
         UnionViewDefinition unionViewDefinition,
         RelationEndPointDefinition foreignKeyEndPoint,
         ObjectID foreignKeyValue,
@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
 
       var objectIDReader = _objectReaderFactory.CreateObjectIDReader(unionViewDefinition, selectedColumns);
 
-      var objectIDLoadCommand = DelegateBasedCommand.Create(
+      var objectIDLoadCommand = DelegateBasedCommand.CreateForReadOnly(
           new MultiObjectIDLoadCommand(new[] { dbCommandBuilder }, objectIDReader),
           lookupResults => lookupResults.Select(
               result =>
@@ -139,7 +139,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
               }));
 
       var indirectDataContainerLoadCommand = new IndirectDataContainerLoadCommand(objectIDLoadCommand, _rdbmsProviderCommandFactory);
-      return DelegateBasedCommand.Create(
+      return DelegateBasedCommand.CreateForReadOnly(
           indirectDataContainerLoadCommand,
           lookupResults => lookupResults.Select(
               result =>

@@ -23,14 +23,14 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands;
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProviderCommands
 {
   [TestFixture]
-  public class DelegateBasedCommandTest
+  public class DelegateBasedCommandWithReadOnlySupportTest
   {
     [Test]
     public void Execute ()
     {
       var executionContext = new Mock<IRdbmsProviderCommandExecutionContext>();
-      var innerCommandStub = new Mock<IRdbmsProviderCommand<string>>();
-      var delegateBasedCommand = new DelegateBasedCommand<string, int>(innerCommandStub.Object, s => s.Length);
+      var innerCommandStub = new Mock<IRdbmsProviderCommandWithReadOnlySupport<string>>();
+      var delegateBasedCommand = new DelegateBasedCommandWithReadOnlySupport<string, int>(innerCommandStub.Object, s => s.Length);
 
       innerCommandStub.Setup(stub => stub.Execute(executionContext.Object)).Returns("Test1");
 
@@ -42,11 +42,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     [Test]
     public void Create ()
     {
-      var innerCommandStub = new Mock<IRdbmsProviderCommand<string>>();
+      var innerCommandStub = new Mock<IRdbmsProviderCommandWithReadOnlySupport<string>>();
       Func<string, int> operation = s => s.Length;
-      var instance = DelegateBasedCommand.Create(innerCommandStub.Object, operation);
+      var instance = DelegateBasedCommand.CreateForReadOnly(innerCommandStub.Object, operation);
 
-      Assert.That(instance, Is.TypeOf(typeof(DelegateBasedCommand<string, int>)));
+      Assert.That(instance, Is.TypeOf(typeof(DelegateBasedCommandWithReadOnlySupport<string, int>)));
       Assert.That(instance.Command, Is.SameAs(innerCommandStub.Object));
       Assert.That(instance.Operation, Is.SameAs(operation));
     }
