@@ -22,7 +22,6 @@ using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
@@ -68,7 +67,7 @@ namespace Remotion.SecurityManager.Persistence
           .GetMandatoryPropertyDefinition(GetPropertyIdentifierFromTypeAndShortName(typeof(Substitution), "SubstitutingUser"));
     }
 
-    public virtual void Saved (IRdbmsProviderCommandExecutionContext executionContext, IEnumerable<DataContainer> dataContainers)
+    public virtual void Saved (IRdbmsProviderReadWriteCommandExecutionContext executionContext, IEnumerable<DataContainer> dataContainers)
     {
       ArgumentUtility.CheckNotNull("executionContext", executionContext);
       ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
@@ -148,7 +147,7 @@ namespace Remotion.SecurityManager.Persistence
       }
     }
 
-    private IEnumerable<string> LoadUserNames (IRdbmsProviderCommandExecutionContext executionContext, ICollection<IDomainObjectHandle<User>> users)
+    private IEnumerable<string> LoadUserNames (IRdbmsProviderReadWriteCommandExecutionContext executionContext, ICollection<IDomainObjectHandle<User>> users)
     {
       if (!users.Any())
         yield break;
@@ -250,7 +249,7 @@ namespace Remotion.SecurityManager.Persistence
       return domainObjectType.GetFullNameChecked() + "." + shortPropertyName;
     }
 
-    private void IncrementRevision (IRdbmsProviderCommandExecutionContext executionContext, IRevisionKey revisionKey)
+    private void IncrementRevision (IRdbmsProviderReadWriteCommandExecutionContext executionContext, IRevisionKey revisionKey)
     {
       var query = Revision.GetIncrementRevisionQuery(revisionKey);
       Assertion.IsTrue(query.QueryType == QueryType.ScalarReadWrite);

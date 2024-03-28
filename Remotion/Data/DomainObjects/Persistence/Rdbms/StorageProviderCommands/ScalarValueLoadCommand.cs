@@ -41,10 +41,21 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       get { return _dbCommandBuilder; }
     }
 
-    public object? Execute (IRdbmsProviderCommandExecutionContext executionContext)
+    public object? Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
       ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      return Execute<IRdbmsProviderReadWriteCommandExecutionContext>(executionContext);
+    }
 
+    public object? Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
+    {
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      return Execute<IRdbmsProviderReadOnlyCommandExecutionContext>(executionContext);
+    }
+
+    private object? Execute<TExecutionContext> (TExecutionContext executionContext)
+        where TExecutionContext : IDbCommandFactory, IScalarCommandExecutionContext
+    {
       using (var command = _dbCommandBuilder.Create(executionContext))
       {
         return executionContext.ExecuteScalar(command);

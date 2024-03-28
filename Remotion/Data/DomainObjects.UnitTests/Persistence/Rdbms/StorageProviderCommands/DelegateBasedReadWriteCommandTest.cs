@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     [Test]
     public void Execute ()
     {
-      var executionContext = new Mock<IRdbmsProviderCommandExecutionContext>();
+      var executionContext = new Mock<IRdbmsProviderReadWriteCommandExecutionContext>();
       var innerCommandStub = new Mock<IRdbmsProviderReadWriteCommand<string>>();
       var delegateBasedCommand = new DelegateBasedReadWriteCommand<string, int>(innerCommandStub.Object, s => s.Length);
 

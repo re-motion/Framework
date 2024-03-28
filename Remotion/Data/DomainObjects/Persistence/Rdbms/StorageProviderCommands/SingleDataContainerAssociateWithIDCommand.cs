@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       get { return _innerCommand; }
     }
 
-    public ObjectLookupResult<DataContainer> Execute (IRdbmsProviderCommandExecutionContext executionContext)
+    public ObjectLookupResult<DataContainer> Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
       ArgumentUtility.CheckNotNull("executionContext", executionContext);
 
@@ -56,6 +56,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       return ProcessDataContainer(dataContainer);
     }
 
+    public ObjectLookupResult<DataContainer> Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
+    {
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+
+      var dataContainer = InnerCommand.Execute(executionContext);
+      return ProcessDataContainer(dataContainer);
+    }
 
     private ObjectLookupResult<DataContainer> ProcessDataContainer (DataContainer? dataContainer)
     {

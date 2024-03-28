@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
     private SingleDataContainerAssociateWithIDCommand _associateCommand;
 
-    private IRdbmsProviderCommandExecutionContext _fakeContext;
+    private IRdbmsProviderReadWriteCommandExecutionContext _fakeContext;
 
     public override void SetUp ()
     {
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _associateCommand = new SingleDataContainerAssociateWithIDCommand(_expectedID, _innerCommandMock.Object);
 
-      _fakeContext = new Mock<IRdbmsProviderCommandExecutionContext>().Object;
+      _fakeContext = new Mock<IRdbmsProviderReadWriteCommandExecutionContext>().Object;
     }
 
     [Test]

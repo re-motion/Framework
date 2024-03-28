@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
   public class MultiDataContainerAssociateWithIDsCommandTest : StandardMappingTest
   {
     private Mock<IRdbmsProviderReadOnlyCommand<IEnumerable<DataContainer>>> _commandStub;
-    private Mock<IRdbmsProviderCommandExecutionContext> _executionContext;
+    private Mock<IRdbmsProviderReadOnlyCommandExecutionContext> _executionContext;
     private DataContainer _order1Container;
     private DataContainer _order2Container;
     private DataContainer _order3Container;
@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       base.SetUp();
 
       _commandStub = new Mock<IRdbmsProviderReadOnlyCommand<IEnumerable<DataContainer>>>();
-      _executionContext = new Mock<IRdbmsProviderCommandExecutionContext>();
+      _executionContext = new Mock<IRdbmsProviderReadOnlyCommandExecutionContext>();
 
       _order1Container = DataContainerObjectMother.Create(DomainObjectIDs.Order1);
       _order2Container = DataContainerObjectMother.Create(DomainObjectIDs.Order3);

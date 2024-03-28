@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
   {
 
     private Mock<IDataReader> _dataReaderMock;
-    private Mock<IRdbmsProviderCommandExecutionContext> _commandExecutionContextStub;
+    private Mock<IRdbmsProviderReadWriteCommandExecutionContext> _commandExecutionContextStub;
 
     private Mock<IDbCommand> _dbCommandMock1;
     private Mock<IDbCommand> _dbCommandMock2;
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     public void SetUp ()
     {
       _dataReaderMock = new Mock<IDataReader>(MockBehavior.Strict);
-      _commandExecutionContextStub = new Mock<IRdbmsProviderCommandExecutionContext>();
+      _commandExecutionContextStub = new Mock<IRdbmsProviderReadWriteCommandExecutionContext>();
 
       _dbCommandMock1 = new Mock<IDbCommand>(MockBehavior.Strict);
       _dbCommandMock2 = new Mock<IDbCommand>(MockBehavior.Strict);

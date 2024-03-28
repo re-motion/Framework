@@ -31,7 +31,7 @@ public class DelegateBasedReadWriteCommand<TIn, TOut> : IRdbmsProviderReadWriteC
     get { return _operation; }
   }
 
-  public TOut Execute (IRdbmsProviderCommandExecutionContext executionContext)
+  public TOut Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
   {
     var executionResult = _command.Execute(executionContext);
     return _operation(executionResult);

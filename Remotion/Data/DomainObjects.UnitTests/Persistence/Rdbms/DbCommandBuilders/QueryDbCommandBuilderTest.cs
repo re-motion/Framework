@@ -61,8 +61,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       dbCommandStub.Setup(stub => stub.Parameters).Returns(dataParameterCollectionStrictMock.Object);
       dbCommandStub.SetupProperty(stub => stub.CommandText);
 
-      var executionContextStub = new Mock<IRdbmsProviderCommandExecutionContext>();
-      executionContextStub.Setup(stub => stub.CreateDbCommand()).Returns(dbCommandStub.Object);
+      var dbCommandFactoryStub = new Mock<IDbCommandFactory>();
+      dbCommandFactoryStub.Setup(stub => stub.CreateDbCommand()).Returns(dbCommandStub.Object);
 
       var dbDataParameterStub = new Mock<IDbDataParameter>();
       _valueParameterStorageTypeInformationMock
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
 
       dataParameterCollectionStrictMock.Setup(mock => mock.Add(dbDataParameterStub.Object)).Returns(0).Verifiable();
 
-      var result = _commandBuilder.Create(executionContextStub.Object);
+      var result = _commandBuilder.Create(dbCommandFactoryStub.Object);
 
       dataParameterCollectionStrictMock.Verify();
       _valueParameterStorageTypeInformationMock.Verify();

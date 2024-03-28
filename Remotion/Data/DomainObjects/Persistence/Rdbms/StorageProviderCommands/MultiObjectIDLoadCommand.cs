@@ -52,14 +52,27 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       get { return _objectIDReader; }
     }
 
-    public IEnumerable<ObjectID?> Execute (IRdbmsProviderCommandExecutionContext executionContext)
+    public IEnumerable<ObjectID?> Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
       ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      return Execute<IRdbmsProviderReadWriteCommandExecutionContext>(executionContext);
+    }
+
+    public IEnumerable<ObjectID?> Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
+    {
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      return Execute<IRdbmsProviderReadOnlyCommandExecutionContext>(executionContext);
+    }
+
+    private IEnumerable<ObjectID?> Execute<TExecutionContext> (TExecutionContext executionContext)
+        where TExecutionContext : IDbCommandFactory, IDataReaderCommandExecutionContext
+    {
       return _dbCommandBuilders.SelectMany(b => LoadObjectIDsFromCommandBuilder(b, executionContext));
     }
 
-    private IEnumerable<ObjectID?> LoadObjectIDsFromCommandBuilder (
-        IDbCommandBuilder commandBuilder, IRdbmsProviderCommandExecutionContext executionContext)
+    private IEnumerable<ObjectID?> LoadObjectIDsFromCommandBuilder<TExecutionContext> (
+        IDbCommandBuilder commandBuilder, TExecutionContext executionContext)
+        where TExecutionContext : IDbCommandFactory, IDataReaderCommandExecutionContext
     {
       ArgumentUtility.CheckNotNull("commandBuilder", commandBuilder);
 

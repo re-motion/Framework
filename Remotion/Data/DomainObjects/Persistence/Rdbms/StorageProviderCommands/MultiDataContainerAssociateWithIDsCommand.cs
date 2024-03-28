@@ -24,7 +24,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
   /// <summary>
-  /// Executes a given <see cref="IRdbmsProviderReadWriteCommand{T}"/> and associates the resulting <see cref="DataContainer"/> instances
+  /// Executes a given <see cref="IRdbmsProviderReadOnlyCommand{T}"/> and associates the resulting <see cref="DataContainer"/> instances
   /// with a given list of <see cref="ObjectID"/> values. If any <see cref="DataContainer"/> has a non-matching <see cref="ObjectID"/>, an exception
   /// is thrown.
   /// </summary>
@@ -61,7 +61,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       get { return _command; }
     }
 
-    public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderCommandExecutionContext executionContext)
+    public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
+    {
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+
+      var dataContainers = _command.Execute(executionContext);
+      return ProcessDataContainers(dataContainers);
+    }
+
+    public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
     {
       ArgumentUtility.CheckNotNull("executionContext", executionContext);
 

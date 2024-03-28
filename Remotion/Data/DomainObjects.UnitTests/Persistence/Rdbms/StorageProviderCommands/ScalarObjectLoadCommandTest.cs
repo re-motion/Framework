@@ -31,14 +31,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     private Mock<IDbCommand> _dbCommandMock;
     private ScalarValueLoadCommand _command;
     private object _fakeResult;
-    private Mock<IRdbmsProviderCommandExecutionContext> _commandExecutionContextMock;
+    private Mock<IRdbmsProviderReadWriteCommandExecutionContext> _commandExecutionContextMock;
 
     [SetUp]
     public void SetUp ()
     {
       _fakeResult = new object();
 
-      _commandExecutionContextMock = new Mock<IRdbmsProviderCommandExecutionContext>(MockBehavior.Strict);
+      _commandExecutionContextMock = new Mock<IRdbmsProviderReadWriteCommandExecutionContext>(MockBehavior.Strict);
       _dbCommandMock = new Mock<IDbCommand>(MockBehavior.Strict);
       _dbCommandBuilderMock = new Mock<IDbCommandBuilder>(MockBehavior.Strict);
 

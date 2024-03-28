@@ -36,7 +36,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       get { return _value; }
     }
 
-    public T Execute (IRdbmsProviderCommandExecutionContext executionContext)
+    public T Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
+    {
+      return _value;
+    }
+
+    public T Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
     {
       return _value;
     }

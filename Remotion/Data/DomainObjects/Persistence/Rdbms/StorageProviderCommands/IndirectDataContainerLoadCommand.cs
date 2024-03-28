@@ -54,7 +54,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       get { return _rdbmsProviderCommandFactory; }
     }
 
-    public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderCommandExecutionContext executionContext)
+    public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
+    {
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+
+      var objectIds = _objectIDLoadCommand.Execute(executionContext);
+      return _rdbmsProviderCommandFactory.CreateForSortedMultiIDLookup(objectIds.ToArray()).Execute(executionContext);
+    }
+
+    public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
     {
       ArgumentUtility.CheckNotNull("executionContext", executionContext);
 

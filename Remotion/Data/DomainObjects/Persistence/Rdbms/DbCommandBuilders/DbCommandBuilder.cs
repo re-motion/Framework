@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
       _sqlDialect = sqlDialect;
     }
 
-    public abstract IDbCommand Create (IRdbmsProviderCommandExecutionContext commandExecutionContext);
+    public abstract IDbCommand Create (IDbCommandFactory dbCommandFactory);
 
     public ISqlDialect SqlDialect
     {

@@ -7,4 +7,5 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms;
 /// </summary>
 public interface IRdbmsProviderReadOnlyCommand<out T> : IRdbmsProviderReadWriteCommand<T>
 {
+  T Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext);
 }

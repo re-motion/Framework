@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     private Mock<IObjectReader<ObjectID>> _objectIDReaderStub;
     private ObjectID[] _fakeResult;
     private ObjectID _objectID1;
-    private Mock<IRdbmsProviderCommandExecutionContext> _commandExecutionContextStub;
+    private Mock<IRdbmsProviderReadWriteCommandExecutionContext> _commandExecutionContextStub;
 
     public override void SetUp ()
     {
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dbCommandBuilder1Mock = new Mock<IDbCommandBuilder>(MockBehavior.Strict);
       _dbCommandBuilder2Mock = new Mock<IDbCommandBuilder>(MockBehavior.Strict);
 
-      _commandExecutionContextStub = new Mock<IRdbmsProviderCommandExecutionContext>();
+      _commandExecutionContextStub = new Mock<IRdbmsProviderReadWriteCommandExecutionContext>();
       _objectIDReaderStub = new Mock<IObjectReader<ObjectID>>();
 
       _dbCommandMock1 = new Mock<IDbCommand>(MockBehavior.Strict);

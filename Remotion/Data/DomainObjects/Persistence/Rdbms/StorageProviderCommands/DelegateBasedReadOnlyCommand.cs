@@ -31,7 +31,13 @@ public class DelegateBasedReadOnlyCommand<TIn, TOut> : IRdbmsProviderReadOnlyCom
     get { return _operation; }
   }
 
-  public TOut Execute (IRdbmsProviderCommandExecutionContext executionContext)
+  public TOut Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
+  {
+    var executionResult = _command.Execute(executionContext);
+    return _operation(executionResult);
+  }
+
+  public TOut Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
   {
     var executionResult = _command.Execute(executionContext);
     return _operation(executionResult);

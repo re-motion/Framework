@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     private ObjectID _objectID1;
     private ObjectID _objectID2;
     private ObjectLookupResult<DataContainer>[] _fakeResult;
-    private Mock<IRdbmsProviderCommandExecutionContext> _commandExecutionContextStub;
+    private Mock<IRdbmsProviderReadOnlyCommandExecutionContext> _commandExecutionContextStub;
 
     public override void SetUp ()
     {
@@ -45,14 +45,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _fakeResult = new ObjectLookupResult<DataContainer>[0];
       _objectID1 = DomainObjectIDs.Order1;
       _objectID2 = DomainObjectIDs.Order3;
-      _commandExecutionContextStub = new Mock<IRdbmsProviderCommandExecutionContext>();
-      _commandExecutionContextStub = new Mock<IRdbmsProviderCommandExecutionContext>();
+      _commandExecutionContextStub = new Mock<IRdbmsProviderReadOnlyCommandExecutionContext>();
 
       _objectIDLoadCommandStub = new Mock<IRdbmsProviderReadOnlyCommand<IEnumerable<ObjectID>>>();
       _objectIDLoadCommandStub.Setup(stub => stub.Execute(_commandExecutionContextStub.Object)).Returns(new[] { _objectID1, _objectID2 });
 
-      _dataContainerLoadCommandStub =
-          new Mock<IRdbmsProviderReadOnlyCommand<ObjectLookupResult<DataContainer>[]>>();
+      _dataContainerLoadCommandStub = new Mock<IRdbmsProviderReadOnlyCommand<ObjectLookupResult<DataContainer>[]>>();
       _dataContainerLoadCommandStub.Setup(stub => stub.Execute(_commandExecutionContextStub.Object)).Returns(_fakeResult);
 
       _storageProviderFactoryStub = new Mock<IRdbmsProviderCommandFactory>();
