@@ -17,6 +17,7 @@
 using System;
 using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
@@ -57,8 +58,8 @@ namespace Remotion.SecurityManager.UnitTests.Persistence
       var result = _securityManagerSqlStorageObjectFactory.CreateStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
 
       Assert.That(result, Is.TypeOf(typeof(SecurityManagerRdbmsProvider)));
-      Assert.That(result.PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
-      Assert.That(result.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
+      Assert.That(result.As<SecurityManagerRdbmsProvider>().PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
+      Assert.That(result.As<SecurityManagerRdbmsProvider>().StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
       Assert.That(result.As<SecurityManagerRdbmsProvider>().ConnectionString, Is.EqualTo(_rdbmsProviderDefinition.ConnectionString));
     }
 
@@ -80,8 +81,8 @@ namespace Remotion.SecurityManager.UnitTests.Persistence
       var result = _securityManagerSqlStorageObjectFactory.CreateReadOnlyStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
 
       Assert.That(result, Is.TypeOf(typeof(SecurityManagerRdbmsProvider)));
-      Assert.That(result.PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
-      Assert.That(result.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
+      Assert.That(result.As<SecurityManagerRdbmsProvider>().PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
+      Assert.That(result.As<SecurityManagerRdbmsProvider>().StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
       Assert.That(result.As<SecurityManagerRdbmsProvider>().ConnectionString, Is.EqualTo(_rdbmsProviderDefinition.ReadOnlyConnectionString));
     }
 
