@@ -16,30 +16,14 @@
 // 
 using System;
 
-namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
   /// <summary>
-  /// Implements <see cref="IStorageProviderCommand{T,TExecutionContext}"/> by always returning the same, fixed value.
+  /// An execution context in which an <see cref="IRdbmsProviderReadOnlyCommand{T}"/>, <see cref="IRdbmsProviderReadWriteCommand"/>, or
+  /// <see cref="IRdbmsProviderReadWriteCommand{T}"/> can be executed.
   /// </summary>
-  /// <typeparam name="T">The type of the value to return.</typeparam>
-  /// <typeparam name="TExecutionContext">The type of the execution context. This is not actually used by this command.</typeparam>
-  public class FixedValueCommand<T, TExecutionContext> : IStorageProviderCommand<T, TExecutionContext>
+  public interface IRdbmsProviderReadWriteCommandExecutionContext
+      : IDbCommandFactory, IScalarCommandExecutionContext, IDataReaderCommandExecutionContext, INonQueryCommandExecutionContext
   {
-    private readonly T _value;
-
-    public FixedValueCommand (T value)
-    {
-      _value = value;
-    }
-
-    public T Value
-    {
-      get { return _value; }
-    }
-
-    public T Execute (TExecutionContext executionContext)
-    {
-      return _value;
-    }
   }
 }

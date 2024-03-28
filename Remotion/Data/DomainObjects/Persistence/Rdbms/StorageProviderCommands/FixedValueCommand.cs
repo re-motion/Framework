@@ -16,21 +16,34 @@
 // 
 using System;
 
-namespace Remotion.Data.DomainObjects.Persistence
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
   /// <summary>
-  /// Represents a command without a return value to be executed by a storage provider.
+  /// Implements <see cref="IRdbmsProviderReadOnlyCommand{T}"/> by always returning the same, fixed value.
   /// </summary>
-  public interface IStorageProviderCommand<in TExecutionContext>
+  /// <typeparam name="T">The type of the value to return.</typeparam>
+  public class FixedValueCommand<T> : IRdbmsProviderReadOnlyCommand<T>
   {
-    void Execute (TExecutionContext executionContext);
-  }
+    private readonly T _value;
 
-  /// <summary>
-  /// Represents a command with a return value to be executed by a storage provider.
-  /// </summary>
-  public interface IStorageProviderCommand<out T, in TExecutionContext>
-  {
-    T Execute (TExecutionContext executionContext);
+    public FixedValueCommand (T value)
+    {
+      _value = value;
+    }
+
+    public T Value
+    {
+      get { return _value; }
+    }
+
+    public T Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
+    {
+      return _value;
+    }
+
+    public T Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
+    {
+      return _value;
+    }
   }
 }

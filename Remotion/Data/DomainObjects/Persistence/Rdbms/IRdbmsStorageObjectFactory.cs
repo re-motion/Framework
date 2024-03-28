@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
         RdbmsProviderDefinition storageProviderDefinition,
         IMethodCallTransformerProvider methodCallTransformerProvider,
         ResultOperatorHandlerRegistry resultOperatorHandlerRegistry);
-    IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> CreateStorageProviderCommandFactory (
+    IRdbmsProviderCommandFactory CreateStorageProviderCommandFactory (
         RdbmsProviderDefinition storageProviderDefinition);
     IDbCommandBuilderFactory CreateDbCommandBuilderFactory (RdbmsProviderDefinition storageProviderDefinition);
 

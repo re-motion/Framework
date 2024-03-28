@@ -86,7 +86,7 @@ public class StorageObjectFactoryStub: IRdbmsStorageObjectFactory
     throw new System.NotImplementedException();
   }
 
-  public IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> CreateStorageProviderCommandFactory (RdbmsProviderDefinition storageProviderDefinition)
+  public IRdbmsProviderCommandFactory CreateStorageProviderCommandFactory (RdbmsProviderDefinition storageProviderDefinition)
   {
     throw new System.NotImplementedException();
   }

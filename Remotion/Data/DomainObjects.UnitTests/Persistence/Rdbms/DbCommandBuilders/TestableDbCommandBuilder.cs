@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
     }
 
-    public override IDbCommand Create (IRdbmsProviderCommandExecutionContext commandExecutionContext)
+    public override IDbCommand Create (IDbCommandFactory dbCommandFactory)
     {
       throw new NotImplementedException();
     }

@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
   [TestFixture]
   public class StorageProviderCollectionTest : StandardMappingTest
   {
-    private Mock<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>> _storageProviderCommandFactoryStub;
+    private Mock<IRdbmsProviderCommandFactory> _storageProviderCommandFactoryStub;
 
     private StorageProvider _provider;
 
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     {
       base.SetUp();
 
-      _storageProviderCommandFactoryStub = new Mock<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>>();
+      _storageProviderCommandFactoryStub = new Mock<IRdbmsProviderCommandFactory>();
 
       var sqlStorageObjectFactoryStub = new Mock<IRdbmsStorageObjectFactory>().Object;
 

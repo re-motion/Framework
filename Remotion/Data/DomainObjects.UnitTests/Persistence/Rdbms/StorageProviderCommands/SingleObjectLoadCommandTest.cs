@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     private SingleObjectLoadCommand<object> _command;
     private Mock<IObjectReader<object>> _objectReaderMock;
     private object _fakeResult;
-    private Mock<IRdbmsProviderCommandExecutionContext> _commandExecutionContextMock;
+    private Mock<IRdbmsProviderReadWriteCommandExecutionContext> _commandExecutionContextMock;
 
     [SetUp]
     public void SetUp ()
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _fakeResult = new object();
 
       _dataReaderMock = new Mock<IDataReader>();
-      _commandExecutionContextMock = new Mock<IRdbmsProviderCommandExecutionContext>(MockBehavior.Strict);
+      _commandExecutionContextMock = new Mock<IRdbmsProviderReadWriteCommandExecutionContext>(MockBehavior.Strict);
       _dbCommandMock = new Mock<IDbCommand>(MockBehavior.Strict);
       _dbCommandBuilderMock = new Mock<IDbCommandBuilder>(MockBehavior.Strict);
       _objectReaderMock = new Mock<IObjectReader<object>>(MockBehavior.Strict);

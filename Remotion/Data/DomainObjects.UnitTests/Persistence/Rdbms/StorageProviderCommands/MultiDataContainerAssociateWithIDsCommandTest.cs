@@ -22,18 +22,18 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Persistence.StorageProviderCommands;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderCommands
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProviderCommands
 {
   [TestFixture]
   public class MultiDataContainerAssociateWithIDsCommandTest : StandardMappingTest
   {
-    private Mock<IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>> _commandStub;
-    private Mock<IRdbmsProviderCommandExecutionContext> _executionContext;
+    private Mock<IRdbmsProviderReadOnlyCommand<IEnumerable<DataContainer>>> _commandStub;
+    private Mock<IRdbmsProviderReadOnlyCommandExecutionContext> _executionContext;
     private DataContainer _order1Container;
     private DataContainer _order2Container;
     private DataContainer _order3Container;
@@ -42,8 +42,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
     {
       base.SetUp();
 
-      _commandStub = new Mock<IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>>();
-      _executionContext = new Mock<IRdbmsProviderCommandExecutionContext>();
+      _commandStub = new Mock<IRdbmsProviderReadOnlyCommand<IEnumerable<DataContainer>>>();
+      _executionContext = new Mock<IRdbmsProviderReadOnlyCommandExecutionContext>();
 
       _order1Container = DataContainerObjectMother.Create(DomainObjectIDs.Order1);
       _order2Container = DataContainerObjectMother.Create(DomainObjectIDs.Order3);
