@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       IDbConnection CreateConnection ();
     }
-    private Mock<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>> _commandFactoryMock;
+    private Mock<IRdbmsProviderCommandFactory> _commandFactoryMock;
     private Mock<IDbConnection> _connectionStub;
     private Mock<IDbTransaction> _transactionStub;
     private Mock<IDbCommand> _commandMock;
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       base.SetUp();
 
-      _commandFactoryMock = new Mock<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>>(MockBehavior.Strict);
+      _commandFactoryMock = new Mock<IRdbmsProviderCommandFactory>(MockBehavior.Strict);
 
       _connectionStub = new Mock<IDbConnection>();
       _connectionStub.Setup(stub => stub.State).Returns(ConnectionState.Open);

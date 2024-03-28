@@ -41,7 +41,7 @@ namespace Remotion.SecurityManager.Persistence
     private readonly IDomainRevisionProvider _revisionProvider;
     private readonly IUserRevisionProvider _userRevisionProvider;
     private readonly IUserNamesRevisionProvider _userNamesRevisionProvider;
-    private readonly IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> _storageProviderCommandFactory;
+    private readonly IRdbmsProviderCommandFactory _rdbmsProviderCommandFactory;
     private readonly PropertyDefinition _userNamePropertyDefinition;
     private readonly PropertyDefinition _substitutionUserPropertyDefinition;
 
@@ -49,17 +49,17 @@ namespace Remotion.SecurityManager.Persistence
         IDomainRevisionProvider revisionProvider,
         IUserRevisionProvider userRevisionProvider,
         IUserNamesRevisionProvider userNamesRevisionProvider,
-        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> storageProviderCommandFactory)
+        IRdbmsProviderCommandFactory rdbmsProviderCommandFactory)
     {
       ArgumentUtility.CheckNotNull("revisionProvider", revisionProvider);
       ArgumentUtility.CheckNotNull("userRevisionProvider", userRevisionProvider);
       ArgumentUtility.CheckNotNull("userNamesRevisionProvider", userNamesRevisionProvider);
-      ArgumentUtility.CheckNotNull("storageProviderCommandFactory", storageProviderCommandFactory);
+      ArgumentUtility.CheckNotNull("rdbmsProviderCommandFactory", rdbmsProviderCommandFactory);
 
       _revisionProvider = revisionProvider;
       _userRevisionProvider = userRevisionProvider;
       _userNamesRevisionProvider = userNamesRevisionProvider;
-      _storageProviderCommandFactory = storageProviderCommandFactory;
+      _rdbmsProviderCommandFactory = rdbmsProviderCommandFactory;
 
       _userNamePropertyDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(User))
           .GetMandatoryPropertyDefinition(GetPropertyIdentifierFromTypeAndShortName(typeof(User), "UserName"));
@@ -161,7 +161,7 @@ namespace Remotion.SecurityManager.Persistence
               .Where(u => userIDs.Contains((Guid)u.ID.Value))
               .Select(u => u.UserName));
 
-      var storageProviderCommand = _storageProviderCommandFactory.CreateForCustomQuery(query);
+      var storageProviderCommand = _rdbmsProviderCommandFactory.CreateForCustomQuery(query);
       foreach (var queryResultRow in storageProviderCommand.Execute(executionContext))
       {
         var loadUserName = queryResultRow.GetConvertedValue<string>(0);
@@ -254,7 +254,7 @@ namespace Remotion.SecurityManager.Persistence
     {
       var query = Revision.GetIncrementRevisionQuery(revisionKey);
       Assertion.IsTrue(query.QueryType == QueryType.ScalarReadWrite);
-      var storageProviderCommand = _storageProviderCommandFactory.CreateForScalarQuery(query);
+      var storageProviderCommand = _rdbmsProviderCommandFactory.CreateForScalarQuery(query);
       storageProviderCommand.Execute(executionContext);
     }
   }
