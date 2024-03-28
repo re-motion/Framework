@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       get { return _tableDefinitionFinder; }
     }
 
-    public virtual IRdbmsProviderCommand<ObjectLookupResult<DataContainer>> CreateForSingleIDLookup (ObjectID objectID)
+    public virtual IRdbmsProviderCommandWithReadOnlySupport<ObjectLookupResult<DataContainer>> CreateForSingleIDLookup (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       return new SingleDataContainerAssociateWithIDCommand(objectID, loadCommand);
     }
 
-    public virtual IRdbmsProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>> CreateForSortedMultiIDLookup (
+    public virtual IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectLookupResult<DataContainer>>> CreateForSortedMultiIDLookup (
         IEnumerable<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       return new MultiDataContainerAssociateWithIDsCommand(objectIDList, loadCommand);
     }
 
-    public virtual IRdbmsProviderCommand<IEnumerable<ObjectLookupResult<object>>> CreateForMultiTimestampLookup (
+    public virtual IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectLookupResult<object>>> CreateForMultiTimestampLookup (
         IEnumerable<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           select Tuple.Create(dbCommandBuilder, timestampReader);
 
       var loadCommand = new MultiObjectLoadCommand<Tuple<ObjectID, object>?>(dbCommandBuildersAndReaders);
-      return DelegateBasedCommand.Create(
+      return DelegateBasedCommand.CreateForReadOnly(
           loadCommand,
           lookupResults => lookupResults.Select(
               result =>

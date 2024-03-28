@@ -15,13 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
   /// <summary>
-  /// Creates instances of <see cref="DelegateBasedCommand{TIn,TOut}"/>. Use this factory class to avoid having
-  /// to pass all generic arguments to <see cref="DelegateBasedCommand{TIn,TOut}"/>'s constructor by hand.
+  /// Creates instances of <see cref="DelegateBasedCommand{TIn,TOut}"/> or <see cref="DelegateBasedCommandWithReadOnlySupport{TIn,TOut}"/>.
+  /// Use this factory class to avoid having to pass all generic arguments to the respective constructor by hand.
   /// </summary>
   public static class DelegateBasedCommand
   {
@@ -29,46 +28,22 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
     /// Creates instances of <see cref="DelegateBasedCommand{TIn,TOut}"/>. Use this factory method to avoid having
     /// to pass all generic arguments to <see cref="DelegateBasedCommand{TIn,TOut}"/>'s constructor by hand.
     /// </summary>
-    public static DelegateBasedCommand<TIn, TOut> Create<TIn, TOut> (
+    public static DelegateBasedCommand<TIn, TOut> CreateForReadWrite<TIn, TOut> (
         IRdbmsProviderCommand<TIn> command,
         Func<TIn, TOut> operation)
     {
       return new DelegateBasedCommand<TIn, TOut>(command, operation);
     }
-  }
 
-  /// <summary>
-  /// The <see cref="DelegateBasedCommand{TIn,TOut}"/> executes an <see cref="IRdbmsProviderCommand{T}"/>
-  /// and applies a specified operation-transformation to the result.
-  /// </summary>
-  public class DelegateBasedCommand<TIn, TOut> : IRdbmsProviderCommand<TOut>
-  {
-    private readonly IRdbmsProviderCommand<TIn> _command;
-    private readonly Func<TIn, TOut> _operation;
-
-    public DelegateBasedCommand (IRdbmsProviderCommand<TIn> command, Func<TIn, TOut> operation)
+    /// <summary>
+    /// Creates instances of <see cref="DelegateBasedCommandWithReadOnlySupport{TIn,TOut}"/>. Use this factory method to avoid having
+    /// to pass all generic arguments to <see cref="DelegateBasedCommandWithReadOnlySupport{TIn,TOut}"/>'s constructor by hand.
+    /// </summary>
+    public static DelegateBasedCommandWithReadOnlySupport<TIn, TOut> CreateForReadOnly<TIn, TOut> (
+        IRdbmsProviderCommandWithReadOnlySupport<TIn> command,
+        Func<TIn, TOut> operation)
     {
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckNotNull("operation", operation);
-
-      _command = command;
-      _operation = operation;
-    }
-
-    public IRdbmsProviderCommand<TIn> Command
-    {
-      get { return _command; }
-    }
-
-    public Func<TIn, TOut> Operation
-    {
-      get { return _operation; }
-    }
-
-    public TOut Execute (IRdbmsProviderCommandExecutionContext executionContext)
-    {
-      var executionResult = _command.Execute(executionContext);
-      return _operation(executionResult);
+      return new DelegateBasedCommandWithReadOnlySupport<TIn, TOut>(command, operation);
     }
   }
 }

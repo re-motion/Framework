@@ -24,19 +24,18 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
   /// <summary>
-  /// Executes a given <see cref="IRdbmsProviderCommand{T}"/> and associates the resulting <see cref="DataContainer"/> instances
+  /// Executes a given <see cref="IRdbmsProviderCommandWithReadOnlySupport{T}"/> and associates the resulting <see cref="DataContainer"/> instances
   /// with a given list of <see cref="ObjectID"/> values. If any <see cref="DataContainer"/> has a non-matching <see cref="ObjectID"/>, an exception
   /// is thrown.
   /// </summary>
-  public class MultiDataContainerAssociateWithIDsCommand
-      : IRdbmsProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>>
+  public class MultiDataContainerAssociateWithIDsCommand : IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectLookupResult<DataContainer>>>
   {
     private readonly ObjectID[] _objectIDs;
-    private readonly IRdbmsProviderCommand<IEnumerable<DataContainer?>> _command;
+    private readonly IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer?>> _command;
 
     public MultiDataContainerAssociateWithIDsCommand (
         IEnumerable<ObjectID> objectIDs,
-        IRdbmsProviderCommand<IEnumerable<DataContainer?>> command)
+        IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer?>> command)
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
       ArgumentUtility.CheckNotNull("command", command);
@@ -67,7 +66,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       ArgumentUtility.CheckNotNull("executionContext", executionContext);
 
       var dataContainers = _command.Execute(executionContext);
+      return ProcessDataContainers(dataContainers);
+    }
 
+    private IEnumerable<ObjectLookupResult<DataContainer>> ProcessDataContainers (IEnumerable<DataContainer?> dataContainers)
+    {
       var dataContainersByID =  new Dictionary<ObjectID, DataContainer>();
       foreach (var dataContainer in dataContainers.Where(dc => dc != null))
       {
