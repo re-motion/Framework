@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       ArgumentUtility.CheckNotNull("constructedTransaction", constructedTransaction);
       return ObjectFactory.Create<RootPersistenceStrategy>(
           true,
-          ParamList.Create(constructedTransaction.ID, _persistenceService)
+          ParamList.Create(constructedTransaction.ID, _persistenceService, _storageAccessResolver)
           );
     }
 

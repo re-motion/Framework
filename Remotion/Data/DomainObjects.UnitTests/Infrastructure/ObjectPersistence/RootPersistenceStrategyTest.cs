@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     [SetUp]
     public void SetUp ()
     {
-      _rootPersistenceStrategy = new RootPersistenceStrategy(Guid.Empty, Mock.Of<IPersistenceService>());
+      _rootPersistenceStrategy = new RootPersistenceStrategy(Guid.Empty, Mock.Of<IPersistenceService>(), Mock.Of<IStorageAccessResolver>());
     }
   }
 }

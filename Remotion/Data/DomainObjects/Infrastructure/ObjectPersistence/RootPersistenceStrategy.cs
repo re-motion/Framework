@@ -37,13 +37,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   {
     private readonly Guid _transactionID;
     private readonly IPersistenceService _persistenceService;
+    private readonly IStorageAccessResolver _storageAccessResolver;
 
-    public RootPersistenceStrategy (Guid transactionID, IPersistenceService persistenceService)
+    public RootPersistenceStrategy (Guid transactionID, IPersistenceService persistenceService, IStorageAccessResolver storageAccessResolver)
     {
       ArgumentUtility.CheckNotNull("persistenceService", persistenceService);
+      ArgumentUtility.CheckNotNull("storageAccessResolver", storageAccessResolver);
 
       _transactionID = transactionID;
       _persistenceService = persistenceService;
+      _storageAccessResolver = storageAccessResolver;
+      _persistenceExtensionFactory = persistenceExtensionFactory;
     }
 
     public Guid TransactionID
