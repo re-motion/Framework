@@ -192,7 +192,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
           persistenceModelProvider);
     }
 
-    public IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> CreateStorageProviderCommandFactory (
+    public IRdbmsProviderCommandFactory CreateStorageProviderCommandFactory (
         RdbmsProviderDefinition storageProviderDefinition)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
@@ -420,7 +420,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
     protected virtual IStorageProvider CreateStorageProvider (
         IPersistenceExtension persistenceExtension,
         RdbmsProviderDefinition rdbmsProviderDefinition,
-        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory)
+        IRdbmsProviderCommandFactory commandFactory)
     {
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
       ArgumentUtility.CheckNotNull("commandFactory", commandFactory);
@@ -438,7 +438,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
     protected virtual IReadOnlyStorageProvider CreateReadOnlyStorageProvider (
         IPersistenceExtension persistenceExtension,
         RdbmsProviderDefinition rdbmsProviderDefinition,
-        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory)
+        IRdbmsProviderCommandFactory commandFactory)
     {
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
       ArgumentUtility.CheckNotNull("commandFactory", commandFactory);
@@ -465,7 +465,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
     }
 
 
-    protected virtual IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> CreateStorageProviderCommandFactory (
+    protected virtual IRdbmsProviderCommandFactory CreateStorageProviderCommandFactory (
       RdbmsProviderDefinition storageProviderDefinition,
       IStorageTypeInformationProvider storageTypeInformationProvider,
       IStorageNameProvider storageNameProvider,
