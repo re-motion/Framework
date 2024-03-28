@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       using (var storageProviderManager = CreateStorageProviderManager())
       {
-        StorageProvider provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition.Name);
+        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition.Name);
         return provider.ExecuteScalarQuery(query);
       }
     }

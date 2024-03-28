@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using Remotion.Data.DomainObjects.Persistence.Configuration;
 
 namespace Remotion.Data.DomainObjects.Persistence
 {
@@ -28,9 +27,9 @@ namespace Remotion.Data.DomainObjects.Persistence
   public interface IStorageProviderManager : IDisposable
   {
     /// <summary>
-    /// Resolves an <see cref="IStorageProvider"/> based on the supplied <paramref name="providerDefinition"/>.
+    /// Resolves an <see cref="IStorageProvider"/> based on the supplied <paramref name="storageProviderID"/>.
     /// </summary>
-    /// <exception cref="PersistenceException">If no <see cref="IStorageProvider"/> could be created based on the <paramref name="providerDefinition"/>.</exception>
-    IStorageProvider GetMandatory (StorageProviderDefinition providerDefinition);
+    /// <exception cref="PersistenceException">If no <see cref="IStorageProvider"/> could be created based on the <paramref name="storageProviderID"/>.</exception>
+    IStorageProvider GetMandatory (string storageProviderID);
   }
 }
