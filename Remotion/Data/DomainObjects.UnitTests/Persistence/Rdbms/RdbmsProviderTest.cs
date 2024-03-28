@@ -137,16 +137,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       var timestamp1 = new object();
       var timestamp2 = new object();
 
-      var commandMock =
-          new Mock<IRdbmsProviderCommand<IEnumerable<ObjectLookupResult<object>>>>(MockBehavior.Strict);
-
+      var commandMock = new Mock<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectLookupResult<object>>>>(MockBehavior.Strict);
       var sequence = new VerifiableSequence();
-      _connectionCreatorMock.InVerifiableSequence(sequence).Setup(mock => mock.CreateConnection()).Returns(_connectionStub.Object).Verifiable();
+
+      _connectionCreatorMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.CreateConnection())
+          .Returns(_connectionStub.Object)
+          .Verifiable();
+
       _commandFactoryMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.CreateForMultiTimestampLookup(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }))
           .Returns(commandMock.Object)
           .Verifiable();
+
       commandMock
           .InVerifiableSequence(sequence)
           .Setup(stub => stub.Execute(_provider))
@@ -174,14 +179,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       var dataContainer1 = DataContainer.CreateNew(DomainObjectIDs.Order1);
       var timestamp2 = new object();
 
-      var commandMock =
-          new Mock<IRdbmsProviderCommand<IEnumerable<ObjectLookupResult<object>>>>(MockBehavior.Strict);
+      var commandMock = new Mock<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectLookupResult<object>>>>(MockBehavior.Strict);
 
-      _connectionCreatorMock.Setup(mock => mock.CreateConnection()).Returns(_connectionStub.Object).Verifiable();
+      _connectionCreatorMock
+          .Setup(mock => mock.CreateConnection())
+          .Returns(_connectionStub.Object)
+          .Verifiable();
+
       _commandFactoryMock
           .Setup(mock => mock.CreateForMultiTimestampLookup(new[] { DomainObjectIDs.Order1 }))
           .Returns(commandMock.Object)
           .Verifiable();
+
       commandMock
           .Setup(stub => stub.Execute(_provider))
           .Returns(new[] { new ObjectLookupResult<object>(DomainObjectIDs.Order3, timestamp2) })
@@ -202,16 +211,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       var queryStub = new Mock<IQuery>();
       queryStub.Setup(stub => stub.StorageProviderDefinition).Returns(TestDomainStorageProviderDefinition);
       queryStub.Setup(stub => stub.QueryType).Returns(QueryType.CollectionReadOnly);
-      var commandMock = new Mock<IRdbmsProviderCommand<IEnumerable<DataContainer>>>(MockBehavior.Strict);
+      var commandMock = new Mock<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer>>>(MockBehavior.Strict);
 
       var sequence = new VerifiableSequence();
-      _connectionCreatorMock.InVerifiableSequence(sequence).Setup(mock => mock.CreateConnection()).Returns(_connectionStub.Object).Verifiable();
+      _connectionCreatorMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.CreateConnection())
+          .Returns(_connectionStub.Object)
+          .Verifiable();
 
       _commandFactoryMock
             .Setup(mock => mock.CreateForDataContainerQuery(queryStub.Object))
             .Returns(commandMock.Object)
             .Verifiable();
-      commandMock.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_provider)).Returns(new[] { dataContainer1, dataContainer2 }).Verifiable();
+
+      commandMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Execute(_provider))
+          .Returns(new[] { dataContainer1, dataContainer2 })
+          .Verifiable();
 
       var result = _provider.ExecuteCollectionQuery(queryStub.Object);
 
@@ -231,16 +249,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       var queryStub = new Mock<IQuery>();
       queryStub.Setup(stub => stub.StorageProviderDefinition).Returns(TestDomainStorageProviderDefinition);
       queryStub.Setup(stub => stub.QueryType).Returns(QueryType.CollectionReadOnly);
-      var commandMock = new Mock<IRdbmsProviderCommand<IEnumerable<DataContainer>>>(MockBehavior.Strict);
 
+      var commandMock = new Mock<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer>>>(MockBehavior.Strict);
       var sequence = new VerifiableSequence();
-      _connectionCreatorMock.InVerifiableSequence(sequence).Setup(mock => mock.CreateConnection()).Returns(_connectionStub.Object).Verifiable();
+
+      _connectionCreatorMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.CreateConnection())
+          .Returns(_connectionStub.Object)
+          .Verifiable();
 
       _commandFactoryMock
-            .Setup(mock => mock.CreateForDataContainerQuery(queryStub.Object))
-            .Returns(commandMock.Object)
-            .Verifiable();
-      commandMock.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_provider)).Returns(new[] { dataContainer1, dataContainer2 }).Verifiable();
+          .Setup(mock => mock.CreateForDataContainerQuery(queryStub.Object))
+          .Returns(commandMock.Object)
+          .Verifiable();
+
+      commandMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Execute(_provider))
+          .Returns(new[] { dataContainer1, dataContainer2 })
+          .Verifiable();
+
       Assert.That(
           () => _provider.ExecuteCollectionQuery(queryStub.Object),
           Throws.InstanceOf<RdbmsProviderException>()
@@ -255,17 +284,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       var queryStub = new Mock<IQuery>();
       queryStub.Setup(stub => stub.StorageProviderDefinition).Returns(TestDomainStorageProviderDefinition);
       queryStub.Setup(stub => stub.QueryType).Returns(QueryType.CollectionReadOnly);
-      var commandMock = new Mock<IRdbmsProviderCommand<IEnumerable<DataContainer>>>(MockBehavior.Strict);
+      var commandMock = new Mock<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer>>>(MockBehavior.Strict);
 
       var sequence = new VerifiableSequence();
-      _connectionCreatorMock.InVerifiableSequence(sequence).Setup(mock => mock.CreateConnection()).Returns(_connectionStub.Object).Verifiable();
+      _connectionCreatorMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.CreateConnection())
+          .Returns(_connectionStub.Object)
+          .Verifiable();
 
       _commandFactoryMock
           .InVerifiableSequence(sequence)
-            .Setup(mock => mock.CreateForDataContainerQuery(queryStub.Object))
-            .Returns(commandMock.Object)
-            .Verifiable();
-      commandMock.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_provider)).Returns(new DataContainer[] { null, null }).Verifiable();
+          .Setup(mock => mock.CreateForDataContainerQuery(queryStub.Object))
+          .Returns(commandMock.Object)
+          .Verifiable();
+
+      commandMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Execute(_provider))
+          .Returns(new DataContainer[] { null, null })
+          .Verifiable();
 
       var result = _provider.ExecuteCollectionQuery(queryStub.Object);
 
@@ -284,17 +322,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       var queryStub = new Mock<IQuery>();
       queryStub.Setup(stub => stub.StorageProviderDefinition).Returns(TestDomainStorageProviderDefinition);
       queryStub.Setup(stub => stub.QueryType).Returns(QueryType.CustomReadOnly);
-      var commandMock = new Mock<IRdbmsProviderCommand<IEnumerable<IQueryResultRow>>>(MockBehavior.Strict);
 
+      var commandMock = new Mock<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<IQueryResultRow>>>(MockBehavior.Strict);
       var sequence = new VerifiableSequence();
-      _connectionCreatorMock.InVerifiableSequence(sequence).Setup(mock => mock.CreateConnection()).Returns(_connectionStub.Object).Verifiable();
+
+      _connectionCreatorMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.CreateConnection())
+          .Returns(_connectionStub.Object)
+          .Verifiable();
 
       _commandFactoryMock
           .InVerifiableSequence(sequence)
             .Setup(mock => mock.CreateForCustomQuery(queryStub.Object))
             .Returns(commandMock.Object)
             .Verifiable();
-      commandMock.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_provider)).Returns(fakeResult.Object).Verifiable();
+
+      commandMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Execute(_provider))
+          .Returns(fakeResult.Object)
+          .Verifiable();
 
       var result = _provider.ExecuteCustomQuery(queryStub.Object);
 
@@ -314,17 +362,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       var queryStub = new Mock<IQuery>();
       queryStub.Setup(stub => stub.StorageProviderDefinition).Returns(TestDomainStorageProviderDefinition);
       queryStub.Setup(stub => stub.QueryType).Returns(QueryType.ScalarReadOnly);
-      var commandMock = new Mock<IRdbmsProviderCommand<object>>(MockBehavior.Strict);
 
+      var commandMock = new Mock<IRdbmsProviderCommandWithReadOnlySupport<object>>(MockBehavior.Strict);
       var sequence = new VerifiableSequence();
-      _connectionCreatorMock.InVerifiableSequence(sequence).Setup(mock => mock.CreateConnection()).Returns(_connectionStub.Object).Verifiable();
+
+      _connectionCreatorMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.CreateConnection())
+          .Returns(_connectionStub.Object)
+          .Verifiable();
 
       _commandFactoryMock
           .InVerifiableSequence(sequence)
-            .Setup(mock => mock.CreateForScalarQuery(queryStub.Object))
-            .Returns(commandMock.Object)
-            .Verifiable();
-      commandMock.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_provider)).Returns(fakeResult).Verifiable();
+          .Setup(mock => mock.CreateForScalarQuery(queryStub.Object))
+          .Returns(commandMock.Object)
+          .Verifiable();
+
+      commandMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Execute(_provider))
+          .Returns(fakeResult)
+          .Verifiable();
 
       var result = _provider.ExecuteScalarQuery(queryStub.Object);
 
@@ -341,16 +399,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       var objectID = DomainObjectIDs.Order1;
       var fakeResult = new ObjectLookupResult<DataContainer>(objectID, DataContainer.CreateNew(objectID));
 
-      var commandMock =
-          new Mock<IRdbmsProviderCommand<ObjectLookupResult<DataContainer>>>(MockBehavior.Strict);
+      var commandMock = new Mock<IRdbmsProviderCommandWithReadOnlySupport<ObjectLookupResult<DataContainer>>>(MockBehavior.Strict);
       var sequence = new VerifiableSequence();
-      _connectionCreatorMock.InVerifiableSequence(sequence).Setup(mock => mock.CreateConnection()).Returns(_connectionStub.Object).Verifiable();
+
+      _connectionCreatorMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.CreateConnection())
+          .Returns(_connectionStub.Object)
+          .Verifiable();
+
       _commandFactoryMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.CreateForSingleIDLookup(objectID))
           .Returns(commandMock.Object)
           .Verifiable();
-      commandMock.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_provider)).Returns(fakeResult).Verifiable();
+
+      commandMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Execute(_provider))
+          .Returns(fakeResult)
+          .Verifiable();
 
       var result = _provider.LoadDataContainer(objectID);
 
@@ -397,16 +465,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       var lookupResult2 = new ObjectLookupResult<DataContainer>(objectID2, DataContainer.CreateNew(objectID2));
       var lookupResult3 = new ObjectLookupResult<DataContainer>(objectID3, DataContainer.CreateNew(objectID3));
 
-      var commandMock =
-          new Mock<IRdbmsProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>>>(MockBehavior.Strict);
+      var commandMock = new Mock<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectLookupResult<DataContainer>>>>(MockBehavior.Strict);
       var sequence = new VerifiableSequence();
-      _connectionCreatorMock.InVerifiableSequence(sequence).Setup(mock => mock.CreateConnection()).Returns(_connectionStub.Object).Verifiable();
+      _connectionCreatorMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.CreateConnection())
+          .Returns(_connectionStub.Object)
+          .Verifiable();
+
       _commandFactoryMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.CreateForSortedMultiIDLookup(new[] { objectID1, objectID2, objectID3 }))
           .Returns(commandMock.Object)
           .Verifiable();
-      commandMock.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_provider)).Returns(new[] { lookupResult1, lookupResult2, lookupResult3 }).Verifiable();
+
+      commandMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Execute(_provider))
+          .Returns(new[] { lookupResult1, lookupResult2, lookupResult3 })
+          .Verifiable();
 
       var result = _provider.LoadDataContainers(new[] { objectID1, objectID2, objectID3 }).ToArray();
 
@@ -435,7 +512,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       var objectID = DomainObjectIDs.Official1;
       var commandMock =
-          new Mock<IRdbmsProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>>>(MockBehavior.Strict);
+          new Mock<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectLookupResult<DataContainer>>>>(MockBehavior.Strict);
       _connectionCreatorMock.Setup(mock => mock.CreateConnection()).Returns(_connectionStub.Object).Verifiable();
       _commandFactoryMock
           .Setup(mock => mock.CreateForSortedMultiIDLookup(new[] { objectID }))
@@ -458,16 +535,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
           new[] { new SortedPropertySpecification(GetPropertyDefinition(typeof(Official), "Name"), SortOrder.Ascending) });
       var fakeResult = DataContainer.CreateNew(objectID);
 
-      var commandMock =
-          new Mock<IRdbmsProviderCommand<IEnumerable<DataContainer>>>(MockBehavior.Strict);
+      var commandMock = new Mock<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer>>>(MockBehavior.Strict);
       var sequence = new VerifiableSequence();
-      _connectionCreatorMock.InVerifiableSequence(sequence).Setup(mock => mock.CreateConnection()).Returns(_connectionStub.Object).Verifiable();
+      _connectionCreatorMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.CreateConnection())
+          .Returns(_connectionStub.Object)
+          .Verifiable();
+
       _commandFactoryMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.CreateForRelationLookup(relationEndPointDefinition, objectID, sortExpression))
           .Returns(commandMock.Object)
           .Verifiable();
-      commandMock.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_provider)).Returns(new[] { fakeResult }).Verifiable();
+
+      commandMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Execute(_provider))
+          .Returns(new[] { fakeResult })
+          .Verifiable();
 
       var result = _provider.LoadDataContainersByRelatedID(relationEndPointDefinition, sortExpression, objectID);
 
@@ -487,16 +573,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
           new[] { new SortedPropertySpecification(GetPropertyDefinition(typeof(Official), "Name"), SortOrder.Ascending) });
       var fakeResult = DataContainer.CreateNew(objectID);
 
-      var commandMock =
-          new Mock<IRdbmsProviderCommand<IEnumerable<DataContainer>>>(MockBehavior.Strict);
+      var commandMock = new Mock<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer>>>(MockBehavior.Strict);
       var sequence = new VerifiableSequence();
-      _connectionCreatorMock.InVerifiableSequence(sequence).Setup(mock => mock.CreateConnection()).Returns(_connectionStub.Object).Verifiable();
+      _connectionCreatorMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.CreateConnection())
+          .Returns(_connectionStub.Object).Verifiable();
+
       _commandFactoryMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.CreateForRelationLookup(relationEndPointDefinition, objectID, sortExpression))
           .Returns(commandMock.Object)
           .Verifiable();
-      commandMock.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_provider)).Returns(new[] { fakeResult, null }).Verifiable();
+
+      commandMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Execute(_provider))
+          .Returns(new[] { fakeResult, null }).Verifiable();
+
       Assert.That(
           () => _provider.LoadDataContainersByRelatedID(relationEndPointDefinition, sortExpression, objectID),
           Throws.InstanceOf<RdbmsProviderException>()
@@ -512,15 +606,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       var relationEndPointDefinition = (RelationEndPointDefinition)GetEndPointDefinition(typeof(Order), "Official");
       var sortExpression = new SortExpressionDefinition(
           new[] { new SortedPropertySpecification(GetPropertyDefinition(typeof(Official), "Name"), SortOrder.Ascending) });
-      var fakeResult = DataContainer.CreateNew(objectID);
 
-      var commandMock = new Mock<IRdbmsProviderCommand<IEnumerable<DataContainer>>>(MockBehavior.Strict);
-      _connectionCreatorMock.Setup(mock => mock.CreateConnection()).Returns(_connectionStub.Object).Verifiable();
+      var fakeResult = DataContainer.CreateNew(objectID);
+      var commandMock = new Mock<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer>>>(MockBehavior.Strict);
+
+      _connectionCreatorMock
+          .Setup(mock => mock.CreateConnection())
+          .Returns(_connectionStub.Object)
+          .Verifiable();
+
       _commandFactoryMock
           .Setup(mock => mock.CreateForRelationLookup(relationEndPointDefinition, objectID, sortExpression))
           .Returns(commandMock.Object)
           .Verifiable();
-      commandMock.Setup(mock => mock.Execute(_provider)).Returns(new[] { fakeResult, fakeResult }).Verifiable();
+
+      commandMock
+          .Setup(mock => mock.Execute(_provider))
+          .Returns(new[] { fakeResult, fakeResult })
+          .Verifiable();
 
       Assert.That(
           () => _provider.LoadDataContainersByRelatedID(relationEndPointDefinition, sortExpression, objectID),
@@ -585,13 +688,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       var commandMock = new Mock<IRdbmsProviderCommand>(MockBehavior.Strict);
       var sequence = new VerifiableSequence();
-      _connectionCreatorMock.InVerifiableSequence(sequence).Setup(mock => mock.CreateConnection()).Returns(_connectionStub.Object).Verifiable();
+
+      _connectionCreatorMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.CreateConnection())
+          .Returns(_connectionStub.Object)
+          .Verifiable();
+
       _commandFactoryMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.CreateForSave(new[] { dataContainer1, dataContainer2 }))
           .Returns(commandMock.Object)
           .Verifiable();
-      commandMock.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_provider)).Verifiable();
+
+      commandMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Execute(_provider))
+          .Verifiable();
 
       _provider.Save(new DataContainerCollection(new[] { dataContainer1, dataContainer2 }, true));
 

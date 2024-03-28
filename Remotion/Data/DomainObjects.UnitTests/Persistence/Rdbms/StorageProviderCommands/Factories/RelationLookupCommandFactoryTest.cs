@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _foreignKeyStoragePropertyDefinitionStrictMock.Verify();
       _dbCommandBuilderFactoryStrictMock.Verify();
 
-      var innerCommand = CheckDelegateBasedCommandAndReturnInnerCommand<IEnumerable<DataContainer>, IEnumerable<DataContainer>>(result);
+      var innerCommand = CheckDelegateBasedReadOnlyCommandAndReturnInnerCommand<IEnumerable<DataContainer>, IEnumerable<DataContainer>>(result);
       Assert.That(innerCommand, Is.TypeOf(typeof(MultiObjectLoadCommand<DataContainer>)));
       var dbCommandBuilderTuples = ((MultiObjectLoadCommand<DataContainer>)innerCommand).DbCommandBuildersAndReaders;
       Assert.That(dbCommandBuilderTuples.Length, Is.EqualTo(1));
@@ -214,11 +214,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _foreignKeyStoragePropertyDefinitionStrictMock.Verify();
       _dbCommandBuilderFactoryStrictMock.Verify();
 
-      var innerCommand = CheckDelegateBasedCommandAndReturnInnerCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IEnumerable<DataContainer>>(result);
+      var innerCommand = CheckDelegateBasedReadOnlyCommandAndReturnInnerCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IEnumerable<DataContainer>>(result);
       Assert.That(innerCommand, Is.TypeOf(typeof(IndirectDataContainerLoadCommand)));
       var indirectLoadCommand = (IndirectDataContainerLoadCommand)innerCommand;
       Assert.That(indirectLoadCommand.RdbmsProviderCommandFactory, Is.SameAs(_fakeStorageProviderCommandFactory.Object));
-      var innerObjectIDLoadCommand = CheckDelegateBasedCommandAndReturnInnerCommand<IEnumerable<ObjectID>, IEnumerable<ObjectID>>(indirectLoadCommand.ObjectIDLoadCommand);
+      var innerObjectIDLoadCommand = CheckDelegateBasedReadOnlyCommandAndReturnInnerCommand<IEnumerable<ObjectID>, IEnumerable<ObjectID>>(indirectLoadCommand.ObjectIDLoadCommand);
       Assert.That(innerObjectIDLoadCommand, Is.TypeOf(typeof(MultiObjectIDLoadCommand)));
       Assert.That(((MultiObjectIDLoadCommand)innerObjectIDLoadCommand).DbCommandBuilders, Is.EqualTo(new[] { _dbCommandBuilderStub.Object }));
       Assert.That(((MultiObjectIDLoadCommand)innerObjectIDLoadCommand).ObjectIDReader, Is.SameAs(_objectIDReaderStub.Object));
@@ -297,13 +297,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       return new ObjectID(classDefinition, Guid.NewGuid());
     }
 
-    private IRdbmsProviderCommand<TIn> CheckDelegateBasedCommandAndReturnInnerCommand<TIn, TResult> (
+    private IRdbmsProviderCommand<TIn> CheckDelegateBasedReadOnlyCommandAndReturnInnerCommand<TIn, TResult> (
         IRdbmsProviderCommand<TResult> command)
     {
       Assert.That(
           command,
-          Is.TypeOf(typeof(DelegateBasedCommand<TIn, TResult>)));
-      return ((DelegateBasedCommand<TIn, TResult>)command).Command;
+          Is.TypeOf(typeof(DelegateBasedCommandWithReadOnlySupport<TIn, TResult>)));
+      return ((DelegateBasedCommandWithReadOnlySupport<TIn, TResult>)command).Command;
     }
 
     private SortedPropertySpecification CreateSortedPropertySpecification (

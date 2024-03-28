@@ -269,7 +269,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dbCommandBuilderFactoryStrictMock.Verify();
 
       var innerCommand =
-          CheckDelegateBasedCommandAndReturnInnerCommand<IEnumerable<Tuple<ObjectID, object>>, IEnumerable<ObjectLookupResult<object>>>(result);
+          CheckDelegateBasedReadOnlyCommandAndReturnInnerCommand<IEnumerable<Tuple<ObjectID, object>>, IEnumerable<ObjectLookupResult<object>>>(result);
       Assert.That(innerCommand, Is.TypeOf(typeof(MultiObjectLoadCommand<Tuple<ObjectID, object>>)));
 
       var commandBuildersAndReaders = ((MultiObjectLoadCommand<Tuple<ObjectID, object>>)innerCommand).DbCommandBuildersAndReaders;
@@ -300,13 +300,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       return new ObjectID(classDefinition, Guid.NewGuid());
     }
 
-    private IRdbmsProviderCommand<TIn> CheckDelegateBasedCommandAndReturnInnerCommand<TIn, TResult> (
+    private IRdbmsProviderCommand<TIn> CheckDelegateBasedReadOnlyCommandAndReturnInnerCommand<TIn, TResult> (
         IRdbmsProviderCommand<TResult> command)
     {
       Assert.That(
           command,
-          Is.TypeOf(typeof(DelegateBasedCommand<TIn, TResult>)));
-      return ((DelegateBasedCommand<TIn, TResult>)command).Command;
+          Is.TypeOf(typeof(DelegateBasedCommandWithReadOnlySupport<TIn, TResult>)));
+      return ((DelegateBasedCommandWithReadOnlySupport<TIn, TResult>)command).Command;
     }
   }
 }
