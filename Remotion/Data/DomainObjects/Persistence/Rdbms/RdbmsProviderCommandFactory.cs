@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
   /// <summary>
   /// Creates <see cref="IRdbmsProviderCommand"/> instances for use with <see cref="RdbmsProvider"/>.
   /// </summary>
-  public class RdbmsProviderCommandFactory : IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>
+  public class RdbmsProviderCommandFactory : IRdbmsProviderCommandFactory
   {
     private readonly RdbmsProviderDefinition _storageProviderDefinition;
     private readonly IDbCommandBuilderFactory _dbCommandBuilderFactory;

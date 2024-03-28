@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     private Mock<IDbCommandBuilder> _dbCommandBuilderStub;
     private Mock<IObjectReader<DataContainer>> _dataContainerReaderStub;
     private Mock<IObjectReader<ObjectID>> _objectIDReaderStub;
-    private Mock<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>> _fakeStorageProviderCommandFactory;
+    private Mock<IRdbmsProviderCommandFactory> _fakeStorageProviderCommandFactory;
 
     private RelationLookupCommandFactory _factory;
 
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dbCommandBuilderStub = new Mock<IDbCommandBuilder>();
       _dataContainerReaderStub = new Mock<IObjectReader<DataContainer>>();
       _objectIDReaderStub = new Mock<IObjectReader<ObjectID>>();
-      _fakeStorageProviderCommandFactory = new Mock<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>>();
+      _fakeStorageProviderCommandFactory = new Mock<IRdbmsProviderCommandFactory>();
 
       _factory = new RelationLookupCommandFactory(
                 _fakeStorageProviderCommandFactory.Object,
@@ -217,7 +217,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var innerCommand = CheckDelegateBasedCommandAndReturnInnerCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IEnumerable<DataContainer>>(result);
       Assert.That(innerCommand, Is.TypeOf(typeof(IndirectDataContainerLoadCommand)));
       var indirectLoadCommand = (IndirectDataContainerLoadCommand)innerCommand;
-      Assert.That(indirectLoadCommand.StorageProviderCommandFactory, Is.SameAs(_fakeStorageProviderCommandFactory.Object));
+      Assert.That(indirectLoadCommand.RdbmsProviderCommandFactory, Is.SameAs(_fakeStorageProviderCommandFactory.Object));
       var innerObjectIDLoadCommand = CheckDelegateBasedCommandAndReturnInnerCommand<IEnumerable<ObjectID>, IEnumerable<ObjectID>>(indirectLoadCommand.ObjectIDLoadCommand);
       Assert.That(innerObjectIDLoadCommand, Is.TypeOf(typeof(MultiObjectIDLoadCommand)));
       Assert.That(((MultiObjectIDLoadCommand)innerObjectIDLoadCommand).DbCommandBuilders, Is.EqualTo(new[] { _dbCommandBuilderStub.Object }));

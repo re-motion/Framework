@@ -19,16 +19,15 @@ using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
-using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Queries;
 
-namespace Remotion.Data.DomainObjects.Persistence
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
   /// <summary>
   /// Defines an interface for classes instantiating <see cref="IRdbmsProviderCommand"/> instances for the basic storage provider operations.
-  /// <see cref="StorageProvider"/> uses this factory interface when the respective provider methods are called.
+  /// <see cref="RdbmsProvider"/> uses this factory interface when the respective provider methods are called.
   /// </summary>
-  public interface IStorageProviderCommandFactory<in TExecutionContext>
+  public interface IRdbmsProviderCommandFactory
   {
     IRdbmsProviderCommand<ObjectLookupResult<DataContainer>> CreateForSingleIDLookup (ObjectID objectID);
 

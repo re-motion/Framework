@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
   /// <summary>
   /// Executes the given <see cref="IRdbmsProviderCommand{T}"/> to retrieve a sequence of <see cref="ObjectID"/> values, then
-  /// looks up those values via the given <see cref="IStorageProviderCommandFactory{TExecutionContext}"/>. This command can be used to indirectly
+  /// looks up those values via the given <see cref="IRdbmsProviderCommandFactory"/>. This command can be used to indirectly
   /// load <see cref="DataContainer"/> instances via two queries, where the first yields only IDs, for example for concrete table inheritance 
   /// relation lookup.
   /// </summary>
@@ -32,17 +32,17 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       : IRdbmsProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>>
   {
     private readonly IRdbmsProviderCommand<IEnumerable<ObjectID>> _objectIDLoadCommand;
-    private readonly IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> _storageProviderCommandFactory;
+    private readonly IRdbmsProviderCommandFactory _rdbmsProviderCommandFactory;
 
     public IndirectDataContainerLoadCommand (
         IRdbmsProviderCommand<IEnumerable<ObjectID>> objectIDLoadCommand,
-        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> storageProviderCommandFactory)
+        IRdbmsProviderCommandFactory rdbmsProviderCommandFactory)
     {
       ArgumentUtility.CheckNotNull("objectIDLoadCommand", objectIDLoadCommand);
-      ArgumentUtility.CheckNotNull("storageProviderCommandFactory", storageProviderCommandFactory);
+      ArgumentUtility.CheckNotNull("rdbmsProviderCommandFactory", rdbmsProviderCommandFactory);
 
       _objectIDLoadCommand = objectIDLoadCommand;
-      _storageProviderCommandFactory = storageProviderCommandFactory;
+      _rdbmsProviderCommandFactory = rdbmsProviderCommandFactory;
     }
 
     public IRdbmsProviderCommand<IEnumerable<ObjectID>> ObjectIDLoadCommand
@@ -50,9 +50,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       get { return _objectIDLoadCommand; }
     }
 
-    public IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> StorageProviderCommandFactory
+    public IRdbmsProviderCommandFactory RdbmsProviderCommandFactory
     {
-      get { return _storageProviderCommandFactory; }
+      get { return _rdbmsProviderCommandFactory; }
     }
 
     public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderCommandExecutionContext executionContext)
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       ArgumentUtility.CheckNotNull("executionContext", executionContext);
 
       var objectIds = _objectIDLoadCommand.Execute(executionContext);
-      return _storageProviderCommandFactory.CreateForSortedMultiIDLookup(objectIds.ToArray()).Execute(executionContext);
+      return _rdbmsProviderCommandFactory.CreateForSortedMultiIDLookup(objectIds.ToArray()).Execute(executionContext);
     }
   }
 }
