@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       using (var storageProviderManager = CreateStorageProviderManager())
       {
-        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition.Name);
+        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition);
         // This foreach/yield combination is needed to force the using block to stay open until the whole result set has finished enumeration.
         foreach (var queryResultRow in provider.ExecuteCustomQuery(query))
         {
@@ -155,7 +155,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       IEnumerable<DataContainer?> dataContainers;
       using (var storageProviderManager = CreateStorageProviderManager())
       {
-        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition.Name);
+        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition);
         dataContainers = provider.ExecuteCollectionQuery(query);
       }
       return dataContainers;
@@ -170,7 +170,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       using (var storageProviderManager = CreateStorageProviderManager())
       {
-        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition.Name);
+        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition);
         return provider.ExecuteScalarQuery(query);
       }
     }

@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.FunctionalProgramming;
 using Remotion.ServiceLocation;
@@ -58,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      var provider = storageProviderManager.GetMandatory(classDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
+      var provider = storageProviderManager.GetMandatory(classDefinition.StorageEntityDefinition.StorageProviderDefinition);
       return provider.CreateNewObjectID(classDefinition);
     }
 
@@ -72,7 +73,7 @@ namespace Remotion.Data.DomainObjects.Persistence
 
       var groupedDataContainers = dataContainers
           .ToLookup(dataContainer => dataContainer.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition)
-          .Select(group => new { Provider = storageProviderManager.GetMandatory(group.Key.Name), DataContainers = group.ToArray() })
+          .Select(group => new { Provider = storageProviderManager.GetMandatory(group.Key), DataContainers = group.ToArray() })
           .ToArray();
 
       var providers = groupedDataContainers.Select(group => group.Provider).ToArray();
@@ -112,7 +113,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
       ArgumentUtility.CheckNotNull("id", id);
 
-      var provider = storageProviderManager.GetMandatory(id.StorageProviderDefinition.Name);
+      var provider = storageProviderManager.GetMandatory(id.StorageProviderDefinition);
       var result = provider.LoadDataContainer(id);
 
       return result;
@@ -298,7 +299,7 @@ namespace Remotion.Data.DomainObjects.Persistence
 
       var oppositeEndPointDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition();
       var oppositeProvider =
-          storageProviderManager.GetMandatory(oppositeEndPointDefinition.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
+          storageProviderManager.GetMandatory(oppositeEndPointDefinition.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition);
 
       SortExpressionDefinition? sortExpression;
       if (relationEndPointDefinition is DomainObjectCollectionRelationEndPointDefinition domainObjectCollectionRelationEndPointDefinition)
@@ -353,11 +354,12 @@ namespace Remotion.Data.DomainObjects.Persistence
       return new PersistenceException(string.Format(message, args));
     }
 
-    private IEnumerable<KeyValuePair<string, List<ObjectID>>> GroupIDsByProvider (IEnumerable<ObjectID> ids)
+    private IEnumerable<KeyValuePair<StorageProviderDefinition, List<ObjectID>>> GroupIDsByProvider (IEnumerable<ObjectID> ids)
     {
-      var result = new MultiDictionary<string, ObjectID>();
+      var result = new MultiDictionary<StorageProviderDefinition, ObjectID>();
       foreach (var id in ids)
-        result[id.StorageProviderDefinition.Name].Add(id);
+        result[id.StorageProviderDefinition].Add(id);
+
       return result;
     }
 
