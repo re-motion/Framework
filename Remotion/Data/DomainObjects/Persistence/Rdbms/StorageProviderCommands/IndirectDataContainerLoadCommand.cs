@@ -23,19 +23,18 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
   /// <summary>
-  /// Executes the given <see cref="IRdbmsProviderCommand{T}"/> to retrieve a sequence of <see cref="ObjectID"/> values, then
+  /// Executes the given <see cref="IRdbmsProviderReadOnlyCommand{T}"/> to retrieve a sequence of <see cref="ObjectID"/> values, then
   /// looks up those values via the given <see cref="IRdbmsProviderCommandFactory"/>. This command can be used to indirectly
   /// load <see cref="DataContainer"/> instances via two queries, where the first yields only IDs, for example for concrete table inheritance 
   /// relation lookup.
   /// </summary>
-  public class IndirectDataContainerLoadCommand
-      : IRdbmsProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>>
+  public class IndirectDataContainerLoadCommand : IRdbmsProviderReadOnlyCommand<IEnumerable<ObjectLookupResult<DataContainer>>>
   {
-    private readonly IRdbmsProviderCommand<IEnumerable<ObjectID>> _objectIDLoadCommand;
+    private readonly IRdbmsProviderReadOnlyCommand<IEnumerable<ObjectID>> _objectIDLoadCommand;
     private readonly IRdbmsProviderCommandFactory _rdbmsProviderCommandFactory;
 
     public IndirectDataContainerLoadCommand (
-        IRdbmsProviderCommand<IEnumerable<ObjectID>> objectIDLoadCommand,
+        IRdbmsProviderReadOnlyCommand<IEnumerable<ObjectID>> objectIDLoadCommand,
         IRdbmsProviderCommandFactory rdbmsProviderCommandFactory)
     {
       ArgumentUtility.CheckNotNull("objectIDLoadCommand", objectIDLoadCommand);
@@ -45,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       _rdbmsProviderCommandFactory = rdbmsProviderCommandFactory;
     }
 
-    public IRdbmsProviderCommand<IEnumerable<ObjectID>> ObjectIDLoadCommand
+    public IRdbmsProviderReadWriteCommand<IEnumerable<ObjectID>> ObjectIDLoadCommand
     {
       get { return _objectIDLoadCommand; }
     }

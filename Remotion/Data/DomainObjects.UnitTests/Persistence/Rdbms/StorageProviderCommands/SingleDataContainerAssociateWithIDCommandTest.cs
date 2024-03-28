@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
   public class SingleDataContainerAssociateWithIDCommandTest : StandardMappingTest
   {
     private ObjectID _expectedID;
-    private Mock<IRdbmsProviderCommand<DataContainer>> _innerCommandMock;
+    private Mock<IRdbmsProviderReadOnlyCommand<DataContainer>> _innerCommandMock;
 
     private SingleDataContainerAssociateWithIDCommand _associateCommand;
 
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       base.SetUp();
 
       _expectedID = DomainObjectIDs.Order1;
-      _innerCommandMock = new Mock<IRdbmsProviderCommand<DataContainer>>(MockBehavior.Strict);
+      _innerCommandMock = new Mock<IRdbmsProviderReadOnlyCommand<DataContainer>>(MockBehavior.Strict);
 
       _associateCommand = new SingleDataContainerAssociateWithIDCommand(_expectedID, _innerCommandMock.Object);
 

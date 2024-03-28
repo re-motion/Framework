@@ -24,27 +24,27 @@ using Remotion.Data.DomainObjects.Queries;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
   /// <summary>
-  /// Defines an interface for classes instantiating <see cref="IRdbmsProviderCommand"/> instances for the basic storage provider operations.
+  /// Defines an interface for classes instantiating <see cref="IRdbmsProviderReadWriteCommand"/> instances for the basic storage provider operations.
   /// <see cref="RdbmsProvider"/> uses this factory interface when the respective provider methods are called.
   /// </summary>
   public interface IRdbmsProviderCommandFactory
   {
-    IRdbmsProviderCommand<ObjectLookupResult<DataContainer>> CreateForSingleIDLookup (ObjectID objectID);
+    IRdbmsProviderReadOnlyCommand<ObjectLookupResult<DataContainer>> CreateForSingleIDLookup (ObjectID objectID);
 
-    IRdbmsProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>> CreateForSortedMultiIDLookup (
-        IEnumerable<ObjectID> objectIDs);
+    IRdbmsProviderReadOnlyCommand<IEnumerable<ObjectLookupResult<DataContainer>>> CreateForSortedMultiIDLookup (IEnumerable<ObjectID> objectIDs);
 
-    IRdbmsProviderCommand<IEnumerable<DataContainer>> CreateForRelationLookup (
-        RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition? sortExpressionDefinition);
+    IRdbmsProviderReadOnlyCommand<IEnumerable<DataContainer>> CreateForRelationLookup (
+        RelationEndPointDefinition foreignKeyEndPoint,
+        ObjectID foreignKeyValue,
+        SortExpressionDefinition? sortExpressionDefinition);
 
-    IRdbmsProviderCommand<IEnumerable<DataContainer?>> CreateForDataContainerQuery (IQuery query);
-    IRdbmsProviderCommand<IEnumerable<IQueryResultRow>> CreateForCustomQuery (IQuery query);
+    IRdbmsProviderReadOnlyCommand<IEnumerable<DataContainer?>> CreateForDataContainerQuery (IQuery query);
+    IRdbmsProviderReadWriteCommand<IEnumerable<IQueryResultRow>> CreateForCustomQuery (IQuery query);
 
-    IRdbmsProviderCommand<object?> CreateForScalarQuery (IQuery query);
+    IRdbmsProviderReadWriteCommand<object?> CreateForScalarQuery (IQuery query);
 
-    IRdbmsProviderCommand<IEnumerable<ObjectLookupResult<object>>> CreateForMultiTimestampLookup (
-        IEnumerable<ObjectID> objectIDs);
+    IRdbmsProviderReadOnlyCommand<IEnumerable<ObjectLookupResult<object>>> CreateForMultiTimestampLookup (IEnumerable<ObjectID> objectIDs);
 
-    IRdbmsProviderCommand CreateForSave (IEnumerable<DataContainer> dataContainers);
+    IRdbmsProviderReadWriteCommand CreateForSave (IEnumerable<DataContainer> dataContainers);
   }
 }

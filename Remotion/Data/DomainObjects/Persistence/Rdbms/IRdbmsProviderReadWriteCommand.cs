@@ -21,16 +21,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
   /// <summary>
   /// Represents a command without a return value to be executed by a storage provider.
   /// </summary>
-  public interface IRdbmsProviderCommand
+  public interface IRdbmsProviderReadWriteCommand
   {
     void Execute (IRdbmsProviderCommandExecutionContext executionContext);
   }
 
   /// <summary>
-  /// Represents a command with a return value to be executed by a storage provider.
+  /// Represents a command with a return value that does not attempt to modify the database, to be executed by a storage provider.
   /// </summary>
-  public interface IRdbmsProviderCommand<out T>
+  public interface IRdbmsProviderReadOnlyCommand<out T> : IRdbmsProviderReadWriteCommand<T>
   {
-    T Execute (IRdbmsProviderCommandExecutionContext executionContext);
   }
 }

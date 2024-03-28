@@ -72,11 +72,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     [Test]
     public void Execute_OneDbCommandBuilder ()
     {
-      _dbCommandBuilder1Mock.Setup(mock => mock.Create(_commandExecutionContextStub.Object)).Returns(_dbCommandMock1.Object).Verifiable();
-      _dbCommandMock1.Setup(mock => mock.Dispose()).Verifiable();
-      _dataReaderMock.Setup(mock => mock.Dispose()).Verifiable();
-      _commandExecutionContextStub.Setup(stub => stub.ExecuteReader(_dbCommandMock1.Object, CommandBehavior.SingleResult)).Returns(_dataReaderMock.Object);
-      _objectIDReaderStub.Setup(stub => stub.ReadSequence(_dataReaderMock.Object)).Returns(_fakeResult);
+      var sequence = new VerifiableSequence();
+
+      _dbCommandBuilder1Mock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Create(_commandExecutionContextStub.Object))
+          .Returns(_dbCommandMock1.Object)
+          .Verifiable();
+
+      _commandExecutionContextStub
+          .InVerifiableSequence(sequence)
+          .Setup(stub => stub.ExecuteReader(_dbCommandMock1.Object, CommandBehavior.SingleResult))
+          .Returns(_dataReaderMock.Object);
+
+      _objectIDReaderStub
+          .InVerifiableSequence(sequence)
+          .Setup(stub => stub.ReadSequence(_dataReaderMock.Object))
+          .Returns(_fakeResult);
+
+      _dataReaderMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Dispose())
+          .Verifiable();
+
+      _dbCommandMock1
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Dispose())
+          .Verifiable();
 
       var command = new MultiObjectIDLoadCommand(new[] { _dbCommandBuilder1Mock.Object }, _objectIDReaderStub.Object);
 
@@ -87,6 +109,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dbCommandMock1.Verify();
       _dbCommandMock2.Verify();
       _dataReaderMock.Verify();
+      sequence.Verify();
       Assert.That(result, Is.EqualTo(new[] { _objectID1 }));
     }
 
@@ -114,54 +137,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dbCommandMock2.Verify();
       _dataReaderMock.Verify(mock => mock.Dispose(), Times.Exactly(2));
       Assert.That(result, Is.EqualTo(new[] { _objectID1, _objectID1 }));
-    }
-
-    [Test]
-    public void LoadObjectIDsFromCommandBuilder ()
-    {
-      var enumerableStub = new Mock<IEnumerable<ObjectID>>();
-      var enumeratorMock = new Mock<IEnumerator<ObjectID>>(MockBehavior.Strict);
-
-      var sequence = new VerifiableSequence();
-
-      _dbCommandBuilder1Mock
-          .InVerifiableSequence(sequence)
-          .Setup(mock => mock.Create(_commandExecutionContextStub.Object))
-          .Returns(_dbCommandMock1.Object)
-          .Verifiable();
-
-      _commandExecutionContextStub
-          .InVerifiableSequence(sequence)
-          .Setup(stub => stub.ExecuteReader(_dbCommandMock1.Object, CommandBehavior.SingleResult))
-          .Returns(_dataReaderMock.Object);
-
-      _objectIDReaderStub
-          .InVerifiableSequence(sequence)
-          .Setup(stub => stub.ReadSequence(_dataReaderMock.Object))
-          .Returns(enumerableStub.Object);
-
-      enumerableStub.Setup(stub => stub.GetEnumerator()).Returns(enumeratorMock.Object);
-      enumeratorMock.InVerifiableSequence(sequence).Setup(mock => mock.MoveNext()).Returns(false).Verifiable();
-      enumeratorMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
-      _dataReaderMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
-      _dbCommandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
-      var command = new MultiObjectIDLoadCommand(new[] { _dbCommandBuilder1Mock.Object, _dbCommandBuilder2Mock.Object }, _objectIDReaderStub.Object);
-
-      var result =
-          (IEnumerable<ObjectID>)PrivateInvoke.InvokeNonPublicMethod(
-              command,
-              "LoadObjectIDsFromCommandBuilder",
-              _dbCommandBuilder1Mock.Object,
-              _commandExecutionContextStub.Object);
-      result.ToArray();
-
-      _dbCommandBuilder1Mock.Verify();
-      _dbCommandBuilder2Mock.Verify();
-      _dbCommandMock1.Verify();
-      _dbCommandMock2.Verify();
-      _dataReaderMock.Verify();
-      enumeratorMock.Verify();
-      sequence.Verify();
     }
   }
 }
