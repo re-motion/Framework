@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       using (MixinConfiguration.BuildFromActive().ForClass(typeof(StorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
-        StorageProvider provider =
+        var provider =
             new StorageProviderManager(NullPersistenceExtension.Instance, StorageSettings).GetMandatory(orderDefinition.StorageEntityDefinition.StorageProviderDefinition);
         Assert.That(Mixin.Get<StorageProviderWithFixedGuidMixin>(provider), Is.Not.Null);
       }
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       using (MixinConfiguration.BuildFromActive().ForClass(typeof(StorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
-        StorageProvider provider =
+        var provider =
             new StorageProviderManager(NullPersistenceExtension.Instance, StorageSettings)
                 .GetMandatory(orderDefinition.StorageEntityDefinition.StorageProviderDefinition);
         ObjectID id1 = provider.CreateNewObjectID(orderDefinition);
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       using (MixinConfiguration.BuildFromActive().ForClass(typeof(StorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
-        StorageProvider provider =
+        var provider =
             new StorageProviderManager(NullPersistenceExtension.Instance, StorageSettings)
                 .GetMandatory(orderDefinition.StorageEntityDefinition.StorageProviderDefinition);
 

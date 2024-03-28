@@ -8,7 +8,7 @@
 // 
 // re-motion is distributed in the hope that it will be useful, 
 // but WITHOUT ANY WARRANTY; without even the implied warranty of 
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
 // GNU Lesser General Public License for more details.
 // 
 // You should have received a copy of the GNU Lesser General Public License
@@ -20,21 +20,16 @@ using Remotion.Data.DomainObjects.Tracing;
 
 namespace Remotion.Data.DomainObjects.Persistence
 {
-  public class StorageProviderManager : StorageProviderManagerBase<IStorageProvider>, IStorageProviderManager, IReadOnlyStorageProviderManager
+  public class ReadOnlyStorageProviderManager : StorageProviderManagerBase<IReadOnlyStorageProvider>, IReadOnlyStorageProviderManager
   {
-    public StorageProviderManager (IPersistenceExtension persistenceExtension, IStorageSettings storageSettings)
+    public ReadOnlyStorageProviderManager (IPersistenceExtension persistenceExtension, IStorageSettings storageSettings)
         : base(persistenceExtension, storageSettings)
     {
     }
 
-    protected sealed override IStorageProvider CreateStorageProvider (StorageProviderDefinition providerDefinition)
+    protected sealed override IReadOnlyStorageProvider CreateStorageProvider (StorageProviderDefinition providerDefinition)
     {
-      return providerDefinition.Factory.CreateStorageProvider(providerDefinition, PersistenceExtension);
-    }
-
-    IReadOnlyStorageProvider IReadOnlyStorageProviderManager.GetMandatory (StorageProviderDefinition providerDefinition)
-    {
-      return GetMandatory(providerDefinition);
+      return providerDefinition.Factory.CreateReadOnlyStorageProvider(providerDefinition, PersistenceExtension);
     }
   }
 }
