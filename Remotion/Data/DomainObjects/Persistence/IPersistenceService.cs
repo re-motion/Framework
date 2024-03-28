@@ -25,15 +25,15 @@ namespace Remotion.Data.DomainObjects.Persistence;
 /// <threadsafety static="true" instance="false" />
 public interface IPersistenceService
 {
-  ObjectID CreateNewObjectID (StorageProviderManager storageProviderManager, ClassDefinition classDefinition);
+  ObjectID CreateNewObjectID (IStorageProviderManager storageProviderManager, ClassDefinition classDefinition);
 
-  void Save (StorageProviderManager storageProviderManager, DataContainerCollection dataContainers);
+  void Save (IStorageProviderManager storageProviderManager, DataContainerCollection dataContainers);
 
-  ObjectLookupResult<DataContainer> LoadDataContainer (StorageProviderManager storageProviderManager, ObjectID id);
+  ObjectLookupResult<DataContainer> LoadDataContainer (IReadOnlyStorageProviderManager storageProviderManager, ObjectID id);
 
-  IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (StorageProviderManager storageProviderManager, IEnumerable<ObjectID> ids);
+  IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyStorageProviderManager storageProviderManager, IEnumerable<ObjectID> ids);
 
-  DataContainerCollection LoadRelatedDataContainers (StorageProviderManager storageProviderManager, RelationEndPointID relationEndPointID);
+  DataContainerCollection LoadRelatedDataContainers (IReadOnlyStorageProviderManager storageProviderManager, RelationEndPointID relationEndPointID);
 
-  DataContainer? LoadRelatedDataContainer (StorageProviderManager storageProviderManager, RelationEndPointID relationEndPointID);
+  DataContainer? LoadRelatedDataContainer (IReadOnlyStorageProviderManager storageProviderManager, RelationEndPointID relationEndPointID);
 }
