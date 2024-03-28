@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      StorageProvider provider = storageProviderManager.GetMandatory(classDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
+      var provider = storageProviderManager.GetMandatory(classDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
       return provider.CreateNewObjectID(classDefinition);
     }
 
@@ -186,7 +186,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     /// When extending <see cref="CheckProvidersCompatibleForSave"/> to support multiple <see cref="StorageProvider"/>, also extend
     /// <see cref="BeginTransaction"/>, <see cref="CommitTransaction"/>, and <see cref="RollbackTransaction"/> with appropriate logic.
     /// </remarks>
-    protected virtual void CheckProvidersCompatibleForSave (IEnumerable<StorageProvider> providers)
+    protected virtual void CheckProvidersCompatibleForSave (IEnumerable<IStorageProvider> providers)
     {
       ArgumentUtility.CheckNotNull("providers", providers);
 
@@ -204,7 +204,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     /// A custom context, passed back to <see cref="CommitTransaction"/> and <see cref="RollbackTransaction"/>. The <see cref="IDisposable.Dispose"/>
     /// method is invoked at the call site.
     /// </returns>
-    protected virtual IDisposable BeginTransaction (IEnumerable<StorageProvider> providers)
+    protected virtual IDisposable BeginTransaction (IEnumerable<IReadOnlyStorageProvider> providers)
     {
       ArgumentUtility.CheckNotNull("providers", providers);
 
@@ -221,7 +221,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     /// <param name="context">
     /// A custom context, created by <see cref="BeginTransaction"/>. The <see cref="IDisposable.Dispose"/> method is invoked at the call site.
     /// </param>
-    protected virtual void CommitTransaction (IEnumerable<StorageProvider> providers, IDisposable context)
+    protected virtual void CommitTransaction (IEnumerable<IReadOnlyStorageProvider> providers, IDisposable context)
     {
       ArgumentUtility.CheckNotNull("providers", providers);
 
@@ -236,7 +236,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     /// <param name="context">
     /// A custom context, created by <see cref="BeginTransaction"/>. The <see cref="IDisposable.Dispose"/> method is invoked at the call site.
     /// </param>
-    protected virtual void RollbackTransaction (IEnumerable<StorageProvider> providers, IDisposable context)
+    protected virtual void RollbackTransaction (IEnumerable<IReadOnlyStorageProvider> providers, IDisposable context)
     {
       ArgumentUtility.CheckNotNull("providers", providers);
 
