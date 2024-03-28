@@ -33,12 +33,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
   {
     public class StorageObjectFactoryFake : IStorageObjectFactory
     {
-      public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+      public IStorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
       {
         throw new NotImplementedException();
       }
 
-      public StorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+      public IReadOnlyStorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
       {
         throw new NotImplementedException();
       }

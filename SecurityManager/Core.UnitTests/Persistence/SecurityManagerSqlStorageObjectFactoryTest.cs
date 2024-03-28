@@ -17,6 +17,7 @@
 using System;
 using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
@@ -54,7 +55,7 @@ namespace Remotion.SecurityManager.UnitTests.Persistence
     [Test]
     public void CreateStorageProvider ()
     {
-      var result = _securityManagerSqlStorageObjectFactory.CreateStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
+      var result = (StorageProvider)_securityManagerSqlStorageObjectFactory.CreateStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
 
       Assert.That(result, Is.TypeOf(typeof(SecurityManagerRdbmsProvider)));
       Assert.That(result.PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
@@ -77,7 +78,7 @@ namespace Remotion.SecurityManager.UnitTests.Persistence
     [Test]
     public void CreateReadOnlyStorageProvider ()
     {
-      var result = _securityManagerSqlStorageObjectFactory.CreateReadOnlyStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
+      var result = (StorageProvider)_securityManagerSqlStorageObjectFactory.CreateReadOnlyStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
 
       Assert.That(result, Is.TypeOf(typeof(SecurityManagerRdbmsProvider)));
       Assert.That(result.PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
