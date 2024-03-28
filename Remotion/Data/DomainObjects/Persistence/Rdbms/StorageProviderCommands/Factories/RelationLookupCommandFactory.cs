@@ -35,20 +35,20 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     private readonly IDbCommandBuilderFactory _dbCommandBuilderFactory;
     private readonly IRdbmsPersistenceModelProvider _rdbmsPersistenceModelProvider;
     private readonly IObjectReaderFactory _objectReaderFactory;
-    private readonly IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> _storageProviderCommandFactory;
+    private readonly IRdbmsProviderCommandFactory _rdbmsProviderCommandFactory;
 
     public RelationLookupCommandFactory (
-        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> storageProviderCommandFactory,
+        IRdbmsProviderCommandFactory rdbmsProviderCommandFactory,
         IDbCommandBuilderFactory dbCommandBuilderFactory,
         IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider,
         IObjectReaderFactory objectReaderFactory)
     {
-      ArgumentUtility.CheckNotNull("storageProviderCommandFactory", storageProviderCommandFactory);
+      ArgumentUtility.CheckNotNull("rdbmsProviderCommandFactory", rdbmsProviderCommandFactory);
       ArgumentUtility.CheckNotNull("dbCommandBuilderFactory", dbCommandBuilderFactory);
       ArgumentUtility.CheckNotNull("rdbmsPersistenceModelProvider", rdbmsPersistenceModelProvider);
       ArgumentUtility.CheckNotNull("objectReaderFactory", objectReaderFactory);
 
-      _storageProviderCommandFactory = storageProviderCommandFactory;
+      _rdbmsProviderCommandFactory = rdbmsProviderCommandFactory;
       _dbCommandBuilderFactory = dbCommandBuilderFactory;
       _rdbmsPersistenceModelProvider = rdbmsPersistenceModelProvider;
       _objectReaderFactory = objectReaderFactory;
@@ -69,9 +69,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       get { return _objectReaderFactory; }
     }
 
-    public IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> StorageProviderCommandFactory
+    public IRdbmsProviderCommandFactory RdbmsProviderCommandFactory
     {
-      get { return _storageProviderCommandFactory; }
+      get { return _rdbmsProviderCommandFactory; }
     }
 
     public virtual IRdbmsProviderCommand<IEnumerable<DataContainer>> CreateForRelationLookup (
@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
                     "Because no OUTER JOIN query is involved in retrieving the result, the ObjectID can never be null.");
               }));
 
-      var indirectDataContainerLoadCommand = new IndirectDataContainerLoadCommand(objectIDLoadCommand, _storageProviderCommandFactory);
+      var indirectDataContainerLoadCommand = new IndirectDataContainerLoadCommand(objectIDLoadCommand, _rdbmsProviderCommandFactory);
       return DelegateBasedCommand.Create(
           indirectDataContainerLoadCommand,
           lookupResults => lookupResults.Select(
