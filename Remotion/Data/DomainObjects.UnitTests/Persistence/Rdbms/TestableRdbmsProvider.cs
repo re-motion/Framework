@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
         RdbmsProviderDefinition definition,
         string connectionString,
         IPersistenceExtension persistenceExtension,
-        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory,
+        IRdbmsProviderCommandFactory commandFactory,
         Func<IDbConnection> connectionFactory)
       : base(definition, connectionString, persistenceExtension, commandFactory, connectionFactory)
     {
