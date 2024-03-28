@@ -19,10 +19,10 @@ using System;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
   /// <summary>
-  /// Implements <see cref="IRdbmsProviderCommand{T}"/> by always returning the same, fixed value.
+  /// Implements <see cref="IRdbmsProviderCommandWithReadOnlySupport{T}"/> by always returning the same, fixed value.
   /// </summary>
   /// <typeparam name="T">The type of the value to return.</typeparam>
-  public class FixedValueCommand<T> : IRdbmsProviderCommand<T>
+  public class FixedValueCommand<T> : IRdbmsProviderCommandWithReadOnlySupport<T>
   {
     private readonly T _value;
 

@@ -19,9 +19,8 @@ using System;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms;
 
 /// <summary>
-/// Represents a command that potentially modifies the database and does not return a value, to be executed by a storage provider.
+/// Represents a command that will not modify the database, to be executed by a storage provider.
 /// </summary>
-public interface IRdbmsProviderCommand
+public interface IRdbmsProviderCommandWithReadOnlySupport<out T> : IRdbmsProviderCommand<T>
 {
-  void Execute (IRdbmsProviderCommandExecutionContext executionContext);
 }

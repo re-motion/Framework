@@ -28,8 +28,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
   [TestFixture]
   public class IndirectDataContainerLoadCommandTest : StandardMappingTest
   {
-    private Mock<IRdbmsProviderCommand<IEnumerable<ObjectID>>> _objectIDLoadCommandStub;
-    private Mock<IRdbmsProviderCommand<ObjectLookupResult<DataContainer>[]>> _dataContainerLoadCommandStub;
+    private Mock<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectID>>> _objectIDLoadCommandStub;
+    private Mock<IRdbmsProviderCommandWithReadOnlySupport<ObjectLookupResult<DataContainer>[]>> _dataContainerLoadCommandStub;
     private Mock<IRdbmsProviderCommandFactory> _storageProviderFactoryStub;
 
     private IndirectDataContainerLoadCommand _loadCommand;
@@ -48,11 +48,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _commandExecutionContextStub = new Mock<IRdbmsProviderCommandExecutionContext>();
       _commandExecutionContextStub = new Mock<IRdbmsProviderCommandExecutionContext>();
 
-      _objectIDLoadCommandStub = new Mock<IRdbmsProviderCommand<IEnumerable<ObjectID>>>();
+      _objectIDLoadCommandStub = new Mock<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectID>>>();
       _objectIDLoadCommandStub.Setup(stub => stub.Execute(_commandExecutionContextStub.Object)).Returns(new[] { _objectID1, _objectID2 });
 
-      _dataContainerLoadCommandStub =
-          new Mock<IRdbmsProviderCommand<ObjectLookupResult<DataContainer>[]>>();
+      _dataContainerLoadCommandStub = new Mock<IRdbmsProviderCommandWithReadOnlySupport<ObjectLookupResult<DataContainer>[]>>();
       _dataContainerLoadCommandStub.Setup(stub => stub.Execute(_commandExecutionContextStub.Object)).Returns(_fakeResult);
 
       _storageProviderFactoryStub = new Mock<IRdbmsProviderCommandFactory>();
