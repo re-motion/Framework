@@ -417,7 +417,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
           new SqlCommentScriptElementFactory());
     }
 
-    protected virtual StorageProvider CreateStorageProvider (
+    protected virtual IStorageProvider CreateStorageProvider (
         IPersistenceExtension persistenceExtension,
         RdbmsProviderDefinition rdbmsProviderDefinition,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory)
@@ -435,7 +435,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
               (Func<IDbConnection>)(() => new SqlConnection())));
     }
 
-    protected virtual StorageProvider CreateReadOnlyStorageProvider (
+    protected virtual IReadOnlyStorageProvider CreateReadOnlyStorageProvider (
         IPersistenceExtension persistenceExtension,
         RdbmsProviderDefinition rdbmsProviderDefinition,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory)
