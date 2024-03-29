@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     [Test]
     public void Execute ()
     {
-      var executionContext = new Mock<IRdbmsProviderCommandExecutionContext>();
+      var executionContext = new Mock<IRdbmsProviderReadOnlyCommandExecutionContext>();
       var innerCommandStub = new Mock<IRdbmsProviderCommandWithReadOnlySupport<string>>();
       var delegateBasedCommand = new DelegateBasedCommandWithReadOnlySupport<string, int>(innerCommandStub.Object, s => s.Length);
 
@@ -40,11 +40,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     }
 
     [Test]
-    public void Create ()
+    public void CreateWithReadOnlySupport ()
     {
       var innerCommandStub = new Mock<IRdbmsProviderCommandWithReadOnlySupport<string>>();
       Func<string, int> operation = s => s.Length;
-      var instance = DelegateBasedCommand.CreateForReadOnly(innerCommandStub.Object, operation);
+      var instance = DelegateBasedCommand.CreateWithReadOnlySupport(innerCommandStub.Object, operation);
 
       Assert.That(instance, Is.TypeOf(typeof(DelegateBasedCommandWithReadOnlySupport<string, int>)));
       Assert.That(instance.Command, Is.SameAs(innerCommandStub.Object));

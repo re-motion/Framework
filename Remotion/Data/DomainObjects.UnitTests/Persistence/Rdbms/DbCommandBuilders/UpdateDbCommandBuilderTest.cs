@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
 
     private Mock<IDbCommand> _dbCommandStub;
 
-    private Mock<IRdbmsProviderCommandExecutionContext> _commandExecutionContextStub;
+    private Mock<IDbCommandFactory> _dbCommandFactoryStub;
 
     public override void SetUp ()
     {
@@ -58,8 +58,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       _dbCommandStub.Setup(stub => stub.Parameters).Returns(_dataParameterCollectionMock.Object);
       _dbCommandStub.SetupProperty(stub => stub.CommandText);
 
-      _commandExecutionContextStub = new Mock<IRdbmsProviderCommandExecutionContext>();
-      _commandExecutionContextStub.Setup(stub => stub.CreateDbCommand()).Returns(_dbCommandStub.Object);
+      _dbCommandFactoryStub = new Mock<IDbCommandFactory>();
+      _dbCommandFactoryStub.Setup(stub => stub.CreateDbCommand()).Returns(_dbCommandStub.Object);
     }
 
     [Test]
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
           .Callback((StringBuilder statement, IDbCommand _, ISqlDialect _) => statement.Append("[ID] = @ID"))
           .Verifiable();
 
-      var result = builder.Create(_commandExecutionContextStub.Object);
+      var result = builder.Create(_dbCommandFactoryStub.Object);
 
       _comparedColumnsSpecificationStrictMock.Verify();
       Assert.That(
@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
           .Callback((StringBuilder statement, IDbCommand _, ISqlDialect _) => statement.Append("[ID] = @ID"))
           .Verifiable();
 
-      var result = builder.Create(_commandExecutionContextStub.Object);
+      var result = builder.Create(_dbCommandFactoryStub.Object);
 
       _comparedColumnsSpecificationStrictMock.Verify();
       Assert.That(
