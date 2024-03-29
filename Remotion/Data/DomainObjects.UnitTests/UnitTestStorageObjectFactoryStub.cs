@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 {
   public class UnitTestStorageObjectFactoryStub : IRdbmsStorageObjectFactory
   {
-  public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+  public IStorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
     {
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       return new UnitTestStorageProviderStub(providerDefiniton, persistenceExtension);
     }
 
-    public StorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+    public IReadOnlyStorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
     {
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
