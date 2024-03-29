@@ -80,9 +80,11 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       var query = _queryGenerator();
       var restoreQuery = QueryFactory.CreateQuery<T>("perftest", query);
 
-      using (var manager = new StorageProviderManager(NullPersistenceExtension.Instance, SafeServiceLocator.Current.GetInstance<IStorageSettings>()))
+      var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
+      var storageProviderDefinition = storageSettings.GetStorageProviderDefinition("PerformanceTestDomain");
+      using (var manager = new StorageProviderManager(NullPersistenceExtension.Instance, storageSettings))
       {
-        return manager.GetMandatory("PerformanceTestDomain").ExecuteCollectionQuery(restoreQuery).ToArray().Length > 100;
+        return manager.GetMandatory(storageProviderDefinition).ExecuteCollectionQuery(restoreQuery).ToArray().Length > 100;
       }
     }
 

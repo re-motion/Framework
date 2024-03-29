@@ -52,6 +52,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       }
     }
 
+    [Obsolete("Use GetMandatory(StorageProviderDefinition) instead. (Version 7.0.0)")]
     public T GetMandatory (string storageProviderID)
     {
       CheckDisposed();

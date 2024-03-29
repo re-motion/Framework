@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       ArgumentUtility.CheckNotNull("id", id);
 
-      using (var storageProviderManager = CreateStorageProviderManager())
+      using (var storageProviderManager = CreateReadOnlyStorageProviderManager())
       {
         var result = _persistenceService.LoadDataContainer(storageProviderManager, id);
         return GetLoadedObjectDataForObjectLookupResult(result);
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
-      using (var storageProviderManager = CreateStorageProviderManager())
+      using (var storageProviderManager = CreateReadOnlyStorageProviderManager())
       {
         var results = _persistenceService.LoadDataContainers(storageProviderManager, objectIDs);
         return results.Select(GetLoadedObjectDataForObjectLookupResult);
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
       ArgumentUtility.CheckNotNull("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
 
-      using (var storageProviderManager = CreateStorageProviderManager())
+      using (var storageProviderManager = CreateReadOnlyStorageProviderManager())
       {
         var dataContainer = _persistenceService.LoadRelatedDataContainer(storageProviderManager, relationEndPointID);
         return GetLoadedObjectDataForDataContainer(dataContainer, alreadyLoadedObjectDataProvider);
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
       ArgumentUtility.CheckNotNull("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
 
-      using (var storageProviderManager = CreateStorageProviderManager())
+      using (var storageProviderManager = CreateReadOnlyStorageProviderManager())
       {
         var dataContainers = _persistenceService.LoadRelatedDataContainers(storageProviderManager, relationEndPointID);
         return dataContainers.Select(dc => GetLoadedObjectDataForDataContainer(dc, alreadyLoadedObjectDataProvider));
@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       using (var storageProviderManager = CreateStorageProviderManager())
       {
-        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition.Name);
+        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition);
         // This foreach/yield combination is needed to force the using block to stay open until the whole result set has finished enumeration.
         foreach (var queryResultRow in provider.ExecuteCustomQuery(query))
         {
@@ -155,7 +155,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       IEnumerable<DataContainer?> dataContainers;
       using (var storageProviderManager = CreateStorageProviderManager())
       {
-        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition.Name);
+        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition);
         dataContainers = provider.ExecuteCollectionQuery(query);
       }
       return dataContainers;
@@ -170,7 +170,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       using (var storageProviderManager = CreateStorageProviderManager())
       {
-        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition.Name);
+        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition);
         return provider.ExecuteScalarQuery(query);
       }
     }
@@ -208,9 +208,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     }
 
-    private StorageProviderManager CreateStorageProviderManager ()
+    private IStorageProviderManager CreateStorageProviderManager ()
     {
       return new StorageProviderManager(CreatePersistenceExtension(), _storageSettings);
+    }
+
+    private IReadOnlyStorageProviderManager CreateReadOnlyStorageProviderManager ()
+    {
+      return new ReadOnlyStorageProviderManager(CreatePersistenceExtension(), _storageSettings);
     }
 
     protected IPersistenceExtension CreatePersistenceExtension ()
