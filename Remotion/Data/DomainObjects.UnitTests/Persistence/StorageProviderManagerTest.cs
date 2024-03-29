@@ -50,7 +50,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void GetMandatory_WithProviderID ()
     {
+#pragma warning disable CS0618 // Type or member is obsolete
       var provider = _storageProviderManager.GetMandatory(c_testDomainProviderID);
+#pragma warning restore CS0618 // Type or member is obsolete
 
       Assert.That(provider, Is.Not.Null);
       Assert.That(provider.GetType(), Is.EqualTo(typeof(RdbmsProvider)));
@@ -102,10 +104,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     }
 
     [Test]
-    public void GetMandatory_WithProviderID_ReturnsSameInstanceTwice ()
+    public void GetMandatory_WithProviderDefinition_ReturnsSameInstanceTwice ()
     {
-      var provider1 = _storageProviderManager.GetMandatory(c_testDomainProviderID);
-      var provider2 = _storageProviderManager.GetMandatory(c_testDomainProviderID);
+      var storageProviderDefinition = StorageSettings.GetStorageProviderDefinition(c_testDomainProviderID);
+      var provider1 = _storageProviderManager.GetMandatory(storageProviderDefinition);
+      var provider2 = _storageProviderManager.GetMandatory(storageProviderDefinition);
 
       Assert.That(provider2, Is.SameAs(provider1));
     }
@@ -114,10 +117,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     public void Disposing ()
     {
       RdbmsProvider provider = null;
+      var storageProviderDefinition = StorageSettings.GetStorageProviderDefinition(c_testDomainProviderID);
 
       using (_storageProviderManager)
       {
-        provider = (RdbmsProvider)_storageProviderManager.GetMandatory(c_testDomainProviderID);
+        provider = (RdbmsProvider)_storageProviderManager.GetMandatory(storageProviderDefinition);
         provider.LoadDataContainer(DomainObjectIDs.Order1);
 
         Assert.That(provider.IsConnected, Is.True);
