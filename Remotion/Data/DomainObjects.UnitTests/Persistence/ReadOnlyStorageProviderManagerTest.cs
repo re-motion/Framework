@@ -86,16 +86,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 #else
       var rdbmsProvider = new RdbmsProvider(
           providerDefinition,
-          providerDefinition.ConnectionString,
+          providerDefinition.ReadOnlyConnectionString,
           Mock.Of<IPersistenceExtension>(),
           Mock.Of<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>>(),
           () => Mock.Of<System.Data.IDbConnection>());
 
       rdbmsStorageObjectFactoryStub
-          .Setup(_ => _.CreateStorageProvider(It.IsAny<StorageProviderDefinition>(), It.IsAny<IPersistenceExtension>()))
+          .Setup(_ => _.CreateReadOnlyStorageProvider(It.IsAny<StorageProviderDefinition>(), It.IsAny<IPersistenceExtension>()))
           .Returns(rdbmsProvider);
 
-      var provider = _storageProviderManager.GetMandatory(providerDefinition);
+      var provider = _readOnlyStorageProviderManager.GetMandatory(providerDefinition);
 
       Assert.That(provider, Is.SameAs(rdbmsProvider));
 #endif
