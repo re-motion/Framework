@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
     /// Creates instances of <see cref="DelegateBasedCommand{TIn,TOut}"/>. Use this factory method to avoid having
     /// to pass all generic arguments to <see cref="DelegateBasedCommand{TIn,TOut}"/>'s constructor by hand.
     /// </summary>
-    public static DelegateBasedCommand<TIn, TOut> CreateForReadWrite<TIn, TOut> (
+    public static DelegateBasedCommand<TIn, TOut> Create<TIn, TOut> (
         IRdbmsProviderCommand<TIn> command,
         Func<TIn, TOut> operation)
     {
@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
     /// Creates instances of <see cref="DelegateBasedCommandWithReadOnlySupport{TIn,TOut}"/>. Use this factory method to avoid having
     /// to pass all generic arguments to <see cref="DelegateBasedCommandWithReadOnlySupport{TIn,TOut}"/>'s constructor by hand.
     /// </summary>
-    public static DelegateBasedCommandWithReadOnlySupport<TIn, TOut> CreateForReadOnly<TIn, TOut> (
+    public static DelegateBasedCommandWithReadOnlySupport<TIn, TOut> CreateWithReadOnlySupport<TIn, TOut> (
         IRdbmsProviderCommandWithReadOnlySupport<TIn> command,
         Func<TIn, TOut> operation)
     {

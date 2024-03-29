@@ -31,7 +31,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var value = new object();
       var command = new FixedValueCommand<object>(value);
 
-      var executionContext = new Mock<IRdbmsProviderCommandExecutionContext>();
+      var executionContext = new Mock<IRdbmsProviderReadWriteCommandExecutionContext>();
+      var result = command.Execute(executionContext.Object);
+
+      Assert.That(result, Is.SameAs(value));
+    }
+
+    [Test]
+    public void ExecuteReadOnly ()
+    {
+      var value = new object();
+      var command = new FixedValueCommand<object>(value);
+
+      var executionContext = new Mock<IRdbmsProviderReadOnlyCommandExecutionContext>();
       var result = command.Execute(executionContext.Object);
 
       Assert.That(result, Is.SameAs(value));

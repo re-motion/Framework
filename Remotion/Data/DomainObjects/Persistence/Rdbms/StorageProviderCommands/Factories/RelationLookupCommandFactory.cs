@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           selectedColumns,
           GetComparedColumns(foreignKeyEndPoint, foreignKeyValue),
           GetOrderedColumns(sortExpression));
-      return DelegateBasedCommand.CreateForReadOnly(
+      return DelegateBasedCommand.CreateWithReadOnlySupport(
           new MultiObjectLoadCommand<DataContainer?>(new[] { Tuple.Create(dbCommandBuilder, dataContainerReader) }),
           lookupResults => lookupResults.Select(
               result =>
@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
 
       var objectIDReader = _objectReaderFactory.CreateObjectIDReader(unionViewDefinition, selectedColumns);
 
-      var objectIDLoadCommand = DelegateBasedCommand.CreateForReadOnly(
+      var objectIDLoadCommand = DelegateBasedCommand.CreateWithReadOnlySupport(
           new MultiObjectIDLoadCommand(new[] { dbCommandBuilder }, objectIDReader),
           lookupResults => lookupResults.Select(
               result =>
@@ -139,7 +139,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
               }));
 
       var indirectDataContainerLoadCommand = new IndirectDataContainerLoadCommand(objectIDLoadCommand, _rdbmsProviderCommandFactory);
-      return DelegateBasedCommand.CreateForReadOnly(
+      return DelegateBasedCommand.CreateWithReadOnlySupport(
           indirectDataContainerLoadCommand,
           lookupResults => lookupResults.Select(
               result =>

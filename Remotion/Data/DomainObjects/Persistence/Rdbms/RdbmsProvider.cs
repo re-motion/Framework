@@ -29,7 +29,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
-  public class RdbmsProvider : StorageProvider, IRdbmsProviderCommandExecutionContext
+  public class RdbmsProvider : StorageProvider, IRdbmsProviderReadOnlyCommandExecutionContext, IRdbmsProviderReadWriteCommandExecutionContext
   {
     private readonly string _connectionString;
     private readonly IRdbmsProviderCommandFactory _rdbmsProviderCommandFactory;
@@ -375,7 +375,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       return command;
     }
 
-    IDbCommand IRdbmsProviderCommandExecutionContext.CreateDbCommand ()
+    IDbCommand IDbCommandFactory.CreateDbCommand ()
     {
       return CreateDbCommand();
     }
