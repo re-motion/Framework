@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           select Tuple.Create(dbCommandBuilder, timestampReader);
 
       var loadCommand = new MultiObjectLoadCommand<Tuple<ObjectID, object>?>(dbCommandBuildersAndReaders);
-      return DelegateBasedCommand.CreateForReadOnly(
+      return DelegateBasedCommand.CreateWithReadOnlySupport(
           loadCommand,
           lookupResults => lookupResults.Select(
               result =>

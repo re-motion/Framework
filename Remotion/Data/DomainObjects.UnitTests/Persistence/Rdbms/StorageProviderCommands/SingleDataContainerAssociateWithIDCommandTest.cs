@@ -33,7 +33,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
     private SingleDataContainerAssociateWithIDCommand _associateCommand;
 
-    private IRdbmsProviderCommandExecutionContext _fakeContext;
+    private IRdbmsProviderReadWriteCommandExecutionContext _fakeReadWriteContext;
+    private IRdbmsProviderReadOnlyCommandExecutionContext _fakeReadOnlyContext;
 
     public override void SetUp ()
     {
@@ -44,16 +45,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _associateCommand = new SingleDataContainerAssociateWithIDCommand(_expectedID, _innerCommandMock.Object);
 
-      _fakeContext = new Mock<IRdbmsProviderCommandExecutionContext>().Object;
+      _fakeReadWriteContext = new Mock<IRdbmsProviderReadWriteCommandExecutionContext>().Object;
+      _fakeReadOnlyContext = new Mock<IRdbmsProviderReadOnlyCommandExecutionContext>().Object;
     }
 
     [Test]
     public void Execute_MatchingDataContainer ()
     {
       var dataContainer = DataContainerObjectMother.Create(_expectedID);
-      _innerCommandMock.Setup(mock => mock.Execute(_fakeContext)).Returns(dataContainer).Verifiable();
+      _innerCommandMock.Setup(mock => mock.Execute(_fakeReadWriteContext)).Returns(dataContainer).Verifiable();
 
-      var result = _associateCommand.Execute(_fakeContext);
+      var result = _associateCommand.Execute(_fakeReadWriteContext);
 
       _innerCommandMock.Verify();
       Assert.That(result.ObjectID, Is.EqualTo(_expectedID));
@@ -64,10 +66,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     public void Execute_NonMatchingDataContainer ()
     {
       var dataContainer = DataContainerObjectMother.Create(DomainObjectIDs.Order3);
-      _innerCommandMock.Setup(mock => mock.Execute(_fakeContext)).Returns(dataContainer).Verifiable();
+      _innerCommandMock.Setup(mock => mock.Execute(_fakeReadWriteContext)).Returns(dataContainer).Verifiable();
 
       Assert.That(
-          () => _associateCommand.Execute(_fakeContext),
+          () => _associateCommand.Execute(_fakeReadWriteContext),
           Throws.TypeOf<PersistenceException>().With.Message.EqualTo(
             "The ObjectID of the loaded DataContainer 'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid' and the expected ObjectID "
             + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' differ."));
@@ -76,9 +78,47 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     [Test]
     public void Execute_Null ()
     {
-      _innerCommandMock.Setup(mock => mock.Execute(_fakeContext)).Returns((DataContainer)null).Verifiable();
+      _innerCommandMock.Setup(mock => mock.Execute(_fakeReadWriteContext)).Returns((DataContainer)null).Verifiable();
 
-      var result = _associateCommand.Execute(_fakeContext);
+      var result = _associateCommand.Execute(_fakeReadWriteContext);
+
+      _innerCommandMock.Verify();
+      Assert.That(result.ObjectID, Is.EqualTo(_expectedID));
+      Assert.That(result.LocatedObject, Is.Null);
+    }
+
+    [Test]
+    public void ExecuteReadOnly_MatchingDataContainer ()
+    {
+      var dataContainer = DataContainerObjectMother.Create(_expectedID);
+      _innerCommandMock.Setup(mock => mock.Execute(_fakeReadOnlyContext)).Returns(dataContainer).Verifiable();
+
+      var result = _associateCommand.Execute(_fakeReadOnlyContext);
+
+      _innerCommandMock.Verify();
+      Assert.That(result.ObjectID, Is.EqualTo(_expectedID));
+      Assert.That(result.LocatedObject, Is.SameAs(dataContainer));
+    }
+
+    [Test]
+    public void ExecuteReadOnly_NonMatchingDataContainer ()
+    {
+      var dataContainer = DataContainerObjectMother.Create(DomainObjectIDs.Order3);
+      _innerCommandMock.Setup(mock => mock.Execute(_fakeReadOnlyContext)).Returns(dataContainer).Verifiable();
+
+      Assert.That(
+          () => _associateCommand.Execute(_fakeReadOnlyContext),
+          Throws.TypeOf<PersistenceException>().With.Message.EqualTo(
+            "The ObjectID of the loaded DataContainer 'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid' and the expected ObjectID "
+            + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' differ."));
+    }
+
+    [Test]
+    public void ExecuteReadOnly_Null ()
+    {
+      _innerCommandMock.Setup(mock => mock.Execute(_fakeReadOnlyContext)).Returns((DataContainer)null).Verifiable();
+
+      var result = _associateCommand.Execute(_fakeReadOnlyContext);
 
       _innerCommandMock.Verify();
       Assert.That(result.ObjectID, Is.EqualTo(_expectedID));

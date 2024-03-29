@@ -16,19 +16,13 @@
 // 
 using System;
 using System.Data;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms;
+
+/// <summary>
+/// A factory that can create <see cref="IDbCommand"/> objects.
+/// </summary>
+public interface IDbCommandFactory
 {
-  /// <summary>
-  /// <see cref="IRdbmsProviderCommandExecutionContext"/> defines methods for creating and executing <see cref="IDbCommand"/> instances. These are
-  /// used by RDBMS-specific implementations of <see cref="IRdbmsProviderCommand{T}"/> and <see cref="IDbCommandBuilder"/>.
-  /// </summary>
-  public interface IRdbmsProviderCommandExecutionContext
-  {
-    IDbCommand CreateDbCommand ();
-    IDataReader ExecuteReader (IDbCommand command, CommandBehavior behavior);
-    object? ExecuteScalar (IDbCommand command);
-    int ExecuteNonQuery (IDbCommand command);
-  }
+  IDbCommand CreateDbCommand ();
 }
