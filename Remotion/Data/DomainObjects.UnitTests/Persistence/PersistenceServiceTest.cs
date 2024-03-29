@@ -23,7 +23,6 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
-using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
