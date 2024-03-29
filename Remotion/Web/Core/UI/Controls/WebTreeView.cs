@@ -836,7 +836,7 @@ namespace Remotion.Web.UI.Controls
 
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassScreenReaderText);
       writer.RenderBeginTag(HtmlTextWriterTag.Span);
-      writer.Write(".");
+      writer.Write(", ");
       badge.Description.WriteTo(writer);
       writer.RenderEndTag();
     }
