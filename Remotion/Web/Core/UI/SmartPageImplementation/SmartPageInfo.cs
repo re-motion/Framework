@@ -295,7 +295,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     private void PreRenderSmartPage ()
     {
-      var smartPageTokenValue = (long)(DateTime.UtcNow - s_pageTokenStartDate).TotalMilliseconds;
+      var smartPageTokenValue = (DateTime.UtcNow - s_pageTokenStartDate).Ticks;
 
       _page.ClientScript.RegisterHiddenField(_page, c_smartPageTokenID, smartPageTokenValue.ToString());
       _page.ClientScript.RegisterHiddenField(_page, CacheDetectionID, null);
