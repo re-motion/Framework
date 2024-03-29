@@ -36,16 +36,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
   {
     private class TestablePersistenceService : PersistenceService
     {
-      public Action<IEnumerable<StorageProvider>> CheckProvidersCompatibleForSaveCallback { get; set; }
-      public Func<IEnumerable<StorageProvider>, IDisposable> BeginTransactionCallback { get; set; }
-      public Action<IEnumerable<StorageProvider>, IDisposable> CommitTransactionCallback { get; set; }
-      public Action<IEnumerable<StorageProvider>, IDisposable> RollbackTransactionCallback { get; set; }
+      public Action<IEnumerable<IStorageProvider>> CheckProvidersCompatibleForSaveCallback { get; set; }
+      public Func<IEnumerable<IReadOnlyStorageProvider>, IDisposable> BeginTransactionCallback { get; set; }
+      public Action<IEnumerable<IReadOnlyStorageProvider>, IDisposable> CommitTransactionCallback { get; set; }
+      public Action<IEnumerable<IReadOnlyStorageProvider>, IDisposable> RollbackTransactionCallback { get; set; }
 
       public TestablePersistenceService ()
       {
       }
 
-      protected override void CheckProvidersCompatibleForSave (IEnumerable<StorageProvider> providers)
+      protected override void CheckProvidersCompatibleForSave (IEnumerable<IStorageProvider> providers)
       {
         if (CheckProvidersCompatibleForSaveCallback != null)
           CheckProvidersCompatibleForSaveCallback(providers);
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
           base.CheckProvidersCompatibleForSave(providers);
       }
 
-      protected override IDisposable BeginTransaction (IEnumerable<StorageProvider> providers)
+      protected override IDisposable BeginTransaction (IEnumerable<IReadOnlyStorageProvider> providers)
       {
         if (BeginTransactionCallback != null)
           return BeginTransactionCallback(providers);
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
         }
       }
 
-      protected override void CommitTransaction (IEnumerable<StorageProvider> providers, IDisposable context)
+      protected override void CommitTransaction (IEnumerable<IReadOnlyStorageProvider> providers, IDisposable context)
       {
         if (CommitTransactionCallback != null)
           CommitTransactionCallback(providers, context);
@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
         }
       }
 
-      protected override void RollbackTransaction (IEnumerable<StorageProvider> providers, IDisposable context)
+      protected override void RollbackTransaction (IEnumerable<IReadOnlyStorageProvider> providers, IDisposable context)
       {
         if (RollbackTransactionCallback != null)
           RollbackTransactionCallback(providers, context);
