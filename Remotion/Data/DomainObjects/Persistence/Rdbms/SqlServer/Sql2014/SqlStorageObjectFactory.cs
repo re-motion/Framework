@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014
       _dataContainerValidator = SafeServiceLocator.Current.GetInstance<IDataContainerValidator>();
     }
 
-    public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+    public IStorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
     {
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
       var rdbmsProviderDefinition =
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014
       return CreateStorageProvider(persistenceExtension, rdbmsProviderDefinition, commandFactory);
     }
 
-    public StorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+    public IReadOnlyStorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
     {
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
       var rdbmsProviderDefinition =
@@ -416,7 +416,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014
           new SqlCommentScriptElementFactory());
     }
 
-    protected virtual StorageProvider CreateStorageProvider (
+    protected virtual IStorageProvider CreateStorageProvider (
         IPersistenceExtension persistenceExtension,
         RdbmsProviderDefinition rdbmsProviderDefinition,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory)
@@ -434,7 +434,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014
               (Func<IDbConnection>)(() => new SqlConnection())));
     }
 
-    protected virtual StorageProvider CreateReadOnlyStorageProvider (
+    protected virtual IReadOnlyStorageProvider CreateReadOnlyStorageProvider (
         IPersistenceExtension persistenceExtension,
         RdbmsProviderDefinition rdbmsProviderDefinition,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory)

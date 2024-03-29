@@ -30,7 +30,8 @@ namespace Remotion.SecurityManager.Persistence
 {
  public class SecurityManagerSqlStorageObjectFactory : SqlStorageObjectFactory
   {
-    protected override StorageProvider CreateStorageProvider (
+
+    protected override IStorageProvider CreateStorageProvider (
         IPersistenceExtension persistenceExtension,
         RdbmsProviderDefinition storageProviderDefinition,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory)
@@ -48,7 +49,7 @@ namespace Remotion.SecurityManager.Persistence
               (Func<IDbConnection>)(() => new SqlConnection())));
     }
 
-    protected override StorageProvider CreateReadOnlyStorageProvider (
+    protected override IReadOnlyStorageProvider CreateReadOnlyStorageProvider (
         IPersistenceExtension persistenceExtension,
         RdbmsProviderDefinition storageProviderDefinition,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory)
