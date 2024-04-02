@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
@@ -30,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
   public class TestableClientTransaction : ClientTransaction
   {
     public TestableClientTransaction ()
-        : this(RootClientTransactionComponentFactory.Create(SafeServiceLocator.Current.GetInstance<IPersistenceService>()))
+        : this(RootClientTransactionComponentFactory.Create(SafeServiceLocator.Current.GetInstance<IPersistenceService>(), SafeServiceLocator.Current.GetInstance<IStorageAccessResolver>()))
     {
     }
 

@@ -13,24 +13,39 @@
 // 
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
-// 
-using System;
-using Moq;
+//
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
-using Remotion.Data.DomainObjects.Persistence;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 {
   [TestFixture]
-  public class RootPersistenceStrategyTest
+  public class IStorageAccessResolverTests
   {
-    private RootPersistenceStrategy _rootPersistenceStrategy;
+    private DefaultServiceLocator _serviceLocator;
 
     [SetUp]
     public void SetUp ()
     {
-      _rootPersistenceStrategy = new RootPersistenceStrategy(Guid.Empty, Mock.Of<IPersistenceService>(), Mock.Of<IStorageAccessResolver>());
+      _serviceLocator = DefaultServiceLocator.Create();
+    }
+
+    [Test]
+    public void GetInstance_Once ()
+    {
+      var storageAccessResolver = _serviceLocator.GetInstance<IStorageAccessResolver>();
+
+      Assert.That(storageAccessResolver, Is.TypeOf<DefaultStorageAccessResolver>());
+    }
+
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
+    {
+      var storageAccessResolver1 = _serviceLocator.GetInstance<IStorageAccessResolver>();
+      var storageAccessResolver2 = _serviceLocator.GetInstance<IStorageAccessResolver>();
+
+      Assert.That(storageAccessResolver1, Is.SameAs(storageAccessResolver2));
     }
   }
 }

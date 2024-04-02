@@ -15,27 +15,31 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
-using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Queries;
 using Remotion.ServiceLocation;
 
-namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
+namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {
-  public class ComponentFactoryWithSpecificPersistenceStrategy : RootClientTransactionComponentFactory
+  /// <summary>
+  /// Always requests <see cref="StorageAccessType.ReadWrite"/> for every operation.
+  /// </summary>
+  [ImplementationFor(typeof(IStorageAccessResolver), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  [Serializable]
+  public class DefaultStorageAccessResolver : IStorageAccessResolver
   {
-    private readonly IPersistenceStrategy _persistenceStrategy;
-
-    public ComponentFactoryWithSpecificPersistenceStrategy (IPersistenceStrategy persistenceStrategy)
-        : base(SafeServiceLocator.Current.GetInstance<IPersistenceService>(),
-            SafeServiceLocator.Current.GetInstance<IStorageAccessResolver>())
+    public StorageAccessType ResolveStorageAccessForLoadingDomainObjectsByObjectID ()
     {
-      _persistenceStrategy = persistenceStrategy;
+      return StorageAccessType.ReadWrite;
     }
 
-    public override IPersistenceStrategy CreatePersistenceStrategy (ClientTransaction constructedTransaction)
+    public StorageAccessType ResolveStorageAccessForLoadingDomainObjectRelation ()
     {
-      return _persistenceStrategy;
+      return StorageAccessType.ReadWrite;
+    }
+
+    public StorageAccessType ResolveStorageAccessForQuery (IQuery query)
+    {
+      return StorageAccessType.ReadWrite;
     }
   }
 }

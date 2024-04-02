@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
   {
     public static Mock<ClientTransaction> CreateStrictMock ()
     {
-      var componentFactory = RootClientTransactionComponentFactory.Create(SafeServiceLocator.Current.GetInstance<IPersistenceService>());
+      var componentFactory = RootClientTransactionComponentFactory.Create(SafeServiceLocator.Current.GetInstance<IPersistenceService>(), SafeServiceLocator.Current.GetInstance<IStorageAccessResolver>());
       return new Mock<ClientTransaction>(MockBehavior.Strict, componentFactory);
     }
 
@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static ClientTransaction CreateWithCustomListeners (params IClientTransactionListener[] listeners)
     {
-      var componentFactoryPartialMock = new Mock<RootClientTransactionComponentFactory>(Mock.Of<IPersistenceService>()) { CallBase = true };
+      var componentFactoryPartialMock = new Mock<RootClientTransactionComponentFactory>(Mock.Of<IPersistenceService>(), Mock.Of<IStorageAccessResolver>()) { CallBase = true };
       componentFactoryPartialMock
           .Protected()
           .Setup<IEnumerable<IClientTransactionListener>>("CreateListeners", true, ItExpr.IsAny<ClientTransaction>())
