@@ -20,6 +20,7 @@
   <ItemGroup>
     <PackageReference Include="log4net" />
     <PackageReference Remove="JetBrains.Annotations" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="Remotion.ThirdParty.Dependency.Jetbrains.Annotations" />
     <PackageReference Include="Remotion.ThirdPartyDependency.CommonServiceLocator" />
   </ItemGroup>
