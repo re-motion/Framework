@@ -174,8 +174,11 @@ ul.treeViewRoot span.treeViewNode span.treeViewNodeBadge
   align-self: start;
 }
 
-ul.treeViewRoot li:has(a:focus) > ul > li:first-of-type span.treeViewNode:not(:hover) span.treeViewNodeBadge,
-ul.treeViewRoot li:has(a:focus) + li span.treeViewNode:not(:hover) span.treeViewNodeBadge
+/* We need to match very closely when drawing the shadow, otherwise we run the risk of having random shadows appear:
+    * Matches the relationship between the focused <li> and its first child <li>: */
+ul.treeViewRoot li:has(> span.treeViewNode a:focus) > ul > li:first-of-type > span.treeViewNode:not(:hover) span.treeViewNodeBadge,
+/*  * Matches the relationship between the focused <li> and its first sibling <li>: */
+ul.treeViewRoot li:has(> span.treeViewNode a:focus) + li:first-of-type > span.treeViewNode:not(:hover) span.treeViewNodeBadge
 {
   /* Simulate continued box-shadow from previous element due to the badge-element hiding the shadow-effect. */
   --rounding-value: 0.5px;
