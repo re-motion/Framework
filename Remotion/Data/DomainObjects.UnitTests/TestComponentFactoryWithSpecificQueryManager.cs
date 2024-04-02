@@ -36,7 +36,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
         : base(
             SafeServiceLocator.Current.GetInstance<IStorageSettings>(),
             SafeServiceLocator.Current.GetInstance<IPersistenceService>(),
-            SafeServiceLocator.Current.GetInstance<IPersistenceExtensionFactory>())
+            SafeServiceLocator.Current.GetInstance<IPersistenceExtensionFactory>(),
+            SafeServiceLocator.Current.GetInstance<IStorageAccessResolver>())
     {
       _queryManager = queryManager;
     }
