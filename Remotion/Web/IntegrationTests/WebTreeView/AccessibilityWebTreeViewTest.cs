@@ -27,7 +27,7 @@ namespace Remotion.Web.IntegrationTests.WebTreeView
   public class AccessibilityWebTreeViewTest : IntegrationTest
   {
     [Test]
-    public void WebTreeView ()
+    public void WebTreeView_WithNoChildren ()
     {
       var home = Start();
       var webTreeView = home.WebTreeViews().GetByLocalID("MyWebTreeView");
@@ -36,6 +36,20 @@ namespace Remotion.Web.IntegrationTests.WebTreeView
       var result = analyzer.Analyze(webTreeView);
       // TODO RM-7340 remove ignore once issue is resolved
       var violations = result.Violations.IgnoreByRuleIDAndXPath(AccessibilityRuleID.AriaRequiredChildren, "/div[@id='body_MyWebTreeView']/ul");
+
+      Assert.That(violations, Is.Empty);
+    }
+
+    [Test]
+    public void WebTreeView_WithChildren ()
+    {
+      var home = Start();
+      var webTreeView = home.WebTreeViews().GetByLocalID("MyWebTreeView3");
+      var analyzer = Helper.CreateAccessibilityAnalyzer();
+
+      var result = analyzer.Analyze(webTreeView);
+      // TODO RM-7340 remove ignore once issue is resolved
+      var violations = result.Violations.IgnoreByRuleIDAndXPath(AccessibilityRuleID.AriaRequiredChildren, "/div[@id='body_MyWebTreeView3']/ul");
 
       Assert.That(violations, Is.Empty);
     }

@@ -180,7 +180,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       var td = GetAssertedCell(tr, 0, 2);
       for (int iColumn = 0; iColumn < 2; iColumn++)
       {
-        XmlNode a = GetAssertedItemLink(td, iColumn, iColumn, iColumn == 0 ? "0" : "-1");
+        XmlNode a = GetAssertedItemLink(td, iColumn, iColumn, iColumn == 0 ? "0" : "-1", isButtonRole: true);
         var span = a.GetAssertedChildElement("span", 0);
         if (iColumn == 0)
         {
@@ -273,24 +273,26 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       var wrapper = GetAssertedWrapper();
 
       var table = _htmlHelper.GetAssertedChildElement(wrapper, "table", 0);
-      table.AssertAttributeValueEquals("role", "menu");
+      table.AssertAttributeValueEquals("role", "toolbar");
       return table;
     }
 
     private void AssertMenuItem (XmlNode parentCell, int itemIndex, int nodeIndex, string tabIndex)
     {
       var item = (WebMenuItem)_control.Object.MenuItems[itemIndex];
+      Assert.That(_control.Object.Enabled, Is.True, "ListMenu is disabled. Only enabled ListMenu are supported by the test.");
+      var isButtonRole = item.Command.Type != CommandType.Href || item.IsDisabled;
 
       switch (item.Style)
       {
         case WebMenuItemStyle.IconAndText:
-          AssertIconAndText(itemIndex, parentCell, item, nodeIndex, tabIndex);
+          AssertIconAndText(itemIndex, parentCell, item, nodeIndex, tabIndex, isButtonRole);
           break;
         case WebMenuItemStyle.Text:
-          AssertText(itemIndex, parentCell, item, nodeIndex, tabIndex);
+          AssertText(itemIndex, parentCell, item, nodeIndex, tabIndex, isButtonRole);
           break;
         case WebMenuItemStyle.Icon:
-          AssertIcon(itemIndex, parentCell, nodeIndex, tabIndex);
+          AssertIcon(itemIndex, parentCell, nodeIndex, tabIndex, isButtonRole);
           break;
       }
     }
@@ -305,22 +307,22 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       return td;
     }
 
-    private void AssertIcon (int itemIndex, XmlNode parent, int nodeIndex, string tabIndex)
+    private void AssertIcon (int itemIndex, XmlNode parent, int nodeIndex, string tabIndex, bool isButtonRole)
     {
-      XmlNode a = GetAssertedItemLink(parent, itemIndex, nodeIndex, tabIndex);
+      XmlNode a = GetAssertedItemLink(parent, itemIndex, nodeIndex, tabIndex, isButtonRole);
       AssertIcon(a);
     }
 
-    private void AssertText (int itemIndex, XmlNode parent, WebMenuItem item, int nodeIndex, string tabIndex)
+    private void AssertText (int itemIndex, XmlNode parent, WebMenuItem item, int nodeIndex, string tabIndex, bool isButtonRole)
     {
-      XmlNode a = GetAssertedItemLink(parent, itemIndex, nodeIndex, tabIndex);
+      XmlNode a = GetAssertedItemLink(parent, itemIndex, nodeIndex, tabIndex, isButtonRole);
       var span = a.GetAssertedChildElement("span", 0);
       span.AssertTextNode(item.Text.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
     }
 
-    private void AssertIconAndText (int itemIndex, XmlNode td, WebMenuItem item, int nodeIndex, string tabIndex)
+    private void AssertIconAndText (int itemIndex, XmlNode td, WebMenuItem item, int nodeIndex, string tabIndex, bool isButtonRole)
     {
-      XmlNode a = GetAssertedItemLink(td, itemIndex, nodeIndex, tabIndex);
+      XmlNode a = GetAssertedItemLink(td, itemIndex, nodeIndex, tabIndex, isButtonRole);
       AssertIcon(a);
 
       var span = a.GetAssertedChildElement("span", 1);
@@ -333,14 +335,17 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       img.AssertAttributeValueContains("src", "/Images/ClassicBlue/NullIcon.gif");
     }
 
-    private XmlNode GetAssertedItemLink (XmlNode td, int itemIndex, int nodeIndex, string tabIndex)
+    private XmlNode GetAssertedItemLink (XmlNode td, int itemIndex, int nodeIndex, string tabIndex, bool isButtonRole)
     {
       var span = td.GetAssertedChildElement("span", nodeIndex);
       span.AssertAttributeValueEquals("id", _control.Object.ClientID + "_" + itemIndex);
       span.AssertChildElementCount(1);
 
       var anchor = span.GetAssertedChildElement("a", 0);
-      anchor.AssertAttributeValueEquals("role", "menuitem");
+      if (isButtonRole)
+        anchor.AssertAttributeValueEquals("role", "button");
+      else
+        anchor.AssertNoAttribute("role");
       anchor.AssertAttributeValueEquals("tabindex", tabIndex);
       return anchor;
     }

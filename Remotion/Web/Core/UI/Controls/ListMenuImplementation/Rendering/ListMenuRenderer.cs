@@ -104,7 +104,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
         renderingContext.Writer.RenderEndTag();
       }
 
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Menu);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Toolbar);
       if(hasHeading)
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaLabelledBy, headingID);
 
@@ -210,13 +210,16 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
       var attributes = new NameValueCollection();
-      attributes.Add(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.MenuItem);
       if (renderingContext.Control.Enabled)
         attributes.Add("tabindex", isFirst ? "0" : "-1");
 
       var command = !menuItem.IsDisabled
           ? Assertion.IsNotNull(menuItem.Command, "Command must not be null for an enabled menu item.")
           : new Command(CommandType.None) { OwnerControl = menuItem.OwnerControl };
+
+      bool isEnabledHrefCommand = command.Type == CommandType.Href && !menuItem.IsDisabled && renderingContext.Control.Enabled;
+      if (!isEnabledHrefCommand)
+        attributes.Add(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Button);
 
       if (string.IsNullOrEmpty(command.ItemID))
         command.ItemID = "MenuItem_" + index + "_Command";
