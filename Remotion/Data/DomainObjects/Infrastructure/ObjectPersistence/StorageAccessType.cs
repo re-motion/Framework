@@ -13,31 +13,14 @@
 // 
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
-// 
-using System;
-using Moq;
-using NUnit.Framework;
-using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
-using Remotion.Data.DomainObjects.Persistence;
-using Remotion.Data.DomainObjects.Persistence.Configuration;
-using Remotion.Data.DomainObjects.Tracing;
+//
+namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
+/// <summary>
+/// Represents of storage access a <see cref="RootPersistenceStrategy"/> operation can request.
+/// </summary>
+public enum StorageAccessType
 {
-  [TestFixture]
-  public class RootPersistenceStrategyTest
-  {
-    private RootPersistenceStrategy _rootPersistenceStrategy;
-
-    [SetUp]
-    public void SetUp ()
-    {
-      _rootPersistenceStrategy = new RootPersistenceStrategy(
-          Guid.Empty,
-          Mock.Of<IStorageSettings>(),
-          Mock.Of<IPersistenceService>(),
-          Mock.Of<IPersistenceExtensionFactory>(),
-          Mock.Of<IStorageAccessResolver>());
-    }
-  }
+  ReadWrite,
+  ReadOnly
 }
