@@ -81,14 +81,14 @@ class WebTreeView
       }
     }
 
-    const focusableTreeNode = treeView.querySelector ('li[tabindex="0"][role=treeitem]');
+    const focusableTreeNode = treeView.querySelector ('a[tabindex="0"][role=treeitem]');
     if (focusableTreeNode === null)
     {
-      const firstSelectedTreeNode = treeView.querySelector ('li[aria-selected=true]');
+      const firstSelectedTreeNode = treeView.querySelector ('a[aria-selected=true]');
       if (firstSelectedTreeNode === null)
       {
         const firstTopLevelTreeNodeList = treeView.querySelector ('ul[role=tree]');
-        const firstTopLevelTreeNode = firstTopLevelTreeNodeList?.querySelector (':scope > li[role=treeitem]');
+        const firstTopLevelTreeNode = firstTopLevelTreeNodeList?.querySelector (':scope > li > span.treeViewNode a[role=treeitem]');
         if (firstTopLevelTreeNode)
         {
           firstTopLevelTreeNode.setAttribute ('tabindex', '0');
@@ -103,14 +103,14 @@ class WebTreeView
 
   private static OnKeyDown (event: KeyboardEvent, treeView: HTMLElement): void
   {
-    const treeNodes = Array.from (treeView.querySelectorAll<HTMLElement> ('li[role=treeitem]'));
+    const treeNodes = Array.from (treeView.querySelectorAll<HTMLElement> ('a[role=treeitem]'));
 
     let activeTreeNodeIndex = -1;
 
     let activeTreeNode = document.activeElement as HTMLElement;
     if (activeTreeNode != null &&
       TypeUtility.IsDefined (activeTreeNode.tagName) &&
-      activeTreeNode.tagName.toUpperCase() === 'LI')
+      activeTreeNode.tagName.toUpperCase() === 'A')
     {
       activeTreeNodeIndex = treeNodes.indexOf (activeTreeNode);
     }
@@ -155,13 +155,14 @@ class WebTreeView
           let hasChildren = activeTreeNode.getAttribute ('aria-expanded') === 'true';
           if (!hasChildren)
           {
-            let parent = activeTreeNode.parentElement;
+            // Selects the <li> that contains this activeTreeNode <a>'s parent <li>
+            let parent = activeTreeNode.closest<HTMLElement>('li')!.parentElement;
             while (parent && !parent.matches ('ul[role=tree]'))
             {
-              if (parent.tagName.toLowerCase() === 'li')
+              if (parent.matches('li'))
               {
-                let newTreeNode = parent;
-                WebTreeView.SetFocus (newTreeNode, activeTreeNode);
+                let newlyFocusedTreeNode = parent.querySelector<HTMLElement>('a[role=treeitem]')!;
+                WebTreeView.SetFocus (newlyFocusedTreeNode, activeTreeNode);
                 break;
               }
 
@@ -187,8 +188,11 @@ class WebTreeView
           let hasChildren = activeTreeNode.getAttribute ('aria-expanded') === 'true';
           if (hasChildren)
           {
-            const newTreeNode = activeTreeNode.querySelector<HTMLElement> (':scope > ul > li')!;
-            WebTreeView.SetFocus (newTreeNode, activeTreeNode);
+            const activeTreeNodeListItem = activeTreeNode.closest<HTMLElement>('li')!;
+            const newTreeNodeListItem = activeTreeNodeListItem.querySelector<HTMLElement> (':scope > ul > li:first-child')!;
+
+            const newNode =  newTreeNodeListItem.querySelector<HTMLElement>('a[role=treeitem]')!;
+            WebTreeView.SetFocus (newNode, activeTreeNode);
           }
           else
           {
@@ -269,8 +273,13 @@ class WebTreeView
 
   private static ToggleExpander (treeNode: HTMLElement): void
   {
-    const expanderSpan = treeNode.querySelector<HTMLElement> ('span')!;
-    const expanderAnchor = expanderSpan.querySelector<HTMLElement> ('a')!;
+    const expanderSpan = treeNode.parentElement!.parentElement!;
+    if (expanderSpan.getAttribute('class') !== 'treeViewNode')
+    {
+      return;
+    }
+
+    const expanderAnchor = expanderSpan.querySelector<HTMLElement> ('a[aria-hidden=true]')!;
     expanderAnchor.click();
   };
 
@@ -278,8 +287,6 @@ class WebTreeView
   {
     treeNode.setAttribute ('tabindex', '0');
     treeNode.focus();
-    let headSpan = treeNode.querySelector<HTMLElement> ('span')!;
-    let headAnchor = headSpan.querySelector<HTMLElement> ('a[id^=Head_]')!;
-    headAnchor.click();
+    treeNode.click();
   };
 }
