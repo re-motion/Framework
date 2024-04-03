@@ -70,10 +70,11 @@ namespace Remotion.SecurityManager.UnitTests.Persistence
     {
       var result = _securityManagerSqlStorageObjectFactory.CreateReadOnlyStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
 
-      Assert.That(result, Is.TypeOf(typeof(SecurityManagerRdbmsProvider)));
-      Assert.That(result.As<SecurityManagerRdbmsProvider>().PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
-      Assert.That(result.As<SecurityManagerRdbmsProvider>().StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
-      Assert.That(result.As<SecurityManagerRdbmsProvider>().ConnectionString, Is.EqualTo(_rdbmsProviderDefinition.ReadOnlyConnectionString));
+      Assert.That(result, Is.InstanceOf<ReadOnlyStorageProviderDecorator>());
+      var innerStorageProvider = result.As<ReadOnlyStorageProviderDecorator>().InnerStorageProvider;
+      Assert.That(innerStorageProvider.As<SecurityManagerRdbmsProvider>().PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
+      Assert.That(innerStorageProvider.As<SecurityManagerRdbmsProvider>().StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
+      Assert.That(innerStorageProvider.As<SecurityManagerRdbmsProvider>().ConnectionString, Is.EqualTo(_rdbmsProviderDefinition.ReadOnlyConnectionString));
     }
 
     [Test]
@@ -85,7 +86,11 @@ namespace Remotion.SecurityManager.UnitTests.Persistence
       {
         var result = _securityManagerSqlStorageObjectFactory.CreateReadOnlyStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
 
-        Assert.That(Mixin.Get<SecurityManagerRdbmsProviderTestMixin>(result), Is.Not.Null);
+        Assert.That(result, Is.InstanceOf<ReadOnlyStorageProviderDecorator>());
+
+        var innerReadOnlyStorageProvider = result.As<ReadOnlyStorageProviderDecorator>().InnerStorageProvider;
+
+        Assert.That(Mixin.Get<SecurityManagerRdbmsProviderTestMixin>(innerReadOnlyStorageProvider), Is.Not.Null);
       }
     }
   }

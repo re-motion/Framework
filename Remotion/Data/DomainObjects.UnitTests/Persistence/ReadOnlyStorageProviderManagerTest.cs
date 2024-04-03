@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
   [TestFixture]
   public class ReadOnlyStorageProviderManagerTest : StandardMappingTest
   {
-    private ReadOnlyStorageProviderManager _storageProviderManager;
+    private ReadOnlyStorageProviderManager _readOnlyStorageProviderManager;
     private IPersistenceExtension _persistenceExtension;
 
     public override void SetUp ()
@@ -35,31 +35,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       base.SetUp();
 
       _persistenceExtension = Mock.Of<IPersistenceExtension>();
-      _storageProviderManager = new ReadOnlyStorageProviderManager(_persistenceExtension);
-      Assert.That(_storageProviderManager.PersistenceExtension, Is.SameAs(_persistenceExtension));
+      _readOnlyStorageProviderManager = new ReadOnlyStorageProviderManager(_persistenceExtension);
+      Assert.That(_readOnlyStorageProviderManager.PersistenceExtension, Is.SameAs(_persistenceExtension));
     }
 
     public override void TearDown ()
     {
       base.TearDown();
-      _storageProviderManager.Dispose();
+      _readOnlyStorageProviderManager.Dispose();
     }
 
     [Test]
     public void LookUp ()
     {
-      IReadOnlyStorageProvider provider = _storageProviderManager[c_testDomainProviderID];
+      IReadOnlyStorageProvider provider = _readOnlyStorageProviderManager[c_testDomainProviderID];
 
       Assert.That(provider, Is.Not.Null);
-      Assert.That(provider.GetType(), Is.EqualTo(typeof(RdbmsProvider)));
-      Assert.That(provider.As<RdbmsProvider>().StorageProviderDefinition.Name, Is.EqualTo(c_testDomainProviderID));
+      Assert.That(provider, Is.InstanceOf<ReadOnlyStorageProviderDecorator>());
+
+      var innerStorageProvider = provider.As<ReadOnlyStorageProviderDecorator>().InnerStorageProvider;
+      Assert.That(innerStorageProvider.As<RdbmsProvider>().StorageProviderDefinition.Name, Is.EqualTo(c_testDomainProviderID));
     }
 
     [Test]
     public void Reference ()
     {
-      IReadOnlyStorageProvider provider1 = _storageProviderManager[c_testDomainProviderID];
-      IReadOnlyStorageProvider provider2 = _storageProviderManager[c_testDomainProviderID];
+      IReadOnlyStorageProvider provider1 = _readOnlyStorageProviderManager[c_testDomainProviderID];
+      IReadOnlyStorageProvider provider2 = _readOnlyStorageProviderManager[c_testDomainProviderID];
 
       Assert.That(provider2, Is.SameAs(provider1));
     }
@@ -67,17 +69,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void Disposing ()
     {
-      RdbmsProvider provider = null;
+      ReadOnlyStorageProviderDecorator provider = null;
 
-      using (_storageProviderManager)
+      using (_readOnlyStorageProviderManager)
       {
-        provider = (RdbmsProvider)_storageProviderManager[c_testDomainProviderID];
+        provider = (ReadOnlyStorageProviderDecorator)_readOnlyStorageProviderManager[c_testDomainProviderID];
         provider.LoadDataContainer(DomainObjectIDs.Order1);
 
-        Assert.That(provider.IsConnected, Is.True);
+        Assert.That(provider.InnerStorageProvider.As<RdbmsProvider>().IsConnected, Is.True);
       }
 
-      Assert.That(provider.IsConnected, Is.False);
+      Assert.That(provider.InnerStorageProvider.As<RdbmsProvider>().IsConnected, Is.False);
     }
   }
 }
