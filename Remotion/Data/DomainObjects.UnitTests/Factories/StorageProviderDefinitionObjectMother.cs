@@ -35,6 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           new RdbmsProviderDefinition(
               DatabaseTest.c_testDomainProviderID,
               sqlStorageObjectFactory,
+              DatabaseTest.TestDomainConnectionString,
               DatabaseTest.TestDomainConnectionString));
 
       storageProviderDefinitionCollection.Add(
@@ -46,6 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           new RdbmsProviderDefinition(
               DatabaseTest.DefaultStorageProviderID,
               sqlStorageObjectFactory,
+              DatabaseTest.TestDomainConnectionString,
               DatabaseTest.TestDomainConnectionString));
 
       storageProviderDefinitionCollection.Add(
@@ -56,6 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           new RdbmsProviderDefinition(
               TableInheritanceMappingTest.TableInheritanceTestDomainProviderID,
               sqlStorageObjectFactory,
+              DatabaseTest.TestDomainConnectionString,
               DatabaseTest.TestDomainConnectionString));
 
       return storageProviderDefinitionCollection;

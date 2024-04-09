@@ -69,18 +69,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
                                                     new RdbmsProviderDefinition(
                                                         DatabaseTest.SchemaGenerationFirstStorageProviderID,
                                                         sqlStorageObjectFactory,
+                                                        DatabaseTest.SchemaGenerationConnectionString1,
                                                         DatabaseTest.SchemaGenerationConnectionString1),
                                                     new RdbmsProviderDefinition(
                                                         DatabaseTest.SchemaGenerationSecondStorageProviderID,
                                                         sqlStorageObjectFactory,
+                                                        DatabaseTest.SchemaGenerationConnectionString2,
                                                         DatabaseTest.SchemaGenerationConnectionString2),
                                                     new RdbmsProviderDefinition(
                                                         DatabaseTest.SchemaGenerationThirdStorageProviderID,
                                                         sqlStorageObjectFactory,
+                                                        DatabaseTest.SchemaGenerationConnectionString3,
                                                         DatabaseTest.SchemaGenerationConnectionString3),
                                                     new RdbmsProviderDefinition(
                                                         DatabaseTest.SchemaGenerationInternalStorageProviderID,
                                                         sqlStorageObjectFactory,
+                                                        DatabaseTest.SchemaGenerationConnectionString1,
                                                         DatabaseTest.SchemaGenerationConnectionString1)
                                                 };
 

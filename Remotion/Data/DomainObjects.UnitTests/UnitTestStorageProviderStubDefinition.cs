@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
   public class UnitTestStorageProviderStubDefinition : RdbmsProviderDefinition
   {
     public UnitTestStorageProviderStubDefinition (string storageProviderID)
-        : base(storageProviderID, new UnitTestStorageObjectFactoryStub(), "connectionString")
+        : base(storageProviderID, new UnitTestStorageObjectFactoryStub(), "connectionString", "readOnlyConnectionString")
     {
     }
 

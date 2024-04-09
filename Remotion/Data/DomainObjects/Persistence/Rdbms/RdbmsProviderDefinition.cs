@@ -28,14 +28,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     private readonly string _connectionString;
     private readonly string _readOnlyConnectionString;
 
-    public RdbmsProviderDefinition (string name, IStorageObjectFactory factory, string connectionString)
+    public RdbmsProviderDefinition (string name, IStorageObjectFactory factory, string connectionString, string readOnlyConnectionString)
         : base(name, factory)
     {
       ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
+      ArgumentUtility.CheckNotNullOrEmpty("readOnlyConnectionString", readOnlyConnectionString);
       ArgumentUtility.CheckNotNullAndType<IRdbmsStorageObjectFactory>("factory", factory);
 
       _connectionString = connectionString;
-      _readOnlyConnectionString = connectionString;
+      _readOnlyConnectionString = readOnlyConnectionString;
     }
 
     public RdbmsProviderDefinition (string name, NameValueCollection config)

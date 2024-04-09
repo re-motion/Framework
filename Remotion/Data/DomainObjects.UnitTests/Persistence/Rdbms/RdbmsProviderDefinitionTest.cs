@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       base.SetUp();
 
       _sqlStorageObjectFactory = new SqlStorageObjectFactory();
-      _definition = new RdbmsProviderDefinition("StorageProviderID", _sqlStorageObjectFactory, "ConnectionString");
+      _definition = new RdbmsProviderDefinition("StorageProviderID", _sqlStorageObjectFactory, "ConnectionString", "ReadOnlyConnectionString");
 
       FakeConfigurationWrapper configurationWrapper = new FakeConfigurationWrapper();
       configurationWrapper.SetUpConnectionString("SqlProvider", "ConnectionString", null);
@@ -48,12 +48,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void Initialize_FromArguments ()
     {
-      RdbmsProviderDefinition provider = new RdbmsProviderDefinition("Provider", _sqlStorageObjectFactory, "ConnectionString");
+      RdbmsProviderDefinition provider = new RdbmsProviderDefinition("Provider", _sqlStorageObjectFactory, "ConnectionString", "ReadOnlyConnectionString");
 
       Assert.That(provider.Name, Is.EqualTo("Provider"));
       Assert.That(provider.Factory, Is.TypeOf(typeof(SqlStorageObjectFactory)));
       Assert.That(provider.ConnectionString, Is.EqualTo("ConnectionString"));
-      Assert.That(provider.ReadOnlyConnectionString, Is.EqualTo("ConnectionString"));
+      Assert.That(provider.ReadOnlyConnectionString, Is.EqualTo("ReadOnlyConnectionString"));
     }
 
     [Test]
