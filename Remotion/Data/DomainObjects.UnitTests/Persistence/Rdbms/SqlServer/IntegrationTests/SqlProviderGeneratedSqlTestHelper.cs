@@ -41,6 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           (providerDefinition, persistenceListener, commandFactory) =>
               new ObservableRdbmsProvider(
                   providerDefinition,
+                  providerDefinition.ConnectionString,
                   NullPersistenceExtension.Instance,
                   commandFactory,
                   () => new SqlConnection(),

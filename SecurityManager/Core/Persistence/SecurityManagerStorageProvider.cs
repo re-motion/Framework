@@ -35,11 +35,13 @@ namespace Remotion.SecurityManager.Persistence
 
     public SecurityManagerRdbmsProvider (
         RdbmsProviderDefinition definition,
+        string connectionString,
         IPersistenceExtension persistenceExtension,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory,
         Func<IDbConnection> connectionFactory)
         : base(
             definition,
+            connectionString,
             persistenceExtension,
             commandFactory,
             connectionFactory)
