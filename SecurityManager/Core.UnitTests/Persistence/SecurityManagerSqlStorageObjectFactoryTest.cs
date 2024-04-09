@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.UnitTests.Persistence
     [SetUp]
     public void SetUp ()
     {
-      _rdbmsProviderDefinition = new RdbmsProviderDefinition("TestDomain", new SecurityManagerSqlStorageObjectFactory(), "ConnectionString");
+      _rdbmsProviderDefinition = new RdbmsProviderDefinition("TestDomain", new SecurityManagerSqlStorageObjectFactory(), "ConnectionString", "ReadOnlyConnectionString");
       _securityManagerSqlStorageObjectFactory = new SecurityManagerSqlStorageObjectFactory();
       _persistenceExtensionStub = new Mock<IPersistenceExtension>();
     }

@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
       try
       {
         var providers = new ProviderCollection<StorageProviderDefinition>();
-        providers.Add(new RdbmsProviderDefinition("TheStorageProvider", new SqlStorageObjectFactory(), TestDomainConnectionString));
+        providers.Add(new RdbmsProviderDefinition("TheStorageProvider", new SqlStorageObjectFactory(), TestDomainConnectionString, TestDomainConnectionString));
         var storageConfiguration = new StorageConfiguration(providers, providers["TheStorageProvider"]);
 
         DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(storage: storageConfiguration));

@@ -503,7 +503,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void LoadDataContainersByRelatedID_ClassDefinitionWithDifferentStorageProviderDefinition ()
     {
       var providerWithDifferentID = new RdbmsProvider(
-          new RdbmsProviderDefinition("Test", new SqlStorageObjectFactory(), TestDomainConnectionString),
+          new RdbmsProviderDefinition("Test", new SqlStorageObjectFactory(), TestDomainConnectionString, TestDomainConnectionString),
           NullPersistenceExtension.Instance,
           _commandFactoryMock.Object,
           () => new SqlConnection());
