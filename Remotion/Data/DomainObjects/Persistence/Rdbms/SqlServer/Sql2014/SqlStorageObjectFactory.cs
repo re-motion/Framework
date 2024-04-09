@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014
           ArgumentUtility.CheckNotNullAndType<RdbmsProviderDefinition>("storageProviderDefinition", storageProviderDefinition);
 
       var commandFactory = CreateStorageProviderCommandFactory(rdbmsProviderDefinition);
-      return CreateReadOnlyStorageProvider(persistenceExtension, rdbmsProviderDefinition, commandFactory);
+      return new ReadOnlyStorageProviderDecorator(CreateReadOnlyStorageProvider(persistenceExtension, rdbmsProviderDefinition, commandFactory));
     }
 
     public virtual IPersistenceModelLoader CreatePersistenceModelLoader (
