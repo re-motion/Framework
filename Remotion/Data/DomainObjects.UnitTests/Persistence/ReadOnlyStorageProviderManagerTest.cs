@@ -55,8 +55,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 #pragma warning restore CS0618 // Type or member is obsolete
 
       Assert.That(provider, Is.Not.Null);
-      Assert.That(provider.GetType(), Is.EqualTo(typeof(RdbmsProvider)));
-      Assert.That(provider.As<RdbmsProvider>().StorageProviderDefinition.Name, Is.EqualTo(c_testDomainProviderID));
+      Assert.That(provider, Is.InstanceOf<ReadOnlyStorageProviderDecorator>());
+
+      var innerStorageProvider = provider.As<ReadOnlyStorageProviderDecorator>().InnerStorageProvider;
+      Assert.That(innerStorageProvider.As<RdbmsProvider>().StorageProviderDefinition.Name, Is.EqualTo(c_testDomainProviderID));
     }
 
     [Test]
@@ -65,8 +67,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       var providerDefinition = StorageSettings.GetStorageProviderDefinitions().OfType<RdbmsProviderDefinition>().First();
       var provider = _readOnlyStorageProviderManager.GetMandatory(providerDefinition);
 
-      Assert.That(provider.GetType(), Is.EqualTo(typeof(RdbmsProvider)));
-      Assert.That(provider.As<RdbmsProvider>().StorageProviderDefinition, Is.SameAs(providerDefinition));
+      Assert.That(provider, Is.InstanceOf<ReadOnlyStorageProviderDecorator>());
+
+      var innerStorageProvider = provider.As<ReadOnlyStorageProviderDecorator>().InnerStorageProvider;
+      Assert.That(innerStorageProvider.As<RdbmsProvider>().StorageProviderDefinition, Is.SameAs(providerDefinition));
     }
 
     [Test]
@@ -116,18 +120,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void Disposing ()
     {
-      RdbmsProvider provider = null;
+      ReadOnlyStorageProviderDecorator provider = null;
 
       var storageProviderDefinition = StorageSettings.GetStorageProviderDefinition(c_testDomainProviderID);
       using (_readOnlyStorageProviderManager)
       {
-        provider = (RdbmsProvider)_readOnlyStorageProviderManager.GetMandatory(storageProviderDefinition);
+        provider = (ReadOnlyStorageProviderDecorator)_readOnlyStorageProviderManager.GetMandatory(storageProviderDefinition);
         provider.LoadDataContainer(DomainObjectIDs.Order1);
 
-        Assert.That(provider.IsConnected, Is.True);
+        Assert.That(provider.InnerStorageProvider.As<RdbmsProvider>().IsConnected, Is.True);
       }
 
-      Assert.That(provider.IsConnected, Is.False);
+      Assert.That(provider.InnerStorageProvider.As<RdbmsProvider>().IsConnected, Is.False);
     }
   }
 }
