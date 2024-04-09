@@ -26,6 +26,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
   public class RdbmsProviderDefinition: StorageProviderDefinition
   {
     private readonly string _connectionString;
+    private readonly string _readOnlyConnectionString;
 
     public RdbmsProviderDefinition (string name, IStorageObjectFactory factory, string connectionString)
         : base(name, factory)
@@ -34,6 +35,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       ArgumentUtility.CheckNotNullAndType<IRdbmsStorageObjectFactory>("factory", factory);
 
       _connectionString = connectionString;
+      _readOnlyConnectionString = connectionString;
     }
 
     public RdbmsProviderDefinition (string name, NameValueCollection config)
@@ -53,6 +55,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
       string connectionStringName = GetAndRemoveNonEmptyStringAttribute(config, "connectionString", name, required: true)!;
       _connectionString = ConfigurationWrapper.Current.GetConnectionString(connectionStringName, true).ConnectionString;
+
+      string? readOnlyConnectionStringName = GetAndRemoveNonEmptyStringAttribute(config, "readOnlyConnectionString", name, required: false);
+      _readOnlyConnectionString = readOnlyConnectionStringName != null
+          ? ConfigurationWrapper.Current.GetConnectionString(readOnlyConnectionStringName, true).ConnectionString
+          : _connectionString;
     }
 
     public new IRdbmsStorageObjectFactory Factory
@@ -63,6 +70,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     public string ConnectionString
     {
       get { return _connectionString; }
+    }
+
+    public string ReadOnlyConnectionString
+    {
+      get { return _readOnlyConnectionString; }
     }
 
     public override bool IsIdentityTypeSupported (Type identityType)

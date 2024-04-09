@@ -74,6 +74,7 @@
           <xs:attribute name="type" type="c:DotNetType" use="required" />
           <xs:attribute name="factoryType" type="c:DotNetType" use="required" />
           <xs:attribute name="connectionString" type="xs:string" use="optional" />
+          <xs:attribute name="readOnlyConnectionString" type="xs:string" use="optional" />
           <xs:anyAttribute processContents="skip" />
         </xs:complexType>
       </xs:element>
