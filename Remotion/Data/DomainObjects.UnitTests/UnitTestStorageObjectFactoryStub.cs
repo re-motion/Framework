@@ -45,6 +45,17 @@ namespace Remotion.Data.DomainObjects.UnitTests
       return new UnitTestStorageProviderStub(providerDefiniton, persistenceExtension);
     }
 
+    public StorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+    {
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+
+      var providerDefiniton = ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition>(
+          "storageProviderDefinition",
+          storageProviderDefinition);
+      return new UnitTestStorageProviderStub(providerDefiniton, persistenceExtension);
+    }
+
     public IPersistenceModelLoader CreatePersistenceModelLoader (
         StorageProviderDefinition storageProviderDefinition,
         IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
