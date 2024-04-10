@@ -18,19 +18,18 @@ using System;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
   /// <summary>
-  /// Executes a given <see cref="IStorageProviderCommand{T,TExecutionContext}"/> and associates the result with a given <see cref="ObjectID"/>, 
+  /// Executes a given <see cref="IRdbmsProviderCommandWithReadOnlySupport{T}"/> and associates the result with a given <see cref="ObjectID"/>, 
   /// checking whether the return value actually matches the expected <see cref="ObjectID"/>.
   /// </summary>
-  public class SingleDataContainerAssociateWithIDCommand<TExecutionContext> : IStorageProviderCommand<ObjectLookupResult<DataContainer>, TExecutionContext>
-      where TExecutionContext: notnull
+  public class SingleDataContainerAssociateWithIDCommand : IRdbmsProviderCommandWithReadOnlySupport<ObjectLookupResult<DataContainer>>
   {
     private readonly ObjectID _expectedObjectID;
-    private readonly IStorageProviderCommand<DataContainer?, TExecutionContext> _innerCommand;
+    private readonly IRdbmsProviderCommandWithReadOnlySupport<DataContainer?> _innerCommand;
 
-    public SingleDataContainerAssociateWithIDCommand (ObjectID expectedObjectID, IStorageProviderCommand<DataContainer?, TExecutionContext> innerCommand)
+    public SingleDataContainerAssociateWithIDCommand (ObjectID expectedObjectID, IRdbmsProviderCommandWithReadOnlySupport<DataContainer?> innerCommand)
     {
       ArgumentUtility.CheckNotNull("expectedObjectID", expectedObjectID);
       ArgumentUtility.CheckNotNull("innerCommand", innerCommand);
@@ -44,22 +43,36 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       get { return _expectedObjectID; }
     }
 
-    public IStorageProviderCommand<DataContainer?, TExecutionContext> InnerCommand
+    public IRdbmsProviderCommandWithReadOnlySupport<DataContainer?> InnerCommand
     {
       get { return _innerCommand; }
     }
 
-    public ObjectLookupResult<DataContainer> Execute (TExecutionContext executionContext)
+    public ObjectLookupResult<DataContainer> Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
       ArgumentUtility.CheckNotNull("executionContext", executionContext);
 
       var dataContainer = InnerCommand.Execute(executionContext);
+      return ProcessDataContainer(dataContainer);
+    }
+
+    public ObjectLookupResult<DataContainer> Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
+    {
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+
+      var dataContainer = InnerCommand.Execute(executionContext);
+      return ProcessDataContainer(dataContainer);
+    }
+
+    private ObjectLookupResult<DataContainer> ProcessDataContainer (DataContainer? dataContainer)
+    {
       if (dataContainer != null && dataContainer.ID != _expectedObjectID)
       {
         var message = string.Format(
             "The ObjectID of the loaded DataContainer '{0}' and the expected ObjectID '{1}' differ.", dataContainer.ID, _expectedObjectID);
         throw new PersistenceException(message);
       }
+
       return new ObjectLookupResult<DataContainer>(_expectedObjectID, dataContainer);
     }
   }

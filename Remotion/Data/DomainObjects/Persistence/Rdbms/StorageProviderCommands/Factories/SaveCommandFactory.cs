@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       get { return _tableDefinitionFinder; }
     }
 
-    public virtual IStorageProviderCommand<IRdbmsProviderCommandExecutionContext> CreateForSave (IEnumerable<DataContainer> dataContainers)
+    public virtual IRdbmsProviderCommand CreateForSave (IEnumerable<DataContainer> dataContainers)
     {
       ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
 

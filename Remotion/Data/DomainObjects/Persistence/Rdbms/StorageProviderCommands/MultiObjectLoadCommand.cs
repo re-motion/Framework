@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
   /// Executes the command created by the given <see cref="IDbCommandBuilder"/> and parses the result into a sequence of objects using the specified
   /// <see cref="IObjectReader{T}"/>.
   /// </summary>
-  public class MultiObjectLoadCommand<T> : IStorageProviderCommand<IEnumerable<T>, IRdbmsProviderCommandExecutionContext>
+  public class MultiObjectLoadCommand<T> : IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<T>>
   {
     private readonly Tuple<IDbCommandBuilder, IObjectReader<T>>[] _dbCommandBuildersAndReaders;
 
@@ -44,14 +44,27 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       get { return _dbCommandBuildersAndReaders; }
     }
 
-    public IEnumerable<T> Execute (IRdbmsProviderCommandExecutionContext executionContext)
+    public IEnumerable<T> Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
       ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      return Execute<IRdbmsProviderReadWriteCommandExecutionContext>(executionContext);
+    }
+
+    public IEnumerable<T> Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
+    {
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      return Execute<IRdbmsProviderReadOnlyCommandExecutionContext>(executionContext);
+    }
+
+    private IEnumerable<T> Execute<TExecutionContext> (TExecutionContext executionContext)
+        where TExecutionContext : IDbCommandFactory, IDataReaderCommandExecutionContext
+    {
       return _dbCommandBuildersAndReaders.SelectMany(b => LoadDataContainersFromCommandBuilder(b, executionContext));
     }
 
-    private IEnumerable<T> LoadDataContainersFromCommandBuilder (
-        Tuple<IDbCommandBuilder, IObjectReader<T>> commandBuilderTuple, IRdbmsProviderCommandExecutionContext executionContext)
+    private IEnumerable<T> LoadDataContainersFromCommandBuilder<TExecutionContext> (
+        Tuple<IDbCommandBuilder, IObjectReader<T>> commandBuilderTuple, TExecutionContext executionContext)
+        where TExecutionContext : IDbCommandFactory, IDataReaderCommandExecutionContext
     {
       ArgumentUtility.CheckNotNull("commandBuilderTuple", commandBuilderTuple);
 

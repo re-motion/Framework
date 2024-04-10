@@ -16,24 +16,14 @@
 // 
 using System;
 using System.Data;
-using Remotion.Data.DomainObjects.Persistence;
-using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Tracing;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms;
+
+/// <summary>
+/// Represents the aspect of <see cref="IRdbmsProviderReadOnlyCommandExecutionContext"/> or <see cref="IRdbmsProviderReadWriteCommandExecutionContext"/> that enables the
+/// execution of an <see cref="IDbCommand"/> that returns a scalar value.
+/// </summary>
+public interface IScalarCommandExecutionContext
 {
-  public class TestableRdbmsProvider : RdbmsProvider
-  {
-    public TestableRdbmsProvider (
-        RdbmsProviderDefinition definition,
-        string connectionString,
-        IPersistenceExtension persistenceExtension,
-        IRdbmsProviderCommandFactory commandFactory,
-        Func<IDbConnection> connectionFactory)
-      : base(definition, connectionString, persistenceExtension, commandFactory, connectionFactory)
-    {
-
-    }
-
-  }
+  object? ExecuteScalar (IDbCommand command);
 }
