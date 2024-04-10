@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       {
         _connection = new TracingDbConnection(CreateConnection(), PersistenceExtension);
         if (string.IsNullOrEmpty(_connection.ConnectionString))
-          _connection.ConnectionString = ConnectionString;
+          _connection.ConnectionString = _connectionString;
 
         try
         {
