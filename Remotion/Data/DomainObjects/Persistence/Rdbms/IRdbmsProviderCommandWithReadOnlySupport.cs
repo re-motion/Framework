@@ -15,25 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
-using Remotion.Data.DomainObjects.Persistence;
-using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Tracing;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms;
+
+/// <summary>
+/// Represents a command that will not modify the database, to be executed by a storage provider.
+/// </summary>
+public interface IRdbmsProviderCommandWithReadOnlySupport<out T> : IRdbmsProviderCommand<T>
 {
-  public class TestableRdbmsProvider : RdbmsProvider
-  {
-    public TestableRdbmsProvider (
-        RdbmsProviderDefinition definition,
-        string connectionString,
-        IPersistenceExtension persistenceExtension,
-        IRdbmsProviderCommandFactory commandFactory,
-        Func<IDbConnection> connectionFactory)
-      : base(definition, connectionString, persistenceExtension, commandFactory, connectionFactory)
-    {
-
-    }
-
-  }
+  T Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext);
 }

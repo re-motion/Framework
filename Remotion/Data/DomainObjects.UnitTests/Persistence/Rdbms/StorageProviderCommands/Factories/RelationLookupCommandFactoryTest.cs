@@ -30,7 +30,6 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories;
-using Remotion.Data.DomainObjects.Persistence.StorageProviderCommands;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
@@ -48,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     private Mock<IDbCommandBuilder> _dbCommandBuilderStub;
     private Mock<IObjectReader<DataContainer>> _dataContainerReaderStub;
     private Mock<IObjectReader<ObjectID>> _objectIDReaderStub;
-    private Mock<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>> _fakeStorageProviderCommandFactory;
+    private Mock<IRdbmsProviderCommandFactory> _fakeStorageProviderCommandFactory;
 
     private RelationLookupCommandFactory _factory;
 
@@ -70,7 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dbCommandBuilderStub = new Mock<IDbCommandBuilder>();
       _dataContainerReaderStub = new Mock<IObjectReader<DataContainer>>();
       _objectIDReaderStub = new Mock<IObjectReader<ObjectID>>();
-      _fakeStorageProviderCommandFactory = new Mock<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>>();
+      _fakeStorageProviderCommandFactory = new Mock<IRdbmsProviderCommandFactory>();
 
       _factory = new RelationLookupCommandFactory(
                 _fakeStorageProviderCommandFactory.Object,
@@ -124,7 +123,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _foreignKeyStoragePropertyDefinitionStrictMock.Verify();
       _dbCommandBuilderFactoryStrictMock.Verify();
 
-      var innerCommand = CheckDelegateBasedCommandAndReturnInnerCommand<IEnumerable<DataContainer>, IEnumerable<DataContainer>>(result);
+      var innerCommand = CheckDelegateBasedReadOnlyCommandAndReturnInnerCommand<IEnumerable<DataContainer>, IEnumerable<DataContainer>>(result);
       Assert.That(innerCommand, Is.TypeOf(typeof(MultiObjectLoadCommand<DataContainer>)));
       var dbCommandBuilderTuples = ((MultiObjectLoadCommand<DataContainer>)innerCommand).DbCommandBuildersAndReaders;
       Assert.That(dbCommandBuilderTuples.Length, Is.EqualTo(1));
@@ -215,11 +214,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _foreignKeyStoragePropertyDefinitionStrictMock.Verify();
       _dbCommandBuilderFactoryStrictMock.Verify();
 
-      var innerCommand = CheckDelegateBasedCommandAndReturnInnerCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IEnumerable<DataContainer>>(result);
+      var innerCommand = CheckDelegateBasedReadOnlyCommandAndReturnInnerCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IEnumerable<DataContainer>>(result);
       Assert.That(innerCommand, Is.TypeOf(typeof(IndirectDataContainerLoadCommand)));
       var indirectLoadCommand = (IndirectDataContainerLoadCommand)innerCommand;
-      Assert.That(indirectLoadCommand.StorageProviderCommandFactory, Is.SameAs(_fakeStorageProviderCommandFactory.Object));
-      var innerObjectIDLoadCommand = CheckDelegateBasedCommandAndReturnInnerCommand<IEnumerable<ObjectID>, IEnumerable<ObjectID>>(indirectLoadCommand.ObjectIDLoadCommand);
+      Assert.That(indirectLoadCommand.RdbmsProviderCommandFactory, Is.SameAs(_fakeStorageProviderCommandFactory.Object));
+      var innerObjectIDLoadCommand = CheckDelegateBasedReadOnlyCommandAndReturnInnerCommand<IEnumerable<ObjectID>, IEnumerable<ObjectID>>(indirectLoadCommand.ObjectIDLoadCommand);
       Assert.That(innerObjectIDLoadCommand, Is.TypeOf(typeof(MultiObjectIDLoadCommand)));
       Assert.That(((MultiObjectIDLoadCommand)innerObjectIDLoadCommand).DbCommandBuilders, Is.EqualTo(new[] { _dbCommandBuilderStub.Object }));
       Assert.That(((MultiObjectIDLoadCommand)innerObjectIDLoadCommand).ObjectIDReader, Is.SameAs(_objectIDReaderStub.Object));
@@ -285,8 +284,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       var result = _factory.CreateForRelationLookup(relationEndPointDefinition, _foreignKeyValue, null);
 
-      Assert.That(result, Is.TypeOf(typeof(FixedValueCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>)));
-      var fixedValueCommand = (FixedValueCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>)result;
+      Assert.That(result, Is.TypeOf(typeof(FixedValueCommand<IEnumerable<DataContainer>>)));
+      var fixedValueCommand = (FixedValueCommand<IEnumerable<DataContainer>>)result;
       Assert.That(fixedValueCommand.Value, Is.EqualTo(Enumerable.Empty<DataContainer>()));
     }
 
@@ -298,13 +297,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       return new ObjectID(classDefinition, Guid.NewGuid());
     }
 
-    private IStorageProviderCommand<TIn, IRdbmsProviderCommandExecutionContext> CheckDelegateBasedCommandAndReturnInnerCommand<TIn, TResult> (
-        IStorageProviderCommand<TResult, IRdbmsProviderCommandExecutionContext> command)
+    private IRdbmsProviderCommand<TIn> CheckDelegateBasedReadOnlyCommandAndReturnInnerCommand<TIn, TResult> (
+        IRdbmsProviderCommand<TResult> command)
     {
       Assert.That(
           command,
-          Is.TypeOf(typeof(DelegateBasedCommand<TIn, TResult, IRdbmsProviderCommandExecutionContext>)));
-      return ((DelegateBasedCommand<TIn, TResult, IRdbmsProviderCommandExecutionContext>)command).Command;
+          Is.TypeOf(typeof(DelegateBasedCommandWithReadOnlySupport<TIn, TResult>)));
+      return ((DelegateBasedCommandWithReadOnlySupport<TIn, TResult>)command).Command;
     }
 
     private SortedPropertySpecification CreateSortedPropertySpecification (

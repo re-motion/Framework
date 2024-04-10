@@ -23,7 +23,6 @@ using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Data.DomainObjects.Persistence.StorageProviderCommands;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories
@@ -36,20 +35,20 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     private readonly IDbCommandBuilderFactory _dbCommandBuilderFactory;
     private readonly IRdbmsPersistenceModelProvider _rdbmsPersistenceModelProvider;
     private readonly IObjectReaderFactory _objectReaderFactory;
-    private readonly IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> _storageProviderCommandFactory;
+    private readonly IRdbmsProviderCommandFactory _rdbmsProviderCommandFactory;
 
     public RelationLookupCommandFactory (
-        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> storageProviderCommandFactory,
+        IRdbmsProviderCommandFactory rdbmsProviderCommandFactory,
         IDbCommandBuilderFactory dbCommandBuilderFactory,
         IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider,
         IObjectReaderFactory objectReaderFactory)
     {
-      ArgumentUtility.CheckNotNull("storageProviderCommandFactory", storageProviderCommandFactory);
+      ArgumentUtility.CheckNotNull("rdbmsProviderCommandFactory", rdbmsProviderCommandFactory);
       ArgumentUtility.CheckNotNull("dbCommandBuilderFactory", dbCommandBuilderFactory);
       ArgumentUtility.CheckNotNull("rdbmsPersistenceModelProvider", rdbmsPersistenceModelProvider);
       ArgumentUtility.CheckNotNull("objectReaderFactory", objectReaderFactory);
 
-      _storageProviderCommandFactory = storageProviderCommandFactory;
+      _rdbmsProviderCommandFactory = rdbmsProviderCommandFactory;
       _dbCommandBuilderFactory = dbCommandBuilderFactory;
       _rdbmsPersistenceModelProvider = rdbmsPersistenceModelProvider;
       _objectReaderFactory = objectReaderFactory;
@@ -70,18 +69,18 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       get { return _objectReaderFactory; }
     }
 
-    public IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> StorageProviderCommandFactory
+    public IRdbmsProviderCommandFactory RdbmsProviderCommandFactory
     {
-      get { return _storageProviderCommandFactory; }
+      get { return _rdbmsProviderCommandFactory; }
     }
 
-    public virtual IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForRelationLookup (
+    public virtual IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer>> CreateForRelationLookup (
         RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition? sortExpressionDefinition)
     {
       ArgumentUtility.CheckNotNull("foreignKeyEndPoint", foreignKeyEndPoint);
       ArgumentUtility.CheckNotNull("foreignKeyValue", foreignKeyValue);
 
-      return InlineRdbmsStorageEntityDefinitionVisitor.Visit<IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>>(
+      return InlineRdbmsStorageEntityDefinitionVisitor.Visit<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer>>>(
           _rdbmsPersistenceModelProvider.GetEntityDefinition(foreignKeyEndPoint.ClassDefinition),
           (table, continuation) => CreateForDirectRelationLookup(table, foreignKeyEndPoint, foreignKeyValue, sortExpressionDefinition),
           (filterView, continuation) => continuation(filterView.BaseEntity),
@@ -89,7 +88,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           (emptyView, continuation) => CreateForEmptyRelationLookup());
     }
 
-    protected virtual IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForDirectRelationLookup (
+    protected virtual IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer>> CreateForDirectRelationLookup (
         TableDefinition tableDefinition,
         RelationEndPointDefinition foreignKeyEndPoint,
         ObjectID foreignKeyValue,
@@ -103,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           selectedColumns,
           GetComparedColumns(foreignKeyEndPoint, foreignKeyValue),
           GetOrderedColumns(sortExpression));
-      return DelegateBasedCommand.Create(
+      return DelegateBasedCommand.CreateWithReadOnlySupport(
           new MultiObjectLoadCommand<DataContainer?>(new[] { Tuple.Create(dbCommandBuilder, dataContainerReader) }),
           lookupResults => lookupResults.Select(
               result =>
@@ -114,7 +113,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
               }));
     }
 
-    protected virtual IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForIndirectRelationLookup (
+    protected virtual IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer>> CreateForIndirectRelationLookup (
         UnionViewDefinition unionViewDefinition,
         RelationEndPointDefinition foreignKeyEndPoint,
         ObjectID foreignKeyValue,
@@ -129,7 +128,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
 
       var objectIDReader = _objectReaderFactory.CreateObjectIDReader(unionViewDefinition, selectedColumns);
 
-      var objectIDLoadCommand = DelegateBasedCommand.Create(
+      var objectIDLoadCommand = DelegateBasedCommand.CreateWithReadOnlySupport(
           new MultiObjectIDLoadCommand(new[] { dbCommandBuilder }, objectIDReader),
           lookupResults => lookupResults.Select(
               result =>
@@ -139,8 +138,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
                     "Because no OUTER JOIN query is involved in retrieving the result, the ObjectID can never be null.");
               }));
 
-      var indirectDataContainerLoadCommand = new IndirectDataContainerLoadCommand(objectIDLoadCommand, _storageProviderCommandFactory);
-      return DelegateBasedCommand.Create(
+      var indirectDataContainerLoadCommand = new IndirectDataContainerLoadCommand(objectIDLoadCommand, _rdbmsProviderCommandFactory);
+      return DelegateBasedCommand.CreateWithReadOnlySupport(
           indirectDataContainerLoadCommand,
           lookupResults => lookupResults.Select(
               result =>
@@ -151,10 +150,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
               }));
     }
 
-    protected virtual FixedValueCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForEmptyRelationLookup ()
+    protected virtual FixedValueCommand<IEnumerable<DataContainer>> CreateForEmptyRelationLookup ()
     {
-      return
-          new FixedValueCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>(Enumerable.Empty<DataContainer>());
+      return new FixedValueCommand<IEnumerable<DataContainer>>(Enumerable.Empty<DataContainer>());
     }
 
     protected virtual IEnumerable<ColumnValue> GetComparedColumns (RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue)

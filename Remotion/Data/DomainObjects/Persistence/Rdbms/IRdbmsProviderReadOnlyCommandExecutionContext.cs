@@ -15,20 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms;
+
+/// <summary>
+/// An execution context in which an <see cref="IRdbmsProviderCommandWithReadOnlySupport{T}"/> can be executed.
+/// </summary>
+public interface IRdbmsProviderReadOnlyCommandExecutionContext : IDbCommandFactory, IScalarCommandExecutionContext, IDataReaderCommandExecutionContext
 {
-  /// <summary>
-  /// <see cref="IRdbmsProviderCommandExecutionContext"/> defines methods for creating and executing <see cref="IDbCommand"/> instances. These are
-  /// used by RDBMS-specific implementations of <see cref="IStorageProviderCommand{T,TExecutionContext}"/> and <see cref="IDbCommandBuilder"/>.
-  /// </summary>
-  public interface IRdbmsProviderCommandExecutionContext
-  {
-    IDbCommand CreateDbCommand ();
-    IDataReader ExecuteReader (IDbCommand command, CommandBehavior behavior);
-    object? ExecuteScalar (IDbCommand command);
-    int ExecuteNonQuery (IDbCommand command);
-  }
 }

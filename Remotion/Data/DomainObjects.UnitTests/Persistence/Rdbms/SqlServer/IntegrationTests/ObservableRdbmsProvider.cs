@@ -38,10 +38,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         RdbmsProviderDefinition definition,
         string connectionString,
         IPersistenceExtension persistenceExtension,
-        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> storageProviderCommandFactory,
+        IRdbmsProviderCommandFactory rdbmsProviderCommandFactory,
         Func<IDbConnection> connectionFactory,
         ICommandExecutionListener listener)
-        : base(definition, connectionString, persistenceExtension, storageProviderCommandFactory, connectionFactory)
+        : base(definition, connectionString, persistenceExtension, rdbmsProviderCommandFactory, connectionFactory)
     {
       ArgumentUtility.CheckNotNull("listener", listener);
       _listener = listener;
