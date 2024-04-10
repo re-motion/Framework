@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
           providerDefinition,
           providerDefinition.ConnectionString,
           Mock.Of<IPersistenceExtension>(),
-          Mock.Of<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>>(),
+          Mock.Of<IRdbmsProviderCommandFactory>(),
           () => Mock.Of<System.Data.IDbConnection>());
 
       rdbmsStorageObjectFactoryStub

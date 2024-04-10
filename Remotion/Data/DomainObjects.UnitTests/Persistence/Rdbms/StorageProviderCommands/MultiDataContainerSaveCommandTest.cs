@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     private Mock<IDbCommand> _dbCommandMock1;
     private Mock<IDbCommand> _dbCommandMock2;
 
-    private Mock<IRdbmsProviderCommandExecutionContext> _rdbmsExecutionContextStrictMock;
+    private Mock<IRdbmsProviderReadWriteCommandExecutionContext> _rdbmsExecutionContextStrictMock;
 
     private Tuple<ObjectID, IDbCommandBuilder> _tuple1;
     private Tuple<ObjectID, IDbCommandBuilder> _tuple2;
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dbCommandMock1 = new Mock<IDbCommand>(MockBehavior.Strict);
       _dbCommandMock2 = new Mock<IDbCommand>(MockBehavior.Strict);
 
-      _rdbmsExecutionContextStrictMock = new Mock<IRdbmsProviderCommandExecutionContext>(MockBehavior.Strict);
+      _rdbmsExecutionContextStrictMock = new Mock<IRdbmsProviderReadWriteCommandExecutionContext>(MockBehavior.Strict);
 
       _tuple1 = Tuple.Create(_objectID1, _dbCommandBuilderMock1.Object);
       _tuple2 = Tuple.Create(_objectID2, _dbCommandBuilderMock2.Object);

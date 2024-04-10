@@ -15,15 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
   /// <summary>
-  /// Implements <see cref="IStorageProviderCommand{T,TExecutionContext}"/> by always returning the same, fixed value.
+  /// Implements <see cref="IRdbmsProviderCommandWithReadOnlySupport{T}"/> by always returning the same, fixed value.
   /// </summary>
   /// <typeparam name="T">The type of the value to return.</typeparam>
-  /// <typeparam name="TExecutionContext">The type of the execution context. This is not actually used by this command.</typeparam>
-  public class FixedValueCommand<T, TExecutionContext> : IStorageProviderCommand<T, TExecutionContext>
+  public class FixedValueCommand<T> : IRdbmsProviderCommandWithReadOnlySupport<T>
   {
     private readonly T _value;
 
@@ -37,8 +37,17 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       get { return _value; }
     }
 
-    public T Execute (TExecutionContext executionContext)
+    public T Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+
+      return _value;
+    }
+
+    public T Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
+    {
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+
       return _value;
     }
   }

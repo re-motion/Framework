@@ -15,23 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using NUnit.Framework;
-using Remotion.Data.DomainObjects.Persistence.StorageProviderCommands;
+using System.Data;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderCommands
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms;
+
+/// <summary>
+/// A factory that can create <see cref="IDbCommand"/> objects.
+/// </summary>
+public interface IDbCommandFactory
 {
-  [TestFixture]
-  public class FixedValueCommandTest
-  {
-    [Test]
-    public void Execute ()
-    {
-      var value = new object();
-      var command = new FixedValueCommand<object, object>(value);
-
-      var result = command.Execute(new object());
-
-      Assert.That(result, Is.SameAs(value));
-    }
-  }
+  IDbCommand CreateDbCommand ();
 }

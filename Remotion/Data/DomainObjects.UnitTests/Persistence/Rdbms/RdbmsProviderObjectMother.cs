@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public static RdbmsProvider CreateForIntegrationTest (
         IStorageSettings storageSettings,
         RdbmsProviderDefinition storageProviderDefinition,
-        Func<RdbmsProviderDefinition, IPersistenceExtension, IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>, RdbmsProvider> ctorCall = null)
+        Func<RdbmsProviderDefinition, IPersistenceExtension, IRdbmsProviderCommandFactory, RdbmsProvider> ctorCall = null)
     {
       if (!storageSettings.GetStorageProviderDefinitions().Contains(storageProviderDefinition))
         throw new ArgumentException($"RdbmsProviderDefinition '{storageProviderDefinition.Name}' is not part of the storage settings.", nameof(storageProviderDefinition));

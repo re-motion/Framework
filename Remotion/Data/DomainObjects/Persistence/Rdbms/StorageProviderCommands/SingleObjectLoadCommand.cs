@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
   /// Executes the command created by the given <see cref="IDbCommandBuilder"/> and parses the result into a single object using the specified
   /// <see cref="IObjectReader{T}"/>.
   /// </summary>
-  public class SingleObjectLoadCommand<T> : IStorageProviderCommand<T?, IRdbmsProviderCommandExecutionContext>
+  public class SingleObjectLoadCommand<T> : IRdbmsProviderCommandWithReadOnlySupport<T?>
   {
     private readonly IDbCommandBuilder _dbCommandBuilder;
     private readonly IObjectReader<T> _objectReader;
@@ -50,10 +50,21 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       get { return _objectReader; }
     }
 
-    public T? Execute (IRdbmsProviderCommandExecutionContext executionContext)
+    public T? Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
       ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      return Execute<IRdbmsProviderReadWriteCommandExecutionContext>(executionContext);
+    }
 
+    public T? Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
+    {
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      return Execute<IRdbmsProviderReadOnlyCommandExecutionContext>(executionContext);
+    }
+
+    private T? Execute<TExecutionContext> (TExecutionContext executionContext)
+        where TExecutionContext : IDbCommandFactory, IDataReaderCommandExecutionContext
+    {
       using (var command = _dbCommandBuilder.Create(executionContext))
       {
         using (var reader = executionContext.ExecuteReader(command, CommandBehavior.SingleRow))
