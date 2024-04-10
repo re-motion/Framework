@@ -45,6 +45,14 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
       return new NonPersistentProvider(storageProviderDefinition, persistenceExtension);
     }
 
+    public StorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+    {
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+
+      return new NonPersistentProvider(storageProviderDefinition, persistenceExtension);
+    }
+
     public IPersistenceModelLoader CreatePersistenceModelLoader (
         StorageProviderDefinition storageProviderDefinition,
         IStorageProviderDefinitionFinder storageProviderDefinitionFinder)

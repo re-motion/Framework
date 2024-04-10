@@ -41,7 +41,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       _storageProviderCommandFactoryStub = new Mock<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>>();
 
       _provider = new RdbmsProvider(
-          new RdbmsProviderDefinition("TestDomain", new SqlStorageObjectFactory(), "ConnectionString"),
+          new RdbmsProviderDefinition("TestDomain", new SqlStorageObjectFactory(), "ConnectionString", "ReadOnlyConnectionString"),
+          "ConnectionString",
           NullPersistenceExtension.Instance,
           _storageProviderCommandFactoryStub.Object,
           () => new SqlConnection());
@@ -61,8 +62,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     {
       _collection.Add(_provider);
 
+      var rdbmsProviderDefinition = (RdbmsProviderDefinition)_provider.StorageProviderDefinition;
+
       StorageProvider copy = new RdbmsProvider(
-          (RdbmsProviderDefinition)_provider.StorageProviderDefinition,
+          rdbmsProviderDefinition,
+          rdbmsProviderDefinition.ConnectionString,
           NullPersistenceExtension.Instance,
           _storageProviderCommandFactoryStub.Object,
           () => new SqlConnection());

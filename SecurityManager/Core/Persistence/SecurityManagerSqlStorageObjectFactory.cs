@@ -42,6 +42,25 @@ namespace Remotion.SecurityManager.Persistence
       return ObjectFactory.Create<SecurityManagerRdbmsProvider>(
           ParamList.Create(
               storageProviderDefinition,
+              storageProviderDefinition.ConnectionString,
+              persistenceExtension,
+              commandFactory,
+              (Func<IDbConnection>)(() => new SqlConnection())));
+    }
+
+    protected override StorageProvider CreateReadOnlyStorageProvider (
+        IPersistenceExtension persistenceExtension,
+        RdbmsProviderDefinition storageProviderDefinition,
+        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory)
+    {
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("commandFactory", commandFactory);
+
+      return ObjectFactory.Create<SecurityManagerRdbmsProvider>(
+          ParamList.Create(
+              storageProviderDefinition,
+              storageProviderDefinition.ReadOnlyConnectionString,
               persistenceExtension,
               commandFactory,
               (Func<IDbConnection>)(() => new SqlConnection())));

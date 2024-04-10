@@ -43,6 +43,14 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
       return new StubStorageProvider(storageProviderDefinition, persistenceExtension);
     }
 
+    public StorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+    {
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+
+      return new StubStorageProvider(storageProviderDefinition, persistenceExtension);
+    }
+
     public IPersistenceModelLoader CreatePersistenceModelLoader (
         StorageProviderDefinition storageProviderDefinition,
         IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
