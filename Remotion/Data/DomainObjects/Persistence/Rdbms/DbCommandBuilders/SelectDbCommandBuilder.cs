@@ -73,11 +73,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
       get { return _orderedColumns; }
     }
 
-    public override IDbCommand Create (IRdbmsProviderCommandExecutionContext commandExecutionContext)
+    public override IDbCommand Create (IDbCommandFactory dbCommandFactory)
     {
-      ArgumentUtility.CheckNotNull("commandExecutionContext", commandExecutionContext);
+      ArgumentUtility.CheckNotNull("dbCommandFactory", dbCommandFactory);
 
-      var command = commandExecutionContext.CreateDbCommand();
+      var command = dbCommandFactory.CreateDbCommand();
 
       var statement = new StringBuilder();
       AppendSelectClause(statement, command, _selectedColumns);

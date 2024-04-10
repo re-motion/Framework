@@ -15,23 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using NUnit.Framework;
-using Remotion.Data.DomainObjects.Persistence.StorageProviderCommands;
+using System.Data;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderCommands
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
-  [TestFixture]
-  public class FixedValueCommandTest
+  /// <summary>
+  /// Represents the aspect of <see cref="IRdbmsProviderReadOnlyCommandExecutionContext"/> or <see cref="IRdbmsProviderReadWriteCommandExecutionContext"/> that enables the
+  /// execution of an <see cref="IDbCommand"/> without a return value.
+  /// </summary>
+  public interface INonQueryCommandExecutionContext
   {
-    [Test]
-    public void Execute ()
-    {
-      var value = new object();
-      var command = new FixedValueCommand<object, object>(value);
-
-      var result = command.Execute(new object());
-
-      Assert.That(result, Is.SameAs(value));
-    }
+    int ExecuteNonQuery (IDbCommand command);
   }
 }

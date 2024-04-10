@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Data.DomainObjects.Persistence.StorageProviderCommands;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories
@@ -74,7 +73,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       get { return _tableDefinitionFinder; }
     }
 
-    public virtual IStorageProviderCommand<ObjectLookupResult<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForSingleIDLookup (ObjectID objectID)
+    public virtual IRdbmsProviderCommandWithReadOnlySupport<ObjectLookupResult<DataContainer>> CreateForSingleIDLookup (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -85,10 +84,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       var dbCommandBuilder = _dbCommandBuilderFactory.CreateForSelect(tableDefinition, selectedColumns, comparedColumns, Array.Empty<OrderedColumn>());
 
       var loadCommand = new SingleObjectLoadCommand<DataContainer?>(dbCommandBuilder, dataContainerReader);
-      return new SingleDataContainerAssociateWithIDCommand<IRdbmsProviderCommandExecutionContext>(objectID, loadCommand);
+      return new SingleDataContainerAssociateWithIDCommand(objectID, loadCommand);
     }
 
-    public virtual IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IRdbmsProviderCommandExecutionContext> CreateForSortedMultiIDLookup (
+    public virtual IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectLookupResult<DataContainer>>> CreateForSortedMultiIDLookup (
         IEnumerable<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
@@ -108,7 +107,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       return new MultiDataContainerAssociateWithIDsCommand(objectIDList, loadCommand);
     }
 
-    public virtual IStorageProviderCommand<IEnumerable<ObjectLookupResult<object>>, IRdbmsProviderCommandExecutionContext> CreateForMultiTimestampLookup (
+    public virtual IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectLookupResult<object>>> CreateForMultiTimestampLookup (
         IEnumerable<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
@@ -124,7 +123,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           select Tuple.Create(dbCommandBuilder, timestampReader);
 
       var loadCommand = new MultiObjectLoadCommand<Tuple<ObjectID, object>?>(dbCommandBuildersAndReaders);
-      return DelegateBasedCommand.Create(
+      return DelegateBasedCommand.CreateWithReadOnlySupport(
           loadCommand,
           lookupResults => lookupResults.Select(
               result =>

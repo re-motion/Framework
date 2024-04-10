@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
       throw new NotImplementedException();
     }
 
-    public IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> CreateStorageProviderCommandFactory (RdbmsProviderDefinition storageProviderDefinition)
+    public IRdbmsProviderCommandFactory CreateStorageProviderCommandFactory (RdbmsProviderDefinition storageProviderDefinition)
     {
       throw new NotImplementedException();
     }

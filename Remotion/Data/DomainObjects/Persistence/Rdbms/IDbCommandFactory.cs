@@ -16,24 +16,14 @@
 // 
 using System;
 using System.Data;
-using Remotion.Data.DomainObjects.Persistence;
-using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Tracing;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
-  public class TestableRdbmsProvider : RdbmsProvider
+  /// <summary>
+  /// A factory that can create <see cref="IDbCommand"/> objects.
+  /// </summary>
+  public interface IDbCommandFactory
   {
-    public TestableRdbmsProvider (
-        RdbmsProviderDefinition definition,
-        string connectionString,
-        IPersistenceExtension persistenceExtension,
-        IRdbmsProviderCommandFactory commandFactory,
-        Func<IDbConnection> connectionFactory)
-      : base(definition, connectionString, persistenceExtension, commandFactory, connectionFactory)
-    {
-
-    }
-
+    IDbCommand CreateDbCommand ();
   }
 }

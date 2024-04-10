@@ -15,22 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Data;
 
-namespace Remotion.Data.DomainObjects.Persistence
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
   /// <summary>
-  /// Represents a command without a return value to be executed by a storage provider.
+  /// Represents the aspect of <see cref="IRdbmsProviderReadOnlyCommandExecutionContext"/> or <see cref="IRdbmsProviderReadWriteCommandExecutionContext"/> that enables the
+  /// execution of an <see cref="IDbCommand"/> that returns a scalar value.
   /// </summary>
-  public interface IStorageProviderCommand<in TExecutionContext>
+  public interface IScalarCommandExecutionContext
   {
-    void Execute (TExecutionContext executionContext);
-  }
-
-  /// <summary>
-  /// Represents a command with a return value to be executed by a storage provider.
-  /// </summary>
-  public interface IStorageProviderCommand<out T, in TExecutionContext>
-  {
-    T Execute (TExecutionContext executionContext);
+    object? ExecuteScalar (IDbCommand command);
   }
 }

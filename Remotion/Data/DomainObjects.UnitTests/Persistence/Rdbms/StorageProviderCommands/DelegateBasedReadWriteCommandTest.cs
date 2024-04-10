@@ -17,10 +17,10 @@
 using System;
 using Moq;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Persistence;
-using Remotion.Data.DomainObjects.Persistence.StorageProviderCommands;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderCommands
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProviderCommands
 {
   [TestFixture]
   public class DelegateBasedCommandTest
@@ -28,13 +28,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
     [Test]
     public void Execute ()
     {
-      var executionContext = new object();
-      var innerCommandStub = new Mock<IStorageProviderCommand<string, object>>();
-      var delegateBasedCommand = new DelegateBasedCommand<string, int, object>(innerCommandStub.Object, s => s.Length);
+      var executionContext = new Mock<IRdbmsProviderReadWriteCommandExecutionContext>();
+      var innerCommandStub = new Mock<IRdbmsProviderCommand<string>>();
+      var delegateBasedCommand = new DelegateBasedCommand<string, int>(innerCommandStub.Object, s => s.Length);
 
-      innerCommandStub.Setup(stub => stub.Execute(executionContext)).Returns("Test1");
+      innerCommandStub.Setup(stub => stub.Execute(executionContext.Object)).Returns("Test1");
 
-      var result = delegateBasedCommand.Execute(executionContext);
+      var result = delegateBasedCommand.Execute(executionContext.Object);
 
       Assert.That(result, Is.EqualTo(5));
     }
@@ -42,11 +42,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
     [Test]
     public void Create ()
     {
-      var innerCommandStub = new Mock<IStorageProviderCommand<string, object>>();
+      var innerCommandStub = new Mock<IRdbmsProviderCommand<string>>();
       Func<string, int> operation = s => s.Length;
       var instance = DelegateBasedCommand.Create(innerCommandStub.Object, operation);
 
-      Assert.That(instance, Is.TypeOf(typeof(DelegateBasedCommand<string, int, object>)));
+      Assert.That(instance, Is.TypeOf(typeof(DelegateBasedCommand<string, int>)));
       Assert.That(instance.Command, Is.SameAs(innerCommandStub.Object));
       Assert.That(instance.Operation, Is.SameAs(operation));
     }

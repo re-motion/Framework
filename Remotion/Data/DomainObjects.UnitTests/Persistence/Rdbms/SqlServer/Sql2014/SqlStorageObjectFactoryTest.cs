@@ -130,7 +130,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       Assert.That(result.As<RdbmsProvider>().StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
       Assert.That(result.As<RdbmsProvider>().ConnectionString, Is.SameAs(_rdbmsProviderDefinition.ConnectionString));
 
-      var commandFactory = (RdbmsProviderCommandFactory)PrivateInvoke.GetNonPublicProperty(result, "StorageProviderCommandFactory");
+      var commandFactory = result.As<RdbmsProvider>().RdbmsProviderCommandFactory.As<RdbmsProviderCommandFactory>();
       Assert.That(commandFactory.DbCommandBuilderFactory, Is.TypeOf(typeof(SqlDbCommandBuilderFactory)));
       Assert.That(commandFactory.RdbmsPersistenceModelProvider, Is.TypeOf(typeof(RdbmsPersistenceModelProvider)));
       Assert.That(commandFactory.ObjectReaderFactory, Is.TypeOf(typeof(ObjectReaderFactory)));
@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       Assert.That(innerStorageProvider.As<RdbmsProvider>().StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
       Assert.That(innerStorageProvider.As<RdbmsProvider>().ConnectionString, Is.SameAs(_rdbmsProviderDefinition.ReadOnlyConnectionString));
 
-      var commandFactory = (RdbmsProviderCommandFactory)PrivateInvoke.GetNonPublicProperty(innerStorageProvider, "StorageProviderCommandFactory");
+      var commandFactory = (RdbmsProviderCommandFactory)innerStorageProvider.As<RdbmsProvider>().RdbmsProviderCommandFactory;
       Assert.That(commandFactory.DbCommandBuilderFactory, Is.TypeOf(typeof(SqlDbCommandBuilderFactory)));
       Assert.That(commandFactory.RdbmsPersistenceModelProvider, Is.TypeOf(typeof(RdbmsPersistenceModelProvider)));
       Assert.That(commandFactory.ObjectReaderFactory, Is.TypeOf(typeof(ObjectReaderFactory)));

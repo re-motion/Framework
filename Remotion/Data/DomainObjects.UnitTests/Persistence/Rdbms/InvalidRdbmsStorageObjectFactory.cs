@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       throw new NotImplementedException();
     }
 
-    public IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> CreateStorageProviderCommandFactory (StorageProviderDefinition storageProviderDefinition)
+    public IRdbmsProviderCommandFactory CreateStorageProviderCommandFactory (StorageProviderDefinition storageProviderDefinition)
     {
       throw new NotImplementedException();
     }

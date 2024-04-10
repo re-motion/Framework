@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.Persistence
     protected override IStorageProvider CreateStorageProvider (
         IPersistenceExtension persistenceExtension,
         RdbmsProviderDefinition storageProviderDefinition,
-        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory)
+        IRdbmsProviderCommandFactory commandFactory)
     {
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
@@ -52,7 +52,7 @@ namespace Remotion.SecurityManager.Persistence
     protected override IReadOnlyStorageProvider CreateReadOnlyStorageProvider (
         IPersistenceExtension persistenceExtension,
         RdbmsProviderDefinition storageProviderDefinition,
-        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory)
+        IRdbmsProviderCommandFactory commandFactory)
     {
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
