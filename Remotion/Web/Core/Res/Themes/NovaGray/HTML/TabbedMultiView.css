@@ -32,7 +32,7 @@ div.tabbedMultiViewActiveView
   grid-area: view;
   display: flex;
   flex-direction: column;
-  overflow: clip;
+  overflow: hidden;
 }
 
 div.tabbedMultiViewActiveView > div.contentBorder
