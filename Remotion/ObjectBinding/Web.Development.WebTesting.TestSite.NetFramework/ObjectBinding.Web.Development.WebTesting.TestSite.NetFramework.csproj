@@ -210,7 +210,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52111</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:60400/fx-develop/ObjectBinding.Web.Development.WebTesting.TestSite/</IISUrl>
+          <IISUrl>http://localhost:60400/fx-6.x/ObjectBinding.Web.Development.WebTesting.TestSite/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

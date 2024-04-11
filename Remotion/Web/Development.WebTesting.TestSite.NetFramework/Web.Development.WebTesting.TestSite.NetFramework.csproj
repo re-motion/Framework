@@ -174,7 +174,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>52040</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:60400/fx-develop/Web.Development.WebTesting.TestSite/</IISUrl>
+          <IISUrl>http://localhost:60400/fx-6.x/Web.Development.WebTesting.TestSite/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
