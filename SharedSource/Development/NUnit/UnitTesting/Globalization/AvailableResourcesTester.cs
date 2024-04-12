@@ -21,6 +21,7 @@ namespace Remotion.Development.NUnit.UnitTesting.Globalization
       var attribute = targetAssembly.GetCustomAttribute<TAttribute>();
       var availableResourcesByAssembly = ((string[])typeof(TAttribute).GetProperty("CultureNames")!.GetValue(attribute)!)
           .Distinct()
+          .Select(name => name.ToLower())
           .ToArray();
 
       var resourceFileName = $"{targetAssembly.GetName().Name}.resources.dll";
@@ -28,6 +29,7 @@ namespace Remotion.Development.NUnit.UnitTesting.Globalization
       var availableResourcesByOutputFolder = Directory.EnumerateDirectories(assemblyDirectory)
           .Where(e => File.Exists(Path.Combine(e, resourceFileName)))
           .Select(Path.GetFileName)
+          .Select(name => name?.ToLower())
           .Concat(new [] { "" }) // Assume that the "invariant" culture is always supported as it is embedded in the target assembly and not stored in a directory
           .ToArray();
 
