@@ -20,6 +20,8 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
@@ -30,6 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     private readonly DecoratorFactory _factory;
 
     public TestComponentFactoryWithObjectLoaderDecorator (DecoratorFactory factory)
+        : base(SafeServiceLocator.Current.GetInstance<IPersistenceService>())
     {
       _factory = factory;
     }
