@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
       return ObjectFactory.Create<RootClientTransactionComponentFactory>(
           true,
-          new ParamListImplementation<IStorageSettings, IPersistenceService, IPersistenceExtensionFactory, IStorageAccessResolver>(
+          ParamList.Create(
               storageSettings,
               persistenceService,
               persistenceExtensionFactory,
