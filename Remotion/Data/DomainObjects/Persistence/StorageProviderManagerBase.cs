@@ -23,12 +23,12 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence
 {
-  public abstract class StorageProviderManagerBase<T> : IDisposable
-      where T : IReadOnlyStorageProvider
+  public abstract class StorageProviderManagerBase<TStorageProvider> : IDisposable
+      where TStorageProvider : IReadOnlyStorageProvider
   {
     public IStorageSettings StorageSettings { get; }
     public IPersistenceExtension PersistenceExtension { get; }
-    private readonly Dictionary<string, IReadOnlyStorageProvider> _storageProviders;
+    private readonly Dictionary<string, TStorageProvider> _storageProviders;
     private bool _disposed;
 
     protected StorageProviderManagerBase (IPersistenceExtension persistenceExtension, IStorageSettings storageSettings)
@@ -36,14 +36,14 @@ namespace Remotion.Data.DomainObjects.Persistence
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
       ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
 
-      _storageProviders = new Dictionary<string, IReadOnlyStorageProvider>();
+      _storageProviders = new Dictionary<string, TStorageProvider>();
       PersistenceExtension = persistenceExtension;
       StorageSettings = storageSettings;
     }
 
-    protected abstract T CreateStorageProvider (StorageProviderDefinition providerDefinition);
+    protected abstract TStorageProvider CreateStorageProvider (StorageProviderDefinition providerDefinition);
 
-    public IReadOnlyDictionary<string, IReadOnlyStorageProvider> StorageProviders
+    public IReadOnlyDictionary<string, TStorageProvider> StorageProviders
     {
       get
       {
@@ -53,13 +53,13 @@ namespace Remotion.Data.DomainObjects.Persistence
     }
 
     [Obsolete("Use GetMandatory(StorageProviderDefinition) instead. (Version 7.0.0)")]
-    public T GetMandatory (string storageProviderID)
+    public TStorageProvider GetMandatory (string storageProviderID)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
 
       if (_storageProviders.TryGetValue(storageProviderID, out var storageProvider))
-        return (T)storageProvider;
+        return storageProvider;
 
       var providerDefinition = StorageSettings.GetStorageProviderDefinition(storageProviderID);
       var provider = CreateStorageProvider(providerDefinition);
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       return provider;
     }
 
-    public T GetMandatory (StorageProviderDefinition providerDefinition)
+    public TStorageProvider GetMandatory (StorageProviderDefinition providerDefinition)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("providerDefinition", providerDefinition);
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.Persistence
 #endif
 
       if (_storageProviders.TryGetValue(providerDefinition.Name, out var storageProvider))
-        return (T)storageProvider;
+        return (TStorageProvider)storageProvider;
 
       var provider = CreateStorageProvider(providerDefinition);
 
