@@ -41,7 +41,8 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <summary>
     /// Gets the statement of the query.
     /// </summary>
-    /// <remarks>The statement must be understood by the <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> responsible for executing the query.</remarks>
+    /// <remarks>The statement must be understood by the <see cref="Remotion.Data.DomainObjects.Persistence.IReadOnlyStorageProvider"/> or
+    /// <see cref="Remotion.Data.DomainObjects.Persistence.IStorageProvider"/> responsible for executing the query.</remarks>
     string Statement { get; }
 
     /// <summary>
