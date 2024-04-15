@@ -454,7 +454,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Assert.That(
           () => _provider.LoadDataContainer(objectID),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
+              "A disposed RdbmsProvider cannot be accessed.\r\nObject name: 'RdbmsProvider'."));
     }
 
     [Test]
@@ -507,7 +507,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Assert.That(
           () => _provider.LoadDataContainers(new[] { objectID }),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
+              "A disposed RdbmsProvider cannot be accessed.\r\nObject name: 'RdbmsProvider'."));
     }
 
     [Test]
@@ -646,7 +646,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Assert.That(
           () => _provider.LoadDataContainersByRelatedID(relationEndPointDefinition, null, objectID),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
+              "A disposed RdbmsProvider cannot be accessed.\r\nObject name: 'RdbmsProvider'."));
     }
 
     [Test]
@@ -730,7 +730,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Assert.That(
           () => _provider.Save(new DataContainerCollection()),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
+              "A disposed RdbmsProvider cannot be accessed.\r\nObject name: 'RdbmsProvider'."));
     }
 
     [Test]
