@@ -23,6 +23,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
   /// </summary>
   public interface IRdbmsProviderCommand<out T>
   {
-    T Execute (IRdbmsProviderCommandExecutionContext executionContext);
+    T Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext);
   }
 }

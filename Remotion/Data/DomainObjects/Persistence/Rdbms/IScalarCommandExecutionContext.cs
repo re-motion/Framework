@@ -17,10 +17,14 @@
 using System;
 using System.Data;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
-  public interface IDbCommandBuilder
+  /// <summary>
+  /// Represents the aspect of <see cref="IRdbmsProviderReadOnlyCommandExecutionContext"/> or <see cref="IRdbmsProviderReadWriteCommandExecutionContext"/> that enables the
+  /// execution of an <see cref="IDbCommand"/> that returns a scalar value.
+  /// </summary>
+  public interface IScalarCommandExecutionContext
   {
-    IDbCommand Create (IDbCommandFactory dbCommandFactory);
+    object? ExecuteScalar (IDbCommand command);
   }
 }

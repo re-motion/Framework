@@ -15,12 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
-  public interface IDbCommandBuilder
+  /// <summary>
+  /// An execution context in which an <see cref="IRdbmsProviderCommandWithReadOnlySupport{T}"/> can be executed.
+  /// </summary>
+  public interface IRdbmsProviderReadOnlyCommandExecutionContext : IDbCommandFactory, IScalarCommandExecutionContext, IDataReaderCommandExecutionContext
   {
-    IDbCommand Create (IDbCommandFactory dbCommandFactory);
   }
 }

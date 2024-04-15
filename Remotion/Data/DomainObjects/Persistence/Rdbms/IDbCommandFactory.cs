@@ -17,10 +17,13 @@
 using System;
 using System.Data;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
-  public interface IDbCommandBuilder
+  /// <summary>
+  /// A factory that can create <see cref="IDbCommand"/> objects.
+  /// </summary>
+  public interface IDbCommandFactory
   {
-    IDbCommand Create (IDbCommandFactory dbCommandFactory);
+    IDbCommand CreateDbCommand ();
   }
 }

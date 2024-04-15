@@ -260,9 +260,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
           .Verifiable();
 
       _commandFactoryMock
-          .Setup(mock => mock.CreateForDataContainerQuery(queryStub.Object))
-          .Returns(commandMock.Object)
-          .Verifiable();
+            .Setup(mock => mock.CreateForDataContainerQuery(queryStub.Object))
+            .Returns(commandMock.Object)
+            .Verifiable();
 
       commandMock
           .InVerifiableSequence(sequence)
@@ -295,9 +295,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       _commandFactoryMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.CreateForDataContainerQuery(queryStub.Object))
-          .Returns(commandMock.Object)
-          .Verifiable();
+            .Setup(mock => mock.CreateForDataContainerQuery(queryStub.Object))
+            .Returns(commandMock.Object)
+            .Verifiable();
 
       commandMock
           .InVerifiableSequence(sequence)

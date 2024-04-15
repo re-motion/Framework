@@ -36,7 +36,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     private ObjectID _objectID1;
     private ObjectID _objectID2;
     private ObjectLookupResult<DataContainer>[] _fakeResult;
-    private Mock<IRdbmsProviderCommandExecutionContext> _commandExecutionContextStub;
 
     public override void SetUp ()
     {
@@ -45,14 +44,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _fakeResult = new ObjectLookupResult<DataContainer>[0];
       _objectID1 = DomainObjectIDs.Order1;
       _objectID2 = DomainObjectIDs.Order3;
-      _commandExecutionContextStub = new Mock<IRdbmsProviderCommandExecutionContext>();
-      _commandExecutionContextStub = new Mock<IRdbmsProviderCommandExecutionContext>();
 
       _objectIDLoadCommandStub = new Mock<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectID>>>();
-      _objectIDLoadCommandStub.Setup(stub => stub.Execute(_commandExecutionContextStub.Object)).Returns(new[] { _objectID1, _objectID2 });
-
       _dataContainerLoadCommandStub = new Mock<IRdbmsProviderCommandWithReadOnlySupport<ObjectLookupResult<DataContainer>[]>>();
-      _dataContainerLoadCommandStub.Setup(stub => stub.Execute(_commandExecutionContextStub.Object)).Returns(_fakeResult);
 
       _storageProviderFactoryStub = new Mock<IRdbmsProviderCommandFactory>();
       _storageProviderFactoryStub
@@ -72,7 +66,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     [Test]
     public void Execute ()
     {
-      var result = _loadCommand.Execute(_commandExecutionContextStub.Object);
+      var executionContextStub = new Mock<IRdbmsProviderReadWriteCommandExecutionContext>();
+      _objectIDLoadCommandStub.Setup(stub => stub.Execute(executionContextStub.Object)).Returns(new[] { _objectID1, _objectID2 });
+      _dataContainerLoadCommandStub.Setup(stub => stub.Execute(executionContextStub.Object)).Returns(_fakeResult);
+
+      var result = _loadCommand.Execute(executionContextStub.Object);
+
+      Assert.That(result, Is.SameAs(_fakeResult));
+    }
+
+    [Test]
+    public void ExecuteReadOnly ()
+    {
+      var executionContextStub = new Mock<IRdbmsProviderReadOnlyCommandExecutionContext>();
+      _objectIDLoadCommandStub.Setup(stub => stub.Execute(executionContextStub.Object)).Returns(new[] { _objectID1, _objectID2 });
+      _dataContainerLoadCommandStub.Setup(stub => stub.Execute(executionContextStub.Object)).Returns(_fakeResult);
+
+      var result = _loadCommand.Execute(executionContextStub.Object);
 
       Assert.That(result, Is.SameAs(_fakeResult));
     }

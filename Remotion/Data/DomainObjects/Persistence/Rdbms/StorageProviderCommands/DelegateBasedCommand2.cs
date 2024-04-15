@@ -31,8 +31,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       get { return _operation; }
     }
 
-    public TOut Execute (IRdbmsProviderCommandExecutionContext executionContext)
+    public TOut Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+
       var executionResult = _command.Execute(executionContext);
       return _operation(executionResult);
     }

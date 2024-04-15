@@ -33,7 +33,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
   public class MultiDataContainerAssociateWithIDsCommandTest : StandardMappingTest
   {
     private Mock<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer>>> _commandStub;
-    private Mock<IRdbmsProviderCommandExecutionContext> _executionContext;
+    private Mock<IRdbmsProviderReadOnlyCommandExecutionContext> _readOnlyExecutionContext;
+    private Mock<IRdbmsProviderReadWriteCommandExecutionContext> _readWriteExecutionContext;
     private DataContainer _order1Container;
     private DataContainer _order2Container;
     private DataContainer _order3Container;
@@ -43,7 +44,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       base.SetUp();
 
       _commandStub = new Mock<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer>>>();
-      _executionContext = new Mock<IRdbmsProviderCommandExecutionContext>();
+      _readOnlyExecutionContext = new Mock<IRdbmsProviderReadOnlyCommandExecutionContext>();
+      _readWriteExecutionContext = new Mock<IRdbmsProviderReadWriteCommandExecutionContext>();
 
       _order1Container = DataContainerObjectMother.Create(DomainObjectIDs.Order1);
       _order2Container = DataContainerObjectMother.Create(DomainObjectIDs.Order3);
@@ -62,9 +64,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     public void Execute ()
     {
       var command = new MultiDataContainerAssociateWithIDsCommand(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1 }, _commandStub.Object);
-      _commandStub.Setup(stub => stub.Execute(_executionContext.Object)).Returns(new[] { _order2Container, _order1Container });
+      _commandStub.Setup(stub => stub.Execute(_readWriteExecutionContext.Object)).Returns(new[] { _order2Container, _order1Container });
 
-      var result = command.Execute(_executionContext.Object).ToList();
+      var result = command.Execute(_readWriteExecutionContext.Object).ToList();
 
       Assert.That(result.Count, Is.EqualTo(3));
       Assert.That(result[0].LocatedObject, Is.SameAs(_order1Container));
@@ -80,9 +82,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     {
       var command = new MultiDataContainerAssociateWithIDsCommand(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order1 }, _commandStub.Object);
 
-      _commandStub.Setup(stub => stub.Execute(_executionContext.Object)).Returns(new[] { _order1Container });
+      _commandStub.Setup(stub => stub.Execute(_readWriteExecutionContext.Object)).Returns(new[] { _order1Container });
 
-      var result = command.Execute(_executionContext.Object).ToList();
+      var result = command.Execute(_readWriteExecutionContext.Object).ToList();
 
       Assert.That(result.Count, Is.EqualTo(2));
       Assert.That(result[0].LocatedObject, Is.SameAs(_order1Container));
@@ -98,9 +100,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       var otherOrder1DataContainer = DataContainerObjectMother.Create(_order1Container.ID);
 
-      _commandStub.Setup(stub => stub.Execute(_executionContext.Object)).Returns(new[] { _order1Container, otherOrder1DataContainer });
+      _commandStub.Setup(stub => stub.Execute(_readWriteExecutionContext.Object)).Returns(new[] { _order1Container, otherOrder1DataContainer });
 
-      var result = command.Execute(_executionContext.Object).ToList();
+      var result = command.Execute(_readWriteExecutionContext.Object).ToList();
 
       Assert.That(result.Count, Is.EqualTo(1));
       Assert.That(result[0].LocatedObject, Is.SameAs(otherOrder1DataContainer));
@@ -112,9 +114,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     {
       var command = new MultiDataContainerAssociateWithIDsCommand(new[] { DomainObjectIDs.Order1 }, _commandStub.Object);
 
-      _commandStub.Setup(stub => stub.Execute(_executionContext.Object)).Returns(new[] { _order1Container, null });
+      _commandStub.Setup(stub => stub.Execute(_readWriteExecutionContext.Object)).Returns(new[] { _order1Container, null });
 
-      var result = command.Execute(_executionContext.Object).ToList();
+      var result = command.Execute(_readWriteExecutionContext.Object).ToList();
 
       Assert.That(result.Count, Is.EqualTo(1));
       Assert.That(result[0].LocatedObject, Is.SameAs(_order1Container));
@@ -129,10 +131,92 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       var command = new MultiDataContainerAssociateWithIDsCommand(new[] { wrongID1, wrongID1, wrongID2, _order3Container.ID }, _commandStub.Object);
 
-      _commandStub.Setup(stub => stub.Execute(_executionContext.Object)).Returns(new[] { _order1Container, _order2Container, _order3Container });
+      _commandStub.Setup(stub => stub.Execute(_readWriteExecutionContext.Object)).Returns(new[] { _order1Container, _order2Container, _order3Container });
 
       Assert.That(
-          () => command.Execute(_executionContext.Object).ToList(),
+          () => command.Execute(_readWriteExecutionContext.Object).ToList(),
+          Throws.TypeOf<PersistenceException>().With.Message.EqualTo(
+              "The ObjectID of one or more loaded DataContainers does not match the expected ObjectIDs:\r\n"
+              + "Loaded DataContainer ID: Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid, expected ObjectID(s): "
+              + "OrderItem|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid, OrderTicket|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid\r\n"
+              + "Loaded DataContainer ID: Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid, expected ObjectID(s): none"));
+    }
+
+    [Test]
+    public void ExecuteReadOnly ()
+    {
+      var command = new MultiDataContainerAssociateWithIDsCommand(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1 }, _commandStub.Object);
+      _commandStub.Setup(stub => stub.Execute(_readOnlyExecutionContext.Object)).Returns(new[] { _order2Container, _order1Container });
+
+      var result = command.Execute(_readOnlyExecutionContext.Object).ToList();
+
+      Assert.That(result.Count, Is.EqualTo(3));
+      Assert.That(result[0].LocatedObject, Is.SameAs(_order1Container));
+      Assert.That(result[0].ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
+      Assert.That(result[1].LocatedObject, Is.SameAs(_order2Container));
+      Assert.That(result[1].ObjectID, Is.EqualTo(DomainObjectIDs.Order3));
+      Assert.That(result[2].LocatedObject, Is.Null);
+      Assert.That(result[2].ObjectID, Is.EqualTo(DomainObjectIDs.OrderItem1));
+    }
+
+    [Test]
+    public void ExecuteReadOnly_DuplicatedObjectID ()
+    {
+      var command = new MultiDataContainerAssociateWithIDsCommand(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order1 }, _commandStub.Object);
+
+      _commandStub.Setup(stub => stub.Execute(_readOnlyExecutionContext.Object)).Returns(new[] { _order1Container });
+
+      var result = command.Execute(_readOnlyExecutionContext.Object).ToList();
+
+      Assert.That(result.Count, Is.EqualTo(2));
+      Assert.That(result[0].LocatedObject, Is.SameAs(_order1Container));
+      Assert.That(result[0].ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
+      Assert.That(result[1].LocatedObject, Is.SameAs(_order1Container));
+      Assert.That(result[1].ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
+    }
+
+    [Test]
+    public void ExecuteReadOnly_DuplicatedDataContainer ()
+    {
+      var command = new MultiDataContainerAssociateWithIDsCommand(new[] { DomainObjectIDs.Order1 }, _commandStub.Object);
+
+      var otherOrder1DataContainer = DataContainerObjectMother.Create(_order1Container.ID);
+
+      _commandStub.Setup(stub => stub.Execute(_readOnlyExecutionContext.Object)).Returns(new[] { _order1Container, otherOrder1DataContainer });
+
+      var result = command.Execute(_readOnlyExecutionContext.Object).ToList();
+
+      Assert.That(result.Count, Is.EqualTo(1));
+      Assert.That(result[0].LocatedObject, Is.SameAs(otherOrder1DataContainer));
+      Assert.That(result[0].ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
+    }
+
+    [Test]
+    public void ExecuteReadOnly_NullDataContainer ()
+    {
+      var command = new MultiDataContainerAssociateWithIDsCommand(new[] { DomainObjectIDs.Order1 }, _commandStub.Object);
+
+      _commandStub.Setup(stub => stub.Execute(_readOnlyExecutionContext.Object)).Returns(new[] { _order1Container, null });
+
+      var result = command.Execute(_readOnlyExecutionContext.Object).ToList();
+
+      Assert.That(result.Count, Is.EqualTo(1));
+      Assert.That(result[0].LocatedObject, Is.SameAs(_order1Container));
+      Assert.That(result[0].ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
+    }
+
+    [Test]
+    public void ExecuteReadOnly_DataContainersNotMatchingAnyID ()
+    {
+      var wrongID1 = new ObjectID(typeof(OrderItem), _order1Container.ID.Value);
+      var wrongID2 = new ObjectID(typeof(OrderTicket), _order1Container.ID.Value);
+
+      var command = new MultiDataContainerAssociateWithIDsCommand(new[] { wrongID1, wrongID1, wrongID2, _order3Container.ID }, _commandStub.Object);
+
+      _commandStub.Setup(stub => stub.Execute(_readOnlyExecutionContext.Object)).Returns(new[] { _order1Container, _order2Container, _order3Container });
+
+      Assert.That(
+          () => command.Execute(_readOnlyExecutionContext.Object).ToList(),
           Throws.TypeOf<PersistenceException>().With.Message.EqualTo(
               "The ObjectID of one or more loaded DataContainers does not match the expected ObjectIDs:\r\n"
               + "Loaded DataContainer ID: Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid, expected ObjectID(s): "
