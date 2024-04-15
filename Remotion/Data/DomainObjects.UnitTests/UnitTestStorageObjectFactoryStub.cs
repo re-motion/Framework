@@ -35,25 +35,23 @@ namespace Remotion.Data.DomainObjects.UnitTests
   public class UnitTestStorageObjectFactoryStub : IRdbmsStorageObjectFactory
   {
     public IStorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
-      {
-        ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
-        ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+    {
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition>(
+          "storageProviderDefinition",
+          storageProviderDefinition);
 
-        var providerDefiniton = ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition>(
-            "storageProviderDefinition",
-            storageProviderDefinition);
-        return new UnitTestStorageProviderStub(providerDefiniton, persistenceExtension);
-      }
+      return new UnitTestStorageProviderStub();
+    }
 
     public IReadOnlyStorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
     {
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-
-      var providerDefiniton = ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition>(
+      ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition>(
           "storageProviderDefinition",
           storageProviderDefinition);
-      return new UnitTestStorageProviderStub(providerDefiniton, persistenceExtension);
+
+      return new UnitTestStorageProviderStub();
     }
 
     public IPersistenceModelLoader CreatePersistenceModelLoader (
@@ -61,6 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("storageProviderDefinitionFinder", storageProviderDefinitionFinder);
 
       return new SqlStorageObjectFactory().CreatePersistenceModelLoader(storageProviderDefinition, storageProviderDefinitionFinder);
     }

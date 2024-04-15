@@ -33,20 +33,20 @@ namespace Remotion.Data.DomainObjects.Queries
 
     /// <summary>
     /// Returns a value stored within the current row at the given <paramref name="position"/> in the format returned by the 
-    /// <see cref="StorageProvider"/>.
+    /// <see cref="IReadOnlyStorageProvider"/>.
     /// </summary>
     /// <returns>The value at <paramref name="position"/>. Can be <see langword="null"/> when no result exists.</returns>
     object? GetRawValue (int position);
 
     /// <summary>
-    /// Returns a value stored within the current row at the given <paramref name="position"/>, asking the <see cref="StorageProvider"/> 
+    /// Returns a value stored within the current row at the given <paramref name="position"/>, asking the <see cref="IReadOnlyStorageProvider"/> 
     /// to convert the value into the given <paramref name="type"/>.
     /// </summary>
     /// <returns>The value at <paramref name="position"/>. Can be <see langword="null"/> when no result exists or the data conversion yielded <see langword="null"/>.</returns>
     object? GetConvertedValue (int position, Type type);
 
     /// <summary>
-    /// Returns a value stored within the current row at the given <paramref name="position"/>, asking the <see cref="StorageProvider"/> to 
+    /// Returns a value stored within the current row at the given <paramref name="position"/>, asking the <see cref="IReadOnlyStorageProvider"/> to 
     /// convert the value into the given type <typeparamref name="T"/>.
     /// </summary>
     /// <returns>The value at <paramref name="position"/>. Can be <see langword="null"/> when no result exists or the data conversion yielded <see langword="null"/>.</returns>
