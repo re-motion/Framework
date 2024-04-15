@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
 
-      return new NonPersistentProvider(storageProviderDefinition, persistenceExtension);
+      return new NonPersistentProvider(storageProviderDefinition);
     }
 
     public IReadOnlyStorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
 
-      return new NonPersistentProvider(storageProviderDefinition, persistenceExtension);
+      return new NonPersistentProvider(storageProviderDefinition);
     }
 
     public IPersistenceModelLoader CreatePersistenceModelLoader (StorageProviderDefinition storageProviderDefinition)
