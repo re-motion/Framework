@@ -561,8 +561,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       var storageProviderSerializer = testableSqlProviderFactory.CreateStorageProviderSerializer(enumSerializerStub.Object);
       Assert.That(storageProviderSerializer, Is.InstanceOf<StorageProviderSerializer>());
       Assert.That(
-          ((StorageProviderSerializer)storageProviderSerializer).ClassSerializer,
-          Is.InstanceOf<ClassSerializer>());
+          ((StorageProviderSerializer)storageProviderSerializer).TypeSerializer,
+          Is.InstanceOf<TypeSerializer>());
     }
 
     [Test]

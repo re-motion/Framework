@@ -16,9 +16,11 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation.Logical;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration;
+using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
 {
@@ -36,10 +38,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void ClassWithoutBaseClass ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(
           classType: typeof(BaseOfBaseValidationDomainObjectClass),
           storageGroupType: typeof(DBStorageGroupAttribute));
-      var validationResult = _validationRule.Validate(classDefinition);
+      var validationResult = _validationRule.Validate(typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -48,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void ClassWithBaseClass_ClassesWithoutStorageGroupAttribute ()
     {
       var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseOfBaseValidationDomainObjectClass), storageGroupType: null);
-      var derivedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(
+      var derivedClassDefinition = TypeDefinitionObjectMother.CreateClassDefinition(
           classType: typeof(BaseOfBaseValidationDomainObjectClass),
           baseClass: baseClassDefinition,
           storageGroupType: null);
@@ -64,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(
           classType: typeof(BaseOfBaseValidationDomainObjectClass),
           storageGroupType: typeof(DBStorageGroupAttribute));
-      var derivedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(
+      var derivedClassDefinition = TypeDefinitionObjectMother.CreateClassDefinition(
           classType: typeof(BaseOfBaseValidationDomainObjectClass),
           baseClass: baseClassDefinition,
           storageGroupType: typeof(DBStorageGroupAttribute));
@@ -80,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(
           classType: typeof(BaseOfBaseValidationDomainObjectClass),
           storageGroupType: typeof(DBStorageGroupAttribute));
-      var derivedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(
+      var derivedClassDefinition = TypeDefinitionObjectMother.CreateClassDefinition(
           classType: typeof(BaseValidationDomainObjectClass),
           baseClass: baseClassDefinition,
           storageGroupType: typeof(StubStorageGroup1Attribute));
@@ -91,6 +93,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           "Class 'BaseValidationDomainObjectClass' must have the same storage group type as its base class 'BaseOfBaseValidationDomainObjectClass'.\r\n\r\n"
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.BaseValidationDomainObjectClass";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
+    }
+
+    [Test]
+    public void IgnoresArgumentsOfTypeOtherThanClassDefinition ()
+    {
+      var typeDefinitionForUnresolvedRelationPropertyType = new TypeDefinitionForUnresolvedRelationPropertyType(typeof(string), new NullPropertyInformation());
+
+      Assert.That(() => _validationRule.Validate(typeDefinitionForUnresolvedRelationPropertyType),
+          Throws.InvalidOperationException.With
+              .Message.EqualTo("Only class definitions are supported"));
     }
   }
 }

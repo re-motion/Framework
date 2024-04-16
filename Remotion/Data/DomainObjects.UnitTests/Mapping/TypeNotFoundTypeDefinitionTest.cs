@@ -24,28 +24,26 @@ using Remotion.Reflection;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
   [TestFixture]
-  public class TypeNotFoundClassDefinitionTest
+  public class TypeNotFoundTypeDefinitionTest
   {
-    private ClassDefinitionForUnresolvedRelationPropertyType _classDefinition;
-    private Type _classType;
+    private TypeDefinitionForUnresolvedRelationPropertyType _typeDefinition;
+    private Type _type;
     private Mock<IPropertyInformation> _relationProperty;
 
     [SetUp]
     public void SetUp ()
     {
-      _classType = typeof(ClassNotInMapping);
+      _type = typeof(ClassNotInMapping);
       _relationProperty = new Mock<IPropertyInformation>();
-      _classDefinition = new ClassDefinitionForUnresolvedRelationPropertyType("Test", _classType, _relationProperty.Object);
+      _typeDefinition = new TypeDefinitionForUnresolvedRelationPropertyType(_type, _relationProperty.Object);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That(_classDefinition.ClassType, Is.SameAs(_classType));
-      Assert.That(_classDefinition.BaseClass, Is.Null);
-      Assert.That(_classDefinition.IsClassTypeResolved, Is.False);
-      Assert.That(_classDefinition.IsAbstract, Is.False);
-      Assert.That(_classDefinition.RelationProperty, Is.SameAs(_relationProperty.Object));
+      Assert.That(_typeDefinition.Type, Is.SameAs(_type));
+      Assert.That(_typeDefinition.IsTypeResolved, Is.False);
+      Assert.That(_typeDefinition.RelationProperty, Is.SameAs(_relationProperty.Object));
     }
   }
 }

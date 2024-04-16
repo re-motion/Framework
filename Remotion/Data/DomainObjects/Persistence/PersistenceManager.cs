@@ -322,7 +322,7 @@ namespace Remotion.Data.DomainObjects.Persistence
 
       var oppositeEndPointDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition();
       var oppositeProvider =
-          _storageProviderManager.GetMandatory(oppositeEndPointDefinition.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
+          _storageProviderManager.GetMandatory(oppositeEndPointDefinition.TypeDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
 
       SortExpressionDefinition? sortExpression;
       if (relationEndPointDefinition is DomainObjectCollectionRelationEndPointDefinition domainObjectCollectionRelationEndPointDefinition)

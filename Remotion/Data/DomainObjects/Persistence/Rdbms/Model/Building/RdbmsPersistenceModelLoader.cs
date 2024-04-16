@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation;
 using Remotion.FunctionalProgramming;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
@@ -74,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       get { return _rdbmsPersistenceModelProvider; }
     }
 
-    public IPersistenceMappingValidator CreatePersistenceMappingValidator (ClassDefinition classDefinition)
+    public IPersistenceMappingValidator CreatePersistenceMappingValidator (TypeDefinition typeDefinition)
     {
       return new PersistenceMappingValidator(
           new OnlyOneTablePerHierarchyValidationRule(),
@@ -82,56 +83,46 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
           new ClassAboveTableIsAbstractValidationRule(),
           new ColumnNamesAreUniqueWithinInheritanceTreeValidationRule(_rdbmsPersistenceModelProvider),
           new PropertyTypeIsSupportedByStorageProviderValidationRule(),
-          new RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule());
+          new RelationPropertyStorageClassMatchesReferencedTypeDefinitionStorageClassValidationRule());
     }
 
-    public void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition)
+    public void ApplyPersistenceModelToHierarchy (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      ClassDefinition[] derivedClasses = classDefinition.GetAllDerivedClasses();
-      var allClassDefinitions = new[] { classDefinition }.Concat(derivedClasses);
+      InlineTypeDefinitionWalker.WalkDescendants(
+          typeDefinition,
+          EnsureStoragePropertiesCreated,
+          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported.")); // TODO R2I Linq: Add support for interfaces
 
-      // ReSharper disable PossibleMultipleEnumeration - multiple enumeration is okay here.
-      EnsureAllStoragePropertiesCreated(allClassDefinitions);
-      EnsureAllStorageEntitiesCreated(allClassDefinitions);
-      // ReSharper restore PossibleMultipleEnumeration
+      InlineTypeDefinitionWalker.WalkDescendants(
+          typeDefinition,
+          EnsureStorageEntitiesCreated,
+          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported.")); // TODO R2I Linq: Add support for interfaces
     }
 
-    private void EnsureAllStorageEntitiesCreated (IEnumerable<ClassDefinition> classDefinitions)
+    private void EnsureStorageEntitiesCreated (TypeDefinition typeDefinition)
     {
-      foreach (var classDefinition in classDefinitions)
-        EnsureStorageEntitiesCreated(classDefinition);
-    }
-
-    private void EnsureStorageEntitiesCreated (ClassDefinition classDefinition)
-    {
-      if (!classDefinition.HasStorageEntityDefinitionBeenSet)
+      if (!typeDefinition.HasStorageEntityDefinitionBeenSet)
       {
-        var storageEntity = CreateEntityDefinition(classDefinition);
-        classDefinition.SetStorageEntity(storageEntity);
+        var storageEntity = CreateEntityDefinition(typeDefinition);
+        typeDefinition.SetStorageEntity(storageEntity);
       }
-      else if (!(classDefinition.StorageEntityDefinition is IRdbmsStorageEntityDefinition))
+      else if (!(typeDefinition.StorageEntityDefinition is IRdbmsStorageEntityDefinition))
       {
         throw new InvalidOperationException(
             string.Format(
-                "The storage entity definition of class '{0}' does not implement interface '{1}'.",
-                classDefinition.ID,
+                "The storage entity definition of type '{0}' does not implement interface '{1}'.",
+                typeDefinition.Type.GetFullNameSafe(),
                 typeof(IRdbmsStorageEntityDefinition).Name));
       }
 
-      Assertion.DebugIsNotNull(classDefinition.StorageEntityDefinition, "classDefinition.StorageEntityDefinition != null");
+      Assertion.DebugIsNotNull(typeDefinition.StorageEntityDefinition, "typeDefinition.StorageEntityDefinition != null");
     }
 
-    private void EnsureAllStoragePropertiesCreated (IEnumerable<ClassDefinition> classDefinitions)
+    private void EnsureStoragePropertiesCreated (TypeDefinition typeDefinition)
     {
-      foreach (var classDefinition in classDefinitions)
-        EnsureStoragePropertiesCreated(classDefinition);
-    }
-
-    private void EnsureStoragePropertiesCreated (ClassDefinition classDefinition)
-    {
-      foreach (var propertyDefinition in classDefinition.MyPropertyDefinitions.Where(pd => pd.StorageClass == StorageClass.Persistent))
+      foreach (var propertyDefinition in typeDefinition.MyPropertyDefinitions.Where(pd => pd.StorageClass == StorageClass.Persistent))
       {
         if (!propertyDefinition.HasStoragePropertyDefinitionBeenSet)
         {
@@ -142,9 +133,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         {
           throw new InvalidOperationException(
             string.Format(
-                "The property definition '{0}' of class '{1}' does not implement interface '{2}'.",
+                "The property definition '{0}' of type '{1}' does not implement interface '{2}'.",
                 propertyDefinition.PropertyName,
-                classDefinition.ID,
+                typeDefinition.Type.GetFullNameSafe(),
                 typeof(IRdbmsStoragePropertyDefinition).Name));
         }
 
@@ -152,8 +143,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       }
     }
 
-    private IStorageEntityDefinition CreateEntityDefinition (ClassDefinition classDefinition)
+    private IStorageEntityDefinition CreateEntityDefinition (TypeDefinition typeDefinition)
     {
+      if (typeDefinition is not ClassDefinition classDefinition)
+        throw new NotSupportedException("Only class definitions are supported."); // TODO R2I Mapping: property finder support for interfaces
+
       if (_storageNameProvider.GetTableName(classDefinition) != null)
         return _entityDefinitionFactory.CreateTableDefinition(classDefinition);
 

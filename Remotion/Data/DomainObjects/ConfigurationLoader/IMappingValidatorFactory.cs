@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader
   /// </summary>
   public interface IMappingValidatorFactory
   {
-    IClassDefinitionValidator CreateClassDefinitionValidator ();
+    ITypeDefinitionValidator CreateTypeDefinitionValidator ();
     IPropertyDefinitionValidator CreatePropertyDefinitionValidator ();
     IRelationDefinitionValidator CreateRelationDefinitionValidator ();
     ISortExpressionValidator CreateSortExpressionValidator ();

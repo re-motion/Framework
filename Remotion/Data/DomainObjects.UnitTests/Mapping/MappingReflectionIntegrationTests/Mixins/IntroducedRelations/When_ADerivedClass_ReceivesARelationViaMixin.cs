@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     {
       base.SetUp();
 
-      _derivedClass = TypeDefinitions[typeof(Derived)];
-      _relationTarget = TypeDefinitions[typeof(RelationTarget)];
+      _derivedClass = GetClassDefinition(typeof(Derived));
+      _relationTarget = GetClassDefinition(typeof(RelationTarget));
 
       _relationEndPointPropertyInMixin = GetPropertyInformation((MixinAddingRelation m) => m.RelationTarget);
       _relationEndPointPropertyInRelationTarget = GetPropertyInformation((RelationTarget t) => t.Derived);

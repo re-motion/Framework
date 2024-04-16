@@ -26,6 +26,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
   /// </summary>
   public interface IStorageProviderSerializer
   {
-    XElement Serialize (IEnumerable<ClassDefinition> classDefinitions, RdbmsProviderDefinition providerDefinition);
+    XElement Serialize (IEnumerable<TypeDefinition> typeDefinitions, RdbmsProviderDefinition providerDefinition);
   }
 }

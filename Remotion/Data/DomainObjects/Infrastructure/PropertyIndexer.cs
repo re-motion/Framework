@@ -293,7 +293,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public PropertyAccessor Find ([NotNull] string shortPropertyName)
     {
       ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
-      return Find(ClassDefinition.ClassType, shortPropertyName);
+      return Find(ClassDefinition.Type, shortPropertyName);
     }
 
     /// <summary>

@@ -792,7 +792,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       //Note: no reading notification must be performed
       using (var persistenceManager = new PersistenceManager(NullPersistenceExtension.Instance, StorageSettings))
       {
-        ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
+        TypeDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
         IRelationEndPointDefinition orderTicketEndPointDefinition =
             orderDefinition.GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
         persistenceManager.LoadRelatedDataContainer(RelationEndPointID.Create(_order1.ID, orderTicketEndPointDefinition));

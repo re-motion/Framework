@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private readonly StorageProviderDefinition _defaultStorageProviderDefinition;
     private readonly StorageProviderDefinition _nonPersistentProviderDefinition;
-    private readonly ReadOnlyDictionary<Type, ClassDefinition> _typeDefinitions;
+    private readonly ReadOnlyDictionary<Type, TypeDefinition> _typeDefinitions;
     private readonly ReadOnlyDictionary<string, RelationDefinition> _relationDefinitions;
 
     // construction and disposing
@@ -70,11 +70,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       _defaultStorageProviderDefinition = new UnitTestStorageProviderStubDefinition("DefaultStorageProvider");
       _nonPersistentProviderDefinition =
           new NonPersistentProviderDefinition("NonPersistentStorageProvider", new NonPersistentStorageObjectFactory());
-      _typeDefinitions = new ReadOnlyDictionary<Type, ClassDefinition>(CreateClassDefinitions());
+      _typeDefinitions = new ReadOnlyDictionary<Type, TypeDefinition>(CreateTypeDefinitions());
       _relationDefinitions = new ReadOnlyDictionary<string, RelationDefinition>(CreateRelationDefinitions());
 
-      foreach (ClassDefinition classDefinition in _typeDefinitions.Values)
-        classDefinition.SetReadOnly();
+      foreach (var typeDefinition in _typeDefinitions.Values)
+        typeDefinition.SetReadOnly();
     }
 
     // methods and properties
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       get { return _nonPersistentProviderDefinition; }
     }
 
-    public ReadOnlyDictionary<Type, ClassDefinition> TypeDefinitions
+    public ReadOnlyDictionary<Type, TypeDefinition> TypeDefinitions
     {
       get { return _typeDefinitions; }
     }
@@ -99,77 +99,83 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       get { return _relationDefinitions; }
     }
 
+    public ClassDefinition GetClassDefinition (Type type)
+    {
+        return (ClassDefinition)TypeDefinitions[type];
+    }
+
     #region Methods for creating class definitions
 
-    private Dictionary<Type, ClassDefinition> CreateClassDefinitions ()
+    private Dictionary<Type, TypeDefinition> CreateTypeDefinitions ()
     {
-      var classDefinitions = new List<ClassDefinition>();
+      var typeDefinitions = new List<TypeDefinition>();
 
       ClassDefinition company = CreateCompanyDefinition(null);
-      classDefinitions.Add(company);
+      typeDefinitions.Add(company);
 
       ClassDefinition customer = CreateCustomerDefinition(company);
-      classDefinitions.Add(customer);
+      typeDefinitions.Add(customer);
 
       ClassDefinition partner = CreatePartnerDefinition(company);
-      classDefinitions.Add(partner);
+      typeDefinitions.Add(partner);
 
       ClassDefinition supplier = CreateSupplierDefinition(partner);
-      classDefinitions.Add(supplier);
+      typeDefinitions.Add(supplier);
 
       ClassDefinition distributor = CreateDistributorDefinition(partner);
-      classDefinitions.Add(distributor);
+      typeDefinitions.Add(distributor);
 
-      classDefinitions.Add(CreateOrderDefinition(null));
-      classDefinitions.Add(CreateOrderViewModelDefinition(null));
-      classDefinitions.Add(CreateOrderTicketDefinition(null));
-      classDefinitions.Add(CreateOrderItemDefinition(null));
+      typeDefinitions.Add(CreateOrderDefinition(null));
+      typeDefinitions.Add(CreateOrderViewModelDefinition(null));
+      typeDefinitions.Add(CreateOrderTicketDefinition(null));
+      typeDefinitions.Add(CreateOrderItemDefinition(null));
 
-      classDefinitions.Add(CreateProductDefinition(null));
-      classDefinitions.Add(CreateProductReviewDefinition(null));
+      typeDefinitions.Add(CreateProductDefinition(null));
+      typeDefinitions.Add(CreateProductReviewDefinition(null));
 
       ClassDefinition officialDefinition = CreateOfficialDefinition(null);
-      classDefinitions.Add(officialDefinition);
-      classDefinitions.Add(CreateSpecialOfficialDefinition(officialDefinition));
+      typeDefinitions.Add(officialDefinition);
+      typeDefinitions.Add(CreateSpecialOfficialDefinition(officialDefinition));
 
-      classDefinitions.Add(CreateCeoDefinition(null));
-      classDefinitions.Add(CreatePersonDefinition(null));
+      typeDefinitions.Add(CreateCeoDefinition(null));
+      typeDefinitions.Add(CreatePersonDefinition(null));
 
-      classDefinitions.Add(CreateClientDefinition(null));
-      classDefinitions.Add(CreateLocationDefinition(null));
+      typeDefinitions.Add(CreateClientDefinition(null));
+      typeDefinitions.Add(CreateLocationDefinition(null));
 
       ClassDefinition fileSystemItemDefinition = CreateFileSystemItemDefinition(null);
-      classDefinitions.Add(fileSystemItemDefinition);
-      classDefinitions.Add(CreateFolderDefinition(fileSystemItemDefinition));
-      classDefinitions.Add(CreateFileDefinition(fileSystemItemDefinition));
+      typeDefinitions.Add(fileSystemItemDefinition);
+      typeDefinitions.Add(CreateFolderDefinition(fileSystemItemDefinition));
+      typeDefinitions.Add(CreateFileDefinition(fileSystemItemDefinition));
 
-      classDefinitions.Add(CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassDefinition(null));
-      classDefinitions.Add(CreateClassWithAllDataTypesDefinition(null));
-      classDefinitions.Add(CreateClassWithDefaultStorageClassTransaction(null));
-      classDefinitions.Add(CreateClassWithGuidKeyDefinition(null));
-      classDefinitions.Add(CreateClassWithInvalidKeyTypeDefinition(null));
-      classDefinitions.Add(CreateClassWithoutIDColumnDefinition(null));
-      classDefinitions.Add(CreateClassWithoutClassIDColumnDefinition(null));
-      classDefinitions.Add(CreateClassWithoutTimestampColumnDefinition(null));
-      classDefinitions.Add(CreateClassWithValidRelationsDefinition(null));
-      classDefinitions.Add(CreateClassWithInvalidRelationDefinition(null));
-      classDefinitions.Add(CreateIndustrialSectorDefinition(null));
-      classDefinitions.Add(CreateEmployeeDefinition(null));
-      classDefinitions.Add(CreateComputerDefinition(null));
-      classDefinitions.Add(CreateClassWithRelatedClassIDColumnAndNoInheritanceDefinition(null));
+      typeDefinitions.Add(CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassDefinition(null));
+      typeDefinitions.Add(CreateClassWithAllDataTypesDefinition(null));
+      typeDefinitions.Add(CreateClassWithDefaultStorageClassTransaction(null));
+      typeDefinitions.Add(CreateClassWithGuidKeyDefinition(null));
+      typeDefinitions.Add(CreateClassWithInvalidKeyTypeDefinition(null));
+      typeDefinitions.Add(CreateClassWithoutIDColumnDefinition(null));
+      typeDefinitions.Add(CreateClassWithoutClassIDColumnDefinition(null));
+      typeDefinitions.Add(CreateClassWithoutTimestampColumnDefinition(null));
+      typeDefinitions.Add(CreateClassWithValidRelationsDefinition(null));
+      typeDefinitions.Add(CreateClassWithInvalidRelationDefinition(null));
+      typeDefinitions.Add(CreateIndustrialSectorDefinition(null));
+      typeDefinitions.Add(CreateEmployeeDefinition(null));
+      typeDefinitions.Add(CreateComputerDefinition(null));
+      typeDefinitions.Add(CreateClassWithRelatedClassIDColumnAndNoInheritanceDefinition(null));
 
       var targetClassForPersistentMixinDefinition = CreateTargetClassForPersistentMixinDefinition(null);
-      classDefinitions.Add(targetClassForPersistentMixinDefinition);
+      typeDefinitions.Add(targetClassForPersistentMixinDefinition);
       var derivedTargetClassForPersistentMixinDefinition = CreateDerivedTargetClassForPersistentMixinDefinition(targetClassForPersistentMixinDefinition);
-      classDefinitions.Add(derivedTargetClassForPersistentMixinDefinition);
+      typeDefinitions.Add(derivedTargetClassForPersistentMixinDefinition);
       var derivedDerivedTargetClassForPersistentMixinDefinition = CreateDerivedDerivedTargetClassForPersistentMixinDefinition(derivedTargetClassForPersistentMixinDefinition);
-      classDefinitions.Add(derivedDerivedTargetClassForPersistentMixinDefinition);
+      typeDefinitions.Add(derivedDerivedTargetClassForPersistentMixinDefinition);
       var relationTargetForPersistentMixinDefinition = CreateRelationTargetForPersistentMixinDefinition(null);
-      classDefinitions.Add(relationTargetForPersistentMixinDefinition);
+      typeDefinitions.Add(relationTargetForPersistentMixinDefinition);
 
-      CalculateAndSetDerivedClasses(classDefinitions);
+      // TODO R2I Update set logic to also include setting interfaces
+      CalculateAndSetDerivedClasses(typeDefinitions.OfType<ClassDefinition>());
 
-      return classDefinitions.ToDictionary(cd => cd.ClassType);
+      return typeDefinitions.ToDictionary(cd => cd.Type);
     }
 
     private void CalculateAndSetDerivedClasses (IEnumerable<ClassDefinition> classDefinitions)
@@ -189,9 +195,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       }
     }
 
-    private ClassDefinition CreateCompanyDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateCompanyDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
-      ClassDefinition company = CreateClassDefinition("Company", "Company", typeof(Company), false, baseClass);
+      ClassDefinition company = CreateClassDefinition("Company", "Company", typeof(Company), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -203,9 +209,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return company;
     }
 
-    private ClassDefinition CreateCustomerDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateCustomerDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
-      ClassDefinition customer = CreateClassDefinition("Customer", "Company", typeof(Customer), false, baseClass);
+      ClassDefinition customer = CreateClassDefinition("Customer", "Company", typeof(Customer), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -217,9 +223,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return customer;
     }
 
-    private ClassDefinition CreatePartnerDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreatePartnerDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
-      ClassDefinition partner = CreateClassDefinition("Partner", "Company", typeof(Partner), false, baseClass);
+      ClassDefinition partner = CreateClassDefinition("Partner", "Company", typeof(Partner), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -229,9 +235,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return partner;
     }
 
-    private ClassDefinition CreateSupplierDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateSupplierDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
-      ClassDefinition supplier = CreateClassDefinition("Supplier", "Company", typeof(Supplier), false, baseClass);
+      ClassDefinition supplier = CreateClassDefinition("Supplier", "Company", typeof(Supplier), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -241,9 +247,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return supplier;
     }
 
-    private ClassDefinition CreateDistributorDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateDistributorDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
-      ClassDefinition distributor = CreateClassDefinition("Distributor", "Company", typeof(Distributor), false, baseClass);
+      ClassDefinition distributor = CreateClassDefinition("Distributor", "Company", typeof(Distributor), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -253,9 +259,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return distributor;
     }
 
-    private ClassDefinition CreateOrderDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateOrderDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
-      ClassDefinition order = CreateClassDefinition("Order", "Order", typeof(Order), false, baseClass);
+      ClassDefinition order = CreateClassDefinition("Order", "Order", typeof(Order), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -271,10 +277,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return order;
     }
 
-    private ClassDefinition CreateOrderViewModelDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateOrderViewModelDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition orderViewModel = CreateClassDefinitionForNonPersistentProvider(
-          "OrderViewModel", typeof(OrderViewModel), false, baseClass);
+          "OrderViewModel", typeof(OrderViewModel), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -286,10 +292,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return orderViewModel;
     }
 
-    private ClassDefinition CreateOfficialDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateOfficialDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition official = CreateClassDefinition(
-          "Official", "Official", typeof(Official), false, baseClass);
+          "Official", "Official", typeof(Official), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -299,17 +305,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return official;
     }
 
-    private ClassDefinition CreateSpecialOfficialDefinition (ClassDefinition officialDefinition)
+    private ClassDefinition CreateSpecialOfficialDefinition (ClassDefinition officialDefinition, params InterfaceDefinition[] implementedInterfaces)
     {
-      var specialOfficial = CreateClassDefinition("SpecialOfficial", "Official", typeof(SpecialOfficial), false, officialDefinition);
+      var specialOfficial = CreateClassDefinition("SpecialOfficial", "Official", typeof(SpecialOfficial), false, officialDefinition, implementedInterfaces);
       specialOfficial.SetPropertyDefinitions(new PropertyDefinitionCollection());
 
       return specialOfficial;
     }
 
-    private ClassDefinition CreateOrderTicketDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateOrderTicketDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
-      ClassDefinition orderTicket = CreateClassDefinition("OrderTicket", "OrderTicket", typeof(OrderTicket), false, baseClass);
+      ClassDefinition orderTicket = CreateClassDefinition("OrderTicket", "OrderTicket", typeof(OrderTicket), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -323,9 +329,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return orderTicket;
     }
 
-    private ClassDefinition CreateOrderItemDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateOrderItemDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
-      ClassDefinition orderItem = CreateClassDefinition("OrderItem", "OrderItem", typeof(OrderItem), false, baseClass);
+      ClassDefinition orderItem = CreateClassDefinition("OrderItem", "OrderItem", typeof(OrderItem), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -339,9 +345,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return orderItem;
     }
 
-    private ClassDefinition CreateProductDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateProductDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
-      var product = CreateClassDefinition("Product", "Product", typeof(Product), false, baseClass);
+      var product = CreateClassDefinition("Product", "Product", typeof(Product), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -353,9 +359,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return product;
     }
 
-    private ClassDefinition CreateProductReviewDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateProductReviewDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
-      var productReview = CreateClassDefinition("ProductReview", "ProductReview", typeof(ProductReview), false, baseClass);
+      var productReview = CreateClassDefinition("ProductReview", "ProductReview", typeof(ProductReview), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -371,10 +377,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return productReview;
     }
 
-    private ClassDefinition CreateCeoDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateCeoDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition ceo = CreateClassDefinition(
-          "Ceo", "Ceo", typeof(Ceo), false, baseClass);
+          "Ceo", "Ceo", typeof(Ceo), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -387,10 +393,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return ceo;
     }
 
-    private ClassDefinition CreatePersonDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreatePersonDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition person = CreateClassDefinition(
-          "Person", "Person", typeof(Person), false, baseClass);
+          "Person", "Person", typeof(Person), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -401,10 +407,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return person;
     }
 
-    private ClassDefinition CreateClientDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateClientDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition client = CreateClassDefinition(
-          "Client", "Client", typeof(Client), false, baseClass);
+          "Client", "Client", typeof(Client), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -414,10 +420,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return client;
     }
 
-    private ClassDefinition CreateLocationDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateLocationDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition location = CreateClassDefinition(
-          "Location", "Location", typeof(Location), false, baseClass);
+          "Location", "Location", typeof(Location), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -427,10 +433,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return location;
     }
 
-    private ClassDefinition CreateFileSystemItemDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateFileSystemItemDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition fileSystemItem = CreateClassDefinition(
-          "FileSystemItem", "FileSystemItem", typeof(FileSystemItem), false, baseClass);
+          "FileSystemItem", "FileSystemItem", typeof(FileSystemItem), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -440,28 +446,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return fileSystemItem;
     }
 
-    private ClassDefinition CreateFolderDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateFolderDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition folder = CreateClassDefinition(
-          "Folder", "FileSystemItem", typeof(Folder), false, baseClass);
+          "Folder", "FileSystemItem", typeof(Folder), false, baseClass, implementedInterfaces);
       folder.SetPropertyDefinitions(new PropertyDefinitionCollection());
 
       return folder;
     }
 
-    private ClassDefinition CreateFileDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateFileDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition file = CreateClassDefinition(
-          "File", "FileSystemItem", typeof(File), false, baseClass);
+          "File", "FileSystemItem", typeof(File), false, baseClass, implementedInterfaces);
       file.SetPropertyDefinitions(new PropertyDefinitionCollection());
 
       return file;
     }
 
     //TODO: remove Date and NaDate properties
-    private ClassDefinition CreateClassWithAllDataTypesDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateClassWithAllDataTypesDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
-      ClassDefinition classWithAllDataTypes = CreateClassDefinition("ClassWithAllDataTypes", "TableWithAllDataTypes", typeof(ClassWithAllDataTypes), false, baseClass);
+      ClassDefinition classWithAllDataTypes = CreateClassDefinition("ClassWithAllDataTypes", "TableWithAllDataTypes", typeof(ClassWithAllDataTypes), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -568,14 +574,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return classWithAllDataTypes;
     }
 
-    private ClassDefinition CreateClassWithDefaultStorageClassTransaction (ClassDefinition baseClass)
+    private ClassDefinition CreateClassWithDefaultStorageClassTransaction (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition classDefinition = CreateClassDefinition(
           "ClassWithDefaultStorageClassTransaction",
           "TableWithDefaultStorageClassTransaction",
           typeof(ClassWithDefaultStorageClassTransaction),
           false,
-          baseClass);
+          baseClass,
+          implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -589,59 +596,63 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithGuidKeyDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateClassWithGuidKeyDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition classDefinition = CreateClassDefinition(
           "ClassWithGuidKey",
           "TableWithGuidKey",
           typeof(ClassWithGuidKey),
           false,
-          baseClass);
+          baseClass,
+          implementedInterfaces);
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithInvalidKeyTypeDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateClassWithInvalidKeyTypeDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition classDefinition = CreateClassDefinition(
           "ClassWithKeyOfInvalidType",
           "TableWithKeyOfInvalidType",
           typeof(ClassWithKeyOfInvalidType),
           false,
-          baseClass);
+          baseClass,
+          implementedInterfaces);
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutIDColumnDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateClassWithoutIDColumnDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition classDefinition = CreateClassDefinition(
           "ClassWithoutIDColumn",
           "TableWithoutIDColumn",
           typeof(ClassWithoutIDColumn),
           false,
-          baseClass);
+          baseClass,
+          implementedInterfaces);
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutClassIDColumnDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateClassWithoutClassIDColumnDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition classDefinition = CreateClassDefinition(
           "ClassWithoutClassIDColumn",
           "TableWithoutClassIDColumn",
           typeof(ClassWithoutClassIDColumn),
           false,
-          baseClass);
+          baseClass,
+          implementedInterfaces);
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutTimestampColumnDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateClassWithoutTimestampColumnDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition classDefinition =
           CreateClassDefinition(
@@ -649,20 +660,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               "TableWithoutTimestampColumn",
               typeof(ClassWithoutTimestampColumn),
               false,
-              baseClass);
+              baseClass,
+              implementedInterfaces);
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithValidRelationsDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateClassWithValidRelationsDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition classDefinition = CreateClassDefinition(
           "ClassWithValidRelations",
           "TableWithValidRelations",
           typeof(ClassWithValidRelations),
           false,
-          baseClass);
+          baseClass,
+          implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -675,14 +688,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithInvalidRelationDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateClassWithInvalidRelationDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition classDefinition = CreateClassDefinition(
           "ClassWithInvalidRelation",
           "TableWithInvalidRelation",
           typeof(ClassWithInvalidRelation),
           false,
-          baseClass);
+          baseClass,
+          implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -692,7 +706,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition classDefinition =
           CreateClassDefinition(
@@ -700,7 +714,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               "TableWithOptionalOneToOneRelationAndOppositeDerivedClass",
               typeof(ClassWithOptionalOneToOneRelationAndOppositeDerivedClass),
               false,
-              baseClass);
+              baseClass,
+              implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -710,9 +725,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return classDefinition;
     }
 
-    private ClassDefinition CreateIndustrialSectorDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateIndustrialSectorDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
-      ClassDefinition industrialSector = CreateClassDefinition("IndustrialSector", "IndustrialSector", typeof(IndustrialSector), false, baseClass);
+      ClassDefinition industrialSector = CreateClassDefinition("IndustrialSector", "IndustrialSector", typeof(IndustrialSector), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -723,9 +738,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return industrialSector;
     }
 
-    private ClassDefinition CreateEmployeeDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateEmployeeDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
-      ClassDefinition employee = CreateClassDefinition("Employee", "Employee", typeof(Employee), false, baseClass);
+      ClassDefinition employee = CreateClassDefinition("Employee", "Employee", typeof(Employee), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -738,7 +753,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return employee;
     }
 
-    private ClassDefinition CreateTargetClassForPersistentMixinDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateTargetClassForPersistentMixinDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition targetClassForPersistentMixin = CreateClassDefinition(
           "TargetClassForPersistentMixin",
@@ -746,6 +761,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           typeof(TargetClassForPersistentMixin),
           false,
           baseClass,
+          implementedInterfaces,
           typeof(MixinAddingPersistentProperties));
 
       var properties = new List<PropertyDefinition>();
@@ -772,35 +788,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return targetClassForPersistentMixin;
     }
 
-    private ClassDefinition CreateDerivedTargetClassForPersistentMixinDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateDerivedTargetClassForPersistentMixinDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition derivedTargetClassForPersistentMixin = CreateClassDefinition(
           "DerivedTargetClassForPersistentMixin",
           "MixedDomains_Target",
           typeof(DerivedTargetClassForPersistentMixin),
           false,
-          baseClass);
+          baseClass,
+          implementedInterfaces);
       derivedTargetClassForPersistentMixin.SetPropertyDefinitions(new PropertyDefinitionCollection());
 
       return derivedTargetClassForPersistentMixin;
     }
 
-    private ClassDefinition CreateDerivedDerivedTargetClassForPersistentMixinDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateDerivedDerivedTargetClassForPersistentMixinDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition derivedDerivedTargetClassForPersistentMixin = CreateClassDefinition(
           "DerivedDerivedTargetClassForPersistentMixin",
           "MixedDomains_Target",
           typeof(DerivedDerivedTargetClassForPersistentMixin),
           false,
-          baseClass);
+          baseClass,
+          implementedInterfaces);
       derivedDerivedTargetClassForPersistentMixin.SetPropertyDefinitions(new PropertyDefinitionCollection());
 
       return derivedDerivedTargetClassForPersistentMixin;
     }
 
-    private ClassDefinition CreateComputerDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateComputerDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
-      ClassDefinition computer = CreateClassDefinition("Computer", "Computer", typeof(Computer), false, baseClass);
+      ClassDefinition computer = CreateClassDefinition("Computer", "Computer", typeof(Computer), false, baseClass, implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -818,7 +836,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return computer;
     }
 
-    private ClassDefinition CreateClassWithRelatedClassIDColumnAndNoInheritanceDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateClassWithRelatedClassIDColumnAndNoInheritanceDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition classDefinition =
           CreateClassDefinition(
@@ -826,7 +844,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               "TableWithRelatedClassIDColumnAndNoInheritance",
               typeof(ClassWithRelatedClassIDColumnAndNoInheritance),
               false,
-              baseClass);
+              baseClass,
+              implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -836,14 +855,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return classDefinition;
     }
 
-    private ClassDefinition CreateRelationTargetForPersistentMixinDefinition (ClassDefinition baseClass)
+    private ClassDefinition CreateRelationTargetForPersistentMixinDefinition (ClassDefinition baseClass, params InterfaceDefinition[] implementedInterfaces)
     {
       ClassDefinition relationTargetForPersistentMixinDefinition = CreateClassDefinition(
           "RelationTargetForPersistentMixin",
           "MixedDomains_RelationTarget",
           typeof(RelationTargetForPersistentMixin),
           false,
-          baseClass);
+          baseClass,
+          implementedInterfaces);
 
       var properties = new List<PropertyDefinition>();
       properties.Add(
@@ -873,6 +893,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         Type classType,
         bool isAbstract,
         ClassDefinition baseClass,
+        IEnumerable<InterfaceDefinition> implementedInterfaces,
         params Type[] persistentMixins)
     {
       // Don't use ClassDefinitionObjectMother: since this configuration is compared with the actual configuration, we must exactly define 
@@ -882,6 +903,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           classType,
           isAbstract,
           baseClass,
+          implementedInterfaces,
           null,
           DefaultStorageClass.Persistent,
           new PersistentMixinFinderStub(classType, persistentMixins),
@@ -895,6 +917,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         Type classType,
         bool isAbstract,
         ClassDefinition baseClass,
+        IEnumerable<InterfaceDefinition> implementedInterfaces,
         params Type[] persistentMixins)
     {
       // Don't use ClassDefinitionObjectMother: since this configuration is compared with the actual configuration, we must exactly define 
@@ -904,6 +927,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           classType,
           isAbstract,
           baseClass,
+          implementedInterfaces,
           null,
           DefaultStorageClass.Transaction,
           new PersistentMixinFinderStub(classType, persistentMixins),
@@ -1007,7 +1031,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var relationsByClass = (from relationDefinition in relationDefinitions
                               from endPoint in relationDefinition.EndPointDefinitions
                               where !endPoint.IsAnonymous
-                              group endPoint by endPoint.ClassDefinition)
+                              group endPoint by endPoint.TypeDefinition)
                              .ToDictionary(grouping => grouping.Key, grouping => (IEnumerable<IRelationEndPointDefinition>)grouping);
 
       foreach (var classDefinition in _typeDefinitions.Values)
@@ -1048,12 +1072,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateOrderToOrderTicketRelationDefinition ()
     {
-      ClassDefinition orderClass = _typeDefinitions[typeof(Order)];
+      var orderClass = _typeDefinitions[typeof(Order)];
       VirtualObjectRelationEndPointDefinition endPoint1 =
           VirtualObjectRelationEndPointDefinitionFactory.Create(
               orderClass, "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderTicket", true, typeof(OrderTicket));
 
-      ClassDefinition orderTicketClass = _typeDefinitions[typeof(OrderTicket)];
+      var orderTicketClass = _typeDefinitions[typeof(OrderTicket)];
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition(
           orderTicketClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderTicket.Order"], true);
 
@@ -1067,7 +1091,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateOrderToOrderItemRelationDefinition ()
     {
-      ClassDefinition orderClass = _typeDefinitions[typeof(Order)];
+      var orderClass = _typeDefinitions[typeof(Order)];
       DomainObjectCollectionRelationEndPointDefinition endPoint1 =
           DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
               orderClass,
@@ -1075,7 +1099,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               true,
               typeof(ObjectList<OrderItem>));
 
-      ClassDefinition orderItemClass = _typeDefinitions[typeof(OrderItem)];
+      var orderItemClass = _typeDefinitions[typeof(OrderItem)];
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition(
           orderItemClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderItem.Order"], true);
 
@@ -1177,13 +1201,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateCompanyToCeoRelationDefinition ()
     {
-      ClassDefinition companyClass = _typeDefinitions[typeof(Company)];
+      var companyClass = _typeDefinitions[typeof(Company)];
 
       VirtualObjectRelationEndPointDefinition endPoint1 =
           VirtualObjectRelationEndPointDefinitionFactory.Create(
               companyClass, "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.Ceo", true, typeof(Ceo));
 
-      ClassDefinition ceoClass = _typeDefinitions[typeof(Ceo)];
+      var ceoClass = _typeDefinitions[typeof(Ceo)];
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition(
           ceoClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Ceo.Company"], true);
@@ -1197,11 +1221,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreatePartnerToPersonRelationDefinition ()
     {
-      ClassDefinition partnerClass = _typeDefinitions[typeof(Partner)];
+      var partnerClass = _typeDefinitions[typeof(Partner)];
       RelationEndPointDefinition endPoint1 = new RelationEndPointDefinition(
           partnerClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Partner.ContactPerson"], true);
 
-      ClassDefinition personClass = _typeDefinitions[typeof(Person)];
+      var personClass = _typeDefinitions[typeof(Person)];
       VirtualObjectRelationEndPointDefinition endPoint2 =
           VirtualObjectRelationEndPointDefinitionFactory.Create(
               personClass,
@@ -1219,7 +1243,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateParentClientToChildClientRelationDefinition ()
     {
-      ClassDefinition clientClass = _typeDefinitions[typeof(Client)];
+      var clientClass = _typeDefinitions[typeof(Client)];
 
       AnonymousRelationEndPointDefinition endPoint1 = new AnonymousRelationEndPointDefinition(clientClass);
       RelationEndPointDefinition endPoint2 =
@@ -1233,8 +1257,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateClientToLocationRelationDefinition ()
     {
-      ClassDefinition clientClass = _typeDefinitions[typeof(Client)];
-      ClassDefinition locationClass = _typeDefinitions[typeof(Location)];
+      var clientClass = _typeDefinitions[typeof(Client)];
+      var locationClass = _typeDefinitions[typeof(Location)];
 
       AnonymousRelationEndPointDefinition endPoint1 = new AnonymousRelationEndPointDefinition(clientClass);
 
@@ -1249,11 +1273,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateFolderToFileSystemItemRelationDefinition ()
     {
-      ClassDefinition fileSystemItemClass = _typeDefinitions[typeof(FileSystemItem)];
+      var fileSystemItemClass = _typeDefinitions[typeof(FileSystemItem)];
       RelationEndPointDefinition endPoint1 = new RelationEndPointDefinition(
           fileSystemItemClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.FileSystemItem.ParentFolder"], false);
 
-      ClassDefinition folderClass = _typeDefinitions[typeof(Folder)];
+      var folderClass = _typeDefinitions[typeof(Folder)];
       DomainObjectCollectionRelationEndPointDefinition endPoint2 =
           DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
               folderClass,
@@ -1271,8 +1295,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateCompanyToClassWithOptionalOneToOneRelationAndOppositeDerivedClassRelationDefinition ()
     {
-      ClassDefinition companyClass = _typeDefinitions[typeof(Company)];
-      ClassDefinition classWithOptionalOneToOneRelationAndOppositeDerivedClass =
+      var companyClass = _typeDefinitions[typeof(Company)];
+      var classWithOptionalOneToOneRelationAndOppositeDerivedClass =
           _typeDefinitions[typeof(ClassWithOptionalOneToOneRelationAndOppositeDerivedClass)];
 
       AnonymousRelationEndPointDefinition endPoint1 = new AnonymousRelationEndPointDefinition(companyClass);
@@ -1294,7 +1318,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateClassWithGuidKeyToClassWithValidRelationsOptional ()
     {
-      ClassDefinition classWithGuidKey = _typeDefinitions[typeof(ClassWithGuidKey)];
+      var classWithGuidKey = _typeDefinitions[typeof(ClassWithGuidKey)];
       VirtualObjectRelationEndPointDefinition endPoint1 =
           VirtualObjectRelationEndPointDefinitionFactory.Create(
               classWithGuidKey,
@@ -1302,7 +1326,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               false,
               typeof(ClassWithValidRelations));
 
-      ClassDefinition classWithValidRelations = _typeDefinitions[typeof(ClassWithValidRelations)];
+      var classWithValidRelations = _typeDefinitions[typeof(ClassWithValidRelations)];
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition(
           classWithValidRelations["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithValidRelations.ClassWithGuidKeyOptional"], false);
 
@@ -1319,7 +1343,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateClassWithGuidKeyToClassWithValidRelationsNonOptional ()
     {
-      ClassDefinition classWithGuidKey = _typeDefinitions[typeof(ClassWithGuidKey)];
+      var classWithGuidKey = _typeDefinitions[typeof(ClassWithGuidKey)];
       VirtualObjectRelationEndPointDefinition endPoint1 =
           VirtualObjectRelationEndPointDefinitionFactory.Create(
               classWithGuidKey,
@@ -1327,7 +1351,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               true,
               typeof(ClassWithValidRelations));
 
-      ClassDefinition classWithValidRelations = _typeDefinitions[typeof(ClassWithValidRelations)];
+      var classWithValidRelations = _typeDefinitions[typeof(ClassWithValidRelations)];
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition(
           classWithValidRelations["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithValidRelations.ClassWithGuidKeyNonOptional"], true);
 
@@ -1344,7 +1368,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateClassWithGuidKeyToClassWithInvalidRelation ()
     {
-      ClassDefinition classWithGuidKey = _typeDefinitions[typeof(ClassWithGuidKey)];
+      var classWithGuidKey = _typeDefinitions[typeof(ClassWithGuidKey)];
       VirtualObjectRelationEndPointDefinition endPoint1 =
           VirtualObjectRelationEndPointDefinitionFactory.Create(
               classWithGuidKey,
@@ -1352,7 +1376,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               false,
               typeof(ClassWithInvalidRelation));
 
-      ClassDefinition classWithInvalidRelation = _typeDefinitions[typeof(ClassWithInvalidRelation)];
+      var classWithInvalidRelation = _typeDefinitions[typeof(ClassWithInvalidRelation)];
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition(
           classWithInvalidRelation["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithInvalidRelation.ClassWithGuidKey"], false);
 
@@ -1369,7 +1393,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateClassWithGuidKeyToClassWithRelatedClassIDColumnAndNoInheritanceRelation ()
     {
-      ClassDefinition classWithGuidKey = _typeDefinitions[typeof(ClassWithGuidKey)];
+      var classWithGuidKey = _typeDefinitions[typeof(ClassWithGuidKey)];
       VirtualObjectRelationEndPointDefinition endPoint1 =
           VirtualObjectRelationEndPointDefinitionFactory.Create(
               classWithGuidKey,
@@ -1377,7 +1401,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               false,
               typeof(ClassWithRelatedClassIDColumnAndNoInheritance));
 
-      ClassDefinition classWithRelatedClassIDColumnAndNoInheritance = _typeDefinitions[typeof(ClassWithRelatedClassIDColumnAndNoInheritance)];
+      var classWithRelatedClassIDColumnAndNoInheritance = _typeDefinitions[typeof(ClassWithRelatedClassIDColumnAndNoInheritance)];
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition(
           classWithRelatedClassIDColumnAndNoInheritance[
           "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithRelatedClassIDColumnAndNoInheritance.ClassWithGuidKey"],
@@ -1396,7 +1420,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateIndustrialSectorToCompanyRelationDefinition ()
     {
-      ClassDefinition industrialSectorClass = _typeDefinitions[typeof(IndustrialSector)];
+      var industrialSectorClass = _typeDefinitions[typeof(IndustrialSector)];
 
       DomainObjectCollectionRelationEndPointDefinition endPoint1 =
           DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
@@ -1405,7 +1429,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               true,
               typeof(ObjectList<Company>));
 
-      ClassDefinition companyClass = _typeDefinitions[typeof(Company)];
+      var companyClass = _typeDefinitions[typeof(Company)];
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition(
           companyClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.IndustrialSector"], false);
@@ -1421,7 +1445,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateSupervisorToSubordinateRelationDefinition ()
     {
-      ClassDefinition employeeClass = _typeDefinitions[typeof(Employee)];
+      var employeeClass = _typeDefinitions[typeof(Employee)];
 
       DomainObjectCollectionRelationEndPointDefinition endPoint1 =
           DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
@@ -1443,13 +1467,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateEmployeeToComputerRelationDefinition ()
     {
-      ClassDefinition employeeClass = _typeDefinitions[typeof(Employee)];
+      var employeeClass = _typeDefinitions[typeof(Employee)];
 
       VirtualObjectRelationEndPointDefinition endPoint1 =
           VirtualObjectRelationEndPointDefinitionFactory.Create(
               employeeClass, "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Employee.Computer", false, typeof(Computer));
 
-      ClassDefinition computerClass = _typeDefinitions[typeof(Computer)];
+      var computerClass = _typeDefinitions[typeof(Computer)];
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition(
           computerClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Computer.Employee"], false);
@@ -1464,13 +1488,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateTargetClassForPersistentMixinMixedUnidirectionalRelationDefinition ()
     {
-      ClassDefinition mixedClass = _typeDefinitions[typeof(TargetClassForPersistentMixin)];
+      var mixedClass = _typeDefinitions[typeof(TargetClassForPersistentMixin)];
 
       RelationEndPointDefinition endPoint1 = new RelationEndPointDefinition(
           mixedClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping.MixinAddingPersistentProperties.UnidirectionalRelationProperty"],
           false);
 
-      ClassDefinition relatedClass = _typeDefinitions[typeof(RelationTargetForPersistentMixin)];
+      var relatedClass = _typeDefinitions[typeof(RelationTargetForPersistentMixin)];
 
       AnonymousRelationEndPointDefinition endPoint2 = new AnonymousRelationEndPointDefinition(relatedClass);
 
@@ -1485,13 +1509,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateTargetClassForPersistentMixinMixedRelationPropertyRelationDefinition ()
     {
-      ClassDefinition mixedClass = _typeDefinitions[typeof(TargetClassForPersistentMixin)];
+      var mixedClass = _typeDefinitions[typeof(TargetClassForPersistentMixin)];
 
       RelationEndPointDefinition endPoint1 = new RelationEndPointDefinition(
           mixedClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping.MixinAddingPersistentProperties.RelationProperty"],
           false);
 
-      ClassDefinition relatedClass = _typeDefinitions[typeof(RelationTargetForPersistentMixin)];
+      var relatedClass = _typeDefinitions[typeof(RelationTargetForPersistentMixin)];
 
       var endPoint2 = VirtualObjectRelationEndPointDefinitionFactory.Create(
           relatedClass,
@@ -1511,7 +1535,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateTargetClassForPersistentMixinMixedVirtualRelationPropertyRelationDefinition ()
     {
-      ClassDefinition mixedClass = _typeDefinitions[typeof(TargetClassForPersistentMixin)];
+      var mixedClass = _typeDefinitions[typeof(TargetClassForPersistentMixin)];
 
       var endPoint1 = VirtualObjectRelationEndPointDefinitionFactory.Create(
           mixedClass,
@@ -1519,7 +1543,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           false,
           typeof(RelationTargetForPersistentMixin));
 
-      ClassDefinition relatedClass = _typeDefinitions[typeof(RelationTargetForPersistentMixin)];
+      var relatedClass = _typeDefinitions[typeof(RelationTargetForPersistentMixin)];
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition(
           relatedClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping.RelationTargetForPersistentMixin.RelationProperty2"],
@@ -1537,7 +1561,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateTargetClassForPersistentMixinMixedCollectionProperty1SideCreateTargetClassForPersistentMixinMixedCollectionPropertyRelationDefinition ()
     {
-      ClassDefinition mixedClass = _typeDefinitions[typeof(TargetClassForPersistentMixin)];
+      var mixedClass = _typeDefinitions[typeof(TargetClassForPersistentMixin)];
 
       var endPoint1 = DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
           mixedClass,
@@ -1545,7 +1569,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           false,
           typeof(ObjectList<RelationTargetForPersistentMixin>));
 
-      ClassDefinition relatedClass = _typeDefinitions[typeof(RelationTargetForPersistentMixin)];
+      var relatedClass = _typeDefinitions[typeof(RelationTargetForPersistentMixin)];
 
       RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition(
           relatedClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping.RelationTargetForPersistentMixin.RelationProperty3"],
@@ -1563,13 +1587,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private RelationDefinition CreateTargetClassForPersistentMixinMixedCollectionPropertyNSideRelationDefinition ()
     {
-      ClassDefinition mixedClass = _typeDefinitions[typeof(TargetClassForPersistentMixin)];
+      var mixedClass = _typeDefinitions[typeof(TargetClassForPersistentMixin)];
 
       RelationEndPointDefinition endPoint1 = new RelationEndPointDefinition(
           mixedClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping.MixinAddingPersistentProperties.CollectionPropertyNSide"],
           false);
 
-      ClassDefinition relatedClass = _typeDefinitions[typeof(RelationTargetForPersistentMixin)];
+      var relatedClass = _typeDefinitions[typeof(RelationTargetForPersistentMixin)];
 
       var endPoint2 = DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
           relatedClass,

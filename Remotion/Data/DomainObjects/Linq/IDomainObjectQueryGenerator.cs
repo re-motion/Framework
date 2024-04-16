@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Linq
   public interface IDomainObjectQueryGenerator
   {
     /// <summary>
-    /// Creates an <see cref="IExecutableQuery{T}"/> object for a given <see cref="ClassDefinition"/> based on the given <see cref="QueryModel"/>.
+    /// Creates an <see cref="IExecutableQuery{T}"/> object for a given <see cref="TypeDefinition"/> based on the given <see cref="QueryModel"/>.
     /// </summary>
     /// <param name="id">The identifier for the resulting query.</param>
     /// <param name="storageProviderDefinition">The <see cref="StorageProvider"/> for the query.</param>
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Linq
     IExecutableQuery<T> CreateScalarQuery<T> (string id, StorageProviderDefinition storageProviderDefinition, QueryModel queryModel);
 
     /// <summary>
-    /// Creates an <see cref="IExecutableQuery{T}"/> collection for a given <see cref="ClassDefinition"/> based on the given <see cref="QueryModel"/>.
+    /// Creates an <see cref="IExecutableQuery{T}"/> collection for a given <see cref="TypeDefinition"/> based on the given <see cref="QueryModel"/>.
     /// </summary>
     /// <param name="id">The identifier for the resulting query.</param>
     /// <param name="storageProviderDefinition">The <see cref="StorageProvider"/> for the query.</param>

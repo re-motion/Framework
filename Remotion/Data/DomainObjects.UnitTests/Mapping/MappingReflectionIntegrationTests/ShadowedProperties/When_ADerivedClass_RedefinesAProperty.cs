@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     {
       base.SetUp();
 
-      _derivedClassDefinition = TypeDefinitions[typeof(Shadower)];
+      _derivedClassDefinition = GetClassDefinition(typeof(Shadower));
       _baseClassDefinition = _derivedClassDefinition.BaseClass;
 
       _basePropertyInfo = GetPropertyInformation((Base b) => b.Name);

@@ -35,14 +35,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
   [TestFixture]
   public class ReflectionUtilityTest : StandardMappingTest
   {
-    private ClassDefinition _classDefinitionWithMixedProperty;
+    private TypeDefinition _typeDefinitionWithMixedProperty;
 
     [SetUp]
     public override void SetUp ()
     {
       base.SetUp();
-      _classDefinitionWithMixedProperty =
-          ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(ClassWithMixedProperty), typeof(MixinAddingProperty));
+      _typeDefinitionWithMixedProperty =
+          TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(ClassWithMixedProperty), typeof(MixinAddingProperty));
     }
 
     [Test]
@@ -246,7 +246,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var property = PropertyInfoAdapter.Create(typeof(ClassWithMixedProperty).GetProperty("PublicNonMixedProperty"));
 
-      var result = ReflectionUtility.GetDeclaringDomainObjectTypeForProperty(property, _classDefinitionWithMixedProperty);
+      var result = ReflectionUtility.GetDeclaringDomainObjectTypeForProperty(property, _typeDefinitionWithMixedProperty);
 
       Assert.That(result, Is.SameAs(typeof(ClassWithMixedProperty)));
     }
@@ -256,7 +256,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var property = PropertyInfoAdapter.Create(typeof(MixinAddingProperty).GetProperty("MixedProperty"));
 
-      var result = ReflectionUtility.GetDeclaringDomainObjectTypeForProperty(property, _classDefinitionWithMixedProperty);
+      var result = ReflectionUtility.GetDeclaringDomainObjectTypeForProperty(property, _typeDefinitionWithMixedProperty);
 
       Assert.That(result, Is.SameAs(typeof(ClassWithMixedProperty)));
     }
@@ -266,7 +266,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var property = PropertyInfoAdapter.Create(typeof(ClassWithMixedProperty).GetProperty("PublicNonMixedProperty"));
 
-      var result = ReflectionUtility.IsMixedProperty(property, _classDefinitionWithMixedProperty);
+      var result = ReflectionUtility.IsMixedProperty(property, _typeDefinitionWithMixedProperty);
 
       Assert.That(result, Is.False);
     }
@@ -276,7 +276,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var property = PropertyInfoAdapter.Create(typeof(MixinAddingProperty).GetProperty("MixedProperty"));
 
-      var result = ReflectionUtility.IsMixedProperty(property, _classDefinitionWithMixedProperty);
+      var result = ReflectionUtility.IsMixedProperty(property, _typeDefinitionWithMixedProperty);
 
       Assert.That(result, Is.True);
     }

@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent.Model;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
@@ -41,64 +42,53 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
       StorageProviderDefinition = storageProviderDefinition;
     }
 
-    public IPersistenceMappingValidator CreatePersistenceMappingValidator (ClassDefinition classDefinition)
+    public IPersistenceMappingValidator CreatePersistenceMappingValidator (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
       return new PersistenceMappingValidator(
           new PropertyStorageClassIsSupportedByStorageProviderValidationRule(),
-          new RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule());
+          new RelationPropertyStorageClassMatchesReferencedTypeDefinitionStorageClassValidationRule());
     }
 
-    public void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition)
+    public void ApplyPersistenceModelToHierarchy (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
+      InlineTypeDefinitionWalker.WalkDescendants(
+          typeDefinition,
+          EnsureStoragePropertiesCreated,
+          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported.")); // TODO R2I Linq: Add support for interfaces
 
-      ClassDefinition[] derivedClasses = classDefinition.GetAllDerivedClasses();
-      var allClassDefinitions = new[] { classDefinition }.Concat(derivedClasses);
-
-      // ReSharper disable PossibleMultipleEnumeration - multiple enumeration is okay here.
-      EnsureAllStoragePropertiesCreated(allClassDefinitions);
-      EnsureAllStorageEntitiesCreated(allClassDefinitions);
-      // ReSharper restore PossibleMultipleEnumeration
+      InlineTypeDefinitionWalker.WalkDescendants(
+          typeDefinition,
+          EnsureStorageEntitiesCreated,
+          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported.")); // TODO R2I Linq: Add support for interfaces
     }
 
-    private void EnsureAllStorageEntitiesCreated (IEnumerable<ClassDefinition> classDefinitions)
+    private void EnsureStorageEntitiesCreated (TypeDefinition typeDefinition)
     {
-      foreach (var classDefinition in classDefinitions)
-        EnsureStorageEntitiesCreated(classDefinition);
-    }
-
-    private void EnsureStorageEntitiesCreated (ClassDefinition classDefinition)
-    {
-      if (!classDefinition.HasStorageEntityDefinitionBeenSet)
+      if (!typeDefinition.HasStorageEntityDefinitionBeenSet)
       {
-        var storageEntity = CreateEntityDefinition(classDefinition);
-        classDefinition.SetStorageEntity(storageEntity);
+        var storageEntity = CreateEntityDefinition(typeDefinition);
+        typeDefinition.SetStorageEntity(storageEntity);
       }
-      else if (!classDefinition.IsNonPersistent())
+      else if (!typeDefinition.IsNonPersistent())
       {
         throw new InvalidOperationException(
             string.Format(
-                "The storage entity definition of class '{0}' is not of type '{1}'.",
-                classDefinition.ID,
+                "The storage entity definition of type '{0}' is not of type '{1}'.",
+                typeDefinition.Type.GetFullNameSafe(),
                 typeof(NonPersistentStorageEntity).Name));
       }
 
-      Assertion.DebugIsNotNull(classDefinition.StorageEntityDefinition, "classDefinition.StorageEntityDefinition != null");
-      Assertion.DebugAssert(classDefinition.StorageEntityDefinition is NonPersistentStorageEntity, "classDefinition.StorageEntityDefinition is NonPersistentStorageEntity");
+      Assertion.DebugIsNotNull(typeDefinition.StorageEntityDefinition, "typeDefinition.StorageEntityDefinition != null");
+      Assertion.DebugAssert(typeDefinition.StorageEntityDefinition is NonPersistentStorageEntity, "classDefinition.StorageEntityDefinition is NonPersistentStorageEntity");
     }
 
-    private void EnsureAllStoragePropertiesCreated (IEnumerable<ClassDefinition> classDefinitions)
+    private void EnsureStoragePropertiesCreated (TypeDefinition typeDefinition)
     {
-      foreach (var classDefinition in classDefinitions)
-        EnsureStoragePropertiesCreated(classDefinition);
-    }
-
-    private void EnsureStoragePropertiesCreated (ClassDefinition classDefinition)
-    {
-      foreach (var propertyDefinition in classDefinition.MyPropertyDefinitions.Where(pd => pd.StorageClass == StorageClass.Persistent))
+      foreach (var propertyDefinition in typeDefinition.MyPropertyDefinitions.Where(pd => pd.StorageClass == StorageClass.Persistent))
       {
         if (!propertyDefinition.HasStoragePropertyDefinitionBeenSet)
         {
@@ -108,9 +98,9 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
         {
           throw new InvalidOperationException(
               string.Format(
-                  "The property definition '{0}' of class '{1}' has a storage property type of '{2}' when only '{3}' is supported.",
+                  "The property definition '{0}' of type '{1}' has a storage property type of '{2}' when only '{3}' is supported.",
                   propertyDefinition.PropertyName,
-                  classDefinition.ID,
+                  typeDefinition.Type.GetFullNameSafe(),
                   propertyDefinition.StoragePropertyDefinition.GetType(),
                   typeof(NonPersistentStorageProperty).Name));
         }
@@ -119,7 +109,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
       }
     }
 
-    private IStorageEntityDefinition CreateEntityDefinition (ClassDefinition classDefinition)
+    private IStorageEntityDefinition CreateEntityDefinition (TypeDefinition typeDefinition)
     {
       return new NonPersistentStorageEntity(StorageProviderDefinition);
     }

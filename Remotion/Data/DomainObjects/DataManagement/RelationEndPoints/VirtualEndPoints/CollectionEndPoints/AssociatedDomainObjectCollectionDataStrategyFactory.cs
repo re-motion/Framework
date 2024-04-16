@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull("endPointID", endPointID);
 
-      var requiredItemType = endPointID.Definition.GetOppositeEndPointDefinition().ClassDefinition.ClassType;
+      var requiredItemType = endPointID.Definition.GetOppositeEndPointDefinition().TypeDefinition.Type;
       return new ModificationCheckingDomainObjectCollectionDataDecorator(
           requiredItemType, new EndPointDelegatingDomainObjectCollectionData(endPointID, _virtualEndPointProvider));
     }

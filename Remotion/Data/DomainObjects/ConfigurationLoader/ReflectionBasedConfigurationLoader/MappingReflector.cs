@@ -134,28 +134,28 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       get { return _typeDiscoveryService; }
     }
 
-    public ClassDefinition[] GetClassDefinitions ()
+    public TypeDefinition[] GetTypeDefinitions ()
     {
-      s_log.Info("Reflecting class definitions...");
+      s_log.Info("Reflecting type definitions...");
 
-      using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to reflect class definitions: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to reflect type definitions: {elapsed}."))
       {
         var types = GetDomainObjectTypesSorted();
-        var classDefinitions = MappingObjectFactory.CreateClassDefinitionCollection(types);
+        var typeDefinitions = MappingObjectFactory.CreateTypeDefinitionCollection(types);
 
-        return classDefinitions
-            .LogAndReturnValue(s_log, LogLevel.Info, result => string.Format("Generated {0} class definitions.", result.Length));
+        return typeDefinitions
+            .LogAndReturnValue(s_log, LogLevel.Info, result => string.Format("Generated {0} type definitions.", result.Length));
       }
     }
 
-    public RelationDefinition[] GetRelationDefinitions (IDictionary<Type, ClassDefinition> classDefinitions)
+    public RelationDefinition[] GetRelationDefinitions (IDictionary<Type, TypeDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
-      s_log.InfoFormat("Reflecting relation definitions of {0} class definitions...", classDefinitions.Count);
+      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
+      s_log.InfoFormat("Reflecting relation definitions of {0} type definitions...", typeDefinitions.Count);
 
       using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to reflect relation definitions: {elapsed}."))
       {
-        var relationDefinitions = MappingObjectFactory.CreateRelationDefinitionCollection(classDefinitions);
+        var relationDefinitions = MappingObjectFactory.CreateRelationDefinitionCollection(typeDefinitions);
         return relationDefinitions
             .LogAndReturnValue(s_log, LogLevel.Info, result => string.Format("Generated {0} relation definitions.", result.Length));
       }
@@ -188,9 +188,9 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       get { return _mappingObjectFactory; }
     }
 
-    public IClassDefinitionValidator CreateClassDefinitionValidator ()
+    public ITypeDefinitionValidator CreateTypeDefinitionValidator ()
     {
-      return new ClassDefinitionValidator(
+      return new TypeDefinitionValidator(
           new DomainObjectTypeDoesNotHaveLegacyInfrastructureConstructorValidationRule(),
           new DomainObjectTypeIsNotGenericValidationRule(),
           new InheritanceHierarchyFollowsClassHierarchyValidationRule(),
@@ -223,7 +223,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
           new RelationEndPointNamesAreConsistentValidationRule(),
           new RelationEndPointTypesAreConsistentValidationRule(),
           new CheckForInvalidRelationEndPointsValidationRule(),
-          new CheckForTypeNotFoundClassDefinitionValidationRule());
+          new CheckForTypeNotFoundTypeDefinitionValidationRule());
     }
 
     public ISortExpressionValidator CreateSortExpressionValidator ()

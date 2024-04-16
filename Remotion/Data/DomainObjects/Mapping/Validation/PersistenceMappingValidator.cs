@@ -43,13 +43,13 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
       get { return _validationRules; }
     }
 
-    public IEnumerable<MappingValidationResult> Validate (IEnumerable<ClassDefinition> classDefinitions)
+    public IEnumerable<MappingValidationResult> Validate (IEnumerable<TypeDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
 
       return from rule in _validationRules
-             from classDefinition in classDefinitions
-             from result in rule.Validate(classDefinition)
+             from typeDefinition in typeDefinitions
+             from result in rule.Validate(typeDefinition)
              where !result.IsValid
              select result;
     }

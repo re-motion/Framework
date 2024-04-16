@@ -20,6 +20,7 @@ using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries.EagerFetching
@@ -72,19 +73,16 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       Assertion.DebugAssert(originatingObject.IsNull == false, "originatingObject.IsNull == false");
       Assertion.DebugIsNotNull(originatingObject.ObjectID, "originatingObject.ObjectID != null");
 
-      var relationEndPointDefinitionInheritanceRoot = relationEndPointDefinition.ClassDefinition.GetInheritanceRootClass();
-      var originatingObjectInheritanceRoot = originatingObject.ObjectID.ClassDefinition.GetInheritanceRootClass();
-
-      if (ReferenceEquals(relationEndPointDefinitionInheritanceRoot, originatingObjectInheritanceRoot))
+      if (TypeDefinitionHierarchy.ArePartOfSameHierarchy(relationEndPointDefinition.TypeDefinition, originatingObject.ObjectID.ClassDefinition))
         return;
 
       var message = string.Format(
           "Cannot register relation end-point '{0}' for domain object '{1}'. The end-point belongs to an object of "
-          + "class '{2}' but the domain object has class '{3}'.",
+          + "type '{2}' but the domain object has type '{3}'.",
           relationEndPointDefinition.PropertyName,
           originatingObject.ObjectID,
-          relationEndPointDefinition.ClassDefinition.ID,
-          originatingObject.ObjectID.ClassDefinition.ID);
+          relationEndPointDefinition.TypeDefinition.Type.GetFullNameSafe(),
+          originatingObject.ObjectID.ClassDefinition.Type.GetFullNameSafe());
 
       throw new InvalidOperationException(message);
     }
@@ -98,14 +96,13 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       ArgumentUtility.CheckNotNull("oppositeEndPointDefinition", oppositeEndPointDefinition);
       ArgumentUtility.CheckNotNull("relatedObjectID", relatedObjectID);
 
-
-      if (!oppositeEndPointDefinition.ClassDefinition.IsSameOrBaseClassOf(relatedObjectID.ClassDefinition))
+      if (!oppositeEndPointDefinition.TypeDefinition.IsAssignableFrom(relatedObjectID.ClassDefinition))
       {
         var message = string.Format(
             "Cannot associate object '{0}' with the relation end-point '{1}'. An object of type '{2}' was expected.",
             relatedObjectID,
             relationEndPointDefinition.PropertyName,
-            oppositeEndPointDefinition.ClassDefinition.ClassType);
+            oppositeEndPointDefinition.TypeDefinition.Type);
 
         throw new InvalidOperationException(message);
       }

@@ -31,11 +31,11 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
     {
     }
 
-    public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
+    public IEnumerable<MappingValidationResult> Validate (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      return from PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions
+      return from PropertyDefinition propertyDefinition in typeDefinition.MyPropertyDefinitions
           select Validate(propertyDefinition);
     }
 

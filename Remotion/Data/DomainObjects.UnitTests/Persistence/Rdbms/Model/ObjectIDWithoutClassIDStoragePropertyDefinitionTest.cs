@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void Initialization_WithAbstractClassDefinition ()
     {
-      var abstractClassDefinition = GetTypeDefinition(typeof(TIFileSystemItem));
+      var abstractClassDefinition = GetClassDefinition(typeof(TIFileSystemItem));
       Assert.That(abstractClassDefinition.IsAbstract, Is.True);
 
       Assert.That(
@@ -287,14 +287,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void UnifyWithEquivalentProperties_ThrowsForDifferentClassDefinitions ()
     {
-      var property2 = new ObjectIDWithoutClassIDStoragePropertyDefinition(_valuePropertyStub.Object, GetTypeDefinition(typeof(OrderItem)));
+      var property2 = new ObjectIDWithoutClassIDStoragePropertyDefinition(_valuePropertyStub.Object, GetClassDefinition(typeof(OrderItem)));
 
       Assert.That(
           () => _objectIDWithoutClassIDStoragePropertyDefinition.UnifyWithEquivalentProperties(new[] { property2 }),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "Only equivalent properties can be combined, but this property has class definition "
-              + "'Remotion.Data.DomainObjects.Mapping.ClassDefinition: Order', and the given property has "
-              + "class definition 'Remotion.Data.DomainObjects.Mapping.ClassDefinition: OrderItem'.", "equivalentProperties"));
+              + "'ClassDefinition: Order', and the given property has "
+              + "class definition 'ClassDefinition: OrderItem'.", "equivalentProperties"));
     }
 
     [Test]

@@ -27,30 +27,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   [TestFixture]
   public class DomainObjectCollectionRelationEndPointDefinitionTest : MappingReflectionTestBase
   {
-    private ClassDefinition _customerClassDefinition;
+    private TypeDefinition _customerTypeDefinition;
     private DomainObjectCollectionRelationEndPointDefinition _customerOrdersEndPoint;
 
-    private ClassDefinition _orderClassDefinition;
+    private TypeDefinition _orderTypeDefinition;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _customerClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Customer));
+      _customerTypeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(Customer));
       _customerOrdersEndPoint = DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
-          _customerClassDefinition,
+          _customerTypeDefinition,
           "Orders",
           false,
           typeof(OrderCollection));
 
-      _orderClassDefinition = CreateOrderDefinition_WithEmptyMembers_AndDerivedClasses();
+      _orderTypeDefinition = CreateOrderDefinition_WithEmptyMembers_AndDerivedClasses();
     }
 
     [Test]
     public void InitializeWithPropertyType ()
     {
       var endPoint = DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
-          _orderClassDefinition,
+          _orderTypeDefinition,
           "VirtualEndPoint",
           true,
           typeof(OrderCollection));
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetSortExpression_Null ()
     {
       var endPoint = DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
-          _orderClassDefinition,
+          _orderTypeDefinition,
           "OrderItems",
           false,
           typeof(ObjectList<OrderItem>),
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           });
 
       var endPoint = DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
-          _orderClassDefinition,
+          _orderTypeDefinition,
           "OrderItems",
           false,
           typeof(ObjectList<OrderItem>),
@@ -127,15 +127,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void PropertyInfo ()
     {
-      ClassDefinition orderClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
+      TypeDefinition orderTypeDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
       DomainObjectCollectionRelationEndPointDefinition relationEndPointDefinition =
-          (DomainObjectCollectionRelationEndPointDefinition)orderClassDefinition.GetRelationEndPointDefinition(typeof(Order) + ".OrderItems");
+          (DomainObjectCollectionRelationEndPointDefinition)orderTypeDefinition.GetRelationEndPointDefinition(typeof(Order) + ".OrderItems");
       Assert.That(relationEndPointDefinition.PropertyInfo, Is.EqualTo(PropertyInfoAdapter.Create(typeof(Order).GetProperty("OrderItems"))));
     }
 
-    private static ClassDefinition CreateOrderDefinition_WithEmptyMembers_AndDerivedClasses ()
+    private static TypeDefinition CreateOrderDefinition_WithEmptyMembers_AndDerivedClasses ()
     {
-      return ClassDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses("Order", classType: typeof(Order));
+      return TypeDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses("Order", classType: typeof(Order));
     }
   }
 }

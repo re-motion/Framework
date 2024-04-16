@@ -83,7 +83,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       var oppositeEndPointDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition();
       var relationColumnName = _storageNameProvider.GetRelationColumnName(relationEndPointDefinition);
       var relationClassIDColumnName = _storageNameProvider.GetRelationClassIDColumnName(relationEndPointDefinition);
-      return CreateStoragePropertyDefinition(oppositeEndPointDefinition.ClassDefinition, relationColumnName, relationClassIDColumnName);
+      if (oppositeEndPointDefinition.TypeDefinition is not ClassDefinition oppositeEndPointClassDefinition)
+        throw new InvalidOperationException("Only class definitions are supported"); // TODO R2I Persistence: Support TypeDefinition
+
+      return CreateStoragePropertyDefinition(oppositeEndPointClassDefinition, relationColumnName, relationClassIDColumnName);
     }
 
     public virtual IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (

@@ -48,10 +48,10 @@ namespace Remotion.Data.DomainObjects.Linq
     {
       private static readonly ConcurrentDictionary<Type, GenericCallHelper> s_cache = new ConcurrentDictionary<Type, GenericCallHelper>();
 
-      public static GenericCallHelper Create (Type classType)
+      public static GenericCallHelper Create (Type type)
       {
         return s_cache.GetOrAdd(
-            classType,
+            type,
             key => (GenericCallHelper)Activator.CreateInstance(typeof(GenericCallHelper<>).MakeGenericType(key))!);
       }
 
@@ -163,10 +163,10 @@ namespace Remotion.Data.DomainObjects.Linq
       if (queryType == QueryType.Collection)
       {
         Assertion.DebugIsNotNull(sqlQuery.SelectedEntityType, "sqlQuery.SelectedEntityType != null");
-        var selectedEntityClassDefinition = _mappingConfiguration.GetTypeDefinition(sqlQuery.SelectedEntityType);
-        Assertion.IsNotNull(selectedEntityClassDefinition, "We assume that in a re-store LINQ query, entities always have a mapping.");
+        var selectedEntityTypeDefinition = _mappingConfiguration.GetTypeDefinition(sqlQuery.SelectedEntityType);
+        Assertion.IsNotNull(selectedEntityTypeDefinition, "We assume that in a re-store LINQ query, entities always have a mapping.");
 
-        var fetchQueries = CreateEagerFetchQueries(selectedEntityClassDefinition, fetchQueryModelBuilders);
+        var fetchQueries = CreateEagerFetchQueries(selectedEntityTypeDefinition, fetchQueryModelBuilders);
         foreach (var fetchQuery in fetchQueries)
           query.EagerFetchQueries.Add(fetchQuery.Item1, fetchQuery.Item2);
 
@@ -208,12 +208,12 @@ namespace Remotion.Data.DomainObjects.Linq
     }
 
     private IEnumerable<Tuple<IRelationEndPointDefinition, IQuery>> CreateEagerFetchQueries (
-        ClassDefinition previousClassDefinition,
+        TypeDefinition previousTypeDefinition,
         IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders)
     {
       foreach (var fetchQueryModelBuilder in fetchQueryModelBuilders)
       {
-        var relationEndPointDefinition = GetEagerFetchRelationEndPointDefinition(fetchQueryModelBuilder.FetchRequest, previousClassDefinition);
+        var relationEndPointDefinition = GetEagerFetchRelationEndPointDefinition(fetchQueryModelBuilder.FetchRequest, previousTypeDefinition);
 
         // clone the fetch query model because we don't want to modify the source model of all inner requests
         var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel().Clone();
@@ -237,12 +237,12 @@ namespace Remotion.Data.DomainObjects.Linq
           fetchQueryModel.BodyClauses.Add(orderByClause);
         }
 
-        var fetchedClassType = relationEndPointDefinition.GetOppositeClassDefinition().ClassType;
-        var genericCallHelper = GenericCallHelper.Create(fetchedClassType);
+        var type = relationEndPointDefinition.GetOppositeTypeDefinition().Type;
+        var genericCallHelper = GenericCallHelper.Create(type);
         var fetchQuery = genericCallHelper.CreateSequenceQuery(
             this,
             "<fetch query for " + fetchQueryModelBuilder.FetchRequest.RelationMember.Name + ">",
-            previousClassDefinition.StorageEntityDefinition.StorageProviderDefinition,
+            previousTypeDefinition.StorageEntityDefinition.StorageProviderDefinition,
             fetchQueryModel,
             fetchQueryModelBuilder.CreateInnerBuilders());
 
@@ -261,7 +261,7 @@ namespace Remotion.Data.DomainObjects.Linq
       }
     }
 
-    private IRelationEndPointDefinition GetEagerFetchRelationEndPointDefinition (FetchRequestBase fetchRequest, ClassDefinition classDefinition)
+    private IRelationEndPointDefinition GetEagerFetchRelationEndPointDefinition (FetchRequestBase fetchRequest, TypeDefinition typeDefinition)
     {
       var propertyInfo = fetchRequest.RelationMember as PropertyInfo;
       if (propertyInfo == null)
@@ -274,10 +274,11 @@ namespace Remotion.Data.DomainObjects.Linq
       }
 
       var propertyInfoAdapter = PropertyInfoAdapter.Create(propertyInfo);
-      var endPoint = classDefinition.ResolveRelationEndPoint(propertyInfoAdapter)
-                     ?? classDefinition.GetAllDerivedClasses()
-                         .Select(cd => cd.ResolveRelationEndPoint(propertyInfoAdapter))
-                         .FirstOrDefault(ep => ep != null);
+      var endPoint = InlineTypeDefinitionWalker.WalkDescendants(
+          typeDefinition,
+          classDefinition => classDefinition.ResolveRelationEndPoint(propertyInfoAdapter),
+          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported."),
+          match: relationEndPoint => relationEndPoint != null); // TODO R2I Mapping: Add support for interfaces
 
       if (endPoint == null)
       {

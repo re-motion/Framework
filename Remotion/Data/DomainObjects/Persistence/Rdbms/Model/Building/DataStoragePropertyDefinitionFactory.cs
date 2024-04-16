@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
       var relationEndPointDefinition =
-          (RelationEndPointDefinition?)propertyDefinition.ClassDefinition.GetRelationEndPointDefinition(propertyDefinition.PropertyName);
+          (RelationEndPointDefinition?)propertyDefinition.TypeDefinition.GetRelationEndPointDefinition(propertyDefinition.PropertyName);
       if (relationEndPointDefinition != null)
       {
         Assertion.IsTrue(propertyDefinition.PropertyType == typeof(ObjectID));

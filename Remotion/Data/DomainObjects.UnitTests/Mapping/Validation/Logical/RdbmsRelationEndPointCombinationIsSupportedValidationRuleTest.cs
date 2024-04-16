@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
   {
     private RelationEndPointCombinationIsSupportedValidationRule _validationRule;
 
-    private ClassDefinition _orderClass;
+    private TypeDefinition _orderClass;
 
     [SetUp]
     public void SetUp ()

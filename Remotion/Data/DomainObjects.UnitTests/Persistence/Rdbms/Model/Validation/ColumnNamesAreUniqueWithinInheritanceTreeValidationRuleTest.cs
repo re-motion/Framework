@@ -43,9 +43,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     {
       _validationRule = new ColumnNamesAreUniqueWithinInheritanceTreeValidationRule(new RdbmsPersistenceModelProvider());
       _baseOfBaseClass = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseOfBaseValidationDomainObjectClass));
-      _derivedBaseClass1 = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseValidationDomainObjectClass), baseClass: _baseOfBaseClass);
-      _derivedBaseClass2 = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(DerivedValidationDomainObjectClass), baseClass: _derivedBaseClass1);
-      _derivedClass = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(OtherDerivedValidationHierarchyClass), baseClass: _baseOfBaseClass);
+      _derivedBaseClass1 = ClassDefinitionObjectMother.CreateClassDefinitionWithDefaultProperties(classType: typeof(BaseValidationDomainObjectClass), baseClass: _baseOfBaseClass);
+      _derivedBaseClass2 = ClassDefinitionObjectMother.CreateClassDefinitionWithDefaultProperties(classType: typeof(DerivedValidationDomainObjectClass), baseClass: _derivedBaseClass1);
+      _derivedClass = ClassDefinitionObjectMother.CreateClassDefinitionWithDefaultProperties(classType: typeof(OtherDerivedValidationHierarchyClass), baseClass: _baseOfBaseClass);
 
       _baseOfBaseClass.SetDerivedClasses(new[] { _derivedBaseClass1, _derivedClass });
       _derivedBaseClass1.SetDerivedClasses(new[] { _derivedBaseClass2 });
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     [Test]
     public void InheritanceRoot_PersistentPropertiesWithSameStorageSpecificPropertyNameInSameClass ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedValidationDomainObjectClass));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixinsWithDefaultProperties(typeof(DerivedValidationDomainObjectClass));
       var propertyDefinition1 = CreatePersistentPropertyDefinition(
           classDefinition,
           "Property",
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     [Test]
     public void InheritanceRoot_PersistentPropertiesWithDifferentStorageSpecificPropertyNameInSameClass ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedValidationDomainObjectClass));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixinsWithDefaultProperties(typeof(DerivedValidationDomainObjectClass));
 
       var propertyDefinition1 = CreatePersistentPropertyDefinition(
           classDefinition,

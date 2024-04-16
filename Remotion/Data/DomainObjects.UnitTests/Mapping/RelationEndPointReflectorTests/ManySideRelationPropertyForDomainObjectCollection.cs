@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
   [TestFixture]
   public class ManySideRelationPropertyForDomainObjectCollection : MappingReflectionTestBase
   {
-    private ClassDefinition _classDefinition;
+    private TypeDefinition _typeDefinition;
     private Type _classType;
 
     public override void SetUp ()
@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       base.SetUp();
 
       _classType = typeof(ClassWithRealRelationEndPoints);
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: _classType);
+      _typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: _classType);
     }
 
     [Test]
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       Assert.IsInstanceOf(typeof(RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition)actual;
-      Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
+      Assert.That(relationEndPointDefinition.TypeDefinition, Is.SameAs(_typeDefinition));
       Assert.That(relationEndPointDefinition.PropertyDefinition, Is.SameAs(GetPropertyDefinition("Unidirectional")));
       Assert.That(relationEndPointDefinition.HasRelationDefinitionBeenSet, Is.False);
     }
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       Assert.IsInstanceOf(typeof(RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition)actual;
-      Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
+      Assert.That(relationEndPointDefinition.TypeDefinition, Is.SameAs(_typeDefinition));
       Assert.That(relationEndPointDefinition.PropertyDefinition, Is.SameAs(GetPropertyDefinition("BidirectionalOneToOne")));
       Assert.That(relationEndPointDefinition.HasRelationDefinitionBeenSet, Is.False);
     }
@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       Assert.IsInstanceOf(typeof(RelationEndPointDefinition), actual);
       RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition)actual;
-      Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
+      Assert.That(relationEndPointDefinition.TypeDefinition, Is.SameAs(_typeDefinition));
       Assert.That(relationEndPointDefinition.PropertyDefinition, Is.SameAs(GetPropertyDefinition("BidirectionalOneToManyForDomainObjectCollection")));
       Assert.That(relationEndPointDefinition.HasRelationDefinitionBeenSet, Is.False);
     }
@@ -151,10 +151,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     {
       PropertyReflector propertyReflector = CreatePropertyReflector(propertyName);
       PropertyDefinition propertyDefinition = propertyReflector.GetMetadata();
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
 
       return new RdbmsRelationEndPointReflector(
-          _classDefinition,
+          _typeDefinition,
           propertyReflector.PropertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,
@@ -168,7 +168,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
           PropertyInfoAdapter.Create(_classType.GetProperty(property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic));
 
       return new PropertyReflector(
-          _classDefinition,
+          _typeDefinition,
           propertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,
@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
     private PropertyDefinition GetPropertyDefinition (string propertyName)
     {
-      return _classDefinition.MyPropertyDefinitions[string.Format("{0}.{1}", _classType.FullName, propertyName)];
+      return _typeDefinition.MyPropertyDefinitions[string.Format("{0}.{1}", _classType.FullName, propertyName)];
     }
   }
 }

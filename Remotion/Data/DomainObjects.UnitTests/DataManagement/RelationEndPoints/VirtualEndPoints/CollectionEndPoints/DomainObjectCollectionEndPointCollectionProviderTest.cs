@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void GetCollection_CollectionWithWrongCtor ()
     {
-      var classDefinition = GetTypeDefinition(typeof(DomainObjectWithCollectionMissingCtor));
+      var classDefinition = GetClassDefinition(typeof(DomainObjectWithCollectionMissingCtor));
       var relationEndPointDefinition = GetEndPointDefinition(typeof(DomainObjectWithCollectionMissingCtor), "OppositeObjects");
       var endPointID = RelationEndPointID.Create(new ObjectID(classDefinition, Guid.NewGuid()), relationEndPointDefinition);
 

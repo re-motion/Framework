@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   public static class VirtualObjectRelationEndPointDefinitionFactory
   {
     public static VirtualObjectRelationEndPointDefinition Create (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         string propertyName,
         bool isMandatory,
         Type propertyType)
@@ -33,20 +33,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var propertyInformationStub = new Mock<IPropertyInformation>();
       propertyInformationStub.Setup(stub => stub.Name).Returns(propertyName);
       propertyInformationStub.Setup(stub => stub.PropertyType).Returns(propertyType);
-      propertyInformationStub.Setup(stub => stub.DeclaringType).Returns(TypeAdapter.Create(classDefinition.ClassType));
+      propertyInformationStub.Setup(stub => stub.DeclaringType).Returns(TypeAdapter.Create(typeDefinition.Type));
 
       return new VirtualObjectRelationEndPointDefinition(
-          classDefinition, propertyName, isMandatory, propertyInformationStub.Object);
+          typeDefinition, propertyName, isMandatory, propertyInformationStub.Object);
     }
 
     public static VirtualObjectRelationEndPointDefinition Create (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         string propertyName,
         bool isMandatory,
         Type propertyType,
         string sortExpression)
     {
-      var relationEndPointDefinition = Create(classDefinition, propertyName, isMandatory, propertyType);
+      var relationEndPointDefinition = Create(typeDefinition, propertyName, isMandatory, propertyType);
       if (sortExpression != null)
         PrivateInvoke.InvokeNonPublicMethod(relationEndPointDefinition, "SetHasSortExpressionFlag");
 

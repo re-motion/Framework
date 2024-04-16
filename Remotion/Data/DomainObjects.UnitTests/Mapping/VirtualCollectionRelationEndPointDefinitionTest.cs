@@ -30,9 +30,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void InitializeWithPropertyType ()
     {
-      var classDefinition = CreateProductDefinition_WithEmptyMembers_AndDerivedClasses();
+      var typeDefinition = CreateProductDefinition_WithEmptyMembers_AndDerivedClasses();
       var endPoint = VirtualCollectionRelationEndPointDefinitionFactory.Create(
-          classDefinition,
+          typeDefinition,
           "VirtualEndPoint",
           true,
           typeof(IObjectList<ProductReview>));
@@ -72,9 +72,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetSortExpression_Null ()
     {
-      var classDefinition = CreateProductDefinition_WithEmptyMembers_AndDerivedClasses();
+      var typeDefinition = CreateProductDefinition_WithEmptyMembers_AndDerivedClasses();
       var endPoint = VirtualCollectionRelationEndPointDefinitionFactory.Create(
-          classDefinition,
+          typeDefinition,
           "Reviews",
           false,
           typeof(IObjectList<ProductReview>));
@@ -85,14 +85,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetSortExpression_NonNull ()
     {
-      var productReviewClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ProductReview));
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(productReviewClassDefinition, typeof(ProductReview), "CreatedAt");
+      var productReviewTypeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(ProductReview));
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(productReviewTypeDefinition, typeof(ProductReview), "CreatedAt");
       var sortExpressionDefinition = new SortExpressionDefinition(new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending(propertyDefinition) });
 
-      var classDefinition = CreateProductDefinition_WithEmptyMembers_AndDerivedClasses();
+      var typeDefinition = CreateProductDefinition_WithEmptyMembers_AndDerivedClasses();
 
       var endPoint = VirtualCollectionRelationEndPointDefinitionFactory.Create(
-          classDefinition,
+          typeDefinition,
           "Reviews",
           false,
           typeof(IObjectList<ProductReview>),
@@ -104,25 +104,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void PropertyInfo ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Product));
+      var typeDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Product));
       var relationEndPointDefinition =
-          (VirtualCollectionRelationEndPointDefinition)classDefinition.GetRelationEndPointDefinition(typeof(Product) + ".Reviews");
+          (VirtualCollectionRelationEndPointDefinition)typeDefinition.GetRelationEndPointDefinition(typeof(Product) + ".Reviews");
       Assert.That(relationEndPointDefinition.PropertyInfo, Is.EqualTo(PropertyInfoAdapter.Create(typeof(Product).GetProperty("Reviews"))));
     }
 
-    private ClassDefinition CreateProductDefinition_WithEmptyMembers_AndDerivedClasses ()
+    private TypeDefinition CreateProductDefinition_WithEmptyMembers_AndDerivedClasses ()
     {
-      return ClassDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses("Product", classType: typeof(Product));
+      return TypeDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses("Product", classType: typeof(Product));
     }
 
     private VirtualCollectionRelationEndPointDefinition CreateReviewsEndPointDefinition ()
     {
-      var productClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Product));
-      var productReviewClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ProductReview));
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(productReviewClassDefinition, typeof(ProductReview), "CreatedAt");
+      var productTypeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(Product));
+      var productReviewTypeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(ProductReview));
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(productReviewTypeDefinition, typeof(ProductReview), "CreatedAt");
       var sortExpressionDefinition = new SortExpressionDefinition(new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending(propertyDefinition) });
       return VirtualCollectionRelationEndPointDefinitionFactory.Create(
-          productClassDefinition,
+          productTypeDefinition,
           "Reviews",
           false,
           typeof(IObjectList<ProductReview>),

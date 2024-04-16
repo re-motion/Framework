@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,16 +14,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using System.Collections.Generic;
-
-namespace Remotion.Data.DomainObjects.Mapping.Validation
+namespace Remotion.Data.DomainObjects.Mapping
 {
   /// <summary>
-  /// Defines the API for the class definition mapping validator.
+  /// Defines the direction a <see cref="TypeDefinitionWalker"/> can walk.
   /// </summary>
-  public interface IClassDefinitionValidator
+  public enum TypeDefinitionWalkerDirection
   {
-    IEnumerable<MappingValidationResult> Validate (IEnumerable<ClassDefinition> classDefinitions);
+    /// <summary>
+    /// The walker will walk upwards through all ascendants of the target <see cref="TypeDefinition"/>.
+    /// </summary>
+    Ascendants,
+    /// <summary>
+    /// The walker will walk downwards through all descendants of the target <see cref="TypeDefinition"/>.
+    /// </summary>
+    Descendants
   }
 }

@@ -24,8 +24,8 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// </summary>
   public class TypeNotCompatibleWithVirtualRelationEndPointDefinition : InvalidRelationEndPointDefinitionBase
   {
-    public TypeNotCompatibleWithVirtualRelationEndPointDefinition (ClassDefinition classDefinition, string propertyName, Type propertyType)
-        : base(classDefinition, propertyName, propertyType)
+    public TypeNotCompatibleWithVirtualRelationEndPointDefinition (TypeDefinition typeDefinition, string propertyName, Type propertyType)
+        : base(typeDefinition, propertyName, propertyType)
     {
     }
   }

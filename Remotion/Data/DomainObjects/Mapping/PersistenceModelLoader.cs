@@ -38,23 +38,23 @@ namespace Remotion.Data.DomainObjects.Mapping
       _storageSettings = storageSettings;
     }
 
-    public void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition)
+    public void ApplyPersistenceModelToHierarchy (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      var persistenceModelLoader = GetProviderSpecificPersistenceModelLoader(classDefinition);
-      persistenceModelLoader.ApplyPersistenceModelToHierarchy(classDefinition);
+      var persistenceModelLoader = GetProviderSpecificPersistenceModelLoader(typeDefinition);
+      persistenceModelLoader.ApplyPersistenceModelToHierarchy(typeDefinition);
     }
 
-    public IPersistenceMappingValidator CreatePersistenceMappingValidator (ClassDefinition classDefinition)
+    public IPersistenceMappingValidator CreatePersistenceMappingValidator (TypeDefinition typeDefinition)
     {
-      var persistenceModelLoader = GetProviderSpecificPersistenceModelLoader(classDefinition);
-      return persistenceModelLoader.CreatePersistenceMappingValidator(classDefinition);
+      var persistenceModelLoader = GetProviderSpecificPersistenceModelLoader(typeDefinition);
+      return persistenceModelLoader.CreatePersistenceMappingValidator(typeDefinition);
     }
 
-    private IPersistenceModelLoader GetProviderSpecificPersistenceModelLoader (ClassDefinition classDefinition)
+    private IPersistenceModelLoader GetProviderSpecificPersistenceModelLoader (TypeDefinition typeDefinition)
     {
-      var storageProviderDefinition = _storageSettings.GetStorageProviderDefinition(classDefinition);
+      var storageProviderDefinition = _storageSettings.GetStorageProviderDefinition(typeDefinition);
       return storageProviderDefinition.Factory.CreatePersistenceModelLoader(storageProviderDefinition);
     }
   }

@@ -29,9 +29,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
 {
   public class RdbmsStorageExtendedEntityDefinitionProvider : IRdbmsStorageEntityDefinitionProvider
   {
-    public IEnumerable<IRdbmsStorageEntityDefinition> GetEntityDefinitions (IEnumerable<ClassDefinition> classDefinitions)
+    public IEnumerable<IRdbmsStorageEntityDefinition> GetEntityDefinitions (IEnumerable<TypeDefinition> typeDefinitions)
     {
-      var entityDefinitions = new RdbmsStorageEntityDefinitionProvider().GetEntityDefinitions(classDefinitions).ToList();
+      var entityDefinitions = new RdbmsStorageEntityDefinitionProvider().GetEntityDefinitions(typeDefinitions).ToList();
 
       var tableDefinitions = entityDefinitions.OfType<TableDefinition>().ToList();
       if (tableDefinitions.Count() > 0)

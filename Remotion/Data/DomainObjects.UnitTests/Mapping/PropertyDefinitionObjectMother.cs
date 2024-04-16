@@ -31,12 +31,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   {
     public static PropertyDefinition CreateForFakePropertyInfo ()
     {
-      return CreateForFakePropertyInfo(ClassDefinitionObjectMother.CreateClassDefinition());
+      return CreateForFakePropertyInfo(TypeDefinitionObjectMother.CreateClassDefinition());
     }
 
     public static PropertyDefinition CreateForFakePropertyInfo (string propertyName, StorageClass storageClass)
     {
-      return CreateForFakePropertyInfo(ClassDefinitionObjectMother.CreateClassDefinition(), propertyName, storageClass);
+      return CreateForFakePropertyInfo(TypeDefinitionObjectMother.CreateClassDefinition(), propertyName, storageClass);
     }
 
     public static PropertyDefinition CreateForFakePropertyInfo (string propertyName, Type propertyType)
@@ -46,37 +46,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public static PropertyDefinition CreateForFakePropertyInfo (string propertyName, Type propertyType, bool isNullable)
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
-      return CreateForFakePropertyInfo(classDefinition, propertyName, false, propertyType, isNullable, null, StorageClass.Persistent);
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition();
+      return CreateForFakePropertyInfo(typeDefinition, propertyName, false, propertyType, isNullable, null, StorageClass.Persistent);
     }
 
-    public static PropertyDefinition CreateForFakePropertyInfo (ClassDefinition classDefinition)
+    public static PropertyDefinition CreateForFakePropertyInfo (TypeDefinition typeDefinition)
     {
-      return CreateForFakePropertyInfo(classDefinition, "Test");
+      return CreateForFakePropertyInfo(typeDefinition, "Test");
     }
 
-    public static PropertyDefinition CreateForFakePropertyInfo (ClassDefinition classDefinition, string propertyName)
+    public static PropertyDefinition CreateForFakePropertyInfo (TypeDefinition typeDefinition, string propertyName)
     {
-      return CreateForFakePropertyInfo(classDefinition, propertyName, false, typeof(string), true, null, StorageClass.Persistent);
+      return CreateForFakePropertyInfo(typeDefinition, propertyName, false, typeof(string), true, null, StorageClass.Persistent);
     }
 
-    public static PropertyDefinition CreateForFakePropertyInfo (ClassDefinition classDefinition, string propertyName, StorageClass storageClass)
+    public static PropertyDefinition CreateForFakePropertyInfo (TypeDefinition typeDefinition, string propertyName, StorageClass storageClass)
     {
-      return CreateForFakePropertyInfo(classDefinition, propertyName, false, typeof(string), true, null, storageClass);
+      return CreateForFakePropertyInfo(typeDefinition, propertyName, false, typeof(string), true, null, storageClass);
     }
 
-    public static PropertyDefinition CreateForFakePropertyInfo (ClassDefinition classDefinition, string propertyName, Type propertyType)
+    public static PropertyDefinition CreateForFakePropertyInfo (TypeDefinition typeDefinition, string propertyName, Type propertyType)
     {
-      return CreateForFakePropertyInfo(classDefinition, propertyName, false, propertyType, true, null, StorageClass.Persistent);
+      return CreateForFakePropertyInfo(typeDefinition, propertyName, false, propertyType, true, null, StorageClass.Persistent);
     }
 
-    public static PropertyDefinition CreateForFakePropertyInfo (ClassDefinition classDefinition, bool isNullable)
+    public static PropertyDefinition CreateForFakePropertyInfo (TypeDefinition typeDefinition, bool isNullable)
     {
-      return CreateForFakePropertyInfo(classDefinition, "Test", false, typeof(string), isNullable, null, StorageClass.Persistent);
+      return CreateForFakePropertyInfo(typeDefinition, "Test", false, typeof(string), isNullable, null, StorageClass.Persistent);
     }
 
     public static PropertyDefinition CreateForFakePropertyInfo (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         string propertyName,
         bool isObjectID,
         Type propertyType,
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         int? maxLength,
         StorageClass storageClass)
     {
-      var declaringType = classDefinition.ClassType;
+      var declaringType = typeDefinition.Type;
 
       var propertyInformationStub = new Mock<IPropertyInformation>();
       propertyInformationStub.Setup(stub => stub.Name).Returns(propertyName + "FakeProperty");
@@ -95,43 +95,43 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var defaultValue = isNullable ? null : propertyType.GetDefaultValue();
 
       IPropertyInformation propertyInformation = propertyInformationStub.Object;
-      return CreateForPropertyInformation(classDefinition, propertyName, isObjectID, isNullable, maxLength, storageClass, propertyInformation, defaultValue);
+      return CreateForPropertyInformation(typeDefinition, propertyName, isObjectID, isNullable, maxLength, storageClass, propertyInformation, defaultValue);
     }
 
     public static PropertyDefinition CreateForFakePropertyInfo_ObjectID ()
     {
-      return CreateForFakePropertyInfo_ObjectID(ClassDefinitionObjectMother.CreateClassDefinition());
+      return CreateForFakePropertyInfo_ObjectID(TypeDefinitionObjectMother.CreateClassDefinition());
     }
 
-    public static PropertyDefinition CreateForFakePropertyInfo_ObjectID (ClassDefinition classDefinition)
+    public static PropertyDefinition CreateForFakePropertyInfo_ObjectID (TypeDefinition typeDefinition)
     {
-      return CreateForFakePropertyInfo_ObjectID(classDefinition, "Test");
+      return CreateForFakePropertyInfo_ObjectID(typeDefinition, "Test");
     }
 
-    public static PropertyDefinition CreateForFakePropertyInfo_ObjectID (ClassDefinition classDefinition, string propertyName)
+    public static PropertyDefinition CreateForFakePropertyInfo_ObjectID (TypeDefinition typeDefinition, string propertyName)
     {
-      return CreateForFakePropertyInfo(classDefinition, propertyName, true, typeof(ObjectID), true, null, StorageClass.Persistent);
+      return CreateForFakePropertyInfo(typeDefinition, propertyName, true, typeof(ObjectID), true, null, StorageClass.Persistent);
     }
 
-    public static PropertyDefinition CreateForFakePropertyInfo_ObjectID (ClassDefinition classDefinition, string propertyName, StorageClass storageClass)
+    public static PropertyDefinition CreateForFakePropertyInfo_ObjectID (TypeDefinition typeDefinition, string propertyName, StorageClass storageClass)
     {
-      return CreateForFakePropertyInfo(classDefinition, propertyName, true, typeof(ObjectID), true, null, storageClass);
+      return CreateForFakePropertyInfo(typeDefinition, propertyName, true, typeof(ObjectID), true, null, storageClass);
     }
 
-    public static PropertyDefinition CreateForRealPropertyInfo (ClassDefinition classDefinition, Type declaringClassType, string propertyName)
+    public static PropertyDefinition CreateForRealPropertyInfo (TypeDefinition typeDefinition, Type declaringType, string propertyName)
     {
-      var propertyInfo = declaringClassType.GetProperty(
+      var propertyInfo = declaringType.GetProperty(
           propertyName,
           BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance);
-      Assert.IsNotNull(propertyInfo, "Property '" + propertyName + "' on type '" + declaringClassType + "'.");
+      Assert.IsNotNull(propertyInfo, "Property '" + propertyName + "' on type '" + declaringType + "'.");
 
-      var fullPropertyName = declaringClassType.FullName + "." + propertyName;
+      var fullPropertyName = declaringType.FullName + "." + propertyName;
 
       var isObjectID = ReflectionUtility.IsDomainObject(propertyInfo.PropertyType);
 
       IPropertyInformation propertyInformation = PropertyInfoAdapter.Create(propertyInfo);
       return CreateForPropertyInformation(
-          classDefinition,
+          typeDefinition,
           fullPropertyName,
           isObjectID,
           true,
@@ -142,12 +142,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     public static PropertyDefinition CreateForPropertyInformation (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         string propertyName,
         IPropertyInformation propertyInformation)
     {
       return CreateForPropertyInformation(
-          classDefinition,
+          typeDefinition,
           propertyName,
           false,
           false,
@@ -158,12 +158,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     public static PropertyDefinition CreateForPropertyInformation (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         StorageClass storageClass,
         IPropertyInformation propertyInformation)
     {
       return CreateForPropertyInformation(
-          classDefinition,
+          typeDefinition,
           "Test",
           false,
           false,
@@ -174,7 +174,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     private static PropertyDefinition CreateForPropertyInformation (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         string propertyName,
         bool isObjectID,
         bool isNullable,
@@ -184,7 +184,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         object defaultValue)
     {
       var propertyDefinition = new PropertyDefinition(
-          classDefinition,
+          typeDefinition,
           propertyInformation,
           propertyName,
           isObjectID,
@@ -197,7 +197,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public static PropertyDefinition CreateForFakePropertyInfo_MaxLength (string propertyName, Type propertyType, int maxLength)
     {
-      return CreateForFakePropertyInfo(ClassDefinitionObjectMother.CreateClassDefinition(), propertyName, false, propertyType, true, maxLength, StorageClass.Persistent);
+      return CreateForFakePropertyInfo(TypeDefinitionObjectMother.CreateClassDefinition(), propertyName, false, propertyType, true, maxLength, StorageClass.Persistent);
     }
   }
 }

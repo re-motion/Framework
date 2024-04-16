@@ -31,8 +31,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     {
       base.SetUp();
 
-      _baseClassOfExcludedClass = TypeDefinitions[typeof(BaseClassOfExcludedClass)];
-      _classDerivedFromExcludedClass = TypeDefinitions[typeof(ClassDerivedFromExcludedClass)];
+      _baseClassOfExcludedClass = GetClassDefinition(typeof(BaseClassOfExcludedClass));
+      _classDerivedFromExcludedClass = GetClassDefinition(typeof(ClassDerivedFromExcludedClass));
     }
 
     [Test]

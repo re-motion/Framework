@@ -69,18 +69,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       CheckEndPointDefinitions(expectedDefinition, actualDefinition);
     }
 
-    private void CheckEndPointDefinitions (RelationDefinition expectedRelationDefinition, RelationDefinition actualRelationDefinition)
+    private void CheckEndPointDefinitions (RelationDefinition expectedRelationDefinition, RelationDefinition actualRelationDefinition) // TODO R2I this needs to be rewritten for TypeDefinition
     {
       foreach (IRelationEndPointDefinition expectedEndPointDefinition in expectedRelationDefinition.EndPointDefinitions)
       {
         IRelationEndPointDefinition actualEndPointDefinition = actualRelationDefinition.GetEndPointDefinition(
-          expectedEndPointDefinition.ClassDefinition.ID, expectedEndPointDefinition.PropertyName);
+            expectedEndPointDefinition.TypeDefinition.Type,
+            expectedEndPointDefinition.PropertyName);
 
         Assert.IsNotNull(
             actualEndPointDefinition,
-            "End point definition was not found (relation definition: '{0}', class: '{1}', property name: '{2}').",
+            "End point definition was not found (relation definition: '{0}', type: '{1}', property name: '{2}').",
             expectedRelationDefinition.ID,
-            expectedEndPointDefinition.ClassDefinition.ID,
+            expectedEndPointDefinition.TypeDefinition.Type,
             expectedEndPointDefinition.PropertyName);
 
         var endPointDefinitionChecker = new RelationEndPointDefinitionChecker();
@@ -89,9 +90,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         Assert.AreSame(
             actualRelationDefinition,
             actualEndPointDefinition.RelationDefinition,
-            "End point definition does not reference the correct relation definition (relation definition: '{0}', class: '{1}', property name: '{2}').",
+            "End point definition does not reference the correct relation definition (relation definition: '{0}', type: '{1}', property name: '{2}').",
             actualRelationDefinition.ID,
-            actualEndPointDefinition.ClassDefinition.ID,
+            actualEndPointDefinition.TypeDefinition.Type,
             actualEndPointDefinition.PropertyName);
       }
     }

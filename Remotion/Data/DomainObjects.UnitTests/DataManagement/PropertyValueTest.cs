@@ -84,13 +84,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void PropertyValue_WithReferenceType_NotAllowed ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("ClassName");
-      PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "test", typeof(List<object>));
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition("ClassName");
+      PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(typeDefinition, "test", typeof(List<object>));
       Assert.That(
           () => new PropertyValue(propertyDefinition, null),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
-                  @"The property 'test' (declared on class 'ClassName') is invalid because its values cannot be copied. "
+                  @"The property 'test' (declared on type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order') is invalid because its values cannot be copied. "
                   + @"Only value types, strings, the Type type, byte arrays, types implementing IStructuralEquatable, and ObjectIDs are currently supported, "
                   + @"but the property's type is 'System.Collections.Generic.List`1[[" + typeof(object).AssemblyQualifiedName + "]]'."));
     }

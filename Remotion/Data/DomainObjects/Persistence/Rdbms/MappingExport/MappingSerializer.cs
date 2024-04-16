@@ -42,13 +42,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
       _storageProviderSerializerFactory = storageProviderSerializerFactory;
     }
 
-    public XDocument Serialize (IEnumerable<ClassDefinition> classDefinitions)
+    public XDocument Serialize (IEnumerable<TypeDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
 
-      var classDefinitionsByStorageProvider = classDefinitions
-          .Where(cd => cd.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition)
-          .GroupBy(cd => (RdbmsProviderDefinition)cd.StorageEntityDefinition.StorageProviderDefinition);
+      var classDefinitionsByStorageProvider = typeDefinitions
+          .Where(td => td.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition)
+          .GroupBy(td => (RdbmsProviderDefinition)td.StorageEntityDefinition.StorageProviderDefinition);
 
       var mappingElement = new XElement(Constants.Namespace + "mapping");
       var enumElements = new List<XElement>();

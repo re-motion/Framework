@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -60,8 +61,8 @@ namespace Remotion.Data.DomainObjects.Linq
       ArgumentUtility.CheckNotNull("tableInfo", tableInfo);
       ArgumentUtility.CheckNotNull("generator", generator);
 
-      var classDefinition = GetClassDefinition(tableInfo.ItemType);
-      return _storageSpecificExpressionResolver.ResolveTable(classDefinition, generator.GetUniqueIdentifier("t"));
+      var typeDefinition = GetTypeDefinition(tableInfo.ItemType);
+      return _storageSpecificExpressionResolver.ResolveTable(typeDefinition, generator.GetUniqueIdentifier("t"));
     }
 
     public ResolvedJoinInfo ResolveJoinInfo (UnresolvedJoinInfo joinInfo, UniqueIdentifierGenerator generator)
@@ -83,8 +84,8 @@ namespace Remotion.Data.DomainObjects.Linq
       ArgumentUtility.CheckNotNull("tableInfo", tableInfo);
       ArgumentUtility.CheckNotNull("generator", generator);
 
-      var classDefinition = GetClassDefinition(tableInfo.ItemType);
-      return _storageSpecificExpressionResolver.ResolveEntity(classDefinition, tableInfo.TableAlias);
+      var typeDefinition = GetTypeDefinition(tableInfo.ItemType);
+      return _storageSpecificExpressionResolver.ResolveEntity(typeDefinition, tableInfo.TableAlias);
     }
 
     public Expression ResolveMemberExpression (SqlEntityExpression originatingEntity, MemberInfo memberInfo)
@@ -93,15 +94,16 @@ namespace Remotion.Data.DomainObjects.Linq
       ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
 
       var property = GetMemberAsProperty(originatingEntity, memberInfo);
-      var entityClassDefinition = GetClassDefinition(originatingEntity.Type);
+      var entityTypeDefinition = GetTypeDefinition(originatingEntity.Type);
 
       if (property.Equals(s_idProperty))
-        return _storageSpecificExpressionResolver.ResolveIDProperty(originatingEntity, entityClassDefinition);
+        return _storageSpecificExpressionResolver.ResolveIDProperty(originatingEntity, entityTypeDefinition);
 
-      var allClassDefinitions = new[] { entityClassDefinition }.Concat(entityClassDefinition.GetAllDerivedClasses());
-      var resolvedMember = allClassDefinitions
-          .Select(cd => ResolveMemberInClassDefinition(originatingEntity, property, cd))
-          .FirstOrDefault(e => e != null);
+      var resolvedMember = InlineTypeDefinitionWalker.WalkDescendants(
+          entityTypeDefinition,
+          classDefinition => ResolveMemberInTypeDefinition(originatingEntity, property, classDefinition),
+          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported"),
+          match: expression => expression != null); // TODO R2I Mapping: Add support for interfaces
 
       if (resolvedMember == null)
       {
@@ -156,13 +158,17 @@ namespace Remotion.Data.DomainObjects.Linq
           throw new UnmappedItemException(message);
         }
 
-        var classDefinition = GetClassDefinition(desiredType);
+        var typeDefinition = GetTypeDefinition(desiredType);
         var idExpression = Expression.MakeMemberAccess(checkedExpression, s_idProperty.PropertyInfo);
         var classIDExpression = Expression.MakeMemberAccess(idExpression, s_classIDProperty.PropertyInfo);
-        var allClassDefinitions = EnumerableUtility.Singleton(classDefinition).Concat(classDefinition.GetAllDerivedClasses().Select(cd => cd));
-        var allClassIDExpressions = allClassDefinitions.Select(cd => new SqlLiteralExpression(cd.ID));
 
-        return new SqlInExpression(classIDExpression, new SqlCollectionExpression(typeof(string[]), allClassIDExpressions.Cast<Expression>()));
+        var allClassIDExpressions = new List<Expression>();
+        InlineTypeDefinitionWalker.WalkDescendants(
+            typeDefinition,
+            classDefinition => allClassIDExpressions.Add(new SqlLiteralExpression(classDefinition.ID)),
+            interfaceDefinition => throw new NotImplementedException("Interfaces are not supported")); // TODO R2I Mapping: Add support for interfaces
+
+        return new SqlInExpression(classIDExpression, new SqlCollectionExpression(typeof(string[]), allClassIDExpressions));
       }
       else
       {
@@ -198,12 +204,12 @@ namespace Remotion.Data.DomainObjects.Linq
       return _storageSpecificExpressionResolver.ResolveIDPropertyViaForeignKey(entityRefMemberExpression.OriginatingEntity, foreignKeyEndPoint);
     }
 
-    private ClassDefinition GetClassDefinition (Type type)
+    private TypeDefinition GetTypeDefinition (Type type)
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(
+      var typeDefinition = MappingConfiguration.Current.GetTypeDefinition(
           type,
           t => new UnmappedItemException(string.Format("The type '{0}' does not identify a queryable table.", t)));
-      return classDefinition;
+      return typeDefinition;
     }
 
     private static PropertyInfoAdapter GetMemberAsProperty (SqlEntityExpression originatingEntity, MemberInfo memberInfo)
@@ -220,10 +226,10 @@ namespace Remotion.Data.DomainObjects.Linq
       return PropertyInfoAdapter.Create(property);
     }
 
-    private Expression? ResolveMemberInClassDefinition (
-        SqlEntityExpression originatingEntity, PropertyInfoAdapter propertyInfoAdapter, ClassDefinition classDefinition)
+    private Expression? ResolveMemberInTypeDefinition (
+        SqlEntityExpression originatingEntity, PropertyInfoAdapter propertyInfoAdapter, TypeDefinition typeDefinition)
     {
-      var endPointDefinition = classDefinition.ResolveRelationEndPoint(propertyInfoAdapter);
+      var endPointDefinition = typeDefinition.ResolveRelationEndPoint(propertyInfoAdapter);
       if (endPointDefinition != null)
       {
         if (endPointDefinition.Cardinality != CardinalityType.One)
@@ -235,7 +241,7 @@ namespace Remotion.Data.DomainObjects.Linq
         return new SqlEntityRefMemberExpression(originatingEntity, propertyInfoAdapter.PropertyInfo);
       }
 
-      var propertyDefinition = classDefinition.ResolveProperty(propertyInfoAdapter);
+      var propertyDefinition = typeDefinition.ResolveProperty(propertyInfoAdapter);
       if (propertyDefinition != null)
         return _storageSpecificExpressionResolver.ResolveProperty(originatingEntity, propertyDefinition);
 
@@ -245,12 +251,13 @@ namespace Remotion.Data.DomainObjects.Linq
     private IRelationEndPointDefinition GetEndPointDefinition (SqlEntityExpression originatingEntity, MemberInfo memberInfo)
     {
       var property = GetMemberAsProperty(originatingEntity, memberInfo);
-      var entityClassDefinition = GetClassDefinition(originatingEntity.Type);
+      var entityTypeDefinition = GetTypeDefinition(originatingEntity.Type);
 
-      var allClassDefinitions = new[] { entityClassDefinition }.Concat(entityClassDefinition.GetAllDerivedClasses());
-      var leftEndPointDefinition = allClassDefinitions
-          .Select(cd => cd.ResolveRelationEndPoint(property))
-          .FirstOrDefault(e => e != null);
+      var leftEndPointDefinition = InlineTypeDefinitionWalker.WalkDescendants(
+          entityTypeDefinition,
+          classDefinition => classDefinition.ResolveRelationEndPoint(property),
+          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported"),
+          match: relationEndPoint => relationEndPoint != null); // TODO R2I Mapping: Add support for interfaces
 
       if (leftEndPointDefinition == null)
       {

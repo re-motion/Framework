@@ -18,6 +18,7 @@ using System;
 using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.FunctionalProgramming;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
@@ -62,9 +63,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       catch (NotSupportedException ex)
       {
         var message = string.Format(
-            "There was an error when retrieving storage type for property '{0}' (declaring class: '{1}'): {2}",
+            "There was an error when retrieving storage type for property '{0}' (declaring type: '{1}'): {2}",
             propertyDefinition.PropertyName,
-            propertyDefinition.ClassDefinition.ID,
+            propertyDefinition.TypeDefinition.Type.GetFullNameSafe(),
             ex.Message);
         return new UnsupportedStoragePropertyDefinition(propertyDefinition.PropertyType, message, ex);
       }
@@ -98,8 +99,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     {
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
+      if (propertyDefinition.TypeDefinition is not ClassDefinition classDefinition) // TODO R2I Persistence: Support TypeDefinition
+        throw new NotSupportedException("Only class definitions are supported");
+
       // CreateSequence can deal with null source objects
-      var baseClasses = propertyDefinition.ClassDefinition.BaseClass.CreateSequence(cd => cd.BaseClass);
+      var baseClasses = classDefinition.BaseClass.CreateSequence(cd => cd.BaseClass);
       return baseClasses.Any(cd => _storageNameProvider.GetTableName(cd) != null);
     }
 

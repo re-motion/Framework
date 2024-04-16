@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-
-namespace Remotion.Data.DomainObjects.Mapping.Validation
+namespace Remotion.Data.DomainObjects.Mapping
 {
   /// <summary>
-  /// Defines the API for the class definition mapping validation rules.
+  /// Provides a method to dispatch on <see cref="TypeDefinition"/> implementations.
   /// </summary>
-  public interface IClassDefinitionValidationRule
+  public interface ITypeDefinitionVisitor
   {
-    MappingValidationResult Validate (ClassDefinition classDefinition);
+    void VisitClassDefinition (ClassDefinition classDefinition);
+
+    void VisitInterfaceDefinition (InterfaceDefinition interfaceDefinition);
   }
 }

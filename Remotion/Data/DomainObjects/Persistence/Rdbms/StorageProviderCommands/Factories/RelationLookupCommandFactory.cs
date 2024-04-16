@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       ArgumentUtility.CheckNotNull("foreignKeyValue", foreignKeyValue);
 
       return InlineRdbmsStorageEntityDefinitionVisitor.Visit<IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext>>(
-          _rdbmsPersistenceModelProvider.GetEntityDefinition(foreignKeyEndPoint.ClassDefinition),
+          _rdbmsPersistenceModelProvider.GetEntityDefinition(foreignKeyEndPoint.TypeDefinition),
           (table, continuation) => CreateForDirectRelationLookup(table, foreignKeyEndPoint, foreignKeyValue, sortExpressionDefinition),
           (filterView, continuation) => continuation(filterView.BaseEntity),
           (unionView, continuation) => CreateForIndirectRelationLookup(unionView, foreignKeyEndPoint, foreignKeyValue, sortExpressionDefinition),
