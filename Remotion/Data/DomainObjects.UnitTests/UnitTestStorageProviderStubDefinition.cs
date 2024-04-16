@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Utilities;
 
@@ -23,8 +24,16 @@ namespace Remotion.Data.DomainObjects.UnitTests
 {
   public class UnitTestStorageProviderStubDefinition : RdbmsProviderDefinition
   {
-    public UnitTestStorageProviderStubDefinition (string storageProviderID, IReadOnlyCollection<Type> assignedStorageGroups = null)
-        : base(storageProviderID, new UnitTestStorageObjectFactoryStub(), "connectionString", "ReadOnlyConnectionString", assignedStorageGroups)
+    public UnitTestStorageProviderStubDefinition (
+        string storageProviderID,
+        [CanBeNull] IRdbmsStorageObjectFactory storageObjectFactory = null,
+        IReadOnlyCollection<Type> assignedStorageGroups = null)
+        : base(
+            storageProviderID,
+            storageObjectFactory ?? new UnitTestStorageObjectFactoryStub(),
+            "connectionString",
+            "ReadOnlyConnectionString",
+            assignedStorageGroups)
     {
     }
 
