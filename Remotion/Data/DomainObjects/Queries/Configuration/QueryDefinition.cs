@@ -75,8 +75,9 @@ public class QueryDefinition
   /// The <see cref="StorageProviderDefinition"/> used for executing instances of this <b>QueryDefinition</b>. Must not be <see langword="null"/>.
   /// </param>
   /// <param name="statement">
-  /// The <paramref name="statement"/> of the <b>QueryDefinition</b>. The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>
-  /// specified through <paramref name="storageProviderDefinition"/> must understand the syntax of the <paramref name="statement"/>. Must not be <see langword="null"/>.
+  /// The <paramref name="statement"/> of the <b>QueryDefinition</b>. The <see cref="Remotion.Data.DomainObjects.Persistence.IReadOnlyStorageProvider"/> or
+  /// <see cref="Remotion.Data.DomainObjects.Persistence.IReadOnlyStorageProvider"/> specified through <paramref name="storageProviderDefinition"/>
+  /// must understand the syntax of the <paramref name="statement"/>. Must not be <see langword="null"/>.
   /// </param>
   /// <param name="queryType">
   /// One of the <see cref="QueryType"/> enumeration constants.</param>
@@ -184,8 +185,9 @@ public class QueryDefinition
   }
 
   /// <summary>
-  /// Gets the statement-text of the <b>QueryDefinition</b>. The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>
-  /// specified through <see cref="StorageProviderDefinition"/> must understand the syntax of the <b>Statement</b>.
+  /// Gets the statement-text of the <b>QueryDefinition</b>. The <see cref="Remotion.Data.DomainObjects.Persistence.IReadOnlyStorageProvider"/> or
+  /// <see cref="Remotion.Data.DomainObjects.Persistence.IReadOnlyStorageProvider"/> specified through <see cref="StorageProviderDefinition"/>
+  /// must understand the syntax of the <b>Statement</b>.
   /// </summary>
   public string Statement
   {

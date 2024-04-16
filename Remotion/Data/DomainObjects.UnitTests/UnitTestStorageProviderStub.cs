@@ -17,28 +17,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Moq;
 using Remotion.Context;
-using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Data.DomainObjects.Tracing;
-using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
   // Used by the Official class definition.
-  public class UnitTestStorageProviderStub : StorageProvider
+  public class UnitTestStorageProviderStub : IStorageProvider
   {
     private class MockStorageProviderScope : IDisposable
     {
-      private readonly StorageProvider _previous;
+      private readonly IStorageProvider _previous;
       private bool _disposed = false;
 
-      public MockStorageProviderScope (StorageProvider previous)
+      public MockStorageProviderScope (IStorageProvider previous)
       {
         _previous = previous;
       }
@@ -55,17 +51,16 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     private static int s_nextID = 0;
 
-    private static readonly SafeContextSingleton<StorageProvider> _innerMockStorageProvider =
-        new SafeContextSingleton<StorageProvider>(typeof(UnitTestStorageProviderStub) + "._innerMockStorageProvider", () => null);
+    private static readonly SafeContextSingleton<IStorageProvider> _innerMockStorageProvider = new(typeof(UnitTestStorageProviderStub) + "._innerMockStorageProvider", () => null);
 
-    public static IDisposable EnterMockStorageProviderScope (StorageProvider mock)
+    public static IDisposable EnterMockStorageProviderScope (IStorageProvider mock)
     {
       var previous = _innerMockStorageProvider.Current;
       _innerMockStorageProvider.SetCurrent(mock);
       return new MockStorageProviderScope(previous);
     }
 
-    public static T ExecuteWithMock<T> (StorageProvider mockedStorageProvider, Func<T> func)
+    public static T ExecuteWithMock<T> (IStorageProvider mockedStorageProvider, Func<T> func)
     {
       using (EnterMockStorageProviderScope(mockedStorageProvider))
       {
@@ -73,33 +68,21 @@ namespace Remotion.Data.DomainObjects.UnitTests
       }
     }
 
-    public static StorageProvider CreateStorageProviderMockForOfficial ()
-    {
-      var storageProviderID =
-          MappingConfiguration.Current.GetTypeDefinition(typeof(Official)).StorageEntityDefinition.StorageProviderDefinition.Name;
-      var storageProviderDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory(storageProviderID);
-      return new Mock<StorageProvider>(storageProviderDefinition, NullPersistenceExtension.Instance).Object;
-    }
-
-    public UnitTestStorageProviderStub (
-        UnitTestStorageProviderStubDefinition definition,
-        IPersistenceExtension persistenceExtension)
-        : base(definition, persistenceExtension)
+    public UnitTestStorageProviderStub ()
     {
     }
 
-    public StorageProvider InnerProvider
-    {
-      get { return _innerMockStorageProvider.Current; }
-    }
+    public IStorageProvider InnerProvider => _innerMockStorageProvider.Current;
 
-    public override ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
+    public ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
     {
       if (InnerProvider != null)
+      {
         return InnerProvider.LoadDataContainer(id);
+      }
       else
       {
-        DataContainer container = DataContainer.CreateForExisting(
+        var container = DataContainer.CreateForExisting(
             id,
             null,
             delegate (PropertyDefinition propertyDefinition)
@@ -117,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       }
     }
 
-    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
+    public IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
     {
       if (InnerProvider != null)
         return InnerProvider.LoadDataContainers(ids);
@@ -125,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         return ids.Select(LoadDataContainer);
     }
 
-    public override IEnumerable<DataContainer> ExecuteCollectionQuery (IQuery query)
+    public IEnumerable<DataContainer> ExecuteCollectionQuery (IQuery query)
     {
       if (InnerProvider != null)
         return InnerProvider.ExecuteCollectionQuery(query);
@@ -133,7 +116,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         return null;
     }
 
-    public override IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
+    public IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
     {
       if (InnerProvider != null)
         return InnerProvider.ExecuteCustomQuery(query);
@@ -141,7 +124,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         return null;
     }
 
-    public override object ExecuteScalarQuery (IQuery query)
+    public object ExecuteScalarQuery (IQuery query)
     {
       if (InnerProvider != null)
         return InnerProvider.ExecuteScalarQuery(query);
@@ -149,19 +132,19 @@ namespace Remotion.Data.DomainObjects.UnitTests
         return null;
     }
 
-    public override void Save (IReadOnlyCollection<DataContainer> dataContainers)
+    public void Save (IReadOnlyCollection<DataContainer> dataContainers)
     {
       if (InnerProvider != null)
         InnerProvider.Save(dataContainers);
     }
 
-    public override void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers)
+    public void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers)
     {
       if (InnerProvider != null)
         InnerProvider.UpdateTimestamps(dataContainers);
     }
 
-    public override IEnumerable<DataContainer> LoadDataContainersByRelatedID (
+    public IEnumerable<DataContainer> LoadDataContainersByRelatedID (
         RelationEndPointDefinition relationEndPointDefinition,
         SortExpressionDefinition sortExpressionDefinition,
         ObjectID relatedID)
@@ -172,30 +155,36 @@ namespace Remotion.Data.DomainObjects.UnitTests
         return null;
     }
 
-    public override void BeginTransaction ()
+    public void BeginTransaction ()
     {
       if (InnerProvider != null)
         InnerProvider.BeginTransaction();
     }
 
-    public override void Commit ()
+    public void Commit ()
     {
       if (InnerProvider != null)
         InnerProvider.Commit();
     }
 
-    public override void Rollback ()
+    public void Rollback ()
     {
       if (InnerProvider != null)
         InnerProvider.Rollback();
     }
 
-    public override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
+    public ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       if (InnerProvider != null)
         return InnerProvider.CreateNewObjectID(classDefinition);
       else
         return new ObjectID(classDefinition, s_nextID++);
+    }
+
+    public void Dispose ()
+    {
+      if (InnerProvider != null)
+        InnerProvider.Dispose();
     }
   }
 }

@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void Disposing ()
     {
-      using (StorageProvider provider = Provider)
+      using (IStorageProvider provider = Provider)
       {
         provider.LoadDataContainer(DomainObjectIDs.Order1);
       }

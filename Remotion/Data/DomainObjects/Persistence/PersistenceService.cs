@@ -179,11 +179,11 @@ namespace Remotion.Data.DomainObjects.Persistence
     }
 
     /// <summary>
-    /// Extension point for supporting multiple <see cref="StorageProvider"/> with changed data during a single <see cref="Save"/> operation.
+    /// Extension point for supporting multiple <see cref="IStorageProvider"/> with changed data during a single <see cref="Save"/> operation.
     /// </summary>
-    /// <param name="providers">The set of <see cref="StorageProvider"/> in the current operation.</param>
+    /// <param name="providers">The set of <see cref="IStorageProvider"/> in the current operation.</param>
     /// <remarks>
-    /// When extending <see cref="CheckProvidersCompatibleForSave"/> to support multiple <see cref="StorageProvider"/>, also extend
+    /// When extending <see cref="CheckProvidersCompatibleForSave"/> to support multiple <see cref="IStorageProvider"/>, also extend
     /// <see cref="BeginTransaction"/>, <see cref="CommitTransaction"/>, and <see cref="RollbackTransaction"/> with appropriate logic.
     /// </remarks>
     protected virtual void CheckProvidersCompatibleForSave (IEnumerable<IStorageProvider> providers)
@@ -199,7 +199,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     /// <summary>
     /// Extension point for beginning a transaction.
     /// </summary>
-    /// <param name="providers">The set of <see cref="StorageProvider"/> in the current operation.</param>
+    /// <param name="providers">The set of <see cref="IReadOnlyStorageProvider"/> or <see cref="IStorageProvider"/> in the current operation.</param>
     /// <returns>
     /// A custom context, passed back to <see cref="CommitTransaction"/> and <see cref="RollbackTransaction"/>. The <see cref="IDisposable.Dispose"/>
     /// method is invoked at the call site.
@@ -217,7 +217,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     /// <summary>
     /// Extension point for committing a transaction.
     /// </summary>
-    /// <param name="providers">The set of <see cref="StorageProvider"/> in the current operation.</param>
+    /// <param name="providers">The set of <see cref="IReadOnlyStorageProvider"/> or <see cref="IStorageProvider"/> in the current operation.</param>
     /// <param name="context">
     /// A custom context, created by <see cref="BeginTransaction"/>. The <see cref="IDisposable.Dispose"/> method is invoked at the call site.
     /// </param>
@@ -232,7 +232,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     /// <summary>
     /// Extension point for rolling a transaction back.
     /// </summary>
-    /// <param name="providers">The set of <see cref="StorageProvider"/> in the current operation.</param>
+    /// <param name="providers">The set of <see cref="IReadOnlyStorageProvider"/> or <see cref="IStorageProvider"/> in the current operation.</param>
     /// <param name="context">
     /// A custom context, created by <see cref="BeginTransaction"/>. The <see cref="IDisposable.Dispose"/> method is invoked at the call site.
     /// </param>

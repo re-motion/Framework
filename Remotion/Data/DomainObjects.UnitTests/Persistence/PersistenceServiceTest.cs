@@ -130,7 +130,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     {
       Assert.AreNotEqual(DomainObjectIDs.Order1.StorageProviderDefinition.Name, DomainObjectIDs.Official1, "Different storage providers");
 
-      var storageProviderMock = new Mock<StorageProvider>(MockBehavior.Strict, UnitTestStorageProviderDefinition, NullPersistenceExtension.Instance);
+      var storageProviderMock = new Mock<IStorageProvider>(MockBehavior.Strict);
 
       var officialDC1 = DataContainer.CreateNew(DomainObjectIDs.Official1);
       var officialDC2 = DataContainer.CreateNew(DomainObjectIDs.Official2);
@@ -174,7 +174,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     {
       Assert.AreNotEqual(DomainObjectIDs.Order1.StorageProviderDefinition.Name, DomainObjectIDs.Official1, "Different storage providers");
 
-      var storageProviderMock = new Mock<StorageProvider>(MockBehavior.Strict, UnitTestStorageProviderDefinition, NullPersistenceExtension.Instance);
+      var storageProviderMock = new Mock<IStorageProvider>(MockBehavior.Strict);
 
       var officialDC1a = DataContainer.CreateNew(DomainObjectIDs.Official1);
       var officialDC1b = DataContainer.CreateNew(DomainObjectIDs.Official1);
@@ -467,7 +467,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       SetPropertyValue(officialContainer1, typeof(Official), "Name", "Zaphod1");
       SetPropertyValue(officialContainer2, typeof(Official), "Name", "Zaphod2");
       var secondStorageProvider = new[] { officialContainer1, officialContainer2 };
-      var storageProviderMock = new Mock<StorageProvider>(MockBehavior.Strict, UnitTestStorageProviderDefinition, NullPersistenceExtension.Instance);
+      var storageProviderMock = new Mock<IStorageProvider>(MockBehavior.Strict);
       storageProviderMock.Setup(mock => mock.BeginTransaction()).Verifiable();
       storageProviderMock
           .Setup(mock => mock.Save(It.IsNotNull<IReadOnlyCollection<DataContainer>>()))
@@ -527,7 +527,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       var isCommitCalled = false;
       var contextMock = new Mock<IDisposable>(MockBehavior.Strict);
       contextMock.Setup(mock => mock.Dispose()).Callback(() => Assert.That(isCommitCalled, Is.True)).Verifiable();
-      var storageProviderMock = new Mock<StorageProvider>(MockBehavior.Strict, UnitTestStorageProviderDefinition, NullPersistenceExtension.Instance);
+      var storageProviderMock = new Mock<IStorageProvider>(MockBehavior.Strict);
       persistenceService.BeginTransactionCallback = _ => contextMock.Object;
       storageProviderMock
           .Setup(mock => mock.Save(It.IsNotNull<IReadOnlyCollection<DataContainer>>()))
@@ -568,7 +568,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       var isRollbackCalled = false;
       var contextMock = new Mock<IDisposable>(MockBehavior.Strict);
       contextMock.Setup(mock => mock.Dispose()).Callback(() => Assert.That(isRollbackCalled, Is.True)).Verifiable();
-      var storageProviderMock = new Mock<StorageProvider>(MockBehavior.Strict, UnitTestStorageProviderDefinition, NullPersistenceExtension.Instance);
+      var storageProviderMock = new Mock<IStorageProvider>(MockBehavior.Strict);
       persistenceService.BeginTransactionCallback = _ => contextMock.Object;
       storageProviderMock
           .Setup(mock => mock.Save(It.IsNotNull<IReadOnlyCollection<DataContainer>>()))

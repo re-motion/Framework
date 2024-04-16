@@ -175,7 +175,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     /// The <see cref="IQuery.StorageProviderDefinition"/> of <paramref name="query"/> could not be found.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.PersistenceException">
-    /// The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
+    /// The <see cref="Remotion.Data.DomainObjects.Persistence.IReadOnlyStorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.StorageProviderException">
     /// An error occurred while executing the query.
@@ -202,7 +202,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     /// The <see cref="IQuery.StorageProviderDefinition"/> of <paramref name="query"/> could not be found.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.PersistenceException">
-    /// The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
+    /// The <see cref="Remotion.Data.DomainObjects.Persistence.IStorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.StorageProviderException">
     /// An error occurred while executing the query.

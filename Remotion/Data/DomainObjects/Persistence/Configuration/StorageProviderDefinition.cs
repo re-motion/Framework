@@ -27,7 +27,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {
   /// <summary>
-  /// Defines the configuration for a specific <see cref="StorageProvider"/>. Subclasses of <see cref="StorageProviderDefinition"/> can be 
+  /// Defines the configuration for a specific <see cref="IReadOnlyStorageProvider"/> or <see cref="IStorageProvider"/>. Subclasses of <see cref="StorageProviderDefinition"/> can be 
   /// instantiated from a config file entry.
   /// </summary>
   public abstract class StorageProviderDefinition: ExtendedProviderBase
