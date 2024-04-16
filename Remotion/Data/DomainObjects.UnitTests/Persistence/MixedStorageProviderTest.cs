@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Mixins;
@@ -30,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void StorageProvidersCanBeMixed ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass(typeof(StorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(IStorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
         var provider =
@@ -42,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void MixinsCanOverrideStorageProviderMethods ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass(typeof(StorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(IStorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
         var provider =
@@ -57,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void MixinsCanIntroduceStorageProviderInterfaces ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass(typeof(StorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(RdbmsProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
       {
         ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
         var provider =
