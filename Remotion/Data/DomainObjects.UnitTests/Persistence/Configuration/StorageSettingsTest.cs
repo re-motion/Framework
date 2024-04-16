@@ -93,8 +93,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     [Test]
     public void Initialize_WithStorageGroupAssignedToMultipleStorageProviders_ThrowsArgumentException ()
     {
-      var storageProvider1 = new UnitTestStorageProviderStubDefinition("unique", new[] { typeof(Dummy) });
-      var storageProvider2 = new UnitTestStorageProviderStubDefinition("otherUnique", new[] { typeof(Dummy) });
+      var storageProvider1 = new UnitTestStorageProviderStubDefinition("unique", assignedStorageGroups: new[] { typeof(Dummy) });
+      var storageProvider2 = new UnitTestStorageProviderStubDefinition("otherUnique", assignedStorageGroups: new[] { typeof(Dummy) });
 
       var storageProviderCollection = new[] { storageProvider1, storageProvider2 };
 
@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     [Test]
     public void Initialize_WithDuplicateStorageProviderThatHasAStorageGroup_ThrowsArgumentException ()
     {
-      var storageProvider = new UnitTestStorageProviderStubDefinition("duplicateProvider", new[] { typeof(Dummy) });
+      var storageProvider = new UnitTestStorageProviderStubDefinition("duplicateProvider", assignedStorageGroups: new[] { typeof(Dummy) });
 
       var storageProviderCollection = new[] { storageProvider, storageProvider };
 
@@ -185,7 +185,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
       var storageProviderDefinitionCollection = new List<StorageProviderDefinition>
                                                 {
                                                     defaultStorageProvider,
-                                                    new UnitTestStorageProviderStubDefinition(providerID, new []{typeof(StubStorageGroup1Attribute)})
+                                                    new UnitTestStorageProviderStubDefinition(providerID, assignedStorageGroups: new []{typeof(StubStorageGroup1Attribute)})
                                                 };
 
       var storageSettings = new StorageSettings(defaultStorageProvider, storageProviderDefinitionCollection);
@@ -225,8 +225,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     [Test]
     public void GetStorageProviderDefinition_WithName_ReturnsProviderDefinition ()
     {
-      var storageProvider1 = new UnitTestStorageProviderStubDefinition("unique", new[] { typeof(Dummy) });
-      var storageProvider2 = new UnitTestStorageProviderStubDefinition("otherUnique", new[] { typeof(FirstStorageGroupAttribute) });
+      var storageProvider1 = new UnitTestStorageProviderStubDefinition("unique", assignedStorageGroups: new[] { typeof(Dummy) });
+      var storageProvider2 = new UnitTestStorageProviderStubDefinition("otherUnique", assignedStorageGroups: new[] { typeof(FirstStorageGroupAttribute) });
 
       var storageProviderCollection = new[] { storageProvider1, storageProvider2 };
 
@@ -240,8 +240,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     [Test]
     public void GetStorageProviderDefinition_WithNameNotExistentInProviders_ThrowsConfigurationException ()
     {
-      var storageProvider1 = new UnitTestStorageProviderStubDefinition("unique", new[] { typeof(Dummy) });
-      var storageProvider2 = new UnitTestStorageProviderStubDefinition("otherUnique", new[] { typeof(FirstStorageGroupAttribute  ) });
+      var storageProvider1 = new UnitTestStorageProviderStubDefinition("unique", assignedStorageGroups: new[] { typeof(Dummy) });
+      var storageProvider2 = new UnitTestStorageProviderStubDefinition("otherUnique", assignedStorageGroups: new[] { typeof(FirstStorageGroupAttribute  ) });
 
       var storageProviderCollection = new[] { storageProvider1, storageProvider2 };
 
