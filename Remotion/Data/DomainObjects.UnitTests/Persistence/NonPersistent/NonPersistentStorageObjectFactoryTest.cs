@@ -43,7 +43,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
      Assert.That(result, Is.InstanceOf<NonPersistentProvider>());
      var nonPersistentProvider = (NonPersistentProvider)result;
      Assert.That(nonPersistentProvider.StorageProviderDefinition, Is.SameAs(_storageProviderDefinition));
-     Assert.That(nonPersistentProvider.PersistenceExtension, Is.SameAs(persistenceExtensionStub.Object));
     }
 
     [Test]
@@ -56,7 +55,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(result, Is.InstanceOf<NonPersistentProvider>());
       var nonPersistentProvider = (NonPersistentProvider)result;
       Assert.That(nonPersistentProvider.StorageProviderDefinition, Is.SameAs(_storageProviderDefinition));
-      Assert.That(nonPersistentProvider.PersistenceExtension, Is.SameAs(persistenceExtensionStub.Object));
     }
 
     [Test]

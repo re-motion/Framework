@@ -21,7 +21,8 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {
   /// <summary>
-  /// Defines the configuration for a specific <see cref="StorageProvider"/>. Use <see cref="StorageSettingsFactory"/> to create instances.
+  /// Defines the configuration for a specific <see cref="IReadOnlyStorageProvider"/> or <see cref="IStorageProvider"/>.
+  /// Use <see cref="StorageSettingsFactory"/> to create instances.
   /// </summary>
   public abstract class StorageProviderDefinition
   {
