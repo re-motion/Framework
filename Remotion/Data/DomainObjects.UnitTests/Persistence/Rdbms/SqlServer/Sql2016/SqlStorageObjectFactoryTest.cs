@@ -32,6 +32,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.Tracing;
@@ -324,8 +325,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
 
       var result = testableSqlProviderFactory.CreateDataParameterDefinitionFactory(_rdbmsProviderDefinition);
 
-      Assert.That(result, Is.TypeOf(typeof(ObjectIDDataParameterDefinitionFactory)));
-      var objectIDDataParameterDefinitionFactory = result.As<ObjectIDDataParameterDefinitionFactory>();
+      Assert.That(result, Is.InstanceOf<SqlFulltextDataParameterDefinitionFactory>());
+      var sqlFulltextDataParameterDefinitionFactory = result.As<SqlFulltextDataParameterDefinitionFactory>();
+
+      Assert.That(sqlFulltextDataParameterDefinitionFactory.NextDataParameterDefinitionFactory, Is.InstanceOf<ObjectIDDataParameterDefinitionFactory>());
+      var objectIDDataParameterDefinitionFactory = sqlFulltextDataParameterDefinitionFactory.NextDataParameterDefinitionFactory.As<ObjectIDDataParameterDefinitionFactory>();
       Assert.That(objectIDDataParameterDefinitionFactory.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
       Assert.That(objectIDDataParameterDefinitionFactory.StorageSettings, Is.SameAs(_storageSettings));
       Assert.That(objectIDDataParameterDefinitionFactory.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub.Object));
