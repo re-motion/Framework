@@ -19,7 +19,7 @@ using System.Globalization;
 using log4net.Core;
 using Remotion.Utilities;
 
-using MicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 using MicrosoftLoglevel = Microsoft.Extensions.Logging.LogLevel;
 using MicrosoftEventId = Microsoft.Extensions.Logging.EventId;
 using RemotionLoglevel = Remotion.Logging.LogLevel;
@@ -29,7 +29,7 @@ namespace Remotion.Logging.Log4Net;
 /// <summary>
 /// Implements <see cref="Microsoft.Extensions.Logging.ILogger"/> to provide an implementation with log4net.
 /// </summary>
-public class Log4NetLogger : MicrosoftLogger
+public class Log4NetLogger : IMicrosoftLogger
 {
   public static Level Convert (MicrosoftLoglevel logLevel)
   {
