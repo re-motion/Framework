@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using log4net.Core;
 using NUnit.Framework;
 using Remotion.Logging;
-
 using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
-namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
+namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsTests
 {
   [TestFixture]
   public class TraceTest : BaseTest

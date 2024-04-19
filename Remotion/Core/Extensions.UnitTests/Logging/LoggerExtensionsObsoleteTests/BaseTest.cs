@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+
 using System;
 using log4net.Appender;
 using log4net.Core;
@@ -21,12 +22,11 @@ using log4net.Repository;
 using log4net.Repository.Hierarchy;
 using NUnit.Framework;
 using Remotion.Logging.Log4Net;
-
 using MicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
 {
-  public class BaseTest
+  public abstract class BaseTest
   {
     private ILogger _logger;
     private MicrosoftLogger _log;
@@ -37,10 +37,8 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
     {
       _memoryAppender = new MemoryAppender();
       var hierarchy = new Hierarchy();
-      hierarchy.Root.Level = Level.All;
       ((IBasicRepositoryConfigurator)hierarchy).Configure(_memoryAppender);
       _logger = hierarchy.GetLogger("The Name");
-
       _log = new Log4NetLogger(_logger);
     }
 

@@ -22,12 +22,11 @@ using log4net.Repository;
 using log4net.Repository.Hierarchy;
 using NUnit.Framework;
 using Remotion.Logging.Log4Net;
-
 using MicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
-namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionTests
+namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsTests
 {
-  public class BaseTest
+  public abstract class BaseTest
   {
     private ILogger _logger;
     private MicrosoftLogger _log;
@@ -38,8 +37,10 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionTests
     {
       _memoryAppender = new MemoryAppender();
       var hierarchy = new Hierarchy();
+      hierarchy.Root.Level = Level.All;
       ((IBasicRepositoryConfigurator)hierarchy).Configure(_memoryAppender);
       _logger = hierarchy.GetLogger("The Name");
+
       _log = new Log4NetLogger(_logger);
     }
 
