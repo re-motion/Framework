@@ -19,8 +19,6 @@ using System;
 using log4net.Core;
 using NUnit.Framework;
 using Remotion.Logging;
-using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
-
 namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsTests
 {
   [TestFixture]
@@ -32,14 +30,14 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsTests
       Exception exception = new Exception();
       SetLoggingThreshold(Level.Warn);
 
-      Log.LogFormat(MicrosoftLogLevel.Warning, LogMessages.TheMessage, exception, "First", "Second");
+      Log.WarnFormat(LogMessages.TheMessage, exception, "First", "Second");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
       Assert.That(loggingEvent.Level, Is.EqualTo(Level.Warn));
-      Assert.That(loggingEvent.MessageObject.ToString(), Is.EqualTo($"The message with First and Second."));
-      // Assert.That(loggingEvent.Properties["EventID"], Is.EqualTo((int)LogMessages.TheMessage));
+      Assert.That(loggingEvent.MessageObject.ToString(), Is.EqualTo("The message with First and Second."));
+      Assert.That(loggingEvent.Properties["EventID"], Is.EqualTo((int)LogMessages.TheMessage));
       Assert.That(loggingEvent.ExceptionObject, Is.SameAs(exception));
       Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
       Assert.That(loggingEvent.LoggerName, Is.EqualTo(Logger.Name));
@@ -50,14 +48,14 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsTests
     {
       SetLoggingThreshold(Level.Warn);
 
-      Log.LogFormat(MicrosoftLogLevel.Warning, LogMessages.TheMessage, null, "First", "Second");
+      Log.WarnFormat(LogMessages.TheMessage, "First", "Second");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
       Assert.That(loggingEvent.Level, Is.EqualTo(Level.Warn));
       Assert.That(loggingEvent.MessageObject.ToString(), Is.EqualTo("The message with First and Second."));
-      // Assert.That(loggingEvent.Properties["EventID"], Is.EqualTo((int)LogMessages.TheMessage));
+      Assert.That(loggingEvent.Properties["EventID"], Is.EqualTo((int)LogMessages.TheMessage));
       Assert.That(loggingEvent.ExceptionObject, Is.Null);
       Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
       Assert.That(loggingEvent.LoggerName, Is.EqualTo(Logger.Name));

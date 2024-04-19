@@ -26,6 +26,25 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
   public class LogTest : BaseTest
   {
     [Test]
+    public void Test_WithMessageEventIDAndException ()
+    {
+      Exception exception = new Exception();
+      SetLoggingThreshold(Level.Info);
+
+      Log.Log(MicrosoftLogLevel.Information, 2, (object)"The message.", exception);
+
+      LoggingEvent[] events = GetLoggingEvents();
+      Assert.That(events.Length, Is.EqualTo(1));
+      LoggingEvent loggingEvent = events[0];
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Info));
+      Assert.That(loggingEvent.MessageObject, Is.EqualTo("The message."));
+      Assert.That(loggingEvent.Properties["EventID"], Is.EqualTo(2));
+      Assert.That(loggingEvent.ExceptionObject, Is.SameAs(exception));
+      Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
+      Assert.That(loggingEvent.LoggerName, Is.EqualTo(Logger.Name));
+    }
+
+    [Test]
     public void Test_WithMessageAndEventID ()
     {
       SetLoggingThreshold(Level.Info);
@@ -94,7 +113,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
       Exception exception = new Exception();
       SetLoggingThreshold(Level.Info);
 
-      Log.InfoFormat(1, exception, "{0} {1}", "The", "message.");
+      Log.LogFormat(MicrosoftLogLevel.Information, 1, exception, "{0} {1}", "The", "message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -148,7 +167,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
     {
       SetLoggingThreshold(Level.Info);
 
-      Log.InfoFormat("{0} {1}", "The", "message.");
+      Log.LogFormat(MicrosoftLogLevel.Information, "{0} {1}", "The", "message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
