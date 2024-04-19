@@ -26,6 +26,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders;
@@ -302,6 +303,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       Assert.That(
           resultAsDataStoragePropertyDefinitionFactory.ValueStoragePropertyDefinitionFactory,
           Is.SameAs(_valueStoragePropertyDefinitonFactoryStub.Object));
+    }
+
+    [Test]
+    public void CreateDataParameterDefinitionFactory ()
+    {
+      IRdbmsStorageObjectFactory testableSqlProviderFactory = new TestableSqlStorageObjectFactory(
+          _storageSettings,
+          null,
+          _storageTypeInformationProviderStub.Object,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null);
+
+      var result = testableSqlProviderFactory.CreateDataParameterDefinitionFactory(_rdbmsProviderDefinition);
+
+      Assert.That(result, Is.TypeOf(typeof(ObjectIDDataParameterDefinitionFactory)));
+      var objectIDDataParameterDefinitionFactory = result.As<ObjectIDDataParameterDefinitionFactory>();
+      Assert.That(objectIDDataParameterDefinitionFactory.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
+      Assert.That(objectIDDataParameterDefinitionFactory.StorageSettings, Is.SameAs(_storageSettings));
+      Assert.That(objectIDDataParameterDefinitionFactory.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub.Object));
+
+      Assert.That(objectIDDataParameterDefinitionFactory.NextDataParameterDefinitionFactory, Is.InstanceOf<SimpleDataParameterDefinitionFactory>());
+      var simpleDataParameterDefinitionFactory = objectIDDataParameterDefinitionFactory.NextDataParameterDefinitionFactory.As<SimpleDataParameterDefinitionFactory>();
+      Assert.That(simpleDataParameterDefinitionFactory.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub.Object));
     }
 
     [Test]

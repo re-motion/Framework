@@ -15,36 +15,27 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries
 {
   /// <summary>
-  /// <see cref="QueryParameterWithType"/> associated a <see cref="QueryParameter"/> with a <see cref="StorageTypeInformation"/>.
+  /// <see cref="QueryParameterWithDataParameterDefinition"/> associated a <see cref="QueryParameter"/> with a <see cref="DataParameterDefinition"/>.
   /// </summary>
-  public struct QueryParameterWithType
+  public struct QueryParameterWithDataParameterDefinition
   {
-    private readonly QueryParameter _queryParameter;
-    private readonly IStorageTypeInformation _storageTypeInformation;
+    public QueryParameter QueryParameter { get; }
 
-    public QueryParameterWithType (QueryParameter queryParameter, IStorageTypeInformation storageTypeInformation)
+    public IDataParameterDefinition DataParameterDefinition { get; }
+
+    public QueryParameterWithDataParameterDefinition (QueryParameter queryParameter, IDataParameterDefinition dataParameterDefinition)
     {
-      ArgumentUtility.CheckNotNull("queryParameter", queryParameter);
-      ArgumentUtility.CheckNotNull("storageTypeInformation", storageTypeInformation);
+      ArgumentUtility.CheckNotNull(nameof(queryParameter), queryParameter);
+      ArgumentUtility.CheckNotNull(nameof(dataParameterDefinition), dataParameterDefinition);
 
-      _queryParameter = queryParameter;
-      _storageTypeInformation = storageTypeInformation;
-    }
-
-    public QueryParameter QueryParameter
-    {
-      get { return _queryParameter; }
-    }
-
-    public IStorageTypeInformation StorageTypeInformation
-    {
-      get { return _storageTypeInformation; }
+      QueryParameter = queryParameter;
+      DataParameterDefinition = dataParameterDefinition;
     }
   }
 }
