@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using MicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 using MicrosoftLoglevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Logging
@@ -32,12 +32,12 @@ namespace Remotion.Logging
     /// </summary>
     /// <typeparam name="T">The (inferred) type of the value to be logged.</typeparam>
     /// <param name="value">The value to be logged.</param>
-    /// <param name="logger">The <see cref="MicrosoftLogger"/> to logger the value with.</param>
+    /// <param name="logger">The <see cref="IMicrosoftLogger"/> to logger the value with.</param>
     /// <param name="logLevel">The <see cref="MicrosoftLoglevel"/> to logger the value at. If the <paramref name="logger"/> does not support this level, the
     /// <paramref name="messageCreator"/> is not called.</param>
     /// <param name="messageCreator">A function object building the message to be logged.</param>
     /// <returns>The <paramref name="value"/> passed in to the method.</returns>
-    public static T LogAndReturnValue<T> (this T value, MicrosoftLogger logger, MicrosoftLoglevel logLevel, Func<T, string?> messageCreator)
+    public static T LogAndReturnValue<T> (this T value, IMicrosoftLogger logger, MicrosoftLoglevel logLevel, Func<T, string?> messageCreator)
     {
       if (logger.IsEnabled(logLevel))
       {
@@ -49,7 +49,7 @@ namespace Remotion.Logging
 
     public static IEnumerable<T> LogAndReturnItems<T> (
         this IEnumerable<T> sequence,
-        MicrosoftLogger logger,
+        IMicrosoftLogger logger,
         MicrosoftLoglevel logLevel,
         Func<int, string?> iterationCompletedMessageCreator)
     {
@@ -60,7 +60,7 @@ namespace Remotion.Logging
 
     private static IEnumerable<T> LogAndReturnWithIteration<T> (
         IEnumerable<T> sequence,
-        MicrosoftLogger logger,
+        IMicrosoftLogger logger,
         MicrosoftLoglevel logLevel,
         Func<int, string?> iterationCompletedMessageCreator)
     {
