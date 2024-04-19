@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Data;
-using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
@@ -48,13 +47,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       if (propertyDefinition.PropertyType == typeof(CompoundDataType))
         return CreateStoragePropertyDefinitionForCompoundDataType(_storageNameProvider.GetColumnName(propertyDefinition));
       return _innerDataStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(propertyDefinition);
-    }
-
-    public IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition ([CanBeNull] object value)
-    {
-      if (value is CompoundDataType)
-        return CreateStoragePropertyDefinitionForCompoundDataType("Value");
-      return _innerDataStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(value);
     }
 
     private IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinitionForCompoundDataType (string columnName)
