@@ -67,14 +67,5 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         return _valueStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(propertyDefinition);
       }
     }
-
-    public virtual IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (object? value)
-    {
-      var objectID = value as ObjectID;
-      if (objectID != null)
-        return _relationStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(objectID.ClassDefinition, "Value", "ValueClassID");
-
-      return _valueStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(value, "Value");
-    }
   }
 }
