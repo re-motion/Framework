@@ -18,7 +18,7 @@ using System;
 using log4net.Core;
 using NUnit.Framework;
 using Remotion.Logging;
-using MicrosoftLoglevel = Microsoft.Extensions.Logging.LogLevel;
+using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
 {
@@ -30,7 +30,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
     {
       SetLoggingThreshold(Level.Info);
 
-      Log.Log(MicrosoftLoglevel.Information, 1, (object)"The message.");
+      Log.Log(MicrosoftLogLevel.Information, 1, (object)"The message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -49,7 +49,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
       Exception exception = new Exception();
       SetLoggingThreshold(Level.Info);
 
-      Log.Log(MicrosoftLoglevel.Information, (object)"The message.", exception);
+      Log.Log(MicrosoftLogLevel.Information, (object)"The message.", exception);
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -66,7 +66,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
     {
       SetLoggingThreshold(Level.Info);
 
-      Log.Log(MicrosoftLoglevel.Information, (object)"The message.");
+      Log.Log(MicrosoftLogLevel.Information, (object)"The message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -83,7 +83,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
     {
       Logger.Repository.Threshold = Level.Off;
 
-      Log.Log(MicrosoftLoglevel.Information, 1, (object)"The message.");
+      Log.Log(MicrosoftLogLevel.Information, 1, (object)"The message.");
 
       Assert.That(GetLoggingEvents(), Is.Empty);
     }
@@ -113,7 +113,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
       Exception exception = new Exception();
       SetLoggingThreshold(Level.Info);
 
-      Log.LogFormat(MicrosoftLoglevel.Information, exception, "{0} {1}", "The", "message.");
+      Log.LogFormat(MicrosoftLogLevel.Information, exception, "{0} {1}", "The", "message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -130,7 +130,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
     {
       SetLoggingThreshold(Level.Info);
 
-      Log.LogFormat(MicrosoftLoglevel.Information, 1, "{0} {1}", "The", "message.");
+      Log.LogFormat(MicrosoftLogLevel.Information, 1, "{0} {1}", "The", "message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -165,7 +165,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
     {
       Logger.Repository.Threshold = Level.Off;
 
-      Log.LogFormat(MicrosoftLoglevel.Information, 1, "{0} {1}", "The", "message.");
+      Log.LogFormat(MicrosoftLogLevel.Information, 1, "{0} {1}", "The", "message.");
 
       Assert.That(GetLoggingEvents(), Is.Empty);
     }
