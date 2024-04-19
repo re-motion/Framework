@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Utilities;
@@ -44,6 +45,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     private readonly RelationLookupCommandFactory _relationLookupCommandFactory;
     private readonly SaveCommandFactory _saveCommandFactory;
     private readonly QueryCommandFactory _queryCommandFactory;
+    private readonly IDataParameterDefinitionFactory _dataParameterDefinitionFactory;
 
     public RdbmsProviderCommandFactory (
         RdbmsProviderDefinition storageProviderDefinition,
@@ -51,7 +53,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
         IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider,
         IObjectReaderFactory objectReaderFactory,
         ITableDefinitionFinder tableDefinitionFinder,
-        IDataStoragePropertyDefinitionFactory dataStoragePropertyDefinitionFactory)
+        IDataStoragePropertyDefinitionFactory dataStoragePropertyDefinitionFactory,
+        IDataParameterDefinitionFactory dataParameterDefinitionFactory)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
       ArgumentUtility.CheckNotNull("dbCommandBuilderFactory", dbCommandBuilderFactory);
@@ -59,6 +62,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       ArgumentUtility.CheckNotNull("objectReaderFactory", objectReaderFactory);
       ArgumentUtility.CheckNotNull("tableDefinitionFinder", tableDefinitionFinder);
       ArgumentUtility.CheckNotNull("dataStoragePropertyDefinitionFactory", dataStoragePropertyDefinitionFactory);
+      ArgumentUtility.CheckNotNull("dataParameterDefinitionFactory", dataParameterDefinitionFactory);
 
       _storageProviderDefinition = storageProviderDefinition;
       _dbCommandBuilderFactory = dbCommandBuilderFactory;
@@ -66,6 +70,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       _objectReaderFactory = objectReaderFactory;
       _tableDefinitionFinder = tableDefinitionFinder;
       _dataStoragePropertyDefinitionFactory = dataStoragePropertyDefinitionFactory;
+      _dataParameterDefinitionFactory = dataParameterDefinitionFactory;
 
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
       _lookupCommandFactory = CreateLookupCommandFactory();
@@ -200,7 +205,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
     protected virtual QueryCommandFactory CreateQueryCommandFactory ()
     {
-      return new QueryCommandFactory(_objectReaderFactory, _dbCommandBuilderFactory, _dataStoragePropertyDefinitionFactory);
+      return new QueryCommandFactory(_objectReaderFactory, _dbCommandBuilderFactory, _dataStoragePropertyDefinitionFactory, _dataParameterDefinitionFactory);
     }
   }
 }

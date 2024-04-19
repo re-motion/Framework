@@ -26,6 +26,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
@@ -201,13 +202,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
           storageTypeInformationProvider,
           storageNameProvider);
 
+      var dataParameterDefinitionFactory = CreateDataParameterDefinitionFactory(storageProviderDefinition, storageTypeInformationProvider);
+
       return CreateStorageProviderCommandFactory(
           storageProviderDefinition,
           storageTypeInformationProvider,
           storageNameProvider,
           persistenceModelProvider,
           infrastructureStoragePropertyDefinitionProvider,
-          dataStoragePropertyDefinitionFactory);
+          dataStoragePropertyDefinitionFactory,
+          dataParameterDefinitionFactory);
     }
 
     public virtual IDbCommandBuilderFactory CreateDbCommandBuilderFactory (RdbmsProviderDefinition storageProviderDefinition)
@@ -443,7 +447,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
       IStorageNameProvider storageNameProvider,
       IRdbmsPersistenceModelProvider persistenceModelProvider,
       IInfrastructureStoragePropertyDefinitionProvider infrastructureStoragePropertyDefinitionProvider,
-      IDataStoragePropertyDefinitionFactory dataStoragePropertyDefinitionFactory)
+      IDataStoragePropertyDefinitionFactory dataStoragePropertyDefinitionFactory,
+      IDataParameterDefinitionFactory dataParameterDefinitionFactory)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
       ArgumentUtility.CheckNotNull("storageNameProvider", storageNameProvider);
@@ -451,6 +456,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
       ArgumentUtility.CheckNotNull("infrastructureStoragePropertyDefinitionProvider", infrastructureStoragePropertyDefinitionProvider);
       ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
       ArgumentUtility.CheckNotNull("dataStoragePropertyDefinitionFactory", dataStoragePropertyDefinitionFactory);
+      ArgumentUtility.CheckNotNull("dataParameterDefinitionFactory", dataParameterDefinitionFactory);
 
       var dataContainerValidator = CreateDataContainerValidator(storageProviderDefinition);
 
@@ -468,7 +474,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
           persistenceModelProvider,
           objectReaderFactory,
           new TableDefinitionFinder(persistenceModelProvider),
-          dataStoragePropertyDefinitionFactory);
+          dataStoragePropertyDefinitionFactory,
+          dataParameterDefinitionFactory);
     }
 
     protected virtual IDataContainerValidator CreateDataContainerValidator (RdbmsProviderDefinition storageProviderDefinition)
@@ -562,6 +569,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
           storageNameProvider);
 
       return new DataStoragePropertyDefinitionFactory(valueStoragePropertyDefinitionFactory, relationStoragePropertyDefinitionFactory);
+    }
+
+    protected virtual IDataParameterDefinitionFactory CreateDataParameterDefinitionFactory (
+        StorageProviderDefinition storageProviderDefinition,
+        IStorageTypeInformationProvider storageTypeInformationProvider)
+    {
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
+
+      return new SqlDataParameterDefinitionFactoryDecorator(
+          new ObjectIDDataParameterDefinitionFactory(storageProviderDefinition, storageTypeInformationProvider, StorageSettings,
+              new SimpleDataParameterDefinitionFactory(storageTypeInformationProvider))
+      );
     }
 
     protected virtual IValueStoragePropertyDefinitionFactory CreateValueStoragePropertyDefinitionFactory (
