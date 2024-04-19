@@ -17,7 +17,7 @@
 using System;
 using Remotion.Globalization;
 
-namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
+namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsTests
 {
   public enum LogMessages
   {
