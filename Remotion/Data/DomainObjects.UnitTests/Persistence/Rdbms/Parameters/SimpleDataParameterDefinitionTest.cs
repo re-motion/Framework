@@ -27,7 +27,6 @@ using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
 using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting.Reflection;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Parameters;
 
@@ -62,11 +61,11 @@ public class SimpleDataParameterDefinitionTest
     var storageTypeInformationStub = new Mock<IStorageTypeInformation>(MockBehavior.Strict);
 
     storageTypeInformationStub
-        .Setup(_ => _.ConvertToStorageType(dummyValue))
+        .Setup(stub => stub.ConvertToStorageType(dummyValue))
         .Returns("It worked");
 
     storageTypeInformationStub
-        .Setup(_ => _.DotNetType)
+        .Setup(stub => stub.DotNetType)
         .Returns(dummyValue.GetType());
 
     var simpleDataParameterDefinition = new SimpleDataParameterDefinition(storageTypeInformationStub.Object);
