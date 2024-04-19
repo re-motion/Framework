@@ -19,41 +19,41 @@ using log4net.Core;
 using NUnit.Framework;
 using Remotion.Logging;
 
-namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionTests
+namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
 {
   [TestFixture]
-  public class ErrorTest : BaseTest
+  public class CriticalTest : BaseTest
   {
-    [Test]
-    public void IsEnabled_WithLevelWarn ()
-    {
-      SetLoggingThreshold(Level.Warn);
-      Assert.That(Log.IsErrorEnabled(), Is.True);
-    }
-
     [Test]
     public void IsEnabled_WithLevelError ()
     {
       SetLoggingThreshold(Level.Error);
-      Assert.That(Log.IsErrorEnabled(), Is.True);
+      Assert.That(Log.IsCriticalEnabled(), Is.True);
     }
 
     [Test]
-    public void IsEnabled_WithLevelFatal ()
+    public void IsEnabled_WithLevelCritical ()
     {
-      SetLoggingThreshold(Level.Fatal);
-      Assert.That(Log.IsErrorEnabled(), Is.False);
+      SetLoggingThreshold(Level.Critical);
+      Assert.That(Log.IsCriticalEnabled(), Is.True);
+    }
+
+    [Test]
+    public void IsEnabled_WithLevelOff ()
+    {
+      Logger.Repository.Threshold = Level.Off;
+      Assert.That(Log.IsCriticalEnabled(), Is.False);
     }
 
     [Test]
     public void Logger_Log ()
     {
-      SetLoggingThreshold(Level.Error);
-      Logger.Log(GetType(), Level.Error, "The message.", null);
+      SetLoggingThreshold(Level.Critical);
+      Logger.Log(GetType(), Level.Critical, "The message.", null);
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
-      Assert.That(events[0].Level, Is.EqualTo(Level.Error));
+      Assert.That(events[0].Level, Is.EqualTo(Level.Critical));
       Assert.That(events[0].MessageObject, Is.EqualTo("The message."));
     }
 
@@ -61,14 +61,14 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionTests
     public void Test_WithMessageEventIDAndException ()
     {
       Exception exception = new Exception();
-      SetLoggingThreshold(Level.Error);
+      SetLoggingThreshold(Level.Critical);
 
-      Log.Error(2, (object)"The message.", exception);
+      Log.Critical(2, (object)"The message.", exception);
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
-      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Error));
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Critical));
       Assert.That(loggingEvent.MessageObject, Is.EqualTo("The message."));
       Assert.That(loggingEvent.Properties["EventID"], Is.EqualTo(2));
       Assert.That(loggingEvent.ExceptionObject, Is.SameAs(exception));
@@ -79,14 +79,14 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionTests
     [Test]
     public void Test_WithMessageAndEventID ()
     {
-      SetLoggingThreshold(Level.Error);
+      SetLoggingThreshold(Level.Critical);
 
-      Log.Error(1, (object)"The message.");
+      Log.Critical(1, (object)"The message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
-      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Error));
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Critical));
       Assert.That(loggingEvent.MessageObject, Is.EqualTo("The message."));
       Assert.That(loggingEvent.Properties["EventID"], Is.EqualTo(1));
       Assert.That(loggingEvent.ExceptionObject, Is.Null);
@@ -98,14 +98,14 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionTests
     public void Test_WithMessageAndException ()
     {
       Exception exception = new Exception();
-      SetLoggingThreshold(Level.Error);
+      SetLoggingThreshold(Level.Critical);
 
-      Log.Error((object)"The message.", exception);
+      Log.Critical((object)"The message.", exception);
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
-      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Error));
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Critical));
       Assert.That(loggingEvent.MessageObject, Is.EqualTo("The message."));
       Assert.That(loggingEvent.ExceptionObject, Is.SameAs(exception));
       Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
@@ -115,14 +115,14 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionTests
     [Test]
     public void Test_WithMessage ()
     {
-      SetLoggingThreshold(Level.Error);
+      SetLoggingThreshold(Level.Critical);
 
-      Log.Error((object)"The message.");
+      Log.Critical((object)"The message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
-      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Error));
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Critical));
       Assert.That(loggingEvent.MessageObject, Is.EqualTo("The message."));
       Assert.That(loggingEvent.ExceptionObject, Is.Null);
       Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
@@ -134,7 +134,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionTests
     {
       Logger.Repository.Threshold = Level.Off;
 
-      Log.Error(1, (object)"The message.");
+      Log.Critical(1, (object)"The message.");
 
       Assert.That(GetLoggingEvents(), Is.Empty);
     }
@@ -143,14 +143,14 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionTests
     public void Test_FormatWithMessageAndEventIDAndException ()
     {
       Exception exception = new Exception();
-      SetLoggingThreshold(Level.Error);
+      SetLoggingThreshold(Level.Critical);
 
-      Log.ErrorFormat(1, exception, "{0} {1}", "The", "message.");
+      Log.CriticalFormat(1, exception, "{0} {1}", "The", "message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
-      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Error));
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Critical));
       Assert.That(loggingEvent.MessageObject.ToString(), Is.EqualTo("The message."));
       Assert.That(loggingEvent.Properties["EventID"], Is.EqualTo(1));
       Assert.That(loggingEvent.ExceptionObject, Is.SameAs(exception));
@@ -161,14 +161,14 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionTests
     [Test]
     public void Test_FormatWithMessageAndEventID ()
     {
-      SetLoggingThreshold(Level.Error);
+      SetLoggingThreshold(Level.Critical);
 
-      Log.ErrorFormat(1, "{0} {1}", "The", "message.");
+      Log.CriticalFormat(1, "{0} {1}", "The", "message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
-      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Error));
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Critical));
       Assert.That(loggingEvent.MessageObject.ToString(), Is.EqualTo("The message."));
       Assert.That(loggingEvent.Properties["EventID"], Is.EqualTo(1));
       Assert.That(loggingEvent.ExceptionObject, Is.Null);
@@ -180,14 +180,14 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionTests
     public void Test_FormatWithMessageAndException ()
     {
       Exception exception = new Exception();
-      SetLoggingThreshold(Level.Error);
+      SetLoggingThreshold(Level.Critical);
 
-      Log.ErrorFormat(exception, "{0} {1}", "The", "message.");
+      Log.CriticalFormat(exception, "{0} {1}", "The", "message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
-      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Error));
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Critical));
       Assert.That(loggingEvent.MessageObject.ToString(), Is.EqualTo("The message."));
       Assert.That(loggingEvent.ExceptionObject, Is.SameAs(exception));
       Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
@@ -197,14 +197,14 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionTests
     [Test]
     public void Test_FormatWithMessage ()
     {
-      SetLoggingThreshold(Level.Error);
+      SetLoggingThreshold(Level.Critical);
 
-      Log.ErrorFormat("{0} {1}", "The", "message.");
+      Log.CriticalFormat("{0} {1}", "The", "message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
-      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Error));
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Critical));
       Assert.That(loggingEvent.MessageObject.ToString(), Is.EqualTo("The message."));
       Assert.That(loggingEvent.ExceptionObject, Is.Null);
       Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
@@ -216,7 +216,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionTests
     {
       Logger.Repository.Threshold = Level.Off;
 
-      Log.ErrorFormat(1, "{0} {1}", "The", "message.");
+      Log.CriticalFormat(1, "{0} {1}", "The", "message.");
 
       Assert.That(GetLoggingEvents(), Is.Empty);
     }
