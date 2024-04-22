@@ -16,6 +16,7 @@
 // 
 using System;
 using log4net.Core;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
 using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
@@ -26,9 +27,9 @@ namespace Remotion.Logging.Log4Net.UnitTests.Log4NetLoggerTests
   public class DebugTest : BaseTest
   {
     [Test]
-    public void IsEnabled_WithLevelAll ()
+    public void IsEnabled_WithLevelTrace ()
     {
-      Logger.Repository.Threshold = Level.All;
+      Logger.Repository.Threshold = Level.Trace;
       Assert.That(Log.IsEnabled(MicrosoftLogLevel.Debug), Is.True);
     }
 
@@ -50,12 +51,12 @@ namespace Remotion.Logging.Log4Net.UnitTests.Log4NetLoggerTests
     public void Logger_Log ()
     {
       SetLoggingThreshold(Level.Debug);
-      Log.Log(MicrosoftLogLevel.Debug, 1, "The message.", (Exception)null, (s,_) => s);
+      Log.Log(MicrosoftLogLevel.Debug, new EventId(), "The message.", (Exception)null, (s, _) => s + " (formatted)");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
       Assert.That(events[0].Level, Is.EqualTo(Level.Debug));
-      Assert.That(events[0].MessageObject, Is.EqualTo("The message."));
+      Assert.That(events[0].MessageObject, Is.EqualTo("The message. (formatted)"));
     }
   }
 }
