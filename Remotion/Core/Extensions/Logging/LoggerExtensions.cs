@@ -21,7 +21,7 @@ using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using MicrosoftLoglevel = Microsoft.Extensions.Logging.LogLevel;
+using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Logging
 {
@@ -40,7 +40,7 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
     /// </exception>
-    public static void LogFormat (this IMicrosoftLogger logger, MicrosoftLoglevel logLevel, Enum messageEnum, Exception? exceptionObject, params object[] args)
+    public static void LogFormat (this IMicrosoftLogger logger, MicrosoftLogLevel logLevel, Enum messageEnum, Exception? exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull("logger", logger);
 
@@ -58,14 +58,14 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
     /// </exception>
-    public static void LogFormat (this IMicrosoftLogger logger, MicrosoftLoglevel logLevel, Enum messageEnum, params object[] args)
+    public static void LogFormat (this IMicrosoftLogger logger, MicrosoftLogLevel logLevel, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("logger", logger);
       logger.LogFormat(logLevel, messageEnum, null, args);
     }
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLoglevel.Trace"/> level, including the stack
+    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLogLevel.Trace"/> level, including the stack
     /// trace of <paramref name="exceptionObject"/>.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
@@ -74,11 +74,11 @@ namespace Remotion.Logging
     public static void TraceFormat (this IMicrosoftLogger logger, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull("logger", logger);
-      logger.LogFormat(MicrosoftLoglevel.Trace, messageEnum, exceptionObject, args);
+      logger.LogFormat(MicrosoftLogLevel.Trace, messageEnum, exceptionObject, args);
     }
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLoglevel.Trace"/> level.
+    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLogLevel.Trace"/> level.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
@@ -86,11 +86,11 @@ namespace Remotion.Logging
     public static void TraceFormat (this IMicrosoftLogger logger, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("logger", logger);
-      logger.LogFormat(MicrosoftLoglevel.Trace, messageEnum, (Exception?)null, args);
+      logger.LogFormat(MicrosoftLogLevel.Trace, messageEnum, (Exception?)null, args);
     }
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLoglevel.Debug"/> level, including the stack
+    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLogLevel.Debug"/> level, including the stack
     /// trace of <paramref name="exceptionObject"/>.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
@@ -99,11 +99,11 @@ namespace Remotion.Logging
     public static void DebugFormat (this IMicrosoftLogger logger, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull("logger", logger);
-      logger.LogFormat(MicrosoftLoglevel.Debug, messageEnum, exceptionObject, args);
+      logger.LogFormat(MicrosoftLogLevel.Debug, messageEnum, exceptionObject, args);
     }
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLoglevel.Debug"/> level.
+    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLogLevel.Debug"/> level.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
@@ -111,11 +111,11 @@ namespace Remotion.Logging
     public static void DebugFormat (this IMicrosoftLogger logger, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("logger", logger);
-      logger.LogFormat(MicrosoftLoglevel.Debug, messageEnum, (Exception?)null, args);
+      logger.LogFormat(MicrosoftLogLevel.Debug, messageEnum, (Exception?)null, args);
     }
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLoglevel.Information"/> level, including the stack
+    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLogLevel.Information"/> level, including the stack
     /// trace of <paramref name="exceptionObject"/>.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
@@ -124,11 +124,11 @@ namespace Remotion.Logging
     public static void InfoFormat (this IMicrosoftLogger logger, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull("logger", logger);
-      logger.LogFormat(MicrosoftLoglevel.Information, messageEnum, exceptionObject, args);
+      logger.LogFormat(MicrosoftLogLevel.Information, messageEnum, exceptionObject, args);
     }
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLoglevel.Information"/> level.
+    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLogLevel.Information"/> level.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
@@ -136,11 +136,11 @@ namespace Remotion.Logging
     public static void InfoFormat (this IMicrosoftLogger logger, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("logger", logger);
-      logger.LogFormat(MicrosoftLoglevel.Information, messageEnum, (Exception?)null, args);
+      logger.LogFormat(MicrosoftLogLevel.Information, messageEnum, (Exception?)null, args);
     }
 
     /// <summary>
-    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLoglevel.Warning"/> level, including the stack
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLogLevel.Warning"/> level, including the stack
     /// trace of <paramref name="exceptionObject"/>.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
@@ -149,11 +149,11 @@ namespace Remotion.Logging
     public static void WarnFormat (this IMicrosoftLogger logger, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull("logger", logger);
-      logger.LogFormat(MicrosoftLoglevel.Warning, messageEnum, exceptionObject, args);
+      logger.LogFormat(MicrosoftLogLevel.Warning, messageEnum, exceptionObject, args);
     }
 
     /// <summary>
-    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLoglevel.Warning"/> level.
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLogLevel.Warning"/> level.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
@@ -161,11 +161,11 @@ namespace Remotion.Logging
     public static void WarnFormat (this IMicrosoftLogger logger, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("logger", logger);
-      logger.LogFormat(MicrosoftLoglevel.Warning, messageEnum, (Exception?)null, args);
+      logger.LogFormat(MicrosoftLogLevel.Warning, messageEnum, (Exception?)null, args);
     }
 
     /// <summary>
-    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLoglevel.Error"/> level, including the stack
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLogLevel.Error"/> level, including the stack
     /// trace of <paramref name="exceptionObject"/>.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
@@ -174,11 +174,11 @@ namespace Remotion.Logging
     public static void ErrorFormat (this IMicrosoftLogger logger, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull("logger", logger);
-      logger.LogFormat(MicrosoftLoglevel.Error, messageEnum, exceptionObject, args);
+      logger.LogFormat(MicrosoftLogLevel.Error, messageEnum, exceptionObject, args);
     }
 
     /// <summary>
-    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLoglevel.Error"/> level.
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLogLevel.Error"/> level.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
@@ -186,11 +186,11 @@ namespace Remotion.Logging
     public static void ErrorFormat (this IMicrosoftLogger logger, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("logger", logger);
-      logger.LogFormat(MicrosoftLoglevel.Error, messageEnum, (Exception?)null, args);
+      logger.LogFormat(MicrosoftLogLevel.Error, messageEnum, (Exception?)null, args);
     }
 
     /// <summary>
-    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLoglevel.Critical"/> level, including the stack
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLogLevel.Critical"/> level, including the stack
     /// trace of <paramref name="exceptionObject"/>.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
@@ -199,11 +199,11 @@ namespace Remotion.Logging
     public static void CriticalFormat (this IMicrosoftLogger logger, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull("logger", logger);
-      logger.LogFormat(MicrosoftLoglevel.Critical, messageEnum, exceptionObject, args);
+      logger.LogFormat(MicrosoftLogLevel.Critical, messageEnum, exceptionObject, args);
     }
 
     /// <summary>
-    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLoglevel.Critical"/> level.
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="MicrosoftLogLevel.Critical"/> level.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
@@ -211,7 +211,7 @@ namespace Remotion.Logging
     public static void CriticalFormat (this IMicrosoftLogger logger, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("logger", logger);
-      logger.LogFormat(MicrosoftLoglevel.Critical, messageEnum, (Exception?)null, args);
+      logger.LogFormat(MicrosoftLogLevel.Critical, messageEnum, (Exception?)null, args);
     }
 
     /// <summary>
