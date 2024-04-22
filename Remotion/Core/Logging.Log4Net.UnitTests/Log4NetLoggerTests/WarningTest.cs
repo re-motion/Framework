@@ -51,12 +51,12 @@ namespace Remotion.Logging.Log4Net.UnitTests.Log4NetLoggerTests
     public void Logger_Log ()
     {
       SetLoggingThreshold(Level.Warn);
-      Log.Log(MicrosoftLogLevel.Warning, new EventId(), "The message.");
+      Log.Log(MicrosoftLogLevel.Warning, new EventId(), "The message.", (Exception)null, (s, _) => s + " (formatted)");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
       Assert.That(events[0].Level, Is.EqualTo(Level.Warn));
-      Assert.That(events[0].MessageObject, Is.EqualTo("The message."));
+      Assert.That(events[0].MessageObject, Is.EqualTo("The message. (formatted)"));
     }
   }
 }
