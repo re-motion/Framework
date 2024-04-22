@@ -644,7 +644,7 @@ public static class LoggerExtensionsObsolete
   /// Checks if <paramref name="logger"/> is enabled for the <see cref="MicrosoftLoglevel.Critical"/> level.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
-  public static bool IsCriticalEnabled (this IMicrosoftLogger logger)
+  public static bool IsFatalEnabled (this IMicrosoftLogger logger)
   {
     ArgumentUtility.CheckNotNull("logger", logger);
     return logger.IsEnabled(MicrosoftLoglevel.Critical);
