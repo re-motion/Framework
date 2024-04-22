@@ -64,8 +64,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
       var parameters = _columnValues.Select(
           cv =>
           {
-            var parameter = cv.Column.StorageTypeInfo.CreateDataParameter(dbCommand, cv.Value);
-            parameter.ParameterName = sqlDialect.GetParameterName(cv.Column.Name);
+            var storageTypeInfo = cv.Column.StorageTypeInfo;
+            var parameterName = sqlDialect.GetParameterName(cv.Column.Name);
+            var parameter = sqlDialect.CreateDataParameter(dbCommand, storageTypeInfo, parameterName, cv.Value);
             dbCommand.Parameters.Add(parameter);
             return parameter;
           });
