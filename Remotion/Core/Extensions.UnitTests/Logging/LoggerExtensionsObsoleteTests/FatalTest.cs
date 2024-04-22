@@ -28,21 +28,21 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
     public void IsEnabled_WithLevelError ()
     {
       SetLoggingThreshold(Level.Error);
-      Assert.That(Log.IsCriticalEnabled(), Is.True);
+      Assert.That(Log.IsFatalEnabled(), Is.True);
     }
 
     [Test]
     public void IsEnabled_WithLevelCritical ()
     {
       SetLoggingThreshold(Level.Critical);
-      Assert.That(Log.IsCriticalEnabled(), Is.True);
+      Assert.That(Log.IsFatalEnabled(), Is.True);
     }
 
     [Test]
     public void IsEnabled_WithLevelOff ()
     {
       Logger.Repository.Threshold = Level.Off;
-      Assert.That(Log.IsCriticalEnabled(), Is.False);
+      Assert.That(Log.IsFatalEnabled(), Is.False);
     }
 
     [Test]
