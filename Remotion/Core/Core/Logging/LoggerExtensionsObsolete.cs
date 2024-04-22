@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using MicrosoftLoglevel = Microsoft.Extensions.Logging.LogLevel;
+using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Logging;
 
@@ -16,10 +16,10 @@ public static class LoggerExtensionsObsolete
   /// Log a message object with the specified <paramref name="logLevel"/> and <paramref name="eventID"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
-  /// <param name="logLevel">The <see cref="MicrosoftLoglevel"/> of the message to be logged.</param>
+  /// <param name="logLevel">The <see cref="MicrosoftLogLevel"/> of the message to be logged.</param>
   /// <param name="eventID">The numeric identifier for the event.</param>
   /// <param name="message">The message object to log.</param>
-  public static void Log (this IMicrosoftLogger logger, MicrosoftLoglevel logLevel, int eventID, object? message)
+  public static void Log (this IMicrosoftLogger logger, MicrosoftLogLevel logLevel, int eventID, object? message)
   {
     logger.Log(logLevel, new EventId(eventID), message?.ToString());
   }
@@ -28,11 +28,11 @@ public static class LoggerExtensionsObsolete
   /// Log a message object with the specified <paramref name="logLevel"/> and <paramref name="eventID"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
-  /// <param name="logLevel">The <see cref="MicrosoftLoglevel"/> of the message to be logged.</param>
+  /// <param name="logLevel">The <see cref="MicrosoftLogLevel"/> of the message to be logged.</param>
   /// <param name="eventID">The numeric identifier for the event.</param>
   /// <param name="message">The message object to log.</param>
   /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
-  public static void Log (this IMicrosoftLogger logger, MicrosoftLoglevel logLevel, int eventID, object? message, Exception exceptionObject)
+  public static void Log (this IMicrosoftLogger logger, MicrosoftLogLevel logLevel, int eventID, object? message, Exception exceptionObject)
   {
     logger.Log(logLevel, new EventId(eventID), exceptionObject, message?.ToString());
   }
@@ -42,10 +42,10 @@ public static class LoggerExtensionsObsolete
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
-  /// <param name="logLevel">The <see cref="MicrosoftLoglevel"/> of the message to be logged.</param>
+  /// <param name="logLevel">The <see cref="MicrosoftLogLevel"/> of the message to be logged.</param>
   /// <param name="message">The message object to log.</param>
   /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
-  public static void Log (this IMicrosoftLogger logger, MicrosoftLoglevel logLevel, object? message, Exception exceptionObject)
+  public static void Log (this IMicrosoftLogger logger, MicrosoftLogLevel logLevel, object? message, Exception exceptionObject)
   {
     logger.Log(logLevel, exceptionObject, message?.ToString());
   }
@@ -54,9 +54,9 @@ public static class LoggerExtensionsObsolete
   /// Log a message object with the specified <paramref name="logLevel"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
-  /// <param name="logLevel">The <see cref="MicrosoftLoglevel"/> of the message to be logged.</param>
+  /// <param name="logLevel">The <see cref="MicrosoftLogLevel"/> of the message to be logged.</param>
   /// <param name="message">The message object to log.</param>
-  public static void Log (this IMicrosoftLogger logger, MicrosoftLoglevel logLevel, object? message)
+  public static void Log (this IMicrosoftLogger logger, MicrosoftLogLevel logLevel, object? message)
   {
     Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, logLevel, message?.ToString());
   }
@@ -66,12 +66,12 @@ public static class LoggerExtensionsObsolete
   /// Log a formatted string with the specified <paramref name="logLevel"/> and <paramref name="eventID"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
-  /// <param name="logLevel">The <see cref="MicrosoftLoglevel"/> of the message to be logged.</param>
+  /// <param name="logLevel">The <see cref="MicrosoftLogLevel"/> of the message to be logged.</param>
   /// <param name="eventID">The numeric identifier for the event.</param>
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
   [StringFormatMethod("format")]
-  public static void LogFormat (this IMicrosoftLogger logger, MicrosoftLoglevel logLevel, int eventID, string? format, params object?[] args)
+  public static void LogFormat (this IMicrosoftLogger logger, MicrosoftLogLevel logLevel, int eventID, string? format, params object?[] args)
   {
     logger.Log(logLevel, new EventId(eventID), format, args);
   }
@@ -80,11 +80,11 @@ public static class LoggerExtensionsObsolete
   /// Log a formatted string with the specified <paramref name="logLevel"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
-  /// <param name="logLevel">The <see cref="MicrosoftLoglevel"/> of the message to be logged.</param>
+  /// <param name="logLevel">The <see cref="MicrosoftLogLevel"/> of the message to be logged.</param>
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
   [StringFormatMethod("format")]
-  public static void LogFormat (this IMicrosoftLogger logger, MicrosoftLoglevel logLevel, string? format, params object?[] args)
+  public static void LogFormat (this IMicrosoftLogger logger, MicrosoftLogLevel logLevel, string? format, params object?[] args)
   {
     logger.Log(logLevel, format, args);
   }
@@ -93,13 +93,13 @@ public static class LoggerExtensionsObsolete
   /// Log a formatted string with the specified <paramref name="logLevel"/>,  including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
-  /// <param name="logLevel">The <see cref="MicrosoftLoglevel"/> of the message to be logged.</param>
+  /// <param name="logLevel">The <see cref="MicrosoftLogLevel"/> of the message to be logged.</param>
   /// <param name="eventID">The numeric identifier for the event.</param>
   /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
   [StringFormatMethod("format")]
-  public static void LogFormat (this IMicrosoftLogger logger, MicrosoftLoglevel logLevel, int eventID, Exception exceptionObject, string? format, params object?[] args)
+  public static void LogFormat (this IMicrosoftLogger logger, MicrosoftLogLevel logLevel, int eventID, Exception exceptionObject, string? format, params object?[] args)
   {
     logger.Log(logLevel, new EventId(eventID), exceptionObject, format, args);
   }
@@ -108,19 +108,19 @@ public static class LoggerExtensionsObsolete
   /// Log a formatted string with the specified <paramref name="logLevel"/>,  including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
-  /// <param name="logLevel">The <see cref="MicrosoftLoglevel"/> of the message to be logged.</param>
+  /// <param name="logLevel">The <see cref="MicrosoftLogLevel"/> of the message to be logged.</param>
   /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
   [StringFormatMethod("format")]
-  public static void LogFormat (this IMicrosoftLogger logger, MicrosoftLoglevel logLevel, Exception exceptionObject, string? format, params object?[] args)
+  public static void LogFormat (this IMicrosoftLogger logger, MicrosoftLogLevel logLevel, Exception exceptionObject, string? format, params object?[] args)
   {
     logger.Log(logLevel, exceptionObject, format, args);
   }
 
-  /// <overloads>Log a message object with the <see cref="MicrosoftLoglevel.Debug"/> level.</overloads>
+  /// <overloads>Log a message object with the <see cref="MicrosoftLogLevel.Debug"/> level.</overloads>
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Debug"/> level and <paramref name="eventID"/>,
+  /// Log a message object with the <see cref="MicrosoftLogLevel.Debug"/> level and <paramref name="eventID"/>,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
@@ -133,7 +133,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Debug"/> level and <paramref name="eventID"/>.
+  /// Log a message object with the <see cref="MicrosoftLogLevel.Debug"/> level and <paramref name="eventID"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="eventID">The numeric identifier for the event.</param>
@@ -144,7 +144,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Debug"/> level,
+  /// Log a message object with the <see cref="MicrosoftLogLevel.Debug"/> level,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
@@ -156,7 +156,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Debug"/> level.
+  /// Log a message object with the <see cref="MicrosoftLogLevel.Debug"/> level.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="message">The message object to log.</param>
@@ -165,9 +165,9 @@ public static class LoggerExtensionsObsolete
     logger.LogDebug(message?.ToString());
   }
 
-  /// <overloads>Log a formatted string with the <see cref="MicrosoftLoglevel.Debug"/> level.</overloads>
+  /// <overloads>Log a formatted string with the <see cref="MicrosoftLogLevel.Debug"/> level.</overloads>
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Debug"/> level and <paramref name="eventID"/>,
+  /// Log a formatted string with the <see cref="MicrosoftLogLevel.Debug"/> level and <paramref name="eventID"/>,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
@@ -182,7 +182,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Debug"/> level and <paramref name="eventID"/>.
+  /// Log a formatted string with the <see cref="MicrosoftLogLevel.Debug"/> level and <paramref name="eventID"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="eventID">The numeric identifier for the event.</param>
@@ -195,7 +195,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Debug"/> level.
+  /// Log a formatted string with the <see cref="MicrosoftLogLevel.Debug"/> level.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
@@ -207,7 +207,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Debug"/> level,
+  /// Log a formatted string with the <see cref="MicrosoftLogLevel.Debug"/> level,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
@@ -220,7 +220,7 @@ public static class LoggerExtensionsObsolete
     logger.LogDebug(exceptionObject, format, args);
   }
 
-  /// <overloads>Log a message object with the <see cref="MicrosoftLoglevel.Information"/> level.</overloads>
+  /// <overloads>Log a message object with the <see cref="MicrosoftLogLevel.Information"/> level.</overloads>
   /// <summary>
   /// Log a message object with the <see cref="LogLevel.Info"/> level and <paramref name="eventID"/>,
   /// including the stack trace of <paramref name="exceptionObject"/>.
@@ -235,7 +235,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Information"/> level and <paramref name="eventID"/>.
+  /// Log a message object with the <see cref="MicrosoftLogLevel.Information"/> level and <paramref name="eventID"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="eventID">The numeric identifier for the event.</param>
@@ -246,7 +246,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Information"/> level,
+  /// Log a message object with the <see cref="MicrosoftLogLevel.Information"/> level,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
@@ -258,7 +258,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Information"/> level.
+  /// Log a message object with the <see cref="MicrosoftLogLevel.Information"/> level.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="message">The message object to log.</param>
@@ -267,9 +267,9 @@ public static class LoggerExtensionsObsolete
     logger.LogInformation(message?.ToString());
   }
 
-  /// <overloads>Log a formatted string with the <see cref="MicrosoftLoglevel.Information"/> level.</overloads>
+  /// <overloads>Log a formatted string with the <see cref="MicrosoftLogLevel.Information"/> level.</overloads>
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Information"/> level and <paramref name="eventID"/>,
+  /// Log a formatted string with the <see cref="MicrosoftLogLevel.Information"/> level and <paramref name="eventID"/>,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
@@ -284,7 +284,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Information"/> level and <paramref name="eventID"/>.
+  /// Log a formatted string with the <see cref="MicrosoftLogLevel.Information"/> level and <paramref name="eventID"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="eventID">The numeric identifier for the event.</param>
@@ -297,7 +297,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Information"/> level.
+  /// Log a formatted string with the <see cref="MicrosoftLogLevel.Information"/> level.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
@@ -309,7 +309,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Information"/> level,
+  /// Log a formatted string with the <see cref="MicrosoftLogLevel.Information"/> level,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
@@ -322,9 +322,9 @@ public static class LoggerExtensionsObsolete
     logger.LogInformation(exceptionObject, format, args);
   }
 
-  /// <overloads>Log a message object with the <see cref="MicrosoftLoglevel.Warning"/> level.</overloads>
+  /// <overloads>Log a message object with the <see cref="MicrosoftLogLevel.Warning"/> level.</overloads>
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Warning"/> level and <paramref name="eventID"/>,
+  /// Log a message object with the <see cref="MicrosoftLogLevel.Warning"/> level and <paramref name="eventID"/>,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
@@ -337,7 +337,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Warning"/> level and <paramref name="eventID"/>.
+  /// Log a message object with the <see cref="MicrosoftLogLevel.Warning"/> level and <paramref name="eventID"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="eventID">The numeric identifier for the event.</param>
@@ -348,7 +348,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Warning"/> level,
+  /// Log a message object with the <see cref="MicrosoftLogLevel.Warning"/> level,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
@@ -360,7 +360,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Warning"/> level.
+  /// Log a message object with the <see cref="MicrosoftLogLevel.Warning"/> level.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="message">The message object to log.</param>
@@ -369,9 +369,9 @@ public static class LoggerExtensionsObsolete
     logger.LogWarning(message?.ToString());
   }
 
-  /// <overloads>Log a formatted string with the <see cref="MicrosoftLoglevel.Warning"/> level.</overloads>
+  /// <overloads>Log a formatted string with the <see cref="MicrosoftLogLevel.Warning"/> level.</overloads>
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Warning"/> level and <paramref name="eventID"/>,
+  /// Log a formatted string with the <see cref="MicrosoftLogLevel.Warning"/> level and <paramref name="eventID"/>,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
@@ -386,7 +386,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Warning"/> level and <paramref name="eventID"/>.
+  /// Log a formatted string with the <see cref="MicrosoftLogLevel.Warning"/> level and <paramref name="eventID"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="eventID">The numeric identifier for the event.</param>
@@ -399,7 +399,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Warning"/> level.
+  /// Log a formatted string with the <see cref="MicrosoftLogLevel.Warning"/> level.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
@@ -411,7 +411,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Warning"/> level,
+  /// Log a formatted string with the <see cref="MicrosoftLogLevel.Warning"/> level,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
@@ -424,9 +424,9 @@ public static class LoggerExtensionsObsolete
     logger.LogWarning(exceptionObject, format, args);
   }
 
-  /// <overloads>Log a message object with the <see cref="MicrosoftLoglevel.Error"/> level.</overloads>
+  /// <overloads>Log a message object with the <see cref="MicrosoftLogLevel.Error"/> level.</overloads>
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Error"/> level and <paramref name="eventID"/>,
+  /// Log a message object with the <see cref="MicrosoftLogLevel.Error"/> level and <paramref name="eventID"/>,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
@@ -439,7 +439,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Error"/> level and <paramref name="eventID"/>.
+  /// Log a message object with the <see cref="MicrosoftLogLevel.Error"/> level and <paramref name="eventID"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="eventID">The numeric identifier for the event.</param>
@@ -450,7 +450,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Error"/> level,
+  /// Log a message object with the <see cref="MicrosoftLogLevel.Error"/> level,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
@@ -462,7 +462,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Error"/> level.
+  /// Log a message object with the <see cref="MicrosoftLogLevel.Error"/> level.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="message">The message object to log.</param>
@@ -471,9 +471,9 @@ public static class LoggerExtensionsObsolete
     logger.LogError(message?.ToString());
   }
 
-  /// <overloads>Log a formatted string with the <see cref="MicrosoftLoglevel.Error"/> level.</overloads>
+  /// <overloads>Log a formatted string with the <see cref="MicrosoftLogLevel.Error"/> level.</overloads>
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Error"/> level and <paramref name="eventID"/>,
+  /// Log a formatted string with the <see cref="MicrosoftLogLevel.Error"/> level and <paramref name="eventID"/>,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
@@ -488,7 +488,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Error"/> level and <paramref name="eventID"/>.
+  /// Log a formatted string with the <see cref="MicrosoftLogLevel.Error"/> level and <paramref name="eventID"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="eventID">The numeric identifier for the event.</param>
@@ -501,7 +501,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Error"/> level.
+  /// Log a formatted string with the <see cref="MicrosoftLogLevel.Error"/> level.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
@@ -513,7 +513,7 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Error"/> level,
+  /// Log a formatted string with the <see cref="MicrosoftLogLevel.Error"/> level,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
@@ -528,7 +528,7 @@ public static class LoggerExtensionsObsolete
 
   /// <overloads>Log a message object with the <c>LogLevel.Fatal</c>.</overloads>
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Critical"/> level and <paramref name="eventID"/>,
+  /// Log a message object with the <see cref="MicrosoftLogLevel.Critical"/> level and <paramref name="eventID"/>,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
@@ -637,43 +637,43 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Checks if <paramref name="logger"/> is enabled for the <see cref="MicrosoftLoglevel.Debug"/> level.
+  /// Checks if <paramref name="logger"/> is enabled for the <see cref="MicrosoftLogLevel.Debug"/> level.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   public static bool IsDebugEnabled (this IMicrosoftLogger logger)
   {
     ArgumentUtility.CheckNotNull("logger", logger);
-    return logger.IsEnabled(MicrosoftLoglevel.Debug);
+    return logger.IsEnabled(MicrosoftLogLevel.Debug);
   }
 
   /// <summary>
-  /// Checks if <paramref name="logger"/> is enabled for the <see cref="MicrosoftLoglevel.Information"/> level.
+  /// Checks if <paramref name="logger"/> is enabled for the <see cref="MicrosoftLogLevel.Information"/> level.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   public static bool IsInfoEnabled (this IMicrosoftLogger logger)
   {
     ArgumentUtility.CheckNotNull("logger", logger);
-    return logger.IsEnabled(MicrosoftLoglevel.Information);
+    return logger.IsEnabled(MicrosoftLogLevel.Information);
   }
 
   /// <summary>
-  /// Checks if <paramref name="logger"/> is enabled for the <see cref="MicrosoftLoglevel.Warning"/> level.
+  /// Checks if <paramref name="logger"/> is enabled for the <see cref="MicrosoftLogLevel.Warning"/> level.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   public static bool IsWarnEnabled (this IMicrosoftLogger logger)
   {
     ArgumentUtility.CheckNotNull("logger", logger);
-    return logger.IsEnabled(MicrosoftLoglevel.Warning);
+    return logger.IsEnabled(MicrosoftLogLevel.Warning);
   }
 
   /// <summary>
-  /// Checks if <paramref name="logger"/> is enabled for the <see cref="MicrosoftLoglevel.Error"/> level.
+  /// Checks if <paramref name="logger"/> is enabled for the <see cref="MicrosoftLogLevel.Error"/> level.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   public static bool IsErrorEnabled (this IMicrosoftLogger logger)
   {
     ArgumentUtility.CheckNotNull("logger", logger);
-    return logger.IsEnabled(MicrosoftLoglevel.Error);
+    return logger.IsEnabled(MicrosoftLogLevel.Error);
   }
 
   /// <summary>

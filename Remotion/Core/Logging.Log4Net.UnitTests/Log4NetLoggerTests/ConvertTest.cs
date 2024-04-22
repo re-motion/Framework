@@ -19,7 +19,7 @@ using System;
 using log4net.Core;
 using NUnit.Framework;
 using Remotion.Development.NUnit.UnitTesting;
-using MicrosoftLoglevel = Microsoft.Extensions.Logging.LogLevel;
+using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Logging.Log4Net.UnitTests.Log4NetLoggerTests
 {
@@ -28,18 +28,18 @@ namespace Remotion.Logging.Log4Net.UnitTests.Log4NetLoggerTests
   {
     private static readonly object[] s_loglevels =
     [
-        new object[] { MicrosoftLoglevel.Trace, Level.Trace },
-        new object[] { MicrosoftLoglevel.Debug, Level.Debug },
-        new object[] { MicrosoftLoglevel.Information, Level.Info },
-        new object[] { MicrosoftLoglevel.Warning, Level.Warn },
-        new object[] { MicrosoftLoglevel.Error, Level.Error },
-        new object[] { MicrosoftLoglevel.Critical, Level.Critical },
-        new object[] { MicrosoftLoglevel.None, Level.Off }
+        new object[] { MicrosoftLogLevel.Trace, Level.Trace },
+        new object[] { MicrosoftLogLevel.Debug, Level.Debug },
+        new object[] { MicrosoftLogLevel.Information, Level.Info },
+        new object[] { MicrosoftLogLevel.Warning, Level.Warn },
+        new object[] { MicrosoftLogLevel.Error, Level.Error },
+        new object[] { MicrosoftLogLevel.Critical, Level.Critical },
+        new object[] { MicrosoftLogLevel.None, Level.Off }
     ];
 
     [Test]
     [TestCaseSource(nameof(s_loglevels))]
-    public void Convert_WithValidLogLevel_ReturnsConvertedLogLevel (MicrosoftLoglevel logLevel, Level level)
+    public void Convert_WithValidLogLevel_ReturnsConvertedLogLevel (MicrosoftLogLevel logLevel, Level level)
     {
       var result = Log4NetLogger.Convert(logLevel);
       Assert.That(result, Is.EqualTo(level));
@@ -49,7 +49,7 @@ namespace Remotion.Logging.Log4Net.UnitTests.Log4NetLoggerTests
     public void Test_InvalidLevel ()
     {
       Assert.That(
-          () => Log4NetLogger.Convert((MicrosoftLoglevel)10),
+          () => Log4NetLogger.Convert((MicrosoftLogLevel)10),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "LogLevel does not support value 10.", "logLevel"));
