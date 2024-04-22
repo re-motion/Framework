@@ -26,7 +26,7 @@ public class Log4NetLoggerProvider : Microsoft.Extensions.Logging.ILoggerProvide
 {
   public Microsoft.Extensions.Logging.ILogger CreateLogger (string categoryName)
   {
-    ArgumentUtility.CheckNotNullOrEmpty("categoryName", categoryName);
+    ArgumentUtility.CheckNotNull("categoryName", categoryName);
 
     return new Log4NetLogger(log4net.LogManager.GetLogger(categoryName).Logger);
   }
