@@ -507,7 +507,7 @@ public static class LoggerExtensionsObsolete
   /// <param name="eventID">The numeric identifier for the event.</param>
   /// <param name="message">The message object to log.</param>
   /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
-  public static void Critical (this IMicrosoftLogger logger, int eventID, object? message, Exception exceptionObject)
+  public static void Fatal (this IMicrosoftLogger logger, int eventID, object? message, Exception exceptionObject)
   {
     logger.LogCritical(new EventId(eventID), exceptionObject, message?.ToString());
   }
@@ -518,7 +518,7 @@ public static class LoggerExtensionsObsolete
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="eventID">The numeric identifier for the event.</param>
   /// <param name="message">The message object to log.</param>
-  public static void Critical (this IMicrosoftLogger logger, int eventID, object? message)
+  public static void Fatal (this IMicrosoftLogger logger, int eventID, object? message)
   {
     logger.LogCritical(new EventId(eventID), message?.ToString());
   }
@@ -530,7 +530,7 @@ public static class LoggerExtensionsObsolete
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="message">The message object to log.</param>
   /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
-  public static void Critical (this IMicrosoftLogger logger, object? message, Exception exceptionObject)
+  public static void Fatal (this IMicrosoftLogger logger, object? message, Exception exceptionObject)
   {
     logger.LogCritical(exceptionObject, message?.ToString());
   }
@@ -540,7 +540,7 @@ public static class LoggerExtensionsObsolete
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="message">The message object to log.</param>
-  public static void Critical (this IMicrosoftLogger logger, object? message)
+  public static void Fatal (this IMicrosoftLogger logger, object? message)
   {
     logger.LogCritical(message?.ToString());
   }
@@ -556,7 +556,7 @@ public static class LoggerExtensionsObsolete
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
   [StringFormatMethod("format")]
-  public static void CriticalFormat (this IMicrosoftLogger logger, int eventID, Exception exceptionObject, string? format, params object?[] args)
+  public static void FatalFormat (this IMicrosoftLogger logger, int eventID, Exception exceptionObject, string? format, params object?[] args)
   {
     logger.LogCritical(new EventId(eventID), exceptionObject, format, args);
   }
@@ -569,7 +569,7 @@ public static class LoggerExtensionsObsolete
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
   [StringFormatMethod("format")]
-  public static void CriticalFormat (this IMicrosoftLogger logger, int eventID, string? format, params object?[] args)
+  public static void FatalFormat (this IMicrosoftLogger logger, int eventID, string? format, params object?[] args)
   {
     logger.LogCritical(new EventId(eventID), format, args);
   }
@@ -581,7 +581,7 @@ public static class LoggerExtensionsObsolete
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
   [StringFormatMethod("format")]
-  public static void CriticalFormat (this IMicrosoftLogger logger, string? format, params object?[] args)
+  public static void FatalFormat (this IMicrosoftLogger logger, string? format, params object?[] args)
   {
     logger.LogCritical(format, args);
   }
@@ -595,7 +595,7 @@ public static class LoggerExtensionsObsolete
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
   [StringFormatMethod("format")]
-  public static void CriticalFormat (this IMicrosoftLogger logger, Exception exceptionObject, string? format, params object?[] args)
+  public static void FatalFormat (this IMicrosoftLogger logger, Exception exceptionObject, string? format, params object?[] args)
   {
     logger.LogCritical(exceptionObject, format, args);
   }
@@ -614,7 +614,7 @@ public static class LoggerExtensionsObsolete
   /// Checks if <paramref name="logger"/> is enabled for the <see cref="MicrosoftLoglevel.Information"/> level.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
-  public static bool IsInformationEnabled (this IMicrosoftLogger logger)
+  public static bool IsInfoEnabled (this IMicrosoftLogger logger)
   {
     ArgumentUtility.CheckNotNull("logger", logger);
     return logger.IsEnabled(MicrosoftLoglevel.Information);
@@ -624,7 +624,7 @@ public static class LoggerExtensionsObsolete
   /// Checks if <paramref name="logger"/> is enabled for the <see cref="MicrosoftLoglevel.Warning"/> level.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
-  public static bool IsWarningEnabled (this IMicrosoftLogger logger)
+  public static bool IsWarnEnabled (this IMicrosoftLogger logger)
   {
     ArgumentUtility.CheckNotNull("logger", logger);
     return logger.IsEnabled(MicrosoftLoglevel.Warning);

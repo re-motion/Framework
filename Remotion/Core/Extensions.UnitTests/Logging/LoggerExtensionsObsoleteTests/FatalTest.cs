@@ -22,7 +22,7 @@ using Remotion.Logging;
 namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
 {
   [TestFixture]
-  public class CriticalTest : BaseTest
+  public class FatalTest : BaseTest
   {
     [Test]
     public void IsEnabled_WithLevelError ()
@@ -63,7 +63,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
       Exception exception = new Exception();
       SetLoggingThreshold(Level.Critical);
 
-      Log.Critical(2, (object)"The message.", exception);
+      Log.Fatal(2, (object)"The message.", exception);
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -81,7 +81,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
     {
       SetLoggingThreshold(Level.Critical);
 
-      Log.Critical(1, (object)"The message.");
+      Log.Fatal(1, (object)"The message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -100,7 +100,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
       Exception exception = new Exception();
       SetLoggingThreshold(Level.Critical);
 
-      Log.Critical((object)"The message.", exception);
+      Log.Fatal((object)"The message.", exception);
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -117,7 +117,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
     {
       SetLoggingThreshold(Level.Critical);
 
-      Log.Critical((object)"The message.");
+      Log.Fatal((object)"The message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -134,7 +134,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
     {
       Logger.Repository.Threshold = Level.Off;
 
-      Log.Critical(1, (object)"The message.");
+      Log.Fatal(1, (object)"The message.");
 
       Assert.That(GetLoggingEvents(), Is.Empty);
     }
@@ -145,7 +145,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
       Exception exception = new Exception();
       SetLoggingThreshold(Level.Critical);
 
-      Log.CriticalFormat(1, exception, "{0} {1}", "The", "message.");
+      Log.FatalFormat(1, exception, "{0} {1}", "The", "message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -163,7 +163,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
     {
       SetLoggingThreshold(Level.Critical);
 
-      Log.CriticalFormat(1, "{0} {1}", "The", "message.");
+      Log.FatalFormat(1, "{0} {1}", "The", "message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -182,7 +182,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
       Exception exception = new Exception();
       SetLoggingThreshold(Level.Critical);
 
-      Log.CriticalFormat(exception, "{0} {1}", "The", "message.");
+      Log.FatalFormat(exception, "{0} {1}", "The", "message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -199,7 +199,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
     {
       SetLoggingThreshold(Level.Critical);
 
-      Log.CriticalFormat("{0} {1}", "The", "message.");
+      Log.FatalFormat("{0} {1}", "The", "message.");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -216,7 +216,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
     {
       Logger.Repository.Threshold = Level.Off;
 
-      Log.CriticalFormat(1, "{0} {1}", "The", "message.");
+      Log.FatalFormat(1, "{0} {1}", "The", "message.");
 
       Assert.That(GetLoggingEvents(), Is.Empty);
     }
