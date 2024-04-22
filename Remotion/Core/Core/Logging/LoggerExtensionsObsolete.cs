@@ -498,7 +498,7 @@ public static class LoggerExtensionsObsolete
     logger.LogError(exceptionObject, format, args);
   }
 
-  /// <overloads>Log a message object with the <see cref="MicrosoftLoglevel.Critical"/> level.</overloads>
+  /// <overloads>Log a message object with the <c>LogLevel.Fatal</c>.</overloads>
   /// <summary>
   /// Log a message object with the <see cref="MicrosoftLoglevel.Critical"/> level and <paramref name="eventID"/>,
   /// including the stack trace of <paramref name="exceptionObject"/>.
@@ -507,47 +507,51 @@ public static class LoggerExtensionsObsolete
   /// <param name="eventID">The numeric identifier for the event.</param>
   /// <param name="message">The message object to log.</param>
   /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
+  [Obsolete("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)", true)]
   public static void Fatal (this IMicrosoftLogger logger, int eventID, object? message, Exception exceptionObject)
   {
-    logger.LogCritical(new EventId(eventID), exceptionObject, message?.ToString());
+    throw new NotSupportedException("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)");
   }
 
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Critical"/> level and <paramref name="eventID"/>.
+  /// Log a message object with the <c>LogLevel.Fatal</c> and <paramref name="eventID"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="eventID">The numeric identifier for the event.</param>
   /// <param name="message">The message object to log.</param>
+  [Obsolete("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)", true)]
   public static void Fatal (this IMicrosoftLogger logger, int eventID, object? message)
   {
-    logger.LogCritical(new EventId(eventID), message?.ToString());
+    throw new NotSupportedException("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)");
   }
 
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Critical"/> level,
+  /// Log a message object with the <c>LogLevel.Fatal</c>,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="message">The message object to log.</param>
   /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
+  [Obsolete("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)", true)]
   public static void Fatal (this IMicrosoftLogger logger, object? message, Exception exceptionObject)
   {
-    logger.LogCritical(exceptionObject, message?.ToString());
+    throw new NotSupportedException("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)");
   }
 
   /// <summary>
-  /// Log a message object with the <see cref="MicrosoftLoglevel.Critical"/> level.
+  /// Log a message object with the <c>LogLevel.Fatal</c>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="message">The message object to log.</param>
+  [Obsolete("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)", true)]
   public static void Fatal (this IMicrosoftLogger logger, object? message)
   {
-    logger.LogCritical(message?.ToString());
+    throw new NotSupportedException("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)");
   }
 
-  /// <overloads>Log a formatted string with the <see cref="MicrosoftLoglevel.Critical"/> level.</overloads>
+  /// <overloads>Log a formatted string with the <c>LogLevel.Fatal</c>.</overloads>
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Critical"/> level and <paramref name="eventID"/>,
+  /// Log a formatted string with the <c>LogLevel.Fatal</c> and <paramref name="eventID"/>,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
@@ -555,49 +559,53 @@ public static class LoggerExtensionsObsolete
   /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
+  [Obsolete("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)", true)]
   [StringFormatMethod("format")]
   public static void FatalFormat (this IMicrosoftLogger logger, int eventID, Exception exceptionObject, string? format, params object?[] args)
   {
-    logger.LogCritical(new EventId(eventID), exceptionObject, format, args);
+    throw new NotSupportedException("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)");
   }
 
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Critical"/> level and <paramref name="eventID"/>.
+  /// Log a formatted string with the <c>LogLevel.Fatal</c> and <paramref name="eventID"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="eventID">The numeric identifier for the event.</param>
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
+  [Obsolete("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)", true)]
   [StringFormatMethod("format")]
   public static void FatalFormat (this IMicrosoftLogger logger, int eventID, string? format, params object?[] args)
   {
-    logger.LogCritical(new EventId(eventID), format, args);
+    throw new NotSupportedException("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)");
   }
 
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Critical"/> level.
+  /// Log a formatted string with the <c>LogLevel.Fatal</c>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
+  [Obsolete("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)", true)]
   [StringFormatMethod("format")]
   public static void FatalFormat (this IMicrosoftLogger logger, string? format, params object?[] args)
   {
-    logger.LogCritical(format, args);
+    throw new NotSupportedException("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)");
   }
 
   /// <summary>
-  /// Log a formatted string with the <see cref="MicrosoftLoglevel.Critical"/> level,
+  /// Log a formatted string with the <c>LogLevel.Fatal</c>,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
   /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
+  [Obsolete("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)", true)]
   [StringFormatMethod("format")]
   public static void FatalFormat (this IMicrosoftLogger logger, Exception exceptionObject, string? format, params object?[] args)
   {
-    logger.LogCritical(exceptionObject, format, args);
+    throw new NotSupportedException("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)");
   }
 
   /// <summary>
@@ -641,12 +649,12 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Checks if <paramref name="logger"/> is enabled for the <see cref="MicrosoftLoglevel.Critical"/> level.
+  /// Checks if <paramref name="logger"/> is enabled for the <c>LogLevel.Fatal</c>.
   /// </summary>
   /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
+  [Obsolete("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)", true)]
   public static bool IsFatalEnabled (this IMicrosoftLogger logger)
   {
-    ArgumentUtility.CheckNotNull("logger", logger);
-    return logger.IsEnabled(MicrosoftLoglevel.Critical);
+    throw new NotSupportedException("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)");
   }
 }
