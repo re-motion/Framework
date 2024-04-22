@@ -17,6 +17,7 @@
 using System;
 using System.Globalization;
 using log4net.Core;
+using log4net.Util;
 using Remotion.Utilities;
 
 using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
@@ -72,7 +73,7 @@ public class Log4NetLogger : IMicrosoftLogger
     return null;
   }
 
-  private LoggingEvent CreateLoggingEvent (Level level, int? eventID, string message, Exception? exceptionObject)
+  private LoggingEvent CreateLoggingEvent (Level level, int? eventID, object message, Exception? exceptionObject)
   {
     var loggingEvent = new LoggingEvent(typeof(Log4NetLogger), null, Logger.Name, level, message, exceptionObject);
 
@@ -92,7 +93,7 @@ public class Log4NetLogger : IMicrosoftLogger
     return loggingEvent;
   }
 
-  private void LogLoggingError (int eventID, Exception? exceptionObject, string message)
+  private void LogLoggingError (int eventID, Exception? exceptionObject, object message)
   {
     int safeEventID;
     if (eventID < 0)
@@ -110,11 +111,10 @@ public class Log4NetLogger : IMicrosoftLogger
           CreateLoggingEvent(
               level,
               safeEventID,
-              string.Format(
+              new SystemStringFormat(
                   CultureInfo.InvariantCulture,
                   "Failure during logging of message:\r\n{0}\r\nEvent ID: {1}",
-                  // TODO RM-7803: message or the ToString() result being null should result in a fallback value being used.
-                  new object?[] { message!.ToString(), eventID }),
+                  new object?[] { message, eventID }),
               exceptionObject));
     }
   }
