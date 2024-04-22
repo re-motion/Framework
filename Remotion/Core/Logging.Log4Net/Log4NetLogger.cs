@@ -22,7 +22,6 @@ using Remotion.Utilities;
 using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 using MicrosoftEventId = Microsoft.Extensions.Logging.EventId;
-using RemotionLoglevel = Remotion.Logging.LogLevel;
 
 namespace Remotion.Logging.Log4Net;
 
@@ -42,19 +41,6 @@ public class Log4NetLogger : IMicrosoftLogger
         MicrosoftLogLevel.Error => Level.Error,
         MicrosoftLogLevel.Critical => Level.Critical,
         MicrosoftLogLevel.None => Level.Off,
-        _ => throw new ArgumentException(string.Format("LogLevel does not support value {0}.", logLevel), "logLevel")
-    };
-  }
-
-  public static Level Convert (RemotionLoglevel logLevel)
-  {
-    return logLevel switch
-    {
-        RemotionLoglevel.Debug => Level.Debug,
-        RemotionLoglevel.Info => Level.Info,
-        RemotionLoglevel.Warn => Level.Warn,
-        RemotionLoglevel.Error => Level.Error,
-        RemotionLoglevel.Fatal => Level.Fatal,
         _ => throw new ArgumentException(string.Format("LogLevel does not support value {0}.", logLevel), "logLevel")
     };
   }
