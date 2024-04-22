@@ -49,8 +49,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     bool IsStorageTypeNullable { get; }
 
     /// <summary>
-    /// Gets the storage type after conversion. This is the <see cref="Type"/> of values returned by <see cref="Read"/> and put into 
-    /// <see cref="CreateDataParameter"/>.
+    /// Gets the storage type after conversion. This is the <see cref="Type"/> of values returned by <see cref="Read"/>.
     /// For example, for <see cref="Enum"/> values, this would be the respective <see cref="Enum"/> type.
     /// </summary>
     /// <value>The converted type.</value>
@@ -70,24 +69,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     /// <b>-1</b> typically represents the <b>max</b> value.
     /// </value>
     int? StorageTypeLength { get; }
-
-    /// <summary>
-    /// Creates an <see cref="IDbDataParameter"/> for the given <paramref name="value"/> and <see cref="IDbCommand"/>.
-    /// </summary>
-    /// <param name="command">The command to create the <see cref="IDbDataParameter"/> with.</param>
-    /// <param name="value">The value to create the parameter for.</param>
-    /// <returns>A parameter holding the given <paramref name="value"/> (possibly converted), for the given <paramref name="command"/>.</returns>
-    /// <remarks>
-    /// <para>
-    /// The returned parameter's <see cref="IDataParameter.Value"/> is set to (a possibly converted version of) <paramref name="value"/>.
-    /// </para>
-    /// <para>
-    /// The parameter's <see cref="IDataParameter.ParameterName"/> is not set, and the parameter is not added to the command's 
-    /// <see cref="IDbCommand.Parameters"/> collection.
-    /// </para>
-    /// </remarks>
-    /// <exception cref="NotSupportedException">The <paramref name="value"/> cannot be converted to the <see cref="StorageType"/>.</exception>
-    IDbDataParameter CreateDataParameter (IDbCommand command, object? value);
 
     /// <summary>
     /// Reads a value from the specified <see cref="IDataReader"/> at the given <paramref name="ordinal"/>, returning it as an instance of 

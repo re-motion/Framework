@@ -50,8 +50,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
       foreach (var comparedColumnValue in _comparedColumnValues)
       {
-        var parameter = comparedColumnValue.Column.StorageTypeInfo.CreateDataParameter(command, comparedColumnValue.Value);
-        parameter.ParameterName = GetParameterName(comparedColumnValue, sqlDialect);
+        var storageTypeInfo = comparedColumnValue.Column.StorageTypeInfo;
+        var parameterName = GetParameterName(comparedColumnValue, sqlDialect);
+        var parameter = sqlDialect.CreateDataParameter(command, storageTypeInfo, parameterName, comparedColumnValue.Value);
         command.Parameters.Add(parameter);
       }
     }
