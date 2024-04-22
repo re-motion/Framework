@@ -37,6 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     private ColumnDefinition _column2;
     private object _value2;
     private Mock<IStorageTypeInformation> _storageTypeInformationMock2;
+
     private StringBuilder _statement;
     private Mock<IDataParameterCollection> _parametersCollectionMock;
     private Mock<IDbCommand> _commandStub;
@@ -57,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
 
       _parametersCollectionMock = new Mock<IDataParameterCollection>(MockBehavior.Strict);
       _commandStub = new Mock<IDbCommand>();
-      _commandStub.Setup(stub => stub.Parameters).Returns(_parametersCollectionMock.Object);
+      _commandStub.Setup(_ => _.Parameters).Returns(_parametersCollectionMock.Object);
 
       _sqlDialectStub = new Mock<ISqlDialect>();
     }
@@ -83,22 +84,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
       var specification = new ComparedColumnsSpecification(new[] { new ColumnValue(_column1, _value1) });
 
-      _sqlDialectStub.Setup(stub => stub.GetParameterName("First")).Returns("pFirst");
+      var parameterStub = new Mock<IDbDataParameter>();
 
-      var parameterStrictMock = new Mock<IDbDataParameter>(MockBehavior.Strict);
-      parameterStrictMock.SetupSet(mock => mock.ParameterName = "pFirst").Verifiable();
+      _parametersCollectionMock.Setup(_ => _.Add(parameterStub.Object)).Returns(0).Verifiable();
 
-      _parametersCollectionMock.Setup(mock => mock.Add(parameterStrictMock.Object)).Returns(0).Verifiable();
-
-      _storageTypeInformationMock1
-          .Setup(mock => mock.CreateDataParameter(_commandStub.Object, _value1))
-          .Returns(parameterStrictMock.Object)
-          .Verifiable();
+      _sqlDialectStub.Setup(_ => _.GetParameterName("First")).Returns("pFirst");
+      _sqlDialectStub
+          .Setup(_ => _.CreateDataParameter(_commandStub.Object, _storageTypeInformationMock1.Object, "pFirst", _value1))
+          .Returns(parameterStub.Object);
 
       specification.AddParameters(_commandStub.Object, _sqlDialectStub.Object);
 
       _parametersCollectionMock.Verify();
-      parameterStrictMock.Verify();
       _storageTypeInformationMock1.Verify();
     }
 
@@ -109,33 +106,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       var columnValue2 = new ColumnValue(_column2, _value2);
       var specification = new ComparedColumnsSpecification(new[] { columnValue1, columnValue2 });
 
-      _sqlDialectStub.Setup(stub => stub.GetParameterName("First")).Returns("pFirst");
-      _sqlDialectStub.Setup(stub => stub.GetParameterName("Second")).Returns("pSecond");
+      var parameterStub1 = new Mock<IDbDataParameter>();
+      var parameterStub2 = new Mock<IDbDataParameter>();
 
-      var parameterStrictMock1 = new Mock<IDbDataParameter>(MockBehavior.Strict);
-      parameterStrictMock1.SetupSet(mock => mock.ParameterName = "pFirst").Verifiable();
+      _parametersCollectionMock.Setup(_ => _.Add(parameterStub1.Object)).Returns(0).Verifiable();
+      _parametersCollectionMock.Setup(_ => _.Add(parameterStub2.Object)).Returns(1).Verifiable();
 
-      var parameterStrictMock2 = new Mock<IDbDataParameter>(MockBehavior.Strict);
-      parameterStrictMock2.SetupSet(mock => mock.ParameterName = "pSecond").Verifiable();
-
-      _parametersCollectionMock.Setup(mock => mock.Add(parameterStrictMock1.Object)).Returns(0).Verifiable();
-      _parametersCollectionMock.Setup(mock => mock.Add(parameterStrictMock2.Object)).Returns(1).Verifiable();
-
-      _storageTypeInformationMock1
-          .Setup(mock => mock.CreateDataParameter(_commandStub.Object, _value1))
-          .Returns(parameterStrictMock1.Object)
-          .Verifiable();
-
-      _storageTypeInformationMock2
-          .Setup(mock => mock.CreateDataParameter(_commandStub.Object, _value2))
-          .Returns(parameterStrictMock2.Object)
-          .Verifiable();
+      _sqlDialectStub.Setup(_ => _.GetParameterName("First")).Returns("pFirst");
+      _sqlDialectStub.Setup(_ => _.GetParameterName("Second")).Returns("pSecond");
+      _sqlDialectStub
+          .Setup(_ => _.CreateDataParameter(_commandStub.Object, _storageTypeInformationMock1.Object, "pFirst", _value1))
+          .Returns(parameterStub1.Object);
+      _sqlDialectStub
+          .Setup(_ => _.CreateDataParameter(_commandStub.Object, _storageTypeInformationMock2.Object, "pSecond", _value2))
+          .Returns(parameterStub2.Object);
 
       specification.AddParameters(_commandStub.Object, _sqlDialectStub.Object);
 
       _parametersCollectionMock.Verify();
-      parameterStrictMock1.Verify();
-      parameterStrictMock2.Verify();
       _storageTypeInformationMock1.Verify();
       _storageTypeInformationMock2.Verify();
     }
@@ -147,8 +135,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
 
       _statement.Append("<existingtext>");
 
-      _sqlDialectStub.Setup(stub => stub.GetParameterName("First")).Returns("pFirst");
-      _sqlDialectStub.Setup(mock => mock.DelimitIdentifier("First")).Returns("[First]");
+      _sqlDialectStub.Setup(_ => _.GetParameterName("First")).Returns("pFirst");
+      _sqlDialectStub.Setup(_ => _.DelimitIdentifier("First")).Returns("[First]");
 
       specification.AppendComparisons(_statement, _commandStub.Object, _sqlDialectStub.Object);
 
@@ -167,11 +155,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
 
       _statement.Append("<existingtext>");
 
-      _sqlDialectStub.Setup(stub => stub.GetParameterName("First")).Returns("pFirst");
-      _sqlDialectStub.Setup(stub => stub.GetParameterName("Second")).Returns("pSecond");
-
-      _sqlDialectStub.Setup(mock => mock.DelimitIdentifier("First")).Returns("[First]");
-      _sqlDialectStub.Setup(mock => mock.DelimitIdentifier("Second")).Returns("[Second]");
+      _sqlDialectStub.Setup(_ => _.GetParameterName("First")).Returns("pFirst");
+      _sqlDialectStub.Setup(_ => _.GetParameterName("Second")).Returns("pSecond");
+      _sqlDialectStub.Setup(_ => _.DelimitIdentifier("First")).Returns("[First]");
+      _sqlDialectStub.Setup(_ => _.DelimitIdentifier("Second")).Returns("[Second]");
 
       specification.AppendComparisons(_statement, _commandStub.Object, _sqlDialectStub.Object);
 
