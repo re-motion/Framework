@@ -31,9 +31,10 @@ namespace Remotion.UnitTests.Logging
     [Test]
     public void LogAndReturnValue_ReturnsValue ()
     {
-      var logMock = new Mock<ILogger>();
+      var fakeLogger = new FakeLogger();
+      fakeLogger.ControlLevel(LogLevel.Debug, false);
 
-      var result = "test".LogAndReturnValue(logMock.Object, LogLevel.Debug, value => string.Format("x{0}y", value));
+      var result = "test".LogAndReturnValue(fakeLogger, LogLevel.Debug, value => string.Format("x{0}y", value));
       Assert.That(result, Is.EqualTo("test"));
     }
 
@@ -60,11 +61,11 @@ namespace Remotion.UnitTests.Logging
     [Test]
     public void LogAndReturnItems_ReturnsValue ()
     {
-      var logMock = new Mock<ILogger>();
-      logMock.Setup(mock => mock.IsEnabled(LogLevel.Debug)).Returns(true).Verifiable();
+      var fakeLogger = new FakeLogger();
+      fakeLogger.ControlLevel(LogLevel.Debug, true);
 
       var input = new[] { "A", "B", "C" };
-      var result = input.LogAndReturnItems(logMock.Object, LogLevel.Debug, count => string.Format("x{0}y", count));
+      var result = input.LogAndReturnItems(fakeLogger, LogLevel.Debug, count => string.Format("x{0}y", count));
       Assert.That(result, Is.EqualTo(new[] { "A", "B", "C" }));
       Assert.That(result, Is.Not.SameAs(input));
     }
