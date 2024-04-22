@@ -23,6 +23,19 @@ namespace Remotion.Logging.Log4Net.UnitTests;
 public class Log4NetLoggerProviderTest
 {
   [Test]
+  public void GetLogger_WithNameAsString ()
+  {
+    var loggerProvider = new Log4NetLoggerProvider();
+    var categoryName = "TestCategory";
+
+    var logger = loggerProvider.CreateLogger(categoryName);
+
+    Assert.That(logger, Is.InstanceOf<Log4NetLogger>());
+    var log4NetLogger = (Log4NetLogger)logger;
+    Assert.That(log4NetLogger.Logger.Name, Is.EqualTo("TestCategory"));
+  }
+
+  [Test]
   public void CreateLogger_WithValidCategoryName_ReturnsLoggerInstance ()
   {
     var loggerProvider = new Log4NetLoggerProvider();
