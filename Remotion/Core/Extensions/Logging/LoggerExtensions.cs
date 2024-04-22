@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Extensions.Logging;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -43,7 +44,12 @@ namespace Remotion.Logging
     {
       ArgumentUtility.CheckNotNull("logger", logger);
 
-      Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, logLevel, exceptionObject, s_globalizationService.Value.GetEnumerationValueDisplayName(messageEnum), args);
+      logger.Log(
+          logLevel,
+          new EventId(Convert.ToInt32(messageEnum)),
+          exceptionObject,
+          s_globalizationService.Value.GetEnumerationValueDisplayName(messageEnum),
+          args);
     }
 
     /// <summary>
