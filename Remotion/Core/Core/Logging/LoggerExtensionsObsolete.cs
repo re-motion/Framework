@@ -25,6 +25,19 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
+  /// Log a message object with the specified <paramref name="logLevel"/> and <paramref name="eventID"/>.
+  /// </summary>
+  /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
+  /// <param name="logLevel">The <see cref="MicrosoftLoglevel"/> of the message to be logged.</param>
+  /// <param name="eventID">The numeric identifier for the event.</param>
+  /// <param name="message">The message object to log.</param>
+  /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
+  public static void Log (this IMicrosoftLogger logger, MicrosoftLoglevel logLevel, int eventID, object? message, Exception exceptionObject)
+  {
+    logger.Log(logLevel, new EventId(eventID), exceptionObject, message?.ToString());
+  }
+
+  /// <summary>
   /// Log a message object with the specified <paramref name="logLevel"/>,
   /// including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
@@ -74,6 +87,21 @@ public static class LoggerExtensionsObsolete
   public static void LogFormat (this IMicrosoftLogger logger, MicrosoftLoglevel logLevel, string? format, params object?[] args)
   {
     logger.Log(logLevel, format, args);
+  }
+
+  /// <summary>
+  /// Log a formatted string with the specified <paramref name="logLevel"/>,  including the stack trace of <paramref name="exceptionObject"/>.
+  /// </summary>
+  /// <param name="logger">The <see cref="IMicrosoftLogger"/> instance where the message is to be logged.</param>
+  /// <param name="logLevel">The <see cref="MicrosoftLoglevel"/> of the message to be logged.</param>
+  /// <param name="eventID">The numeric identifier for the event.</param>
+  /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
+  /// <param name="format">A string containing zero or more format items for the description of the context.</param>
+  /// <param name="args">An array containing zero or more objects to format.</param>
+  [StringFormatMethod("format")]
+  public static void LogFormat (this IMicrosoftLogger logger, MicrosoftLoglevel logLevel, int eventID, Exception exceptionObject, string? format, params object?[] args)
+  {
+    logger.Log(logLevel, new EventId(eventID), exceptionObject, format, args);
   }
 
   /// <summary>
