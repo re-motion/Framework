@@ -15,14 +15,26 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using Microsoft.Extensions.Logging;
 using NUnit.Framework;
-using Remotion.Logging.Log4Net;
+using Remotion.Development.UnitTesting;
 
-namespace Remotion.Extensions.UnitTests.Logging.Log4NetTests;
+namespace Remotion.Logging.Log4Net.UnitTests;
 
 public class Log4NetLoggerProviderTest
 {
+  [Test]
+  public void GetLogger_WithNameAsString ()
+  {
+    var loggerProvider = new Log4NetLoggerProvider();
+    var categoryName = "TestCategory";
+
+    var logger = loggerProvider.CreateLogger(categoryName);
+
+    Assert.That(logger, Is.InstanceOf<Log4NetLogger>());
+    var log4NetLogger = (Log4NetLogger)logger;
+    Assert.That(log4NetLogger.Logger.Name, Is.EqualTo("TestCategory"));
+  }
+
   [Test]
   public void CreateLogger_WithValidCategoryName_ReturnsLoggerInstance ()
   {
@@ -31,7 +43,8 @@ public class Log4NetLoggerProviderTest
 
     var logger = loggerProvider.CreateLogger(categoryName);
 
-    Assert.That(logger, Is.Not.Null);
     Assert.That(logger, Is.InstanceOf<Log4NetLogger>());
+    var secondLogger = loggerProvider.CreateLogger(categoryName);
+    Assert.That(logger.As<Log4NetLogger>().Logger, Is.SameAs(secondLogger.As<Log4NetLogger>().Logger));
   }
 }
