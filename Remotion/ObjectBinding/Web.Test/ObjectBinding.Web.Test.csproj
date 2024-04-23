@@ -649,7 +649,7 @@
     <EmbeddedResource Include="Globalization\IndividualControlTests.BocReferenceValueUserControl.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\RMTest.de-at.resx">
+    <EmbeddedResource Include="Globalization\RMTest.de-AT.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\RMTest.de.resx">
