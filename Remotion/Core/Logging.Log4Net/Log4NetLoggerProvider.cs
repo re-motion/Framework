@@ -15,27 +15,23 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using log4net.Core;
-using Microsoft.Extensions.Logging;
+using Remotion.Utilities;
 
 namespace Remotion.Logging.Log4Net;
 
-public class Log4NetLogger
-    : Microsoft.Extensions.Logging.ILogger
+/// <summary>
+/// Implements <see cref="Microsoft.Extensions.Logging.ILoggerProvider"/> to provide an implementation with log4net.
+/// </summary>
+public class Log4NetLoggerProvider : Microsoft.Extensions.Logging.ILoggerProvider
 {
-  public void Log<TState> (Microsoft.Extensions.Logging.LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+  public Microsoft.Extensions.Logging.ILogger CreateLogger (string categoryName)
   {
-    throw new NotImplementedException();
+    ArgumentUtility.CheckNotNull("categoryName", categoryName);
+
+    return new Log4NetLogger(log4net.LogManager.GetLogger(categoryName).Logger);
   }
 
-  public bool IsEnabled (Microsoft.Extensions.Logging.LogLevel logLevel)
+  public void Dispose ()
   {
-    throw new NotImplementedException();
-  }
-
-  public IDisposable? BeginScope<TState> (TState state)
-      where TState : notnull
-  {
-    throw new NotImplementedException();
   }
 }
