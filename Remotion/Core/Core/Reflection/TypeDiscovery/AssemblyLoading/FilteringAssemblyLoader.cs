@@ -20,6 +20,7 @@ using System.IO;
 using System.Reflection;
 using Remotion.Logging;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
 {
@@ -36,7 +37,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
   /// </remarks>
   public class FilteringAssemblyLoader : IAssemblyLoader
   {
-    private static readonly Lazy<ILog> s_log = new Lazy<ILog>(() => LogManager.GetLogger(typeof(FilteringAssemblyLoader)));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<FilteringAssemblyLoader>();
 
     private readonly IAssemblyLoaderFilter _filter;
 
@@ -55,12 +56,12 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     {
       ArgumentUtility.CheckNotNull("filePath", filePath);
 
-      s_log.Value.InfoFormat("Attempting to get assembly name for path '{0}'.", filePath);
+      s_logger.InfoFormat("Attempting to get assembly name for path '{0}'.", filePath);
       AssemblyName? assemblyName = PerformGuardedLoadOperation(filePath, null, () => AssemblyNameCache.GetAssemblyName(filePath));
       if (assemblyName == null)
         return null;
 
-      s_log.Value.InfoFormat("Assembly name for path '{0}' is '{1}'.", filePath, assemblyName.FullName);
+      s_logger.InfoFormat("Assembly name for path '{0}' is '{1}'.", filePath, assemblyName.FullName);
 
       return TryLoadAssembly(assemblyName, filePath);
     }
@@ -72,9 +73,9 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
 
       if (PerformGuardedLoadOperation(assemblyName.FullName, context, () => _filter.ShouldConsiderAssembly(assemblyName)))
       {
-        s_log.Value.InfoFormat("Attempting to load assembly with name '{0}' in context '{1}'.", assemblyName, context);
+        s_logger.InfoFormat("Attempting to load assembly with name '{0}' in context '{1}'.", assemblyName, context);
         Assembly? loadedAssembly = PerformGuardedLoadOperation(assemblyName.FullName, context, () => Assembly.Load(assemblyName));
-        s_log.Value.InfoFormat("Success: {0}", loadedAssembly != null);
+        s_logger.InfoFormat("Success: {0}", loadedAssembly != null);
 
         if (loadedAssembly == null)
           return null;
@@ -103,20 +104,20 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
       }
       catch (BadImageFormatException ex)
       {
-        s_log.Value.InfoFormat(
+        s_logger.InfoFormat(
             "The file {0} triggered a BadImageFormatException and will be ignored. Possible causes for this are:" + Environment.NewLine
             + "- The file is not a .NET assembly." + Environment.NewLine
             + "- The file was built for a newer version of .NET." + Environment.NewLine
             + "- The file was compiled for a different platform (x86, x64, etc.) than the platform this process is running on." + Environment.NewLine
             + "- The file is damaged.",
             assemblyDescriptionText);
-        s_log.Value.DebugFormat(ex, "The file {0} triggered a BadImageFormatException.", assemblyDescriptionText);
+        s_logger.DebugFormat(ex, "The file {0} triggered a BadImageFormatException.", assemblyDescriptionText);
 
         return default(T)!;
       }
       catch (FileLoadException ex)
       {
-        s_log.Value.WarnFormat(
+        s_logger.WarnFormat(
             ex,
             "The assembly {0} triggered a FileLoadException and will be ignored - maybe the assembly is DelaySigned, but signing has not been completed?",
             assemblyDescriptionText);
@@ -132,7 +133,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
         // https://www.re-motion.org/jira/browse/RM-5089
         if (assemblyDescription.Contains("System.IdentityModel.Selectors"))
         {
-          s_log.Value.WarnFormat(message, ex);
+          s_logger.WarnFormat(message, ex);
           return default(T)!;
         }
 

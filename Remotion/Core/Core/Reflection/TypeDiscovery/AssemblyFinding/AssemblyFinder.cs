@@ -22,6 +22,8 @@ using System.Reflection;
 using Remotion.Logging;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
+using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 {
@@ -33,7 +35,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
   /// <threadsafety static="true" instance="true" />
   public class AssemblyFinder : IAssemblyFinder
   {
-    private static readonly Lazy<ILog> s_log = new Lazy<ILog>(() => LogManager.GetLogger(typeof(AssemblyFinder)));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<AssemblyFinder>();
 
     private readonly IRootAssemblyFinder _rootAssemblyFinder;
     private readonly IAssemblyLoader _assemblyLoader;
@@ -69,8 +71,8 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     /// <returns>The root assemblies and their referenced assemblies.</returns>
     public virtual IEnumerable<Assembly> FindAssemblies ()
     {
-      s_log.Value.Debug("Finding assemblies...");
-      using (StopwatchScope.CreateScope(s_log.Value, LogLevel.Info, "Time spent for finding and loading assemblies: {elapsed}."))
+      s_logger.Debug("Finding assemblies...");
+      using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Information, "Time spent for finding and loading assemblies: {elapsed}."))
       {
         var rootAssemblies = FindRootAssemblies();
         var resultSet = new HashSet<Assembly>(rootAssemblies.Select(root => root.Assembly));
@@ -78,26 +80,26 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
         // Forcing the enumeration at this point does not have a measurable impact on performance.
         // Instead, decoupling the assembly loading from the rest of the system is actually helpful for concurrency.
-        return resultSet.LogAndReturnItems(s_log.Value, LogLevel.Info, count => string.Format("Found {0} assemblies.", count))
+        return resultSet.LogAndReturnItems(s_logger, MicrosoftLogLevel.Information, count => string.Format("Found {0} assemblies.", count))
             .ToList();
       }
     }
 
     private ICollection<RootAssembly> FindRootAssemblies ()
     {
-      s_log.Value.Debug("Finding root assemblies...");
-      using (StopwatchScope.CreateScope(s_log.Value, LogLevel.Debug, "Time spent for finding and loading root assemblies: {elapsed}."))
+      s_logger.Debug("Finding root assemblies...");
+      using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Debug, "Time spent for finding and loading root assemblies: {elapsed}."))
       {
         return _rootAssemblyFinder.FindRootAssemblies()
-            .LogAndReturnItems(s_log.Value, LogLevel.Debug, count => string.Format("Found {0} root assemblies.", count))
+            .LogAndReturnItems(s_logger, MicrosoftLogLevel.Debug, count => string.Format("Found {0} root assemblies.", count))
             .ToList();
       }
     }
 
     private ICollection<Assembly> FindReferencedAssemblies (ICollection<RootAssembly> rootAssemblies)
     {
-      s_log.Value.Debug("Finding referenced assemblies...");
-      using (StopwatchScope.CreateScope(s_log.Value, LogLevel.Debug, "Time spent for finding and loading referenced assemblies: {elapsed}."))
+      s_logger.Debug("Finding referenced assemblies...");
+      using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Debug, "Time spent for finding and loading referenced assemblies: {elapsed}."))
       {
         // referenced assemblies are added later in order to get their references as well
         var referenceRoots = new ConcurrentQueue<Assembly>(
@@ -134,7 +136,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
         }
 
         return result
-            .LogAndReturnItems(s_log.Value, LogLevel.Debug, count => string.Format("Found {0} referenced assemblies.", count))
+            .LogAndReturnItems(s_logger, MicrosoftLogLevel.Debug, count => string.Format("Found {0} referenced assemblies.", count))
             .ToList();
       }
     }

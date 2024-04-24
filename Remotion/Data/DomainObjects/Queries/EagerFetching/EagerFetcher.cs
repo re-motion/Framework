@@ -20,6 +20,7 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Logging;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 {
@@ -31,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
   [Serializable]
   public class EagerFetcher : IEagerFetcher
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(EagerFetcher));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<EagerFetcher>();
 
     private readonly IFetchedRelationDataRegistrationAgent _registrationAgent;
 
@@ -65,14 +66,14 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
         var relationEndPointDefinition = item.Key;
         var fetchQuery = item.Value;
 
-        s_log.DebugFormat(
+        s_logger.DebugFormat(
             "Eager fetching objects for {0} via query {1} ('{2}').",
             relationEndPointDefinition.PropertyName,
             fetchQuery.ID,
             fetchQuery.Statement);
 
         var fetchedObjects = fetchResultLoader.GetOrLoadFetchQueryResult(fetchQuery, pendingRegistrationCollector);
-        s_log.DebugFormat(
+        s_logger.DebugFormat(
             "The eager fetch query for {0} yielded {1} related objects for {2} original objects.",
             relationEndPointDefinition.PropertyName,
             fetchedObjects.Count,

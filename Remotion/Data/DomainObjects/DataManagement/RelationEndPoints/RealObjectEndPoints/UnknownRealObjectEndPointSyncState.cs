@@ -18,6 +18,7 @@ using System;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Logging;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjectEndPoints
 {
@@ -28,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
   /// </summary>
   public class UnknownRealObjectEndPointSyncState : IRealObjectEndPointSyncState
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(UnknownRealObjectEndPointSyncState));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<UnknownRealObjectEndPointSyncState>();
 
     private readonly IVirtualEndPointProvider _virtualEndPointProvider;
 

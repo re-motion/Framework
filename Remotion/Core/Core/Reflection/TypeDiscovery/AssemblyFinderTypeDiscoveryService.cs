@@ -26,6 +26,8 @@ using Remotion.Configuration.TypeDiscovery;
 using Remotion.Logging;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
+using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Reflection.TypeDiscovery
 {
@@ -37,7 +39,7 @@ namespace Remotion.Reflection.TypeDiscovery
   /// </summary>
   public sealed class AssemblyFinderTypeDiscoveryService : ITypeDiscoveryService
   {
-    private static readonly Lazy<ILog> s_log = new Lazy<ILog>(() => LogManager.GetLogger(typeof(AssemblyFinderTypeDiscoveryService)));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<AssemblyFinderTypeDiscoveryService>();
 
     private readonly IAssemblyFinder _assemblyFinder;
     private readonly Lazy<BaseTypeCache> _baseTypeCache;
@@ -92,10 +94,10 @@ namespace Remotion.Reflection.TypeDiscovery
             nonNullBaseType,
             key =>
             {
-              s_log.Value.DebugFormat("Discovering types derived from '{0}', including GAC...", key);
+              s_logger.DebugFormat("Discovering types derived from '{0}', including GAC...", key);
               using (StopwatchScope.CreateScope(
-                  s_log.Value,
-                  LogLevel.Info,
+                  s_logger,
+                  MicrosoftLogLevel.Information,
                   string.Format("Discovered types derived from '{0}', including GAC. Time taken: {{elapsed}}", key)))
               {
                 return GetTypesFromAllAssemblies(key, excludeGlobalTypes: false).ToList().AsReadOnly();
@@ -115,10 +117,10 @@ namespace Remotion.Reflection.TypeDiscovery
 
     private BaseTypeCache CreateBaseTypeCache ()
     {
-      s_log.Value.DebugFormat("Creating cache for all types in application directory...");
+      s_logger.DebugFormat("Creating cache for all types in application directory...");
       using (StopwatchScope.CreateScope(
-          s_log.Value,
-          LogLevel.Info,
+          s_logger,
+          MicrosoftLogLevel.Information,
           "Created cache for all types in application directory. Time taken: {elapsed}"))
       {
         return BaseTypeCache.Create(GetTypesFromAllAssemblies(null, true));

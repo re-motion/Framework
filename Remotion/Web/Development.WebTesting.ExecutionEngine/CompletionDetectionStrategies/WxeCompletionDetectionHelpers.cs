@@ -17,8 +17,9 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
-using log4net;
+using Remotion.Logging;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies
 {
@@ -55,12 +56,12 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     /// <paramref name="expectedWxePostBackSequenceNumber"/>.
     /// </summary>
     public static void WaitForExpectedWxePostBackSequenceNumber (
-        [NotNull] ILog log,
+        [NotNull] IMicrosoftLogger logger,
         [NotNull] PageObjectContext context,
         int expectedWxePostBackSequenceNumber,
         TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNull("log", log);
+      ArgumentUtility.CheckNotNull("logger", logger);
       ArgumentUtility.CheckNotNull("context", context);
 
       int newWxePostBackSequenceNumber;
@@ -79,7 +80,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
       {
         try
         {
-          log.DebugFormat("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle(context));
+          logger.DebugFormat("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle(context));
         }
         catch
         {
@@ -91,7 +92,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
         throw;
       }
 
-      log.DebugFormat("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle(context));
+      logger.DebugFormat("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle(context));
 
       Assertion.IsTrue(
           newWxePostBackSequenceNumber == expectedWxePostBackSequenceNumber,
@@ -103,36 +104,36 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     /// <paramref name="oldWxePostBackSequenceNumber"/> by <paramref name="expectedWxePostBackSequenceNumberIncrease"/>.
     /// </summary>
     public static void WaitForExpectedWxePostBackSequenceNumber (
-        [NotNull] ILog log,
+        [NotNull] IMicrosoftLogger logger,
         [NotNull] PageObjectContext context,
         int oldWxePostBackSequenceNumber,
         int expectedWxePostBackSequenceNumberIncrease,
         TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNull("log", log);
+      ArgumentUtility.CheckNotNull("logger", logger);
       ArgumentUtility.CheckNotNull("context", context);
 
       var expectedWxePostBackSequenceNumber = oldWxePostBackSequenceNumber + expectedWxePostBackSequenceNumberIncrease;
 
-      log.DebugFormat("State: previous WXE-PSN: {0}, expected WXE-PSN: {1}.", oldWxePostBackSequenceNumber, expectedWxePostBackSequenceNumber);
+      logger.DebugFormat("State: previous WXE-PSN: {0}, expected WXE-PSN: {1}.", oldWxePostBackSequenceNumber, expectedWxePostBackSequenceNumber);
 
-      WaitForExpectedWxePostBackSequenceNumber(log, context, expectedWxePostBackSequenceNumber, timeout);
+      WaitForExpectedWxePostBackSequenceNumber(logger, context, expectedWxePostBackSequenceNumber, timeout);
     }
 
     /// <summary>
     /// Waits for the WXE function token to change from <paramref name="oldWxeFunctionToken"/> to a new function token.
     /// </summary>
     public static void WaitForNewWxeFunctionToken (
-        [NotNull] ILog log,
+        [NotNull] IMicrosoftLogger logger,
         [NotNull] PageObjectContext context,
         [NotNull] string oldWxeFunctionToken,
         TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNull("log", log);
+      ArgumentUtility.CheckNotNull("logger", logger);
       ArgumentUtility.CheckNotNull("context", context);
       ArgumentUtility.CheckNotNullOrEmpty("oldWxeFunctionToken", oldWxeFunctionToken);
 
-      log.DebugFormat("State: previous WXE-FT: {0}.", oldWxeFunctionToken);
+      logger.DebugFormat("State: previous WXE-FT: {0}.", oldWxeFunctionToken);
       var options = timeout.HasValue ? new Options { Timeout = timeout.Value } : null;
 
       try
@@ -145,7 +146,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
       {
         try
         {
-          log.DebugFormat("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle(context));
+          logger.DebugFormat("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle(context));
         }
         catch
         {
@@ -157,7 +158,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
         throw;
       }
 
-      log.DebugFormat("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle(context));
+      logger.DebugFormat("Parameters: window: '{0}' scope: '{1}'.", context.Window.Title, GetPageTitle(context));
 
       Assertion.IsTrue(
           GetWxeFunctionToken(context) != oldWxeFunctionToken,

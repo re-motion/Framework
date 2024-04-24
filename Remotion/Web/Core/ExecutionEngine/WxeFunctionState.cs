@@ -18,6 +18,7 @@ using System;
 using Remotion.Logging;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.ExecutionEngine
 {
@@ -28,7 +29,7 @@ namespace Remotion.Web.ExecutionEngine
   [Serializable]
   public class WxeFunctionState
   {
-    private static ILog s_log = LogManager.GetLogger(typeof(WxeFunctionState));
+    private static IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<WxeFunctionState>();
 
     private WxeFunction _function;
     private int _lifetime;
@@ -55,7 +56,7 @@ namespace Remotion.Web.ExecutionEngine
       _function.SetFunctionToken(_functionToken);
       _isCleanUpEnabled = enableCleanUp;
       _postBackID = 0;
-      s_log.Debug(string.Format("Created WxeFunctionState {0}.", _functionToken));
+      s_logger.Debug(string.Format("Created WxeFunctionState {0}.", _functionToken));
     }
 
     public WxeFunction Function
@@ -102,7 +103,7 @@ namespace Remotion.Web.ExecutionEngine
     {
       if (! _isAborted)
       {
-        s_log.Debug(string.Format("Aborting WxeFunctionState {0}.", _functionToken));
+        s_logger.Debug(string.Format("Aborting WxeFunctionState {0}.", _functionToken));
         AbortRecursive();
         _isAborted = true;
       }

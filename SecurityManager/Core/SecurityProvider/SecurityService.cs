@@ -24,6 +24,7 @@ using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.SecurityManager
 {
@@ -32,7 +33,7 @@ namespace Remotion.SecurityManager
   {
     public const int Position = NullSecurityProvider.Position - 1;
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(SecurityService));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<SecurityService>();
 
     private readonly IAccessControlListFinder _accessControlListFinder;
     private readonly ISecurityTokenBuilder _securityTokenBuilder;
@@ -68,7 +69,7 @@ namespace Remotion.SecurityManager
         }
         catch (AccessControlException e)
         {
-          s_log.Error("Error during evaluation of security query.", e);
+          s_logger.Error("Error during evaluation of security query.", e);
           return new AccessType[0];
         }
 
@@ -81,7 +82,7 @@ namespace Remotion.SecurityManager
         }
         catch (ObjectsNotFoundException e)
         {
-          s_log.Error("Error during evaluation of security query.", e);
+          s_logger.Error("Error during evaluation of security query.", e);
           return new AccessType[0];
         }
       }

@@ -36,6 +36,7 @@ using Remotion.Web.UI.Controls.Hotkey;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -263,7 +264,7 @@ namespace Remotion.Web.UI.Controls
         //  Not found, append to form grid instead of inserting at position of related form grid row
         if (relatedRow == null)
         {
-          s_log.Warn(
+          s_logger.Warn(
               $"Could not find control '{relatedRowID}' inside FormGrid (HtmlTable) '{_table.ID}' "
               + $"in naming container '{_table.NamingContainer.GetType().GetFullNameSafe()}' on page '{_table.Page!}'.");
 
@@ -980,7 +981,7 @@ namespace Remotion.Web.UI.Controls
 
     // static members
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(FormGridManager));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<FormGridManager>();
     private static NoneHotkeyFormatter s_noneHotkeyFormatter = new NoneHotkeyFormatter();
 
     // member fields
@@ -1161,7 +1162,7 @@ namespace Remotion.Web.UI.Controls
           {
             // TODO RM-8118: not null assertion
             //  Not supported format
-            s_log.Warn(
+            s_logger.Warn(
                 $"FormGridManager '{UniqueID}' on page '{Page!}' received a resource with an invalid key '{key}'. Required format: 'tableUniqueID:controlUniqueID:property'.");
           }
         }
@@ -1169,7 +1170,7 @@ namespace Remotion.Web.UI.Controls
         {
           // TODO RM-8118: not null assertion
           //  Invalid form grid
-          s_log.Warn($"FormGrid '{tableID}' is not managed by FormGridManager '{UniqueID}' on page '{Page!}'.");
+          s_logger.Warn($"FormGrid '{tableID}' is not managed by FormGridManager '{UniqueID}' on page '{Page!}'.");
         }
       }
 
@@ -1228,7 +1229,7 @@ namespace Remotion.Web.UI.Controls
           {
             // TODO RM-8118: not null assertion
             //  Invalid control
-            s_log.Warn(
+            s_logger.Warn(
                 $"FormGrid '{tableID}' in naming container '{NamingContainer.GetType().GetFullNameSafe()}' on page '{Page!}' does not contain a control with UniqueID '{controlID}'.");
           }
         }
