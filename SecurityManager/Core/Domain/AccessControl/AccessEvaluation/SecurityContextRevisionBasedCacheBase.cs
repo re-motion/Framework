@@ -26,6 +26,8 @@ using Remotion.Data.DomainObjects.Queries;
 using Remotion.Linq.EagerFetching;
 using Remotion.Logging;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
+using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
@@ -35,7 +37,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       where TRevisionKey : IRevisionKey
       where TRevisionValue : IRevisionValue
   {
-    private static readonly ILog s_log = LogManager.GetLogger(MethodInfo.GetCurrentMethod()!.DeclaringType!);
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<SecurityContextRevisionBasedCacheBase<TData, TRevisionKey, TRevisionValue>>();
     private static readonly ConcurrentDictionary<string, IQuery> s_queryCache = new ConcurrentDictionary<string, IQuery>();
 
     protected SecurityContextRevisionBasedCacheBase (IRevisionProvider<TRevisionKey, TRevisionValue> revisionProvider)
@@ -46,16 +48,16 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     private StopwatchScope CreateStopwatchScopeForQueryParsing (string queryName)
     {
       return StopwatchScope.CreateScope(
-          s_log,
-          LogLevel.Debug,
+          s_logger,
+          MicrosoftLogLevel.Debug,
           "Parsed query for " + GetType().Name + "." + queryName + "(). Time taken: {elapsed:ms}ms");
     }
 
     protected StopwatchScope CreateStopwatchScopeForQueryExecution (string queryName)
     {
       return StopwatchScope.CreateScope(
-          s_log,
-          LogLevel.Debug,
+          s_logger,
+          MicrosoftLogLevel.Debug,
           "Fetched " + queryName + " into " + GetType().Name + ". Time taken: {elapsed:ms}ms");
     }
 

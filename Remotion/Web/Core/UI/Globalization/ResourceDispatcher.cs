@@ -24,6 +24,7 @@ using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.Reflection;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.UI.Globalization
 {
@@ -41,7 +42,7 @@ public sealed class ResourceDispatcher
   /// <summary> Use this ID to dispatch resources to the control that provides the resource manager. </summary>
   private const string c_thisElementID = "this";
 
-	private static readonly ILog s_log = LogManager.GetLogger(typeof(ResourceDispatcher));
+	private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<ResourceDispatcher>();
   private static ArrayList _registeredDispatchTargets = new ArrayList();
   private static readonly WebStringConverter s_webStringConverter = new();
 
@@ -112,7 +113,7 @@ public sealed class ResourceDispatcher
 
       if (targetControl == null)
       {
-        s_log.Warn("Control '" + control.ToString() + "': No child-control with ID '" + elementID + "' found. ID was read from \"" + resourceSource + "\".");
+        s_logger.Warn("Control '" + control.ToString() + "': No child-control with ID '" + elementID + "' found. ID was read from \"" + resourceSource + "\".");
       }
       else
       {
@@ -163,7 +164,7 @@ public sealed class ResourceDispatcher
         if (genericHtmlControl != null)
           genericHtmlControl.Attributes[propertyName] = propertyValue.ToPlainTextString().GetValue();
         else //  Non-HtmlControls require valid property
-          s_log.Warn("Control '" + control.ID + "' of type '" + control.GetType().GetFullNameSafe() + "' does not contain a public property '" + propertyName + "'.");
+          s_logger.Warn("Control '" + control.ID + "' of type '" + control.GetType().GetFullNameSafe() + "' does not contain a public property '" + propertyName + "'.");
       }
     }
   }

@@ -18,10 +18,10 @@ using System;
 using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
-using log4net;
 using OpenQA.Selenium;
+using Remotion.Logging;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.WebDriver;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting
   /// </summary>
   public static class CoypuElementScopeFillInWithAndSendKeysExtensions
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(CoypuElementScopeFillInWithAndSendKeysExtensions));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger(typeof(CoypuElementScopeFillInWithAndSendKeysExtensions));
 
     /// <summary>
     /// ASP.NET WebForms-ready &amp; IE-compatible version for Coypu's <see cref="ElementScope.SendKeys"/> method.
@@ -88,7 +88,7 @@ namespace Remotion.Web.Development.WebTesting
 
       var command = GetFillInJavaScriptCommand(id);
 
-      s_log.DebugFormat("FillInWith using JavaScript: '{0}'.", value);
+      s_logger.DebugFormat("FillInWith using JavaScript: '{0}'.", value);
 
       driver.ExecuteScript(command, scope, valueWithoutLastCharacter);
       scope.SendKeys(Keys.End);
@@ -107,7 +107,7 @@ namespace Remotion.Web.Development.WebTesting
       var clearTextBoxWithoutTriggeringPostBack = Keys.Control + "a" + Keys.Control + Keys.Delete;
       value = clearTextBoxWithoutTriggeringPostBack + value;
 
-      s_log.DebugFormat("FillInWith without triggering PostBack on clear: '{0}'.", value);
+      s_logger.DebugFormat("FillInWith without triggering PostBack on clear: '{0}'.", value);
 
       scope.SendKeys(value);
     }

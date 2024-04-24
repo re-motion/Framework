@@ -23,12 +23,13 @@ using Remotion.Reflection.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Mixins.MixerTools
 {
   public class MixerPipelineFactory : IMixerPipelineFactory
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(MixerPipelineFactory));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<MixerPipelineFactory>();
 
     private readonly string _assemblyName;
     private readonly int _degreeOfParallelism;
@@ -58,7 +59,7 @@ namespace Remotion.Mixins.MixerTools
       var participants = defaultPipeline.Participants.ToArray();
 
       var participantTypeNames = participants.Select(p => p.GetType().Name).ToArray();
-      s_log.InfoFormat(
+      s_logger.InfoFormat(
           "Using pipeline '{0}' with the following participants: {1}.",
           defaultPipeline.ParticipantConfigurationID,
           string.Join(", ", participantTypeNames));

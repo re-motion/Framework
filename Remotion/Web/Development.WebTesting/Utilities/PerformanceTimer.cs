@@ -17,8 +17,9 @@
 using System;
 using System.Diagnostics;
 using JetBrains.Annotations;
-using log4net;
+using Remotion.Logging;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -27,15 +28,15 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   /// </summary>
   public class PerformanceTimer : IDisposable
   {
-    private readonly ILog _log;
+    private readonly IMicrosoftLogger _logger;
     private readonly string _message;
     private readonly Stopwatch _stopwatch;
 
-    public PerformanceTimer ([NotNull] ILog log, string message)
+    public PerformanceTimer ([NotNull] IMicrosoftLogger logger, string message)
     {
-      ArgumentUtility.CheckNotNull("log", log);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
-      _log = log;
+      _logger = logger;
       _message = message;
       _stopwatch = Stopwatch.StartNew();
     }
@@ -43,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public void Dispose ()
     {
       _stopwatch.Stop();
-      _log.DebugFormat(_message + " [took: {0}]", _stopwatch.Elapsed);
+      _logger.DebugFormat(_message + " [took: {0}]", _stopwatch.Elapsed);
     }
   }
 }

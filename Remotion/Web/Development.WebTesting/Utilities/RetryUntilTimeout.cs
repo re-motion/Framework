@@ -18,9 +18,10 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using JetBrains.Annotations;
-using log4net;
+using Remotion.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -33,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   /// </remarks>
   public class RetryUntilTimeout
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(RetryUntilTimeout));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<RetryUntilTimeout>();
 
     private readonly RetryUntilTimeout<object?> _retryUntilTimeout;
 
@@ -119,7 +120,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   {
     // Todo RM-6337: Find out why DriverScope.RetryUntilTimeout is so slow.
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(RetryUntilTimeout<TReturnType>));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<RetryUntilTimeout<TReturnType>>();
 
     private readonly Func<TReturnType> _func;
     private readonly TimeSpan _timeout;
@@ -148,12 +149,12 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         {
           if (stopwatch.ElapsedMilliseconds < _timeout.TotalMilliseconds)
           {
-            s_log.Debug("RetryUntilTimeout failed with " + ex.GetType().Name + " - trying again.");
+            s_logger.Debug("RetryUntilTimeout failed with " + ex.GetType().Name + " - trying again.");
             Thread.Sleep(_retryInterval);
           }
           else
           {
-            s_log.Warn("RetryUntilTimeout failed with " + ex.GetType().Name + " - timeout elapsed, failing.");
+            s_logger.Warn("RetryUntilTimeout failed with " + ex.GetType().Name + " - timeout elapsed, failing.");
             throw;
           }
         }

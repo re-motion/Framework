@@ -27,6 +27,8 @@ using Remotion.Logging;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
+using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
@@ -63,7 +65,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
           domainObjectCreator);
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(MappingReflector));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<MappingReflector>();
     private readonly IMemberInformationNameResolver _nameResolver;
     private readonly IMappingObjectFactory _mappingObjectFactory;
     private readonly ITypeDiscoveryService _typeDiscoveryService;
@@ -136,28 +138,28 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public ClassDefinition[] GetClassDefinitions ()
     {
-      s_log.Info("Reflecting class definitions...");
+      s_logger.Info("Reflecting class definitions...");
 
-      using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to reflect class definitions: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Information, "Time needed to reflect class definitions: {elapsed}."))
       {
         var types = GetDomainObjectTypesSorted();
         var classDefinitions = MappingObjectFactory.CreateClassDefinitionCollection(types);
 
         return classDefinitions
-            .LogAndReturnValue(s_log, LogLevel.Info, result => string.Format("Generated {0} class definitions.", result.Length));
+            .LogAndReturnValue(s_logger, MicrosoftLogLevel.Information, result => string.Format("Generated {0} class definitions.", result.Length));
       }
     }
 
     public RelationDefinition[] GetRelationDefinitions (IDictionary<Type, ClassDefinition> classDefinitions)
     {
       ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
-      s_log.InfoFormat("Reflecting relation definitions of {0} class definitions...", classDefinitions.Count);
+      s_logger.InfoFormat("Reflecting relation definitions of {0} class definitions...", classDefinitions.Count);
 
-      using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to reflect relation definitions: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Information, "Time needed to reflect relation definitions: {elapsed}."))
       {
         var relationDefinitions = MappingObjectFactory.CreateRelationDefinitionCollection(classDefinitions);
         return relationDefinitions
-            .LogAndReturnValue(s_log, LogLevel.Info, result => string.Format("Generated {0} relation definitions.", result.Length));
+            .LogAndReturnValue(s_logger, MicrosoftLogLevel.Information, result => string.Format("Generated {0} relation definitions.", result.Length));
       }
     }
 

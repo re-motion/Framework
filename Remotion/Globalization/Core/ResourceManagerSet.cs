@@ -22,6 +22,7 @@ using System.Globalization;
 using System.Linq;
 using Remotion.Logging;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Globalization
 {
@@ -29,7 +30,7 @@ namespace Remotion.Globalization
   /// <threadsafety static="true" instance="true" />
   public class ResourceManagerSet : IResourceManager
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(ResourceManagerSet));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<ResourceManagerSet>();
 
     private readonly IResourceManager[] _resourceManagers;
     private readonly string _name;
@@ -112,7 +113,7 @@ namespace Remotion.Globalization
       }
       // ReSharper restore ForCanBeConvertedToForeach
 
-      s_log.DebugFormat("Could not find resource with ID '{0}' in any of the following resource containers '{1}'.", id, _name);
+      s_logger.DebugFormat("Could not find resource with ID '{0}' in any of the following resource containers '{1}'.", id, _name);
 
       value = null;
       return false;

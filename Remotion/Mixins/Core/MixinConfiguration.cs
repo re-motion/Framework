@@ -22,6 +22,7 @@ using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Validation;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Mixins
 {
@@ -85,7 +86,7 @@ namespace Remotion.Mixins
   /// <threadsafety static="true" instance="true" />
   public partial class MixinConfiguration
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(MixinConfiguration));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<MixinConfiguration>();
 
     private readonly ClassContextCollection _classContexts;
 

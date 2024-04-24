@@ -20,8 +20,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using log4net;
+using Microsoft.Extensions.Logging;
+using Remotion.Logging;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
 {
@@ -30,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
   /// </summary>
   public class DockerCommandLineClient : IDockerClient
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(DockerCommandLineClient));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<DockerCommandLineClient>();
 
     private readonly string _dockerExeFullPath;
     private readonly TimeSpan _pullTimeout;
@@ -153,7 +155,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
 
     private string RunDockerCommand (string dockerCommand, string? workingDirectory = null, TimeSpan? timeout = null)
     {
-      s_log.Info($"Running: 'docker {dockerCommand}'");
+      s_logger.Info($"Running: 'docker {dockerCommand}'");
 
       var startInfo = new ProcessStartInfo
                       {
@@ -179,7 +181,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
         dockerProcess.OutputDataReceived += (sender, outputLine) =>
         {
           if (outputLine.Data != null)
-            s_log.Info(outputLine.Data);
+            s_logger.Info(outputLine.Data);
         };
 
         var error = dockerProcess.StandardError.ReadToEnd();
@@ -191,7 +193,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
         {
           var errorMessage = $"Docker command '{dockerCommand}' failed: {error}";
 
-          s_log.Error(errorMessage);
+          s_logger.Error(errorMessage);
           throw new DockerOperationException(errorMessage, dockerProcess.ExitCode);
         }
 
@@ -232,7 +234,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
                            Environment.NewLine +
                            string.Join(Environment.NewLine, listOfKnownDockerLocations.ToArray());
 
-        s_log.Fatal(errorMessage);
+        s_logger.LogCritical(errorMessage);
         throw new FileNotFoundException(errorMessage);
       }
 

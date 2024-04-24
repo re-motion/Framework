@@ -25,6 +25,7 @@ using System.Resources;
 using Remotion.Collections;
 using Remotion.Logging;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Globalization.Implementation
 {
@@ -45,7 +46,7 @@ namespace Remotion.Globalization.Implementation
   {
     //  static members
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(ResourceManagerWrapper));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<ResourceManagerWrapper>();
 
     // member fields
 
@@ -180,7 +181,7 @@ namespace Remotion.Globalization.Implementation
         return true;
       }
 
-      s_log.DebugFormat("Could not find resource with ID '{0}' in resource container '{1}'.", id, _resourceManager.BaseName);
+      s_logger.DebugFormat("Could not find resource with ID '{0}' in resource container '{1}'.", id, _resourceManager.BaseName);
       value = null;
       return false;
     }

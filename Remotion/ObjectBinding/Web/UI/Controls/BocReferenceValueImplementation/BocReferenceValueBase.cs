@@ -37,6 +37,7 @@ using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 {
@@ -147,7 +148,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     private static readonly object SelectionChangedEvent = new object();
     private static readonly object MenuItemClickEvent = new object();
 
-    private static readonly ILog s_log = LogManager.GetLogger(MethodBase.GetCurrentMethod()!.DeclaringType!);
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger(MethodBase.GetCurrentMethod()!.DeclaringType!);
 
     private readonly DropDownMenu _optionsMenu;
 
@@ -713,7 +714,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
             default:
             {
               //  Invalid collection property
-              s_log.Debug(
+              s_logger.Debug(
                   GetType().Name + " '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
                   + "' does not contain an element named '" + elementID + "'.");
               break;
@@ -741,7 +742,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
             default:
             {
               //  Invalid collection property
-              s_log.Debug(
+              s_logger.Debug(
                   GetType().Name + " '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
                   + "' does not contain a collection property named '" + collectionID + "'.");
               break;
@@ -766,7 +767,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         else
         {
           //  Not supported format or invalid property
-          s_log.Debug(
+          s_logger.Debug(
               GetType().Name + " '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
               + "' received a resource with an invalid or unknown key '" + key
               + "'. Required format: 'property' or 'collectionID:elementID:property'.");

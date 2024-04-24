@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Logging;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 {
@@ -31,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
   [Serializable]
   public class FetchedVirtualObjectRelationDataRegistrationAgent : FetchedRelationDataRegistrationAgentBase
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(FetchedVirtualObjectRelationDataRegistrationAgent));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<FetchedVirtualObjectRelationDataRegistrationAgent>();
 
     private readonly IVirtualEndPointProvider _virtualEndPointProvider;
 
@@ -121,7 +122,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
               throw new InvalidOperationException(message);
             }
             if (!TrySetVirtualObjectEndPointData(relationEndPointID, relatedObject))
-              s_log.DebugFormat("Relation data for relation end-point '{0}' is discarded; the end-point has already been loaded.", relationEndPointID);
+              s_logger.DebugFormat("Relation data for relation end-point '{0}' is discarded; the end-point has already been loaded.", relationEndPointID);
           }
         }
       }

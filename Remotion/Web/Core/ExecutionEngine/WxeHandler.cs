@@ -25,6 +25,7 @@ using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Utilities;
 using VirtualPathUtility = System.Web.VirtualPathUtility;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.ExecutionEngine
 {
@@ -89,7 +90,7 @@ namespace Remotion.Web.ExecutionEngine
     private const int c_HttpSessionTimeout = 409;
     private const int c_HttpFunctionTimeout = 409;
 
-    private static ILog s_log = LogManager.GetLogger(typeof(WxeHandler));
+    private static IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<WxeHandler>();
 
     /// <summary> The <see cref="WxeFunctionState"/> representing the <see cref="RootFunction"/> and its context. </summary>
     private WxeFunctionState? _currentFunctionState;
@@ -288,14 +289,14 @@ namespace Remotion.Web.ExecutionEngine
       {
         if (isPostBackAction)
         {
-          s_log.Error(string.Format("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
+          s_logger.Error(string.Format("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
           context.Response.StatusCode = c_HttpSessionTimeout;
           context.Response.StatusDescription = "Session Timeout.";
           return null;
         }
         if (isPostRequest)
         {
-          s_log.Error(string.Format("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
+          s_logger.Error(string.Format("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
           throw new WxeTimeoutException("Session Timeout.", functionToken); // TODO RM-8118: display error message
         }
         try
@@ -304,7 +305,7 @@ namespace Remotion.Web.ExecutionEngine
         }
         catch (WxeException e)
         {
-          s_log.Error(string.Format("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
+          s_logger.Error(string.Format("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
           throw new WxeTimeoutException("Session timeout.", functionToken, e); // TODO RM-8118: display error message
         }
       }
@@ -314,14 +315,14 @@ namespace Remotion.Web.ExecutionEngine
       {
         if (isPostBackAction)
         {
-          s_log.Error(string.Format("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
+          s_logger.Error(string.Format("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
           context.Response.StatusCode = c_HttpFunctionTimeout;
           context.Response.StatusDescription = "Function Timeout.";
           return null;
         }
         if (isPostRequest)
         {
-          s_log.Error(string.Format("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
+          s_logger.Error(string.Format("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
           throw new WxeTimeoutException("Function Timeout.", functionToken); // TODO RM-8118: display error message
         }
         try
@@ -330,14 +331,14 @@ namespace Remotion.Web.ExecutionEngine
         }
         catch (WxeException e)
         {
-          s_log.Error(string.Format("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
+          s_logger.Error(string.Format("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
           throw new WxeTimeoutException("Function Timeout.", functionToken, e); // TODO RM-8118: display error message
         }
       }
 
       if (functionState.IsAborted)
       {
-        s_log.Error(string.Format("Error resuming WxeFunctionState {0}: The function state has been aborted.", functionState.FunctionToken));
+        s_logger.Error(string.Format("Error resuming WxeFunctionState {0}: The function state has been aborted.", functionState.FunctionToken));
         throw new InvalidOperationException(string.Format("WxeFunctionState {0} is aborted.", functionState.FunctionToken));
             // TODO: display error message
       }

@@ -16,8 +16,9 @@
 // 
 using System;
 using JetBrains.Annotations;
-using log4net;
+using Remotion.Logging;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies
 {
@@ -27,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
   /// </summary>
   public class WxeResetInCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(WxeResetInCompletionDetectionStrategy));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<WxeResetInCompletionDetectionStrategy>();
     private readonly PageObjectContext _context;
     private readonly TimeSpan? _timeout;
 
@@ -54,10 +55,10 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
       ArgumentUtility.CheckNotNull("state", state!);
 
       var oldWxeFunctionToken = (string)state;
-      WxeCompletionDetectionHelpers.WaitForNewWxeFunctionToken(s_log, _context, oldWxeFunctionToken, _timeout);
+      WxeCompletionDetectionHelpers.WaitForNewWxeFunctionToken(s_logger, _context, oldWxeFunctionToken, _timeout);
 
       const int expectedWxePostBackSequenceNumber = 2;
-      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber(s_log, _context, expectedWxePostBackSequenceNumber, _timeout);
+      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber(s_logger, _context, expectedWxePostBackSequenceNumber, _timeout);
     }
   }
 }

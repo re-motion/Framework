@@ -21,13 +21,14 @@ using System.Linq;
 using Remotion.Logging;
 using Remotion.Mixins.Context;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Mixins.MixerTools
 {
   // Change to be an ITypeDiscoveryService decorator
   public class MixedTypeFinder : IMixedTypeFinder
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(MixedTypeFinder));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<MixedTypeFinder>();
 
     private readonly ITypeDiscoveryService _typeDiscoveryService;
 
@@ -48,7 +49,7 @@ namespace Remotion.Mixins.MixerTools
       ArgumentUtility.CheckNotNull("configuration", configuration);
 
       var types = _typeDiscoveryService.GetTypes(null, false);
-      s_log.InfoFormat(
+      s_logger.InfoFormat(
           "Retrieving class contexts for {0} configured mixin targets and {1} loaded types.",
           configuration.ClassContexts.Count,
           types.Count);
@@ -64,13 +65,13 @@ namespace Remotion.Mixins.MixerTools
     {
       if (context.Type.IsGenericTypeDefinition)
       {
-        s_log.DebugFormat("Type {0} is a generic type definition and is thus ignored.", context.Type);
+        s_logger.DebugFormat("Type {0} is a generic type definition and is thus ignored.", context.Type);
         return false;
       }
 
       if (context.Type.IsInterface)
       {
-        s_log.DebugFormat("Type {0} is an interface and is thus ignored.", context.Type);
+        s_logger.DebugFormat("Type {0} is an interface and is thus ignored.", context.Type);
         return false;
       }
 

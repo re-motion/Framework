@@ -23,12 +23,13 @@ using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Test.Shared.ErrorHandling;
 using Remotion.Web.UI;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.Test
 {
   public class Global : HttpApplication
   {
-    private static ILog s_log = LogManager.GetLogger(typeof(Global));
+    private static IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<Global>();
     private static ResourceVirtualPathProvider _resourceVirtualPathProvider;
 
     protected void Application_Start (Object sender, EventArgs e)
@@ -101,7 +102,7 @@ namespace Remotion.Web.Test
     {
       var exception = Server.GetLastError();
 
-      s_log.Error("Application Error:", exception);
+      s_logger.Error("Application Error:", exception);
 
       if (exception is AsyncUnhandledException)
       {

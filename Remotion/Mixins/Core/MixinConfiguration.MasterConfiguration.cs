@@ -18,6 +18,7 @@ using System;
 using Remotion.Logging;
 using Remotion.Mixins.Context;
 using Remotion.Utilities;
+using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Mixins
 {
@@ -70,8 +71,8 @@ namespace Remotion.Mixins
 
     private static MixinConfiguration BuildMasterConfiguration ()
     {
-      s_log.Info("Building mixin master configuration...");
-      using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to build mixin master configuration: {elapsed}."))
+      s_logger.Info("Building mixin master configuration...");
+      using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Information, "Time needed to build mixin master configuration: {elapsed}."))
       {
         return DeclarativeConfigurationBuilder.BuildDefaultConfiguration();
       }

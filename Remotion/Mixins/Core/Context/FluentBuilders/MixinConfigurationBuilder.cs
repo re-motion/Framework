@@ -22,6 +22,8 @@ using System.Runtime.CompilerServices;
 using Remotion.Logging;
 using Remotion.Reflection;
 using Remotion.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
+using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Mixins.Context.FluentBuilders
 {
@@ -30,7 +32,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
   /// </summary>
   public class MixinConfigurationBuilder
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(MixinConfigurationBuilder));
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<MixinConfigurationBuilder>();
 
     private readonly MixinConfiguration? _parentConfiguration;
     private readonly Dictionary<Type, ClassContextBuilder> _classContextBuilders = new Dictionary<Type, ClassContextBuilder>();
@@ -86,7 +88,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
 
     /// <summary>
     /// Adds the given mixin to the given target type with a number of explicit dependencies and suppressed mixins. This is a shortcut
-    /// method for calling <see cref="ForClass"/>, <see cref="ClassContextBuilder.AddMixin(System.Type,Remotion.Mixins.Context.MixinContextOrigin)"/>, 
+    /// method for calling <see cref="ForClass"/>, <see cref="ClassContextBuilder.AddMixin(System.Type,Remotion.Mixins.Context.MixinContextOrigin)"/>,
     /// <see cref="MixinContextBuilder.WithDependencies"/>, and <see cref="MixinContextBuilder.ReplaceMixins"/> in a row.
     /// </summary>
     /// <param name="mixinKind">The kind of relationship the mixin has with its target class.</param>
@@ -123,9 +125,9 @@ namespace Remotion.Mixins.Context.FluentBuilders
     }
 
     /// <summary>
-    /// Adds the given mixin to the given target type with a number of explicit dependencies and suppressed mixins, 
+    /// Adds the given mixin to the given target type with a number of explicit dependencies and suppressed mixins,
     /// using the calling method as <see cref="MixinContextBuilder.Origin"/>. This is a shortcut
-    /// method for calling <see cref="ForClass"/>, <see cref="ClassContextBuilder.AddMixin(System.Type,Remotion.Mixins.Context.MixinContextOrigin)"/>, 
+    /// method for calling <see cref="ForClass"/>, <see cref="ClassContextBuilder.AddMixin(System.Type,Remotion.Mixins.Context.MixinContextOrigin)"/>,
     /// <see cref="MixinContextBuilder.WithDependencies"/>, and <see cref="MixinContextBuilder.ReplaceMixins"/> in a row.
     /// </summary>
     /// <param name="mixinKind">The kind of relationship the mixin has with its target class.</param>
@@ -180,10 +182,10 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>A new <see cref="MixinConfiguration"/> instance incorporating all the data acquired so far.</returns>
     public virtual MixinConfiguration BuildConfiguration ()
     {
-      using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to build mixin configuration from fluent builders: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Information, "Time needed to build mixin configuration from fluent builders: {elapsed}."))
       {
         var parentContexts = ParentConfiguration != null ? ParentConfiguration.ClassContexts : new ClassContextCollection();
-        s_log.DebugFormat("Building a mixin configuration with {0} parent class contexts from fluent builders...", parentContexts.Count);
+        s_logger.DebugFormat("Building a mixin configuration with {0} parent class contexts from fluent builders...", parentContexts.Count);
 
         var builder = new InheritanceResolvingClassContextBuilder(ClassContextBuilders, parentContexts, DefaultMixinInheritancePolicy.Instance);
 
@@ -191,8 +193,8 @@ namespace Remotion.Mixins.Context.FluentBuilders
         var classContextCollection = new ClassContextCollection(allContexts);
         return new MixinConfiguration(classContextCollection)
             .LogAndReturnValue(
-                s_log,
-                LogLevel.Info,
+                s_logger,
+                MicrosoftLogLevel.Information,
                 conf => string.Format("Built mixin configuration from fluent builders with {0} class contexts.", conf.ClassContexts.Count));
       }
     }

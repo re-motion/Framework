@@ -57,6 +57,7 @@ using Remotion.Web.UI.Controls.PostBackTargets;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
+using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -205,7 +206,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     // static members
     private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof(IBusinessObjectReferenceProperty) };
 
-    private static readonly ILog s_log = LogManager.GetLogger(MethodBase.GetCurrentMethod()!.DeclaringType!);
+    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger(MethodBase.GetCurrentMethod()!.DeclaringType!);
 
     private static readonly object s_menuItemClickEvent = new object();
     private static readonly object s_listItemCommandClickEvent = new object();
@@ -2043,7 +2044,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
             default:
             {
               //  Invalid collection property
-              s_log.Debug(
+              s_logger.Debug(
                   "BocList '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
                   + "' does not contain a collection property named '" + collectionID + "'.");
               break;
@@ -2068,7 +2069,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         else
         {
           //  Not supported format or invalid property
-          s_log.Debug(
+          s_logger.Debug(
               "BocList '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
               + "' received a resource with an invalid or unknown key '" + key
               + "'. Required format: 'property' or 'collectionID:elementID:property'.");
