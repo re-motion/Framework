@@ -41,7 +41,7 @@ namespace Remotion.Logging
     {
       if (logger.IsEnabled(logLevel))
       {
-        logger.Log(logLevel, messageCreator(value));
+        Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, logLevel, messageCreator(value));
       }
 
       return value;
@@ -71,7 +71,7 @@ namespace Remotion.Logging
         yield return item;
       }
 
-      logger.Log(logLevel, iterationCompletedMessageCreator(count));
+      Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, logLevel, iterationCompletedMessageCreator(count));
     }
   }
 }
