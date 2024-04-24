@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using log4net;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting;
 
@@ -15,7 +15,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
   /// </summary>
   public abstract class DockerContainerWrapperBase : IDisposable
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(DockerContainerWrapperBase));
+    private static readonly ILogger s_logger = LogManager.GetLogger<DockerContainerWrapperBase>();
 
     protected IDockerClient Docker { get; }
 
@@ -55,7 +55,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
       }
       catch (DockerOperationException ex)
       {
-        s_log.Error($"Pulling the docker image '{ConfigurationParameters.DockerImageName}' failed. Trying to proceed with a locally cached image.", ex);
+        s_logger.LogError($"Pulling the docker image '{ConfigurationParameters.DockerImageName}' failed. Trying to proceed with a locally cached image.", ex);
       }
 
       var mounts = GetMountsWithWebApplicationPath(ConfigurationParameters.Mounts);

@@ -22,7 +22,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using JetBrains.Annotations;
-using log4net;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
@@ -51,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       internal IntPtr InheritedFromUniqueProcessID;
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(ProcessUtils));
+    private static readonly ILogger s_logger = LogManager.GetLogger(typeof(ProcessUtils));
 
     /// <summary>
     /// Retrieves information about the specified process. See https://msdn.microsoft.com/en-us/library/windows/desktop/ms684280.aspx .
@@ -254,18 +254,18 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNullOrEmpty("processName", processName);
 
-      s_log.DebugFormat("Process killing has been called for '{0}'...", processName);
+      s_logger.LogDebug("Process killing has been called for '{0}'...", processName);
 
       foreach (var process in Process.GetProcessesByName(processName))
       {
         try
         {
-          s_log.DebugFormat("Killing process '{0}'...", processName);
+          s_logger.LogDebug("Killing process '{0}'...", processName);
           process.Kill();
         }
         catch (Exception ex)
         {
-          s_log.Warn(string.Format("Killing process '{0}' failed.", processName), ex);
+          s_logger.LogWarning(string.Format("Killing process '{0}' failed.", processName), ex);
           // Ignore exception, process is already closing or we do not have the required privileges anyway.
         }
       }

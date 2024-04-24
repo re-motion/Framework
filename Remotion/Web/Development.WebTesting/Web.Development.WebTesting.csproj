@@ -27,6 +27,7 @@
     <PackageReference Include="Selenium.Support" />
     <PackageReference Include="Selenium.WebDriver" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>

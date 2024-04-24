@@ -18,7 +18,7 @@ using System;
 using System.Threading;
 using Coypu;
 using JetBrains.Annotations;
-using log4net;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 
@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting
       }
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(WebTestAction));
+    private static readonly ILogger s_logger = LogManager.CreateLogger<WebTestAction>();
 
     private readonly ControlObject _control;
     private readonly ElementScope _scope;
@@ -109,7 +109,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNullOrEmpty("message", message);
 
-      s_log.DebugFormat("Action {0}: {1}", _actionID, message);
+      s_logger.LogDebug("Action {0}: {1}", _actionID, message);
     }
   }
 }

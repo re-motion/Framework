@@ -20,7 +20,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using JetBrains.Annotations;
-using log4net;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
   /// </summary>
   public class DefaultDownloadHelper : DownloadHelperBase
   {
-    private static ILog Log { get; } = LogManager.GetLogger(typeof(DefaultDownloadHelper));
+    private static ILogger s_logger = LogManager.GetLogger(typeof(DefaultDownloadHelper));
 
     [NotNull]
     private string DownloadDirectory { get; }
@@ -147,7 +147,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
         }
         catch (IOException ex)
         {
-          Log.WarnFormat(
+          s_logger.LogWarning(
               @"Could not delete '{0}'.
 {1}",
               DownloadDirectory,
@@ -178,7 +178,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
         }
         catch (IOException ex)
         {
-          Log.WarnFormat(
+          s_logger.LogWarning(
               @"Could not delete '{0}'.
 {1}",
               fullFilePath,

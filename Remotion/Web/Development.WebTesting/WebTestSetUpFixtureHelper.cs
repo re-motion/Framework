@@ -20,8 +20,7 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using JetBrains.Annotations;
-using log4net;
-using log4net.Config;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.HostingStrategies;
 
@@ -36,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting
   /// </remarks>
   public class WebTestSetUpFixtureHelper
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(WebTestSetUpFixtureHelper));
+    private static readonly ILogger s_logger = LogManager.GetLogger<WebTestSetUpFixtureHelper>();
 
     /// <summary>
     /// Creates a new <see cref="WebTestSetUpFixtureHelper"/> with configuration based on <see cref="WebTestConfigurationFactory"/>.
@@ -137,7 +136,7 @@ namespace Remotion.Web.Development.WebTesting
 
     private void VerifyWebApplicationStarted (Uri webApplicationRoot, TimeSpan applicationPingTimeout)
     {
-      s_log.Info($"Verifying that '{webApplicationRoot}' is accessible within {applicationPingTimeout}.");
+      s_logger.LogInformation($"Verifying that '{webApplicationRoot}' is accessible within {applicationPingTimeout}.");
 
       var stopwatch = Stopwatch.StartNew();
 
@@ -159,7 +158,7 @@ namespace Remotion.Web.Development.WebTesting
         var remainingTimeout = (int)(applicationPingTimeout.TotalMilliseconds - stopwatch.Elapsed.TotalMilliseconds);
         if (remainingTimeout <= 0)
         {
-          s_log.Warn($"Checking the web application root '{webApplicationRoot}' timed out (HTTP status code: '{statusCode}').");
+          s_logger.LogWarning($"Checking the web application root '{webApplicationRoot}' timed out (HTTP status code: '{statusCode}').");
 
           // Embed the response text as inner exception
           var innerException = lastResponseText != null
@@ -180,7 +179,7 @@ namespace Remotion.Web.Development.WebTesting
           webRequest.Timeout = remainingTimeout;
 
           using var response = (HttpWebResponse)webRequest.GetResponse();
-          s_log.Info($"Verified that '{webApplicationRoot}' is accessible after {stopwatch.Elapsed.TotalMilliseconds:N0} ms.");
+          s_logger.LogInformation($"Verified that '{webApplicationRoot}' is accessible after {stopwatch.Elapsed.TotalMilliseconds:N0} ms.");
           return;
         }
         catch (WebException ex)
@@ -189,7 +188,7 @@ namespace Remotion.Web.Development.WebTesting
           if (ex.Response is HttpWebResponse httpWebResponse)
             statusCode = httpWebResponse.StatusCode;
 
-          s_log.Warn(
+          s_logger.LogWarning(
               $"Checking the web application root '{webApplicationRoot}' failed with WebException: '{ex.Message}' (HTTP status code: '{statusCode}'). "
               + $"Retrying until {nameof(applicationPingTimeout)} ({applicationPingTimeout}) is reached.");
 

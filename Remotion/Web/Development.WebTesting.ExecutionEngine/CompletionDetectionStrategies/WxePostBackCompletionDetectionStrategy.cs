@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using log4net;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies
@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
   /// </summary>
   public class WxePostBackCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(WxePostBackCompletionDetectionStrategy));
+    private static readonly ILogger s_logger = LogManager.GetLogger<WxePostBackCompletionDetectionStrategy>();
     private readonly int _expectedWxePostBackSequenceNumberIncrease;
     private readonly TimeSpan? _timeout;
 
@@ -52,7 +52,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
       var oldWxePostBackSequenceNumber = (int)state;
 
       WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber(
-          s_log,
+          s_logger,
           context,
           oldWxePostBackSequenceNumber,
           _expectedWxePostBackSequenceNumberIncrease,
