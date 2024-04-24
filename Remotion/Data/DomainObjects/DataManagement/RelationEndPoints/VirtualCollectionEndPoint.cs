@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
@@ -34,7 +35,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// </summary>
   public class VirtualCollectionEndPoint : RelationEndPoint, IVirtualCollectionEndPoint
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(VirtualCollectionEndPoint));
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<VirtualCollectionEndPoint>();
 
     private readonly IVirtualCollectionEndPointCollectionManager _collectionManager;
     private readonly ILazyLoader _lazyLoader;
@@ -180,8 +181,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       if (_dataManager != null)
         throw new InvalidOperationException("The data is already complete.");
 
-      if (s_log.IsInfoEnabled())
-        s_log.InfoFormat("Virtual end-point '{0}' is transitioned to complete state.", ID);
+      if (s_logger.IsEnabled(LogLevel.Information))
+        s_logger.LogInformation("Virtual end-point '{0}' is transitioned to complete state.", ID);
 
       var dataManager = _dataManagerFactory.CreateEndPointDataManager(ID);
 
@@ -263,9 +264,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
 
-      if (s_log.IsInfoEnabled())
+      if (s_logger.IsEnabled(LogLevel.Information))
       {
-        s_log.InfoFormat(
+        s_logger.LogInformation(
             "RealObjectEndPoint '{0}' is unregistered from VirtualCollectionEndPoint '{1}'. The VirtualCollectionEndPoint is transitioned to incomplete state.",
             oppositeEndPoint.ID,
             ID);
@@ -290,8 +291,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override void Synchronize ()
     {
-      if (s_log.IsDebugEnabled())
-        s_log.DebugFormat("End-point '{0}' is being synchronized.", ID);
+      if (s_logger.IsEnabled(LogLevel.Debug))
+        s_logger.LogDebug("End-point '{0}' is being synchronized.", ID);
 
       if (_dataManager != null)
       {
@@ -311,8 +312,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       Assertion.IsNotNull(_dataManager, "Cannot synchronize an opposite end-point with a virtual end-point in incomplete state.");
 
-      if (s_log.IsDebugEnabled())
-        s_log.DebugFormat("ObjectEndPoint '{0}' is being marked as synchronized.", oppositeEndPoint.ID);
+      if (s_logger.IsEnabled(LogLevel.Debug))
+        s_logger.LogDebug("ObjectEndPoint '{0}' is being marked as synchronized.", oppositeEndPoint.ID);
 
       _dataManager.SynchronizeOppositeEndPoint(oppositeEndPoint);
       oppositeEndPoint.MarkSynchronized();

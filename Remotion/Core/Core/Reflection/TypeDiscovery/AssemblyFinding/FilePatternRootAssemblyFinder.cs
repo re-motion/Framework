@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
@@ -57,7 +58,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
       }
     }
 
-    private static readonly Lazy<ILog> s_log = new Lazy<ILog>(() => LogManager.GetLogger(typeof(FilePatternRootAssemblyFinder)));
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<FilePatternRootAssemblyFinder>();
 
     private readonly string _searchPath;
     private readonly IReadOnlyList<FilePatternSpecification> _specifications;
@@ -103,11 +104,11 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
     public IEnumerable<RootAssembly> FindRootAssemblies ()
     {
-      s_log.Value.DebugFormat("Finding root assemblies based on specifications...");
+      s_logger.LogDebug("Finding root assemblies based on specifications...");
       var fileDescriptions = ConsolidateSpecifications();
 
       using (StopwatchScope.CreateScope(
-          s_log.Value,
+          s_logger,
           LogLevel.Debug,
           "Loaded root assemblies based on specifications. Time taken: {elapsed}"))
       {
@@ -125,14 +126,14 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
       var fileDescriptions = new HashSet<FileDescription>();
 
       using (StopwatchScope.CreateScope(
-          s_log.Value,
+          s_logger,
           LogLevel.Debug,
           "Selected files based on root assembly specifications. Time taken: {elapsed}"))
       {
         foreach (var specification in _specifications)
         {
           using (StopwatchScope.CreateScope(
-              s_log.Value,
+              s_logger,
               LogLevel.Debug,
               string.Format(
                   "Applied '{0}' specification with file pattern '{1}'. Time taken: {{elapsed}}",

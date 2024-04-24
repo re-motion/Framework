@@ -17,13 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using log4net.Appender;
-using log4net.Core;
-using log4net.Repository;
-using log4net.Repository.Hierarchy;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Testing;
 using Moq;
 using NUnit.Framework;
-using Remotion.Logging;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.Providers;
@@ -40,7 +37,7 @@ namespace Remotion.Validation.UnitTests.Merging
   [TestFixture]
   public class DiagnosticOutputValidationRuleMergeDecoratorTest
   {
-    private MemoryAppender _memoryAppender;
+    private FakeLogCollector _fakeLogCollector;
     private Mock<IValidationRuleCollectorMerger> _wrappedMergerStub;
     private DiagnosticOutputValidationRuleMergeDecorator _diagnosticOutputValidationRuleMergeDecorator;
     private Mock<ILogContext> _logContextStub;
@@ -49,20 +46,15 @@ namespace Remotion.Validation.UnitTests.Merging
     [SetUp]
     public void SetUp ()
     {
-      _memoryAppender = new MemoryAppender();
-      var hierarchy = new Hierarchy();
-      ((IBasicRepositoryConfigurator)hierarchy).Configure(_memoryAppender);
-      var logger = hierarchy.GetLogger("The Name");
-      var log = new Log4NetLog(logger);
-      var logManagerStub = new Mock<ILogManager>();
-      logManagerStub.Setup(stub => stub.GetLogger(typeof(DiagnosticOutputValidationRuleMergeDecorator))).Returns(log);
+      _fakeLogCollector = new FakeLogCollector();
+      FakeLoggerProvider fakeLoggerProvider = new FakeLoggerProvider(_fakeLogCollector);
 
       _logContextStub = new Mock<ILogContext>();
       _wrappedMergerStub = new Mock<IValidationRuleCollectorMerger>();
       _validatorFormatterStub = new Mock<IValidatorFormatter>();
 
       _diagnosticOutputValidationRuleMergeDecorator =
-          new DiagnosticOutputValidationRuleMergeDecorator(_wrappedMergerStub.Object, _validatorFormatterStub.Object, logManagerStub.Object);
+          new DiagnosticOutputValidationRuleMergeDecorator(_wrappedMergerStub.Object, _validatorFormatterStub.Object, new LoggerFactory(new[] { fakeLoggerProvider }));
     }
 
     [Test]
@@ -207,17 +199,12 @@ namespace Remotion.Validation.UnitTests.Merging
       CheckLoggingMethod(() => _diagnosticOutputValidationRuleMergeDecorator.Merge(validationCollectorInfos), expectedBeforeMerge, 1);
     }
 
-    private IEnumerable<LoggingEvent> GetLoggingEvents ()
-    {
-      return _memoryAppender.GetEvents();
-    }
-
     private void CheckLoggingMethod (Action action, string expectedMessage, int loggingEventIndex)
     {
       action();
-      var loggingEvents = GetLoggingEvents().ToArray();
+      var loggingEvents = _fakeLogCollector.GetSnapshot();
 
-      Assert.That(loggingEvents[loggingEventIndex].RenderedMessage, Is.EqualTo(expectedMessage));
+      Assert.That(loggingEvents[loggingEventIndex].Message, Is.EqualTo(expectedMessage));
     }
   }
 }

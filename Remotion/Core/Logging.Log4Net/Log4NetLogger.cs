@@ -18,51 +18,48 @@ using System;
 using System.Globalization;
 using log4net.Core;
 using log4net.Util;
-using Remotion.Utilities;
-
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
-using MicrosoftEventId = Microsoft.Extensions.Logging.EventId;
+using Microsoft.Extensions.Logging;
 
 namespace Remotion.Logging.Log4Net;
 
 /// <summary>
 /// Implements <see cref="Microsoft.Extensions.Logging.ILogger"/> to provide an implementation with log4net.
 /// </summary>
-public class Log4NetLogger : IMicrosoftLogger
+public class Log4NetLogger : Microsoft.Extensions.Logging.ILogger
 {
-  public static Level Convert (MicrosoftLogLevel logLevel)
+  public static Level Convert (LogLevel logLevel)
   {
     return logLevel switch
     {
-        MicrosoftLogLevel.Trace => Level.Trace,
-        MicrosoftLogLevel.Debug => Level.Debug,
-        MicrosoftLogLevel.Information => Level.Info,
-        MicrosoftLogLevel.Warning => Level.Warn,
-        MicrosoftLogLevel.Error => Level.Error,
-        MicrosoftLogLevel.Critical => Level.Critical,
-        MicrosoftLogLevel.None => Level.Off,
+        LogLevel.Trace => Level.Trace,
+        LogLevel.Debug => Level.Debug,
+        LogLevel.Information => Level.Info,
+        LogLevel.Warning => Level.Warn,
+        LogLevel.Error => Level.Error,
+        LogLevel.Critical => Level.Critical,
+        LogLevel.None => Level.Off,
         _ => throw new ArgumentException(string.Format("LogLevel does not support value {0}.", logLevel), "logLevel")
     };
   }
 
   public log4net.Core.ILogger Logger { get; }
 
-  public Log4NetLogger (ILogger logger)
+  public Log4NetLogger (log4net.Core.ILogger logger)
   {
-    ArgumentUtility.CheckNotNull("logger", logger);
+    if (logger == null)
+      throw new ArgumentNullException(nameof(logger));
 
     Logger = logger;
   }
 
-  public void Log<TState> (MicrosoftLogLevel logLevel, MicrosoftEventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+  public void Log<TState> (LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
   {
     var level = Convert(logLevel);
     if (Logger.IsEnabledFor(level))
       Logger.Log(CreateLoggingEvent(level, eventId.Id, formatter(state, exception), exception));
   }
 
-  public bool IsEnabled (MicrosoftLogLevel logLevel)
+  public bool IsEnabled (LogLevel logLevel)
   {
     return Logger.IsEnabledFor(Convert(logLevel));
   }

@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Persistence;
@@ -34,7 +35,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
   [ImplementationFor(typeof(IAccessResolver), Lifetime = LifetimeKind.Singleton)]
   public class AccessResolver : IAccessResolver
   {
-    private static readonly ILog s_log = LogManager.GetLogger(MethodInfo.GetCurrentMethod()!.DeclaringType!);
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<AccessResolver>();
     private static readonly QueryCache s_queryCache = new QueryCache();
 
     public AccessType[] GetAccessTypes (IDomainObjectHandle<AccessControlList> aclHandle, SecurityToken token)
@@ -48,8 +49,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
         using (clientTransaction.EnterDiscardingScope())
         {
           using (StopwatchScope.CreateScope(
-              s_log,
-              LogLevel.Info,
+              s_logger,
+              LogLevel.Information,
               string.Format(
                   "Evaluated access types of ACL '{0}' for principal '{1}'. Time taken: {{elapsed:ms}}ms",
                   aclHandle.ObjectID,
@@ -71,7 +72,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     private AccessControlList LoadAccessControlList (ClientTransaction clientTransaction, IDomainObjectHandle<AccessControlList> aclHandle)
     {
       using (StopwatchScope.CreateScope(
-          s_log,
+          s_logger,
           LogLevel.Debug,
           "Fetched ACL '" + aclHandle.ObjectID + "' for AccessResolver. Time taken: {elapsed:ms}ms"))
       {
@@ -93,7 +94,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     private void LoadAccessTypeDefinitions (ClientTransaction clientTransaction)
     {
-      using (StopwatchScope.CreateScope(s_log, LogLevel.Debug, "Fetched access types for AccessResolver. Time taken: {elapsed:ms}ms"))
+      using (StopwatchScope.CreateScope(s_logger, LogLevel.Debug, "Fetched access types for AccessResolver. Time taken: {elapsed:ms}ms"))
       {
         s_queryCache.ExecuteCollectionQuery<AccessTypeDefinition>(
             clientTransaction,

@@ -19,8 +19,6 @@ using log4net.Core;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
-using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
-
 namespace Remotion.Logging.Log4Net.UnitTests.Log4NetLoggerTests
 {
   [TestFixture]
@@ -29,29 +27,29 @@ namespace Remotion.Logging.Log4Net.UnitTests.Log4NetLoggerTests
     [Test]
     public void IsEnabled_WithLevelError ()
     {
-      SetLoggingThreshold(Level.Critical);
-      Assert.That(Log.IsEnabled(MicrosoftLogLevel.Critical), Is.True);
+      SetLoggingThreshold(Level.Error);
+      Assert.That(Log.IsEnabled(LogLevel.Critical), Is.True);
     }
 
     [Test]
     public void IsEnabled_WithLevelCritical ()
     {
       SetLoggingThreshold(Level.Critical);
-      Assert.That(Log.IsEnabled(MicrosoftLogLevel.Critical), Is.True);
+      Assert.That(Log.IsEnabled(LogLevel.Critical), Is.True);
     }
 
     [Test]
     public void IsEnabled_WithLevelOff ()
     {
       Logger.Repository.Threshold = Level.Off;
-      Assert.That(Log.IsEnabled(MicrosoftLogLevel.Critical), Is.False);
+      Assert.That(Log.IsEnabled(LogLevel.Critical), Is.False);
     }
 
     [Test]
     public void Logger_Log ()
     {
       SetLoggingThreshold(Level.Critical);
-      Log.Log(MicrosoftLogLevel.Critical, new EventId(), "The message.", (Exception)null, (s, _) => s + " (formatted)");
+      Log.Log(LogLevel.Critical, new EventId(), "The message.", (Exception)null, (s, _) => s + " (formatted)");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));

@@ -15,17 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using log4net;
 using log4net.Appender;
 using log4net.Config;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.Compilation;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
 
@@ -276,27 +273,6 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       _filterMock.Setup(_ => _.ShouldIncludeAssembly(It.IsAny<Assembly>())).Returns(true).Verifiable();
     }
 
-
-    private string Compile (string sourceDirectory, string outputAssemblyName, bool generateExecutable, string compilerOptions)
-    {
-      Assertion.IsTrue(
-          Path.GetDirectoryName(typeof(FilteringAssemblyLoader).Assembly.Location) == Path.GetDirectoryName(typeof(Remotion.Logging.LogManager).Assembly.Location));
-      var targetDirectory = Path.GetDirectoryName(typeof(FilteringAssemblyLoader).Assembly.Location);
-
-      var compiler = new AssemblyCompiler(
-          sourceDirectory,
-          Path.Combine(targetDirectory, outputAssemblyName),
-          typeof(Console).Assembly.Location,
-          typeof(FilteringAssemblyLoader).Assembly.Location,
-          typeof(Remotion.Logging.LogManager).Assembly.Location);
-
-      compiler.CompilerParameters.GenerateExecutable = generateExecutable;
-      compiler.CompilerParameters.CompilerOptions = compilerOptions;
-
-      compiler.Compile();
-      return compiler.OutputAssemblyPath;
-    }
-
     private void CheckLog (string expectedLogMessage)
     {
       var loggingEvents = _memoryAppender.GetEvents();
@@ -311,11 +287,6 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     private void CheckLog (string fullLog, string expectedLogMessage)
     {
       Assert.That(fullLog, Does.Contain(expectedLogMessage));
-    }
-
-    private void CheckLogRegEx (string fullLog, string expectedLogRegEx)
-    {
-      Assert.That(fullLog, Does.Match(expectedLogRegEx));
     }
   }
 }

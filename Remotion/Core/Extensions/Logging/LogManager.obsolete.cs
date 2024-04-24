@@ -15,16 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.ServiceLocation;
+using Microsoft.Extensions.Logging;
+using Remotion.Obsolete;
 
 namespace Remotion.Logging
 {
   /// <summary>
-  /// Use this class to create a logger implementing <see cref="ILog"/> from the current <see cref="ILogManager"/>.
+  /// Use this class to create a logger implementing <see cref="ILogger"/>.
   /// </summary>
-  /// <remarks>
-  /// Currently only <b>log4net</b> is supported as logging infrastructure.
-  /// </remarks>
   public static class LogManager
   {
     /// <summary>
@@ -32,9 +30,10 @@ namespace Remotion.Logging
     /// </summary>
     /// <param name="name">The name of the logger to retrieve.</param>
     /// <returns>A logger for the <paramref name="name"/> specified.</returns>
-    public static ILog GetLogger (string name)
+    [Obsolete("Use LazyLoggerFactory.CreateLogger(name) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
+    public static ILogger GetLogger (string name)
     {
-      return SafeServiceLocator.Current.GetInstance<ILogManager>().GetLogger(name);
+      return LazyLoggerFactory.CreateLogger(name);
     }
 
     /// <summary>
@@ -42,37 +41,30 @@ namespace Remotion.Logging
     /// </summary>
     /// <param name="type">The full name of <paramref name="type"/> will be used as the name of the logger to retrieve.</param>
     /// <returns>A logger for the fully qualified name of the <paramref name="type"/> specified.</returns>
-    public static ILog GetLogger (Type type)
+    [Obsolete("Use LazyLoggerFactory.CreateLogger(type) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
+    public static ILogger GetLogger (Type type)
     {
-      return SafeServiceLocator.Current.GetInstance<ILogManager>().GetLogger(type);
+      return LazyLoggerFactory.CreateLogger(type);
     }
 
     /// <summary>
     /// Initializes the current logging framework.
     /// </summary>
+    [Obsolete("This API is not supported by Microsoft Logging. Use log4net.Config.XmlConfigurator.Configure() directly when depending on log4net. (Version 7.0.0)", true)]
     public static void Initialize ()
     {
-      SafeServiceLocator.Current.GetInstance<ILogManager>().Initialize();
+      throw new NotSupportedException(
+          "This API is not supported by Microsoft Logging. Use log4net.Config.XmlConfigurator.Configure() directly when depending on log4net. (Version 7.0.0)");
     }
 
     /// <summary>
     /// Initializes the current logging framework to log to the console.
     /// </summary>
+    [Obsolete("This API is not supported by Microsoft Logging. Use log4net.Config.XmlConfigurator.Configure() directly when depending on log4net. (Version 7.0.0)", true)]
     public static void InitializeConsole ()
     {
-      SafeServiceLocator.Current.GetInstance<ILogManager>().InitializeConsole();
-    }
-
-    /// <summary>
-    /// Initializes the current logging framework to log to the console, configuring a given <see cref="LogLevel"/> as the default threshold as well
-    /// as specific thresholds for specific loggers.
-    /// </summary>
-    /// <param name="defaultThreshold">The threshold for logging. Only log messages of at least this <see cref="LogLevel"/> are output to the console
-    /// for all loggers not specifically configured via <paramref name="logThresholds"/>.</param>
-    /// <param name="logThresholds">The thresholds for specific loggers.</param>
-    public static void InitializeConsole (LogLevel defaultThreshold, params LogThreshold[] logThresholds)
-    {
-      SafeServiceLocator.Current.GetInstance<ILogManager>().InitializeConsole(defaultThreshold, logThresholds);
+      throw new NotSupportedException(
+          "This API is not supported by Microsoft Logging. Use log4net.Config.XmlConfigurator.Configure() directly when depending on log4net. (Version 7.0.0)");
     }
   }
 }

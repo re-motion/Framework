@@ -8,5 +8,6 @@ namespace Remotion.Obsolete
   {
     public const string HtmlUtility = "REMOTION0001";
     public const string QueryTypeValue = "REMOTION0002";
+    public const string LoggingUtility = "REMOTION0003";
   }
 }

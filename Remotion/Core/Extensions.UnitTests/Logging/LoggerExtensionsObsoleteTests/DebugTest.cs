@@ -18,6 +18,7 @@ using System;
 using log4net.Core;
 using NUnit.Framework;
 using Remotion.Logging;
+#pragma warning disable REMOTION0003
 
 namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
 {

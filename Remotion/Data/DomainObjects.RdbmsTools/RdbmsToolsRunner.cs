@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
-using Remotion.Logging;
 using Remotion.ServiceLocation;
 using Remotion.Tools;
 
@@ -44,7 +43,11 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
     protected override void RunImplementation ()
     {
       if (_rdbmsToolsParameters.Verbose)
-        LogManager.InitializeConsole();
+      {
+        //TODO: RM-9195
+        // Configure console logging 
+        // log4net.Config.BaseConfigurator.Configure();
+      }
 
       InitializeConfiguration();
 

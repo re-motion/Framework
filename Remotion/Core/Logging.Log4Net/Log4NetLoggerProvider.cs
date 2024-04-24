@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Logging.Log4Net;
 
@@ -26,7 +25,8 @@ public class Log4NetLoggerProvider : Microsoft.Extensions.Logging.ILoggerProvide
 {
   public Microsoft.Extensions.Logging.ILogger CreateLogger (string categoryName)
   {
-    ArgumentUtility.CheckNotNull("categoryName", categoryName);
+    if (categoryName == null)
+      throw new ArgumentNullException(nameof(categoryName));
 
     return new Log4NetLogger(log4net.LogManager.GetLogger(categoryName).Logger);
   }

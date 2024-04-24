@@ -16,6 +16,7 @@
 // 
 using System;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Utilities;
 
@@ -30,19 +31,20 @@ namespace Remotion.Globalization.Implementation
   public static class ResourceLogger
   {
     private const LogLevel c_logLevel = LogLevel.Debug;
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(ResourceLogger));
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger(typeof(ResourceLogger));
 
     public static bool IsEnabled
     {
-      get { return s_log.IsEnabled(c_logLevel); }
+      get { return s_logger.IsEnabled(c_logLevel); }
     }
 
     [StringFormatMethod("idFormat")]
-    public static void LogResourceEntryNotFound (string idFormat, params object[]? args)
+    public static void LogResourceEntryNotFound (string idFormat, params object[] args)
     {
       ArgumentUtility.CheckNotNullOrEmpty("idFormat", idFormat);
+      ArgumentUtility.CheckNotNullOrEmpty("args", args);
 
-      s_log.LogFormat(c_logLevel, "No resource entry exists for the following element: " + idFormat, args);
+      s_logger.Log(c_logLevel, "No resource entry exists for the following element: " + idFormat, args);
     }
   }
 }
