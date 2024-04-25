@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Mixins.Context.DeclarativeAnalyzers;
 using Remotion.Mixins.Context.FluentBuilders;
@@ -166,7 +167,7 @@ namespace Remotion.Mixins.Context
     public DeclarativeConfigurationBuilder AddAssembly (Assembly assembly)
     {
       ArgumentUtility.CheckNotNull("assembly", assembly);
-      s_logger.DebugFormat("Adding assembly {0} to DeclarativeConfigurationBuilder.", assembly);
+      s_logger.LogDebug("Adding assembly {0} to DeclarativeConfigurationBuilder.", assembly);
 
       foreach (var t in AssemblyTypeCache.GetTypes(assembly))
       {

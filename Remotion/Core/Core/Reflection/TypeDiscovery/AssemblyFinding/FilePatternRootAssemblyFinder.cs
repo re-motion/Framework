@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
@@ -105,7 +106,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
     public IEnumerable<RootAssembly> FindRootAssemblies ()
     {
-      s_logger.DebugFormat("Finding root assemblies based on specifications...");
+      s_logger.LogDebug("Finding root assemblies based on specifications...");
       var fileDescriptions = ConsolidateSpecifications();
 
       using (StopwatchScope.CreateScope(

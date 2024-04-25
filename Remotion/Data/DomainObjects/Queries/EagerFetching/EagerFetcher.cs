@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Logging;
@@ -66,14 +67,14 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
         var relationEndPointDefinition = item.Key;
         var fetchQuery = item.Value;
 
-        s_logger.DebugFormat(
+        s_logger.LogDebug(
             "Eager fetching objects for {0} via query {1} ('{2}').",
             relationEndPointDefinition.PropertyName,
             fetchQuery.ID,
             fetchQuery.Statement);
 
         var fetchedObjects = fetchResultLoader.GetOrLoadFetchQueryResult(fetchQuery, pendingRegistrationCollector);
-        s_logger.DebugFormat(
+        s_logger.LogDebug(
             "The eager fetch query for {0} yielded {1} related objects for {2} original objects.",
             relationEndPointDefinition.PropertyName,
             fetchedObjects.Count,

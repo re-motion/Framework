@@ -221,7 +221,7 @@ namespace Remotion.Web.ExecutionEngine
       if (hasOutOfProcessSession)
       {
         stopwatch!.Stop();
-        s_logger.DebugFormat("Deserialized WxeFunctionState {0} in {1} ms.", functionToken, stopwatch.ElapsedMilliseconds);
+        s_logger.LogDebug("Deserialized WxeFunctionState {0} in {1} ms.", functionToken, stopwatch.ElapsedMilliseconds);
       }
 
       return functionState;

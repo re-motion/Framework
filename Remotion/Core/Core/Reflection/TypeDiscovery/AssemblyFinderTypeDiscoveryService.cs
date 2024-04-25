@@ -22,6 +22,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Remotion.Configuration.TypeDiscovery;
 using Remotion.Logging;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
@@ -94,7 +95,7 @@ namespace Remotion.Reflection.TypeDiscovery
             nonNullBaseType,
             key =>
             {
-              s_logger.DebugFormat("Discovering types derived from '{0}', including GAC...", key);
+              s_logger.LogDebug("Discovering types derived from '{0}', including GAC...", key);
               using (StopwatchScope.CreateScope(
                   s_logger,
                   MicrosoftLogLevel.Information,
@@ -117,7 +118,7 @@ namespace Remotion.Reflection.TypeDiscovery
 
     private BaseTypeCache CreateBaseTypeCache ()
     {
-      s_logger.DebugFormat("Creating cache for all types in application directory...");
+      s_logger.LogDebug("Creating cache for all types in application directory...");
       using (StopwatchScope.CreateScope(
           s_logger,
           MicrosoftLogLevel.Information,

@@ -20,6 +20,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Utilities;
 using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
@@ -113,7 +114,7 @@ namespace Remotion.Globalization
       }
       // ReSharper restore ForCanBeConvertedToForeach
 
-      s_logger.DebugFormat("Could not find resource with ID '{0}' in any of the following resource containers '{1}'.", id, _name);
+      s_logger.LogDebug("Could not find resource with ID '{0}' in any of the following resource containers '{1}'.", id, _name);
 
       value = null;
       return false;

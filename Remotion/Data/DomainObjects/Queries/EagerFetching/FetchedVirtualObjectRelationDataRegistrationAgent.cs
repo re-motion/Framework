@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
@@ -122,7 +123,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
               throw new InvalidOperationException(message);
             }
             if (!TrySetVirtualObjectEndPointData(relationEndPointID, relatedObject))
-              s_logger.DebugFormat("Relation data for relation end-point '{0}' is discarded; the end-point has already been loaded.", relationEndPointID);
+              s_logger.LogDebug("Relation data for relation end-point '{0}' is discarded; the end-point has already been loaded.", relationEndPointID);
           }
         }
       }
