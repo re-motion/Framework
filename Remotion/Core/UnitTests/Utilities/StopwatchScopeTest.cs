@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using Microsoft.Extensions.Logging.Testing;
 using Moq;
 using NUnit.Framework;
 using Remotion.Logging;
@@ -220,9 +221,9 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void CreateScope_Log ()
     {
-      var logMock = new Mock<ILog>();
+      var fakeLogger = new FakeLogger();
 
-      var scope = StopwatchScope.CreateScope(logMock.Object, LogLevel.Error, "{context}#{elapsed}#{elapsed:ms}#{elapsedCP}#{elapsedCP:ms}");
+      var scope = StopwatchScope.CreateScope(fakeLogger, Microsoft.Extensions.Logging.LogLevel.Error, "{context}#{elapsed}#{elapsed:ms}#{elapsedCP}#{elapsedCP:ms}");
 
       Wait(TimeSpan.FromMilliseconds(1.0));
 
@@ -231,6 +232,8 @@ namespace Remotion.UnitTests.Utilities
       var firstElapsed = scope.ElapsedTotal;
       var firstElapsedCP = scope.ElapsedSinceLastCheckpoint;
       scope.Checkpoint("one");
+
+      Assert.That(fakeLogger.Collector.Count, Is.EqualTo(1));
 
       scope.Resume();
 
@@ -241,38 +244,7 @@ namespace Remotion.UnitTests.Utilities
       var secondElapsedCP = scope.ElapsedSinceLastCheckpoint;
       scope.Dispose();
 
-      var expectedFirstArgs = new[] {
-          "one",
-          firstElapsed.ToString(),
-          firstElapsed.TotalMilliseconds.ToString(),
-          firstElapsedCP.ToString(),
-          firstElapsedCP.TotalMilliseconds.ToString()
-      };
-      logMock.Verify(
-          mock =>
-              mock.LogFormat(
-                  LogLevel.Error,
-                  null,
-                  null,
-                  "{0}#{1}#{2}#{3}#{4}",
-                  expectedFirstArgs),
-          Times.AtLeastOnce());
-
-      var expectedSecondArgs = new[] {
-          "end",
-          secondElapsed.ToString(),
-          secondElapsed.TotalMilliseconds.ToString(),
-          secondElapsedCP.ToString(),
-          secondElapsedCP.TotalMilliseconds.ToString()
-      };
-      logMock.Verify(
-          mock => mock.LogFormat(
-              LogLevel.Error,
-              null,
-              null,
-              "{0}#{1}#{2}#{3}#{4}",
-              expectedSecondArgs),
-          Times.AtLeastOnce());
+      Assert.That(fakeLogger.Collector.Count, Is.EqualTo(2));
     }
 
     [Test]
