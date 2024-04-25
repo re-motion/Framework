@@ -15,9 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Logging;
+using log4net;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies
 {
@@ -27,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
   /// </summary>
   public class WxeResetCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<WxeResetCompletionDetectionStrategy>();
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(WxeResetCompletionDetectionStrategy));
     private readonly TimeSpan? _timeout;
 
     public WxeResetCompletionDetectionStrategy (TimeSpan? timeout = null)
@@ -50,10 +49,10 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
       ArgumentUtility.CheckNotNull("state", state!);
 
       var oldWxeFunctionToken = (string)state;
-      WxeCompletionDetectionHelpers.WaitForNewWxeFunctionToken(s_logger, context, oldWxeFunctionToken, _timeout);
+      WxeCompletionDetectionHelpers.WaitForNewWxeFunctionToken(s_log, context, oldWxeFunctionToken, _timeout);
 
       const int expectedWxePostBackSequenceNumber = 2;
-      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber(s_logger, context, expectedWxePostBackSequenceNumber, _timeout);
+      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber(s_log, context, expectedWxePostBackSequenceNumber, _timeout);
     }
   }
 }

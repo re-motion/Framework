@@ -19,10 +19,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using JetBrains.Annotations;
-using Remotion.Logging;
+using log4net;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.Development.WebTesting.HostingStrategies
 {
@@ -31,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
   /// </summary>
   public class IisDockerContainerWrapper : IDisposable
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<IisDockerContainerWrapper>();
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(IisDockerContainerWrapper));
 
     private readonly IDockerClient _docker;
     private readonly IisDockerContainerConfigurationParameters _configurationParameters;
@@ -59,7 +58,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
       }
       catch (DockerOperationException ex)
       {
-        s_logger.Error($"Pulling the docker image '{_configurationParameters.DockerImageName}' failed. Trying to proceed with a locally cached image.", ex);
+        s_log.Error($"Pulling the docker image '{_configurationParameters.DockerImageName}' failed. Trying to proceed with a locally cached image.", ex);
       }
 
       var mounts = GetMountsWithWebApplicationPath(_configurationParameters.Mounts);

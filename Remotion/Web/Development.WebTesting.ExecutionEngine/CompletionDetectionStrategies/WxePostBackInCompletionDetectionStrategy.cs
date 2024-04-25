@@ -16,9 +16,8 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Logging;
+using log4net;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies
 {
@@ -27,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
   /// </summary>
   public class WxePostBackInCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<WxePostBackInCompletionDetectionStrategy>();
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(WxePostBackInCompletionDetectionStrategy));
     private readonly PageObjectContext _context;
     private readonly int _expectedWxePostBackSequenceNumberIncrease;
     private readonly TimeSpan? _timeout;
@@ -58,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
       var oldWxePostBackSequenceNumber = (int)state;
 
       WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber(
-          s_logger,
+          s_log,
           _context,
           oldWxePostBackSequenceNumber,
           _expectedWxePostBackSequenceNumberIncrease,
