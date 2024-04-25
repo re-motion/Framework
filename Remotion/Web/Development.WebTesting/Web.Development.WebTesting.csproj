@@ -19,7 +19,6 @@
     <EmbeddedResource Include="Accessibility\axe.min.js" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />
   </ItemGroup>
   <ItemGroup>

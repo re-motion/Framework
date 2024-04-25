@@ -18,9 +18,8 @@ using System;
 using System.IO;
 using System.Threading;
 using JetBrains.Annotations;
-using Remotion.Logging;
+using log4net;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
 {
@@ -29,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
   /// </summary>
   public class ChromiumUserDirectoryCleanUpStrategy : IBrowserSessionCleanUpStrategy
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<ChromiumUserDirectoryCleanUpStrategy>();
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(ChromiumUserDirectoryCleanUpStrategy));
 
     private readonly string _userDirectoryRoot;
     private readonly string _userDirectory;
@@ -85,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
 
           if (tries == maxTries - 1)
           {
-            s_logger.InfoFormat(
+            s_log.InfoFormat(
                 @"Could not delete the user data folder '{0}' because of an '{1}':
 {2}",
                 _userDirectory,

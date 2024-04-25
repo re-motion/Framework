@@ -12,7 +12,6 @@
     <SignAssembly>False</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\Development.WebTesting\Web.Development.WebTesting.csproj" />
   </ItemGroup>
   <ItemGroup>

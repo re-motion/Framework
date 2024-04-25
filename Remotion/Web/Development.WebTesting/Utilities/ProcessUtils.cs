@@ -22,9 +22,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using JetBrains.Annotations;
-using Remotion.Logging;
+using log4net;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -52,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       internal IntPtr InheritedFromUniqueProcessID;
     }
 
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger(typeof(ProcessUtils));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(ProcessUtils));
 
     /// <summary>
     /// Retrieves information about the specified process. See https://msdn.microsoft.com/en-us/library/windows/desktop/ms684280.aspx .
@@ -255,18 +254,18 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNullOrEmpty("processName", processName);
 
-      s_logger.DebugFormat("Process killing has been called for '{0}'...", processName);
+      s_log.DebugFormat("Process killing has been called for '{0}'...", processName);
 
       foreach (var process in Process.GetProcessesByName(processName))
       {
         try
         {
-          s_logger.DebugFormat("Killing process '{0}'...", processName);
+          s_log.DebugFormat("Killing process '{0}'...", processName);
           process.Kill();
         }
         catch (Exception ex)
         {
-          s_logger.Warn(string.Format("Killing process '{0}' failed.", processName), ex);
+          s_log.Warn(string.Format("Killing process '{0}' failed.", processName), ex);
           // Ignore exception, process is already closing or we do not have the required privileges anyway.
         }
       }

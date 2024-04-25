@@ -20,9 +20,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using Coypu;
 using JetBrains.Annotations;
+using log4net;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using Remotion.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Accessibility;
 using Remotion.Web.Development.WebTesting.Accessibility.Implementation;
@@ -33,7 +33,6 @@ using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Screenshot = Remotion.Web.Development.WebTesting.ScreenshotCreation.Screenshot;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -111,7 +110,7 @@ namespace Remotion.Web.Development.WebTesting
       return new WebTestHelper(new TFactory());
     }
 
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger(typeof(WebTestHelper));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(WebTestHelper));
 
     private readonly IBrowserConfiguration _browserConfiguration;
     private readonly DriverConfiguration _driverConfiguration;
@@ -167,11 +166,11 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="configurationOverride">Specifies additional options applied when creating the browser.</param>
     public void OnFixtureSetUp (WindowSize? windowSize = null, [CanBeNull] DriverConfigurationOverride? configurationOverride = null)
     {
-      s_logger.InfoFormat("WebTestHelper.OnFixtureSetup() has been called.");
-      s_logger.InfoFormat("Remotion version: " + typeof(WebTestHelper).Assembly.GetName().Version);
-      s_logger.InfoFormat("Selenium (WebDriver) version: " + typeof(IWebDriver).Assembly.GetName().Version);
-      s_logger.InfoFormat("Selenium Support (WebDriver.Support) version: " + typeof(WebDriverWait).Assembly.GetName().Version);
-      s_logger.InfoFormat("Coypu version: " + typeof(Element).Assembly.GetName().Version);
+      s_log.InfoFormat("WebTestHelper.OnFixtureSetup() has been called.");
+      s_log.InfoFormat("Remotion version: " + typeof(WebTestHelper).Assembly.GetName().Version);
+      s_log.InfoFormat("Selenium (WebDriver) version: " + typeof(IWebDriver).Assembly.GetName().Version);
+      s_log.InfoFormat("Selenium Support (WebDriver.Support) version: " + typeof(WebDriverWait).Assembly.GetName().Version);
+      s_log.InfoFormat("Coypu version: " + typeof(Element).Assembly.GetName().Version);
 
       // Note: otherwise the Selenium web driver may get confused when searching for windows.
       // Confusion could theoretically happen when calling Coypu.BrowserSession.FindWindow(string locator), as the window gets found per title.
@@ -180,8 +179,8 @@ namespace Remotion.Web.Development.WebTesting
       EnsureAllBrowserWindowsAreClosed();
 
       _mainBrowserSession = CreateNewBrowserSession(windowSize, configurationOverride);
-      s_logger.InfoFormat("Browser: {0}, version {1}", _mainBrowserSession.Driver.GetBrowserName(), _mainBrowserSession.Driver.GetBrowserVersion());
-      s_logger.InfoFormat("WebDriver version: {0}", _mainBrowserSession.Driver.GetWebDriverVersion());
+      s_log.InfoFormat("Browser: {0}, version {1}", _mainBrowserSession.Driver.GetBrowserName(), _mainBrowserSession.Driver.GetBrowserVersion());
+      s_log.InfoFormat("WebDriver version: {0}", _mainBrowserSession.Driver.GetWebDriverVersion());
 
       // Note: otherwise cursor could interfere with element hovering.
       if (!_mainBrowserSession.Headless)
@@ -197,10 +196,10 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNullOrEmpty("testName", testName);
 
       _testName = testName;
-      s_logger.InfoFormat("Executing test: {0}.", _testName);
+      s_log.InfoFormat("Executing test: {0}.", _testName);
 
       if (_mainBrowserSession != null)
-        s_logger.InfoFormat("Current window title: {0}.", _mainBrowserSession.Window.Title);
+        s_log.InfoFormat("Current window title: {0}.", _mainBrowserSession.Window.Title);
     }
 
     /// <summary>
@@ -211,7 +210,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>The new browser session.</returns>
     public IBrowserSession CreateNewBrowserSession (WindowSize? windowSize = null, [CanBeNull] DriverConfigurationOverride? configurationOverride = null)
     {
-      using (new PerformanceTimer(s_logger, string.Format("Created new {0} browser session.", _browserConfiguration.BrowserName)))
+      using (new PerformanceTimer(s_log, string.Format("Created new {0} browser session.", _browserConfiguration.BrowserName)))
       {
         var mergedDriverConfiguration = MergeDriverConfiguration(_driverConfiguration, configurationOverride);
 
@@ -254,14 +253,14 @@ namespace Remotion.Web.Development.WebTesting
     private TPageObject CreateInitialPageObject<TPageObject> (IBrowserSession browser, IRequestErrorDetectionStrategy requestErrorDetectionStrategy)
         where TPageObject : PageObject
     {
-      s_logger.InfoFormat("WebTestHelper.CreateInitialPageObject<" + typeof(TPageObject).FullName + "> has been called.");
+      s_log.InfoFormat("WebTestHelper.CreateInitialPageObject<" + typeof(TPageObject).FullName + "> has been called.");
       var context = PageObjectContext.New(browser, requestErrorDetectionStrategy);
-      s_logger.InfoFormat("New PageObjectContext has been created.");
+      s_log.InfoFormat("New PageObjectContext has been created.");
 
       requestErrorDetectionStrategy.CheckPageForError(context.Scope);
 
       var pageObject = (TPageObject)Activator.CreateInstance(typeof(TPageObject), new object[] { context })!;
-      s_logger.InfoFormat("Initial PageObject has been created.");
+      s_log.InfoFormat("Initial PageObject has been created.");
       return pageObject;
     }
 
@@ -297,7 +296,7 @@ namespace Remotion.Web.Development.WebTesting
         screenshotRecorder.TakeBrowserScreenshot(_testName, _browserSessions.ToArray(), BrowserConfiguration.Locator);
       }
 
-      s_logger.InfoFormat("Finished test: {0} [has succeeded: {1}].", _testName, hasSucceeded);
+      s_log.InfoFormat("Finished test: {0} [has succeeded: {1}].", _testName, hasSucceeded);
 
       _browserConfiguration.DownloadHelper.DeleteFiles();
     }
@@ -325,12 +324,12 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public void OnFixtureTearDown ()
     {
-      s_logger.InfoFormat("WebTestHelper.OnFixtureTearDown() has been called.");
+      s_log.InfoFormat("WebTestHelper.OnFixtureTearDown() has been called.");
 
       foreach (var browserSession in _browserSessions)
         browserSession.Dispose();
 
-      s_logger.InfoFormat("{0} sessions have been disposed.", _browserSessions.Count);
+      s_log.InfoFormat("{0} sessions have been disposed.", _browserSessions.Count);
       _browserSessions.Clear();
     }
 
@@ -349,7 +348,7 @@ namespace Remotion.Web.Development.WebTesting
       if (!_testInfrastructureConfiguration.CloseBrowserWindowsOnSetUpAndTearDown)
         return;
 
-      s_logger.InfoFormat("Killing all processes named '{0}'.", _browserConfiguration.BrowserExecutableName);
+      s_log.InfoFormat("Killing all processes named '{0}'.", _browserConfiguration.BrowserExecutableName);
       var browserProcessName = _browserConfiguration.BrowserExecutableName;
       if (browserProcessName == null)
         return;

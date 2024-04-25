@@ -19,13 +19,12 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using log4net;
 using OpenQA.Selenium;
-using Remotion.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Screenshot = Remotion.Web.Development.WebTesting.ScreenshotCreation.Screenshot;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -34,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   /// </summary>
   public class TestExecutionScreenshotRecorder
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger(typeof(TestExecutionScreenshotRecorder));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(TestExecutionScreenshotRecorder));
 
     private readonly string _outputDirectory;
 
@@ -101,11 +100,11 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
         screenshot.Image.Save(filePath, ImageFormat.Png);
 
-        s_logger.InfoFormat("Saved screenshot of desktop to '{0}'.", filePath);
+        s_log.InfoFormat("Saved screenshot of desktop to '{0}'.", filePath);
       }
       catch (Exception ex)
       {
-        s_logger.Error(string.Format("Could not save desktop screenshot to '{0}'.", filePath), ex);
+        s_log.Error(string.Format("Could not save desktop screenshot to '{0}'.", filePath), ex);
       }
     }
 
@@ -141,7 +140,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         }
         catch (Exception ex)
         {
-          s_logger.Error(string.Format("Could not save screenshot of browser session window. (window: {0})", sessionID), ex);
+          s_log.Error(string.Format("Could not save screenshot of browser session window. (window: {0})", sessionID), ex);
         }
 
         sessionID++;
@@ -192,13 +191,13 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         }
         catch (Exception ex)
         {
-          s_logger.Error(string.Format("Could not save screenshot of browser session window. (window: {0})", windowID), ex);
+          s_log.Error(string.Format("Could not save screenshot of browser session window. (window: {0})", windowID), ex);
         }
 
         windowID++;
       }
 
-      s_logger.InfoFormat("Saved screenshots for the browser session '{0}'.", GetWindowText(browserSession));
+      s_log.InfoFormat("Saved screenshots for the browser session '{0}'.", GetWindowText(browserSession));
     }
 
     private CursorInformation CaptureCursorInformationWithLog ()
@@ -209,7 +208,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       }
       catch (Exception ex)
       {
-        s_logger.ErrorFormat("Could not capture CursorInformation. Exception: \n{0}", ex);
+        s_log.ErrorFormat("Could not capture CursorInformation. Exception: \n{0}", ex);
         return CursorInformation.Empty;
       }
     }
