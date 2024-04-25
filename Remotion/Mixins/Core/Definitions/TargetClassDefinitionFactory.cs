@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions.Building;
@@ -40,7 +41,7 @@ namespace Remotion.Mixins.Definitions
     {
       ArgumentUtility.CheckNotNull("context", context);
 
-      s_logger.DebugFormat("Creating a validated class definition for: {0}.", context);
+      s_logger.LogDebug("Creating a validated class definition for: {0}.", context);
 
       using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Debug, "Time needed to create and validate class definition: {elapsed}."))
       {
@@ -54,7 +55,7 @@ namespace Remotion.Mixins.Definitions
     {
       ArgumentUtility.CheckNotNull("context", context);
 
-      s_logger.DebugFormat("Creating an unvalidated class definition for: {0}.", context);
+      s_logger.LogDebug("Creating an unvalidated class definition for: {0}.", context);
 
       using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Debug, "Time needed to create class definition: {elapsed}."))
       {

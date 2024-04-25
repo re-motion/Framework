@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Mixins.Context;
 using Remotion.Utilities;
@@ -65,13 +66,13 @@ namespace Remotion.Mixins.MixerTools
     {
       if (context.Type.IsGenericTypeDefinition)
       {
-        s_logger.DebugFormat("Type {0} is a generic type definition and is thus ignored.", context.Type);
+        s_logger.LogDebug("Type {0} is a generic type definition and is thus ignored.", context.Type);
         return false;
       }
 
       if (context.Type.IsInterface)
       {
-        s_logger.DebugFormat("Type {0} is an interface and is thus ignored.", context.Type);
+        s_logger.LogDebug("Type {0} is an interface and is thus ignored.", context.Type);
         return false;
       }
 

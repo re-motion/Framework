@@ -19,6 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Utilities;
 using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
@@ -37,7 +38,7 @@ namespace Remotion.Reflection.TypeDiscovery
     {
       ArgumentUtility.CheckNotNull("types", types);
 
-      s_logger.DebugFormat("Beginning to build BaseTypeCache...");
+      s_logger.LogDebug("Beginning to build BaseTypeCache...");
       using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Debug, string.Format("Built BaseTypeCache. Time taken: {{elapsed}}")))
       {
         // Note: there is no measurable impact when switching this code to parallel execution.

@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Logging;
@@ -174,7 +175,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       {
         if (s_logger.IsDebugEnabled())
         {
-          s_logger.DebugFormat(
+          s_logger.LogDebug(
               "Unsynchronized ObjectEndPoint '{0}' is unregistered from virtual end-point '{1}'.",
               oppositeEndPoint.ID,
               endPoint.ID);
@@ -230,7 +231,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
 
       if (Logger.IsDebugEnabled())
-        Logger.DebugFormat("End-point '{0}' is being synchronized.", endPoint.ID);
+        Logger.LogDebug("End-point '{0}' is being synchronized.", endPoint.ID);
 
       foreach (var item in GetOriginalItemsWithoutEndPoints())
         DataManager.UnregisterOriginalItemWithoutEndPoint(item);
@@ -245,7 +246,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
       if (s_logger.IsDebugEnabled())
-        s_logger.DebugFormat("ObjectEndPoint '{0}' is being marked as synchronized.", oppositeEndPoint.ID);
+        s_logger.LogDebug("ObjectEndPoint '{0}' is being marked as synchronized.", oppositeEndPoint.ID);
 
       if (!_unsynchronizedOppositeEndPoints.Remove(oppositeEndPoint.ObjectID))
       {

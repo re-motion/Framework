@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -185,7 +186,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
       using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Information, "Time needed to build mixin configuration from fluent builders: {elapsed}."))
       {
         var parentContexts = ParentConfiguration != null ? ParentConfiguration.ClassContexts : new ClassContextCollection();
-        s_logger.DebugFormat("Building a mixin configuration with {0} parent class contexts from fluent builders...", parentContexts.Count);
+        s_logger.LogDebug("Building a mixin configuration with {0} parent class contexts from fluent builders...", parentContexts.Count);
 
         var builder = new InheritanceResolvingClassContextBuilder(ClassContextBuilders, parentContexts, DefaultMixinInheritancePolicy.Instance);
 
