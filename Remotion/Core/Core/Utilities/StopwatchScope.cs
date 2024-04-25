@@ -17,6 +17,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
@@ -137,14 +138,14 @@ namespace Remotion.Utilities
     public static StopwatchScope CreateScope (IMicrosoftLogger logger, MicrosoftLogLevel logLevel, string formatString)
     {
       var actualFormatString = ReplacePlaceholders(formatString);
-      return new StopwatchScope((context, scope) => logger.LogFormat(
-          logLevel,
-          actualFormatString,
-          context,
-          scope.ElapsedTotal.ToString(),
-          scope.ElapsedTotal.TotalMilliseconds.ToString(),
-          scope.ElapsedSinceLastCheckpoint.ToString(),
-          scope.ElapsedSinceLastCheckpoint.TotalMilliseconds.ToString()), "end");
+      return new StopwatchScope((context, scope) => logger.Log(
+              logLevel,
+              actualFormatString,
+              context,
+              scope.ElapsedTotal.ToString(),
+              scope.ElapsedTotal.TotalMilliseconds.ToString(),
+              scope.ElapsedSinceLastCheckpoint.ToString(),
+              scope.ElapsedSinceLastCheckpoint.TotalMilliseconds.ToString()), "end");
     }
 
     /// <summary>

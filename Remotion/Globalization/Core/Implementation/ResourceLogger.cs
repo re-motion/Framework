@@ -16,6 +16,7 @@
 // 
 using System;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Utilities;
 using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
@@ -45,7 +46,7 @@ namespace Remotion.Globalization.Implementation
       ArgumentUtility.CheckNotNullOrEmpty("idFormat", idFormat);
       ArgumentUtility.CheckNotNullOrEmpty("args", args);
 
-      s_logger.LogFormat(c_logLevel, "No resource entry exists for the following element: " + idFormat, args);
+      s_logger.Log(c_logLevel, "No resource entry exists for the following element: " + idFormat, args);
     }
   }
 }
