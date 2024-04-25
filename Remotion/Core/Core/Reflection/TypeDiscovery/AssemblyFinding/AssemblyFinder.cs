@@ -19,6 +19,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
@@ -71,7 +72,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     /// <returns>The root assemblies and their referenced assemblies.</returns>
     public virtual IEnumerable<Assembly> FindAssemblies ()
     {
-      s_logger.Debug("Finding assemblies...");
+      s_logger.LogDebug("Finding assemblies...");
       using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Information, "Time spent for finding and loading assemblies: {elapsed}."))
       {
         var rootAssemblies = FindRootAssemblies();
@@ -87,7 +88,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
     private ICollection<RootAssembly> FindRootAssemblies ()
     {
-      s_logger.Debug("Finding root assemblies...");
+      s_logger.LogDebug("Finding root assemblies..."?.ToString());
       using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Debug, "Time spent for finding and loading root assemblies: {elapsed}."))
       {
         return _rootAssemblyFinder.FindRootAssemblies()
@@ -98,7 +99,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
     private ICollection<Assembly> FindReferencedAssemblies (ICollection<RootAssembly> rootAssemblies)
     {
-      s_logger.Debug("Finding referenced assemblies...");
+      s_logger.LogDebug("Finding referenced assemblies..."?.ToString());
       using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Debug, "Time spent for finding and loading referenced assemblies: {elapsed}."))
       {
         // referenced assemblies are added later in order to get their references as well

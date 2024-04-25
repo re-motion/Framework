@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -56,7 +57,7 @@ namespace Remotion.Web.ExecutionEngine
       _function.SetFunctionToken(_functionToken);
       _isCleanUpEnabled = enableCleanUp;
       _postBackID = 0;
-      s_logger.Debug(string.Format("Created WxeFunctionState {0}.", _functionToken));
+      s_logger.LogDebug(string.Format("Created WxeFunctionState {0}.", _functionToken));
     }
 
     public WxeFunction Function
@@ -103,7 +104,7 @@ namespace Remotion.Web.ExecutionEngine
     {
       if (! _isAborted)
       {
-        s_logger.Debug(string.Format("Aborting WxeFunctionState {0}.", _functionToken));
+        s_logger.LogDebug(string.Format("Aborting WxeFunctionState {0}.", _functionToken));
         AbortRecursive();
         _isAborted = true;
       }

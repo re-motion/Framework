@@ -21,6 +21,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web;
 using System.Web.SessionState;
+using Microsoft.Extensions.Logging;
 using Remotion.Context;
 using Remotion.Logging;
 using Remotion.Reflection;
@@ -288,7 +289,7 @@ namespace Remotion.Web.ExecutionEngine
       {
         CheckFunctionTokenExists(functionToken);
 
-        s_logger.Debug(string.Format("Refreshing WxeFunctionState {0}.", functionToken));
+        s_logger.LogDebug(string.Format("Refreshing WxeFunctionState {0}.", functionToken));
         WxeFunctionStateMetaData old = _functionStates[functionToken];
         _functionStates[functionToken] = new WxeFunctionStateMetaData(old.FunctionToken, old.LifetimeInMinutes, DateTime.UtcNow);
       }

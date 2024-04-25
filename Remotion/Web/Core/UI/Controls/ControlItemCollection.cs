@@ -21,6 +21,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Web.UI;
+using Microsoft.Extensions.Logging;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.Reflection;
@@ -309,7 +310,7 @@ namespace Remotion.Web.UI.Controls
           ResourceDispatcher.DispatchGeneric(item, entry.Value);
         else //  Invalid collection element
         {
-          s_logger.Debug(
+          s_logger.LogDebug(
               "'" + parentID + "' on page '" + page + "' does not contain an item with an ID of '" + id + "' inside the collection '" + collectionName
               + "'.");
         }

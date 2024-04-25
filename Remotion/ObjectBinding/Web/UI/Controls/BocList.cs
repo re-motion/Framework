@@ -28,6 +28,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.Logging;
@@ -2044,7 +2045,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
             default:
             {
               //  Invalid collection property
-              s_logger.Debug(
+              s_logger.LogDebug(
                   "BocList '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
                   + "' does not contain a collection property named '" + collectionID + "'.");
               break;
@@ -2069,7 +2070,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         else
         {
           //  Not supported format or invalid property
-          s_logger.Debug(
+          s_logger.LogDebug(
               "BocList '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
               + "' received a resource with an invalid or unknown key '" + key
               + "'. Required format: 'property' or 'collectionID:elementID:property'.");
