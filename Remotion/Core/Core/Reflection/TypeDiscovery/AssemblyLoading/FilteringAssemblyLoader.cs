@@ -134,7 +134,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
         // https://www.re-motion.org/jira/browse/RM-5089
         if (assemblyDescription.Contains("System.IdentityModel.Selectors"))
         {
-          s_logger.WarnFormat(message, ex);
+          s_logger.LogWarning(message, ex);
           return default(T)!;
         }
 
