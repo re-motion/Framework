@@ -18,7 +18,6 @@ using System;
 using System.Globalization;
 using log4net.Core;
 using log4net.Util;
-using Remotion.Utilities;
 
 using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
@@ -50,7 +49,8 @@ public class Log4NetLogger : IMicrosoftLogger
 
   public Log4NetLogger (ILogger logger)
   {
-    ArgumentUtility.CheckNotNull("logger", logger);
+    if (logger == null)
+      throw new ArgumentNullException(nameof(logger));
 
     Logger = logger;
   }
