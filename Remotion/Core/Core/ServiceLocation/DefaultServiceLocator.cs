@@ -17,7 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
+using Remotion.Logging.Log4Net;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -78,6 +80,10 @@ namespace Remotion.ServiceLocation
       _createRegistrationFromTypeFunc = CreateRegistrationFromType;
 
       Register(new ServiceConfigurationEntry(typeof(ILogManager), new ServiceImplementationInfo(typeof(Log4NetLogManager), LifetimeKind.Singleton)));
+      Register(
+          new ServiceConfigurationEntry(
+              typeof(ILoggerFactory),
+              ServiceImplementationInfo.CreateSingle(() => new LoggerFactory(new[] { new Log4NetLoggerProvider() }), LifetimeKind.Singleton)));
     }
 
     /// <summary>

@@ -18,8 +18,8 @@
     <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="log4net" />
     <PackageReference Remove="JetBrains.Annotations" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="Remotion.ThirdParty.Dependency.Jetbrains.Annotations" />
     <PackageReference Include="Remotion.ThirdPartyDependency.CommonServiceLocator" />
@@ -37,5 +37,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="THIRD-PARTY-NOTICES.txt" Pack="true" PackagePath=""/>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Logging.Log4Net\Core.Logging.Log4Net.csproj" />
   </ItemGroup>
 </Project>
