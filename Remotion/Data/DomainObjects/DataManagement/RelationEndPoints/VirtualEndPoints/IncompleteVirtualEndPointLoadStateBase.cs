@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Logging;
 using Remotion.Utilities;
@@ -207,7 +208,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull("stateSetter", stateSetter);
 
       if (s_logger.IsInfoEnabled())
-        s_logger.InfoFormat("Virtual end-point '{0}' is transitioned to complete state.", endPoint.ID);
+        s_logger.LogInformation("Virtual end-point '{0}' is transitioned to complete state.", endPoint.ID);
 
       var dataManager = CreateEndPointDataManager(endPoint);
 

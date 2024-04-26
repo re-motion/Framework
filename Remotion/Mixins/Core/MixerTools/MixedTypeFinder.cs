@@ -50,7 +50,7 @@ namespace Remotion.Mixins.MixerTools
       ArgumentUtility.CheckNotNull("configuration", configuration);
 
       var types = _typeDiscoveryService.GetTypes(null, false);
-      s_logger.InfoFormat(
+      s_logger.LogInformation(
           "Retrieving class contexts for {0} configured mixin targets and {1} loaded types.",
           configuration.ClassContexts.Count,
           types.Count);

@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Queries;
@@ -72,7 +73,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     protected override Data LoadData (GuidRevisionValue revision)
     {
-      s_logger.InfoFormat("Reset CachedUser for user '{0}'.", _userName);
+      s_logger.LogInformation("Reset CachedUser for user '{0}'.", _userName);
       return new Data(revision, GetUser(_userName));
     }
 

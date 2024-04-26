@@ -184,7 +184,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         throw new InvalidOperationException("The data is already complete.");
 
       if (s_logger.IsInfoEnabled())
-        s_logger.InfoFormat("Virtual end-point '{0}' is transitioned to complete state.", ID);
+        s_logger.LogInformation("Virtual end-point '{0}' is transitioned to complete state.", ID);
 
       var dataManager = _dataManagerFactory.CreateEndPointDataManager(ID);
 
@@ -268,7 +268,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       if (s_logger.IsInfoEnabled())
       {
-        s_logger.InfoFormat(
+        s_logger.LogInformation(
             "RealObjectEndPoint '{0}' is unregistered from VirtualCollectionEndPoint '{1}'. The VirtualCollectionEndPoint is transitioned to incomplete state.",
             oppositeEndPoint.ID,
             ID);

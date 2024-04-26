@@ -57,12 +57,12 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     {
       ArgumentUtility.CheckNotNull("filePath", filePath);
 
-      s_logger.InfoFormat("Attempting to get assembly name for path '{0}'.", filePath);
+      s_logger.LogInformation("Attempting to get assembly name for path '{0}'.", filePath);
       AssemblyName? assemblyName = PerformGuardedLoadOperation(filePath, null, () => AssemblyNameCache.GetAssemblyName(filePath));
       if (assemblyName == null)
         return null;
 
-      s_logger.InfoFormat("Assembly name for path '{0}' is '{1}'.", filePath, assemblyName.FullName);
+      s_logger.LogInformation("Assembly name for path '{0}' is '{1}'.", filePath, assemblyName.FullName);
 
       return TryLoadAssembly(assemblyName, filePath);
     }
@@ -74,9 +74,9 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
 
       if (PerformGuardedLoadOperation(assemblyName.FullName, context, () => _filter.ShouldConsiderAssembly(assemblyName)))
       {
-        s_logger.InfoFormat("Attempting to load assembly with name '{0}' in context '{1}'.", assemblyName, context);
+        s_logger.LogInformation("Attempting to load assembly with name '{0}' in context '{1}'.", assemblyName, context);
         Assembly? loadedAssembly = PerformGuardedLoadOperation(assemblyName.FullName, context, () => Assembly.Load(assemblyName));
-        s_logger.InfoFormat("Success: {0}", loadedAssembly != null);
+        s_logger.LogInformation("Success: {0}", loadedAssembly != null);
 
         if (loadedAssembly == null)
           return null;
@@ -105,7 +105,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
       }
       catch (BadImageFormatException ex)
       {
-        s_logger.InfoFormat(
+        s_logger.LogInformation(
             "The file {0} triggered a BadImageFormatException and will be ignored. Possible causes for this are:" + Environment.NewLine
             + "- The file is not a .NET assembly." + Environment.NewLine
             + "- The file was built for a newer version of .NET." + Environment.NewLine

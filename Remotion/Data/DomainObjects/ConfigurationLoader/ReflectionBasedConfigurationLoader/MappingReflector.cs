@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     public RelationDefinition[] GetRelationDefinitions (IDictionary<Type, ClassDefinition> classDefinitions)
     {
       ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
-      s_logger.InfoFormat("Reflecting relation definitions of {0} class definitions...", classDefinitions.Count);
+      s_logger.LogInformation("Reflecting relation definitions of {0} class definitions...", classDefinitions.Count);
 
       using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Information, "Time needed to reflect relation definitions: {elapsed}."))
       {
