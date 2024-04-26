@@ -214,7 +214,7 @@ namespace Remotion.Mixins.Context
     /// <see cref="ClassContext"/> and <see cref="MixinContext"/> objects based on the information added so far.</returns>
     public MixinConfiguration BuildConfiguration ()
     {
-      s_logger.InfoFormat("Building mixin configuration from {0} types.", _allTypes.Count);
+      s_logger.LogInformation("Building mixin configuration from {0} types.", _allTypes.Count);
 
       using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Information, "Time needed to build mixin configuration: {elapsed}."))
       {

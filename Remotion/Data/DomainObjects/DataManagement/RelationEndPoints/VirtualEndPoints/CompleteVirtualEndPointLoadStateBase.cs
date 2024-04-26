@@ -187,7 +187,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       {
         if (s_logger.IsInfoEnabled())
         {
-          s_logger.InfoFormat(
+          s_logger.LogInformation(
               "ObjectEndPoint '{0}' is unregistered from virtual end-point '{1}'. The virtual end-point is transitioned to incomplete state.",
               oppositeEndPoint.ID,
               endPoint.ID);

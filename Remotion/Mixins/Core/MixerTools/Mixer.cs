@@ -108,7 +108,7 @@ namespace Remotion.Mixins.MixerTools
     {
       if (!Directory.Exists(AssemblyOutputDirectory))
       {
-        s_logger.InfoFormat("Preparing output directory '{0}'.", AssemblyOutputDirectory);
+        s_logger.LogInformation("Preparing output directory '{0}'.", AssemblyOutputDirectory);
         Directory.CreateDirectory(AssemblyOutputDirectory);
       }
 
@@ -128,7 +128,7 @@ namespace Remotion.Mixins.MixerTools
         _finishedTypes.Clear();
         _generatedFiles = new string[0];
 
-        s_logger.InfoFormat("The base directory is '{0}'.", AppContext.BaseDirectory);
+        s_logger.LogInformation("The base directory is '{0}'.", AppContext.BaseDirectory);
 
         var pipeline = MixerPipelineFactory.CreatePipeline(AssemblyOutputDirectory);
 
@@ -145,7 +145,7 @@ namespace Remotion.Mixins.MixerTools
         Save(pipeline);
       }
 
-      s_logger.InfoFormat("Successfully generated concrete types for {0} target classes.", _finishedTypes.Count);
+      s_logger.LogInformation("Successfully generated concrete types for {0} target classes.", _finishedTypes.Count);
     }
 
     private void Generate (Type mixedType, IPipeline pipeline)
@@ -176,7 +176,7 @@ namespace Remotion.Mixins.MixerTools
       _generatedFiles = pipeline.CodeManager.FlushCodeToDisk();
 
       foreach (var generatedFile in _generatedFiles)
-        s_logger.InfoFormat("Generated assembly file '{0}'.", generatedFile);
+        s_logger.LogInformation("Generated assembly file '{0}'.", generatedFile);
     }
 
     private void CleanupIfExists (string[] paths)
@@ -185,7 +185,7 @@ namespace Remotion.Mixins.MixerTools
       {
         if (File.Exists(path))
         {
-          s_logger.InfoFormat("Removing file '{0}'.", path);
+          s_logger.LogInformation("Removing file '{0}'.", path);
           File.Delete(path);
         }
       }
