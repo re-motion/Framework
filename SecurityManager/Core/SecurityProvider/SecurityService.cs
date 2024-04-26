@@ -16,6 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Logging;
@@ -69,7 +70,7 @@ namespace Remotion.SecurityManager
         }
         catch (AccessControlException e)
         {
-          s_logger.Error("Error during evaluation of security query.", e);
+          s_logger.LogError(e, "Error during evaluation of security query.");
           return new AccessType[0];
         }
 
@@ -82,7 +83,7 @@ namespace Remotion.SecurityManager
         }
         catch (ObjectsNotFoundException e)
         {
-          s_logger.Error("Error during evaluation of security query.", e);
+          s_logger.LogError(e, "Error during evaluation of security query.");
           return new AccessType[0];
         }
       }
