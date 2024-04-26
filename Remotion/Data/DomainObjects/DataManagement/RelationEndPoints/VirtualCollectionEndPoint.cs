@@ -29,6 +29,7 @@ using Remotion.Data.DomainObjects.Validation;
 using Remotion.Logging;
 using Remotion.Utilities;
 using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
@@ -183,7 +184,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       if (_dataManager != null)
         throw new InvalidOperationException("The data is already complete.");
 
-      if (s_logger.IsInfoEnabled())
+      if (s_logger.IsEnabled(LogLevel.Information))
         s_logger.LogInformation("Virtual end-point '{0}' is transitioned to complete state.", ID);
 
       var dataManager = _dataManagerFactory.CreateEndPointDataManager(ID);
@@ -266,7 +267,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
 
-      if (s_logger.IsInfoEnabled())
+      if (s_logger.IsEnabled(LogLevel.Information))
       {
         s_logger.LogInformation(
             "RealObjectEndPoint '{0}' is unregistered from VirtualCollectionEndPoint '{1}'. The VirtualCollectionEndPoint is transitioned to incomplete state.",
