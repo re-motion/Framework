@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Remotion.Collections;
 using Remotion.Logging;
 using Remotion.Mixins.Context;
@@ -133,14 +134,14 @@ namespace Remotion.Mixins.MixerTools
 
         var mixedTypes = MixedTypeFinder.FindMixedTypes(configuration).ToArray();
 
-        s_logger.Info("Generating types...");
+        s_logger.LogInformation("Generating types...");
         using (configuration.EnterScope())
         {
           foreach (var mixedType in mixedTypes)
             Generate(mixedType, pipeline);
         }
 
-        s_logger.Info("Saving assemblies...");
+        s_logger.LogInformation("Saving assemblies...");
         Save(pipeline);
       }
 

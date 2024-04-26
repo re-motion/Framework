@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation;
@@ -138,7 +139,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public ClassDefinition[] GetClassDefinitions ()
     {
-      s_logger.Info("Reflecting class definitions...");
+      s_logger.LogInformation("Reflecting class definitions...");
 
       using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Information, "Time needed to reflect class definitions: {elapsed}."))
       {

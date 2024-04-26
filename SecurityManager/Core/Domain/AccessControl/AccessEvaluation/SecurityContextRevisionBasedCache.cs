@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Queries;
@@ -85,7 +86,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        s_logger.Info("Reset SecurityContextRevisionBasedCache cache.");
+        s_logger.LogInformation("Reset SecurityContextRevisionBasedCache cache.");
         using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Information, "Refreshed data in SecurityContextRevisionBasedCache. Time taken: {elapsed:ms}ms"))
         {
           var tenants = LoadTenants();
