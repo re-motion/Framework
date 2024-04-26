@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using System.Web;
+using Microsoft.Extensions.Logging;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Logging;
 using Remotion.ServiceLocation;
@@ -102,7 +103,7 @@ namespace Remotion.Web.Test
     {
       var exception = Server.GetLastError();
 
-      s_logger.Error("Application Error:", exception);
+      s_logger.LogError(exception, "Application Error:");
 
       if (exception is AsyncUnhandledException)
       {
