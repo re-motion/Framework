@@ -18,6 +18,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Utilities;
 using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
@@ -111,7 +112,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
             + "- The file was compiled for a different platform (x86, x64, etc.) than the platform this process is running on." + Environment.NewLine
             + "- The file is damaged.",
             assemblyDescriptionText);
-        s_logger.DebugFormat(ex, "The file {0} triggered a BadImageFormatException.", assemblyDescriptionText);
+        s_logger.LogDebug(ex, "The file {0} triggered a BadImageFormatException.", assemblyDescriptionText);
 
         return default(T)!;
       }
