@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
-using Remotion.Logging;
 using Remotion.ServiceLocation;
 using Remotion.Tools;
 #if NETFRAMEWORK
@@ -71,7 +70,9 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
 #endif
     {
       if (_rdbmsToolsParameters.Verbose)
-        LogManager.InitializeConsole();
+      {
+        //TODO: RM-9195
+      }
 
       InitializeConfiguration();
 
