@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using Microsoft.Extensions.Logging;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.Reflection;
@@ -113,7 +114,7 @@ public sealed class ResourceDispatcher
 
       if (targetControl == null)
       {
-        s_logger.Warn("Control '" + control.ToString() + "': No child-control with ID '" + elementID + "' found. ID was read from \"" + resourceSource + "\".");
+        s_logger.LogWarning("Control '" + control.ToString() + "': No child-control with ID '" + elementID + "' found. ID was read from \"" + resourceSource + "\".");
       }
       else
       {
@@ -164,7 +165,7 @@ public sealed class ResourceDispatcher
         if (genericHtmlControl != null)
           genericHtmlControl.Attributes[propertyName] = propertyValue.ToPlainTextString().GetValue();
         else //  Non-HtmlControls require valid property
-          s_logger.Warn("Control '" + control.ID + "' of type '" + control.GetType().GetFullNameSafe() + "' does not contain a public property '" + propertyName + "'.");
+          s_logger.LogWarning("Control '" + control.ID + "' of type '" + control.GetType().GetFullNameSafe() + "' does not contain a public property '" + propertyName + "'.");
       }
     }
   }

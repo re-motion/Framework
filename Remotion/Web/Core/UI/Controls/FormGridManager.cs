@@ -24,6 +24,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Microsoft.Extensions.Logging;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.Reflection;
@@ -264,7 +265,7 @@ namespace Remotion.Web.UI.Controls
         //  Not found, append to form grid instead of inserting at position of related form grid row
         if (relatedRow == null)
         {
-          s_logger.Warn(
+          s_logger.LogWarning(
               $"Could not find control '{relatedRowID}' inside FormGrid (HtmlTable) '{_table.ID}' "
               + $"in naming container '{_table.NamingContainer.GetType().GetFullNameSafe()}' on page '{_table.Page!}'.");
 
@@ -1162,7 +1163,7 @@ namespace Remotion.Web.UI.Controls
           {
             // TODO RM-8118: not null assertion
             //  Not supported format
-            s_logger.Warn(
+            s_logger.LogWarning(
                 $"FormGridManager '{UniqueID}' on page '{Page!}' received a resource with an invalid key '{key}'. Required format: 'tableUniqueID:controlUniqueID:property'.");
           }
         }
@@ -1170,7 +1171,7 @@ namespace Remotion.Web.UI.Controls
         {
           // TODO RM-8118: not null assertion
           //  Invalid form grid
-          s_logger.Warn($"FormGrid '{tableID}' is not managed by FormGridManager '{UniqueID}' on page '{Page!}'.");
+          s_logger.LogWarning($"FormGrid '{tableID}' is not managed by FormGridManager '{UniqueID}' on page '{Page!}'.");
         }
       }
 
@@ -1229,7 +1230,7 @@ namespace Remotion.Web.UI.Controls
           {
             // TODO RM-8118: not null assertion
             //  Invalid control
-            s_logger.Warn(
+            s_logger.LogWarning(
                 $"FormGrid '{tableID}' in naming container '{NamingContainer.GetType().GetFullNameSafe()}' on page '{Page!}' does not contain a control with UniqueID '{controlID}'.");
           }
         }

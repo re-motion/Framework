@@ -93,7 +93,7 @@ namespace Remotion.Xml
       }
       else
       {
-        s_logger.Warn(errorInfo);
+        s_logger.LogWarning(errorInfo?.ToString());
         ++ _warnings;
       }
     }
