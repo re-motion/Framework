@@ -118,7 +118,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
       }
       catch (FileLoadException ex)
       {
-        s_logger.WarnFormat(
+        s_logger.LogWarning(
             ex,
             "The assembly {0} triggered a FileLoadException and will be ignored - maybe the assembly is DelaySigned, but signing has not been completed?",
             assemblyDescriptionText);
