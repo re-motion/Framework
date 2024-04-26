@@ -294,7 +294,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override void Synchronize ()
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("End-point '{0}' is being synchronized.", ID);
 
       if (_dataManager != null)
@@ -315,7 +315,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       Assertion.IsNotNull(_dataManager, "Cannot synchronize an opposite end-point with a virtual end-point in incomplete state.");
 
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("ObjectEndPoint '{0}' is being marked as synchronized.", oppositeEndPoint.ID);
 
       _dataManager.SynchronizeOppositeEndPoint(oppositeEndPoint);
