@@ -19,6 +19,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Web;
 using System.Web.SessionState;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -289,14 +290,14 @@ namespace Remotion.Web.ExecutionEngine
       {
         if (isPostBackAction)
         {
-          s_logger.Error(string.Format("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
+          s_logger.LogError(string.Format("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
           context.Response.StatusCode = c_HttpSessionTimeout;
           context.Response.StatusDescription = "Session Timeout.";
           return null;
         }
         if (isPostRequest)
         {
-          s_logger.Error(string.Format("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
+          s_logger.LogError(string.Format("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
           throw new WxeTimeoutException("Session Timeout.", functionToken); // TODO RM-8118: display error message
         }
         try
@@ -305,7 +306,7 @@ namespace Remotion.Web.ExecutionEngine
         }
         catch (WxeException e)
         {
-          s_logger.Error(string.Format("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
+          s_logger.LogError(string.Format("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
           throw new WxeTimeoutException("Session timeout.", functionToken, e); // TODO RM-8118: display error message
         }
       }
@@ -315,14 +316,14 @@ namespace Remotion.Web.ExecutionEngine
       {
         if (isPostBackAction)
         {
-          s_logger.Error(string.Format("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
+          s_logger.LogError(string.Format("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
           context.Response.StatusCode = c_HttpFunctionTimeout;
           context.Response.StatusDescription = "Function Timeout.";
           return null;
         }
         if (isPostRequest)
         {
-          s_logger.Error(string.Format("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
+          s_logger.LogError(string.Format("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
           throw new WxeTimeoutException("Function Timeout.", functionToken); // TODO RM-8118: display error message
         }
         try
@@ -331,14 +332,14 @@ namespace Remotion.Web.ExecutionEngine
         }
         catch (WxeException e)
         {
-          s_logger.Error(string.Format("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
+          s_logger.LogError(string.Format("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
           throw new WxeTimeoutException("Function Timeout.", functionToken, e); // TODO RM-8118: display error message
         }
       }
 
       if (functionState.IsAborted)
       {
-        s_logger.Error(string.Format("Error resuming WxeFunctionState {0}: The function state has been aborted.", functionState.FunctionToken));
+        s_logger.LogError(string.Format("Error resuming WxeFunctionState {0}: The function state has been aborted.", functionState.FunctionToken));
         throw new InvalidOperationException(string.Format("WxeFunctionState {0} is aborted.", functionState.FunctionToken));
             // TODO: display error message
       }
