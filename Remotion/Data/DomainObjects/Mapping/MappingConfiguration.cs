@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.ConfigurationLoader;
 using Remotion.Data.DomainObjects.Persistence.Model;
@@ -123,7 +124,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     private Mapping InitializeMapping (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader)
     {
-      s_logger.Info("Building mapping configuration...");
+      s_logger.LogInformation("Building mapping configuration...");
 
       using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Information, "Time needed to build and validate mapping configuration: {elapsed}."))
       {
