@@ -26,6 +26,7 @@ using Remotion.Data.DomainObjects.Queries;
 using Remotion.Logging;
 using Remotion.Reflection;
 using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
@@ -39,85 +40,85 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void TransactionInitialize (ClientTransaction clientTransaction)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} TransactionInitialize", clientTransaction.ID);
     }
 
     public void TransactionDiscard (ClientTransaction clientTransaction)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} TransactionDiscard", clientTransaction.ID);
     }
 
     public void SubTransactionCreating (ClientTransaction clientTransaction)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} SubTransactionCreating", clientTransaction.ID);
     }
 
     public void SubTransactionInitialize (ClientTransaction clientTransaction, ClientTransaction subTransaction)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} SubTransactionInitialize: {1}", clientTransaction.ID, subTransaction.ID);
     }
 
     public void SubTransactionCreated (ClientTransaction clientTransaction, ClientTransaction subTransaction)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} SubTransactionCreated: {1}", clientTransaction.ID, subTransaction.ID);
     }
 
     public void NewObjectCreating (ClientTransaction clientTransaction, Type type)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} NewObjectCreating: {1}", clientTransaction.ID, type.GetFullNameSafe());
     }
 
     public void ObjectsLoading (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} ObjectsLoading: {1}", clientTransaction.ID, GetObjectIDString(objectIDs));
     }
 
     public void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} ObjectsLoaded: {1}", clientTransaction.ID, GetDomainObjectsString(domainObjects));
     }
 
     public void ObjectsNotFound (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} ObjectsNotFound: {1}", clientTransaction.ID, GetObjectIDString(objectIDs));
     }
 
     public void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} ObjectsUnloaded: {1}", clientTransaction.ID, GetDomainObjectsString(unloadedDomainObjects));
     }
 
     public void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} ObjectsUnloading: {1}", clientTransaction.ID, GetDomainObjectsString(unloadedDomainObjects));
     }
 
     public void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} ObjectDeleting: {1}", clientTransaction.ID, GetDomainObjectString(domainObject));
     }
 
     public void ObjectDeleted (ClientTransaction clientTransaction, DomainObject domainObject)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} ObjectDeleted: {1}", clientTransaction.ID, GetDomainObjectString(domainObject));
     }
 
     public void PropertyValueReading (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
       {
         s_logger.LogDebug(
             "{0} PropertyValueReading: {1} ({2}, {3})",
@@ -130,7 +131,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
       {
         s_logger.LogDebug(
             "{0} PropertyValueRead: {1}=={2} ({3}, {4})",
@@ -144,7 +145,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
       {
         s_logger.LogDebug(
             "{0} PropertyValueChanging: {1} {2}->{3} ({4})",
@@ -158,7 +159,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
       {
         s_logger.LogDebug(
             "{0} PropertyValueChanged: {1} {2}->{3} ({4})",
@@ -176,7 +177,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         IRelationEndPointDefinition relationEndPointDefinition,
         ValueAccess valueAccess)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
       {
         s_logger.LogDebug(
             "{0} RelationReading: {1} ({2}, {3})",
@@ -194,7 +195,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         DomainObject? relatedObject,
         ValueAccess valueAccess)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
       {
         s_logger.LogDebug(
             "{0} RelationRead: {1}=={2} ({3}, {4})",
@@ -213,7 +214,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         IReadOnlyCollectionData<DomainObject> relatedObjects,
         ValueAccess valueAccess)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
       {
         var domainObjectsString = relatedObjects.IsDataComplete ? GetDomainObjectsString(relatedObjects) : "<data not loaded>";
         s_logger.LogDebug(
@@ -233,7 +234,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         DomainObject? oldRelatedObject,
         DomainObject? newRelatedObject)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
       {
         s_logger.LogDebug(
             "{0} RelationChanging: {1}: {2}->{3} /{4}",
@@ -252,7 +253,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         DomainObject? oldRelatedObject,
         DomainObject? newRelatedObject)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
       {
         s_logger.LogDebug(
             "{0} RelationChanged: {1}: {2}->{3} /{4}",
@@ -266,7 +267,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult) where T: DomainObject
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
       {
         s_logger.LogDebug(
             "{0} FilterQueryResult: {1} ({2}): {3}",
@@ -280,7 +281,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public IEnumerable<T> FilterCustomQueryResult<T> (ClientTransaction clientTransaction, IQuery query, IEnumerable<T> results)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
       {
         s_logger.LogDebug(
             "{0} FilterCustomQueryResult: {1} ({2})",
@@ -293,85 +294,85 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} TransactionCommitting: {1}", clientTransaction.ID, GetDomainObjectsString(domainObjects));
     }
 
     public void TransactionCommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} TransactionCommitValidate: {1}", clientTransaction.ID, GetDomainObjectsString(committedData.Select(pd => pd.DomainObject)));
     }
 
     public void TransactionCommitted (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} TransactionCommitted: {1}", clientTransaction.ID, GetDomainObjectsString(domainObjects));
     }
 
     public void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} TransactionRollingBack: {1}", clientTransaction.ID, GetDomainObjectsString(domainObjects));
     }
 
     public void TransactionRolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} TransactionRolledBack: {1}", clientTransaction.ID, GetDomainObjectsString(domainObjects));
     }
 
     public void RelationEndPointMapRegistering (ClientTransaction clientTransaction, IRelationEndPoint endPoint)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} RelationEndPointMapRegistering: {1}", clientTransaction.ID, endPoint.ID);
     }
 
     public void RelationEndPointMapUnregistering (ClientTransaction clientTransaction, RelationEndPointID endPointID)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} RelationEndPointMapUnregistering: {1}", clientTransaction.ID, endPointID);
     }
 
     public void RelationEndPointBecomingIncomplete (ClientTransaction clientTransaction, RelationEndPointID endPointID)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} RelationEndPointBecomingIncomplete: {1}", clientTransaction.ID, endPointID);
     }
 
     public void ObjectMarkedInvalid (ClientTransaction clientTransaction, DomainObject domainObject)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} ObjectMarkedInvalid: {1}", clientTransaction.ID, GetDomainObjectString(domainObject));
     }
 
     public void ObjectMarkedNotInvalid (ClientTransaction clientTransaction, DomainObject domainObject)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} ObjectMarkedNotInvalid: {1}", clientTransaction.ID, GetDomainObjectString(domainObject));
     }
 
     public void DataContainerMapRegistering (ClientTransaction clientTransaction, DataContainer container)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} DataContainerMapRegistering: {1}", clientTransaction.ID, container.ID);
     }
 
     public void DataContainerMapUnregistering (ClientTransaction clientTransaction, DataContainer container)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} DataContainerMapUnregistering: {1}", clientTransaction.ID, container.ID);
     }
 
     public void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, DataContainerState newDataContainerState)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} DataContainerStateUpdated: {1} {2}", clientTransaction.ID, container.ID, newDataContainerState);
     }
 
     public void VirtualRelationEndPointStateUpdated (ClientTransaction clientTransaction, RelationEndPointID endPointID, bool? newEndPointChangeState)
     {
-      if (s_logger.IsDebugEnabled())
+      if (s_logger.IsEnabled(LogLevel.Debug))
         s_logger.LogDebug("{0} VirtualRelationEndPointStateUpdated: {1} {2}", clientTransaction.ID, endPointID, newEndPointChangeState);
     }
 
