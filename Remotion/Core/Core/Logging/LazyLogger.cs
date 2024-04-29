@@ -16,23 +16,31 @@
 //
 using System;
 using Microsoft.Extensions.Logging;
-using Remotion.ServiceLocation;
-using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Logging;
 
-public static class LazyLoggerFactory
+public class LazyLogger : ILogger
 {
-  public static LazyLogger CreateLogger<T> ()
+  private readonly Lazy<ILogger> _lazyLogger;
+
+  public LazyLogger (Lazy<ILogger> lazyLogger)
   {
-    return CreateLogger(typeof(T));
+    _lazyLogger = lazyLogger;
   }
 
-  public static LazyLogger CreateLogger (Type type)
+  public void Log<TState> (Microsoft.Extensions.Logging.LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
   {
-    ArgumentUtility.CheckNotNull(nameof(type), type);
+    _lazyLogger.Value.Log(logLevel, eventId, state, exception, formatter);
+  }
 
-    return new LazyLogger(new Lazy<IMicrosoftLogger>(() => SafeServiceLocator.Current.GetInstance<ILoggerFactory>().CreateLogger(type)));
+  public bool IsEnabled (Microsoft.Extensions.Logging.LogLevel logLevel)
+  {
+    return _lazyLogger.Value.IsEnabled(logLevel);
+  }
+
+  public IDisposable? BeginScope<TState> (TState state)
+      where TState : notnull
+  {
+    return _lazyLogger.Value.BeginScope(state);
   }
 }
