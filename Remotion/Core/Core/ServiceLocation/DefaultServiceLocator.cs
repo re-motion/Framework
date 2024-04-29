@@ -79,7 +79,6 @@ namespace Remotion.ServiceLocation
       // Optimized for memory allocations
       _createRegistrationFromTypeFunc = CreateRegistrationFromType;
 
-      Register(new ServiceConfigurationEntry(typeof(ILogManager), new ServiceImplementationInfo(typeof(Log4NetLogManager), LifetimeKind.Singleton)));
       Register(
           new ServiceConfigurationEntry(
               typeof(ILoggerFactory),
