@@ -22,8 +22,6 @@ using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 {
@@ -60,7 +58,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
       }
     }
 
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<FilePatternRootAssemblyFinder>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<FilePatternRootAssemblyFinder>();
 
     private readonly string _searchPath;
     private readonly IReadOnlyList<FilePatternSpecification> _specifications;
@@ -111,7 +109,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
       using (StopwatchScope.CreateScope(
           s_logger,
-          MicrosoftLogLevel.Debug,
+          LogLevel.Debug,
           "Loaded root assemblies based on specifications. Time taken: {elapsed}"))
       {
         var rootAssemblies =
@@ -129,14 +127,14 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
       using (StopwatchScope.CreateScope(
           s_logger,
-          MicrosoftLogLevel.Debug,
+          LogLevel.Debug,
           "Selected files based on root assembly specifications. Time taken: {elapsed}"))
       {
         foreach (var specification in _specifications)
         {
           using (StopwatchScope.CreateScope(
               s_logger,
-              MicrosoftLogLevel.Debug,
+              LogLevel.Debug,
               string.Format(
                   "Applied '{0}' specification with file pattern '{1}'. Time taken: {{elapsed}}",
                   specification.Kind,

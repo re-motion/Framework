@@ -26,7 +26,6 @@ using Remotion.Context;
 using Remotion.Logging;
 using Remotion.Reflection;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.ExecutionEngine
 {
@@ -70,7 +69,7 @@ namespace Remotion.Web.ExecutionEngine
       }
     }
 
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<WxeFunctionStateManager>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<WxeFunctionStateManager>();
 
     private static readonly string s_key = typeof(WxeFunctionStateManager).GetAssemblyQualifiedNameChecked();
     private static readonly string s_sessionKeyForFunctionStates = s_key + "|WxeFunctionStates";

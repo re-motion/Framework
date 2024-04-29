@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
+using Microsoft.Extensions.Logging;
 
 namespace Remotion.Logging
 {
   /// <summary>
-  /// Use this class to create a logger implementing <see cref="IMicrosoftLogger"/>.
+  /// Use this class to create a logger implementing <see cref="ILogger"/>.
   /// </summary>
   /// <remarks>
   /// Currently only <b>log4net</b> is supported as logging infrastructure.
@@ -33,7 +33,7 @@ namespace Remotion.Logging
     /// <param name="name">The name of the logger to retrieve.</param>
     /// <returns>A logger for the <paramref name="name"/> specified.</returns>#
     [Obsolete("This API is not supported by Microsoft Logging. (Version 7.0.0)", true)]
-    public static IMicrosoftLogger GetLogger (string name)
+    public static ILogger GetLogger (string name)
     {
       throw new NotImplementedException();
     }
@@ -43,7 +43,7 @@ namespace Remotion.Logging
     /// </summary>
     /// <param name="type">The full name of <paramref name="type"/> will be used as the name of the logger to retrieve.</param>
     /// <returns>A logger for the fully qualified name of the <paramref name="type"/> specified.</returns>
-    public static IMicrosoftLogger GetLogger (Type type)
+    public static ILogger GetLogger (Type type)
     {
       return LazyLoggerFactory.CreateLogger(type);
     }

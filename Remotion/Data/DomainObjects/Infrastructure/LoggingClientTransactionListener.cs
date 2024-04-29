@@ -25,8 +25,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Logging;
 using Remotion.Reflection;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
@@ -36,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   [Serializable]
   public class LoggingClientTransactionListener : IClientTransactionListener
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<LoggingClientTransactionListener>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<LoggingClientTransactionListener>();
 
     public void TransactionInitialize (ClientTransaction clientTransaction)
     {

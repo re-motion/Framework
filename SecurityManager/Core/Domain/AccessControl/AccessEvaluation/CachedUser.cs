@@ -27,8 +27,6 @@ using Remotion.FunctionalProgramming;
 using Remotion.Logging;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
@@ -49,7 +47,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     private const string c_userNameParameter = "<userName>";
 
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<CachedUser>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<CachedUser>();
 
     // Note: Parsing the query takes about 1/6 of the total query time when connected to a local database instance.
     // Unfortunately, the first query also causes the initialization of various caches in re-store,
@@ -82,7 +80,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     {
       using (StopwatchScope.CreateScope(
           s_logger,
-          MicrosoftLogLevel.Information,
+          LogLevel.Information,
           "Refreshed data in CachedUser for user '" + userName + "'. Time taken: {elapsed:ms}ms"))
       {
         var clientTransaction = ClientTransaction.CreateRootTransaction();
@@ -94,7 +92,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     {
       using (StopwatchScope.CreateScope(
           s_logger,
-          MicrosoftLogLevel.Debug,
+          LogLevel.Debug,
           "Fetched data into CachedUser for user '" + userName + "'. Time taken: {elapsed:ms}ms"))
       {
         var queryTemplate = s_queryCache.GetQuery<User>(

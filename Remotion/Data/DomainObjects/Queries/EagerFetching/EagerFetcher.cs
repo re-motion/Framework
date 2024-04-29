@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Logging;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 {
@@ -33,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
   [Serializable]
   public class EagerFetcher : IEagerFetcher
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<EagerFetcher>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<EagerFetcher>();
 
     private readonly IFetchedRelationDataRegistrationAgent _registrationAgent;
 

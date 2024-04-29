@@ -19,8 +19,6 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Globalization.Implementation
 {
@@ -32,8 +30,8 @@ namespace Remotion.Globalization.Implementation
   /// </remarks>
   public static class ResourceLogger
   {
-    private const MicrosoftLogLevel c_logLevel = MicrosoftLogLevel.Debug;
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger(typeof(ResourceLogger));
+    private const LogLevel c_logLevel = LogLevel.Debug;
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger(typeof(ResourceLogger));
 
     public static bool IsEnabled
     {

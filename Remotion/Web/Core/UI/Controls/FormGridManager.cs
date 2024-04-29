@@ -37,7 +37,6 @@ using Remotion.Web.UI.Controls.Hotkey;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -982,7 +981,7 @@ namespace Remotion.Web.UI.Controls
 
     // static members
 
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<FormGridManager>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<FormGridManager>();
     private static NoneHotkeyFormatter s_noneHotkeyFormatter = new NoneHotkeyFormatter();
 
     // member fields

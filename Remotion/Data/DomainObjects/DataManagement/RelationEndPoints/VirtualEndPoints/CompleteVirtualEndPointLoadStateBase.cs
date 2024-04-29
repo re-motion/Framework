@@ -22,8 +22,6 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Logging;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints
 {
@@ -38,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       where TEndPoint : IVirtualEndPoint<TData>
       where TDataManager : class, IVirtualEndPointDataManager
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<CompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager>>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<CompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager>>();
 
     private readonly TDataManager _dataManager;
     private readonly IRelationEndPointProvider _endPointProvider;
@@ -69,7 +67,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     protected abstract IEnumerable<IRealObjectEndPoint> GetOriginalOppositeEndPoints ();
     protected abstract IEnumerable<DomainObject> GetOriginalItemsWithoutEndPoints ();
 
-    public static IMicrosoftLogger Logger
+    public static ILogger Logger
     {
       get { return s_logger; }
     }

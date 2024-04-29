@@ -20,6 +20,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Linq.ExecutableQueries;
@@ -27,8 +28,6 @@ using Remotion.Data.DomainObjects.Queries;
 using Remotion.Linq.EagerFetching;
 using Remotion.Logging;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
@@ -38,7 +37,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       where TRevisionKey : IRevisionKey
       where TRevisionValue : IRevisionValue
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<SecurityContextRevisionBasedCacheBase<TData, TRevisionKey, TRevisionValue>>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<SecurityContextRevisionBasedCacheBase<TData, TRevisionKey, TRevisionValue>>();
     private static readonly ConcurrentDictionary<string, IQuery> s_queryCache = new ConcurrentDictionary<string, IQuery>();
 
     protected SecurityContextRevisionBasedCacheBase (IRevisionProvider<TRevisionKey, TRevisionValue> revisionProvider)
@@ -50,7 +49,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     {
       return StopwatchScope.CreateScope(
           s_logger,
-          MicrosoftLogLevel.Debug,
+          LogLevel.Debug,
           "Parsed query for " + GetType().Name + "." + queryName + "(). Time taken: {elapsed:ms}ms");
     }
 
@@ -58,7 +57,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     {
       return StopwatchScope.CreateScope(
           s_logger,
-          MicrosoftLogLevel.Debug,
+          LogLevel.Debug,
           "Fetched " + queryName + " into " + GetType().Name + ". Time taken: {elapsed:ms}ms");
     }
 

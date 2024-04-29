@@ -27,7 +27,6 @@ using Remotion.Logging;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.UI.Globalization;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -36,7 +35,7 @@ namespace Remotion.Web.UI.Controls
   /// </summary>
   public class ControlItemCollection : CollectionBase
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<ControlItemCollection>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<ControlItemCollection>();
 
     private IControl? _ownerControl;
     private readonly Type[] _supportedTypes;

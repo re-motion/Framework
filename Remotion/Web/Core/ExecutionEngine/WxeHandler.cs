@@ -26,7 +26,6 @@ using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Utilities;
 using VirtualPathUtility = System.Web.VirtualPathUtility;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.ExecutionEngine
 {
@@ -91,7 +90,7 @@ namespace Remotion.Web.ExecutionEngine
     private const int c_HttpSessionTimeout = 409;
     private const int c_HttpFunctionTimeout = 409;
 
-    private static IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<WxeHandler>();
+    private static ILogger s_logger = LazyLoggerFactory.CreateLogger<WxeHandler>();
 
     /// <summary> The <see cref="WxeFunctionState"/> representing the <see cref="RootFunction"/> and its context. </summary>
     private WxeFunctionState? _currentFunctionState;

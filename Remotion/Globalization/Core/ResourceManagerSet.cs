@@ -23,7 +23,6 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Globalization
 {
@@ -31,7 +30,7 @@ namespace Remotion.Globalization
   /// <threadsafety static="true" instance="true" />
   public class ResourceManagerSet : IResourceManager
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<ResourceManagerSet>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<ResourceManagerSet>();
 
     private readonly IResourceManager[] _resourceManagers;
     private readonly string _name;

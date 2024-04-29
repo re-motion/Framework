@@ -26,7 +26,6 @@ using Microsoft.Extensions.Logging;
 using Remotion.Collections;
 using Remotion.Logging;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Globalization.Implementation
 {
@@ -47,7 +46,7 @@ namespace Remotion.Globalization.Implementation
   {
     //  static members
 
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<ResourceManagerWrapper>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<ResourceManagerWrapper>();
 
     // member fields
 

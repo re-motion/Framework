@@ -21,7 +21,6 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
 {
@@ -38,7 +37,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
   /// </remarks>
   public class FilteringAssemblyLoader : IAssemblyLoader
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<FilteringAssemblyLoader>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<FilteringAssemblyLoader>();
 
     private readonly IAssemblyLoaderFilter _filter;
 

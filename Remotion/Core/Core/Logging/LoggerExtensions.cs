@@ -16,8 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
+using Microsoft.Extensions.Logging;
 
 namespace Remotion.Logging
 {
@@ -32,12 +31,12 @@ namespace Remotion.Logging
     /// </summary>
     /// <typeparam name="T">The (inferred) type of the value to be logged.</typeparam>
     /// <param name="value">The value to be logged.</param>
-    /// <param name="logger">The <see cref="IMicrosoftLogger"/> to logger the value with.</param>
-    /// <param name="logLevel">The <see cref="MicrosoftLogLevel"/> to logger the value at. If the <paramref name="logger"/> does not support this level, the
+    /// <param name="logger">The <see cref="ILogger"/> to logger the value with.</param>
+    /// <param name="logLevel">The <see cref="LogLevel"/> to logger the value at. If the <paramref name="logger"/> does not support this level, the
     /// <paramref name="messageCreator"/> is not called.</param>
     /// <param name="messageCreator">A function object building the message to be logged.</param>
     /// <returns>The <paramref name="value"/> passed in to the method.</returns>
-    public static T LogAndReturnValue<T> (this T value, IMicrosoftLogger logger, MicrosoftLogLevel logLevel, Func<T, string?> messageCreator)
+    public static T LogAndReturnValue<T> (this T value, ILogger logger, LogLevel logLevel, Func<T, string?> messageCreator)
     {
       if (logger.IsEnabled(logLevel))
       {
@@ -49,8 +48,8 @@ namespace Remotion.Logging
 
     public static IEnumerable<T> LogAndReturnItems<T> (
         this IEnumerable<T> sequence,
-        IMicrosoftLogger logger,
-        MicrosoftLogLevel logLevel,
+        ILogger logger,
+        LogLevel logLevel,
         Func<int, string?> iterationCompletedMessageCreator)
     {
       if (logger.IsEnabled(logLevel))
@@ -60,8 +59,8 @@ namespace Remotion.Logging
 
     private static IEnumerable<T> LogAndReturnWithIteration<T> (
         IEnumerable<T> sequence,
-        IMicrosoftLogger logger,
-        MicrosoftLogLevel logLevel,
+        ILogger logger,
+        LogLevel logLevel,
         Func<int, string?> iterationCompletedMessageCreator)
     {
       int count = 0;

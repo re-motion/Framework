@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Logging;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjectEndPoints
 {
@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
   /// </summary>
   public class UnknownRealObjectEndPointSyncState : IRealObjectEndPointSyncState
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<UnknownRealObjectEndPointSyncState>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<UnknownRealObjectEndPointSyncState>();
 
     private readonly IVirtualEndPointProvider _virtualEndPointProvider;
 

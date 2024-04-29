@@ -17,9 +17,9 @@
 
 using System;
 using log4net.Core;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Remotion.Logging;
-using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 
 namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsTests
@@ -33,7 +33,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsTests
       Exception exception = new Exception();
       SetLoggingThreshold(Level.Info);
 
-      Log.LogFormat(MicrosoftLogLevel.Information, LogMessages.TheMessage, exception, "First", "Second");
+      Log.LogFormat(LogLevel.Information, LogMessages.TheMessage, exception, "First", "Second");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));
@@ -51,7 +51,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsTests
     {
       SetLoggingThreshold(Level.Info);
 
-      Log.LogFormat(MicrosoftLogLevel.Information, LogMessages.TheMessage, "First", "Second");
+      Log.LogFormat(LogLevel.Information, LogMessages.TheMessage, "First", "Second");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));

@@ -33,7 +33,6 @@ using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
 using Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering;
 using Remotion.Web.UI.Globalization;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
@@ -52,7 +51,7 @@ namespace Remotion.Web.UI.Controls
     private const string c_resourceKeyTabs = "Tabs";
 
     // statics
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<WebTabStrip>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<WebTabStrip>();
     private static readonly object s_selectedIndexChangedEvent = new object();
     private static readonly object s_clickEvent = new object();
 

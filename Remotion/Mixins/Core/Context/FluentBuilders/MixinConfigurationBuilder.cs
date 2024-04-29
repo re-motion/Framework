@@ -23,8 +23,6 @@ using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Reflection;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Mixins.Context.FluentBuilders
 {
@@ -33,7 +31,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
   /// </summary>
   public class MixinConfigurationBuilder
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<MixinConfigurationBuilder>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<MixinConfigurationBuilder>();
 
     private readonly MixinConfiguration? _parentConfiguration;
     private readonly Dictionary<Type, ClassContextBuilder> _classContextBuilders = new Dictionary<Type, ClassContextBuilder>();
@@ -183,7 +181,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>A new <see cref="MixinConfiguration"/> instance incorporating all the data acquired so far.</returns>
     public virtual MixinConfiguration BuildConfiguration ()
     {
-      using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Information, "Time needed to build mixin configuration from fluent builders: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_logger, LogLevel.Information, "Time needed to build mixin configuration from fluent builders: {elapsed}."))
       {
         var parentContexts = ParentConfiguration != null ? ParentConfiguration.ClassContexts : new ClassContextCollection();
         s_logger.LogDebug("Building a mixin configuration with {0} parent class contexts from fluent builders...", parentContexts.Count);
@@ -195,7 +193,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
         return new MixinConfiguration(classContextCollection)
             .LogAndReturnValue(
                 s_logger,
-                MicrosoftLogLevel.Information,
+                LogLevel.Information,
                 conf => string.Format("Built mixin configuration from fluent builders with {0} class contexts.", conf.ClassContexts.Count));
       }
     }

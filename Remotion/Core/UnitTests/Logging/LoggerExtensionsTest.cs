@@ -21,7 +21,6 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Logging;
 using Microsoft.Extensions.Logging.Testing;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.UnitTests.Logging
 {
