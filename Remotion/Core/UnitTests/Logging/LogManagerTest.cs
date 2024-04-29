@@ -15,8 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Remotion.Logging;
+using Remotion.Logging.Log4Net;
 
 namespace Remotion.UnitTests.Logging
 {
@@ -24,23 +26,13 @@ namespace Remotion.UnitTests.Logging
   public class LogManagerTest
   {
     [Test]
-    public void GetLogger_WithNameAsString ()
-    {
-      ILog log = LogManager.GetLogger("The Name");
-
-      Assert.That(log, Is.InstanceOf(typeof(Log4NetLog)));
-      Log4NetLog log4NetLog = (Log4NetLog)log;
-      Assert.That(log4NetLog.Logger.Name, Is.EqualTo("The Name"));
-    }
-
-    [Test]
     public void GetLogger_WithNameFromType ()
     {
-      ILog log = LogManager.GetLogger(typeof(SampleType));
+      ILogger log = LogManager.GetLogger(typeof(SampleType));
 
-      Assert.That(log, Is.InstanceOf(typeof(Log4NetLog)));
-      Log4NetLog log4NetLog = (Log4NetLog)log;
-      Assert.That(log4NetLog.Logger.Name, Is.EqualTo("Remotion.UnitTests.Logging.SampleType"));
+      Assert.That(log, Is.InstanceOf(typeof(LazyLogger)));
+      LazyLogger lazyLogger = (LazyLogger)log;
+      Assert.That(lazyLogger.Logger.Name, Is.EqualTo("Remotion.UnitTests.Logging.SampleType"));
     }
 
   }
