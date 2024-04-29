@@ -19,8 +19,6 @@ using log4net.Core;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 
-using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
-
 namespace Remotion.Logging.Log4Net.UnitTests.Log4NetLoggerTests
 {
   [TestFixture]
@@ -32,7 +30,7 @@ namespace Remotion.Logging.Log4Net.UnitTests.Log4NetLoggerTests
       Exception exception = new Exception();
       SetLoggingThreshold(Level.Info);
 
-      Log.Log<object>(MicrosoftLogLevel.Information, new EventId(1, null), "Test", exception, (s, ex) => $"{s} - {ex.Message}");
+      Log.Log<object>(LogLevel.Information, new EventId(1, null), "Test", exception, (s, ex) => $"{s} - {ex.Message}");
 
       LoggingEvent[] events = GetLoggingEvents();
       Assert.That(events.Length, Is.EqualTo(1));

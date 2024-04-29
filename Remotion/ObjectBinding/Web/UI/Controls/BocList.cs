@@ -58,7 +58,6 @@ using Remotion.Web.UI.Controls.PostBackTargets;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -207,7 +206,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     // static members
     private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof(IBusinessObjectReferenceProperty) };
 
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger(MethodBase.GetCurrentMethod()!.DeclaringType!);
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger(MethodBase.GetCurrentMethod()!.DeclaringType!);
 
     private static readonly object s_menuItemClickEvent = new object();
     private static readonly object s_listItemCommandClickEvent = new object();

@@ -27,8 +27,6 @@ using Remotion.Security;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
@@ -63,7 +61,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       }
     }
 
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<SecurityContextRevisionBasedCache>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<SecurityContextRevisionBasedCache>();
     private static readonly RevisionKey s_revisionKey = new RevisionKey();
 
     public SecurityContextRevisionBasedCache (IDomainRevisionProvider revisionProvider)
@@ -86,7 +84,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         s_logger.LogInformation("Reset SecurityContextRevisionBasedCache cache.");
-        using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Information, "Refreshed data in SecurityContextRevisionBasedCache. Time taken: {elapsed:ms}ms"))
+        using (StopwatchScope.CreateScope(s_logger, LogLevel.Information, "Refreshed data in SecurityContextRevisionBasedCache. Time taken: {elapsed:ms}ms"))
         {
           var tenants = LoadTenants();
           var groups = LoadGroups();

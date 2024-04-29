@@ -27,8 +27,6 @@ using Remotion.Configuration.TypeDiscovery;
 using Remotion.Logging;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Reflection.TypeDiscovery
 {
@@ -40,7 +38,7 @@ namespace Remotion.Reflection.TypeDiscovery
   /// </summary>
   public sealed class AssemblyFinderTypeDiscoveryService : ITypeDiscoveryService
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<AssemblyFinderTypeDiscoveryService>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<AssemblyFinderTypeDiscoveryService>();
 
     private readonly IAssemblyFinder _assemblyFinder;
     private readonly Lazy<BaseTypeCache> _baseTypeCache;
@@ -98,7 +96,7 @@ namespace Remotion.Reflection.TypeDiscovery
               s_logger.LogDebug("Discovering types derived from '{0}', including GAC...", key);
               using (StopwatchScope.CreateScope(
                   s_logger,
-                  MicrosoftLogLevel.Information,
+                  LogLevel.Information,
                   string.Format("Discovered types derived from '{0}', including GAC. Time taken: {{elapsed}}", key)))
               {
                 return GetTypesFromAllAssemblies(key, excludeGlobalTypes: false).ToList().AsReadOnly();
@@ -121,7 +119,7 @@ namespace Remotion.Reflection.TypeDiscovery
       s_logger.LogDebug("Creating cache for all types in application directory...");
       using (StopwatchScope.CreateScope(
           s_logger,
-          MicrosoftLogLevel.Information,
+          LogLevel.Information,
           "Created cache for all types in application directory. Time taken: {elapsed}"))
       {
         return BaseTypeCache.Create(GetTypesFromAllAssemblies(null, true));

@@ -19,8 +19,6 @@ using System.Diagnostics;
 using System.IO;
 using Microsoft.Extensions.Logging;
 using Remotion.Logging;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Utilities
 {
@@ -104,7 +102,7 @@ namespace Remotion.Utilities
     /// Creates a <see cref="StopwatchScope"/> that measures the time, writing the result to the given
     /// <paramref name="logger"/> when the scope is disposed or a <see cref="Checkpoint"/> is reached.
     /// </summary>
-    /// <param name="logger">The <see cref="IMicrosoftLogger"/> to receive the result.</param>
+    /// <param name="logger">The <see cref="ILogger"/> to receive the result.</param>
     /// <param name="logLevel">The log level to log the result with.</param>
     /// <param name="formatString">A string to format the result with. The string can contain the following placeholders:
     /// <list type="bullet">
@@ -135,7 +133,7 @@ namespace Remotion.Utilities
     /// <returns>
     /// A <see cref="StopwatchScope"/> that measures the time in milliseconds.
     /// </returns>
-    public static StopwatchScope CreateScope (IMicrosoftLogger logger, MicrosoftLogLevel logLevel, string formatString)
+    public static StopwatchScope CreateScope (ILogger logger, LogLevel logLevel, string formatString)
     {
       var actualFormatString = ReplacePlaceholders(formatString);
       return new StopwatchScope((context, scope) => logger.Log(

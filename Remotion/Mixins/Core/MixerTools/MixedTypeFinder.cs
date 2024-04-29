@@ -22,14 +22,13 @@ using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Mixins.Context;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Mixins.MixerTools
 {
   // Change to be an ITypeDiscoveryService decorator
   public class MixedTypeFinder : IMixedTypeFinder
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<MixedTypeFinder>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<MixedTypeFinder>();
 
     private readonly ITypeDiscoveryService _typeDiscoveryService;
 

@@ -20,13 +20,12 @@ using System.Xml;
 using System.Xml.Schema;
 using Microsoft.Extensions.Logging;
 using Remotion.Logging;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Xml
 {
   public class XmlSchemaValidationHandler
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<XmlSchemaValidationHandler>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<XmlSchemaValidationHandler>();
 
     private bool _failOnError;
 

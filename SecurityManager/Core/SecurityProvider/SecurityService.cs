@@ -24,7 +24,6 @@ using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.SecurityManager
 {
@@ -33,7 +32,7 @@ namespace Remotion.SecurityManager
   {
     public const int Position = NullSecurityProvider.Position - 1;
 
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<SecurityService>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<SecurityService>();
 
     private readonly IAccessControlListFinder _accessControlListFinder;
     private readonly ISecurityTokenBuilder _securityTokenBuilder;

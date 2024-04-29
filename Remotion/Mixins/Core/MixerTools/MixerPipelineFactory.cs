@@ -24,13 +24,12 @@ using Remotion.Reflection.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Mixins.MixerTools
 {
   public class MixerPipelineFactory : IMixerPipelineFactory
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<MixerPipelineFactory>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<MixerPipelineFactory>();
 
     private readonly string _assemblyName;
     private readonly int _degreeOfParallelism;

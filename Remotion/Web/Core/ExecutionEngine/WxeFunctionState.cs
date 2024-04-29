@@ -19,7 +19,6 @@ using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.ExecutionEngine
 {
@@ -30,7 +29,7 @@ namespace Remotion.Web.ExecutionEngine
   [Serializable]
   public class WxeFunctionState
   {
-    private static IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<WxeFunctionState>();
+    private static ILogger s_logger = LazyLoggerFactory.CreateLogger<WxeFunctionState>();
 
     private WxeFunction _function;
     private int _lifetime;

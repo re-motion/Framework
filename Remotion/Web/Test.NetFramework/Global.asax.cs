@@ -16,19 +16,19 @@
 // 
 using System;
 using System.Web;
+using Microsoft.Extensions.Logging;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Logging;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Test.Shared.ErrorHandling;
 using Remotion.Web.UI;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Web.Test.NetFramework
 {
   public class Global : HttpApplication
   {
-    private static IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<Global>();
+    private static ILogger s_logger = LazyLoggerFactory.CreateLogger<Global>();
     private static ResourceVirtualPathProvider _resourceVirtualPathProvider;
 
     protected void Application_Start (Object sender, EventArgs e)

@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Persistence;
@@ -28,15 +29,13 @@ using Remotion.Security;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
   [ImplementationFor(typeof(IAccessResolver), Lifetime = LifetimeKind.Singleton)]
   public class AccessResolver : IAccessResolver
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<AccessResolver>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<AccessResolver>();
     private static readonly QueryCache s_queryCache = new QueryCache();
 
     public AccessType[] GetAccessTypes (IDomainObjectHandle<AccessControlList> aclHandle, SecurityToken token)
@@ -51,7 +50,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
         {
           using (StopwatchScope.CreateScope(
               s_logger,
-              MicrosoftLogLevel.Information,
+              LogLevel.Information,
               string.Format(
                   "Evaluated access types of ACL '{0}' for principal '{1}'. Time taken: {{elapsed:ms}}ms",
                   aclHandle.ObjectID,
@@ -74,7 +73,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     {
       using (StopwatchScope.CreateScope(
           s_logger,
-          MicrosoftLogLevel.Debug,
+          LogLevel.Debug,
           "Fetched ACL '" + aclHandle.ObjectID + "' for AccessResolver. Time taken: {elapsed:ms}ms"))
       {
         var queryTemplate = s_queryCache.GetQuery<AccessControlList>(
@@ -95,7 +94,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     private void LoadAccessTypeDefinitions (ClientTransaction clientTransaction)
     {
-      using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Debug, "Fetched access types for AccessResolver. Time taken: {elapsed:ms}ms"))
+      using (StopwatchScope.CreateScope(s_logger, LogLevel.Debug, "Fetched access types for AccessResolver. Time taken: {elapsed:ms}ms"))
       {
         s_queryCache.ExecuteCollectionQuery<AccessTypeDefinition>(
             clientTransaction,

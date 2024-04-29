@@ -23,8 +23,6 @@ using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 {
@@ -36,7 +34,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
   /// <threadsafety static="true" instance="true" />
   public class AssemblyFinder : IAssemblyFinder
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<AssemblyFinder>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<AssemblyFinder>();
 
     private readonly IRootAssemblyFinder _rootAssemblyFinder;
     private readonly IAssemblyLoader _assemblyLoader;
@@ -73,7 +71,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     public virtual IEnumerable<Assembly> FindAssemblies ()
     {
       s_logger.LogDebug("Finding assemblies...");
-      using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Information, "Time spent for finding and loading assemblies: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_logger, LogLevel.Information, "Time spent for finding and loading assemblies: {elapsed}."))
       {
         var rootAssemblies = FindRootAssemblies();
         var resultSet = new HashSet<Assembly>(rootAssemblies.Select(root => root.Assembly));
@@ -81,7 +79,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
         // Forcing the enumeration at this point does not have a measurable impact on performance.
         // Instead, decoupling the assembly loading from the rest of the system is actually helpful for concurrency.
-        return resultSet.LogAndReturnItems(s_logger, MicrosoftLogLevel.Information, count => string.Format("Found {0} assemblies.", count))
+        return resultSet.LogAndReturnItems(s_logger, LogLevel.Information, count => string.Format("Found {0} assemblies.", count))
             .ToList();
       }
     }
@@ -89,10 +87,10 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     private ICollection<RootAssembly> FindRootAssemblies ()
     {
       s_logger.LogDebug("Finding root assemblies..."?.ToString());
-      using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Debug, "Time spent for finding and loading root assemblies: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_logger, LogLevel.Debug, "Time spent for finding and loading root assemblies: {elapsed}."))
       {
         return _rootAssemblyFinder.FindRootAssemblies()
-            .LogAndReturnItems(s_logger, MicrosoftLogLevel.Debug, count => string.Format("Found {0} root assemblies.", count))
+            .LogAndReturnItems(s_logger, LogLevel.Debug, count => string.Format("Found {0} root assemblies.", count))
             .ToList();
       }
     }
@@ -100,7 +98,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     private ICollection<Assembly> FindReferencedAssemblies (ICollection<RootAssembly> rootAssemblies)
     {
       s_logger.LogDebug("Finding referenced assemblies..."?.ToString());
-      using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Debug, "Time spent for finding and loading referenced assemblies: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_logger, LogLevel.Debug, "Time spent for finding and loading referenced assemblies: {elapsed}."))
       {
         // referenced assemblies are added later in order to get their references as well
         var referenceRoots = new ConcurrentQueue<Assembly>(
@@ -137,7 +135,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
         }
 
         return result
-            .LogAndReturnItems(s_logger, MicrosoftLogLevel.Debug, count => string.Format("Found {0} referenced assemblies.", count))
+            .LogAndReturnItems(s_logger, LogLevel.Debug, count => string.Format("Found {0} referenced assemblies.", count))
             .ToList();
       }
     }

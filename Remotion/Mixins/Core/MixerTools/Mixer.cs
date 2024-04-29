@@ -30,8 +30,6 @@ using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Implementation;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Mixins.MixerTools
 {
@@ -41,7 +39,7 @@ namespace Remotion.Mixins.MixerTools
   /// </summary>
   public class Mixer
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<Mixer>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<Mixer>();
 
     public static Mixer Create (string assemblyName, string assemblyOutputDirectory, int degreeOfParallelism)
     {
@@ -121,7 +119,7 @@ namespace Remotion.Mixins.MixerTools
     {
       ArgumentUtility.CheckNotNull("configuration", configuration);
 
-      using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Information, "Time needed to mix and save all types: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_logger, LogLevel.Information, "Time needed to mix and save all types: {elapsed}."))
       {
         _errors.Clear();
         _processedTypes.Clear();

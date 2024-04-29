@@ -18,7 +18,6 @@ using System;
 using Microsoft.Extensions.Logging;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.Logging;
 
@@ -33,6 +32,6 @@ public static class LazyLoggerFactory
   {
     ArgumentUtility.CheckNotNull(nameof(type), type);
 
-    return new LazyLogger(new Lazy<IMicrosoftLogger>(() => SafeServiceLocator.Current.GetInstance<ILoggerFactory>().CreateLogger(type)));
+    return new LazyLogger(new Lazy<ILogger>(() => SafeServiceLocator.Current.GetInstance<ILoggerFactory>().CreateLogger(type)));
   }
 }

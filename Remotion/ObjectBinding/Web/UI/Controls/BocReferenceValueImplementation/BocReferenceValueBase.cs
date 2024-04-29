@@ -38,7 +38,6 @@ using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 {
@@ -149,7 +148,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     private static readonly object SelectionChangedEvent = new object();
     private static readonly object MenuItemClickEvent = new object();
 
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger(MethodBase.GetCurrentMethod()!.DeclaringType!);
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger(MethodBase.GetCurrentMethod()!.DeclaringType!);
 
     private readonly DropDownMenu _optionsMenu;
 

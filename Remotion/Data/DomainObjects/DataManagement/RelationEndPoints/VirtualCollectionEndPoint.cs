@@ -28,8 +28,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.Logging;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
@@ -38,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// </summary>
   public class VirtualCollectionEndPoint : RelationEndPoint, IVirtualCollectionEndPoint
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<VirtualCollectionEndPoint>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<VirtualCollectionEndPoint>();
 
     private readonly IVirtualCollectionEndPointCollectionManager _collectionManager;
     private readonly ILazyLoader _lazyLoader;

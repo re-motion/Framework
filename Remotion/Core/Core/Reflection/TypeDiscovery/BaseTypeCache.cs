@@ -22,8 +22,6 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Utilities;
-using IMicrosoftLogger = Microsoft.Extensions.Logging.ILogger;
-using MicrosoftLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Remotion.Reflection.TypeDiscovery
 {
@@ -32,14 +30,14 @@ namespace Remotion.Reflection.TypeDiscovery
   /// </summary>
   public sealed class BaseTypeCache
   {
-    private static readonly IMicrosoftLogger s_logger = LazyLoggerFactory.CreateLogger<BaseTypeCache>();
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<BaseTypeCache>();
 
     public static BaseTypeCache Create (IEnumerable<Type> types)
     {
       ArgumentUtility.CheckNotNull("types", types);
 
       s_logger.LogDebug("Beginning to build BaseTypeCache...");
-      using (StopwatchScope.CreateScope(s_logger, MicrosoftLogLevel.Debug, string.Format("Built BaseTypeCache. Time taken: {{elapsed}}")))
+      using (StopwatchScope.CreateScope(s_logger, LogLevel.Debug, string.Format("Built BaseTypeCache. Time taken: {{elapsed}}")))
       {
         // Note: there is no measurable impact when switching this code to parallel execution.
         var classes = new List<KeyValuePair<Type, Type>>();
