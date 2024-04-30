@@ -26,13 +26,13 @@ namespace Remotion.Logging
   public static class LoggerExtensions
   {
     /// <summary>
-    /// Logs the given value and returns it to the caller. This is typically used to logger a value returned by a method directly in the return
+    /// Logs the given value and returns it to the caller. This is typically used to log a value returned by a method directly in the return
     /// statement.
     /// </summary>
     /// <typeparam name="T">The (inferred) type of the value to be logged.</typeparam>
     /// <param name="value">The value to be logged.</param>
-    /// <param name="logger">The <see cref="ILogger"/> to logger the value with.</param>
-    /// <param name="logLevel">The <see cref="Microsoft.Extensions.Logging.LogLevel"/> to logger the value at. If the <paramref name="logger"/> does not support this level, the
+    /// <param name="logger">The <see cref="ILogger"/> to log the value with.</param>
+    /// <param name="logLevel">The <see cref="Microsoft.Extensions.Logging.LogLevel"/> to log the value at. If the <paramref name="logger"/> does not support this level, the
     /// <paramref name="messageCreator"/> is not called.</param>
     /// <param name="messageCreator">A function object building the message to be logged.</param>
     /// <returns>The <paramref name="value"/> passed in to the method.</returns>
