@@ -39,7 +39,8 @@ namespace Remotion.Web.Test
       defaultServiceLocator.RegisterSingle(() => wxeLifetimeManagementSettings);
 
       ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
-      LogManager.Initialize();
+      //TODO: RM-9195
+      // LogManager.Initialize();
 
 #if DEBUG
       const string configuration = "Debug";

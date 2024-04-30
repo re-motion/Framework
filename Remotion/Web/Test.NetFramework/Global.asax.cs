@@ -35,8 +35,8 @@ namespace Remotion.Web.Test.NetFramework
     {
       var defaultServiceLocator = DefaultServiceLocator.Create();
       ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
-      LogManager.Initialize();
-
+      // LogManager.Initialize();
+      //TODO: RM-9195
 #if DEBUG
       const string configuration = "Debug";
 #else

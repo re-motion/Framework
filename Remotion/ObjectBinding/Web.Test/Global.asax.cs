@@ -43,7 +43,8 @@ namespace OBWTest
     public Global ()
     {
       //  Initialize Logger
-      LogManager.GetLogger(typeof(Global));
+      //TODO: RM-9195
+      // LogManager.GetLogger(typeof(Global));
       InitializeComponent();
     }
 
@@ -56,7 +57,8 @@ namespace OBWTest
 
     protected void Application_Start (Object sender, EventArgs e)
     {
-      LogManager.Initialize();
+      //TODO: RM-9195
+      // LogManager.Initialize();
 
       string objectPath = Server.MapPath("~/objects");
       if (!Directory.Exists(objectPath))

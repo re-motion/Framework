@@ -99,19 +99,20 @@ namespace Remotion.Mixins.MixerTools
 
     private void ConfigureLogging ()
     {
-      if (_parameters.Verbose)
-      {
-        LogManager.InitializeConsole();
-      }
-      else
-      {
-        var mixerLoggers = from t in AssemblyTypeCache.GetTypes(typeof(Mixer).Assembly)
-            where t.Namespace == typeof(Mixer).GetNamespaceChecked()
-            select LogManager.GetLogger(t);
-        var logThresholds = from l in mixerLoggers
-            select new LogThreshold(l, LogLevel.Info);
-        LogManager.InitializeConsole(LogLevel.Warn, logThresholds.ToArray());
-      }
+      //TODO: RM-9195
+      // if (_parameters.Verbose)
+      // {
+      //   LogManager.InitializeConsole();
+      // }
+      // else
+      // {
+      //   var mixerLoggers = from t in AssemblyTypeCache.GetTypes(typeof(Mixer).Assembly)
+      //       where t.Namespace == typeof(Mixer).GetNamespaceChecked()
+      //       select LogManager.GetLogger(t);
+      //   var logThresholds = from l in mixerLoggers
+      //       select new LogThreshold(l, LogLevel.Info);
+      //   LogManager.InitializeConsole(LogLevel.Warn, logThresholds.ToArray());
+      // }
     }
 
     private Mixer CreateMixer ()
