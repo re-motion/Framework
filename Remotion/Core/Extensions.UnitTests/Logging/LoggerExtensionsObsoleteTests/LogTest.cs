@@ -22,6 +22,7 @@ using Remotion.Logging;
 
 namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
 {
+#if NETFRAMEWORK
   [TestFixture]
   public class LogTest : BaseTest
   {
@@ -189,4 +190,5 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
       Assert.That(GetLoggingEvents(), Is.Empty);
     }
   }
+#endif
 }
