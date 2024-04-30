@@ -48,7 +48,8 @@ namespace Remotion.SecurityManager.PerformanceTests
 
       ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
 
-      LogManager.Initialize();
+      //TODO: RM-9195
+      // LogManager.Initialize();
 
       var provider = new SecurityService(
           SafeServiceLocator.Current.GetInstance<IAccessControlListFinder>(),
