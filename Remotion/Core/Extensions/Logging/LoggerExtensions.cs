@@ -62,7 +62,7 @@ namespace Remotion.Logging
     }
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Trace"/> level, including the stack
+    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="Microsoft.Extensions.Logging.LogLevel.Trace"/> level, including the stack
     /// trace of <paramref name="exceptionObject"/>.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
@@ -75,7 +75,7 @@ namespace Remotion.Logging
     }
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Trace"/> level.
+    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="Microsoft.Extensions.Logging.LogLevel.Trace"/> level.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
@@ -87,7 +87,7 @@ namespace Remotion.Logging
     }
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Debug"/> level, including the stack
+    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="Microsoft.Extensions.Logging.LogLevel.Debug"/> level, including the stack
     /// trace of <paramref name="exceptionObject"/>.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
@@ -100,7 +100,7 @@ namespace Remotion.Logging
     }
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Debug"/> level.
+    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="Microsoft.Extensions.Logging.LogLevel.Debug"/> level.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
@@ -112,7 +112,7 @@ namespace Remotion.Logging
     }
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Information"/> level, including the stack
+    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="Microsoft.Extensions.Logging.LogLevel.Information"/> level, including the stack
     /// trace of <paramref name="exceptionObject"/>.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
@@ -125,7 +125,7 @@ namespace Remotion.Logging
     }
 
     /// <summary>
-    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Information"/> level.
+    /// Log message and event id derived from the <paramref name="messageEnum"/> with the <see cref="Microsoft.Extensions.Logging.LogLevel.Information"/> level.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
@@ -137,7 +137,7 @@ namespace Remotion.Logging
     }
 
     /// <summary>
-    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Warning"/> level, including the stack
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="Microsoft.Extensions.Logging.LogLevel.Warning"/> level, including the stack
     /// trace of <paramref name="exceptionObject"/>.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
@@ -150,7 +150,7 @@ namespace Remotion.Logging
     }
 
     /// <summary>
-    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Warning"/> level.
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="Microsoft.Extensions.Logging.LogLevel.Warning"/> level.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
@@ -162,7 +162,7 @@ namespace Remotion.Logging
     }
 
     /// <summary>
-    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Error"/> level, including the stack
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="Microsoft.Extensions.Logging.LogLevel.Error"/> level, including the stack
     /// trace of <paramref name="exceptionObject"/>.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
@@ -175,7 +175,7 @@ namespace Remotion.Logging
     }
 
     /// <summary>
-    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Error"/> level.
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="Microsoft.Extensions.Logging.LogLevel.Error"/> level.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
@@ -187,7 +187,7 @@ namespace Remotion.Logging
     }
 
     /// <summary>
-    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Critical"/> level, including the stack
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="Microsoft.Extensions.Logging.LogLevel.Critical"/> level, including the stack
     /// trace of <paramref name="exceptionObject"/>.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
@@ -200,7 +200,7 @@ namespace Remotion.Logging
     }
 
     /// <summary>
-    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="LogLevel.Critical"/> level.
+    /// Log a message and event id derived from the <paramref name="messageEnum"/> with the <see cref="Microsoft.Extensions.Logging.LogLevel.Critical"/> level.
     /// </summary>
     /// <exception cref="ArgumentOutOfRangeException">
     /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
