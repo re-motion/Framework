@@ -31,9 +31,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
       ArgumentUtility.CheckNotNull("ints", ints);
       ArgumentUtility.CheckNotNull("bools", bools);
 
-      if (logger.IsDebugEnabled())
+      if (logger.IsEnabled(LogLevel.Debug))
       {
-        logger.DebugFormat(
+        logger.LogDebug(
             "Flattened serialization: {0} objects ({1} unique), {2} integers, and {3} boolean values.",
             objects.Length,
             objects.Distinct().Count(),
@@ -48,9 +48,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
                                  select new { g.Key, Count = count };
 
         var statisticsString = string.Join(Environment.NewLine, groupingsWithCount.Select(g => g.Key + ": " + g.Count));
-        logger.Debug(statisticsString);
+        logger.LogDebug(statisticsString);
       }
-
     }
   }
 }

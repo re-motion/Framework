@@ -28,9 +28,8 @@ namespace Remotion.Validation.Merging
   {
     public NamespaceAwareDiagnosticOutputValidationRuleMergeDecorator (
         IValidationRuleCollectorMerger validationRuleCollectorMerger,
-        IValidatorFormatter validatorFormatter,
-        ILogManager logManager)
-        : base(validationRuleCollectorMerger, validatorFormatter, logManager)
+        IValidatorFormatter validatorFormatter)
+        : base(validationRuleCollectorMerger, validatorFormatter)
     {
     }
 
