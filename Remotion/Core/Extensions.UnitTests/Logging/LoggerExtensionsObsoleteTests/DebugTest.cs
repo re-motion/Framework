@@ -21,6 +21,7 @@ using Remotion.Logging;
 
 namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
 {
+#if NETFRAMEWORK
   [TestFixture]
   public class DebugTest : BaseTest
   {
@@ -221,4 +222,5 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
       Assert.That(GetLoggingEvents(), Is.Empty);
     }
   }
+#endif
 }
