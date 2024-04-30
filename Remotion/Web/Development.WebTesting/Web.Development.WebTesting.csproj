@@ -19,11 +19,11 @@
     <EmbeddedResource Include="Accessibility\axe.min.js" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Logging.Log4Net\Core.Logging.Log4Net.csproj" />
     <ProjectReference Include="..\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fork.Coypu" />
-    <PackageReference Include="log4net" />
     <PackageReference Include="Selenium.Support" />
     <PackageReference Include="Selenium.WebDriver" />
   </ItemGroup>
