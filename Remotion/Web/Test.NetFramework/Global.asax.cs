@@ -81,7 +81,7 @@ namespace Remotion.Web.Test.NetFramework
     {
       var exception = Server.GetLastError();
 
-      s_logger.Error("Application Error:", exception);
+      s_logger.LogError("Application Error:", exception);
 
       if (exception is AsyncUnhandledException)
       {
