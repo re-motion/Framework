@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
@@ -51,12 +52,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       var dataContainerValidator = new CompoundDataContainerValidator(Enumerable.Empty<IDataContainerValidator>());
 
       var storageNameProvider = new ReflectionBasedStorageNameProvider();
-      var infrastructureStoragePropertyDefinitionProvider =
-          new InfrastructureStoragePropertyDefinitionProvider(storageTypeInformationProvider, storageNameProvider);
+      var infrastructureStoragePropertyDefinitionProvider = new InfrastructureStoragePropertyDefinitionProvider(storageTypeInformationProvider, storageNameProvider);
       var dataStoragePropertyDefinitionFactory = new DataStoragePropertyDefinitionFactory(
           new ValueStoragePropertyDefinitionFactory(storageTypeInformationProvider, storageNameProvider),
           new RelationStoragePropertyDefinitionFactory(
               TestDomainStorageProviderDefinition, false, storageNameProvider, storageTypeInformationProvider, StorageSettings));
+
+      var dataParameterDefinitionFactoryChain =
+          new ObjectIDDataParameterDefinitionFactory(TestDomainStorageProviderDefinition, storageTypeInformationProvider, StorageSettings,
+              new SimpleDataParameterDefinitionFactory(storageTypeInformationProvider));
+
       _factory = new RdbmsProviderCommandFactory(
           TestDomainStorageProviderDefinition,
           new SqlDbCommandBuilderFactory(new SqlDialect()),
@@ -64,7 +69,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
           new ObjectReaderFactory(
               rdbmsPersistenceModelProvider, infrastructureStoragePropertyDefinitionProvider, storageTypeInformationProvider, dataContainerValidator),
           new TableDefinitionFinder(rdbmsPersistenceModelProvider),
-          dataStoragePropertyDefinitionFactory);
+          dataStoragePropertyDefinitionFactory,
+          dataParameterDefinitionFactoryChain);
 
       _objectID1 = DomainObjectIDs.Order1;
       _objectID2 = DomainObjectIDs.Order3;

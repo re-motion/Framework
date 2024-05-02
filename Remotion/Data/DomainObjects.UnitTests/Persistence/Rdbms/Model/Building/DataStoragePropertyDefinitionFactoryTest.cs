@@ -69,42 +69,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _valuePropertyFactoryMock.Verify();
       Assert.That(result, Is.SameAs(_fakeStoragePropertyDefinition.Object));
     }
-
-    [Test]
-    public void CreateStoragePropertyDefinition_Value_Null ()
-    {
-      _valuePropertyFactoryMock.Setup(mock => mock.CreateStoragePropertyDefinition(null, "Value")).Returns(_fakeStoragePropertyDefinition.Object).Verifiable();
-
-      var result = _factory.CreateStoragePropertyDefinition((object)null);
-
-      _valuePropertyFactoryMock.Verify();
-      Assert.That(result, Is.SameAs(_fakeStoragePropertyDefinition.Object));
-    }
-
-    [Test]
-    public void CreateStoragePropertyDefinition_Value_NonObjectID ()
-    {
-      _valuePropertyFactoryMock.Setup(mock => mock.CreateStoragePropertyDefinition("test", "Value")).Returns(_fakeStoragePropertyDefinition.Object).Verifiable();
-
-      var result = _factory.CreateStoragePropertyDefinition("test");
-
-      _valuePropertyFactoryMock.Verify();
-      Assert.That(result, Is.SameAs(_fakeStoragePropertyDefinition.Object));
-    }
-
-    [Test]
-    public void CreateStoragePropertyDefinition_Value_ObjectID ()
-    {
-      var expectedClassDefinition = GetTypeDefinition(typeof(Order));
-      _relationPropertyFactoryMock
-          .Setup(mock => mock.CreateStoragePropertyDefinition(expectedClassDefinition, "Value", "ValueClassID"))
-          .Returns(_fakeStoragePropertyDefinition.Object)
-          .Verifiable();
-
-      var result = _factory.CreateStoragePropertyDefinition(DomainObjectIDs.Order1);
-
-      _relationPropertyFactoryMock.Verify();
-      Assert.That(result, Is.SameAs(_fakeStoragePropertyDefinition.Object));
-    }
   }
 }

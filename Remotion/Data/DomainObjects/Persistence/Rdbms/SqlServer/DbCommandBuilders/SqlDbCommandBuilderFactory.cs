@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
           _sqlDialect);
     }
 
-    public IDbCommandBuilder CreateForQuery (string statement, IEnumerable<QueryParameterWithType> parametersWithType)
+    public IDbCommandBuilder CreateForQuery (string statement, IEnumerable<QueryParameterWithDataParameterDefinition> parametersWithType)
     {
       ArgumentUtility.CheckNotNull("statement", statement);
       ArgumentUtility.CheckNotNull("parametersWithType", parametersWithType);
