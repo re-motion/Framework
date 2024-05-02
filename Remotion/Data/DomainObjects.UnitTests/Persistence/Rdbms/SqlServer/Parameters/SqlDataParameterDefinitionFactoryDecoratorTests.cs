@@ -44,7 +44,7 @@ public class SqlDataParameterDefinitionFactoryDecoratorTests
     var factoryStub = new Mock<IDataParameterDefinitionFactory>();
     factoryStub.Setup(_ => _.CreateDataParameterDefinition(queryParameter)).Returns(parameterDefinitionStub.Object);
 
-    var factoryDecorator = new SqlDataParameterDefinitionFactoryDecorator(factoryStub.Object);
+    var factoryDecorator = new SqlFulltextDataParameterDefinitionFactory(factoryStub.Object);
 
     var result = factoryDecorator.CreateDataParameterDefinition(queryParameter);
     Assert.That(result, Is.InstanceOf<SqlFulltextDataParameterDefinitionDecorator>());
@@ -69,7 +69,7 @@ public class SqlDataParameterDefinitionFactoryDecoratorTests
     var factoryStub = new Mock<IDataParameterDefinitionFactory>();
     factoryStub.Setup(_ => _.CreateDataParameterDefinition(queryParameter)).Returns(parameterDefinitionStub.Object);
 
-    var factoryDecorator = new SqlDataParameterDefinitionFactoryDecorator(factoryStub.Object);
+    var factoryDecorator = new SqlFulltextDataParameterDefinitionFactory(factoryStub.Object);
 
     var result = factoryDecorator.CreateDataParameterDefinition(queryParameter);
     Assert.That(result, Is.SameAs(parameterDefinitionStub.Object));

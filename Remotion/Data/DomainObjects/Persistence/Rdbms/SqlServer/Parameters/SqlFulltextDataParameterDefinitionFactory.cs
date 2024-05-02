@@ -21,26 +21,28 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 
 /// <summary>
-/// Adds a <see cref="SqlFulltextDataParameterDefinitionDecorator"/> to the <see cref="IDataParameterDefinition"/>.
+/// Adds a <see cref="SqlFulltextDataParameterDefinitionDecorator"/> to <see cref="IDataParameterDefinition"/>s
+/// created for <see cref="string"/> or <see cref="char"/>[] values.
 /// </summary>
-public class SqlDataParameterDefinitionFactoryDecorator : IDataParameterDefinitionFactory
+public class SqlFulltextDataParameterDefinitionFactory : IDataParameterDefinitionFactory
 {
-  private readonly IDataParameterDefinitionFactory _innerFactory;
+  public IDataParameterDefinitionFactory NextDataParameterDefinitionFactory { get; }
 
-  public SqlDataParameterDefinitionFactoryDecorator (IDataParameterDefinitionFactory innerFactory)
+  public SqlFulltextDataParameterDefinitionFactory (IDataParameterDefinitionFactory nextDataParameterDefinitionFactory)
   {
-    ArgumentUtility.CheckNotNull(nameof(innerFactory), innerFactory);
+    ArgumentUtility.CheckNotNull(nameof(nextDataParameterDefinitionFactory), nextDataParameterDefinitionFactory);
 
-    _innerFactory = innerFactory;
+    NextDataParameterDefinitionFactory = nextDataParameterDefinitionFactory;
   }
 
   public IDataParameterDefinition CreateDataParameterDefinition (QueryParameter queryParameter)
   {
     ArgumentUtility.CheckNotNull(nameof(queryParameter), queryParameter);
 
-    var innerDataParameterDefinition = _innerFactory.CreateDataParameterDefinition(queryParameter);
-    return queryParameter.Value is string or char[]
-        ? new SqlFulltextDataParameterDefinitionDecorator(innerDataParameterDefinition)
-        : innerDataParameterDefinition;
+    var innerDataParameterDefinition = NextDataParameterDefinitionFactory.CreateDataParameterDefinition(queryParameter);
+    if (queryParameter.Value is string or char[])
+      return new SqlFulltextDataParameterDefinitionDecorator(innerDataParameterDefinition);
+
+    return innerDataParameterDefinition;
   }
 }
