@@ -29,16 +29,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
   public class QueryDbCommandBuilder : DbCommandBuilder
   {
     private readonly string _statement;
-    private readonly QueryParameterWithType[] _parametersWithType;
+    private readonly QueryParameterWithDataParameterDefinition[] _parametersWithDefinition;
 
-    public QueryDbCommandBuilder (string statement, IEnumerable<QueryParameterWithType> parameters, ISqlDialect sqlDialect)
+    public QueryDbCommandBuilder (string statement, IEnumerable<QueryParameterWithDataParameterDefinition> parameters, ISqlDialect sqlDialect)
         : base(sqlDialect)
     {
       ArgumentUtility.CheckNotNull("statement", statement);
       ArgumentUtility.CheckNotNull("parameters", parameters);
 
       _statement = statement;
-      _parametersWithType = parameters.ToArray();
+      _parametersWithDefinition = parameters.ToArray();
     }
 
     public override IDbCommand Create (IRdbmsProviderCommandExecutionContext commandExecutionContext)
@@ -48,23 +48,25 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
       var command = commandExecutionContext.CreateDbCommand();
 
       var statement = _statement;
-      foreach (var parameterWithType in _parametersWithType)
+      foreach (var parameterWithDefinition in _parametersWithDefinition)
       {
-        var queryParameterValue = parameterWithType.QueryParameter.Value;
+        var queryParameterValue = parameterWithDefinition.QueryParameter.Value;
 
-        if (parameterWithType.QueryParameter.ParameterType == QueryParameterType.Text)
+        if (parameterWithDefinition.QueryParameter.ParameterType == QueryParameterType.Text)
         {
           Assertion.DebugAssert(
               queryParameterValue is string,
               "parameterWithType.QueryParameter.Value is string when parameterWithType.QueryParameter.ParameterType == Text");
           var queryParameterValueAsString = (string)queryParameterValue;
 
-          statement = statement.Replace(parameterWithType.QueryParameter.Name, queryParameterValueAsString);
+          statement = statement.Replace(parameterWithDefinition.QueryParameter.Name, queryParameterValueAsString);
         }
         else
         {
-          var parameter = parameterWithType.StorageTypeInformation.CreateDataParameter(command, queryParameterValue);
-          parameter.ParameterName = parameterWithType.QueryParameter.Name;
+          var dataParameterName = parameterWithDefinition.QueryParameter.Name;
+          var dataParameterValue = parameterWithDefinition.DataParameterDefinition.GetParameterValue(queryParameterValue);
+          var parameter = parameterWithDefinition.DataParameterDefinition.CreateDataParameter(command, dataParameterName, dataParameterValue);
+
           command.Parameters.Add(parameter);
         }
       }
