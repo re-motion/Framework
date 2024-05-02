@@ -41,12 +41,12 @@ public class ObjectIDDataParameterDefinition : IDataParameterDefinition
   /// <inheritdoc />
   public object GetParameterValue (object? value)
   {
-    var objectID = ArgumentUtility.CheckType<ObjectID>(nameof(value), value);
+    var objectID = ArgumentUtility.CheckType<ObjectID?>(nameof(value), value);
     if (objectID == null)
       return DBNull.Value;
 
     var objectIDValue = objectID.Value;
-    ArgumentUtility.CheckType("parameterObject.Value", objectIDValue, ValueStorageTypeInformation.DotNetType);
+    ArgumentUtility.CheckType("objectID.Value", objectIDValue, ValueStorageTypeInformation.DotNetType);
 
     return ValueStorageTypeInformation.ConvertToStorageType(objectIDValue);
   }
