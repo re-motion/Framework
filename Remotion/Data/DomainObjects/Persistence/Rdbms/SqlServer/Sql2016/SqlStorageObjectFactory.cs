@@ -266,6 +266,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
           storageNameProvider);
     }
 
+    public IDataParameterDefinitionFactory CreateDataParameterDefinitionFactory (RdbmsProviderDefinition storageProviderDefinition)
+    {
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+
+      var storageTypeInformationProvider = CreateStorageTypeInformationProvider(storageProviderDefinition);
+
+      return CreateDataParameterDefinitionFactory(storageProviderDefinition, storageTypeInformationProvider);
+    }
+
     public IRelationStoragePropertyDefinitionFactory CreateRelationStoragePropertyDefinitionFactory (RdbmsProviderDefinition storageProviderDefinition)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
@@ -579,9 +588,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
       ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
 
-      return new SqlFulltextDataParameterDefinitionFactory(
-          new ObjectIDDataParameterDefinitionFactory(storageProviderDefinition, storageTypeInformationProvider, StorageSettings,
-              new SimpleDataParameterDefinitionFactory(storageTypeInformationProvider))
+      return new ObjectIDDataParameterDefinitionFactory(
+          storageProviderDefinition,
+          storageTypeInformationProvider,
+          StorageSettings,
+          new SimpleDataParameterDefinitionFactory(storageTypeInformationProvider)
       );
     }
 
