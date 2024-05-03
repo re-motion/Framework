@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
             Is.EqualTo(expectedParametersData.Length),
             "Number of parameters doesn't match.\r\nStatement: {0})",
             expectedSql);
-        for (int i = 0; i < expectedParametersData.Length; ++i)
+        for (int i = 0; i < expectedParametersData.Length; i++)
         {
           var actualParameter = (IDataParameter)sqlCommand.Parameters[i];
           var expectedParameterData = expectedParametersData[i];

@@ -97,8 +97,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
       var dbCommandBuilder = (SelectDbCommandBuilder)result;
       Assert.That(dbCommandBuilder.Table, Is.SameAs(_tableDefinition));
       Assert.That(((SelectedColumnsSpecification)dbCommandBuilder.SelectedColumns).SelectedColumns, Is.EqualTo(new[] { _column1, _column2 }));
-      Assert.That(((SqlXmlSetComparedColumnSpecification)dbCommandBuilder.ComparedColumns).ColumnDefinition, Is.SameAs(_column1));
-      Assert.That(((SqlXmlSetComparedColumnSpecification)dbCommandBuilder.ComparedColumns).ObjectValues, Is.EqualTo(new[] { 12, 13 }));
+      Assert.That(((SqlTableValuedParameterComparedColumnSpecification)dbCommandBuilder.ComparedColumns).ColumnDefinition, Is.SameAs(_column1));
+      Assert.That(((SqlTableValuedParameterComparedColumnSpecification)dbCommandBuilder.ComparedColumns).ObjectValues, Is.EqualTo(new[] { 12, 13 }));
       Assert.That(((OrderedColumnsSpecification)dbCommandBuilder.OrderedColumns).Columns, Is.EqualTo(new[] { _orderColumn1, _orderColumn2 }));
     }
 

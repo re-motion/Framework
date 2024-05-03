@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 /// <summary>
 /// Single parameter value of type <see cref="TableTypeName"/> that contains columns as defined by <see cref="ColumnMetaData"/> and any number of <see cref="SqlDataRecord"/>s.
 /// </summary>
-public class SqlTableValuedParameterValue : IReadOnlyCollection<SqlDataRecord>
+public class SqlTableValuedParameterValue : IReadOnlyCollection<SqlDataRecord>, IEquatable<SqlTableValuedParameterValue>
 {
   /// <summary>
   /// Name of the table type as defined in the database, with columns corresponding to the <see cref="ColumnMetaData"/>.
@@ -81,4 +81,69 @@ public class SqlTableValuedParameterValue : IReadOnlyCollection<SqlDataRecord>
   }
 
   public int Count => _records.Count;
+
+  public bool Equals (SqlTableValuedParameterValue? other)
+  {
+    if (other == null)
+      return false;
+
+    if (TableTypeName != other.TableTypeName)
+      return false;
+
+    if (_columnMetaData.Length != other._columnMetaData.Length)
+      return false;
+
+    if (_records.Count != other._records.Count)
+      return false;
+
+    for (var i = 0; i < _columnMetaData.Length; i++)
+    {
+      var ours = _columnMetaData[i];
+      var theirs = other._columnMetaData[i];
+      if (!theirs.Name.Equals(ours.Name))
+        return false;
+
+      if (!theirs.DbType.Equals(ours.DbType))
+        return false;
+    }
+
+    for (int rec = 0; rec < _records.Count; rec++)
+    {
+      var ours = _records[rec];
+      var theirs = other._records[rec];
+      if (ours.FieldCount != theirs.FieldCount)
+        return false;
+
+      for (int col = 0; col < ours.FieldCount; col++)
+      {
+        var ourValue = ours[col];
+        var theirValue = theirs[col];
+        if (!ourValue.Equals(theirValue))
+          return false;
+      }
+    }
+    return true;
+  }
+
+  public override bool Equals (object? obj)
+  {
+    if (ReferenceEquals(null, obj))
+      return false;
+    if (ReferenceEquals(this, obj))
+      return true;
+    if (obj.GetType() != this.GetType())
+      return false;
+    return Equals((SqlTableValuedParameterValue)obj);
+  }
+
+  public override int GetHashCode ()
+  {
+    unchecked
+    {
+      var hashCode = _records.GetHashCode();
+      hashCode = (hashCode * 397) ^ _columnMetaData.GetHashCode();
+      hashCode = (hashCode * 397) ^ TableTypeName.GetHashCode();
+      return hashCode;
+    }
+  }
 }

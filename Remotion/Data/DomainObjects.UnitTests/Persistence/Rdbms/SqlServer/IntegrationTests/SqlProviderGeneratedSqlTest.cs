@@ -17,11 +17,13 @@
 using System;
 using System.Data;
 using System.Linq;
+using Microsoft.SqlServer.Server;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -81,13 +83,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainers_MultiIDs_SameTable ()
     {
+      var expectedTvpValue1 = new SqlTableValuedParameterValue("TVP_Guid", new[] { new SqlMetaData("Value", SqlDbType.UniqueIdentifier) });
+      expectedTvpValue1.AddRecord(DomainObjectIDs.Computer1.Value);
+      expectedTvpValue1.AddRecord(DomainObjectIDs.Computer2.Value);
+
       var sequence = new VerifiableSequence();
       _testHelper.ExpectExecuteReader(
           sequence,
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [SerialNumber], [EmployeeID] FROM [Computer] "
-          + "WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
-          Tuple.Create("@ID", DbType.Xml, (object)"<L><I>c7c26bf5-871d-48c7-822a-e9b05aac4e5a</I><I>176a0ff6-296d-4934-bd1a-23cf52c22411</I></L>"));
+          + "WHERE [ID] IN (SELECT [Value] FROM @ID);",
+          Tuple.Create("@ID", DbType.Object, (object)expectedTvpValue1));
 
       _testHelper.Provider.LoadDataContainers(new[] { DomainObjectIDs.Computer1, DomainObjectIDs.Computer2 }).ToArray();
 
@@ -98,19 +104,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainers_MultiIDs_DifferentTables ()
     {
+      var expectedTvpValue1 = new SqlTableValuedParameterValue("TVP_Guid", new[] { new SqlMetaData("Value", SqlDbType.UniqueIdentifier) });
+      expectedTvpValue1.AddRecord(DomainObjectIDs.Computer1.Value);
+      expectedTvpValue1.AddRecord(DomainObjectIDs.Computer2.Value);
+      var expectedTvpValue2 = new SqlTableValuedParameterValue("TVP_Guid", new[] { new SqlMetaData("Value", SqlDbType.UniqueIdentifier) });
+      expectedTvpValue2.AddRecord(DomainObjectIDs.Employee1.Value);
+      expectedTvpValue2.AddRecord(DomainObjectIDs.Employee2.Value);
+
       var sequence = new VerifiableSequence();
       _testHelper.ExpectExecuteReader(
           sequence,
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [SerialNumber], [EmployeeID] FROM [Computer] "
-          + "WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
-          Tuple.Create("@ID", DbType.Xml, (object)"<L><I>c7c26bf5-871d-48c7-822a-e9b05aac4e5a</I><I>176a0ff6-296d-4934-bd1a-23cf52c22411</I></L>"));
+          + "WHERE [ID] IN (SELECT [Value] FROM @ID);",
+          Tuple.Create("@ID", DbType.Object, (object)expectedTvpValue1));
       _testHelper.ExpectExecuteReader(
           sequence,
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [Name], [SupervisorID] FROM [Employee] "
-          + "WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
-          Tuple.Create("@ID", DbType.Xml, (object)"<L><I>51ece39b-f040-45b0-8b72-ad8b45353990</I><I>c3b2bbc3-e083-4974-bac7-9cee1fb85a5e</I></L>"));
+          + "WHERE [ID] IN (SELECT [Value] FROM @ID);",
+          Tuple.Create("@ID", DbType.Object, (object)expectedTvpValue2));
 
       _testHelper.Provider.LoadDataContainers(
           new[] { DomainObjectIDs.Computer1, DomainObjectIDs.Computer2, DomainObjectIDs.Employee1, DomainObjectIDs.Employee2 }).ToArray();
@@ -309,12 +322,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var dataContainer1 = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee1);
       var dataContainer2 = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee2);
 
+      var expectedTvpValue1 = new SqlTableValuedParameterValue("TVP_Guid", new[] { new SqlMetaData("Value", SqlDbType.UniqueIdentifier) });
+      expectedTvpValue1.AddRecord(DomainObjectIDs.Employee1.Value);
+      expectedTvpValue1.AddRecord(DomainObjectIDs.Employee2.Value);
+
       var sequence = new VerifiableSequence();
       _testHelper.ExpectExecuteReader(
           sequence,
           CommandBehavior.SingleResult,
-          "SELECT [ID], [ClassID], [Timestamp] FROM [Employee] WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
-          Tuple.Create("@ID", DbType.Xml, (object)"<L><I>51ece39b-f040-45b0-8b72-ad8b45353990</I><I>c3b2bbc3-e083-4974-bac7-9cee1fb85a5e</I></L>"));
+          "SELECT [ID], [ClassID], [Timestamp] FROM [Employee] WHERE [ID] IN (SELECT [Value] FROM @ID);",
+          Tuple.Create("@ID", DbType.Object, (object)expectedTvpValue1));
 
       _testHelper.Provider.UpdateTimestamps(new[] { dataContainer1, dataContainer2 });
 
@@ -330,17 +347,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var dataContainer3 = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Customer1);
       var dataContainer4 = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Partner1);
 
+      var expectedTvpValue1 = new SqlTableValuedParameterValue("TVP_Guid", new[] { new SqlMetaData("Value", SqlDbType.UniqueIdentifier) });
+      expectedTvpValue1.AddRecord(DomainObjectIDs.Employee1.Value);
+      expectedTvpValue1.AddRecord(DomainObjectIDs.Employee2.Value);
+      var expectedTvpValue2 = new SqlTableValuedParameterValue("TVP_Guid", new[] { new SqlMetaData("Value", SqlDbType.UniqueIdentifier) });
+      expectedTvpValue2.AddRecord(DomainObjectIDs.Customer1.Value);
+      expectedTvpValue2.AddRecord(DomainObjectIDs.Partner1.Value);
+
       var sequence = new VerifiableSequence();
       _testHelper.ExpectExecuteReader(
           sequence,
           CommandBehavior.SingleResult,
-          "SELECT [ID], [ClassID], [Timestamp] FROM [Employee] WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
-          Tuple.Create("@ID", DbType.Xml, (object)"<L><I>51ece39b-f040-45b0-8b72-ad8b45353990</I><I>c3b2bbc3-e083-4974-bac7-9cee1fb85a5e</I></L>"));
+          "SELECT [ID], [ClassID], [Timestamp] FROM [Employee] WHERE [ID] IN (SELECT [Value] FROM @ID);",
+          Tuple.Create("@ID", DbType.Object, (object)expectedTvpValue1));
       _testHelper.ExpectExecuteReader(
           sequence,
           CommandBehavior.SingleResult,
-          "SELECT [ID], [ClassID], [Timestamp] FROM [Company] WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
-          Tuple.Create("@ID", DbType.Xml, (object)"<L><I>55b52e75-514b-4e82-a91b-8f0bb59b80ad</I><I>5587a9c0-be53-477d-8c0a-4803c7fae1a9</I></L>"));
+          "SELECT [ID], [ClassID], [Timestamp] FROM [Company] WHERE [ID] IN (SELECT [Value] FROM @ID);",
+          Tuple.Create("@ID", DbType.Object, (object)expectedTvpValue2));
 
       _testHelper.Provider.UpdateTimestamps(new[] { dataContainer1, dataContainer2, dataContainer3, dataContainer4 });
 

@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
       return new SelectDbCommandBuilder(
           table,
           new SelectedColumnsSpecification(selectedColumns),
-          new SqlXmlSetComparedColumnSpecification(comparedValues.Item1, comparedValues.Item2),
+          new SqlTableValuedParameterComparedColumnSpecification(comparedValues.Item1, comparedValues.Item2),
           new OrderedColumnsSpecification(orderedColumns),
           _sqlDialect);
     }
