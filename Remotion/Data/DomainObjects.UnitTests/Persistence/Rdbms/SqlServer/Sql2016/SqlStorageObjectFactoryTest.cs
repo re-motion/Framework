@@ -325,8 +325,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
 
       var result = testableSqlProviderFactory.CreateDataParameterDefinitionFactory(_rdbmsProviderDefinition);
 
-      Assert.That(result, Is.InstanceOf<SqlFulltextDataParameterDefinitionFactory>());
-      var sqlFulltextDataParameterDefinitionFactory = result.As<SqlFulltextDataParameterDefinitionFactory>();
+      Assert.That(result, Is.InstanceOf<SqlTableValuedDataParameterDefinitionFactory>());
+      var sqlTableValuedParameterDefinitionFactory = result.As<SqlTableValuedDataParameterDefinitionFactory>();
+      Assert.That(sqlTableValuedParameterDefinitionFactory.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub.Object));
+
+      Assert.That(sqlTableValuedParameterDefinitionFactory.NextDataParameterDefinitionFactory, Is.InstanceOf<SqlFulltextDataParameterDefinitionFactory>());
+      var sqlFulltextDataParameterDefinitionFactory = sqlTableValuedParameterDefinitionFactory.NextDataParameterDefinitionFactory.As<SqlFulltextDataParameterDefinitionFactory>();
 
       Assert.That(sqlFulltextDataParameterDefinitionFactory.NextDataParameterDefinitionFactory, Is.InstanceOf<ObjectIDDataParameterDefinitionFactory>());
       var objectIDDataParameterDefinitionFactory = sqlFulltextDataParameterDefinitionFactory.NextDataParameterDefinitionFactory.As<ObjectIDDataParameterDefinitionFactory>();
