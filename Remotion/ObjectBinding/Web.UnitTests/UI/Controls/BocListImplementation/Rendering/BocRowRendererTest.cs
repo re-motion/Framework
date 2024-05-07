@@ -513,6 +513,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var outerDiv = Html.GetAssertedChildElement(td, "div", 0);
 
       var innerDiv = Html.GetAssertedChildElement(outerDiv, "div", 0);
+      Html.AssertAttribute(innerDiv, "aria-hidden", "true");
 
       var validationSummary = Html.GetAssertedChildElement(innerDiv, "validation-summary", 0);
 
