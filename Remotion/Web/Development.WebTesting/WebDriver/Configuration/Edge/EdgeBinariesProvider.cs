@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
     private const string c_edgeExecutableName = "msedge.exe";
     private const string c_zipFileName = "msedgedriver.zip";
 
-    private static readonly Version s_minimumSupportedEdgeVersion = new Version(119, 0);
+    private static readonly Version s_minimumSupportedEdgeVersion = new Version(124, 0);
 
     /// <summary>
     /// Returns the <see cref="EdgeExecutable"/> that contains the installed Edge browser location, the corresponding msedgedriver location,
