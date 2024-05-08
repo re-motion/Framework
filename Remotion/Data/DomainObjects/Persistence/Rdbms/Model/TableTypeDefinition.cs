@@ -51,5 +51,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     {
       return Properties.SelectMany(p => p.GetColumns());
     }
+
+    public void Accept (IRdbmsStructuredTypeDefinitionVisitor visitor)
+    {
+      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+
+      visitor.VisitTableTypeDefinition(this);
+    }
   }
 }

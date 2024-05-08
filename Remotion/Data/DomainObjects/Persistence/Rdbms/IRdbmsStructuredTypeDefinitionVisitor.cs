@@ -14,17 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
-using System.Collections.Generic;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
-  public interface IRdbmsStructuredTypeDefinition
+  public interface IRdbmsStructuredTypeDefinitionVisitor
   {
-    IReadOnlyCollection<IRdbmsStoragePropertyDefinition> Properties { get; }
-    IReadOnlyCollection<ITableConstraintDefinition> Constraints { get; }
-    IReadOnlyCollection<IIndexDefinition> Indexes { get; }
-    IEnumerable<ColumnDefinition> GetAllColumns ();
-
-    void Accept (IRdbmsStructuredTypeDefinitionVisitor visitor);
+    void VisitTableTypeDefinition (TableTypeDefinition tableTypeDefinition);
   }
 }
