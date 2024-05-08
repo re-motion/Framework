@@ -18,7 +18,7 @@
     <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="log4net" Version="2.0.15" />
+    <PackageReference Include="log4net" Version="2.0.17" />
     <PackageReference Remove="JetBrains.Annotations" />
     <PackageReference Include="Remotion.ThirdParty.Dependency.Jetbrains.Annotations" Version="2022.1.0" />
     <PackageReference Include="Remotion.ThirdPartyDependency.CommonServiceLocator" Version="2.0.6" />
