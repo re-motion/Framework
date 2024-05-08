@@ -60,6 +60,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
           (emptyView, continuation) => { });
     }
 
+    public void AddStructuredTypeDefinition (IRdbmsStructuredTypeDefinition typeDefinition)
+    {
+      //TODO RM-9197
+    }
+
     public IScriptElement GetCreateScript ()
     {
       return _createScriptElements;

@@ -89,6 +89,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
           (emptyView, continuation) => AddEmptyViewDefinition(emptyView));
     }
 
+    public void AddStructuredTypeDefinition (IRdbmsStructuredTypeDefinition typeDefinition)
+    {
+    }
+
     public IScriptElement GetCreateScript ()
     {
       return _createScriptElements;
