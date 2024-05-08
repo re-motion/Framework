@@ -100,6 +100,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         var validationMarkerCellID = BocRowRenderer.GetCellIDForValidationMarker(renderingContext.Control, arguments.RowIndex, visibleColumnIndex);
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, $"#{validationMarkerCellID}");
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, c_onInlineValidationEntryClickScript);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Tabindex, "-1");
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.A);
 
         var columnTitle = columnDefinition.ColumnTitleDisplayValue.IsEmpty
