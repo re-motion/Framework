@@ -65,6 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Database
     {
       var scriptGenerator = new ScriptGenerator(
           pd => pd.Factory.CreateSchemaScriptBuilder(pd),
+          new RdbmsStructuredTypeDefinitionProvider(),
           new RdbmsStorageEntityDefinitionProvider(),
           new ScriptToStringConverter());
 

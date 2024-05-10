@@ -63,6 +63,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 
         var scriptGenerator = new ScriptGenerator(
             pd => pd.Factory.CreateSchemaScriptBuilder(pd),
+            new RdbmsStructuredTypeDefinitionProvider(),
             new RdbmsStorageEntityDefinitionProvider(),
             new ScriptToStringConverter());
         var scripts = scriptGenerator.GetScripts(MappingConfiguration.Current.GetTypeDefinitions()).Single();

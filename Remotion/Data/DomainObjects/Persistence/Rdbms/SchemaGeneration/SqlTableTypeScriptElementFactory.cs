@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
 using Remotion.Utilities;
@@ -31,11 +32,30 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
     {
       ArgumentUtility.CheckNotNull(nameof(tableTypeDefinition), tableTypeDefinition);
 
-      var columnDeclarationList = string.Join(",\r\n", tableTypeDefinition.GetAllColumns().Select(GetColumnDeclaration));
+      var columnDeclarationList = tableTypeDefinition.GetAllColumns().Select(GetColumnDeclaration).ToList();
       var primaryKeyConstraintString = GetPrimaryKeyDeclaration(tableTypeDefinition);
-      return
-          new ScriptStatement(
-              $"CREATE TYPE [{tableTypeDefinition.TypeName.SchemaName ?? _defaultSchema}].[{tableTypeDefinition.TypeName.TypeName}] AS TABLE\r\n(\r\n{columnDeclarationList}{primaryKeyConstraintString}\r\n)");
+      var schemaName = tableTypeDefinition.TypeName.SchemaName ?? _defaultSchema;
+      var typeName = tableTypeDefinition.TypeName.TypeName;
+
+      var hasPrimaryKey = !string.IsNullOrEmpty(primaryKeyConstraintString);
+      var script = new StringBuilder();
+      script.AppendLine($"IF TYPE_ID('[{schemaName}].[{typeName}]') IS NULL CREATE TYPE [{schemaName}].[{typeName}] AS TABLE");
+      script.AppendLine("(");
+      for (var i = 0; i < columnDeclarationList.Count; i++)
+      {
+        script.Append($"  {columnDeclarationList[i]}");
+        if (i < columnDeclarationList.Count - 1 || hasPrimaryKey)
+          script.Append(",");
+
+        script.AppendLine();
+      }
+
+      if (hasPrimaryKey)
+        script.AppendLine($"  {primaryKeyConstraintString}");
+
+      script.Append(")");
+
+      return new ScriptStatement(script.ToString());
     }
 
     public IScriptElement GetDropElement (TableTypeDefinition tableTypeDefinition)
@@ -45,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     private string GetColumnDeclaration (ColumnDefinition column)
     {
-      return $"  [{column.Name}] {column.StorageTypeInfo.StorageTypeName} {(column.StorageTypeInfo.IsStorageTypeNullable ? "NULL" : "NOT NULL")}";
+      return $"[{column.Name}] {column.StorageTypeInfo.StorageTypeName} {(column.StorageTypeInfo.IsStorageTypeNullable ? "NULL" : "NOT NULL")}";
     }
 
     private string GetPrimaryKeyDeclaration (TableTypeDefinition tableTypeDefinition)
@@ -54,8 +74,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
       if (primaryKeyConstraint == null)
         return string.Empty;
 
-      return
-          $",\r\n  CONSTRAINT [{primaryKeyConstraint.ConstraintName}] PRIMARY KEY {(primaryKeyConstraint.IsClustered ? "CLUSTERED" : "NONCLUSTERED")} ({GetColumnList(primaryKeyConstraint.Columns)})";
+      return $"CONSTRAINT [{primaryKeyConstraint.ConstraintName}] PRIMARY KEY {(primaryKeyConstraint.IsClustered ? "CLUSTERED" : "NONCLUSTERED")} ({GetColumnList(primaryKeyConstraint.Columns)})";
     }
 
     protected string GetColumnList (IEnumerable<ColumnDefinition> columns)

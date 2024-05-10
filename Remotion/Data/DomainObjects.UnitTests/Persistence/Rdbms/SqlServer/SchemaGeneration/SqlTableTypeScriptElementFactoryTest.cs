@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetCreateElement(_tableTypeDefinitionWithoutPrimaryKeyConstraint);
 
       var expectedResult =
-          "CREATE TYPE [SchemaName].[TypeName] AS TABLE\r\n"
+          "IF TYPE_ID('[SchemaName].[TypeName]') IS NULL CREATE TYPE [SchemaName].[TypeName] AS TABLE\r\n"
           + "(\r\n"
           + "  [Column1] varchar(100) NOT NULL,\r\n"
           + "  [Column2] bit NULL\r\n"
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetCreateElement(_tableTypeDefinitionWithClusteredPrimaryKeyConstraint);
 
       var expectedResult =
-          "CREATE TYPE [dbo].[TypeName] AS TABLE\r\n"
+          "IF TYPE_ID('[dbo].[TypeName]') IS NULL CREATE TYPE [dbo].[TypeName] AS TABLE\r\n"
           + "(\r\n"
           + "  [Column1] varchar(100) NOT NULL,\r\n"
           + "  [Column2] bit NULL,\r\n"
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetCreateElement(_tableTypeDefinitionWithNonClusteredPrimaryKeyConstraint);
 
       var expectedResult =
-          "CREATE TYPE [dbo].[TypeName] AS TABLE\r\n"
+          "IF TYPE_ID('[dbo].[TypeName]') IS NULL CREATE TYPE [dbo].[TypeName] AS TABLE\r\n"
           + "(\r\n"
           + "  [Column1] varchar(100) NOT NULL,\r\n"
           + "  [Column2] bit NULL,\r\n"
