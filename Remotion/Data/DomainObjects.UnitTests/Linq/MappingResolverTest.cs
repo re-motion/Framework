@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var fakeEntityExpression = CreateFakeEntityExpression(typeof(Order));
 
       _storageSpecificExpressionResolverStub
-          .Setup(stub => stub.ResolveEntity(MappingConfiguration.Current.GetClassDefinition(typeof(Order)), "o"))
+          .Setup(stub => stub.ResolveEntity(MappingConfiguration.Current.GetTypeDefinition(typeof(Order)), "o"))
           .Returns(fakeEntityExpression);
 
       var sqlEntityExpression =
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       var unresolvedTableInfo = new UnresolvedTableInfo(typeof(Order));
       _storageSpecificExpressionResolverStub
-          .Setup(stub => stub.ResolveTable(MappingConfiguration.Current.GetClassDefinition(typeof(Order)), "t0"))
+          .Setup(stub => stub.ResolveTable(MappingConfiguration.Current.GetTypeDefinition(typeof(Order)), "t0"))
           .Returns(_fakeSimpleTableInfo);
 
       var resolvedTableInfo = (ResolvedSimpleTableInfo)_resolver.ResolveTableInfo(unresolvedTableInfo, _generator);
@@ -282,7 +282,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var fakeIDColumnExpression = new SqlColumnDefinitionExpression(typeof(ObjectID), "c", "ID", true);
 
       _storageSpecificExpressionResolverStub
-          .Setup(stub => stub.ResolveIDProperty(entityExpression, MappingConfiguration.Current.GetClassDefinition(typeof(Order))))
+          .Setup(stub => stub.ResolveIDProperty(entityExpression, MappingConfiguration.Current.GetTypeDefinition(typeof(Order))))
           .Returns(fakeIDColumnExpression);
 
       var result = (SqlColumnExpression)_resolver.ResolveMemberExpression(entityExpression, property);
@@ -573,10 +573,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       Assert.That(result, Is.Null);
     }
 
-    private SqlEntityDefinitionExpression CreateFakeEntityExpression (Type type)
+    private SqlEntityDefinitionExpression CreateFakeEntityExpression (Type classType)
     {
-      var starColumn = new SqlColumnDefinitionExpression(type, "o", "*", false);
-      return new SqlEntityDefinitionExpression(type, "o", null, e => e.GetColumn(typeof(ObjectID), "ID", true), starColumn);
+      var starColumn = new SqlColumnDefinitionExpression(classType, "o", "*", false);
+      return new SqlEntityDefinitionExpression(classType, "o", null, e => e.GetColumn(typeof(ObjectID), "ID", true), starColumn);
     }
 
     private PropertyDefinition GetPropertyDefinition (PropertyInfo property)
