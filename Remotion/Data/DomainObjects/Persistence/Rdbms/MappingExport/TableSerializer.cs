@@ -38,37 +38,37 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
       _propertySerializer = propertySerializer;
     }
 
-    public IEnumerable<XElement> Serialize (ClassDefinition classDefinition)
+    public IEnumerable<XElement> Serialize (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      var tableDefinition = GetTableDefinition(classDefinition);
+      var tableDefinition = GetTableDefinition(typeDefinition);
       if (tableDefinition == null)
         yield break;
 
-      var storageProviderDefinition = (RdbmsProviderDefinition)classDefinition.StorageEntityDefinition.StorageProviderDefinition;
+      var storageProviderDefinition = (RdbmsProviderDefinition)typeDefinition.StorageEntityDefinition.StorageProviderDefinition;
       var persistenceModelProvider = storageProviderDefinition.Factory.CreateRdbmsPersistenceModelProvider(storageProviderDefinition);
 
       yield return new XElement(
           Constants.Namespace + "table",
           new XAttribute("name", tableDefinition.TableName.EntityName),
-          GetPersistentPropertyDefinitions(classDefinition)
+          GetPersistentPropertyDefinitions(typeDefinition)
               .Select(p => _propertySerializer.Serialize(p, persistenceModelProvider))
           );
     }
 
-    private TableDefinition? GetTableDefinition (ClassDefinition classDefinition)
+    private TableDefinition? GetTableDefinition (TypeDefinition typeDefinition)
     {
-      if (classDefinition.StorageEntityDefinition is FilterViewDefinition)
-        return ((FilterViewDefinition)classDefinition.StorageEntityDefinition).GetBaseTable();
+      if (typeDefinition.StorageEntityDefinition is FilterViewDefinition)
+        return ((FilterViewDefinition)typeDefinition.StorageEntityDefinition).GetBaseTable();
 
-      if (classDefinition.StorageEntityDefinition is TableDefinition)
-        return (TableDefinition)classDefinition.StorageEntityDefinition;
+      if (typeDefinition.StorageEntityDefinition is TableDefinition)
+        return (TableDefinition)typeDefinition.StorageEntityDefinition;
 
       return null;
     }
 
-    private IEnumerable<PropertyDefinition> GetPersistentPropertyDefinitions (ClassDefinition classDefinition)
+    private IEnumerable<PropertyDefinition> GetPersistentPropertyDefinitions (TypeDefinition classDefinition)
     {
       return classDefinition.GetPropertyDefinitions().Where(p => p.StorageClass == StorageClass.Persistent);
     }
