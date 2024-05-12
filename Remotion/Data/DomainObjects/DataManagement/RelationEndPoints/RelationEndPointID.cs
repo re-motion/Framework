@@ -214,10 +214,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       ArgumentUtility.CheckNotNull("info", info);
 
       var objectID = (ObjectID?)info.GetValue("ObjectID", typeof(ObjectID));
-      var typeAssemblyQualifiedName = info.GetString("Type")!;
+      var type = (Type)info.GetValue("Type", typeof(Type))!;
       var propertyName = info.GetString("PropertyName")!;
 
-      var type = Type.GetType(typeAssemblyQualifiedName, throwOnError: true, ignoreCase: false)!;
       var typeDefinition = MappingConfiguration.Current.GetTypeDefinition(type);
       var relationEndPointDefinition = typeDefinition.GetMandatoryRelationEndPointDefinition(propertyName);
 
@@ -233,7 +232,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       ArgumentUtility.CheckNotNull("info", info);
 
       info.AddValue("ObjectID", _objectID);
-      info.AddValue("Type", _definition.TypeDefinition.Type.AssemblyQualifiedName);
+      info.AddValue("Type", _definition.TypeDefinition.Type);
       info.AddValue("PropertyName", _definition.PropertyName);
     }
 
