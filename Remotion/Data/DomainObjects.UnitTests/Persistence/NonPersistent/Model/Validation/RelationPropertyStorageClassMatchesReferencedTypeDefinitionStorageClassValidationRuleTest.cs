@@ -29,7 +29,7 @@ using Remotion.Data.DomainObjects.UnitTests.Mapping.Validation;
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.Validation
 {
   [TestFixture]
-  public class RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRuleTest: ValidationRuleTestBase
+  public class RelationPropertyStorageClassMatchesReferencedTypeDefinitionStorageClassValidationRuleTest: ValidationRuleTestBase
   {
     private RelationPropertyStorageClassMatchesReferencedTypeDefinitionStorageClassValidationRule _validationRule;
     private TypeDefinition _persistentTypeDefinition;
