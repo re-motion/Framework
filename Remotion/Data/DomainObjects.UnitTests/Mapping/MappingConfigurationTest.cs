@@ -552,13 +552,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       _mockMappingLoader.Setup(_ => _.GetRelationDefinitions(It.IsAny<IDictionary<Type, TypeDefinition>>())).Returns(relationDefinitions);
       _mockMappingLoader.Setup(_ => _.ResolveTypes).Returns(true);
       _mockMappingLoader.Setup(_ => _.NameResolver).Returns(_memberInformationNameResolver);
-      _mockMappingLoader.Setup(_ => _.CreateTypeDefinitionValidator()).Returns(CreateClassDefinitionValidator());
+      _mockMappingLoader.Setup(_ => _.CreateTypeDefinitionValidator()).Returns(CreateTypeDefinitionValidator());
       _mockMappingLoader.Setup(_ => _.CreatePropertyDefinitionValidator()).Returns(CreatePropertyDefinitionValidator());
       _mockMappingLoader.Setup(_ => _.CreateRelationDefinitionValidator()).Returns(CreateRelationDefinitionValidator());
       _mockMappingLoader.Setup(_ => _.CreateSortExpressionValidator()).Returns(CreateSortExpressionValidator());
     }
 
-    private TypeDefinitionValidator CreateClassDefinitionValidator ()
+    private TypeDefinitionValidator CreateTypeDefinitionValidator ()
     {
       return new TypeDefinitionValidator(new DomainObjectTypeIsNotGenericValidationRule());
     }
