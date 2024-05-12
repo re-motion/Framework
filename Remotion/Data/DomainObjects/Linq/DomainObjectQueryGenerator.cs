@@ -237,8 +237,8 @@ namespace Remotion.Data.DomainObjects.Linq
           fetchQueryModel.BodyClauses.Add(orderByClause);
         }
 
-        var type = relationEndPointDefinition.GetOppositeTypeDefinition().Type;
-        var genericCallHelper = GenericCallHelper.Create(type);
+        var fetchedType = relationEndPointDefinition.GetOppositeTypeDefinition().Type;
+        var genericCallHelper = GenericCallHelper.Create(fetchedType);
         var fetchQuery = genericCallHelper.CreateSequenceQuery(
             this,
             "<fetch query for " + fetchQueryModelBuilder.FetchRequest.RelationMember.Name + ">",
