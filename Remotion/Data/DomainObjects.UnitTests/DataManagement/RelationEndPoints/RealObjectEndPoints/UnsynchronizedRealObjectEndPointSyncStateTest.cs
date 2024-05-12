@@ -101,9 +101,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(result, Is.Not.Null);
     }
 
-    private IRelationEndPointDefinition GetRelationEndPointDefinition (Type type, string shortPropertyName)
+    private IRelationEndPointDefinition GetRelationEndPointDefinition (Type declaringType, string shortPropertyName)
     {
-      return Configuration.GetTypeDefinition(type).GetRelationEndPointDefinition(type.FullName + "." + shortPropertyName);
+      return Configuration.GetTypeDefinition(declaringType).GetRelationEndPointDefinition(declaringType.FullName + "." + shortPropertyName);
     }
   }
 }
