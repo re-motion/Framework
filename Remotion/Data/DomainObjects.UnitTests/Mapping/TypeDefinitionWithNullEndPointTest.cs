@@ -22,7 +22,7 @@ using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
   [TestFixture]
-  public class ClassDefinitionWithNullEndPointTest : MappingReflectionTestBase
+  public class TypeDefinitionWithNullEndPointTest : MappingReflectionTestBase
   {
     // types
 
@@ -30,9 +30,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     // member fields
 
-    private TypeDefinition _clientClass;
+    private TypeDefinition _clientTypeDefinition;
     private AnonymousRelationEndPointDefinition _clientEndPoint;
-    private TypeDefinition _locationClass;
+    private TypeDefinition _locationTypeDefinition;
     private RelationEndPointDefinition _locationEndPoint;
 
     // methods and properties
@@ -41,8 +41,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       base.SetUp();
 
-      _clientClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Client)];
-      _locationClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Location)];
+      _clientTypeDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Client)];
+      _locationTypeDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Location)];
 
       RelationDefinition relation = FakeMappingConfiguration.Current.RelationDefinitions[
           "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Location:Remotion.Data.DomainObjects.UnitTests.Mapping."
@@ -54,15 +54,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetRelationEndPointDefinitions ()
     {
-      Assert.That(_locationClass.GetRelationEndPointDefinitions(), Has.Member(_locationEndPoint));
-      Assert.That(_clientClass.GetRelationEndPointDefinitions(), Has.No.Member(_clientEndPoint));
+      Assert.That(_locationTypeDefinition.GetRelationEndPointDefinitions(), Has.Member(_locationEndPoint));
+      Assert.That(_clientTypeDefinition.GetRelationEndPointDefinitions(), Has.No.Member(_clientEndPoint));
     }
 
     [Test]
     public void GetMyRelationEndPointDefinitions ()
     {
-      Assert.That(_locationClass.MyRelationEndPointDefinitions, Has.Member(_locationEndPoint));
-      Assert.That(_clientClass.MyRelationEndPointDefinitions, Has.No.Member(_clientEndPoint));
+      Assert.That(_locationTypeDefinition.MyRelationEndPointDefinitions, Has.Member(_locationEndPoint));
+      Assert.That(_clientTypeDefinition.MyRelationEndPointDefinitions, Has.No.Member(_clientEndPoint));
     }
   }
 }
