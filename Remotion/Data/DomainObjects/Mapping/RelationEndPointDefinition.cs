@@ -72,6 +72,12 @@ namespace Remotion.Data.DomainObjects.Mapping
       }
     }
 
+    [Obsolete("Use RelationEndPointDefinition.TypeDefinition instead. (Version 7.0.0)")]
+    public TypeDefinition ClassDefinition
+    {
+      get { return TypeDefinition; }
+    }
+
     public TypeDefinition TypeDefinition
     {
       get { return _typeDefinition; }
