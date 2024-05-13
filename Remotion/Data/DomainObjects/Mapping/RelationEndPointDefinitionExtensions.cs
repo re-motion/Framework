@@ -34,6 +34,13 @@ namespace Remotion.Data.DomainObjects.Mapping
       return oppositeEndPointDefinition;
     }
 
+    [Obsolete("Use GetOppositeTypeDefinition() instead. (Version 7.0.0)")]
+    [JetBrains.Annotations.NotNull]
+    public static TypeDefinition GetOppositeClassDefinition (this IRelationEndPointDefinition relationEndPointDefinition)
+    {
+      return relationEndPointDefinition.GetOppositeTypeDefinition();
+    }
+
     [JetBrains.Annotations.NotNull]
     public static TypeDefinition GetOppositeTypeDefinition (this IRelationEndPointDefinition relationEndPointDefinition)
     {
