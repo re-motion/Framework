@@ -368,6 +368,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
       yield return CreateViewBuilder(storageProviderDefinition);
       yield return CreateIndexBuilder(storageProviderDefinition);
       yield return CreateSynonymBuilder(storageProviderDefinition);
+      yield return CreateTableTypeBuilder();
     }
 
     public virtual IScriptBuilder CreateTableBuilder (RdbmsProviderDefinition storageProviderDefinition)
@@ -421,6 +422,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
           new SqlCommentScriptElementFactory());
     }
 
+    public virtual IScriptBuilder CreateTableTypeBuilder ()
+    {
+      var sqlTableTypeScriptElementFactory = new SqlTableTypeScriptElementFactory();
+      return new TableTypeScriptBuilder(sqlTableTypeScriptElementFactory, new SqlCommentScriptElementFactory());
+    }
 
     protected virtual StorageProvider CreateStorageProvider (
         IPersistenceExtension persistenceExtension,
