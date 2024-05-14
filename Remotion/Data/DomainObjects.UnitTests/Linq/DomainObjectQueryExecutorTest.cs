@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
 
       _queryGeneratorMock = new Mock<IDomainObjectQueryGenerator>(MockBehavior.Default);
 
-      _queryExecutor = new DomainObjectQueryExecutor(TestDomainStorageProviderDefinition, _queryGeneratorMock.Object, "<dynamic query>", QueryObjectMother.EmptyMetadata);
+      _queryExecutor = new DomainObjectQueryExecutor(TestDomainStorageProviderDefinition, _queryGeneratorMock.Object, "DefinitelyUniqueQueryID", QueryObjectMother.EmptyMetadata);
 
       _queryManagerMock = new Mock<IQueryManager>(MockBehavior.Strict);
       var transaction = ClientTransactionObjectMother.CreateTransactionWithQueryManager<ClientTransaction>(_queryManagerMock.Object);
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     public void ExecuteScalar ()
     {
       _queryGeneratorMock
-          .Setup(mock => mock.CreateScalarQuery<int>("<dynamic query>", TestDomainStorageProviderDefinition, _someQueryModel, QueryObjectMother.EmptyMetadata))
+          .Setup(mock => mock.CreateScalarQuery<int>("DefinitelyUniqueQueryID", TestDomainStorageProviderDefinition, _someQueryModel, QueryObjectMother.EmptyMetadata))
           .Returns(_scalarExecutableQueryMock.Object)
           .Verifiable();
 
@@ -129,7 +129,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       _queryGeneratorMock
           .Setup(
               mock => mock.CreateSequenceQuery<Order>(
-                  "<dynamic query>",
+                  "DefinitelyUniqueQueryID",
                   TestDomainStorageProviderDefinition,
                   _someQueryModel,
                   It.Is<IEnumerable<FetchQueryModelBuilder>>(p => p.Count() == 0),
@@ -180,7 +180,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       _queryGeneratorMock
           .Setup(
               mock => mock.CreateSequenceQuery<Order>(
-                  "<dynamic query>",
+                  "DefinitelyUniqueQueryID",
                   TestDomainStorageProviderDefinition,
                   _someQueryModel,
                   It.Is<IEnumerable<FetchQueryModelBuilder>>(p => p.Count() == 0),
@@ -204,7 +204,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       _queryGeneratorMock
           .Setup(
               mock => mock.CreateSequenceQuery<Order>(
-                  "<dynamic query>",
+                  "DefinitelyUniqueQueryID",
                   TestDomainStorageProviderDefinition,
                   _someQueryModel,
                   It.Is<IEnumerable<FetchQueryModelBuilder>>(p => p.Count() == 0),
@@ -226,7 +226,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       _queryGeneratorMock
           .Setup(
               mock => mock.CreateSequenceQuery<Order>(
-                  "<dynamic query>",
+                  "DefinitelyUniqueQueryID",
                   TestDomainStorageProviderDefinition,
                   _someQueryModel,
                   It.Is<IEnumerable<FetchQueryModelBuilder>>(p => p.Count() == 0),
@@ -248,7 +248,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       _queryGeneratorMock
           .Setup(
               mock => mock.CreateSequenceQuery<Order>(
-                  "<dynamic query>",
+                  "DefinitelyUniqueQueryID",
                   TestDomainStorageProviderDefinition,
                   _someQueryModel,
                   It.Is<IEnumerable<FetchQueryModelBuilder>>(p => p.Count() == 0),
