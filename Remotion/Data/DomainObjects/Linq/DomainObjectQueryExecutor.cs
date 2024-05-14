@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.Linq
       if (fetchQueryModelBuilders.Any())
         throw new NotSupportedException("Scalar queries cannot perform eager fetching.");
 
-      var query = _queryGenerator.CreateScalarQuery<T>("<dynamic query>", _storageProviderDefinition, queryModel, _metadata);
+      var query = _queryGenerator.CreateScalarQuery<T>(_id, _storageProviderDefinition, queryModel, _metadata);
       return query.Execute(ClientTransaction.Current.QueryManager);
     }
 
@@ -132,7 +132,7 @@ namespace Remotion.Data.DomainObjects.Linq
       var fetchQueryModelBuilders = RemoveTrailingFetchRequests(queryModel);
 
       var query = _queryGenerator.CreateSequenceQuery<T>(
-          "<dynamic query>",
+          _id,
           _storageProviderDefinition,
           queryModel,
           fetchQueryModelBuilders,
