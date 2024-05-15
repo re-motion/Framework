@@ -26,7 +26,7 @@
     <ProjectReference Include="..\MixerTools\Mixins.MixerTools.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.8.0-3.final" GeneratePathProperty="true" ExcludeAssets="all" />
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.10.0-3.final" GeneratePathProperty="true" ExcludeAssets="all" />
     <PackageReference Include="Remotion.TypePipe.Development" Version="3.2.0" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
