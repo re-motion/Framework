@@ -51,31 +51,56 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
       _structuredTypeDefinitionProvider = structuredTypeDefinitionProvider;
     }
 
-    public IEnumerable<Script> GetScripts (IEnumerable<ClassDefinition> classDefinitions)
+    public IEnumerable<Script> GetScripts (IEnumerable<ClassDefinition> classDefinitions, IEnumerable<TupleDefinition> tupleDefinitions)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull(nameof(classDefinitions), classDefinitions);
+      ArgumentUtility.CheckNotNull(nameof(tupleDefinitions), tupleDefinitions);
 
-      var classDefinitionsByStorageProvider =
-          from cd in classDefinitions
-          where cd.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition
-          group cd by cd.StorageEntityDefinition.StorageProviderDefinition
-          into g
-            select new { StorageProviderDefinition = (RdbmsProviderDefinition)g.Key, ClassDefinitions = g };
+      var definitionsByStorageProvider = new Dictionary<RdbmsProviderDefinition, (List<ClassDefinition> ClassDefinitions, List<TupleDefinition> TupleDefinitions)>();
+      var rdbmsClassDefinitions = classDefinitions.Select(cd => (cd, cd.StorageEntityDefinition.StorageProviderDefinition as RdbmsProviderDefinition))
+          .Where(o => o.Item2 is not null);
 
-      foreach (var group in classDefinitionsByStorageProvider)
+      foreach (var rdbmsClassDefinition in rdbmsClassDefinitions)
       {
-        var scriptBuilder = _scriptBuilderFactory(group.StorageProviderDefinition);
+        var classDefinition = rdbmsClassDefinition.Item1;
+        var storageProviderDefinition = rdbmsClassDefinition.Item2!;
+        if (!definitionsByStorageProvider.TryGetValue(storageProviderDefinition, out var definitions))
+        {
+          definitions = new ValueTuple<List<ClassDefinition>, List<TupleDefinition>>(new List<ClassDefinition>(), new List<TupleDefinition>());
+          definitionsByStorageProvider.Add(storageProviderDefinition, definitions);
+        }
+        definitions.ClassDefinitions.Add(classDefinition);
+      }
 
-        var types = _structuredTypeDefinitionProvider.GetTypeDefinitions(group.StorageProviderDefinition.Factory.CreateStorageTypeInformationProvider(group.StorageProviderDefinition));
+      var rdbmsTupleDefinitions = tupleDefinitions.Select(td => (td, td.StructuredTypeDefinition.StorageProviderDefinition as RdbmsProviderDefinition))
+          .Where(o => o.Item2 is not null);
+
+      foreach (var rdbmsTupleDefinition in rdbmsTupleDefinitions)
+      {
+        var tupleDefinition = rdbmsTupleDefinition.Item1;
+        var storageProviderDefinition = rdbmsTupleDefinition.Item2!;
+        if (!definitionsByStorageProvider.TryGetValue(storageProviderDefinition, out var definitions))
+        {
+          definitions = new ValueTuple<List<ClassDefinition>, List<TupleDefinition>>(new List<ClassDefinition>(), new List<TupleDefinition>());
+          definitionsByStorageProvider.Add(storageProviderDefinition, definitions);
+        }
+        definitions.TupleDefinitions.Add(tupleDefinition);
+      }
+
+      foreach (var definitionSet in definitionsByStorageProvider)
+      {
+        var scriptBuilder = _scriptBuilderFactory(definitionSet.Key);
+
+        var types = _structuredTypeDefinitionProvider.GetTypeDefinitions(definitionSet.Value.TupleDefinitions);
         foreach (var typeDefinition in types)
           scriptBuilder.AddStructuredTypeDefinition(typeDefinition);
 
-        var entities = _entityDefinitionProvider.GetEntityDefinitions(group.ClassDefinitions);
+        var entities = _entityDefinitionProvider.GetEntityDefinitions(definitionSet.Value.ClassDefinitions);
         foreach (var entityDefinition in entities)
           scriptBuilder.AddEntityDefinition(entityDefinition);
 
         var scripts = _scriptToStringConverter.Convert(scriptBuilder);
-        yield return new Script(group.StorageProviderDefinition, scripts.SetUpScript, scripts.TearDownScript);
+        yield return new Script(definitionSet.Key, scripts.SetUpScript, scripts.TearDownScript);
       }
     }
   }

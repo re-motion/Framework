@@ -35,5 +35,12 @@ namespace Remotion.Data.DomainObjects.Mapping
     bool ResolveTypes { get; }
 
     IMemberInformationNameResolver NameResolver { get; }
+    TupleDefinition[] GetTupleDefinitions ();
+    bool ContainsTupleDefinition (Type tupleType);
+    TupleDefinition GetTupleDefinition (Type tupleType);
+    TupleDefinition GetTupleDefinition (Type tupleType, Func<Type, Exception> missingTypeDefinitionExceptionFactory);
+    bool ContainsTupleDefinition (string tupleID);
+    TupleDefinition GetTupleDefinition (string tupleID);
+    TupleDefinition GetTupleDefinition (string tupleID, Func<string, Exception> missingClassDefinitionExceptionFactory);
   }
 }

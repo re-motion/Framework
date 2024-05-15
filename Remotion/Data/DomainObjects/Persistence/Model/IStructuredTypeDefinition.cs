@@ -14,19 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using System.Collections.Generic;
-using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Reflection;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 
-namespace Remotion.Data.DomainObjects.ConfigurationLoader
+namespace Remotion.Data.DomainObjects.Persistence.Model;
+
+public interface IStructuredTypeDefinition
 {
-  public interface IMappingLoader : IMappingValidatorFactory
-  {
-    ClassDefinition[] GetClassDefinitions ();
-    RelationDefinition[] GetRelationDefinitions (IDictionary<Type, ClassDefinition> classDefinitions);
-    bool ResolveTypes { get; }
-    IMemberInformationNameResolver NameResolver { get; }
-    TupleDefinition[] GetTupleDefinitions ();
-  }
+  string StorageProviderID { get; }
+  StorageProviderDefinition StorageProviderDefinition { get; }
 }

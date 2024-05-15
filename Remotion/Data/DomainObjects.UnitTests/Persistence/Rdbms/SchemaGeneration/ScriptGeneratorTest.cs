@@ -20,7 +20,6 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -114,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     [Test]
     public void GetScripts_NoClassDefinitions ()
     {
-      var result = _scriptGenerator.GetScripts(new ClassDefinition[0]);
+      var result = _scriptGenerator.GetScripts(Array.Empty<ClassDefinition>(), Array.Empty<TupleDefinition>());
 
       Assert.That(result, Is.Empty);
     }
@@ -122,7 +121,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     [Test]
     public void GetScript_ClassDefinitionWithoutRdbmsStorageProviderDefinition ()
     {
-      var result = _scriptGenerator.GetScripts(new[] { _classDefinitionForThirdStorageProvider });
+      var result = _scriptGenerator.GetScripts(new[] { _classDefinitionForThirdStorageProvider }, Array.Empty<TupleDefinition>());
 
       Assert.That(result, Is.Empty);
     }
@@ -135,13 +134,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
           .Returns(new[] { _fakeEntityDefinition1.Object })
           .Verifiable();
       _structuredTypeDefinitionProviderMock
-          .Setup(mock => mock.GetTypeDefinitions(It.IsAny<IStorageTypeInformationProvider>()))
+          .Setup(mock => mock.GetTypeDefinitions(Array.Empty<TupleDefinition>()))
           .Returns(Array.Empty<IRdbmsStructuredTypeDefinition>())
           .Verifiable();
 
       _scriptBuilderForSecondStorageProviderMock.Setup(mock => mock.AddEntityDefinition(_fakeEntityDefinition1.Object)).Verifiable();
 
-      var result = _scriptGenerator.GetScripts(new[] { _classDefinitionForSecondStorageProvider }).ToList();
+      var result = _scriptGenerator.GetScripts(new[] { _classDefinitionForSecondStorageProvider }, Array.Empty<TupleDefinition>()).ToList();
 
       _entityDefinitionProviderMock.Verify();
       _structuredTypeDefinitionProviderMock.Verify();
@@ -160,14 +159,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
           .Returns(new[] { _fakeEntityDefinition1.Object, _fakeEntityDefinition2.Object })
           .Verifiable();
       _structuredTypeDefinitionProviderMock
-          .Setup(mock => mock.GetTypeDefinitions(It.IsAny<IStorageTypeInformationProvider>()))
+          .Setup(mock => mock.GetTypeDefinitions(Array.Empty<TupleDefinition>()))
           .Returns(Array.Empty<IRdbmsStructuredTypeDefinition>())
           .Verifiable();
 
       _scriptBuilderForFirstStorageProviderMock.Setup(mock => mock.AddEntityDefinition(_fakeEntityDefinition1.Object)).Verifiable();
       _scriptBuilderForFirstStorageProviderMock.Setup(mock => mock.AddEntityDefinition(_fakeEntityDefinition2.Object)).Verifiable();
 
-      var result = _scriptGenerator.GetScripts(new[] { _classDefinitionForFirstStorageProvider1, _classDefinitionForFirstStorageProvider2 }).ToList();
+      var result = _scriptGenerator
+          .GetScripts(new[] { _classDefinitionForFirstStorageProvider1, _classDefinitionForFirstStorageProvider2 }, Array.Empty<TupleDefinition>()).ToList();
 
       _entityDefinitionProviderMock.Verify();
       _structuredTypeDefinitionProviderMock.Verify();
@@ -190,7 +190,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
           .Returns(new[] { _fakeEntityDefinition3.Object })
           .Verifiable();
       _structuredTypeDefinitionProviderMock
-          .Setup(mock => mock.GetTypeDefinitions(It.IsAny<IStorageTypeInformationProvider>()))
+          .Setup(mock => mock.GetTypeDefinitions(Array.Empty<TupleDefinition>()))
           .Returns(Array.Empty<IRdbmsStructuredTypeDefinition>())
           .Verifiable();
 
@@ -207,7 +207,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
                   _classDefinitionForFirstStorageProvider2,
                   _classDefinitionForSecondStorageProvider,
                   _classDefinitionForThirdStorageProvider
-              }).ToList();
+              },
+              Array.Empty<TupleDefinition>()).ToList();
 
       _entityDefinitionProviderMock.Verify();
       _structuredTypeDefinitionProviderMock.Verify();

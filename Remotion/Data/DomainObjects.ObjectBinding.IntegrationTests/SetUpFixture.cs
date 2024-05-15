@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
             new RdbmsStructuredTypeDefinitionProvider(),
             new RdbmsStorageEntityDefinitionProvider(),
             new ScriptToStringConverter());
-        var scripts = scriptGenerator.GetScripts(MappingConfiguration.Current.GetTypeDefinitions()).Single();
+        var scripts = scriptGenerator.GetScripts(MappingConfiguration.Current.GetTypeDefinitions(), MappingConfiguration.Current.GetTupleDefinitions()).Single();
 
         var masterAgent = new DatabaseAgent(MasterConnectionString);
         masterAgent.ExecuteBatchFile("Database\\CreateDB.sql", false, DatabaseConfiguration.GetReplacementDictionary());

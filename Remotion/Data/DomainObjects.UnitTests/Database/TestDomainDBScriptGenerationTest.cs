@@ -73,7 +73,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Database
           .Where(e => e.StorageEntityDefinition.StorageProviderID is c_testDomainProviderID or TableInheritanceMappingTest.TableInheritanceTestDomainProviderID)
           .Where(e => !Attribute.IsDefined(e.ClassType, typeof(ExcludeFromTestDomainDBAttribute)));
 
-      return scriptGenerator.GetScripts(typeDefinitions)
+      var tupleDefinitions = MappingConfiguration.Current.GetTupleDefinitions()
+          .Where(e => e.StructuredTypeDefinition.StorageProviderID is c_testDomainProviderID or TableInheritanceMappingTest.TableInheritanceTestDomainProviderID)
+          .Where(e => !Attribute.IsDefined(e.TupleType, typeof(ExcludeFromTestDomainDBAttribute)));
+
+      return scriptGenerator.GetScripts(typeDefinitions, tupleDefinitions)
           .Select(e => new Script(e.StorageProviderDefinition, PatchGeneratedScript(e.SetUpScript), PatchGeneratedScript(e.TearDownScript)));
     }
 

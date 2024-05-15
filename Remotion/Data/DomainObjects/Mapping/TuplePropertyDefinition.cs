@@ -15,18 +15,26 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
-using Remotion.Data.DomainObjects.Mapping;
+using System.Diagnostics;
 using Remotion.Reflection;
+using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.ConfigurationLoader
+namespace Remotion.Data.DomainObjects.Mapping;
+
+[DebuggerDisplay("{GetType().Name}: {PropertyName}")]
+public class TuplePropertyDefinition : PropertyDefinitionBase
 {
-  public interface IMappingLoader : IMappingValidatorFactory
+  public TupleDefinition TupleDefinition { get; }
+
+  public TuplePropertyDefinition (TupleDefinition tupleDefinition, string propertyName, IPropertyInformation propertyInfo, bool isNullable, int? maxLength)
+  :base(propertyName, propertyInfo, propertyInfo.PropertyType, isNullable, maxLength)
   {
-    ClassDefinition[] GetClassDefinitions ();
-    RelationDefinition[] GetRelationDefinitions (IDictionary<Type, ClassDefinition> classDefinitions);
-    bool ResolveTypes { get; }
-    IMemberInformationNameResolver NameResolver { get; }
-    TupleDefinition[] GetTupleDefinitions ();
+    ArgumentUtility.CheckNotNull(nameof(tupleDefinition), tupleDefinition);
+    TupleDefinition = tupleDefinition;
+  }
+
+  protected override string GetTypeID ()
+  {
+    return TupleDefinition.ID;
   }
 }

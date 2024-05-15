@@ -163,7 +163,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           new NullStructuredTypeDefinitionProvider(),
           new RdbmsStorageEntityDefinitionProvider(),
           new ScriptToStringConverter());
-      var scripts = scriptGenerator.GetScripts(MappingConfiguration.Current.GetTypeDefinitions()).ToArray();
+      var scripts = scriptGenerator.GetScripts(MappingConfiguration.GetTypeDefinitions(), MappingConfiguration.GetTupleDefinitions()).ToArray();
       Assert.That(scripts.Length, Is.EqualTo(1));
       Assert.That(
           scripts[0].SetUpScript,

@@ -78,6 +78,11 @@ namespace Remotion.Data.DomainObjects.Mapping
       return classReflector.GetMetadata(baseClass);
     }
 
+    public TupleDefinition CreateTupleDefinition (Type type)
+    {
+      throw new NotImplementedException();
+    }
+
     public PropertyDefinition CreatePropertyDefinition (ClassDefinition classDefinition, IPropertyInformation propertyInfo)
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
@@ -125,6 +130,14 @@ namespace Remotion.Data.DomainObjects.Mapping
 
       var classDefinitionCollectionFactory = new ClassDefinitionCollectionFactory(this);
       return classDefinitionCollectionFactory.CreateClassDefinitionCollection(types);
+    }
+
+    public TupleDefinition[] CreateTupleDefinitionCollection (IEnumerable<Type> types)
+    {
+      ArgumentUtility.CheckNotNull("types", types);
+
+      var tupleDefinitionCollectionFactory = new TupleDefinitionCollectionFactory(this);
+      return tupleDefinitionCollectionFactory.CreateTupleDefinitionCollection(types);
     }
 
     public PropertyDefinitionCollection CreatePropertyDefinitionCollection (

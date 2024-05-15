@@ -14,19 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using System.Collections.Generic;
-using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Reflection;
+namespace Remotion.Data.DomainObjects;
 
-namespace Remotion.Data.DomainObjects.ConfigurationLoader
+/// <summary>
+/// Marker interface for <see cref="System.Type"/>s that are used as templates for persistent structured types.
+/// </summary>
+public interface IStructuredType
 {
-  public interface IMappingLoader : IMappingValidatorFactory
-  {
-    ClassDefinition[] GetClassDefinitions ();
-    RelationDefinition[] GetRelationDefinitions (IDictionary<Type, ClassDefinition> classDefinitions);
-    bool ResolveTypes { get; }
-    IMemberInformationNameResolver NameResolver { get; }
-    TupleDefinition[] GetTupleDefinitions ();
-  }
 }

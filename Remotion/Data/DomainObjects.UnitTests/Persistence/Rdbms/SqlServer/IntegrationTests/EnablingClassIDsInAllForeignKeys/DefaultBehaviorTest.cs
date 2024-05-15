@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           new RdbmsStorageEntityDefinitionProvider(),
           new ScriptToStringConverter());
 
-      var script = scriptGenerator.GetScripts(MappingConfiguration.GetTypeDefinitions()).Single();
+      var script = scriptGenerator.GetScripts(MappingConfiguration.GetTypeDefinitions(), MappingConfiguration.GetTupleDefinitions()).Single();
 
       const string expectedSetUpScriptFragment =
           @"CREATE TABLE [dbo].[ClassWithRelations]

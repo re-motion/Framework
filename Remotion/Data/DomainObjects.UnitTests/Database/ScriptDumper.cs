@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Database
           new RdbmsStructuredTypeDefinitionProvider(),
           new RdbmsStorageEntityDefinitionProvider(),
           new ScriptToStringConverter());
-      var scripts = scriptGenerator.GetScripts(types.Select(t => MappingConfiguration.Current.GetTypeDefinition(t)));
+      var scripts = scriptGenerator.GetScripts(types.Select(t => MappingConfiguration.Current.GetTypeDefinition(t)), Array.Empty<TupleDefinition>());
       foreach (var script in scripts)
       {
         Console.WriteLine("Setup:");

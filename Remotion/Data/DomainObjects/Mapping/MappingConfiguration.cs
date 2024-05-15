@@ -45,15 +45,21 @@ namespace Remotion.Data.DomainObjects.Mapping
       public readonly ReadOnlyDictionary<Type, ClassDefinition> TypeDefinitions;
       public readonly ReadOnlyDictionary<string, ClassDefinition> ClassDefinitions;
       public readonly ReadOnlyDictionary<string, RelationDefinition> RelationDefinitions;
+      public readonly ReadOnlyDictionary<Type, TupleDefinition> TupleTypeDefinitions;
+      public readonly ReadOnlyDictionary<string, TupleDefinition> TupleDefinitions;
 
       public Mapping (
           ReadOnlyDictionary<Type, ClassDefinition> typeDefinitions,
           ReadOnlyDictionary<string, ClassDefinition> classDefinitions,
-          ReadOnlyDictionary<string, RelationDefinition> relationDefinitions)
+          ReadOnlyDictionary<string, RelationDefinition> relationDefinitions,
+          ReadOnlyDictionary<Type, TupleDefinition> tupleTypeDefinitions,
+          ReadOnlyDictionary<string, TupleDefinition> tupleDefinitions)
       {
         TypeDefinitions = typeDefinitions;
         ClassDefinitions = classDefinitions;
         RelationDefinitions = relationDefinitions;
+        TupleTypeDefinitions = tupleTypeDefinitions;
+        TupleDefinitions = tupleDefinitions;
       }
     }
 
@@ -152,7 +158,11 @@ namespace Remotion.Data.DomainObjects.Mapping
 
         mappingConfigurationValidationHelper.ValidateSortExpression(relationDefinitionsDictionary.Values);
 
-        return new Mapping(typeDefinitionsDictionary, classDefinitionsDictionary, relationDefinitionsDictionary);
+        var tupleTypeDefinitions = mappingLoader.GetTupleDefinitions();
+        var tupleTypeDefinitionsDictionary = new ReadOnlyDictionary<Type, TupleDefinition>(tupleTypeDefinitions.ToDictionary(ttd => ttd.TupleType));
+        var tupleDefinitionsDictionary = new ReadOnlyDictionary<string, TupleDefinition>(tupleTypeDefinitions.ToDictionary(ttd => ttd.ID));
+
+        return new Mapping(typeDefinitionsDictionary, classDefinitionsDictionary, relationDefinitionsDictionary, tupleTypeDefinitionsDictionary, tupleDefinitionsDictionary);
       }
     }
 
@@ -177,6 +187,11 @@ namespace Remotion.Data.DomainObjects.Mapping
       return _mapping.Value.TypeDefinitions.Values.ToArray();
     }
 
+    public TupleDefinition[] GetTupleDefinitions ()
+    {
+      return _mapping.Value.TupleTypeDefinitions.Values.ToArray();
+    }
+
     public bool ContainsTypeDefinition (Type classType)
     {
       ArgumentUtility.CheckNotNull("classType", classType);
@@ -184,11 +199,25 @@ namespace Remotion.Data.DomainObjects.Mapping
       return _mapping.Value.TypeDefinitions.ContainsKey(classType);
     }
 
+    public bool ContainsTupleDefinition (Type tupleType)
+    {
+      ArgumentUtility.CheckNotNull("tupleType", tupleType);
+
+      return _mapping.Value.TupleTypeDefinitions.ContainsKey(tupleType);
+    }
+
     public ClassDefinition GetTypeDefinition (Type classType)
     {
       ArgumentUtility.CheckNotNull("classType", classType);
 
       return GetTypeDefinition(classType, type => CreateMappingException("Mapping does not contain class '{0}'.", type));
+    }
+
+    public TupleDefinition GetTupleDefinition (Type tupleType)
+    {
+      ArgumentUtility.CheckNotNull("tupleType", tupleType);
+
+      return GetTupleDefinition(tupleType, type => CreateMappingException("Mapping does not contain tuple '{0}'.", type));
     }
 
    public ClassDefinition GetTypeDefinition (Type classType, Func<Type, Exception> missingTypeDefinitionExceptionFactory)
@@ -203,6 +232,18 @@ namespace Remotion.Data.DomainObjects.Mapping
       return classDefinition;
     }
 
+   public TupleDefinition GetTupleDefinition (Type tupleType, Func<Type, Exception> missingTypeDefinitionExceptionFactory)
+    {
+      ArgumentUtility.CheckNotNull("tupleType", tupleType);
+      ArgumentUtility.CheckNotNull("missingTypeDefinitionExceptionFactory", missingTypeDefinitionExceptionFactory);
+
+      var tupleDefinitions = _mapping.Value.TupleTypeDefinitions.GetValueOrDefault(tupleType);
+      if (tupleDefinitions == null)
+        throw missingTypeDefinitionExceptionFactory(tupleType);
+
+      return tupleDefinitions;
+    }
+
     public bool ContainsClassDefinition (string classID)
     {
       ArgumentUtility.CheckNotNull("classID", classID);
@@ -210,11 +251,25 @@ namespace Remotion.Data.DomainObjects.Mapping
       return _mapping.Value.ClassDefinitions.ContainsKey(classID);
     }
 
+    public bool ContainsTupleDefinition (string tupleID)
+    {
+      ArgumentUtility.CheckNotNull("tupleID", tupleID);
+
+      return _mapping.Value.TupleDefinitions.ContainsKey(tupleID);
+    }
+
     public ClassDefinition GetClassDefinition (string classID)
     {
       ArgumentUtility.CheckNotNullOrEmpty("classID", classID);
 
       return GetClassDefinition(classID, id => CreateMappingException("Mapping does not contain class '{0}'.", id));
+    }
+
+    public TupleDefinition GetTupleDefinition (string tupleID)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty("tupleID", tupleID);
+
+      return GetTupleDefinition(tupleID, id => CreateMappingException("Mapping does not contain tuple '{0}'.", id));
     }
 
     public ClassDefinition GetClassDefinition (string classID, Func<string, Exception> missingClassDefinitionExceptionFactory)
@@ -227,6 +282,18 @@ namespace Remotion.Data.DomainObjects.Mapping
         throw missingClassDefinitionExceptionFactory(classID);
 
       return classDefinition;
+    }
+
+    public TupleDefinition GetTupleDefinition (string tupleID, Func<string, Exception> missingClassDefinitionExceptionFactory)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty("tupleID", tupleID);
+      ArgumentUtility.CheckNotNull("missingClassDefinitionExceptionFactory", missingClassDefinitionExceptionFactory);
+
+      var tupleDefinition = _mapping.Value.TupleDefinitions.GetValueOrDefault(tupleID);
+      if (tupleDefinition == null)
+        throw missingClassDefinitionExceptionFactory(tupleID);
+
+      return tupleDefinition;
     }
 
     public IMemberInformationNameResolver NameResolver

@@ -27,22 +27,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var property2 = new SimpleStoragePropertyDefinition(typeof(bool), column2);
 
       _tableTypeDefinitionWithoutPrimaryKeyConstraint = TableTypeDefinitionObjectMother.Create(
+          StorageSettings.GetDefaultStorageProviderDefinition(),
           typeName: "TypeName",
           schemaName: "SchemaName",
           propertyDefinitions: new[] { property1, property2 }
       );
 
       _tableTypeDefinitionWithClusteredPrimaryKeyConstraint = TableTypeDefinitionObjectMother.Create(
+          StorageSettings.GetDefaultStorageProviderDefinition(),
           typeName: "TypeName",
           propertyDefinitions: new[] { property1, property2 },
 
           constraints: new ITableConstraintDefinition[] { new PrimaryKeyConstraintDefinition("PKName", true, new[] { column1 }) });
 
       _tableTypeDefinitionWithNonClusteredPrimaryKeyConstraint = TableTypeDefinitionObjectMother.Create(
+          StorageSettings.GetDefaultStorageProviderDefinition(),
           typeName: "TypeName",
           propertyDefinitions: new[] { property1, property2 },
 
-          constraints:  new ITableConstraintDefinition[] { new PrimaryKeyConstraintDefinition("PKName", false, new[] { column1, column2 }) });
+          constraints: new ITableConstraintDefinition[] { new PrimaryKeyConstraintDefinition("PKName", false, new[] { column1, column2 }) });
     }
 
     [Test]

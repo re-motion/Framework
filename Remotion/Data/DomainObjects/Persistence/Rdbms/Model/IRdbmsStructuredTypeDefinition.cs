@@ -15,10 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System.Collections.Generic;
+using Remotion.Data.DomainObjects.Persistence.Model;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
-  public interface IRdbmsStructuredTypeDefinition
+  public interface IRdbmsStructuredTypeDefinition : IStructuredTypeDefinition
   {
     IReadOnlyCollection<IRdbmsStoragePropertyDefinition> Properties { get; }
     IReadOnlyCollection<ITableConstraintDefinition> Constraints { get; }

@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     /// </summary>
     /// <param name="propertyDefinition">The <see cref="PropertyDefinition"/> for which an <see cref="IStorageTypeInformation"/> object should be
     ///   returned.</param>
-    /// <param name="forceNullable">Specifies whether to override the <see cref="PropertyDefinition.IsNullable"/> property to make the property
+    /// <param name="forceNullable">Specifies whether to override the <see cref="PropertyDefinitionBase.IsNullable"/> property to make the property
     /// nullable in the database even when the property is not nullable in memory.</param>
     /// <returns>A <see cref="IStorageTypeInformation"/> for the given <paramref name="propertyDefinition"/>.</returns>
     [NotNull]

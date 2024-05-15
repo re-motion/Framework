@@ -161,6 +161,34 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       }
     }
 
+    public TupleDefinition[] GetTupleDefinitions ()
+    {
+      s_log.Info("Reflecting tuple definitions...");
+
+      using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to reflect tuple definitions: {elapsed}."))
+      {
+        var tupleDefinitions = new List<TupleDefinition>();
+        foreach (var (type, maxLength) in GetSimpleTypes())
+        {
+          var tupleDefinition = new TupleDefinition(type.Name, type, null);
+          tupleDefinition.SetTuplePropertyDefinitions(new[] { new TuplePropertyDefinition(tupleDefinition, "Value", new ValuePropertyInformation(type), true, maxLength) });
+          tupleDefinitions.Add(tupleDefinition);
+        }
+
+        var types = GetTupleTypesSorted();
+        tupleDefinitions.AddRange(MappingObjectFactory.CreateTupleDefinitionCollection(types));
+
+        return tupleDefinitions.ToArray()
+            .LogAndReturnValue(s_log, LogLevel.Info, result => $"Generated {result.Length} tuple definitions.");
+      }
+    }
+
+    private IEnumerable<(Type, int)> GetSimpleTypes ()
+    {
+      yield return (typeof(string), -1);
+      yield return (typeof(int), 0);
+    }
+
     private IEnumerable<Type> GetDomainObjectTypes ()
     {
       return (from type in _typeDiscoveryService.GetTypes(typeof(DomainObject), excludeGlobalTypes: false).Cast<Type>()
@@ -168,9 +196,21 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
               select type).Distinct();
     }
 
+    private IEnumerable<Type> GetTupleTypes ()
+    {
+      return (from type in _typeDiscoveryService.GetTypes(typeof(IStructuredType), excludeGlobalTypes: false).Cast<Type>()
+              where !ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type)
+              select type).Distinct();
+    }
+
     private Type[] GetDomainObjectTypesSorted ()
     {
       return GetDomainObjectTypes().OrderBy(t => t.GetFullNameChecked(), StringComparer.OrdinalIgnoreCase).ToArray();
+    }
+
+    private Type[] GetTupleTypesSorted ()
+    {
+      return GetTupleTypes().OrderBy(t => t.GetFullNameChecked(), StringComparer.OrdinalIgnoreCase).ToArray();
     }
 
     bool IMappingLoader.ResolveTypes

@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Collections;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
@@ -30,17 +31,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     public IReadOnlyCollection<IIndexDefinition> Indexes { get; }
 
     public TableTypeDefinition (
+        StorageProviderDefinition storageProviderDefinition,
         TypeNameDefinition typeName,
         IReadOnlyCollection<IRdbmsStoragePropertyDefinition> properties,
         IReadOnlyCollection<ITableConstraintDefinition> constraints,
-        IReadOnlyCollection<IIndexDefinition> indexes
-    )
+        IReadOnlyCollection<IIndexDefinition> indexes)
     {
+      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
       ArgumentUtility.CheckNotNull(nameof(typeName), typeName);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(properties), properties);
       ArgumentUtility.CheckNotNull(nameof(constraints), constraints);
       ArgumentUtility.CheckNotNull(nameof(indexes), indexes);
 
+      StorageProviderDefinition = storageProviderDefinition;
       TypeName = typeName;
       Properties = properties.AsReadOnly();
       Constraints = constraints.AsReadOnly();
@@ -58,5 +61,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
       visitor.VisitTableTypeDefinition(this);
     }
+
+    public string StorageProviderID => StorageProviderDefinition.Name;
+    public StorageProviderDefinition StorageProviderDefinition { get; }
   }
 }

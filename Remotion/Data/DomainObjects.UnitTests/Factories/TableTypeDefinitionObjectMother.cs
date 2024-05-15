@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Factories
@@ -8,6 +9,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
   public static class TableTypeDefinitionObjectMother
   {
     public static TableTypeDefinition Create (
+        StorageProviderDefinition storageProviderDefinition,
         string typeName = "TestType",
         [CanBeNull] string schemaName = null,
         IReadOnlyCollection<IRdbmsStoragePropertyDefinition> propertyDefinitions = null,
@@ -18,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       constraints ??= Array.Empty<ITableConstraintDefinition>();
       indexes ??= Array.Empty<IIndexDefinition>();
 
-      return new TableTypeDefinition(new TypeNameDefinition(schemaName, typeName), propertyDefinitions, constraints, indexes);
+      return new TableTypeDefinition(storageProviderDefinition, new TypeNameDefinition(schemaName, typeName), propertyDefinitions, constraints, indexes);
     }
   }
 }

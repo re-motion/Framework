@@ -43,9 +43,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       _tableTypeScriptFactoryStub = new Mock<IStructuredTypeScriptElementFactory>();
       _builder = new TableTypeScriptBuilder(_tableTypeScriptFactoryStub.Object, new SqlCommentScriptElementFactory());
 
-      _tableTypeDefinition1 = TableTypeDefinitionObjectMother.Create();
-      _tableTypeDefinition2 = TableTypeDefinitionObjectMother.Create();
-      _tableTypeDefinition3 = TableTypeDefinitionObjectMother.Create();
+      _tableTypeDefinition1 = TableTypeDefinitionObjectMother.Create(StorageSettings.GetDefaultStorageProviderDefinition());
+      _tableTypeDefinition2 = TableTypeDefinitionObjectMother.Create(StorageSettings.GetDefaultStorageProviderDefinition());
+      _tableTypeDefinition3 = TableTypeDefinitionObjectMother.Create(StorageSettings.GetDefaultStorageProviderDefinition());
 
       _fakeElement1 = new Mock<IScriptElement>();
       _fakeElement2 = new Mock<IScriptElement>();

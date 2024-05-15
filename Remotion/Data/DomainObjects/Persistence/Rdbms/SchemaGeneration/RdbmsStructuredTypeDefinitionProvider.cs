@@ -16,46 +16,20 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Linq;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 {
   public class RdbmsStructuredTypeDefinitionProvider : IRdbmsStructuredTypeDefinitionProvider
   {
-    public IReadOnlyCollection<IRdbmsStructuredTypeDefinition> GetTypeDefinitions (IStorageTypeInformationProvider storageTypeInformationProvider)
+    public IReadOnlyCollection<IRdbmsStructuredTypeDefinition> GetTypeDefinitions (IEnumerable<TupleDefinition> tupleDefinitions)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageTypeInformationProvider), storageTypeInformationProvider);
+      ArgumentUtility.CheckNotNull(nameof(tupleDefinitions), tupleDefinitions);
 
-      return new[]
-             {
-               CreateTypeDefinition(DbType.String, typeof(String)),
-               CreateTypeDefinition(DbType.Binary, typeof(Byte[])),
-               CreateTypeDefinition(DbType.Boolean, typeof(Boolean?)),
-               CreateTypeDefinition(DbType.Byte, typeof(Byte?)),
-               CreateTypeDefinition(DbType.DateTime, typeof(DateTime?)),
-               CreateTypeDefinition(DbType.Decimal, typeof(Decimal?)),
-               CreateTypeDefinition(DbType.Double, typeof(Double?)),
-               CreateTypeDefinition(DbType.Guid, typeof(Guid?)),
-               CreateTypeDefinition(DbType.Int16, typeof(Int16?)),
-               CreateTypeDefinition(DbType.Int32, typeof(Int32?)),
-               CreateTypeDefinition(DbType.Int64, typeof(Int64?)),
-               CreateTypeDefinition(DbType.Single, typeof(Single?))
-             };
-
-      IRdbmsStructuredTypeDefinition CreateTypeDefinition (DbType dbType, Type dotnetType)
-      {
-        var storageTypeInformation = storageTypeInformationProvider.GetStorageType(dotnetType);
-        var typeNameDefinition = new TypeNameDefinition(null, $"TVP_{dbType}");
-        var propertyDefinitions = new[] { new SimpleStoragePropertyDefinition(dotnetType, new ColumnDefinition("Value", storageTypeInformation, false)) };
-        return new TableTypeDefinition(
-            typeNameDefinition,
-            propertyDefinitions,
-            Array.Empty<ITableConstraintDefinition>(),
-            Array.Empty<IIndexDefinition>());
-      }
+      return tupleDefinitions.Select(td => td.StructuredTypeDefinition).OfType<IRdbmsStructuredTypeDefinition>().ToArray();
     }
   }
 }

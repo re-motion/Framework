@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       base.SetUp();
 
-      _tableTypeDefinition = TableTypeDefinitionObjectMother.Create();
+      _tableTypeDefinition = TableTypeDefinitionObjectMother.Create(StorageSettings.GetDefaultStorageProviderDefinition());
 
       _voidReceiverMock = new Mock<IVisitorCallReceiver>(MockBehavior.Strict);
     }
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void Visit_WithoutResult_Continuation_TableTypeDefinition ()
     {
-      var secondTypeDef = TableTypeDefinitionObjectMother.Create("Second");
+      var secondTypeDef = TableTypeDefinitionObjectMother.Create(StorageSettings.GetDefaultStorageProviderDefinition(), typeName: "Second");
 
       _voidReceiverMock
           .Setup(_ => _.HandleTableTypeDefinition(_tableTypeDefinition, It.IsAny<Action<IRdbmsStructuredTypeDefinition>>()))

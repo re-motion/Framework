@@ -21,11 +21,12 @@ using Remotion.Reflection;
 namespace Remotion.Data.DomainObjects.Mapping
 {
   /// <summary>
-  /// <see cref="IMappingObjectFactory"/> defines the API for creating maping objects.
+  /// <see cref="IMappingObjectFactory"/> defines the API for creating mapping objects.
   /// </summary>
   public interface IMappingObjectFactory
   {
     ClassDefinition CreateClassDefinition (Type type, ClassDefinition? baseClass);
+    TupleDefinition CreateTupleDefinition (Type type);
 
     PropertyDefinition CreatePropertyDefinition (ClassDefinition classDefinition, IPropertyInformation propertyInfo);
 
@@ -35,6 +36,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     IRelationEndPointDefinition CreateRelationEndPointDefinition (ClassDefinition classDefinition, IPropertyInformation propertyInfo);
 
     ClassDefinition[] CreateClassDefinitionCollection (IEnumerable<Type> types);
+    TupleDefinition[] CreateTupleDefinitionCollection (IEnumerable<Type> types);
 
     PropertyDefinitionCollection CreatePropertyDefinitionCollection (ClassDefinition classDefinition, IEnumerable<IPropertyInformation> propertyInfos);
 

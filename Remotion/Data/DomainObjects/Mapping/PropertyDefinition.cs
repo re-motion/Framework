@@ -23,20 +23,8 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Mapping
 {
   [DebuggerDisplay("{GetType().Name}: {PropertyName}")]
-  public class PropertyDefinition
+  public class PropertyDefinition : PropertyDefinitionBase
   {
-    private readonly string _propertyName;
-    private readonly ClassDefinition _classDefinition;
-    private readonly int? _maxLength;
-    private readonly StorageClass _storageClass;
-    private IStoragePropertyDefinition? _storagePropertyDefinition;
-    private readonly IPropertyInformation _propertyInfo;
-    private readonly Type _propertyType;
-    private readonly bool _isNullable;
-    private bool _isNullablePropertyType;
-    private readonly bool _isObjectID;
-    private readonly object? _defaultValue;
-
     public PropertyDefinition (
         ClassDefinition classDefinition,
         IPropertyInformation propertyInfo,
@@ -46,112 +34,38 @@ namespace Remotion.Data.DomainObjects.Mapping
         int? maxLength,
         StorageClass storageClass,
         object? defaultValue)
+        : base(propertyName, propertyInfo, isObjectID ? typeof(ObjectID) : propertyInfo.PropertyType, isNullable, maxLength)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
-      _classDefinition = classDefinition;
-      _propertyInfo = propertyInfo;
-      _propertyType = isObjectID ? typeof(ObjectID) : propertyInfo.PropertyType;
-      _propertyName = propertyName;
-      _isObjectID = isObjectID;
-      _isNullablePropertyType = NullableTypeUtility.IsNullableType(propertyInfo.PropertyType);
-      _isNullable = isNullable;
-      _maxLength = maxLength;
-      _storageClass = storageClass;
-      _defaultValue = defaultValue;
+      ClassDefinition = classDefinition;
+      IsObjectID = isObjectID;
+      StorageClass = storageClass;
+      DefaultValue = defaultValue;
     }
 
-    public ClassDefinition ClassDefinition
-    {
-      get { return _classDefinition; }
-    }
+    public ClassDefinition ClassDefinition { get; }
 
-    public string PropertyName
-    {
-      get { return _propertyName; }
-    }
+    public object? DefaultValue { get; }
 
-    public bool HasStoragePropertyDefinitionBeenSet
-    {
-      get { return _storagePropertyDefinition != null; }
-    }
+    public bool IsObjectID { get; }
 
-    public IStoragePropertyDefinition StoragePropertyDefinition
+    public StorageClass StorageClass { get; }
+
+    public override IStoragePropertyDefinition StoragePropertyDefinition
     {
       get
       {
         if (StorageClass != StorageClass.Persistent)
           throw new InvalidOperationException("Cannot access property 'storagePropertyDefinition' for non-persistent property definitions.");
 
-        Assertion.IsNotNull(_storagePropertyDefinition, "StoragePropertyDefinition has not been set for property '{0}' of class '{1}'.", PropertyName, _classDefinition.ID);
-        return _storagePropertyDefinition;
+        return base.StoragePropertyDefinition;
       }
     }
 
-    public IPropertyInformation PropertyInfo
+    protected override string GetTypeID ()
     {
-      get { return _propertyInfo; }
-    }
-
-    public Type PropertyType
-    {
-      get { return _propertyType; }
-    }
-
-    public object? DefaultValue
-    {
-      get
-      {
-        return _defaultValue;
-      }
-    }
-
-    /// <summary>
-    /// Caches the information on whether the property's .NET type is nullable.
-    /// </summary>
-    internal bool IsNullablePropertyType
-    {
-      get { return _isNullablePropertyType; }
-    }
-
-    /// <summary>
-    /// Gets a flag describing whether the property's value is required for persistence.
-    /// </summary>
-    public bool IsNullable
-    {
-      get { return _isNullable; }
-    }
-
-    public bool IsObjectID
-    {
-      get { return _isObjectID; }
-    }
-
-    /// <summary>
-    /// Gets the maximum length of the property's value when the value is persisted.
-    /// </summary>
-    public int? MaxLength
-    {
-      get { return _maxLength; }
-    }
-
-    public StorageClass StorageClass
-    {
-      get { return _storageClass; }
-    }
-
-    public void SetStorageProperty (IStoragePropertyDefinition storagePropertyDefinition)
-    {
-      ArgumentUtility.CheckNotNull("storagePropertyDefinition", storagePropertyDefinition);
-
-      _storagePropertyDefinition = storagePropertyDefinition;
-    }
-
-    public override string ToString ()
-    {
-      return GetType().GetFullNameSafe() + ": " + _propertyName;
+      return ClassDefinition.ID;
     }
   }
 }
