@@ -15,7 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel;
+using System.Data;
+using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
@@ -24,11 +28,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
   public class SqlDialectTest
   {
     private SqlDialect _dialect;
+    private Mock<TypeConverter> _typeConverterStub;
 
     [SetUp]
     public void SetUp ()
     {
       _dialect = new SqlDialect();
+      _typeConverterStub = new Mock<TypeConverter>();
     }
 
     [Test]
@@ -48,6 +54,365 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
     {
       Assert.That(_dialect.GetParameterName("parameter"), Is.EqualTo("@parameter"));
       Assert.That(_dialect.GetParameterName("@parameter"), Is.EqualTo("@parameter"));
+    }
+
+    [Test]
+    [CLSCompliant(false)]
+    [TestCase(null, TestName = "CreateDataParameter_WithoutSize_DoesNotSetSizeOnParameter.")]
+    [TestCase(-1, TestName = "CreateDataParameter_WithNegativeSize_SetsSizeOnParameter.")]
+    [TestCase(0, TestName = "CreateDataParameter_WithSizeZero_SetsSizeOnParameter.")]
+    [TestCase(1, TestName = "CreateDataParameter_WithPositiveSize_SetsSizeOnParameter.")]
+    public void CreateDataParameter (int? storageTypeSize)
+    {
+      var commandStub = new Mock<IDbCommand>();
+      var dataParameterMock = new Mock<IDbDataParameter>();
+
+      var storageTypeInformation = new StorageTypeInformation(
+          typeof(bool),
+          "test",
+          DbType.Boolean,
+          false,
+          storageTypeSize,
+          typeof(int),
+          _typeConverterStub.Object);
+
+      _typeConverterStub.Setup(_ => _.ConvertTo(null, null, "value", storageTypeInformation.StorageType)).Returns("");
+
+      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+
+      dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
+      dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Value = "").Verifiable();
+      if (storageTypeSize.HasValue)
+        dataParameterMock.SetupSet(_ => _.Size = storageTypeSize.Value).Verifiable();
+      else
+        dataParameterMock.SetupSet(_ => _.Size = It.IsAny<int>()).Throws(new AssertionException("Must not be called."));
+
+      var result = _dialect.CreateDataParameter(commandStub.Object, storageTypeInformation, "@dummy", "value");
+
+      dataParameterMock.Verify();
+
+      Assert.That(result, Is.SameAs(dataParameterMock.Object));
+    }
+
+    [Test]
+    public void CreateDataParameter_WithStringValueExceedingFixedSize_DoesNotInitializeSize ()
+    {
+      var commandStub = new Mock<IDbCommand>();
+      var dataParameterMock = new Mock<IDbDataParameter>();
+
+      var storageTypeInformation = new StorageTypeInformation(
+          typeof(string),
+          "test",
+          DbType.String,
+          false,
+          5,
+          typeof(string),
+          _typeConverterStub.Object);
+
+      _typeConverterStub.Setup(_ => _.ConvertTo(null, null, "value", storageTypeInformation.StorageType)).Returns("converted value");
+
+      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+
+      dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
+      dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Value = "converted value").Verifiable();
+      dataParameterMock.SetupSet(_ => _.Size = It.IsAny<int>()).Throws(new AssertionException("Must not be called."));
+
+      var result = _dialect.CreateDataParameter(commandStub.Object, storageTypeInformation, "@dummy", "value");
+
+      dataParameterMock.Verify();
+
+      Assert.That(result, Is.SameAs(dataParameterMock.Object));
+    }
+
+    [Test]
+    public void CreateDataParameter_WithStringValueWithFixedSizeAndMaxSize_InitializesToMaxSize ()
+    {
+      var commandStub = new Mock<IDbCommand>();
+      var dataParameterMock = new Mock<IDbDataParameter>();
+
+      var storageTypeInformation = new StorageTypeInformation(
+          typeof(string),
+          "test",
+          DbType.String,
+          false,
+          -1,
+          typeof(string),
+          _typeConverterStub.Object);
+
+      _typeConverterStub.Setup(_ => _.ConvertTo(null, null, "value", storageTypeInformation.StorageType)).Returns("converted value");
+
+      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+
+      dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
+      dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Value = "converted value").Verifiable();
+      dataParameterMock.SetupSet(_ => _.Size = -1);
+
+      var result = _dialect.CreateDataParameter(commandStub.Object, storageTypeInformation, "@dummy", "value");
+
+      dataParameterMock.Verify();
+
+      Assert.That(result, Is.SameAs(dataParameterMock.Object));
+    }
+
+    [Test]
+    public void CreateDataParameter_WithCharArrayValueExceedingFixedSize_DoesNotInitializeSize ()
+    {
+      var commandStub = new Mock<IDbCommand>();
+      var dataParameterMock = new Mock<IDbDataParameter>();
+
+      var storageTypeInformation = new StorageTypeInformation(
+          typeof(char[]),
+          "test",
+          DbType.AnsiString,
+          false,
+          5,
+          typeof(char[]),
+          _typeConverterStub.Object);
+
+      var convertedValue = new char[10];
+      _typeConverterStub.Setup(_ => _.ConvertTo(null, null, "value", storageTypeInformation.StorageType)).Returns(convertedValue);
+
+      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+
+      dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
+      dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Value = convertedValue).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Size = It.IsAny<int>()).Throws(new AssertionException("Must not be called."));
+
+      var result = _dialect.CreateDataParameter(commandStub.Object, storageTypeInformation, "@dummy","value");
+
+      dataParameterMock.Verify();
+
+      Assert.That(result, Is.SameAs(dataParameterMock.Object));
+    }
+
+    [Test]
+    public void CreateDataParameter_WithCharArrayFixedSizeWithMaxSize_InitializesToMaxSize ()
+    {
+      var commandStub = new Mock<IDbCommand>();
+      var dataParameterMock = new Mock<IDbDataParameter>();
+
+      var storageTypeInformation = new StorageTypeInformation(
+          typeof(char[]),
+          "test",
+          DbType.AnsiStringFixedLength,
+          false,
+          -1,
+          typeof(char[]),
+          _typeConverterStub.Object);
+
+      var convertedValue = new char[5];
+      _typeConverterStub.Setup(_ => _.ConvertTo(null, null, "value", storageTypeInformation.StorageType)).Returns(convertedValue);
+
+      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+
+      dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
+      dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Value = convertedValue).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Size = -1).Verifiable();
+
+      var result = _dialect.CreateDataParameter(commandStub.Object, storageTypeInformation, "@dummy","value");
+
+      dataParameterMock.Verify();
+
+      Assert.That(result, Is.SameAs(dataParameterMock.Object));
+    }
+
+    [Test]
+    public void CreateDataParameter_WithByteArrayValueExceedingFixedSize_DoesNotInitializeSize ()
+    {
+      var commandStub = new Mock<IDbCommand>();
+      var dataParameterMock = new Mock<IDbDataParameter>();
+
+      var storageTypeInformation = new StorageTypeInformation(
+          typeof(byte[]),
+          "test",
+          DbType.Binary,
+          false,
+          5,
+          typeof(byte[]),
+          _typeConverterStub.Object);
+
+      var convertedValue = new byte[10];
+      _typeConverterStub.Setup(_ => _.ConvertTo(null, null, "value", storageTypeInformation.StorageType)).Returns(convertedValue);
+
+      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+
+      dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
+      dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Value = convertedValue).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Size = It.IsAny<int>()).Throws(new AssertionException("Must not be called."));
+
+      var result = _dialect.CreateDataParameter(commandStub.Object, storageTypeInformation, "@dummy","value");
+
+      dataParameterMock.Verify();
+
+      Assert.That(result, Is.SameAs(dataParameterMock.Object));
+    }
+
+    [Test]
+    public void CreateDataParameter_WithNullResult ()
+    {
+      var commandStub = new Mock<IDbCommand>();
+      var dataParameterMock = new Mock<IDbDataParameter>();
+
+      var storageTypeInformation = new StorageTypeInformation(typeof(bool), "test", DbType.Boolean, false, null, typeof(int), _typeConverterStub.Object);
+      _typeConverterStub.Setup(_ => _.ConvertTo(null, null, "value", storageTypeInformation.StorageType)).Returns((object)null);
+
+      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+
+      dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
+      dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Value = DBNull.Value).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Size = It.IsAny<int>()).Throws(new AssertionException("Must not be called."));
+
+      var result = _dialect.CreateDataParameter(commandStub.Object, storageTypeInformation, "@dummy","value");
+
+      dataParameterMock.Verify();
+
+      Assert.That(result, Is.SameAs(dataParameterMock.Object));
+    }
+
+    [Test]
+    public void CreateDataParameter_WithNullResult_AndParameterSize_SetsSize ()
+    {
+      var commandStub = new Mock<IDbCommand>();
+      var dataParameterMock = new Mock<IDbDataParameter>();
+
+      var storageTypeInformation = new StorageTypeInformation(
+          typeof(byte[]),
+          "test",
+          DbType.Binary,
+          false,
+          5,
+          typeof(byte[]),
+          _typeConverterStub.Object);
+
+      _typeConverterStub.Setup(_ => _.ConvertTo(null, null, "value", storageTypeInformation.StorageType)).Returns((object)null);
+
+      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+
+      dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
+      dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Value = DBNull.Value).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Size = 5).Verifiable();
+
+      var result = _dialect.CreateDataParameter(commandStub.Object, storageTypeInformation, "@dummy","value");
+
+      dataParameterMock.Verify();
+
+      Assert.That(result, Is.SameAs(dataParameterMock.Object));
+    }
+
+    [Test]
+    public void CreateDataParameter_WithNullInput_NoSize ()
+    {
+      var commandStub = new Mock<IDbCommand>();
+      var dataParameterMock = new Mock<IDbDataParameter>();
+
+      var storageTypeInformation = new StorageTypeInformation(typeof(bool), "test", DbType.Boolean, false, null, typeof(int), _typeConverterStub.Object);
+      _typeConverterStub.Setup(_ => _.ConvertTo(null, null, null, storageTypeInformation.StorageType)).Returns(DBNull.Value);
+
+      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+
+      dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
+      dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Value = DBNull.Value).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Size = It.IsAny<int>()).Throws(new AssertionException("Must not be called."));
+
+      var result = _dialect.CreateDataParameter(commandStub.Object, storageTypeInformation, "@dummy", null);
+
+      dataParameterMock.Verify();
+
+      Assert.That(result, Is.SameAs(dataParameterMock.Object));
+    }
+
+    [Test]
+    public void CreateDataParameter_WithNullInput_WithSize ()
+    {
+      var commandStub = new Mock<IDbCommand>();
+      var dataParameterMock = new Mock<IDbDataParameter>();
+
+      var storageTypeInformation = new StorageTypeInformation(typeof(string), "test", DbType.String, false, 5, typeof(string), _typeConverterStub.Object);
+      _typeConverterStub.Setup(_ => _.ConvertTo(null, null, null, storageTypeInformation.StorageType)).Returns(DBNull.Value);
+
+      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+
+      dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
+      dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Value = DBNull.Value).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Size = 5).Verifiable();
+
+      var result = _dialect.CreateDataParameter(commandStub.Object, storageTypeInformation, "@dummy", null);
+
+      dataParameterMock.Verify();
+
+      Assert.That(result, Is.SameAs(dataParameterMock.Object));
+    }
+
+    [Test]
+    public void CreateDataParameter_WithConvertedValueNull_AndFullTextMaxLength_SetsSize ()
+    {
+      var commandStub = new Mock<IDbCommand>();
+      var dataParameterMock = new Mock<IDbDataParameter>();
+
+      var value = "dummyInput";
+      var storageTypeInformationStub = new Mock<IStorageTypeInformation>();
+      storageTypeInformationStub.SetupGet(_ => _.StorageType).Returns(typeof(string));
+      storageTypeInformationStub.SetupGet(_ => _.StorageDbType).Returns(DbType.String);
+      storageTypeInformationStub.SetupGet(_ => _.StorageTypeLength).Returns(-1);
+      storageTypeInformationStub.SetupGet(_ => _.DotNetType).Returns(typeof(string));
+
+      storageTypeInformationStub.Setup(_ => _.ConvertToStorageType(value)).Returns((object)null);
+
+      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+
+      dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
+      dataParameterMock.SetupSet(_ => _.DbType = DbType.String).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Value = null).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Size = 4000);
+
+      var result = _dialect.CreateDataParameter(commandStub.Object, storageTypeInformationStub.Object, "@dummy",value);
+
+      dataParameterMock.Verify();
+
+      Assert.That(result, Is.SameAs(dataParameterMock.Object));
+    }
+
+    [Test]
+    public void CreateDataParameter_ImpossibleTestForDefaultValue ()
+    {
+      var commandStub = new Mock<IDbCommand>();
+      var dataParameterMock = new Mock<IDbDataParameter>();
+
+      var storageTypeInformation = new StorageTypeInformation(
+          typeof(byte[]),
+          "test",
+          DbType.String,
+          false,
+          -1,
+          typeof(byte[]),
+          _typeConverterStub.Object);
+
+      var value = new[] { 1, 2, 3 };
+      _typeConverterStub.Setup(_ => _.ConvertTo(null, null, value, storageTypeInformation.StorageType)).Returns(new [] { 1, 2, 3 });
+
+      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+
+      dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
+      dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Value = new[] { 1, 2, 3 }).Verifiable();
+      dataParameterMock.SetupSet(_ => _.Size = It.IsAny<int>()).Throws(new AssertionException("Should not be set."));
+
+      Assert.That(
+          () => _dialect.CreateDataParameter(commandStub.Object, storageTypeInformation, "@dummy", value),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo($"The type '{typeof(int[])}' is not fulltext compatible."));
+
+      dataParameterMock.Verify();
     }
   }
 }
