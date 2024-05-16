@@ -73,40 +73,40 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     [Test]
     public void AppendColumnValueAssignments ()
     {
-      _sqlDialectStub.Setup(stub => stub.DelimitIdentifier("ID")).Returns("[delimited ID]");
-      _sqlDialectStub.Setup(stub => stub.DelimitIdentifier("Timestamp")).Returns("[delimited Timestamp]");
-      _sqlDialectStub.Setup(stub => stub.GetParameterName("ID")).Returns("pID");
-      _sqlDialectStub.Setup(stub => stub.GetParameterName("Timestamp")).Returns("pTimestamp");
+      var parameter1Stub = new Mock<IDbDataParameter>();
+      parameter1Stub.Setup(_ => _.ParameterName).Returns("pID").Verifiable();
 
-      var parameter1StrictMock = new Mock<IDbDataParameter>(MockBehavior.Strict);
-      parameter1StrictMock.SetupSet(mock => mock.ParameterName = "pID").Verifiable();
-      parameter1StrictMock.Setup(mock => mock.ParameterName).Returns("pID").Verifiable();
-      parameter1StrictMock.SetupSet(mock => mock.Value = _value1).Verifiable();
-      parameter1StrictMock.SetupSet(mock => mock.DbType = DbType.Guid).Verifiable();
-
-      var parameter2StrictMock = new Mock<IDbDataParameter>(MockBehavior.Strict);
-      parameter2StrictMock.SetupSet(mock => mock.ParameterName = "pTimestamp").Verifiable();
-      parameter2StrictMock.Setup(mock => mock.ParameterName).Returns("pTimestamp").Verifiable();
-      parameter2StrictMock.SetupSet(mock => mock.Value = _value2).Verifiable();
-      parameter2StrictMock.SetupSet(mock => mock.DbType = DbType.DateTime).Verifiable();
+      var parameter2Stub = new Mock<IDbDataParameter>();
+      parameter2Stub.Setup(_ => _.ParameterName).Returns("pTimestamp").Verifiable();
 
       var dataParameterCollectionMock = new Mock<IDataParameterCollection>(MockBehavior.Strict);
 
-      _dbCommandStub.Setup(stub => stub.Parameters).Returns(dataParameterCollectionMock.Object);
-      _dbCommandStub.SetupProperty(stub => stub.CommandText);
+      _dbCommandStub.Setup(_ => _.Parameters).Returns(dataParameterCollectionMock.Object);
+      _dbCommandStub.SetupProperty(_ => _.CommandText);
       _dbCommandStub
-          .SetupSequence(stub => stub.CreateParameter())
-          .Returns(parameter1StrictMock.Object)
-          .Returns(parameter2StrictMock.Object);
+          .SetupSequence(_ => _.CreateParameter())
+          .Returns(parameter1Stub.Object)
+          .Returns(parameter2Stub.Object);
 
-      dataParameterCollectionMock.Setup(mock => mock.Add(parameter1StrictMock.Object)).Returns(0).Verifiable();
-      dataParameterCollectionMock.Setup(mock => mock.Add(parameter2StrictMock.Object)).Returns(1).Verifiable();
+      dataParameterCollectionMock.Setup(_ => _.Add(parameter1Stub.Object)).Returns(0).Verifiable();
+      dataParameterCollectionMock.Setup(_ => _.Add(parameter2Stub.Object)).Returns(1).Verifiable();
+
+      _sqlDialectStub.Setup(_ => _.DelimitIdentifier("ID")).Returns("[delimited ID]");
+      _sqlDialectStub.Setup(_ => _.DelimitIdentifier("Timestamp")).Returns("[delimited Timestamp]");
+
+      _sqlDialectStub.Setup(_ => _.GetParameterName("ID")).Returns("pID");
+      _sqlDialectStub.Setup(_ => _.GetParameterName("Timestamp")).Returns("pTimestamp");
+
+      _sqlDialectStub
+          .Setup(_ => _.CreateDataParameter(_dbCommandStub.Object, _column1.StorageTypeInfo, "pID", _value1))
+          .Returns(parameter1Stub.Object);
+      _sqlDialectStub
+          .Setup(_ => _.CreateDataParameter(_dbCommandStub.Object, _column2.StorageTypeInfo, "pTimestamp", _value2))
+          .Returns(parameter2Stub.Object);
 
       _updatedColumnsSpecification.AppendColumnValueAssignments(_statement, _dbCommandStub.Object, _sqlDialectStub.Object);
 
       dataParameterCollectionMock.Verify();
-      parameter1StrictMock.Verify();
-      parameter2StrictMock.Verify();
       Assert.That(_statement.ToString(), Is.EqualTo("[delimited ID] = pID, [delimited Timestamp] = pTimestamp"));
       Assert.That(_dbCommandStub.Object.Parameters, Is.SameAs(dataParameterCollectionMock.Object));
     }
