@@ -59,6 +59,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       LoadDataFailedErrorMessage,
       /// <summary> The message displayed when the user input does not match the regex required for triggering the drop-down list to open.</summary>
       SearchStringForDropDownDoesNotMatchRegexMessage,
+      /// <summary> The message announced to screen reader users when new matches are being loaded from the server. </summary>
+      LoadingMoreMatchesMessage,
+      /// <summary> The message announced to screen reader users when new matches were loaded from the server and the result list has been expanded. </summary>
+      LoadedMoreMatchesMessage,
       /// <summary> The message displayed when the user input does not result in a result.</summary>
       NoDataFoundMessage,
       /// <summary> The aria-role description for the combobox as a read-only element. </summary>
@@ -270,6 +274,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       jsonBuilder.Append(", ");
       jsonBuilder.Append("NoDataFoundMessage : ");
       AppendStringValueOrNullToScript(jsonBuilder, resourceManager.GetText(ResourceIdentifier.NoDataFoundMessage));
+      jsonBuilder.Append(", ");
+      jsonBuilder.Append("LoadingMoreMatchesMessage : ");
+      AppendStringValueOrNullToScript(jsonBuilder, resourceManager.GetText(ResourceIdentifier.LoadingMoreMatchesMessage));
+      jsonBuilder.Append(", ");
+      jsonBuilder.Append("LoadedMoreMatchesMessage : ");
+      AppendStringValueOrNullToScript(jsonBuilder, resourceManager.GetText(ResourceIdentifier.LoadedMoreMatchesMessage));
       jsonBuilder.Append(" }");
 
       return jsonBuilder.ToString();

@@ -132,4 +132,10 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.ScreenReaderLabelForComboboxReadOnly" xml:space="preserve">
       <value>nur lesen kombiniertes Eingabefeld</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.LoadedMoreMatchesMessage" xml:space="preserve">
+    <value>Weitere Treffer wurden geladen.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.LoadingMoreMatchesMessage" xml:space="preserve">
+    <value>Weitere Treffer werden geladen.</value>
+  </data>
 </root>

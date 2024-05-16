@@ -154,15 +154,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// and returns its results.
     /// </summary>
     /// <param name="searchText">Text to search for.</param>
+    /// <param name="completionSetOffset">Auto completion set offset.</param>
     /// <param name="completionSetCount">Auto completion set count.</param>
     /// <returns>The completion set as list of <see cref="SearchServiceResultItem"/> or an empty list if the completion set has been empty.</returns>
-    public IReadOnlyList<SearchServiceResultItem> GetSearchServiceResults ([NotNull] string searchText, int completionSetCount)
+    public IReadOnlyList<SearchServiceResultItem> GetSearchServiceResults ([NotNull] string searchText, int completionSetOffset, int completionSetCount)
     {
       ArgumentUtility.CheckNotNullOrEmpty("searchText", searchText);
 
       var inputScopeID = GetInputScopeID();
 
-      var searchServiceRequestScript = CreateAutoCompleteSearchServiceRequest(inputScopeID, searchText, completionSetCount);
+      var searchServiceRequestScript = CreateAutoCompleteSearchServiceRequest(inputScopeID, searchText, completionSetOffset, completionSetCount);
       var response = (IReadOnlyDictionary<string, object>)Context.Browser.Driver.ExecuteScript(searchServiceRequestScript, Scope);
       return ParseSearchServiceResponse(
           response,
@@ -276,7 +277,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty("filter", filter);
 
-      var results = GetSearchServiceResults(filter, 2);
+      var results = GetSearchServiceResults(filter, 0, 2);
 
       if (results.Count == 0)
         throw AssertionExceptionUtility.CreateExpectationException(Driver, "No matches were found for the specified filter: '{0}'.", filter);
@@ -296,7 +297,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNullOrEmpty("autoCompleteTextValueInputFieldId", autoCompleteTextValueInputFieldId);
       ArgumentUtility.CheckNotNullOrEmpty("searchText", searchText);
 
-      return CreateAutoCompleteSearchServiceRequestScript(autoCompleteTextValueInputFieldId, searchText, "serviceMethodSearchExact", null);
+      return CreateAutoCompleteSearchServiceRequestScript(autoCompleteTextValueInputFieldId, searchText, "serviceMethodSearchExact", null, null);
     }
 
     /// <summary>
@@ -304,27 +305,34 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     /// <param name="autoCompleteTextValueInputFieldId">The auto completes input field ID.</param>
     /// <param name="searchText">The search text.</param>
+    /// <param name="completionSetOffset"></param>
     /// <param name="completionSetCount">The maximum size of the returned auto completion set.</param>
     private string CreateAutoCompleteSearchServiceRequest (
         [NotNull] string autoCompleteTextValueInputFieldId,
         [NotNull] string searchText,
+        int completionSetOffset,
         int completionSetCount)
     {
       ArgumentUtility.CheckNotNullOrEmpty("autoCompleteTextValueInputFieldId", autoCompleteTextValueInputFieldId);
       ArgumentUtility.CheckNotNullOrEmpty("searchText", searchText);
 
-      return CreateAutoCompleteSearchServiceRequestScript(autoCompleteTextValueInputFieldId, searchText, "serviceMethodSearch", completionSetCount);
+      return CreateAutoCompleteSearchServiceRequestScript(autoCompleteTextValueInputFieldId, searchText, "serviceMethodSearch", completionSetOffset, completionSetCount);
     }
 
     private string CreateAutoCompleteSearchServiceRequestScript (
         [NotNull] string autoCompleteTextValueInputFieldId,
         [NotNull] string searchText,
         [NotNull] string searchMethod,
+        int? completionSetOffset,
         int? completionSetCount)
     {
       ArgumentUtility.CheckNotNullOrEmpty("autoCompleteTextValueInputFieldId", autoCompleteTextValueInputFieldId);
       ArgumentUtility.CheckNotNullOrEmpty("searchText", searchText);
       ArgumentUtility.CheckNotNullOrEmpty("searchMethod", searchMethod);
+
+      var setCompletionSetOffsetScriptPart = completionSetOffset.HasValue
+          ? string.Format("data['completionSetOffset'] = {0};", completionSetOffset.Value)
+          : string.Empty;
 
       var setCompletionSetCountScriptPart = completionSetCount.HasValue
           ? string.Format("data['completionSetCount'] = {0};", completionSetCount.Value)
@@ -337,6 +345,7 @@ CallWebService = function() {{
   
   var data = options.params;
   data['searchString'] = options.searchString;
+  {setCompletionSetOffsetScriptPart}
   {setCompletionSetCountScriptPart}
 
   data = Sys.Serialization.JavaScriptSerializer.serialize(data);
