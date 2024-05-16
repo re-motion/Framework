@@ -109,8 +109,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     /// </summary>
     /// <value>The type converter for the actual .NET type.</value>
     /// <remarks>
-    /// The <see cref="DotNetTypeConverter"/> is used to convert the values passed into <see cref="CreateDataParameter"/> to the underlying 
-    /// <see cref="StorageType"/>. That way, an enum value passed into <see cref="CreateDataParameter"/> can be converted to the underlying
+    /// The <see cref="DotNetTypeConverter"/> is used to convert values to the underlying <see cref="StorageType"/>. For example, an enum value can be converted to the underlying
     /// <see cref="int"/> type when it is to be written into the database. Conversely, <see cref="Read"/> uses the <see cref="DotNetTypeConverter"/> to
     /// convert values read from the database (which should usually be of the <see cref="StorageType"/>) back to the expected 
     /// <see cref="DotNetType"/>. That way, e.g, an <see cref="int"/> value can become an enum value again.
@@ -118,36 +117,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     public TypeConverter DotNetTypeConverter
     {
       get { return _dotNetTypeConverter; }
-    }
-
-    public IDbDataParameter CreateDataParameter (IDbCommand command, object? value)
-    {
-      ArgumentUtility.CheckNotNull("command", command);
-
-      var convertedValue = ConvertToStorageType(value);
-
-      var parameter = command.CreateParameter();
-      parameter.Value = convertedValue;
-      parameter.DbType = StorageDbType;
-      if (StorageTypeLength.HasValue)
-      {
-        var parameterSize = StorageTypeLength.Value;
-        if (parameterSize == SqlStorageTypeInformationProvider.StorageTypeLengthRepresentingMax)
-        {
-          parameter.Size = parameterSize;
-        }
-        else
-        {
-          var isStringAndValueExceedsParameterSize = convertedValue is string && ((string)convertedValue).Length > parameterSize;
-          var isCharArrayAndValueExceedsParameterSize = convertedValue is char[] && ((char[])convertedValue).Length > parameterSize;
-          var isByteArrayAndValueExceedsParameterSize = convertedValue is byte[] && ((byte[])convertedValue).Length > parameterSize;
-
-          if (! (isStringAndValueExceedsParameterSize || isCharArrayAndValueExceedsParameterSize || isByteArrayAndValueExceedsParameterSize))
-            parameter.Size = parameterSize;
-        }
-      }
-
-      return parameter;
     }
 
     public object? Read (IDataReader dataReader, int ordinal)

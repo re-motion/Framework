@@ -471,9 +471,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     {
       var result = _sqlStorageObjectFactory.CreateStorageTypeInformationProvider(_rdbmsProviderDefinition);
 
-      Assert.That(result, Is.TypeOf(typeof(SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator)));
-      var decoratedResult = (SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator)result;
-      Assert.That(decoratedResult.InnerStorageTypeInformationProvider, Is.TypeOf(typeof(SqlStorageTypeInformationProvider)));
+      Assert.That(result, Is.TypeOf(typeof(SqlStorageTypeInformationProvider)));
     }
 
     [Test]
