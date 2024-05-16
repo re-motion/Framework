@@ -383,7 +383,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
     }
 
     [Test]
-    public void CreateDataParameter_ImpossibleTestForDefaultValue ()
+    public void CreateDataParameter_WithConvertedValueNotAString_ButDbTypeString_DoesNotSetSize ()
     {
       var commandStub = new Mock<IDbCommand>();
       var dataParameterMock = new Mock<IDbDataParameter>();
@@ -407,10 +407,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
       dataParameterMock.SetupSet(_ => _.Value = new[] { 1, 2, 3 }).Verifiable();
       dataParameterMock.SetupSet(_ => _.Size = It.IsAny<int>()).Throws(new AssertionException("Should not be set."));
 
-      Assert.That(
-          () => _dialect.CreateDataParameter(commandStub.Object, storageTypeInformation, "@dummy", value),
-          Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo($"The type '{typeof(int[])}' is not fulltext compatible."));
+      var result = _dialect.CreateDataParameter(commandStub.Object, storageTypeInformation, "@dummy", value);
+      Assert.That(result, Is.SameAs(dataParameterMock.Object));
 
       dataParameterMock.Verify();
     }
