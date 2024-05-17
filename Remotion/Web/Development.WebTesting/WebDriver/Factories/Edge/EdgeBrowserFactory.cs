@@ -104,7 +104,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
 
       var driverService = EdgeDriverService.CreateDefaultService(driverDirectory, driverExecutable);
 
-      driverService.UseVerboseLogging = false;
+      driverService.EnableVerboseLogging = false;
       driverService.LogPath = WebDriverLogUtility.CreateLogFile(_edgeConfiguration.LogsDirectory, _edgeConfiguration.BrowserName);
 
       return driverService;
