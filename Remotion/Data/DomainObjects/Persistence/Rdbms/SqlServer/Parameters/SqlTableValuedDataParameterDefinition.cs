@@ -91,7 +91,7 @@ public class SqlTableValuedDataParameterDefinition : IDataParameterDefinition
     var tvpValue = ArgumentUtility.CheckNotNullAndType<SqlTableValuedParameterValue>(nameof(parameterValue), parameterValue);
 
     var sqlParameter = (SqlParameter)command.CreateParameter();
-    sqlParameter.Value = tvpValue.Any() ? tvpValue : DBNull.Value;
+    sqlParameter.Value = tvpValue.Any() ? tvpValue : null;
     sqlParameter.SqlDbType = SqlDbType.Structured;
     sqlParameter.TypeName = tvpValue.TableTypeName;
     return sqlParameter;

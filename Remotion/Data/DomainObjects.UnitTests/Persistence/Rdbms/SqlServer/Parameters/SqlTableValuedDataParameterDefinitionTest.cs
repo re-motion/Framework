@@ -35,22 +35,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Para
 [TestFixture]
 public class SqlTableValuedDataParameterDefinitionTest
 {
-  private static IEnumerable<(object[], bool)> GetTestCollections ()
+  private static IEnumerable<(object[], bool, SqlDbType)> GetTestCollections ()
   {
-    yield return ([1, 2, 3, 5, 8, 13, 21], true); // distinct
-    yield return ([1, 2, 3, 3, 2, 1], false); // duplicates
-    yield return ([], false); // empty
-    yield return ([], true); // empty distinct
-    yield return ([ClassWithAllDataTypes.EnumType.Value0, ClassWithAllDataTypes.EnumType.Value1, ClassWithAllDataTypes.EnumType.Value2], true); // converted
-    yield return (["Value1", "Value2", "Value1"], false);
+    yield return ([1, 2, 3, 5, 8, 13, 21], true, SqlDbType.Int); // distinct
+    yield return ([1, 2, 3, 3, 2, 1], false, SqlDbType.Int); // duplicates
+    yield return ([], false, SqlDbType.NVarChar); // empty
+    yield return ([], true, SqlDbType.NVarChar); // empty distinct
+    yield return ([ClassWithAllDataTypes.EnumType.Value0, ClassWithAllDataTypes.EnumType.Value1, ClassWithAllDataTypes.EnumType.Value2], true, SqlDbType.Int); // converted
+    yield return (["Value1", "Value2", "Value1"], false, SqlDbType.NVarChar);
   }
 
   [Test]
   [TestCaseSource(nameof(GetTestCollections))]
-  public void GetParameterValue_ReturnsSqlTableValuedParameterValue ((object[], bool) testCase)
+  public void GetParameterValue_ReturnsSqlTableValuedParameterValue ((object[], bool, SqlDbType) testCase)
   {
     var items = testCase.Item1;
     var isDistinct = testCase.Item2;
+    var expectedSqlDbType = testCase.Item3;
 
     var storageTypeInformation = new SqlStorageTypeInformationProvider().GetStorageType(items.FirstOrDefault());
     var convertedValues = items.Select(i => storageTypeInformation.ConvertToStorageType(i)).ToArray();
@@ -72,19 +73,15 @@ public class SqlTableValuedDataParameterDefinitionTest
 
     var sqlMetaData = tvpValue.ColumnMetaData.Single();
     Assert.That(sqlMetaData.Name, Is.EqualTo("Value"));
-
-    var conversionHelper = new SqlParameter();
-    conversionHelper.DbType = storageTypeInformation.StorageDbType;
-    var sqlDbType = conversionHelper.SqlDbType;
-    Assert.That(sqlMetaData.SqlDbType, Is.EqualTo(sqlDbType));
+    Assert.That(sqlMetaData.SqlDbType, Is.EqualTo(expectedSqlDbType));
 
     Assert.That(tvpValue.Select(record => record.GetValue(0)), Is.EquivalentTo(convertedValues));
   }
 
   [Test]
-  public void GetParameterValue_WithMismatchedItemType_ThrowsArgumentException ()
+  public void GetParameterValue_WithItemOfMismatchedType_ThrowsArgumentException ()
   {
-    var items = new[] { "Value1", "Value2" };
+    var items = new object[] { 42, 17, "NotANumber", 4 };
     var storageTypeInformation = StorageTypeInformationObjectMother.CreateIntStorageTypeInformation();
 
     var parameterDefinition = new SqlTableValuedDataParameterDefinition(storageTypeInformation, true);
@@ -92,13 +89,13 @@ public class SqlTableValuedDataParameterDefinitionTest
     Assert.That(
         () => parameterDefinition.GetParameterValue(items),
         Throws.InstanceOf<ArgumentException>().With
-            .ArgumentExceptionMessageEqualTo($"Item 0 of parameter 'value' has the type '{typeof(string)}' instead of '{typeof(int)}'.", "value"));
+            .ArgumentExceptionMessageEqualTo($"Item 2 of parameter 'value' has the type '{typeof(string)}' instead of '{typeof(int)}'.", "value"));
   }
 
   [Test]
   public void CreateDataParameter_WithTableValuedParameter_SetsSqlParameterProperties ()
   {
-    var items = new[] { 1, 2, 3, 5, 8, 13, 21 }.ToList();
+    var items = new[] { 1, 2, 3, 5, 8, 13, 21 };
     var tvpValue = new SqlTableValuedParameterValue("any", new[] { new SqlMetaData("Value", SqlDbType.Int) });
     foreach (var item in items)
       tvpValue.AddRecord(item);
@@ -117,7 +114,7 @@ public class SqlTableValuedDataParameterDefinitionTest
   }
 
   [Test]
-  public void CreateDataParameter_WithEmptyTableValuedParameter_SetsParameterValueToDbNull ()
+  public void CreateDataParameter_WithEmptyTableValuedParameter_SetsParameterValueToDBNull ()
   {
     var tvpValue = new SqlTableValuedParameterValue("any", new[] { new SqlMetaData("Value", SqlDbType.Int) });
 
@@ -131,6 +128,6 @@ public class SqlTableValuedDataParameterDefinitionTest
     Assert.That(sqlParameter.DbType, Is.EqualTo(DbType.Object));
     Assert.That(sqlParameter.SqlDbType, Is.EqualTo(SqlDbType.Structured));
     Assert.That(sqlParameter.TypeName, Is.EqualTo(tvpValue.TableTypeName));
-    Assert.That(sqlParameter.Value, Is.EqualTo(DBNull.Value));
+    Assert.That(sqlParameter.Value, Is.Null);
   }
 }
