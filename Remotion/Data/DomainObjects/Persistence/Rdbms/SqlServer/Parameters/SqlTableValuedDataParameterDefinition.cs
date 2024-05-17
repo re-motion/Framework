@@ -53,16 +53,6 @@ public class SqlTableValuedDataParameterDefinition : IDataParameterDefinition
     if (enumerable == null)
       return DBNull.Value;
 
-    var convertedValues = new ArrayList();
-    foreach (var item in enumerable)
-    {
-      if (item != null && !StorageTypeInformation.DotNetType.IsInstanceOfType(item))
-        throw ArgumentUtility.CreateArgumentItemTypeException(nameof(value), convertedValues.Count, StorageTypeInformation.DotNetType, item.GetType());
-
-      var convertedValue = StorageTypeInformation.ConvertToStorageType(item);
-      convertedValues.Add(convertedValue);
-    }
-
     var tableTypeNameSuffix = IsDistinct ? DistinctCollectionTableTypeNameSuffix : string.Empty;
     var tableTypeName = $"TVP_{StorageTypeInformation.StorageDbType}{tableTypeNameSuffix}";
 
@@ -74,8 +64,17 @@ public class SqlTableValuedDataParameterDefinition : IDataParameterDefinition
     var columnMetaData = new[] { sqlMetaData };
 
     var tvpValue = new SqlTableValuedParameterValue(tableTypeName, columnMetaData);
-    foreach (var convertedValue in convertedValues)
-      tvpValue.AddRecord(convertedValue);
+
+    foreach (var item in enumerable)
+    {
+      if (item == null)
+        throw ArgumentUtility.CreateArgumentItemNullException(nameof(value), tvpValue.Count);
+
+      if (!StorageTypeInformation.DotNetType.IsInstanceOfType(item))
+        throw ArgumentUtility.CreateArgumentItemTypeException(nameof(value), tvpValue.Count, StorageTypeInformation.DotNetType, item.GetType());
+
+      tvpValue.AddRecord(item);
+    }
 
     return tvpValue;
   }
