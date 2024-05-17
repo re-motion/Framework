@@ -111,7 +111,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
       var firefoxOptions =  new FirefoxOptions
              {
                  Profile = profile,
-                 BrowserExecutableLocation = BrowserBinaryPath,
+                 BinaryLocation = BrowserBinaryPath,
              };
 
       // Mirrors Chrome's startup behavior to fulfill some initial test expectations
