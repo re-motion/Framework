@@ -82,4 +82,5 @@ public class SqlTableValuedParameterValue : IReadOnlyCollection<SqlDataRecord>
   }
 
   public int Count => _records.Count;
+  public bool IsEmpty => _records.Count == 0;
 }

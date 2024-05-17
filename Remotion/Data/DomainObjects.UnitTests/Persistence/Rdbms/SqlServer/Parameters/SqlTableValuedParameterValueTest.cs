@@ -142,6 +142,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Para
       Assert.That(enumerator.MoveNext, Is.False);
     }
 
+    [Test]
+    public void IsEmpty_WhenEmpty_ReturnsTrue ()
+    {
+      var tableTypeName = "Dummy";
+      var columnMetaData = new[] { new SqlMetaData("IntValue", SqlDbType.Int), new SqlMetaData("StringValue", SqlDbType.NVarChar, 100) };
+
+      var tvpValue = new SqlTableValuedParameterValue(tableTypeName, columnMetaData);
+
+      Assert.That(tvpValue.IsEmpty, Is.True);
+    }
+
+    [Test]
+    public void IsEmpty_WhenNotEmpty_ReturnsFalse ()
+    {
+      var tableTypeName = "Dummy";
+      var columnMetaData = new[] { new SqlMetaData("IntValue", SqlDbType.Int), new SqlMetaData("StringValue", SqlDbType.NVarChar, 100) };
+
+      var tvpValue = new SqlTableValuedParameterValue(tableTypeName, columnMetaData);
+      tvpValue.AddRecord(42, "forty-two");
+
+      Assert.That(tvpValue.IsEmpty, Is.False);
+    }
+
     private void CheckValues (SqlDataRecord sqlDataRecord, params object[] expectedValues)
     {
       Assert.That(sqlDataRecord, Is.Not.Null);
