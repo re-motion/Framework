@@ -20,6 +20,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
@@ -32,40 +33,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Para
 [TestFixture]
 public class SqlTableValuedDataParameterDefinitionFactoryTests
 {
-  [Test]
-  public void CreateParameterDefinition_WithCollectionOfInt_ReturnsDefinitionForInt ()
+  private static IEnumerable<(object, Type, bool, IStorageTypeInformation)> GetTestCasesForCreateParameterDefinition ()
   {
-    var nextFactoryStub = new Mock<IDataParameterDefinitionFactory>();
-
-    var storageTypeInformation = StorageTypeInformationObjectMother.CreateIntStorageTypeInformation();
-    var storageTypeInformationProviderStub = new Mock<IStorageTypeInformationProvider>();
-    storageTypeInformationProviderStub.Setup(_ => _.GetStorageType(typeof(int))).Returns(storageTypeInformation);
-
-    var factory = new SqlTableValuedDataParameterDefinitionFactory(storageTypeInformationProviderStub.Object, nextFactoryStub.Object);
-
-    var queryParameter = new QueryParameter("IntArray", new[] { 1, 2, 3, 4 });
-    var result = factory.CreateDataParameterDefinition(queryParameter);
-
-    Assert.That(result, Is.InstanceOf<SqlTableValuedDataParameterDefinition>());
-    Assert.That(result.As<SqlTableValuedDataParameterDefinition>().StorageTypeInformation, Is.SameAs(storageTypeInformation));
+    yield return (Array.Empty<int>(), typeof(int), false, StorageTypeInformationObjectMother.CreateIntStorageTypeInformation());
+    yield return (Array.AsReadOnly(Array.Empty<int>()), typeof(int), false, StorageTypeInformationObjectMother.CreateIntStorageTypeInformation());
+    yield return (new ArrayList(), typeof(object), false, StorageTypeInformationObjectMother.CreateIntStorageTypeInformation());
+    yield return (new List<int>(), typeof(int), false, StorageTypeInformationObjectMother.CreateIntStorageTypeInformation());
+    yield return (Mock.Of<ICollection>(), typeof(object), false, StorageTypeInformationObjectMother.CreateStorageTypeInformation());
+    yield return (Mock.Of<ICollection<DateTime>>(), typeof(DateTime), false, StorageTypeInformationObjectMother.CreateDateTimeStorageTypeInformation());
+    yield return (Mock.Of<IReadOnlyCollection<Guid>>(), typeof(Guid), false, StorageTypeInformationObjectMother.CreateUniqueIdentifierStorageTypeInformation());
+    yield return (Mock.Of<ISet<string>>(), typeof(string), true, StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation());
+#if NET5_0_OR_GREATER
+    yield return (Mock.Of<IReadOnlySet<int>>(), typeof(int), true, StorageTypeInformationObjectMother.CreateIntStorageTypeInformation());
+#endif
   }
 
   [Test]
-  public void CreateParameterDefinition_WithCollection_ReturnsDefinitionForObject ()
+  [TestCaseSource(nameof(GetTestCasesForCreateParameterDefinition))]
+  public void CreateParameterDefinition ((object, Type, bool, IStorageTypeInformation) testCase)
   {
-    var nextFactoryStub = new Mock<IDataParameterDefinitionFactory>();
+    var value = testCase.Item1;
+    var dotNetType = testCase.Item2;
+    var isDistinct = testCase.Item3;
+    var storageTypeInformation = testCase.Item4;
 
-    var storageTypeInformation = StorageTypeInformationObjectMother.CreateStorageTypeInformation();
     var storageTypeInformationProviderStub = new Mock<IStorageTypeInformationProvider>();
-    storageTypeInformationProviderStub.Setup(_ => _.GetStorageType(typeof(object))).Returns(storageTypeInformation);
+    storageTypeInformationProviderStub.Setup(_ => _.GetStorageType(dotNetType)).Returns(storageTypeInformation);
 
+    var nextFactoryStub = new Mock<IDataParameterDefinitionFactory>();
     var factory = new SqlTableValuedDataParameterDefinitionFactory(storageTypeInformationProviderStub.Object, nextFactoryStub.Object);
 
-    var collection = new Mock<ICollection>();
-    var queryParameter = new QueryParameter("Collection", collection.Object);
+    var queryParameter = new QueryParameter("Dummy", value);
     var result = factory.CreateDataParameterDefinition(queryParameter);
 
     Assert.That(result, Is.InstanceOf<SqlTableValuedDataParameterDefinition>());
+    Assert.That(result.As<SqlTableValuedDataParameterDefinition>().IsDistinct, Is.EqualTo(isDistinct));
     Assert.That(result.As<SqlTableValuedDataParameterDefinition>().StorageTypeInformation, Is.SameAs(storageTypeInformation));
   }
 

@@ -28,8 +28,8 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 
 /// <summary>
-/// Can create <see cref="IDataParameterDefinition"/> instances that can handle <see cref="ICollection"/>, <see cref="ICollection{T}"/>, and <see cref="IReadOnlyCollection{T}"/>
-/// parameter values.
+/// SQL-Server-based implementation that can create <see cref="IDataParameterDefinition"/> instances that uses table-valued parameters to handle parameter values that are
+/// collections (<see cref="ICollection"/>, <see cref="ICollection{T}"/>, and <see cref="IReadOnlyCollection{T}"/>).
 /// </summary>
 public class SqlTableValuedDataParameterDefinitionFactory : IDataParameterDefinitionFactory
 {
@@ -53,7 +53,7 @@ public class SqlTableValuedDataParameterDefinitionFactory : IDataParameterDefini
   {
     ArgumentUtility.CheckNotNull(nameof(queryParameter), queryParameter);
 
-    if (IsCollection(queryParameter.Value, out var itemType, out var isDistinct))
+    if (TryGetCollectionInfo(queryParameter.Value, out var itemType, out var isDistinct))
     {
       var storageTypeInformation = StorageTypeInformationProvider.GetStorageType(itemType);
       return new SqlTableValuedDataParameterDefinition(storageTypeInformation, isDistinct);
@@ -61,7 +61,7 @@ public class SqlTableValuedDataParameterDefinitionFactory : IDataParameterDefini
     return NextDataParameterDefinitionFactory.CreateDataParameterDefinition(queryParameter);
   }
 
-  private bool IsCollection (object? value, [MaybeNullWhen(false)] out Type itemType, out bool isDistinct)
+  private bool TryGetCollectionInfo (object? value, [MaybeNullWhen(false)] out Type itemType, out bool isDistinct)
   {
     itemType = null!;
     isDistinct = false;
