@@ -15,12 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Microsoft.SqlServer.Server;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 using Remotion.Development.NUnit.UnitTesting;
+using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Parameters
 {
@@ -33,13 +36,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Para
       var tableTypeName = "Dummy";
       var columnMetaData = new[] { new SqlMetaData("DummyName", SqlDbType.Int) };
 
-      var result = new SqlTableValuedParameterValue(tableTypeName, columnMetaData);
+      var tvpValue = new SqlTableValuedParameterValue(tableTypeName, columnMetaData);
 
-      Assert.That(result.TableTypeName, Is.SameAs(tableTypeName));
-      Assert.That(result.ColumnMetaData, Is.EqualTo(columnMetaData));
+      Assert.That(tvpValue.TableTypeName, Is.SameAs(tableTypeName));
+      Assert.That(tvpValue.ColumnMetaData, Is.EqualTo(columnMetaData));
 
-      Assert.That(result.Count, Is.EqualTo(0));
-      Assert.That(result, Is.Empty);
+      Assert.That(tvpValue.Count, Is.EqualTo(0));
+      Assert.That(tvpValue, Is.Empty);
     }
 
     [Test]
@@ -48,12 +51,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Para
       var tableTypeName = "Dummy";
       var columnMetaData = new[] { new SqlMetaData("DummyName", SqlDbType.Int) };
 
-      var result = new SqlTableValuedParameterValue(tableTypeName, columnMetaData);
+      var tvpValue = new SqlTableValuedParameterValue(tableTypeName, columnMetaData);
 
-      result.AddRecord(42);
+      tvpValue.AddRecord(42);
 
-      Assert.That(result.Count, Is.EqualTo(1));
-      var record = result.Single();
+      Assert.That(tvpValue.Count, Is.EqualTo(1));
+      var record = tvpValue.Single();
 
       Assert.That(record.FieldCount, Is.EqualTo(1));
       Assert.That(record.GetSqlMetaData(0), Is.EqualTo(columnMetaData[0]));
@@ -65,9 +68,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Para
       var tableTypeName = "Dummy";
       var columnMetaData = new[] { new SqlMetaData("DummyName", SqlDbType.Int) };
 
-      var result = new SqlTableValuedParameterValue(tableTypeName, columnMetaData);
+      var tvpValue = new SqlTableValuedParameterValue(tableTypeName, columnMetaData);
 
-      Assert.That(() => result.AddRecord("Not a Number"), Throws.InstanceOf<InvalidCastException>());
+      Assert.That(() => tvpValue.AddRecord("Not a Number"), Throws.InstanceOf<InvalidCastException>());
     }
 
     [Test]
@@ -76,10 +79,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Para
       var tableTypeName = "Dummy";
       var columnMetaData = new[] { new SqlMetaData("DummyName", SqlDbType.Int), new SqlMetaData("DummyName", SqlDbType.Int) };
 
-      var result = new SqlTableValuedParameterValue(tableTypeName, columnMetaData);
+      var tvpValue = new SqlTableValuedParameterValue(tableTypeName, columnMetaData);
 
       Assert.That(
-          () => result.AddRecord(12),
+          () => tvpValue.AddRecord(12),
           Throws.InstanceOf<ArgumentException>().With.ArgumentExceptionMessageEqualTo("Record has 2 values but 1 was provided.", "columnValues"));
     }
 
@@ -89,11 +92,62 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Para
       var tableTypeName = "Dummy";
       var columnMetaData = new[] { new SqlMetaData("DummyName", SqlDbType.Int) };
 
-      var result = new SqlTableValuedParameterValue(tableTypeName, columnMetaData);
+      var tvpValue = new SqlTableValuedParameterValue(tableTypeName, columnMetaData);
 
       Assert.That(
-          () => result.AddRecord(12, 42),
+          () => tvpValue.AddRecord(12, 42),
           Throws.InstanceOf<ArgumentException>().With.ArgumentExceptionMessageEqualTo("Record has 1 value but 2 were provided.", "columnValues"));
+    }
+
+    [Test]
+    public void GetEnumerator_Plain ()
+    {
+      var tableTypeName = "Dummy";
+      var columnMetaData = new[] { new SqlMetaData("IntValue", SqlDbType.Int), new SqlMetaData("StringValue", SqlDbType.NVarChar, 100) };
+
+      var tvpValue = new SqlTableValuedParameterValue(tableTypeName, columnMetaData);
+      tvpValue.AddRecord(42, "Forty-two");
+      tvpValue.AddRecord(17, "Seventeen");
+      tvpValue.AddRecord(4, "Four");
+
+      var enumerator = ((IEnumerable)tvpValue).GetEnumerator();
+      Assert.That(enumerator.MoveNext, Is.True);
+      CheckValues(enumerator.Current.As<SqlDataRecord>(), 42, "Forty-two");
+      Assert.That(enumerator.MoveNext, Is.True);
+      CheckValues(enumerator.Current.As<SqlDataRecord>(), 17, "Seventeen");
+      Assert.That(enumerator.MoveNext, Is.True);
+      CheckValues(enumerator.Current.As<SqlDataRecord>(), 4, "Four");
+      Assert.That(enumerator.MoveNext, Is.False);
+      (enumerator as IDisposable)?.Dispose();
+    }
+
+    [Test]
+    public void GetEnumerator_Generic ()
+    {
+      var tableTypeName = "Dummy";
+      var columnMetaData = new[] { new SqlMetaData("IntValue", SqlDbType.Int), new SqlMetaData("StringValue", SqlDbType.NVarChar, 100) };
+
+      var tvpValue = new SqlTableValuedParameterValue(tableTypeName, columnMetaData);
+      tvpValue.AddRecord(42, "Forty-two");
+      tvpValue.AddRecord(17, "Seventeen");
+      tvpValue.AddRecord(4, "Four");
+
+      using var enumerator = ((IEnumerable<SqlDataRecord>)tvpValue).GetEnumerator();
+      Assert.That(enumerator.MoveNext, Is.True);
+      CheckValues(enumerator.Current, 42, "Forty-two");
+      Assert.That(enumerator.MoveNext, Is.True);
+      CheckValues(enumerator.Current, 17, "Seventeen");
+      Assert.That(enumerator.MoveNext, Is.True);
+      CheckValues(enumerator.Current, 4, "Four");
+      Assert.That(enumerator.MoveNext, Is.False);
+    }
+
+    private void CheckValues (SqlDataRecord sqlDataRecord, params object[] expectedValues)
+    {
+      Assert.That(sqlDataRecord, Is.Not.Null);
+      var actualValues = new object[sqlDataRecord.FieldCount];
+      Assert.That(sqlDataRecord.GetValues(actualValues), Is.EqualTo(expectedValues.Length));
+      Assert.That(actualValues, Is.EqualTo(expectedValues));
     }
   }
 }
