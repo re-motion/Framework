@@ -59,6 +59,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
           (emptyView, continuation) => { });
     }
 
+    public void AddStructuredTypeDefinition (IRdbmsStructuredTypeDefinition typeDefinition)
+    {
+      // tables have nothing to do with structured types
+    }
+
     public IScriptElement GetCreateScript ()
     {
       return _createScriptElements;
