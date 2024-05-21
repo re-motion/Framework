@@ -34,14 +34,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
         Type dotNetType = null,
         TypeConverter dotNetTypeConverter = null)
     {
+      var dbType = storageDbType ?? DbType.String;
+      var dbTypeSize = storageTypeLength ?? GetDefaultSize(dbType);
+
       return new StorageTypeInformation(
           storageType ?? typeof(string),
           storageTypeName ?? "nvarchar(max)",
-          storageDbType ?? DbType.String,
+          dbType,
           isStorageTypeNullable ?? true,
-          storageTypeLength ?? -1,
+          dbTypeSize,
           dotNetType ?? typeof(string),
           dotNetTypeConverter ?? new DefaultConverter(typeof(string)));
+    }
+
+    private static int? GetDefaultSize (DbType dbType)
+    {
+      return dbType switch
+      {
+          DbType.AnsiString => -1,
+          DbType.AnsiStringFixedLength => -1,
+          DbType.Binary => -1,
+          DbType.String => -1,
+          DbType.StringFixedLength => -1,
+          _ => null
+      };
     }
 
     public static StorageTypeInformation CreateUniqueIdentifierStorageTypeInformation (bool isNullable = false)
