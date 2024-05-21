@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void Initialize ()
     {
-      Assert.IsInstanceOf<IRelationEndPointDefinition>(_definition);
+      Assert.That(_definition, Is.InstanceOf<IRelationEndPointDefinition>());
       Assert.That(_definition.ClassDefinition, Is.SameAs(_clientDefinition));
       Assert.That(_definition.Cardinality, Is.EqualTo(CardinalityType.Many));
       Assert.That(_definition.IsMandatory, Is.EqualTo(false));

@@ -33,7 +33,7 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void GetUser ()
     {
-      Assert.IsInstanceOf(typeof(NullSecurityPrincipal), _provider.GetPrincipal());
+      Assert.That(_provider.GetPrincipal(), Is.InstanceOf(typeof(NullSecurityPrincipal)));
     }
 
     [Test]

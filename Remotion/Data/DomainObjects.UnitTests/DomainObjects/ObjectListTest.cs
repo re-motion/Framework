@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void ObjectList_IsIList ()
     {
       IList<OrderItem> list = new ObjectList<OrderItem>();
-      Assert.IsInstanceOf(typeof(IList<OrderItem>), list);
+      Assert.That(list, Is.InstanceOf(typeof(IList<OrderItem>)));
     }
 
     [Test]

@@ -70,7 +70,7 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void Initialize ()
     {
-      Assert.IsInstanceOf(typeof(IClassReflector), _classReflector);
+      Assert.That(_classReflector, Is.InstanceOf(typeof(IClassReflector)));
       Assert.That(_classReflector.StatePropertyReflector, Is.SameAs(_statePropertyReflectorMock.Object));
       Assert.That(_classReflector.AccessTypeReflector, Is.SameAs(_accessTypeReflectorMock.Object));
     }

@@ -57,7 +57,7 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void Initialize ()
     {
-      Assert.IsInstanceOf(typeof(IStatePropertyReflector), _statePropertyReflector);
+      Assert.That(_statePropertyReflector, Is.InstanceOf(typeof(IStatePropertyReflector)));
       Assert.That(_statePropertyReflector.EnumerationTypeReflector, Is.SameAs(_enumeratedTypeReflectorMock.Object));
     }
 
