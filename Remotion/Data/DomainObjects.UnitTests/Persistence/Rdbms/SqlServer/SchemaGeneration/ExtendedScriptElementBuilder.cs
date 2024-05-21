@@ -40,6 +40,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       _innerScriptBuilder.AddEntityDefinition(entityDefinition);
     }
 
+    public void AddStructuredTypeDefinition (IRdbmsStructuredTypeDefinition typeDefinition)
+    {
+      ArgumentUtility.CheckNotNull(nameof(typeDefinition), typeDefinition);
+
+      _innerScriptBuilder.AddStructuredTypeDefinition(typeDefinition);
+    }
+
     public IScriptElement GetCreateScript ()
     {
      return new ScriptElementCollection();

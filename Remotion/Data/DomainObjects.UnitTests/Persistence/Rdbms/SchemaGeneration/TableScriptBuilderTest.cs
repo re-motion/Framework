@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
+using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGeneration
 {
@@ -51,6 +52,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       _fakeElement1 = new Mock<IScriptElement>();
       _fakeElement2 = new Mock<IScriptElement>();
       _fakeElement3 = new Mock<IScriptElement>();
+    }
+
+    [Test]
+    public void AddStructuredTypeDefinition_DoesNothing ()
+    {
+      var elements = _builder.GetCreateScript().As<ScriptElementCollection>().Elements;
+      Assert.That(elements.Count, Is.EqualTo(1));
+
+      var scriptStatement = elements[0].As<ScriptStatement>();
+      var before = scriptStatement.Statement;
+
+      _builder.AddStructuredTypeDefinition(Mock.Of<IRdbmsStructuredTypeDefinition>());
+
+      Assert.That(elements.Count, Is.EqualTo(1));
+      Assert.That(scriptStatement.Statement, Is.EqualTo(before));
     }
 
     [Test]

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
@@ -82,6 +83,50 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
           Throws.ArgumentException.With.Message.StartsWith(
               "The scriptBuilder sequence contains a CompositeScriptBuilder that references a different RdbmsProviderDefinition "
               + "('SchemaGenerationSecondStorageProvider') than the current CompositeScriptBuilder ('SchemaGenerationFirstStorageProvider')."));
+    }
+
+    [Test]
+    public void AddEntityDefinition_CallsAllSubBuilders ()
+    {
+      var entityDefinition = Mock.Of<IRdbmsStorageEntityDefinition>();
+      var subBuilderMocks = new[]
+                            {
+                                CreateSubBuilderMock(entityDefinition),
+                                CreateSubBuilderMock(entityDefinition),
+                                CreateSubBuilderMock(entityDefinition)
+                            };
+      var builder = new CompositeScriptBuilder(SchemaGenerationFirstStorageProviderDefinition, subBuilderMocks.Select(o => o.Object));
+      builder.AddEntityDefinition(entityDefinition);
+
+      subBuilderMocks[0].Verify();
+      subBuilderMocks[1].Verify();
+      subBuilderMocks[2].Verify();
+
+      Mock<IScriptBuilder> CreateSubBuilderMock (IRdbmsStorageEntityDefinition storageEntityDefinition)
+      {
+        var subBuilderMock = new Mock<IScriptBuilder>();
+        subBuilderMock.Setup(_ => _.AddEntityDefinition(storageEntityDefinition)).Verifiable();
+        return subBuilderMock;
+      }
+    }
+
+    [Test]
+    public void AddStructuredTypeDefinition_CallsAllSubBuilders ()
+    {
+      Mock<IScriptBuilder> CreateSubBuilderMock ()
+      {
+        var subBuilderMock = new Mock<IScriptBuilder>();
+        subBuilderMock.Setup(_ => _.AddStructuredTypeDefinition(It.IsAny<IRdbmsStructuredTypeDefinition>())).Verifiable();
+        return subBuilderMock;
+      }
+
+      var subBuilderMocks = new[] { CreateSubBuilderMock(), CreateSubBuilderMock(), CreateSubBuilderMock() };
+      var builder = new CompositeScriptBuilder(SchemaGenerationFirstStorageProviderDefinition, subBuilderMocks.Select(o => o.Object));
+      builder.AddStructuredTypeDefinition(Mock.Of<IRdbmsStructuredTypeDefinition>());
+
+      subBuilderMocks[0].Verify();
+      subBuilderMocks[1].Verify();
+      subBuilderMocks[2].Verify();
     }
 
     [Test]
