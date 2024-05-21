@@ -46,14 +46,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     {
       UrlMappingConfiguration mapping = UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml");
 
-      Assert.IsNotNull(mapping, "Mapping is null.");
+      Assert.That(mapping, Is.Not.Null, "Mapping is null.");
 
-      Assert.IsNotNull(mapping.Mappings, "Rules are null.");
+      Assert.That(mapping.Mappings, Is.Not.Null, "Rules are null.");
       Assert.That(mapping.Mappings.Count, Is.EqualTo(3));
 
-      Assert.IsNotNull(mapping.Mappings[0], "First rule is null.");
-      Assert.IsNotNull(mapping.Mappings[1], "Second rule is null.");
-      Assert.IsNotNull(mapping.Mappings[2], "Thrid rule is null.");
+      Assert.That(mapping.Mappings[0], Is.Not.Null, "First rule is null.");
+      Assert.That(mapping.Mappings[1], Is.Not.Null, "Second rule is null.");
+      Assert.That(mapping.Mappings[2], Is.Not.Null, "Thrid rule is null.");
 
       Assert.That(mapping.Mappings[0].ID, Is.EqualTo("First"));
       Assert.That(mapping.Mappings[0].FunctionType, Is.EqualTo(typeof(FirstMappedFunction)));
@@ -95,14 +95,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     {
       UrlMappingConfiguration mapping = UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml");
 
-      Assert.IsNotNull(mapping, "Mapping is null.");
+      Assert.That(mapping, Is.Not.Null, "Mapping is null.");
 
-      Assert.IsNotNull(mapping.Mappings, "Rules are null.");
+      Assert.That(mapping.Mappings, Is.Not.Null, "Rules are null.");
       Assert.That(mapping.Mappings.Count, Is.EqualTo(3));
 
-      Assert.IsNotNull(mapping.Mappings[0], "First rule is null.");
-      Assert.IsNotNull(mapping.Mappings[1], "Second rule is null.");
-      Assert.IsNotNull(mapping.Mappings[2], "Thrid rule is null.");
+      Assert.That(mapping.Mappings[0], Is.Not.Null, "First rule is null.");
+      Assert.That(mapping.Mappings[1], Is.Not.Null, "Second rule is null.");
+      Assert.That(mapping.Mappings[2], Is.Not.Null, "Thrid rule is null.");
 
       Assert.That(mapping.Mappings[0].ID, Is.EqualTo("First"));
       Assert.That(mapping.Mappings[0].FunctionType, Is.EqualTo(typeof(FirstMappedFunction)));

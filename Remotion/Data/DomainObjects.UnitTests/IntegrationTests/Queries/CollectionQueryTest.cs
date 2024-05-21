@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     {
       var orders = (OrderCollection)QueryManager.GetCollection(QueryFactory.CreateQuery(Queries.GetMandatory("StoredProcedureQuery"))).ToCustomCollection();
 
-      Assert.IsNotNull(orders, "OrderCollection is null");
+      Assert.That(orders, Is.Not.Null, "OrderCollection is null");
       Assert.That(orders.Count, Is.EqualTo(2), "Order count");
       Assert.That(orders[0].ID, Is.EqualTo(DomainObjectIDs.Order1), "Order1");
       Assert.That(orders[1].ID, Is.EqualTo(DomainObjectIDs.Order3), "Order3");
@@ -169,7 +169,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer1.Value);
       var orders = (OrderCollection)QueryManager.GetCollection(query).ToCustomCollection();
 
-      Assert.IsNotNull(orders, "OrderCollection is null");
+      Assert.That(orders, Is.Not.Null, "OrderCollection is null");
       Assert.That(orders.Count, Is.EqualTo(2), "Order count");
       Assert.That(orders[0].ID, Is.EqualTo(DomainObjectIDs.Order1), "Order1");
       Assert.That(orders[1].ID, Is.EqualTo(DomainObjectIDs.Order2), "Order2");

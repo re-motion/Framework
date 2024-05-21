@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       foreach (RelationDefinition expectedDefinition in expectedDefinitions)
       {
         RelationDefinition actualDefinition = actualDefinitions.GetValueOrDefault(expectedDefinition.ID);
-        Assert.IsNotNull(actualDefinition, "Relation '{0}' was not found.", expectedDefinition.ID);
+        Assert.That(actualDefinition, Is.Not.Null, $"Relation '{expectedDefinition.ID}' was not found.");
         Check(expectedDefinition, actualDefinition);
       }
     }
@@ -76,12 +76,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         IRelationEndPointDefinition actualEndPointDefinition = actualRelationDefinition.GetEndPointDefinition(
           expectedEndPointDefinition.ClassDefinition.ID, expectedEndPointDefinition.PropertyName);
 
-        Assert.IsNotNull(
+        Assert.That(
             actualEndPointDefinition,
-            "End point definition was not found (relation definition: '{0}', class: '{1}', property name: '{2}').",
-            expectedRelationDefinition.ID,
-            expectedEndPointDefinition.ClassDefinition.ID,
-            expectedEndPointDefinition.PropertyName);
+            Is.Not.Null,
+            $"End point definition was not found ("
+            + $"relation definition: '{expectedRelationDefinition.ID}', "
+            + $"class: '{expectedEndPointDefinition.ClassDefinition.ID}', "
+            + $"property name: '{expectedEndPointDefinition.PropertyName}').");
 
         var endPointDefinitionChecker = new RelationEndPointDefinitionChecker();
         endPointDefinitionChecker.Check(expectedEndPointDefinition, actualEndPointDefinition, true);

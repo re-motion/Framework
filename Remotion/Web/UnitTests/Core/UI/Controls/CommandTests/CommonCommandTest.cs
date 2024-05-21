@@ -46,12 +46,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 
       command.RenderBegin(_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
 
-      Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
+      Assert.That(_testHelper.HtmlWriter.Tag, Is.Not.Null, "Missing Tag");
       Assert.That(_testHelper.HtmlWriter.Tag, Is.EqualTo(HtmlTextWriterTag.A), "Wrong Tag");
 
       Assert.That(_testHelper.HtmlWriter.Attributes.Count, Is.EqualTo(1), "Has wrong number of attributes");
 
-      Assert.IsNotNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Id], "Missing ID");
+      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Id], Is.Not.Null, "Missing ID");
       Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Id], Is.EqualTo(expectedID), "Wrong ID");
     }
 
@@ -64,7 +64,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 
       command.RenderBegin(_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
 
-      Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
+      Assert.That(_testHelper.HtmlWriter.Tag, Is.Not.Null, "Missing Tag");
       Assert.That(_testHelper.HtmlWriter.Tag, Is.EqualTo(HtmlTextWriterTag.A), "Wrong Tag");
 
       Assert.That(_testHelper.HtmlWriter.Attributes.Count, Is.EqualTo(0), "Has wrong number of attributes");
@@ -79,7 +79,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 
       command.RenderBegin(_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
 
-      Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
+      Assert.That(_testHelper.HtmlWriter.Tag, Is.Not.Null, "Missing Tag");
       Assert.That(_testHelper.HtmlWriter.Tag, Is.EqualTo(HtmlTextWriterTag.A), "Wrong Tag");
 
       Assert.That(_testHelper.HtmlWriter.Attributes.Count, Is.EqualTo(0), "Has wrong number of attributes");

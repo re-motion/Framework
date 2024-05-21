@@ -74,7 +74,7 @@ public class WebTabCollectionTest: WebControlTest
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(5));
     Assert.That(_tabStrip.Tabs[0], Is.SameAs(_tabNew), "Wrong tab at position 0.");
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab2), "Wrong tab selected.");
   }
 
@@ -92,7 +92,7 @@ public class WebTabCollectionTest: WebControlTest
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(5));
     Assert.That(_tabStrip.Tabs[2], Is.SameAs(_tabNew), "Wrong tab at position 2.");
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab2), "Wrong tab selected.");
   }
 
@@ -110,7 +110,7 @@ public class WebTabCollectionTest: WebControlTest
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(5));
     Assert.That(_tabStrip.Tabs[4], Is.SameAs(_tabNew), "Wrong tab at position 4.");
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab2), "Wrong tab selected.");
   }
 
@@ -128,7 +128,7 @@ public class WebTabCollectionTest: WebControlTest
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
     Assert.That(_tabStrip.Tabs[0], Is.SameAs(_tabNew), "Wrong tab at position 0.");
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab2), "Wrong tab selected.");
   }
 
@@ -146,7 +146,7 @@ public class WebTabCollectionTest: WebControlTest
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
     Assert.That(_tabStrip.Tabs[1], Is.SameAs(_tabNew), "Wrong tab at position 1.");
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab3), "Wrong tab selected.");
   }
 
@@ -164,7 +164,7 @@ public class WebTabCollectionTest: WebControlTest
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
     Assert.That(_tabStrip.Tabs[3], Is.SameAs(_tabNew), "Wrong tab at position 3.");
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab0), "Wrong tab selected.");
   }
 
@@ -182,7 +182,7 @@ public class WebTabCollectionTest: WebControlTest
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
     Assert.That(_tabStrip.Tabs[0], Is.SameAs(_tabNew), "Wrong tab at position 0.");
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab1), "Wrong tab selected.");
   }
 
@@ -200,7 +200,7 @@ public class WebTabCollectionTest: WebControlTest
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
     Assert.That(_tabStrip.Tabs[1], Is.SameAs(_tabNew), "Wrong tab at position 1.");
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab2), "Wrong tab selected.");
   }
 
@@ -218,7 +218,7 @@ public class WebTabCollectionTest: WebControlTest
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
     Assert.That(_tabStrip.Tabs[3], Is.SameAs(_tabNew), "Wrong tab at position 3.");
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab2), "Wrong tab selected.");
   }
 
@@ -249,7 +249,7 @@ public class WebTabCollectionTest: WebControlTest
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(3));
     Assert.That(_tabStrip.Tabs[0], Is.SameAs(_tab1), "Wrong tab at position 0.");
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab2), "Wrong tab selected.");
   }
 
@@ -267,7 +267,7 @@ public class WebTabCollectionTest: WebControlTest
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(3));
     Assert.That(_tabStrip.Tabs[1], Is.SameAs(_tab2), "Wrong tab at position 1.");
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab3), "Wrong tab selected.");
   }
 
@@ -284,7 +284,7 @@ public class WebTabCollectionTest: WebControlTest
 
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(3));
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab0), "Wrong tab selected.");
   }
 
@@ -302,7 +302,7 @@ public class WebTabCollectionTest: WebControlTest
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(3));
     Assert.That(_tabStrip.Tabs[0], Is.SameAs(_tab1), "Wrong tab at position 0.");
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab1), "Wrong tab selected.");
   }
 
@@ -320,7 +320,7 @@ public class WebTabCollectionTest: WebControlTest
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(3));
     Assert.That(_tabStrip.Tabs[1], Is.SameAs(_tab2), "Wrong tab at position 1.");
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab2), "Wrong tab selected.");
   }
 
@@ -337,7 +337,7 @@ public class WebTabCollectionTest: WebControlTest
 
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(3));
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab2), "Wrong tab selected.");
   }
 
@@ -457,7 +457,7 @@ public class WebTabCollectionTest: WebControlTest
 
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab1), "Wrong tab selected.");
   }
 
@@ -472,7 +472,7 @@ public class WebTabCollectionTest: WebControlTest
 
     _tab1.IsVisible = false;
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab2), "Wrong tab selected.");
   }
 
@@ -489,7 +489,7 @@ public class WebTabCollectionTest: WebControlTest
 
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab2), "Wrong tab selected.");
   }
 
@@ -539,7 +539,7 @@ public class WebTabCollectionTest: WebControlTest
 
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab1), "Wrong tab selected.");
   }
 
@@ -554,7 +554,7 @@ public class WebTabCollectionTest: WebControlTest
 
     _tab1.IsDisabled = true;
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab2), "Wrong tab selected.");
   }
 
@@ -571,7 +571,7 @@ public class WebTabCollectionTest: WebControlTest
 
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
 
-    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null, "No tab selected.");
     Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab2), "Wrong tab selected.");
   }
 }

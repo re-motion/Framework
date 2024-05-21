@@ -363,8 +363,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
       Assert.That(collection, Is.Not.Null);
       Assert.That(collection.Count, Is.EqualTo(2), "DataContainerCollection.Count");
-      Assert.IsNotNull(collection[DomainObjectIDs.Order1], "ID of Order with OrdnerNo 1");
-      Assert.IsNotNull(collection[DomainObjectIDs.Order2], "ID of Order with OrdnerNo 2");
+      Assert.That(collection[DomainObjectIDs.Order1], Is.Not.Null, "ID of Order with OrdnerNo 1");
+      Assert.That(collection[DomainObjectIDs.Order2], Is.Not.Null, "ID of Order with OrdnerNo 2");
     }
 
     [Test]

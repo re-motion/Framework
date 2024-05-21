@@ -79,19 +79,19 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 
       _testHelper.VerifyAll();
 
-      Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
+      Assert.That(_testHelper.HtmlWriter.Tag, Is.Not.Null, "Missing Tag");
       Assert.That(_testHelper.HtmlWriter.Tag, Is.EqualTo(HtmlTextWriterTag.A), "Wrong Tag");
 
-      Assert.IsNotNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Href], "Missing Href");
+      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Href], Is.Not.Null, "Missing Href");
       Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Href], Is.EqualTo(expectedHref), "Wrong Href");
 
-      Assert.IsNotNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Onclick], "Missing OnClick");
+      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Onclick], Is.Not.Null, "Missing OnClick");
       Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Onclick], Is.EqualTo(expectedOnClick), "Wrong OnClick");
 
-      Assert.IsNotNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], "Missing Title");
+      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], Is.Not.Null, "Missing Title");
       Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], Is.EqualTo(_testHelper.ToolTip), "Wrong Title");
 
-      Assert.IsNotNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], "Missing Target");
+      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], Is.Not.Null, "Missing Target");
       Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], Is.EqualTo(_testHelper.Target), "Wrong Target");
     }
 
@@ -117,7 +117,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
           new NameValueCollection());
 
       _testHelper.VerifyAll();
-      Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
+      Assert.That(_testHelper.HtmlWriter.Tag, Is.Not.Null, "Missing Tag");
       Assert.That(_testHelper.HtmlWriter.Tag, Is.EqualTo(HtmlTextWriterTag.A), "Wrong Tag");
       Assert.That(_testHelper.HtmlWriter.Attributes.Count, Is.EqualTo(0), "Has Attributes");
     }

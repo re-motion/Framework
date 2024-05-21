@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
     public void Check (DataContainer expectedContainer, DataContainer actualContainer)
     {
-      Assert.IsNotNull(actualContainer, "actualContainer");
+      Assert.That(actualContainer, Is.Not.Null, "actualContainer");
       Assert.That(actualContainer.ID.Value, Is.EqualTo(expectedContainer.ID.Value), "ID");
       Assert.That(actualContainer.DomainObjectType, Is.EqualTo(expectedContainer.DomainObjectType), "DomainObjectType");
       Assert.That(actualContainer.State, Is.EqualTo(expectedContainer.State), "State");

@@ -142,8 +142,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       foreach (PropertyDefinition expectedPropertyDefinition in expectedDefinition.MyPropertyDefinitions)
       {
         PropertyDefinition actualPropertyDefinition = actualDefinition.MyPropertyDefinitions[expectedPropertyDefinition.PropertyName];
-        Assert.IsNotNull(
-            actualPropertyDefinition, "Class '{0}' has no property '{1}'.", expectedDefinition.ID, expectedPropertyDefinition.PropertyName);
+        Assert.That(
+            actualPropertyDefinition,
+            Is.Not.Null,
+            $"Class '{expectedDefinition.ID}' has no property '{expectedPropertyDefinition.PropertyName}'.");
 
         if (expectedPropertyDefinition.StorageClass == StorageClass.Persistent)
         {
@@ -180,11 +182,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var actualDerivedClassesDictionary = actualDerivedClasses.ToDictionary(cd => cd.ID);
       foreach (ClassDefinition expectedDerivedClass in expectedDerivedClasses)
       {
-        Assert.IsNotNull(
+        Assert.That(
             actualDerivedClassesDictionary[expectedDerivedClass.ID],
-            "Actual class definition '{0}' does not contain expected derived class '{1}'.",
-            expectedClassDefinition.ID,
-            expectedDerivedClass.ID);
+            Is.Not.Null,
+            $"Actual class definition '{expectedClassDefinition.ID}' does not contain expected derived class '{expectedDerivedClass.ID}'.");
       }
     }
 
@@ -201,7 +202,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       foreach (PropertyDefinition expectedDefinition in expectedDefinitions)
       {
         PropertyDefinition actualDefinition = actualDefinitions[expectedDefinition.PropertyName];
-        Assert.IsNotNull(actualDefinition, "Class '{0}' has no property '{1}'.", expectedClassDefinition.ID, expectedDefinition.PropertyName);
+        Assert.That(actualDefinition, Is.Not.Null, $"Class '{expectedClassDefinition.ID}' has no property '{expectedDefinition.PropertyName}'.");
         CheckPropertyDefinition(expectedDefinition, actualDefinition, expectedClassDefinition);
       }
     }

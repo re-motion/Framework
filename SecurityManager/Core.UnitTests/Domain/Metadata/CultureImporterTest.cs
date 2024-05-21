@@ -59,7 +59,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
       using (_transaction.EnterNonDiscardingScope())
       {
         Assert.That(_importer.LocalizedNames.Count, Is.EqualTo(0), "LocalizedNames count");
-        Assert.IsNotNull(_importer.Cultures, "Cultures");
+        Assert.That(_importer.Cultures, Is.Not.Null, "Cultures");
         Assert.That(_importer.Cultures.Count, Is.EqualTo(1));
         Assert.That(_importer.Cultures[0].CultureName, Is.EqualTo("de"));
       }

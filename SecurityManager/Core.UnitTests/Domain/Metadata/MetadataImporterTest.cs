@@ -236,12 +236,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
         StatePropertyDefinition expectedProperty1 = _testHelper.CreateFileStateProperty(0);
         StatePropertyDefinition actualProperty1 = _importer.StateProperties[expectedProperty1.MetadataItemID];
-        Assert.IsNotNull(actualProperty1, "State property not found");
+        Assert.That(actualProperty1, Is.Not.Null, "State property not found");
         MetadataObjectAssert.AreEqual(expectedProperty1, actualProperty1, "State property");
 
         StatePropertyDefinition expectedProperty2 = _testHelper.CreateConfidentialityProperty(1);
         StatePropertyDefinition actualProperty2 = _importer.StateProperties[expectedProperty2.MetadataItemID];
-        Assert.IsNotNull(actualProperty2, "Confidentiality property not found");
+        Assert.That(actualProperty2, Is.Not.Null, "Confidentiality property not found");
         MetadataObjectAssert.AreEqual(expectedProperty2, actualProperty2, "Confidentiality property");
       }
     }

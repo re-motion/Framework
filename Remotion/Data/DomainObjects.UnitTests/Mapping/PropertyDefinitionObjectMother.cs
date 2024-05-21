@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var propertyInfo = declaringClassType.GetProperty(
           propertyName,
           BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance);
-      Assert.IsNotNull(propertyInfo, "Property '" + propertyName + "' on type '" + declaringClassType + "'.");
+      Assert.That(propertyInfo, Is.Not.Null, "Property '" + propertyName + "' on type '" + declaringClassType + "'.");
 
       var fullPropertyName = declaringClassType.FullName + "." + propertyName;
 

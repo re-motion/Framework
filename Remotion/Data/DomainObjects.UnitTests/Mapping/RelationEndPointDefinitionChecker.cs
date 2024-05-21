@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       foreach (var expectedDefinition in expectedDefinitions)
       {
         var actualDefinition = actualDefinitions[expectedDefinition.PropertyName];
-        Assert.IsNotNull(actualDefinition, "Relation end point '{0}' was not found.", expectedDefinition.PropertyName);
+        Assert.That(actualDefinition, Is.Not.Null, $"Relation end point '{expectedDefinition.PropertyName}' was not found.");
         Check(expectedDefinition, actualDefinition, checkRelationDefinition);
       }
     }
