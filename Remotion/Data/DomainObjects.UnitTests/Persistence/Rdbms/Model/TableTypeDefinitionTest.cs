@@ -68,4 +68,20 @@ public class TableTypeDefinitionTest
     Assert.That(result.Length, Is.EqualTo(4));
     Assert.That(result.Select(o => o.Name), Is.EqualTo(new[] { "Column1", "Column2", "Column3", "Column4" }));
   }
+
+  [Test]
+  public void Accept_Calls_VisitTableTypeDefinition ()
+  {
+    var typeName = new EntityNameDefinition("test", "MyTableType");
+    var properties = new List<IRdbmsStoragePropertyDefinition> { Mock.Of<IRdbmsStoragePropertyDefinition>() };
+    var constraints = Array.Empty<ITableConstraintDefinition>();
+
+    var tableTypeDefinition = new TableTypeDefinition(typeName, properties, constraints);
+
+    var visitorMock = new Mock<IRdbmsStructuredTypeDefinitionVisitor>();
+    visitorMock.Setup(_=>_.VisitTableTypeDefinition(tableTypeDefinition)).Verifiable();
+
+    tableTypeDefinition.Accept(visitorMock.Object);
+    visitorMock.Verify();
+  }
 }
