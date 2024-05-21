@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _queryParameter1 = new QueryParameter("first", DomainObjectIDs.Order1);
       _queryParameter2 = new QueryParameter("second", DomainObjectIDs.Order3.Value);
-      _queryParameter3 = new QueryParameter("third", DomainObjectIDs.Official1);
+      _queryParameter3 = new QueryParameter("third", new[]{ DomainObjectIDs.Official1, DomainObjectIDs.Official2 });
       var collection = new QueryParameterCollection { _queryParameter1, _queryParameter2, _queryParameter3 };
 
       _queryStub = new Mock<IQuery>();
@@ -171,17 +171,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
           .Verifiable();
 
       var commandBuilderStub = new Mock<IDbCommandBuilder>();
-      var expectedParametersWithType =
-          new[]
-          {
-              new QueryParameterWithDataParameterDefinition(
-                  new QueryParameter(_queryParameter1.Name, DomainObjectIDs.Order1, _queryParameter1.ParameterType),
-                  _dataParameterDefinition1),
-              new QueryParameterWithDataParameterDefinition(_queryParameter2, _dataParameterDefinition2),
-              new QueryParameterWithDataParameterDefinition(
-                  new QueryParameter(_queryParameter3.Name, DomainObjectIDs.Official1, _queryParameter3.ParameterType),
-                  _dataParameterDefinition3)
-          };
+      var expectedParametersWithType = GetExpectedParametersForQueryStub();
       _dbCommandBuilderFactoryStrictMock
           .Setup(stub => stub.CreateForQuery("statement", expectedParametersWithType))
           .Returns(commandBuilderStub.Object)
@@ -201,13 +191,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     {
       return new[]
              {
-                 new QueryParameterWithDataParameterDefinition(
-                     new QueryParameter(_queryParameter1.Name, DomainObjectIDs.Order1, _queryParameter1.ParameterType),
-                     _dataParameterDefinition1),
+                 new QueryParameterWithDataParameterDefinition(_queryParameter1, _dataParameterDefinition1),
                  new QueryParameterWithDataParameterDefinition(_queryParameter2, _dataParameterDefinition2),
-                 new QueryParameterWithDataParameterDefinition(
-                     new QueryParameter(_queryParameter3.Name, DomainObjectIDs.Official1, _queryParameter3.ParameterType),
-                     _dataParameterDefinition3)
+                 new QueryParameterWithDataParameterDefinition(_queryParameter3, _dataParameterDefinition3)
              };
     }
   }
