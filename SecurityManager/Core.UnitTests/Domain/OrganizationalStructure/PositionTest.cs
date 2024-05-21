@@ -203,7 +203,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       {
         Position position = testHelper.CreatePosition("Position");
 
-        Assert.IsNotEmpty(position.UniqueIdentifier);
+        Assert.That(position.UniqueIdentifier, Is.Not.Empty);
       }
     }
 

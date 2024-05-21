@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       OrganizationalStructureFactory factory = new OrganizationalStructureFactory();
       Group group = factory.CreateGroup();
 
-      Assert.IsNotEmpty(group.UniqueIdentifier);
+      Assert.That(group.UniqueIdentifier, Is.Not.Empty);
     }
 
     [Test]

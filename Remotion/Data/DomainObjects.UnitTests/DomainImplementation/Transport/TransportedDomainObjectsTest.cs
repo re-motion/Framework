@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       var transportedObjects = new TransportedDomainObjects(newTransaction, transportedObjectList);
 
       Assert.That(transportedObjects.DataTransaction, Is.Not.Null);
-      Assert.IsNotEmpty(GetTransportedObjects(transportedObjects));
+      Assert.That(GetTransportedObjects(transportedObjects), Is.Not.Empty);
       List<ObjectID> ids = GetTransportedObjects(transportedObjects).ConvertAll(obj => obj.ID);
       Assert.That(ids, Is.EquivalentTo(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.Company1 }));
     }

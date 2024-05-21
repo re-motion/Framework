@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
     {
       Tenant tenant = TestHelper.CreateTenant("TestTenant", "UID: testTenant");
 
-      Assert.IsNotEmpty(tenant.UniqueIdentifier);
+      Assert.That(tenant.UniqueIdentifier, Is.Not.Empty);
     }
 
     [Test]
