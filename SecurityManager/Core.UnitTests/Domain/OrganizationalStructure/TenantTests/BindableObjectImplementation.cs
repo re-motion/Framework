@@ -122,7 +122,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
         }
       }
 
-      Assert.IsTrue(isFound, "Property UnqiueIdentifier declared on Tenant was not found.");
+      Assert.That(isFound, Is.True, "Property UnqiueIdentifier declared on Tenant was not found.");
     }
 
     [Test]

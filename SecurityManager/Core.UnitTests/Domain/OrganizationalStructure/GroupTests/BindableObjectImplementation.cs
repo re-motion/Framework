@@ -141,7 +141,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
         }
       }
 
-      Assert.IsTrue(isFound, "Property UnqiueIdentifier declared on Group was not found.");
+      Assert.That(isFound, Is.True, "Property UnqiueIdentifier declared on Group was not found.");
     }
 
     [Test]

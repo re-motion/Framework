@@ -419,7 +419,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
         RelationEndPointID.Create(newOrder.ID, typeof(Order).FullName + ".Customer"),
         RelationEndPointID.Create(_oldCustomer.ID, typeof(Customer).FullName + ".Orders"));
 
-      Assert.IsTrue(newOrder.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(Order), "Customer")), "newOrder ObjectID touched");
+      Assert.That(newOrder.InternalDataContainer.HasValueBeenTouched(GetPropertyDefinition(typeof(Order), "Customer")), Is.True, "newOrder ObjectID touched");
     }
 
     [Test]

@@ -97,8 +97,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocEnumValue.ReadOnly = false;
       _bocEnumValue.ListControlStyle.ControlType = ListControlType.RadioButtonList;
       Assert.That(_propertyEnumValue, Is.Not.Null, "Could not find property 'EnumValue'.");
-      Assert.IsTrue(
+      Assert.That(
           typeof(IBusinessObjectEnumerationProperty).IsAssignableFrom(_propertyEnumValue.GetType()),
+          Is.True,
           "Property 'EnumValue' of invalid type.");
       _bocEnumValue.Property = _propertyEnumValue;
 
