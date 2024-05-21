@@ -36,8 +36,7 @@ namespace Remotion.Development.NUnit.UnitTesting.Globalization
       Assert.That(
           availableResourcesByOutputFolder,
           Is.EquivalentTo(availableResourcesByAssembly),
-          "The available resources declared by the assembly '{0}' does not match the available resources in the output directory.",
-          targetAssembly.GetName().Name);
+          $"The available resources declared by the assembly '{targetAssembly.GetName().Name}' does not match the available resources in the output directory.");
     }
   }
 }

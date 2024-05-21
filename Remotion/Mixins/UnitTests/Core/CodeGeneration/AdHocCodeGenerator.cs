@@ -134,9 +134,8 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
         catch (UnauthorizedAccessException)
         {
           Assert.Fail(
-              "Assembly '{0}' already exists, likely because it could not be properly cleaned during a previous test-run. "
-              + "Please delete the bin-directory manually and re-run the tests.",
-              _filename);
+              $"Assembly '{_filename}' already exists, likely because it could not be properly cleaned during a previous test-run. "
+              + "Please delete the bin-directory manually and re-run the tests.");
         }
       }
 

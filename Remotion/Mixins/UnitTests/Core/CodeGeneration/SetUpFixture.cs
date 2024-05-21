@@ -113,7 +113,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       }
       catch (Exception ex)
       {
-        Assert.Fail("Error when saving assemblies: {0}", ex);
+        Assert.Fail($"Error when saving assemblies: {ex}");
       }
 
 #if ENABLE_PEVERIFY

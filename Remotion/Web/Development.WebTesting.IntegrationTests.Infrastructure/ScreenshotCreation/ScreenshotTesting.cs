@@ -243,7 +243,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
           using (var resourceStream = testAssembly.GetManifestResourceStream(resourceName))
           {
             if (resourceStream == null)
-              Assert.Fail("Could not open saved resource image: '{0}'", resourceName);
+              Assert.Fail($"Could not open saved resource image: '{resourceName}'");
 
             var resource = (Bitmap)Image.FromStream(resourceStream);
 

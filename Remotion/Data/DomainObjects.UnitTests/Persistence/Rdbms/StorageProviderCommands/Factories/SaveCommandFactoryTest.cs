@@ -357,11 +357,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var column = columnValues.FirstOrDefault(cv => cv.Column.Name == columnName);
       if (column.Column == null)
       {
-        Assert.That(shouldBeIncluded, Is.False, "Column '{0}' was expected, but not found.", columnName);
+        Assert.That(shouldBeIncluded, Is.False, $"Column '{columnName}' was expected, but not found.");
       }
       else
       {
-        Assert.That(shouldBeIncluded, Is.True, "Column '{0}' was not expected, but found.", columnName);
+        Assert.That(shouldBeIncluded, Is.True, $"Column '{columnName}' was not expected, but found.");
         Assert.That(column.Value, Is.EqualTo(expectedValue));
       }
     }

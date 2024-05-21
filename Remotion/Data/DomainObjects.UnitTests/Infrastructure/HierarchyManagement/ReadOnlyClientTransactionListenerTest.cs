@@ -133,8 +133,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       Assert.That(
         () => method.Invoke(_listener, arguments),
         Throws.TargetInvocationException.With.InnerException.TypeOf<ClientTransactionReadOnlyException>().And.InnerException.Message.EqualTo(message),
-        "Expected exception to be thrown by method '{0}'.",
-        method.Name);
+        $"Expected exception to be thrown by method '{method.Name}'.");
     }
 
     private void ExpectNoException (MethodInfo method, object[] arguments)
@@ -142,8 +141,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       Assert.That(
         () => method.Invoke(_listener, arguments),
         Throws.Nothing,
-        "Expected no exception to be thrown by method '{0}'.",
-        method.Name);
+        $"Expected no exception to be thrown by method '{method.Name}'.");
     }
 
     private object GetDefaultValue (Type t)
