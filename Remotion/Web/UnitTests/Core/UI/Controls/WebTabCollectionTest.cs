@@ -232,7 +232,7 @@ public class WebTabCollectionTest: WebControlTest
 
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(1));
     Assert.That(_tabStrip.Tabs[0], Is.SameAs(_tabNew), "Wrong tab at position 0.");
-    Assert.IsNull(_tabStrip.SelectedTab, "Tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Null, "Tab selected.");
   }
 
   [Test]
@@ -350,7 +350,7 @@ public class WebTabCollectionTest: WebControlTest
     _tabStrip.Tabs.RemoveAt(0);
 
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(0));
-    Assert.IsNull(_tabStrip.SelectedTab, "Tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Null, "Tab selected.");
   }
 
   [Test]
@@ -365,7 +365,7 @@ public class WebTabCollectionTest: WebControlTest
     _tabStrip.Tabs.Clear();
 
     Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(0));
-    Assert.IsNull(_tabStrip.SelectedTab, "Tab selected.");
+    Assert.That(_tabStrip.SelectedTab, Is.Null, "Tab selected.");
   }
 
   [Test]

@@ -190,29 +190,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       PropertyValue propertyValue = CreateNullableIntPropertyValue("test", null);
 
-      Assert.IsNull(propertyValue.Value, "Value after initialization");
-      Assert.IsNull(propertyValue.OriginalValue, "OriginalValue after initialization");
+      Assert.That(propertyValue.Value, Is.Null, "Value after initialization");
+      Assert.That(propertyValue.OriginalValue, Is.Null, "OriginalValue after initialization");
       Assert.IsFalse(propertyValue.HasChanged, "HasChanged after initialization");
       Assert.IsFalse(propertyValue.HasBeenTouched, "HasBeenTouched after initialization");
 
       propertyValue.Value = null;
 
-      Assert.IsNull(propertyValue.Value, "Value after change #1");
-      Assert.IsNull(propertyValue.OriginalValue, "OriginalValue after change #1");
+      Assert.That(propertyValue.Value, Is.Null, "Value after change #1");
+      Assert.That(propertyValue.OriginalValue, Is.Null, "OriginalValue after change #1");
       Assert.IsFalse(propertyValue.HasChanged, "HasChanged after change #1");
       Assert.IsTrue(propertyValue.HasBeenTouched, "HasBeenTouched after change #1");
 
       propertyValue.Value = 10;
 
       Assert.That(propertyValue.Value, Is.EqualTo(10), "Value after change #2");
-      Assert.IsNull(propertyValue.OriginalValue, "OriginalValue after change #2");
+      Assert.That(propertyValue.OriginalValue, Is.Null, "OriginalValue after change #2");
       Assert.IsTrue(propertyValue.HasChanged, "HasChanged after change #2");
       Assert.IsTrue(propertyValue.HasBeenTouched, "HasBeenTouched after change #2");
 
       propertyValue.Value = null;
 
-      Assert.IsNull(propertyValue.Value, "Value after change #3");
-      Assert.IsNull(propertyValue.OriginalValue, "OriginalValue after change #3");
+      Assert.That(propertyValue.Value, Is.Null, "Value after change #3");
+      Assert.That(propertyValue.OriginalValue, Is.Null, "OriginalValue after change #3");
       Assert.IsFalse(propertyValue.HasChanged, "HasChanged after change #3");
       Assert.IsTrue(propertyValue.HasBeenTouched, "HasBeenTouched after change #3");
     }
@@ -222,29 +222,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       PropertyValue propertyValue = CreateStringPropertyValue("test", null);
 
-      Assert.IsNull(propertyValue.Value, "Value after initialization");
-      Assert.IsNull(propertyValue.OriginalValue, "OriginalValue after initialization");
+      Assert.That(propertyValue.Value, Is.Null, "Value after initialization");
+      Assert.That(propertyValue.OriginalValue, Is.Null, "OriginalValue after initialization");
       Assert.IsFalse(propertyValue.HasChanged, "HasChanged after initialization");
       Assert.IsFalse(propertyValue.HasBeenTouched, "HasBeenTouched after initialization");
 
       propertyValue.Value = null;
 
-      Assert.IsNull(propertyValue.Value, "Value after change #1");
-      Assert.IsNull(propertyValue.OriginalValue, "OriginalValue after change #1");
+      Assert.That(propertyValue.Value, Is.Null, "Value after change #1");
+      Assert.That(propertyValue.OriginalValue, Is.Null, "OriginalValue after change #1");
       Assert.IsFalse(propertyValue.HasChanged, "HasChanged after change #1");
       Assert.IsTrue(propertyValue.HasBeenTouched, "HasBeenTouched after change #1");
 
       propertyValue.Value = "Test Value";
 
       Assert.That(propertyValue.Value, Is.EqualTo("Test Value"), "Value after change #2");
-      Assert.IsNull(propertyValue.OriginalValue, "OriginalValue after change #2");
+      Assert.That(propertyValue.OriginalValue, Is.Null, "OriginalValue after change #2");
       Assert.IsTrue(propertyValue.HasChanged, "HasChanged after change #2");
       Assert.IsTrue(propertyValue.HasBeenTouched, "HasBeenTouched after change #2");
 
       propertyValue.Value = null;
 
-      Assert.IsNull(propertyValue.Value, "Value after change #3");
-      Assert.IsNull(propertyValue.OriginalValue, "OriginalValue after change #3");
+      Assert.That(propertyValue.Value, Is.Null, "Value after change #3");
+      Assert.That(propertyValue.OriginalValue, Is.Null, "OriginalValue after change #3");
       Assert.IsFalse(propertyValue.HasChanged, "HasChanged after change #3");
       Assert.IsTrue(propertyValue.HasBeenTouched, "HasBeenTouched after change #3");
     }
@@ -256,29 +256,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       var propertyValue = new PropertyValue(definition, null);
 
-      Assert.IsNull(propertyValue.Value, "Value after initialization");
-      Assert.IsNull(propertyValue.OriginalValue, "OriginalValue after initialization");
+      Assert.That(propertyValue.Value, Is.Null, "Value after initialization");
+      Assert.That(propertyValue.OriginalValue, Is.Null, "OriginalValue after initialization");
       Assert.IsFalse(propertyValue.HasChanged, "HasChanged after initialization");
       Assert.IsFalse(propertyValue.HasBeenTouched, "HasBeenTouched after initialization");
 
       propertyValue.Value = null;
 
-      Assert.IsNull(propertyValue.Value, "Value after change #1");
-      Assert.IsNull(propertyValue.OriginalValue, "OriginalValue after change #1");
+      Assert.That(propertyValue.Value, Is.Null, "Value after change #1");
+      Assert.That(propertyValue.OriginalValue, Is.Null, "OriginalValue after change #1");
       Assert.IsFalse(propertyValue.HasChanged, "HasChanged after change #1");
       Assert.IsTrue(propertyValue.HasBeenTouched, "HasBeenTouched after change #1");
 
       propertyValue.Value = Tuple.Create("Test Value");
 
       Assert.That(propertyValue.Value, Is.EqualTo(Tuple.Create("Test Value")), "Value after change #2");
-      Assert.IsNull(propertyValue.OriginalValue, "OriginalValue after change #2");
+      Assert.That(propertyValue.OriginalValue, Is.Null, "OriginalValue after change #2");
       Assert.IsTrue(propertyValue.HasChanged, "HasChanged after change #2");
       Assert.IsTrue(propertyValue.HasBeenTouched, "HasBeenTouched after change #2");
 
       propertyValue.Value = null;
 
-      Assert.IsNull(propertyValue.Value, "Value after change #3");
-      Assert.IsNull(propertyValue.OriginalValue, "OriginalValue after change #3");
+      Assert.That(propertyValue.Value, Is.Null, "Value after change #3");
+      Assert.That(propertyValue.OriginalValue, Is.Null, "OriginalValue after change #3");
       Assert.IsFalse(propertyValue.HasChanged, "HasChanged after change #3");
       Assert.IsTrue(propertyValue.HasBeenTouched, "HasBeenTouched after change #3");
     }

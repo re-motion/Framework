@@ -131,7 +131,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
       entry = mappings[2];
       Assert.That(mappings.Find(entry.FunctionType), Is.SameAs(mappings[0]), $"Could not find {entry.FunctionType.FullName}.");
 
-      Assert.IsNull(mappings.Find(typeof(UnmappedFunction)), "Found mapping for unmapped function.");
+      Assert.That(mappings.Find(typeof(UnmappedFunction)), Is.Null, "Found mapping for unmapped function.");
     }
 
     [Test]
@@ -148,7 +148,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
       entry = mappings[2];
       Assert.That(mappings.Find(entry.Resource), Is.SameAs(mappings[2]), $"Could not find {entry.Resource}.");
 
-      Assert.IsNull(mappings.Find("~/unmapped.wxe"), "Found mapping for unmapped resource.");
+      Assert.That(mappings.Find("~/unmapped.wxe"), Is.Null, "Found mapping for unmapped resource.");
     }
 
     [Test]
@@ -162,7 +162,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
       entry = mappings[1];
       Assert.That(mappings.FindByID(entry.ID), Is.SameAs(mappings[1]), $"Could not find {entry.Resource}.");
 
-      Assert.IsNull(mappings.FindByID("unknown"), "Found mapping for unknown id.");
+      Assert.That(mappings.FindByID("unknown"), Is.Null, "Found mapping for unknown id.");
     }
   }
 }

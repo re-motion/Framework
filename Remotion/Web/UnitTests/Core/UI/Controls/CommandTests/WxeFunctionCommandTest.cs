@@ -97,7 +97,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       Assert.IsNotNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], "Missing Title");
       Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], Is.EqualTo(_testHelper.ToolTip), "Wrong Title");
 
-      Assert.IsNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], "Has Target");
+      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], Is.Null, "Has Target");
     }
 
     [Test]
