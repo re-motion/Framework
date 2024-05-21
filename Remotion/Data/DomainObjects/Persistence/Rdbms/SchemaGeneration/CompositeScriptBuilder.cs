@@ -59,6 +59,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
         scriptBuilder.AddEntityDefinition(entityDefinition);
     }
 
+    public void AddStructuredTypeDefinition (IRdbmsStructuredTypeDefinition typeDefinition)
+    {
+      ArgumentUtility.CheckNotNull(nameof(typeDefinition), typeDefinition);
+
+      foreach (var scriptBuilder in _scriptBuilders)
+        scriptBuilder.AddStructuredTypeDefinition(typeDefinition);
+    }
+
     public IScriptElement GetCreateScript ()
     {
       var scriptElementCollection = new ScriptElementCollection();
