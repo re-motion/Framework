@@ -560,7 +560,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
 
       Assert.That(requirement.RequiringDependencies.ContainsKey(mixin.MixinDependencies[typeof(IMixinWithAdditionalClassDependency)]), Is.True);
 
-      Assert.AreEqual(0, requirement.Methods.Count, "mixin type requirements do not contain method requirements");
+      Assert.That(requirement.Methods.Count, Is.EqualTo(0), "mixin type requirements do not contain method requirements");
 
       Assert.That(mixin.MixinDependencies[typeof(IMixinWithAdditionalClassDependency)].RequiredType, Is.SameAs(requirement));
     }
@@ -582,7 +582,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
 
       Assert.That(requirement.RequiringDependencies.ContainsKey(mixin.MixinDependencies[typeof(MixinWithNoAdditionalDependency)]), Is.True);
 
-      Assert.AreEqual(0, requirement.Methods.Count, "mixin type requirements do not contain method requirements");
+      Assert.That(requirement.Methods.Count, Is.EqualTo(0), "mixin type requirements do not contain method requirements");
 
       Assert.That(mixin.MixinDependencies[typeof(MixinWithNoAdditionalDependency)].RequiredType, Is.SameAs(requirement));
     }

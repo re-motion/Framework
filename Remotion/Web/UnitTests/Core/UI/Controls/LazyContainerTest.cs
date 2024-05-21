@@ -393,8 +393,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
         object actualControlState = actualControlStates[expectedKey];
         Assert.That(actualControlState is Pair, Is.True);
         Pair actualValues = (Pair)actualControlState;
-        Assert.AreEqual(expectedValues.First, actualValues.First, expectedKey);
-        Assert.AreEqual(expectedValues.Second, actualValues.Second, expectedKey);
+        Assert.That(actualValues.First, Is.EqualTo(expectedValues.First), expectedKey);
+        Assert.That(actualValues.Second, Is.EqualTo(expectedValues.Second), expectedKey);
       }
     }
 

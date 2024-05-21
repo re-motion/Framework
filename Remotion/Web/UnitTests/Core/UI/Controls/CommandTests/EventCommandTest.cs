@@ -85,16 +85,16 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       _testHelper.VerifyAll();
 
       Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
-      Assert.AreEqual(HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
+      Assert.That(_testHelper.HtmlWriter.Tag, Is.EqualTo(HtmlTextWriterTag.A), "Wrong Tag");
 
       Assert.IsNotNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Href], "Missing Href");
-      Assert.AreEqual("fakeFallbackUrl", _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Href], "Wrong Href");
+      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Href], Is.EqualTo("fakeFallbackUrl"), "Wrong Href");
 
       Assert.IsNotNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Onclick], "Missing OnClick");
-      Assert.AreEqual(expectedOnClick, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Onclick], "Wrong OnClick");
+      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Onclick], Is.EqualTo(expectedOnClick), "Wrong OnClick");
 
       Assert.IsNotNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], "Missing Title");
-      Assert.AreEqual(_testHelper.ToolTip, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], "Wrong Title");
+      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], Is.EqualTo(_testHelper.ToolTip), "Wrong Title");
 
       Assert.IsNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], "Has Target");
     }
@@ -110,8 +110,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 
       _testHelper.VerifyAll();
       Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
-      Assert.AreEqual(HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
-      Assert.AreEqual(0, _testHelper.HtmlWriter.Attributes.Count, "Has Attributes");
+      Assert.That(_testHelper.HtmlWriter.Tag, Is.EqualTo(HtmlTextWriterTag.A), "Wrong Tag");
+      Assert.That(_testHelper.HtmlWriter.Attributes.Count, Is.EqualTo(0), "Has Attributes");
     }
 
     private void TestHandler (object sender, CommandClickEventArgs e)

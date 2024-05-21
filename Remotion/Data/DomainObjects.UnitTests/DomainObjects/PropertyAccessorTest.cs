@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(sector.Companies, Is.SameAs(newCompanies));
 
       sector.Name = "Foo";
-      Assert.AreEqual("Foo", sector.Name, "property value");
+      Assert.That(sector.Name, Is.EqualTo("Foo"), "property value");
     }
 
     [Test]
@@ -542,7 +542,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo(0));
 
       Assert.That(existingOrder.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].IsNull, Is.False);
-      Assert.AreEqual(0, eventReceiver.LoadedDomainObjectLists.Count, "The IsNull check did not cause the object to be loaded.");
+      Assert.That(eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo(0), "The IsNull check did not cause the object to be loaded.");
     }
 
     [Test]
@@ -564,10 +564,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo(0));
 
       Assert.That(existingOrder.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].IsNull, Is.False);
-      Assert.AreEqual(1, eventReceiver.LoadedDomainObjectLists.Count, "For virtual end points, the IsNull unfortunately does cause a load.");
+      Assert.That(eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo(1), "For virtual end points, the IsNull unfortunately does cause a load.");
 
       Assert.That(existingOrder.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].GetValue<OrderTicket>() == null, Is.False);
-      Assert.AreEqual(1, eventReceiver.LoadedDomainObjectLists.Count, "An ordinary check does cause the object to be loaded.");
+      Assert.That(eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo(1), "An ordinary check does cause the object to be loaded.");
     }
 
     [Test]

@@ -898,8 +898,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
         Controller.PrepareValidation();
 
-        Assert.AreEqual(stringValueField.Text, stringValueField.Text, "Row {0}", i);
-        Assert.AreEqual(int32ValueField.Text, int32ValueField.Text, "Row {0}", i);
+        Assert.That(stringValueField.Text, Is.EqualTo(stringValueField.Text), $"Row {i}");
+        Assert.That(int32ValueField.Text, Is.EqualTo(int32ValueField.Text), $"Row {i}");
       }
     }
 

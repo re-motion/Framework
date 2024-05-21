@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       ArgumentUtility.CheckNotNull("actualDefinitions", actualDefinitions);
 
       if (!ignoreUnknown)
-        Assert.AreEqual(expectedDefinitions.Count(), actualDefinitions.Count, "Number of relation definitions does not match.");
+        Assert.That(actualDefinitions.Count, Is.EqualTo(expectedDefinitions.Count()), "Number of relation definitions does not match.");
 
       foreach (RelationDefinition expectedDefinition in expectedDefinitions)
       {
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       ArgumentUtility.CheckNotNull("expectedDefinition", expectedDefinition);
       ArgumentUtility.CheckNotNull("actualDefinition", actualDefinition);
 
-      Assert.AreEqual(expectedDefinition.ID, actualDefinition.ID, "IDs of relation definitions do not match.");
+      Assert.That(actualDefinition.ID, Is.EqualTo(expectedDefinition.ID), "IDs of relation definitions do not match.");
 
       CheckEndPointDefinitions(expectedDefinition, actualDefinition);
     }

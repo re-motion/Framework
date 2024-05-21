@@ -362,7 +362,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
           RelationEndPointID.Create(DomainObjectIDs.Customer1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
       Assert.That(collection, Is.Not.Null);
-      Assert.AreEqual(2, collection.Count, "DataContainerCollection.Count");
+      Assert.That(collection.Count, Is.EqualTo(2), "DataContainerCollection.Count");
       Assert.IsNotNull(collection[DomainObjectIDs.Order1], "ID of Order with OrdnerNo 1");
       Assert.IsNotNull(collection[DomainObjectIDs.Order2], "ID of Order with OrdnerNo 2");
     }

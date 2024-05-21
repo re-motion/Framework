@@ -39,9 +39,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     public void Check (DataContainer expectedContainer, DataContainer actualContainer)
     {
       Assert.IsNotNull(actualContainer, "actualContainer");
-      Assert.AreEqual(expectedContainer.ID.Value, actualContainer.ID.Value, "ID");
-      Assert.AreEqual(expectedContainer.DomainObjectType, actualContainer.DomainObjectType, "DomainObjectType");
-      Assert.AreEqual(expectedContainer.State, actualContainer.State, "State");
+      Assert.That(actualContainer.ID.Value, Is.EqualTo(expectedContainer.ID.Value), "ID");
+      Assert.That(actualContainer.DomainObjectType, Is.EqualTo(expectedContainer.DomainObjectType), "DomainObjectType");
+      Assert.That(actualContainer.State, Is.EqualTo(expectedContainer.State), "State");
 
       PropertyValueChecker valueChecker = new PropertyValueChecker();
       foreach (var expectedPropertyValue in expectedContainer.ClassDefinition.GetPropertyDefinitions())

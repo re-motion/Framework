@@ -108,16 +108,16 @@ namespace Remotion.Tools.UnitTests
       _consoleStub.Object.ForegroundColor = ConsoleColor.White;
       _consoleStub.Object.BackgroundColor = ConsoleColor.Red;
       IDisposable scope = new ConsoleUtility.ColorScope(_consoleStub.Object, ConsoleColor.Green, ConsoleColor.Magenta);
-      Assert.AreEqual(ConsoleColor.Green, _consoleStub.Object.ForegroundColor, "color was set");
-      Assert.AreEqual(ConsoleColor.Magenta, _consoleStub.Object.BackgroundColor, "color was set");
+      Assert.That(_consoleStub.Object.ForegroundColor, Is.EqualTo(ConsoleColor.Green), "color was set");
+      Assert.That(_consoleStub.Object.BackgroundColor, Is.EqualTo(ConsoleColor.Magenta), "color was set");
       scope.Dispose();
-      Assert.AreEqual(ConsoleColor.White, _consoleStub.Object.ForegroundColor, "color was restored");
-      Assert.AreEqual(ConsoleColor.Red, _consoleStub.Object.BackgroundColor, "color was restored");
+      Assert.That(_consoleStub.Object.ForegroundColor, Is.EqualTo(ConsoleColor.White), "color was restored");
+      Assert.That(_consoleStub.Object.BackgroundColor, Is.EqualTo(ConsoleColor.Red), "color was restored");
       _consoleStub.Object.ForegroundColor = ConsoleColor.Yellow;
       _consoleStub.Object.BackgroundColor = ConsoleColor.DarkYellow;
       scope.Dispose();
-      Assert.AreEqual(ConsoleColor.Yellow, _consoleStub.Object.ForegroundColor, "second dispose ignored");
-      Assert.AreEqual(ConsoleColor.DarkYellow, _consoleStub.Object.BackgroundColor, "second dispose ignored");
+      Assert.That(_consoleStub.Object.ForegroundColor, Is.EqualTo(ConsoleColor.Yellow), "second dispose ignored");
+      Assert.That(_consoleStub.Object.BackgroundColor, Is.EqualTo(ConsoleColor.DarkYellow), "second dispose ignored");
     }
   }
 }
