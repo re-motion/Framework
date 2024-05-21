@@ -37,6 +37,8 @@ namespace Remotion.Security.UnitTests.XmlAsserter
       return new XmlElementConstraintResult(this, actual, isSuccess);
     }
 
+    public override string Description => $"equal to the namespace '{_expectedNamespace}' and local name '{_expectedLocalName}'.";
+
     private bool Matches (object actual)
     {
       var actualAsXmlNode = actual as XmlNode;

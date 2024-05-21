@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.1" />
     <PackageReference Include="Moq" Version="4.16.1" PrivateAssets="all" />
     <PackageReference Include="Moq.VerifiableSequence" Version="4.16.1.2" PrivateAssets="all" />
-    <PackageReference Include="NUnit" Version="3.13.3" PrivateAssets="all" />
+    <PackageReference Include="NUnit" Version="4.1.0" PrivateAssets="all" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
   </ItemGroup>
 
