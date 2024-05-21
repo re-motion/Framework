@@ -58,5 +58,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
     {
       return Properties.SelectMany(p => p.GetColumns());
     }
+
+    /// <summary>
+    /// Calls <see cref="IRdbmsStructuredTypeDefinitionVisitor.VisitTableTypeDefinition"/> on the given <paramref name="visitor"/>.
+    /// </summary>
+    public void Accept (IRdbmsStructuredTypeDefinitionVisitor visitor)
+    {
+      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+
+      visitor.VisitTableTypeDefinition(this);
+    }
   }
 }
