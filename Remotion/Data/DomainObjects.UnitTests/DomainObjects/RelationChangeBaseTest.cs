@@ -34,13 +34,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       if (foreignKeyObject != null)
       {
-        Assert.IsFalse(
+        Assert.That(
             foreignKeyObject.Properties[foreignKeyObject.GetPublicDomainObjectType(), simpleForeignKeyPropertyName].HasBeenTouched,
+            Is.False,
             "ObjectID before modification");
       }
 
       foreach (RelationEndPointID id in endPointsInvolved)
-        Assert.IsFalse(TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(id).HasBeenTouched, id + " before modification");
+        Assert.That(TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(id).HasBeenTouched, Is.False, id + " before modification");
 
       modification();
 
