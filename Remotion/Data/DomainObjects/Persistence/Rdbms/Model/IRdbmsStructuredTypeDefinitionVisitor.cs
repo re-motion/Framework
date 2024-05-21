@@ -14,28 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
-using System.Collections.Generic;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
   /// <summary>
-  /// Defines an API for a structured type in a relational database.
+  /// Defines the API for the structured type definition visitor implementations.
   /// </summary>
-  public interface IRdbmsStructuredTypeDefinition
+  public interface IRdbmsStructuredTypeDefinitionVisitor
   {
-    /// <summary>
-    /// The name of the structured type.
-    /// </summary>
-    EntityNameDefinition TypeName { get; }
-
-    /// <summary>
-    /// The <see cref="IRdbmsStoragePropertyDefinition"/>s that correspond to the attributes of the structured type. 
-    /// </summary>
-    IReadOnlyCollection<IRdbmsStoragePropertyDefinition> Properties { get; }
-
-    /// <summary>
-    /// Calls the method on the given <paramref name="visitor"/> that corresponds to the <see cref="IRdbmsStructuredTypeDefinition"/> implementation.  
-    /// </summary>
-    void Accept (IRdbmsStructuredTypeDefinitionVisitor visitor);
+    void VisitTableTypeDefinition (TableTypeDefinition tableTypeDefinition);
   }
 }
