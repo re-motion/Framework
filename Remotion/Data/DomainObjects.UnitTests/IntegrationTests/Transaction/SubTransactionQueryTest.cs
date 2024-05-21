@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         var result = ClientTransactionScope.CurrentTransaction.QueryManager.GetCustom(query, qrr => qrr.GetRawValue(0));
 
-        CollectionAssert.AreEquivalent(new[] { "üäöfedcba", "abcdeföäü" }, result);
+        Assert.That(result, Is.EquivalentTo(new[] { "üäöfedcba", "abcdeföäü" }));
       }
     }
 

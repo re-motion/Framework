@@ -133,7 +133,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       _lazyContainer.RealControls.Add(_parent);
       NamingContainerInvoker.InitRecursive();
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
 
       expectedEvents.Add(FormatInitEvent(_child));
       expectedEvents.Add(FormatInitEvent(_childSecond));
@@ -141,7 +141,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       _lazyContainer.Ensure();
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
     }
 
     [Test]
@@ -153,7 +153,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       NamingContainerInvoker.InitRecursive();
       _lazyContainer.Ensure();
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
 
       expectedEvents.Add(FormatInitEvent(_child));
       expectedEvents.Add(FormatInitEvent(_childSecond));
@@ -161,7 +161,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       _lazyContainer.RealControls.Add(_parent);
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
     }
 
 
@@ -176,7 +176,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       NamingContainerInvoker.InitRecursive();
       NamingContainerInvoker.LoadRecursive();
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
 
       expectedEvents.Add(FormatInitEvent(_child));
       expectedEvents.Add(FormatInitEvent(_childSecond));
@@ -187,7 +187,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       _lazyContainer.Ensure();
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
     }
 
     [Test]
@@ -201,7 +201,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       _lazyContainer.RealControls.Add(_parent);
       NamingContainerInvoker.LoadRecursive();
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
 
       expectedEvents.Add(FormatInitEvent(_child));
       expectedEvents.Add(FormatInitEvent(_childSecond));
@@ -212,7 +212,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       _lazyContainer.Ensure();
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
     }
 
     [Test]
@@ -226,7 +226,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       NamingContainerInvoker.LoadRecursive();
       _lazyContainer.RealControls.Add(_parent);
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
 
       expectedEvents.Add(FormatInitEvent(_child));
       expectedEvents.Add(FormatInitEvent(_childSecond));
@@ -237,7 +237,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       _lazyContainer.Ensure();
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
     }
 
     [Test]
@@ -251,7 +251,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       NamingContainerInvoker.LoadRecursive();
       _lazyContainer.RealControls.Add(_parent);
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
 
       expectedEvents.Add(FormatInitEvent(_child));
       expectedEvents.Add(FormatInitEvent(_childSecond));
@@ -262,7 +262,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       _lazyContainer.Ensure();
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
     }
 
     [Test]
