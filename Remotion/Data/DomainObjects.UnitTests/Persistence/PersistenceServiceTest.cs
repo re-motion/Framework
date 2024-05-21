@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void LoadDataContainers ()
     {
-      Assert.AreNotEqual(DomainObjectIDs.Order1.StorageProviderDefinition.Name, DomainObjectIDs.Official1, "Different storage providers");
+      Assert.That(DomainObjectIDs.Order1.StorageProviderDefinition.Name, Is.Not.EqualTo(DomainObjectIDs.Official1), "Different storage providers");
 
       var storageProviderMock = new Mock<IStorageProvider>(MockBehavior.Strict);
 
@@ -172,7 +172,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void LoadDataContainers_DuplicatesAreReplacedBySingleDataContainer ()
     {
-      Assert.AreNotEqual(DomainObjectIDs.Order1.StorageProviderDefinition.Name, DomainObjectIDs.Official1, "Different storage providers");
+      Assert.That(DomainObjectIDs.Order1.StorageProviderDefinition.Name, Is.Not.EqualTo(DomainObjectIDs.Official1), "Different storage providers");
 
       var storageProviderMock = new Mock<IStorageProvider>(MockBehavior.Strict);
 
