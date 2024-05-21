@@ -86,13 +86,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         var endPointDefinitionChecker = new RelationEndPointDefinitionChecker();
         endPointDefinitionChecker.Check(expectedEndPointDefinition, actualEndPointDefinition, true);
 
-        Assert.AreSame(
-            actualRelationDefinition,
+        Assert.That(
             actualEndPointDefinition.RelationDefinition,
-            "End point definition does not reference the correct relation definition (relation definition: '{0}', class: '{1}', property name: '{2}').",
-            actualRelationDefinition.ID,
-            actualEndPointDefinition.ClassDefinition.ID,
-            actualEndPointDefinition.PropertyName);
+            Is.SameAs(actualRelationDefinition),
+            $"End point definition does not reference the correct relation definition ("
+            + $"relation definition: '{actualRelationDefinition.ID}', "
+            + $"class: '{actualEndPointDefinition.ClassDefinition.ID}', "
+            + $"property name: '{actualEndPointDefinition.PropertyName}').");
       }
     }
   }

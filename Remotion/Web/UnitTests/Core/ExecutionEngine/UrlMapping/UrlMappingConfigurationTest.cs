@@ -123,13 +123,13 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
       UrlMappingCollection mappings = UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml").Mappings;
 
       UrlMappingEntry entry = mappings[0];
-      Assert.AreSame(mappings[0], mappings.Find(entry.FunctionType), "Could not find {0}.", entry.FunctionType.FullName);
+      Assert.That(mappings.Find(entry.FunctionType), Is.SameAs(mappings[0]), $"Could not find {entry.FunctionType.FullName}.");
 
       entry = mappings[1];
-      Assert.AreSame(mappings[1], mappings.Find(entry.FunctionType), "Could not find {0}.", entry.FunctionType.FullName);
+      Assert.That(mappings.Find(entry.FunctionType), Is.SameAs(mappings[1]), $"Could not find {entry.FunctionType.FullName}.");
 
       entry = mappings[2];
-      Assert.AreSame(mappings[0], mappings.Find(entry.FunctionType), "Could not find {0}.", entry.FunctionType.FullName);
+      Assert.That(mappings.Find(entry.FunctionType), Is.SameAs(mappings[0]), $"Could not find {entry.FunctionType.FullName}.");
 
       Assert.IsNull(mappings.Find(typeof(UnmappedFunction)), "Found mapping for unmapped function.");
     }
@@ -140,13 +140,13 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
       UrlMappingCollection mappings = UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml").Mappings;
 
       UrlMappingEntry entry = mappings[0];
-      Assert.AreSame(mappings[0], mappings.Find(entry.Resource), "Could not find {0}.", entry.Resource);
+      Assert.That(mappings.Find(entry.Resource), Is.SameAs(mappings[0]), $"Could not find {entry.Resource}.");
 
       entry = mappings[1];
-      Assert.AreSame(mappings[1], mappings.Find(entry.Resource), "Could not find {0}.", entry.Resource);
+      Assert.That(mappings.Find(entry.Resource), Is.SameAs(mappings[1]), $"Could not find {entry.Resource}.");
 
       entry = mappings[2];
-      Assert.AreSame(mappings[2], mappings.Find(entry.Resource), "Could not find {0}.", entry.Resource);
+      Assert.That(mappings.Find(entry.Resource), Is.SameAs(mappings[2]), $"Could not find {entry.Resource}.");
 
       Assert.IsNull(mappings.Find("~/unmapped.wxe"), "Found mapping for unmapped resource.");
     }
@@ -157,10 +157,10 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
       UrlMappingCollection mappings = UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml").Mappings;
 
       UrlMappingEntry entry = mappings[0];
-      Assert.AreSame(mappings[0], mappings.FindByID(entry.ID), "Could not find {0}.", entry.ID);
+      Assert.That(mappings.FindByID(entry.ID), Is.SameAs(mappings[0]), $"Could not find {entry.ID}.");
 
       entry = mappings[1];
-      Assert.AreSame(mappings[1], mappings.FindByID(entry.ID), "Could not find {0}.", entry.Resource);
+      Assert.That(mappings.FindByID(entry.ID), Is.SameAs(mappings[1]), $"Could not find {entry.Resource}.");
 
       Assert.IsNull(mappings.FindByID("unknown"), "Found mapping for unknown id.");
     }

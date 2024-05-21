@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       Company company = Company.NewObject();
       company.IndustrialSector = sector;
-      Assert.AreSame(sector, company.IndustrialSector, "related object");
+      Assert.That(company.IndustrialSector, Is.SameAs(sector), "related object");
 
       Assert.IsTrue(sector.Companies.ContainsObject(company), "related objects");
       var newCompanies = new ObjectList<Company>();
