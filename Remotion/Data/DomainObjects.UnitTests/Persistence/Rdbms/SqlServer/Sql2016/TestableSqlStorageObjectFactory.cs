@@ -22,11 +22,13 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using SqlTableTypeScriptBuilder = Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration.SqlTableTypeScriptBuilder;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2016
 {
@@ -39,6 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     private readonly ForeignKeyConstraintScriptBuilder _constraintBuilder;
     private readonly IndexScriptBuilder _indexBuilder;
     private readonly SynonymScriptBuilder _synonymBuilder;
+    private readonly SqlTableTypeScriptBuilder _tableTypeScriptBuilder;
     private readonly IRdbmsPersistenceModelProvider _rdbmsPersistenceModelProvider;
     private readonly IStorageTypeInformationProvider _storageTypeInformationProvider;
     private readonly IDbCommandBuilderFactory _dbCommandBuilderFactory;
@@ -57,7 +60,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
         ViewScriptBuilder viewBuilder,
         ForeignKeyConstraintScriptBuilder constraintBuilder,
         IndexScriptBuilder indexBuilder,
-        SynonymScriptBuilder synonymBuilder)
+        SynonymScriptBuilder synonymBuilder,
+        SqlTableTypeScriptBuilder tableTypeScriptBuilder)
         : base(storageSettings, SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(), SafeServiceLocator.Current.GetInstance<IDataContainerValidator>())
     {
       _indexBuilder = indexBuilder;
@@ -65,6 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       _viewBuilder = viewBuilder;
       _tableBuilder = tableBuilder;
       _synonymBuilder = synonymBuilder;
+      _tableTypeScriptBuilder = tableTypeScriptBuilder;
     }
 
     public TestableSqlStorageObjectFactory (
@@ -79,7 +84,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
         IRelationStoragePropertyDefinitionFactory relationStoragePropertyDefinitionFactory,
         ISqlQueryGenerator sqlQueryGenerator,
         IForeignKeyConstraintDefinitionFactory foreignKeyConstraintDefinitionFactoryFactory,
-        IStoragePropertyDefinitionResolver storagePropertyDefinitionResolver)
+        IStoragePropertyDefinitionResolver storagePropertyDefinitionResolver
+        )
         : base(storageSettings, SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(), SafeServiceLocator.Current.GetInstance<IDataContainerValidator>())
     {
       _infrastructureStoragePropertyDefinitionProvider = infrastructureStoragePropertyDefinitionProvider;
@@ -135,6 +141,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     public override IScriptBuilder CreateSynonymBuilder (RdbmsProviderDefinition storageProviderDefinition)
     {
       return _synonymBuilder ?? base.CreateSynonymBuilder(storageProviderDefinition);
+    }
+
+    public override IScriptBuilder CreateTableTypeBuilder ()
+    {
+      return _tableTypeScriptBuilder ?? base.CreateTableTypeBuilder();
     }
 
     public override IStorageNameProvider CreateStorageNameProvider (RdbmsProviderDefinition storageProviderDefiniton)

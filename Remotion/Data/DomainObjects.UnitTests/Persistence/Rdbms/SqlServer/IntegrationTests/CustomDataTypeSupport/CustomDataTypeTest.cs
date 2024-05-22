@@ -191,6 +191,7 @@ CREATE VIEW [dbo].[CustomDataType_ClassWithCustomDataTypeView] ([ID], [ClassID],
 GO
 -- Create indexes for tables that were created above
 -- Create synonyms for tables that were created above
+-- Create all structured types
 ".ApplyDatabaseConfiguration()));
     }
   }
