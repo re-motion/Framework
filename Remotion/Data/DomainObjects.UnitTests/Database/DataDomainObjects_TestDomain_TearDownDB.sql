@@ -4,6 +4,30 @@
 --
 
 USE DBPrefix_TestDomain
+-- Drop all structured types
+DROP TYPE IF EXISTS [dbo].[TVP_String]
+DROP TYPE IF EXISTS [dbo].[TVP_AnsiString]
+DROP TYPE IF EXISTS [dbo].[TVP_Binary]
+DROP TYPE IF EXISTS [dbo].[TVP_Boolean]
+DROP TYPE IF EXISTS [dbo].[TVP_Boolean_Distinct]
+DROP TYPE IF EXISTS [dbo].[TVP_Byte]
+DROP TYPE IF EXISTS [dbo].[TVP_Byte_Distinct]
+DROP TYPE IF EXISTS [dbo].[TVP_DateTime]
+DROP TYPE IF EXISTS [dbo].[TVP_DateTime_Distinct]
+DROP TYPE IF EXISTS [dbo].[TVP_Decimal]
+DROP TYPE IF EXISTS [dbo].[TVP_Decimal_Distinct]
+DROP TYPE IF EXISTS [dbo].[TVP_Double]
+DROP TYPE IF EXISTS [dbo].[TVP_Double_Distinct]
+DROP TYPE IF EXISTS [dbo].[TVP_Guid]
+DROP TYPE IF EXISTS [dbo].[TVP_Guid_Distinct]
+DROP TYPE IF EXISTS [dbo].[TVP_Int16]
+DROP TYPE IF EXISTS [dbo].[TVP_Int16_Distinct]
+DROP TYPE IF EXISTS [dbo].[TVP_Int32]
+DROP TYPE IF EXISTS [dbo].[TVP_Int32_Distinct]
+DROP TYPE IF EXISTS [dbo].[TVP_Int64]
+DROP TYPE IF EXISTS [dbo].[TVP_Int64_Distinct]
+DROP TYPE IF EXISTS [dbo].[TVP_Single]
+DROP TYPE IF EXISTS [dbo].[TVP_Single_Distinct]
 -- Drop all synonyms
 -- Drop all indexes
 -- Drop all views
