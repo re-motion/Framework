@@ -21,6 +21,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
+using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Database
 {
@@ -63,17 +64,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Database
 
     private IEnumerable<Script> GenerateScripts ()
     {
-      var scriptGenerator = new ScriptGenerator(
+      var testDomainScriptGenerator = new ScriptGenerator(
           pd => pd.Factory.CreateSchemaScriptBuilder(pd),
           new RdbmsStorageEntityDefinitionProvider(),
+          new RdbmsStructuredTypeDefinitionProvider(),
+          new ScriptToStringConverter());
+      var tableInheritanceScriptGenerator = new ScriptGenerator(
+          pd => pd.Factory.CreateSchemaScriptBuilder(pd),
+          new RdbmsStorageEntityDefinitionProvider(),
+          new FakeStructuredTypeDefinitionProvider(),
           new ScriptToStringConverter());
 
-      var typeDefinitions = MappingConfiguration.Current.GetTypeDefinitions()
-          .Where(e => e.StorageEntityDefinition.StorageProviderID is c_testDomainProviderID or TableInheritanceMappingTest.TableInheritanceTestDomainProviderID)
+      var typeDefinitions1 = MappingConfiguration.Current.GetTypeDefinitions()
+          .Where(e => e.StorageEntityDefinition.StorageProviderID is c_testDomainProviderID)
+          .Where(e => !Attribute.IsDefined(e.ClassType, typeof(ExcludeFromTestDomainDBAttribute)));
+      var typeDefinitions2 = MappingConfiguration.Current.GetTypeDefinitions()
+          .Where(e => e.StorageEntityDefinition.StorageProviderID is TableInheritanceMappingTest.TableInheritanceTestDomainProviderID)
           .Where(e => !Attribute.IsDefined(e.ClassType, typeof(ExcludeFromTestDomainDBAttribute)));
 
-      return scriptGenerator.GetScripts(typeDefinitions)
-          .Select(e => new Script(e.StorageProviderDefinition, PatchGeneratedScript(e.SetUpScript), PatchGeneratedScript(e.TearDownScript)));
+      var allScripts = testDomainScriptGenerator.GetScripts(typeDefinitions1).Concat(tableInheritanceScriptGenerator.GetScripts(typeDefinitions2));
+      return allScripts.Select(e => new Script(e.StorageProviderDefinition, PatchGeneratedScript(e.SetUpScript), PatchGeneratedScript(e.TearDownScript)));
     }
 
     private void SaveStoredScript (string name, string newContent)
