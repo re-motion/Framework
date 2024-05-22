@@ -29,7 +29,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Database
     public static void DumpScripts (params Type[] types)
     {
       var scriptGenerator = new ScriptGenerator(
-          pd => pd.Factory.CreateSchemaScriptBuilder(pd), new RdbmsStorageEntityDefinitionProvider(), new ScriptToStringConverter());
+          pd => pd.Factory.CreateSchemaScriptBuilder(pd),
+          new RdbmsStructuredTypeDefinitionProvider(),
+          new RdbmsStorageEntityDefinitionProvider(),
+          new ScriptToStringConverter());
       var scripts = scriptGenerator.GetScripts(types.Select(t => MappingConfiguration.Current.GetTypeDefinition(t)));
       foreach (var script in scripts)
       {

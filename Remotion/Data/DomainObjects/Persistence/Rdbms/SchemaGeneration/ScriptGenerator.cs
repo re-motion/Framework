@@ -30,21 +30,25 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
   public class ScriptGenerator
   {
     private readonly Func<RdbmsProviderDefinition, IScriptBuilder> _scriptBuilderFactory;
+    private readonly IRdbmsStructuredTypeDefinitionProvider _structuredTypeDefinitionProvider;
     private readonly IRdbmsStorageEntityDefinitionProvider _entityDefinitionProvider;
     private readonly IScriptToStringConverter _scriptToStringConverter;
 
     public ScriptGenerator (
         Func<RdbmsProviderDefinition, IScriptBuilder> scriptBuilderFactory,
+        IRdbmsStructuredTypeDefinitionProvider structuredTypeDefinitionProvider,
         IRdbmsStorageEntityDefinitionProvider entityDefinitionProvider,
         IScriptToStringConverter scriptToStringConverter)
     {
       ArgumentUtility.CheckNotNull("scriptBuilderFactory", scriptBuilderFactory);
+      ArgumentUtility.CheckNotNull("structuredTypeDefinitionProvider", structuredTypeDefinitionProvider);
       ArgumentUtility.CheckNotNull("entityDefinitionProvider", entityDefinitionProvider);
       ArgumentUtility.CheckNotNull("scriptToStringConverter", scriptToStringConverter);
 
       _scriptBuilderFactory = scriptBuilderFactory;
       _entityDefinitionProvider = entityDefinitionProvider;
       _scriptToStringConverter = scriptToStringConverter;
+      _structuredTypeDefinitionProvider = structuredTypeDefinitionProvider;
     }
 
     public IEnumerable<Script> GetScripts (IEnumerable<ClassDefinition> classDefinitions)
@@ -61,9 +65,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
       foreach (var group in classDefinitionsByStorageProvider)
       {
         var scriptBuilder = _scriptBuilderFactory(group.StorageProviderDefinition);
+
+        var types = _structuredTypeDefinitionProvider.GetTypeDefinitions(group.StorageProviderDefinition.Factory.CreateStorageTypeInformationProvider(group.StorageProviderDefinition));
+        foreach (var typeDefinition in types)
+          scriptBuilder.AddStructuredTypeDefinition(typeDefinition);
+
         var entities = _entityDefinitionProvider.GetEntityDefinitions(group.ClassDefinitions);
         foreach (var entityDefinition in entities)
           scriptBuilder.AddEntityDefinition(entityDefinition);
+
         var scripts = _scriptToStringConverter.Convert(scriptBuilder);
         yield return new Script(group.StorageProviderDefinition, scripts.SetUpScript, scripts.TearDownScript);
       }
