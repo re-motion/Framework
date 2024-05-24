@@ -25,5 +25,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
   {
     void VisitPrimaryKeyConstraintDefinition (PrimaryKeyConstraintDefinition primaryKeyConstraintDefinition);
     void VisitForeignKeyConstraintDefinition (ForeignKeyConstraintDefinition foreignKeyConstraintDefinition);
+    void VisitUniqueConstraintDefinition (UniqueConstraintDefinition uniqueConstraintDefinition);
   }
 }
