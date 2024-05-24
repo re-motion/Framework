@@ -73,7 +73,7 @@ public class SqlTableValuedDataParameterDefinition : IDataParameterDefinition
       if (!StorageTypeInformation.DotNetType.IsInstanceOfType(item))
         throw ArgumentUtility.CreateArgumentItemTypeException(nameof(value), tvpValue.Count, StorageTypeInformation.DotNetType, item.GetType());
 
-      tvpValue.AddRecord(item);
+      tvpValue.AddRecord(StorageTypeInformation.ConvertToStorageType(item));
     }
 
     return tvpValue;

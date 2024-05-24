@@ -75,7 +75,7 @@ public class SqlTableValuedDataParameterDefinitionTest
     Assert.That(sqlMetaData.Name, Is.EqualTo("Value"));
     Assert.That(sqlMetaData.SqlDbType, Is.EqualTo(expectedSqlDbType));
 
-    Assert.That(tvpValue.Select(record => record.GetValue(0)), Is.EquivalentTo(convertedValues));
+    Assert.That(tvpValue.Select(record => record.GetValue(0)), Is.EqualTo(convertedValues));
   }
 
   [Test]
