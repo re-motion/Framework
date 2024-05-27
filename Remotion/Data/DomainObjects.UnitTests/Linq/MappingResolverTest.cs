@@ -424,7 +424,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var idExpression = Expression.MakeMemberAccess(sqlEntityExpression, typeof(DomainObject).GetProperty("ID"));
       var classIDExpression = Expression.MakeMemberAccess(idExpression, typeof(ObjectID).GetProperty("ClassID"));
       var expectedExpression = new SqlInExpression(
-          classIDExpression, new SqlCollectionExpression(typeof(string[]), new Expression[] { new SqlLiteralExpression("StorageGroupClass") }));
+          classIDExpression, new ConstantCollectionExpression(new[] { "StorageGroupClass" }));
 
       SqlExpressionTreeComparer.CheckAreEqualTrees(result, expectedExpression);
     }
@@ -450,14 +450,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var classIDExpression = Expression.MakeMemberAccess(idExpression, typeof(ObjectID).GetProperty("ClassID"));
       var expectedExpression = new SqlInExpression(
           classIDExpression,
-          new SqlCollectionExpression(
-              typeof(string[]),
-              new Expression[]
-              {
-                  new SqlLiteralExpression("Partner"),
-                  new SqlLiteralExpression("Distributor"),
-                  new SqlLiteralExpression("Supplier")
-              }));
+          new ConstantCollectionExpression(new [] { "Partner", "Distributor", "Supplier" }));
 
       SqlExpressionTreeComparer.CheckAreEqualTrees(result, expectedExpression);
     }
@@ -472,7 +465,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var idExpression = Expression.MakeMemberAccess(sqlEntityExpression, typeof(DomainObject).GetProperty("ID"));
       var classIDExpression = Expression.MakeMemberAccess(idExpression, typeof(ObjectID).GetProperty("ClassID"));
       var expectedExpression = new SqlInExpression(
-          classIDExpression, new SqlCollectionExpression(typeof(string[]), new Expression[] { new SqlLiteralExpression("Distributor") }));
+          classIDExpression, new ConstantCollectionExpression(new[] { "Distributor" }));
 
       SqlExpressionTreeComparer.CheckAreEqualTrees(result, expectedExpression);
     }

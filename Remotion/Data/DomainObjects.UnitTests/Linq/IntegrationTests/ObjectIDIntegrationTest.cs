@@ -229,14 +229,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
                   + "SQL generation. The SQL 'IN' operator (originally probably a call to a 'Contains' method) requires a single value, so the following "
                   + "expression cannot be translated to SQL: "
                   + "'new ObjectID(ClassID = [t0].[ClassID] AS ClassID, Value = Convert([t0].[ID] AS Value)) "
-                  + "IN (Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid,Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid)'."
+                  + "IN [Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid, Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid]'."
 #else
                   "There was an error preparing or resolving query "
                   + "'from Order o in DomainObjectQueryable<Order> where {value(Remotion.Data.DomainObjects.ObjectID[]) => Contains([o].ID)} select [o]' for "
                   + "SQL generation. The SQL 'IN' operator (originally probably a call to a 'Contains' method) requires a single value, so the following "
                   + "expression cannot be translated to SQL: "
                   + "'new ObjectID(ClassID = [t0].[ClassID] AS ClassID, Value = Convert([t0].[ID] AS Value, Object)) "
-                  + "IN (Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid,Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid)'."
+                  + "IN [Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid, Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid]'."
 #endif
                   ));
     }
@@ -256,12 +256,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
       Assert.That(
           () => CheckQueryResult(orders, DomainObjectIDs.Order1, DomainObjectIDs.Order3),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo(
-                  "There was an error preparing or resolving query "
-                  + "'from Order o in DomainObjectQueryable<Order> where {value(Remotion.Data.DomainObjects.DomainObject[]) => Contains([o])} select [o]' for "
-                  + "SQL generation. The SQL 'IN' operator (originally probably a call to a 'Contains' method) requires a single value, so the following "
-                  + "expression cannot be translated to SQL: "
-                  + "'[t0].[ID] IN (ENTITY(Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid),ENTITY(Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid))'."));
+              .With.Message.EqualTo("Objects of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order_AssembledTypeProxy_1' cannot be used as data parameter value."));
     }
 
     [Test]

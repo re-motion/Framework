@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.FunctionalProgramming;
 using Remotion.Linq;
 using Remotion.Linq.SqlBackend.MappingResolution;
+using Remotion.Linq.SqlBackend.SqlStatementModel;
 using Remotion.Linq.SqlBackend.SqlStatementModel.Resolved;
 using Remotion.Linq.SqlBackend.SqlStatementModel.SqlSpecificExpressions;
 using Remotion.Linq.SqlBackend.SqlStatementModel.Unresolved;
@@ -160,9 +161,9 @@ namespace Remotion.Data.DomainObjects.Linq
         var idExpression = Expression.MakeMemberAccess(checkedExpression, s_idProperty.PropertyInfo);
         var classIDExpression = Expression.MakeMemberAccess(idExpression, s_classIDProperty.PropertyInfo);
         var allClassDefinitions = EnumerableUtility.Singleton(classDefinition).Concat(classDefinition.GetAllDerivedClasses().Select(cd => cd));
-        var allClassIDExpressions = allClassDefinitions.Select(cd => new SqlLiteralExpression(cd.ID));
+        var allClassIDs = allClassDefinitions.Select(cd => cd.ID).ToArray();
 
-        return new SqlInExpression(classIDExpression, new SqlCollectionExpression(typeof(string[]), allClassIDExpressions.Cast<Expression>()));
+        return new SqlInExpression(classIDExpression, new ConstantCollectionExpression(allClassIDs));
       }
       else
       {
