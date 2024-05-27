@@ -53,4 +53,19 @@ public class SimpleDataParameterDefinitionFactoryTest
     Assert.That(result, Is.InstanceOf<SimpleDataParameterDefinition>());
     Assert.That(result.As<SimpleDataParameterDefinition>().StorageTypeInformation, Is.SameAs(storageTypeInformation));
   }
+
+  [Test]
+  public void CreateDataParameterDefinition_WithNotSupportedValueType_ThrowsNotSupportedException ()
+  {
+    var dummy = "Dummy";
+
+    var storageTypeInformationProviderStub = new Mock<IStorageTypeInformationProvider>();
+    storageTypeInformationProviderStub.Setup(_ => _.GetStorageType(dummy)).Throws<NotSupportedException>();
+
+    var dataParameterDefinitionFactory = new SimpleDataParameterDefinitionFactory(storageTypeInformationProviderStub.Object);
+
+    Assert.That(
+        () => dataParameterDefinitionFactory.CreateDataParameterDefinition(new QueryParameter("dummy", dummy)),
+        Throws.InstanceOf<NotSupportedException>().With.Message.EqualTo($"Objects of type 'System.String' cannot be used as data parameter value."));
+  }
 }

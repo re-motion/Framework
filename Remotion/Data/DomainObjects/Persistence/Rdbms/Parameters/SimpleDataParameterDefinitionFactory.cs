@@ -39,7 +39,14 @@ public class SimpleDataParameterDefinitionFactory : IDataParameterDefinitionFact
   {
     ArgumentUtility.CheckNotNull(nameof(queryParameter), queryParameter);
 
-    var storageTypeInformation = StorageTypeInformationProvider.GetStorageType(queryParameter.Value);
-    return new SimpleDataParameterDefinition(storageTypeInformation);
+    try
+    {
+      var storageTypeInformation = StorageTypeInformationProvider.GetStorageType(queryParameter.Value);
+      return new SimpleDataParameterDefinition(storageTypeInformation);
+    }
+    catch (NotSupportedException)
+    {
+      throw new NotSupportedException($"Objects of type '{queryParameter.Value!.GetType()}' cannot be used as data parameter value.");
+    }
   }
 }
