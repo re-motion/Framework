@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     protected IPropertyInformation GetPropertyInfo (Type type, string propertyName)
     {
       PropertyInfo propertyInfo = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-      Assert.IsNotNull(propertyInfo, "Property '{0}' was not found on type '{1}'.", propertyName, type);
+      Assert.That(propertyInfo, Is.Not.Null, $"Property '{propertyName}' was not found on type '{type}'.");
 
       return PropertyInfoAdapter.Create(propertyInfo);
     }
@@ -56,14 +56,14 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     protected IPropertyInformation GetPropertyInfo (Type type, Type interfaceType, string propertyName)
     {
       PropertyInfo interfacePropertyInfo = interfaceType.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-      Assert.IsNotNull(interfacePropertyInfo, "Property '{0}' was not found on type '{1}'.", propertyName, interfaceType);
+      Assert.That(interfacePropertyInfo, Is.Not.Null, $"Property '{propertyName}' was not found on type '{interfaceType}'.");
       PropertyInfo propertyInfo = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
       if (propertyInfo == null)
       {
         Type interfaceTypeDefinition = interfaceType.IsGenericType ? interfaceType.GetGenericTypeDefinition() : interfaceType;
         string explicitName = interfaceTypeDefinition.FullName.Replace("`1", "<T>") + "." + interfacePropertyInfo.Name;
         propertyInfo = type.GetProperty(explicitName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-        Assert.IsNotNull(propertyInfo, "Property '{0}' (or '{1}') was not found on type '{2}'.", propertyName, explicitName, type);
+        Assert.That(propertyInfo, Is.Not.Null, $"Property '{propertyName}' (or '{explicitName}') was not found on type '{type}'.");
       }
 
       var introducedMemberAttributes = propertyInfo.GetCustomAttributes(typeof(IntroducedMemberAttribute), true);

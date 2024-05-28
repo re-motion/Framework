@@ -54,10 +54,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual(0, _importer.Classes.Count, "Class count");
-        Assert.AreEqual(0, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual(0, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual(0, _importer.AccessTypes.Count, "Access type count");
+        Assert.That(_importer.Classes.Count, Is.EqualTo(0), "Class count");
+        Assert.That(_importer.StateProperties.Count, Is.EqualTo(0), "State property count");
+        Assert.That(_importer.AbstractRoles.Count, Is.EqualTo(0), "Abstract role count");
+        Assert.That(_importer.AccessTypes.Count, Is.EqualTo(0), "Access type count");
       }
     }
 
@@ -80,10 +80,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual(1, _importer.Classes.Count, "Class count");
-        Assert.AreEqual(0, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual(0, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual(0, _importer.AccessTypes.Count, "Access type count");
+        Assert.That(_importer.Classes.Count, Is.EqualTo(1), "Class count");
+        Assert.That(_importer.StateProperties.Count, Is.EqualTo(0), "State property count");
+        Assert.That(_importer.AbstractRoles.Count, Is.EqualTo(0), "Abstract role count");
+        Assert.That(_importer.AccessTypes.Count, Is.EqualTo(0), "Access type count");
 
         SecurableClassDefinition actualClass1 = _importer.Classes[new Guid("00000000-0000-0000-0001-000000000000")];
         Assert.That(actualClass1.Index, Is.EqualTo(0));
@@ -111,10 +111,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual(2, _importer.Classes.Count, "Class count");
-        Assert.AreEqual(0, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual(0, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual(0, _importer.AccessTypes.Count, "Access type count");
+        Assert.That(_importer.Classes.Count, Is.EqualTo(2), "Class count");
+        Assert.That(_importer.StateProperties.Count, Is.EqualTo(0), "State property count");
+        Assert.That(_importer.AbstractRoles.Count, Is.EqualTo(0), "Abstract role count");
+        Assert.That(_importer.AccessTypes.Count, Is.EqualTo(0), "Access type count");
 
         SecurableClassDefinition actualClass1 = _importer.Classes[new Guid("00000000-0000-0000-0001-000000000000")];
         Assert.That(actualClass1.Index, Is.EqualTo(0));
@@ -147,10 +147,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual(0, _importer.Classes.Count, "Class count");
-        Assert.AreEqual(0, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual(3, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual(0, _importer.AccessTypes.Count, "Access type count");
+        Assert.That(_importer.Classes.Count, Is.EqualTo(0), "Class count");
+        Assert.That(_importer.StateProperties.Count, Is.EqualTo(0), "State property count");
+        Assert.That(_importer.AbstractRoles.Count, Is.EqualTo(3), "Abstract role count");
+        Assert.That(_importer.AccessTypes.Count, Is.EqualTo(0), "Access type count");
 
         AbstractRoleDefinition expectedRole1 = _testHelper.CreateClerkAbstractRole(0);
         MetadataObjectAssert.AreEqual(expectedRole1, _importer.AbstractRoles[expectedRole1.MetadataItemID], "Abstract Role Clerk");
@@ -184,10 +184,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual(0, _importer.Classes.Count, "Class count");
-        Assert.AreEqual(0, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual(0, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual(3, _importer.AccessTypes.Count, "Access type count");
+        Assert.That(_importer.Classes.Count, Is.EqualTo(0), "Class count");
+        Assert.That(_importer.StateProperties.Count, Is.EqualTo(0), "State property count");
+        Assert.That(_importer.AbstractRoles.Count, Is.EqualTo(0), "Abstract role count");
+        Assert.That(_importer.AccessTypes.Count, Is.EqualTo(3), "Access type count");
 
         AccessTypeDefinition expectedAccessType1 = _testHelper.CreateAccessTypeCreate(0);
         MetadataObjectAssert.AreEqual(expectedAccessType1, _importer.AccessTypes[expectedAccessType1.MetadataItemID], "Access Type Create");
@@ -229,19 +229,19 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual(0, _importer.Classes.Count, "Class count");
-        Assert.AreEqual(2, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual(0, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual(0, _importer.AccessTypes.Count, "Access type count");
+        Assert.That(_importer.Classes.Count, Is.EqualTo(0), "Class count");
+        Assert.That(_importer.StateProperties.Count, Is.EqualTo(2), "State property count");
+        Assert.That(_importer.AbstractRoles.Count, Is.EqualTo(0), "Abstract role count");
+        Assert.That(_importer.AccessTypes.Count, Is.EqualTo(0), "Access type count");
 
         StatePropertyDefinition expectedProperty1 = _testHelper.CreateFileStateProperty(0);
         StatePropertyDefinition actualProperty1 = _importer.StateProperties[expectedProperty1.MetadataItemID];
-        Assert.IsNotNull(actualProperty1, "State property not found");
+        Assert.That(actualProperty1, Is.Not.Null, "State property not found");
         MetadataObjectAssert.AreEqual(expectedProperty1, actualProperty1, "State property");
 
         StatePropertyDefinition expectedProperty2 = _testHelper.CreateConfidentialityProperty(1);
         StatePropertyDefinition actualProperty2 = _importer.StateProperties[expectedProperty2.MetadataItemID];
-        Assert.IsNotNull(actualProperty2, "Confidentiality property not found");
+        Assert.That(actualProperty2, Is.Not.Null, "Confidentiality property not found");
         MetadataObjectAssert.AreEqual(expectedProperty2, actualProperty2, "Confidentiality property");
       }
     }
@@ -265,10 +265,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual(2, _importer.Classes.Count, "Class count");
-        Assert.AreEqual(0, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual(0, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual(0, _importer.AccessTypes.Count, "Access type count");
+        Assert.That(_importer.Classes.Count, Is.EqualTo(2), "Class count");
+        Assert.That(_importer.StateProperties.Count, Is.EqualTo(0), "State property count");
+        Assert.That(_importer.AbstractRoles.Count, Is.EqualTo(0), "Abstract role count");
+        Assert.That(_importer.AccessTypes.Count, Is.EqualTo(0), "Access type count");
 
         SecurableClassDefinition baseClass = _importer.Classes[new Guid("00000000-0000-0000-0001-000000000000")];
         SecurableClassDefinition derivedClass = _importer.Classes[new Guid("00000000-0000-0000-0002-000000000000")];
@@ -317,16 +317,16 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual(1, _importer.Classes.Count, "Class count");
-        Assert.AreEqual(2, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual(0, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual(0, _importer.AccessTypes.Count, "Access type count");
+        Assert.That(_importer.Classes.Count, Is.EqualTo(1), "Class count");
+        Assert.That(_importer.StateProperties.Count, Is.EqualTo(2), "State property count");
+        Assert.That(_importer.AbstractRoles.Count, Is.EqualTo(0), "Abstract role count");
+        Assert.That(_importer.AccessTypes.Count, Is.EqualTo(0), "Access type count");
 
         SecurableClassDefinition classDefinition = _importer.Classes[new Guid("00000000-0000-0000-0001-000000000000")];
         StatePropertyDefinition property1 = _importer.StateProperties[new Guid("00000000-0000-0000-0002-000000000001")];
         StatePropertyDefinition property2 = _importer.StateProperties[new Guid("00000000-0000-0000-0001-000000000001")];
 
-        Assert.AreEqual(1, classDefinition.StateProperties.Count, "State property count");
+        Assert.That(classDefinition.StateProperties.Count, Is.EqualTo(1), "State property count");
         Assert.That(classDefinition.StateProperties[0], Is.SameAs(property2));
       }
     }
@@ -365,15 +365,15 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual(1, _importer.Classes.Count, "Class count");
-        Assert.AreEqual(0, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual(0, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual(8, _importer.AccessTypes.Count, "Access type count");
+        Assert.That(_importer.Classes.Count, Is.EqualTo(1), "Class count");
+        Assert.That(_importer.StateProperties.Count, Is.EqualTo(0), "State property count");
+        Assert.That(_importer.AbstractRoles.Count, Is.EqualTo(0), "Abstract role count");
+        Assert.That(_importer.AccessTypes.Count, Is.EqualTo(8), "Access type count");
 
         SecurableClassDefinition classDefinition = _importer.Classes[new Guid("00000000-0000-0000-0001-000000000000")];
         AccessTypeDefinition accessType = _importer.AccessTypes[new Guid("62dfcd92-a480-4d57-95f1-28c0f5996b3a")];
 
-        Assert.AreEqual(1, classDefinition.AccessTypes.Count, "Access type count");
+        Assert.That(classDefinition.AccessTypes.Count, Is.EqualTo(1), "Access type count");
         Assert.That(classDefinition.AccessTypes[0], Is.SameAs(accessType));
       }
     }
@@ -455,10 +455,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual(2, _importer.Classes.Count, "Class count");
-        Assert.AreEqual(2, _importer.StateProperties.Count, "State property count");
-        Assert.AreEqual(3, _importer.AbstractRoles.Count, "Abstract role count");
-        Assert.AreEqual(8, _importer.AccessTypes.Count, "Access type count");
+        Assert.That(_importer.Classes.Count, Is.EqualTo(2), "Class count");
+        Assert.That(_importer.StateProperties.Count, Is.EqualTo(2), "State property count");
+        Assert.That(_importer.AbstractRoles.Count, Is.EqualTo(3), "Abstract role count");
+        Assert.That(_importer.AccessTypes.Count, Is.EqualTo(8), "Access type count");
       }
     }
 

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
@@ -24,7 +25,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
   public class HtmlHelper : HtmlHelperBase
   {
     public HtmlHelper ()
-        : base(Assert.AreEqual, Assert.Greater, Assert.IsNotNull, Assert.IsNull, Assert.IsTrue)
+        : base(
+            (actual, expected, message, args) => Assert.That(actual, Is.EqualTo(expected), FormattableStringFactory.Create(message, args)),
+            (actual, expected, message, args) => Assert.That(actual, Is.GreaterThan(expected), FormattableStringFactory.Create(message, args)),
+            (actual, message, args) => Assert.That(actual, Is.Not.Null, FormattableStringFactory.Create(message, args)),
+            (actual, message, args) => Assert.That(actual, Is.Null, FormattableStringFactory.Create(message, args)),
+            (actual, message, args) => Assert.That(actual, Is.True, FormattableStringFactory.Create(message, args))
+            )
     {
     }
 

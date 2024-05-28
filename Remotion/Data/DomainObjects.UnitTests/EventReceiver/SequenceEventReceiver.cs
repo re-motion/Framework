@@ -131,7 +131,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
         }
       }
 
-      Assert.AreEqual(expectedStates.Length, _states.Count, "Length");
+      Assert.That(_states.Count, Is.EqualTo(expectedStates.Length), "Length");
     }
 
     public void Unregister ()

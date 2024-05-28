@@ -312,7 +312,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void ApplicationData ()
     {
       Assert.That(ClientTransactionScope.CurrentTransaction.ApplicationData, Is.Not.Null);
-      Assert.IsAssignableFrom(typeof(Dictionary<Enum, object>), ClientTransactionScope.CurrentTransaction.ApplicationData);
+      Assert.That(ClientTransactionScope.CurrentTransaction.ApplicationData, Is.AssignableFrom(typeof(Dictionary<Enum, object>)));
 
       Assert.That(ClientTransactionScope.CurrentTransaction.ApplicationData.ContainsKey(ApplicationDataKey.Key1), Is.False);
       ClientTransactionScope.CurrentTransaction.ApplicationData[ApplicationDataKey.Key1] = "TestData";

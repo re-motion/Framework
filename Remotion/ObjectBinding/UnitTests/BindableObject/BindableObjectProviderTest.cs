@@ -218,7 +218,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetMetadataFactory_WithDefaultFactory ()
     {
-      Assert.IsInstanceOf(typeof(BindableObjectMetadataFactory), _provider.MetadataFactory);
+      Assert.That(_provider.MetadataFactory, Is.InstanceOf(typeof(BindableObjectMetadataFactory)));
     }
 
     [Test]

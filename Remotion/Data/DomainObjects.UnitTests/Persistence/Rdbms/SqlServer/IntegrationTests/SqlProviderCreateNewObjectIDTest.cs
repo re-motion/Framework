@@ -31,9 +31,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       ClassDefinition orderClass = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
       var newObjectID = Provider.CreateNewObjectID(orderClass);
 
-      Assert.IsNotNull(newObjectID, "ObjectID of new DataContainer.");
-      Assert.AreEqual(orderClass.ID, newObjectID.ClassID, "ClassID of ObjectID.");
-      Assert.AreEqual(typeof(Guid), newObjectID.Value.GetType(), "Type of ID value of ObjectID.");
+      Assert.That(newObjectID, Is.Not.Null, "ObjectID of new DataContainer.");
+      Assert.That(newObjectID.ClassID, Is.EqualTo(orderClass.ID), "ClassID of ObjectID.");
+      Assert.That(newObjectID.Value.GetType(), Is.EqualTo(typeof(Guid)), "Type of ID value of ObjectID.");
     }
 
     [Test]

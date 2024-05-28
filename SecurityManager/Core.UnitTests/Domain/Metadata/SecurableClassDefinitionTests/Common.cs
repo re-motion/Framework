@@ -214,7 +214,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
 
         Assert.That(result.Count, Is.EqualTo(10));
         for (int i = 0; i < result.Count; i++)
-          Assert.AreEqual(expectedClassDefinitions[i].ID, result[i].ID, "Wrong Index.");
+          Assert.That(result[i].ID, Is.EqualTo(expectedClassDefinitions[i].ID), "Wrong Index.");
       }
     }
 
@@ -235,7 +235,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
 
         Assert.That(result.Count, Is.EqualTo(10));
         for (int i = 0; i < result.Count; i++)
-          Assert.AreEqual(expectedClassDefinitions[i].ID, result[i].ID, "Wrong Index.");
+          Assert.That(result[i].ID, Is.EqualTo(expectedClassDefinitions[i].ID), "Wrong Index.");
       }
     }
 
@@ -259,7 +259,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
 
         Assert.That(actualBaseClassDefinition.DerivedClasses.Count, Is.EqualTo(10));
         for (int i = 0; i < actualBaseClassDefinition.DerivedClasses.Count; i++)
-          Assert.AreEqual(expectedDerivedClasses[i].ID, actualBaseClassDefinition.DerivedClasses[i].ID, "Wrong Index.");
+          Assert.That(actualBaseClassDefinition.DerivedClasses[i].ID, Is.EqualTo(expectedDerivedClasses[i].ID), "Wrong Index.");
       }
     }
 
@@ -277,7 +277,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
           StatelessAccessControlList accessControlList = classDefinition.CreateStatelessAccessControlList();
 
           Assert.That(accessControlList.Class, Is.SameAs(classDefinition));
-          Assert.IsNotEmpty(accessControlList.AccessControlEntries);
+          Assert.That(accessControlList.AccessControlEntries, Is.Not.Empty);
           Assert.That(classDefinition.State.IsChanged, Is.True);
         }
       }
@@ -317,8 +317,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
           StatefulAccessControlList accessControlList = classDefinition.CreateStatefulAccessControlList();
 
           Assert.That(accessControlList.Class, Is.SameAs(classDefinition));
-          Assert.IsNotEmpty(accessControlList.AccessControlEntries);
-          Assert.IsNotEmpty(accessControlList.StateCombinations);
+          Assert.That(accessControlList.AccessControlEntries, Is.Not.Empty);
+          Assert.That(accessControlList.StateCombinations, Is.Not.Empty);
           Assert.That(classDefinition.State.IsChanged, Is.True);
         }
       }

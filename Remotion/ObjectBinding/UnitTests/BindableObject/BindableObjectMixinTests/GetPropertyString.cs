@@ -44,7 +44,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
 
       _property = _businessObject.BusinessObjectClass.GetPropertyDefinition("String");
       Assert.That(
-          _property, Is.Not.Null, "Property 'String' was not found on BusinessObjectClass '{0}'", _businessObject.BusinessObjectClass.Identifier);
+          _property,
+          Is.Not.Null,
+          $"Property 'String' was not found on BusinessObjectClass '{_businessObject.BusinessObjectClass.Identifier}'");
 
       BusinessObjectProvider.SetProvider(typeof(BindableObjectProviderAttribute), new BindableObjectProvider());
     }

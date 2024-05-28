@@ -156,10 +156,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     {
       var orders = (OrderCollection)QueryManager.GetCollection(QueryFactory.CreateQuery(Queries.GetMandatory("StoredProcedureQuery"))).ToCustomCollection();
 
-      Assert.IsNotNull(orders, "OrderCollection is null");
-      Assert.AreEqual(2, orders.Count, "Order count");
-      Assert.AreEqual(DomainObjectIDs.Order1, orders[0].ID, "Order1");
-      Assert.AreEqual(DomainObjectIDs.Order3, orders[1].ID, "Order3");
+      Assert.That(orders, Is.Not.Null, "OrderCollection is null");
+      Assert.That(orders.Count, Is.EqualTo(2), "Order count");
+      Assert.That(orders[0].ID, Is.EqualTo(DomainObjectIDs.Order1), "Order1");
+      Assert.That(orders[1].ID, Is.EqualTo(DomainObjectIDs.Order3), "Order3");
     }
 
     [Test]
@@ -169,10 +169,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer1.Value);
       var orders = (OrderCollection)QueryManager.GetCollection(query).ToCustomCollection();
 
-      Assert.IsNotNull(orders, "OrderCollection is null");
-      Assert.AreEqual(2, orders.Count, "Order count");
-      Assert.AreEqual(DomainObjectIDs.Order1, orders[0].ID, "Order1");
-      Assert.AreEqual(DomainObjectIDs.Order2, orders[1].ID, "Order2");
+      Assert.That(orders, Is.Not.Null, "OrderCollection is null");
+      Assert.That(orders.Count, Is.EqualTo(2), "Order count");
+      Assert.That(orders[0].ID, Is.EqualTo(DomainObjectIDs.Order1), "Order1");
+      Assert.That(orders[1].ID, Is.EqualTo(DomainObjectIDs.Order2), "Order2");
     }
 
     [Test]
@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
       DomainObjectIDs.Order1.GetObject<Order>(); // ensure Order1 already exists in transaction
 
       var orders = (OrderCollection)QueryManager.GetCollection(QueryFactory.CreateQuery(Queries.GetMandatory("StoredProcedureQuery"))).ToCustomCollection();
-      Assert.AreEqual(2, orders.Count, "Order count");
+      Assert.That(orders.Count, Is.EqualTo(2), "Order count");
 
       foreach (Order order in orders)
         Assert.That(TestableClientTransaction.IsEnlisted(order), Is.True);

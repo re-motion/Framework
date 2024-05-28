@@ -127,20 +127,20 @@ public class NavigationCommandTest
         new Style(),
         new NameValueCollection());
 
-    Assert.IsNotNull(_writer.Tag, "Missing Tag");
-    Assert.AreEqual(HtmlTextWriterTag.A, _writer.Tag, "Wrong Tag");
+    Assert.That(_writer.Tag, Is.Not.Null, "Missing Tag");
+    Assert.That(_writer.Tag, Is.EqualTo(HtmlTextWriterTag.A), "Wrong Tag");
 
-    Assert.IsNotNull(_writer.Attributes[HtmlTextWriterAttribute.Href], "Missing Href");
-    Assert.AreEqual(expectedHref, _writer.Attributes[HtmlTextWriterAttribute.Href], "Wrong Href");
+    Assert.That(_writer.Attributes[HtmlTextWriterAttribute.Href], Is.Not.Null, "Missing Href");
+    Assert.That(_writer.Attributes[HtmlTextWriterAttribute.Href], Is.EqualTo(expectedHref), "Wrong Href");
 
-    Assert.IsNotNull(_writer.Attributes[HtmlTextWriterAttribute.Onclick], "Missing OnClick");
-    Assert.AreEqual(expectedOnClick, _writer.Attributes[HtmlTextWriterAttribute.Onclick], "Wrong OnClick");
+    Assert.That(_writer.Attributes[HtmlTextWriterAttribute.Onclick], Is.Not.Null, "Missing OnClick");
+    Assert.That(_writer.Attributes[HtmlTextWriterAttribute.Onclick], Is.EqualTo(expectedOnClick), "Wrong OnClick");
 
-    Assert.IsNotNull(_writer.Attributes[HtmlTextWriterAttribute.Title], "Missing Title");
-    Assert.AreEqual(_toolTip, _writer.Attributes[HtmlTextWriterAttribute.Title], "Wrong Title");
+    Assert.That(_writer.Attributes[HtmlTextWriterAttribute.Title], Is.Not.Null, "Missing Title");
+    Assert.That(_writer.Attributes[HtmlTextWriterAttribute.Title], Is.EqualTo(_toolTip), "Wrong Title");
 
-    Assert.IsNotNull(_writer.Attributes[HtmlTextWriterAttribute.Target], "Missing Target");
-    Assert.AreEqual(_target, _writer.Attributes[HtmlTextWriterAttribute.Target], "Wrong Target");
+    Assert.That(_writer.Attributes[HtmlTextWriterAttribute.Target], Is.Not.Null, "Missing Target");
+    Assert.That(_writer.Attributes[HtmlTextWriterAttribute.Target], Is.EqualTo(_target), "Wrong Target");
   }
 
   [Test]

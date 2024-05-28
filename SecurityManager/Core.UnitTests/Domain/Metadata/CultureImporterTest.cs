@@ -58,8 +58,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       using (_transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual(0, _importer.LocalizedNames.Count, "LocalizedNames count");
-        Assert.IsNotNull(_importer.Cultures, "Cultures");
+        Assert.That(_importer.LocalizedNames.Count, Is.EqualTo(0), "LocalizedNames count");
+        Assert.That(_importer.Cultures, Is.Not.Null, "Cultures");
         Assert.That(_importer.Cultures.Count, Is.EqualTo(1));
         Assert.That(_importer.Cultures[0].CultureName, Is.EqualTo("de"));
       }
@@ -80,7 +80,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       using (_transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual(1, _importer.LocalizedNames.Count, "LocalizedNames count");
+        Assert.That(_importer.LocalizedNames.Count, Is.EqualTo(1), "LocalizedNames count");
         Assert.That(_importer.LocalizedNames[0].Text, Is.EqualTo("Beamter"));
         Assert.That(_importer.LocalizedNames[0].MetadataObject.MetadataItemID, Is.EqualTo(new Guid("b8621bc9-9ab3-4524-b1e4-582657d6b420")));
       }
@@ -144,7 +144,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       using (_transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual(3, _importer.LocalizedNames.Count, "LocalizedNames count");
+        Assert.That(_importer.LocalizedNames.Count, Is.EqualTo(3), "LocalizedNames count");
         Assert.That(_importer.LocalizedNames[0].Text, Is.EqualTo("Beamter"));
         Assert.That(_importer.LocalizedNames[0].MetadataObject.MetadataItemID, Is.EqualTo(new Guid("b8621bc9-9ab3-4524-b1e4-582657d6b420")));
         Assert.That(_importer.LocalizedNames[1].Text, Is.EqualTo("Vertraulichkeit"));
@@ -214,7 +214,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
       using (_transaction.EnterNonDiscardingScope())
       {
-        Assert.AreEqual(3, _importer.LocalizedNames.Count, "LocalizedNames count");
+        Assert.That(_importer.LocalizedNames.Count, Is.EqualTo(3), "LocalizedNames count");
         Assert.That(_importer.LocalizedNames[0].Text, Is.EqualTo("Beamter"));
         Assert.That(_importer.LocalizedNames[0].ID, Is.EqualTo(clerkNameID));
         Assert.That(_importer.LocalizedNames[0].MetadataObject.MetadataItemID, Is.EqualTo(new Guid("b8621bc9-9ab3-4524-b1e4-582657d6b420")));

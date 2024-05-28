@@ -71,7 +71,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
 
       Assert.That(attributes.Length, Is.EqualTo(1));
       Assert.That(attributes[0], Is.Not.Null);
-      Assert.IsInstanceOf(typeof(InheritedAttribute), attributes[0]);
+      Assert.That(attributes[0], Is.InstanceOf(typeof(InheritedAttribute)));
     }
 
     [Test]
@@ -82,7 +82,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
 
       Assert.That(attributes.Length, Is.EqualTo(1));
       Assert.That(attributes[0], Is.Not.Null);
-      Assert.IsInstanceOf(typeof(InheritedAttribute), attributes[0]);
+      Assert.That(attributes[0], Is.InstanceOf(typeof(InheritedAttribute)));
     }
   }
 }

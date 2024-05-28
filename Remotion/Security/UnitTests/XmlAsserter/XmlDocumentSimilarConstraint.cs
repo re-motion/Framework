@@ -80,5 +80,15 @@ namespace Remotion.Security.UnitTests.XmlAsserter
 
       return true;
     }
+
+    public override string Description
+    {
+      get
+      {
+        // typically, NUnit prints the entire content of the expected value since XMLDocument can be long blocks of texts,
+        // we are skipping this because it does not seem helpful.
+        return "similar to the expected XmlDocument.";
+      }
+    }
   }
 }

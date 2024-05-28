@@ -67,11 +67,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       ITransaction child = _transaction.CreateChild();
       Assert.That(child, Is.Not.Null);
-      Assert.IsInstanceOf(typeof(ClientTransactionWrapper), child);
-      Assert.IsInstanceOf(typeof(ClientTransaction), ((ClientTransactionWrapper)child).WrappedInstance);
+      Assert.That(child, Is.InstanceOf(typeof(ClientTransactionWrapper)));
+      Assert.That(((ClientTransactionWrapper)child).WrappedInstance, Is.InstanceOf(typeof(ClientTransaction)));
 
       var persistenceStrategy = ClientTransactionTestHelper.GetPersistenceStrategy(((ClientTransactionWrapper)child).WrappedInstance);
-      Assert.IsInstanceOf(typeof(SubPersistenceStrategy), persistenceStrategy);
+      Assert.That(persistenceStrategy, Is.InstanceOf(typeof(SubPersistenceStrategy)));
     }
 
     [Test]

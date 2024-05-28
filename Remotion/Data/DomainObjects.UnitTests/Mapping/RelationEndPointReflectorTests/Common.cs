@@ -33,15 +33,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     {
       var type = typeof(ClassWithVirtualRelationEndPoints);
       var propertyInfo = PropertyInfoAdapter.Create(type.GetProperty("NoAttributeForVirtualCollection"));
-      Assert.IsInstanceOf(
-          typeof(RdbmsRelationEndPointReflector),
+      Assert.That(
           RelationEndPointReflector.CreateRelationEndPointReflector(
               ClassDefinitionObjectMother.CreateClassDefinition(classType: type),
               propertyInfo,
               Configuration.NameResolver,
               PropertyMetadataProvider,
               DomainModelConstraintProviderStub.Object,
-              SortExpressionDefinitionProviderStub.Object));
+              SortExpressionDefinitionProviderStub.Object),
+          Is.InstanceOf(typeof(RdbmsRelationEndPointReflector)));
     }
 
     [Test]

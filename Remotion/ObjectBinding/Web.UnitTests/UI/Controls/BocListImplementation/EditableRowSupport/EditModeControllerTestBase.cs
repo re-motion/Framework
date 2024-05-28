@@ -186,7 +186,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     protected void CheckEvents (StringCollection expected, StringCollection actual)
     {
-      CollectionAssert.AreEqual(expected, actual);
+      Assert.That(actual, Is.EqualTo(expected).AsCollection);
     }
 
     protected string FormatChangesCanceledEventMessage (int index, IBusinessObject businessObject)

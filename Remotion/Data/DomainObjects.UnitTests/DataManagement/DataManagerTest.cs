@@ -1180,7 +1180,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     private void CheckHasPersistableDataItem (PersistableData expectedPersistableData, Dictionary<DomainObject, PersistableData> actualDictionary)
     {
       var actualPersistableData = actualDictionary.GetValueOrDefault(expectedPersistableData.DomainObject);
-      Assert.That(actualPersistableData, Is.Not.Null, "Expected persistable item: {0}", expectedPersistableData.DomainObject.ID);
+      Assert.That(actualPersistableData, Is.Not.Null, $"Expected persistable item: {expectedPersistableData.DomainObject.ID}");
       Assert.That(actualPersistableData.DomainObjectState, Is.EqualTo(expectedPersistableData.DomainObjectState));
       Assert.That(actualPersistableData.DataContainer, Is.SameAs(expectedPersistableData.DataContainer));
     }

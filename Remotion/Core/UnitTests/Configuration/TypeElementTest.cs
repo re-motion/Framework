@@ -37,8 +37,8 @@ namespace Remotion.UnitTests.Configuration
       ConfigurationProperty property = properties["type"];
       Assert.That(property, Is.Not.Null);
       Assert.That(property.DefaultValue, Is.Null);
-      Assert.IsInstanceOf(typeof(TypeNameConverter), property.Converter);
-      Assert.IsInstanceOf(typeof(SubclassTypeValidator), property.Validator);
+      Assert.That(property.Converter, Is.InstanceOf(typeof(TypeNameConverter)));
+      Assert.That(property.Validator, Is.InstanceOf(typeof(SubclassTypeValidator)));
       Assert.That(property.IsRequired, Is.True);
     }
 
@@ -65,7 +65,7 @@ namespace Remotion.UnitTests.Configuration
       TypeElement<SampleType> typeElement = new TypeElement<SampleType>();
       typeElement.Type = typeof(DerivedSampleType);
 
-      Assert.IsInstanceOf(typeof(DerivedSampleType), typeElement.CreateInstance());
+      Assert.That(typeElement.CreateInstance(), Is.InstanceOf(typeof(DerivedSampleType)));
     }
 
     [Test]

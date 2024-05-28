@@ -672,7 +672,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       };
       Controller.AddRow(NewValues[0], Columns);
 
-      CollectionAssert.AreEquivalent(new[] { NewValues[0] }, addedRows);
+      Assert.That(addedRows, Is.EquivalentTo(new[] { NewValues[0] }));
     }
 
 
@@ -797,7 +797,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       };
       Controller.RemoveRow(businessObject);
 
-      CollectionAssert.AreEqual(new[] { businessObject }, removedRows);
+      Assert.That(removedRows, Is.EqualTo(new[] { businessObject }).AsCollection);
     }
 
     [Test]
@@ -898,8 +898,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
         Controller.PrepareValidation();
 
-        Assert.AreEqual(stringValueField.Text, stringValueField.Text, "Row {0}", i);
-        Assert.AreEqual(int32ValueField.Text, int32ValueField.Text, "Row {0}", i);
+        Assert.That(stringValueField.Text, Is.EqualTo(stringValueField.Text), $"Row {i}");
+        Assert.That(int32ValueField.Text, Is.EqualTo(int32ValueField.Text), $"Row {i}");
       }
     }
 

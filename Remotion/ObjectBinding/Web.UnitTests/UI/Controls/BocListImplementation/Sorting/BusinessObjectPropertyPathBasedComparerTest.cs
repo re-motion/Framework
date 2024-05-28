@@ -243,8 +243,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       int compareResultLeftRight = comparer.Compare(rowLeft, rowRight);
       int compareResultRightLeft = comparer.Compare(rowRight, rowLeft);
 
-      Assert.IsTrue(compareResultLeftRight == 0, "Left - Right != zero");
-      Assert.IsTrue(compareResultRightLeft == 0, "Right - Left != zero");
+      Assert.That(compareResultLeftRight == 0, Is.True, "Left - Right != zero");
+      Assert.That(compareResultRightLeft == 0, Is.True, "Right - Left != zero");
     }
 
     private void CompareAscendingValues (IComparer<BocListRow> comparer, IBusinessObject left, IBusinessObject right)
@@ -255,8 +255,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       int compareResultLeftRight = comparer.Compare(rowLeft, rowRight);
       int compareResultRightLeft = comparer.Compare(rowRight, rowLeft);
 
-      Assert.IsTrue(compareResultLeftRight < 0, "Left - Right <= zero.");
-      Assert.IsTrue(compareResultRightLeft > 0, "Right - Left >= zero.");
+      Assert.That(compareResultLeftRight < 0, Is.True, "Left - Right <= zero.");
+      Assert.That(compareResultRightLeft > 0, Is.True, "Right - Left >= zero.");
     }
 
     private void CompareDescendingValues (IComparer<BocListRow> comparer, IBusinessObject left, IBusinessObject right)
@@ -267,8 +267,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       int compareResultLeftRight = comparer.Compare(rowLeft, rowRight);
       int compareResultRightLeft = comparer.Compare(rowRight, rowLeft);
 
-      Assert.IsTrue(compareResultLeftRight > 0, "Right - Left >= zero.");
-      Assert.IsTrue(compareResultRightLeft < 0, "Left - Right <= zero.");
+      Assert.That(compareResultLeftRight > 0, Is.True, "Right - Left >= zero.");
+      Assert.That(compareResultRightLeft < 0, Is.True, "Left - Right <= zero.");
     }
   }
 }

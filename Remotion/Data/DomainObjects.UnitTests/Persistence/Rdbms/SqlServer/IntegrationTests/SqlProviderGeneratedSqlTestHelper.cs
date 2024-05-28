@@ -111,9 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         Assert.That(
             sqlCommand.CommandText,
             Is.EqualTo(expectedSql),
-            "Command text doesn't match.\r\nActual statement: {0}\r\nExpected statement: {1})",
-            sqlCommand.CommandText,
-            expectedSql);
+            $"Command text doesn't match.\r\nActual statement: {sqlCommand.CommandText}\r\nExpected statement: {expectedSql})");
         Assert.That(
             sqlCommand.CommandType,
             Is.EqualTo(CommandType.Text),
@@ -121,8 +119,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         Assert.That(
             sqlCommand.Parameters.Count,
             Is.EqualTo(expectedParametersData.Length),
-            "Number of parameters doesn't match.\r\nStatement: {0})",
-            expectedSql);
+            $"Number of parameters doesn't match.\r\nStatement: {expectedSql})");
         for (int i = 0; i < expectedParametersData.Length; ++i)
         {
           var actualParameter = (IDataParameter)sqlCommand.Parameters[i];
@@ -131,18 +128,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           Assert.That(
               actualParameter.ParameterName,
               Is.EqualTo(expectedParameterData.Item1),
-              "Name of parameter " + i + " doesn't match.\r\nStatement: {0})",
-              expectedSql);
+              $"Name of parameter {i} doesn't match.\r\nStatement: {expectedSql})");
           Assert.That(
               actualParameter.DbType,
               Is.EqualTo(expectedParameterData.Item2),
-              "DbType of parameter " + i + " doesn't match.\r\nSstatement: {0})",
-              expectedSql);
+              $"DbType of parameter {i} doesn't match.\r\nSstatement: {expectedSql})");
           Assert.That(
               actualParameter.Value,
               Is.EqualTo(expectedParameterData.Item3),
-              "Value of parameter " + i + " doesn't match.\r\nStatement: {0})",
-              expectedSql);
+              $"Value of parameter {i} doesn't match.\r\nStatement: {expectedSql})");
         }
       }
       catch (AssertionException)

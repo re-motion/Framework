@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       OrganizationalStructureFactory factory = new OrganizationalStructureFactory();
       Group group = factory.CreateGroup();
 
-      Assert.IsNotEmpty(group.UniqueIdentifier);
+      Assert.That(group.UniqueIdentifier, Is.Not.Empty);
     }
 
     [Test]
@@ -119,7 +119,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
 
       IBusinessObjectProperty property = businessObject.BusinessObjectClass.GetPropertyDefinition("UniqueIdentifier");
 
-      Assert.IsInstanceOf(typeof(IBusinessObjectStringProperty), property);
+      Assert.That(property, Is.InstanceOf(typeof(IBusinessObjectStringProperty)));
       Assert.That(businessObject.GetProperty(property), Is.EqualTo("My Unique Identifier"));
     }
 
@@ -141,7 +141,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
         }
       }
 
-      Assert.IsTrue(isFound, "Property UnqiueIdentifier declared on Group was not found.");
+      Assert.That(isFound, Is.True, "Property UnqiueIdentifier declared on Group was not found.");
     }
 
     [Test]

@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf(typeof(DomainObjectCollectionRelationEndPointDefinition), actual);
+      Assert.That(actual, Is.InstanceOf(typeof(DomainObjectCollectionRelationEndPointDefinition)));
       Assert.That(
           actual.PropertyName,
           Is.EqualTo(
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf(typeof(VirtualCollectionRelationEndPointDefinition), actual);
+      Assert.That(actual, Is.InstanceOf(typeof(VirtualCollectionRelationEndPointDefinition)));
       Assert.That(
           actual.PropertyName,
           Is.EqualTo(
@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf(typeof(DomainObjectCollectionRelationEndPointDefinition), actual);
+      Assert.That(actual, Is.InstanceOf(typeof(DomainObjectCollectionRelationEndPointDefinition)));
       Assert.That(
           actual.PropertyName,
           Is.EqualTo(
@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf(typeof(VirtualCollectionRelationEndPointDefinition), actual);
+      Assert.That(actual, Is.InstanceOf(typeof(VirtualCollectionRelationEndPointDefinition)));
       Assert.That(
           actual.PropertyName,
           Is.EqualTo(
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf(typeof(VirtualObjectRelationEndPointDefinition), actual);
+      Assert.That(actual, Is.InstanceOf(typeof(VirtualObjectRelationEndPointDefinition)));
       VirtualObjectRelationEndPointDefinition relationEndPointDefinition = (VirtualObjectRelationEndPointDefinition)actual;
       Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
       Assert.That(
@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf(typeof(DomainObjectCollectionRelationEndPointDefinition), actual);
+      Assert.That(actual, Is.InstanceOf(typeof(DomainObjectCollectionRelationEndPointDefinition)));
       DomainObjectCollectionRelationEndPointDefinition relationEndPointDefinition = (DomainObjectCollectionRelationEndPointDefinition)actual;
       Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
       Assert.That(
@@ -193,7 +193,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf(typeof(VirtualCollectionRelationEndPointDefinition), actual);
+      Assert.That(actual, Is.InstanceOf(typeof(VirtualCollectionRelationEndPointDefinition)));
       VirtualCollectionRelationEndPointDefinition relationEndPointDefinition = (VirtualCollectionRelationEndPointDefinition)actual;
       Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
       Assert.That(

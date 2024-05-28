@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
     {
       Tenant tenant = TestHelper.CreateTenant("TestTenant", "UID: testTenant");
 
-      Assert.IsNotEmpty(tenant.UniqueIdentifier);
+      Assert.That(tenant.UniqueIdentifier, Is.Not.Empty);
     }
 
     [Test]
@@ -100,7 +100,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
 
       IBusinessObjectProperty property = businessObject.BusinessObjectClass.GetPropertyDefinition("UniqueIdentifier");
 
-      Assert.IsInstanceOf(typeof(IBusinessObjectStringProperty), property);
+      Assert.That(property, Is.InstanceOf(typeof(IBusinessObjectStringProperty)));
       Assert.That(businessObject.GetProperty(property), Is.EqualTo("My Unique Identifier"));
     }
 
@@ -122,7 +122,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
         }
       }
 
-      Assert.IsTrue(isFound, "Property UnqiueIdentifier declared on Tenant was not found.");
+      Assert.That(isFound, Is.True, "Property UnqiueIdentifier declared on Tenant was not found.");
     }
 
     [Test]

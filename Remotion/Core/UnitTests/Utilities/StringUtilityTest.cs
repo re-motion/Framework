@@ -686,8 +686,8 @@ public class StringUtility_ParseSeparatedListTest
     Assert.That(actualItems.Length, Is.EqualTo(expectedItems.Length));
     for (int i = 0; i < expectedItems.Length; ++i)
     {
-      Assert.AreEqual(expectedItems[i].Value, actualItems[i].Value, string.Format("[{0}].Value", i));
-      Assert.AreEqual(expectedItems[i].IsQuoted, actualItems[i].IsQuoted, string.Format("[{0}].IsQuoted", i));
+      Assert.That(actualItems[i].Value, Is.EqualTo(expectedItems[i].Value), string.Format("[{0}].Value", i));
+      Assert.That(actualItems[i].IsQuoted, Is.EqualTo(expectedItems[i].IsQuoted), string.Format("[{0}].IsQuoted", i));
     }
   }
 }

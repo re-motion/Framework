@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Collections;
+using Remotion.Development.UnitTesting;
 
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Collections
@@ -53,7 +54,7 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void Serialization ()
     {
-      Assert.That(_collection, Is.BinarySerializable);
+      Assert.That(() => Serializer.Serialize(_collection), Throws.Nothing);
     }
 
     [Test]

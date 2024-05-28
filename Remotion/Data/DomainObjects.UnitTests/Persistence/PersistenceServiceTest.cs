@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void LoadDataContainers ()
     {
-      Assert.AreNotEqual(DomainObjectIDs.Order1.StorageProviderDefinition.Name, DomainObjectIDs.Official1, "Different storage providers");
+      Assert.That(DomainObjectIDs.Order1.StorageProviderDefinition.Name, Is.Not.EqualTo(DomainObjectIDs.Official1), "Different storage providers");
 
       var storageProviderMock = new Mock<IStorageProvider>(MockBehavior.Strict);
 
@@ -172,7 +172,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void LoadDataContainers_DuplicatesAreReplacedBySingleDataContainer ()
     {
-      Assert.AreNotEqual(DomainObjectIDs.Order1.StorageProviderDefinition.Name, DomainObjectIDs.Official1, "Different storage providers");
+      Assert.That(DomainObjectIDs.Order1.StorageProviderDefinition.Name, Is.Not.EqualTo(DomainObjectIDs.Official1), "Different storage providers");
 
       var storageProviderMock = new Mock<IStorageProvider>(MockBehavior.Strict);
 
@@ -362,9 +362,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
           RelationEndPointID.Create(DomainObjectIDs.Customer1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders"));
 
       Assert.That(collection, Is.Not.Null);
-      Assert.AreEqual(2, collection.Count, "DataContainerCollection.Count");
-      Assert.IsNotNull(collection[DomainObjectIDs.Order1], "ID of Order with OrdnerNo 1");
-      Assert.IsNotNull(collection[DomainObjectIDs.Order2], "ID of Order with OrdnerNo 2");
+      Assert.That(collection.Count, Is.EqualTo(2), "DataContainerCollection.Count");
+      Assert.That(collection[DomainObjectIDs.Order1], Is.Not.Null, "ID of Order with OrdnerNo 1");
+      Assert.That(collection[DomainObjectIDs.Order2], Is.Not.Null, "ID of Order with OrdnerNo 2");
     }
 
     [Test]

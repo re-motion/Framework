@@ -56,9 +56,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
 
       _testHelper.VerifyAll();
 
-      Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
-      Assert.AreEqual(HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
-      Assert.AreEqual(0, _testHelper.HtmlWriter.Attributes.Count, "Has wrong number of attributes");
+      Assert.That(_testHelper.HtmlWriter.Tag, Is.Not.Null, "Missing Tag");
+      Assert.That(_testHelper.HtmlWriter.Tag, Is.EqualTo(HtmlTextWriterTag.A), "Wrong Tag");
+      Assert.That(_testHelper.HtmlWriter.Attributes.Count, Is.EqualTo(0), "Has wrong number of attributes");
     }
 
     [Test]
@@ -70,9 +70,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       command.Object.RenderBegin(_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
 
       _testHelper.VerifyAll();
-      Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
-      Assert.AreEqual(HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
-      Assert.AreEqual(0, _testHelper.HtmlWriter.Attributes.Count, "Has wrong number of attributes");
+      Assert.That(_testHelper.HtmlWriter.Tag, Is.Not.Null, "Missing Tag");
+      Assert.That(_testHelper.HtmlWriter.Tag, Is.EqualTo(HtmlTextWriterTag.A), "Wrong Tag");
+      Assert.That(_testHelper.HtmlWriter.Attributes.Count, Is.EqualTo(0), "Has wrong number of attributes");
     }
   }
 }

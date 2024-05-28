@@ -226,7 +226,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     public void GetSetRelatedObjectAndOriginal_WithNullAndAutomaticProperty ()
     {
       Order order = DomainObjectIDs.Order1.GetObject<Order>();
-      Assert.IsNotEmpty(order.OrderItems);
+      Assert.That(order.OrderItems, Is.Not.Empty);
       OrderItem orderItem = order.OrderItems[0];
 
       orderItem.Order = null;

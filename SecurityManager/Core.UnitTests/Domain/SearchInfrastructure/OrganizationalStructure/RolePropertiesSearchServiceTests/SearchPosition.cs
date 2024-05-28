@@ -82,12 +82,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
       Assert.That(positions.Length, Is.EqualTo(2));
       foreach (string positionName in new[] { "Official", "Manager" })
       {
-        Assert.IsTrue(
+        Assert.That(
 // ReSharper disable AccessToModifiedClosure
             Array.Exists(positions, current => positionName == ((Position)current).Name),
 // ReSharper restore AccessToModifiedClosure
-            "Position '{0}' was not found.",
-            positionName);
+            Is.True,
+            $"Position '{positionName}' was not found.");
       }
     }
 

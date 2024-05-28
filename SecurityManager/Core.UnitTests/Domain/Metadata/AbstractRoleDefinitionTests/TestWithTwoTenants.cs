@@ -82,7 +82,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.AbstractRoleDefinit
       for (int i = 0; i < result.Count; i++)
       {
         AbstractRoleDefinition abstractRole = result[i];
-        Assert.AreEqual(i, abstractRole.Index, "Wrong Index.");
+        Assert.That(abstractRole.Index, Is.EqualTo(i), "Wrong Index.");
       }
     }
   }

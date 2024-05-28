@@ -31,10 +31,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
     public static void AreEqual (EnumValueDefinition expected, EnumValueDefinition actual, string message)
     {
-      Assert.AreEqual(expected.MetadataItemID, actual.MetadataItemID, message);
-      Assert.AreEqual(expected.Name, actual.Name, message);
-      Assert.AreEqual(expected.Index, actual.Index, message);
-      Assert.AreEqual(expected.Value, actual.Value, message);
+      Assert.That(actual.MetadataItemID, Is.EqualTo(expected.MetadataItemID), message);
+      Assert.That(actual.Name, Is.EqualTo(expected.Name), message);
+      Assert.That(actual.Index, Is.EqualTo(expected.Index), message);
+      Assert.That(actual.Value, Is.EqualTo(expected.Value), message);
     }
 
     public static void AreEqual (AccessTypeDefinition expected, AccessTypeDefinition actual)
@@ -55,18 +55,18 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
     public static void AreEqual (StateDefinition expected, StateDefinition actual, string message)
     {
-      Assert.AreEqual(expected.Name, actual.Name, message);
-      Assert.AreEqual(expected.Index, actual.Index, message);
-      Assert.AreEqual(expected.Value, actual.Value, message);
+      Assert.That(actual.Name, Is.EqualTo(expected.Name), message);
+      Assert.That(actual.Index, Is.EqualTo(expected.Index), message);
+      Assert.That(actual.Value, Is.EqualTo(expected.Value), message);
     }
 
     public static void AreEqual (StatePropertyDefinition expected, StatePropertyDefinition actual, string message)
     {
-      Assert.AreEqual(expected.MetadataItemID, actual.MetadataItemID, message);
-      Assert.AreEqual(expected.Name, actual.Name, message);
-      Assert.AreEqual(expected.Index, actual.Index, message);
+      Assert.That(actual.MetadataItemID, Is.EqualTo(expected.MetadataItemID), message);
+      Assert.That(actual.Name, Is.EqualTo(expected.Name), message);
+      Assert.That(actual.Index, Is.EqualTo(expected.Index), message);
 
-      Assert.AreEqual(expected.DefinedStates.Count, actual.DefinedStates.Count, message);
+      Assert.That(actual.DefinedStates.Count, Is.EqualTo(expected.DefinedStates.Count), message);
 
       for (int i = 0; i < expected.DefinedStates.Count; i++)
         AreEqual(expected.DefinedStates[i], actual.DefinedStates[i], message);
@@ -97,8 +97,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
         expectedIndex = expected.Index;
       }
 
-      Assert.AreEqual(expectedName, actual.Name, message, args);
-      Assert.AreEqual(expectedIndex, actual.Index, message);
+      Assert.That(actual.Name, Is.EqualTo(expectedName), () => string.Format(message, args));
+      Assert.That(actual.Index, Is.EqualTo(expectedIndex), message);
     }
   }
 }

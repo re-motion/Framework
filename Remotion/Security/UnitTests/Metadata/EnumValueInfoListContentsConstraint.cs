@@ -36,6 +36,8 @@ namespace Remotion.Security.UnitTests.Metadata
       return new EnumValueInfoListContentsConstraintResult(this, actual, _expectedName, isSuccess);
     }
 
+    public override string Description => "equal to the expected name.";
+
     private bool Matches (object actual)
     {
       var actualAsEnumValueInfoList = actual as List<EnumValueInfo>;

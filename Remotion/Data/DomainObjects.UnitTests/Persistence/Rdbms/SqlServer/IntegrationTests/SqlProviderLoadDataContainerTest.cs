@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       DataContainer container = Provider.LoadDataContainer(id).LocatedObject;
 
-      Assert.IsNull(container.GetValue(GetPropertyDefinition(typeof(ClassWithValidRelations), "ClassWithGuidKeyOptional")), "PropertyValue.Value");
+      Assert.That(container.GetValue(GetPropertyDefinition(typeof(ClassWithValidRelations), "ClassWithGuidKeyOptional")), Is.Null, "PropertyValue.Value");
     }
 
     [Test]

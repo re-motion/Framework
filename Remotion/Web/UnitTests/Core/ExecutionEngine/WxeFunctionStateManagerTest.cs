@@ -101,7 +101,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       DateTime lastAccess = functionStateManager.GetLastAccessUtc(_functionState.FunctionToken);
       Thread.Sleep(1000);
       functionStateManager.Touch(_functionState.FunctionToken);
-      Assert.Greater(functionStateManager.GetLastAccessUtc(_functionState.FunctionToken), lastAccess);
+      Assert.That(functionStateManager.GetLastAccessUtc(_functionState.FunctionToken), Is.GreaterThan(lastAccess));
     }
 
     [Test]

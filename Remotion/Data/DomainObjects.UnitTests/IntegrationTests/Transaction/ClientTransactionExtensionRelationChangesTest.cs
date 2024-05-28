@@ -532,7 +532,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       ObjectList<OrderItem> preloadedOrderItems = _order1OrderItems;
 
-      Assert.Greater(preloadedOrderItems.Count, 0);
+      Assert.That(preloadedOrderItems.Count, Is.GreaterThan(0));
       var orderItem = (OrderItem)preloadedOrderItems[0];
 
       var orderItemEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, orderItem);
@@ -749,7 +749,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void ReplaceInOneToManyRelation ()
     {
-      Assert.Greater(_order1OrderItems.Count, 0);
+      Assert.That(_order1OrderItems.Count, Is.GreaterThan(0));
       OrderItem oldOrderItem = _order1OrderItems[0];
 
       ObjectList<OrderItem> preloadedOrderItems = _order1OrderItems;
@@ -830,7 +830,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void ReplaceInOneToManyRelationWithOldRelatedObject ()
     {
-      Assert.Greater(_order1OrderItems.Count, 0);
+      Assert.That(_order1OrderItems.Count, Is.GreaterThan(0));
       OrderItem oldOrderItem = _order1OrderItems[0];
 
       ObjectList<OrderItem> preloadedOrderItemsOfOrder1 = _order1OrderItems;

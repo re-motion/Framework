@@ -67,7 +67,7 @@ namespace Remotion.Mixins.MixerTools.UnitTests
               var types = theAssembly.GetTypes();
 
               var concreteType = types.SingleOrDefault(t => t.BaseType == typeof(BaseType1));
-              Assert.NotNull(concreteType);
+              Assert.That(concreteType, Is.Not.Null);
               Assert.That(
                   MixinTypeUtility.GetClassContextForConcreteType(concreteType),
                   Is.EqualTo(MixinConfiguration.ActiveConfiguration.GetContext(typeof(BaseType1))));

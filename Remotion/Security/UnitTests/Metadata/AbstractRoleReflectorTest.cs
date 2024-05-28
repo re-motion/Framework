@@ -56,7 +56,7 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void Initialize ()
     {
-      Assert.IsInstanceOf(typeof(IAbstractRoleReflector), _abstractRoleReflector);
+      Assert.That(_abstractRoleReflector, Is.InstanceOf(typeof(IAbstractRoleReflector)));
       Assert.That(_abstractRoleReflector.EnumerationTypeReflector, Is.SameAs(_enumeratedTypeReflectorMock.Object));
     }
 

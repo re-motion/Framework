@@ -126,7 +126,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
         IObjectSecurityStrategy objectSecurityStrategy = position.GetSecurityStrategy();
         Assert.That(objectSecurityStrategy, Is.Not.Null);
-        Assert.IsInstanceOf(typeof(DomainObjectSecurityStrategyDecorator), objectSecurityStrategy);
+        Assert.That(objectSecurityStrategy, Is.InstanceOf(typeof(DomainObjectSecurityStrategyDecorator)));
         DomainObjectSecurityStrategyDecorator domainObjectSecurityStrategyDecorator = (DomainObjectSecurityStrategyDecorator)objectSecurityStrategy;
         Assert.That(domainObjectSecurityStrategyDecorator.RequiredSecurityForStates, Is.EqualTo(RequiredSecurityForStates.None));
       }
@@ -203,7 +203,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       {
         Position position = testHelper.CreatePosition("Position");
 
-        Assert.IsNotEmpty(position.UniqueIdentifier);
+        Assert.That(position.UniqueIdentifier, Is.Not.Empty);
       }
     }
 

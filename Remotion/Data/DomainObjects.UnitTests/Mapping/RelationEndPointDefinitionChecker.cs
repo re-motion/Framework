@@ -25,12 +25,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void Check (
         RelationEndPointDefinitionCollection expectedDefinitions, RelationEndPointDefinitionCollection actualDefinitions, bool checkRelationDefinition)
     {
-      Assert.AreEqual(expectedDefinitions.Count, actualDefinitions.Count, "Number of relation end points does not match.");
+      Assert.That(actualDefinitions.Count, Is.EqualTo(expectedDefinitions.Count), "Number of relation end points does not match.");
 
       foreach (var expectedDefinition in expectedDefinitions)
       {
         var actualDefinition = actualDefinitions[expectedDefinition.PropertyName];
-        Assert.IsNotNull(actualDefinition, "Relation end point '{0}' was not found.", expectedDefinition.PropertyName);
+        Assert.That(actualDefinition, Is.Not.Null, $"Relation end point '{expectedDefinition.PropertyName}' was not found.");
         Check(expectedDefinition, actualDefinition, checkRelationDefinition);
       }
     }
@@ -38,59 +38,51 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void Check (
         IRelationEndPointDefinition expectedEndPointDefinition, IRelationEndPointDefinition actualEndPointDefinition, bool checkRelationDefinition)
     {
-      Assert.AreEqual(
-          expectedEndPointDefinition.GetType(),
+      Assert.That(
           actualEndPointDefinition.GetType(),
-          "End point definitions (property name: '{0}') are not of same type.",
-          expectedEndPointDefinition.PropertyName);
+          Is.EqualTo(expectedEndPointDefinition.GetType()),
+          $"End point definitions (property name: '{expectedEndPointDefinition.PropertyName}') are not of same type.");
 
-      Assert.AreEqual(
-          expectedEndPointDefinition.ClassDefinition.ID,
+      Assert.That(
           actualEndPointDefinition.ClassDefinition.ID,
-          "ClassDefinition of end point definitions (property name: '{0}') does not match.",
-          expectedEndPointDefinition.PropertyName);
+          Is.EqualTo(expectedEndPointDefinition.ClassDefinition.ID),
+          $"ClassDefinition of end point definitions (property name: '{expectedEndPointDefinition.PropertyName}') does not match.");
 
       if (checkRelationDefinition)
       {
-        Assert.AreEqual(
-            expectedEndPointDefinition.RelationDefinition.ID,
+        Assert.That(
             actualEndPointDefinition.RelationDefinition.ID,
-            "RelationDefinition of end point definitions (property name: '{0}') does not match.",
-            expectedEndPointDefinition.PropertyName);
+            Is.EqualTo(expectedEndPointDefinition.RelationDefinition.ID),
+            $"RelationDefinition of end point definitions (property name: '{expectedEndPointDefinition.PropertyName}') does not match.");
       }
 
-      Assert.AreEqual(
-          expectedEndPointDefinition.PropertyName,
+      Assert.That(
           actualEndPointDefinition.PropertyName,
-          "PropertyName of end point definitions (property name: '{0}') does not match.",
-          expectedEndPointDefinition.PropertyName);
+          Is.EqualTo(expectedEndPointDefinition.PropertyName),
+          $"PropertyName of end point definitions (property name: '{expectedEndPointDefinition.PropertyName}') does not match.");
 
       if (!expectedEndPointDefinition.IsAnonymous)
       {
-        Assert.AreEqual(
-            expectedEndPointDefinition.PropertyInfo.PropertyType,
+        Assert.That(
             actualEndPointDefinition.PropertyInfo.PropertyType,
-            "PropertyType of end point definitions (property name: '{0}') does not match.",
-            expectedEndPointDefinition.PropertyName);
+            Is.EqualTo(expectedEndPointDefinition.PropertyInfo.PropertyType),
+            $"PropertyType of end point definitions (property name: '{expectedEndPointDefinition.PropertyName}') does not match.");
       }
 
-      Assert.AreEqual(
-          expectedEndPointDefinition.IsMandatory,
+      Assert.That(
           actualEndPointDefinition.IsMandatory,
-          "IsMandatory of end point definitions (property name: '{0}') does not match. ",
-          expectedEndPointDefinition.PropertyName);
+          Is.EqualTo(expectedEndPointDefinition.IsMandatory),
+          $"IsMandatory of end point definitions (property name: '{expectedEndPointDefinition.PropertyName}') does not match. ");
 
-      Assert.AreEqual(
-          expectedEndPointDefinition.IsAnonymous,
+      Assert.That(
           actualEndPointDefinition.IsAnonymous,
-          "IsAnonymous of end point definitions (property name: '{0}') does not match.",
-          expectedEndPointDefinition.PropertyName);
+          Is.EqualTo(expectedEndPointDefinition.IsAnonymous),
+          $"IsAnonymous of end point definitions (property name: '{expectedEndPointDefinition.PropertyName}') does not match.");
 
-      Assert.AreEqual(
-          expectedEndPointDefinition.Cardinality,
+      Assert.That(
           actualEndPointDefinition.Cardinality,
-          "Cardinality of end point definitions (property name: '{0}') does not match.",
-          expectedEndPointDefinition.PropertyName);
+          Is.EqualTo(expectedEndPointDefinition.Cardinality),
+          $"Cardinality of end point definitions (property name: '{expectedEndPointDefinition.PropertyName}') does not match.");
 
 
       if (expectedEndPointDefinition is DomainObjectCollectionRelationEndPointDefinition)
@@ -100,11 +92,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
         var expectedSortExpressionDefinition = expectedCollectionRelationEndPointDefinition.GetSortExpression();
         var actualSortExpressionDefinition = actualCollectionEndPointDefinition.GetSortExpression();
-        Assert.AreEqual(
-            expectedSortExpressionDefinition?.ToString(),
+        Assert.That(
             actualSortExpressionDefinition?.ToString(),
-            "SortExpression of end point definitions (property name: '{0}') does not match.",
-            expectedCollectionRelationEndPointDefinition.PropertyName);
+            Is.EqualTo(expectedSortExpressionDefinition?.ToString()),
+            $"SortExpression of end point definitions (property name: '{expectedCollectionRelationEndPointDefinition.PropertyName}') does not match.");
       }
 
       if (expectedEndPointDefinition is VirtualCollectionRelationEndPointDefinition)
@@ -114,11 +105,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
         var expectedSortExpressionDefinition = expectedCollectionRelationEndPointDefinition.GetSortExpression();
         var actualSortExpressionDefinition = actualCollectionEndPointDefinition.GetSortExpression();
-        Assert.AreEqual(
-            expectedSortExpressionDefinition?.ToString(),
+        Assert.That(
             actualSortExpressionDefinition?.ToString(),
-            "SortExpression of end point definitions (property name: '{0}') does not match.",
-            expectedCollectionRelationEndPointDefinition.PropertyName);
+            Is.EqualTo(expectedSortExpressionDefinition?.ToString()),
+            $"SortExpression of end point definitions (property name: '{expectedCollectionRelationEndPointDefinition.PropertyName}') does not match.");
       }
     }
   }
