@@ -56,7 +56,11 @@ public class SqlTableValuedDataParameterDefinition : IDataParameterDefinition
     foreach (var item in enumerable)
     {
       if (item == null)
-        throw ArgumentUtility.CreateArgumentItemNullException(nameof(value), tvpValue.Count);
+      {
+        throw new NotSupportedException(
+            "Items within enumerable parameter values must not be null, because this would result in table rows with all columns being NULL. "
+            + "This does not work with WHERE IN, and is not useful in JOIN scenarios, wherefore it is not supported.");
+      }
 
       var columnValues = RecordDefinition.GetColumnValues(item);
       tvpValue.AddRecord(columnValues);
