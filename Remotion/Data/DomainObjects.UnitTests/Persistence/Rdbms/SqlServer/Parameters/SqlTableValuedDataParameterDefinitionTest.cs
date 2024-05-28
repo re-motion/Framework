@@ -107,6 +107,7 @@ public class SqlTableValuedDataParameterDefinitionTest
     Assert.That(dataParameter, Is.InstanceOf<SqlParameter>());
 
     var sqlParameter = dataParameter.As<SqlParameter>();
+    Assert.That(sqlParameter.ParameterName, Is.EqualTo("@dummy"));
     Assert.That(sqlParameter.DbType, Is.EqualTo(DbType.Object));
     Assert.That(sqlParameter.SqlDbType, Is.EqualTo(SqlDbType.Structured));
     Assert.That(sqlParameter.TypeName, Is.EqualTo(tvpValue.TableTypeName));

@@ -55,8 +55,14 @@ public class SqlTableValuedDataParameterDefinitionFactory : IDataParameterDefini
 
     if (TryGetCollectionInfo(queryParameter.Value, out var itemType, out var isDistinct))
     {
-      var storageTypeInformation = StorageTypeInformationProvider.GetStorageType(itemType);
-      return new SqlTableValuedDataParameterDefinition(storageTypeInformation, isDistinct);
+      try
+      {
+        var storageTypeInformation = StorageTypeInformationProvider.GetStorageType(itemType);
+        return new SqlTableValuedDataParameterDefinition(storageTypeInformation, isDistinct);
+      }
+      catch (NotSupportedException)
+      {
+      }
     }
     return NextDataParameterDefinitionFactory.CreateDataParameterDefinition(queryParameter);
   }
