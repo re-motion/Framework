@@ -17,7 +17,7 @@ namespace Core.Development.Analyzers
     public static readonly DiagnosticDescriptor AlternativeDescriptor = new DiagnosticDescriptor(
         "RMCORE0001",
         "Use SafeContext instead of typical API",
-        "'{0}' should not be used with SafeContext, use 'Remotion.Context.SafeContext.{1}' instead.",
+        "'{0}' should not be used with SafeContext, use 'Remotion.Context.SafeContext.{1}' instead",
         "Usage",
         DiagnosticSeverity.Warning,
         true);
@@ -25,7 +25,7 @@ namespace Core.Development.Analyzers
     public static readonly DiagnosticDescriptor WarningDescriptor = new DiagnosticDescriptor(
         "RMCORE0001",
         "Use typical API with SafeContext",
-        "'{0}' should not be used with SafeContext by itself, use '{1}' to create a safe context boundary.",
+        "'{0}' should not be used with SafeContext by itself, use '{1}' to create a safe context boundary",
         "Usage",
         DiagnosticSeverity.Warning,
         true);

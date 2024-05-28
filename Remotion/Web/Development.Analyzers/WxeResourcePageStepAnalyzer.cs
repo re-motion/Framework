@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.Analyzers
 
     public static readonly DiagnosticDescriptor RMWEB0003DiagnosticDescriptor = new(
         WebDiagnosticIDs.RMWEB0003_PossiblyInvalidTypeForWxeResourcePageStepConstructor,
-        "Passing a type from another assembly to the constructor of WxeResourcePageStep or WxeResourceUserControlStep can indicate a copy & paste mistake.",
+        "Passing a type from another assembly to the constructor of WxeResourcePageStep or WxeResourceUserControlStep can indicate a copy & paste mistake",
         "Type '{0}' is not defined in the same assembly as the containing type '{1}'. If this is intentional, you can suppress the warning.",
         "Usage",
         DiagnosticSeverity.Error,
@@ -46,8 +46,8 @@ namespace Remotion.Web.Development.Analyzers
 
     public static readonly DiagnosticDescriptor RMWEB0004DiagnosticDescriptor = new(
         WebDiagnosticIDs.RMWEB0004_NonTypeofValuePassedToWxeResourcePageStepCosntructur,
-        "Passing non-typeof value to the constructor of WxeResourcePageStep or WxeResourceUserControlStep is not intended.",
-        "Only typeof(xxx) values should be passed to the constructors of WxeResourcePageStep and WxeResourceUserControlStep that take a Type parameter. "
+        "Passing non-typeof value to the constructor of WxeResourcePageStep or WxeResourceUserControlStep is not intended",
+        "Only typeof(xxx) values should be passed to the constructors of WxeResourcePageStep and WxeResourceUserControlStep that take a Type parameter."
         + "If the non-typeof usage is intentional, pass the type's assembly instead (`new(type.Assembly);`)",
         "Usage",
         DiagnosticSeverity.Error,
@@ -93,7 +93,7 @@ namespace Remotion.Web.Development.Analyzers
 
       if (operation.Arguments[0].Value is not ITypeOfOperation typeOfOperation)
       {
-        if (SymbolEqualityComparer.Default.Equals(operation.Arguments[0].Parameter.Type, symbolContext.SystemTypeSymbol))
+        if (SymbolEqualityComparer.Default.Equals(operation.Arguments[0].Parameter?.Type, symbolContext.SystemTypeSymbol))
         {
           var diagnostic = Diagnostic.Create(
               RMWEB0004DiagnosticDescriptor,

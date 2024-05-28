@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.Analyzers
     public static readonly DiagnosticDescriptor DiagnosticDescriptor = new DiagnosticDescriptor(
         WebDiagnosticIDs.RMWEB0001_WrongWebStringUsage,
         "Wrong WebString or PlainTextString usage",
-        "'{0}' should not be used with a '{1}' argument. {2}",
+        "'{0}' should not be used with a '{1}' argument. {2}.",
         "Usage",
         DiagnosticSeverity.Error,
         true);
