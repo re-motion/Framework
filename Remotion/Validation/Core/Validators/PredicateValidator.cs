@@ -35,13 +35,13 @@ namespace Remotion.Validation.Validators
     public string ErrorMessage { get; }
     public ValidationMessage ValidationMessage { get; }
 
-    public PredicateValidator ([NotNull] Predicate predicate, [NotNull] ValidationMessage validationMessage)
+    public PredicateValidator ([NotNull] Predicate predicate, [NotNull] ValidationMessage validationMessage, string? errorMessage = null)
     {
       ArgumentUtility.CheckNotNull("predicate", predicate);
       ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
 
       _predicate = predicate;
-      ErrorMessage = "The value must meet the specified condition.";
+      ErrorMessage = errorMessage ?? "The value must meet the specified condition.";
       ValidationMessage = validationMessage;
     }
 

@@ -72,6 +72,25 @@ namespace Remotion.Validation.UnitTests.Validators
     }
 
     [Test]
+    public void Validate_WithPredicateFalseAndErrorMessage_ReturnsSingleValidationFailure ()
+    {
+      var propertyValidatorContext = CreatePropertyValidatorContext(1);
+      var validator = new PredicateValidator(
+          (instanceToValidate, propertyValue, context) => false,
+          new InvariantValidationMessage("Custom validation message."),
+          "error");
+
+      var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
+
+      Assert.That(validationFailures.Length, Is.EqualTo(1));
+      Assert.That(validationFailures[0].ValidatedObject, Is.EqualTo(propertyValidatorContext.Instance));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.Property), Is.EqualTo(new [] { propertyValidatorContext.Property }));
+      Assert.That(validationFailures[0].ValidatedProperties.Select(vp => vp.ValidatedPropertyValue), Is.EqualTo(new [] { propertyValidatorContext.PropertyValue }));
+      Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("error"));
+      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message."));
+    }
+
+    [Test]
     public void Validate_WithPredicateNull_ThrowsArgumentNullException ()
     {
       using (CultureScope.CreateInvariantCultureScope())
