@@ -208,6 +208,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           where possibleItems.Contains(o.ID.Value)
           select o;
 
+      Assert.That(
+          () => CheckQueryResult(orders, DomainObjectIDs.Order1, DomainObjectIDs.Order3),
+          Throws.InstanceOf<NotSupportedException>().With.Message.EqualTo(
+              $"The parameter value's type 'System.Object[]' cannot be mapped by "
+              + "Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters.SimpleTypeQueryParameterRecordDefinitionFinder. "
+              + "Either use a collection of scalar values, or use an implementation of "
+              + "Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters.IQueryParameterRecordDefinitionFinder "
+              + "that supports 'System.Object[]'."));
+    }
+
+    [Test]
+    public void QueryWithContainsInWhere_OnCollection_WithObjectIDValuesAsGuid ()
+    {
+      var possibleItems = new[] { (Guid)DomainObjectIDs.Order1.Value, (Guid)DomainObjectIDs.Order3.Value };
+      var orders =
+          from o in QueryFactory.CreateLinqQuery<Order>()
+          where possibleItems.Contains((Guid)o.ID.Value)
+          select o;
+
       CheckQueryResult(orders, DomainObjectIDs.Order1, DomainObjectIDs.Order3);
     }
 
@@ -255,8 +274,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           select o;
       Assert.That(
           () => CheckQueryResult(orders, DomainObjectIDs.Order1, DomainObjectIDs.Order3),
-          Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo("Objects of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order_AssembledTypeProxy_1' cannot be used as data parameter value."));
+          Throws.InstanceOf<NotSupportedException>().With.Message.EqualTo(
+              "The parameter value's type 'Remotion.Data.DomainObjects.DomainObject[]' cannot be mapped by "
+              + "Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters.SimpleTypeQueryParameterRecordDefinitionFinder. "
+              + "Either use a collection of scalar values, or use an implementation of "
+              + "Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters.IQueryParameterRecordDefinitionFinder "
+              + "that supports 'Remotion.Data.DomainObjects.DomainObject[]'."));
     }
 
     [Test]
