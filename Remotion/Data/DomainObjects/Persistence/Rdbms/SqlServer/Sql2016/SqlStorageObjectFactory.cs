@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
       DataContainerValidator = dataContainerValidator;
     }
 
-    public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+    public IStorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
     {
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
       var rdbmsProviderDefinition =
@@ -72,6 +72,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
 
       var commandFactory = CreateStorageProviderCommandFactory(rdbmsProviderDefinition);
       return CreateStorageProvider(persistenceExtension, rdbmsProviderDefinition, commandFactory);
+    }
+
+    public IReadOnlyStorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+    {
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      var rdbmsProviderDefinition =
+          ArgumentUtility.CheckNotNullAndType<RdbmsProviderDefinition>("storageProviderDefinition", storageProviderDefinition);
+
+      var commandFactory = CreateStorageProviderCommandFactory(rdbmsProviderDefinition);
+      return new ReadOnlyStorageProviderDecorator(CreateReadOnlyStorageProvider(persistenceExtension, rdbmsProviderDefinition, commandFactory));
     }
 
     public virtual IPersistenceModelLoader CreatePersistenceModelLoader (
@@ -182,7 +192,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
           persistenceModelProvider);
     }
 
-    public IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> CreateStorageProviderCommandFactory (
+    public IRdbmsProviderCommandFactory CreateStorageProviderCommandFactory (
         RdbmsProviderDefinition storageProviderDefinition)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
@@ -407,11 +417,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
           new SqlCommentScriptElementFactory());
     }
 
-
-    protected virtual StorageProvider CreateStorageProvider (
+    protected virtual IStorageProvider CreateStorageProvider (
         IPersistenceExtension persistenceExtension,
         RdbmsProviderDefinition rdbmsProviderDefinition,
-        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory)
+        IRdbmsProviderCommandFactory commandFactory)
     {
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
       ArgumentUtility.CheckNotNull("commandFactory", commandFactory);
@@ -420,6 +429,25 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
       return ObjectFactory.Create<RdbmsProvider>(
           ParamList.Create(
               rdbmsProviderDefinition,
+              rdbmsProviderDefinition.ConnectionString,
+              persistenceExtension,
+              commandFactory,
+              (Func<IDbConnection>)(() => new SqlConnection())));
+    }
+
+    protected virtual IReadOnlyStorageProvider CreateReadOnlyStorageProvider (
+        IPersistenceExtension persistenceExtension,
+        RdbmsProviderDefinition rdbmsProviderDefinition,
+        IRdbmsProviderCommandFactory commandFactory)
+    {
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("commandFactory", commandFactory);
+      ArgumentUtility.CheckNotNull("rdbmsProviderDefinition", rdbmsProviderDefinition);
+
+      return ObjectFactory.Create<RdbmsProvider>(
+          ParamList.Create(
+              rdbmsProviderDefinition,
+              rdbmsProviderDefinition.ReadOnlyConnectionString,
               persistenceExtension,
               commandFactory,
               (Func<IDbConnection>)(() => new SqlConnection())));
@@ -437,7 +465,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
     }
 
 
-    protected virtual IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> CreateStorageProviderCommandFactory (
+    protected virtual IRdbmsProviderCommandFactory CreateStorageProviderCommandFactory (
       RdbmsProviderDefinition storageProviderDefinition,
       IStorageTypeInformationProvider storageTypeInformationProvider,
       IStorageNameProvider storageNameProvider,

@@ -26,10 +26,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
   {
     public TestableRdbmsProvider (
         RdbmsProviderDefinition definition,
+        string connectionString,
         IPersistenceExtension persistenceExtension,
-        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory,
+        IRdbmsProviderCommandFactory commandFactory,
         Func<IDbConnection> connectionFactory)
-      : base(definition, persistenceExtension, commandFactory, connectionFactory)
+      : base(definition, connectionString, persistenceExtension, commandFactory, connectionFactory)
     {
 
     }

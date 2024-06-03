@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
@@ -23,6 +24,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
   public static class QueryObjectMother
   {
+    public static IReadOnlyDictionary<string, object> EmptyMetadata { get; } = new Dictionary<string, object>();
+
     public static IQuery Create (IStorageSettings storageSettings)
     {
       return new Query(CreateQueryDefinition(storageSettings), new QueryParameterCollection());
@@ -30,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
 
     private static QueryDefinition CreateQueryDefinition (IStorageSettings storageSettings)
     {
-      return new QueryDefinition("test", storageSettings.GetDefaultStorageProviderDefinition(), "Some statement", QueryType.Collection);
+      return new QueryDefinition("test", storageSettings.GetDefaultStorageProviderDefinition(), "Some statement", QueryType.CollectionReadOnly);
     }
   }
 }

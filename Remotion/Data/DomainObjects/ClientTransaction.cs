@@ -70,7 +70,10 @@ public class ClientTransaction
   {
     var componentFactory = RootClientTransactionComponentFactory.Create(
         SafeServiceLocator.Current.GetInstance<IStorageSettings>(),
-        SafeServiceLocator.Current.GetInstance<IPersistenceExtensionFactory>());
+        SafeServiceLocator.Current.GetInstance<IPersistenceService>(),
+        SafeServiceLocator.Current.GetInstance<IPersistenceExtensionFactory>(),
+        SafeServiceLocator.Current.GetInstance<IStorageAccessResolver>());
+
     return ObjectFactory.Create<ClientTransaction>(true, ParamList.Create(componentFactory));
   }
 

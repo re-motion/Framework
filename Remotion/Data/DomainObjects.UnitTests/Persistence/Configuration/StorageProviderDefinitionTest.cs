@@ -31,6 +31,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
   [TestFixture]
   public class StorageProviderDefinitionTest
   {
+    public class FakeStorageObjectFactory : IStorageObjectFactory
+    {
+      public IStorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+      {
+        throw new NotImplementedException();
+      }
+
+      public IReadOnlyStorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+      {
+        throw new NotImplementedException();
+      }
+
+      public IPersistenceModelLoader CreatePersistenceModelLoader (
+          StorageProviderDefinition storageProviderDefinition)
+      {
+        throw new NotImplementedException();
+      }
+
+      public IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (
+          StorageProviderDefinition storageProviderDefinition,
+          IMethodCallTransformerProvider methodCallTransformerProvider,
+          ResultOperatorHandlerRegistry resultOperatorHandlerRegistry,
+          IMappingConfiguration mappingConfiguration)
+      {
+        throw new NotImplementedException();
+      }
+    }
+
     private Mock<IStorageObjectFactory> _storageObjectFactoryStub;
 
     [SetUp]
@@ -56,44 +84,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
       Assert.That(providerDefinition.ToString(), Is.EqualTo("TestableStorageProviderDefinition: 'TestProvider'"));
     }
 
-    public class StorageObjectFactoryFake : IStorageObjectFactory
-    {
-      public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
-      {
-        throw new NotImplementedException();
-      }
-
-      public IPersistenceModelLoader CreatePersistenceModelLoader (
-          StorageProviderDefinition storageProviderDefinition)
-      {
-        throw new NotImplementedException();
-      }
-
-      public IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (
-          StorageProviderDefinition storageProviderDefinition,
-          IMethodCallTransformerProvider methodCallTransformerProvider,
-          ResultOperatorHandlerRegistry resultOperatorHandlerRegistry,
-          IMappingConfiguration mappingConfiguration)
-      {
-        throw new NotImplementedException();
-      }
-    }
-
-    private class DerivedStorageObjectFactoryFake : StorageObjectFactoryFake { }
+    private class FakeDerivedStorageObjectFactory : FakeStorageObjectFactory { }
 
     public class FakeMixin { }
 
-    public class StorageObjectFactoryFakeWithCtorParameters
+    public class FakeStorageObjectFactoryWithCtorParameters
     {
-      public StorageObjectFactoryFakeWithCtorParameters (string s)
+      public FakeStorageObjectFactoryWithCtorParameters (string s)
       {
         Dev.Null = s;
       }
     }
 
-    private class DerivedStorageObjectFactoryFakeWithUnresolvedCtorParameter : StorageObjectFactoryFake
+    private class FakeDerivedStorageObjectFactoryWithUnresolvedCtorParameter : FakeStorageObjectFactory
     {
-      public DerivedStorageObjectFactoryFakeWithUnresolvedCtorParameter (string s)
+      public FakeDerivedStorageObjectFactoryWithUnresolvedCtorParameter (string s)
       {
         Dev.Null = s;
       }

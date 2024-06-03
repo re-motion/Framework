@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 {
   public class StubDomainObjectQueryGenerator : IDomainObjectQueryGenerator
   {
-    public IExecutableQuery<T> CreateScalarQuery<T> (string id, StorageProviderDefinition storageProviderDefinition, QueryModel queryModel)
+    public IExecutableQuery<T> CreateScalarQuery<T> (string id, StorageProviderDefinition storageProviderDefinition, QueryModel queryModel, IReadOnlyDictionary<string, object> metadata)
     {
       throw new NotImplementedException();
     }
@@ -36,9 +36,10 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
         string id,
         StorageProviderDefinition storageProviderDefinition,
         QueryModel queryModel,
-        IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders)
+        IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders,
+        IReadOnlyDictionary<string, object> metadata)
     {
-      return new StubSquenceQuery<T>(new QueryDefinition(id, storageProviderDefinition, "The Query", QueryType.Collection));
+      return new StubSquenceQuery<T>(new QueryDefinition(id, storageProviderDefinition, "The Query", QueryType.CollectionReadWrite, metaData: metadata));
     }
   }
 }

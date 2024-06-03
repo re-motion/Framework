@@ -15,20 +15,24 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Tracing;
+using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Persistence
 {
-  /// <summary>
-  /// <see cref="IRdbmsProviderCommandExecutionContext"/> defines methods for creating and executing <see cref="IDbCommand"/> instances. These are
-  /// used by RDBMS-specific implementations of <see cref="IStorageProviderCommand{T,TExecutionContext}"/> and <see cref="IDbCommandBuilder"/>.
-  /// </summary>
-  public interface IRdbmsProviderCommandExecutionContext
+  public sealed class ReadOnlyStorageProviderManager : StorageProviderManagerBase<IReadOnlyStorageProvider>, IReadOnlyStorageProviderManager
   {
-    IDbCommand CreateDbCommand ();
-    IDataReader ExecuteReader (IDbCommand command, CommandBehavior behavior);
-    object? ExecuteScalar (IDbCommand command);
-    int ExecuteNonQuery (IDbCommand command);
+    public ReadOnlyStorageProviderManager (IPersistenceExtension persistenceExtension, IStorageSettings storageSettings)
+        : base(persistenceExtension, storageSettings)
+    {
+    }
+
+    protected override IReadOnlyStorageProvider CreateStorageProvider (StorageProviderDefinition providerDefinition)
+    {
+      ArgumentUtility.CheckNotNull(nameof(providerDefinition), providerDefinition);
+
+      return providerDefinition.Factory.CreateReadOnlyStorageProvider(providerDefinition, PersistenceExtension);
+    }
   }
 }

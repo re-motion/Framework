@@ -28,7 +28,6 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories;
-using Remotion.Data.DomainObjects.Persistence.StorageProviderCommands;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -106,9 +105,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _objectReaderFactoryStrictMock.Verify();
 
-      Assert.That(result, Is.TypeOf<SingleDataContainerAssociateWithIDCommand<IRdbmsProviderCommandExecutionContext>>());
+      Assert.That(result, Is.TypeOf<SingleDataContainerAssociateWithIDCommand>());
 
-      var associateCommand = (SingleDataContainerAssociateWithIDCommand<IRdbmsProviderCommandExecutionContext>)result;
+      var associateCommand = (SingleDataContainerAssociateWithIDCommand)result;
       Assert.That(associateCommand.ExpectedObjectID, Is.EqualTo(_objectID1));
       Assert.That(associateCommand.InnerCommand, Is.TypeOf(typeof(SingleObjectLoadCommand<DataContainer>)));
 
@@ -270,7 +269,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dbCommandBuilderFactoryStrictMock.Verify();
 
       var innerCommand =
-          CheckDelegateBasedCommandAndReturnInnerCommand<IEnumerable<Tuple<ObjectID, object>>, IEnumerable<ObjectLookupResult<object>>>(result);
+          CheckDelegateBasedReadOnlyCommandAndReturnInnerCommand<IEnumerable<Tuple<ObjectID, object>>, IEnumerable<ObjectLookupResult<object>>>(result);
       Assert.That(innerCommand, Is.TypeOf(typeof(MultiObjectLoadCommand<Tuple<ObjectID, object>>)));
 
       var commandBuildersAndReaders = ((MultiObjectLoadCommand<Tuple<ObjectID, object>>)innerCommand).DbCommandBuildersAndReaders;
@@ -301,13 +300,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       return new ObjectID(classDefinition, Guid.NewGuid());
     }
 
-    private IStorageProviderCommand<TIn, IRdbmsProviderCommandExecutionContext> CheckDelegateBasedCommandAndReturnInnerCommand<TIn, TResult> (
-        IStorageProviderCommand<TResult, IRdbmsProviderCommandExecutionContext> command)
+    private IRdbmsProviderCommand<TIn> CheckDelegateBasedReadOnlyCommandAndReturnInnerCommand<TIn, TResult> (
+        IRdbmsProviderCommand<TResult> command)
     {
       Assert.That(
           command,
-          Is.TypeOf(typeof(DelegateBasedCommand<TIn, TResult, IRdbmsProviderCommandExecutionContext>)));
-      return ((DelegateBasedCommand<TIn, TResult, IRdbmsProviderCommandExecutionContext>)command).Command;
+          Is.TypeOf(typeof(DelegateBasedCommandWithReadOnlySupport<TIn, TResult>)));
+      return ((DelegateBasedCommandWithReadOnlySupport<TIn, TResult>)command).Command;
     }
   }
 }

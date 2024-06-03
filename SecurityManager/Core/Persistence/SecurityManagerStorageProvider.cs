@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.SecurityManager.Domain;
@@ -34,11 +33,13 @@ namespace Remotion.SecurityManager.Persistence
 
     public SecurityManagerRdbmsProvider (
         RdbmsProviderDefinition definition,
+        string connectionString,
         IPersistenceExtension persistenceExtension,
-        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory,
+        IRdbmsProviderCommandFactory commandFactory,
         Func<IDbConnection> connectionFactory)
         : base(
             definition,
+            connectionString,
             persistenceExtension,
             commandFactory,
             connectionFactory)

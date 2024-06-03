@@ -37,17 +37,27 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   {
     private readonly Guid _transactionID;
     private readonly IStorageSettings _storageSettings;
+    private readonly IPersistenceService _persistenceService;
     private readonly IPersistenceExtensionFactory _persistenceExtensionFactory;
+    private readonly IStorageAccessResolver _storageAccessResolver;
 
-    public RootPersistenceStrategy (Guid transactionID, IStorageSettings storageSettings, IPersistenceExtensionFactory persistenceExtensionFactory)
+    public RootPersistenceStrategy (
+        Guid transactionID,
+        IStorageSettings storageSettings,
+        IPersistenceService persistenceService,
+        IPersistenceExtensionFactory persistenceExtensionFactory,
+        IStorageAccessResolver storageAccessResolver)
     {
       ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
-      ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
+      ArgumentUtility.CheckNotNull("persistenceService", persistenceService);
       ArgumentUtility.CheckNotNull("persistenceExtensionFactory", persistenceExtensionFactory);
+      ArgumentUtility.CheckNotNull("storageAccessResolver", storageAccessResolver);
 
       _transactionID = transactionID;
       _storageSettings = storageSettings;
+      _persistenceService = persistenceService;
       _persistenceExtensionFactory = persistenceExtensionFactory;
+      _storageAccessResolver = storageAccessResolver;
     }
 
     public Guid TransactionID
@@ -59,9 +69,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      using (var persistenceManager = CreatePersistenceManager())
+      using (var storageProviderManager = CreateStorageProviderManager())
       {
-        return persistenceManager.CreateNewObjectID(classDefinition);
+        return _persistenceService.CreateNewObjectID(storageProviderManager, classDefinition);
       }
     }
 
@@ -69,9 +79,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       ArgumentUtility.CheckNotNull("id", id);
 
-      using (var persistenceManager = CreatePersistenceManager())
+      var storageAccess = _storageAccessResolver.ResolveStorageAccessForLoadingDomainObjectsByObjectID();
+      using (var storageProviderManager = CreateStorageProviderManager(storageAccess))
       {
-        var result = persistenceManager.LoadDataContainer(id);
+        var result = _persistenceService.LoadDataContainer(storageProviderManager, id);
         return GetLoadedObjectDataForObjectLookupResult(result);
       }
     }
@@ -80,9 +91,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
-      using (var persistenceManager = CreatePersistenceManager())
+      var storageAccess = _storageAccessResolver.ResolveStorageAccessForLoadingDomainObjectsByObjectID();
+      using (var storageProviderManager = CreateStorageProviderManager(storageAccess))
       {
-        var results = persistenceManager.LoadDataContainers(objectIDs);
+        var results = _persistenceService.LoadDataContainers(storageProviderManager, objectIDs);
         return results.Select(GetLoadedObjectDataForObjectLookupResult);
       }
     }
@@ -94,9 +106,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
       ArgumentUtility.CheckNotNull("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
 
-      using (var persistenceManager = CreatePersistenceManager())
+      var storageAccess = _storageAccessResolver.ResolveStorageAccessForLoadingDomainObjectRelation();
+      using (var storageProviderManager = CreateStorageProviderManager(storageAccess))
       {
-        var dataContainer = persistenceManager.LoadRelatedDataContainer(relationEndPointID);
+        var dataContainer = _persistenceService.LoadRelatedDataContainer(storageProviderManager, relationEndPointID);
         return GetLoadedObjectDataForDataContainer(dataContainer, alreadyLoadedObjectDataProvider);
       }
     }
@@ -107,9 +120,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
       ArgumentUtility.CheckNotNull("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
 
-      using (var persistenceManager = CreatePersistenceManager())
+      var storageAccess = _storageAccessResolver.ResolveStorageAccessForLoadingDomainObjectRelation();
+      using (var storageProviderManager = CreateStorageProviderManager(storageAccess))
       {
-        var dataContainers = persistenceManager.LoadRelatedDataContainers(relationEndPointID);
+        var dataContainers = _persistenceService.LoadRelatedDataContainers(storageProviderManager, relationEndPointID);
         return dataContainers.Select(dc => GetLoadedObjectDataForDataContainer(dc, alreadyLoadedObjectDataProvider));
       }
     }
@@ -118,8 +132,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       ArgumentUtility.CheckNotNull("query", query);ArgumentUtility.CheckNotNull("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
 
-
-      if (query.QueryType != QueryType.Collection)
+      if (query.QueryType != QueryType.CollectionReadWrite && query.QueryType != QueryType.CollectionReadOnly)
         throw new ArgumentException("Only collection queries can be used to load data containers.", "query");
 
       var dataContainers = ExecuteDataContainerQuery(query);
@@ -130,12 +143,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       ArgumentUtility.CheckNotNull("query", query);
 
-      if (query.QueryType != QueryType.Custom)
+      if (query.QueryType != QueryType.CustomReadOnly && query.QueryType != QueryType.CustomReadWrite)
         throw new ArgumentException("Only custom queries can be used to load custom results", "query");
 
-      using (var storageProviderManager = CreateStorageProviderManager())
+      var storageAccess = ResolveStorageAccessForQuery(query);
+      using (var storageProviderManager = CreateStorageProviderManager(storageAccess))
       {
-        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition.Name);
+        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition);
         // This foreach/yield combination is needed to force the using block to stay open until the whole result set has finished enumeration.
         foreach (var queryResultRow in provider.ExecuteCustomQuery(query))
         {
@@ -147,9 +161,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     private IEnumerable<DataContainer?> ExecuteDataContainerQuery (IQuery query)
     {
       IEnumerable<DataContainer?> dataContainers;
-      using (var storageProviderManager = CreateStorageProviderManager())
+
+      var storageAccess = ResolveStorageAccessForQuery(query);
+      using (var storageProviderManager = CreateStorageProviderManager(storageAccess))
       {
-        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition.Name);
+        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition);
         dataContainers = provider.ExecuteCollectionQuery(query);
       }
       return dataContainers;
@@ -159,12 +175,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       ArgumentUtility.CheckNotNull("query", query);
 
-      if (query.QueryType != QueryType.Scalar)
+      if (query.QueryType != QueryType.ScalarReadOnly && query.QueryType != QueryType.ScalarReadWrite)
         throw new ArgumentException("Only scalar queries can be used to load scalar results.", "query");
 
-      using (var storageProviderManager = CreateStorageProviderManager())
+      var storageAccess = ResolveStorageAccessForQuery(query);
+      using (var storageProviderManager = CreateStorageProviderManager(storageAccess))
       {
-        StorageProvider provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition.Name);
+        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition);
         return provider.ExecuteScalarQuery(query);
       }
     }
@@ -179,9 +196,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       if (collection.Count > 0)
       {
-        using (var persistenceManager = CreatePersistenceManager())
+        using (var storageProviderManager = CreateStorageProviderManager())
         {
-          persistenceManager.Save(collection);
+          _persistenceService.Save(storageProviderManager, collection);
         }
       }
 
@@ -194,20 +211,25 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       ArgumentUtility.CheckNotNull("query", query);
       ArgumentUtility.CheckNotNull("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
 
-      if (query.QueryType != QueryType.Collection)
-        throw new ArgumentException("Only collection queries can be used for fetching.", "query");
+      if (query.QueryType != QueryType.CollectionReadOnly)
+        throw new ArgumentException("Only readonly collection queries can be used for fetching.", "query");
 
       var dataContainers = ExecuteDataContainerQuery(query);
       return dataContainers.Select(dc => new LoadedObjectDataWithDataSourceData(GetLoadedObjectDataForDataContainer(dc, alreadyLoadedObjectDataProvider), dc));
 
     }
 
-    protected virtual PersistenceManager CreatePersistenceManager ()
+    private IReadOnlyStorageProviderManager CreateStorageProviderManager (StorageAccessType accessType)
     {
-      return new PersistenceManager(CreatePersistenceExtension(), _storageSettings);
+      return accessType switch
+      {
+          StorageAccessType.ReadOnly => new ReadOnlyStorageProviderManager(CreatePersistenceExtension(), _storageSettings),
+          StorageAccessType.ReadWrite => new StorageProviderManager(CreatePersistenceExtension(), _storageSettings),
+          _ => throw new NotSupportedException($"Unhandled storage access type: '{accessType.ToString()}'.")
+      };
     }
 
-    private StorageProviderManager CreateStorageProviderManager ()
+    private IStorageProviderManager CreateStorageProviderManager ()
     {
       return new StorageProviderManager(CreatePersistenceExtension(), _storageSettings);
     }
@@ -216,6 +238,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       var listenerFactory = _persistenceExtensionFactory;
       return new CompoundPersistenceExtension(listenerFactory.CreatePersistenceExtensions(_transactionID));
+    }
+
+    private StorageAccessType ResolveStorageAccessForQuery (IQuery query)
+    {
+      return query.QueryType switch
+      {
+          QueryType.CollectionReadWrite => StorageAccessType.ReadWrite,
+          QueryType.CustomReadWrite => StorageAccessType.ReadWrite,
+          QueryType.ScalarReadWrite => StorageAccessType.ReadWrite,
+          _ => _storageAccessResolver.ResolveStorageAccessForQuery(query)
+      };
     }
 
     private ILoadedObjectData GetLoadedObjectDataForDataContainer (DataContainer? dataContainer, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)

@@ -53,9 +53,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
 
     private abstract class StorageObjectFactoryBase : IStorageObjectFactory
     {
-      public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+      public IStorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
       {
         throw new System.NotImplementedException();
+      }
+
+      public IReadOnlyStorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+      {
+        throw new NotImplementedException();
       }
 
       public IPersistenceModelLoader CreatePersistenceModelLoader (StorageProviderDefinition storageProviderDefinition)

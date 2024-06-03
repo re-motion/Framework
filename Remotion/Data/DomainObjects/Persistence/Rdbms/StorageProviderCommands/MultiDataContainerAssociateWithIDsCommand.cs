@@ -19,25 +19,23 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
   /// <summary>
-  /// Executes a given <see cref="IStorageProviderCommand{T,TExecutionContext}"/> and associates the resulting <see cref="DataContainer"/> instances
+  /// Executes a given <see cref="IRdbmsProviderCommandWithReadOnlySupport{T}"/> and associates the resulting <see cref="DataContainer"/> instances
   /// with a given list of <see cref="ObjectID"/> values. If any <see cref="DataContainer"/> has a non-matching <see cref="ObjectID"/>, an exception
   /// is thrown.
   /// </summary>
-  public class MultiDataContainerAssociateWithIDsCommand
-      : IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IRdbmsProviderCommandExecutionContext>
+  public class MultiDataContainerAssociateWithIDsCommand : IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectLookupResult<DataContainer>>>
   {
     private readonly ObjectID[] _objectIDs;
-    private readonly IStorageProviderCommand<IEnumerable<DataContainer?>, IRdbmsProviderCommandExecutionContext> _command;
+    private readonly IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer?>> _command;
 
     public MultiDataContainerAssociateWithIDsCommand (
         IEnumerable<ObjectID> objectIDs,
-        IStorageProviderCommand<IEnumerable<DataContainer?>, IRdbmsProviderCommandExecutionContext> command)
+        IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer?>> command)
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
       ArgumentUtility.CheckNotNull("command", command);
@@ -58,17 +56,29 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       get { return _objectIDs; }
     }
 
-    public IStorageProviderCommand<IEnumerable<DataContainer?>, IRdbmsProviderCommandExecutionContext> Command
+    public IRdbmsProviderCommand<IEnumerable<DataContainer?>> Command
     {
       get { return _command; }
     }
 
-    public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderCommandExecutionContext executionContext)
+    public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
       ArgumentUtility.CheckNotNull("executionContext", executionContext);
 
       var dataContainers = _command.Execute(executionContext);
+      return ProcessDataContainers(dataContainers);
+    }
 
+    public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
+    {
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+
+      var dataContainers = _command.Execute(executionContext);
+      return ProcessDataContainers(dataContainers);
+    }
+
+    private IEnumerable<ObjectLookupResult<DataContainer>> ProcessDataContainers (IEnumerable<DataContainer?> dataContainers)
+    {
       var dataContainersByID =  new Dictionary<ObjectID, DataContainer>();
       foreach (var dataContainer in dataContainers.Where(dc => dc != null))
       {

@@ -15,22 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Data;
 
-namespace Remotion.Data.DomainObjects.Persistence
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms;
+
+/// <summary>
+/// A factory that can create <see cref="IDbCommand"/> objects.
+/// </summary>
+public interface IDbCommandFactory
 {
-  /// <summary>
-  /// Represents a command without a return value to be executed by a storage provider.
-  /// </summary>
-  public interface IStorageProviderCommand<in TExecutionContext>
-  {
-    void Execute (TExecutionContext executionContext);
-  }
-
-  /// <summary>
-  /// Represents a command with a return value to be executed by a storage provider.
-  /// </summary>
-  public interface IStorageProviderCommand<out T, in TExecutionContext>
-  {
-    T Execute (TExecutionContext executionContext);
-  }
+  IDbCommand CreateDbCommand ();
 }

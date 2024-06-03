@@ -13,25 +13,14 @@
 // 
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
-// 
-using System;
-using NUnit.Framework;
-using Remotion.Data.DomainObjects.Persistence.StorageProviderCommands;
+//
+namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderCommands
+/// <summary>
+/// Represents of storage access a <see cref="RootPersistenceStrategy"/> operation can request.
+/// </summary>
+public enum StorageAccessType
 {
-  [TestFixture]
-  public class FixedValueCommandTest
-  {
-    [Test]
-    public void Execute ()
-    {
-      var value = new object();
-      var command = new FixedValueCommand<object, object>(value);
-
-      var result = command.Execute(new object());
-
-      Assert.That(result, Is.SameAs(value));
-    }
-  }
+  ReadWrite,
+  ReadOnly
 }

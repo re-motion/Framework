@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries.Configuration;
@@ -33,9 +34,15 @@ namespace Remotion.Data.DomainObjects.Queries
     string ID { get; }
 
     /// <summary>
+    /// Gets metadata associated with the query. If provided, this information can be used for diagnostic and query-hint purposes.
+    /// </summary>
+    IReadOnlyDictionary<string, object> Metadata { get; }
+
+    /// <summary>
     /// Gets the statement of the query.
     /// </summary>
-    /// <remarks>The statement must be understood by the <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> responsible for executing the query.</remarks>
+    /// <remarks>The statement must be understood by the <see cref="Remotion.Data.DomainObjects.Persistence.IReadOnlyStorageProvider"/> or
+    /// <see cref="Remotion.Data.DomainObjects.Persistence.IStorageProvider"/> responsible for executing the query.</remarks>
     string Statement { get; }
 
     /// <summary>

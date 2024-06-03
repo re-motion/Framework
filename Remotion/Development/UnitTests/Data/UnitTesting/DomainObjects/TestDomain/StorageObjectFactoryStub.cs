@@ -34,7 +34,12 @@ public class StorageObjectFactoryStub: IRdbmsStorageObjectFactory
   {
   }
 
-  public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+  public IStorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+  {
+    throw new System.NotImplementedException();
+  }
+
+  public IReadOnlyStorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
   {
     throw new System.NotImplementedException();
   }
@@ -81,7 +86,7 @@ public class StorageObjectFactoryStub: IRdbmsStorageObjectFactory
     throw new System.NotImplementedException();
   }
 
-  public IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> CreateStorageProviderCommandFactory (RdbmsProviderDefinition storageProviderDefinition)
+  public IRdbmsProviderCommandFactory CreateStorageProviderCommandFactory (RdbmsProviderDefinition storageProviderDefinition)
   {
     throw new System.NotImplementedException();
   }

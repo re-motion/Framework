@@ -17,182 +17,173 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Moq;
 using Remotion.Context;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Data.DomainObjects.Tracing;
-using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Remotion.Data.DomainObjects.UnitTests
+namespace Remotion.Data.DomainObjects.UnitTests;
+
+// Used by the Official class definition.
+public class UnitTestStorageProviderStub : IStorageProvider
 {
-  // Used by the Official class definition.
-  public class UnitTestStorageProviderStub : StorageProvider
+  private class MockStorageProviderScope : IDisposable
   {
-    private class MockStorageProviderScope : IDisposable
+    private readonly IStorageProvider _previous;
+    private bool _disposed = false;
+
+    public MockStorageProviderScope (IStorageProvider previous)
     {
-      private readonly StorageProvider _previous;
-      private bool _disposed = false;
+      _previous = previous;
+    }
 
-      public MockStorageProviderScope (StorageProvider previous)
+    public void Dispose ()
+    {
+      if (!_disposed)
       {
-        _previous = previous;
-      }
-
-      public void Dispose ()
-      {
-        if (!_disposed)
-        {
-          _innerMockStorageProvider.SetCurrent(_previous);
-          _disposed = true;
-        }
+        _innerMockStorageProvider.SetCurrent(_previous);
+        _disposed = true;
       }
     }
+  }
 
-    private static int s_nextID = 0;
+  private static int s_nextID = 0;
 
-    private static readonly SafeContextSingleton<StorageProvider> _innerMockStorageProvider =
-        new SafeContextSingleton<StorageProvider>(typeof(UnitTestStorageProviderStub) + "._innerMockStorageProvider", () => null);
+  private static readonly SafeContextSingleton<IStorageProvider> _innerMockStorageProvider = new(typeof(UnitTestStorageProviderStub) + "._innerMockStorageProvider", () => null);
 
-    public static IDisposable EnterMockStorageProviderScope (StorageProvider mock)
+  public static IDisposable EnterMockStorageProviderScope (IStorageProvider mock)
+  {
+    var previous = _innerMockStorageProvider.Current;
+    _innerMockStorageProvider.SetCurrent(mock);
+    return new MockStorageProviderScope(previous);
+  }
+
+  public static T ExecuteWithMock<T> (IStorageProvider mockedStorageProvider, Func<T> func)
+  {
+    using (EnterMockStorageProviderScope(mockedStorageProvider))
     {
-      var previous = _innerMockStorageProvider.Current;
-      _innerMockStorageProvider.SetCurrent(mock);
-      return new MockStorageProviderScope(previous);
+      return func();
     }
+  }
 
-    public static T ExecuteWithMock<T> (StorageProvider mockedStorageProvider, Func<T> func)
+  public UnitTestStorageProviderStub ()
+  {
+  }
+
+  public IStorageProvider InnerProvider => _innerMockStorageProvider.Current;
+
+  public ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
+  {
+    if (InnerProvider != null)
     {
-      using (EnterMockStorageProviderScope(mockedStorageProvider))
-      {
-        return func();
-      }
+      return InnerProvider.LoadDataContainer(id);
     }
-
-    public static StorageProvider CreateStorageProviderMockForOfficial ()
+    else
     {
-      var storageProviderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Official)).StorageEntityDefinition.StorageProviderDefinition;
-      return new Mock<StorageProvider>(storageProviderDefinition, NullPersistenceExtension.Instance).Object;
-    }
+      var container = DataContainer.CreateForExisting(
+          id,
+          null,
+          delegate (PropertyDefinition propertyDefinition)
+          {
+            if (propertyDefinition.PropertyName.EndsWith(".Name"))
+              return "Max Sachbearbeiter";
+            else
+              return propertyDefinition.DefaultValue;
+          });
 
-    public UnitTestStorageProviderStub (
-        UnitTestStorageProviderStubDefinition definition,
-        IPersistenceExtension persistenceExtension)
-        : base(definition, persistenceExtension)
-    {
+      var idAsInt = (int)id.Value;
+      if (s_nextID <= idAsInt)
+        s_nextID = idAsInt + 1;
+      return new ObjectLookupResult<DataContainer>(id, container);
     }
+  }
 
-    public StorageProvider InnerProvider
-    {
-      get { return _innerMockStorageProvider.Current; }
-    }
+  public IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
+  {
+    if (InnerProvider != null)
+      return InnerProvider.LoadDataContainers(ids);
+    else
+      return ids.Select(LoadDataContainer);
+  }
 
-    public override ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
-    {
-      if (InnerProvider != null)
-        return InnerProvider.LoadDataContainer(id);
-      else
-      {
-        DataContainer container = DataContainer.CreateForExisting(
-            id,
-            null,
-            delegate (PropertyDefinition propertyDefinition)
-            {
-              if (propertyDefinition.PropertyName.EndsWith(".Name"))
-                return "Max Sachbearbeiter";
-              else
-                return propertyDefinition.DefaultValue;
-            });
+  public IEnumerable<DataContainer> ExecuteCollectionQuery (IQuery query)
+  {
+    if (InnerProvider != null)
+      return InnerProvider.ExecuteCollectionQuery(query);
+    else
+      return null;
+  }
 
-        var idAsInt = (int)id.Value;
-        if (s_nextID <= idAsInt)
-          s_nextID = idAsInt + 1;
-        return new ObjectLookupResult<DataContainer>(id, container);
-      }
-    }
+  public IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
+  {
+    if (InnerProvider != null)
+      return InnerProvider.ExecuteCustomQuery(query);
+    else
+      return null;
+  }
 
-    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
-    {
-      if (InnerProvider != null)
-        return InnerProvider.LoadDataContainers(ids);
-      else
-        return ids.Select(LoadDataContainer);
-    }
+  public object ExecuteScalarQuery (IQuery query)
+  {
+    if (InnerProvider != null)
+      return InnerProvider.ExecuteScalarQuery(query);
+    else
+      return null;
+  }
 
-    public override IEnumerable<DataContainer> ExecuteCollectionQuery (IQuery query)
-    {
-      if (InnerProvider != null)
-        return InnerProvider.ExecuteCollectionQuery(query);
-      else
-        return null;
-    }
+  public void Save (IReadOnlyCollection<DataContainer> dataContainers)
+  {
+    if (InnerProvider != null)
+      InnerProvider.Save(dataContainers);
+  }
 
-    public override IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
-    {
-      if (InnerProvider != null)
-        return InnerProvider.ExecuteCustomQuery(query);
-      else
-        return null;
-    }
+  public void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers)
+  {
+    if (InnerProvider != null)
+      InnerProvider.UpdateTimestamps(dataContainers);
+  }
 
-    public override object ExecuteScalarQuery (IQuery query)
-    {
-      if (InnerProvider != null)
-        return InnerProvider.ExecuteScalarQuery(query);
-      else
-        return null;
-    }
+  public IEnumerable<DataContainer> LoadDataContainersByRelatedID (
+      RelationEndPointDefinition relationEndPointDefinition,
+      SortExpressionDefinition sortExpressionDefinition,
+      ObjectID relatedID)
+  {
+    if (InnerProvider != null)
+      return InnerProvider.LoadDataContainersByRelatedID(relationEndPointDefinition, sortExpressionDefinition, relatedID);
+    else
+      return null;
+  }
 
-    public override void Save (IReadOnlyCollection<DataContainer> dataContainers)
-    {
-      if (InnerProvider != null)
-        InnerProvider.Save(dataContainers);
-    }
+  public void BeginTransaction ()
+  {
+    if (InnerProvider != null)
+      InnerProvider.BeginTransaction();
+  }
 
-    public override void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers)
-    {
-      if (InnerProvider != null)
-        InnerProvider.UpdateTimestamps(dataContainers);
-    }
+  public void Commit ()
+  {
+    if (InnerProvider != null)
+      InnerProvider.Commit();
+  }
 
-    public override IEnumerable<DataContainer> LoadDataContainersByRelatedID (
-        RelationEndPointDefinition relationEndPointDefinition,
-        SortExpressionDefinition sortExpressionDefinition,
-        ObjectID relatedID)
-    {
-      if (InnerProvider != null)
-        return InnerProvider.LoadDataContainersByRelatedID(relationEndPointDefinition, sortExpressionDefinition, relatedID);
-      else
-        return null;
-    }
+  public void Rollback ()
+  {
+    if (InnerProvider != null)
+      InnerProvider.Rollback();
+  }
 
-    public override void BeginTransaction ()
-    {
-      if (InnerProvider != null)
-        InnerProvider.BeginTransaction();
-    }
+  public ObjectID CreateNewObjectID (ClassDefinition classDefinition)
+  {
+    if (InnerProvider != null)
+      return InnerProvider.CreateNewObjectID(classDefinition);
+    else
+      return new ObjectID(classDefinition, s_nextID++);
+  }
 
-    public override void Commit ()
-    {
-      if (InnerProvider != null)
-        InnerProvider.Commit();
-    }
-
-    public override void Rollback ()
-    {
-      if (InnerProvider != null)
-        InnerProvider.Rollback();
-    }
-
-    public override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
-    {
-      if (InnerProvider != null)
-        return InnerProvider.CreateNewObjectID(classDefinition);
-      else
-        return new ObjectID(classDefinition, s_nextID++);
-    }
+  public void Dispose ()
+  {
+    if (InnerProvider != null)
+      InnerProvider.Dispose();
   }
 }
