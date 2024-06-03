@@ -515,12 +515,16 @@ img.disabled,
   filter: grayscale(100%);
 }
 
+.remotion-themed.scrollable
+{
+  overflow: auto;
+}
+
 /* If either scrollbar-width`/`scrollbar-color` is specified, the `::-webkit-scrollbar` selectors won't work  */
 @supports not selector(::-webkit-scrollbar)
 {
   .remotion-themed.scrollable
   {
-    overflow: auto;
     scrollbar-width: var(--remotion-themed-scrollbar-style);
     scrollbar-color: var(--remotion-themed-scrollbar-color);
   }
