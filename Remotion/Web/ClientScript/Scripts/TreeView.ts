@@ -16,11 +16,29 @@
 // 
 class WebTreeView
 {
-  public static Initialize (treeViewOrSelector: CssSelectorOrElement<HTMLElement>): void
+  public static Initialize (treeViewOrSelector: CssSelectorOrElement<HTMLElement>, updateMessageText: Nullable<string>): void
   {
     ArgumentUtility.CheckNotNull ('treeViewOrSelector', treeViewOrSelector);
 
-    const treeView = ElementResolverUtility.ResolveSingle (treeViewOrSelector);
+    const treeView = ElementResolverUtility.ResolveSingle(treeViewOrSelector);
+
+    if (updateMessageText)
+    {
+      const treeAlertBox = treeView.querySelector<HTMLElement>('span[aria-live=assertive] span');
+      if (treeAlertBox)
+      {
+        treeAlertBox.setAttribute("aria-hidden", 'false');
+
+        setTimeout(() => treeAlertBox.innerHTML = updateMessageText, 0);
+
+        // we need a timeout to reset aria-hidden, as the screenreader needs time to read the value of the alert,
+        // but it should not be able to find the alert text afterward.
+        setTimeout(
+            () => treeAlertBox.setAttribute("aria-hidden", 'true'),
+            7_000
+        );
+      }
+    }
 
     treeView.addEventListener ('keydown', function (event)
     {

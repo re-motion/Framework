@@ -65,6 +65,8 @@ namespace Remotion.Web.UI.Controls
     private const string c_nodeIconTPlus = "sprite.svg#TreeViewTPlus";
     private const string c_nodeIconWhite = "sprite.svg#TreeViewWhite";
 
+    private const string c_possibleChildrenDescriptorIDPostfix = "PossibleChildrenAriaDescriptor";
+
     #endregion
 
     /// <summary> The separator used for the node path. </summary>
@@ -89,7 +91,9 @@ namespace Remotion.Web.UI.Controls
     public enum ResourceIdentifier
     {
       /// <summary> Additional text for improved screen reader support in Internet Explorer.</summary>
-      ScreenReaderNodeSelectedLabelText
+      ScreenReaderNodeSelectedLabelText,
+      ScreenReaderNoItemFoundText,
+      ScreenReaderPossiblyNoChildrenText
     }
 
     // statics
@@ -143,6 +147,7 @@ namespace Remotion.Web.UI.Controls
     private bool _hasTreeNodeMenusCreated;
     private int _menuCounter;
     private string? _assignedLabelID;
+    private WebString? _clickedNodeWithoutChildrenText;
 
     private readonly IRenderingFeatures _renderingFeatures;
 
@@ -222,27 +227,30 @@ namespace Remotion.Web.UI.Controls
     /// <param name="eventArgument"> The path to the clicked tree node. </param>
     private void HandleExpansionCommandEvent (string eventArgument)
     {
-      string[] pathSegments;
-      WebTreeNode? clickedNode = ParseNodePath(eventArgument, out pathSegments);
-      if (clickedNode != null)
-      {
-        _focusededNode = clickedNode;
-        if (clickedNode.IsEvaluated)
-        {
-          clickedNode.IsExpanded = !clickedNode.IsExpanded;
-          if (clickedNode.IsExpanded && EnableLookAheadEvaluation)
-            clickedNode.EvaluateChildren();
-        }
-        else
-        {
-          clickedNode.EvaluateExpand();
-          if (EnableLookAheadEvaluation)
-            clickedNode.EvaluateChildren();
-        }
+      WebTreeNode? clickedNode = ParseNodePath(eventArgument, out _);
+      if (clickedNode == null)
+        return;
 
-        if (clickedNode.IsExpanded)
-          InitializeTreeNodeMenus(clickedNode.Children);
+      _focusededNode = clickedNode;
+      if (clickedNode.IsEvaluated)
+      {
+        clickedNode.IsExpanded = !clickedNode.IsExpanded;
+        if (clickedNode.IsExpanded && EnableLookAheadEvaluation)
+          clickedNode.EvaluateChildren();
       }
+      else
+      {
+        clickedNode.EvaluateExpand();
+        var hasChildren = clickedNode.Children.Count > 0;
+        if (!hasChildren)
+          _clickedNodeWithoutChildrenText = clickedNode.Text;
+
+        if (EnableLookAheadEvaluation)
+          clickedNode.EvaluateChildren();
+      }
+
+      if (clickedNode.IsExpanded)
+        InitializeTreeNodeMenus(clickedNode.Children);
     }
 
     /// <summary> Handles the click command. </summary>
@@ -585,11 +593,18 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Overrides the parent control's <c>RenderContents</c> method. </summary>
     protected override void RenderContents (HtmlTextWriter writer)
     {
+      var escapedUpdateMessageTextOrNull = _clickedNodeWithoutChildrenText switch
+      {
+          null => "null",
+          _ => "'" + ScriptUtility.EscapeClientScript(
+              _clickedNodeWithoutChildrenText.GetValueOrDefault().GetValue() + " " + GetResourceManager().GetString(ResourceIdentifier.ScreenReaderNoItemFoundText)) + "'"
+      };
+
       ((IControl)this).Page!.ClientScript.RegisterStartupScriptBlock(
           this,
           typeof(WebTreeView),
           Guid.NewGuid().ToString(),
-          string.Format("WebTreeView.Initialize ('#{0}');", ClientID));
+          $"WebTreeView.Initialize ('#{ClientID}', {escapedUpdateMessageTextOrNull});");
 
       ResolveNodeIcons();
 
@@ -611,8 +626,38 @@ namespace Remotion.Web.UI.Controls
         RenderNodes(writer, _nodes, true, nodeIDAlgorithm, 0);
       }
       writer.RenderEndTag();
+
+      RenderAriaTreeAlertBox(writer);
+      RenderAriaPossibleChildrenDescription(writer);
+
       foreach (DropDownMenu menu in _menuPlaceHolder.Controls)
         menu.RenderAsContextMenu(writer);
+    }
+
+    private void RenderAriaTreeAlertBox (HtmlTextWriter writer)
+    {
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassScreenReaderText);
+      writer.AddAttribute(HtmlTextWriterAttribute2.AriaLive, HtmlAriaLiveAttributeValue.Assertive);
+      writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      writer.AddAttribute(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
+      writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      writer.RenderEndTag();
+      writer.RenderEndTag();
+    }
+
+    private void RenderAriaPossibleChildrenDescription (HtmlTextWriter writer)
+    {
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassScreenReaderText);
+      writer.AddAttribute(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
+      writer.AddAttribute(HtmlTextWriterAttribute.Id, CreatePossibleChildrenDescriptorID());
+      writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      GetResourceManager().GetText(ResourceIdentifier.ScreenReaderPossiblyNoChildrenText).WriteTo(writer);
+      writer.RenderEndTag();
+    }
+
+    private string CreatePossibleChildrenDescriptorID ()
+    {
+      return $"{ID}_{c_possibleChildrenDescriptorIDPostfix}";
     }
 
     /// <summary> Renders the <paremref name="nodes"/> onto the <paremref name="writer"/>. </summary>
@@ -802,6 +847,9 @@ namespace Remotion.Web.UI.Controls
       }
       if (node.IsExpanded)
         writer.AddAttribute(HtmlTextWriterAttribute2.AriaOwns, CreateNodeChildrenID(nodeID));
+
+      if (!isEvaluated)
+        writer.AddAttribute(HtmlTextWriterAttribute2.AriaDescribedBy, CreatePossibleChildrenDescriptorID());
 
       writer.RenderBeginTag(HtmlTextWriterTag.A);
       if (_treeNodeRenderMethod == null)
