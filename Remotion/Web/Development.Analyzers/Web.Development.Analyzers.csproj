@@ -8,6 +8,7 @@
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <AssemblyTitle>Remotion Web Analyzers</AssemblyTitle>
     <Description>Analyzer ensuring best practices when using the Remotion.Web assemblies.</Description>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

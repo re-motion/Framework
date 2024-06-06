@@ -7,6 +7,7 @@
     <AssemblyName>Remotion.Development.Analyzers</AssemblyName>
     <AssemblyTitle>Remotion Analyzers</AssemblyTitle>
     <Description>Analyzer ensuring best practices when using the Remotion assemblies.</Description>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Remove="$(MsBuildThisFileFullPath)"/>
