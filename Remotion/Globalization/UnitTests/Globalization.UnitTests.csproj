@@ -22,7 +22,7 @@
     <ProjectReference Include="..\Core\Globalization.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.10.0-3.final" GeneratePathProperty="true" ExcludeAssets="all" />
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" GeneratePathProperty="true" ExcludeAssets="all" />
   </ItemGroup>
   <Target Name="CopyTestAssemblyFilesToOutputPath" AfterTargets="Build" Condition="'$(TargetFramework)' != ''">
     <Copy SourceFiles="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)Remotion.Globalization.UnitTests.TestDomain.Resources.ClassWithResources.resources"

@@ -17,9 +17,9 @@
     <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Moq" Version="4.16.1" />
-    <PackageReference Include="Moq.VerifiableSequence" Version="4.16.1.2" />
-    <PackageReference Include="NUnit" Version="4.1.0" />
+    <PackageReference Include="Moq" />
+    <PackageReference Include="Moq.VerifiableSequence" />
+    <PackageReference Include="NUnit" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Development.Core.csproj" />

@@ -30,9 +30,9 @@
     <ProjectReference Include="..\..\Validation\Mixins\Validation.Mixins.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Remotion.IO" version="3.0.0" />
-    <PackageReference Include="Remotion.IO.Archive.Zip" version="3.0.0" />
-    <PackageReference Include="Remotion.TypePipe" version="3.2.0" />
+    <PackageReference Include="Remotion.IO" />
+    <PackageReference Include="Remotion.IO.Archive.Zip" />
+    <PackageReference Include="Remotion.TypePipe" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

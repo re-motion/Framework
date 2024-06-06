@@ -12,10 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoreForms.Web.Infrastructure.MachineConfig" Version="8.1.2" />
-    <PackageReference Include="CoreForms.Web.Infrastructure.Roslyn" Version="8.1.2" />
-    <PackageReference Include="CoreForms.Web.Infrastructure" Version="8.1.2" />
-    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.10.0-3.final" ExcludeAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="CoreForms.Web.Infrastructure.MachineConfig" />
+    <PackageReference Include="CoreForms.Web.Infrastructure.Roslyn" />
+    <PackageReference Include="CoreForms.Web.Infrastructure" />
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" ExcludeAssets="all" GeneratePathProperty="true" />
   </ItemGroup>
 
 </Project>
