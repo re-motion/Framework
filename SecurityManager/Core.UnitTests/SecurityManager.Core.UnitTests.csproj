@@ -20,7 +20,6 @@
     <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupDBSpecialTables.sql" />
     <None Include="@(DatabaseFiles)" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="AclTools\Code Repository.txt" />
-    <None Include="..\SecurityManager AGPL.licenseheader" Link="SecurityManager AGPL.licenseheader" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Remotion\Core\Core\Core.Core.csproj" />

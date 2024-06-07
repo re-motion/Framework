@@ -11,11 +11,9 @@
     <Product Condition="'$(ProductType)' == 'Mixins'" >$(ProductNameForMixins)</Product>
     <Product Condition="'$(ProductType)' == 'SecurityManager'">$(ProductNameForSecurityManager)</Product>
     <Company>$(CompanyName)</Company>
-    <Copyright Condition="'$(ProductType)' == 'Default' OR '$(ProductType)' == 'Mixins'">$(Copyright)</Copyright>
-    <Copyright Condition="'$(ProductType)' == 'SecurityManager'">$(CopyrightForSecurityManager)</Copyright>
+    <Copyright>$(Copyright)</Copyright>
     <Authors>$(Company)</Authors>
-    <PackageLicenseExpression Condition="'$(ProductType)' == 'Default' OR '$(ProductType)' == 'Mixins'">LGPL-2.1-or-later</PackageLicenseExpression>
-    <PackageLicenseExpression Condition="'$(ProductType)' == 'SecurityManager'">AGPL-3.0-only</PackageLicenseExpression>
+    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
     <PackageProjectUrl>http://www.re-motion.org</PackageProjectUrl>
     <RepositoryUrl>https://github.com/re-motion/Framework/</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -61,7 +59,7 @@
     <None Include="$(MSBuildThisFileDirectory)..\remotion.snk" Link="remotion.snk" />
     <None Include="$(MSBuildThisFileDirectory)..\Remotion\Remotion LGPL.licenseheader" Link="Remotion LGPL.licenseheader" Condition="'$(ProductType)' == 'Default'" />
     <None Include="$(MSBuildThisFileDirectory)..\Remotion\Remotion LGPL.licenseheader" Link="Remotion LGPL.licenseheader" Condition="'$(ProductType)' == 'Mixins'" />
-    <None Include="$(MSBuildThisFileDirectory)..\SecurityManager\SecurityManager AGPL.licenseheader" Link="SecurityManager AGPL.licenseheader" Condition="'$(ProductType)' == 'SecurityManager'" />
+    <None Include="$(MSBuildThisFileDirectory)..\Remotion\Remotion LGPL.licenseheader" Link="Remotion LGPL.licenseheader" Condition="'$(ProductType)' == 'SecurityManager'" />
   </ItemGroup>
 
   <ItemGroup>
