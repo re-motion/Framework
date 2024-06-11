@@ -437,14 +437,14 @@ CREATE TYPE [dbo].[TVP_String] AS TABLE
   [Value] nvarchar (max) NULL
 )
 GO
-CREATE TYPE [dbo].[TVP_AnsiString] AS TABLE
-(
-  [Value] varchar (max) NULL
-)
-GO
 CREATE TYPE [dbo].[TVP_Binary] AS TABLE
 (
   [Value] varbinary (max) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_AnsiString] AS TABLE
+(
+  [Value] varchar (max) NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Boolean] AS TABLE
@@ -466,50 +466,6 @@ GO
 CREATE TYPE [dbo].[TVP_Byte_Distinct] AS TABLE
 (
   [Value] tinyint NULL
-  UNIQUE CLUSTERED ([Value])
-)
-GO
-CREATE TYPE [dbo].[TVP_DateTime] AS TABLE
-(
-  [Value] datetime NULL
-)
-GO
-CREATE TYPE [dbo].[TVP_DateTime_Distinct] AS TABLE
-(
-  [Value] datetime NULL
-  UNIQUE CLUSTERED ([Value])
-)
-GO
-CREATE TYPE [dbo].[TVP_Decimal] AS TABLE
-(
-  [Value] decimal (38, 3) NULL
-)
-GO
-CREATE TYPE [dbo].[TVP_Decimal_Distinct] AS TABLE
-(
-  [Value] decimal (38, 3) NULL
-  UNIQUE CLUSTERED ([Value])
-)
-GO
-CREATE TYPE [dbo].[TVP_Double] AS TABLE
-(
-  [Value] float NULL
-)
-GO
-CREATE TYPE [dbo].[TVP_Double_Distinct] AS TABLE
-(
-  [Value] float NULL
-  UNIQUE CLUSTERED ([Value])
-)
-GO
-CREATE TYPE [dbo].[TVP_Guid] AS TABLE
-(
-  [Value] uniqueidentifier NULL
-)
-GO
-CREATE TYPE [dbo].[TVP_Guid_Distinct] AS TABLE
-(
-  [Value] uniqueidentifier NULL
   UNIQUE CLUSTERED ([Value])
 )
 GO
@@ -546,6 +502,17 @@ CREATE TYPE [dbo].[TVP_Int64_Distinct] AS TABLE
   UNIQUE CLUSTERED ([Value])
 )
 GO
+CREATE TYPE [dbo].[TVP_Decimal] AS TABLE
+(
+  [Value] decimal (38, 3) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Decimal_Distinct] AS TABLE
+(
+  [Value] decimal (38, 3) NULL
+  UNIQUE CLUSTERED ([Value])
+)
+GO
 CREATE TYPE [dbo].[TVP_Single] AS TABLE
 (
   [Value] real NULL
@@ -554,6 +521,39 @@ GO
 CREATE TYPE [dbo].[TVP_Single_Distinct] AS TABLE
 (
   [Value] real NULL
+  UNIQUE CLUSTERED ([Value])
+)
+GO
+CREATE TYPE [dbo].[TVP_Double] AS TABLE
+(
+  [Value] float NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Double_Distinct] AS TABLE
+(
+  [Value] float NULL
+  UNIQUE CLUSTERED ([Value])
+)
+GO
+CREATE TYPE [dbo].[TVP_DateTime] AS TABLE
+(
+  [Value] datetime NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_DateTime_Distinct] AS TABLE
+(
+  [Value] datetime NULL
+  UNIQUE CLUSTERED ([Value])
+)
+GO
+CREATE TYPE [dbo].[TVP_Guid] AS TABLE
+(
+  [Value] uniqueidentifier NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Guid_Distinct] AS TABLE
+(
+  [Value] uniqueidentifier NULL
   UNIQUE CLUSTERED ([Value])
 )
 GO
