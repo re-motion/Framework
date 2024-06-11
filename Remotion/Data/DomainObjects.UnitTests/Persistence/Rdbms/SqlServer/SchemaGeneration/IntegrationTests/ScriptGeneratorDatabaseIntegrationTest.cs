@@ -38,6 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       _standardScriptGenerator = new ScriptGenerator(
           pd => pd.Factory.CreateSchemaScriptBuilder(pd),
           new RdbmsStorageEntityDefinitionProvider(),
+          new RdbmsStructuredTypeDefinitionProvider(),
           new ScriptToStringConverter());
 
       _extendedScriptGenerator = new ScriptGenerator(
@@ -54,6 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
                   }),
               SchemaGenerationThirdStorageProviderDefinition.ConnectionString),
           new RdbmsStorageExtendedEntityDefinitionProvider(),
+          new RdbmsStructuredTypeDefinitionProvider(),
           new ScriptToStringConverter());
     }
 

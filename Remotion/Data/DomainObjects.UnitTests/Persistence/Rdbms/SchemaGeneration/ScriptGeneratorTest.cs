@@ -36,15 +36,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     private ClassDefinition _classDefinitionForFirstStorageProvider2;
     private ClassDefinition _classDefinitionForSecondStorageProvider;
     private ClassDefinition _classDefinitionForThirdStorageProvider;
-    private Mock<IRdbmsStorageEntityDefinitionProvider> _entityDefininitionProviderMock;
+    private Mock<IRdbmsStorageEntityDefinitionProvider> _entityDefinitionProviderMock;
+    private Mock<IRdbmsStructuredTypeDefinitionProvider> _structuredTypeDefinitionProviderMock;
     private Mock<IScriptToStringConverter> _scriptToStringConverterStub;
     private ScriptGenerator _scriptGenerator;
     private Mock<IRdbmsStorageEntityDefinition> _fakeEntityDefinition1;
     private Mock<IRdbmsStorageEntityDefinition> _fakeEntityDefinition2;
     private Mock<IRdbmsStorageEntityDefinition> _fakeEntityDefinition3;
+    private Mock<IRdbmsStructuredTypeDefinition> _fakeStructuredTypeDefinition1;
+    private Mock<IRdbmsStructuredTypeDefinition> _fakeStructuredTypeDefinition2;
+    private Mock<IRdbmsStructuredTypeDefinition> _fakeStructuredTypeDefinition3;
     private ScriptPair _fakeScriptResult1;
     private ScriptPair _fakeScriptResult2;
     private ScriptPair _fakeScriptResult3;
+    private ScriptPair _fakeScriptResult4;
+    private ScriptPair _fakeScriptResult5;
+    private ScriptPair _fakeScriptResult6;
     private Mock<IScriptBuilder> _scriptBuilderForFirstStorageProviderMock;
     private Mock<IScriptBuilder> _scriptBuilderForSecondStorageProviderMock;
     private Mock<IScriptBuilder> _scriptBuilderForThirdStorageProviderMock;
@@ -75,7 +82,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       _fakeScriptResult1 = new ScriptPair("CreateScript1", "DropScript1");
       _fakeScriptResult2 = new ScriptPair("CreateScript2", "DropScript2");
       _fakeScriptResult3 = new ScriptPair("CreateScript3", "DropScript3");
-      _entityDefininitionProviderMock = new Mock<IRdbmsStorageEntityDefinitionProvider>(MockBehavior.Strict);
+
+      _entityDefinitionProviderMock = new Mock<IRdbmsStorageEntityDefinitionProvider>(MockBehavior.Strict);
+      _structuredTypeDefinitionProviderMock = new Mock<IRdbmsStructuredTypeDefinitionProvider>(MockBehavior.Strict);
       _scriptBuilderForFirstStorageProviderMock = new Mock<IScriptBuilder>(MockBehavior.Strict);
       _scriptBuilderForSecondStorageProviderMock = new Mock<IScriptBuilder>(MockBehavior.Strict);
       _scriptBuilderForThirdStorageProviderMock = new Mock<IScriptBuilder>(MockBehavior.Strict);
@@ -99,12 +108,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
             }
             throw new InvalidOperationException("Invalid storage provider!");
           },
-          _entityDefininitionProviderMock.Object,
+          _entityDefinitionProviderMock.Object,
+          _structuredTypeDefinitionProviderMock.Object,
           _scriptToStringConverterStub.Object);
 
       _fakeEntityDefinition1 = new Mock<IRdbmsStorageEntityDefinition>();
       _fakeEntityDefinition2 = new Mock<IRdbmsStorageEntityDefinition>();
       _fakeEntityDefinition3 = new Mock<IRdbmsStorageEntityDefinition>();
+
+      _fakeStructuredTypeDefinition1 = new Mock<IRdbmsStructuredTypeDefinition>();
+      _fakeStructuredTypeDefinition2 = new Mock<IRdbmsStructuredTypeDefinition>();
+      _fakeStructuredTypeDefinition3 = new Mock<IRdbmsStructuredTypeDefinition>();
     }
 
     [Test]
@@ -124,18 +138,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     }
 
     [Test]
-    public void GetScripts_OneClassDefinitionWithRdbmsStorageProviderDefinition ()
+    public void GetScripts_OneClassDefinition_OneStructuredTypeDefinition_WithRdbmsStorageProviderDefinition ()
     {
-      _entityDefininitionProviderMock
+      _entityDefinitionProviderMock
           .Setup(mock => mock.GetEntityDefinitions(new[] { _classDefinitionForSecondStorageProvider }))
           .Returns(new[] { _fakeEntityDefinition1.Object })
           .Verifiable();
+      _structuredTypeDefinitionProviderMock
+          .Setup(mock => mock.GetTypeDefinitions(SchemaGenerationSecondStorageProviderDefinition))
+          .Returns(new[] { _fakeStructuredTypeDefinition1.Object })
+          .Verifiable();
 
       _scriptBuilderForSecondStorageProviderMock.Setup(mock => mock.AddEntityDefinition(_fakeEntityDefinition1.Object)).Verifiable();
+      _scriptBuilderForSecondStorageProviderMock.Setup(mock => mock.AddStructuredTypeDefinition(_fakeStructuredTypeDefinition1.Object)).Verifiable();
 
       var result = _scriptGenerator.GetScripts(new[] { _classDefinitionForSecondStorageProvider }).ToList();
 
-      _entityDefininitionProviderMock.Verify();
+      _entityDefinitionProviderMock.Verify();
+      _structuredTypeDefinitionProviderMock.Verify();
       _scriptBuilderForSecondStorageProviderMock.Verify();
       Assert.That(result.Count, Is.EqualTo(1));
       Assert.That(result[0].StorageProviderDefinition, Is.SameAs(SchemaGenerationSecondStorageProviderDefinition));
@@ -144,19 +164,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     }
 
     [Test]
-    public void GetScripts_SeveralClassDefinitionWithSameRdbmsStorageProviderDefinitions ()
+    public void GetScripts_SeveralClassDefinition_SeveralStructuredTypeDefinition_WithSameRdbmsStorageProviderDefinitions ()
     {
-      _entityDefininitionProviderMock
+      _entityDefinitionProviderMock
           .Setup(mock => mock.GetEntityDefinitions(new[] { _classDefinitionForFirstStorageProvider1, _classDefinitionForFirstStorageProvider2 }))
           .Returns(new[] { _fakeEntityDefinition1.Object, _fakeEntityDefinition2.Object })
+          .Verifiable();
+      _structuredTypeDefinitionProviderMock
+          .Setup(mock => mock.GetTypeDefinitions(SchemaGenerationFirstStorageProviderDefinition))
+          .Returns(new[] { _fakeStructuredTypeDefinition1.Object, _fakeStructuredTypeDefinition2.Object})
           .Verifiable();
 
       _scriptBuilderForFirstStorageProviderMock.Setup(mock => mock.AddEntityDefinition(_fakeEntityDefinition1.Object)).Verifiable();
       _scriptBuilderForFirstStorageProviderMock.Setup(mock => mock.AddEntityDefinition(_fakeEntityDefinition2.Object)).Verifiable();
+      _scriptBuilderForFirstStorageProviderMock.Setup(mock => mock.AddStructuredTypeDefinition(_fakeStructuredTypeDefinition1.Object)).Verifiable();
+      _scriptBuilderForFirstStorageProviderMock.Setup(mock => mock.AddStructuredTypeDefinition(_fakeStructuredTypeDefinition2.Object)).Verifiable();
 
       var result = _scriptGenerator.GetScripts(new[] { _classDefinitionForFirstStorageProvider1, _classDefinitionForFirstStorageProvider2 }).ToList();
 
-      _entityDefininitionProviderMock.Verify();
+      _entityDefinitionProviderMock.Verify();
+      _structuredTypeDefinitionProviderMock.Verify();
       _scriptBuilderForFirstStorageProviderMock.Verify();
       Assert.That(result.Count, Is.EqualTo(1));
       Assert.That(result[0].StorageProviderDefinition, Is.SameAs(SchemaGenerationFirstStorageProviderDefinition));
@@ -165,21 +192,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     }
 
     [Test]
-    public void GetScripts_SeveralClassDefinitionWithDifferentRdbmsStorageProviderDefinitions ()
+    public void GetScripts_SeveralClassDefinition_SeveralStructuredTypeDefinition_WithDifferentRdbmsStorageProviderDefinitions ()
     {
-      _entityDefininitionProviderMock
+      _entityDefinitionProviderMock
           .Setup(mock => mock.GetEntityDefinitions(new[] { _classDefinitionForFirstStorageProvider1, _classDefinitionForFirstStorageProvider2 }))
           .Returns(new[] { _fakeEntityDefinition1.Object, _fakeEntityDefinition2.Object })
           .Verifiable();
-      _entityDefininitionProviderMock
+      _entityDefinitionProviderMock
           .Setup(mock => mock.GetEntityDefinitions(new[] { _classDefinitionForSecondStorageProvider }))
           .Returns(new[] { _fakeEntityDefinition3.Object })
+          .Verifiable();
+      _structuredTypeDefinitionProviderMock
+          .Setup(mock => mock.GetTypeDefinitions(SchemaGenerationFirstStorageProviderDefinition))
+          .Returns(new[] { _fakeStructuredTypeDefinition1.Object, _fakeStructuredTypeDefinition2.Object })
+          .Verifiable();
+      _structuredTypeDefinitionProviderMock
+          .Setup(mock => mock.GetTypeDefinitions(SchemaGenerationSecondStorageProviderDefinition))
+          .Returns(new[] { _fakeStructuredTypeDefinition3.Object })
           .Verifiable();
 
       _scriptBuilderForFirstStorageProviderMock.Setup(mock => mock.AddEntityDefinition(_fakeEntityDefinition1.Object)).Verifiable();
       _scriptBuilderForFirstStorageProviderMock.Setup(mock => mock.AddEntityDefinition(_fakeEntityDefinition2.Object)).Verifiable();
+      _scriptBuilderForFirstStorageProviderMock.Setup(mock => mock.AddStructuredTypeDefinition(_fakeStructuredTypeDefinition1.Object)).Verifiable();
+      _scriptBuilderForFirstStorageProviderMock.Setup(mock => mock.AddStructuredTypeDefinition(_fakeStructuredTypeDefinition2.Object)).Verifiable();
 
       _scriptBuilderForSecondStorageProviderMock.Setup(mock => mock.AddEntityDefinition(_fakeEntityDefinition3.Object)).Verifiable();
+      _scriptBuilderForSecondStorageProviderMock.Setup(mock => mock.AddStructuredTypeDefinition(_fakeStructuredTypeDefinition3.Object)).Verifiable();
 
       var result =
           _scriptGenerator.GetScripts(
@@ -191,7 +229,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
                   _classDefinitionForThirdStorageProvider
               }).ToList();
 
-      _entityDefininitionProviderMock.Verify();
+      _entityDefinitionProviderMock.Verify();
+      _structuredTypeDefinitionProviderMock.Verify();
       _scriptBuilderForFirstStorageProviderMock.Verify();
       _scriptBuilderForSecondStorageProviderMock.Verify();
       Assert.That(result.Count, Is.EqualTo(2));
