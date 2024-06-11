@@ -26,6 +26,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories;
 using Remotion.Data.DomainObjects.Queries;
@@ -62,9 +63,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
           new ObjectIDDataParameterDefinitionFactory(TestDomainStorageProviderDefinition, storageTypeInformationProvider, StorageSettings,
               new SimpleDataParameterDefinitionFactory(storageTypeInformationProvider));
 
+      var singleScalarTableTypeDefinitionProvider = new SingleScalarSqlTableTypeDefinitionProvider(storageTypeInformationProvider);
+
       _factory = new RdbmsProviderCommandFactory(
           TestDomainStorageProviderDefinition,
-          new SqlDbCommandBuilderFactory(new SqlDialect()),
+          new SqlDbCommandBuilderFactory(singleScalarTableTypeDefinitionProvider, new SqlDialect()),
           rdbmsPersistenceModelProvider,
           new ObjectReaderFactory(
               rdbmsPersistenceModelProvider, infrastructureStoragePropertyDefinitionProvider, storageTypeInformationProvider, dataContainerValidator),
