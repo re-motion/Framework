@@ -101,7 +101,8 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
     protected virtual void BuildSchema ()
     {
       var scriptGenerator = new ScriptGenerator(
-          pd => pd.Factory.CreateSchemaScriptBuilder(pd), new RdbmsStorageEntityDefinitionProvider(), new ScriptToStringConverter());
+          pd => pd.Factory.CreateSchemaScriptBuilder(pd), new RdbmsStorageEntityDefinitionProvider(), new RdbmsStructuredTypeDefinitionProvider(),
+          new ScriptToStringConverter());
       var scripts = scriptGenerator.GetScripts(MappingConfiguration.Current.GetTypeDefinitions());
       var fileGenerator = new FileGenerator(_rdbmsToolsParameters.SchemaOutputDirectory);
       var includeStorageProviderName = scripts.Count() > 1;

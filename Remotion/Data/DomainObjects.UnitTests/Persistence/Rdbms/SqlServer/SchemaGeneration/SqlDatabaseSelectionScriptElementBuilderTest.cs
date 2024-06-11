@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
+using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
@@ -38,6 +39,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var connectionString = "Data Source=myServerAddress;Initial Catalog=MyDataBase;User Id=myUsername;Password=myPassword;";
       _innerScriptBuilderMock = new Mock<IScriptBuilder>();
       _builder = new SqlDatabaseSelectionScriptElementBuilder(_innerScriptBuilderMock.Object, connectionString);
+    }
+
+    [Test]
+    public void AddStructuredTypeDefinition_CallsInnerBuilder ()
+    {
+      var structuredTypeDefinition = Mock.Of<IRdbmsStructuredTypeDefinition>();
+      _innerScriptBuilderMock.Setup(mock => mock.AddStructuredTypeDefinition(structuredTypeDefinition)).Verifiable();
+
+      Assert.That(() => _builder.AddStructuredTypeDefinition(structuredTypeDefinition), Throws.Nothing);
+
+      _innerScriptBuilderMock.Verify();
     }
 
     [Test]

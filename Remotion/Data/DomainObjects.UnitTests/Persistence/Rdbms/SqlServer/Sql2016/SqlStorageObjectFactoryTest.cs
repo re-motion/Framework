@@ -60,6 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     private Mock<SqlIndexScriptElementFactory> _indexScriptElementFactoryStub;
     private Mock<IndexScriptBuilder> _indexBuilderStub;
     private Mock<SynonymScriptBuilder> _synonymBuilderStub;
+    private Mock<TableTypeScriptBuilder> _tableTypeBuilderStub;
     private Mock<IRdbmsPersistenceModelProvider> _rdbmsPersistenceModelProviderStub;
     private Mock<IStorageTypeInformationProvider> _storageTypeInformationProviderStub;
     private Mock<IDbCommandBuilderFactory> _dbCommandBuilderFactoryStub;
@@ -103,6 +104,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
               new Mock<ISynonymScriptElementFactory<FilterViewDefinition>>().Object,
               new Mock<ISynonymScriptElementFactory<EmptyViewDefinition>>().Object,
               new SqlCommentScriptElementFactory());
+      _tableTypeBuilderStub = new Mock<TableTypeScriptBuilder>(Mock.Of<IStructuredTypeScriptElementFactory>(), new SqlCommentScriptElementFactory());
       _rdbmsPersistenceModelProviderStub = new Mock<IRdbmsPersistenceModelProvider>();
       _storageTypeInformationProviderStub = new Mock<IStorageTypeInformationProvider>();
       _dbCommandBuilderFactoryStub = new Mock<IDbCommandBuilderFactory>();
@@ -564,7 +566,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
           _viewBuilderStub.Object,
           _constraintBuilderStub.Object,
           _indexBuilderStub.Object,
-          _synonymBuilderStub.Object);
+          _synonymBuilderStub.Object,
+          _tableTypeBuilderStub.Object);
 
       var result = testableSqlProviderFactory.CreateSchemaScriptBuilder(_rdbmsProviderDefinition);
 
@@ -582,7 +585,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
                   _constraintBuilderStub.Object,
                   _viewBuilderStub.Object,
                   _indexBuilderStub.Object,
-                  _synonymBuilderStub.Object
+                  _synonymBuilderStub.Object,
+                  _tableTypeBuilderStub.Object
               }));
     }
 

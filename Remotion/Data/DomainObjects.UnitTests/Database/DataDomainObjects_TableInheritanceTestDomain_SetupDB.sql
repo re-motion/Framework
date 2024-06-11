@@ -282,3 +282,4 @@ CREATE VIEW [dbo].[TI_SpecificFolderView] ([ID], [ClassID], [Timestamp], [Name],
 GO
 -- Create indexes for tables that were created above
 -- Create synonyms for tables that were created above
+-- Create all structured types

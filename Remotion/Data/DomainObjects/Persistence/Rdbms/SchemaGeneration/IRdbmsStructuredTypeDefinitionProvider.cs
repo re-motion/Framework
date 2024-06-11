@@ -14,17 +14,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
+using System.Collections.Generic;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 {
   /// <summary>
-  /// <see cref="ITableConstraintDefinitionVisitor"/> defines the API for all table constraint definition visitor implementations.
+  /// A strategy to obtain all <see cref="IRdbmsStructuredTypeDefinition"/> objects.
   /// </summary>
-  public interface ITableConstraintDefinitionVisitor
+  public interface IRdbmsStructuredTypeDefinitionProvider
   {
-    void VisitPrimaryKeyConstraintDefinition (PrimaryKeyConstraintDefinition primaryKeyConstraintDefinition);
-    void VisitForeignKeyConstraintDefinition (ForeignKeyConstraintDefinition foreignKeyConstraintDefinition);
-    void VisitUniqueConstraintDefinition (UniqueConstraintDefinition uniqueConstraintDefinition);
+    IReadOnlyCollection<IRdbmsStructuredTypeDefinition> GetTypeDefinitions (RdbmsProviderDefinition storageTypeInformationProvider);
   }
 }

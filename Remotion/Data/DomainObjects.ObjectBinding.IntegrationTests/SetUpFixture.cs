@@ -64,6 +64,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
         var scriptGenerator = new ScriptGenerator(
             pd => pd.Factory.CreateSchemaScriptBuilder(pd),
             new RdbmsStorageEntityDefinitionProvider(),
+            new RdbmsStructuredTypeDefinitionProvider(),
             new ScriptToStringConverter());
         var scripts = scriptGenerator.GetScripts(MappingConfiguration.Current.GetTypeDefinitions()).Single();
 
