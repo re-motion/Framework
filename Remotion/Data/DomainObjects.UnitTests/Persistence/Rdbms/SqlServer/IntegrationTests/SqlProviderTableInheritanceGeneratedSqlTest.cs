@@ -17,10 +17,12 @@
 using System;
 using System.Data;
 using System.Linq;
+using Microsoft.SqlServer.Server;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests
@@ -46,6 +48,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainersByRelatedID_NoSortExpression ()
     {
+      var expectedTvpValue = new SqlTableValuedParameterValue("TVP_Guid", new[] { new SqlMetaData("Value", SqlDbType.UniqueIdentifier) });
+      expectedTvpValue.AddRecord(DomainObjectIDs.PersonForUnidirectionalRelationTest.Value);
+      expectedTvpValue.AddRecord(DomainObjectIDs.Customer.Value);
+      expectedTvpValue.AddRecord(DomainObjectIDs.Person.Value);
+
       var sequence = new VerifiableSequence();
       _testHelper.ExpectExecuteReader(
           sequence,
@@ -58,11 +65,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [CreatedBy], [CreatedAt], [ClientID], [FirstName], [LastName], [DateOfBirth], [Photo], "
           + "[CustomerType], [CustomerSince], [RegionID] FROM [TableInheritance_Person] "
-          + "WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
+          + "WHERE [ID] IN (SELECT [Value] FROM @ID);",
           Tuple.Create(
               "@ID",
-              DbType.Xml,
-              (object)"<L><I>084010c4-82e5-4b0d-ae9f-a953303c03a4</I><I>623016f9-b525-4cae-a2bd-d4a6155b2f33</I><I>21e9bea1-3026-430a-a01e-e9b6a39928a8</I></L>"));
+              DbType.Object,
+              (object)expectedTvpValue));
       _testHelper.ExpectExecuteReader(
           sequence,
           CommandBehavior.SingleResult,
@@ -79,6 +86,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainersByRelatedID_WithSortExpression ()
     {
+      var expectedTvpValue = new SqlTableValuedParameterValue("TVP_Guid", new[] { new SqlMetaData("Value", SqlDbType.UniqueIdentifier) });
+      expectedTvpValue.AddRecord(DomainObjectIDs.Customer.Value);
+      expectedTvpValue.AddRecord(DomainObjectIDs.PersonForUnidirectionalRelationTest.Value);
+      expectedTvpValue.AddRecord(DomainObjectIDs.Person.Value);
+
       var sequence = new VerifiableSequence();
       _testHelper.ExpectExecuteReader(
           sequence,
@@ -92,11 +104,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [CreatedBy], [CreatedAt], [ClientID], [FirstName], [LastName], [DateOfBirth], [Photo], "
           + "[CustomerType], [CustomerSince], [RegionID] FROM [TableInheritance_Person] "
-          + "WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
+          + "WHERE [ID] IN (SELECT [Value] FROM @ID);",
           Tuple.Create(
               "@ID",
-              DbType.Xml,
-              (object)"<L><I>623016f9-b525-4cae-a2bd-d4a6155b2f33</I><I>084010c4-82e5-4b0d-ae9f-a953303c03a4</I><I>21e9bea1-3026-430a-a01e-e9b6a39928a8</I></L>"));
+              DbType.Object,
+              (object)expectedTvpValue));
       _testHelper.ExpectExecuteReader(
           sequence,
           CommandBehavior.SingleResult,
