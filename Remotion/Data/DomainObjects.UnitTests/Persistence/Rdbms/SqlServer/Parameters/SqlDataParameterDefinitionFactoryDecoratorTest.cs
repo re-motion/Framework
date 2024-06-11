@@ -26,7 +26,7 @@ using Remotion.Development.UnitTesting;
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Parameters;
 
 [TestFixture]
-public class SqlDataParameterDefinitionFactoryDecoratorTests
+public class SqlDataParameterDefinitionFactoryDecoratorTest
 {
   private static IEnumerable<object> GetCauseDecorationValues ()
   {
@@ -38,15 +38,16 @@ public class SqlDataParameterDefinitionFactoryDecoratorTests
   [TestCaseSource(nameof(GetCauseDecorationValues))]
   public void DecoratesWith_SqlFulltextDataParameterDefinitionDecorator (object queryParameterValue)
   {
+    var queryStub = new Mock<IQuery>();
     var queryParameter = new QueryParameter("dummy", queryParameterValue);
     var parameterDefinitionStub = new Mock<IDataParameterDefinition>();
 
     var factoryStub = new Mock<IDataParameterDefinitionFactory>();
-    factoryStub.Setup(_ => _.CreateDataParameterDefinition(queryParameter)).Returns(parameterDefinitionStub.Object);
+    factoryStub.Setup(_ => _.CreateDataParameterDefinition(queryParameter, queryStub.Object)).Returns(parameterDefinitionStub.Object);
 
     var factoryDecorator = new SqlFulltextDataParameterDefinitionFactory(factoryStub.Object);
 
-    var result = factoryDecorator.CreateDataParameterDefinition(queryParameter);
+    var result = factoryDecorator.CreateDataParameterDefinition(queryParameter, queryStub.Object);
     Assert.That(result, Is.InstanceOf<SqlFulltextDataParameterDefinitionDecorator>());
     Assert.That(result.As<SqlFulltextDataParameterDefinitionDecorator>().InnerDataParameterDefinition, Is.SameAs(parameterDefinitionStub.Object));
   }
@@ -63,15 +64,16 @@ public class SqlDataParameterDefinitionFactoryDecoratorTests
   [TestCaseSource(nameof(GetPreventDecorationValues))]
   public void DoesNotDecorate (object queryParameterValue)
   {
+    var queryStub = new Mock<IQuery>();
     var queryParameter = new QueryParameter("dummy", queryParameterValue);
     var parameterDefinitionStub = new Mock<IDataParameterDefinition>();
 
     var factoryStub = new Mock<IDataParameterDefinitionFactory>();
-    factoryStub.Setup(_ => _.CreateDataParameterDefinition(queryParameter)).Returns(parameterDefinitionStub.Object);
+    factoryStub.Setup(_ => _.CreateDataParameterDefinition(queryParameter, queryStub.Object)).Returns(parameterDefinitionStub.Object);
 
     var factoryDecorator = new SqlFulltextDataParameterDefinitionFactory(factoryStub.Object);
 
-    var result = factoryDecorator.CreateDataParameterDefinition(queryParameter);
+    var result = factoryDecorator.CreateDataParameterDefinition(queryParameter, queryStub.Object);
     Assert.That(result, Is.SameAs(parameterDefinitionStub.Object));
   }
 }

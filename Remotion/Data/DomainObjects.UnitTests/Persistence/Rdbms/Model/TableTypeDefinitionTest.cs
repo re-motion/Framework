@@ -16,7 +16,7 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -31,8 +31,8 @@ public class TableTypeDefinitionTest
   public void Initialize ()
   {
     var typeName = new EntityNameDefinition("test", "MyTableType");
-    var properties = new List<IRdbmsStoragePropertyDefinition> { Mock.Of<IRdbmsStoragePropertyDefinition>(), Mock.Of<IRdbmsStoragePropertyDefinition>() };
-    var constraints = new List<ITableConstraintDefinition>{ Mock.Of<ITableConstraintDefinition>() };
+    var properties = new[] { Mock.Of<IRdbmsStoragePropertyDefinition>(), Mock.Of<IRdbmsStoragePropertyDefinition>() };
+    var constraints = new List<ITableConstraintDefinition> { Mock.Of<ITableConstraintDefinition>() };
 
     var tableTypeDefinition = new TableTypeDefinition(typeName, properties, constraints);
 
@@ -44,29 +44,21 @@ public class TableTypeDefinitionTest
   [Test]
   public void GetAllColumns_ReturnsColumnsOfAllProperties ()
   {
-    var property1 = new Mock<IRdbmsStoragePropertyDefinition>();
-    property1.Setup(_ => _.GetColumns()).Returns(
-    [
-        new ColumnDefinition("Column1", Mock.Of<IStorageTypeInformation>(), false),
-        new ColumnDefinition("Column2", Mock.Of<IStorageTypeInformation>(), false)
-    ]);
+    var name = new EntityNameDefinition(null, "Test");
 
-    var property2 = new Mock<IRdbmsStoragePropertyDefinition>();
-    property2.Setup(_ => _.GetColumns()).Returns(
-    [
-        new ColumnDefinition("Column3", Mock.Of<IStorageTypeInformation>(), false),
-        new ColumnDefinition("Column4", Mock.Of<IStorageTypeInformation>(), false)
-    ]);
+    var column1 = new ColumnDefinition("Column1", Mock.Of<IStorageTypeInformation>(), false);
+    var column2 = new ColumnDefinition("Column2", Mock.Of<IStorageTypeInformation>(), false);
+    var column3 = new ColumnDefinition("Column3", Mock.Of<IStorageTypeInformation>(), false);
+    var column4 = new ColumnDefinition("Column4", Mock.Of<IStorageTypeInformation>(), false);
 
-    var typeName = new EntityNameDefinition("test", "MyTableType");
-    var properties = new List<IRdbmsStoragePropertyDefinition> { property1.Object, property2.Object };
-    var constraints = Array.Empty<ITableConstraintDefinition>();
+    var storagePropertyStub1 = new Mock<IRdbmsStoragePropertyDefinition>();
+    storagePropertyStub1.Setup(_ => _.GetColumns()).Returns([column1, column2]);
+    var storagePropertyStub2 = new Mock<IRdbmsStoragePropertyDefinition>();
+    storagePropertyStub2.Setup(_ => _.GetColumns()).Returns([column3, column4]);
 
-    var tableTypeDefinition = new TableTypeDefinition(typeName, properties, constraints);
-    var result = tableTypeDefinition.GetAllColumns().ToArray();
-
-    Assert.That(result.Length, Is.EqualTo(4));
-    Assert.That(result.Select(o => o.Name), Is.EqualTo(new[] { "Column1", "Column2", "Column3", "Column4" }));
+    var tableTypeDefinition = new TableTypeDefinition(name, [storagePropertyStub1.Object, storagePropertyStub2.Object], []);
+    var result = tableTypeDefinition.GetAllColumns();
+    Assert.That(result, Is.EqualTo(new[] { column1, column2, column3, column4 }));
   }
 
   [Test]
@@ -79,9 +71,112 @@ public class TableTypeDefinitionTest
     var tableTypeDefinition = new TableTypeDefinition(typeName, properties, constraints);
 
     var visitorMock = new Mock<IRdbmsStructuredTypeDefinitionVisitor>();
-    visitorMock.Setup(_=>_.VisitTableTypeDefinition(tableTypeDefinition)).Verifiable();
+    visitorMock.Setup(_ => _.VisitTableTypeDefinition(tableTypeDefinition)).Verifiable();
 
-    tableTypeDefinition.Accept(visitorMock.Object);
+    ((IRdbmsStructuredTypeDefinition)tableTypeDefinition).Accept(visitorMock.Object);
     visitorMock.Verify();
+  }
+
+  public struct RecordPropertyData
+  {
+    public string Name { get; set; }
+    public ColumnData[] Columns { get; set; }
+  }
+
+  public struct ColumnData
+  {
+    public string Name;
+    public DbType DbType;
+    public int? Length;
+    public SqlDbType SqlDbType;
+  }
+
+  private static IEnumerable<RecordPropertyData[]> GetSqlMetaDataTestCases ()
+  {
+    // single property with one column
+    yield return [new RecordPropertyData { Columns = [ new ColumnData { Name = "Value", DbType = DbType.String, Length = -1, SqlDbType = SqlDbType.NVarChar } ] }];
+    yield return [new RecordPropertyData { Columns = [ new ColumnData { Name = "Value", DbType = DbType.AnsiString, Length = 100, SqlDbType = SqlDbType.VarChar } ] }];
+    yield return [new RecordPropertyData { Columns = [ new ColumnData { Name = "Value", DbType = DbType.Binary, Length = 512, SqlDbType = SqlDbType.VarBinary } ] }];
+
+    // multiple properties, one column each
+    yield return
+    [
+        new RecordPropertyData { Columns = [ new ColumnData { Name = "Bool", DbType = DbType.Boolean, Length = null, SqlDbType = SqlDbType.Bit } ] },
+        new RecordPropertyData { Columns = [ new ColumnData { Name = "Byte", DbType = DbType.Byte, Length = null, SqlDbType = SqlDbType.TinyInt } ] },
+        new RecordPropertyData { Columns = [ new ColumnData { Name = "Short", DbType = DbType.Int16, Length = null, SqlDbType = SqlDbType.SmallInt } ] },
+        new RecordPropertyData { Columns = [ new ColumnData { Name = "Int", DbType = DbType.Int32, Length = null, SqlDbType = SqlDbType.Int } ] },
+        new RecordPropertyData { Columns = [ new ColumnData { Name = "Long", DbType = DbType.Int64, Length = null, SqlDbType = SqlDbType.BigInt } ] }
+    ];
+    yield return
+    [
+        new RecordPropertyData { Columns = [ new ColumnData { Name = "Decimal", DbType = DbType.Decimal, Length = null, SqlDbType = SqlDbType.Decimal } ] },
+        new RecordPropertyData { Columns = [ new ColumnData { Name = "Float", DbType = DbType.Single, Length = null, SqlDbType = SqlDbType.Real } ] },
+        new RecordPropertyData { Columns = [ new ColumnData { Name = "Double", DbType = DbType.Double, Length = null, SqlDbType = SqlDbType.Float } ] }
+    ];
+    yield return
+    [
+        new RecordPropertyData { Columns = [ new ColumnData { Name = "Guid", DbType = DbType.Guid, Length = null, SqlDbType = SqlDbType.UniqueIdentifier } ] },
+        new RecordPropertyData { Columns = [ new ColumnData { Name = "DateTime", DbType = DbType.DateTime, Length = null, SqlDbType = SqlDbType.DateTime } ] }
+    ];
+
+    // one property with multiple columns
+    yield return
+    [
+        new RecordPropertyData
+        {
+            Columns =
+            [
+                new ColumnData { Name = "IDValue", DbType = DbType.Guid, Length = null, SqlDbType = SqlDbType.UniqueIdentifier },
+                new ColumnData { Name = "ClassID", DbType = DbType.AnsiString, Length = 100, SqlDbType = SqlDbType.VarChar }
+            ]
+        }
+    ];
+  }
+
+  [Test]
+  [TestCaseSource(nameof(GetSqlMetaDataTestCases))]
+  public void CreateTableValuedParameterValue (RecordPropertyData[] properties)
+  {
+    var storagePropertyDefinitions = new List<IRdbmsStoragePropertyDefinition>();
+    var expectedSqlMetaData = new List<(string name, SqlDbType sqlDbType, int? length)>();
+
+    foreach (var property in properties)
+    {
+      var columnDefinitions = new List<ColumnDefinition>();
+      foreach (var column in property.Columns)
+      {
+        var storageTypeInfo = new Mock<IStorageTypeInformation>();
+        storageTypeInfo.Setup(_ => _.StorageDbType).Returns(column.DbType);
+        storageTypeInfo.Setup(_ => _.StorageTypeLength).Returns(column.Length);
+
+        var columnDefinition = new ColumnDefinition(column.Name, storageTypeInfo.Object, false);
+        columnDefinitions.Add(columnDefinition);
+        expectedSqlMetaData.Add((column.Name, column.SqlDbType, column.Length));
+      }
+
+      var storagePropertyDefinition = new Mock<IRdbmsStoragePropertyDefinition>();
+      storagePropertyDefinition.Setup(_ => _.GetColumns()).Returns(columnDefinitions);
+      storagePropertyDefinitions.Add(storagePropertyDefinition.Object);
+    }
+
+    var tableTypeName = new EntityNameDefinition(null, $"TestTableType");
+    var tableTypeDefinition = new TableTypeDefinition(
+        tableTypeName,
+        storagePropertyDefinitions,
+        Array.Empty<ITableConstraintDefinition>());
+
+    var result = tableTypeDefinition.CreateTableValuedParameterValue();
+    Assert.That(result.IsEmpty, Is.True);
+    Assert.That(result.TableTypeName, Is.EqualTo("TestTableType"));
+    Assert.That(result.ColumnMetaData.Count, Is.EqualTo(expectedSqlMetaData.Count));
+    var expected = expectedSqlMetaData.GetEnumerator();
+    foreach (var actual in result.ColumnMetaData)
+    {
+      expected.MoveNext();
+      Assert.That(actual.Name, Is.EqualTo(expected.Current.name));
+      Assert.That(actual.SqlDbType, Is.EqualTo(expected.Current.sqlDbType));
+      if (expected.Current.length.HasValue)
+        Assert.That(actual.MaxLength, Is.EqualTo(expected.Current.length));
+    }
   }
 }
