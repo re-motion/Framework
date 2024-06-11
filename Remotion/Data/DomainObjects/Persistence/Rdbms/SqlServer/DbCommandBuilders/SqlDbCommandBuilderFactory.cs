@@ -20,7 +20,9 @@ using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders.Specifications;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Utilities;
 
@@ -31,15 +33,17 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
   /// </summary>
   public class SqlDbCommandBuilderFactory : IDbCommandBuilderFactory
   {
+    private readonly ISingleScalarStructuredTypeDefinitionProvider _tableTypeDefinitionProvider;
     private readonly ISqlDialect _sqlDialect;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SqlDbCommandBuilderFactory"/> class.
     /// </summary>
-    /// <param name="sqlDialect">The SQL dialect.</param>
-    public SqlDbCommandBuilderFactory (ISqlDialect sqlDialect)
+    public SqlDbCommandBuilderFactory (ISingleScalarStructuredTypeDefinitionProvider tableTypeDefinitionProvider, ISqlDialect sqlDialect)
     {
+      ArgumentUtility.CheckNotNull("tableTypeDefinitionProvider", tableTypeDefinitionProvider);
       ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
+      _tableTypeDefinitionProvider = tableTypeDefinitionProvider;
       _sqlDialect = sqlDialect;
     }
 
@@ -72,12 +76,23 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
       ArgumentUtility.CheckNotNull("selectedColumns", selectedColumns);
       ArgumentUtility.CheckNotNull("orderedColumns", orderedColumns);
 
-      var comparedValues = GetValuesForSingleColumnDefinition(comparedColumnValueTable);
+      var (columnDefinition, comparedValues) = GetValuesForSingleColumnDefinition(comparedColumnValueTable);
+      var tableType = (TableTypeDefinition)_tableTypeDefinitionProvider.GetStructuredTypeDefinition(columnDefinition.StorageTypeInfo.DotNetType, false);
+      Assertion.IsTrue(
+          tableType.Properties.Count == 1 && tableType.Properties.Single().GetColumns().Count() == 1,
+          "Table type returned by ISingleScalarStructuredTypeDefinitionProvider should only contain a single property with a single column.");
+
+      var recordDefinition = new RecordDefinition(
+          columnDefinition.Name,
+          tableType,
+          [RecordPropertyDefinition.ScalarAsValue(tableType.Properties.Single())]);
+
+      var dataParameterDefinition = new SqlTableValuedDataParameterDefinition(recordDefinition);
 
       return new SelectDbCommandBuilder(
           table,
           new SelectedColumnsSpecification(selectedColumns),
-          new SqlXmlSetComparedColumnSpecification(comparedValues.Item1, comparedValues.Item2),
+          new SqlTableValuedParameterComparedColumnSpecification(columnDefinition, comparedValues, dataParameterDefinition),
           new OrderedColumnsSpecification(orderedColumns),
           _sqlDialect);
     }

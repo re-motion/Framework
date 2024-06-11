@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories;
 using Remotion.Data.DomainObjects.Tracing;
@@ -43,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
         throw new ArgumentException($"RdbmsProviderDefinition '{storageProviderDefinition.Name}' is not part of the storage settings.", nameof(storageProviderDefinition));
 
       var storageTypeInformationProvider = new SqlStorageTypeInformationProvider();
-      var dbCommandBuilderFactory = new SqlDbCommandBuilderFactory(new SqlDialect());
+      var dbCommandBuilderFactory = new SqlDbCommandBuilderFactory(new SingleScalarSqlTableTypeDefinitionProvider(storageTypeInformationProvider), new SqlDialect());
       var storageNameProvider = new ReflectionBasedStorageNameProvider();
       var rdbmsPersistenceModelProvider = new RdbmsPersistenceModelProvider();
       var infrastructureStoragePropertyDefinitionProvider = new InfrastructureStoragePropertyDefinitionProvider(
