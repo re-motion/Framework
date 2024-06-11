@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
@@ -76,6 +77,11 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     public IEnumSerializer CreateEnumSerializer ()
+    {
+      throw new NotImplementedException();
+    }
+
+    public ISingleScalarStructuredTypeDefinitionProvider CreateSingleScalarStructuredTypeDefinitionProvider (RdbmsProviderDefinition storageProviderDefinition)
     {
       throw new NotImplementedException();
     }

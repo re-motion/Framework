@@ -35,11 +35,12 @@ public class SqlFulltextDataParameterDefinitionFactory : IDataParameterDefinitio
     NextDataParameterDefinitionFactory = nextDataParameterDefinitionFactory;
   }
 
-  public IDataParameterDefinition CreateDataParameterDefinition (QueryParameter queryParameter)
+  public IDataParameterDefinition CreateDataParameterDefinition (QueryParameter queryParameter, IQuery query)
   {
     ArgumentUtility.CheckNotNull(nameof(queryParameter), queryParameter);
+    ArgumentUtility.CheckNotNull(nameof(query), query);
 
-    var innerDataParameterDefinition = NextDataParameterDefinitionFactory.CreateDataParameterDefinition(queryParameter);
+    var innerDataParameterDefinition = NextDataParameterDefinitionFactory.CreateDataParameterDefinition(queryParameter, query);
     if (queryParameter.Value is string or char[])
       return new SqlFulltextDataParameterDefinitionDecorator(innerDataParameterDefinition);
 

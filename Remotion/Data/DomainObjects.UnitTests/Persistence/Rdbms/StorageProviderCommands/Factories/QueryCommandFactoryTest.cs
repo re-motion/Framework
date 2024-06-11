@@ -85,15 +85,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     public void CreateForDataContainerQuery ()
     {
       _dataParameterDefinitionFactoryStrictMock
-          .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter1))
+          .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter1, _queryStub.Object))
           .Returns(_dataParameterDefinition1)
           .Verifiable();
       _dataParameterDefinitionFactoryStrictMock
-          .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter2))
+          .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter2, _queryStub.Object))
           .Returns(_dataParameterDefinition2)
           .Verifiable();
       _dataParameterDefinitionFactoryStrictMock
-          .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter3))
+          .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter3, _queryStub.Object))
           .Returns(_dataParameterDefinition3)
           .Verifiable();
 
@@ -123,15 +123,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     public void CreateForCustomQuery ()
     {
       _dataParameterDefinitionFactoryStrictMock
-          .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter1))
+          .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter1, _queryStub.Object))
           .Returns(_dataParameterDefinition1)
           .Verifiable();
       _dataParameterDefinitionFactoryStrictMock
-          .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter2))
+          .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter2, _queryStub.Object))
           .Returns(_dataParameterDefinition2)
           .Verifiable();
       _dataParameterDefinitionFactoryStrictMock
-          .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter3))
+          .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter3, _queryStub.Object))
           .Returns(_dataParameterDefinition3)
           .Verifiable();
 
@@ -158,15 +158,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     public void CreateForScalarQuery ()
     {
       _dataParameterDefinitionFactoryStrictMock
-          .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter1))
+          .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter1, _queryStub.Object))
           .Returns(_dataParameterDefinition1)
           .Verifiable();
       _dataParameterDefinitionFactoryStrictMock
-          .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter2))
+          .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter2, _queryStub.Object))
           .Returns(_dataParameterDefinition2)
           .Verifiable();
       _dataParameterDefinitionFactoryStrictMock
-          .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter3))
+          .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter3, _queryStub.Object))
           .Returns(_dataParameterDefinition3)
           .Verifiable();
 
