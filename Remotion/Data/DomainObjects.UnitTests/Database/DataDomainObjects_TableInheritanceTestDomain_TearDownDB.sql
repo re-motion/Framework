@@ -4,6 +4,7 @@
 --
 
 USE DBPrefix_TestDomain
+-- Drop all structured types
 -- Drop all synonyms
 -- Drop all indexes
 -- Drop all views

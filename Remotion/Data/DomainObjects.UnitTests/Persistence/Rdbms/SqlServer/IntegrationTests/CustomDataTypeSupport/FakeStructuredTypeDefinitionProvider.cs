@@ -15,16 +15,20 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport;
+
+/// <summary>
+/// An implementation of <see cref="IRdbmsStructuredTypeDefinitionProvider"/> that never returns any <see cref="IRdbmsStructuredTypeDefinition"/>s.
+/// </summary>
+public class FakeStructuredTypeDefinitionProvider : IRdbmsStructuredTypeDefinitionProvider
 {
-  /// <summary>
-  /// <see cref="ITableConstraintDefinitionVisitor"/> defines the API for all table constraint definition visitor implementations.
-  /// </summary>
-  public interface ITableConstraintDefinitionVisitor
+  public IReadOnlyCollection<IRdbmsStructuredTypeDefinition> GetTypeDefinitions (RdbmsProviderDefinition storageTypeInformationProvider)
   {
-    void VisitPrimaryKeyConstraintDefinition (PrimaryKeyConstraintDefinition primaryKeyConstraintDefinition);
-    void VisitForeignKeyConstraintDefinition (ForeignKeyConstraintDefinition foreignKeyConstraintDefinition);
-    void VisitUniqueConstraintDefinition (UniqueConstraintDefinition uniqueConstraintDefinition);
+    return Array.Empty<IRdbmsStructuredTypeDefinition>();
   }
 }
