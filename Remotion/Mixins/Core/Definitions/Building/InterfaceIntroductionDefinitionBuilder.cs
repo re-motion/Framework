@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -34,7 +33,7 @@ namespace Remotion.Mixins.Definitions.Building
     {
       _mixin = mixin;
       _defaultVisibility = defaultVisibility;
-      _nonIntroducedInterfaces = new HashSet<Type> { typeof(ISerializable), typeof(IDeserializationCallback), typeof(IInitializableMixin) };
+      _nonIntroducedInterfaces = new HashSet<Type> { typeof(IInitializableMixin) };
       AnalyzeNonIntroducedInterfaces();
     }
 

@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Remotion.Collections;
 using Remotion.Mixins.Utilities;
 using Remotion.TypePipe.Dlr.Ast;
@@ -34,9 +33,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// </summary>
   public class MixinTypeGenerator
   {
-    private static readonly MethodInfo s_getObjectDataForGeneratedTypesMethod = MemberInfoFromExpressionUtility.GetMethod(
-        () => MixinSerializationHelper.GetObjectDataForGeneratedTypes(null!, new StreamingContext(), null!, null!, false, null!));
-
     private readonly Dictionary<MethodInfo, MethodInfo> _publicMethodWrappers = new Dictionary<MethodInfo, MethodInfo>();
 
     private readonly ConcreteMixinTypeIdentifier _identifier;
@@ -61,7 +57,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddInterfaces ()
     {
-      _type.AddInterface(typeof(ISerializable));
       _type.AddInterface(typeof(IGeneratedMixinType));
     }
 
@@ -79,26 +74,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       var newExpression = serializer.CreateExpression();
 
       _type.AddTypeInitializer(ctx => Expression.Assign(_identifierField, newExpression));
-    }
-
-    public void ImplementGetObjectData ()
-    {
-      // TODO 5811: This does exactly the same as what ComplexSerializationEnabler does, but with a different ID (ConcreteMixinTypeIdentifier instead 
-      // of AssembledTypeID) and a different way to get the type back from the pipeline (GetAdditionalType instead of GetAssembledType).
-      // Consider refactoring ComplexSerializationEnabler to allow this code to be replaced.
-
-      SerializationImplementer.ImplementGetObjectDataByDelegation(
-          _type,
-          (ctx, baseIsISerializable) =>
-          Expression.Call(
-              null,
-              s_getObjectDataForGeneratedTypesMethod,
-              ctx.Parameters[0],
-              ctx.Parameters[1],
-              ctx.This,
-              _identifierField,
-              Expression.Constant(!baseIsISerializable),
-              Expression.Constant(_pipelineIdentifier)));
     }
 
     public void AddMixinTypeAttribute ()
