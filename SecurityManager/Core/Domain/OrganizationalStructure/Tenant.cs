@@ -29,7 +29,6 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
-  [Serializable]
   [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Tenant")]
   [PermanentGuid("BD8FB1A4-E300-4663-AB1E-D6BD7B106619")]
   [Instantiable]

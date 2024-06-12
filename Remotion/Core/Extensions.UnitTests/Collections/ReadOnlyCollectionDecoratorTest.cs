@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Collections;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.UnitTests.Collections
 {
@@ -112,12 +111,6 @@ namespace Remotion.UnitTests.Collections
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
                   "'Clear' ist not supported for read-only collections."));
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      Assert.That(() => Serializer.Serialize(_collection), Throws.Nothing);
     }
   }
 }

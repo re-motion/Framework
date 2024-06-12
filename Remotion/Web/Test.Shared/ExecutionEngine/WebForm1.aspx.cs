@@ -183,7 +183,6 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       }
     }
 
-    [Serializable]
     public class SubFunction : WxeFunction, ISampleFunctionVariables
     {
       public SubFunction (string var1, string var2)

@@ -21,7 +21,6 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 namespace OBWTest.Design
 {
 
-[Serializable]
 public class DesignTestFunction: WxeFunction
 {
   public DesignTestFunction ()

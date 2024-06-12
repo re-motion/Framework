@@ -30,7 +30,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
   /// An implementation of <see cref="IClientTransactionListener"/> which throws an exception if the <see cref="ClientTransaction"/> is about
   /// to be modified while not <see cref="ClientTransaction.IsWriteable"/>.
   /// </summary>
-  [Serializable]
   public class ReadOnlyClientTransactionListener : IClientTransactionListener
   {
     public virtual void TransactionInitialize (ClientTransaction clientTransaction)

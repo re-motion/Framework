@@ -23,7 +23,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
   /// <summary>
   /// Manages the enlisted objects via a <see cref="Dictionary{TKey,TValue}"/>.
   /// </summary>
-  [Serializable]
   public class DictionaryBasedEnlistedDomainObjectManager : IEnlistedDomainObjectManager
   {
     private readonly Dictionary<ObjectID, int> _enlistedObjects = new Dictionary<ObjectID, int>();

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting;
 using Remotion.Security.UnitTests.SampleDomain;
 using Remotion.Security.UnitTests.TestDomain;
 
@@ -405,22 +404,6 @@ namespace Remotion.Security.UnitTests
       SecurityContext right = SecurityContext.Create(typeof(File), "owner", "ownerGroup", "ownerTenant", rightStates, rightAbstractRoles);
 
       Assert.That(right.GetHashCode(), Is.EqualTo(left.GetHashCode()));
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      Dictionary<string, Enum> myStates = new Dictionary<string, Enum>();
-      myStates.Add("State", TestSecurityState.Public);
-      myStates.Add("Confidentiality", TestSecurityState.Public);
-
-      Enum[] myRoles = new Enum[] { TestAbstractRoles.Developer, TestAbstractRoles.QualityEngineer };
-
-      SecurityContext context = SecurityContext.Create(typeof(SecurableObject), "myOwner", "myGroup", "myTenant", myStates, myRoles);
-      SecurityContext deserializedContext = Serializer.SerializeAndDeserialize(context);
-
-      Assert.That(deserializedContext, Is.Not.SameAs(context));
-      Assert.That(deserializedContext, Is.EqualTo(context));
     }
 
     private static Dictionary<string, Enum> CreateTwoStates ()

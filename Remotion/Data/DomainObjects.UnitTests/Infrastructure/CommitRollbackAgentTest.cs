@@ -26,10 +26,7 @@ using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting;
 using Remotion.FunctionalProgramming;
 using Remotion.TypePipe;
 
@@ -381,25 +378,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _persistenceStrategyMock.Verify();
       _dataManagerMock.Verify();
       sequence.Verify();
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var instance = new CommitRollbackAgent(
-          _clientTransaction,
-          new SerializableClientTransactionEventSinkFake(),
-          new SerializablePersistenceStrategyFake(),
-          new SerializableDataManagerFake());
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
-
-      Assert.That(deserializedInstance.ClientTransaction, Is.Not.Null);
-      Assert.That(deserializedInstance.EventSink, Is.Not.Null);
-      Assert.That(deserializedInstance.PersistenceStrategy, Is.Not.Null);
-      Assert.That(deserializedInstance.DataManager, Is.Not.Null);
     }
   }
 }

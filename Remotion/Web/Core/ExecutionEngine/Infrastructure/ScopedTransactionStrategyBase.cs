@@ -24,13 +24,11 @@ using Remotion.Utilities;
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
   // TODO: Doc
-  [Serializable]
   public abstract class ScopedTransactionStrategyBase : TransactionStrategyBase
   {
     private readonly Func<ITransaction> _transactionFactory;
     [NotNull]
     private ITransaction _transaction;
-    [NonSerialized]
     private ITransactionScope? _scope;
     private readonly bool _autoCommit;
     private readonly IWxeFunctionExecutionContext _executionContext;

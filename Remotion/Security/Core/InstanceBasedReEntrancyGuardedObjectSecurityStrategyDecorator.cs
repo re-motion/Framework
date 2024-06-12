@@ -28,7 +28,6 @@ namespace Remotion.Security
   /// performing additional secured operations as part of a security check.
   /// </remarks>
   /// <threadsafety static="true" instance="false" />
-  [Serializable]
   public class InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator : IObjectSecurityStrategy
   {
     private bool _isEvaluatingAccess;

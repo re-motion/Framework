@@ -22,10 +22,8 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 {
-  [Serializable]
   public class TransportTransactionListener : ClientTransactionListenerBase
   {
-    [NonSerialized]
     private readonly DomainObjectTransporter _transporter;
 
     public TransportTransactionListener (DomainObjectTransporter transporter)

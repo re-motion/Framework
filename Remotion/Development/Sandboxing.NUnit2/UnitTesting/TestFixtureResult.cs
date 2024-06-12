@@ -24,7 +24,9 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
   /// <summary>
   /// <see cref="TestFixtureResult"/> holds the type of the test class and the result of the test methods.
   /// </summary>
+#if NETFRAMEWORK
   [Serializable]
+#endif
   public struct TestFixtureResult
   {
     public readonly Type Type;

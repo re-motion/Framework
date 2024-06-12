@@ -15,12 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {
-[Serializable]
 public class IdentityTypeNotSupportedException : StorageProviderConfigurationException
 {
   // types
@@ -49,15 +47,6 @@ public class IdentityTypeNotSupportedException : StorageProviderConfigurationExc
     _invalidIdentityType = invalidIdentityType;
   }
 
-#if NET8_0_OR_GREATER
-  [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-  protected IdentityTypeNotSupportedException (SerializationInfo info, StreamingContext context) : base(info, context)
-  {
-    _storageProviderDefinitionType = (Type)info.GetValue("StorageProviderDefinitionType", typeof(Type))!;
-    _invalidIdentityType = (Type)info.GetValue("InvalidIdentityType", typeof(Type))!;
-  }
-
   // methods and properties
 
   public Type StorageProviderDefinitionType
@@ -68,17 +57,6 @@ public class IdentityTypeNotSupportedException : StorageProviderConfigurationExc
   public Type InvalidIdentityType
   {
     get { return _invalidIdentityType; }
-  }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-  public override void GetObjectData (SerializationInfo info, StreamingContext context)
-  {
-    base.GetObjectData(info, context);
-
-    info.AddValue("StorageProviderDefinitionType", _storageProviderDefinitionType);
-    info.AddValue("InvalidIdentityType", _invalidIdentityType);
   }
 }
 }

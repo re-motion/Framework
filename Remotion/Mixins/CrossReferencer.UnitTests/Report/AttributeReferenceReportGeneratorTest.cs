@@ -48,8 +48,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [Test]
     public void GenerateXml_WithAttributes ()
     {
-      // Mixin2 has SerializableAttribute which has no parameters
-      Assert.That(typeof(Mixin2).IsDefined(typeof(SerializableAttribute), false));
+      Assert.That(typeof(Mixin2).IsDefined(typeof(AttributeWithoutParametersAttribute), true));
       var reportGenerator = new AttributeReferenceReportGenerator(typeof(Mixin2), _identifierGenerator);
       var output = reportGenerator.GenerateXml();
 

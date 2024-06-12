@@ -20,7 +20,6 @@ using Remotion.Globalization;
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
   [BindableObject]
-  [Serializable]
   [MultiLingualResources("Remotion.ObjectBinding.UnitTests.Globalization.SimpleBusinessObjectClass")]
   public class SimpleBusinessObjectClass
   {

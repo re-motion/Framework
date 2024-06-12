@@ -22,7 +22,6 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace Remotion.Web.Test.Shared.ExecutionEngine
 {
-  [Serializable]
   public class ProfilingWxeFunction : WxeFunction
   {
     private DateTime _start;

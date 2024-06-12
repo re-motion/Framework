@@ -17,7 +17,6 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Security.UnitTests
 {
@@ -117,14 +116,6 @@ namespace Remotion.Security.UnitTests
       EnumWrapper wrapper = EnumWrapper.Get("Name", "Namespace.TypeName, Assembly");
 
       Assert.That(wrapper.ToString(), Is.EqualTo("Name|Namespace.TypeName, Assembly"));
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      EnumWrapper wrapper = EnumWrapper.Get("bla", "ble");
-      EnumWrapper deserializedWrapper = Serializer.SerializeAndDeserialize(wrapper);
-      Assert.That(deserializedWrapper, Is.EqualTo(wrapper));
     }
   }
 }

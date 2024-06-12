@@ -18,7 +18,6 @@ using System;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
-using Remotion.Development.UnitTesting;
 using Remotion.Security;
 using Remotion.Security.Development;
 using Remotion.SecurityManager.Domain;
@@ -64,16 +63,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     public void UsesCache ()
     {
       Assert.That(_principal.User, Is.SameAs(_principal.User));
-    }
-
-    [Test]
-    public void SerializesCache ()
-    {
-      var deserialized = Serializer.SerializeAndDeserialize(Tuple.Create(_principal, _principal.User));
-      SecurityManagerPrincipal deserialziedSecurityManagerPrincipal = deserialized.Item1;
-      UserProxy deserialziedUser = deserialized.Item2;
-
-      Assert.That(deserialziedSecurityManagerPrincipal.User, Is.SameAs(deserialziedUser));
     }
 
     [Test]

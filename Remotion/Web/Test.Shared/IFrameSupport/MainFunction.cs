@@ -20,7 +20,6 @@ using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.Test.Shared.IFrameSupport
 {
-  [Serializable]
   public class MainFunction : WxeFunction
   {
     public MainFunction ()

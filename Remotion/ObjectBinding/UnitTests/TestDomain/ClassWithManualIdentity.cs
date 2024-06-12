@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
-  [Serializable]
   public class ClassWithManualIdentity : ManualBusinessObject, IBusinessObjectWithIdentity
   {
     private readonly string _uniqueIdentifier;

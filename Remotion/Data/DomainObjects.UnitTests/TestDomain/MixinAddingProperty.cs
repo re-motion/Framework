@@ -25,7 +25,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     string ExplicitMixedProperty { get; set; }
   }
 
-  [Serializable]
   public class MixinAddingProperty : DomainObjectMixin<DomainObject>, IMixinAddingProperty
   {
     private string _mixedProperty;

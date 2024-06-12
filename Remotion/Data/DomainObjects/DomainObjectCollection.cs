@@ -128,7 +128,6 @@ namespace Remotion.Data.DomainObjects
   /// </list>
   /// </para>
   /// </remarks>
-  [Serializable]
   public partial class DomainObjectCollection : ICloneable, IList, IAssociatableDomainObjectCollection
   {
     /// <summary>

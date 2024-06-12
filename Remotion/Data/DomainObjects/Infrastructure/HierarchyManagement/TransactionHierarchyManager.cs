@@ -25,7 +25,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
   /// <summary>
   /// Manages the position and state of a <see cref="ClientTransaction"/> in a transaction hierarchy.
   /// </summary>
-  [Serializable]
   public class TransactionHierarchyManager : ITransactionHierarchyManager
   {
     /// <summary>

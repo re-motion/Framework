@@ -20,7 +20,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
@@ -308,15 +307,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       var eventRaiser = endPoint.GetCollectionEventRaiser();
       eventRaiser.WithinReplaceData();
     }
-
-
-    #region Serialization
-
-    public CompleteDomainObjectCollectionEndPointLoadState (FlattenedDeserializationInfo info)
-        : base(info)
-    {
-    }
-
-    #endregion
   }
 }

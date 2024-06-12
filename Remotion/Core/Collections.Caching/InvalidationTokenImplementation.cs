@@ -23,7 +23,6 @@ namespace Remotion.Collections.Caching
   /// </summary>
   /// <remarks>Instantiate via <see cref="InvalidationToken"/>.<see cref="InvalidationToken.Create"/>.</remarks>
   /// <threadsafety static="true" instance="false" />
-  [Serializable]
   internal sealed class InvalidationTokenImplementation : InvalidationToken
   {
     private long _currentRevisionValue;

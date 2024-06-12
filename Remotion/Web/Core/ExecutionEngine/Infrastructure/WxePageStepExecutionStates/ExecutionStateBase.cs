@@ -26,7 +26,6 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
   /// <remarks>
   /// Derive from this type and provide an implementation for the <see cref="ExecuteSubFunction"/> method to define the behavior of this state type.
   /// </remarks>
-  [Serializable]
   public abstract class ExecutionStateBase<TParameters> : IExecutionState
       where TParameters: IExecutionStateParameters
   {

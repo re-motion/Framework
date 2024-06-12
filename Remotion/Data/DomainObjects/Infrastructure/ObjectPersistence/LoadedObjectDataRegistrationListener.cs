@@ -25,7 +25,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// Implements <see cref="ILoadedObjectDataRegistrationListener"/> by distributing the events to <see cref="IClientTransactionEventSink"/> and 
   /// <see cref="ITransactionHierarchyManager"/> implementations.
   /// </summary>
-  [Serializable]
   public class LoadedObjectDataRegistrationListener : ILoadedObjectDataRegistrationListener
   {
     private readonly IClientTransactionEventSink _eventSink;

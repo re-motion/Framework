@@ -20,7 +20,6 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace Remotion.Web.Test.Shared.PathTests
 {
-  [Serializable]
   public class TestFunction : WxeFunction
   {
     public TestFunction ()

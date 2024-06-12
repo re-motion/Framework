@@ -28,7 +28,6 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
   /// objects. Eager fetching is not performed recursively, recursive fetching must be implemented by the given 
   /// <see cref="IFetchEnabledObjectLoader"/>'s <see cref="IFetchEnabledObjectLoader.GetOrLoadFetchQueryResult"/> method.
   /// </summary>
-  [Serializable]
   public class EagerFetcher : IEagerFetcher
   {
     private static readonly ILog s_log = LogManager.GetLogger(typeof(EagerFetcher));

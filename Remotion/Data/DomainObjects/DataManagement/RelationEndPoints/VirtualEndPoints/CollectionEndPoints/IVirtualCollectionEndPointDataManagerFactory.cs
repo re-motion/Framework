@@ -15,14 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
   /// <summary>
   /// 	Defines the API for factories creating instances implementing <see cref="IVirtualCollectionEndPointDataManager"/>.
   /// </summary>
-  public interface IVirtualCollectionEndPointDataManagerFactory : IFlattenedSerializable
+  public interface IVirtualCollectionEndPointDataManagerFactory
   {
     IVirtualCollectionEndPointDataManager CreateEndPointDataManager (RelationEndPointID endPointID);
   }

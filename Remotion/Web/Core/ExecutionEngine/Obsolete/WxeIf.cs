@@ -22,7 +22,6 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
   /// <summary>
   /// If-Then-Else block.
   /// </summary>
-  [Serializable]
   public abstract class WxeIf: WxeStep
   {
     WxeStepList? _stepList = null; // represents Then or Else step list, depending on result of If()

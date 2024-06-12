@@ -21,7 +21,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
 
@@ -347,21 +346,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That(DomainObjectCollectionDataTestHelper.GetDataStrategy(originalCollection), Is.SameAs(_associatedDataStrategyStub.Object));
       Assert.That(DomainObjectCollectionDataTestHelper.GetDataStrategy(newCollection), Is.SameAs(otherStrategy));
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      var instance = new DomainObjectCollectionEndPointCollectionManager(
-          _endPointID,
-          new SerializableDomainObjectCollectionEndPointCollectionProviderFake(),
-          new SerializableAssociatedDomainObjectCollectionDataStrategyFactoryFake());
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
-
-      Assert.That(deserializedInstance.EndPointID, Is.Not.Null);
-      Assert.That(deserializedInstance.DomainObjectCollectionProvider, Is.Not.Null);
-      Assert.That(deserializedInstance.DataStrategyFactory, Is.Not.Null);
     }
 
     private DomainObjectCollection RegisterAssociatedOriginalCollection ()

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Utilities;
 
 namespace Remotion.UnitTests.Utilities
@@ -42,17 +41,6 @@ namespace Remotion.UnitTests.Utilities
       Assert.That(comparer.Compare(obj1, obj2), Is.EqualTo(1));
       Assert.That(comparer.Compare(obj2, obj1), Is.EqualTo(-1));
       Assert.That(comparer.Compare(obj1, obj1), Is.EqualTo(0));
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      var comparer = new InvertedComparerDecorator<string>(StringComparer.InvariantCulture);
-      var deserializedComparer = Serializer.SerializeAndDeserialize(comparer);
-
-      Assert.That(deserializedComparer.Compare("a", "b"), Is.EqualTo(1));
-      Assert.That(deserializedComparer.Compare("b", "a"), Is.EqualTo(-1));
-      Assert.That(deserializedComparer.Compare("a", "a"), Is.EqualTo(0));
     }
   }
 }

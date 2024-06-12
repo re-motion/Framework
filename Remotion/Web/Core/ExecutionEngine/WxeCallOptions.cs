@@ -26,7 +26,6 @@ namespace Remotion.Web.ExecutionEngine
   /// whether the useer should be presented with a perma-URL to the <see cref="WxeFunction"/>.
   /// Use the derived types if you require additional control over the <see cref="WxeFunction"/>'s execution.
   /// </summary>
-  [Serializable]
   public sealed class WxeCallOptions : WxeCallOptionsBase
   {
     public WxeCallOptions ()

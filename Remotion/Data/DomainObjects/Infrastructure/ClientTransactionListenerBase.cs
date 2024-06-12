@@ -24,7 +24,6 @@ using Remotion.Data.DomainObjects.Queries;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
-  [Serializable]
   public abstract class ClientTransactionListenerBase : IClientTransactionListener
   {
     public virtual void TransactionInitialize (ClientTransaction clientTransaction)

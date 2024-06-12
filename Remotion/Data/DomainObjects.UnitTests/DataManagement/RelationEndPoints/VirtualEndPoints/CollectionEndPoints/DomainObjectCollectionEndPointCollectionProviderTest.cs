@@ -21,11 +21,9 @@ using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
@@ -154,18 +152,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(
           () => _provider.RegisterCollection(_endPointID, collection),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("The collection must be associated with the given endPointID.", "collection"));
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var instance = new DomainObjectCollectionEndPointCollectionProvider(new SerializableAssociatedDomainObjectCollectionDataStrategyFactoryFake());
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
-
-      Assert.That(deserializedInstance.DataStrategyFactory, Is.Not.Null);
     }
   }
 }

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
 {
@@ -23,12 +22,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
   /// The <see cref="NullExecutionState"/> is the null-object implementation of the <see cref="IExecutionState"/> interface. This state always
   /// returns <see langword="false" /> for the <see cref="IsExecuting"/> property.
   /// </summary>
-  [Serializable]
   public class NullExecutionState
-      : IExecutionState,
-#pragma warning disable SYSLIB0050
-          IObjectReference
-#pragma warning restore SYSLIB0050
+      : IExecutionState
   {
     public static readonly NullExecutionState Null = new NullExecutionState();
 
@@ -58,11 +53,6 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
 
     public void ExecuteSubFunction (WxeContext context)
     {
-    }
-
-    object IObjectReference.GetRealObject (StreamingContext context)
-    {
-      return NullExecutionState.Null;
     }
   }
 }

@@ -15,14 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints
 {
   /// <summary>
   /// Defines an interface for classes keeping the data for an <see cref="IVirtualEndPoint"/>.
   /// </summary>
-  public interface IVirtualEndPointDataManager : IFlattenedSerializable
+  public interface IVirtualEndPointDataManager
   {
     RelationEndPointID EndPointID { get; }
 

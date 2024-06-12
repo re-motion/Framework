@@ -30,7 +30,10 @@ using Remotion.Utilities;
 namespace Remotion.Tools.UnitTests
 {
   [TestFixture]
+#if NETFRAMEWORK
+  // Required for test CreateInAppDomain_FromShadowCopiedScenario
   [Serializable]
+#endif  
   public class AppDomainAssemblyResolverTest
   {
     private string _testDllPath;

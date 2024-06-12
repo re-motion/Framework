@@ -25,7 +25,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// Returns <see cref="AlreadyExistingLoadedObjectData"/> and <see cref="InvalidLoadedObjectData"/> instances for objects known by a given 
   /// <see cref="ILoadedDataContainerProvider"/> or <see cref="IInvalidDomainObjectManager"/>.
   /// </summary>
-  [Serializable]
   public class LoadedObjectDataProvider : ILoadedObjectDataProvider
   {
     private readonly ILoadedDataContainerProvider _loadedDataContainerProvider;

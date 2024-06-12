@@ -18,9 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -118,16 +116,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       EventListener.StateUpdated(_dataContainer, state);
 
       EventSinkWithMock.Verify();
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      var instance = new DataContainerEventListener(new SerializableClientTransactionEventSinkFake());
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
-
-      Assert.That(deserializedInstance.EventSink, Is.Not.Null);
     }
   }
 }

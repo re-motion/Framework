@@ -33,7 +33,6 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
   /// <seealso cref="EntityFrameworkAppenderProxy"/>
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [Serializable]
   public class EntityFrameworkExtension : IPersistenceExtension, IClientTransactionExtension
   {
     #region Implementation of IClientTransactionExtension

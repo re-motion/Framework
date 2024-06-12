@@ -23,7 +23,6 @@ using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 {
-  [Serializable]
   public class SearchFunction : WxeFunction
   {
     // types

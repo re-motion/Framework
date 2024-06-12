@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Remotion.Mixins;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -30,41 +29,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// type (or object) is passed to them rather than throwing exceptions.</remarks>
   public static class DomainObjectMixinCodeGenerationBridge
   {
-    internal class DummyObjectReference
-#pragma warning disable SYSLIB0050
-        : IObjectReference
-#pragma warning restore SYSLIB0050
-    {
-      private readonly object _realObject;
-
-      public DummyObjectReference (Type concreteDeserializedType, SerializationInfo info, StreamingContext context)
-      {
-        try
-        {
-          Assertion.DebugAssert(
-              NullableTypeUtility.IsNullableType(concreteDeserializedType) == false,
-              "NullableTypeUtility.IsNullableType (concreteDeserializedType) == false with concreteDeserializedType '{0}'.",
-              concreteDeserializedType);
-
-          _realObject = Activator.CreateInstance(
-              concreteDeserializedType,
-              BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
-              null,
-              new object[] { info, context },
-              null)!;
-        }
-        catch (MissingMethodException ex)
-        {
-          throw new MissingMethodException("No deserialization constructor was found on type " + concreteDeserializedType.GetFullNameSafe() + ".", ex);
-        }
-      }
-
-      public object GetRealObject (StreamingContext context)
-      {
-        return _realObject;
-      }
-    }
-
     public static void OnDomainObjectReferenceInitializing (DomainObject instance)
     {
       ArgumentUtility.CheckNotNull("instance", instance);

@@ -155,12 +155,10 @@ namespace Remotion.Mixins
   /// <see cref="BindToGenericTargetParameterAttribute"/> is used.
   /// </para>
   /// </remarks>
-  [Serializable]
   public class Mixin<TTarget, TNext> : Mixin<TTarget>, IInitializableMixin
       where TTarget: class
       where TNext: class
   {
-    [NonSerialized]
     private TNext? _next;
 
     /// <summary>
@@ -248,12 +246,10 @@ namespace Remotion.Mixins
   /// <see cref="BindToGenericTargetParameterAttribute"/> is used.
   /// </para>
   /// </remarks>
-  [Serializable]
   public class Mixin<TTarget> : IInitializableMixin
       where TTarget: class
   {
     // TODO RM-7688 Should be private
-    [NonSerialized]
     internal TTarget? _target;
 
     /// <summary>

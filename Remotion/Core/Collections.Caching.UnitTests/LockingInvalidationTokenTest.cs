@@ -17,7 +17,6 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Collections.Caching.UnitTests
 {
@@ -100,25 +99,6 @@ namespace Remotion.Collections.Caching.UnitTests
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "The Revision used for the comparision was either created via the default constructor or the associated CacheInvalidationToken has already been garbage collected.",
               "revision"));
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      var token = InvalidationToken.CreatWithLocking();
-      var revision = token.GetCurrent();
-
-      var deserializedObjects = Serializer.SerializeAndDeserialize(new object[] { token, revision });
-      var deserializedToken = (InvalidationToken)deserializedObjects[0];
-      var deserializedRevision = (InvalidationToken.Revision)deserializedObjects[1];
-
-      Assert.That(deserializedToken.IsCurrent(deserializedRevision), Is.True);
-#if DEBUG
-      Assert.That(
-          () => token.IsCurrent(deserializedRevision),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
-              "The Revision used for the comparision was not created by the current CacheInvalidationToken.", "revision"));
-#endif
     }
   }
 }

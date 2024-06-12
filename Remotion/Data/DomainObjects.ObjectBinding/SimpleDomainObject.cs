@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.TypePipe;
@@ -35,7 +34,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   /// if you don't.
   /// </remarks>
   [IgnoreForMappingConfiguration]
-  [Serializable]
   public abstract class SimpleDomainObject<TDomainObject> : BindableDomainObject, ISupportsGetObject
       where TDomainObject : SimpleDomainObject<TDomainObject>
   {
@@ -87,18 +85,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     }
 
     protected SimpleDomainObject ()
-    {
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SimpleDomainObject{TDomainObject}"/> class in the process of deserialization.
-    /// </summary>
-    /// <param name="info">The <see cref="SerializationInfo"/> coming from the .NET serialization infrastructure.</param>
-    /// <param name="context">The <see cref="StreamingContext"/> coming from the .NET serialization infrastructure.</param>
-    /// <remarks>Be sure to call this base constructor from the deserialization constructor of any concrete <see cref="SimpleDomainObject{TDomainObject}"/> type
-    /// implementing the <see cref="ISerializable"/> interface.</remarks>
-    protected SimpleDomainObject (SerializationInfo info, StreamingContext context)
-      : base(info, context)
     {
     }
 

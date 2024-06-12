@@ -24,7 +24,6 @@ using Remotion.Data.DomainObjects.Queries;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
-  [Serializable]
   public class InvalidatedTransactionListener : IClientTransactionListener
   {
     private Exception CreateException ()

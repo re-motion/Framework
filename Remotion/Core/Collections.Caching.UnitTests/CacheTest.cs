@@ -20,7 +20,6 @@ using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Collections.Caching.UnitTests.Utilities;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Collections.Caching.UnitTests
 {
@@ -329,39 +328,6 @@ namespace Remotion.Collections.Caching.UnitTests
     public void GetIsNull ()
     {
       Assert.That(_cache.IsNull, Is.False);
-    }
-
-    [Test]
-    public void SerializeEmptyCache ()
-    {
-      ICache<string, object> deserializedCache = Serializer.SerializeAndDeserialize(_cache);
-      Assert.That(deserializedCache, Is.Not.Null);
-
-      Assert.That(deserializedCache.TryGetValue("bla", out var result), Is.False);
-      deserializedCache.GetOrCreateValue("bla", delegate { return "foo"; });
-      Assert.That(deserializedCache.TryGetValue("bla", out result), Is.True);
-
-      Assert.That(result, Is.EqualTo("foo"));
-
-      Assert.That(_cache.TryGetValue("bla", out result), Is.False);
-    }
-
-    [Test]
-    public void SerializeNonEmptyCache ()
-    {
-
-      _cache.GetOrCreateValue("bla", delegate { return "foo"; });
-      Assert.That(_cache.TryGetValue("bla", out var result), Is.True);
-
-      ICache<string, object> deserializedCache = Serializer.SerializeAndDeserialize(_cache);
-      Assert.That(deserializedCache, Is.Not.Null);
-
-      Assert.That(deserializedCache.TryGetValue("bla", out result), Is.True);
-      Assert.That(result, Is.EqualTo("foo"));
-
-      deserializedCache.GetOrCreateValue("whatever", delegate { return "fred"; });
-      Assert.That(deserializedCache.TryGetValue("whatever", out result), Is.True);
-      Assert.That(_cache.TryGetValue("whatever", out result), Is.False);
     }
 
     [Test]

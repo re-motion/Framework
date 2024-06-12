@@ -21,7 +21,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.Utilities;
@@ -33,7 +32,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// </summary>
   public class DomainObjectCollectionEndPoint : RelationEndPoint, IDomainObjectCollectionEndPoint
   {
-    [Serializable]
     public class EndPointLoader : IncompleteDomainObjectCollectionEndPointLoadState.IEndPointLoader
     {
       private readonly ILazyLoader _lazyLoader;
@@ -55,22 +53,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         _lazyLoader.LoadLazyCollectionEndPoint(endPoint.ID);
         return collectionEndPoint._loadState;
       }
-
-      #region Serialization
-      public EndPointLoader (FlattenedDeserializationInfo info)
-      {
-        ArgumentUtility.CheckNotNull("info", info);
-
-        _lazyLoader = info.GetValueForHandle<ILazyLoader>();
-      }
-
-      void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-      {
-        ArgumentUtility.CheckNotNull("info", info);
-
-        info.AddHandle(_lazyLoader);
-      }
-      #endregion
     }
 
     private readonly IDomainObjectCollectionEndPointCollectionManager _collectionManager;
@@ -407,34 +389,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       Assertion.DebugAssert(!Definition.IsAnonymous, "!Definition.IsAnonymous");
       return DomainObjectCollectionFactory.Instance.CreateCollection(Definition.PropertyInfo.PropertyType, dataStrategy);
     }
-
-    #region Serialization
-
-    protected DomainObjectCollectionEndPoint (FlattenedDeserializationInfo info)
-        : base(info)
-    {
-      _collectionManager = info.GetValueForHandle<IDomainObjectCollectionEndPointCollectionManager>();
-      _lazyLoader = info.GetValueForHandle<ILazyLoader>();
-      _endPointProvider = info.GetValueForHandle<IRelationEndPointProvider>();
-      _transactionEventSink = info.GetValueForHandle<IClientTransactionEventSink>();
-      _dataManagerFactory = info.GetValueForHandle<IDomainObjectCollectionEndPointDataManagerFactory>();
-
-      _loadState = info.GetValue<IDomainObjectCollectionEndPointLoadState>();
-      _hasBeenTouched = info.GetBoolValue();
-    }
-
-    protected override void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      info.AddHandle(_collectionManager);
-      info.AddHandle(_lazyLoader);
-      info.AddHandle(_endPointProvider);
-      info.AddHandle(_transactionEventSink);
-      info.AddHandle(_dataManagerFactory);
-
-      info.AddValue(_loadState);
-      info.AddBoolValue(_hasBeenTouched);
-    }
-
-    #endregion
   }
 }

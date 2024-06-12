@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Serializable]
   public class BT3Mixin7Base : Mixin<IBaseType31, ICBaseType3BT3Mixin4>
   {
     [OverrideTarget]

@@ -23,7 +23,9 @@ namespace Remotion.Tools
   /// <summary>
   /// Base class for executing code in a separate <see cref="AppDomain"/>.
   /// </summary>
+ #if NETFRAMEWORK
   [Serializable]
+#endif
   public abstract class AppDomainRunnerBase
   {
     private readonly AppDomainSetup _appDomainSetup;

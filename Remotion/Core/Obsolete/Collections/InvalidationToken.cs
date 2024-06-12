@@ -19,10 +19,8 @@ using System;
 namespace Remotion.Collections
 {
   [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Collections.Caching.dll", true)]
-  [Serializable]
   public abstract class InvalidationToken
   {
-    [Serializable]
     public struct Revision
     {
       public InvalidationToken Token

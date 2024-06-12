@@ -15,20 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 using System.Threading;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
-  [Serializable]
-  public class SecurityExecutionListener : IWxeFunctionExecutionListener, IDeserializationCallback
+  public class SecurityExecutionListener : IWxeFunctionExecutionListener
   {
     private readonly WxeFunction _function;
     private readonly IWxeFunctionExecutionListener _innerListener;
-    [NonSerialized]
-    private IWxeSecurityAdapter? _wxeSecurityAdapter;
+    private readonly IWxeSecurityAdapter? _wxeSecurityAdapter;
 
     public SecurityExecutionListener (WxeFunction function, IWxeFunctionExecutionListener innerListener, [CanBeNull] IWxeSecurityAdapter? wxeSecurityAdapter)
     {
@@ -94,11 +91,6 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     {
       ArgumentUtility.CheckNotNull("context", context);
       _innerListener.OnExecutionFail(context, exception);
-    }
-
-    public void OnDeserialization (object? sender)
-    {
-      _wxeSecurityAdapter = WxeFunction.GetWxeSecurityAdapter();
     }
   }
 }

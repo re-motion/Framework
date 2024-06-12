@@ -18,7 +18,6 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 {
@@ -67,12 +66,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       Assert.That(
           LifetimeService.GetObjectReference(parentTransaction, objectID1),
           Is.SameAs(LifetimeService.GetObjectReference(subTransaction2, objectID1)));
-    }
-
-    [Test]
-    public void Serializability ()
-    {
-      Assert.That(() => Serializer.SerializeAndDeserialize(_listener), Throws.Nothing);
     }
   }
 }

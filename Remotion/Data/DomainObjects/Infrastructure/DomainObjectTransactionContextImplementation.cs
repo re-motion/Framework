@@ -24,7 +24,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// Provides the state and implementation for <see cref="DomainObjectTransactionContext"/> to allow the value type <see cref="DomainObjectTransactionContext"/> to remain lightweight.
   /// Represents the context of a <see cref="DomainObjects.DomainObject"/> that is associated with a specific <see cref="ClientTransaction"/>.
   /// </summary>
-  [Serializable]
   public sealed class DomainObjectTransactionContextImplementation
   {
     public bool IsDomainObjectReferenceInitializing { get; private set; }

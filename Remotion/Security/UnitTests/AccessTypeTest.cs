@@ -17,7 +17,6 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting;
 using Remotion.Security.UnitTests.SampleDomain;
 
 namespace Remotion.Security.UnitTests
@@ -60,15 +59,6 @@ namespace Remotion.Security.UnitTests
       AccessType accessType = AccessType.Get(wrapper);
 
       Assert.That(accessType.ToString(), Is.EqualTo(wrapper.ToString()));
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      AccessType accessType = AccessType.Get(EnumWrapper.Get(TestAccessTypes.First));
-      AccessType deserializedAccessType = Serializer.SerializeAndDeserialize(accessType);
-
-      Assert.That(deserializedAccessType, Is.EqualTo(accessType));
     }
 
     [Test]

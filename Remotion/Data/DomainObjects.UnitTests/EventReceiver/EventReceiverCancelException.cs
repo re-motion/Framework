@@ -15,11 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {
-  [Serializable]
   public class EventReceiverCancelException : ApplicationException
   {
     // types
@@ -33,9 +31,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     public EventReceiverCancelException () : this("An EventReceiver cancelled the operation.") { }
     public EventReceiverCancelException (string message) : base(message) { }
     public EventReceiverCancelException (string message, Exception inner) : base(message, inner) { }
-#pragma warning disable SYSLIB0051
-    protected EventReceiverCancelException (SerializationInfo info, StreamingContext context) : base(info, context) { }
-#pragma warning restore SYSLIB0051
 
     // methods and properties
 

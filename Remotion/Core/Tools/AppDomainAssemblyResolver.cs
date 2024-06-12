@@ -28,7 +28,6 @@ namespace Remotion.Tools
   /// <see cref="MarshalByRefObject"/> in order to allow <see cref="Register"/> to be called from the parent <see cref="AppDomain"/>. After 
   /// <see cref="Register"/> was called, the resolver tries to resolve all assembly references from the given assembly directory.
   /// </summary>
-  [Serializable]
   public sealed class AppDomainAssemblyResolver : MarshalByRefObject
   {
     public static AppDomainAssemblyResolver CreateInAppDomain (AppDomain appDomain, string applicationBase)

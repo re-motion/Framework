@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
             "NonExistingRdbms",
             "NonExistingReadOnlyRdbms");
 
-        var storageSettings = new SerializableStorageSettings(new StorageSettings(storageProviderDefinition, new[] { storageProviderDefinition }));
+        var storageSettings = new StorageSettings(storageProviderDefinition, new[] { storageProviderDefinition });
 
         var defaultServiceLocator = DefaultServiceLocator.Create();
         defaultServiceLocator.RegisterSingle<IStorageSettings>(() => storageSettings);

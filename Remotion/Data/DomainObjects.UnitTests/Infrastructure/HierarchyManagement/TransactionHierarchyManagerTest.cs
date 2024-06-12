@@ -20,11 +20,8 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
-using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManagement
 {
@@ -442,26 +439,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
 
       Assert.That(_manager.IsWriteable, Is.False);
       Assert.That(_manager.SubTransaction, Is.Not.Null);
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var instance = new TransactionHierarchyManager(
-          ClientTransactionObjectMother.Create(),
-          new SerializableClientTransactionEventSinkFake(),
-          ClientTransactionObjectMother.Create(),
-          new SerializableTransactionHierarchyManagerFake(),
-          new SerializableClientTransactionEventSinkFake());
-      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
-
-      Assert.That(deserializedInstance.IsWriteable, Is.True);
-      Assert.That(deserializedInstance.SubTransaction, Is.Null);
-      Assert.That(deserializedInstance.ThisTransaction, Is.Not.Null);
-      Assert.That(deserializedInstance.ParentTransaction, Is.Not.Null);
-      Assert.That(deserializedInstance.ParentHierarchyManager, Is.Not.Null);
     }
 
     private void FakeManagerWithSubtransaction (TransactionHierarchyManager transactionHierarchyManager)

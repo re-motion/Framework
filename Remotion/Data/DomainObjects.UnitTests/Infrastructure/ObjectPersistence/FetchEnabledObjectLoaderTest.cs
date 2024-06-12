@@ -22,9 +22,7 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.EagerFetching;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 {
@@ -225,23 +223,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     private ILoadedObjectData CreateEquivalentData (ILoadedObjectData loadedObjectData)
     {
       return LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(loadedObjectData.ObjectID).Object;
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      var instance = new FetchEnabledObjectLoader(
-          new SerializableFetchEnabledPersistenceStrategyFake(),
-          new SerializableLoadedObjectDataRegistrationAgentFake(),
-          new SerializableLoadedObjectDataProviderFake(),
-          new SerializableEagerFetcherFake());
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
-
-      Assert.That(deserializedInstance.PersistenceStrategy, Is.Not.Null);
-      Assert.That(deserializedInstance.LoadedObjectDataRegistrationAgent, Is.Not.Null);
-      Assert.That(deserializedInstance.LoadedObjectDataProvider, Is.Not.Null);
-      Assert.That(deserializedInstance.EagerFetcher, Is.Not.Null);
     }
 
     private IQuery CreateFakeQuery (params Tuple<IRelationEndPointDefinition, IQuery>[] fetchQueries)

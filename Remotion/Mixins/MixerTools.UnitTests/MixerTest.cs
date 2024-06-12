@@ -16,7 +16,6 @@
 // 
 using System;
 using System.IO;
-using System.Runtime.Serialization;
 using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Context;
@@ -30,7 +29,6 @@ using Remotion.TypePipe.Implementation;
 
 namespace Remotion.Mixins.MixerTools.UnitTests
 {
-  [Serializable]
   [TestFixture]
   public class MixerTest
   {
@@ -271,38 +269,10 @@ namespace Remotion.Mixins.MixerTools.UnitTests
     }
 
     [IgnoreForMixinConfiguration]
-    public class FakeConcreteMixedType : BaseType1, ISerializable, IDeserializationCallback
+    public class FakeConcreteMixedType : BaseType1
     {
-      public bool OnDeserializingCalled = false;
-      public bool OnDeserializedCalled = false;
-      public bool OnDeserializationCalled = false;
-      public bool CtorCalled = true;
-      public bool SerializationCtorCalled = false;
-
       public FakeConcreteMixedType ()
       {
-      }
-
-      protected FakeConcreteMixedType (SerializationInfo info, StreamingContext context)
-      {
-        SerializationCtorCalled = true;
-      }
-
-      [OnDeserializing]
-      public void OnDeserializing (StreamingContext context)
-      {
-        OnDeserializingCalled = true;
-      }
-
-      [OnDeserialized]
-      public void OnDeserialized (StreamingContext context)
-      {
-        OnDeserializedCalled = true;
-      }
-
-      public void OnDeserialization (object sender)
-      {
-        OnDeserializationCalled = true;
       }
 
       public ClassContext ClassContext
@@ -318,11 +288,6 @@ namespace Remotion.Mixins.MixerTools.UnitTests
       public object FirstNextCallProxy
       {
         get { throw new NotImplementedException(); }
-      }
-
-      public void GetObjectData (SerializationInfo info, StreamingContext context)
-      {
-        throw new NotImplementedException();
       }
     }
   }

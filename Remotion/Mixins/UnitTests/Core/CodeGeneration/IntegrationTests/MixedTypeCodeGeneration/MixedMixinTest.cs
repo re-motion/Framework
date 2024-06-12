@@ -16,7 +16,6 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.TypePipe;
@@ -57,42 +56,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       }
     }
 
-    [Ignore("TODO RM-7961: Test fails because MixinArrayInitializer uses a hardcoded reference to ObjectFactory, which is incompatible with replacing the IoC container.")]
-    [Test]
-    public void MixedMixin_Serialization ()
-    {
-      var instance = ObjectFactory.Create<ClassWithMixedMixin>(ParamList.Empty);
-
-      var deserialized = Serializer.SerializeAndDeserialize(instance);
-
-      Assert.That(deserialized.StringMethod(3), Is.EqualTo("MixinMixingMixin-MixinMixingClass-ClassWithMixedMixin.StringMethod (3)"));
-    }
-
-    [Ignore("TODO 5812")]
-    [Test]
-    public void MixedDerivedMixin_Serialization ()
-    {
-      var instance = ObjectFactory.Create<ClassWithMixedDerivedMixin>(ParamList.Empty);
-
-      var derivedMixin = Mixin.Get<MixinMixingClassRequiringToBeDerived>(instance);
-      var mixinType = derivedMixin.GetType();
-      Assert.That(Pipeline.ReflectionService.IsAssembledType(mixinType), Is.True, "Mixed mixin.");
-
-      var underlyingType = Pipeline.ReflectionService.GetRequestedType(mixinType);
-      Assert.That(underlyingType, Is.Not.SameAs(typeof(MixinMixingClassRequiringToBeDerived)), "Derived mixin.");
-      Assert.That(underlyingType.BaseType, Is.SameAs(typeof(MixinMixingClassRequiringToBeDerived)));
-
-      var mixinMixin = Mixin.Get<MixinMixingDerivedMixin>(derivedMixin);
-      Assert.That(mixinMixin, Is.Not.Null);
-
-      var deserialized = Serializer.SerializeAndDeserialize(instance);
-
-      Assert.That(
-          deserialized.StringMethod(3),
-          Is.EqualTo("MixinMixingDerivedMixin-MixinMixingClassRequiringToBeDerived-ClassWithMixedDerivedMixin.StringMethod (3)"));
-    }
-
-    [Serializable]
     public class ClassWithMixedDerivedMixin
     {
       public virtual string StringMethod (int i)
@@ -101,7 +64,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       }
     }
 
-    [Serializable]
     [Extends(typeof(ClassWithMixedDerivedMixin))]
     public class MixinMixingClassRequiringToBeDerived : Mixin<ClassWithMixedDerivedMixin, MixinMixingClassRequiringToBeDerived.IRequirements>
     {
@@ -117,7 +79,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       }
     }
 
-    [Serializable]
     [Extends(typeof(MixinMixingClassRequiringToBeDerived))]
     public class MixinMixingDerivedMixin : Mixin<MixinMixingClassRequiringToBeDerived, MixinMixingDerivedMixin.IRequirements>
     {

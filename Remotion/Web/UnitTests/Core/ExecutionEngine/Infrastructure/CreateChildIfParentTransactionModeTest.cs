@@ -17,7 +17,6 @@
 using System;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
@@ -131,14 +130,6 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
           .Verifiable();
 
       grandParentFunction.Execute(context);
-    }
-
-    [Test]
-    public void IsSerializeable ()
-    {
-      var deserialized = Serializer.SerializeAndDeserialize(new CreateChildIfParentTransactionMode(true, new TestTransactionFactory()));
-
-      Assert.That(deserialized.AutoCommit, Is.True);
     }
   }
 }

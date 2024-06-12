@@ -48,8 +48,6 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       //RunLoadObjectsTest();
 
-      //RunSerializationTest();
-
       //RunHasRelationChangedTest();
       //RunCommitTest ();
 
@@ -109,25 +107,6 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       test.SetUp();
       test.LoadObjectsOverRelationWithAbstractBaseClass();
       test.TearDown();
-
-      test.TestFixtureTearDown();
-    }
-
-    private static void RunSerializationTest ()
-    {
-      var test = new SerializationTest();
-      test.OneTimeSetUp();
-
-      var testMethods = from m in test.GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance)
-                        where m.IsDefined(typeof(TestAttribute), true) && !m.IsDefined(typeof(IgnoreAttribute), true)
-                        orderby m.Name
-                        select m;
-      foreach (MethodInfo testMethod in testMethods)
-      {
-        test.SetUp();
-        testMethod.Invoke(test, new object[0]);
-        test.TearDown();
-      }
 
       test.TestFixtureTearDown();
     }

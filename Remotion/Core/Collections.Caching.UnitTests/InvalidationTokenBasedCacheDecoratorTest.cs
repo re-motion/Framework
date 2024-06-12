@@ -20,7 +20,6 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Remotion.Collections.Caching.UnitTests.Utilities;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Collections.Caching.UnitTests
 {
@@ -338,18 +337,6 @@ namespace Remotion.Collections.Caching.UnitTests
       var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
 
       Assert.That(((ICache<object, string>)decorator).IsNull, Is.True);
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      var cache = new Cache<object, string>();
-      var invalidationTokenBasedCacheDecorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(invalidationTokenBasedCacheDecorator);
-
-      Assert.That(deserializedInstance, Is.Not.SameAs(invalidationTokenBasedCacheDecorator));
-      Assert.That(deserializedInstance.InvalidationToken, Is.Not.SameAs(invalidationTokenBasedCacheDecorator.InvalidationToken));
     }
   }
 }

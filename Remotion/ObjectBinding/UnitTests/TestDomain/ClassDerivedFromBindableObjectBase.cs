@@ -20,7 +20,6 @@ using Remotion.ObjectBinding.BindableObject;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
-  [Serializable]
   public class ClassDerivedFromBindableObjectBase : BindableObjectBase
   {
     public ClassDerivedFromBindableObjectBase ()
