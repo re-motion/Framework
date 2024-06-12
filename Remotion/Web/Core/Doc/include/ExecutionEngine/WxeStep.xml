@@ -26,11 +26,6 @@
         A <b>WxeStep</b> can be embedded in a <see cref="WxeStepList"/> or <see cref="WxeFunction"/> in the
         form of a non-public instance field or as a non-public nested class.
       </para>
-      <note type="inheritinfo">
-        In order to allow the usage of a state server, is is required to apply the 
-        <see cref="SerializableAttribute"/> when extending <b>WxeStep</b>. In addition, all fields not marked with 
-        the <see cref="NonSerializedAttribute"/> must be of a serializable type.
-      </note>
     </remarks>
     <example>
       An advanced step, derived from <b>WxeStep</b>.

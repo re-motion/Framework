@@ -16,7 +16,6 @@
 // 
 using System;
 using System.IO;
-using System.Threading;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;

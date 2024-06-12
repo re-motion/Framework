@@ -15,24 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Web.ExecutionEngine
 {
   /// <summary> This exception is used by the execution engine to control the call stack. </summary>
-  [Serializable]
   public abstract class WxeExecutionControlException : WxeInfrastructureException
   {
     protected WxeExecutionControlException (string message)
         : base(message)
-    {
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    protected WxeExecutionControlException (SerializationInfo info, StreamingContext context)
-        : base(info, context)
     {
     }
   }

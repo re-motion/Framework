@@ -15,7 +15,6 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 <%@ Page Title="" Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="GenericTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.GenericTest" %>
-<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <asp:UpdatePanel ID="UpdatePanel" runat="server">
     <ContentTemplate>

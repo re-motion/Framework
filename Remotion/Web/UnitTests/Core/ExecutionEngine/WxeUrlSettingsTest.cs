@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;

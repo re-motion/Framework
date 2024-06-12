@@ -15,14 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Web.ExecutionEngine
 {
   /// <summary>
   ///   Encapsulates an exception when it is re-thrown by a <see cref="WxeFunction"/>.
   /// </summary>
-  [Serializable]
   public class WxeUnhandledException : WxeException
   {
 
@@ -33,14 +31,6 @@ namespace Remotion.Web.ExecutionEngine
 
     public WxeUnhandledException (string message, Exception innerException)
       : base(message, innerException)
-    {
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    public WxeUnhandledException (SerializationInfo info, StreamingContext context)
-      : base(info, context)
     {
     }
   }

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 using System.Web;
 using JetBrains.Annotations;
 using Remotion.Utilities;
@@ -38,14 +37,6 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public WxeHttpExceptionPreservingException (HttpException exception)
         : base(string.Format("{0} was thrown.", exception), ArgumentUtility.CheckNotNull("exception", exception))
-    {
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    private WxeHttpExceptionPreservingException (SerializationInfo info, StreamingContext context)
-        : base(info, context)
     {
     }
 

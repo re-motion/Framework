@@ -15,16 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
-  [Serializable]
   public class NullUserControlExecutor
-      : IUserControlExecutor,
-#pragma warning disable SYSLIB0050
-          IObjectReference
-#pragma warning restore SYSLIB0050
+      : IUserControlExecutor
   {
     public static readonly IUserControlExecutor Null = new NullUserControlExecutor();
 
@@ -67,11 +62,6 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     public bool IsReturningPostBack
     {
       get { return false; }
-    }
-
-    object IObjectReference.GetRealObject (StreamingContext context)
-    {
-      return Null;
     }
 
     public WxeStep? ExecutingStep

@@ -15,11 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Web.UI
 {
-  [Serializable]
   public sealed class AsyncUnhandledException : Exception
   {
     public AsyncUnhandledException (Exception innerException)
@@ -28,14 +26,6 @@ namespace Remotion.Web.UI
             + "the error can be logged, reset (via Server.ClearError()), "
             + "and the user can be client-side redirected to a specific error page via Response.Redirect(...).",
             innerException)
-    {
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    private AsyncUnhandledException (SerializationInfo info, StreamingContext context)
-        : base(info, context)
     {
     }
   }
