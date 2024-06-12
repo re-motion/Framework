@@ -32,7 +32,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     [Test]
     public void AttributeConsidering ()
     {
-      var filter = new AttributeAssemblyLoaderFilter(typeof(SerializableAttribute)); // attribute type doesn't matter here
+      var filter = new AttributeAssemblyLoaderFilter(typeof(Attribute)); // attribute type doesn't matter here
       Assert.That(filter.ShouldConsiderAssembly(typeof(AttributeAssemblyLoaderFilterTest).Assembly.GetName()), Is.True);
       Assert.That(filter.ShouldConsiderAssembly(typeof(TestFixtureAttribute).Assembly.GetName()), Is.True);
       Assert.That(filter.ShouldConsiderAssembly(typeof(object).Assembly.GetName()), Is.True);
@@ -55,7 +55,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       Assert.That(filter.ShouldIncludeAssembly(typeof(object).Assembly), Is.True);
       Assert.That(filter.ShouldIncludeAssembly(typeof(Uri).Assembly), Is.True);
 
-      filter = new AttributeAssemblyLoaderFilter(typeof(SerializableAttribute));
+      filter = new AttributeAssemblyLoaderFilter(typeof(Attribute));
       Assert.That(filter.ShouldIncludeAssembly(typeof(AttributeAssemblyLoaderFilterTest).Assembly), Is.False);
       Assert.That(filter.ShouldIncludeAssembly(typeof(TestFixtureAttribute).Assembly), Is.False);
       Assert.That(filter.ShouldIncludeAssembly(typeof(object).Assembly), Is.False);

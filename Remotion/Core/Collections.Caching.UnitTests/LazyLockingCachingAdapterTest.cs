@@ -30,8 +30,6 @@ using Wrapper = Remotion.Collections.Caching.LazyLockingCachingAdapter<string, o
 
 namespace Remotion.Collections.Caching.UnitTests
 {
-  using InnerFactory = Func<ICache<string, Lazy<Wrapper>>, Lazy<Wrapper>>;
-
   [TestFixture]
   public class LazyLockingCachingAdapterTest
   {

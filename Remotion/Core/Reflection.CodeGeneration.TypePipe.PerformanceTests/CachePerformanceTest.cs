@@ -19,7 +19,6 @@ using System.Globalization;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
-using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 using Remotion.Mixins.CodeGeneration;
