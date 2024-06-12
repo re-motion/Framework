@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
@@ -27,12 +26,8 @@ namespace Remotion.SecurityManager.Domain
   /// of the <see cref="ISecurityManagerPrincipal"/> interface.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [Serializable]
   public sealed class NullSecurityManagerPrincipal
-      : ISecurityManagerPrincipal,
-#pragma warning disable SYSLIB0050
-          IObjectReference
-#pragma warning restore SYSLIB0050
+      : ISecurityManagerPrincipal
   {
     private static readonly TenantProxy[] s_emptyTenantProxies = new TenantProxy[0];
     private static readonly SubstitutionProxy[] s_emptySubstitutionProxies = new SubstitutionProxy[0];
@@ -85,11 +80,6 @@ namespace Remotion.SecurityManager.Domain
     bool INullObject.IsNull
     {
       get { return true; }
-    }
-
-    object IObjectReference.GetRealObject (StreamingContext context)
-    {
-      return SecurityManagerPrincipal.Null;
     }
   }
 }

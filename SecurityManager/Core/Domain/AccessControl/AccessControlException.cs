@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
@@ -33,11 +32,6 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     public AccessControlException () : this("An access control exception occurred.") { }
     public AccessControlException (string message) : base(message) { }
     public AccessControlException (string message, Exception inner) : base(message, inner) { }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    protected AccessControlException (SerializationInfo info, StreamingContext context) : base(info, context) { }
 
     // methods and properties
 
