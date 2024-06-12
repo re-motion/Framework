@@ -811,6 +811,9 @@ namespace Remotion.BocAutoCompleteReferenceValue
         }
 
         function onChange(dropDownTriggered: boolean, currentValue: string): void {
+            if (informationPopUp.visible() && currentValue == state.previousValue)
+                return;
+
             informationPopUp.hide();
 
             if (!dropDownTriggered && currentValue == state.previousValue)
