@@ -39,10 +39,10 @@
     <None Update="..\..\Remotion LGPL.licenseheader" Pack="true" PackagePath="res/" Visible="false" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Remotion.ThirdPartyDependency.RobotoFonts" Version="2.137.0" />
+    <PackageReference Include="Remotion.ThirdPartyDependency.RobotoFonts" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
-    <PackageReference Include="Remotion.ThirdPartyDependency.System.Web" Version="4.8.0" />
+    <PackageReference Include="Remotion.ThirdPartyDependency.System.Web" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
