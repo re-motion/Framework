@@ -69,15 +69,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    public void Serialization ()
-    {
-      var instance = new ClassDerivedFromBindableObjectWithIdentityBase();
-      instance = Serializer.SerializeAndDeserialize(instance);
-      var mixin = (BindableObjectWithIdentityBaseImplementation)PrivateInvoke.GetNonPublicField(instance, "_implementation");
-      Assert.That(mixin.BusinessObjectClass, Is.Not.Null);
-    }
-
-    [Test]
     public void GetProperty ()
     {
       _implementationMock.Setup(mock => mock.GetProperty(_propertyFake.Object)).Returns(12).Verifiable();

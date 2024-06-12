@@ -15,14 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 using Remotion.Mixins;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject
 {
-  [Serializable]
-  public class BindableObjectWithIdentityBaseImplementation : BindableObjectWithIdentityMixin, IDeserializationCallback, IBindableObjectWithIdentityBaseImplementation
+  public class BindableObjectWithIdentityBaseImplementation : BindableObjectWithIdentityMixin, IBindableObjectWithIdentityBaseImplementation
   {
     public static BindableObjectWithIdentityBaseImplementation Create (BindableObjectWithIdentityBase wrapper)
     {
@@ -43,11 +41,6 @@ namespace Remotion.ObjectBinding.BindableObject
     public override string UniqueIdentifier
     {
       get { return ((BindableObjectWithIdentityBase)Target).UniqueIdentifier; }
-    }
-
-    void IDeserializationCallback.OnDeserialization (object? sender)
-    {
-      MixinTargetMockUtility.MockMixinTargetAfterDeserialization(this, _wrapper);
     }
 
     public string BaseDisplayName

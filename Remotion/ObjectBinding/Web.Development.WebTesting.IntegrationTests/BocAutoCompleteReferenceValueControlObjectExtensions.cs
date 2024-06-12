@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;

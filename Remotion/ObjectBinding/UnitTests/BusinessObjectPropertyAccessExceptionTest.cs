@@ -32,18 +32,5 @@ namespace Remotion.ObjectBinding.UnitTests
       Assert.That(exception.Message, Is.EqualTo("The Message"));
       Assert.That(exception.InnerException, Is.SameAs(expectedException));
     }
-
-    [Test]
-    public void Serialization ()
-    {
-      Exception expectedException = new Exception("The Exception");
-      var exception = new BusinessObjectPropertyAccessException("The Message", expectedException);
-
-      var deserialized = Serializer.SerializeAndDeserialize(exception);
-
-      Assert.That(deserialized.Message, Is.EqualTo("The Message"));
-      Assert.That(deserialized.InnerException, Is.Not.Null);
-      Assert.That(deserialized.InnerException.Message, Is.EqualTo("The Exception"));
-    }
   }
 }
