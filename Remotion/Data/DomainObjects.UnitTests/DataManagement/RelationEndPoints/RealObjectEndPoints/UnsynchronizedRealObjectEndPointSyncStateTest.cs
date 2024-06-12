@@ -20,7 +20,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjectEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.RealObjectEndPoints
@@ -89,16 +88,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
                   + "out of sync with the opposite property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order'. To make this change, "
                   + "synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method on the "
                   + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' property."));
-    }
-
-    [Test]
-    public void FlattenedSerializable ()
-    {
-      var state = new UnsynchronizedRealObjectEndPointSyncState();
-
-      var result = FlattenedSerializer.SerializeAndDeserialize(state);
-
-      Assert.That(result, Is.Not.Null);
     }
 
     private IRelationEndPointDefinition GetRelationEndPointDefinition (Type classType, string shortPropertyName)

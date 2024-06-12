@@ -21,10 +21,8 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.EagerFetching;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
 {
@@ -200,16 +198,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
 
       _fetchResultLoaderMock.Verify();
       _registrationAgentMock.Verify();
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      var instance = new EagerFetcher(new SerializableFetchedRelationDataRegistrationAgentFake());
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
-
-      Assert.That(deserializedInstance.RegistrationAgent, Is.Not.Null);
     }
   }
 }

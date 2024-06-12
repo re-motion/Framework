@@ -96,20 +96,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     }
 
     [Test]
-    public void Serialization_ViaISerializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var instance = SampleBindableDomainObject_ImplementingISerializable.NewObject();
-      instance = Serializer.SerializeAndDeserialize(instance);
-
-      var implementation = (BindableDomainObjectImplementation)PrivateInvoke.GetNonPublicField(instance, "_implementation");
-      Assert.That(implementation, Is.Not.Null);
-      Assert.That(implementation.BusinessObjectClass, Is.Not.Null);
-      Assert.That(implementation.BusinessObjectClass.TargetType, Is.SameAs(typeof(SampleBindableDomainObject_ImplementingISerializable)));
-    }
-
-    [Test]
     public void Loading ()
     {
       var newInstanceID = new ObjectID(typeof(SampleBindableDomainObject), Guid.NewGuid());

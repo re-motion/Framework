@@ -15,14 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Data.DomainObjects.Queries.Configuration
 {
 /// <summary>
 /// The exception that is thrown when a problem occurs while constructing a <see cref="QueryConfiguration"/>.
 /// </summary>
-[Serializable]
 public class QueryConfigurationException : ConfigurationException
 {
   // types
@@ -36,11 +34,6 @@ public class QueryConfigurationException : ConfigurationException
   public QueryConfigurationException () : this("Error in query configuration.") {}
   public QueryConfigurationException (string message) : base(message) {}
   public QueryConfigurationException (string message, Exception? inner) : base(message, inner) {}
-
-#if NET8_0_OR_GREATER
-  [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-  protected QueryConfigurationException (SerializationInfo info, StreamingContext context) : base(info, context) {}
 
   // methods and properties
 

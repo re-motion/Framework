@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
@@ -185,14 +184,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         throw new InvalidOperationException(message);
       }
     }
-
-    #region Serialization
-
-    public CompleteVirtualObjectEndPointLoadState (FlattenedDeserializationInfo info)
-      : base(info)
-    {
-    }
-
-    #endregion Serialization
   }
 }

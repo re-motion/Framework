@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -32,12 +31,8 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence
 {
   /// <threadsafety static="true" instance="false" />
-  [Serializable]
   [ImplementationFor(typeof(IPersistenceService), Lifetime = LifetimeKind.Singleton)]
-  public class PersistenceService : IPersistenceService,
-#pragma warning disable SYSLIB0050
-      IObjectReference
-#pragma warning restore SYSLIB0050
+  public class PersistenceService : IPersistenceService
   {
     private class TransactionContext : IDisposable
     {
@@ -362,8 +357,5 @@ namespace Remotion.Data.DomainObjects.Persistence
 
       return result;
     }
-
-    /// <inheritdoc />
-    object IObjectReference.GetRealObject (StreamingContext context) => SafeServiceLocator.Current.GetInstance<IPersistenceService>();
   }
 }

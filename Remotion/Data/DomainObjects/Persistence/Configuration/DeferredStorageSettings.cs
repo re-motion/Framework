@@ -16,7 +16,6 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.Threading;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.Mapping;
@@ -36,14 +35,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
   /// </remarks>
   /// <threadsafety static="true" instance="true"/>
   [UsedImplicitly]
-  [Serializable]
   [ImplementationFor(typeof(IStorageSettings), Lifetime = LifetimeKind.Singleton)]
-  public sealed class DeferredStorageSettings : IStorageSettings,
-#pragma warning disable SYSLIB0050
-      IObjectReference
-#pragma warning restore SYSLIB0050
+  public sealed class DeferredStorageSettings : IStorageSettings
   {
-    [NonSerialized]
     private readonly Lazy<IStorageSettings> _storageSettings;
 
     /// <summary>
@@ -86,18 +80,5 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     public StorageProviderDefinition? GetDefaultStorageProviderDefinition () => _storageSettings.Value.GetDefaultStorageProviderDefinition();
 
     public IReadOnlyCollection<StorageProviderDefinition> GetStorageProviderDefinitions () => _storageSettings.Value.GetStorageProviderDefinitions();
-
-    object IObjectReference.GetRealObject (StreamingContext context)
-    {
-      var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
-
-      if (storageSettings is not DeferredStorageSettings)
-      {
-        throw new SerializationException(
-            "The instance cannot be deserialized because the instance of the IStorageSettings resolved via SafeServiceLocator is not of type 'DeferredStorageSettings'.");
-      }
-
-      return storageSettings;
-    }
   }
 }

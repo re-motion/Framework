@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjectEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
@@ -207,28 +206,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       return ((RelationEndPointDefinition)ID.Definition).PropertyDefinition;
     }
-
-
-    #region Serialization
-    protected RealObjectEndPoint (FlattenedDeserializationInfo info)
-      : base(info)
-    {
-      _foreignKeyDataContainer = info.GetValueForHandle<DataContainer>();
-      _propertyDefinition = GetPropertyDefinition();
-      _endPointProvider = info.GetValueForHandle<IRelationEndPointProvider>();
-      _transactionEventSink = info.GetValueForHandle<IClientTransactionEventSink>();
-      _syncState = info.GetValueForHandle<IRealObjectEndPointSyncState>();
-    }
-
-    protected override void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      base.SerializeIntoFlatStructure(info);
-      info.AddHandle(_foreignKeyDataContainer);
-      info.AddHandle(_endPointProvider);
-      info.AddHandle(_transactionEventSink);
-      info.AddHandle(_syncState);
-    }
-    #endregion
-
   }
 }

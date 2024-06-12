@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.Logging;
@@ -457,43 +456,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       return ObjectListFactory.Create(dataStrategy);
     }
-
-    #region Serialization
-
-    protected VirtualCollectionEndPoint (FlattenedDeserializationInfo info)
-        : base(info)
-    {
-      _collectionManager = info.GetValueForHandle<IVirtualCollectionEndPointCollectionManager>();
-      _lazyLoader = info.GetValueForHandle<ILazyLoader>();
-      _endPointProvider = info.GetValueForHandle<IRelationEndPointProvider>();
-      _transactionEventSink = info.GetValueForHandle<IClientTransactionEventSink>();
-      _dataManagerFactory = info.GetValueForHandle<IVirtualCollectionEndPointDataManagerFactory>();
-
-      _dataManager = info.GetNullableValueForHandle<IVirtualCollectionEndPointDataManager>();
-      _hasBeenTouched = info.GetBoolValue();
-
-      _addedDomainObjects = new HashSet<ObjectID>();
-      info.FillCollection(_addedDomainObjects);
-
-      _removedDomainObjects = new HashSet<ObjectID>();
-      info.FillCollection(_removedDomainObjects);
-    }
-
-    protected override void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      info.AddHandle(_collectionManager);
-      info.AddHandle(_lazyLoader);
-      info.AddHandle(_endPointProvider);
-      info.AddHandle(_transactionEventSink);
-      info.AddHandle(_dataManagerFactory);
-
-      info.AddHandle(_dataManager);
-      info.AddBoolValue(_hasBeenTouched);
-
-      info.AddCollection(_addedDomainObjects);
-      info.AddCollection(_removedDomainObjects);
-    }
-
-    #endregion
   }
 }

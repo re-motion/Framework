@@ -19,7 +19,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
@@ -107,27 +106,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       _transactionEventSink.RaiseRelationEndPointMapUnregisteringEvent(endPointID);
       _relationEndPoints.Remove(endPointID);
     }
-
-    #region Serialization
-
-    protected RelationEndPointMap (FlattenedDeserializationInfo info)
-      : this(info.GetValueForHandle<IClientTransactionEventSink>())
-    {
-      var endPointArray = info.GetArray<IRelationEndPoint>();
-      foreach (IRelationEndPoint endPoint in endPointArray)
-        _relationEndPoints.Add(endPoint.ID, endPoint);
-    }
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-      info.AddHandle(_transactionEventSink);
-
-      var endPointArray = new IRelationEndPoint[Count];
-      _relationEndPoints.Values.CopyTo(endPointArray, 0);
-      info.AddArray(endPointArray);
-    }
-
-    #endregion
   }
 }

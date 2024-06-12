@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints
 {
@@ -69,14 +68,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       return _stubbedOriginalItemsWithoutEndPoints;
     }
-
-    #region Serialization
-
-    public TestableCompleteVirtualEndPointLoadState (FlattenedDeserializationInfo info)
-      : base(info)
-    {
-    }
-
-    #endregion
   }
 }

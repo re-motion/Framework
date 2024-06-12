@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
@@ -23,7 +22,6 @@ namespace Remotion.Data.DomainObjects
 /// <summary>
 /// The exception that is thrown when a PropertyValue is set to a value of wrong type.
 /// </summary>
-[Serializable]
 public class InvalidTypeException : DomainObjectException
 {
   // types
@@ -37,16 +35,6 @@ public class InvalidTypeException : DomainObjectException
   private Type _actualType;
 
   // construction and disposing
-
-#if NET8_0_OR_GREATER
-  [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-  protected InvalidTypeException (SerializationInfo info, StreamingContext context) : base(info, context)
-  {
-    _propertyName = info.GetString("PropertyName")!;
-    _expectedType = (Type)info.GetValue("ExpectedType", typeof(Type))!;
-    _actualType = (Type)info.GetValue("ActualType", typeof(Type))!;
-  }
 
   public InvalidTypeException (string propertyName, Type expectedType, Type actualType) : this(
       string.Format(
@@ -94,23 +82,6 @@ public class InvalidTypeException : DomainObjectException
   public Type ActualType
   {
     get { return _actualType; }
-  }
-
-  /// <summary>
-  /// Sets the SerializationInfo object with the parameter name and additional exception information.
-  /// </summary>
-  /// <param name="info">The object that holds the serialized object data.</param>
-  /// <param name="context">The contextual information about the source or destination.</param>
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-  public override void GetObjectData (SerializationInfo info, StreamingContext context)
-  {
-    base.GetObjectData(info, context);
-
-    info.AddValue("PropertyName", _propertyName);
-    info.AddValue("ExpectedType", _expectedType);
-    info.AddValue("ActualType", _actualType);
   }
 }
 }

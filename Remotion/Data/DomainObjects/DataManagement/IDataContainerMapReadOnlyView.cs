@@ -16,14 +16,13 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.DataManagement
 {
   /// <summary>
   /// Provides a read-only API to access the <see cref="DataContainer"/> instances loaded into a <see cref="DataContainerMap"/>.
   /// </summary>
-  public interface IDataContainerMapReadOnlyView : IEnumerable<DataContainer>, IFlattenedSerializable
+  public interface IDataContainerMapReadOnlyView : IEnumerable<DataContainer>
   {
     int Count { get; }
     DataContainer? this[ObjectID id] { get; }

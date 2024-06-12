@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Linq;
-using System.Runtime.Serialization;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
@@ -570,16 +569,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       public static Throws NewObject ()
       {
         return NewObject<Throws>();
-      }
-
-      public Throws ()
-        : base(ThrowException(), new StreamingContext())
-      {
-      }
-
-      private static SerializationInfo ThrowException ()
-      {
-        throw new Exception("Thrown in ThrowException()");
       }
     }
   }

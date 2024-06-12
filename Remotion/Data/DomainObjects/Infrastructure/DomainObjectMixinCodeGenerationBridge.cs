@@ -31,9 +31,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   public static class DomainObjectMixinCodeGenerationBridge
   {
     internal class DummyObjectReference
-#pragma warning disable SYSLIB0050
-        : IObjectReference
-#pragma warning restore SYSLIB0050
     {
       private readonly object _realObject;
 

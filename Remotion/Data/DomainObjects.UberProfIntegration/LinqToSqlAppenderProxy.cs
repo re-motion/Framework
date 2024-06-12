@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Data;
-using System.Runtime.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UberProfIntegration
@@ -28,11 +27,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
   /// The wrapper uses runtime-binding to redirect the calls to Linq to Sql Profiler's API. This removes the static dependcy on Linq to Sql Profiler.
   /// </remarks>
   /// <threadsafety static="true" instance="true" />
-  [Serializable]
   public sealed class LinqToSqlAppenderProxy
-#pragma warning disable SYSLIB0050
-      : IObjectReference
-#pragma warning restore SYSLIB0050
   {
     private static readonly DoubleCheckedLockingContainer<LinqToSqlAppenderProxy> s_instance =
         new DoubleCheckedLockingContainer<LinqToSqlAppenderProxy>(() => new LinqToSqlAppenderProxy(
@@ -151,11 +146,6 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     public void TransactionRolledBack (Guid sessionID)
     {
       _transactionRolledBack(sessionID);
-    }
-
-    object IObjectReference.GetRealObject (StreamingContext context)
-    {
-      return Instance;
     }
   }
 }

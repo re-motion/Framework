@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
@@ -24,7 +23,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// <summary>
   /// Provides a common interface for objects representing one side of a relation between <see cref="DomainObject"/> instances.
   /// </summary>
-  public interface IRelationEndPoint : INullObject, IFlattenedSerializable
+  public interface IRelationEndPoint : INullObject
   {
     RelationEndPointID ID { get; }
     ClientTransaction ClientTransaction { get; }

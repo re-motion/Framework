@@ -23,11 +23,9 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries.EagerFetching;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
 {
@@ -348,16 +346,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
               new[] { _fetchedComputerData1 }),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "Only virtual object-valued relation end-points can be handled by this registration agent.", "relationEndPointDefinition"));
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      var agent = new FetchedVirtualObjectRelationDataRegistrationAgent(new SerializableVirtualEndPointProviderFake());
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(agent);
-
-      Assert.That(deserializedInstance.VirtualEndPointProvider, Is.Not.Null);
     }
 
     private LoadedObjectDataWithDataSourceData CreateFetchedComputerData (Computer fetchedObject, ObjectID EmployeeID)

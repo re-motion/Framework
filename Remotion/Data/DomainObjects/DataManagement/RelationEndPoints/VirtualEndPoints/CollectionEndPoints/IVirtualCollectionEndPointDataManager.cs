@@ -16,14 +16,13 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
   /// <summary>
   /// Defines an interface for classes storing the data for a <see cref="VirtualCollectionEndPoint"/>.
   /// </summary>
-  public interface IVirtualCollectionEndPointDataManager : IFlattenedSerializable
+  public interface IVirtualCollectionEndPointDataManager
   {
     IVirtualCollectionData CollectionData { get; }
     ReadOnlyVirtualCollectionDataDecorator GetOriginalCollectionData ();

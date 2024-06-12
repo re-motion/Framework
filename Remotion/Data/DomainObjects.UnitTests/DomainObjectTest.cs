@@ -519,53 +519,12 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void NeedsLoadModeDataContainerOnly_Serialization_ISerializable_True ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var classWithAllDataTypes = _transaction.ExecuteInScope(() => ClassWithAllDataTypes.NewObject());
-      Assert.That(classWithAllDataTypes.NeedsLoadModeDataContainerOnly, Is.True);
-
-      var deserializedClassWithAllDataTypes = Serializer.SerializeAndDeserialize(classWithAllDataTypes);
-      Assert.That(deserializedClassWithAllDataTypes.NeedsLoadModeDataContainerOnly, Is.True);
-    }
-
-    [Test]
-    public void NeedsLoadModeDataContainerOnly_Serialization_ISerializable_False ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var classWithAllDataTypes = (ClassWithAllDataTypes)LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.ClassWithAllDataTypes1);
-
-      Assert.That(classWithAllDataTypes.NeedsLoadModeDataContainerOnly, Is.False);
-
-      var deserializedClassWithAllDataTypes = Serializer.SerializeAndDeserialize(classWithAllDataTypes);
-      Assert.That(deserializedClassWithAllDataTypes.NeedsLoadModeDataContainerOnly, Is.False);
-    }
-
-    [Test]
     public void Properties ()
     {
       var order = _transaction.ExecuteInScope(() => Order.NewObject());
       var propertyIndexer = _transaction.ExecuteInScope(() => order.Properties);
       Assert.That(propertyIndexer, Is.Not.Null);
       Assert.That(propertyIndexer.DomainObject, Is.SameAs(order));
-    }
-
-    [Test]
-    public void Properties_Serialization ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var order = _transaction.ExecuteInScope(() => Order.NewObject());
-      var propertyIndexer = _transaction.ExecuteInScope(() => order.Properties);
-      Assert.That(propertyIndexer, Is.Not.Null);
-      Assert.That(propertyIndexer.DomainObject, Is.SameAs(order));
-
-      var deserializedOrder = Serializer.SerializeAndDeserialize(order);
-      var newPropertyIndexer = _transaction.ExecuteInScope(() => deserializedOrder.Properties);
-      Assert.That(newPropertyIndexer, Is.Not.Null);
-      Assert.That(newPropertyIndexer.DomainObject, Is.SameAs(deserializedOrder));
     }
 
     [Test]

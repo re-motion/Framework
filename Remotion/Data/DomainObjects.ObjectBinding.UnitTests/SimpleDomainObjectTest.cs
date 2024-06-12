@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
@@ -69,24 +68,5 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
         Assert.That(deserializedInstance.IntProperty, Is.EqualTo(7));
       }
     }
-
-
-#pragma warning disable SYSLIB0050
-    [Test]
-    public void DeserializationConstructor_CallsBase ()
-    {
-      var serializable = ClassDerivedFromSimpleDomainObject_ImplementingISerializable.NewObject();
-
-      var info = new SerializationInfo(typeof(ClassDerivedFromSimpleDomainObject_ImplementingISerializable), new FormatterConverter());
-      var context = new StreamingContext();
-
-      serializable.GetObjectData(info, context);
-      Assert.That(info.MemberCount, Is.GreaterThan(0));
-
-      var deserialized =
-          (ClassDerivedFromSimpleDomainObject_ImplementingISerializable)Activator.CreateInstance(((object)serializable).GetType(), info, context);
-      Assert.That(deserialized.ID, Is.EqualTo(serializable.ID));
-    }
-#pragma warning restore SYSLIB0050
   }
 }

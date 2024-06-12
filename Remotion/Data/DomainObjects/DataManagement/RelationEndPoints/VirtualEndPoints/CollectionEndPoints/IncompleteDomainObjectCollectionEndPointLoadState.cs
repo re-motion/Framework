@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
@@ -144,21 +143,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       return _dataManagerFactory.CreateEndPointDataManager(endPoint.ID);
     }
-
-    #region Serialization
-
-    public IncompleteDomainObjectCollectionEndPointLoadState (FlattenedDeserializationInfo info)
-        : base(info)
-    {
-      _dataManagerFactory = info.GetValueForHandle<IDomainObjectCollectionEndPointDataManagerFactory>();
-    }
-
-    protected override void SerializeSubclassData (FlattenedSerializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-      info.AddHandle(_dataManagerFactory);
-    }
-
-    #endregion
   }
 }

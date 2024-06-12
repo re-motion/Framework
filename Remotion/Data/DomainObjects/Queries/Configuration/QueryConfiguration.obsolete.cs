@@ -17,7 +17,6 @@
 using System;
 using System.Configuration;
 using Remotion.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries.Configuration
 {

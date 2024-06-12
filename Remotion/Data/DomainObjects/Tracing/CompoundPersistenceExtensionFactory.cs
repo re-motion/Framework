@@ -17,18 +17,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Tracing
 {
-  [Serializable]
   [ImplementationFor(typeof(IPersistenceExtensionFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
-  public sealed class CompoundPersistenceExtensionFactory : IPersistenceExtensionFactory,
-#pragma warning disable SYSLIB0050
-      IObjectReference
-#pragma warning restore SYSLIB0050
+  public sealed class CompoundPersistenceExtensionFactory : IPersistenceExtensionFactory
   {
     private readonly IReadOnlyCollection<IPersistenceExtensionFactory> _persistenceExtensionFactories;
 
@@ -47,20 +42,6 @@ namespace Remotion.Data.DomainObjects.Tracing
     public IEnumerable<IPersistenceExtension> CreatePersistenceExtensions (Guid clientTransactionID)
     {
       return _persistenceExtensionFactories.SelectMany(f => f.CreatePersistenceExtensions(clientTransactionID));
-    }
-
-    object IObjectReference.GetRealObject (StreamingContext context)
-    {
-      var persistenceExtensionFactory = SafeServiceLocator.Current.GetInstance<IPersistenceExtensionFactory>();
-
-      if (persistenceExtensionFactory is not CompoundPersistenceExtensionFactory)
-      {
-        throw new SerializationException(
-            "The instance cannot be deserialized because the instance of the IPersistenceExtensionFactory "
-            + "resolved via SafeServiceLocator is not of type 'CompoundPersistenceExtensionFactory'.");
-      }
-
-      return persistenceExtensionFactory;
     }
   }
 }

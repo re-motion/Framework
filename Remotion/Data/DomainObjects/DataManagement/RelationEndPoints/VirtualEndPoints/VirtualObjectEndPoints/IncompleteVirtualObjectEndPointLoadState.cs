@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
@@ -83,22 +82,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       return _dataManagerFactory.CreateEndPointDataManager(endPoint.ID);
     }
-
-    #region Serialization
-
-    public IncompleteVirtualObjectEndPointLoadState (FlattenedDeserializationInfo info)
-        : base(info)
-    {
-      _dataManagerFactory = info.GetValueForHandle<IVirtualObjectEndPointDataManagerFactory>();
-    }
-
-    protected override void SerializeSubclassData (FlattenedSerializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-      info.AddHandle(_dataManagerFactory);
-    }
-
-    #endregion Serialization
-
   }
 }

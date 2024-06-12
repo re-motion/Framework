@@ -19,10 +19,7 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
-using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints
 {
@@ -460,25 +457,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That(_dataManager.CurrentOppositeObject, Is.Null);
       Assert.That(_dataManager.CurrentOppositeEndPoint, Is.Null);
-    }
-
-    [Test]
-    public void FlattenedSerializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var data = new VirtualObjectEndPointDataManager(_endPointID);
-
-      var endPointFake = new SerializableRealObjectEndPointFake(null, DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order1));
-      data.RegisterOriginalOppositeEndPoint(endPointFake);
-
-      var deserializedInstance = FlattenedSerializer.SerializeAndDeserialize(data);
-
-      Assert.That(deserializedInstance.EndPointID, Is.Not.Null);
-      Assert.That(deserializedInstance.OriginalOppositeEndPoint, Is.Not.Null);
-      Assert.That(deserializedInstance.OriginalOppositeObject, Is.Not.Null);
-      Assert.That(deserializedInstance.CurrentOppositeEndPoint, Is.Not.Null);
-      Assert.That(deserializedInstance.CurrentOppositeObject, Is.Not.Null);
     }
   }
 }

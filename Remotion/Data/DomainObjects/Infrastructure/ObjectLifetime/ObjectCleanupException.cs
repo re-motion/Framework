@@ -15,8 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
-using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
@@ -36,7 +34,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
   /// Rollback the <see cref="ClientTransaction"/> to get rid of the partially constructed instance.
   /// </para>
   /// </remarks>
-  [Serializable]
   public class ObjectCleanupException : DomainObjectException
   {
     private readonly ObjectID _objectID;
@@ -52,16 +49,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       _cleanupException = cleanupException;
     }
 
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    protected ObjectCleanupException ([NotNull] SerializationInfo info, StreamingContext context)
-        : base(info, context)
-    {
-      _objectID = (ObjectID)info.GetValue("_objectID", typeof(ObjectID))!;
-      _cleanupException = (Exception)info.GetValue("_cleanupException", typeof(Exception))!;
-    }
-
     public ObjectID ObjectID
     {
       get { return _objectID; }
@@ -70,17 +57,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     public Exception CleanupException
     {
       get { return _cleanupException; }
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    public override void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      base.GetObjectData(info, context);
-
-      info.AddValue("_objectID", _objectID);
-      info.AddValue("_cleanupException", _cleanupException);
     }
   }
 }

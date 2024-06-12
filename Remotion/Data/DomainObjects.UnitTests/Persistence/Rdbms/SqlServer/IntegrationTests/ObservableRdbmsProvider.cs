@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Data;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Utilities;

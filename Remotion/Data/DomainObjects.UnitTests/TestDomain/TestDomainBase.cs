@@ -17,7 +17,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
@@ -25,7 +24,6 @@ using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
-  [Serializable]
   public abstract class TestDomainBase : DomainObject, ISupportsGetObject
   {
     public static event EventHandler StaticCtorHandler;
@@ -99,11 +97,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       CtorCalled = true;
       CtorTx = ClientTransaction.Current;
       OnReferenceInitializingCalledBeforeCtor = OnReferenceInitializingCalled;
-    }
-
-    protected TestDomainBase (SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
     }
 
     [StorageClassNone]

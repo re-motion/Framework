@@ -22,8 +22,6 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjectEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
-using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
 
@@ -288,19 +286,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(decoratedCommand.OldRelatedObject, Is.SameAs(oldRelatedObject));
       Assert.That(decoratedCommand.EndPointProvider, Is.SameAs(_endPointProviderStub.Object));
       Assert.That(GetOppositeObjectIDSetter(decoratedCommand), Is.SameAs(_fakeSetter));
-    }
-
-    [Test]
-    public void FlattenedSerializable ()
-    {
-      var state = new SynchronizedRealObjectEndPointSyncState(
-          new SerializableRelationEndPointProviderFake(), new SerializableClientTransactionEventSinkFake());
-
-      var result = FlattenedSerializer.SerializeAndDeserialize(state);
-
-      Assert.That(result, Is.Not.Null);
-      Assert.That(result.EndPointProvider, Is.Not.Null);
-      Assert.That(result.TransactionEventSink, Is.Not.Null);
     }
 
     private IRelationEndPointDefinition GetRelationEndPointDefinition (Type classType, string shortPropertyName)

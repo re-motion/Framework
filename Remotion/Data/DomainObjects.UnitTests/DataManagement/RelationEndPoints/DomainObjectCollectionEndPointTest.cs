@@ -24,8 +24,6 @@ using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
-using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
 using Remotion.Data.DomainObjects.Validation;
@@ -861,16 +859,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _lazyLoaderMock.Verify();
       Assert.That(result, Is.SameAs(loadStateFake.Object));
-    }
-
-    [Test]
-    public void EndPointLoader_Serializable ()
-    {
-      var endPointLoader = new DomainObjectCollectionEndPoint.EndPointLoader(new SerializableLazyLoaderFake());
-
-      var deserializedInstance = FlattenedSerializer.SerializeAndDeserialize(endPointLoader);
-
-      Assert.That(deserializedInstance.LazyLoader, Is.Not.Null);
     }
   }
 }

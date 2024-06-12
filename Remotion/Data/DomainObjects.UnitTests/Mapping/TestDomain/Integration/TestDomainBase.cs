@@ -15,19 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 {
-  [Serializable]
   public abstract class TestDomainBase : DomainObject
   {
     protected TestDomainBase ()
-    {
-    }
-
-    protected TestDomainBase (SerializationInfo info, StreamingContext context)
-      : base(info, context)
     {
     }
   }

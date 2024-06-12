@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement
@@ -99,26 +98,5 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       return GetEnumerator();
     }
-
-    #region Serialization
-
-    protected DataContainerMap (FlattenedDeserializationInfo info)
-        : this(info.GetValueForHandle<IClientTransactionEventSink>())
-    {
-      var dataContainerCount = info.GetIntValue();
-      for (int i = 0; i < dataContainerCount; ++i)
-        _dataContainers.Add(info.GetValueForHandle<DataContainer>());
-    }
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      info.AddHandle(_transactionEventSink);
-
-      info.AddIntValue(_dataContainers.Count);
-      foreach (DataContainer dataContainer in _dataContainers)
-        info.AddHandle(dataContainer);
-    }
-
-    #endregion
   }
 }

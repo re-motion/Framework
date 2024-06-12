@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
@@ -27,11 +26,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   {
     public TestableRelationEndPoint (ClientTransaction clientTransaction, RelationEndPointID id)
         : base(clientTransaction, id)
-    {
-    }
-
-    public TestableRelationEndPoint (FlattenedDeserializationInfo info)
-        : base(info)
     {
     }
 
@@ -88,10 +82,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public override IDataManagementCommand CreateDeleteCommand ()
     {
       throw new NotImplementedException();
-    }
-
-    protected override void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
     }
 
     public override void SetDataFromSubTransaction (IRelationEndPoint source)

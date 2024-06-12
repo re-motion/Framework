@@ -23,10 +23,7 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 {
@@ -558,24 +555,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       _dataManagerMock.Verify();
       _registrationListenerMock.Verify();
       sequence.Verify();
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var clientTransaction = ClientTransaction.CreateRootTransaction();
-      var agent = new LoadedObjectDataRegistrationAgent(
-          clientTransaction,
-          new SerializableDataManagerFake(),
-          new SerializableLoadedObjectDataRegistrationListenerFake());
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(agent);
-
-      Assert.That(deserializedInstance.ClientTransaction, Is.Not.Null);
-      Assert.That(deserializedInstance.DataManager, Is.Not.Null);
-      Assert.That(deserializedInstance.RegistrationListener, Is.Not.Null);
     }
 
     private FreshlyLoadedObjectData GetFreshlyLoadedObject (ObjectID id = null)

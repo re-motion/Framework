@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence
@@ -26,7 +25,6 @@ namespace Remotion.Data.DomainObjects.Persistence
   /// <summary>
   /// Thrown when one or multiple objects can't be found in the underlying data source.
   /// </summary>
-  [Serializable]
   public class ObjectsNotFoundException : StorageProviderException
   {
     private static string BuildMessage (IEnumerable<ObjectID> ids)
@@ -54,28 +52,9 @@ namespace Remotion.Data.DomainObjects.Persistence
       _ids = ids.ToArray();
     }
 
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    protected ObjectsNotFoundException (SerializationInfo info, StreamingContext context)
-        : base(info, context)
-    {
-      _ids = (ObjectID[])info.GetValue("_ids", typeof(ObjectID[]))!;
-    }
-
     public ReadOnlyCollection<ObjectID> IDs
     {
       get { return Array.AsReadOnly(_ids); }
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    public override void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      base.GetObjectData(info, context);
-
-      info.AddValue("_ids", _ids);
     }
   }
 }
