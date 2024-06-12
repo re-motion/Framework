@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
@@ -33,7 +32,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   [BindableDomainObjectProvider]
   [BindableObjectBaseClass]
   [IgnoreForMappingConfiguration]
-  [Serializable]
   public abstract class BindableDomainObject : DomainObject, IBusinessObjectWithIdentity
   {
     private IBindableDomainObjectImplementation? _implementation;
@@ -43,29 +41,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     /// </summary>
     protected BindableDomainObject ()
     {
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="BindableDomainObject"/> class in the process of deserialization.
-    /// </summary>
-    /// <param name="info">The <see cref="SerializationInfo"/> coming from the .NET serialization infrastructure.</param>
-    /// <param name="context">The <see cref="StreamingContext"/> coming from the .NET serialization infrastructure.</param>
-    /// <remarks>Be sure to call this base constructor from the deserialization constructor of any concrete <see cref="BindableDomainObject"/> type
-    /// implementing the <see cref="ISerializable"/> interface.</remarks>
-    protected BindableDomainObject (SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-      _implementation = (IBindableDomainObjectImplementation)info.GetValue("BDO._implementation", typeof(IBindableDomainObjectImplementation))!;
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    protected new void BaseGetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      info.AddValue("BDO._implementation", _implementation);
-
-      base.BaseGetObjectData(info, context);
     }
 
     protected override void OnReferenceInitializing ()

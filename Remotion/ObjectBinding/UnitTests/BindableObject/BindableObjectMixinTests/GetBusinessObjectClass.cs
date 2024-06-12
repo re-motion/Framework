@@ -16,7 +16,6 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
@@ -86,24 +85,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
           .EnterScope())
       {
         businessObject = (IBusinessObject)ObjectFactory.Create<DerivedBusinessObjectClass>(ParamList.Empty);
-        Assert.That(businessObject, Is.InstanceOf(typeof(IMixinAddingProperty)));
-      }
-
-      // lazy initialization here - should use mixin configuration from above
-      var businessObjectClass = (BindableObjectClass)businessObject.BusinessObjectClass;
-      Assert.That(businessObjectClass.GetPropertyDefinition("MixedProperty"), Is.Not.Null);
-    }
-
-    [Test]
-    public void LazyInitialization_KeepsMixinConfigurationOfDeserializationTime ()
-    {
-      IBusinessObject businessObject;
-      using (MixinConfiguration.BuildNew()
-          .ForClass<BaseBusinessObjectClass>().AddMixin<MixinAddingProperty>()
-          .ForClass<BaseBusinessObjectClass>().AddMixin<BindableObjectMixin>()
-          .EnterScope())
-      {
-        businessObject = Serializer.SerializeAndDeserialize((IBusinessObject)ObjectFactory.Create<DerivedBusinessObjectClass>(ParamList.Empty));
         Assert.That(businessObject, Is.InstanceOf(typeof(IMixinAddingProperty)));
       }
 

@@ -15,21 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
-  [Serializable]
   [Instantiable]
-  public abstract class Customer : Company, IDeserializationCallback
+  public abstract class Customer : Company
   {
-    [NonSerialized]
-    public bool OnDeserializationCalled;
-    [NonSerialized]
-    public bool OnDeserializingAttributeCalled;
-    [NonSerialized]
-    public bool OnDeserializedAttributeCalled;
-
     public enum CustomerType
     {
       Standard = 0,
@@ -56,22 +47,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 
     [DBBidirectionalRelation("AssociatedCustomerCompany", ContainsForeignKey = false)]
     public abstract Person ContactPerson { get; set; }
-
-    public void OnDeserialization (object sender)
-    {
-      OnDeserializationCalled = true;
-    }
-
-    [OnDeserialized]
-    private void OnDeserializedAttribute (StreamingContext context)
-    {
-      OnDeserializedAttributeCalled = true;
-    }
-
-    [OnDeserializing]
-    private void OnOnDeserializingAttribute (StreamingContext context)
-    {
-      OnDeserializingAttributeCalled = true;
-    }
   }
 }

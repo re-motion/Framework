@@ -19,7 +19,6 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
-using Remotion.Development.UnitTesting;
 using Remotion.Security;
 using Remotion.Security.Development;
 using Remotion.SecurityManager.Domain;
@@ -159,17 +158,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     {
       var principal = CreateSecurityManagerPrincipal(_tenant, _user, _roles, _substitution);
       Assert.That(principal.GetSecurityPrincipal(), Is.SameAs(principal.GetSecurityPrincipal()));
-    }
-
-    [Test]
-    public void SerializesCache ()
-    {
-      var principal = CreateSecurityManagerPrincipal(_tenant, _user, _roles, _substitution);
-      var deserialized = Serializer.SerializeAndDeserialize(Tuple.Create(principal, principal.GetSecurityPrincipal()));
-      SecurityManagerPrincipal deserialziedSecurityManagerPrincipal = deserialized.Item1;
-      ISecurityPrincipal deserialziedSecurityPrincipal = deserialized.Item2;
-
-      Assert.That(deserialziedSecurityManagerPrincipal.GetSecurityPrincipal(), Is.SameAs(deserialziedSecurityPrincipal));
     }
 
     [Test]

@@ -19,7 +19,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.DomainImplementation.Transport;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 {
@@ -34,24 +33,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       base.SetUp();
       _transporter = new DomainObjectTransporter();
       _listener = new TransportTransactionListener(_transporter);
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      Serializer.SerializeAndDeserialize(_listener);
-    }
-
-    [Test]
-    public void Serialization_AndMethodCalled ()
-    {
-      TransportTransactionListener listener = Serializer.SerializeAndDeserialize(_listener);
-      Assert.That(
-          () => listener.PropertyValueChanging(TestableClientTransaction, null, null, null, null),
-          Throws.InvalidOperationException
-              .With.Message.EqualTo(
-                  "Cannot use the transported transaction for changing properties after "
-                  + "it has been deserialized."));
     }
 
     [Test]

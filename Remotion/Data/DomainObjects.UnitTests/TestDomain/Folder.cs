@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
-  [Serializable]
   [Instantiable]
   public abstract class Folder : FileSystemItem
   {

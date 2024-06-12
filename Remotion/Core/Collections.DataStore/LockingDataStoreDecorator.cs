@@ -33,7 +33,6 @@ namespace Remotion.Collections.DataStore
   /// </remarks>
   /// <threadsafety static="true" instance="true" />
   [Obsolete("Use ConcurrentDataStore<TKey, TValue> instead. (Version: 1.19.3)")]
-  [Serializable]
   public class LockingDataStoreDecorator<TKey, TValue> : IDataStore<TKey, TValue>
       where TKey : notnull
   {

@@ -21,8 +21,6 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
-using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
 
@@ -237,33 +235,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void Rollback ()
     {
       _loadState.Rollback(_virtualEndPointMock.Object);
-    }
-
-    [Test]
-    public void FlattenedSerializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var endPointLoader =
-          new SerializableVirtualEndPointLoaderFake<
-              IVirtualEndPoint<object>,
-              object,
-              IVirtualEndPointDataManager,
-              IVirtualEndPointLoadState<IVirtualEndPoint<object>, object, IVirtualEndPointDataManager>>();
-
-      var state = new TestableIncompleteVirtualEndPointLoadState(endPointLoader);
-
-      var oppositeEndPoint = new SerializableRealObjectEndPointFake(
-          null,
-          DomainObjectMother.CreateFakeObject<OrderTicket>(DomainObjectIDs.OrderTicket1));
-      state.RegisterOriginalOppositeEndPoint(_virtualEndPointMock.Object, oppositeEndPoint);
-
-      var result = FlattenedSerializer.SerializeAndDeserialize(state);
-
-      Assert.That(result, Is.Not.Null);
-      Assert.That(result.OriginalOppositeEndPoints, Is.Not.Null);
-      Assert.That(result.OriginalOppositeEndPoints, Is.Not.Empty);
-      Assert.That(result.EndPointLoader, Is.Not.Null);
     }
 
     private void CheckOperationDelegatesToCompleteState (

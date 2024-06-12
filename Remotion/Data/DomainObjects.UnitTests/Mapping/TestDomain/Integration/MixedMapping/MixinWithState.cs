@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping
 {
-  [Serializable]
   public class MixinWithState
   {
     public string State;

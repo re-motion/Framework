@@ -21,7 +21,6 @@ using System.Collections.Generic;
 namespace Remotion.Collections
 {
   [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Extensions.dll", true)]
-  [Serializable]
   public class ReadOnlyCollectionDecorator<T> : ICollection<T>, IReadOnlyCollection<T>
   {
     public ReadOnlyCollectionDecorator (ICollection<T> collection)

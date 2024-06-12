@@ -23,7 +23,6 @@ namespace Remotion.Web.ExecutionEngine
   /// Use an instance of the <see cref="WxePermaUrlCallArguments"/> to execute a sub-function within the same window while providing a perma-URL
   /// in the browser's location bar.
   /// </summary>
-  [Serializable]
   public sealed class WxePermaUrlCallArguments : WxeCallArgumentsBase
   {
     public WxePermaUrlCallArguments ()

@@ -37,7 +37,6 @@ namespace Remotion.Web.ExecutionEngine
 {
   /// <summary> This step interrupts the server side execution to display a page to the user. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Class/*' />
-  [Serializable]
   public class WxePageStep : WxeStep, IExecutionStateContext
   {
     private const int c_estimatedLargeObjectHeapThreshold = 85000;
@@ -66,7 +65,6 @@ namespace Remotion.Web.ExecutionEngine
     private bool _isPageDirty;
     private bool _isDirtyFromReturnState;
 
-    [NonSerialized]
     private WxeHandler? _wxeHandler;
 
     private IExecutionState _executionState = NullExecutionState.Null;

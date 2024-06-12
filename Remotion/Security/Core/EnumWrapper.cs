@@ -28,7 +28,6 @@ namespace Remotion.Security
   /// </remarks>
   /// <summary>Wraps an enum and exposes the enum information as string.</summary>
   /// <remarks>Used for example to cross web service boundaries, when the server is unaware of a given enum type.</remarks>
-  [Serializable]
   public struct EnumWrapper : IEquatable<EnumWrapper>
   {
     private static readonly ConcurrentDictionary<Enum, EnumWrapper> s_enumWrapperCache = new ConcurrentDictionary<Enum, EnumWrapper>();

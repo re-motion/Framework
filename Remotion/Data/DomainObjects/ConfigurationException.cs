@@ -15,14 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Data.DomainObjects
 {
 /// <summary>
 /// BaseClass for exceptions that are related to the configuraton of the persistence framework.
 /// </summary>
-[Serializable]
 public class ConfigurationException : DomainObjectException
 {
   // types
@@ -36,11 +34,6 @@ public class ConfigurationException : DomainObjectException
   public ConfigurationException () : this("A configuration exception occurred.") {}
   public ConfigurationException (string message) : base(message) {}
   public ConfigurationException (string message, Exception? inner) : base(message, inner) {}
-
-#if NET8_0_OR_GREATER
-  [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-  protected ConfigurationException (SerializationInfo info, StreamingContext context) : base(info, context) {}
 
   // methods and properties
 

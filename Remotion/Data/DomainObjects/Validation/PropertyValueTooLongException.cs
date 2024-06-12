@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation
@@ -23,7 +22,6 @@ namespace Remotion.Data.DomainObjects.Validation
   /// <summary>
   /// The <see cref="PropertyValueTooLongException"/> is thrown when a domain object property's value exceeds it's maximum length.
   /// </summary>
-  [Serializable]
   public class PropertyValueTooLongException : DomainObjectValidationException
   {
     private readonly DomainObject? _domainObject;
@@ -43,29 +41,6 @@ namespace Remotion.Data.DomainObjects.Validation
       _domainObject = domainObject;
       _propertyName = propertyName;
       _maxLength = maxLength;
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    protected PropertyValueTooLongException (SerializationInfo info, StreamingContext context)
-        : base(info, context)
-    {
-      _domainObject = (DomainObject?)info.GetValue("_domainObject", typeof(DomainObject));
-      _propertyName = info.GetString("_propertyName")!;
-      _maxLength = info.GetInt32("_maxLength");
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    public override void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      base.GetObjectData(info, context);
-
-      info.AddValue("_domainObject", _domainObject);
-      info.AddValue("_propertyName", _propertyName);
-      info.AddValue("_maxLength", _maxLength);
     }
 
     public DomainObject? DomainObject

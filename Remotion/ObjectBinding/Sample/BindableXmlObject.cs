@@ -22,7 +22,6 @@ using Remotion.Reflection;
 
 namespace Remotion.ObjectBinding.Sample
 {
-  [Serializable]
   [BindableObjectWithIdentity]
   public class BindableXmlObject : IBusinessObjectWithIdentity
   {

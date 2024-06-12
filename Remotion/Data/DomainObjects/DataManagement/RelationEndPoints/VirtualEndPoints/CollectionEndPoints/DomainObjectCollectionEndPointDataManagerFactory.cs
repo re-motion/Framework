@@ -22,7 +22,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// <summary>
   /// The <see cref="DomainObjectCollectionEndPointDataManagerFactory"/> is responsible to create a new <see cref="IDomainObjectCollectionEndPointDataManager"/> instance.
   /// </summary>
-  [Serializable]
   public class DomainObjectCollectionEndPointDataManagerFactory : IDomainObjectCollectionEndPointDataManagerFactory
   {
     private readonly IDomainObjectCollectionEndPointChangeDetectionStrategy _changeDetectionStrategy;

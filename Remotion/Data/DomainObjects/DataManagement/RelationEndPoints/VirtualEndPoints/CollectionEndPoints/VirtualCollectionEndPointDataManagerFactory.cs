@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
@@ -41,19 +40,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       return new VirtualCollectionEndPointDataManager(endPointID, DataContainerMap);
     }
-
-    #region Serialization
-
-    private VirtualCollectionEndPointDataManagerFactory (FlattenedDeserializationInfo info)
-    {
-      DataContainerMap = info.GetValueForHandle<IDataContainerMapReadOnlyView>();
-    }
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      info.AddHandle(DataContainerMap);
-    }
-
-    #endregion
   }
 }

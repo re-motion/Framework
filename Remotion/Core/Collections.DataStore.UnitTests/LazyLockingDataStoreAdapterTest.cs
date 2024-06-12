@@ -297,14 +297,6 @@ namespace Remotion.Collections.DataStore.UnitTests
     }
 
     [Test]
-    public void Serializable ()
-    {
-      Serializer.SerializeAndDeserialize(
-          new LazyLockingDataStoreAdapter<string, object>(
-              new SimpleDataStore<string, Lazy<Wrapper>>()));
-    }
-
-    [Test]
     public void GetOrCreateValue_WithNestedTryGetValue_HasNoNestedValue ()
     {
       object expected = new object();

@@ -242,17 +242,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       _wrappedDataMock.Verify(mock => mock.Replace(0, _orderItem1), Times.AtLeastOnce());
     }
 
-    [Test]
-    public void Serializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var decorator = new ModificationCheckingDomainObjectCollectionDataDecorator(typeof(Order), new DomainObjectCollectionData(new[] { _order1, _order3 }));
-      var deserializedDecorator = Serializer.SerializeAndDeserialize(decorator);
-
-      Assert.That(deserializedDecorator.Count(), Is.EqualTo(2));
-    }
-
     private void StubInnerData (params DomainObject[] contents)
     {
       _wrappedDataMock.Setup(stub => stub.Count).Returns(contents.Length);

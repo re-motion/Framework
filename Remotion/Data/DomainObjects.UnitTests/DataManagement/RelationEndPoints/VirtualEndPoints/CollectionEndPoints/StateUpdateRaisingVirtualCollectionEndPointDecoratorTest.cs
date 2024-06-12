@@ -23,8 +23,6 @@ using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
-using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
 using Remotion.Development.Moq.UnitTesting;
@@ -209,19 +207,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void TestToString ()
     {
       Assert.That(_decorator.ToString(), Is.EqualTo("StateUpdateRaisingVirtualCollectionEndPointDecorator { " + _innerEndPointMock.Object + " }"));
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      var innerEndPoint = new SerializableVirtualCollectionEndPointFake();
-      var listener = new SerializableVirtualEndPointStateUpdateListenerFake();
-      var instance = new StateUpdateRaisingVirtualCollectionEndPointDecorator(innerEndPoint, listener);
-
-      var deserializedInstance = FlattenedSerializer.SerializeAndDeserialize(instance);
-
-      Assert.That(deserializedInstance.InnerEndPoint, Is.Not.Null);
-      Assert.That(deserializedInstance.Listener, Is.Not.Null);
     }
 
     private void CheckDelegationWithStateUpdate (Expression<Action<IVirtualCollectionEndPoint>> action)

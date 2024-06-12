@@ -28,7 +28,6 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   /// Used when a threadsafe representation of the domain object is required.
   /// </remarks>
   /// <threadsafety static="true" instance="true"/>
-  [Serializable]
   public sealed class UserProxy : OrganizationalStructureObjectProxy<User>
   {
     public static UserProxy Create (User user)

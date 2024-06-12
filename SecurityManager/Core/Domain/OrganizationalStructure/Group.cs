@@ -31,7 +31,6 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
-  [Serializable]
   [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Group")]
   [PermanentGuid("AA1761A4-226C-4ebe-91F0-8FFF4974B175")]
   [Instantiable]

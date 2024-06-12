@@ -16,11 +16,9 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries.Configuration
@@ -33,12 +31,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
 /// and serializes this information. If it was then the deserialized object will be the reference from 
 /// <see cref="Query"/> with the same <see cref="ID"/> again. Otherwise, a new object will be instantiated.
 /// </remarks>
-[Serializable]
 public class QueryDefinition
-    : ISerializable,
-#pragma warning disable SYSLIB0050
-        IObjectReference
-#pragma warning restore SYSLIB0050
 {
   // types
 
@@ -56,12 +49,7 @@ public class QueryDefinition
   private readonly QueryType _queryType;
   private readonly Type? _collectionType;
   private readonly StorageProviderDefinition _storageProviderDefinition;
-  private IReadOnlyDictionary<string,object> _metadata;
-
-  // Note: _ispartOfQueryConfiguration is used only during the deserialization process.
-  // It is set only in the deserialization constructor and is used in IObjectReference.GetRealObject.
-  private readonly bool _ispartOfQueryConfiguration;
-
+  private readonly IReadOnlyDictionary<string,object> _metadata;
 
   // construction and disposing
 
@@ -136,37 +124,6 @@ public class QueryDefinition
     _metadata = metaData ?? s_emptyMetadata;
   }
 
-  /// <summary>
-  /// This constructor is used for deserializing the object and is not intended to be used directly from code.
-  /// </summary>
-  /// <param name="info">The data needed to serialize or deserialize an object. </param>
-  /// <param name="context">The source and destination of a given serialized stream.</param>
-  protected QueryDefinition (SerializationInfo info, StreamingContext context)
-  {
-    _id = info.GetString("ID")!;
-    _ispartOfQueryConfiguration = info.GetBoolean("IsPartOfQueryConfiguration");
-
-    if (!_ispartOfQueryConfiguration)
-    {
-       var storageProviderID = info.GetString("StorageProviderID")!;
-       var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
-       _storageProviderDefinition = storageSettings.GetStorageProviderDefinition(storageProviderID);
-      _statement = info.GetString("Statement")!;
-      _queryType = (QueryType)info.GetValue("QueryType", typeof(QueryType))!;
-      _collectionType = (Type?)info.GetValue("CollectionType", typeof(Type));
-      _metadata = (IReadOnlyDictionary<string, object>)info.GetValue("Metadata", typeof(IReadOnlyDictionary<string, object>))!;
-    }
-    else
-    {
-      // Populate with dummy-values during deserialization. Instance will be discarded through IObjectReference.GetRealObject()
-      _storageProviderDefinition = s_dummyStorageProviderDefinition;
-      _statement = "statement has not been serialized";
-      _queryType = (QueryType)(-1);
-      _collectionType = null;
-      _metadata = s_emptyMetadata;
-    }
-  }
-
   // methods and properties
 
   /// <summary>
@@ -219,70 +176,5 @@ public class QueryDefinition
   {
     get { return _metadata; }
   }
-
-  #region ISerializable Members
-
-  /// <summary>
-  /// Populates a specified <see cref="System.Runtime.Serialization.SerializationInfo"/> with the 
-  /// data needed to serialize the current <see cref="QueryDefinition"/> instance. See remarks 
-  /// on <see cref="QueryDefinition"/> for further details.
-  /// </summary>
-  /// <param name="info">The <see cref="System.Runtime.Serialization.SerializationInfo"/> to populate with data.</param>
-  /// <param name="context">The contextual information about the source or destination of the serialization.</param>
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-  void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-  {
-    GetObjectData(info, context);
-  }
-
-  /// <summary>
-  /// Populates a specified <see cref="System.Runtime.Serialization.SerializationInfo"/> with the 
-  /// data needed to serialize the current <see cref="QueryDefinition"/> instance. See remarks 
-  /// on <see cref="QueryDefinition"/> for further details.
-  /// </summary>
-  /// <param name="info">The <see cref="System.Runtime.Serialization.SerializationInfo"/> to populate with data.</param>
-  /// <param name="context">The contextual information about the source or destination of the serialization.</param>
-  /// <note type="inheritinfo">Overwrite this method to support serialization of derived classes.</note>
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-  protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
-  {
-    info.AddValue("ID", _id);
-
-    bool isPartOfQueryConfiguration = SafeServiceLocator.Current.GetInstance<IQueryDefinitionRepository>().Contains(_id);
-    info.AddValue("IsPartOfQueryConfiguration", isPartOfQueryConfiguration);
-
-    if (!isPartOfQueryConfiguration)
-    {
-      info.AddValue("StorageProviderID", StorageProviderDefinition.Name);
-      info.AddValue("Statement", _statement);
-      info.AddValue("QueryType", _queryType);
-      info.AddValue("CollectionType", _collectionType);
-      info.AddValue("Metadata", _metadata);
-    }
-  }
-
-  #endregion
-
-  #region IObjectReference Members
-
-  /// <summary>
-  /// Returns a reference to the real object that should be deserialized. See remarks 
-  /// on <see cref="QueryDefinition"/> for further details.
-  /// </summary>
-  /// <param name="context">The source and destination of a given serialized stream.</param>
-  /// <returns>Returns the actual <see cref="QueryDefinition"/>.</returns>
-  object IObjectReference.GetRealObject (StreamingContext context)
-  {
-    if (_ispartOfQueryConfiguration)
-      return SafeServiceLocator.Current.GetInstance<IQueryDefinitionRepository>().GetMandatory(_id);
-    else
-      return this;
-  }
-
-  #endregion
 }
 }

@@ -20,7 +20,6 @@ using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.UnitTests
 {
-  [Serializable]
   public class WxeDelegateStep : WxeStep
   {
     private readonly Action _action;

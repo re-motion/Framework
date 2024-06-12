@@ -35,7 +35,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
   /// of the respective transaction.
   /// </para>
   /// </remarks>
-  [Serializable]
   public class NewObjectHierarchyInvalidationClientTransactionListener : ClientTransactionListenerBase
   {
     public override void DataContainerMapRegistering (ClientTransaction clientTransaction, DataContainer container)

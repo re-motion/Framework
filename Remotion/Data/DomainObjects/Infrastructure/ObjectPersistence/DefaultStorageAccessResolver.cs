@@ -24,7 +24,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 /// Always requests <see cref="StorageAccessType.ReadWrite"/> for every operation.
 /// </summary>
 [ImplementationFor(typeof(IStorageAccessResolver), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
-[Serializable]
 public class DefaultStorageAccessResolver : IStorageAccessResolver
 {
   public StorageAccessType ResolveStorageAccessForLoadingDomainObjectsByObjectID ()

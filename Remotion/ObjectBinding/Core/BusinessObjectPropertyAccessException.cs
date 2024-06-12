@@ -15,23 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.ObjectBinding
 {
-  [Serializable]
   public class BusinessObjectPropertyAccessException : Exception
   {
     public BusinessObjectPropertyAccessException (string message, Exception innerException)
         : base(message, innerException)
-    {
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    protected BusinessObjectPropertyAccessException (SerializationInfo info, StreamingContext context)
-        : base(info, context)
     {
     }
   }

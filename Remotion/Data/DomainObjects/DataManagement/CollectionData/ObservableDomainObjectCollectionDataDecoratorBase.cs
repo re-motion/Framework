@@ -25,7 +25,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// <see cref="IDomainObjectCollectionData"/>, calling the abstract <see cref="OnDataChanging"/> and <see cref="OnDataChanged"/>
   /// methods each for each change to the collection.
   /// </summary>
-  [Serializable]
   public abstract class ObservableDomainObjectCollectionDataDecoratorBase : DomainObjectCollectionDataDecoratorBase
   {
     public enum OperationKind

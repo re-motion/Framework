@@ -76,7 +76,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       generator.AddInterfaces();
       generator.AddFields();
       generator.AddTypeInitializer();
-      generator.ImplementGetObjectData();
 
       generator.AddMixinTypeAttribute();
       generator.AddDebuggerAttributes();

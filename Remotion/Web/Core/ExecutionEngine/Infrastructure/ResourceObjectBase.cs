@@ -22,7 +22,6 @@ using Remotion.Web.Resources;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
-  [Serializable]
   public abstract class ResourceObjectBase
   {
     private readonly string _resourceRoot;

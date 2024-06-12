@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
-  [Serializable]
   public class TestableDataContainerEndPointsRegistrationAgentBase : DataContainerEndPointsRegistrationAgentBase
   {
     public TestableDataContainerEndPointsRegistrationAgentBase (IRelationEndPointFactory endPointFactory, IRelationEndPointRegistrationAgent registrationAgent)

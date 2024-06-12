@@ -19,7 +19,6 @@ using Remotion.Data.DomainObjects;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {
-  [Serializable]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]

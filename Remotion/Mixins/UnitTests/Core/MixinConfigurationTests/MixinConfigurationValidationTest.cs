@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using NUnit.Framework;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
 
@@ -53,7 +52,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
     }
 
     class UninstantiableGeneric<T>
-      where T : ISerializable, IServiceProvider
+      where T : IServiceProvider
     {
     }
 

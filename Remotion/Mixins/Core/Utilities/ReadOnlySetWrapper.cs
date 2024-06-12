@@ -25,7 +25,6 @@ namespace Remotion.Collections
   /// <summary>
   /// Read-only wrapper around an <see cref="ISet{T}"/> to prevent casting an <see cref="IReadOnlyCollection{T}"/> back to mutable type.
   /// </summary>
-  [Serializable]
   internal sealed class ReadOnlySetWrapper<T> : IReadOnlyCollection<T>
   {
     private readonly ISet<T> _collection;

@@ -21,8 +21,6 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
-using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
 
@@ -215,20 +213,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(() => _map.RemoveEndPoint(_endPointID1), Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
           "End point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' is not "
           + "part of this map.", "endPointID"));
-    }
-
-    [Test]
-    public void FlattenedSerialization ()
-    {
-      var map = new RelationEndPointMap(new SerializableClientTransactionEventSinkFake());
-
-      var serializableEndPoint = new SerializableRealObjectEndPointFake(_endPointID1, null);
-      map.AddEndPoint(serializableEndPoint);
-
-      var deserializedMap = FlattenedSerializer.SerializeAndDeserialize(map);
-
-      Assert.That(deserializedMap[_endPointID1], Is.Not.Null);
-      Assert.That(deserializedMap.TransactionEventSink, Is.Not.Null);
     }
 
     private void StubEvents ()

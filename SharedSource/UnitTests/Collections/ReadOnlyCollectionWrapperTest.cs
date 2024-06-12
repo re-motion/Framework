@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Collections;
-using Remotion.Development.UnitTesting;
 
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Collections
@@ -35,12 +34,6 @@ namespace Remotion.UnitTests.Collections
       enumerator.MoveNext();
       Assert.That(enumerator.Current, Is.EqualTo("test2"));
       Assert.That(enumerator.MoveNext(), Is.False);
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      Assert.That(() => Serializer.Serialize(_collection), Throws.Nothing);
     }
 
     [Test]

@@ -33,7 +33,6 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
   /// <seealso cref="LinqToSqlAppenderProxy"/>
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [Serializable]
   public class LinqToSqlExtension : IPersistenceExtension, IClientTransactionExtension
   {
     #region Implementation of IClientTransactionExtension

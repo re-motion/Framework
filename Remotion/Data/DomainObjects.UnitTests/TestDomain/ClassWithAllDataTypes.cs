@@ -15,15 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
   [DBTable("TableWithAllDataTypes")]
   [TestDomain]
   [Instantiable]
-  [Serializable]
-  public abstract class ClassWithAllDataTypes : TestDomainBase, ISerializable
+  public abstract class ClassWithAllDataTypes : TestDomainBase
   {
     public enum EnumType
     {
@@ -49,18 +47,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     protected ClassWithAllDataTypes ()
     {
     }
-
-    protected ClassWithAllDataTypes (SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-    }
-
-#pragma warning disable SYSLIB0051
-    public void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      BaseGetObjectData(info, context);
-    }
-#pragma warning restore SYSLIB0051
 
     [StorageClassNone]
     public object ObjectProperty

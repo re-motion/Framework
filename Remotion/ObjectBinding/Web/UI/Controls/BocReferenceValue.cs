@@ -90,7 +90,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> 
     ///   The object returned by <see cref="BocReferenceValue"/>. 
-    ///   Does not require <see cref="System.Runtime.Serialization.ISerializable"/>. 
     /// </summary>
     private IBusinessObjectWithIdentity? _value;
 

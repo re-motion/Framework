@@ -24,7 +24,6 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 namespace OBWTest.IndividualControlTests
 {
 
-[Serializable]
 public class TestFunction: WxeFunction
 {
   private Person _person;

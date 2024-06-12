@@ -20,7 +20,6 @@ using Remotion.ObjectBinding;
 
 namespace Remotion.Data.DomainObjects.Web.Test.Domain
 {
-  [Serializable]
   [BindableObject]
   public class ClassWithAllDataTypesSearch
   {

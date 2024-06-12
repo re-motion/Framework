@@ -19,7 +19,6 @@ using Moq;
 using Moq.Language.Flow;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
@@ -28,11 +27,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   {
     public TestableObjectEndPoint (ClientTransaction clientTransaction, RelationEndPointID id)
         : base(clientTransaction, id)
-    {
-    }
-
-    public TestableObjectEndPoint (FlattenedDeserializationInfo info)
-        : base(info)
     {
     }
 

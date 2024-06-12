@@ -24,7 +24,6 @@ using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure
 {
-  [Serializable]
   public class EditGroupFormFunction : FormFunction<Group>
   {
     public EditGroupFormFunction ()

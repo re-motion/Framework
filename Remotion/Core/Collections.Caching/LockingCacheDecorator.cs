@@ -36,7 +36,6 @@ namespace Remotion.Collections.Caching
   /// </remarks>
   /// <threadsafety static="true" instance="true" />
   [Obsolete("Use ConcurrentCache<TKey, TValue> instead. (Version: 1.19.3)")]
-  [Serializable]
   public sealed class LockingCacheDecorator<TKey, TValue> : ICache<TKey, TValue>
       where TKey: notnull
   {

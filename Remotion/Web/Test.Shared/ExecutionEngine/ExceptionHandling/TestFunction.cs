@@ -20,7 +20,6 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling
 {
-  [Serializable]
   public class TestFunction : WxeFunction
   {
     public TestFunction ()

@@ -34,7 +34,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// <summary>
   /// Creates all parts necessary to construct a <see cref="ClientTransaction"/> with sub-transaction semantics.
   /// </summary>
-  [Serializable]
   public class SubClientTransactionComponentFactory : ClientTransactionComponentFactoryBase
   {
     public static SubClientTransactionComponentFactory Create (

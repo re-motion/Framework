@@ -44,11 +44,11 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [Test]
     public void GenerateXml_WithAttributes ()
     {
-      // Mixin2 has Serializable attribute
+      // Mixin2 has AttributeWithoutParameters attribute
       var involvedType = new InvolvedType(typeof(Mixin2));
 
       var attributeIdentifier = new IdentifierGenerator<Type>();
-      attributeIdentifier.GetIdentifier(typeof(SerializableAttribute));
+      attributeIdentifier.GetIdentifier(typeof(AttributeWithoutParametersAttribute));
       var reportGenerator = CreateReportGenerator(attributeIdentifier, involvedType);
 
       var output = reportGenerator.GenerateXml();
@@ -59,8 +59,8 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
               "Attribute",
               new XAttribute("id", "0"),
               new XAttribute("assembly-ref", "0"),
-              new XAttribute("namespace", "System"),
-              new XAttribute("name", "SerializableAttribute"),
+              new XAttribute("namespace", "Remotion.Mixins.CrossReferencer.UnitTests.TestDomain"),
+              new XAttribute("name", "AttributeWithoutParametersAttribute"),
               new XElement(
                   "AppliedTo",
                   new XElement(

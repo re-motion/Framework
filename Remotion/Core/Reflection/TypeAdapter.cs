@@ -204,13 +204,6 @@ namespace Remotion.Reflection
       get { return _type.IsNested; }
     }
 
-    public bool IsSerializable
-    {
-#pragma warning disable SYSLIB0050
-      get { return _type.IsSerializable; }
-#pragma warning restore SYSLIB0050
-    }
-
     public bool HasElementType
     {
       get { return _type.HasElementType; }

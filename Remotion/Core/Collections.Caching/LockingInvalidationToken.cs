@@ -24,7 +24,6 @@ namespace Remotion.Collections.Caching
   /// Instantiate via <see cref="InvalidationToken"/>.<see cref="InvalidationToken.CreatWithLocking"/>.
   /// </remarks>
   /// <threadsafety static="true" instance="true" />
-  [Serializable]
   public sealed class LockingInvalidationToken : InvalidationToken
   {
     private long _currentRevisionValue;

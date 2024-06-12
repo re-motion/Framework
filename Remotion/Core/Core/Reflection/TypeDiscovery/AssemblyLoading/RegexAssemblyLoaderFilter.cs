@@ -25,7 +25,6 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
   /// Filters the assemblies loaded during type discovery by name, excluding those whose names match a given regular expression. Whether to
   /// match the simple name or the full name can be specified.
   /// </summary>
-  [Serializable]
   public class RegexAssemblyLoaderFilter : IAssemblyLoaderFilter
   {
     public enum MatchTargetKind { FullName, SimpleName };

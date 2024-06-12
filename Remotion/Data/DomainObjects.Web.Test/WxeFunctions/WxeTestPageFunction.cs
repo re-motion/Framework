@@ -19,7 +19,6 @@ using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 {
-[Serializable]
 public class WxeTestPageFunction : WxeFunction
 {
   // types

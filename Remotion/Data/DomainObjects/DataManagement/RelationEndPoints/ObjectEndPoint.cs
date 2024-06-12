@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.Utilities;
@@ -113,18 +112,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       else
         return new[] { oppositeEndPointID };
     }
-
-    #region Serialization
-
-    protected ObjectEndPoint (FlattenedDeserializationInfo info)
-        : base(info)
-    {
-    }
-
-    protected override void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-    }
-
-    #endregion
   }
 }

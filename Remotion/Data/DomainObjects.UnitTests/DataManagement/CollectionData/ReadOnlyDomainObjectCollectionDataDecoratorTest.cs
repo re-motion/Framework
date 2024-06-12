@@ -188,16 +188,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
               .With.Message.EqualTo("Cannot sort a read-only collection."));
     }
 
-    [Test]
-    public void Serializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var decorator = new ReadOnlyDomainObjectCollectionDataDecorator(new DomainObjectCollectionData(new[] { _order1, _order3, _order4 }));
-      var result = Serializer.SerializeAndDeserialize(decorator);
-      Assert.That(result.Count, Is.EqualTo(3));
-    }
-
     private void StubInnerData (params DomainObject[] contents)
     {
       _wrappedDataStub.Setup(stub => stub.Count).Returns(contents.Length);

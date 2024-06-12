@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.Text;
 using Remotion.Utilities;
 
@@ -26,7 +25,6 @@ namespace Remotion.Mixins.Validation
   /// Thrown when there is an error in the mixin configuration which is detected during validation of the configuration. The problem prevents
   /// code being generated from the configuration. See also <see cref="ConfigurationException"/>.
   /// </summary>
-  [Serializable]
   public class ValidationException : Exception
   {
     private static string BuildExceptionString (ValidationLogData data)
@@ -95,31 +93,6 @@ namespace Remotion.Mixins.Validation
       NumberOfSuccesses = validationLogData.GetNumberOfSuccesses();
       NumberOfUnexpectedExceptions = validationLogData.GetNumberOfUnexpectedExceptions();
       NumberOfWarnings = validationLogData.GetNumberOfWarnings();
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ValidationException"/> class during deserialization.
-    /// </summary>
-    /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"></see> that holds the serialized object data about the exception being thrown.</param>
-    /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"></see> that contains contextual information about the source or destination.</param>
-    /// <exception cref="T:System.ArgumentNullException">The info parameter is null. </exception>
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    protected ValidationException (SerializationInfo info, StreamingContext context)
-        : base(info, context)
-    {
-      _serializableValidationLogData =
-          (SerializableValidationLogData?)info.GetValue("SerializableValidationLogData", typeof(SerializableValidationLogData));
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    public override void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      base.GetObjectData(info, context);
-      info.AddValue("SerializableValidationLogData", _serializableValidationLogData);
     }
   }
 }

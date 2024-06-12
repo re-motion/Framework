@@ -23,7 +23,6 @@ using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
 {
-  [Serializable]
   public abstract class BaseTransactedFunction : WxeFunction
   {
     protected BaseTransactedFunction ()

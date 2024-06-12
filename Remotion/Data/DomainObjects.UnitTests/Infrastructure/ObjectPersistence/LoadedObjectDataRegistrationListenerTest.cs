@@ -21,8 +21,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 {
@@ -160,18 +158,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       _eventSinkWithMock.Verify();
       _hierarchyManagerMock.Verify();
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      var instance = new LoadedObjectDataRegistrationListener(
-          new SerializableClientTransactionEventSinkFake(), new SerializableTransactionHierarchyManagerFake());
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
-
-      Assert.That(deserializedInstance.EventSink, Is.Not.Null);
-      Assert.That(deserializedInstance.HierarchyManager, Is.Not.Null);
     }
   }
 }

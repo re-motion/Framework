@@ -21,8 +21,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
-using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
@@ -658,29 +656,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That(_dataManager.CollectionData.ToArray(), Is.EqualTo(new[] { _domainObject2 }));
       Assert.That(_dataManager.CurrentOppositeEndPoints, Is.EquivalentTo(new[] { _domainObjectEndPoint2.Object }));
-    }
-
-    [Test]
-    public void FlattenedSerializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var changeDetectionStrategy = new SerializableDomainObjectCollectionEndPointChangeDetectionStrategyFake();
-      var data = new DomainObjectCollectionEndPointDataManager(_endPointID, changeDetectionStrategy);
-
-      var endPointFake = new SerializableRealObjectEndPointFake(null, _domainObject1);
-      data.RegisterOriginalOppositeEndPoint(endPointFake);
-      data.RegisterOriginalItemWithoutEndPoint(_domainObject2);
-
-      var deserializedInstance = FlattenedSerializer.SerializeAndDeserialize(data);
-
-      Assert.That(deserializedInstance.EndPointID, Is.Not.Null);
-      Assert.That(deserializedInstance.ChangeDetectionStrategy, Is.Not.Null);
-      Assert.That(deserializedInstance.CollectionData.Count, Is.EqualTo(2));
-      Assert.That(deserializedInstance.OriginalCollectionData.Count, Is.EqualTo(2));
-      Assert.That(deserializedInstance.OriginalOppositeEndPoints.Length, Is.EqualTo(1));
-      Assert.That(deserializedInstance.OriginalItemsWithoutEndPoints.Length, Is.EqualTo(1));
-      Assert.That(deserializedInstance.CurrentOppositeEndPoints.Length, Is.EqualTo(1));
     }
 
     private int Compare123 (DomainObject x, DomainObject y)

@@ -21,8 +21,6 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
-using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
 using Remotion.Development.Moq.UnitTesting;
@@ -104,19 +102,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
               Is.TypeOf<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>()
                 .With.Property<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>(d => d.Listener).SameAs(_listenerStub.Object)
                 .And.Property<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>(d => d.InnerEndPoint).SameAs(fakeResult.Object)));
-    }
-
-    [Test]
-    public void FlattenedSerializable ()
-    {
-      var innerFactory = new SerializableRelationEndPointFactoryFake();
-      var listener = new SerializableVirtualEndPointStateUpdateListenerFake();
-      var decorator = new StateUpdateRaisingRelationEndPointFactoryDecorator(innerFactory, listener);
-
-      var deserializedInstance = FlattenedSerializer.SerializeAndDeserialize(decorator);
-
-      Assert.That(deserializedInstance.InnerFactory, Is.Not.Null);
-      Assert.That(deserializedInstance.Listener, Is.Not.Null);
     }
   }
 }
