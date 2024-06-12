@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 // Note: This file is originally defined in Remotion.Development.UnitTesting.Sandboxing. It is duplicated by Remotion.Linq.UnitTests.Sandboxing.
 // Note: Changes made to this file must be synchronized with all copies.
@@ -25,7 +24,6 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
   /// <summary>
   /// <see cref="TestFailedException"/> is thrown when <see cref="TestResult.EnsureNotFailed"/> is called and the specific test has been failed.
   /// </summary>
-  [Serializable]
   public class TestFailedException : Exception
   {
     private static string CreateMessage (Type declaringType, string testName, SandboxTestStatus status)
@@ -35,11 +33,6 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
 
     public TestFailedException (Type declaringType, string testName, SandboxTestStatus status, Exception exception)
       : base(CreateMessage(declaringType, testName, status), exception)
-    {
-    }
-
-    protected TestFailedException (SerializationInfo info, StreamingContext context)
-        : base(info, context)
     {
     }
   }
