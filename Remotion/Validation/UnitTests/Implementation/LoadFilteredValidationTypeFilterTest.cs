@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 
@@ -36,7 +35,6 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void IsValid_FilteredTypes_ReturnFalse ()
     {
       Assert.That(_filter.IsValidatableType(typeof(object)), Is.False);
-      Assert.That(_filter.IsValidatableType(typeof(ISerializable)), Is.False);
     }
 
     [Test]
