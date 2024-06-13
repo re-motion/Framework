@@ -56,4 +56,27 @@
     <Message Text="Done inserting source links into debug-symbols, ConfigurationID=$(ConfigurationID)" Importance="High"/>
   </Target>
 
+  <!-- The current copy task in the build script does not copy folders correctly so we override it here to fix the issue for NUnit 4. -->
+  <Target Name="PrepareNunitDirectory" Outputs="$(_nunitRunnerFolderPath)">
+    <Error Text="The property 'TempDirectory' is not set." Condition="'$(TempDirectory)' == ''" />
+    <Error Text="The property 'NUnitToolPath' is not set." Condition="'$(NUnitToolPath)' == ''" />
+
+    <PropertyGroup>
+      <_nunitRunnerFolderPath>$(TempDirectory)SharedSourceBuildNunitCopy\</_nunitRunnerFolderPath>
+    </PropertyGroup>
+
+    <WriteLinesToFile
+            File="$(NUnitToolPath)Remotion.NUnit.addins"
+            Lines="*.dll"
+            Overwrite="true"
+            Encoding="Unicode"/>
+
+    <ItemGroup>
+      <_filesToBeCopied Include="$(NUnitToolPath)**\*.*" />
+      <_filesToBeCopied Include="%(NUnitExtensionsPaths.Identity)**\*.*" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(_filesToBeCopied)" DestinationFiles="@(_filesToBeCopied->'$(_nunitRunnerFolderPath)%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+
 </Project>
