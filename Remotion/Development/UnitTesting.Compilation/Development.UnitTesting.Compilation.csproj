@@ -14,7 +14,7 @@
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.CodeDom" Version="7.0.0" />
+    <PackageReference Include="System.CodeDom" />
   </ItemGroup>
   <ItemGroup>
     <None Include="build\*.*" Pack="true" PackagePath="build\%(Filename)%(Extension);buildTransitive\%(Filename)%(Extension)" />
