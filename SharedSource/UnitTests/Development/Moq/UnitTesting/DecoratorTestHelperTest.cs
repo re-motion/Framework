@@ -58,7 +58,7 @@ namespace Remotion.UnitTests.Development.Moq.UnitTesting
               @"Mock<DecoratorTestHelperTest\.IMyInterface:\d+>:\s*This mock failed verification due to the following:\s*DecoratorTestHelperTest\.IMyInterface d => d\.Get\(\):\s*This setup was not matched\."));
       Assert.That(
           () => _helperForFaultyDecorator.CheckDelegation(d => d.Get(), "Abc"),
-          Throws.TypeOf<AssertionException>().And.Message.StartsWith("  Expected string length 3 but was 6. Strings differ at index 0."));
+          Throws.TypeOf<AssertionException>().And.Message.Contains("  Expected string length 3 but was 6. Strings differ at index 0."));
     }
 
     [Test]
