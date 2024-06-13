@@ -59,8 +59,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Remotion.Infrastructure.Styles.Analyzer" Version="1.1.3" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+    <PackageReference Include="Remotion.Infrastructure.Styles.Analyzer" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All"/>
   </ItemGroup>
 
   <PropertyGroup>

@@ -17,10 +17,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Remove="NUnit" />
-    <PackageReference Include="NUnit" Version="2.6.3" />
+    <PackageReference Include="NUnit" VersionOverride="2.6.3" />
 
     <PackageReference Remove="NUnit3TestAdapter" />
-    <PackageReference Include="NUnitTestAdapter" Version="2.3.0" />
+    <PackageReference Include="NUnitTestAdapter" />
 
     <PackageReference Remove="JetBrains.Annotations" />
   </ItemGroup>

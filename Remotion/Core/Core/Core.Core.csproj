@@ -18,9 +18,9 @@
     <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="log4net" Version="2.0.15" />
-    <PackageReference Include="CommonServiceLocator" Version="2.0.6" />
-    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
+    <PackageReference Include="log4net" />
+    <PackageReference Include="CommonServiceLocator" />
+    <PackageReference Include="System.ValueTuple" />
     <PackageReference Remove="JetBrains.Annotations" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
