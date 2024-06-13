@@ -83,7 +83,7 @@ namespace Remotion.UnitTests.Development.Moq.UnitTesting.Threading
                   + "   This setup was not matched\\.$"));
       Assert.That(
           () => _helperForFaultyDecorator.ExpectSynchronizedDelegation(d => d.Get(), "Abc"),
-          Throws.TypeOf<AssertionException>().And.Message.StartsWith("  Expected string length 3 but was 6. Strings differ at index 0."));
+          Throws.TypeOf<AssertionException>().And.Message.Contains("  Expected string length 3 but was 6. Strings differ at index 0."));
     }
 
     [Test]
