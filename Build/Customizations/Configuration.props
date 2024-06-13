@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <NUnitExtensionsPaths Include="$(PackagesDirectory)NUnit.Extension.NUnitV2Driver.3.8.0\"/>
+    <NUnitExtensionsPaths Include="$(PackagesDirectory)NUnit.Extension.NUnitV2Driver.3.8.0\tools\"/>
   </ItemGroup>
 
 </Project>
