@@ -1,0 +1,49 @@
+<Project>
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageVersion Include="Castle.Core" Version="4.4.0" />
+    <PackageVersion Include="CommonServiceLocator" Version="2.0.6" />
+    <PackageVersion Include="CoreForms.Web" Version="5.0.0-alpha.7" />
+    <PackageVersion Include="CoreForms.Web.Extensions" Version="5.0.0-alpha.7" />
+    <PackageVersion Include="CoreForms.Web.Infrastructure" Version="5.0.0-alpha.7" />
+    <PackageVersion Include="CoreForms.Web.Infrastructure.MachineConfig" Version="5.0.0-alpha.7" />
+    <PackageVersion Include="CoreForms.Web.Infrastructure.Roslyn" Version="5.0.0-alpha.7" />
+    <PackageVersion Include="CoreForms.Web.Services" Version="5.0.0-alpha.7" />
+    <PackageVersion Include="Fork.Coypu" Version="3.1.1.2" />
+    <PackageVersion Include="JetBrains.Annotations" Version="2021.1.0" />
+    <PackageVersion Include="log4net" Version="2.0.15" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.NUnit" Version="1.1.1" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.8.0" />
+    <PackageVersion Include="Microsoft.Edge.SeleniumTools" Version="3.141.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+    <PackageVersion Include="Microsoft.TypeScript.MSBuild" Version="4.4.4" />
+    <PackageVersion Include="microsoft-ajax.TypeScript.DefinitelyTyped" Version="0.1.4" />
+    <PackageVersion Include="Moq" Version="4.16.1" />
+    <PackageVersion Include="Moq.VerifiableSequence" Version="4.16.1.1" />
+    <PackageVersion Include="NUnit" Version="3.12.0" />
+    <PackageVersion Include="NUnit3TestAdapter" Version="4.0.0" />
+    <PackageVersion Include="NUnitTestAdapter" Version="2.3.0" />
+    <PackageVersion Include="Remotion.Infrastructure.Styles.Analyzer" Version="1.1.3" />
+    <PackageVersion Include="Remotion.IO" Version="3.0.0" />
+    <PackageVersion Include="Remotion.IO.Archive.Zip" Version="3.0.0" />
+    <PackageVersion Include="Remotion.Linq" Version="2.2.0" />
+    <PackageVersion Include="Remotion.Linq.Development" Version="2.2.0" />
+    <PackageVersion Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
+    <PackageVersion Include="Remotion.Linq.SqlBackend" Version="2.1.1" />
+    <PackageVersion Include="Remotion.Linq.SqlBackend.Development" Version="2.1.1" />
+    <PackageVersion Include="Remotion.TypePipe" Version="3.0.0" />
+    <PackageVersion Include="Remotion.TypePipe.Development" Version="3.0.0" />
+    <PackageVersion Include="Remotion.TypePipe.Documentation" Version="3.0.0" />
+    <PackageVersion Include="Selenium.Support" Version="3.141.0" />
+    <PackageVersion Include="Selenium.WebDriver" Version="3.141.0" />
+    <PackageVersion Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+    <PackageVersion Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageVersion Include="System.Text.Json" Version="6.0.7" />
+  </ItemGroup>
+
+</Project>

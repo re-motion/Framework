@@ -12,9 +12,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoreForms.Web.Infrastructure.MachineConfig" Version="5.0.0-alpha.7" />
-    <PackageReference Include="CoreForms.Web.Infrastructure.Roslyn" Version="5.0.0-alpha.7" />
-    <PackageReference Include="CoreForms.Web.Infrastructure" Version="5.0.0-alpha.7" />
+    <PackageReference Include="CoreForms.Web.Infrastructure.MachineConfig" />
+    <PackageReference Include="CoreForms.Web.Infrastructure.Roslyn" />
+    <PackageReference Include="CoreForms.Web.Infrastructure" />
   </ItemGroup>
 
 </Project>
