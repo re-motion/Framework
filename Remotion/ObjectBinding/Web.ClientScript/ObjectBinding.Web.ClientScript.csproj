@@ -17,7 +17,7 @@
     </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Remotion.ThirdPartyDependency.JQuery.Autocomplete" Version="1.1.0-pre" />
+    <PackageReference Include="Remotion.ThirdPartyDependency.JQuery.Autocomplete" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\Web\ClientScript\README.md">
