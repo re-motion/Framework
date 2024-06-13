@@ -25,7 +25,7 @@
     <ProjectReference Include="..\Core\Core.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.3.1" GeneratePathProperty="true" ExcludeAssets="all" />
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" GeneratePathProperty="true" ExcludeAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Reflection\TestDomain\ContextAwareTypeUtilityTest\app.config">
