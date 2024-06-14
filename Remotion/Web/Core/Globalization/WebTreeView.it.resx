@@ -120,4 +120,10 @@
   <data name="Remotion.Web.UI.Controls.WebTreeView.ScreenReaderNodeSelectedLabelText" xml:space="preserve">
     <value>selezionato</value>
   </data>
+  <data name="Remotion.Web.UI.Controls.WebTreeView.ScreenReaderNoItemFoundText" xml:space="preserve">
+      <value>Non contiene alcun elemento.</value>
+  </data>
+  <data name="Remotion.Web.UI.Controls.WebTreeView.ScreenReaderPossiblyNoChildrenText" xml:space="preserve">
+    <value>Non può contenere elementi.</value>
+  </data>
 </root>

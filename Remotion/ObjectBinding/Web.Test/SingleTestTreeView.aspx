@@ -47,7 +47,7 @@
         <td style="width: 33%; vertical-align: top">
           <asp:UpdatePanel ID="UpdatePanel" runat="server">
             <ContentTemplate>
-              <ros:PersonTreeView ID="PersonTreeViewWithMenus" runat="server" DataSourceControl="CurrentObject" Width="150px" CssClass="TreeBlock" EnableTopLevelExpander="False" EnableLookAheadEvaluation="True" ControlServicePath="IndividualControlTests/BocTreeViewWebService.asmx" ControlServiceArguments="ControlServiceArgs" />
+              <ros:PersonTreeView ID="PersonTreeViewWithMenus" runat="server" DataSourceControl="CurrentObject" Width="150px" CssClass="TreeBlock" EnableTopLevelExpander="False" EnableLookAheadEvaluation="False" ControlServicePath="IndividualControlTests/BocTreeViewWebService.asmx" ControlServiceArguments="ControlServiceArgs" />
             </ContentTemplate>
           </asp:UpdatePanel>
         </td>
