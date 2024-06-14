@@ -24,11 +24,11 @@
     <ProjectReference Include="..\Core\Data.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Remotion.Linq" Version="2.2.0" />
-    <PackageReference Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
-    <PackageReference Include="Remotion.Linq.SqlBackend" Version="2.1.0" />
-    <PackageReference Include="Remotion.TypePipe" Version="3.0.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+    <PackageReference Include="Remotion.Linq" />
+    <PackageReference Include="Remotion.Linq.EagerFetching" />
+    <PackageReference Include="Remotion.Linq.SqlBackend" />
+    <PackageReference Include="Remotion.TypePipe" />
+    <PackageReference Include="System.Data.SqlClient" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <Reference Include="System.Configuration" />
