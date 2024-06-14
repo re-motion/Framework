@@ -22,10 +22,10 @@
     <ProjectReference Include="..\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Fork.Coypu" Version="3.2.0.1" />
-    <PackageReference Include="log4net" Version="2.0.15" />
-    <PackageReference Include="Selenium.Support" Version="4.5.0" />
-    <PackageReference Include="Selenium.WebDriver" Version="4.5.0" />
+    <PackageReference Include="Fork.Coypu" />
+    <PackageReference Include="log4net" />
+    <PackageReference Include="Selenium.Support" />
+    <PackageReference Include="Selenium.WebDriver" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <Reference Include="System.Configuration" />
