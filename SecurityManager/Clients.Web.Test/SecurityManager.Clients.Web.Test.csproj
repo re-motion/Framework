@@ -182,7 +182,7 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\SecurityManager AGPL.licenseheader">
+    <None Include="..\..\Remotion\Remotion LGPL.licenseheader">
       <Link>SecurityManager AGPL.licenseheader</Link>
     </None>
     <None Include="..\..\remotion.snk">

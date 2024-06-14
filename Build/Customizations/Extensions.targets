@@ -74,12 +74,6 @@
   </Target>
   -->
 
-  <Target Name="SecurityManager_After_UpdateAssemblyInfos" AfterTargets="UpdateAssemblyInfos" Condition="'$(AssemblyInfoFileForSecurityManager)' != ''">
-    <MSBuild.ExtensionPack.Framework.AssemblyInfo AssemblyInfoFiles="$(AssemblyInfoFileForSecurityManager)"
-                                                  AssemblyProduct="$(ProductNameForSecurityManager)"
-                                                  AssemblyCopyright="$(CopyrightForSecurityManager)" />
-  </Target>
-
   <Target Name="CreateNpmDependencyPackage" AfterTargets="CreateNuGetPackagesWithDebugSymbols">
     <PropertyGroup>
       <_npmDependenciesFilePath>$(SolutionDirectory)Remotion\Web\Dependencies.JavaScript\package.json</_npmDependenciesFilePath>
