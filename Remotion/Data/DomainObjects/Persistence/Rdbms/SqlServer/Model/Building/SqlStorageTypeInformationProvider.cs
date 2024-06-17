@@ -231,7 +231,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
           storageType,
           DbType.AnsiString,
           isNullableInDatabase,
-          storageTypeLength,
+          storageTypeLength ?? StorageTypeLengthRepresentingMax,
           extensibleEnumType,
           new ExtensibleEnumConverter(extensibleEnumType));
     }
@@ -261,7 +261,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
         return new DefaultConverter(nullableValueType);
     }
 
-    [CanBeNull]
     private StorageTypeInformation? GetStorageTypeForEnumType (Type enumType, int? maxLength, bool isNullableInDatabase)
     {
       var underlyingStorageInformation = GetStorageType(Enum.GetUnderlyingType(enumType), maxLength, isNullableInDatabase);
