@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq.Expressions;
+using Remotion.Configuration;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;

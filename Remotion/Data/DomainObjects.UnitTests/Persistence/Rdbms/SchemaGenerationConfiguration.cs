@@ -27,6 +27,7 @@ using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.Development.Data.UnitTesting.DomainObjects.Configuration;
+using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Reflection.TypeDiscovery;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;

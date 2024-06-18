@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.Resources;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests
 {
