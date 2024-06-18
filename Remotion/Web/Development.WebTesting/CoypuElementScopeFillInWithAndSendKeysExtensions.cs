@@ -21,6 +21,7 @@ using JetBrains.Annotations;
 using log4net;
 using OpenQA.Selenium;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting
 {

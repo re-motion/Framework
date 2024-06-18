@@ -19,6 +19,7 @@ using System.Collections.Specialized;
 using System.Web;
 using Moq;
 using NUnit.Framework;
+using Remotion.Web.Configuration;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.UrlMapping;

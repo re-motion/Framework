@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;

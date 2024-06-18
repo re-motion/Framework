@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using Remotion.Web.Development.WebTesting.HostingStrategies;
 
 namespace Remotion.Web.Development.WebTesting.Configuration

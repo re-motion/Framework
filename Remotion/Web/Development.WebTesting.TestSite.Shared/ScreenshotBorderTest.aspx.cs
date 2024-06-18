@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 {

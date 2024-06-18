@@ -19,6 +19,7 @@ using System.IO;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
+using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.UrlMapping;
 using Remotion.Web.UnitTests.Core.Utilities;
 
