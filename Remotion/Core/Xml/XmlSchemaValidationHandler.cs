@@ -79,7 +79,7 @@ namespace Remotion.Xml
 
       if (args.Severity == XmlSeverityType.Error)
       {
-        s_logger.LogError(errorInfo?.ToString());
+        s_logger.LogError(errorInfo.ToString());
         ++ _errors;
         if (_failOnError)
           throw args.Exception;
@@ -92,7 +92,7 @@ namespace Remotion.Xml
       }
       else
       {
-        s_logger.LogWarning(errorInfo?.ToString());
+        s_logger.LogWarning(errorInfo.ToString());
         ++ _warnings;
       }
     }
