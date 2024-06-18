@@ -92,6 +92,48 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     }
 
     [Test]
+    public void GenerateXml_WithAttributesWithEmptyParameterName ()
+    {
+      var reportGenerator = new AttributeReferenceReportGenerator(typeof(ClassWithAttributeWithoutParameterName), _identifierGenerator);
+
+      var output = reportGenerator.GenerateXml();
+
+      var expectedOutput = new XElement(
+          "HasAttributes",
+          new XElement(
+              "HasAttribute",
+              new XAttribute("ref", "0"),
+              new XElement(
+                  "Argument",
+                  new XAttribute("kind", "constructor"),
+                  new XAttribute("type", "Byte"),
+#if NETFRAMEWORK
+                  new XAttribute("name", "P_0"),
+#else
+                  new XAttribute("name", "value"),
+#endif                  
+                  new XAttribute("value", "2"))
+              ),
+          new XElement(
+              "HasAttribute",
+              new XAttribute("ref", "1"),
+              new XElement(
+                  "Argument",
+                  new XAttribute("kind", "constructor"),
+                  new XAttribute("type", "Byte"),
+#if NETFRAMEWORK
+                  new XAttribute("name", "P_0"),
+#else
+                  new XAttribute("name", "value"),
+#endif                  
+                  new XAttribute("value", "0"))
+              ));
+
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
+    }
+
+
+    [Test]
     public void GenerateXml_WithAttributesWithFieldParameter ()
     {
       // ClassWithAttributeFieldParam has the following attribute: [FieldParam(new[] { "AttributeParam1", "AttributeParam2"})]

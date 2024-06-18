@@ -62,7 +62,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
       for (int i = 0; i < attribute.ConstructorArguments.Count; i++)
       {
         var constructorArgument = attribute.ConstructorArguments[i];
-        var parameterName = attribute.Constructor.GetParameters()[i].Name;
+        var parameterName = attribute.Constructor.GetParameters()[i].Name ?? $"P_{i}";
         attributeElement.Add(GenerateParameterElement("constructor", constructorArgument.ArgumentType, parameterName, constructorArgument.Value));
       }
 
