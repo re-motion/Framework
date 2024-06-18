@@ -33,9 +33,9 @@ namespace Remotion.Mixins.CrossReferencer.Report
         ErrorAggregator<Exception> validationErrors,
         IRemotionReflector reflector)
     {
-      ArgumentUtility.CheckNotNull ("configurationErrors", configurationErrors);
-      ArgumentUtility.CheckNotNull ("validationErrors", validationErrors);
-      ArgumentUtility.CheckNotNull ("reflector", reflector);
+      ArgumentUtility.CheckNotNull("configurationErrors", configurationErrors);
+      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
+      ArgumentUtility.CheckNotNull("reflector", reflector);
 
       _configurationErrors = configurationErrors;
       _validationErrors = validationErrors;
@@ -48,17 +48,17 @@ namespace Remotion.Mixins.CrossReferencer.Report
       var compositeReportGenerator = CreateCompositeReportGenerator();
 
       var result = compositeReportGenerator.GenerateXml();
-      result.Add (new XAttribute ("creation-time", DateTime.Now.ToString ("yyyy-MM-dd HH:mm:ss")));
+      result.Add(new XAttribute("creation-time", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
 
-      return new XDocument (result);
+      return new XDocument(result);
     }
 
     private CompositeReportGenerator CreateCompositeReportGenerator ()
     {
-      var configurationErrorReport = new ConfigurationErrorReportGenerator (_configurationErrors);
-      var validationErrorReport = new ValidationErrorReportGenerator (_validationErrors, _reflector);
+      var configurationErrorReport = new ConfigurationErrorReportGenerator(_configurationErrors);
+      var validationErrorReport = new ValidationErrorReportGenerator(_validationErrors, _reflector);
 
-      return new CompositeReportGenerator (configurationErrorReport, validationErrorReport);
+      return new CompositeReportGenerator(configurationErrorReport, validationErrorReport);
     }
   }
 }

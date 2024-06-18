@@ -41,11 +41,11 @@ namespace Remotion.Mixins.CrossReferencer.Report
         IRemotionReflector remotionReflector,
         IOutputFormatter outputFormatter)
     {
-      ArgumentUtility.CheckNotNull ("_involvedTypes", involvedTypes);
-      ArgumentUtility.CheckNotNull ("configurationErrors", configurationErrors);
-      ArgumentUtility.CheckNotNull ("validationErrors", validationErrors);
-      ArgumentUtility.CheckNotNull ("remotionReflector", remotionReflector);
-      ArgumentUtility.CheckNotNull ("outputFormatter", outputFormatter);
+      ArgumentUtility.CheckNotNull("_involvedTypes", involvedTypes);
+      ArgumentUtility.CheckNotNull("configurationErrors", configurationErrors);
+      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
+      ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
+      ArgumentUtility.CheckNotNull("outputFormatter", outputFormatter);
 
       _involvedTypes = involvedTypes;
       _configurationErrors = configurationErrors;
@@ -66,23 +66,23 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
       var result = compositeReportGenerator.GenerateXml();
 
-      _creationTime = DateTime.Now.ToString ("yyyy-MM-dd HH:mm:ss");
-      result.Add (new XAttribute ("creation-time", _creationTime));
+      _creationTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+      result.Add(new XAttribute("creation-time", _creationTime));
 
-      return new XDocument (result);
+      return new XDocument(result);
     }
 
     private CompositeReportGenerator CreateCompositeReportGenerator ()
     {
       var assemblyIdentifierGenerator = new IdentifierGenerator<Assembly>();
-      var readOnlyassemblyIdentifierGenerator = assemblyIdentifierGenerator.GetReadonlyIdentiferGenerator ("none");
+      var readOnlyassemblyIdentifierGenerator = assemblyIdentifierGenerator.GetReadonlyIdentiferGenerator("none");
       var readonlyInvolvedTypeIdentiferGenerator =
-          new IdentifierPopulator<Type> (_involvedTypes.Select (it => it.Type)).GetReadonlyIdentifierGenerator ("none");
-      var memberIdentifierGenerator = new IdentifierGenerator<MemberInfo> ();
+          new IdentifierPopulator<Type>(_involvedTypes.Select(it => it.Type)).GetReadonlyIdentifierGenerator("none");
+      var memberIdentifierGenerator = new IdentifierGenerator<MemberInfo>();
       var interfaceIdentiferGenerator = new IdentifierGenerator<Type>();
       var attributeIdentiferGenerator = new IdentifierGenerator<Type>();
 
-      var involvedReport = new InvolvedTypeReportGenerator (
+      var involvedReport = new InvolvedTypeReportGenerator(
           _involvedTypes,
           assemblyIdentifierGenerator,
           readonlyInvolvedTypeIdentiferGenerator,
@@ -91,7 +91,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
           attributeIdentiferGenerator,
           _remotionReflector,
           _outputFormatter);
-      var interfaceReport = new InterfaceReportGenerator (
+      var interfaceReport = new InterfaceReportGenerator(
           _involvedTypes,
           assemblyIdentifierGenerator,
           readonlyInvolvedTypeIdentiferGenerator,
@@ -99,19 +99,19 @@ namespace Remotion.Mixins.CrossReferencer.Report
           interfaceIdentiferGenerator,
           _remotionReflector,
           _outputFormatter);
-      var attributeReport = new AttributeReportGenerator (
+      var attributeReport = new AttributeReportGenerator(
           _involvedTypes,
           assemblyIdentifierGenerator,
           readonlyInvolvedTypeIdentiferGenerator,
           attributeIdentiferGenerator,
           _remotionReflector,
           _outputFormatter);
-      var assemblyReport = new AssemblyReportGenerator (_involvedTypes, readOnlyassemblyIdentifierGenerator, readonlyInvolvedTypeIdentiferGenerator);
+      var assemblyReport = new AssemblyReportGenerator(_involvedTypes, readOnlyassemblyIdentifierGenerator, readonlyInvolvedTypeIdentiferGenerator);
 
-      var configurationErrorReport = new ConfigurationErrorReportGenerator (_configurationErrors);
-      var validationErrorReport = new ValidationErrorReportGenerator (_validationErrors, _remotionReflector);
+      var configurationErrorReport = new ConfigurationErrorReportGenerator(_configurationErrors);
+      var validationErrorReport = new ValidationErrorReportGenerator(_validationErrors, _remotionReflector);
 
-      return new CompositeReportGenerator (
+      return new CompositeReportGenerator(
           involvedReport,
           interfaceReport,
           attributeReport,

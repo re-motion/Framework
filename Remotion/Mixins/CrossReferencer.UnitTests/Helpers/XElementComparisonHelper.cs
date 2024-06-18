@@ -35,22 +35,20 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Helpers
 
       public string Generate (XElement x)
       {
-        var s = x.ToString ();
+        var s = x.ToString();
         foreach (var ignoredAttribute in _ignoredAttributes)
-          s = Regex.Replace (s, string.Format ("{0}=\"[^\"]*\" ", ignoredAttribute), "");
+          s = Regex.Replace(s, string.Format("{0}=\"[^\"]*\" ", ignoredAttribute), "");
 
         return s;
       }
     }
 
     private static readonly XElementComparisonStringGenerator s_stringGenerator =
-      new XElementComparisonStringGenerator("metadataToken");
+        new XElementComparisonStringGenerator("metadataToken");
 
-    public static void Compare(XElement actual, XElement expected)
+    public static void Compare (XElement actual, XElement expected)
     {
       Assert.That(s_stringGenerator.Generate(actual), Is.EqualTo(s_stringGenerator.Generate(expected)));
     }
   }
-
-  
 }

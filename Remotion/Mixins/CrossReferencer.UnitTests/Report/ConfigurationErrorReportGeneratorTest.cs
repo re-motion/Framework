@@ -29,12 +29,12 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     public void GenerateXml_NoErrors ()
     {
       var errorAggregator = new ErrorAggregator<Exception>();
-      var reportGenerator = new ConfigurationErrorReportGenerator (errorAggregator);
+      var reportGenerator = new ConfigurationErrorReportGenerator(errorAggregator);
 
       var output = reportGenerator.GenerateXml();
-      var expectedOutput = new XElement ("ConfigurationErrors");
+      var expectedOutput = new XElement("ConfigurationErrors");
 
-      Assert.That (output.ToString(), Is.EqualTo (expectedOutput.ToString()));
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
     [Test]
@@ -42,29 +42,29 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     {
       var errorAggregator = new ErrorAggregator<Exception>();
 
-      var innerException1 = SetUpExceptionWithDummyStackTrace ("inner exception", null);
-      var Exception1 = SetUpExceptionWithDummyStackTrace ("test configuration exception 1", innerException1);
-      var Exception2 = SetUpExceptionWithDummyStackTrace ("test configuration excpetion 2", null);
+      var innerException1 = SetUpExceptionWithDummyStackTrace("inner exception", null);
+      var Exception1 = SetUpExceptionWithDummyStackTrace("test configuration exception 1", innerException1);
+      var Exception2 = SetUpExceptionWithDummyStackTrace("test configuration excpetion 2", null);
 
-      errorAggregator.AddException (Exception1);
-      errorAggregator.AddException (Exception2);
-      var reportGenerator = new ConfigurationErrorReportGenerator (errorAggregator);
+      errorAggregator.AddException(Exception1);
+      errorAggregator.AddException(Exception2);
+      var reportGenerator = new ConfigurationErrorReportGenerator(errorAggregator);
 
       var output = reportGenerator.GenerateXml();
-      var expectedOutput = new XElement (
+      var expectedOutput = new XElement(
           "ConfigurationErrors",
-          new RecursiveExceptionReportGenerator (Exception1).GenerateXml(),
-          new RecursiveExceptionReportGenerator (Exception2).GenerateXml()
-          );
+          new RecursiveExceptionReportGenerator(Exception1).GenerateXml(),
+          new RecursiveExceptionReportGenerator(Exception2).GenerateXml()
+      );
 
-      Assert.That (output.ToString(), Is.EqualTo (expectedOutput.ToString()));
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
     private Exception SetUpExceptionWithDummyStackTrace (string exceptionMessage, Exception innerException)
     {
       try
       {
-        throw new Exception (exceptionMessage, innerException);
+        throw new Exception(exceptionMessage, innerException);
       }
       catch (Exception caughtException)
       {

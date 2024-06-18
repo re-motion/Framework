@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 {
   [Serializable]
-  [Extends (typeof (TargetClass2))]
+  [Extends(typeof(TargetClass2))]
   public class Mixin2
   {
   }

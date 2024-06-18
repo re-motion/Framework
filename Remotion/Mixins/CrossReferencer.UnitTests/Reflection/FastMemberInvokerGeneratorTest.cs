@@ -30,131 +30,148 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
     private FastMemberInvokerGenerator _generator;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
-      _generator = new FastMemberInvokerGenerator ();
+      _generator = new FastMemberInvokerGenerator();
     }
 
     [Test]
     public void GetFastMethodInvoker_ForStaticMethod ()
     {
       var instance = "stringContent";
-      var invoker = _generator.GetFastMethodInvoker (
-          instance.GetType (),
-          "IsNullOrEmpty", new Type[0],
-          new[] { typeof (string) }, BindingFlags.Public | BindingFlags.Static);
+      var invoker = _generator.GetFastMethodInvoker(
+          instance.GetType(),
+          "IsNullOrEmpty",
+          new Type[0],
+          new[] { typeof(string) },
+          BindingFlags.Public | BindingFlags.Static);
 
-      var output = invoker (null, new object[] { instance });
+      var output = invoker(null, new object[] { instance });
 
-      Assert.That (output, Is.EqualTo (false));
+      Assert.That(output, Is.EqualTo(false));
     }
 
     [Test]
     public void GetFastMethodInvoker_ForInstanceMethod_WithoutOverloads ()
     {
       var instance = "stringContent";
-      var invoker = _generator.GetFastMethodInvoker (
-          instance.GetType (),
-          "GetHashCode", new Type[0],
-          Type.EmptyTypes, BindingFlags.Public | BindingFlags.Instance);
+      var invoker = _generator.GetFastMethodInvoker(
+          instance.GetType(),
+          "GetHashCode",
+          new Type[0],
+          Type.EmptyTypes,
+          BindingFlags.Public | BindingFlags.Instance);
 
-      var output = invoker (instance, new object[0]);
+      var output = invoker(instance, new object[0]);
 
-      Assert.That (output, Is.EqualTo (instance.GetHashCode()));
+      Assert.That(output, Is.EqualTo(instance.GetHashCode()));
     }
 
     [Test]
-    public void GetFastMethodInvoker_ForInstanceMethod_WithOverloads()
+    public void GetFastMethodInvoker_ForInstanceMethod_WithOverloads ()
     {
       var instance = "stringContent";
-      var invoker = _generator.GetFastMethodInvoker (
+      var invoker = _generator.GetFastMethodInvoker(
           instance.GetType(),
-          "IndexOf", new Type[0],
-          new[] { typeof (char) }, BindingFlags.Public | BindingFlags.Instance);
-      
+          "IndexOf",
+          new Type[0],
+          new[] { typeof(char) },
+          BindingFlags.Public | BindingFlags.Instance);
+
       var output = invoker(instance, new object[] { 't' });
 
-      Assert.That (output, Is.EqualTo (1));
+      Assert.That(output, Is.EqualTo(1));
     }
 
     [Test]
-    public void GetFastMethodInvoker_ForGenericMethod()
+    public void GetFastMethodInvoker_ForGenericMethod ()
     {
       var instance = new ClassWithMethods();
-      var invoker = _generator.GetFastMethodInvoker (
+      var invoker = _generator.GetFastMethodInvoker(
           instance.GetType(),
-          "Count", new[] { typeof(int) },
-          new[] { typeof (IEnumerable<int>) }, BindingFlags.Public | BindingFlags.Instance);
-      
+          "Count",
+          new[] { typeof(int) },
+          new[] { typeof(IEnumerable<int>) },
+          BindingFlags.Public | BindingFlags.Instance);
+
       var output = invoker(instance, new object[] { new[] { 3, 1, 2 } });
 
-      Assert.That (output, Is.EqualTo (3));
+      Assert.That(output, Is.EqualTo(3));
     }
 
     [Test]
-    public void GetFastMethodInvoker_ForStaticGenericMethod()
+    public void GetFastMethodInvoker_ForStaticGenericMethod ()
     {
       var instance = new ClassWithMethods();
-      var invoker = _generator.GetFastMethodInvoker (
+      var invoker = _generator.GetFastMethodInvoker(
           instance.GetType(),
-          "Count", new[] { typeof(int) },
-          new[] { typeof (IEnumerable<int>), typeof(int) }, BindingFlags.Public | BindingFlags.Static);
-      
+          "Count",
+          new[] { typeof(int) },
+          new[] { typeof(IEnumerable<int>), typeof(int) },
+          BindingFlags.Public | BindingFlags.Static);
+
       var output = invoker(instance, new object[] { new[] { 3, 1, 2 }, 1 });
 
-      Assert.That (output, Is.EqualTo (4));
+      Assert.That(output, Is.EqualTo(4));
     }
 
     [Test]
     public void GetFastMethodInvoker_ForGenericMethodTwoParameters ()
     {
-      var instance = new ClassWithMethods ();
-      var invoker = _generator.GetFastMethodInvoker (
-          instance.GetType (),
-          "Count", new[] { typeof (int), typeof(string) },
-          new[] { typeof (IEnumerable<int>), typeof (string) }, BindingFlags.Public | BindingFlags.Instance);
+      var instance = new ClassWithMethods();
+      var invoker = _generator.GetFastMethodInvoker(
+          instance.GetType(),
+          "Count",
+          new[] { typeof(int), typeof(string) },
+          new[] { typeof(IEnumerable<int>), typeof(string) },
+          BindingFlags.Public | BindingFlags.Instance);
 
-      var output = invoker (instance, new object[] { new[] { 3, 1, 2 }, "asdf" });
+      var output = invoker(instance, new object[] { new[] { 3, 1, 2 }, "asdf" });
 
-      Assert.That (output, Is.EqualTo (7));
+      Assert.That(output, Is.EqualTo(7));
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Method 'Foo' not found on type 'System.String'.")]
+    [ExpectedException(typeof(MissingMethodException), ExpectedMessage = "Method 'Foo' not found on type 'System.String'.")]
     public void GetFastMethodInvoker_ForNonExistingMethod ()
     {
       var instance = "stringContent";
-      _generator.GetFastMethodInvoker (
-          instance.GetType (),
-          "Foo", new Type[0],
-          new[] { typeof (string) }, BindingFlags.Public | BindingFlags.Static);
+      _generator.GetFastMethodInvoker(
+          instance.GetType(),
+          "Foo",
+          new Type[0],
+          new[] { typeof(string) },
+          BindingFlags.Public | BindingFlags.Static);
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "Overload of method 'GetHashCode' not found on type 'System.String'.")]
+    [ExpectedException(typeof(MissingMethodException), ExpectedMessage = "Overload of method 'GetHashCode' not found on type 'System.String'.")]
     public void GetFastMethodInvoker_ForExistingMethod_WithInvalidSignature ()
     {
       var instance = "stringContent";
-      _generator.GetFastMethodInvoker (
-          instance.GetType (),
-          "GetHashCode", new Type[0],
-          new[] { typeof (string) }, BindingFlags.Public | BindingFlags.Instance);
+      _generator.GetFastMethodInvoker(
+          instance.GetType(),
+          "GetHashCode",
+          new Type[0],
+          new[] { typeof(string) },
+          BindingFlags.Public | BindingFlags.Instance);
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "Void methods are not supported.")]
+    [ExpectedException(typeof(NotSupportedException), ExpectedMessage = "Void methods are not supported.")]
     public void GetFastMethodInvoker_ForVoidMethod ()
     {
       var instance = new TargetDoSomething();
-      var invoker = _generator.GetFastMethodInvoker (
-          instance.GetType (),
-          "DoSomething", new Type[0],
+      var invoker = _generator.GetFastMethodInvoker(
+          instance.GetType(),
+          "DoSomething",
+          new Type[0],
           Type.EmptyTypes,
           BindingFlags.Public | BindingFlags.Instance);
 
-      var output = invoker (instance, new object[0]);
+      var output = invoker(instance, new object[0]);
 
-      Assert.That (output, Is.Null);
+      Assert.That(output, Is.Null);
     }
   }
 }

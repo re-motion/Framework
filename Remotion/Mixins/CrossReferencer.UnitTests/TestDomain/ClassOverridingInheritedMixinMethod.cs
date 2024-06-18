@@ -21,7 +21,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
   public class ClassOverridingInheritedMixinMethod
   {
     [OverrideMixin]
-    public string ProtectedInheritedMethod()
+    public string ProtectedInheritedMethod ()
     {
       return "ClassOverridingInheritedMixinMethod.ProtectedInheritedMethod";
     }

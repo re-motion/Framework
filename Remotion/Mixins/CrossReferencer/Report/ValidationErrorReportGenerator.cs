@@ -27,10 +27,10 @@ namespace Remotion.Mixins.CrossReferencer.Report
     private readonly ErrorAggregator<Exception> _errorAggregator;
     private readonly IRemotionReflector _remotionReflector;
 
-    public ValidationErrorReportGenerator(ErrorAggregator<Exception> errorAggregator, IRemotionReflector remotionReflector)
+    public ValidationErrorReportGenerator (ErrorAggregator<Exception> errorAggregator, IRemotionReflector remotionReflector)
     {
-      ArgumentUtility.CheckNotNull ("errorAggregator", errorAggregator);
-      ArgumentUtility.CheckNotNull ("remotionReflector", remotionReflector);
+      ArgumentUtility.CheckNotNull("errorAggregator", errorAggregator);
+      ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
 
       _errorAggregator = errorAggregator;
       _remotionReflector = remotionReflector;
@@ -38,23 +38,23 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public XElement GenerateXml ()
     {
-      var validationErrors = new XElement ("ValidationErrors");
+      var validationErrors = new XElement("ValidationErrors");
 
       foreach (var exception in _errorAggregator.Exceptions)
       {
-        var topLevelExceptionElement = new RecursiveExceptionReportGenerator (exception).GenerateXml();
+        var topLevelExceptionElement = new RecursiveExceptionReportGenerator(exception).GenerateXml();
         var validationLog = _remotionReflector.GetValidationLogFromValidationException(exception);
 
-        topLevelExceptionElement.Add (
-            new XElement (
+        topLevelExceptionElement.Add(
+            new XElement(
                 "ValidationLog",
                 new XAttribute("number-of-rules-executed", validationLog.GetProperty("NumberOfRulesExecuted")),
                 new XAttribute("number-of-failures", validationLog.GetProperty("NumberOfFailures")),
                 new XAttribute("number-of-unexpected-exceptions", validationLog.GetProperty("NumberOfUnexpectedExceptions")),
                 new XAttribute("number-of-warnings", validationLog.GetProperty("NumberOfWarnings")),
                 new XAttribute("number-of-successes", validationLog.GetProperty("NumberOfSuccesses")))
-            );
-        validationErrors.Add (topLevelExceptionElement);
+        );
+        validationErrors.Add(topLevelExceptionElement);
       }
 
       return validationErrors;

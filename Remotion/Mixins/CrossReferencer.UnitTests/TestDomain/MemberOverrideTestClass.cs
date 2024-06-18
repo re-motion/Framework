@@ -27,7 +27,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
       {
       }
 
-      public virtual void OverriddenMethod()
+      public virtual void OverriddenMethod ()
       {
       }
     }
@@ -39,7 +39,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
       }
 
       [OverrideTarget]
-      public void OverriddenMethod()
+      public void OverriddenMethod ()
       {
       }
     }

@@ -25,12 +25,12 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Utilities
   public class ErrorAggregatorTest
   {
     [Test]
-    public void AddException_RetrieveWithExceptionsProperty()
+    public void AddException_RetrieveWithExceptionsProperty ()
     {
       var errorAggregator = new ErrorAggregator<Exception>();
 
       var exception1 = new Exception("test exception");
-      var exception2 = new Exception ("another text exception");
+      var exception2 = new Exception("another text exception");
 
       errorAggregator.AddException(exception1);
       errorAggregator.AddException(exception2);

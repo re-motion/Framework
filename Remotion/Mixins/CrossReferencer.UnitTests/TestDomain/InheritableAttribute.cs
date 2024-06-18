@@ -18,6 +18,8 @@ using System;
 
 namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 {
-  [AttributeUsage (AttributeTargets.Class, Inherited = true)]
-  public class InheritableAttribute : Attribute { }
+  [AttributeUsage(AttributeTargets.Class, Inherited = true)]
+  public class InheritableAttribute : Attribute
+  {
+  }
 }

@@ -31,11 +31,13 @@ namespace Remotion.Mixins.CrossReferencer.Report
     private readonly IRemotionReflector _remotionReflector;
 
     public InterfaceReferenceReportGenerator (
-        InvolvedType involvedType, IIdentifierGenerator<Type> interfaceIdentifierGenerator, IRemotionReflector remotionReflector)
+        InvolvedType involvedType,
+        IIdentifierGenerator<Type> interfaceIdentifierGenerator,
+        IRemotionReflector remotionReflector)
     {
-      ArgumentUtility.CheckNotNull ("involvedType", involvedType);
-      ArgumentUtility.CheckNotNull ("interfaceIdentifierGenerator", interfaceIdentifierGenerator);
-      ArgumentUtility.CheckNotNull ("remotionReflector", remotionReflector);
+      ArgumentUtility.CheckNotNull("involvedType", involvedType);
+      ArgumentUtility.CheckNotNull("interfaceIdentifierGenerator", interfaceIdentifierGenerator);
+      ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
 
       _involvedType = involvedType;
       _interfaceIdentifierGenerator = interfaceIdentifierGenerator;
@@ -44,17 +46,17 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public XElement GenerateXml ()
     {
-      return new XElement (
+      return new XElement(
           "ImplementedInterfaces",
           from implementedInterface in GetAllInterfaces()
-          where !_remotionReflector.IsInfrastructureType (implementedInterface)
-          select GenerateInterfaceReference (implementedInterface)
-          );
+          where !_remotionReflector.IsInfrastructureType(implementedInterface)
+          select GenerateInterfaceReference(implementedInterface)
+      );
     }
 
     private XElement GenerateInterfaceReference (Type implementedInterface)
     {
-      return new XElement ("ImplementedInterface", new XAttribute ("ref", _interfaceIdentifierGenerator.GetIdentifier (implementedInterface)));
+      return new XElement("ImplementedInterface", new XAttribute("ref", _interfaceIdentifierGenerator.GetIdentifier(implementedInterface)));
     }
 
     private HashSet<Type> GetAllInterfaces ()
@@ -62,12 +64,12 @@ namespace Remotion.Mixins.CrossReferencer.Report
       var allInterfaces = new HashSet<Type>();
 
       foreach (var iface in _involvedType.Type.GetInterfaces())
-        allInterfaces.Add (iface);
+        allInterfaces.Add(iface);
 
       if (_involvedType.IsTarget)
       {
-        foreach (var composedInterface in _remotionReflector.GetComposedInterfaces (_involvedType.ClassContext))
-          allInterfaces.Add (composedInterface);
+        foreach (var composedInterface in _remotionReflector.GetComposedInterfaces(_involvedType.ClassContext))
+          allInterfaces.Add(composedInterface);
       }
 
       return allInterfaces;

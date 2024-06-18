@@ -21,7 +21,7 @@ namespace Remotion.Mixins.CrossReferencer
 {
   public class AdditionalTypesCollector : IInvolvedVisitor
   {
-    private readonly List<Type> _additionalTypes = new List<Type> ();
+    private readonly List<Type> _additionalTypes = new List<Type>();
 
     public void Visit (InvolvedTypeMember involvedTypeMember)
     {

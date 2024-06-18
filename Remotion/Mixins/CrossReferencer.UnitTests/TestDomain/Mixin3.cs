@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 {
-  [Extends (typeof(TargetClass2))]
+  [Extends(typeof(TargetClass2))]
   public class Mixin3 : IDisposable
   {
     public void Dispose ()

@@ -26,12 +26,13 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Stub
   public class RemotionReflectorStub : ReflectorProvider
   {
     public RemotionReflectorStub (string component, Version version, IEnumerable<_Assembly> assemblies, string assemblyDirectory)
-      : base (component, version, assemblies, assemblyDirectory)
-    { }
+        : base(component, version, assemblies, assemblyDirectory)
+    {
+    }
 
     public void CallMethod (MethodBase method)
     {
-      ReceivedReflector = GetCompatibleReflector (method);
+      ReceivedReflector = GetCompatibleReflector(method);
     }
 
     public IRemotionReflector ReceivedReflector { get; private set; }

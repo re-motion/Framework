@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 {
-  [Book (1337, Title = "C# in depth")]
+  [Book(1337, Title = "C# in depth")]
   public class ClassWithBookAttribute
   {
   }

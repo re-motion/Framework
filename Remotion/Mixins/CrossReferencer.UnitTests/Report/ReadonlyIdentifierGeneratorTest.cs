@@ -30,9 +30,9 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 
       var readonlyIdentifierGenerator = new ReadonlyIdentifierGenerator<string>(identifierGenerator, "dummy-value");
 
-      var output = readonlyIdentifierGenerator.GetIdentifier ("key-1");
+      var output = readonlyIdentifierGenerator.GetIdentifier("key-1");
 
-      Assert.That (output, Is.EqualTo ("dummy-value"));
+      Assert.That(output, Is.EqualTo("dummy-value"));
     }
 
     [Test]
@@ -44,13 +44,13 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 
       var readonlyIdentifierGenerator = new ReadonlyIdentifierGenerator<string>(identifierGenerator, "does not matter");
 
-      var output = readonlyIdentifierGenerator.GetIdentifier ("value-1");
+      var output = readonlyIdentifierGenerator.GetIdentifier("value-1");
 
-      Assert.That (output, Is.EqualTo (expectedOutput));
+      Assert.That(output, Is.EqualTo(expectedOutput));
     }
 
     [Test]
-    public void GetIdentifier2_NonExistingItem()
+    public void GetIdentifier2_NonExistingItem ()
     {
       var identifierGenerator = new IdentifierGenerator<string>();
 
@@ -62,7 +62,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     }
 
     [Test]
-    public void GetIdentifier2_ForExistingItem()
+    public void GetIdentifier2_ForExistingItem ()
     {
       var identifierGenerator = new IdentifierGenerator<string>();
 

@@ -32,18 +32,28 @@ namespace Remotion.Mixins.CrossReferencer
     }
 
     private readonly IList<MemberInfo> _overriddenTargetMembers = new List<MemberInfo>();
-    public IEnumerable<MemberInfo> OverriddenTargetMembers { get { return _overriddenTargetMembers; } }
-    private readonly IList<MemberInfo> _overriddenMixinMembers = new List<MemberInfo> ();
-    public IEnumerable<MemberInfo> OverriddenMixinMembers { get { return _overriddenMixinMembers; } }
-    public OverridingMemberInfo(MemberInfo memberInfo)
+
+    public IEnumerable<MemberInfo> OverriddenTargetMembers
     {
-      ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
+      get { return _overriddenTargetMembers; }
+    }
+
+    private readonly IList<MemberInfo> _overriddenMixinMembers = new List<MemberInfo>();
+
+    public IEnumerable<MemberInfo> OverriddenMixinMembers
+    {
+      get { return _overriddenMixinMembers; }
+    }
+
+    public OverridingMemberInfo (MemberInfo memberInfo)
+    {
+      ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
       _memberInfo = memberInfo;
     }
 
-    public void AddOverriddenMember(MemberInfo memberInfo, OverrideType type)
+    public void AddOverriddenMember (MemberInfo memberInfo, OverrideType type)
     {
-      switch(type)
+      switch (type)
       {
         case OverrideType.Target:
           _overriddenTargetMembers.Add(memberInfo);
@@ -56,12 +66,12 @@ namespace Remotion.Mixins.CrossReferencer
       }
     }
 
-    public static implicit operator MemberInfo(OverridingMemberInfo o)
+    public static implicit operator MemberInfo (OverridingMemberInfo o)
     {
       return o._memberInfo;
     }
 
-    public static implicit operator OverridingMemberInfo(MemberInfo m)
+    public static implicit operator OverridingMemberInfo (MemberInfo m)
     {
       return new OverridingMemberInfo(m);
     }

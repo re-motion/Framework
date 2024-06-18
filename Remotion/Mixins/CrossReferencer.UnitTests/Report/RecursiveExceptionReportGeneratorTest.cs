@@ -27,50 +27,50 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [Test]
     public void GenerateXml_ForExceptionWithoutInnerException ()
     {
-      var exception = SetUpExceptionWithDummyStackTrace ("plain exception", null);
+      var exception = SetUpExceptionWithDummyStackTrace("plain exception", null);
 
-      var reportGenerator = new RecursiveExceptionReportGenerator (exception);
+      var reportGenerator = new RecursiveExceptionReportGenerator(exception);
       var output = reportGenerator.GenerateXml();
 
-      var expectedOutput = new XElement (
+      var expectedOutput = new XElement(
           "Exception",
-          new XAttribute ("type", exception.GetType()),
-          new XElement ("Message", new XCData (exception.Message)),
-          new XElement ("StackTrace", new XCData (exception.StackTrace))
-          );
+          new XAttribute("type", exception.GetType()),
+          new XElement("Message", new XCData(exception.Message)),
+          new XElement("StackTrace", new XCData(exception.StackTrace))
+      );
 
-      Assert.That (output.ToString(), Is.EqualTo (expectedOutput.ToString()));
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
     [Test]
     public void GenerateXml_ForExceptionWithInnerException ()
     {
-      var innerException = SetUpExceptionWithDummyStackTrace ("inner exception", null);
-      var outerException = SetUpExceptionWithDummyStackTrace ("exception with inner exception", innerException);
-      var reportGenerator = new RecursiveExceptionReportGenerator (outerException);
+      var innerException = SetUpExceptionWithDummyStackTrace("inner exception", null);
+      var outerException = SetUpExceptionWithDummyStackTrace("exception with inner exception", innerException);
+      var reportGenerator = new RecursiveExceptionReportGenerator(outerException);
 
       var output = reportGenerator.GenerateXml();
 
-      var expectedOutput = new XElement (
+      var expectedOutput = new XElement(
           "Exception",
-          new XAttribute ("type", outerException.GetType()),
-          new XElement ("Message", new XCData (outerException.Message)),
-          new XElement ("StackTrace", new XCData (outerException.StackTrace)),
-          new XElement (
+          new XAttribute("type", outerException.GetType()),
+          new XElement("Message", new XCData(outerException.Message)),
+          new XElement("StackTrace", new XCData(outerException.StackTrace)),
+          new XElement(
               "Exception",
-              new XAttribute ("type", innerException.GetType()),
-              new XElement ("Message", new XCData (innerException.Message)),
-              new XElement ("StackTrace", new XCData (innerException.StackTrace)))
-          );
+              new XAttribute("type", innerException.GetType()),
+              new XElement("Message", new XCData(innerException.Message)),
+              new XElement("StackTrace", new XCData(innerException.StackTrace)))
+      );
 
-      Assert.That (output.ToString(), Is.EqualTo (expectedOutput.ToString()));
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
     private Exception SetUpExceptionWithDummyStackTrace (string exceptionMessage, Exception innerException)
     {
       try
       {
-        throw new Exception (exceptionMessage, innerException);
+        throw new Exception(exceptionMessage, innerException);
       }
       catch (Exception caughtException)
       {

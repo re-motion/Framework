@@ -36,22 +36,22 @@ namespace Remotion.Mixins.CrossReferencer.Report
     private readonly IOutputFormatter _outputFormatter;
 
     public MixinReferenceReportGenerator (
-        InvolvedType involvedType, 
-        IIdentifierGenerator<Assembly> assemblyIdentifierGenerator, 
-        IIdentifierGenerator<Type> involvedTypeIdentifierGenerator, 
-        IIdentifierGenerator<Type> interfaceIdentifierGenerator, 
-        IIdentifierGenerator<Type> attributeIdentifierGenerator, 
-        IRemotionReflector remotionReflector, 
+        InvolvedType involvedType,
+        IIdentifierGenerator<Assembly> assemblyIdentifierGenerator,
+        IIdentifierGenerator<Type> involvedTypeIdentifierGenerator,
+        IIdentifierGenerator<Type> interfaceIdentifierGenerator,
+        IIdentifierGenerator<Type> attributeIdentifierGenerator,
+        IRemotionReflector remotionReflector,
         IOutputFormatter outputFormatter
-        )
+    )
     {
-      ArgumentUtility.CheckNotNull ("involvedType", involvedType);
-      ArgumentUtility.CheckNotNull ("assemblyIdentifierGenerator", assemblyIdentifierGenerator);
-      ArgumentUtility.CheckNotNull ("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull ("interfaceIdentifierGenerator", interfaceIdentifierGenerator);
-      ArgumentUtility.CheckNotNull ("attributeIdentifierGenerator", attributeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull ("remotionReflector", remotionReflector);
-      ArgumentUtility.CheckNotNull ("outputFormatter", outputFormatter);
+      ArgumentUtility.CheckNotNull("involvedType", involvedType);
+      ArgumentUtility.CheckNotNull("assemblyIdentifierGenerator", assemblyIdentifierGenerator);
+      ArgumentUtility.CheckNotNull("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
+      ArgumentUtility.CheckNotNull("interfaceIdentifierGenerator", interfaceIdentifierGenerator);
+      ArgumentUtility.CheckNotNull("attributeIdentifierGenerator", attributeIdentifierGenerator);
+      ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
+      ArgumentUtility.CheckNotNull("outputFormatter", outputFormatter);
 
       _involvedType = involvedType;
       _assemblyIdentifierGenerator = assemblyIdentifierGenerator;
@@ -67,47 +67,51 @@ namespace Remotion.Mixins.CrossReferencer.Report
       if (!_involvedType.IsTarget)
         return null;
 
-      return new XElement (
+      return new XElement(
           "Mixins",
-          from mixin in _involvedType.ClassContext.GetProperty ("Mixins")
-          select GenerateMixinElement (mixin));
+          from mixin in _involvedType.ClassContext.GetProperty("Mixins")
+          select GenerateMixinElement(mixin));
     }
 
     private XElement GenerateMixinElement (ReflectedObject mixinContext)
     {
-      var mixinType = mixinContext.GetProperty ("MixinType").To<Type>();
+      var mixinType = mixinContext.GetProperty("MixinType").To<Type>();
 
-      var mixinElement = new XElement (
+      var mixinElement = new XElement(
           "Mixin",
-          new XAttribute ("ref", _involvedTypeIdentifierGenerator.GetIdentifier (mixinType)),
-          new XAttribute ("index", "n/a"),
-          new XAttribute ("relation", GetRelationName(mixinContext)),
+          new XAttribute("ref", _involvedTypeIdentifierGenerator.GetIdentifier(mixinType)),
+          new XAttribute("index", "n/a"),
+          new XAttribute("relation", GetRelationName(mixinContext)),
           // property MixinType on mixinContext always return the generic type definition, not the type of the actual instance
-          new XAttribute ("instance-name", _outputFormatter.GetShortFormattedTypeName (mixinType)),
-          new XAttribute ("introduced-member-visibility", mixinContext.GetProperty ("IntroducedMemberVisibility").ToString().ToLower()),
-          new AdditionalDependencyReportGenerator (
-              mixinContext.GetProperty ("ExplicitDependencies"), _involvedTypeIdentifierGenerator, _outputFormatter).GenerateXml()
-          );
+          new XAttribute("instance-name", _outputFormatter.GetShortFormattedTypeName(mixinType)),
+          new XAttribute("introduced-member-visibility", mixinContext.GetProperty("IntroducedMemberVisibility").ToString().ToLower()),
+          new AdditionalDependencyReportGenerator(
+              mixinContext.GetProperty("ExplicitDependencies"),
+              _involvedTypeIdentifierGenerator,
+              _outputFormatter).GenerateXml()
+      );
 
       if (_involvedType.HasTargetClassDefintion)
       {
-        var mixinDefinition = _involvedType.TargetClassDefinition.CallMethod (
-            "GetMixinByConfiguredType", mixinContext.GetProperty ("MixinType").To<Type>());
+        var mixinDefinition = _involvedType.TargetClassDefinition.CallMethod(
+            "GetMixinByConfiguredType",
+            mixinContext.GetProperty("MixinType").To<Type>());
 
         // set more specific name for mixin references
-        mixinElement.SetAttributeValue ("instance-name", _outputFormatter.GetShortFormattedTypeName (mixinDefinition.GetProperty ("Type").To<Type>()));
+        mixinElement.SetAttributeValue("instance-name", _outputFormatter.GetShortFormattedTypeName(mixinDefinition.GetProperty("Type").To<Type>()));
         // set mixin index
-        mixinElement.SetAttributeValue ("index", mixinDefinition.GetProperty ("MixinIndex").To<int>());
+        mixinElement.SetAttributeValue("index", mixinDefinition.GetProperty("MixinIndex").To<int>());
 
-        mixinElement.Add (
-            new InterfaceIntroductionReportGenerator (mixinDefinition.GetProperty ("InterfaceIntroductions"), _interfaceIdentifierGenerator).
-                GenerateXml());
-        mixinElement.Add (
-            new AttributeIntroductionReportGenerator (
-                mixinDefinition.GetProperty ("AttributeIntroductions"), _attributeIdentifierGenerator, _remotionReflector).GenerateXml());
-        mixinElement.Add (
-            new MemberOverrideReportGenerator (mixinDefinition.CallMethod ("GetAllOverrides")).GenerateXml());
-        mixinElement.Add (new TargetCallDependenciesReportGenerator (mixinDefinition, _assemblyIdentifierGenerator, _remotionReflector, _outputFormatter).GenerateXml ());
+        mixinElement.Add(
+            new InterfaceIntroductionReportGenerator(mixinDefinition.GetProperty("InterfaceIntroductions"), _interfaceIdentifierGenerator).GenerateXml());
+        mixinElement.Add(
+            new AttributeIntroductionReportGenerator(
+                mixinDefinition.GetProperty("AttributeIntroductions"),
+                _attributeIdentifierGenerator,
+                _remotionReflector).GenerateXml());
+        mixinElement.Add(
+            new MemberOverrideReportGenerator(mixinDefinition.CallMethod("GetAllOverrides")).GenerateXml());
+        mixinElement.Add(new TargetCallDependenciesReportGenerator(mixinDefinition, _assemblyIdentifierGenerator, _remotionReflector, _outputFormatter).GenerateXml());
       }
 
       return mixinElement;
@@ -115,7 +119,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     private string GetRelationName (ReflectedObject mixinContext)
     {
-      if (mixinContext.GetProperty ("MixinKind").ToString ().Equals ("Extending"))
+      if (mixinContext.GetProperty("MixinKind").ToString().Equals("Extending"))
         return "Extends";
       return "Used by";
     }

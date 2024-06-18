@@ -30,31 +30,31 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [Test]
     public void GenerateXml_ZeroInterfaces ()
     {
-      var involvedType = new InvolvedType (typeof (object));
-      var reportGenerator = new InterfaceReferenceReportGenerator (involvedType, new IdentifierGenerator<Type>(), Helpers.RemotionReflectorFactory.GetRemotionReflection ());
+      var involvedType = new InvolvedType(typeof(object));
+      var reportGenerator = new InterfaceReferenceReportGenerator(involvedType, new IdentifierGenerator<Type>(), Helpers.RemotionReflectorFactory.GetRemotionReflection());
 
       var output = reportGenerator.GenerateXml();
 
-      var expectedOutput = new XElement ("ImplementedInterfaces");
+      var expectedOutput = new XElement("ImplementedInterfaces");
 
-      Assert.That (output.ToString(), Is.EqualTo (expectedOutput.ToString()));
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
     [Test]
     public void GenerateXml_WithInterfaces ()
     {
       // TargetClass1 implements IDisposealbe
-      var involvedType = new InvolvedType (typeof (TargetClass1));
-      var reportGenerator = new InterfaceReferenceReportGenerator (involvedType, new IdentifierGenerator<Type>(), Helpers.RemotionReflectorFactory.GetRemotionReflection ());
+      var involvedType = new InvolvedType(typeof(TargetClass1));
+      var reportGenerator = new InterfaceReferenceReportGenerator(involvedType, new IdentifierGenerator<Type>(), Helpers.RemotionReflectorFactory.GetRemotionReflection());
 
       var output = reportGenerator.GenerateXml();
 
-      var expectedOutput = new XElement (
+      var expectedOutput = new XElement(
           "ImplementedInterfaces",
-          new XElement ("ImplementedInterface", new XAttribute ("ref", "0"))
-          );
+          new XElement("ImplementedInterface", new XAttribute("ref", "0"))
+      );
 
-      Assert.That (output.ToString(), Is.EqualTo (expectedOutput.ToString()));
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
     [Test]
@@ -67,19 +67,19 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           .BuildConfiguration();
 
       // MyMixinTarget does not implement any interfaces! (but ICMyMixinTargetMyMixin is added to class context as a composed interface)
-      var involvedType = new InvolvedType (typeof (ComposedInterfacesTestClass.MyMixinTarget));
-      var classContext = mixinConfiguration.ClassContexts.GetWithInheritance (typeof (ComposedInterfacesTestClass.MyMixinTarget));
-      involvedType.ClassContext = new ReflectedObject (classContext);
+      var involvedType = new InvolvedType(typeof(ComposedInterfacesTestClass.MyMixinTarget));
+      var classContext = mixinConfiguration.ClassContexts.GetWithInheritance(typeof(ComposedInterfacesTestClass.MyMixinTarget));
+      involvedType.ClassContext = new ReflectedObject(classContext);
 
-      var reportGenerator = new InterfaceReferenceReportGenerator (involvedType, new IdentifierGenerator<Type>(), Helpers.RemotionReflectorFactory.GetRemotionReflection ());
+      var reportGenerator = new InterfaceReferenceReportGenerator(involvedType, new IdentifierGenerator<Type>(), Helpers.RemotionReflectorFactory.GetRemotionReflection());
       var output = reportGenerator.GenerateXml();
 
-      var expectedOutput = new XElement (
+      var expectedOutput = new XElement(
           "ImplementedInterfaces",
-          new XElement ("ImplementedInterface", new XAttribute ("ref", "0"))
-          );
+          new XElement("ImplementedInterface", new XAttribute("ref", "0"))
+      );
 
-      Assert.That (output.ToString(), Is.EqualTo (expectedOutput.ToString()));
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
   }
 }

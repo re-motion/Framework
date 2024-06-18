@@ -26,14 +26,14 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public RecursiveExceptionReportGenerator (Exception exception)
     {
-      ArgumentUtility.CheckNotNull ("exception", exception);
+      ArgumentUtility.CheckNotNull("exception", exception);
 
       _exception = exception;
     }
 
     public XElement GenerateXml ()
     {
-      return GenerateExceptionElement (_exception);
+      return GenerateExceptionElement(_exception);
     }
 
     private XElement GenerateExceptionElement (Exception exception)
@@ -41,12 +41,12 @@ namespace Remotion.Mixins.CrossReferencer.Report
       if (exception == null)
         return null;
 
-      return new XElement (
+      return new XElement(
           "Exception",
-          new XAttribute ("type", exception.GetType()),
-          new XElement ("Message", new XCData (exception.Message)),
-          new XElement ("StackTrace", new XCData (exception.StackTrace)),
-          GenerateExceptionElement (exception.InnerException));
+          new XAttribute("type", exception.GetType()),
+          new XElement("Message", new XCData(exception.Message)),
+          new XElement("StackTrace", new XCData(exception.StackTrace)),
+          GenerateExceptionElement(exception.InnerException));
     }
   }
 }

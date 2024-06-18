@@ -19,11 +19,11 @@ using Remotion.Collections;
 
 namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 {
-
   public class MemberSignatureTestClass : IExplicitInterface
   {
     protected MemberSignatureTestClass (int Param1, string Param2, Remotion.Reflection.IActionInvoker Param3)
-    {}
+    {
+    }
 
     public void PublicMethod ()
     {
@@ -37,12 +37,13 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 
     private string _privateField;
 
-    public virtual void PublicVirtualMethod()
+    public virtual void PublicVirtualMethod ()
     {
     }
 
     public class NestedClass
-    { }
+    {
+    }
 
     public class NestedClassWithInterfaceAndInheritance : GenericTarget<string, int>, IDisposable
     {
@@ -54,12 +55,15 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 
     public interface INestedInterface : IDisposable, ICloneable
     {
-      float Calculate ();  
+      float Calculate ();
     }
 
-    public enum NestedEnumeration {}
+    public enum NestedEnumeration
+    {
+    }
 
-    public struct NestedStruct : IDisposable {
+    public struct NestedStruct : IDisposable
+    {
       public void Dispose ()
       {
         throw new NotImplementedException();
@@ -71,11 +75,20 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
       throw new NotImplementedException();
     }
 
-    public long MethodWithParams (int intParam, string stringParam, AssemblyResolver assemblyBuilderParam) { return 0; }
+    public long MethodWithParams (int intParam, string stringParam, AssemblyResolver assemblyBuilderParam)
+    {
+      return 0;
+    }
 
-    public long MethodWithNestedType (NestedClassWithInterfaceAndInheritance param) { return 0; }
+    public long MethodWithNestedType (NestedClassWithInterfaceAndInheritance param)
+    {
+      return 0;
+    }
 
-    public long MethodWithNestedGenericType (NestedGenericType<NestedClassWithInterfaceAndInheritance> param) { return 0; }
+    public long MethodWithNestedGenericType (NestedGenericType<NestedClassWithInterfaceAndInheritance> param)
+    {
+      return 0;
+    }
 
     protected MultiDictionary<string, int> _dictionary;
 
@@ -85,10 +98,9 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 
     public interface INestedExplicitInterface : IExplicitInterface
     {
-      
     }
 
-    public class SubClass :IExplicitInterface
+    public class SubClass : IExplicitInterface
     {
       string IExplicitInterface.Version ()
       {

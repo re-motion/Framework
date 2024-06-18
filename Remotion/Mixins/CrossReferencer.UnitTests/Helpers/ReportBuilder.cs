@@ -28,43 +28,48 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Helpers
   {
     public static AssemblyReportGenerator CreateAssemblyReportGenerator (params InvolvedType[] types)
     {
-      return CreateAssemblyReportGenerator (new IdentifierGenerator<Assembly> (), types);
+      return CreateAssemblyReportGenerator(new IdentifierGenerator<Assembly>(), types);
     }
 
     public static AssemblyReportGenerator CreateAssemblyReportGenerator (IIdentifierGenerator<Assembly> identifierGenerator, params InvolvedType[] types)
     {
-      return new AssemblyReportGenerator (types, identifierGenerator, new IdentifierGenerator<Type> ());
+      return new AssemblyReportGenerator(types, identifierGenerator, new IdentifierGenerator<Type>());
     }
 
     public static InterfaceReportGenerator CreateInterfaceReportGenerator (IRemotionReflector remotionReflector, IOutputFormatter outputFormatter, params InvolvedType[] types)
     {
-      return new InterfaceReportGenerator (types,
-                                           new IdentifierGenerator<Assembly> (),
-                                           new IdentifierGenerator<Type> (),
-                                           new IdentifierGenerator<MemberInfo> (),
-                                           new IdentifierGenerator<Type> (),
-                                           remotionReflector,
-                                           outputFormatter);
+      return new InterfaceReportGenerator(
+          types,
+          new IdentifierGenerator<Assembly>(),
+          new IdentifierGenerator<Type>(),
+          new IdentifierGenerator<MemberInfo>(),
+          new IdentifierGenerator<Type>(),
+          remotionReflector,
+          outputFormatter);
     }
 
     public static MemberReportGenerator CreateMemberReportGenerator (Type type, IOutputFormatter outputFormatter)
     {
-      return new MemberReportGenerator (type, new InvolvedType (type), new IdentifierGenerator<Type> (), new IdentifierGenerator<MemberInfo> (), outputFormatter);
+      return new MemberReportGenerator(type, new InvolvedType(type), new IdentifierGenerator<Type>(), new IdentifierGenerator<MemberInfo>(), outputFormatter);
     }
 
-    public static InvolvedTypeReportGenerator CreateInvolvedTypeReportGenerator (IRemotionReflector remotionReflector, IOutputFormatter outputFormatter, params InvolvedType[] involvedTypes)
+    public static InvolvedTypeReportGenerator CreateInvolvedTypeReportGenerator (
+        IRemotionReflector remotionReflector,
+        IOutputFormatter outputFormatter,
+        params InvolvedType[] involvedTypes)
     {
-      var assemblyIdentifierGenerator = StubFactory.CreateIdentifierGeneratorStub (new Assembly[0]);
-      var involvedTypeIdentifierGenerator = StubFactory.CreateIdentifierGeneratorStub (involvedTypes.Select (t => t.Type));
+      var assemblyIdentifierGenerator = StubFactory.CreateIdentifierGeneratorStub(new Assembly[0]);
+      var involvedTypeIdentifierGenerator = StubFactory.CreateIdentifierGeneratorStub(involvedTypes.Select(t => t.Type));
 
-      return new InvolvedTypeReportGenerator (involvedTypes,
-                                              assemblyIdentifierGenerator,
-                                              involvedTypeIdentifierGenerator,
-                                              new IdentifierGenerator<MemberInfo> (),
-                                              new IdentifierGenerator<Type> (),
-                                              new IdentifierGenerator<Type> (),
-                                              remotionReflector,
-                                              outputFormatter);
+      return new InvolvedTypeReportGenerator(
+          involvedTypes,
+          assemblyIdentifierGenerator,
+          involvedTypeIdentifierGenerator,
+          new IdentifierGenerator<MemberInfo>(),
+          new IdentifierGenerator<Type>(),
+          new IdentifierGenerator<Type>(),
+          remotionReflector,
+          outputFormatter);
     }
   }
 }

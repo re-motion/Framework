@@ -20,7 +20,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 {
   public class TargetClassWithOverriddenBaseClassMember
   {
-    public virtual void MyBaseClassMethod()
+    public virtual void MyBaseClassMethod ()
     {
     }
 

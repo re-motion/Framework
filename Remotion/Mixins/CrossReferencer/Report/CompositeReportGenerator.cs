@@ -26,15 +26,15 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public CompositeReportGenerator (params IReportGenerator[] reportGenerators)
     {
-      ArgumentUtility.CheckNotNull ("reportGenerators", reportGenerators);
+      ArgumentUtility.CheckNotNull("reportGenerators", reportGenerators);
       _reportGenerators = reportGenerators;
     }
 
     public XElement GenerateXml ()
     {
-      var mixinXRefReportElement = new XElement ("MixinXRefReport");
+      var mixinXRefReportElement = new XElement("MixinXRefReport");
       foreach (var reportGenerator in _reportGenerators)
-        mixinXRefReportElement.Add (reportGenerator.GenerateXml());
+        mixinXRefReportElement.Add(reportGenerator.GenerateXml());
 
       return mixinXRefReportElement;
     }

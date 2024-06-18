@@ -24,22 +24,22 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain.FastMethodInvoker
   {
     public int Count<T> (IEnumerable<T> a)
     {
-      return a.Count ();
+      return a.Count();
     }
 
     public int Count<T> (IEnumerable<T> a, T b)
     {
-      return a.Count () + b.ToString ().Length;
+      return a.Count() + b.ToString().Length;
     }
 
     public int Count<T1, T2> (IEnumerable<T1> a, T2 b)
     {
-      return a.Count () + b.ToString ().Length;
+      return a.Count() + b.ToString().Length;
     }
 
     public static int Count<T> (IEnumerable<T> a, int b)
     {
-      return a.Count () + b;
+      return a.Count() + b;
     }
   }
 }

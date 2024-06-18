@@ -32,12 +32,12 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Explore
     public void InheritanceBehavior_OverrideMixin ()
     {
       var mixinConfiguration = MixinConfiguration.BuildNew().ForClass<BaseClass>().AddMixin<CustomMixin>().BuildConfiguration();
-      MixinConfiguration.SetActiveConfiguration (mixinConfiguration);
+      MixinConfiguration.SetActiveConfiguration(mixinConfiguration);
 
-      var subClass = (IAlgorithm) ObjectFactory.Create<SubClass>().With();
+      var subClass = (IAlgorithm)ObjectFactory.Create<SubClass>().With();
       var output = subClass.AlgorithmMethod();
 
-      Assert.That (output, Is.EqualTo ("2, complex algorithm"));
+      Assert.That(output, Is.EqualTo("2, complex algorithm"));
     }
 
     #region TestDomain for InheritanceBehavior_OverrideMixin
@@ -83,12 +83,12 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Explore
     public void InheritanceBehavior_OverrideTarget ()
     {
       var mixinConfiguration = MixinConfiguration.BuildNew().ForClass<TargetClass>().AddMixin<SubMixin>().BuildConfiguration();
-      MixinConfiguration.SetActiveConfiguration (mixinConfiguration);
+      MixinConfiguration.SetActiveConfiguration(mixinConfiguration);
 
       var targetClass = ObjectFactory.Create<TargetClass>().With();
       var output = targetClass.DoSomething();
 
-      Assert.That (output, Is.EqualTo("2"));
+      Assert.That(output, Is.EqualTo("2"));
     }
 
     #region TestDomain for InheritanceBehavior_OverrideTarget

@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
 using System.Linq;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Reflectors;
@@ -27,28 +26,28 @@ namespace Remotion.Mixins.CrossReferencer.Report
     // IEnumerable<MemberDefinitionBase>
     private readonly ReflectedObject _memberDefinitions;
 
-    public MemberOverrideReportGenerator(ReflectedObject memberDefinitions)
+    public MemberOverrideReportGenerator (ReflectedObject memberDefinitions)
     {
-      ArgumentUtility.CheckNotNull ("memberDefinitions", memberDefinitions);
+      ArgumentUtility.CheckNotNull("memberDefinitions", memberDefinitions);
 
       _memberDefinitions = memberDefinitions;
     }
 
     public XElement GenerateXml ()
     {
-      return new XElement (
+      return new XElement(
           "MemberOverrides",
           from overriddenMember in _memberDefinitions
-          select GenerateOverriddenMemberElement (overriddenMember));
+          select GenerateOverriddenMemberElement(overriddenMember));
     }
 
-    private XElement GenerateOverriddenMemberElement(ReflectedObject overriddenMember)
+    private XElement GenerateOverriddenMemberElement (ReflectedObject overriddenMember)
     {
-      return new XElement (
+      return new XElement(
           "OverriddenMember",
-          new XAttribute ("type", overriddenMember.GetProperty("MemberType")),
-          new XAttribute ("name", overriddenMember.GetProperty("Name"))
-          );
+          new XAttribute("type", overriddenMember.GetProperty("MemberType")),
+          new XAttribute("name", overriddenMember.GetProperty("Name"))
+      );
     }
   }
 }

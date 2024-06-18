@@ -36,9 +36,9 @@ namespace Remotion.Mixins.CrossReferencer.Report
         IIdentifierGenerator<Assembly> assemblyIdentifierGenerator,
         IIdentifierGenerator<Type> involvedTypeIdentifierGenerator)
     {
-      ArgumentUtility.CheckNotNull ("involvedTypes", involvedTypes);
-      ArgumentUtility.CheckNotNull ("assemblyIdentifierGenerator", assemblyIdentifierGenerator);
-      ArgumentUtility.CheckNotNull ("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
+      ArgumentUtility.CheckNotNull("involvedTypes", involvedTypes);
+      ArgumentUtility.CheckNotNull("assemblyIdentifierGenerator", assemblyIdentifierGenerator);
+      ArgumentUtility.CheckNotNull("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
 
       _involvedTypes = involvedTypes;
       _assemblyIdentifierGenerator = assemblyIdentifierGenerator;
@@ -47,7 +47,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public XElement GenerateXml ()
     {
-      var assembliesElement = new XElement ("Assemblies");
+      var assembliesElement = new XElement("Assemblies");
 
       var involvedTypes = _involvedTypes.GroupBy(i => i.Type.Assembly);
       foreach (var involvedTypesByAssembly in involvedTypes)
@@ -62,26 +62,26 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     private XElement GenerateAssemblyElement (Assembly assembly, IEnumerable<InvolvedType> involvedTypesForAssembly)
     {
-      return new XElement (
-        "Assembly",
-        new XAttribute ("id", _assemblyIdentifierGenerator.GetIdentifier (assembly)),
-        new XAttribute ("name", assembly.GetName ().Name),
-        new XAttribute ("version", assembly.GetName ().Version),
-        new XAttribute ("location", GetShortAssemblyLocation (assembly)),
-        new XAttribute ("culture", assembly.GetName ().CultureInfo),
-        new XAttribute ("publicKeyToken", Convert.ToBase64String (assembly.GetName ().GetPublicKeyToken ())),
-        from involvedType in involvedTypesForAssembly
-        select
-          new XElement (
-          "InvolvedType-Reference",
-          new XAttribute ("ref", _involvedTypeIdentifierGenerator.GetIdentifier (involvedType.Type))
-          )
-        );
+      return new XElement(
+          "Assembly",
+          new XAttribute("id", _assemblyIdentifierGenerator.GetIdentifier(assembly)),
+          new XAttribute("name", assembly.GetName().Name),
+          new XAttribute("version", assembly.GetName().Version),
+          new XAttribute("location", GetShortAssemblyLocation(assembly)),
+          new XAttribute("culture", assembly.GetName().CultureInfo),
+          new XAttribute("publicKeyToken", Convert.ToBase64String(assembly.GetName().GetPublicKeyToken())),
+          from involvedType in involvedTypesForAssembly
+          select
+              new XElement(
+                  "InvolvedType-Reference",
+                  new XAttribute("ref", _involvedTypeIdentifierGenerator.GetIdentifier(involvedType.Type))
+              )
+      );
     }
 
     public string GetShortAssemblyLocation (Assembly assembly)
     {
-      return assembly.GlobalAssemblyCache ? assembly.Location : "./" + Path.GetFileName (assembly.Location);
+      return assembly.GlobalAssemblyCache ? assembly.Location : "./" + Path.GetFileName(assembly.Location);
     }
   }
 }

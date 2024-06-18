@@ -33,106 +33,106 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [SetUp]
     public void SetUp ()
     {
-      _outputFormatter = new OutputFormatter ();
+      _outputFormatter = new OutputFormatter();
       _remotionReflector = new DefaultReflector();
     }
 
     [Test]
     public void GenerateXml_ZeroInterfaces ()
     {
-      var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator (_remotionReflector, _outputFormatter);
-      var output = reportGenerator.GenerateXml ();
+      var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator(_remotionReflector, _outputFormatter);
+      var output = reportGenerator.GenerateXml();
 
-      var expectedOutput = new XElement ("Interfaces");
-      Assert.That (output.ToString (), Is.EqualTo (expectedOutput.ToString ()));
+      var expectedOutput = new XElement("Interfaces");
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
     [Test]
     public void GenerateXml_WithInterfaces ()
     {
       // TargetClass1 implements IDisposable
-      var involvedType = new InvolvedType (typeof (TargetClass1));
+      var involvedType = new InvolvedType(typeof(TargetClass1));
 
-      var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator (_remotionReflector, _outputFormatter, involvedType);
-      var output = reportGenerator.GenerateXml ();
+      var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator(_remotionReflector, _outputFormatter, involvedType);
+      var output = reportGenerator.GenerateXml();
 
-      var memberReportGenerator = ReportBuilder.CreateMemberReportGenerator (typeof (IDisposable), _outputFormatter);
-      var expectedOutput = new XElement (
+      var memberReportGenerator = ReportBuilder.CreateMemberReportGenerator(typeof(IDisposable), _outputFormatter);
+      var expectedOutput = new XElement(
           "Interfaces",
-          new XElement (
+          new XElement(
               "Interface",
-              new XAttribute ("id", "0"),
-              new XAttribute ("assembly-ref", "0"),
-              new XAttribute ("namespace", "System"),
-              new XAttribute ("name", "IDisposable"),
-              new XAttribute ("is-composed-interface", false),
-              memberReportGenerator.GenerateXml (),
-              new XElement (
+              new XAttribute("id", "0"),
+              new XAttribute("assembly-ref", "0"),
+              new XAttribute("namespace", "System"),
+              new XAttribute("name", "IDisposable"),
+              new XAttribute("is-composed-interface", false),
+              memberReportGenerator.GenerateXml(),
+              new XElement(
                   "ImplementedBy",
-                  new XElement (
+                  new XElement(
                       "InvolvedType-Reference",
-                      new XAttribute ("ref", "0"))
-                  )
-              ));
+                      new XAttribute("ref", "0"))
+              )
+          ));
 
-      Assert.That (output.ToString (), Is.EqualTo (expectedOutput.ToString ()));
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
     [Test]
     public void GenerateXml_WithComposedInterface ()
     {
-      var mixinConfiguration = MixinConfiguration.BuildNew ()
-          .ForClass<ComposedInterfacesTestClass.MyMixinTarget> ()
-          .AddCompleteInterface<ComposedInterfacesTestClass.ICMyMixinTargetMyMixin> ()
-          .AddMixin<ComposedInterfacesTestClass.MyMixin> ()
-          .BuildConfiguration ();
+      var mixinConfiguration = MixinConfiguration.BuildNew()
+          .ForClass<ComposedInterfacesTestClass.MyMixinTarget>()
+          .AddCompleteInterface<ComposedInterfacesTestClass.ICMyMixinTargetMyMixin>()
+          .AddMixin<ComposedInterfacesTestClass.MyMixin>()
+          .BuildConfiguration();
 
-      var involvedType = new InvolvedType (typeof (ComposedInterfacesTestClass.MyMixinTarget));
-      var classContext = mixinConfiguration.ClassContexts.GetWithInheritance (typeof (ComposedInterfacesTestClass.MyMixinTarget));
-      involvedType.ClassContext = new ReflectedObject (classContext);
+      var involvedType = new InvolvedType(typeof(ComposedInterfacesTestClass.MyMixinTarget));
+      var classContext = mixinConfiguration.ClassContexts.GetWithInheritance(typeof(ComposedInterfacesTestClass.MyMixinTarget));
+      involvedType.ClassContext = new ReflectedObject(classContext);
 
-      var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator (_remotionReflector, _outputFormatter, involvedType);
-      var output = reportGenerator.GenerateXml ();
+      var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator(_remotionReflector, _outputFormatter, involvedType);
+      var output = reportGenerator.GenerateXml();
 
-      var memberReportGenerator = ReportBuilder.CreateMemberReportGenerator (typeof (ComposedInterfacesTestClass.ICMyMixinTargetMyMixin), _outputFormatter);
-      var expectedOutput = new XElement (
+      var memberReportGenerator = ReportBuilder.CreateMemberReportGenerator(typeof(ComposedInterfacesTestClass.ICMyMixinTargetMyMixin), _outputFormatter);
+      var expectedOutput = new XElement(
           "Interfaces",
-          new XElement (
+          new XElement(
               "Interface",
-              new XAttribute ("id", "0"),
-              new XAttribute ("assembly-ref", "0"),
-              new XAttribute ("namespace", "Remotion.Mixins.CrossReferencer.UnitTests.TestDomain"),
-              new XAttribute ("name", "ComposedInterfacesTestClass+ICMyMixinTargetMyMixin"),
-              new XAttribute ("is-composed-interface", true),
-              memberReportGenerator.GenerateXml (),
-              new XElement (
+              new XAttribute("id", "0"),
+              new XAttribute("assembly-ref", "0"),
+              new XAttribute("namespace", "Remotion.Mixins.CrossReferencer.UnitTests.TestDomain"),
+              new XAttribute("name", "ComposedInterfacesTestClass+ICMyMixinTargetMyMixin"),
+              new XAttribute("is-composed-interface", true),
+              memberReportGenerator.GenerateXml(),
+              new XElement(
                   "ImplementedBy",
-                  new XElement (
+                  new XElement(
                       "InvolvedType-Reference",
-                      new XAttribute ("ref", "0"))
-                  )
-              ));
+                      new XAttribute("ref", "0"))
+              )
+          ));
 
-      Assert.That (output.ToString (), Is.EqualTo (expectedOutput.ToString ()));
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
     [Test]
     public void GetComposedInterfaces ()
     {
-      var mixinConfiguration = MixinConfiguration.BuildNew ()
-          .ForClass<ComposedInterfacesTestClass.MyMixinTarget> ()
-          .AddCompleteInterface<ComposedInterfacesTestClass.ICMyMixinTargetMyMixin> ()
-          .AddMixin<ComposedInterfacesTestClass.MyMixin> ()
-          .BuildConfiguration ();
+      var mixinConfiguration = MixinConfiguration.BuildNew()
+          .ForClass<ComposedInterfacesTestClass.MyMixinTarget>()
+          .AddCompleteInterface<ComposedInterfacesTestClass.ICMyMixinTargetMyMixin>()
+          .AddMixin<ComposedInterfacesTestClass.MyMixin>()
+          .BuildConfiguration();
 
-      var involvedType = new InvolvedType (typeof (ComposedInterfacesTestClass.MyMixinTarget));
-      var classContext = mixinConfiguration.ClassContexts.GetWithInheritance (typeof (ComposedInterfacesTestClass.MyMixinTarget));
-      involvedType.ClassContext = new ReflectedObject (classContext);
+      var involvedType = new InvolvedType(typeof(ComposedInterfacesTestClass.MyMixinTarget));
+      var classContext = mixinConfiguration.ClassContexts.GetWithInheritance(typeof(ComposedInterfacesTestClass.MyMixinTarget));
+      involvedType.ClassContext = new ReflectedObject(classContext);
 
-      var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator (_remotionReflector, _outputFormatter, involvedType);
-      var output = reportGenerator.GetComposedInterfaces ();
+      var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator(_remotionReflector, _outputFormatter, involvedType);
+      var output = reportGenerator.GetComposedInterfaces();
 
-      Assert.That (output, Is.EquivalentTo (classContext.CompleteInterfaces));
+      Assert.That(output, Is.EquivalentTo(classContext.CompleteInterfaces));
     }
   }
 }

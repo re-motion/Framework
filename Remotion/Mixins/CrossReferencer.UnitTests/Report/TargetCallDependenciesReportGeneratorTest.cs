@@ -37,35 +37,40 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [SetUp]
     public void SetUp ()
     {
-      _remotionReflector = Helpers.RemotionReflectorFactory.GetRemotionReflection ();
-      _outputFormatter = new OutputFormatter ();
+      _remotionReflector = Helpers.RemotionReflectorFactory.GetRemotionReflection();
+      _outputFormatter = new OutputFormatter();
     }
 
     [Test]
     public void GenerateXml_InterfaceImplementedOnTargetClass ()
     {
-      var targetType = new InvolvedType (typeof (TargetClass1));
+      var targetType = new InvolvedType(typeof(TargetClass1));
 
-      var mixinConfiguration = MixinConfiguration.BuildNew ().ForClass<TargetClass1> ().AddMixin<Mixin4> ().BuildConfiguration ();
-      targetType.ClassContext = new ReflectedObject (mixinConfiguration.ClassContexts.First ());
-      targetType.TargetClassDefinition = new ReflectedObject (TargetClassDefinitionUtility.GetConfiguration (targetType.Type, mixinConfiguration));
-      var mixinContext = targetType.ClassContext.GetProperty ("Mixins").First ();
-      var mixinDefinition = targetType.TargetClassDefinition.CallMethod ("GetMixinByConfiguredType", mixinContext.GetProperty ("MixinType").To<Type> ());
+      var mixinConfiguration = MixinConfiguration.BuildNew().ForClass<TargetClass1>().AddMixin<Mixin4>().BuildConfiguration();
+      targetType.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      targetType.TargetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration));
+      var mixinContext = targetType.ClassContext.GetProperty("Mixins").First();
+      var mixinDefinition = targetType.TargetClassDefinition.CallMethod("GetMixinByConfiguredType", mixinContext.GetProperty("MixinType").To<Type>());
 
-      var assemblyIdentifierGenerator = new IdentifierGenerator<Assembly> ();
+      var assemblyIdentifierGenerator = new IdentifierGenerator<Assembly>();
 
-      var output = new TargetCallDependenciesReportGenerator (mixinDefinition, assemblyIdentifierGenerator,
-                                                             _remotionReflector, _outputFormatter).GenerateXml ();
+      var output = new TargetCallDependenciesReportGenerator(
+          mixinDefinition,
+          assemblyIdentifierGenerator,
+          _remotionReflector,
+          _outputFormatter).GenerateXml();
 
-      var expectedOutput = new XElement ("TargetCallDependencies",
-                                        new XElement ("Dependency",
-                                                     new XAttribute ("assembly-ref", "0"),
-                                                     new XAttribute ("namespace", "System"),
-                                                     new XAttribute ("name", "IDisposable"),
-                                                     new XAttribute ("is-interface", true),
-                                                     new XAttribute ("is-implemented-by-target", true),
-                                                     new XAttribute ("is-added-by-mixin", false),
-                                                     new XAttribute ("is-implemented-dynamically", false)));
+      var expectedOutput = new XElement(
+          "TargetCallDependencies",
+          new XElement(
+              "Dependency",
+              new XAttribute("assembly-ref", "0"),
+              new XAttribute("namespace", "System"),
+              new XAttribute("name", "IDisposable"),
+              new XAttribute("is-interface", true),
+              new XAttribute("is-implemented-by-target", true),
+              new XAttribute("is-added-by-mixin", false),
+              new XAttribute("is-implemented-dynamically", false)));
 
       XElementComparisonHelper.Compare(output, expectedOutput);
     }
@@ -73,30 +78,35 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [Test]
     public void GenerateXml_InterfaceDynamicallyImplemented ()
     {
-      var targetType = new InvolvedType (typeof (TargetClass3));
+      var targetType = new InvolvedType(typeof(TargetClass3));
 
-      var mixinConfiguration = MixinConfiguration.BuildNew ().ForClass<TargetClass3> ().AddMixin<Mixin4> ().BuildConfiguration ();
-      targetType.ClassContext = new ReflectedObject (mixinConfiguration.ClassContexts.First ());
-      targetType.TargetClassDefinition = new ReflectedObject (TargetClassDefinitionUtility.GetConfiguration (targetType.Type, mixinConfiguration));
-      var mixinContext = targetType.ClassContext.GetProperty ("Mixins").First ();
-      var mixinDefinition = targetType.TargetClassDefinition.CallMethod ("GetMixinByConfiguredType", mixinContext.GetProperty ("MixinType").To<Type> ());
+      var mixinConfiguration = MixinConfiguration.BuildNew().ForClass<TargetClass3>().AddMixin<Mixin4>().BuildConfiguration();
+      targetType.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      targetType.TargetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration));
+      var mixinContext = targetType.ClassContext.GetProperty("Mixins").First();
+      var mixinDefinition = targetType.TargetClassDefinition.CallMethod("GetMixinByConfiguredType", mixinContext.GetProperty("MixinType").To<Type>());
 
-      var assemblyIdentifierGenerator = new IdentifierGenerator<Assembly> ();
+      var assemblyIdentifierGenerator = new IdentifierGenerator<Assembly>();
 
-      var output = new TargetCallDependenciesReportGenerator (mixinDefinition, assemblyIdentifierGenerator,
-                                                             _remotionReflector, _outputFormatter).GenerateXml ();
+      var output = new TargetCallDependenciesReportGenerator(
+          mixinDefinition,
+          assemblyIdentifierGenerator,
+          _remotionReflector,
+          _outputFormatter).GenerateXml();
 
-      var expectedOutput = new XElement ("TargetCallDependencies",
-                                        new XElement ("Dependency",
-                                                     new XAttribute ("assembly-ref", "0"),
-                                                     new XAttribute ("namespace", "System"),
-                                                     new XAttribute ("name", "IDisposable"),
-                                                     new XAttribute ("is-interface", true),
-                                                     new XAttribute ("is-implemented-by-target", false),
-                                                     new XAttribute ("is-added-by-mixin", false),
-                                                     new XAttribute ("is-implemented-dynamically", true)));
+      var expectedOutput = new XElement(
+          "TargetCallDependencies",
+          new XElement(
+              "Dependency",
+              new XAttribute("assembly-ref", "0"),
+              new XAttribute("namespace", "System"),
+              new XAttribute("name", "IDisposable"),
+              new XAttribute("is-interface", true),
+              new XAttribute("is-implemented-by-target", false),
+              new XAttribute("is-added-by-mixin", false),
+              new XAttribute("is-implemented-dynamically", true)));
 
-      XElementComparisonHelper.Compare (output, expectedOutput);
+      XElementComparisonHelper.Compare(output, expectedOutput);
     }
   }
 }

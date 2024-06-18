@@ -30,76 +30,76 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
     [Test]
     public void MemberInfo_Equals_False ()
     {
-      var targetType = typeof (BaseMemberOverrideTestClass.Target);
+      var targetType = typeof(BaseMemberOverrideTestClass.Target);
 
       var mixinConfiguration =
-          MixinConfiguration.BuildNew ()
-              .ForClass<BaseMemberOverrideTestClass.Target> ().AddMixin<BaseMemberOverrideTestClass.Mixin1> ()
-              .BuildConfiguration ();
-      var targetClassDefinition = new ReflectedObject (TargetClassDefinitionUtility.GetConfiguration (targetType, mixinConfiguration));
-      var involvedType = new InvolvedType (targetType)
+          MixinConfiguration.BuildNew()
+              .ForClass<BaseMemberOverrideTestClass.Target>().AddMixin<BaseMemberOverrideTestClass.Mixin1>()
+              .BuildConfiguration();
+      var targetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType, mixinConfiguration));
+      var involvedType = new InvolvedType(targetType)
                          {
-                           TargetClassDefinition = targetClassDefinition,
-                           ClassContext = new ReflectedObject (mixinConfiguration.ClassContexts.First ())
+                             TargetClassDefinition = targetClassDefinition,
+                             ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First())
                          };
 
-      var memberInfo1 = targetType.GetMember ("OverriddenMethod")[0];
+      var memberInfo1 = targetType.GetMember("OverriddenMethod")[0];
 
       var output =
-        involvedType.TargetClassDefinition.CallMethod ("GetAllMembers").SingleOrDefault (
-          mdb => mdb.GetProperty ("MemberInfo").To<MemberInfo> () == memberInfo1);
+          involvedType.TargetClassDefinition.CallMethod("GetAllMembers").SingleOrDefault(
+              mdb => mdb.GetProperty("MemberInfo").To<MemberInfo>() == memberInfo1);
 
-      Assert.That (output, Is.Null);
+      Assert.That(output, Is.Null);
     }
 
     [Test]
     public void MemberEquals_True ()
     {
-      var targetType = typeof (BaseMemberOverrideTestClass.Target);
+      var targetType = typeof(BaseMemberOverrideTestClass.Target);
 
       var mixinConfiguration =
-          MixinConfiguration.BuildNew ()
-              .ForClass<BaseMemberOverrideTestClass.Target> ().AddMixin<BaseMemberOverrideTestClass.Mixin1> ()
-              .BuildConfiguration ();
-      var targetClassDefinition = new ReflectedObject (TargetClassDefinitionUtility.GetConfiguration (targetType, mixinConfiguration));
-      var involvedType = new InvolvedType (targetType)
+          MixinConfiguration.BuildNew()
+              .ForClass<BaseMemberOverrideTestClass.Target>().AddMixin<BaseMemberOverrideTestClass.Mixin1>()
+              .BuildConfiguration();
+      var targetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType, mixinConfiguration));
+      var involvedType = new InvolvedType(targetType)
                          {
-                           TargetClassDefinition = targetClassDefinition,
-                           ClassContext = new ReflectedObject (mixinConfiguration.ClassContexts.First ())
+                             TargetClassDefinition = targetClassDefinition,
+                             ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First())
                          };
 
-      var memberInfo1 = targetType.GetMember ("OverriddenMethod")[0];
+      var memberInfo1 = targetType.GetMember("OverriddenMethod")[0];
 
       var output =
-        involvedType.TargetClassDefinition.CallMethod ("GetAllMembers").SingleOrDefault (
-          mdb => MemberInfoEqualityUtility.MemberEquals (mdb.GetProperty ("MemberInfo").To<MemberInfo> (), memberInfo1));
+          involvedType.TargetClassDefinition.CallMethod("GetAllMembers").SingleOrDefault(
+              mdb => MemberInfoEqualityUtility.MemberEquals(mdb.GetProperty("MemberInfo").To<MemberInfo>(), memberInfo1));
 
-      Assert.That (output.To<object> (), Is.Not.Null);
+      Assert.That(output.To<object>(), Is.Not.Null);
     }
 
     [Test]
     public void MemberEquals_False ()
     {
-      var targetType = typeof (BaseMemberOverrideTestClass.Target);
+      var targetType = typeof(BaseMemberOverrideTestClass.Target);
 
       var mixinConfiguration =
-          MixinConfiguration.BuildNew ()
-              .ForClass<BaseMemberOverrideTestClass.Target> ().AddMixin<BaseMemberOverrideTestClass.Mixin1> ()
-              .BuildConfiguration ();
-      var targetClassDefinition = new ReflectedObject (TargetClassDefinitionUtility.GetConfiguration (targetType, mixinConfiguration));
-      var involvedType = new InvolvedType (targetType)
-      {
-        TargetClassDefinition = targetClassDefinition,
-        ClassContext = new ReflectedObject (mixinConfiguration.ClassContexts.First ())
-      };
+          MixinConfiguration.BuildNew()
+              .ForClass<BaseMemberOverrideTestClass.Target>().AddMixin<BaseMemberOverrideTestClass.Mixin1>()
+              .BuildConfiguration();
+      var targetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType, mixinConfiguration));
+      var involvedType = new InvolvedType(targetType)
+                         {
+                             TargetClassDefinition = targetClassDefinition,
+                             ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First())
+                         };
 
-      var memberInfo1 = typeof (HiddenMemberTestClass.Target).GetMember ("HiddenMethod")[0];
+      var memberInfo1 = typeof(HiddenMemberTestClass.Target).GetMember("HiddenMethod")[0];
 
       var output =
-        involvedType.TargetClassDefinition.CallMethod ("GetAllMembers").SingleOrDefault (
-          mdb => MemberInfoEqualityUtility.MemberEquals (mdb.GetProperty ("MemberInfo").To<MemberInfo> (), memberInfo1));
+          involvedType.TargetClassDefinition.CallMethod("GetAllMembers").SingleOrDefault(
+              mdb => MemberInfoEqualityUtility.MemberEquals(mdb.GetProperty("MemberInfo").To<MemberInfo>(), memberInfo1));
 
-      Assert.That (output, Is.Null);
+      Assert.That(output, Is.Null);
     }
   }
 }

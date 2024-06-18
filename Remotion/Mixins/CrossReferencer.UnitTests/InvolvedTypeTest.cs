@@ -30,41 +30,41 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
     [Test]
     public void Equals_True ()
     {
-      var type1 = new InvolvedType (typeof (TargetClass1));
-      type1.ClassContext = new ReflectedObject (new ClassContext (typeof (TargetClass1)));
-      var type2 = new InvolvedType (typeof (TargetClass1));
-      type2.ClassContext = new ReflectedObject (new ClassContext (typeof (TargetClass1)));
+      var type1 = new InvolvedType(typeof(TargetClass1));
+      type1.ClassContext = new ReflectedObject(new ClassContext(typeof(TargetClass1)));
+      var type2 = new InvolvedType(typeof(TargetClass1));
+      type2.ClassContext = new ReflectedObject(new ClassContext(typeof(TargetClass1)));
 
-      Assert.That (type1, Is.EqualTo (type2));
+      Assert.That(type1, Is.EqualTo(type2));
     }
 
     [Test]
     public void Equals_False_TypeDoesntMatch ()
     {
-      var type1 = new InvolvedType (typeof (TargetClass1));
-      var type2 = new InvolvedType (typeof (TargetClass2));
+      var type1 = new InvolvedType(typeof(TargetClass1));
+      var type2 = new InvolvedType(typeof(TargetClass2));
 
-      Assert.That (type1, Is.Not.EqualTo (type2));
+      Assert.That(type1, Is.Not.EqualTo(type2));
     }
 
     [Test]
     public void Equals_False_IsTargetDoesntMatch ()
     {
-      var type1 = new InvolvedType (typeof (TargetClass1));
-      type1.ClassContext = new ReflectedObject (new ClassContext (typeof (TargetClass1)));
-      var type2 = new InvolvedType (typeof (TargetClass1));
+      var type1 = new InvolvedType(typeof(TargetClass1));
+      type1.ClassContext = new ReflectedObject(new ClassContext(typeof(TargetClass1)));
+      var type2 = new InvolvedType(typeof(TargetClass1));
 
-      Assert.That (type1, Is.Not.EqualTo (type2));
+      Assert.That(type1, Is.Not.EqualTo(type2));
     }
 
     [Test]
     public void Equals_False_IsMixinDoesntMatch ()
     {
-      var type1 = new InvolvedType (typeof (TargetClass1));
-      var type2 = new InvolvedType (typeof (Mixin1));
-      type2.TargetTypes.Add (new InvolvedType(typeof (TargetClass1)), null);
+      var type1 = new InvolvedType(typeof(TargetClass1));
+      var type2 = new InvolvedType(typeof(Mixin1));
+      type2.TargetTypes.Add(new InvolvedType(typeof(TargetClass1)), null);
 
-      Assert.That (type1, Is.Not.EqualTo (type2));
+      Assert.That(type1, Is.Not.EqualTo(type2));
     }
 
     [Test]
@@ -75,17 +75,17 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
           .ForClass<TargetClass2>().AddMixin<Mixin2>()
           .BuildConfiguration();
 
-      var type1 = new InvolvedType (typeof (TargetClass1));
-      var type2 = new InvolvedType (typeof (TargetClass1));
+      var type1 = new InvolvedType(typeof(TargetClass1));
+      var type2 = new InvolvedType(typeof(TargetClass1));
 
-      type1.ClassContext = new ReflectedObject (mixinConfiguration.ClassContexts.First());
-      type2.ClassContext = new ReflectedObject (mixinConfiguration.ClassContexts.Last());
+      type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      type2.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.Last());
 
-      Assert.That (type1, Is.Not.EqualTo (type2));
+      Assert.That(type1, Is.Not.EqualTo(type2));
     }
 
     [Test]
-    public void Equals_False_TargetClassDefintionDoesntMatch()
+    public void Equals_False_TargetClassDefintionDoesntMatch ()
     {
       var mixinConfiguration = MixinConfiguration.BuildNew()
           .ForClass<TargetClass1>().AddMixin<Mixin1>()
@@ -104,10 +104,10 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
     [Test]
     public void GetHashCode_EqualObjects ()
     {
-      var type1 = new InvolvedType (typeof (TargetClass1));
-      var type2 = new InvolvedType (typeof (TargetClass1));
+      var type1 = new InvolvedType(typeof(TargetClass1));
+      var type2 = new InvolvedType(typeof(TargetClass1));
 
-      Assert.That (type1.GetHashCode(), Is.EqualTo (type2.GetHashCode()));
+      Assert.That(type1.GetHashCode(), Is.EqualTo(type2.GetHashCode()));
     }
 
     [Test]
@@ -117,23 +117,23 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
           .ForClass<TargetClass1>().AddMixin<Mixin1>()
           .BuildConfiguration();
 
-      var type1 = new InvolvedType (typeof (TargetClass1));
-      type1.ClassContext = new ReflectedObject (mixinConfiguration.ClassContexts.First());
+      var type1 = new InvolvedType(typeof(TargetClass1));
+      type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
 
-      Assert.That (type1.IsTarget, Is.True);
-      Assert.That (type1.ClassContext, Is.Not.Null);
+      Assert.That(type1.IsTarget, Is.True);
+      Assert.That(type1.ClassContext, Is.Not.Null);
     }
 
     [Test]
     public void ClassContextProperty_ForNonTargetClass ()
     {
-      var type1 = new InvolvedType (typeof (object));
+      var type1 = new InvolvedType(typeof(object));
 
-      Assert.That (type1.IsTarget, Is.False);
+      Assert.That(type1.IsTarget, Is.False);
     }
 
     [Test]
-    public void TargetClassDefinitionProperty_ForNonGenericTargetClass()
+    public void TargetClassDefinitionProperty_ForNonGenericTargetClass ()
     {
       var type = typeof(TargetClass1);
       var mixinConfiguration = MixinConfiguration.BuildNew()
@@ -142,7 +142,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
 
       var type1 = new InvolvedType(type);
       type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
-      type1.TargetClassDefinition = new ReflectedObject (TargetClassDefinitionUtility.GetConfiguration (type, mixinConfiguration));
+      type1.TargetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(type, mixinConfiguration));
 
       Assert.That(type1.IsTarget, Is.True);
       Assert.That(type1.ClassContext, Is.Not.Null);
@@ -151,67 +151,67 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
     [Test]
     public void TargetClassDefinitionProperty_ForNonTargetClass ()
     {
-      var type1 = new InvolvedType (typeof (object));
+      var type1 = new InvolvedType(typeof(object));
 
-      Assert.That (type1.IsTarget, Is.False);
+      Assert.That(type1.IsTarget, Is.False);
     }
 
     [Test]
     public void TargetClassDefinitionProperty_ForGenericTargetClass ()
     {
       var mixinConfiguration = MixinConfiguration.BuildNew()
-          .ForClass (typeof (GenericTarget<,>)).AddMixin<Mixin1>()
+          .ForClass(typeof(GenericTarget<,>)).AddMixin<Mixin1>()
           .BuildConfiguration();
 
-      var type1 = new InvolvedType (typeof (GenericTarget<,>));
-      type1.ClassContext = new ReflectedObject (mixinConfiguration.ClassContexts.First());
+      var type1 = new InvolvedType(typeof(GenericTarget<,>));
+      type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
 
-      Assert.That (type1.IsTarget, Is.True);
+      Assert.That(type1.IsTarget, Is.True);
     }
 
     [Test]
     public void MixinContextsProperty_ForNonMixin ()
     {
-      var type1 = new InvolvedType (typeof (object));
+      var type1 = new InvolvedType(typeof(object));
 
-      Assert.That (type1.IsMixin, Is.False);
-      Assert.That (type1.TargetTypes.Count, Is.EqualTo (0));
+      Assert.That(type1.IsMixin, Is.False);
+      Assert.That(type1.TargetTypes.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void MixinContextsProperty_ForMixin ()
     {
-      var type1 = new InvolvedType (typeof (object));
-      type1.TargetTypes.Add (new InvolvedType(typeof (TargetClass1)), null);
+      var type1 = new InvolvedType(typeof(object));
+      type1.TargetTypes.Add(new InvolvedType(typeof(TargetClass1)), null);
 
-      Assert.That (type1.IsMixin, Is.True);
-      Assert.That (type1.TargetTypes.Count, Is.GreaterThan (0));
+      Assert.That(type1.IsMixin, Is.True);
+      Assert.That(type1.TargetTypes.Count, Is.GreaterThan(0));
     }
 
     [Test]
     public void GetMembers_ForClassWithNonPublicProperty ()
     {
-      var type = new InvolvedType (typeof (ClassWithNonPublicProperty));
+      var type = new InvolvedType(typeof(ClassWithNonPublicProperty));
 
-      var member = type.Members.FirstOrDefault (m => ((MemberInfo) m.MemberInfo).Name == "PropertyName");
-      Assert.That (member, Is.Not.Null);
+      var member = type.Members.FirstOrDefault(m => ((MemberInfo)m.MemberInfo).Name == "PropertyName");
+      Assert.That(member, Is.Not.Null);
       var subMemberInfos = member.SubMemberInfos.ToArray();
-      Assert.That (subMemberInfos.Length, Is.EqualTo (2));
-      Assert.That ((MemberInfo) (subMemberInfos[0]), Is.Not.Null);
-      Assert.That ((MemberInfo) (subMemberInfos[1]), Is.Not.Null);
+      Assert.That(subMemberInfos.Length, Is.EqualTo(2));
+      Assert.That((MemberInfo)(subMemberInfos[0]), Is.Not.Null);
+      Assert.That((MemberInfo)(subMemberInfos[1]), Is.Not.Null);
     }
 
     [Test]
     public void GetMembers_ForClassWithNonPublicEvent ()
     {
-      var type = new InvolvedType (typeof (ClassWithNonPublicEvent));
+      var type = new InvolvedType(typeof(ClassWithNonPublicEvent));
 
-      var member = type.Members.FirstOrDefault (m => ((MemberInfo) m.MemberInfo).Name == "EventName");
-      Assert.That (member, Is.Not.Null);
+      var member = type.Members.FirstOrDefault(m => ((MemberInfo)m.MemberInfo).Name == "EventName");
+      Assert.That(member, Is.Not.Null);
       var subMemberInfos = member.SubMemberInfos.ToArray();
-      Assert.That (subMemberInfos.Length, Is.EqualTo (2));
-      Assert.That ((MemberInfo) (subMemberInfos[0]), Is.Not.Null);
-      Assert.That ((MemberInfo) (subMemberInfos[1]), Is.Not.Null);
+      Assert.That(subMemberInfos.Length, Is.EqualTo(2));
+      Assert.That((MemberInfo)(subMemberInfos[0]), Is.Not.Null);
+      Assert.That((MemberInfo)(subMemberInfos[1]), Is.Not.Null);
     }
   }
 }

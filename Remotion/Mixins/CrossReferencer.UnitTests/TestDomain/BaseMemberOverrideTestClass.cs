@@ -34,7 +34,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
     public class Mixin1 : Mixin<Target>
     {
       [OverrideTarget]
-      public void OverriddenMethod()
+      public void OverriddenMethod ()
       {
       }
     }

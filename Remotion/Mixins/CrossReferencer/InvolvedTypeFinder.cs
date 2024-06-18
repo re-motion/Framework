@@ -38,13 +38,13 @@ namespace Remotion.Mixins.CrossReferencer
         ErrorAggregator<Exception> configurationErrors,
         ErrorAggregator<Exception> validationErrors,
         IRemotionReflector remotionReflector
-        )
+    )
     {
-      ArgumentUtility.CheckNotNull ("mixinConfiguration", mixinConfiguration);
-      ArgumentUtility.CheckNotNull ("assemblies", assemblies);
-      ArgumentUtility.CheckNotNull ("configurationErrors", configurationErrors);
-      ArgumentUtility.CheckNotNull ("validationErrors", validationErrors);
-      ArgumentUtility.CheckNotNull ("remotionReflector", remotionReflector);
+      ArgumentUtility.CheckNotNull("mixinConfiguration", mixinConfiguration);
+      ArgumentUtility.CheckNotNull("assemblies", assemblies);
+      ArgumentUtility.CheckNotNull("configurationErrors", configurationErrors);
+      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
+      ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
 
       _mixinConfiguration = mixinConfiguration;
       _assemblies = assemblies;
@@ -55,66 +55,70 @@ namespace Remotion.Mixins.CrossReferencer
 
     public InvolvedType[] FindInvolvedTypes ()
     {
-      var involvedTypes = new InvolvedTypeStore ();
-      var classContexts = _mixinConfiguration.GetProperty ("ClassContexts");
+      var involvedTypes = new InvolvedTypeStore();
+      var classContexts = _mixinConfiguration.GetProperty("ClassContexts");
 
       foreach (var assembly in _assemblies)
       {
         try
         {
-          foreach (var type in assembly.GetTypes ())
+          foreach (var type in assembly.GetTypes())
           {
-            var classContext = classContexts.CallMethod ("GetWithInheritance", type);
+            var classContext = classContexts.CallMethod("GetWithInheritance", type);
             if (classContext != null)
             {
-              var involvedType = involvedTypes.GetOrCreateValue (type);
-              var targetClassDefinition = GetTargetClassDefinition (type, classContext);
+              var involvedType = involvedTypes.GetOrCreateValue(type);
+              var targetClassDefinition = GetTargetClassDefinition(type, classContext);
               involvedType.ClassContext = classContext;
               involvedType.TargetClassDefinition = targetClassDefinition;
 
-              foreach (var mixinContext in classContext.GetProperty ("Mixins"))
+              foreach (var mixinContext in classContext.GetProperty("Mixins"))
               {
-                var mixinType = mixinContext.GetProperty ("MixinType").To<Type> ();
-                var mixin = involvedTypes.GetOrCreateValue (mixinType);
-                mixin.TargetTypes.Add (involvedType, GetMixinDefiniton (mixinType, targetClassDefinition));
+                var mixinType = mixinContext.GetProperty("MixinType").To<Type>();
+                var mixin = involvedTypes.GetOrCreateValue(mixinType);
+                mixin.TargetTypes.Add(involvedType, GetMixinDefiniton(mixinType, targetClassDefinition));
               }
             }
 
             // also add classes which inherit from Mixin<> or Mixin<,>, but are actually not used as Mixins (not in ClassContexts)
-            if (_remotionReflector.IsInheritedFromMixin (type) && !_remotionReflector.IsInfrastructureType (type))
-              involvedTypes.GetOrCreateValue (type);
+            if (_remotionReflector.IsInheritedFromMixin(type) && !_remotionReflector.IsInfrastructureType(type))
+              involvedTypes.GetOrCreateValue(type);
           }
         }
         catch (ReflectionTypeLoadException ex)
         {
-          var loaderExceptionLog = new StringBuilder ();
+          var loaderExceptionLog = new StringBuilder();
           foreach (var loaderException in ex.LoaderExceptions)
-            loaderExceptionLog.AppendFormat ("   {1}{0}", Environment.NewLine, loaderException.Message);
+            loaderExceptionLog.AppendFormat("   {1}{0}", Environment.NewLine, loaderException.Message);
 
-          XRef.Log.SendWarning ("Unable to analyze '{1}' in '{2}' because some referenced assemblies could not be loaded: {0}{3}",
-            Environment.NewLine, assembly.FullName, assembly.Location, loaderExceptionLog);
+          // XRef.Log.SendWarning(
+          //     "Unable to analyze '{1}' in '{2}' because some referenced assemblies could not be loaded: {0}{3}",
+          //     Environment.NewLine,
+          //     assembly.FullName,
+          //     assembly.Location,
+          //     loaderExceptionLog);
         }
       }
 
-      var additionalTypesCollector = new AdditionalTypesCollector ();
+      var additionalTypesCollector = new AdditionalTypesCollector();
 
       foreach (IVisitableInvolved involvedType in involvedTypes)
-        involvedType.Accept (additionalTypesCollector);
+        involvedType.Accept(additionalTypesCollector);
 
       foreach (var additionalType in additionalTypesCollector.AdditionalTypes)
-        involvedTypes.GetOrCreateValue (additionalType);
+        involvedTypes.GetOrCreateValue(additionalType);
 
       AddGenericDefinitionsRecursively(involvedTypes);
 
-      return involvedTypes.ToArray ();
+      return involvedTypes.ToArray();
     }
 
-    private void AddGenericDefinitionsRecursively(InvolvedTypeStore involvedTypes)
+    private void AddGenericDefinitionsRecursively (InvolvedTypeStore involvedTypes)
     {
       foreach (var type in involvedTypes.Where(t => t.Type.IsGenericType))
       {
         var genericType = type.Type;
-        while (genericType.IsGenericType && genericType.GetGenericTypeDefinition() != genericType) 
+        while (genericType.IsGenericType && genericType.GetGenericTypeDefinition() != genericType)
         {
           var genericTypeDefinition = genericType.GetGenericTypeDefinition();
           genericType = involvedTypes.GetOrCreateValue(genericTypeDefinition).Type;
@@ -124,7 +128,7 @@ namespace Remotion.Mixins.CrossReferencer
 
     private ReflectedObject GetMixinDefiniton (Type mixinType, ReflectedObject targetClassDefinition)
     {
-      return targetClassDefinition == null ? null : targetClassDefinition.CallMethod ("GetMixinByConfiguredType", mixinType);
+      return targetClassDefinition == null ? null : targetClassDefinition.CallMethod("GetMixinByConfiguredType", mixinType);
     }
 
     public ReflectedObject GetTargetClassDefinition (Type type, ReflectedObject classContext)
@@ -135,17 +139,18 @@ namespace Remotion.Mixins.CrossReferencer
       try
       {
         // may throw ConfigurationException or ValidationException
-        return _remotionReflector.GetTargetClassDefinition (type, _mixinConfiguration, classContext);
+        return _remotionReflector.GetTargetClassDefinition(type, _mixinConfiguration, classContext);
       }
       catch (Exception configurationOrValidationException)
       {
-        if (_remotionReflector.IsConfigurationException (configurationOrValidationException))
-          _configurationErrors.AddException (configurationOrValidationException);
-        else if (_remotionReflector.IsValidationException (configurationOrValidationException))
-          _validationErrors.AddException (configurationOrValidationException);
+        if (_remotionReflector.IsConfigurationException(configurationOrValidationException))
+          _configurationErrors.AddException(configurationOrValidationException);
+        else if (_remotionReflector.IsValidationException(configurationOrValidationException))
+          _validationErrors.AddException(configurationOrValidationException);
         else
           throw;
       }
+
       // MixinConfiguration is not valid
       return null;
     }

@@ -33,8 +33,8 @@ namespace Remotion.Mixins.CrossReferencer.Report
         ReflectedObject interfaceIntroductionDefinitions,
         IIdentifierGenerator<Type> interfaceIdentifierGenerator)
     {
-      ArgumentUtility.CheckNotNull ("interfaceIntroductionDefinitions", interfaceIntroductionDefinitions);
-      ArgumentUtility.CheckNotNull ("interfaceIdentifierGenerator", interfaceIdentifierGenerator);
+      ArgumentUtility.CheckNotNull("interfaceIntroductionDefinitions", interfaceIntroductionDefinitions);
+      ArgumentUtility.CheckNotNull("interfaceIdentifierGenerator", interfaceIdentifierGenerator);
 
       _interfaceIntroductionDefinitions = interfaceIntroductionDefinitions;
       _interfaceIdentifierGenerator = interfaceIdentifierGenerator;
@@ -42,10 +42,10 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public XElement GenerateXml ()
     {
-      return new XElement (
+      return new XElement(
           "InterfaceIntroductions",
           from introducedInterface in _interfaceIntroductionDefinitions
-          select GenerateInterfaceReferenceElement (introducedInterface.GetProperty ("InterfaceType").To<Type>()));
+          select GenerateInterfaceReferenceElement(introducedInterface.GetProperty("InterfaceType").To<Type>()));
     }
 
     private XElement GenerateInterfaceReferenceElement (Type introducedInterface)
@@ -57,11 +57,11 @@ namespace Remotion.Mixins.CrossReferencer.Report
       ab.InterfaceIntroductions[0].IntroducedProperties;
       ab.InterfaceIntroductions[0].IntroducedEvents
       */
-      return new XElement (
+      return new XElement(
           "IntroducedInterface",
-          new XAttribute ("ref", _interfaceIdentifierGenerator.GetIdentifier (introducedInterface))
+          new XAttribute("ref", _interfaceIdentifierGenerator.GetIdentifier(introducedInterface))
           //, GenerateMemberIntroductions
-          );
+      );
     }
   }
 }

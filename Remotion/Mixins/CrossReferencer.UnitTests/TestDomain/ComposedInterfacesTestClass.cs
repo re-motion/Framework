@@ -24,7 +24,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
     {
       public void A ()
       {
-        Console.WriteLine ("A");
+        Console.WriteLine("A");
       }
     }
 
@@ -32,7 +32,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
     {
       public void B ()
       {
-        Console.WriteLine ("B");
+        Console.WriteLine("B");
       }
     }
 

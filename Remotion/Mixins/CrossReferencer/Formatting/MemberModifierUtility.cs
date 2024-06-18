@@ -26,25 +26,25 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
 
     public bool IsOverriddenMember (MemberInfo memberInfo)
     {
-      ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
+      ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
 
       var methodInfo = memberInfo as MethodInfo;
       if (methodInfo != null)
-        return IsOverriddenMethod (methodInfo);
+        return IsOverriddenMethod(methodInfo);
 
       var propertyInfo = memberInfo as PropertyInfo;
       if (propertyInfo != null)
       {
-        return IsOverriddenMethod (propertyInfo.GetGetMethod (true))
-               || IsOverriddenMethod (propertyInfo.GetSetMethod (true));
+        return IsOverriddenMethod(propertyInfo.GetGetMethod(true))
+               || IsOverriddenMethod(propertyInfo.GetSetMethod(true));
       }
 
       var eventInfo = memberInfo as EventInfo;
       if (eventInfo != null)
       {
-        return IsOverriddenMethod (eventInfo.GetAddMethod (true))
-               || IsOverriddenMethod (eventInfo.GetRaiseMethod (true))
-               || IsOverriddenMethod (eventInfo.GetRemoveMethod (true));
+        return IsOverriddenMethod(eventInfo.GetAddMethod(true))
+               || IsOverriddenMethod(eventInfo.GetRaiseMethod(true))
+               || IsOverriddenMethod(eventInfo.GetRemoveMethod(true));
       }
 
       return false;
@@ -52,40 +52,40 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
 
     public string GetMemberModifiers (MemberInfo memberInfo)
     {
-      ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
+      ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
 
       switch (memberInfo.MemberType)
       {
         case MemberTypes.Method:
         case MemberTypes.Constructor:
-          return GetMethodModifiers (memberInfo, memberInfo);
+          return GetMethodModifiers(memberInfo, memberInfo);
         case MemberTypes.Field:
-          return GetFieldModifiers ((FieldInfo)memberInfo);
+          return GetFieldModifiers((FieldInfo)memberInfo);
 
         case MemberTypes.Property:
-          var propertyInfo = (PropertyInfo) memberInfo;
-          return GetMethodModifiers (propertyInfo.GetGetMethod (true) ?? propertyInfo.GetSetMethod (true), memberInfo);
+          var propertyInfo = (PropertyInfo)memberInfo;
+          return GetMethodModifiers(propertyInfo.GetGetMethod(true) ?? propertyInfo.GetSetMethod(true), memberInfo);
 
         case MemberTypes.Event:
-          var eventInfo = (EventInfo) memberInfo;
-          return GetMethodModifiers (eventInfo.GetAddMethod (true), memberInfo);
+          var eventInfo = (EventInfo)memberInfo;
+          return GetMethodModifiers(eventInfo.GetAddMethod(true), memberInfo);
 
         case MemberTypes.NestedType:
-          return _typeModifierUtility.GetTypeModifiers ((Type) memberInfo);
+          return _typeModifierUtility.GetTypeModifiers((Type)memberInfo);
 
         case MemberTypes.Custom:
         case MemberTypes.TypeInfo:
           return "TODO special MemberTypes";
 
         default:
-          throw new Exception ("unknown member type");
+          throw new Exception("unknown member type");
       }
     }
 
 
     private string GetMethodModifiers (MemberInfo methodFieldOrConstructor, MemberInfo memberInfoForOverride)
     {
-      var methodInfo = (MethodBase) methodFieldOrConstructor;
+      var methodInfo = (MethodBase)methodFieldOrConstructor;
       var modifiers = "";
 
       if (methodInfo.IsPublic)
@@ -101,7 +101,7 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
 
       if (methodFieldOrConstructor is MethodInfo)
       {
-        var isOverriddenMember = IsOverriddenMember (memberInfoForOverride);
+        var isOverriddenMember = IsOverriddenMember(memberInfoForOverride);
 
         if (methodInfo.IsAbstract)
           modifiers += " abstract";
@@ -155,7 +155,7 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
 
     private bool IsOverriddenMethod (MethodInfo methodInfo)
     {
-      return methodInfo != null && methodInfo.DeclaringType != methodInfo.GetBaseDefinition ().DeclaringType;
+      return methodInfo != null && methodInfo.DeclaringType != methodInfo.GetBaseDefinition().DeclaringType;
     }
   }
 }

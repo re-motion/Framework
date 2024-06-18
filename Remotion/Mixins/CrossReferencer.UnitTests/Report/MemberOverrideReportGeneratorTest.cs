@@ -34,18 +34,18 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           .ForClass<TargetClass1>().AddMixin<Mixin1>()
           .BuildConfiguration();
 
-      var type1 = new InvolvedType (typeof (TargetClass1));
-      type1.ClassContext = new ReflectedObject (mixinConfiguration.ClassContexts.First());
+      var type1 = new InvolvedType(typeof(TargetClass1));
+      type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
 
-      var memberOverrides = GetMemberOverrides (type1, typeof (Mixin1), mixinConfiguration);
+      var memberOverrides = GetMemberOverrides(type1, typeof(Mixin1), mixinConfiguration);
 
-      var reportGenerator = new MemberOverrideReportGenerator (memberOverrides);
+      var reportGenerator = new MemberOverrideReportGenerator(memberOverrides);
 
       var output = reportGenerator.GenerateXml();
 
-      var expectedOutput = new XElement ("MemberOverrides");
+      var expectedOutput = new XElement("MemberOverrides");
 
-      Assert.That (output.ToString(), Is.EqualTo (expectedOutput.ToString()));
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
 
@@ -56,30 +56,30 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           .ForClass<TargetDoSomething>().AddMixin<MixinDoSomething>()
           .BuildConfiguration();
 
-      var type1 = new InvolvedType (typeof (TargetDoSomething));
-      type1.ClassContext = new ReflectedObject (mixinConfiguration.ClassContexts.First());
+      var type1 = new InvolvedType(typeof(TargetDoSomething));
+      type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
 
-      var memberOverrides = GetMemberOverrides (type1, typeof (MixinDoSomething), mixinConfiguration);
+      var memberOverrides = GetMemberOverrides(type1, typeof(MixinDoSomething), mixinConfiguration);
 
-      var reportGenerator = new MemberOverrideReportGenerator (memberOverrides);
+      var reportGenerator = new MemberOverrideReportGenerator(memberOverrides);
 
       var output = reportGenerator.GenerateXml();
 
-      var expectedOutput = new XElement (
+      var expectedOutput = new XElement(
           "MemberOverrides",
-          new XElement (
+          new XElement(
               "OverriddenMember",
-              new XAttribute ("type", "Method"),
-              new XAttribute ("name", "DoSomething")
-              ));
+              new XAttribute("type", "Method"),
+              new XAttribute("name", "DoSomething")
+          ));
 
-      Assert.That (output.ToString(), Is.EqualTo (expectedOutput.ToString()));
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
     private ReflectedObject GetMemberOverrides (InvolvedType targetType, Type mixinType, MixinConfiguration mixinConfiguration)
     {
-      var targetClassDefinition = TargetClassDefinitionUtility.GetConfiguration (targetType.Type, mixinConfiguration);
-      return new ReflectedObject (targetClassDefinition.GetMixinByConfiguredType (mixinType).GetAllOverrides());
+      var targetClassDefinition = TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration);
+      return new ReflectedObject(targetClassDefinition.GetMixinByConfiguredType(mixinType).GetAllOverrides());
     }
   }
 }

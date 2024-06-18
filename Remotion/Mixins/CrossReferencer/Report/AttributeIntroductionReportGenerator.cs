@@ -35,9 +35,9 @@ namespace Remotion.Mixins.CrossReferencer.Report
         IIdentifierGenerator<Type> attributeIdentifierGenerator,
         IRemotionReflector remotionReflector)
     {
-      ArgumentUtility.CheckNotNull ("attributeIntroductionDefinitions", attributeIntroductionDefinitions);
-      ArgumentUtility.CheckNotNull ("attributeIdentifierGenerator", attributeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull ("remotionReflector", remotionReflector);
+      ArgumentUtility.CheckNotNull("attributeIntroductionDefinitions", attributeIntroductionDefinitions);
+      ArgumentUtility.CheckNotNull("attributeIdentifierGenerator", attributeIdentifierGenerator);
+      ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
 
       _attributeIntroductionDefinitions = attributeIntroductionDefinitions;
       _attributeIdentifierGenerator = attributeIdentifierGenerator;
@@ -46,19 +46,19 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public XElement GenerateXml ()
     {
-      return new XElement (
+      return new XElement(
           "AttributeIntroductions",
           from introducedAttribute in _attributeIntroductionDefinitions
-          where !_remotionReflector.IsInfrastructureType (introducedAttribute.GetProperty("AttributeType").To<Type>())
+          where !_remotionReflector.IsInfrastructureType(introducedAttribute.GetProperty("AttributeType").To<Type>())
           select GenerateAttributeReferanceElement(introducedAttribute.GetProperty("AttributeType").To<Type>()));
     }
 
     private XElement GenerateAttributeReferanceElement (Type introducedAttribute)
     {
-      return new XElement (
+      return new XElement(
           "IntroducedAttribute",
-          new XAttribute ("ref", _attributeIdentifierGenerator.GetIdentifier (introducedAttribute))
-          );
+          new XAttribute("ref", _attributeIdentifierGenerator.GetIdentifier(introducedAttribute))
+      );
     }
   }
 }

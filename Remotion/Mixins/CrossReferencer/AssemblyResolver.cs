@@ -37,60 +37,42 @@ namespace Remotion.Mixins.CrossReferencer
       _assembliesInPrivateBinPath = assembliesInPrivateBinPath;
     }
 
-    public Assembly HandleAssemblyResolve (object sender, ResolveEventArgs args)
+    public Assembly? HandleAssemblyResolve (object? sender, ResolveEventArgs args)
     {
-      ArgumentUtility.CheckNotNull ("args", args);
+      ArgumentUtility.CheckNotNull("args", args);
 
       AssemblyName privateAssemblyName;
-      if (_assembliesInPrivateBinPath.TryGetValue (args.Name, out privateAssemblyName))
-        return Assembly.Load (privateAssemblyName);
+      if (_assembliesInPrivateBinPath.TryGetValue(args.Name, out privateAssemblyName))
+        return Assembly.Load(privateAssemblyName);
 
       // Simulate assembly binding redirects to the latest version.
       // This is only a fallback if the requested assembly of a different version is already loaded into the AppDomain.
-      var assemblyName = new AssemblyName (args.Name);
+      var assemblyName = new AssemblyName(args.Name);
       return AppDomain.CurrentDomain.GetAssemblies()
-          .Where (a => AssemblyName.ReferenceMatchesDefinition (assemblyName, a.GetName()))
-          .OrderByDescending (a => a.GetName().Version)
+          .Where(a => AssemblyName.ReferenceMatchesDefinition(assemblyName, a.GetName()))
+          .OrderByDescending(a => a.GetName().Version)
           .FirstOrDefault();
     }
 
-    private static Dictionary<string,AssemblyName> GetAssembliesInPrivateBinPath ()
+    private static Dictionary<string, AssemblyName> GetAssembliesInPrivateBinPath ()
     {
       var privateBinPaths = (AppDomain.CurrentDomain.RelativeSearchPath ?? "")
-          .Split (new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
-          .Select (p => Path.Combine (AppDomain.CurrentDomain.BaseDirectory, p))
-          .Where (Directory.Exists)
-          .Select (p => new DirectoryInfo (p))
+          .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+          .Select(p => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, p))
+          .Where(Directory.Exists)
+          .Select(p => new DirectoryInfo(p))
           .ToArray();
 
       return privateBinPaths
-          .SelectMany (d => d.EnumerateFileSystemInfos ("*.dll").Concat (d.EnumerateFileSystemInfos ("*.exe")))
-          .Select (GetAssemblyNameOrNull)
-          .Where (a => a != null)
-          .ToDictionary (a => a.FullName, a => a);
+          .SelectMany(d => d.EnumerateFileSystemInfos("*.dll").Concat(d.EnumerateFileSystemInfos("*.exe")))
+          .Select(GetAssemblyNameOrNull)
+          .Where(a => a != null)
+          .ToDictionary(a => a.FullName, a => a);
     }
 
     private static AssemblyName GetAssemblyNameOrNull (FileSystemInfo file)
     {
-      try
-      {
-        return AssemblyName.GetAssemblyName (file.FullName);
-      }
-      catch (FileNotFoundException fileNotFoundException)
-      {
-        XRef.Log.SendInfo (fileNotFoundException.Message);
-        return null;
-      }
-      catch (FileLoadException fileLoadException)
-      {
-        XRef.Log.SendInfo (fileLoadException.Message);
-        return null;
-      }
-      catch (BadImageFormatException badImageFormatException)
-      {
-        XRef.Log.SendInfo (badImageFormatException.Message);
-        return null;
-      }
+      return AssemblyName.GetAssemblyName(file.FullName);
     }
   }
 }

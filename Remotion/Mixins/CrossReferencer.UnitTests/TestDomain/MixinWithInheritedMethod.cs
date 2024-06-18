@@ -27,5 +27,6 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
   }
 
   public class MixinWithInheritedMethod : BaseMixinWithInheritedMethod
-  { }
+  {
+  }
 }

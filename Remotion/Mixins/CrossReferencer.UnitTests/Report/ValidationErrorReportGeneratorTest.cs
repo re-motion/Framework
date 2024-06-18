@@ -32,12 +32,12 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     public void GenerateXml_NoErrors ()
     {
       var errorAggregator = new ErrorAggregator<Exception>();
-      var reportGenerator = new ValidationErrorReportGenerator (errorAggregator, Helpers.RemotionReflectorFactory.GetRemotionReflection ());
+      var reportGenerator = new ValidationErrorReportGenerator(errorAggregator, Helpers.RemotionReflectorFactory.GetRemotionReflection());
 
       var output = reportGenerator.GenerateXml();
-      var expectedOutput = new XElement ("ValidationErrors");
+      var expectedOutput = new XElement("ValidationErrors");
 
-      Assert.That (output.ToString(), Is.EqualTo (expectedOutput.ToString()));
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
     [Test]
@@ -46,24 +46,25 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       var errorAggregator = new ErrorAggregator<Exception>();
       var validationException1 = SetUpExceptionWithDummyStackTrace("test validation exception", new DefaultValidationLog());
 
-      errorAggregator.AddException (validationException1);
-      var reportGenerator = new ValidationErrorReportGenerator (errorAggregator, Helpers.RemotionReflectorFactory.GetRemotionReflection ());
+      errorAggregator.AddException(validationException1);
+      var reportGenerator = new ValidationErrorReportGenerator(errorAggregator, Helpers.RemotionReflectorFactory.GetRemotionReflection());
 
       var output = reportGenerator.GenerateXml();
 
-      var validationExceptionElement = new RecursiveExceptionReportGenerator (validationException1).GenerateXml();
-      validationExceptionElement.Add (
-          new XElement ("ValidationLog",
-                        new XAttribute("number-of-rules-executed", validationException1.ValidationLog.GetNumberOfRulesExecuted()),
-                        new XAttribute("number-of-failures", validationException1.ValidationLog.GetNumberOfFailures()),
-                        new XAttribute("number-of-unexpected-exceptions", validationException1.ValidationLog.GetNumberOfUnexpectedExceptions()),
-                        new XAttribute("number-of-warnings", validationException1.ValidationLog.GetNumberOfWarnings()),
-                        new XAttribute("number-of-successes", validationException1.ValidationLog.GetNumberOfSuccesses())
-              ));
+      var validationExceptionElement = new RecursiveExceptionReportGenerator(validationException1).GenerateXml();
+      validationExceptionElement.Add(
+          new XElement(
+              "ValidationLog",
+              new XAttribute("number-of-rules-executed", validationException1.ValidationLog.GetNumberOfRulesExecuted()),
+              new XAttribute("number-of-failures", validationException1.ValidationLog.GetNumberOfFailures()),
+              new XAttribute("number-of-unexpected-exceptions", validationException1.ValidationLog.GetNumberOfUnexpectedExceptions()),
+              new XAttribute("number-of-warnings", validationException1.ValidationLog.GetNumberOfWarnings()),
+              new XAttribute("number-of-successes", validationException1.ValidationLog.GetNumberOfSuccesses())
+          ));
 
-      var expectedOutput = new XElement ("ValidationErrors", validationExceptionElement);
+      var expectedOutput = new XElement("ValidationErrors", validationExceptionElement);
 
-      Assert.That (output.ToString(), Is.EqualTo (expectedOutput.ToString()));
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
     [Test]
@@ -72,31 +73,31 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       var errorAggregator = new ErrorAggregator<Exception>();
       var validationException1 = SetUpExceptionWithDummyStackTrace("test validation exception", new DefaultValidationLog());
 
-      errorAggregator.AddException (validationException1);
-      var remotionReflectorStub = MockRepository.GenerateStub<IRemotionReflector>();
-      var reportGenerator = new ValidationErrorReportGenerator (errorAggregator, remotionReflectorStub);
+      errorAggregator.AddException(validationException1);
+      var remotionReflectorStub = MockRepository.GenerateStub<RemotionReflector>();
+      var reportGenerator = new ValidationErrorReportGenerator(errorAggregator, remotionReflectorStub);
 
-      remotionReflectorStub.Stub (_ => _.GetValidationLogFromValidationException (null)).IgnoreArguments()
-          .Return (new ReflectedObject (new ValidationLogNullObject()));
+      remotionReflectorStub.Stub(_ => _.GetValidationLogFromValidationException(null)).IgnoreArguments()
+          .Return(new ReflectedObject(new ValidationLogNullObject()));
 
       var output = reportGenerator.GenerateXml();
 
-      var validationExceptionElement = new RecursiveExceptionReportGenerator (validationException1).GenerateXml();
-      validationExceptionElement.Add (
-          new XElement (
+      var validationExceptionElement = new RecursiveExceptionReportGenerator(validationException1).GenerateXml();
+      validationExceptionElement.Add(
+          new XElement(
               "ValidationLog",
-              new XAttribute ("number-of-rules-executed", 0),
-              new XAttribute ("number-of-failures", 0),
-              new XAttribute ("number-of-unexpected-exceptions", 0),
-              new XAttribute ("number-of-warnings", 0),
-              new XAttribute ("number-of-successes", 0)));
+              new XAttribute("number-of-rules-executed", 0),
+              new XAttribute("number-of-failures", 0),
+              new XAttribute("number-of-unexpected-exceptions", 0),
+              new XAttribute("number-of-warnings", 0),
+              new XAttribute("number-of-successes", 0)));
 
-      var expectedOutput = new XElement ("ValidationErrors", validationExceptionElement);
+      var expectedOutput = new XElement("ValidationErrors", validationExceptionElement);
 
-      Assert.That (output.ToString(), Is.EqualTo (expectedOutput.ToString()));
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
-    private ValidationException SetUpExceptionWithDummyStackTrace(string exceptionMessage, IValidationLog validationLog)
+    private ValidationException SetUpExceptionWithDummyStackTrace (string exceptionMessage, IValidationLog validationLog)
     {
       try
       {

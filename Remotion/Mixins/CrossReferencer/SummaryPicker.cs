@@ -25,44 +25,44 @@ namespace Remotion.Mixins.CrossReferencer
 {
   public class SummaryPicker
   {
-    private static readonly XElement s_noSummary = new XElement ("summary", "No summary found.");
-    private static readonly Regex s_normalizeTrim = new Regex (@"\s+", RegexOptions.Compiled);
+    private static readonly XElement s_noSummary = new XElement("summary", "No summary found.");
+    private static readonly Regex s_normalizeTrim = new Regex(@"\s+", RegexOptions.Compiled);
 
     public XElement GetSummary (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       // get path and filename of xml summary
-      var documentationFileName = Path.ChangeExtension (type.Assembly.Location, ".xml");
+      var documentationFileName = Path.ChangeExtension(type.Assembly.Location, ".xml");
 
-      
+
       // check if xml document exists
-      if (!File.Exists (documentationFileName))
+      if (!File.Exists(documentationFileName))
         return s_noSummary;
 
       // open docu
-      var xmlDocument = XDocument.Load (documentationFileName);
+      var xmlDocument = XDocument.Load(documentationFileName);
 
       // search for member
       var searchName = "T:" + type.FullName;
-      var xpath = string.Format ("//member[@name = '{0}']/summary", searchName);
-      var summary = xmlDocument.XPathSelectElement (xpath);
+      var xpath = string.Format("//member[@name = '{0}']/summary", searchName);
+      var summary = xmlDocument.XPathSelectElement(xpath);
 
       // xpath expression returned no result
       if (summary == null)
         return s_noSummary;
 
       // normalize and trim summary content
-      return NormalizeAndTrim (summary);
+      return NormalizeAndTrim(summary);
     }
 
     public XElement NormalizeAndTrim (XElement element)
     {
-      ArgumentUtility.CheckNotNull ("element", element);
+      ArgumentUtility.CheckNotNull("element", element);
 
-      var normalizedElement = s_normalizeTrim.Replace (element.ToString(), " ").Replace (" <", "<").Replace ("> ", ">");
+      var normalizedElement = s_normalizeTrim.Replace(element.ToString(), " ").Replace(" <", "<").Replace("> ", ">");
 
-      return XElement.Parse (normalizedElement);
+      return XElement.Parse(normalizedElement);
     }
   }
 }

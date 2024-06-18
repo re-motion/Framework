@@ -42,14 +42,14 @@ namespace Remotion.Mixins.CrossReferencer.Report
         IIdentifierGenerator<Type> attributeIdentifierGenerator,
         IRemotionReflector remotionReflector,
         IOutputFormatter outputFormatter
-        )
+    )
     {
-      ArgumentUtility.CheckNotNull ("involvedTypes", involvedTypes);
-      ArgumentUtility.CheckNotNull ("assemblyIdentifierGenerator", assemblyIdentifierGenerator);
-      ArgumentUtility.CheckNotNull ("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull ("attributeIdentifierGenerator", attributeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull ("remotionReflector", remotionReflector);
-      ArgumentUtility.CheckNotNull ("outputFormatter", outputFormatter);
+      ArgumentUtility.CheckNotNull("involvedTypes", involvedTypes);
+      ArgumentUtility.CheckNotNull("assemblyIdentifierGenerator", assemblyIdentifierGenerator);
+      ArgumentUtility.CheckNotNull("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
+      ArgumentUtility.CheckNotNull("attributeIdentifierGenerator", attributeIdentifierGenerator);
+      ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
+      ArgumentUtility.CheckNotNull("outputFormatter", outputFormatter);
 
       _involvedTypes = involvedTypes;
       _assemblyIdentifierGenerator = assemblyIdentifierGenerator;
@@ -63,11 +63,11 @@ namespace Remotion.Mixins.CrossReferencer.Report
     {
       var allAttributes = GetAllAttributes();
 
-      return new XElement (
+      return new XElement(
           "Attributes",
           from attribute in allAttributes.Keys
           where _attributeIdentifierGenerator.GetIdentifier(attribute, "none") != "none"
-          select GenerateAttributeElement (attribute, allAttributes));
+          select GenerateAttributeElement(attribute, allAttributes));
     }
 
     private Dictionary<Type, List<Type>> GetAllAttributes ()
@@ -76,42 +76,43 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
       foreach (var involvedType in _involvedTypes)
       {
-        foreach (var attribute in CustomAttributeData.GetCustomAttributes (involvedType.Type))
+        foreach (var attribute in CustomAttributeData.GetCustomAttributes(involvedType.Type))
         {
           //var attributeType = attribute.GetType();
           var attributeType = attribute.Constructor.DeclaringType;
 
-          if (_remotionReflector.IsInfrastructureType (attributeType))
+          if (_remotionReflector.IsInfrastructureType(attributeType))
             continue;
 
-          if (!allAttributes.ContainsKey (attributeType))
-            allAttributes.Add (attributeType, new List<Type>());
+          if (!allAttributes.ContainsKey(attributeType))
+            allAttributes.Add(attributeType, new List<Type>());
 
           var values = allAttributes[attributeType];
-          if (!values.Contains (involvedType.Type))
-            values.Add (involvedType.Type);
+          if (!values.Contains(involvedType.Type))
+            values.Add(involvedType.Type);
         }
       }
+
       return allAttributes;
     }
 
     private XElement GenerateAttributeElement (Type attribute, Dictionary<Type, List<Type>> allAttributes)
     {
-      return new XElement (
+      return new XElement(
           "Attribute",
-          new XAttribute ("id", _attributeIdentifierGenerator.GetIdentifier (attribute)),
-          new XAttribute ("assembly-ref", _assemblyIdentifierGenerator.GetIdentifier (attribute.Assembly)),
-          new XAttribute ("namespace", attribute.Namespace),
-          new XAttribute ("name", _outputFormatter.GetShortFormattedTypeName(attribute)),
-          new XElement (
+          new XAttribute("id", _attributeIdentifierGenerator.GetIdentifier(attribute)),
+          new XAttribute("assembly-ref", _assemblyIdentifierGenerator.GetIdentifier(attribute.Assembly)),
+          new XAttribute("namespace", attribute.Namespace),
+          new XAttribute("name", _outputFormatter.GetShortFormattedTypeName(attribute)),
+          new XElement(
               "AppliedTo",
               from appliedToType in allAttributes[attribute]
               select
-                  new XElement (
-                  "InvolvedType-Reference",
-                  new XAttribute ("ref", _involvedTypeIdentifierGenerator.GetIdentifier (appliedToType)))
-              )
-          );
+                  new XElement(
+                      "InvolvedType-Reference",
+                      new XAttribute("ref", _involvedTypeIdentifierGenerator.GetIdentifier(appliedToType)))
+          )
+      );
     }
   }
 }

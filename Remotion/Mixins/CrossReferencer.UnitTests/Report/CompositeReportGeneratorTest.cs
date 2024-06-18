@@ -30,16 +30,16 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [SetUp]
     public void SetUp ()
     {
-      _reportGenerator = new CompositeReportGenerator (new ReportGeneratorStub ("Assemblies"), new ReportGeneratorStub ("InvolvedTypes"));
+      _reportGenerator = new CompositeReportGenerator(new ReportGeneratorStub("Assemblies"), new ReportGeneratorStub("InvolvedTypes"));
     }
 
     [Test]
     public void GenerateXml ()
     {
-      XElement output = _reportGenerator.GenerateXml ();
+      XElement output = _reportGenerator.GenerateXml();
 
-      var expectedOutput = new XElement ("MixinXRefReport", new XElement ("Assemblies"), new XElement ("InvolvedTypes"));
-      Assert.That (output.ToString(), Is.EqualTo (expectedOutput.ToString()));
+      var expectedOutput = new XElement("MixinXRefReport", new XElement("Assemblies"), new XElement("InvolvedTypes"));
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
   }
 }

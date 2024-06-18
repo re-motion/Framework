@@ -21,7 +21,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
   public class MixinWithConfigurationError
   {
     [OverrideTarget]
-    public void MethodThatDoesNotExistOnTarget()
+    public void MethodThatDoesNotExistOnTarget ()
     {
       throw new NotImplementedException();
     }

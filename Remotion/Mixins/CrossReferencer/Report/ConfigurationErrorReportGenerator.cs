@@ -26,20 +26,20 @@ namespace Remotion.Mixins.CrossReferencer.Report
   {
     private readonly ErrorAggregator<Exception> _errorAggregator;
 
-    public ConfigurationErrorReportGenerator(ErrorAggregator<Exception> errorAggregator)
+    public ConfigurationErrorReportGenerator (ErrorAggregator<Exception> errorAggregator)
     {
-      ArgumentUtility.CheckNotNull ("errorAggregator", errorAggregator);
+      ArgumentUtility.CheckNotNull("errorAggregator", errorAggregator);
 
       _errorAggregator = errorAggregator;
     }
 
     public XElement GenerateXml ()
     {
-      return new XElement (
+      return new XElement(
           "ConfigurationErrors",
           from exception in _errorAggregator.Exceptions
-          select new RecursiveExceptionReportGenerator (exception).GenerateXml()
-          );
+          select new RecursiveExceptionReportGenerator(exception).GenerateXml()
+      );
     }
   }
 }

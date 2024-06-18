@@ -35,27 +35,27 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Utilities
     [Test]
     public void GetIdentifier ()
     {
-      var identifier = _assemblyIdentifierGenerator.GetIdentifier (typeof (IdentifierGeneratorTest).Assembly);
+      var identifier = _assemblyIdentifierGenerator.GetIdentifier(typeof(IdentifierGeneratorTest).Assembly);
 
-      Assert.That (identifier, Is.EqualTo ("0"));
+      Assert.That(identifier, Is.EqualTo("0"));
     }
 
     [Test]
     public void GetIdentifier_Twice ()
     {
-      _assemblyIdentifierGenerator.GetIdentifier (typeof (IdentifierGeneratorTest).Assembly);
-      var identifier = _assemblyIdentifierGenerator.GetIdentifier (typeof (object).Assembly);
+      _assemblyIdentifierGenerator.GetIdentifier(typeof(IdentifierGeneratorTest).Assembly);
+      var identifier = _assemblyIdentifierGenerator.GetIdentifier(typeof(object).Assembly);
 
-      Assert.That (identifier, Is.EqualTo ("1"));
+      Assert.That(identifier, Is.EqualTo("1"));
     }
 
     [Test]
     public void GetIdentifier_TwiceOnSameAssembly ()
     {
-      var identifier1 = _assemblyIdentifierGenerator.GetIdentifier (typeof (IdentifierGeneratorTest).Assembly);
-      var identifier2 = _assemblyIdentifierGenerator.GetIdentifier (typeof (IdentifierGeneratorTest).Assembly);
+      var identifier1 = _assemblyIdentifierGenerator.GetIdentifier(typeof(IdentifierGeneratorTest).Assembly);
+      var identifier2 = _assemblyIdentifierGenerator.GetIdentifier(typeof(IdentifierGeneratorTest).Assembly);
 
-      Assert.That (identifier1, Is.EqualTo (identifier2));
+      Assert.That(identifier1, Is.EqualTo(identifier2));
     }
 
     [Test]
@@ -63,11 +63,11 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Utilities
     {
       var identifierGenerator = new IdentifierGenerator<string>();
 
-      var expectedOuput = identifierGenerator.GetIdentifier ("test-value");
+      var expectedOuput = identifierGenerator.GetIdentifier("test-value");
 
-      var output = identifierGenerator.GetIdentifier ("test-value", "does not matter");
+      var output = identifierGenerator.GetIdentifier("test-value", "does not matter");
 
-      Assert.That (output, Is.EqualTo (expectedOuput));
+      Assert.That(output, Is.EqualTo(expectedOuput));
     }
 
     [Test]
@@ -75,9 +75,9 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Utilities
     {
       var identifierGenerator = new IdentifierGenerator<string>();
 
-      var output = identifierGenerator.GetIdentifier ("test-value", "default value if not present");
+      var output = identifierGenerator.GetIdentifier("test-value", "default value if not present");
 
-      Assert.That (output, Is.EqualTo ("default value if not present"));
+      Assert.That(output, Is.EqualTo("default value if not present"));
     }
   }
 }

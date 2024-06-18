@@ -31,7 +31,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Stub
 
     public XElement GenerateXml ()
     {
-      return new XElement (_stubXml);
+      return new XElement(_stubXml);
     }
   }
 }

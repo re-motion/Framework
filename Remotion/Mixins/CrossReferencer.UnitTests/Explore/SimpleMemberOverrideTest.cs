@@ -25,16 +25,16 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Explore
     [Test]
     public void SimpleOverrideByMixin ()
     {
-      var mixinConfiguration = MixinConfiguration.BuildNew ()
-          .ForClass (typeof (Target)).AddMixin (typeof (MixinOverrideTarget))
-          .BuildConfiguration ();
-      var targetClassDefiniton = TargetClassDefinitionUtility.GetConfiguration (typeof (Target), mixinConfiguration);
-      var targetClassOverrides = targetClassDefiniton.GetAllMembers ().Single (mdb => mdb.Name == "WriteType").Overrides;
-      var mixinOverrides = targetClassDefiniton.Mixins[0].GetAllMembers ().Single (mdb => mdb.Name == "WriteType").Overrides;
+      var mixinConfiguration = MixinConfiguration.BuildNew()
+          .ForClass(typeof(Target)).AddMixin(typeof(MixinOverrideTarget))
+          .BuildConfiguration();
+      var targetClassDefiniton = TargetClassDefinitionUtility.GetConfiguration(typeof(Target), mixinConfiguration);
+      var targetClassOverrides = targetClassDefiniton.GetAllMembers().Single(mdb => mdb.Name == "WriteType").Overrides;
+      var mixinOverrides = targetClassDefiniton.Mixins[0].GetAllMembers().Single(mdb => mdb.Name == "WriteType").Overrides;
 
-      Assert.That (targetClassOverrides.Count, Is.EqualTo (1));
-      Assert.That (mixinOverrides.Count, Is.EqualTo (0));
-      Assert.That (targetClassOverrides[0].DeclaringClass.Type, Is.EqualTo (typeof (MixinOverrideTarget)));
+      Assert.That(targetClassOverrides.Count, Is.EqualTo(1));
+      Assert.That(mixinOverrides.Count, Is.EqualTo(0));
+      Assert.That(targetClassOverrides[0].DeclaringClass.Type, Is.EqualTo(typeof(MixinOverrideTarget)));
     }
 
     #region TestDomain for SimpleOverrideByMixin
@@ -43,7 +43,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Explore
     {
       public virtual void WriteType ()
       {
-        Console.WriteLine (GetType ());
+        Console.WriteLine(GetType());
       }
     }
 
@@ -52,7 +52,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Explore
       [OverrideTarget]
       public void WriteType ()
       {
-        Console.WriteLine (GetType ());
+        Console.WriteLine(GetType());
       }
     }
 
@@ -61,16 +61,16 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Explore
     [Test]
     public void SimpleOverrideByTarget ()
     {
-      var mixinConfiguration = MixinConfiguration.BuildNew ()
-          .ForClass (typeof (TargetOverrideMixin)).AddMixin (typeof (TemplateMixin))
-          .BuildConfiguration ();
-      var targetClassDefiniton = TargetClassDefinitionUtility.GetConfiguration (typeof (TargetOverrideMixin), mixinConfiguration);
-      var targetClassOverrides = targetClassDefiniton.GetAllMembers ().Single (mdb => mdb.Name == "WriteType").Overrides;
-      var mixinOverrides = targetClassDefiniton.Mixins[0].GetAllMembers ().Single (mdb => mdb.Name == "WriteType").Overrides;
+      var mixinConfiguration = MixinConfiguration.BuildNew()
+          .ForClass(typeof(TargetOverrideMixin)).AddMixin(typeof(TemplateMixin))
+          .BuildConfiguration();
+      var targetClassDefiniton = TargetClassDefinitionUtility.GetConfiguration(typeof(TargetOverrideMixin), mixinConfiguration);
+      var targetClassOverrides = targetClassDefiniton.GetAllMembers().Single(mdb => mdb.Name == "WriteType").Overrides;
+      var mixinOverrides = targetClassDefiniton.Mixins[0].GetAllMembers().Single(mdb => mdb.Name == "WriteType").Overrides;
 
-      Assert.That (targetClassOverrides.Count, Is.EqualTo (0));
-      Assert.That (mixinOverrides.Count, Is.EqualTo (1));
-      Assert.That (mixinOverrides[0].DeclaringClass.Type, Is.EqualTo (typeof (TargetOverrideMixin)));
+      Assert.That(targetClassOverrides.Count, Is.EqualTo(0));
+      Assert.That(mixinOverrides.Count, Is.EqualTo(1));
+      Assert.That(mixinOverrides[0].DeclaringClass.Type, Is.EqualTo(typeof(TargetOverrideMixin)));
     }
 
     #region TestDomain for SimpleOverrideByTarget
@@ -80,7 +80,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Explore
       [OverrideMixin]
       public void WriteType ()
       {
-        Console.WriteLine (GetType ());
+        Console.WriteLine(GetType());
       }
     }
 
@@ -88,7 +88,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Explore
     {
       public virtual void WriteType ()
       {
-        Console.WriteLine (GetType ());
+        Console.WriteLine(GetType());
       }
     }
 

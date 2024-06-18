@@ -27,86 +27,89 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
     private FastMemberInvokerCache _cache;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
-      _cache = new FastMemberInvokerCache ();
+      _cache = new FastMemberInvokerCache();
     }
 
     [Test]
-    public void CacheKey_Equals_EqualKeys()
+    public void CacheKey_Equals_EqualKeys ()
     {
-      var key1 = new FastMemberInvokerCache.CacheKey (typeof (string), "Foo", new Type[0], new[] { typeof (int), typeof (string) });
-      var key2 = new FastMemberInvokerCache.CacheKey (typeof (string), "Foo", new Type[0], new[] { typeof (int), typeof (string) });
+      var key1 = new FastMemberInvokerCache.CacheKey(typeof(string), "Foo", new Type[0], new[] { typeof(int), typeof(string) });
+      var key2 = new FastMemberInvokerCache.CacheKey(typeof(string), "Foo", new Type[0], new[] { typeof(int), typeof(string) });
 
-      Assert.That (key1, Is.EqualTo (key2));
+      Assert.That(key1, Is.EqualTo(key2));
     }
 
     [Test]
     public void CacheKey_Equals_NonEqualKeys_DeclaringType ()
     {
-      var key1 = new FastMemberInvokerCache.CacheKey (typeof (string), "Foo", new Type[0], new[] { typeof (int), typeof (string) });
-      var key2 = new FastMemberInvokerCache.CacheKey (typeof (int), "Foo", new Type[0], new[] { typeof (int), typeof (string) });
+      var key1 = new FastMemberInvokerCache.CacheKey(typeof(string), "Foo", new Type[0], new[] { typeof(int), typeof(string) });
+      var key2 = new FastMemberInvokerCache.CacheKey(typeof(int), "Foo", new Type[0], new[] { typeof(int), typeof(string) });
 
-      Assert.That (key1, Is.Not.EqualTo (key2));
+      Assert.That(key1, Is.Not.EqualTo(key2));
     }
 
     [Test]
     public void CacheKey_Equals_NonEqualKeys_MemberName ()
     {
-      var key1 = new FastMemberInvokerCache.CacheKey (typeof (string), "Foo", new Type[0], new[] { typeof (int), typeof (string) });
-      var key2 = new FastMemberInvokerCache.CacheKey (typeof (string), "Bar", new Type[0], new[] { typeof (int), typeof (string) });
+      var key1 = new FastMemberInvokerCache.CacheKey(typeof(string), "Foo", new Type[0], new[] { typeof(int), typeof(string) });
+      var key2 = new FastMemberInvokerCache.CacheKey(typeof(string), "Bar", new Type[0], new[] { typeof(int), typeof(string) });
 
-      Assert.That (key1, Is.Not.EqualTo (key2));
+      Assert.That(key1, Is.Not.EqualTo(key2));
     }
 
     [Test]
     public void CacheKey_Equals_NonEqualKeys_ArgumentTypes ()
     {
-      var key1 = new FastMemberInvokerCache.CacheKey (typeof (string), "Foo", new Type[0], new[] { typeof (int), typeof (string) });
-      var key2 = new FastMemberInvokerCache.CacheKey (typeof (string), "Foo", new Type[0], new[] { typeof (string), typeof (int) });
+      var key1 = new FastMemberInvokerCache.CacheKey(typeof(string), "Foo", new Type[0], new[] { typeof(int), typeof(string) });
+      var key2 = new FastMemberInvokerCache.CacheKey(typeof(string), "Foo", new Type[0], new[] { typeof(string), typeof(int) });
 
-      Assert.That (key1, Is.Not.EqualTo (key2));
+      Assert.That(key1, Is.Not.EqualTo(key2));
     }
 
     [Test]
     public void CacheKey_GetHashCode_EqualKeys ()
     {
-      var key1 = new FastMemberInvokerCache.CacheKey (typeof (string), "Foo", new Type[0], new[] { typeof (int), typeof (string) });
-      var key2 = new FastMemberInvokerCache.CacheKey (typeof (string), "Foo", new Type[0], new[] { typeof (int), typeof (string) });
+      var key1 = new FastMemberInvokerCache.CacheKey(typeof(string), "Foo", new Type[0], new[] { typeof(int), typeof(string) });
+      var key2 = new FastMemberInvokerCache.CacheKey(typeof(string), "Foo", new Type[0], new[] { typeof(int), typeof(string) });
 
-      Assert.That (key1.GetHashCode(), Is.EqualTo (key2.GetHashCode()));
+      Assert.That(key1.GetHashCode(), Is.EqualTo(key2.GetHashCode()));
     }
 
     [Test]
-    public void GetFastMethodInvoker()
+    public void GetFastMethodInvoker ()
     {
       var instance = "stringContent";
-      var invoker = _cache.GetOrCreateFastMethodInvoker (
-          instance.GetType (),
-          "IsNullOrEmpty", new Type[0],
-          new[] { typeof (string) }, 
+      var invoker = _cache.GetOrCreateFastMethodInvoker(
+          instance.GetType(),
+          "IsNullOrEmpty",
+          new Type[0],
+          new[] { typeof(string) },
           BindingFlags.Public | BindingFlags.Static);
 
-      var output = invoker (null, new object[] { instance });
+      var output = invoker(null, new object[] { instance });
 
-      Assert.That (output, Is.EqualTo (false));
+      Assert.That(output, Is.EqualTo(false));
     }
 
     [Test]
     public void GetFastMethodInvoker_Twice ()
     {
-      var invoker1 = _cache.GetOrCreateFastMethodInvoker (
-          typeof (string),
-          "IsNullOrEmpty", new Type[0],
-          new[] { typeof (string) },
+      var invoker1 = _cache.GetOrCreateFastMethodInvoker(
+          typeof(string),
+          "IsNullOrEmpty",
+          new Type[0],
+          new[] { typeof(string) },
           BindingFlags.Public | BindingFlags.Static);
-      var invoker2 = _cache.GetOrCreateFastMethodInvoker (
-          typeof (string),
-          "IsNullOrEmpty", new Type[0],
-          new[] { typeof (string) },
+      var invoker2 = _cache.GetOrCreateFastMethodInvoker(
+          typeof(string),
+          "IsNullOrEmpty",
+          new Type[0],
+          new[] { typeof(string) },
           BindingFlags.Public | BindingFlags.Static);
 
-      Assert.That (invoker2, Is.SameAs (invoker1));
+      Assert.That(invoker2, Is.SameAs(invoker1));
     }
   }
 }

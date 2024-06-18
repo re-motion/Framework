@@ -37,21 +37,21 @@ namespace Remotion.Mixins.CrossReferencer.Report
     private readonly IOutputFormatter _outputFormatter;
 
     public InterfaceReportGenerator (
-      InvolvedType[] involvedTypes, 
-      IIdentifierGenerator<Assembly> assemblyIdentifierGenerator, 
-      IIdentifierGenerator<Type> involvedTypeIdentifierGenerator,
-      IIdentifierGenerator<MemberInfo> memberIdentifierGenerator, 
-      IIdentifierGenerator<Type> interfaceIdentifierGenerator, 
-      IRemotionReflector remotionReflector, 
-      IOutputFormatter outputFormatter)
+        InvolvedType[] involvedTypes,
+        IIdentifierGenerator<Assembly> assemblyIdentifierGenerator,
+        IIdentifierGenerator<Type> involvedTypeIdentifierGenerator,
+        IIdentifierGenerator<MemberInfo> memberIdentifierGenerator,
+        IIdentifierGenerator<Type> interfaceIdentifierGenerator,
+        IRemotionReflector remotionReflector,
+        IOutputFormatter outputFormatter)
     {
-      ArgumentUtility.CheckNotNull ("involvedTypes", involvedTypes);
-      ArgumentUtility.CheckNotNull ("assemblyIdentifierGenerator", assemblyIdentifierGenerator);
-      ArgumentUtility.CheckNotNull ("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull ("memberIdentifierGenerator", memberIdentifierGenerator);
-      ArgumentUtility.CheckNotNull ("interfaceIdentifierGenerator", interfaceIdentifierGenerator);
-      ArgumentUtility.CheckNotNull ("remotionReflector", remotionReflector);
-      ArgumentUtility.CheckNotNull ("outputFormatter", outputFormatter);
+      ArgumentUtility.CheckNotNull("involvedTypes", involvedTypes);
+      ArgumentUtility.CheckNotNull("assemblyIdentifierGenerator", assemblyIdentifierGenerator);
+      ArgumentUtility.CheckNotNull("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
+      ArgumentUtility.CheckNotNull("memberIdentifierGenerator", memberIdentifierGenerator);
+      ArgumentUtility.CheckNotNull("interfaceIdentifierGenerator", interfaceIdentifierGenerator);
+      ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
+      ArgumentUtility.CheckNotNull("outputFormatter", outputFormatter);
 
       _involvedTypes = involvedTypes;
       _assemblyIdentifierGenerator = assemblyIdentifierGenerator;
@@ -68,26 +68,26 @@ namespace Remotion.Mixins.CrossReferencer.Report
       var allInterfaces = GetAllInterfaces();
       var composedInterfaces = GetComposedInterfaces();
 
-      return new XElement (
+      return new XElement(
           "Interfaces",
           from usedInterface in allInterfaces.Keys
-          where !_remotionReflector.IsInfrastructureType (usedInterface)
-          select GenerateInterfaceElement (usedInterface, allInterfaces, composedInterfaces.Contains(usedInterface))
-          );
+          where !_remotionReflector.IsInfrastructureType(usedInterface)
+          select GenerateInterfaceElement(usedInterface, allInterfaces, composedInterfaces.Contains(usedInterface))
+      );
     }
 
     public HashSet<Type> GetComposedInterfaces ()
     {
-      var allComposedInterfaces = new HashSet<Type> ();
+      var allComposedInterfaces = new HashSet<Type>();
 
       foreach (var involvedType in _involvedTypes)
       {
         if (!involvedType.IsTarget) continue;
 
-        var composedInterfaces = _remotionReflector.GetComposedInterfaces (involvedType.ClassContext);
+        var composedInterfaces = _remotionReflector.GetComposedInterfaces(involvedType.ClassContext);
         foreach (var composedInterface in composedInterfaces)
         {
-          allComposedInterfaces.Add (composedInterface);
+          allComposedInterfaces.Add(composedInterface);
         }
       }
 
@@ -103,21 +103,21 @@ namespace Remotion.Mixins.CrossReferencer.Report
       {
         foreach (var usedInterface in involvedType.Type.GetInterfaces())
         {
-          if (!allInterfaces.ContainsKey (usedInterface))
-            allInterfaces.Add (usedInterface, new List<Type>());
+          if (!allInterfaces.ContainsKey(usedInterface))
+            allInterfaces.Add(usedInterface, new List<Type>());
 
-          allInterfaces[usedInterface].Add (involvedType.Type);
+          allInterfaces[usedInterface].Add(involvedType.Type);
         }
 
         if (involvedType.IsTarget)
         {
-          var composedInterfaces = _remotionReflector.GetComposedInterfaces (involvedType.ClassContext);
+          var composedInterfaces = _remotionReflector.GetComposedInterfaces(involvedType.ClassContext);
           foreach (var composedInterface in composedInterfaces)
           {
-            if (!allInterfaces.ContainsKey (composedInterface))
-              allInterfaces.Add (composedInterface, new List<Type>());
+            if (!allInterfaces.ContainsKey(composedInterface))
+              allInterfaces.Add(composedInterface, new List<Type>());
 
-            allInterfaces[composedInterface].Add (involvedType.Type);
+            allInterfaces[composedInterface].Add(involvedType.Type);
           }
         }
       }
@@ -127,23 +127,23 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     private XElement GenerateInterfaceElement (Type usedInterface, Dictionary<Type, List<Type>> allInterfaces, bool isComposedInterface)
     {
-      return new XElement (
+      return new XElement(
           "Interface",
-          new XAttribute ("id", _interfaceIdentifierGenerator.GetIdentifier (usedInterface)),
-          new XAttribute ("assembly-ref", _assemblyIdentifierGenerator.GetIdentifier (usedInterface.Assembly)),
-          new XAttribute ("namespace", usedInterface.Namespace),
+          new XAttribute("id", _interfaceIdentifierGenerator.GetIdentifier(usedInterface)),
+          new XAttribute("assembly-ref", _assemblyIdentifierGenerator.GetIdentifier(usedInterface.Assembly)),
+          new XAttribute("namespace", usedInterface.Namespace),
           new XAttribute("name", _outputFormatter.GetShortFormattedTypeName(usedInterface)),
-          new XAttribute ("is-composed-interface", isComposedInterface),
-          new MemberReportGenerator (usedInterface, new InvolvedType (usedInterface), _involvedTypeIdentifierGenerator, _memberIdentifierGenerator, _outputFormatter).GenerateXml (),
-          new XElement (
+          new XAttribute("is-composed-interface", isComposedInterface),
+          new MemberReportGenerator(usedInterface, new InvolvedType(usedInterface), _involvedTypeIdentifierGenerator, _memberIdentifierGenerator, _outputFormatter).GenerateXml(),
+          new XElement(
               "ImplementedBy",
               from implementingType in allInterfaces[usedInterface]
               select
-                  new XElement (
-                  "InvolvedType-Reference",
-                  new XAttribute ("ref", _involvedTypeIdentifierGenerator.GetIdentifier (implementingType)))
-              )
-          );
+                  new XElement(
+                      "InvolvedType-Reference",
+                      new XAttribute("ref", _involvedTypeIdentifierGenerator.GetIdentifier(implementingType)))
+          )
+      );
     }
   }
 }

@@ -20,6 +20,8 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 {
   public class TargetDoSomething : IDoSomething
   {
-    public virtual void DoSomething () { }
+    public virtual void DoSomething ()
+    {
+    }
   }
 }

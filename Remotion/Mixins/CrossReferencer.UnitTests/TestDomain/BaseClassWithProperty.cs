@@ -21,6 +21,9 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
   public class BaseClassWithProperty
   {
     public virtual string PropertyName { get; set; }
-    public virtual void DoSomething() { }
+
+    public virtual void DoSomething ()
+    {
+    }
   }
 }

@@ -35,9 +35,9 @@ namespace Remotion.Mixins.CrossReferencer.Report
         IIdentifierGenerator<Type> involvedTypeIdentifierGenerator,
         IOutputFormatter outputFormatter)
     {
-      ArgumentUtility.CheckNotNull ("explicitDependencies", explicitDependencies);
-      ArgumentUtility.CheckNotNull ("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull ("outputFormatter", outputFormatter);
+      ArgumentUtility.CheckNotNull("explicitDependencies", explicitDependencies);
+      ArgumentUtility.CheckNotNull("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
+      ArgumentUtility.CheckNotNull("outputFormatter", outputFormatter);
 
       _explicitDependencies = explicitDependencies;
       _involvedTypeIdentifierGenerator = involvedTypeIdentifierGenerator;
@@ -46,15 +46,15 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public XElement GenerateXml ()
     {
-      return new XElement (
+      return new XElement(
           "AdditionalDependencies",
           from explicitDependencyType in _explicitDependencies
-          select new XElement (
+          select new XElement(
               "AdditionalDependency",
-              new XAttribute ("ref", _involvedTypeIdentifierGenerator.GetIdentifier (explicitDependencyType.To<Type>())),
-              new XAttribute ("instance-name", _outputFormatter.GetShortFormattedTypeName (explicitDependencyType.To<Type>()))
-              )
-          );
+              new XAttribute("ref", _involvedTypeIdentifierGenerator.GetIdentifier(explicitDependencyType.To<Type>())),
+              new XAttribute("instance-name", _outputFormatter.GetShortFormattedTypeName(explicitDependencyType.To<Type>()))
+          )
+      );
     }
   }
 }

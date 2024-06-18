@@ -18,8 +18,8 @@ using System;
 
 namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 {
-  [FieldParam(new[] { "AttributeParam1", "AttributeParam2"})]
-  public class ClassWithAttributeFieldParam 
+  [FieldParam(new[] { "AttributeParam1", "AttributeParam2" })]
+  public class ClassWithAttributeFieldParam
   {
   }
 

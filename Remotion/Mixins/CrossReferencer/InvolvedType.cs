@@ -30,11 +30,11 @@ namespace Remotion.Mixins.CrossReferencer
     private IEnumerable<InvolvedTypeMember> _members;
     private ReflectedObject /* ClassContext */ _classContext;
     private ReflectedObject /* TargetClassDefinition */ _targetClassDefintion;
-    private readonly IDictionary<InvolvedType, ReflectedObject> _targetTypes = new Dictionary<InvolvedType, ReflectedObject> ();
+    private readonly IDictionary<InvolvedType, ReflectedObject> _targetTypes = new Dictionary<InvolvedType, ReflectedObject>();
 
     public InvolvedType (Type realType)
     {
-      ArgumentUtility.CheckNotNull ("realType", realType);
+      ArgumentUtility.CheckNotNull("realType", realType);
 
       _realType = realType;
     }
@@ -49,18 +49,19 @@ namespace Remotion.Mixins.CrossReferencer
       get
       {
         if (_members == null)
-          // TODO remove constructors
-          _members = _realType.GetMembers (BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
-                              .Where (m => !HasSpecialName (m))
-                              .OrderBy (m => m.Name)
-                              .Select (m =>
-                              {
-                                ReflectedObject targetMemberDefinition;
-                                List<ReflectedObject> mixinMemberDefinitions;
-                                TargetMemberDefinitions.TryGetValue (m, out targetMemberDefinition);
-                                MixinMemberDefinitions.TryGetValue (m, out mixinMemberDefinitions);
-                                return new InvolvedTypeMember (m, targetMemberDefinition, mixinMemberDefinitions);
-                              });
+            // TODO remove constructors
+          _members = _realType.GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
+              .Where(m => !HasSpecialName(m))
+              .OrderBy(m => m.Name)
+              .Select(
+                  m =>
+                  {
+                    ReflectedObject targetMemberDefinition;
+                    List<ReflectedObject> mixinMemberDefinitions;
+                    TargetMemberDefinitions.TryGetValue(m, out targetMemberDefinition);
+                    MixinMemberDefinitions.TryGetValue(m, out mixinMemberDefinitions);
+                    return new InvolvedTypeMember(m, targetMemberDefinition, mixinMemberDefinitions);
+                  });
         return _members;
       }
     }
@@ -77,14 +78,8 @@ namespace Remotion.Mixins.CrossReferencer
 
     public ReflectedObject /* ClassContext */ ClassContext
     {
-      get
-      {
-        return _classContext;
-      }
-      set
-      {
-        _classContext = value;
-      }
+      get { return _classContext; }
+      set { _classContext = value; }
     }
 
     public bool HasTargetClassDefintion
@@ -94,14 +89,8 @@ namespace Remotion.Mixins.CrossReferencer
 
     public ReflectedObject /* TargetClassDefinition */ TargetClassDefinition
     {
-      get
-      {
-        return _targetClassDefintion;
-      }
-      set
-      {
-        _targetClassDefintion = value;
-      }
+      get { return _targetClassDefintion; }
+      set { _targetClassDefintion = value; }
     }
 
     public IDictionary<InvolvedType, ReflectedObject> TargetTypes
@@ -110,26 +99,29 @@ namespace Remotion.Mixins.CrossReferencer
     }
 
     private IDictionary<MemberInfo, ReflectedObject> _targetMemberDefinitions;
+
     public IDictionary<MemberInfo, ReflectedObject> TargetMemberDefinitions
     {
       get
       {
         if (_targetMemberDefinitions == null)
-          _targetMemberDefinitions = TargetClassDefinition == null ? new Dictionary<MemberInfo, ReflectedObject> () :
-            TargetClassDefinition.CallMethod ("GetAllMembers").ToDictionary (m => m.GetProperty ("MemberInfo").To<MemberInfo> (), m => m, new MemberDefinitionEqualityComparer ());
+          _targetMemberDefinitions = TargetClassDefinition == null
+              ? new Dictionary<MemberInfo, ReflectedObject>()
+              : TargetClassDefinition.CallMethod("GetAllMembers").ToDictionary(m => m.GetProperty("MemberInfo").To<MemberInfo>(), m => m, new MemberDefinitionEqualityComparer());
 
         return _targetMemberDefinitions;
       }
     }
 
     private IDictionary<MemberInfo, List<ReflectedObject>> _mixinMemberDefinitions;
+
     public IDictionary<MemberInfo, List<ReflectedObject>> MixinMemberDefinitions
     {
       get
       {
         if (_mixinMemberDefinitions == null)
-          _mixinMemberDefinitions = TargetTypes.Values.Where (t => t != null).SelectMany (t => t.CallMethod ("GetAllMembers"))
-            .GroupBy (m => m.GetProperty ("MemberInfo").To<MemberInfo> ()).ToDictionary (m => m.Key, m => m.ToList (), new MemberDefinitionEqualityComparer ());
+          _mixinMemberDefinitions = TargetTypes.Values.Where(t => t != null).SelectMany(t => t.CallMethod("GetAllMembers"))
+              .GroupBy(m => m.GetProperty("MemberInfo").To<MemberInfo>()).ToDictionary(m => m.Key, m => m.ToList(), new MemberDefinitionEqualityComparer());
 
         return _mixinMemberDefinitions;
       }
@@ -138,7 +130,7 @@ namespace Remotion.Mixins.CrossReferencer
     public void Accept (IInvolvedVisitor involvedVisitor)
     {
       foreach (var member in Members)
-        member.Accept (involvedVisitor);
+        member.Accept(involvedVisitor);
     }
 
     private static bool HasSpecialName (MemberInfo memberInfo)
@@ -151,51 +143,52 @@ namespace Remotion.Mixins.CrossReferencer
 
         var methodName = methodInfo.Name;
         // only explicit interface implementations contain a '.'
-        if (methodName.Contains ('.'))
+        if (methodName.Contains('.'))
         {
-          var parts = methodName.Split ('.');
+          var parts = methodName.Split('.');
           var partCount = parts.Length;
           methodName = parts[partCount - 1];
         }
 
         return
-          (methodInfo.IsSpecialName
-           && (methodName.StartsWith ("add_")
-               || methodName.StartsWith ("remove_")
-               || methodName.StartsWith ("get_")
-               || methodName.StartsWith ("set_")
-              )
-          );
+            (methodInfo.IsSpecialName
+             && (methodName.StartsWith("add_")
+                 || methodName.StartsWith("remove_")
+                 || methodName.StartsWith("get_")
+                 || methodName.StartsWith("set_")
+             )
+            );
       }
+
       return false;
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       var other = obj as InvolvedType;
       return other != null
-             && Equals (other._realType, _realType)
-             && Equals (other._classContext, _classContext)
-             && Equals (other._targetClassDefintion, _targetClassDefintion)
-             && other._targetTypes.SequenceEqual (_targetTypes);
+             && Equals(other._realType, _realType)
+             && Equals(other._classContext, _classContext)
+             && Equals(other._targetClassDefintion, _targetClassDefintion)
+             && other._targetTypes.SequenceEqual(_targetTypes);
     }
 
     public override int GetHashCode ()
     {
-      int hashCode = _realType.GetHashCode ();
-      Rotate (ref hashCode);
-      hashCode ^= _classContext == null ? 0 : _classContext.GetHashCode ();
-      Rotate (ref hashCode);
-      hashCode ^= _targetClassDefintion == null ? 0 : _targetClassDefintion.GetHashCode ();
-      Rotate (ref hashCode);
-      hashCode ^= _targetTypes.Aggregate (0, (current, typeAndMixinDefintionPair) => current ^ typeAndMixinDefintionPair.GetHashCode ());
+      int hashCode = _realType.GetHashCode();
+      Rotate(ref hashCode);
+      hashCode ^= _classContext == null ? 0 : _classContext.GetHashCode();
+      Rotate(ref hashCode);
+      hashCode ^= _targetClassDefintion == null ? 0 : _targetClassDefintion.GetHashCode();
+      Rotate(ref hashCode);
+      hashCode ^= _targetTypes.Aggregate(0, (current, typeAndMixinDefintionPair) => current ^ typeAndMixinDefintionPair.GetHashCode());
 
       return hashCode;
     }
 
     public override string ToString ()
     {
-      return String.Format ("{0}, isTarget: {1}, isMixin: {2}, # of targets: {3}", _realType, IsTarget, IsMixin, _targetTypes.Count);
+      return String.Format("{0}, isTarget: {1}, isMixin: {2}, # of targets: {3}", _realType, IsTarget, IsMixin, _targetTypes.Count);
     }
 
     private static void Rotate (ref int value)

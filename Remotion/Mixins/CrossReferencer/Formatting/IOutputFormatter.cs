@@ -29,7 +29,7 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
     XElement CreateModifierMarkup (string attributes, string keywords);
 
     XElement CreateConstructorMarkup (string name, ParameterInfo[] parameterInfos);
-    XElement CreateMethodMarkup (string methodName, Type returnType, ParameterInfo[] parameterInfos, Type[] genericArguments = null);
+    XElement CreateMethodMarkup (string methodName, Type returnType, ParameterInfo[] parameterInfos, Type[]? genericArguments = null);
     XElement CreateEventMarkup (string eventName, Type handlerType);
     XElement CreateFieldMarkup (string fieldName, Type fieldType);
     XElement CreatePropertyMarkup (string propertyName, Type propertyType);

@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 {
-  
   public abstract class MemberModifierTestClass : IDisposable
   {
     static MemberModifierTestClass ()
@@ -37,38 +36,43 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 
     private string _privateField;
 
-    public virtual void PublicVirtualMethod() {}
+    public virtual void PublicVirtualMethod ()
+    {
+    }
 
-    public abstract void PublicAbstractMethod();
+    public abstract void PublicAbstractMethod ();
 
     public void Dispose ()
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public static int _staticField;
 
     public static void StaticMethod ()
-    {}
+    {
+    }
 
     public static class NestedStaticClass
-    {}
+    {
+    }
 
     public readonly string _readonlyField;
 
-    public class NestedClass {}
-
+    public class NestedClass
+    {
+    }
   }
-  public delegate void ChangedEventHandler(object sender, EventArgs e);
+
+  public delegate void ChangedEventHandler (object sender, EventArgs e);
 
 
   public abstract class SubModifierTestClass : MemberModifierTestClass
   {
-    public abstract override void PublicAbstractMethod();
+    public abstract override void PublicAbstractMethod ();
 
-    public override sealed void PublicVirtualMethod()
+    public override sealed void PublicVirtualMethod ()
     {
     }
   }
-  
 }

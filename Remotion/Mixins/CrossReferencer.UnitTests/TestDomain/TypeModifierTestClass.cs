@@ -20,16 +20,36 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 {
   public class TypeModifierTestClass
   {
-    protected class ProtectedClass {}
-    protected internal class ProtectedInternalClass { }
-    internal class InternalClass { }
-    private class PrivateClass{} 
-    public struct PublicStruct {}
+    protected class ProtectedClass
+    {
+    }
+
+    protected internal class ProtectedInternalClass
+    {
+    }
+
+    internal class InternalClass
+    {
+    }
+
+    private class PrivateClass
+    {
+    }
+
+    public struct PublicStruct
+    {
+    }
   }
 
-  internal class TopLevelInternalClass {}
+  internal class TopLevelInternalClass
+  {
+  }
 
-  public sealed class PublicSealedClass {}
+  public sealed class PublicSealedClass
+  {
+  }
 
-  public abstract class PublicAbstractClass {}
+  public abstract class PublicAbstractClass
+  {
+  }
 }

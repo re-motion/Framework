@@ -52,11 +52,11 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       // Mixin1 has no depencies
       var explicitDependencies = _mixinConfiguration.ClassContexts.Single().Mixins.First().ExplicitDependencies;
 
-      var dependencies = new ReflectedObject (explicitDependencies);
-      var output = new AdditionalDependencyReportGenerator (dependencies, _identifierGenerator, _outputFormatter).GenerateXml();
-      var expectedOutput = new XElement ("AdditionalDependencies");
+      var dependencies = new ReflectedObject(explicitDependencies);
+      var output = new AdditionalDependencyReportGenerator(dependencies, _identifierGenerator, _outputFormatter).GenerateXml();
+      var expectedOutput = new XElement("AdditionalDependencies");
 
-      Assert.That (output.ToString(), Is.EqualTo (expectedOutput.ToString()));
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
     [Test]
@@ -64,21 +64,21 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     {
       var explicitDependencies = _mixinConfiguration.ClassContexts.Single().Mixins.Last().ExplicitDependencies;
 
-      var dependencies = new ReflectedObject (explicitDependencies);
-      var output = new AdditionalDependencyReportGenerator (dependencies, _identifierGenerator, _outputFormatter).GenerateXml ();
-      var expectedOutput = new XElement (
+      var dependencies = new ReflectedObject(explicitDependencies);
+      var output = new AdditionalDependencyReportGenerator(dependencies, _identifierGenerator, _outputFormatter).GenerateXml();
+      var expectedOutput = new XElement(
           "AdditionalDependencies",
-          new XElement (
+          new XElement(
               "AdditionalDependency",
-              new XAttribute ("ref", "0"),
-              new XAttribute ("instance-name", "AdditionalDependenciesTest+Mixin1")),
-          new XElement (
+              new XAttribute("ref", "0"),
+              new XAttribute("instance-name", "AdditionalDependenciesTest+Mixin1")),
+          new XElement(
               "AdditionalDependency",
-              new XAttribute ("ref", "1"),
-              new XAttribute ("instance-name", "AdditionalDependenciesTest+Mixin2"))
-          );
+              new XAttribute("ref", "1"),
+              new XAttribute("instance-name", "AdditionalDependenciesTest+Mixin2"))
+      );
 
-      Assert.That (output.ToString(), Is.EqualTo (expectedOutput.ToString()));
+      Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
   }
 }
