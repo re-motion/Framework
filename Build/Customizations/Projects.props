@@ -131,6 +131,7 @@
       <CreateNuGetPackageWithSymbolServerSupport>True</CreateNuGetPackageWithSymbolServerSupport>
     </ReleaseProjectFiles>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\MixerTools\Mixins.MixerTools.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\CrossReferencer\Mixins.CrossReferencer.csproj"/>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\UnitTests\Mixins.UnitTests.csproj">
       <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
@@ -138,6 +139,9 @@
       <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\MixerTools.UnitTests\Mixins.MixerTools.UnitTests.csproj">
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
+    </UnitTestProjectFiles>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Mixins\CrossReferencer.UnitTests\Mixins.CrossReferencer.UnitTests.csproj">
       <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
 
