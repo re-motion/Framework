@@ -21,47 +21,21 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Remotion.Mixins.XRef.Formatting;
-using Remotion.Mixins.XRef.RemotionReflector;
 using Remotion.Mixins.XRef.Report;
 
 namespace Remotion.Mixins.XRef
 {
   public static class XRef
   {
-    private static readonly object s_locker = new object();
-    public const string DefaultXmlOutputFileName = "MixinXRef.xml";
+    private const string c_defaultXmlOutputFileName = "MixinXRef.xml";
+    private const string c_defaultXmlOutputDirectory = "C:\\";
 
-    public static bool Run (XRefArguments arguments)
+    public static void GetAssemblyInformation (bool generateFullReport = false, string outputDirectory = c_defaultXmlOutputDirectory, string outputFileName = c_defaultXmlOutputFileName, bool skipHtmlGeneration = true)
     {
-      lock (s_locker)
-      {
-        var success = false;
-        try
-        {
-          success = InternalRun(arguments);
-        }
-        catch
-        {
-        }
-
-        return success;
-      }
-    }
-
-    private static bool InternalRun (XRefArguments arguments)
-    {
-      var argsOk = CheckArguments(arguments);
-      if (!argsOk)
-        return false;
-
-      IRemotionReflector reflector;
-      if (!CreateReflector(arguments, out reflector))
-        return false;
+      var reflector = new RemotionReflector();
 
       var assemblyResolver = AssemblyResolver.Create();
       AppDomain.CurrentDomain.AssemblyResolve += assemblyResolver.HandleAssemblyResolve;
-
-      //      reflector.InitializeLogging();
 
       var typeDiscoveryService = reflector.GetTypeDiscoveryService();
 
@@ -72,8 +46,7 @@ namespace Remotion.Mixins.XRef
       }
       catch (Exception)
       {
-        //        Log.SendError(ex.ToString());
-        return false;
+        return;
       }
 
       var allAssemblies = allTypes.Cast<Type>().Select(t => t.Assembly)
@@ -83,8 +56,7 @@ namespace Remotion.Mixins.XRef
 
       if (!allAssemblies.Any())
       {
-        //        Log.SendError("\"{0}\" contains no assemblies or only assemblies on the ignore list", arguments.AssemblyDirectory);
-        return false;
+        return;
       }
 
       var mixinConfiguration = reflector.BuildConfigurationFromAssemblies(allAssemblies);
@@ -94,149 +66,47 @@ namespace Remotion.Mixins.XRef
       var involvedTypeFinder = new InvolvedTypeFinder(mixinConfiguration, allAssemblies, configurationErrors, validationErrors, reflector);
       var involvedTypes = involvedTypeFinder.FindInvolvedTypes();
 
-      var reportGenerator = GetReportGenerator(arguments, involvedTypes, configurationErrors, validationErrors, reflector);
+      var reportGenerator = GetReportGenerator(generateFullReport, involvedTypes, configurationErrors, validationErrors, reflector);
       var outputDocument = reportGenerator.GenerateXmlDocument();
 
-      var xmlFile = Path.Combine(
-          arguments.OutputDirectory,
-          !string.IsNullOrEmpty(arguments.XMLOutputFileName)
-              ? arguments.XMLOutputFileName
-              : DefaultXmlOutputFileName);
+      var xmlFile = Path.Combine(outputDirectory, outputFileName);
       outputDocument.Save(xmlFile);
 
-      //      Log.SendInfo("XML Report successfully generated to '{0}'.", arguments.OutputDirectory);
+      var success = ProcessOutputDocument(xmlFile, outputDirectory, generateFullReport, skipHtmlGeneration);
 
-      var success = ProcessOutputDocument(arguments, xmlFile);
-
-      return success;
+      //return success;
     }
 
     private static IXmlReportGenerator GetReportGenerator (
-        XRefArguments arguments,
+        bool generateFullReport,
         InvolvedType[] involvedTypes,
         ErrorAggregator<Exception> configurationErrors,
         ErrorAggregator<Exception> validationErrors,
-        IRemotionReflector reflector)
+        RemotionReflector reflector)
     {
-      return arguments.GenerateOnlyErrorReport
-          ? (IXmlReportGenerator)new ErrorReportGenerator(configurationErrors, validationErrors, reflector)
+      return generateFullReport
+          ? new ErrorReportGenerator(configurationErrors, validationErrors, reflector)
           : new FullReportGenerator(involvedTypes, configurationErrors, validationErrors, reflector, new OutputFormatter());
     }
 
-    private static bool ProcessOutputDocument (XRefArguments arguments, string xmlFile)
+    private static bool ProcessOutputDocument (string xmlFile, string outputDirectory, bool generateFullReport, bool skipHtmlGeneration)
     {
-      if (arguments.GenerateOnlyErrorReport || arguments.SkipHTMLGeneration)
+      if (generateFullReport || skipHtmlGeneration)
       {
-        //        Log.SendInfo("  Skipping HTML generation");
         return true;
       }
 
-      //      Log.SendInfo("Starting HTML generation");
-      var transformerExitCode = new XRefTransformer(xmlFile, arguments.OutputDirectory).GenerateHtmlFromXml();
+      var transformerExitCode = new XRefTransformer(xmlFile, outputDirectory).GenerateHtmlFromXml();
       if (transformerExitCode != 0)
       {
-        //        Log.SendError("Error applying XSLT (code {0})", transformerExitCode);
         return false;
       }
 
       // copy resources folder
       var xRefPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-      var directoryInfo = new DirectoryInfo(Path.Combine(xRefPath, @"xml_utilities\resources"));
-      var resourcesPath = Path.Combine(arguments.OutputDirectory, "resources");
+      var directoryInfo = new DirectoryInfo(Path.Combine(xRefPath!, @"xml_utilities\resources"));
+      var resourcesPath = Path.Combine(outputDirectory, "resources");
       directoryInfo.CopyTo(resourcesPath);
-
-      //      Log.SendInfo("Mixin Documentation successfully generated to '{0}'.", arguments.OutputDirectory);
-      return true;
-    }
-
-    private static bool CreateReflector (XRefArguments arguments, out IRemotionReflector reflector)
-    {
-      try
-      {
-        switch (arguments.ReflectorSource)
-        {
-          case ReflectorSource.ReflectorAssembly:
-            reflector = RemotionReflectorFactory.Create(arguments.AssemblyDirectory, arguments.ReflectorPath);
-            return true;
-          case ReflectorSource.CustomReflector:
-            var customReflector = Type.GetType(arguments.CustomReflectorAssemblyQualifiedTypeName);
-            if (customReflector == null)
-            {
-              //              Log.SendError("Custom reflector can not be found");
-              reflector = null;
-              return false;
-            }
-
-            if (!typeof(IRemotionReflector).IsAssignableFrom(customReflector))
-            {
-              //              Log.SendError(
-              //                  "Specified custom reflector {0} does not implement {1}",
-              //                  customReflector,
-              //                  typeof(IRemotionReflector).FullName);
-              reflector = null;
-              return false;
-            }
-
-            reflector = RemotionReflectorFactory.Create(arguments.AssemblyDirectory, customReflector);
-            return true;
-          case ReflectorSource.Unspecified:
-            throw new IndexOutOfRangeException("Reflector source is unspecified");
-        }
-      }
-      catch (Exception)
-      {
-        //        Log.SendError("Error while initializing the reflector: {0}", ex.Message);
-        reflector = null;
-        return false;
-      }
-
-      throw new InvalidOperationException("Unreachable codepath reached.");
-    }
-
-    private static bool CheckArguments (XRefArguments arguments)
-    {
-      if (string.IsNullOrEmpty(arguments.AssemblyDirectory))
-      {
-        //        Log.SendError("Input directory missing");
-        return false;
-      }
-
-      if (!File.Exists(Path.Combine(arguments.AssemblyDirectory, "Remotion.dll")))
-      {
-        //        Log.SendError("The input directory '" + arguments.AssemblyDirectory + "' doesn't contain the remotion assembly.");
-        return false;
-      }
-
-      if (string.IsNullOrEmpty(arguments.OutputDirectory))
-      {
-        //        Log.SendError("Output directory missing");
-        return false;
-      }
-
-      if (arguments.ReflectorSource == ReflectorSource.Unspecified)
-      {
-        //        Log.SendError("Reflector is missing. Either provide a reflector assembly or a custom reflector.");
-        return false;
-      }
-
-      if (!Directory.Exists(arguments.AssemblyDirectory))
-      {
-        //        Log.SendError("Input directory '" + arguments.AssemblyDirectory + "' does not exist");
-        return false;
-      }
-
-      var invalid = arguments.OutputDirectory.Intersect(Path.GetInvalidPathChars());
-      if (invalid.Any())
-      {
-        //        Log.SendError("Output directory contains invalid characters: {0}", string.Join(" ", invalid.Select(c => c.ToString()).ToArray()));
-        return false;
-      }
-
-      if (Directory.Exists(arguments.OutputDirectory) && !arguments.OverwriteExistingFiles)
-      {
-        //        Log.SendError("Output directory already exists. Use -f option if you are sure you want to overwrite all existing files.");
-        return false;
-      }
 
       return true;
     }

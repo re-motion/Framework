@@ -25,12 +25,12 @@ namespace Remotion.Mixins.XRef.Report
   {
     private readonly ErrorAggregator<Exception> _configurationErrors;
     private readonly ErrorAggregator<Exception> _validationErrors;
-    private readonly IRemotionReflector _reflector;
+    private readonly RemotionReflector _reflector;
 
     public ErrorReportGenerator (
         ErrorAggregator<Exception> configurationErrors,
         ErrorAggregator<Exception> validationErrors,
-        IRemotionReflector reflector)
+        RemotionReflector reflector)
     {
       ArgumentUtility.CheckNotNull("configurationErrors", configurationErrors);
       ArgumentUtility.CheckNotNull("validationErrors", validationErrors);

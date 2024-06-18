@@ -27,13 +27,13 @@ namespace Remotion.Mixins.XRef.Report
   {
     private readonly ReflectedObject _mixinDefinition;
     private readonly IIdentifierGenerator<Assembly> _assemblyIdentifierGenerator;
-    private readonly IRemotionReflector _remotionReflector;
+    private readonly RemotionReflector _remotionReflector;
     private readonly IOutputFormatter _outputFormatter;
 
     public TargetCallDependenciesReportGenerator (
         ReflectedObject mixinDefinition,
         IIdentifierGenerator<Assembly> assemblyIdentifierGenerator,
-        IRemotionReflector remotionReflector,
+        RemotionReflector remotionReflector,
         IOutputFormatter outputFormatter)
     {
       _mixinDefinition = mixinDefinition;

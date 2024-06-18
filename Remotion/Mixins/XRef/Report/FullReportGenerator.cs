@@ -29,7 +29,7 @@ namespace Remotion.Mixins.XRef.Report
     private readonly InvolvedType[] _involvedTypes;
     private readonly ErrorAggregator<Exception> _configurationErrors;
     private readonly ErrorAggregator<Exception> _validationErrors;
-    private readonly IRemotionReflector _remotionReflector;
+    private readonly RemotionReflector _remotionReflector;
     private readonly IOutputFormatter _outputFormatter;
     private string _creationTime;
 
@@ -37,7 +37,7 @@ namespace Remotion.Mixins.XRef.Report
         InvolvedType[] involvedTypes,
         ErrorAggregator<Exception> configurationErrors,
         ErrorAggregator<Exception> validationErrors,
-        IRemotionReflector remotionReflector,
+        RemotionReflector remotionReflector,
         IOutputFormatter outputFormatter)
     {
       ArgumentUtility.CheckNotNull("_involvedTypes", involvedTypes);

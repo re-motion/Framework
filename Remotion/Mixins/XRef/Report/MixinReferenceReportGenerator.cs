@@ -20,7 +20,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Remotion.Mixins.XRef.Formatting;
-using ArgumentUtility = Remotion.Utilities.ArgumentUtility;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef.Report
 {
@@ -31,7 +31,7 @@ namespace Remotion.Mixins.XRef.Report
     private readonly IIdentifierGenerator<Type> _involvedTypeIdentifierGenerator;
     private readonly IIdentifierGenerator<Type> _interfaceIdentifierGenerator;
     private readonly IIdentifierGenerator<Type> _attributeIdentifierGenerator;
-    private readonly IRemotionReflector _remotionReflector;
+    private readonly RemotionReflector _remotionReflector;
     private readonly IOutputFormatter _outputFormatter;
 
     public MixinReferenceReportGenerator (
@@ -40,7 +40,7 @@ namespace Remotion.Mixins.XRef.Report
         IIdentifierGenerator<Type> involvedTypeIdentifierGenerator,
         IIdentifierGenerator<Type> interfaceIdentifierGenerator,
         IIdentifierGenerator<Type> attributeIdentifierGenerator,
-        IRemotionReflector remotionReflector,
+        RemotionReflector remotionReflector,
         IOutputFormatter outputFormatter
     )
     {

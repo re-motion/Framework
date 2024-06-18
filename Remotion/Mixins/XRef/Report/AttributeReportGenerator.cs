@@ -31,7 +31,7 @@ namespace Remotion.Mixins.XRef.Report
     private readonly IIdentifierGenerator<Assembly> _assemblyIdentifierGenerator;
     private readonly IIdentifierGenerator<Type> _involvedTypeIdentifierGenerator;
     private readonly IIdentifierGenerator<Type> _attributeIdentifierGenerator;
-    private readonly IRemotionReflector _remotionReflector;
+    private readonly RemotionReflector _remotionReflector;
     private readonly IOutputFormatter _outputFormatter;
 
     public AttributeReportGenerator (
@@ -39,7 +39,7 @@ namespace Remotion.Mixins.XRef.Report
         IIdentifierGenerator<Assembly> assemblyIdentifierGenerator,
         IIdentifierGenerator<Type> involvedTypeIdentifierGenerator,
         IIdentifierGenerator<Type> attributeIdentifierGenerator,
-        IRemotionReflector remotionReflector,
+        RemotionReflector remotionReflector,
         IOutputFormatter outputFormatter
     )
     {

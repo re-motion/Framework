@@ -33,7 +33,7 @@ namespace Remotion.Mixins.XRef.Report
     private readonly IIdentifierGenerator<MemberInfo> _memberIdentifierGenerator;
     private readonly IIdentifierGenerator<Type> _interfaceIdentifierGenerator;
     private readonly IIdentifierGenerator<Type> _attributeIdentifierGenerator;
-    private readonly IRemotionReflector _remotionReflector;
+    private readonly RemotionReflector _remotionReflector;
     private readonly IOutputFormatter _outputFormatter;
 
     private readonly SummaryPicker _summaryPicker = new();
@@ -46,7 +46,7 @@ namespace Remotion.Mixins.XRef.Report
         IIdentifierGenerator<MemberInfo> memberIdentifierGenerator,
         IIdentifierGenerator<Type> interfaceIdentifierGenerator,
         IIdentifierGenerator<Type> attributeIdentifierGenerator,
-        IRemotionReflector remotionReflector,
+        RemotionReflector remotionReflector,
         IOutputFormatter outputFormatter)
     {
       ArgumentUtility.CheckNotNull("involvedTypes", involvedTypes);

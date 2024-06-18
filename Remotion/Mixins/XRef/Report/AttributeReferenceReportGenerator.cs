@@ -29,12 +29,12 @@ namespace Remotion.Mixins.XRef.Report
   {
     private readonly Type _type;
     private readonly IIdentifierGenerator<Type> _attributeIdentifierGenerator;
-    private readonly IRemotionReflector _remotionReflector;
+    private readonly RemotionReflector _remotionReflector;
 
     public AttributeReferenceReportGenerator (
         Type type,
         IIdentifierGenerator<Type> attributeIdentifierGenerator,
-        IRemotionReflector remotionReflector)
+        RemotionReflector remotionReflector)
     {
       ArgumentUtility.CheckNotNull("type", type);
       ArgumentUtility.CheckNotNull("attributeIdentifierGenerator", attributeIdentifierGenerator);

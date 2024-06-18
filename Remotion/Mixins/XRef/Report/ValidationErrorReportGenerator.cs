@@ -24,7 +24,7 @@ namespace Remotion.Mixins.XRef.Report
   public class ValidationErrorReportGenerator : IReportGenerator
   {
     private readonly ErrorAggregator<Exception> _errorAggregator;
-    private readonly IRemotionReflector _remotionReflector;
+    private readonly RemotionReflector _remotionReflector;
 
     public ValidationErrorReportGenerator (ErrorAggregator<Exception> errorAggregator, RemotionReflector remotionReflector)
     {

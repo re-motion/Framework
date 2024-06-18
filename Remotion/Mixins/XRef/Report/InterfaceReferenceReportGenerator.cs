@@ -27,12 +27,12 @@ namespace Remotion.Mixins.XRef.Report
   {
     private readonly InvolvedType _involvedType;
     private readonly IIdentifierGenerator<Type> _interfaceIdentifierGenerator;
-    private readonly IRemotionReflector _remotionReflector;
+    private readonly RemotionReflector _remotionReflector;
 
     public InterfaceReferenceReportGenerator (
         InvolvedType involvedType,
         IIdentifierGenerator<Type> interfaceIdentifierGenerator,
-        IRemotionReflector remotionReflector)
+        RemotionReflector remotionReflector)
     {
       ArgumentUtility.CheckNotNull("involvedType", involvedType);
       ArgumentUtility.CheckNotNull("interfaceIdentifierGenerator", interfaceIdentifierGenerator);

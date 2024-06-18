@@ -27,12 +27,12 @@ namespace Remotion.Mixins.XRef.Report
     // MultiDefinitionCollection<Type, AttributeIntroductionDefinition> _attributeIntroductionDefinitions
     private readonly ReflectedObject _attributeIntroductionDefinitions;
     private readonly IIdentifierGenerator<Type> _attributeIdentifierGenerator;
-    private readonly IRemotionReflector _remotionReflector;
+    private readonly RemotionReflector _remotionReflector;
 
     public AttributeIntroductionReportGenerator (
         ReflectedObject attributeIntroductionDefinitions,
         IIdentifierGenerator<Type> attributeIdentifierGenerator,
-        IRemotionReflector remotionReflector)
+        RemotionReflector remotionReflector)
     {
       ArgumentUtility.CheckNotNull("attributeIntroductionDefinitions", attributeIntroductionDefinitions);
       ArgumentUtility.CheckNotNull("attributeIdentifierGenerator", attributeIdentifierGenerator);

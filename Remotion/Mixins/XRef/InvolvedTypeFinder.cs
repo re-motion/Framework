@@ -29,14 +29,14 @@ namespace Remotion.Mixins.XRef
     private readonly Assembly[] _assemblies;
     private readonly ErrorAggregator<Exception> _configurationErrors;
     private readonly ErrorAggregator<Exception> _validationErrors;
-    private readonly IRemotionReflector _remotionReflector;
+    private readonly RemotionReflector _remotionReflector;
 
     public InvolvedTypeFinder (
         ReflectedObject mixinConfiguration,
         Assembly[] assemblies,
         ErrorAggregator<Exception> configurationErrors,
         ErrorAggregator<Exception> validationErrors,
-        IRemotionReflector remotionReflector
+        RemotionReflector remotionReflector
     )
     {
       ArgumentUtility.CheckNotNull("mixinConfiguration", mixinConfiguration);

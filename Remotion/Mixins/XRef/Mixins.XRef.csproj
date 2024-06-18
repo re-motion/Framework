@@ -23,6 +23,7 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Core\Core\Core.Core.csproj"/>
+        <ProjectReference Include="..\Core\Mixins.Core.csproj" />
     </ItemGroup>
     <Import Project="..\..\..\Build\Shared.build.targets"/>
 </Project>
