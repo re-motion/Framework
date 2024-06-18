@@ -19,6 +19,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef.Utility
 {
@@ -26,10 +27,10 @@ namespace Remotion.Mixins.XRef.Utility
   {
     public Func<object, object[], object> GetFastMethodInvoker (Type declaringType, string memberName, Type[] typeParameters, Type[] argumentTypes, BindingFlags bindingFlags)
     {
-      Utilities.ArgumentUtility.CheckNotNull("declaringType", declaringType);
-      Utilities.ArgumentUtility.CheckNotNull("memberName", memberName);
-      Utilities.ArgumentUtility.CheckNotNull("typeParameters", typeParameters);
-      Utilities.ArgumentUtility.CheckNotNull("argumentTypes", argumentTypes);
+      ArgumentUtility.CheckNotNull("declaringType", declaringType);
+      ArgumentUtility.CheckNotNull("memberName", memberName);
+      ArgumentUtility.CheckNotNull("typeParameters", typeParameters);
+      ArgumentUtility.CheckNotNull("argumentTypes", argumentTypes);
 
       var overloads = (MethodBase[])declaringType.GetMember(memberName, MemberTypes.Method, bindingFlags);
 

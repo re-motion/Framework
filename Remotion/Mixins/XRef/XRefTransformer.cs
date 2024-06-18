@@ -42,10 +42,10 @@ namespace Remotion.Mixins.XRef
       var xRefPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
       // stylesheet path
-      var xsltStyleSheetPath = Path.Combine(xRefPath, @"xml_utilities\main.xslt");
+      var xsltStyleSheetPath = Path.Combine(xRefPath!, @"xml_utilities\main.xslt");
 
       // xslt processor path      
-      var xsltProcessorPath = Path.Combine(xRefPath, @"xml_utilities\saxon\Transform.exe");
+      var xsltProcessorPath = Path.Combine(xRefPath!, @"xml_utilities\saxon\Transform.exe");
 
       // dummy output file - will not be created, just to trick saxon
       var mainOutputFile = Path.Combine(_outputDirectory, "dummy.html");

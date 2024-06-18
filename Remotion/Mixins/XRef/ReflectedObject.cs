@@ -21,18 +21,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Remotion.Mixins.XRef.Utility;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef
 {
   public class ReflectedObject : IEnumerable<ReflectedObject>
   {
-    private static readonly FastMemberInvokerCache s_cache = new FastMemberInvokerCache();
+    private static readonly FastMemberInvokerCache s_cache = new();
 
     private readonly object _wrappedObject;
 
     public ReflectedObject (object wrappedObject)
     {
-      Utilities.ArgumentUtility.CheckNotNull("wrappedObject", wrappedObject);
+      ArgumentUtility.CheckNotNull("wrappedObject", wrappedObject);
 
       if (wrappedObject is ReflectedObject)
         throw new ArgumentException("There is no point in wrapping an instance of 'MixinXRef.Reflection.ReflectedObject'.");
@@ -42,50 +43,50 @@ namespace Remotion.Mixins.XRef
 
     public static ReflectedObject Create (Assembly assembly, string fullName, params object[] parameters)
     {
-      Utilities.ArgumentUtility.CheckNotNull("assembly", assembly);
-      Utilities.ArgumentUtility.CheckNotNull("fullName", fullName);
-      Utilities.ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNull("fullName", fullName);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
-      return new ReflectedObject(Activator.CreateInstance(assembly.GetType(fullName, true), UnWrapParameters(parameters)));
+      return new ReflectedObject(Activator.CreateInstance(assembly.GetType(fullName, true)!, UnWrapParameters(parameters))!);
     }
 
-    public static ReflectedObject CallMethod (Type type, string methodName, params object[] parameters)
+    public static ReflectedObject? CallMethod (Type type, string methodName, params object[] parameters)
     {
-      Utilities.ArgumentUtility.CheckNotNull("type", type);
-      Utilities.ArgumentUtility.CheckNotNull("methodName", methodName);
-      Utilities.ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("methodName", methodName);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
       return CallMethod(type, methodName, new Type[0], parameters);
     }
 
-    public static ReflectedObject CallMethod (Type type, string methodName, Type[] typeParameters, params object[] parameters)
+    public static ReflectedObject? CallMethod (Type type, string methodName, Type[] typeParameters, params object[] parameters)
     {
-      Utilities.ArgumentUtility.CheckNotNull("type", type);
-      Utilities.ArgumentUtility.CheckNotNull("methodName", methodName);
-      Utilities.ArgumentUtility.CheckNotNull("typeParameters", typeParameters);
-      Utilities.ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("methodName", methodName);
+      ArgumentUtility.CheckNotNull("typeParameters", typeParameters);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
       var unwrappedParameters = UnWrapParameters(parameters);
       var argumentTypes = unwrappedParameters.Select(obj => obj.GetType()).ToArray();
       var invoker = s_cache.GetOrCreateFastMethodInvoker(type, methodName, typeParameters, argumentTypes, BindingFlags.Public | BindingFlags.Static);
 
-      var returnValue = invoker(null, unwrappedParameters);
+      var returnValue = invoker(null!, unwrappedParameters);
       return returnValue == null ? null : new ReflectedObject(returnValue);
     }
 
-    public ReflectedObject CallMethod (string methodName, params object[] parameters)
+    public ReflectedObject? CallMethod (string methodName, params object[] parameters)
     {
-      Utilities.ArgumentUtility.CheckNotNull("methodName", methodName);
-      Utilities.ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull("methodName", methodName);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
       return CallMethod(methodName, new Type[0], parameters);
     }
 
-    public ReflectedObject CallMethod (string methodName, Type[] typeParameters, params object[] parameters)
+    public ReflectedObject? CallMethod (string methodName, Type[] typeParameters, params object[] parameters)
     {
-      Utilities.ArgumentUtility.CheckNotNull("methodName", methodName);
-      Utilities.ArgumentUtility.CheckNotNull("typeParameters", typeParameters);
-      Utilities.ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull("methodName", methodName);
+      ArgumentUtility.CheckNotNull("typeParameters", typeParameters);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
       var unwrappedParameters = UnWrapParameters(parameters);
       var argumentTypes = unwrappedParameters.Select(obj => obj.GetType()).ToArray();
@@ -95,9 +96,9 @@ namespace Remotion.Mixins.XRef
       return returnValue == null ? null : new ReflectedObject(returnValue);
     }
 
-    public ReflectedObject GetProperty (string propertyName)
+    public ReflectedObject? GetProperty (string propertyName)
     {
-      Utilities.ArgumentUtility.CheckNotNull("propertyName", propertyName);
+      ArgumentUtility.CheckNotNull("propertyName", propertyName);
 
       return CallMethod("get_" + propertyName);
     }
@@ -132,7 +133,7 @@ namespace Remotion.Mixins.XRef
 
     public override string ToString ()
     {
-      return _wrappedObject.ToString();
+      return _wrappedObject.ToString() ?? string.Empty;
     }
 
     public override bool Equals (object? obj)
@@ -155,7 +156,7 @@ namespace Remotion.Mixins.XRef
     private static object[] UnWrapParameters (object[] parameters)
     {
       if (parameters == null)
-        return null;
+        return null!;
 
       for (int i = 0; i < parameters.Length; i++)
       {

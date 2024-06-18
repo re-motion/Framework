@@ -25,7 +25,7 @@ namespace Remotion.Mixins.XRef
 {
   public class InvolvedTypeStore : IEnumerable<InvolvedType>
   {
-    private readonly Dictionary<Type, InvolvedType> _involvedTypes = new Dictionary<Type, InvolvedType>();
+    private readonly Dictionary<Type, InvolvedType> _involvedTypes = new();
 
     public InvolvedType GetOrCreateValue (Type type)
     {

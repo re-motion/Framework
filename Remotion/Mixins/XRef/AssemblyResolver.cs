@@ -42,8 +42,7 @@ namespace Remotion.Mixins.XRef
     {
       ArgumentUtility.CheckNotNull("args", args);
 
-      AssemblyName privateAssemblyName;
-      if (_assembliesInPrivateBinPath.TryGetValue(args.Name, out privateAssemblyName))
+      if (_assembliesInPrivateBinPath.TryGetValue(args.Name, out var privateAssemblyName))
         return Assembly.Load(privateAssemblyName);
 
       // Simulate assembly binding redirects to the latest version.

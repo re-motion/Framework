@@ -17,13 +17,14 @@
 // 
 using System;
 using System.Collections.Generic;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef
 {
   public class ErrorAggregator<TException>
       where TException : Exception
   {
-    private readonly List<TException> _exceptionList = new List<TException>();
+    private readonly List<TException> _exceptionList = new();
 
     public void AddException (TException exception)
     {
@@ -32,9 +33,6 @@ namespace Remotion.Mixins.XRef
       _exceptionList.Add(exception);
     }
 
-    public IEnumerable<TException> Exceptions
-    {
-      get { return _exceptionList.AsReadOnly(); }
-    }
+    public IEnumerable<TException> Exceptions => _exceptionList.AsReadOnly();
   }
 }

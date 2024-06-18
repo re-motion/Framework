@@ -19,6 +19,7 @@ using System;
 using System.Reflection;
 using System.Xml.Linq;
 using Remotion.Mixins.XRef.Formatting;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef.Report
 {
@@ -35,8 +36,8 @@ namespace Remotion.Mixins.XRef.Report
     private readonly IRemotionReflector _remotionReflector;
     private readonly IOutputFormatter _outputFormatter;
 
-    private readonly SummaryPicker _summaryPicker = new SummaryPicker();
-    private readonly TypeModifierUtility _typeModifierUtility = new TypeModifierUtility();
+    private readonly SummaryPicker _summaryPicker = new();
+    private readonly TypeModifierUtility _typeModifierUtility = new();
 
     public InvolvedTypeReportGenerator (
         InvolvedType[] involvedTypes,

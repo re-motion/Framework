@@ -45,44 +45,20 @@
 //
 
 using System;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
 
 namespace Remotion.Mixins.XRef.Options
 {
   [Serializable]
   public class OptionException : Exception
   {
-    private readonly string _option;
-
     public OptionException (string message, string optionName)
         : base(message)
     {
-      _option = optionName;
     }
 
     public OptionException (string message, string optionName, Exception innerException)
         : base(message, innerException)
     {
-      _option = optionName;
-    }
-
-    protected OptionException (SerializationInfo info, StreamingContext context)
-        : base(info, context)
-    {
-      _option = info.GetString("OptionName");
-    }
-
-    public string OptionName
-    {
-      get { return _option; }
-    }
-
-    [SecurityPermission(SecurityAction.LinkDemand, SerializationFormatter = true)]
-    public override void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      base.GetObjectData(info, context);
-      info.AddValue("OptionName", _option);
     }
   }
 }

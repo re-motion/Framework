@@ -184,7 +184,7 @@ namespace Remotion.Mixins.XRef.Options
       c.Option.Invoke(c);
     }
 
-    private readonly Regex _valueOption = new Regex(
+    private readonly Regex _valueOption = new(
         @"^(?<flag>--|-|/)(?<name>[^:=]+)((?<sep>[:=])(?<value>.*))?$");
 
     private bool GetOptionParts (string argument, out string flag, out string name, out string sep, out string value)

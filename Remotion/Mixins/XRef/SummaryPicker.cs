@@ -26,8 +26,8 @@ namespace Remotion.Mixins.XRef
 {
   public class SummaryPicker
   {
-    private static readonly XElement s_noSummary = new XElement("summary", "No summary found.");
-    private static readonly Regex s_normalizeTrim = new Regex(@"\s+", RegexOptions.Compiled);
+    private static readonly XElement s_noSummary = new("summary", "No summary found.");
+    private static readonly Regex s_normalizeTrim = new(@"\s+", RegexOptions.Compiled);
 
     public XElement GetSummary (Type type)
     {

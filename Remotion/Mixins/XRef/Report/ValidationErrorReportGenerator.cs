@@ -17,6 +17,7 @@
 // 
 using System;
 using System.Xml.Linq;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef.Report
 {
@@ -25,7 +26,7 @@ namespace Remotion.Mixins.XRef.Report
     private readonly ErrorAggregator<Exception> _errorAggregator;
     private readonly IRemotionReflector _remotionReflector;
 
-    public ValidationErrorReportGenerator (ErrorAggregator<Exception> errorAggregator, IRemotionReflector remotionReflector)
+    public ValidationErrorReportGenerator (ErrorAggregator<Exception> errorAggregator, RemotionReflector remotionReflector)
     {
       ArgumentUtility.CheckNotNull("errorAggregator", errorAggregator);
       ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);

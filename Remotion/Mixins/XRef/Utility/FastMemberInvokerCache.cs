@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef.Utility
 {
@@ -33,9 +34,9 @@ namespace Remotion.Mixins.XRef.Utility
 
       public CacheKey (Type declaringType, string memberName, Type[] typeParameters, Type[] argumentTypes)
       {
-        Utilities.ArgumentUtility.CheckNotNull("declaringType", declaringType);
-        Utilities.ArgumentUtility.CheckNotNull("memberName", memberName);
-        Utilities.ArgumentUtility.CheckNotNull("argumentTypes", argumentTypes);
+        ArgumentUtility.CheckNotNull("declaringType", declaringType);
+        ArgumentUtility.CheckNotNull("memberName", memberName);
+        ArgumentUtility.CheckNotNull("argumentTypes", argumentTypes);
 
         _declaringType = declaringType;
         _memberName = memberName;
@@ -51,8 +52,11 @@ namespace Remotion.Mixins.XRef.Utility
                ^ _argumentTypes.Length;
       }
 
-      public override bool Equals (object obj)
+      public override bool Equals (object? obj)
       {
+        if (obj == null)
+          return false;
+
         var other = (CacheKey)obj;
         return _declaringType == other._declaringType
                && _memberName == other._memberName
@@ -63,9 +67,9 @@ namespace Remotion.Mixins.XRef.Utility
       }
     }
 
-    private readonly FastMemberInvokerGenerator _generator = new FastMemberInvokerGenerator();
+    private readonly FastMemberInvokerGenerator _generator = new();
 
-    private readonly Dictionary<CacheKey, Func<object, object[], object>> _cache = new Dictionary<CacheKey, Func<object, object[], object>>();
+    private readonly Dictionary<CacheKey, Func<object, object[], object>> _cache = new();
 
     public Func<object, object[], object> GetOrCreateFastMethodInvoker (
         Type declaringType,
@@ -74,10 +78,8 @@ namespace Remotion.Mixins.XRef.Utility
         Type[] argumentTypes,
         BindingFlags bindingFlags)
     {
-      Func<object, object[], object> invoker;
-
       var key = new CacheKey(declaringType, methodName, typeParameters, argumentTypes);
-      if (!_cache.TryGetValue(key, out invoker))
+      if (!_cache.TryGetValue(key, out var invoker))
       {
         invoker = _generator.GetFastMethodInvoker(declaringType, methodName, typeParameters, argumentTypes, bindingFlags);
         _cache.Add(key, invoker);

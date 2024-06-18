@@ -21,6 +21,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 using Remotion.Mixins.XRef.Formatting;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef.Report
 {
@@ -31,7 +32,7 @@ namespace Remotion.Mixins.XRef.Report
     private readonly IIdentifierGenerator<Type> _involvedTypeIdentifierGenerator;
     private readonly IIdentifierGenerator<MemberInfo> _memberIdentifierGenerator;
     private readonly IOutputFormatter _outputFormatter;
-    private readonly MemberModifierUtility _memberModifierUtility = new MemberModifierUtility();
+    private readonly MemberModifierUtility _memberModifierUtility = new();
     private readonly MemberSignatureUtility _memberSignatureUtility;
 
     public MemberReportGenerator (

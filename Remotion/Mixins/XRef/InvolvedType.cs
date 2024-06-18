@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using ArgumentUtility = Remotion.Utilities.ArgumentUtility;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef
 {
@@ -43,10 +43,7 @@ namespace Remotion.Mixins.XRef
       _realType = realType;
     }
 
-    public Type Type
-    {
-      get { return _realType; }
-    }
+    public Type Type => _realType;
 
     public IEnumerable<InvolvedTypeMember> Members
     {
@@ -70,37 +67,25 @@ namespace Remotion.Mixins.XRef
       }
     }
 
-    public bool IsTarget
-    {
-      get { return _classContext != null; }
-    }
+    public bool IsTarget => _classContext != null;
 
-    public bool IsMixin
-    {
-      get { return _targetTypes.Count > 0; }
-    }
+    public bool IsMixin => _targetTypes.Count > 0;
 
     public ReflectedObject /* ClassContext */ ClassContext
     {
-      get { return _classContext; }
-      set { _classContext = value; }
+      get => _classContext;
+      set => _classContext = value;
     }
 
-    public bool HasTargetClassDefintion
-    {
-      get { return _targetClassDefintion != null; }
-    }
+    public bool HasTargetClassDefintion => _targetClassDefintion != null;
 
     public ReflectedObject /* TargetClassDefinition */ TargetClassDefinition
     {
-      get { return _targetClassDefintion; }
-      set { _targetClassDefintion = value; }
+      get => _targetClassDefintion;
+      set => _targetClassDefintion = value;
     }
 
-    public IDictionary<InvolvedType, ReflectedObject> TargetTypes
-    {
-      get { return _targetTypes; }
-    }
+    public IDictionary<InvolvedType, ReflectedObject> TargetTypes => _targetTypes;
 
     private IDictionary<MemberInfo, ReflectedObject> _targetMemberDefinitions;
 

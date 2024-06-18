@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef
 {
@@ -163,10 +164,7 @@ namespace Remotion.Mixins.XRef
 
     public OverridingMemberInfo MemberInfo { get; private set; }
 
-    public IEnumerable<OverridingMemberInfo> SubMemberInfos
-    {
-      get { return _subMemberInfos.Values; }
-    }
+    public IEnumerable<OverridingMemberInfo> SubMemberInfos => _subMemberInfos.Values;
 
     public ReflectedObject TargetMemberDefinition { get; private set; }
     public IEnumerable<ReflectedObject> MixinMemberDefinitions { get; private set; }

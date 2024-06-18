@@ -16,6 +16,7 @@
         </Description>
         <AssemblyName>Remotion.Mixins.XRef</AssemblyName>
         <RootNamespace>$(AssemblyName)</RootNamespace>
+        <Nullable>annotations</Nullable>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Remove="JetBrains.Annotations"/>

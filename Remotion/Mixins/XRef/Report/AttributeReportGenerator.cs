@@ -21,6 +21,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Remotion.Mixins.XRef.Formatting;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef.Report
 {
@@ -100,7 +101,7 @@ namespace Remotion.Mixins.XRef.Report
           "Attribute",
           new XAttribute("id", _attributeIdentifierGenerator.GetIdentifier(attribute)),
           new XAttribute("assembly-ref", _assemblyIdentifierGenerator.GetIdentifier(attribute.Assembly)),
-          new XAttribute("namespace", attribute.Namespace),
+          new XAttribute("namespace", attribute.Namespace ?? "defaultNamespace"),
           new XAttribute("name", _outputFormatter.GetShortFormattedTypeName(attribute)),
           new XElement(
               "AppliedTo",

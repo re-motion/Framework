@@ -52,7 +52,7 @@ namespace Remotion.Mixins.XRef.Options
 {
   public class OptionValueCollection : IList, IList<string>
   {
-    private readonly List<string> _values = new List<string>();
+    private readonly List<string> _values = new();
     private readonly OptionContext _context;
 
     internal OptionValueCollection (OptionContext context)
@@ -67,15 +67,9 @@ namespace Remotion.Mixins.XRef.Options
       (_values as ICollection).CopyTo(array, index);
     }
 
-    bool ICollection.IsSynchronized
-    {
-      get { return (_values as ICollection).IsSynchronized; }
-    }
+    bool ICollection.IsSynchronized => (_values as ICollection).IsSynchronized;
 
-    object ICollection.SyncRoot
-    {
-      get { return (_values as ICollection).SyncRoot; }
-    }
+    object ICollection.SyncRoot => (_values as ICollection).SyncRoot;
 
     #endregion
 
@@ -106,15 +100,9 @@ namespace Remotion.Mixins.XRef.Options
       return _values.Remove(item);
     }
 
-    public int Count
-    {
-      get { return _values.Count; }
-    }
+    public int Count => _values.Count;
 
-    public bool IsReadOnly
-    {
-      get { return false; }
-    }
+    public bool IsReadOnly => false;
 
     #endregion
 
@@ -138,27 +126,27 @@ namespace Remotion.Mixins.XRef.Options
 
     #region IList
 
-    int IList.Add (object value)
+    int IList.Add (object? value)
     {
       return (_values as IList).Add(value);
     }
 
-    bool IList.Contains (object value)
+    bool IList.Contains (object? value)
     {
       return (_values as IList).Contains(value);
     }
 
-    int IList.IndexOf (object value)
+    int IList.IndexOf (object? value)
     {
       return (_values as IList).IndexOf(value);
     }
 
-    void IList.Insert (int index, object value)
+    void IList.Insert (int index, object? value)
     {
       (_values as IList).Insert(index, value);
     }
 
-    void IList.Remove (object value)
+    void IList.Remove (object? value)
     {
       (_values as IList).Remove(value);
     }
@@ -168,15 +156,12 @@ namespace Remotion.Mixins.XRef.Options
       (_values as IList).RemoveAt(index);
     }
 
-    bool IList.IsFixedSize
-    {
-      get { return false; }
-    }
+    bool IList.IsFixedSize => false;
 
-    object IList.this [int index]
+    object? IList.this [int index]
     {
-      get { return this[index]; }
-      set { (_values as IList)[index] = value; }
+      get => this[index];
+      set => (_values as IList)[index] = value;
     }
 
     #endregion
@@ -218,9 +203,9 @@ namespace Remotion.Mixins.XRef.Options
       get
       {
         AssertValid(index);
-        return index >= _values.Count ? null : _values[index];
+        return index >= _values.Count ? null! : _values[index];
       }
-      set { _values[index] = value; }
+      set => _values[index] = value;
     }
 
     #endregion

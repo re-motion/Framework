@@ -17,6 +17,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef
 {
@@ -45,9 +46,6 @@ namespace Remotion.Mixins.XRef
       return _identifierGenerator.GetIdentifier(item, defaultIfNotPresent);
     }
 
-    public IEnumerable<T> Elements
-    {
-      get { return _identifierGenerator.Elements; }
-    }
+    public IEnumerable<T> Elements => _identifierGenerator.Elements;
   }
 }

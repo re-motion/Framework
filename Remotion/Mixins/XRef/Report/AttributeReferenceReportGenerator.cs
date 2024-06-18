@@ -21,7 +21,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
-using ArgumentUtility = Remotion.Utilities.ArgumentUtility;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef.Report
 {
@@ -64,7 +64,7 @@ namespace Remotion.Mixins.XRef.Report
       for (int i = 0; i < attribute.ConstructorArguments.Count; i++)
       {
         var constructorArgument = attribute.ConstructorArguments[i];
-        var parameterName = attribute.Constructor.GetParameters()[i].Name;
+        var parameterName = attribute.Constructor.GetParameters()[i].Name ?? "defaultParameterName";
         attributeElement.Add(GenerateParameterElement("constructor", constructorArgument.ArgumentType, parameterName, constructorArgument.Value));
       }
 

@@ -17,6 +17,7 @@
 // 
 using System;
 using System.Xml.Linq;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef.Report
 {

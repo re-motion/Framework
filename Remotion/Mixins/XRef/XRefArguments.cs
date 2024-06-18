@@ -30,27 +30,27 @@ namespace Remotion.Mixins.XRef
   [Serializable]
   public sealed class XRefArguments : ISerializable
   {
-    private static XRefArguments s_instance;
+    private static XRefArguments? s_instance;
 
     public static XRefArguments Instance
     {
-      get { return s_instance ?? (s_instance = new XRefArguments()); }
-      set { s_instance = value; }
+      get => s_instance ?? (s_instance = new XRefArguments());
+      set => s_instance = value;
     }
 
-    public string AssemblyDirectory { get; set; }
-    public string OutputDirectory { get; set; }
-    public string XMLOutputFileName { get; set; }
+    public string AssemblyDirectory { get; set; } = null!;
+    public string OutputDirectory { get; set; } = null!;
+    public string XMLOutputFileName { get; set; } = null!;
     public bool OverwriteExistingFiles { get; set; }
     public bool SkipHTMLGeneration { get; set; }
     public bool GenerateOnlyErrorReport { get; set; }
     public ReflectorSource ReflectorSource { get; set; }
-    public string ReflectorPath { get; set; }
-    public string CustomReflectorAssemblyQualifiedTypeName { get; set; }
-    public string IgnoredAssemblies { get; set; }
+    public string ReflectorPath { get; set; } = null!;
+    public string CustomReflectorAssemblyQualifiedTypeName { get; set; } = null!;
+    public string? IgnoredAssemblies { get; set; }
 
-    public string AppConfigFile { get; set; }
-    public string AppBaseDirectory { get; set; }
+    public string AppConfigFile { get; set; } = null!;
+    public string AppBaseDirectory { get; set; } = null!;
 
     public XRefArguments ()
     {
@@ -58,17 +58,17 @@ namespace Remotion.Mixins.XRef
 
     private XRefArguments (SerializationInfo info, StreamingContext context)
     {
-      AssemblyDirectory = info.GetString("AssemblyDirectory");
-      OutputDirectory = info.GetString("OutputDirectory");
-      XMLOutputFileName = info.GetString("XMLOutputFileName");
-      OverwriteExistingFiles = info.GetBoolean("OverwriteExistingFiles");
-      SkipHTMLGeneration = info.GetBoolean("SkipHTMLGeneration");
-      GenerateOnlyErrorReport = info.GetBoolean("GenerateOnlyErrorReport");
-      ReflectorSource = (ReflectorSource)info.GetInt32("ReflectorSource");
-      ReflectorPath = info.GetString("ReflectorPath");
-      CustomReflectorAssemblyQualifiedTypeName = info.GetString("CustomReflectorAssemblyQualifiedTypeName");
-      AppConfigFile = info.GetString("AppConfigFile");
-      AppBaseDirectory = info.GetString("AppBaseDirectory");
+      AssemblyDirectory = info.GetString("AssemblyDirectory")!;
+      OutputDirectory = info.GetString("OutputDirectory")!;
+      XMLOutputFileName = info.GetString("XMLOutputFileName")!;
+      OverwriteExistingFiles = info.GetBoolean("OverwriteExistingFiles")!;
+      SkipHTMLGeneration = info.GetBoolean("SkipHTMLGeneration")!;
+      GenerateOnlyErrorReport = info.GetBoolean("GenerateOnlyErrorReport")!;
+      ReflectorSource = (ReflectorSource)info.GetInt32("ReflectorSource")!;
+      ReflectorPath = info.GetString("ReflectorPath")!;
+      CustomReflectorAssemblyQualifiedTypeName = info.GetString("CustomReflectorAssemblyQualifiedTypeName")!;
+      AppConfigFile = info.GetString("AppConfigFile")!;
+      AppBaseDirectory = info.GetString("AppBaseDirectory")!;
     }
 
     public void GetObjectData (SerializationInfo info, StreamingContext context)

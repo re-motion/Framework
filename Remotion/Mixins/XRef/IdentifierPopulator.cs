@@ -17,12 +17,13 @@
 // 
 using System;
 using System.Collections.Generic;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef
 {
   public class IdentifierPopulator<T>
   {
-    private readonly IdentifierGenerator<T> _identifierGenerator = new IdentifierGenerator<T>();
+    private readonly IdentifierGenerator<T> _identifierGenerator = new();
 
 
     public IdentifierPopulator (IEnumerable<T> items)

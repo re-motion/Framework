@@ -17,12 +17,13 @@
 // 
 using System;
 using System.Reflection;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef.Formatting
 {
   public class MemberModifierUtility
   {
-    private readonly TypeModifierUtility _typeModifierUtility = new TypeModifierUtility();
+    private readonly TypeModifierUtility _typeModifierUtility = new();
 
     public bool IsOverriddenMember (MemberInfo memberInfo)
     {

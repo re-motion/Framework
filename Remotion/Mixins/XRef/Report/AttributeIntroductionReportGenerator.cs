@@ -18,8 +18,7 @@
 using System;
 using System.Linq;
 using System.Xml.Linq;
-using ArgumentUtility = Remotion.Utilities.ArgumentUtility;
-using IRemotionReflector = Remotion.Mixins.XRef.Reflection.RemotionReflector.IRemotionReflector;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef.Report
 {

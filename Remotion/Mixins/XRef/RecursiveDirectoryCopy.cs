@@ -17,6 +17,7 @@
 // 
 using System;
 using System.IO;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef
 {
