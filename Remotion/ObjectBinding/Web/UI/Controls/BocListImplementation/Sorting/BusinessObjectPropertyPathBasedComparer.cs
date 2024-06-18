@@ -25,12 +25,14 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
 {
+  using CacheValue = Tuple<object?, DoubleCheckedLockingContainer<string>>;
+
   public sealed class BusinessObjectPropertyPathBasedComparer : IComparer<BocListRow>
   {
     private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<BusinessObjectPropertyPathBasedComparer>();
 
     private readonly IBusinessObjectPropertyPath _propertyPath;
-    private readonly Dictionary<BocListRow, Tuple<object?, DoubleCheckedLockingContainer<string>>> _cache = new Dictionary<BocListRow, Tuple<object?, DoubleCheckedLockingContainer<string>>>();
+    private readonly Dictionary<BocListRow, CacheValue> _cache = new Dictionary<BocListRow, CacheValue>();
 
     public BusinessObjectPropertyPathBasedComparer (IBusinessObjectPropertyPath propertyPath)
     {
@@ -105,7 +107,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
       return _cache.GetOrCreateValue(row, GetPropertyPathResult).Item2.Value;
     }
 
-    private Tuple<object?, DoubleCheckedLockingContainer<string>> GetPropertyPathResult (BocListRow row)
+    private CacheValue GetPropertyPathResult (BocListRow row)
     {
       IBusinessObjectPropertyPathResult result;
       try
