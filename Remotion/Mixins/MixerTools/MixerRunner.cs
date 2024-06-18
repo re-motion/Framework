@@ -15,9 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
-using Remotion.Logging;
-using Remotion.Reflection;
 using Remotion.Tools.Console;
 using Remotion.Utilities;
 using Remotion.Tools;

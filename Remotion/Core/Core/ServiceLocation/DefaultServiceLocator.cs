@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
-using Remotion.Logging;
 using Remotion.Logging.Log4Net;
 using Remotion.Utilities;
 

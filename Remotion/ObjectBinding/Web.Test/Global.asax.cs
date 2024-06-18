@@ -21,7 +21,6 @@ using System.Threading;
 using System.Web;
 using System.Web.Configuration;
 using Remotion.Development.Web.ResourceHosting;
-using Remotion.Logging;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Sample;
@@ -29,7 +28,6 @@ using Remotion.ObjectBinding.Sample.ReferenceDataSourceTestDomain;
 using Remotion.ObjectBinding.Web;
 using Remotion.ServiceLocation;
 using Remotion.Web;
-using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Infrastructure;
 
 namespace OBWTest

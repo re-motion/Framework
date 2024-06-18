@@ -18,7 +18,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using Microsoft.Extensions.Logging;
-using Remotion.Logging;
 
 namespace Remotion.Utilities
 {

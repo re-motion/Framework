@@ -23,7 +23,6 @@ using log4net.Repository;
 using log4net.Repository.Hierarchy;
 using Moq;
 using NUnit.Framework;
-using Remotion.Logging;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.Providers;

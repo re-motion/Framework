@@ -21,7 +21,6 @@ using System.IO;
 using Microsoft.Extensions.Logging.Testing;
 using Moq;
 using NUnit.Framework;
-using Remotion.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.UnitTests.Utilities
