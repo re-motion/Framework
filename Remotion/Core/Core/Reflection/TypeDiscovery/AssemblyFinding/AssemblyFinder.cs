@@ -86,7 +86,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
     private ICollection<RootAssembly> FindRootAssemblies ()
     {
-      s_logger.LogDebug("Finding root assemblies..."?.ToString());
+      s_logger.LogDebug("Finding root assemblies...");
       using (StopwatchScope.CreateScope(s_logger, LogLevel.Debug, "Time spent for finding and loading root assemblies: {elapsed}."))
       {
         return _rootAssemblyFinder.FindRootAssemblies()
@@ -97,7 +97,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
     private ICollection<Assembly> FindReferencedAssemblies (ICollection<RootAssembly> rootAssemblies)
     {
-      s_logger.LogDebug("Finding referenced assemblies..."?.ToString());
+      s_logger.LogDebug("Finding referenced assemblies...");
       using (StopwatchScope.CreateScope(s_logger, LogLevel.Debug, "Time spent for finding and loading referenced assemblies: {elapsed}."))
       {
         // referenced assemblies are added later in order to get their references as well
