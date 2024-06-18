@@ -17,15 +17,13 @@
 // 
 using System;
 using System.Reflection;
-using MixinXRef.Reflection;
-using MixinXRef.Reflection.RemotionReflector;
-using NUnit.Framework;
-using Rhino.Mocks;
-using MixinXRef.UnitTests.TestDomain.Reflection;
 using System.Runtime.InteropServices;
-using MixinXRef.UnitTests.Stub;
+using Moq;
+using NUnit.Framework;
+using Remotion.Mixins.CrossReferencer.Reflectors;
+using Remotion.Mixins.CrossReferencer.UnitTests.Stub;
 
-namespace MixinXRef.UnitTests.Reflection
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
 {
   [TestFixture]
   public class RemotionReflectorTest

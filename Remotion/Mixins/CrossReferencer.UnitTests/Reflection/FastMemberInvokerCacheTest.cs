@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Reflection;
-using MixinXRef.Reflection.Utility;
 using NUnit.Framework;
+using Remotion.Mixins.CrossReferencer.Utilities;
 
-namespace MixinXRef.UnitTests.Reflection
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
 {
   [TestFixture]
   public class FastMemberInvokerCacheTest

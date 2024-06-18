@@ -20,9 +20,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Remotion.Mixins.XRef.RemotionReflector;
+using System.Runtime.InteropServices;
+using Remotion.Mixins.CrossReferencer.Utilities;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer.Reflectors
 {
   public abstract class ReflectorProvider
   {

@@ -19,9 +19,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Remotion.Mixins.XRef.Utility;
+using Remotion.Mixins.CrossReferencer.Utilities;
+using Remotion.Utilities;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer.Reflectors
 {
   public class ReflectedObject : IEnumerable<ReflectedObject>
   {
@@ -31,7 +32,7 @@ namespace Remotion.Mixins.XRef
 
     public ReflectedObject (object wrappedObject)
     {
-      Utilities.ArgumentUtility.CheckNotNull("wrappedObject", wrappedObject);
+      ArgumentUtility.CheckNotNull("wrappedObject", wrappedObject);
 
       if (wrappedObject is ReflectedObject)
         throw new ArgumentException("There is no point in wrapping an instance of 'MixinXRef.Reflection.ReflectedObject'.");
@@ -41,28 +42,28 @@ namespace Remotion.Mixins.XRef
 
     public static ReflectedObject Create (Assembly assembly, string fullName, params object[] parameters)
     {
-      Utilities.ArgumentUtility.CheckNotNull("assembly", assembly);
-      Utilities.ArgumentUtility.CheckNotNull("fullName", fullName);
-      Utilities.ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNull("fullName", fullName);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
       return new ReflectedObject(Activator.CreateInstance(assembly.GetType(fullName, true), UnWrapParameters(parameters)));
     }
 
     public static ReflectedObject CallMethod (Type type, string methodName, params object[] parameters)
     {
-      Utilities.ArgumentUtility.CheckNotNull("type", type);
-      Utilities.ArgumentUtility.CheckNotNull("methodName", methodName);
-      Utilities.ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("methodName", methodName);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
       return CallMethod(type, methodName, new Type[0], parameters);
     }
 
     public static ReflectedObject CallMethod (Type type, string methodName, Type[] typeParameters, params object[] parameters)
     {
-      Utilities.ArgumentUtility.CheckNotNull("type", type);
-      Utilities.ArgumentUtility.CheckNotNull("methodName", methodName);
-      Utilities.ArgumentUtility.CheckNotNull("typeParameters", typeParameters);
-      Utilities.ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("methodName", methodName);
+      ArgumentUtility.CheckNotNull("typeParameters", typeParameters);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
       var unwrappedParameters = UnWrapParameters(parameters);
       var argumentTypes = unwrappedParameters.Select(obj => obj.GetType()).ToArray();
@@ -74,17 +75,17 @@ namespace Remotion.Mixins.XRef
 
     public ReflectedObject CallMethod (string methodName, params object[] parameters)
     {
-      Utilities.ArgumentUtility.CheckNotNull("methodName", methodName);
-      Utilities.ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull("methodName", methodName);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
       return CallMethod(methodName, new Type[0], parameters);
     }
 
     public ReflectedObject CallMethod (string methodName, Type[] typeParameters, params object[] parameters)
     {
-      Utilities.ArgumentUtility.CheckNotNull("methodName", methodName);
-      Utilities.ArgumentUtility.CheckNotNull("typeParameters", typeParameters);
-      Utilities.ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull("methodName", methodName);
+      ArgumentUtility.CheckNotNull("typeParameters", typeParameters);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
       var unwrappedParameters = UnWrapParameters(parameters);
       var argumentTypes = unwrappedParameters.Select(obj => obj.GetType()).ToArray();
@@ -96,7 +97,7 @@ namespace Remotion.Mixins.XRef
 
     public ReflectedObject GetProperty (string propertyName)
     {
-      Utilities.ArgumentUtility.CheckNotNull("propertyName", propertyName);
+      ArgumentUtility.CheckNotNull("propertyName", propertyName);
 
       return CallMethod("get_" + propertyName);
     }

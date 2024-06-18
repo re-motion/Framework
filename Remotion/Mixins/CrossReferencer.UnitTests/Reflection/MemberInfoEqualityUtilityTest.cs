@@ -15,16 +15,14 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 // 
+using System;
 using System.Linq;
 using System.Reflection;
-using MixinXRef.Reflection;
-using MixinXRef.Reflection.Utility;
-using MixinXRef.UnitTests.TestDomain;
-using MixinXRef.Utility;
 using NUnit.Framework;
-using Remotion.Mixins;
+using Remotion.Mixins.CrossReferencer.Reflectors;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 
-namespace MixinXRef.UnitTests.Reflection
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
 {
   [TestFixture]
   public class MemberInfoEqualityUtilityTest

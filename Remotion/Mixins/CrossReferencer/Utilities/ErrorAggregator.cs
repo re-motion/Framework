@@ -16,8 +16,9 @@
 // 
 using System;
 using System.Collections.Generic;
+using Remotion.Utilities;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer.Utilities
 {
   public class ErrorAggregator<TException>
       where TException : Exception

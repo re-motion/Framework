@@ -18,12 +18,11 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using MixinXRef.Reflection;
-using MixinXRef.Reflection.RemotionReflector;
-using MixinXRef.Utility;
-using TalkBack;
+using Remotion.Mixins.CrossReferencer.Reflectors;
+using Remotion.Mixins.CrossReferencer.Utilities;
+using Remotion.Utilities;
 
-namespace MixinXRef
+namespace Remotion.Mixins.CrossReferencer
 {
   public class InvolvedTypeFinder : IInvolvedTypeFinder
   {

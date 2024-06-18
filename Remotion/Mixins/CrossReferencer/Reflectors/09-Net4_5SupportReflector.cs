@@ -21,9 +21,9 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Reflection;
-using Remotion.Mixins.XRef.RemotionReflector;
+using Remotion.Utilities;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer.Reflectors
 {
   /// <summary>
   ///   restores support for assemblies using re-motion >= 1.15.0 by delegating to the apporopriate reflectors

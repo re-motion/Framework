@@ -15,23 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Reflection;
 using System.Xml.Linq;
-using MixinXRef.Formatting;
-using MixinXRef.Reflection;
-using MixinXRef.Reflection.RemotionReflector;
-using MixinXRef.Reflection.Utility;
-using MixinXRef.Reflectors;
-using MixinXRef.Report;
-using MixinXRef.UnitTests.TestDomain;
-using MixinXRef.Utility;
 using NUnit.Framework;
-using Remotion.Mixins;
-using MixinXRef.UnitTests.Helpers;
-using Rhino.Mocks;
+using Remotion.Mixins.CrossReferencer.Formatting;
+using Remotion.Mixins.CrossReferencer.Reflectors;
+using Remotion.Mixins.CrossReferencer.UnitTests.Helpers;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 
-
-namespace MixinXRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   [TestFixture]
   public class InterfaceReportGeneratorTest
@@ -110,7 +101,7 @@ namespace MixinXRef.UnitTests.Report
               "Interface",
               new XAttribute ("id", "0"),
               new XAttribute ("assembly-ref", "0"),
-              new XAttribute ("namespace", "MixinXRef.UnitTests.TestDomain"),
+              new XAttribute ("namespace", "Remotion.Mixins.CrossReferencer.UnitTests.TestDomain"),
               new XAttribute ("name", "ComposedInterfacesTestClass+ICMyMixinTargetMyMixin"),
               new XAttribute ("is-composed-interface", true),
               memberReportGenerator.GenerateXml (),

@@ -20,9 +20,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Remotion.Mixins.XRef.RemotionReflector;
+using Remotion.Utilities;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer.Reflectors
 {
   [ReflectorSupport("Remotion", "1.11.20", "Remotion.Interfaces.dll")]
   public class DefaultReflector : RemotionReflectorBase
@@ -47,7 +47,7 @@ namespace Remotion.Mixins.XRef
 
     public override IRemotionReflector Initialize (string assemblyDirectory)
     {
-      Utilities.ArgumentUtility.CheckNotNull("assemblyDirectory", assemblyDirectory);
+      ArgumentUtility.CheckNotNull("assemblyDirectory", assemblyDirectory);
 
       _assemblyDirectory = assemblyDirectory;
 
@@ -61,35 +61,35 @@ namespace Remotion.Mixins.XRef
 
     public override bool IsNonApplicationAssembly (Assembly assembly)
     {
-      Utilities.ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
 
       return assembly.GetCustomAttributes(false).Any(attribute => attribute.GetType().Name == "NonApplicationAssemblyAttribute");
     }
 
     public override bool IsConfigurationException (Exception exception)
     {
-      Utilities.ArgumentUtility.CheckNotNull("exception", exception);
+      ArgumentUtility.CheckNotNull("exception", exception);
 
       return exception.GetType().FullName == "Remotion.Mixins.ConfigurationException";
     }
 
     public override bool IsValidationException (Exception exception)
     {
-      Utilities.ArgumentUtility.CheckNotNull("exception", exception);
+      ArgumentUtility.CheckNotNull("exception", exception);
 
       return exception.GetType().FullName == "Remotion.Mixins.Validation.ValidationException";
     }
 
     public override bool IsInfrastructureType (Type type)
     {
-      Utilities.ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       return type.Assembly.GetName().Name == "Remotion.Interfaces";
     }
 
     public override bool IsInheritedFromMixin (Type type)
     {
-      Utilities.ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       var mixinBaseType = RemotionInterfaceAssembly.GetType("Remotion.Mixins.IInitializableMixin", true);
       return mixinBaseType.IsAssignableFrom(type);
@@ -97,8 +97,8 @@ namespace Remotion.Mixins.XRef
 
     public override ReflectedObject GetTargetClassDefinition (Type targetType, ReflectedObject mixinConfiguration, ReflectedObject classContext)
     {
-      Utilities.ArgumentUtility.CheckNotNull("targetType", targetType);
-      Utilities.ArgumentUtility.CheckNotNull("mixinConfiguration", mixinConfiguration);
+      ArgumentUtility.CheckNotNull("targetType", targetType);
+      ArgumentUtility.CheckNotNull("mixinConfiguration", mixinConfiguration);
 
       var targetClassDefinitionUtilityType = RemotionAssembly.GetType("Remotion.Mixins.TargetClassDefinitionUtility", true);
       return ReflectedObject.CallMethod(targetClassDefinitionUtilityType, "GetConfiguration", targetType, mixinConfiguration);
@@ -106,7 +106,7 @@ namespace Remotion.Mixins.XRef
 
     public override ReflectedObject BuildConfigurationFromAssemblies (Assembly[] assemblies)
     {
-      Utilities.ArgumentUtility.CheckNotNull("assemblies", assemblies);
+      ArgumentUtility.CheckNotNull("assemblies", assemblies);
 
       var declarativeConfigurationBuilderType = RemotionAssembly.GetType("Remotion.Mixins.Context.DeclarativeConfigurationBuilder", true);
       return ReflectedObject.CallMethod(declarativeConfigurationBuilderType, "BuildConfigurationFromAssemblies", new object[] { assemblies });
@@ -114,7 +114,7 @@ namespace Remotion.Mixins.XRef
 
     public override ReflectedObject GetValidationLogFromValidationException (Exception validationException)
     {
-      Utilities.ArgumentUtility.CheckNotNull("validationException", validationException);
+      ArgumentUtility.CheckNotNull("validationException", validationException);
 
       return new ReflectedObject(new ValidationLogNullObject());
     }

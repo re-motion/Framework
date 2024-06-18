@@ -16,13 +16,11 @@
 // 
 using System;
 using System.Reflection;
-using MixinXRef.Formatting;
-using MixinXRef.Reflection;
-using MixinXRef.Reflection.Utility;
-using MixinXRef.UnitTests.TestDomain;
 using NUnit.Framework;
+using Remotion.Mixins.CrossReferencer.Formatting;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 
-namespace MixinXRef.UnitTests.Reflection
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
 {
   [TestFixture]
   public class MemberSignatureUtilityTest

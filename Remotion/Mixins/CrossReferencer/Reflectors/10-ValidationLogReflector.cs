@@ -17,9 +17,8 @@
 // 
 
 using System;
-using Remotion.Mixins.XRef.RemotionReflector;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer.Reflectors
 {
   /// <summary>
   ///  restores the validationException.ValidationLogData property reflection call.

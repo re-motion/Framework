@@ -19,9 +19,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using MixinXRef.Utility;
+using Remotion.Utilities;
 
-namespace MixinXRef
+namespace Remotion.Mixins.CrossReferencer
 {
   public class AssemblyResolver
   {

@@ -19,10 +19,9 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using MixinXRef.Reflection;
-using MixinXRef.Reflection.RemotionReflector;
+using Remotion.Mixins.CrossReferencer.Reflectors;
 
-namespace MixinXRef.UnitTests.Stub
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Stub
 {
   public class RemotionReflectorStub : ReflectorProvider
   {

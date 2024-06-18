@@ -15,19 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using MixinXRef.Report;
-using MixinXRef.UnitTests.Helpers;
-using MixinXRef.UnitTests.TestDomain;
-using MixinXRef.Utility;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
+using Remotion.Mixins.CrossReferencer.Report;
+using Remotion.Mixins.CrossReferencer.UnitTests.Helpers;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 
-namespace MixinXRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   [TestFixture]
   public class AssemblyReportGeneratorTest

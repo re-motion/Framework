@@ -17,13 +17,11 @@
 using System;
 using System.Linq;
 using System.Xml.Linq;
-using MixinXRef.Reflection;
-using MixinXRef.Reflection.RemotionReflector;
-using MixinXRef.Reflection.Utility;
-using MixinXRef.Utility;
-using IRemotionReflector = MixinXRef.Reflection.RemotionReflector.IRemotionReflector;
+using Remotion.Mixins.CrossReferencer.Reflectors;
+using Remotion.Mixins.CrossReferencer.Utilities;
+using Remotion.Utilities;
 
-namespace MixinXRef.Report
+namespace Remotion.Mixins.CrossReferencer.Report
 {
   public class AttributeIntroductionReportGenerator : IReportGenerator
   {

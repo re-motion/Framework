@@ -18,10 +18,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using MixinXRef.Utility;
+using Remotion.Utilities;
 
-namespace MixinXRef
+namespace Remotion.Mixins.CrossReferencer
 {
   public class InvolvedTypeStore : IEnumerable<InvolvedType>
   {

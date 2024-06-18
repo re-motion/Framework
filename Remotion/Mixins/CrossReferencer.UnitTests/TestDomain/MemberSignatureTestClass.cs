@@ -15,10 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using MixinXRef.UnitTests.Formatting;
 using Remotion.Collections;
 
-namespace MixinXRef.UnitTests.TestDomain
+namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 {
 
   public class MemberSignatureTestClass : IExplicitInterface

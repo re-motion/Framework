@@ -18,11 +18,12 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using MixinXRef.Formatting;
-using MixinXRef.Utility;
-using IRemotionReflector = MixinXRef.Reflection.RemotionReflector.IRemotionReflector;
+using Remotion.Mixins.CrossReferencer.Formatting;
+using Remotion.Mixins.CrossReferencer.Reflectors;
+using Remotion.Mixins.CrossReferencer.Utilities;
+using Remotion.Utilities;
 
-namespace MixinXRef.Report
+namespace Remotion.Mixins.CrossReferencer.Report
 {
   public class FullReportGenerator : IXmlReportGenerator
   {

@@ -18,14 +18,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using MixinXRef.Reflection;
-using MixinXRef.UnitTests.TestDomain;
-using MixinXRef.Utility;
 using NUnit.Framework;
-using Remotion.Mixins;
+using Remotion.Mixins.CrossReferencer.Reflectors;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
+using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Mixins.Definitions;
 
-namespace MixinXRef.UnitTests
+namespace Remotion.Mixins.CrossReferencer.UnitTests
 {
   [TestFixture]
   public class InvolvedTypeFinderTest

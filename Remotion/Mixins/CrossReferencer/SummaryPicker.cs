@@ -19,9 +19,9 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using MixinXRef.Utility;
+using Remotion.Utilities;
 
-namespace MixinXRef
+namespace Remotion.Mixins.CrossReferencer
 {
   public class SummaryPicker
   {

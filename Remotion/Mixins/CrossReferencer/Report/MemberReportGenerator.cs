@@ -19,10 +19,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
-using MixinXRef.Formatting;
-using MixinXRef.Utility;
+using Remotion.Mixins.CrossReferencer.Formatting;
+using Remotion.Mixins.CrossReferencer.Utilities;
+using Remotion.Utilities;
 
-namespace MixinXRef.Report
+namespace Remotion.Mixins.CrossReferencer.Report
 {
   public class MemberReportGenerator : IReportGenerator
   {

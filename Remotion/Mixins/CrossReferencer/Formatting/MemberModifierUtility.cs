@@ -16,9 +16,9 @@
 // 
 using System;
 using System.Reflection;
-using MixinXRef.Utility;
+using Remotion.Utilities;
 
-namespace MixinXRef.Formatting
+namespace Remotion.Mixins.CrossReferencer.Formatting
 {
   public class MemberModifierUtility
   {

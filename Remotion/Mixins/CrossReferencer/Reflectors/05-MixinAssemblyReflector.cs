@@ -19,9 +19,9 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Remotion.Mixins.XRef.RemotionReflector;
+using Remotion.Utilities;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer.Reflectors
 {
   [ReflectorSupport("Remotion", "1.13.141", "Remotion.Mixins.dll")]
   public class MixinAssemblyReflector : RemotionReflectorBase
@@ -36,7 +36,7 @@ namespace Remotion.Mixins.XRef
 
     public override IRemotionReflector Initialize (string assemblyDirectory)
     {
-      Utilities.ArgumentUtility.CheckNotNull("assemblyDirectory", assemblyDirectory);
+      ArgumentUtility.CheckNotNull("assemblyDirectory", assemblyDirectory);
 
       _assemblyDirectory = assemblyDirectory;
 
@@ -50,14 +50,14 @@ namespace Remotion.Mixins.XRef
 
     public override bool IsInfrastructureType (Type type)
     {
-      Utilities.ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       return type.Assembly.GetName().Name == "Remotion.Mixins";
     }
 
     public override bool IsInheritedFromMixin (Type type)
     {
-      Utilities.ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       var mixinBaseType = RemotionAssembly.GetType("Remotion.Mixins.IInitializableMixin", true);
       return mixinBaseType.IsAssignableFrom(type);
@@ -65,7 +65,7 @@ namespace Remotion.Mixins.XRef
 
     public override ReflectedObject BuildConfigurationFromAssemblies (Assembly[] assemblies)
     {
-      Utilities.ArgumentUtility.CheckNotNull("assemblies", assemblies);
+      ArgumentUtility.CheckNotNull("assemblies", assemblies);
 
       var declarativeConfigurationBuilderType = RemotionAssembly.GetType("Remotion.Mixins.Context.DeclarativeConfigurationBuilder", true);
       return ReflectedObject.CallMethod(declarativeConfigurationBuilderType, "BuildConfigurationFromAssemblies", new object[] { assemblies });
@@ -73,8 +73,8 @@ namespace Remotion.Mixins.XRef
 
     public override ReflectedObject GetTargetClassDefinition (Type targetType, ReflectedObject mixinConfiguration, ReflectedObject classContext)
     {
-      Utilities.ArgumentUtility.CheckNotNull("targetType", targetType);
-      Utilities.ArgumentUtility.CheckNotNull("mixinConfiguration", mixinConfiguration);
+      ArgumentUtility.CheckNotNull("targetType", targetType);
+      ArgumentUtility.CheckNotNull("mixinConfiguration", mixinConfiguration);
 
       var targetClassDefinitionFactoryType = RemotionAssembly.GetType("Remotion.Mixins.Definitions.TargetClassDefinitionFactory", true);
       return ReflectedObject.CallMethod(targetClassDefinitionFactoryType, "CreateTargetClassDefinition", classContext);

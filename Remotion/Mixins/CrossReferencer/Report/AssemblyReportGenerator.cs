@@ -20,9 +20,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using MixinXRef.Utility;
+using Remotion.Mixins.CrossReferencer.Utilities;
+using Remotion.Utilities;
 
-namespace MixinXRef.Report
+namespace Remotion.Mixins.CrossReferencer.Report
 {
   public class AssemblyReportGenerator : IReportGenerator
   {

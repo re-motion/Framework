@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace MixinXRef.UnitTests.TestDomain
+namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 {
   
   public abstract class MemberModifierTestClass : IDisposable

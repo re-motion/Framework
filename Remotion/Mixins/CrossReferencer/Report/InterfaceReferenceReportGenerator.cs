@@ -18,11 +18,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using MixinXRef.Reflection.RemotionReflector;
-using MixinXRef.Utility;
-using IRemotionReflector = MixinXRef.Reflection.RemotionReflector.IRemotionReflector;
+using Remotion.Mixins.CrossReferencer.Reflectors;
+using Remotion.Mixins.CrossReferencer.Utilities;
+using Remotion.Utilities;
 
-namespace MixinXRef.Report
+namespace Remotion.Mixins.CrossReferencer.Report
 {
   public class InterfaceReferenceReportGenerator : IReportGenerator
   {

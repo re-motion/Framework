@@ -16,23 +16,23 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 // 
 using System;
-using Remotion.Mixins.XRef.RemotionReflector;
+using Remotion.Utilities;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer.Reflectors
 {
   [ReflectorSupport("Remotion", "1.11.20")]
   public class OldMixinDependenciesReflector : RemotionReflectorBase
   {
     public override ReflectedObject GetNextCallDependencies (ReflectedObject mixinDefinition)
     {
-      Utilities.ArgumentUtility.CheckNotNull("mixinDefinition", mixinDefinition);
+      ArgumentUtility.CheckNotNull("mixinDefinition", mixinDefinition);
 
       return mixinDefinition.GetProperty("BaseDependencies");
     }
 
     public override ReflectedObject GetTargetCallDependencies (ReflectedObject mixinDefinition)
     {
-      Utilities.ArgumentUtility.CheckNotNull("mixinDefinition", mixinDefinition);
+      ArgumentUtility.CheckNotNull("mixinDefinition", mixinDefinition);
 
       return mixinDefinition.GetProperty("ThisDependencies");
     }

@@ -14,11 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
 using System.Collections.Generic;
-using MixinXRef.Utility;
-using Rhino.Mocks;
+using Moq;
+using Remotion.Mixins.CrossReferencer.Utilities;
 
-namespace MixinXRef.UnitTests.Helpers
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Helpers
 {
   internal static class StubFactory
   {

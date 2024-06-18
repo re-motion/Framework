@@ -17,17 +17,14 @@
 using System;
 using System.Linq;
 using System.Xml.Linq;
-using MixinXRef.Formatting;
-using MixinXRef.Reflection;
-using MixinXRef.Reflection.Utility;
-using MixinXRef.Report;
-using MixinXRef.UnitTests.Reflection;
-using MixinXRef.UnitTests.TestDomain;
-using MixinXRef.Utility;
 using NUnit.Framework;
-using Remotion.Mixins;
+using Remotion.Mixins.CrossReferencer.Formatting;
+using Remotion.Mixins.CrossReferencer.Reflectors;
+using Remotion.Mixins.CrossReferencer.Report;
+using Remotion.Mixins.CrossReferencer.UnitTests.Reflection;
+using Remotion.Mixins.CrossReferencer.Utilities;
 
-namespace MixinXRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   [TestFixture]
   public class AdditionalDependencyReportGeneratorTest

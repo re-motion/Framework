@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MixinXRef.UnitTests.TestDomain.FastMethodInvoker
+namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain.FastMethodInvoker
 {
   public class ClassWithMethods
   {

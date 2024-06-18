@@ -15,9 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Mixins;
 
-namespace MixinXRef.UnitTests.TestDomain
+namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 {
   [Serializable]
   [Extends (typeof (TargetClass2))]

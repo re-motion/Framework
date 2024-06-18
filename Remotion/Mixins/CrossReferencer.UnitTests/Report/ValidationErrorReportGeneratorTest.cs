@@ -16,15 +16,14 @@
 // 
 using System;
 using System.Xml.Linq;
-using MixinXRef.Reflection;
-using MixinXRef.Reflection.RemotionReflector;
-using MixinXRef.Report;
-using MixinXRef.Utility;
+using Moq;
 using NUnit.Framework;
+using Remotion.Mixins.CrossReferencer.Reflectors;
+using Remotion.Mixins.CrossReferencer.Report;
+using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Mixins.Validation;
-using Rhino.Mocks;
 
-namespace MixinXRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   [TestFixture]
   public class ValidationErrorReportGeneratorTest

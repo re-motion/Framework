@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace MixinXRef
+namespace Remotion.Mixins.CrossReferencer
 {
   public interface IInvolvedTypeFinder
   {

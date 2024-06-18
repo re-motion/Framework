@@ -16,11 +16,11 @@
 // 
 using System;
 using System.Text;
-using MixinXRef.Reflection;
-using MixinXRef.UnitTests.TestDomain;
 using NUnit.Framework;
+using Remotion.Mixins.CrossReferencer.Reflectors;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 
-namespace MixinXRef.UnitTests.Reflection
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
 {
   [TestFixture]
   public class ReflectedObjectTest

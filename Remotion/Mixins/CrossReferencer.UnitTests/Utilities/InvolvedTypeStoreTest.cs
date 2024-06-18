@@ -16,10 +16,9 @@
 // 
 using System;
 using System.Linq;
-using MixinXRef.Utility;
 using NUnit.Framework;
 
-namespace MixinXRef.UnitTests.Utility
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Utilities
 {
   [TestFixture]
   public class InvolvedTypeStoreTest

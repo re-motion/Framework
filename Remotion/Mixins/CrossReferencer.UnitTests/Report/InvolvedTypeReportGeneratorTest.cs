@@ -18,18 +18,16 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using MixinXRef.Formatting;
-using MixinXRef.Reflection;
-using MixinXRef.Reflection.RemotionReflector;
-using MixinXRef.Report;
-using MixinXRef.UnitTests.Helpers;
-using MixinXRef.UnitTests.TestDomain;
-using MixinXRef.Utility;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Context;
+using Remotion.Mixins.CrossReferencer.Formatting;
+using Remotion.Mixins.CrossReferencer.Reflectors;
+using Remotion.Mixins.CrossReferencer.Report;
+using Remotion.Mixins.CrossReferencer.UnitTests.Helpers;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
+using Remotion.Mixins.CrossReferencer.Utilities;
 
-namespace MixinXRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   [TestFixture]
   public class InvolvedTypeReportGeneratorTest
@@ -88,7 +86,7 @@ namespace MixinXRef.UnitTests.Report
               "InvolvedType",
               new XAttribute ("id", "0"),
               new XAttribute ("assembly-ref", "0"),
-              new XAttribute ("namespace", "MixinXRef.UnitTests.TestDomain"),
+              new XAttribute ("namespace", "Remotion.Mixins.CrossReferencer.UnitTests.TestDomain"),
               new XAttribute ("name", "GenericTarget<TParameter1, TParameter2>"),
               new XAttribute ("base", "Object"),
               new XAttribute ("base-ref", "none"),
@@ -131,7 +129,7 @@ namespace MixinXRef.UnitTests.Report
               "InvolvedType",
               new XAttribute ("id", "0"),
               new XAttribute ("assembly-ref", "0"),
-              new XAttribute ("namespace", "MixinXRef.UnitTests.TestDomain"),
+              new XAttribute ("namespace", "Remotion.Mixins.CrossReferencer.UnitTests.TestDomain"),
               new XAttribute ("name", "IUseless"),
               new XAttribute ("base", "none"),
               new XAttribute ("base-ref", "none"),
@@ -190,7 +188,7 @@ namespace MixinXRef.UnitTests.Report
               "InvolvedType",
               new XAttribute ("id", "0"),
               new XAttribute ("assembly-ref", "0"),
-              new XAttribute ("namespace", "MixinXRef.UnitTests.TestDomain"),
+              new XAttribute ("namespace", "Remotion.Mixins.CrossReferencer.UnitTests.TestDomain"),
               new XAttribute ("name", "TargetClass1"),
               new XAttribute ("base", "Object"),
               new XAttribute ("base-ref", "none"),
@@ -219,7 +217,7 @@ namespace MixinXRef.UnitTests.Report
               "InvolvedType",
               new XAttribute ("id", "1"),
               new XAttribute ("assembly-ref", "0"),
-              new XAttribute ("namespace", "MixinXRef.UnitTests.TestDomain"),
+              new XAttribute ("namespace", "Remotion.Mixins.CrossReferencer.UnitTests.TestDomain"),
               new XAttribute ("name", "TargetClass2"),
               new XAttribute ("base", "Object"),
               new XAttribute ("base-ref", "none"),
@@ -248,7 +246,7 @@ namespace MixinXRef.UnitTests.Report
               "InvolvedType",
               new XAttribute ("id", "2"),
               new XAttribute ("assembly-ref", "0"),
-              new XAttribute ("namespace", "MixinXRef.UnitTests.TestDomain"),
+              new XAttribute ("namespace", "Remotion.Mixins.CrossReferencer.UnitTests.TestDomain"),
               new XAttribute ("name", "Mixin1"),
               new XAttribute ("base", "Object"),
               new XAttribute ("base-ref", "none"),
@@ -277,7 +275,7 @@ namespace MixinXRef.UnitTests.Report
               "InvolvedType",
               new XAttribute ("id", "3"),
               new XAttribute ("assembly-ref", "0"),
-              new XAttribute ("namespace", "MixinXRef.UnitTests.TestDomain"),
+              new XAttribute ("namespace", "Remotion.Mixins.CrossReferencer.UnitTests.TestDomain"),
               new XAttribute ("name", "Mixin2"),
               new XAttribute ("base", "Object"),
               new XAttribute ("base-ref", "none"),
@@ -322,7 +320,7 @@ namespace MixinXRef.UnitTests.Report
               "InvolvedType",
               new XAttribute ("id", "0"),
               new XAttribute ("assembly-ref", "0"),
-              new XAttribute ("namespace", "MixinXRef.UnitTests.TestDomain"),
+              new XAttribute ("namespace", "Remotion.Mixins.CrossReferencer.UnitTests.TestDomain"),
               new XAttribute ("name", "TargetClass1"),
               new XAttribute ("base", "Object"),
               new XAttribute ("base-ref", "1"),

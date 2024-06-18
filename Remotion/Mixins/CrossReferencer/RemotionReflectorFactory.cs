@@ -21,10 +21,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using MixinXRef.Reflection.RemotionReflector;
-using MixinXRef.Utility;
+using Remotion.Mixins.CrossReferencer.Reflectors;
+using Remotion.Utilities;
 
-namespace MixinXRef
+namespace Remotion.Mixins.CrossReferencer
 {
   public static class RemotionReflectorFactory
   {

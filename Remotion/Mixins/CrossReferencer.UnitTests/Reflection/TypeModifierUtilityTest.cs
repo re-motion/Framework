@@ -14,12 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
 using System.Reflection;
-using MixinXRef.Formatting;
-using MixinXRef.UnitTests.TestDomain;
 using NUnit.Framework;
+using Remotion.Mixins.CrossReferencer.Formatting;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 
-namespace MixinXRef.UnitTests.Reflection
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
 {
   [TestFixture]
   public class TypeModifierUtilityTest

@@ -16,15 +16,14 @@
 // 
 using System;
 using System.Xml.Linq;
-using MixinXRef.Reflection.RemotionReflector;
-using MixinXRef.Report;
-using MixinXRef.UnitTests.TestDomain;
-using MixinXRef.Utility;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
-using Remotion.Mixins;
+using Remotion.Mixins.CrossReferencer.Reflectors;
+using Remotion.Mixins.CrossReferencer.Report;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
+using Remotion.Mixins.CrossReferencer.Utilities;
 
-namespace MixinXRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   [TestFixture]
   public class AttributeReferenceReportGeneratorTest

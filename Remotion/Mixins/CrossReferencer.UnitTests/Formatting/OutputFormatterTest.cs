@@ -18,11 +18,11 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Xml.Linq;
-using MixinXRef.Formatting;
-using MixinXRef.UnitTests.TestDomain;
 using NUnit.Framework;
+using Remotion.Mixins.CrossReferencer.Formatting;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 
-namespace MixinXRef.UnitTests.Formatting
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Formatting
 {
   [TestFixture]
   public class OutputFormatterTest
@@ -173,7 +173,7 @@ namespace MixinXRef.UnitTests.Formatting
           new XElement ("Type", "System.String", new XAttribute ("languageType", "Keyword")),
           new XElement ("ParameterName", "stringParam"),
           new XElement ("Text", ","),
-          new XElement ("Type", "MixinXRef.AssemblyResolver", new XAttribute ("languageType", "Type")),
+          new XElement ("Type", "Remotion.Mixins.CrossReferencer.AssemblyResolver", new XAttribute ("languageType", "Type")),
           new XElement ("ParameterName", "assemblyBuilderParam"),
           new XElement ("Text", ")")
           );
@@ -192,7 +192,7 @@ namespace MixinXRef.UnitTests.Formatting
       var expectedOutput = new XElement (
           "Signature",
           new XElement ("Text", "("),
-          new XElement ("Type", "MixinXRef.UnitTests.TestDomain.MemberSignatureTestClass+NestedClassWithInterfaceAndInheritance", new XAttribute ("languageType", "Type")),
+          new XElement ("Type", "Remotion.Mixins.CrossReferencer.UnitTests.TestDomain.MemberSignatureTestClass+NestedClassWithInterfaceAndInheritance", new XAttribute ("languageType", "Type")),
           new XElement ("ParameterName", "param"),
           new XElement ("Text", ")")
           );
@@ -211,7 +211,7 @@ namespace MixinXRef.UnitTests.Formatting
       var expectedOutput = new XElement (
           "Signature",
           new XElement ("Text", "("),
-          new XElement ("Type", "MixinXRef.UnitTests.TestDomain.MemberSignatureTestClass+NestedGenericType<MixinXRef.UnitTests.TestDomain.MemberSignatureTestClass+NestedClassWithInterfaceAndInheritance>", new XAttribute ("languageType", "Type")),
+          new XElement ("Type", "Remotion.Mixins.CrossReferencer.UnitTests.TestDomain.MemberSignatureTestClass+NestedGenericType<MixinXRef.UnitTests.TestDomain.MemberSignatureTestClass+NestedClassWithInterfaceAndInheritance>", new XAttribute ("languageType", "Type")),
           new XElement ("ParameterName", "param"),
           new XElement ("Text", ")")
           );
@@ -238,7 +238,7 @@ namespace MixinXRef.UnitTests.Formatting
     {
       var methodInfo =
           typeof (MemberSignatureTestClass).GetMethod (
-              "MixinXRef.UnitTests.TestDomain.IExplicitInterface.Version",
+              "Remotion.Mixins.CrossReferencer.UnitTests.TestDomain.IExplicitInterface.Version",
               BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 
       var output = _outputFormatter.CreateMethodMarkup (methodInfo.Name, methodInfo.ReturnType, methodInfo.GetParameters());
@@ -263,7 +263,7 @@ namespace MixinXRef.UnitTests.Formatting
       var expectedOutput = new XElement (
           "Signature",
           new XElement ("Keyword", "event"),
-          new XElement ("Type", "MixinXRef.UnitTests.TestDomain.ChangedEventHandler", new XAttribute ("languageType", "Type")),
+          new XElement ("Type", "Remotion.Mixins.CrossReferencer.UnitTests.TestDomain.ChangedEventHandler", new XAttribute ("languageType", "Type")),
           new XElement ("Name", "EventName")
           );
 
@@ -350,7 +350,7 @@ namespace MixinXRef.UnitTests.Formatting
           new XElement ("Keyword", "class"),
           new XElement ("Name", "NestedClassWithInterfaceAndInheritance"),
           new XElement ("Text", ":"),
-          new XElement ("Type", "MixinXRef.UnitTests.TestDomain.GenericTarget<System.String, System.Int32>"),
+          new XElement ("Type", "Remotion.Mixins.CrossReferencer.UnitTests.TestDomain.GenericTarget<System.String, System.Int32>"),
           new XElement ("Text", ","),
           new XElement ("Type", "System.IDisposable")
           );

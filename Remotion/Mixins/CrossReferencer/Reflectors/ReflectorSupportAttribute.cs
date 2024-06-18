@@ -17,7 +17,7 @@
 // 
 using System;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer.Reflectors
 {
   [AttributeUsage(AttributeTargets.Class, Inherited = false)]
   public class ReflectorSupportAttribute : Attribute

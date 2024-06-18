@@ -18,8 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Remotion.Utilities;
 
-namespace Remotion.Mixins.XRef.Utility
+namespace Remotion.Mixins.CrossReferencer.Utilities
 {
   public class FastMemberInvokerCache
   {
@@ -32,9 +33,9 @@ namespace Remotion.Mixins.XRef.Utility
 
       public CacheKey (Type declaringType, string memberName, Type[] typeParameters, Type[] argumentTypes)
       {
-        Utilities.ArgumentUtility.CheckNotNull("declaringType", declaringType);
-        Utilities.ArgumentUtility.CheckNotNull("memberName", memberName);
-        Utilities.ArgumentUtility.CheckNotNull("argumentTypes", argumentTypes);
+        ArgumentUtility.CheckNotNull("declaringType", declaringType);
+        ArgumentUtility.CheckNotNull("memberName", memberName);
+        ArgumentUtility.CheckNotNull("argumentTypes", argumentTypes);
 
         _declaringType = declaringType;
         _memberName = memberName;

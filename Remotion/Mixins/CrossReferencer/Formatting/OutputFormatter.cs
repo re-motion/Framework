@@ -15,14 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using MixinXRef.Utility;
+using Remotion.Utilities;
 
-namespace MixinXRef.Formatting
+namespace Remotion.Mixins.CrossReferencer.Formatting
 {
   public class OutputFormatter : IOutputFormatter
   {

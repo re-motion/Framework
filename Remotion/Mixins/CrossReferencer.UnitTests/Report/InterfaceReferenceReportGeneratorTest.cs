@@ -16,15 +16,13 @@
 // 
 using System;
 using System.Xml.Linq;
-using MixinXRef.Reflection;
-using MixinXRef.Reflection.Utility;
-using MixinXRef.Report;
-using MixinXRef.UnitTests.TestDomain;
-using MixinXRef.Utility;
 using NUnit.Framework;
-using Remotion.Mixins;
+using Remotion.Mixins.CrossReferencer.Reflectors;
+using Remotion.Mixins.CrossReferencer.Report;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
+using Remotion.Mixins.CrossReferencer.Utilities;
 
-namespace MixinXRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   [TestFixture]
   public class InterfaceReferenceReportGeneratorTest

@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Xml.Linq;
-using MixinXRef.Report;
 using NUnit.Framework;
+using Remotion.Mixins.CrossReferencer.Report;
 
-namespace MixinXRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   [TestFixture]
   public class RecursiveExceptionReportGeneratorTest

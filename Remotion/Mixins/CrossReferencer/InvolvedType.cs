@@ -18,10 +18,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using MixinXRef.Reflection;
-using MixinXRef.Utility;
+using Remotion.Mixins.CrossReferencer.Reflectors;
+using Remotion.Mixins.CrossReferencer.Utilities;
+using Remotion.Utilities;
 
-namespace MixinXRef
+namespace Remotion.Mixins.CrossReferencer
 {
   public class InvolvedType : IVisitableInvolved
   {

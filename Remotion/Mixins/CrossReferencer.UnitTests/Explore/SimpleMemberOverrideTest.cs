@@ -15,11 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
 using NUnit.Framework;
-using Remotion.Mixins;
 
-namespace MixinXRef.UnitTests.Explore
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Explore
 {
   [TestFixture]
   public class SimpleMemberOverrideTest

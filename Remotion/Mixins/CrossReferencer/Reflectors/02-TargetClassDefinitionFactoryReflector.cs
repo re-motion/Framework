@@ -19,9 +19,9 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Remotion.Mixins.XRef.RemotionReflector;
+using Remotion.Utilities;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer.Reflectors
 {
   [ReflectorSupport("Remotion", "1.13.23")]
   public class TargetClassDefinitionFactoryReflector : RemotionReflectorBase
@@ -36,7 +36,7 @@ namespace Remotion.Mixins.XRef
 
     public override IRemotionReflector Initialize (string assemblyDirectory)
     {
-      Utilities.ArgumentUtility.CheckNotNull("assemblyDirectory", assemblyDirectory);
+      ArgumentUtility.CheckNotNull("assemblyDirectory", assemblyDirectory);
 
       _assemblyDirectory = assemblyDirectory;
 
@@ -45,8 +45,8 @@ namespace Remotion.Mixins.XRef
 
     public override ReflectedObject GetTargetClassDefinition (Type targetType, ReflectedObject mixinConfiguration, ReflectedObject classContext)
     {
-      Utilities.ArgumentUtility.CheckNotNull("targetType", targetType);
-      Utilities.ArgumentUtility.CheckNotNull("mixinConfiguration", mixinConfiguration);
+      ArgumentUtility.CheckNotNull("targetType", targetType);
+      ArgumentUtility.CheckNotNull("mixinConfiguration", mixinConfiguration);
 
       var targetClassDefinitionFactoryType = RemotionAssembly.GetType("Remotion.Mixins.Definitions.TargetClassDefinitionFactory", true);
       return ReflectedObject.CallMethod(targetClassDefinitionFactoryType, "CreateTargetClassDefinition", classContext);
@@ -54,7 +54,7 @@ namespace Remotion.Mixins.XRef
 
     public override bool IsNonApplicationAssembly (Assembly assembly)
     {
-      Utilities.ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
 
       return assembly.GetCustomAttributes(false).Any(
           attribute => attribute.GetType().FullName == "Remotion.Reflection.TypeDiscovery.NonApplicationAssemblyAttribute");

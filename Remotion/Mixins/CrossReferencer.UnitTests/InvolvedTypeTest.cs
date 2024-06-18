@@ -17,14 +17,12 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using MixinXRef.Reflection;
-using MixinXRef.Reflection.Utility;
-using MixinXRef.UnitTests.TestDomain;
 using NUnit.Framework;
-using Remotion.Mixins;
 using Remotion.Mixins.Context;
+using Remotion.Mixins.CrossReferencer.Reflectors;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 
-namespace MixinXRef.UnitTests
+namespace Remotion.Mixins.CrossReferencer.UnitTests
 {
   [TestFixture]
   public class InvolvedTypeTest

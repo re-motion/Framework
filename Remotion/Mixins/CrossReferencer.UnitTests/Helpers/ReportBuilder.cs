@@ -17,12 +17,12 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using MixinXRef.Formatting;
-using MixinXRef.Reflection.RemotionReflector;
-using MixinXRef.Report;
-using MixinXRef.Utility;
+using Remotion.Mixins.CrossReferencer.Formatting;
+using Remotion.Mixins.CrossReferencer.Reflectors;
+using Remotion.Mixins.CrossReferencer.Report;
+using Remotion.Mixins.CrossReferencer.Utilities;
 
-namespace MixinXRef.UnitTests.Helpers
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Helpers
 {
   internal static class ReportBuilder
   {

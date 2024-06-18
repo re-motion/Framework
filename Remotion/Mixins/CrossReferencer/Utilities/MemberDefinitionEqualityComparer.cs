@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer.Utilities
 {
   public class MemberDefinitionEqualityComparer : IEqualityComparer<MemberInfo>
   {

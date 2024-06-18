@@ -17,13 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using MixinXRef.Reflection;
-using MixinXRef.Reflection.Utility;
-using MixinXRef.UnitTests.TestDomain;
-using MixinXRef.UnitTests.TestDomain.FastMethodInvoker;
 using NUnit.Framework;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain.FastMethodInvoker;
+using Remotion.Mixins.CrossReferencer.Utilities;
 
-namespace MixinXRef.UnitTests.Reflection
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
 {
   [TestFixture]
   public class FastMemberInvokerGeneratorTest

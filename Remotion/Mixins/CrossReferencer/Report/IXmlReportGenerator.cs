@@ -17,7 +17,7 @@
 using System;
 using System.Xml.Linq;
 
-namespace MixinXRef.Report
+namespace Remotion.Mixins.CrossReferencer.Report
 {
   public interface IXmlReportGenerator
   {

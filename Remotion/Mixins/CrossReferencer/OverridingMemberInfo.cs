@@ -17,9 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using MixinXRef.Utility;
+using Remotion.Utilities;
 
-namespace MixinXRef
+namespace Remotion.Mixins.CrossReferencer
 {
   public class OverridingMemberInfo
   {

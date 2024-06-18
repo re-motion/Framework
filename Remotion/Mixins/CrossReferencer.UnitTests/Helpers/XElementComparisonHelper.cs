@@ -14,12 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using NUnit.Framework;
 
-namespace MixinXRef.UnitTests.Helpers
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Helpers
 {
   public static class XElementComparisonHelper
   {

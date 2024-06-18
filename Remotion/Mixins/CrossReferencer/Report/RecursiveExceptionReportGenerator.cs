@@ -16,9 +16,9 @@
 // 
 using System;
 using System.Xml.Linq;
-using MixinXRef.Utility;
+using Remotion.Utilities;
 
-namespace MixinXRef.Report
+namespace Remotion.Mixins.CrossReferencer.Report
 {
   public class RecursiveExceptionReportGenerator : IReportGenerator
   {

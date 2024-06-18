@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using MixinXRef.Utility;
-using NUnit.Framework;
 using System.Linq;
+using NUnit.Framework;
+using Remotion.Mixins.CrossReferencer.Utilities;
 
-namespace MixinXRef.UnitTests.Utility
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Utilities
 {
   [TestFixture]
   public class ErrorAggregatorTest

@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Reflection;
-using MixinXRef.Utility;
 using NUnit.Framework;
+using Remotion.Mixins.CrossReferencer.Utilities;
 
-namespace MixinXRef.UnitTests.Utility
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Utilities
 {
   [TestFixture]
   public class IdentifierGeneratorTest

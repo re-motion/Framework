@@ -17,9 +17,8 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Mixins.XRef.RemotionReflector;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer.Reflectors
 {
   [ReflectorSupport("Remotion", "1.13.182.0", "Remotion.Mixins.dll")]
   public class ComposedInterfacesReflector : RemotionReflectorBase

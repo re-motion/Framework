@@ -18,9 +18,9 @@
 using System;
 using System.IO;
 using System.Reflection;
-using Remotion.Mixins.XRef.RemotionReflector;
+using Remotion.Utilities;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer.Reflectors
 {
   [ReflectorSupport("Remotion", "1.13.174.0", "Remotion.Mixins.dll")]
   public class CreateAndValidateReflector : RemotionReflectorBase
@@ -35,7 +35,7 @@ namespace Remotion.Mixins.XRef
 
     public override IRemotionReflector Initialize (string assemblyDirectory)
     {
-      Utilities.ArgumentUtility.CheckNotNull("assemblyDirectory", assemblyDirectory);
+      ArgumentUtility.CheckNotNull("assemblyDirectory", assemblyDirectory);
 
       _assemblyDirectory = assemblyDirectory;
 
@@ -44,8 +44,8 @@ namespace Remotion.Mixins.XRef
 
     public override ReflectedObject GetTargetClassDefinition (Type targetType, ReflectedObject mixinConfiguration, ReflectedObject classContext)
     {
-      Utilities.ArgumentUtility.CheckNotNull("targetType", targetType);
-      Utilities.ArgumentUtility.CheckNotNull("mixinConfiguration", mixinConfiguration);
+      ArgumentUtility.CheckNotNull("targetType", targetType);
+      ArgumentUtility.CheckNotNull("mixinConfiguration", mixinConfiguration);
 
       var targetClassDefinitionFactoryType = RemotionMixinsAssembly.GetType("Remotion.Mixins.Definitions.TargetClassDefinitionFactory", true);
       return ReflectedObject.CallMethod(targetClassDefinitionFactoryType, "CreateAndValidate", classContext);

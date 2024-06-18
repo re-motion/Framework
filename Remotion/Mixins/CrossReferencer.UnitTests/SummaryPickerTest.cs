@@ -16,11 +16,10 @@
 // 
 using System;
 using System.Xml.Linq;
-using MixinXRef.UnitTests.TestDomain;
 using NUnit.Framework;
-using Remotion.Mixins;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 
-namespace MixinXRef.UnitTests
+namespace Remotion.Mixins.CrossReferencer.UnitTests
 {
   [TestFixture]
   public class SummaryPickerTest

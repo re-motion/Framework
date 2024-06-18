@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Reflection;
 
-namespace Remotion.Mixins.XRef.RemotionReflector
+namespace Remotion.Mixins.CrossReferencer.Reflectors
 {
   public abstract class RemotionReflectorBase : IRemotionReflector
   {

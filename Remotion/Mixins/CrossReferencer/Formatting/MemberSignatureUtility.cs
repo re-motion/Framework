@@ -17,9 +17,9 @@
 using System;
 using System.Reflection;
 using System.Xml.Linq;
-using MixinXRef.Utility;
+using Remotion.Utilities;
 
-namespace MixinXRef.Formatting
+namespace Remotion.Mixins.CrossReferencer.Formatting
 {
   public class MemberSignatureUtility
   {
