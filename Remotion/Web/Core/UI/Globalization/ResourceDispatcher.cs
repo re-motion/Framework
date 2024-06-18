@@ -42,7 +42,7 @@ public sealed class ResourceDispatcher
   /// <summary> Use this ID to dispatch resources to the control that provides the resource manager. </summary>
   private const string c_thisElementID = "this";
 
-	private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<ResourceDispatcher>();
+  private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<ResourceDispatcher>();
   private static ArrayList _registeredDispatchTargets = new ArrayList();
   private static readonly WebStringConverter s_webStringConverter = new();
 
