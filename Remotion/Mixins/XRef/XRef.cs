@@ -29,36 +29,19 @@ namespace Remotion.Mixins.XRef
     private const string c_defaultXmlOutputFileName = "MixinXRef.xml";
     private const string c_defaultXmlOutputDirectory = "C:\\";
 
-    public static void GetAssemblyInformation (bool generateFullReport = false, string outputDirectory = c_defaultXmlOutputDirectory, string outputFileName = c_defaultXmlOutputFileName, bool skipHtmlGeneration = true)
+    public static void GetAssemblyInformation (
+        Assembly? assemblyToCheck = null,
+        bool generateFullReport = false,
+        bool skipHtmlGeneration = true,
+        string outputDirectory = c_defaultXmlOutputDirectory,
+        string outputFileName = c_defaultXmlOutputFileName)
     {
-      var reflector = new RemotionReflector();
+      var reflector = new RemotionReflector(assemblyToCheck);
 
-      var assemblyResolver = AssemblyResolver.Create();
-      AppDomain.CurrentDomain.AssemblyResolve += assemblyResolver.HandleAssemblyResolve;
-
-      var typeDiscoveryService = reflector.GetTypeDiscoveryService();
-
-      ICollection allTypes;
-      try
-      {
-        allTypes = typeDiscoveryService.GetTypes(null, true);
-      }
-      catch (Exception)
-      {
+      if (!GetAssemblies(reflector, out var allAssemblies))
         return;
-      }
 
-      var allAssemblies = allTypes.Cast<Type>().Select(t => t.Assembly)
-          .Distinct()
-          .Where(a => !reflector.IsRelevantAssemblyForConfiguration(a) || !reflector.IsNonApplicationAssembly(a))
-          .ToArray();
-
-      if (!allAssemblies.Any())
-      {
-        return;
-      }
-
-      var mixinConfiguration = reflector.BuildConfigurationFromAssemblies(allAssemblies);
+      var mixinConfiguration = reflector.BuildConfigurationFromAssemblies(allAssemblies!);
       var configurationErrors = new ErrorAggregator<Exception>();
       var validationErrors = new ErrorAggregator<Exception>();
 
@@ -74,6 +57,32 @@ namespace Remotion.Mixins.XRef
       var success = ProcessOutputDocument(xmlFile, outputDirectory, generateFullReport, skipHtmlGeneration);
 
       //return success;
+    }
+
+    private static bool GetAssemblies (RemotionReflector reflector, out Assembly[]? allAssemblies)
+    {
+      allAssemblies = null;
+      var assemblyResolver = AssemblyResolver.Create();
+      AppDomain.CurrentDomain.AssemblyResolve += assemblyResolver.HandleAssemblyResolve;
+
+      var typeDiscoveryService = reflector.GetTypeDiscoveryService();
+
+      ICollection allTypes;
+      try
+      {
+        allTypes = typeDiscoveryService.GetTypes(null, true);
+      }
+      catch
+      {
+        return false;
+      }
+
+      allAssemblies = allTypes.Cast<Type>().Select(t => t.Assembly)
+          .Distinct()
+          .Where(a => !reflector.IsRelevantAssemblyForConfiguration(a) || !reflector.IsNonApplicationAssembly(a))
+          .ToArray();
+
+      return allAssemblies.Any();
     }
 
     private static IXmlReportGenerator GetReportGenerator (
