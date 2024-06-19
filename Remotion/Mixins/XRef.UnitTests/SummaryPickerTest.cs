@@ -50,7 +50,7 @@ namespace Remotion.Mixins.XRef.UnitTests
 
       var expectedOutput = new XElement(
           "summary",
-          "Constitutes a mixin configuration (ie. a set of classes associated with mixins) and manages the mixin configuration for the current thread.");
+          "Constitutes a mixin configuration (ie. a set of classes associated with mixins) and manages the mixin configuration for the current thread (actually: <see cref=\"SafeContext\"/>). Instances of this class are immutable, i.e., their content is initialized on construction and cannot be changed later on.");
 
       Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }

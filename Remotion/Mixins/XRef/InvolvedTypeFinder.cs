@@ -20,6 +20,7 @@ using System.Reflection;
 using System.Text;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Validation;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef
@@ -28,15 +29,15 @@ namespace Remotion.Mixins.XRef
   {
     private readonly MixinConfiguration _mixinConfiguration;
     private readonly Assembly[] _assemblies;
-    private readonly ErrorAggregator<Exception> _configurationErrors;
-    private readonly ErrorAggregator<Exception> _validationErrors;
+    private readonly ErrorAggregator<ConfigurationException> _configurationErrors;
+    private readonly ErrorAggregator<ValidationException> _validationErrors;
     private readonly RemotionReflector _remotionReflector;
 
     public InvolvedTypeFinder (
         MixinConfiguration mixinConfiguration,
         Assembly[] assemblies,
-        ErrorAggregator<Exception> configurationErrors,
-        ErrorAggregator<Exception> validationErrors,
+        ErrorAggregator<ConfigurationException> configurationErrors,
+        ErrorAggregator<ValidationException> validationErrors,
         RemotionReflector remotionReflector
     )
     {
@@ -143,10 +144,10 @@ namespace Remotion.Mixins.XRef
       }
       catch (Exception configurationOrValidationException)
       {
-        if (_remotionReflector.IsConfigurationException(configurationOrValidationException))
-          _configurationErrors.AddException(configurationOrValidationException);
-        else if (_remotionReflector.IsValidationException(configurationOrValidationException))
-          _validationErrors.AddException(configurationOrValidationException);
+        if (configurationOrValidationException is ConfigurationException configException)
+          _configurationErrors.AddException(configException);
+        else if (configurationOrValidationException is ValidationException validationException)
+          _validationErrors.AddException(validationException);
         else
           throw;
       }

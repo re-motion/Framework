@@ -35,7 +35,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Explore
       var mixinConfiguration = MixinConfiguration.BuildNew().ForClass<BaseClass>().AddMixin<CustomMixin>().BuildConfiguration();
       MixinConfiguration.SetActiveConfiguration(mixinConfiguration);
 
-      var subClass = (IAlgorithm)ObjectFactory.Create<SubClass>().With();
+      var subClass = (IAlgorithm)ObjectFactory.Create<SubClass>();
       var output = subClass.AlgorithmMethod();
 
       Assert.That(output, Is.EqualTo("2, complex algorithm"));
@@ -86,7 +86,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Explore
       var mixinConfiguration = MixinConfiguration.BuildNew().ForClass<TargetClass>().AddMixin<SubMixin>().BuildConfiguration();
       MixinConfiguration.SetActiveConfiguration(mixinConfiguration);
 
-      var targetClass = ObjectFactory.Create<TargetClass>().With();
+      var targetClass = ObjectFactory.Create<TargetClass>();
       var output = targetClass.DoSomething();
 
       Assert.That(output, Is.EqualTo("2"));

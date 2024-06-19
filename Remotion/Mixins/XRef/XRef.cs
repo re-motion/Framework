@@ -19,6 +19,7 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Remotion.Mixins.Validation;
 using Remotion.Mixins.XRef.Formatting;
 using Remotion.Mixins.XRef.Report;
 
@@ -42,8 +43,8 @@ namespace Remotion.Mixins.XRef
         return;
 
       var mixinConfiguration = reflector.BuildConfigurationFromAssemblies(allAssemblies!);
-      var configurationErrors = new ErrorAggregator<Exception>();
-      var validationErrors = new ErrorAggregator<Exception>();
+      var configurationErrors = new ErrorAggregator<ConfigurationException>();
+      var validationErrors = new ErrorAggregator<ValidationException>();
 
       var involvedTypeFinder = new InvolvedTypeFinder(mixinConfiguration, allAssemblies, configurationErrors, validationErrors, reflector);
       var involvedTypes = involvedTypeFinder.FindInvolvedTypes();
@@ -88,8 +89,8 @@ namespace Remotion.Mixins.XRef
     private static IXmlReportGenerator GetReportGenerator (
         bool generateFullReport,
         InvolvedType[] involvedTypes,
-        ErrorAggregator<Exception> configurationErrors,
-        ErrorAggregator<Exception> validationErrors,
+        ErrorAggregator<ConfigurationException> configurationErrors,
+        ErrorAggregator<ValidationException> validationErrors,
         RemotionReflector reflector)
     {
       return generateFullReport

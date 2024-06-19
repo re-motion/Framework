@@ -61,7 +61,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
     {
       var mixinConfiguration = MixinConfiguration.BuildNew()
           .ForClass<ComposedInterfacesTestClass.MyMixinTarget>()
-          .AddCompleteInterface<ComposedInterfacesTestClass.ICMyMixinTargetMyMixin>()
+          .AddComposedInterface<ComposedInterfacesTestClass.ICMyMixinTargetMyMixin>()
           .AddMixin<ComposedInterfacesTestClass.MyMixin>()
           .BuildConfiguration();
 

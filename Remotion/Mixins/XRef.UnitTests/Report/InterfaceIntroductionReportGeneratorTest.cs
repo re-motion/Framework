@@ -19,6 +19,7 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
+using Remotion.Mixins.Definitions;
 using Remotion.Mixins.XRef.Report;
 using Remotion.Mixins.XRef.UnitTests.TestDomain;
 
@@ -75,10 +76,10 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
-    private ReflectedObject GetInterfaceIntroductions (InvolvedType targetType, Type mixinType, MixinConfiguration mixinConfiguration)
+    private UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> GetInterfaceIntroductions (InvolvedType targetType, Type mixinType, MixinConfiguration mixinConfiguration)
     {
-      var targetClassDefinition = TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration);
-      return new ReflectedObject(targetClassDefinition.GetMixinByConfiguredType(mixinType).InterfaceIntroductions);
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType.Type));
+      return targetClassDefinition.GetMixinByConfiguredType(mixinType).InterfaceIntroductions;
     }
   }
 }

@@ -16,7 +16,9 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 // 
 using System;
+using System.Linq;
 using NUnit.Framework;
+using Remotion.Mixins.Definitions;
 
 namespace Remotion.Mixins.XRef.UnitTests.Explore
 {
@@ -29,9 +31,9 @@ namespace Remotion.Mixins.XRef.UnitTests.Explore
       var mixinConfiguration = MixinConfiguration.BuildNew()
           .ForClass(typeof(Target)).AddMixin(typeof(MixinOverrideTarget))
           .BuildConfiguration();
-      var targetClassDefiniton =       mixinConfiguration.GetContext(typeof(Target));
-      var targetClassOverrides = targetClassDefiniton.GetAllMembers().Single(mdb => mdb.Name == "WriteType").Overrides;
-      var mixinOverrides = targetClassDefiniton.Mixins[0].GetAllMembers().Single(mdb => mdb.Name == "WriteType").Overrides;
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(typeof(Target)));
+      var targetClassOverrides = targetClassDefinition.GetAllMembers().Single(mdb => mdb.Name == "WriteType").Overrides;
+      var mixinOverrides = targetClassDefinition.Mixins[0].GetAllMembers().Single(mdb => mdb.Name == "WriteType").Overrides;
 
       Assert.That(targetClassOverrides.Count, Is.EqualTo(1));
       Assert.That(mixinOverrides.Count, Is.EqualTo(0));
@@ -65,9 +67,9 @@ namespace Remotion.Mixins.XRef.UnitTests.Explore
       var mixinConfiguration = MixinConfiguration.BuildNew()
           .ForClass(typeof(TargetOverrideMixin)).AddMixin(typeof(TemplateMixin))
           .BuildConfiguration();
-      var targetClassDefiniton = TargetClassDefinitionUtility.GetConfiguration(typeof(TargetOverrideMixin), mixinConfiguration);
-      var targetClassOverrides = targetClassDefiniton.GetAllMembers().Single(mdb => mdb.Name == "WriteType").Overrides;
-      var mixinOverrides = targetClassDefiniton.Mixins[0].GetAllMembers().Single(mdb => mdb.Name == "WriteType").Overrides;
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(typeof(TargetOverrideMixin)));
+      var targetClassOverrides = targetClassDefinition.GetAllMembers().Single(mdb => mdb.Name == "WriteType").Overrides;
+      var mixinOverrides = targetClassDefinition.Mixins[0].GetAllMembers().Single(mdb => mdb.Name == "WriteType").Overrides;
 
       Assert.That(targetClassOverrides.Count, Is.EqualTo(0));
       Assert.That(mixinOverrides.Count, Is.EqualTo(1));

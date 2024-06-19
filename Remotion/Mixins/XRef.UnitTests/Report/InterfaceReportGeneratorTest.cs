@@ -83,7 +83,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
     {
       var mixinConfiguration = MixinConfiguration.BuildNew()
           .ForClass<ComposedInterfacesTestClass.MyMixinTarget>()
-          .AddCompleteInterface<ComposedInterfacesTestClass.ICMyMixinTargetMyMixin>()
+          .AddComposedInterface<ComposedInterfacesTestClass.ICMyMixinTargetMyMixin>()
           .AddMixin<ComposedInterfacesTestClass.MyMixin>()
           .BuildConfiguration();
 
@@ -121,7 +121,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
     {
       var mixinConfiguration = MixinConfiguration.BuildNew()
           .ForClass<ComposedInterfacesTestClass.MyMixinTarget>()
-          .AddCompleteInterface<ComposedInterfacesTestClass.ICMyMixinTargetMyMixin>()
+          .AddComposedInterface<ComposedInterfacesTestClass.ICMyMixinTargetMyMixin>()
           .AddMixin<ComposedInterfacesTestClass.MyMixin>()
           .BuildConfiguration();
 
@@ -132,7 +132,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator(_remotionReflector, _outputFormatter, involvedType);
       var output = reportGenerator.GetComposedInterfaces();
 
-      Assert.That(output, Is.EquivalentTo(classContext.CompleteInterfaces));
+      Assert.That(output, Is.EquivalentTo(classContext.ComposedInterfaces));
     }
   }
 }

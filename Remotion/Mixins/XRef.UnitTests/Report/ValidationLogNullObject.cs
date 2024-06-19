@@ -17,38 +17,15 @@
 // 
 
 using System;
+using Remotion.Mixins.Validation;
 
 namespace Remotion.Mixins.XRef.UnitTests.Report
 {
-  public class ValidationLogNullObject
+  public class ValidationLogNullObject :SerializableValidationLogData
   {
     public ValidationLogNullObject ()
+        : base(new ValidationLogData())
     {
-    }
-
-    public int NumberOfRulesExecuted
-    {
-      get { return 0; }
-    }
-
-    public int NumberOfUnexpectedExceptions
-    {
-      get { return 0; }
-    }
-
-    public int NumberOfFailures
-    {
-      get { return 0; }
-    }
-
-    public int NumberOfWarnings
-    {
-      get { return 0; }
-    }
-
-    public int NumberOfSuccesses
-    {
-      get { return 0; }
     }
   }
 }

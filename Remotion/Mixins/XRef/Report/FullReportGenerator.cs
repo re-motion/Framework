@@ -18,6 +18,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using Remotion.Mixins.Validation;
 using Remotion.Mixins.XRef.Formatting;
 using Remotion.Utilities;
 
@@ -26,16 +27,16 @@ namespace Remotion.Mixins.XRef.Report
   public class FullReportGenerator : IXmlReportGenerator
   {
     private readonly InvolvedType[] _involvedTypes;
-    private readonly ErrorAggregator<Exception> _configurationErrors;
-    private readonly ErrorAggregator<Exception> _validationErrors;
+    private readonly ErrorAggregator<ConfigurationException> _configurationErrors;
+    private readonly ErrorAggregator<ValidationException> _validationErrors;
     private readonly RemotionReflector _remotionReflector;
     private readonly IOutputFormatter _outputFormatter;
     private string _creationTime;
 
     public FullReportGenerator (
         InvolvedType[] involvedTypes,
-        ErrorAggregator<Exception> configurationErrors,
-        ErrorAggregator<Exception> validationErrors,
+        ErrorAggregator<ConfigurationException> configurationErrors,
+        ErrorAggregator<ValidationException> validationErrors,
         RemotionReflector remotionReflector,
         IOutputFormatter outputFormatter)
     {

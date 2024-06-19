@@ -51,7 +51,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       // Mixin1 has no depencies
       var explicitDependencies = _mixinConfiguration.ClassContexts.Single().Mixins.First().ExplicitDependencies;
 
-      var dependencies = new ReflectedObject(explicitDependencies);
+      var dependencies = explicitDependencies;
       var output = new AdditionalDependencyReportGenerator(dependencies, _identifierGenerator, _outputFormatter).GenerateXml();
       var expectedOutput = new XElement("AdditionalDependencies");
 
@@ -63,7 +63,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
     {
       var explicitDependencies = _mixinConfiguration.ClassContexts.Single().Mixins.Last().ExplicitDependencies;
 
-      var dependencies = new ReflectedObject(explicitDependencies);
+      var dependencies = explicitDependencies;
       var output = new AdditionalDependencyReportGenerator(dependencies, _identifierGenerator, _outputFormatter).GenerateXml();
       var expectedOutput = new XElement(
           "AdditionalDependencies",

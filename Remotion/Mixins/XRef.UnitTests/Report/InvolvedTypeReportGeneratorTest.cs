@@ -21,6 +21,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using NUnit.Framework;
 using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
 using Remotion.Mixins.XRef.Formatting;
 using Remotion.Mixins.XRef.Report;
 using Remotion.Mixins.XRef.UnitTests.Helpers;
@@ -386,9 +387,10 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       var mixinConfiguration =
           MixinConfiguration.BuildNew().ForClass<UselessObject>().AddMixin<ClassWithAlphabeticOrderingAttribute>().BuildConfiguration();
       var involvedType = new InvolvedType(typeof(ClassWithAlphabeticOrderingAttribute));
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(typeof(UselessObject)));
       involvedType.TargetTypes.Add(
           new InvolvedType(typeof(UselessObject)),
-          new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(typeof(UselessObject), mixinConfiguration).Mixins[0]));
+          targetClassDefinition.Mixins[0]);
 
       var reportGenerator = ReportBuilder.CreateInvolvedTypeReportGenerator(_remotionReflector, _outputFormatter);
 
@@ -399,7 +401,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
 
     private void SetTargetClassDefinition (InvolvedType involvedType, MixinConfiguration mixinConfiguration)
     {
-      involvedType.TargetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(involvedType.Type, mixinConfiguration));
+      involvedType.TargetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(involvedType.Type));
     }
 
     private InvolvedTypeReportGenerator CreateInvolvedTypeReportGenerator (params InvolvedType[] involvedTypes)

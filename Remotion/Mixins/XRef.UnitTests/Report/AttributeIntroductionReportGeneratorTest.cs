@@ -21,6 +21,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using NUnit.Framework;
 using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Utilities;
 using Remotion.Mixins.XRef.Report;
 using Remotion.Mixins.XRef.UnitTests.TestDomain;
@@ -82,13 +83,13 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
-    private ReflectedObject GetAttributeIntroductions (
+    private MultiDefinitionCollection<Type,AttributeIntroductionDefinition> GetAttributeIntroductions (
         InvolvedType targetType,
         Type mixinType,
         MixinConfiguration mixinConfiguration)
     {
-      var targetClassDefinition = TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration);
-      return new ReflectedObject(targetClassDefinition.GetMixinByConfiguredType(mixinType).AttributeIntroductions);
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType.Type));
+      return targetClassDefinition.GetMixinByConfiguredType(mixinType).AttributeIntroductions;
     }
   }
 }

@@ -20,6 +20,7 @@ using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
 using Remotion.Mixins.XRef.UnitTests.TestDomain;
 
 namespace Remotion.Mixins.XRef.UnitTests
@@ -95,8 +96,8 @@ namespace Remotion.Mixins.XRef.UnitTests
       var type1 = new InvolvedType(typeof(TargetClass1));
       var type2 = new InvolvedType(typeof(TargetClass1));
 
-      type1.TargetClassDefinition = TargetClassDefinitionUtility.GetConfiguration(typeof(TargetClass1), mixinConfiguration);
-      type2.TargetClassDefinition = TargetClassDefinitionUtility.GetConfiguration(typeof(TargetClass2), mixinConfiguration);
+      type1.TargetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(typeof(TargetClass1)));
+      type2.TargetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(typeof(TargetClass2)));
 
       Assert.That(type1, Is.Not.EqualTo(type2));
     }

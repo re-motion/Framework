@@ -20,6 +20,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using NUnit.Framework;
+using Remotion.Mixins.Definitions;
 using Remotion.Mixins.XRef.Formatting;
 using Remotion.Mixins.XRef.Report;
 using Remotion.Mixins.XRef.UnitTests.TestDomain;
@@ -66,7 +67,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
 
       var mixinConfiguration = MixinConfiguration.BuildNew().ForClass<TargetClass1>().AddMixin<Mixin1>().BuildConfiguration();
       targetType.ClassContext = mixinConfiguration.ClassContexts.First();
-      targetType.TargetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration));
+      targetType.TargetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType.Type));
 
       var interfaceIdentifierGenerator = new IdentifierGenerator<Type>();
       var attributeIdentifierGenerator = new IdentifierGenerator<Type>();
@@ -84,7 +85,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
 
       var output = reportGenerator.GenerateXml();
 
-      var targetClassDefinition = TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration);
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType.Type));
       var mixinDefinition = targetClassDefinition.GetMixinByConfiguredType(typeof(Mixin1));
 
       var expectedOutput = new XElement(
@@ -98,13 +99,13 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
               new XAttribute("introduced-member-visibility", "private"),
               // has no dependencies
               new XElement("AdditionalDependencies"),
-              new InterfaceIntroductionReportGenerator(new ReflectedObject(mixinDefinition.InterfaceIntroductions), interfaceIdentifierGenerator).GenerateXml(),
+              new InterfaceIntroductionReportGenerator(mixinDefinition.InterfaceIntroductions, interfaceIdentifierGenerator).GenerateXml(),
               new AttributeIntroductionReportGenerator(
-                  new ReflectedObject(mixinDefinition.AttributeIntroductions),
+                  mixinDefinition.AttributeIntroductions,
                   attributeIdentifierGenerator,
                   new RemotionReflector()).GenerateXml(),
-              new MemberOverrideReportGenerator(new ReflectedObject(mixinDefinition.GetAllOverrides())).GenerateXml(),
-              new TargetCallDependenciesReportGenerator(new ReflectedObject(mixinDefinition), assemblyIdentifierGenerator, _remotionReflector, _outputFormatter).GenerateXml()
+              new MemberOverrideReportGenerator(mixinDefinition.GetAllOverrides()).GenerateXml(),
+              new TargetCallDependenciesReportGenerator( mixinDefinition, assemblyIdentifierGenerator, _remotionReflector, _outputFormatter).GenerateXml()
           ));
 
       Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));

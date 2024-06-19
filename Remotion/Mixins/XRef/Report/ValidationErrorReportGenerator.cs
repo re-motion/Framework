@@ -16,16 +16,17 @@
 // 
 using System;
 using System.Xml.Linq;
+using Remotion.Mixins.Validation;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef.Report
 {
   public class ValidationErrorReportGenerator : IReportGenerator
   {
-    private readonly ErrorAggregator<Exception> _errorAggregator;
+    private readonly ErrorAggregator<ValidationException> _errorAggregator;
     private readonly RemotionReflector _remotionReflector;
 
-    public ValidationErrorReportGenerator (ErrorAggregator<Exception> errorAggregator, RemotionReflector remotionReflector)
+    public ValidationErrorReportGenerator (ErrorAggregator<ValidationException> errorAggregator, RemotionReflector remotionReflector)
     {
       ArgumentUtility.CheckNotNull("errorAggregator", errorAggregator);
       ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
@@ -46,11 +47,11 @@ namespace Remotion.Mixins.XRef.Report
         topLevelExceptionElement.Add(
             new XElement(
                 "ValidationLog",
-                new XAttribute("number-of-rules-executed", validationLog.GetProperty("NumberOfRulesExecuted")),
-                new XAttribute("number-of-failures", validationLog.GetProperty("NumberOfFailures")),
-                new XAttribute("number-of-unexpected-exceptions", validationLog.GetProperty("NumberOfUnexpectedExceptions")),
-                new XAttribute("number-of-warnings", validationLog.GetProperty("NumberOfWarnings")),
-                new XAttribute("number-of-successes", validationLog.GetProperty("NumberOfSuccesses")))
+                new XAttribute("number-of-rules-executed", validationLog.NumberOfRulesExecuted),
+                new XAttribute("number-of-failures", validationLog.NumberOfFailures),
+                new XAttribute("number-of-unexpected-exceptions", validationLog.NumberOfUnexpectedExceptions),
+                new XAttribute("number-of-warnings", validationLog.NumberOfWarnings),
+                new XAttribute("number-of-successes", validationLog.NumberOfSuccesses))
         );
         validationErrors.Add(topLevelExceptionElement);
       }

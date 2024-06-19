@@ -30,7 +30,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
     [Test]
     public void GenerateXml_NoErrors ()
     {
-      var errorAggregator = new ErrorAggregator<Exception>();
+      var errorAggregator = new ErrorAggregator<ValidationException>();
       var reportGenerator = new ValidationErrorReportGenerator(errorAggregator, new RemotionReflector());
 
       var output = reportGenerator.GenerateXml();
@@ -42,7 +42,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
     [Test]
     public void GenerateXml_WithErrors ()
     {
-      var errorAggregator = new ErrorAggregator<Exception>();
+      var errorAggregator = new ErrorAggregator<ValidationException>();
       var validationException1 = SetUpExceptionWithDummyStackTrace("test validation exception", new DefaultValidationLog());
 
       errorAggregator.AddException(validationException1);
@@ -54,11 +54,11 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       validationExceptionElement.Add(
           new XElement(
               "ValidationLog",
-              new XAttribute("number-of-rules-executed", validationException1.ValidationLog.GetNumberOfRulesExecuted()),
-              new XAttribute("number-of-failures", validationException1.ValidationLog.GetNumberOfFailures()),
-              new XAttribute("number-of-unexpected-exceptions", validationException1.ValidationLog.GetNumberOfUnexpectedExceptions()),
-              new XAttribute("number-of-warnings", validationException1.ValidationLog.GetNumberOfWarnings()),
-              new XAttribute("number-of-successes", validationException1.ValidationLog.GetNumberOfSuccesses())
+              new XAttribute("number-of-rules-executed", validationException1.ValidationLogData.NumberOfRulesExecuted),
+              new XAttribute("number-of-failures", validationException1.ValidationLogData.NumberOfFailures),
+              new XAttribute("number-of-unexpected-exceptions", validationException1.ValidationLogData.NumberOfUnexpectedExceptions),
+              new XAttribute("number-of-warnings", validationException1.ValidationLogData.NumberOfWarnings),
+              new XAttribute("number-of-successes", validationException1.ValidationLogData.NumberOfSuccesses)
           ));
 
       var expectedOutput = new XElement("ValidationErrors", validationExceptionElement);
@@ -69,7 +69,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
     [Test]
     public void GenerateXml_WithValidationLogNullObject ()
     {
-      var errorAggregator = new ErrorAggregator<Exception>();
+      var errorAggregator = new ErrorAggregator<ValidationException>();
       var validationException1 = SetUpExceptionWithDummyStackTrace("test validation exception", new DefaultValidationLog());
 
       errorAggregator.AddException(validationException1);
@@ -77,8 +77,8 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       var reportGenerator = new ValidationErrorReportGenerator(errorAggregator, remotionReflectorStub.Object);
 
       remotionReflectorStub
-          .Setup(_ => _.GetValidationLogFromValidationException(It.IsAny<Exception>()))
-          .Returns(new ReflectedObject(new ValidationLogNullObject()));
+          .Setup(_ => _.GetValidationLogFromValidationException(It.IsAny<ValidationException>()))
+          .Returns(new ValidationLogNullObject());
 
       var output = reportGenerator.GenerateXml();
 
@@ -101,7 +101,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
     {
       try
       {
-        throw new ValidationException(exceptionMessage, validationLog);
+        throw new ValidationException(new ValidationLogData());
       }
       catch (ValidationException caughtException)
       {

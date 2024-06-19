@@ -21,6 +21,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using NUnit.Framework;
+using Remotion.Mixins.Definitions;
 using Remotion.Mixins.XRef.Formatting;
 using Remotion.Mixins.XRef.Report;
 using Remotion.Mixins.XRef.UnitTests.Helpers;
@@ -159,7 +160,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       var type = typeof(InheritatedTargetClass);
       var mixinConfiguration =
           MixinConfiguration.BuildNew().ForClass<InheritatedTargetClass>().AddMixin<MixinOverridesTargetClassMember>().BuildConfiguration();
-      var targetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(type, mixinConfiguration));
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(type));
 
       var involvedType = new InvolvedType(type) { TargetClassDefinition = targetClassDefinition };
 
@@ -221,8 +222,8 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
 
       var mixinConfiguration =
           MixinConfiguration.BuildNew().ForClass<ClassOverridingInheritedMixinMethod>().AddMixin<MixinWithInheritedMethod>().BuildConfiguration();
-      var targetClassDefinition = TargetClassDefinitionUtility.GetConfiguration(targetType, mixinConfiguration);
-      mixin.TargetTypes.Add(target, new ReflectedObject(targetClassDefinition.GetMixinByConfiguredType(mixinType)));
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType));
+      mixin.TargetTypes.Add(target, targetClassDefinition.GetMixinByConfiguredType(mixinType));
 
       var reportGenerator = CreateMemberReportGenerator(mixinType, mixin);
       var output = reportGenerator.GenerateXml();
@@ -281,7 +282,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       var type = typeof(MemberOverrideTestClass.Target);
       var mixinConfiguration =
           MixinConfiguration.BuildNew().ForClass<MemberOverrideTestClass.Target>().AddMixin<MemberOverrideTestClass.Mixin1>().BuildConfiguration();
-      var targetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(type, mixinConfiguration));
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(type));
       var involvedType = new InvolvedType(type);
       involvedType.TargetClassDefinition = targetClassDefinition;
 
@@ -341,7 +342,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       var type = typeof(MemberOverrideTestClass.Target);
       var mixinConfiguration =
           MixinConfiguration.BuildNew().ForClass<MemberOverrideTestClass.Target>().AddMixin<MemberOverrideTestClass.Mixin1>().BuildConfiguration();
-      var targetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(type, mixinConfiguration));
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(type));;
       var involvedType = new InvolvedType(type) { TargetClassDefinition = targetClassDefinition };
 
       var reportGenerator = CreateMemberReportGenerator(type, involvedType);
@@ -370,9 +371,10 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
               .ForClass<MemberOverrideTestClass.Target>().AddMixin<MemberOverrideTestClass.Mixin1>()
               .BuildConfiguration();
       var involvedType = new InvolvedType(mixinType);
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType.Type));
       involvedType.TargetTypes.Add(
           targetType,
-          new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration).Mixins[mixinType]));
+          targetClassDefinition.Mixins[mixinType]);
       var reportGenerator = CreateMemberReportGenerator(mixinType, involvedType);
 
       var output = reportGenerator.GenerateXml().XPathSelectElement("Member[@name='OverriddenMethod']").Element("Modifiers").Element("Type");
@@ -397,7 +399,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
           MixinConfiguration.BuildNew()
               .ForClass<TargetClass1>().AddMixin<Mixin1>()
               .BuildConfiguration();
-      var targetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType, mixinConfiguration));
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType));
       var involvedType = new InvolvedType(targetType)
                          {
                              TargetClassDefinition = targetClassDefinition,
@@ -420,7 +422,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
           MixinConfiguration.BuildNew()
               .ForClass<MemberOverrideTestClass.Target>().AddMixin<MemberOverrideTestClass.Mixin1>()
               .BuildConfiguration();
-      var targetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType, mixinConfiguration));
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType));
       var involvedType = new InvolvedType(targetType)
                          {
                              TargetClassDefinition = targetClassDefinition,
@@ -454,7 +456,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
           MixinConfiguration.BuildNew()
               .ForClass<BaseMemberOverrideTestClass.Target>().AddMixin<BaseMemberOverrideTestClass.Mixin1>()
               .BuildConfiguration();
-      var targetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType, mixinConfiguration));
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType));
       var involvedType = new InvolvedType(targetType)
                          {
                              TargetClassDefinition = targetClassDefinition,
@@ -485,7 +487,8 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
           MixinConfiguration.BuildNew()
               .ForClass<HiddenMemberTestClass.Target>().AddMixin<HiddenMemberTestClass.Mixin1>()
               .BuildConfiguration();
-      var targetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType, mixinConfiguration));
+
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType));
       var involvedType = new InvolvedType(targetType)
                          {
                              TargetClassDefinition = targetClassDefinition,

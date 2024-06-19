@@ -23,9 +23,9 @@ namespace Remotion.Mixins.XRef.Report
 {
   public class ConfigurationErrorReportGenerator : IReportGenerator
   {
-    private readonly ErrorAggregator<Exception> _errorAggregator;
+    private readonly ErrorAggregator<ConfigurationException> _errorAggregator;
 
-    public ConfigurationErrorReportGenerator (ErrorAggregator<Exception> errorAggregator)
+    public ConfigurationErrorReportGenerator (ErrorAggregator<ConfigurationException> errorAggregator)
     {
       ArgumentUtility.CheckNotNull("errorAggregator", errorAggregator);
 

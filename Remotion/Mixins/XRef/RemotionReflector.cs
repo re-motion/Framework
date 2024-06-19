@@ -21,6 +21,7 @@ using System.Linq;
 using System.Reflection;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Validation;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef;
@@ -74,7 +75,7 @@ public class RemotionReflector
   {
     ArgumentUtility.CheckNotNull("type", type);
 
-    var mixinBaseType = _mixinsAssembly.GetType("Remotion.Mixins.IInitializableMixin", true);
+    var mixinBaseType = typeof(IInitializableMixin);
     return mixinBaseType!.IsAssignableFrom(type);
   }
 
@@ -95,9 +96,9 @@ public class RemotionReflector
     return (MixinConfiguration)ReflectedObject.CallMethod(declarativeConfigurationBuilderType!, "BuildConfigurationFromAssemblies", new object[] { assemblies }).WrappedObject;
   }
 
-  public ReflectedObject GetValidationLogFromValidationException (Exception validationException)
+  public SerializableValidationLogData GetValidationLogFromValidationException (ValidationException validationException)
   {
-    return new ReflectedObject(validationException).GetProperty("ValidationLogData");
+    return validationException.ValidationLogData;
   }
 
   public UniqueDefinitionCollection<Type,NextCallDependencyDefinition> GetNextCallDependencies (MixinDefinition mixinDefinition)

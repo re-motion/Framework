@@ -20,6 +20,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using NUnit.Framework;
+using Remotion.Mixins.Definitions;
 using Remotion.Mixins.XRef.Formatting;
 using Remotion.Mixins.XRef.Report;
 using Remotion.Mixins.XRef.UnitTests.Helpers;
@@ -47,7 +48,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
 
       var mixinConfiguration = MixinConfiguration.BuildNew().ForClass<TargetClass1>().AddMixin<Mixin4>().BuildConfiguration();
       targetType.ClassContext = mixinConfiguration.ClassContexts.First();
-      targetType.TargetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration));
+      targetType.TargetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType.Type));
       var mixinContext = targetType.ClassContext.Mixins.First();
       var mixinDefinition = targetType.TargetClassDefinition.GetMixinByConfiguredType(mixinContext.MixinType);
 
@@ -81,7 +82,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
 
       var mixinConfiguration = MixinConfiguration.BuildNew().ForClass<TargetClass3>().AddMixin<Mixin4>().BuildConfiguration();
       targetType.ClassContext = mixinConfiguration.ClassContexts.First();
-      targetType.TargetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration));
+      targetType.TargetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType.Type));
       var mixinContext = targetType.ClassContext.Mixins.First();
       var mixinDefinition = targetType.TargetClassDefinition.GetMixinByConfiguredType(mixinContext.MixinType);
 
