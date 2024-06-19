@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <ProjectType>Test</ProjectType>
+        <ProductType>Mixins</ProductType>
+        <UseWebForms>true</UseWebForms>
+    </PropertyGroup>
+    <Import Project="..\..\..\Build\Shared.build.props"/>
+    <PropertyGroup>
+        <AssemblyTitle>Remotion Mixins Library Unit Tests</AssemblyTitle>
+        <AssemblyName>Remotion.Mixins.XRef.UnitTests</AssemblyName>
+        <RootNamespace>$(AssemblyName)</RootNamespace>
+        <SignAssembly>false</SignAssembly>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Core\Mixins.Core.csproj" />
+        <ProjectReference Include="..\XRef\Mixins.XRef.csproj"/>
+    </ItemGroup>
+    <Import Project="..\..\..\Build\Shared.build.targets"/>
+</Project>
