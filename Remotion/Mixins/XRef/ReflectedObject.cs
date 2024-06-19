@@ -28,7 +28,7 @@ namespace Remotion.Mixins.XRef
   {
     private static readonly FastMemberInvokerCache s_cache = new();
 
-    private readonly object _wrappedObject;
+    public object WrappedObject { get; }
 
     public ReflectedObject (object wrappedObject)
     {
@@ -37,7 +37,7 @@ namespace Remotion.Mixins.XRef
       if (wrappedObject is ReflectedObject)
         throw new ArgumentException("There is no point in wrapping an instance of 'MixinXRef.Reflection.ReflectedObject'.");
 
-      _wrappedObject = wrappedObject;
+      WrappedObject = wrappedObject;
     }
 
     public static ReflectedObject Create (Assembly assembly, string fullName, params object[] parameters)
@@ -89,9 +89,9 @@ namespace Remotion.Mixins.XRef
 
       var unwrappedParameters = UnWrapParameters(parameters);
       var argumentTypes = unwrappedParameters.Select(obj => obj.GetType()).ToArray();
-      var invoker = s_cache.GetOrCreateFastMethodInvoker(_wrappedObject.GetType(), methodName, typeParameters, argumentTypes, BindingFlags.Public | BindingFlags.Instance);
+      var invoker = s_cache.GetOrCreateFastMethodInvoker(WrappedObject.GetType(), methodName, typeParameters, argumentTypes, BindingFlags.Public | BindingFlags.Instance);
 
-      var returnValue = invoker(_wrappedObject, unwrappedParameters);
+      var returnValue = invoker(WrappedObject, unwrappedParameters);
       return returnValue == null ? null : new ReflectedObject(returnValue);
     }
 
@@ -104,12 +104,12 @@ namespace Remotion.Mixins.XRef
 
     public T To<T> ()
     {
-      return (T)_wrappedObject;
+      return (T)WrappedObject;
     }
 
     public IEnumerator<ReflectedObject> GetEnumerator ()
     {
-      var wrappedObjectAsEnumerable = _wrappedObject as IEnumerable;
+      var wrappedObjectAsEnumerable = WrappedObject as IEnumerable;
 
       if (wrappedObjectAsEnumerable != null)
       {
@@ -117,7 +117,7 @@ namespace Remotion.Mixins.XRef
           yield return new ReflectedObject(item);
       }
       else
-        throw new NotSupportedException(string.Format("The reflected object '{0}' is not enumerable.", _wrappedObject.GetType()));
+        throw new NotSupportedException(string.Format("The reflected object '{0}' is not enumerable.", WrappedObject.GetType()));
     }
 
     IEnumerator IEnumerable.GetEnumerator ()
@@ -132,17 +132,17 @@ namespace Remotion.Mixins.XRef
 
     public override string ToString ()
     {
-      return _wrappedObject.ToString() ?? string.Empty;
+      return WrappedObject.ToString() ?? string.Empty;
     }
 
     public override bool Equals (object? obj)
     {
-      return obj is ReflectedObject && _wrappedObject.Equals(UnWrapInstance(obj));
+      return obj is ReflectedObject && WrappedObject.Equals(UnWrapInstance(obj));
     }
 
     public override int GetHashCode ()
     {
-      return _wrappedObject.GetHashCode();
+      return WrappedObject.GetHashCode();
     }
 
     private static object UnWrapInstance (object instance)

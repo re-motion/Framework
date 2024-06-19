@@ -17,10 +17,14 @@
 // 
 using System;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 using NUnit.Framework;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.Mixins.Utilities;
 using Remotion.Mixins.XRef.Report;
 using Remotion.Mixins.XRef.UnitTests.TestDomain;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef.UnitTests.Report
 {
@@ -35,13 +39,13 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
           .BuildConfiguration();
 
       var type1 = new InvolvedType(typeof(TargetClass2));
-      type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      type1.ClassContext = mixinConfiguration.ClassContexts.First();
 
       var attributeIntroductions = GetAttributeIntroductions(type1, typeof(Mixin1), mixinConfiguration);
       var reportGenerator = new AttributeIntroductionReportGenerator(
           attributeIntroductions,
           new IdentifierGenerator<Type>(),
-          Helpers.RemotionReflectorFactory.GetRemotionReflection());
+          new RemotionReflector());
       var output = reportGenerator.GenerateXml();
 
       var expectedOutput = new XElement("AttributeIntroductions");
@@ -58,13 +62,13 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
           .BuildConfiguration();
 
       var type1 = new InvolvedType(typeof(UselessObject));
-      type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      type1.ClassContext = mixinConfiguration.ClassContexts.First();
 
       var attributeIntroductions = GetAttributeIntroductions(type1, typeof(ObjectWithInheritableAttribute), mixinConfiguration);
       var reportGenerator = new AttributeIntroductionReportGenerator(
           attributeIntroductions,
           attributeIdentifierGenerator,
-          Helpers.RemotionReflectorFactory.GetRemotionReflection());
+          new RemotionReflector());
 
       var output = reportGenerator.GenerateXml();
 

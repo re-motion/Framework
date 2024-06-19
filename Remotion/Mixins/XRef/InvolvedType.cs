@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef
@@ -25,15 +27,15 @@ namespace Remotion.Mixins.XRef
   public class InvolvedType : IVisitableInvolved
   {
     private readonly Type _realType;
-    private IEnumerable<InvolvedTypeMember> _members;
+    private IEnumerable<InvolvedTypeMember>? _members;
 
-    private ReflectedObject /* ClassContext */
+    private ClassContext /* ClassContext */
         _classContext;
 
-    private ReflectedObject /* TargetClassDefinition */
+    private TargetClassDefinition /* TargetClassDefinition */
         _targetClassDefintion;
 
-    private readonly IDictionary<InvolvedType, ReflectedObject> _targetTypes = new Dictionary<InvolvedType, ReflectedObject>();
+    private readonly IDictionary<InvolvedType, MixinDefinition> _targetTypes = new Dictionary<InvolvedType, MixinDefinition>();
 
     public InvolvedType (Type realType)
     {
@@ -56,8 +58,8 @@ namespace Remotion.Mixins.XRef
               .Select(
                   m =>
                   {
-                    ReflectedObject targetMemberDefinition;
-                    List<ReflectedObject> mixinMemberDefinitions;
+                    MemberDefinitionBase targetMemberDefinition;
+                    List<MemberDefinitionBase> mixinMemberDefinitions;
                     TargetMemberDefinitions.TryGetValue(m, out targetMemberDefinition);
                     MixinMemberDefinitions.TryGetValue(m, out mixinMemberDefinitions);
                     return new InvolvedTypeMember(m, targetMemberDefinition, mixinMemberDefinitions);
@@ -70,7 +72,7 @@ namespace Remotion.Mixins.XRef
 
     public bool IsMixin => _targetTypes.Count > 0;
 
-    public ReflectedObject /* ClassContext */ ClassContext
+    public ClassContext ClassContext
     {
       get => _classContext;
       set => _classContext = value;
@@ -78,38 +80,38 @@ namespace Remotion.Mixins.XRef
 
     public bool HasTargetClassDefintion => _targetClassDefintion != null;
 
-    public ReflectedObject /* TargetClassDefinition */ TargetClassDefinition
+    public TargetClassDefinition TargetClassDefinition
     {
       get => _targetClassDefintion;
       set => _targetClassDefintion = value;
     }
 
-    public IDictionary<InvolvedType, ReflectedObject> TargetTypes => _targetTypes;
+    public IDictionary<InvolvedType, MixinDefinition> TargetTypes => _targetTypes;
 
-    private IDictionary<MemberInfo, ReflectedObject> _targetMemberDefinitions;
+    private IDictionary<MemberInfo, MemberDefinitionBase>? _targetMemberDefinitions;
 
-    public IDictionary<MemberInfo, ReflectedObject> TargetMemberDefinitions
+    public IDictionary<MemberInfo, MemberDefinitionBase> TargetMemberDefinitions
     {
       get
       {
         if (_targetMemberDefinitions == null)
           _targetMemberDefinitions = TargetClassDefinition == null
-              ? new Dictionary<MemberInfo, ReflectedObject>()
-              : TargetClassDefinition.CallMethod("GetAllMembers").ToDictionary(m => m.GetProperty("MemberInfo").To<MemberInfo>(), m => m, new MemberDefinitionEqualityComparer());
+              ? new Dictionary<MemberInfo, MemberDefinitionBase>()
+              : TargetClassDefinition.GetAllMembers().ToDictionary(m => m.MemberInfo, m => m, new MemberDefinitionEqualityComparer());
 
         return _targetMemberDefinitions;
       }
     }
 
-    private IDictionary<MemberInfo, List<ReflectedObject>> _mixinMemberDefinitions;
+    private IDictionary<MemberInfo, List<MemberDefinitionBase>>? _mixinMemberDefinitions;
 
-    public IDictionary<MemberInfo, List<ReflectedObject>> MixinMemberDefinitions
+    public IDictionary<MemberInfo, List<MemberDefinitionBase>> MixinMemberDefinitions
     {
       get
       {
         if (_mixinMemberDefinitions == null)
-          _mixinMemberDefinitions = TargetTypes.Values.Where(t => t != null).SelectMany(t => t.CallMethod("GetAllMembers"))
-              .GroupBy(m => m.GetProperty("MemberInfo").To<MemberInfo>()).ToDictionary(m => m.Key, m => m.ToList(), new MemberDefinitionEqualityComparer());
+          _mixinMemberDefinitions = TargetTypes.Values.Where(t => t != null).SelectMany(t => t.GetAllMembers())
+              .GroupBy(m => m.MemberInfo).ToDictionary(m => m.Key, m => m.ToList(), new MemberDefinitionEqualityComparer());
 
         return _mixinMemberDefinitions;
       }

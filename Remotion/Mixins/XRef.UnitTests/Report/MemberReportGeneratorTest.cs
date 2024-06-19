@@ -401,7 +401,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       var involvedType = new InvolvedType(targetType)
                          {
                              TargetClassDefinition = targetClassDefinition,
-                             ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First())
+                             ClassContext = mixinConfiguration.ClassContexts.First()
                          };
 
       var reportGenerator = CreateMemberReportGenerator(targetType, involvedType);
@@ -424,7 +424,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       var involvedType = new InvolvedType(targetType)
                          {
                              TargetClassDefinition = targetClassDefinition,
-                             ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First())
+                             ClassContext = mixinConfiguration.ClassContexts.First()
                          };
 
       var reportGenerator = CreateMemberReportGenerator(targetType, involvedType);
@@ -458,7 +458,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       var involvedType = new InvolvedType(targetType)
                          {
                              TargetClassDefinition = targetClassDefinition,
-                             ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First())
+                             ClassContext = mixinConfiguration.ClassContexts.First()
                          };
 
       var reportGenerator = CreateMemberReportGenerator(targetType, involvedType);
@@ -489,7 +489,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       var involvedType = new InvolvedType(targetType)
                          {
                              TargetClassDefinition = targetClassDefinition,
-                             ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First())
+                             ClassContext = mixinConfiguration.ClassContexts.First()
                          };
 
       var reportGenerator = CreateMemberReportGenerator(targetType, involvedType);

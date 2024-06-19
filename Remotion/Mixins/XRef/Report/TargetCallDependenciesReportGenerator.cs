@@ -18,19 +18,20 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using Remotion.Mixins.Definitions;
 using Remotion.Mixins.XRef.Formatting;
 
 namespace Remotion.Mixins.XRef.Report
 {
   public class TargetCallDependenciesReportGenerator : IReportGenerator
   {
-    private readonly ReflectedObject _mixinDefinition;
+    private readonly MixinDefinition _mixinDefinition;
     private readonly IIdentifierGenerator<Assembly> _assemblyIdentifierGenerator;
     private readonly RemotionReflector _remotionReflector;
     private readonly IOutputFormatter _outputFormatter;
 
     public TargetCallDependenciesReportGenerator (
-        ReflectedObject mixinDefinition,
+        MixinDefinition mixinDefinition,
         IIdentifierGenerator<Assembly> assemblyIdentifierGenerator,
         RemotionReflector remotionReflector,
         IOutputFormatter outputFormatter)
@@ -51,10 +52,10 @@ namespace Remotion.Mixins.XRef.Report
       return element;
     }
 
-    private XElement CreateDependencyElement (ReflectedObject targetCallDependencyDefinition)
+    private XElement CreateDependencyElement (TargetCallDependencyDefinition targetCallDependencyDefinition)
     {
-      var targetClassDefinition = _mixinDefinition.GetProperty("TargetClass");
-      var requiredType = targetCallDependencyDefinition.GetProperty("RequiredType").GetProperty("Type").To<Type>();
+      var targetClassDefinition = _mixinDefinition.TargetClass;
+      var requiredType = targetCallDependencyDefinition.RequiredType.Type;
       var element = new XElement(
           "Dependency",
           new XAttribute(
@@ -66,8 +67,8 @@ namespace Remotion.Mixins.XRef.Report
           new XAttribute("is-interface", requiredType.IsInterface));
       if (requiredType.IsInterface)
       {
-        var implementedByTarget = targetClassDefinition.GetProperty("ImplementedInterfaces").Any(i => i.To<Type>() == requiredType);
-        var addedByMixin = targetClassDefinition.GetProperty("ReceivedInterfaces").Any(i => i.GetProperty("InterfaceType").To<Type>() == requiredType);
+        var implementedByTarget = targetClassDefinition.ImplementedInterfaces.Any(i => i == requiredType);
+        var addedByMixin = targetClassDefinition.ReceivedInterfaces.Any(i => i.InterfaceType == requiredType);
         var implementedDynamically = !implementedByTarget && !addedByMixin;
 
         element.Add(new XAttribute("is-implemented-by-target", implementedByTarget));

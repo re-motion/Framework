@@ -73,14 +73,12 @@ namespace Remotion.Mixins.XRef.UnitTests.Reflection
     }
 
     [Test]
-    [ExpectedException(typeof(NotSupportedException), ExpectedMessage = "Void methods are not supported.")]
     public void CallMethod_ExistingMethod_Void ()
     {
       // TargetDoSomething has method: public void DoSomething()
       var reflectedObject = new ReflectedObject(new TargetDoSomething());
-      var output = reflectedObject.CallMethod("DoSomething");
 
-      Assert.That(output, Is.Null);
+      Assert.That(() => reflectedObject.CallMethod("DoSomething"), Throws.InstanceOf<NotSupportedException>().With.Message.EqualTo("Void methods are not supported."));
     }
 
     [Test]
@@ -275,7 +273,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Reflection
       var reflectedObject1 = new ReflectedObject("string");
       var reflectedObject2 = new ReflectedObject("string");
 
-      Assert.True(reflectedObject1.Equals(reflectedObject2));
+      Assert.That(reflectedObject1, Is.EqualTo(reflectedObject2));
     }
 
     [Test]
@@ -284,7 +282,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Reflection
       var reflectedObject1 = new ReflectedObject("string");
       var reflectedObject2 = new ReflectedObject("anotherString");
 
-      Assert.False(reflectedObject1.Equals(reflectedObject2));
+      Assert.That(reflectedObject1, Is.EqualTo(reflectedObject2));
     }
 
     [Test]

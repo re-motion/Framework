@@ -35,7 +35,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
     [SetUp]
     public void SetUp ()
     {
-      _remotionReflector = Helpers.RemotionReflectorFactory.GetRemotionReflection();
+      _remotionReflector = new RemotionReflector();
       _outputFormatter = new OutputFormatter();
     }
 
@@ -65,7 +65,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       var targetType = new InvolvedType(typeof(TargetClass1));
 
       var mixinConfiguration = MixinConfiguration.BuildNew().ForClass<TargetClass1>().AddMixin<Mixin1>().BuildConfiguration();
-      targetType.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      targetType.ClassContext = mixinConfiguration.ClassContexts.First();
       targetType.TargetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration));
 
       var interfaceIdentifierGenerator = new IdentifierGenerator<Type>();
@@ -102,7 +102,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
               new AttributeIntroductionReportGenerator(
                   new ReflectedObject(mixinDefinition.AttributeIntroductions),
                   attributeIdentifierGenerator,
-                  Helpers.RemotionReflectorFactory.GetRemotionReflection()).GenerateXml(),
+                  new RemotionReflector()).GenerateXml(),
               new MemberOverrideReportGenerator(new ReflectedObject(mixinDefinition.GetAllOverrides())).GenerateXml(),
               new TargetCallDependenciesReportGenerator(new ReflectedObject(mixinDefinition), assemblyIdentifierGenerator, _remotionReflector, _outputFormatter).GenerateXml()
           ));
@@ -118,7 +118,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       var mixinConfiguration = MixinConfiguration.BuildNew()
           .ForClass(typeof(GenericTarget<,>)).AddMixin<ClassWithBookAttribute>().AddMixin<Mixin3>()
           .BuildConfiguration();
-      targetType.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      targetType.ClassContext = mixinConfiguration.ClassContexts.First();
 
       var interfaceIdentifierGenerator = new IdentifierGenerator<Type>();
       var attributeIdentifierGenerator = new IdentifierGenerator<Type>();

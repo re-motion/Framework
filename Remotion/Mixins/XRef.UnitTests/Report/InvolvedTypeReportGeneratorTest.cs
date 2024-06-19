@@ -47,7 +47,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
     [SetUp]
     public void SetUp ()
     {
-      _remotionReflector = Helpers.RemotionReflectorFactory.GetRemotionReflection();
+      _remotionReflector = new RemotionReflector();
       _outputFormatter = new OutputFormatter();
 
       _involvedTypeIdentifierGenerator = new IdentifierGenerator<Type>();
@@ -163,11 +163,11 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
           .BuildConfiguration();
 
       var involvedType1 = new InvolvedType(typeof(TargetClass1));
-      involvedType1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      involvedType1.ClassContext = mixinConfiguration.ClassContexts.First();
       SetTargetClassDefinition(involvedType1, mixinConfiguration);
 
       var involvedType2 = new InvolvedType(typeof(TargetClass2));
-      involvedType2.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.Last());
+      involvedType2.ClassContext = mixinConfiguration.ClassContexts.Last();
       SetTargetClassDefinition(involvedType2, mixinConfiguration);
 
       var involvedType3 = new InvolvedType(typeof(Mixin1));
@@ -300,7 +300,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
     [Test]
     public void GenerateXml_DifferentAssemblies ()
     {
-      var involvedType1 = new InvolvedType(typeof(TargetClass1)) { ClassContext = new ReflectedObject(new ClassContext(typeof(TargetClass1))) };
+      var involvedType1 = new InvolvedType(typeof(TargetClass1)) { ClassContext = ClassContextObjectMother.Create(typeof(TargetClass1)) };
       var involvedType2 = new InvolvedType(typeof(object));
 
       var reportGenerator = CreateInvolvedTypeReportGenerator(involvedType1, involvedType2);

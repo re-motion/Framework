@@ -113,7 +113,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
           new IdentifierGenerator<Assembly>(),
           new IdentifierGenerator<Type>(),
           attributeIdentifier,
-          Helpers.RemotionReflectorFactory.GetRemotionReflection(),
+          new RemotionReflector(),
           new OutputFormatter());
     }
   }

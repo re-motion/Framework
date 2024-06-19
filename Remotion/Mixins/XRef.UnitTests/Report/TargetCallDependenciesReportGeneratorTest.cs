@@ -36,7 +36,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
     [SetUp]
     public void SetUp ()
     {
-      _remotionReflector = Helpers.RemotionReflectorFactory.GetRemotionReflection();
+      _remotionReflector = new RemotionReflector();
       _outputFormatter = new OutputFormatter();
     }
 
@@ -46,10 +46,10 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       var targetType = new InvolvedType(typeof(TargetClass1));
 
       var mixinConfiguration = MixinConfiguration.BuildNew().ForClass<TargetClass1>().AddMixin<Mixin4>().BuildConfiguration();
-      targetType.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      targetType.ClassContext = mixinConfiguration.ClassContexts.First();
       targetType.TargetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration));
-      var mixinContext = targetType.ClassContext.GetProperty("Mixins").First();
-      var mixinDefinition = targetType.TargetClassDefinition.CallMethod("GetMixinByConfiguredType", mixinContext.GetProperty("MixinType").To<Type>());
+      var mixinContext = targetType.ClassContext.Mixins.First();
+      var mixinDefinition = targetType.TargetClassDefinition.GetMixinByConfiguredType(mixinContext.MixinType);
 
       var assemblyIdentifierGenerator = new IdentifierGenerator<Assembly>();
 
@@ -80,10 +80,10 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       var targetType = new InvolvedType(typeof(TargetClass3));
 
       var mixinConfiguration = MixinConfiguration.BuildNew().ForClass<TargetClass3>().AddMixin<Mixin4>().BuildConfiguration();
-      targetType.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      targetType.ClassContext = mixinConfiguration.ClassContexts.First();
       targetType.TargetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration));
-      var mixinContext = targetType.ClassContext.GetProperty("Mixins").First();
-      var mixinDefinition = targetType.TargetClassDefinition.CallMethod("GetMixinByConfiguredType", mixinContext.GetProperty("MixinType").To<Type>());
+      var mixinContext = targetType.ClassContext.Mixins.First();
+      var mixinDefinition = targetType.TargetClassDefinition.GetMixinByConfiguredType(mixinContext.MixinType);
 
       var assemblyIdentifierGenerator = new IdentifierGenerator<Assembly>();
 

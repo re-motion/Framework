@@ -31,7 +31,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
     public void GenerateXml_NoErrors ()
     {
       var errorAggregator = new ErrorAggregator<Exception>();
-      var reportGenerator = new ValidationErrorReportGenerator(errorAggregator, Helpers.RemotionReflectorFactory.GetRemotionReflection());
+      var reportGenerator = new ValidationErrorReportGenerator(errorAggregator, new RemotionReflector());
 
       var output = reportGenerator.GenerateXml();
       var expectedOutput = new XElement("ValidationErrors");
@@ -46,7 +46,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       var validationException1 = SetUpExceptionWithDummyStackTrace("test validation exception", new DefaultValidationLog());
 
       errorAggregator.AddException(validationException1);
-      var reportGenerator = new ValidationErrorReportGenerator(errorAggregator, Helpers.RemotionReflectorFactory.GetRemotionReflection());
+      var reportGenerator = new ValidationErrorReportGenerator(errorAggregator, new RemotionReflector());
 
       var output = reportGenerator.GenerateXml();
 
@@ -73,11 +73,12 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       var validationException1 = SetUpExceptionWithDummyStackTrace("test validation exception", new DefaultValidationLog());
 
       errorAggregator.AddException(validationException1);
-      var remotionReflectorStub = MockRepository.GenerateStub<RemotionReflector>();
-      var reportGenerator = new ValidationErrorReportGenerator(errorAggregator, remotionReflectorStub);
+      var remotionReflectorStub = new Mock<RemotionReflector>();
+      var reportGenerator = new ValidationErrorReportGenerator(errorAggregator, remotionReflectorStub.Object);
 
-      remotionReflectorStub.Stub(_ => _.GetValidationLogFromValidationException(null)).IgnoreArguments()
-          .Return(new ReflectedObject(new ValidationLogNullObject()));
+      remotionReflectorStub
+          .Setup(_ => _.GetValidationLogFromValidationException(It.IsAny<Exception>()))
+          .Returns(new ReflectedObject(new ValidationLogNullObject()));
 
       var output = reportGenerator.GenerateXml();
 

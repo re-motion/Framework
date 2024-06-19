@@ -13,6 +13,8 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Extensions\Core.Extensions.csproj" />
     <ProjectReference Include="..\XRef\Mixins.XRef.csproj" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

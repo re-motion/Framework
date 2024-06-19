@@ -29,7 +29,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Explore
       var mixinConfiguration = MixinConfiguration.BuildNew()
           .ForClass(typeof(Target)).AddMixin(typeof(MixinOverrideTarget))
           .BuildConfiguration();
-      var targetClassDefiniton = TargetClassDefinitionUtility.GetConfiguration(typeof(Target), mixinConfiguration);
+      var targetClassDefiniton =       mixinConfiguration.GetContext(typeof(Target));
       var targetClassOverrides = targetClassDefiniton.GetAllMembers().Single(mdb => mdb.Name == "WriteType").Overrides;
       var mixinOverrides = targetClassDefiniton.Mixins[0].GetAllMembers().Single(mdb => mdb.Name == "WriteType").Overrides;
 

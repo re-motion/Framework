@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Remotion.Mixins.Definitions;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef
@@ -28,8 +29,8 @@ namespace Remotion.Mixins.XRef
 
     public InvolvedTypeMember (
         MemberInfo memberInfo,
-        ReflectedObject targetMemberDefinition,
-        IEnumerable<ReflectedObject> mixinMemberDefinitions)
+        MemberDefinitionBase targetMemberDefinition,
+        IEnumerable<MemberDefinitionBase> mixinMemberDefinitions)
     {
       ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
 
@@ -39,7 +40,7 @@ namespace Remotion.Mixins.XRef
       SetMixinOverride(targetMemberDefinition);
       AddTargetOverrides(mixinMemberDefinitions);
 
-      MixinMemberDefinitions = mixinMemberDefinitions ?? Enumerable.Empty<ReflectedObject>();
+      MixinMemberDefinitions = mixinMemberDefinitions ?? Enumerable.Empty<MemberDefinitionBase>();
       TargetMemberDefinition = targetMemberDefinition;
 
       OverridingMixinTypes = GetOverridingMixinTypes();
@@ -73,32 +74,32 @@ namespace Remotion.Mixins.XRef
       }
     }
 
-    private void AddTargetOverrides (IEnumerable<ReflectedObject> mixinMemberDefinitions)
+    private void AddTargetOverrides (IEnumerable<MemberDefinitionBase> mixinMemberDefinitions)
     {
       if (mixinMemberDefinitions == null || !mixinMemberDefinitions.Any())
         return;
 
       var overriddenMembers = mixinMemberDefinitions
-          .Select(m => m.GetProperty("BaseAsMember"))
+          .Select(m => m.BaseAsMember)
           .Where(m => m != null)
-          .Select(m => m.GetProperty("MemberInfo").To<MemberInfo>())
+          .Select(m => m.MemberInfo)
           .Distinct();
 
       foreach (var overriddenMember in overriddenMembers)
         AddOverriddenMember(overriddenMember, OverridingMemberInfo.OverrideType.Target);
     }
 
-    private void SetMixinOverride (ReflectedObject targetMemberDefinition)
+    private void SetMixinOverride (MemberDefinitionBase targetMemberDefinition)
     {
       if (targetMemberDefinition == null)
         return;
 
-      var baseMember = targetMemberDefinition.GetProperty("BaseAsMember");
+      var baseMember = targetMemberDefinition.BaseAsMember;
 
       if (baseMember == null)
         return;
 
-      AddOverriddenMember(baseMember.GetProperty("MemberInfo").To<MemberInfo>(), OverridingMemberInfo.OverrideType.Mixin);
+      AddOverriddenMember(baseMember.MemberInfo, OverridingMemberInfo.OverrideType.Mixin);
     }
 
     private void AddSubMemberInfos (MemberInfo memberInfo)
@@ -136,8 +137,8 @@ namespace Remotion.Mixins.XRef
         return Enumerable.Empty<Type>();
 
       return
-          TargetMemberDefinition.GetProperty("Overrides").Select(
-              o => o.GetProperty("DeclaringClass").GetProperty("Type").To<Type>());
+          TargetMemberDefinition.Overrides.Select(
+              o => o.DeclaringClass.Type);
     }
 
     private IEnumerable<Type> GetOverridingTargetTypes ()
@@ -146,8 +147,8 @@ namespace Remotion.Mixins.XRef
         return Enumerable.Empty<Type>();
 
       return
-          MixinMemberDefinitions.SelectMany(m => m.GetProperty("Overrides")).Select(
-              o => o.GetProperty("DeclaringClass").GetProperty("Type").To<Type>());
+          MixinMemberDefinitions.SelectMany(m => m.Overrides).Select(
+              o => o.DeclaringClass.Type);
     }
 
     private enum SubMemberType
@@ -165,8 +166,8 @@ namespace Remotion.Mixins.XRef
 
     public IEnumerable<OverridingMemberInfo> SubMemberInfos => _subMemberInfos.Values;
 
-    public ReflectedObject TargetMemberDefinition { get; private set; }
-    public IEnumerable<ReflectedObject> MixinMemberDefinitions { get; private set; }
+    public MemberDefinitionBase TargetMemberDefinition { get; private set; }
+    public IEnumerable<MemberDefinitionBase> MixinMemberDefinitions { get; private set; }
 
     public IEnumerable<Type> OverriddenMembersDeclaringTypes
     {

@@ -34,7 +34,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
     public void SetUp ()
     {
       _outputFormatter = new OutputFormatter();
-      _remotionReflector = new DefaultReflector();
+      _remotionReflector = new RemotionReflector();
     }
 
     [Test]
@@ -89,7 +89,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
 
       var involvedType = new InvolvedType(typeof(ComposedInterfacesTestClass.MyMixinTarget));
       var classContext = mixinConfiguration.ClassContexts.GetWithInheritance(typeof(ComposedInterfacesTestClass.MyMixinTarget));
-      involvedType.ClassContext = new ReflectedObject(classContext);
+      involvedType.ClassContext = classContext;
 
       var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator(_remotionReflector, _outputFormatter, involvedType);
       var output = reportGenerator.GenerateXml();
@@ -127,7 +127,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
 
       var involvedType = new InvolvedType(typeof(ComposedInterfacesTestClass.MyMixinTarget));
       var classContext = mixinConfiguration.ClassContexts.GetWithInheritance(typeof(ComposedInterfacesTestClass.MyMixinTarget));
-      involvedType.ClassContext = new ReflectedObject(classContext);
+      involvedType.ClassContext = classContext;
 
       var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator(_remotionReflector, _outputFormatter, involvedType);
       var output = reportGenerator.GetComposedInterfaces();

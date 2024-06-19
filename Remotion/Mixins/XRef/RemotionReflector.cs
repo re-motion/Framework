@@ -19,6 +19,8 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef;
@@ -76,21 +78,21 @@ public class RemotionReflector
     return mixinBaseType!.IsAssignableFrom(type);
   }
 
-  public ReflectedObject GetTargetClassDefinition (Type targetType, ReflectedObject mixinConfiguration, ReflectedObject classContext)
+  public TargetClassDefinition GetTargetClassDefinition (Type targetType, MixinConfiguration mixinConfiguration, ClassContext classContext)
   {
     ArgumentUtility.CheckNotNull("targetType", targetType);
     ArgumentUtility.CheckNotNull("mixinConfiguration", mixinConfiguration);
 
     var targetClassDefinitionFactoryType = _mixinsAssembly.GetType("Remotion.Mixins.Definitions.TargetClassDefinitionFactory", true);
-    return ReflectedObject.CallMethod(targetClassDefinitionFactoryType!, "CreateAndValidate", classContext);
+    return (TargetClassDefinition)ReflectedObject.CallMethod(targetClassDefinitionFactoryType!, "CreateAndValidate", classContext).WrappedObject;
   }
 
-  public ReflectedObject BuildConfigurationFromAssemblies (Assembly[] assemblies)
+  public MixinConfiguration BuildConfigurationFromAssemblies (Assembly[] assemblies)
   {
     ArgumentUtility.CheckNotNull("assemblies", assemblies);
 
     var declarativeConfigurationBuilderType = _mixinsAssembly.GetType("Remotion.Mixins.Context.DeclarativeConfigurationBuilder", true);
-    return ReflectedObject.CallMethod(declarativeConfigurationBuilderType!, "BuildConfigurationFromAssemblies", new object[] { assemblies });
+    return (MixinConfiguration)ReflectedObject.CallMethod(declarativeConfigurationBuilderType!, "BuildConfigurationFromAssemblies", new object[] { assemblies }).WrappedObject;
   }
 
   public ReflectedObject GetValidationLogFromValidationException (Exception validationException)
@@ -98,23 +100,23 @@ public class RemotionReflector
     return new ReflectedObject(validationException).GetProperty("ValidationLogData");
   }
 
-  public ReflectedObject GetNextCallDependencies (ReflectedObject mixinDefinition)
+  public UniqueDefinitionCollection<Type,NextCallDependencyDefinition> GetNextCallDependencies (MixinDefinition mixinDefinition)
   {
     ArgumentUtility.CheckNotNull("mixinDefinition", mixinDefinition);
 
-    return mixinDefinition.GetProperty("NextCallDependencies");
+    return mixinDefinition.NextCallDependencies;
   }
 
-  public ReflectedObject GetTargetCallDependencies (ReflectedObject mixinDefinition)
+  public UniqueDefinitionCollection<Type,TargetCallDependencyDefinition> GetTargetCallDependencies (MixinDefinition mixinDefinition)
   {
     ArgumentUtility.CheckNotNull("mixinDefinition", mixinDefinition);
 
-    return mixinDefinition.GetProperty("TargetCallDependencies");
+    return mixinDefinition.TargetCallDependencies;
   }
 
-  public ICollection<Type> GetComposedInterfaces (ReflectedObject classContext)
+  public IReadOnlyCollection<Type> GetComposedInterfaces (ClassContext classContext)
   {
-    return classContext.GetProperty("ComposedInterfaces").To<ICollection<Type>>();
+    return classContext.ComposedInterfaces;
   }
 
   public ITypeDiscoveryService GetTypeDiscoveryService ()

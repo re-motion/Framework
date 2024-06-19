@@ -17,6 +17,7 @@
 using System;
 using System.Linq;
 using System.Xml.Linq;
+using Remotion.Mixins.Definitions;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.XRef.Report
@@ -24,12 +25,12 @@ namespace Remotion.Mixins.XRef.Report
   public class AttributeIntroductionReportGenerator : IReportGenerator
   {
     // MultiDefinitionCollection<Type, AttributeIntroductionDefinition> _attributeIntroductionDefinitions
-    private readonly ReflectedObject _attributeIntroductionDefinitions;
+    private readonly MultiDefinitionCollection<Type,AttributeIntroductionDefinition> _attributeIntroductionDefinitions;
     private readonly IIdentifierGenerator<Type> _attributeIdentifierGenerator;
     private readonly RemotionReflector _remotionReflector;
 
     public AttributeIntroductionReportGenerator (
-        ReflectedObject attributeIntroductionDefinitions,
+        MultiDefinitionCollection<Type,AttributeIntroductionDefinition> attributeIntroductionDefinitions,
         IIdentifierGenerator<Type> attributeIdentifierGenerator,
         RemotionReflector remotionReflector)
     {
@@ -47,8 +48,8 @@ namespace Remotion.Mixins.XRef.Report
       return new XElement(
           "AttributeIntroductions",
           from introducedAttribute in _attributeIntroductionDefinitions
-          where !_remotionReflector.IsInfrastructureType(introducedAttribute.GetProperty("AttributeType").To<Type>())
-          select GenerateAttributeReferanceElement(introducedAttribute.GetProperty("AttributeType").To<Type>()));
+          where !_remotionReflector.IsInfrastructureType(introducedAttribute.AttributeType)
+          select GenerateAttributeReferanceElement(introducedAttribute.AttributeType));
     }
 
     private XElement GenerateAttributeReferanceElement (Type introducedAttribute)
