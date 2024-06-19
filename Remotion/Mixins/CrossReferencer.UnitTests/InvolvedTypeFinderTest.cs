@@ -23,20 +23,21 @@ using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Validation;
 
 namespace Remotion.Mixins.CrossReferencer.UnitTests
 {
   [TestFixture]
   public class InvolvedTypeFinderTest
   {
-    private ErrorAggregator<Exception> _configurationErrors;
-    private ErrorAggregator<Exception> _validationErrors;
+    private ErrorAggregator<ConfigurationException> _configurationErrors;
+    private ErrorAggregator<ValidationException> _validationErrors;
 
     [SetUp]
     public void SetUp ()
     {
-      _configurationErrors = new ErrorAggregator<Exception>();
-      _validationErrors = new ErrorAggregator<Exception>();
+      _configurationErrors = new ErrorAggregator<ConfigurationException>();
+      _validationErrors = new ErrorAggregator<ValidationException>();
     }
 
     [Test]
@@ -60,13 +61,13 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
       var involvedTypes = involvedTypeFinder.FindInvolvedTypes();
 
       var expectedType1 = new InvolvedType(typeof(TargetClass1));
-      expectedType1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      expectedType1.ClassContext = mixinConfiguration.ClassContexts.First();
       expectedType1.TargetClassDefinition = CreateTargetClassDefintion<TargetClass1>(mixinConfiguration);
 
       var expectedType2 = new InvolvedType(typeof(Mixin1));
-      expectedType2.TargetTypes.Add(expectedType1, expectedType1.TargetClassDefinition.CallMethod("GetMixinByConfiguredType", typeof(Mixin1)));
+      expectedType2.TargetTypes.Add(expectedType1, expectedType1.TargetClassDefinition.GetMixinByConfiguredType(typeof(Mixin1)));
 
-      Assert.That(involvedTypes, Is.EquivalentTo(GetAdditonalAssemblyInvolvedTypes(expectedType1, expectedType2)));
+      AssertSameTypes(involvedTypes, expectedType1, expectedType2);
     }
 
     [Test]
@@ -81,20 +82,20 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
       var involvedTypes = involvedTypeFinder.FindInvolvedTypes();
 
       var expectedType1 = new InvolvedType(typeof(TargetClass1));
-      expectedType1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      expectedType1.ClassContext = mixinConfiguration.ClassContexts.First();
       expectedType1.TargetClassDefinition = CreateTargetClassDefintion<TargetClass1>(mixinConfiguration);
 
       var expectedType2 = new InvolvedType(typeof(Mixin1));
-      expectedType2.TargetTypes.Add(expectedType1, expectedType1.TargetClassDefinition.CallMethod("GetMixinByConfiguredType", typeof(Mixin1)));
+      expectedType2.TargetTypes.Add(expectedType1, expectedType1.TargetClassDefinition.GetMixinByConfiguredType(typeof(Mixin1)));
 
       var expectedType3 = new InvolvedType(typeof(TargetClass2));
-      expectedType3.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.Last());
+      expectedType3.ClassContext = mixinConfiguration.ClassContexts.Last();
       expectedType3.TargetClassDefinition = CreateTargetClassDefintion<TargetClass2>(mixinConfiguration);
 
       var expectedType4 = new InvolvedType(typeof(Mixin2));
-      expectedType4.TargetTypes.Add(expectedType3, expectedType3.TargetClassDefinition.CallMethod("GetMixinByConfiguredType", typeof(Mixin2)));
+      expectedType4.TargetTypes.Add(expectedType3, expectedType3.TargetClassDefinition.GetMixinByConfiguredType(typeof(Mixin2)));
 
-      Assert.That(involvedTypes, Is.EquivalentTo(GetAdditonalAssemblyInvolvedTypes(expectedType1, expectedType2, expectedType3, expectedType4)));
+      AssertSameTypes(involvedTypes, expectedType1, expectedType2, expectedType3, expectedType4);
     }
 
     [Test]
@@ -109,18 +110,18 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
       var involvedTypes = involvedTypeFinder.FindInvolvedTypes();
 
       var expectedType1 = new InvolvedType(typeof(TargetClass1));
-      expectedType1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      expectedType1.ClassContext = mixinConfiguration.ClassContexts.First();
       expectedType1.TargetClassDefinition = CreateTargetClassDefintion<TargetClass1>(mixinConfiguration);
 
       var expectedType2 = new InvolvedType(typeof(Mixin1));
-      expectedType2.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.Last());
+      expectedType2.ClassContext = mixinConfiguration.ClassContexts.Last();
       expectedType2.TargetClassDefinition = CreateTargetClassDefintion<Mixin1>(mixinConfiguration);
-      expectedType2.TargetTypes.Add(expectedType1, expectedType1.TargetClassDefinition.CallMethod("GetMixinByConfiguredType", typeof(Mixin1)));
+      expectedType2.TargetTypes.Add(expectedType1, expectedType1.TargetClassDefinition.GetMixinByConfiguredType(typeof(Mixin1)));
 
       var expectedType3 = new InvolvedType(typeof(Mixin2));
-      expectedType3.TargetTypes.Add(expectedType2, expectedType2.TargetClassDefinition.CallMethod("GetMixinByConfiguredType", typeof(Mixin2)));
+      expectedType3.TargetTypes.Add(expectedType2, expectedType2.TargetClassDefinition.GetMixinByConfiguredType(typeof(Mixin2)));
 
-      Assert.That(involvedTypes, Is.EquivalentTo(GetAdditonalAssemblyInvolvedTypes(expectedType1, expectedType2, expectedType3)));
+      AssertSameTypes(involvedTypes, expectedType1, expectedType2, expectedType3);
     }
 
     [Test]
@@ -134,19 +135,18 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
       var involvedTypes = involvedTypeFinder.FindInvolvedTypes();
 
       var expectedType1 = new InvolvedType(typeof(UselessObject));
-      expectedType1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      expectedType1.ClassContext = mixinConfiguration.ClassContexts.First();
       expectedType1.TargetClassDefinition = CreateTargetClassDefintion<UselessObject>(mixinConfiguration);
 
       var expectedType2 = new InvolvedType(typeof(ClassInheritsFromUselessObject));
-      expectedType2.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.GetWithInheritance(typeof(ClassInheritsFromUselessObject)));
+      expectedType2.ClassContext = mixinConfiguration.ClassContexts.GetWithInheritance(typeof(ClassInheritsFromUselessObject));
       expectedType2.TargetClassDefinition = CreateTargetClassDefintion<ClassInheritsFromUselessObject>(mixinConfiguration);
 
       var expectedType3 = new InvolvedType(typeof(Mixin1));
-      expectedType3.TargetTypes.Add(expectedType1, expectedType1.TargetClassDefinition.CallMethod("GetMixinByConfiguredType", typeof(Mixin1)));
-      expectedType3.TargetTypes.Add(expectedType2, expectedType2.TargetClassDefinition.CallMethod("GetMixinByConfiguredType", typeof(Mixin1)));
+      expectedType3.TargetTypes.Add(expectedType1, expectedType1.TargetClassDefinition.GetMixinByConfiguredType(typeof(Mixin1)));
+      expectedType3.TargetTypes.Add(expectedType2, expectedType2.TargetClassDefinition.GetMixinByConfiguredType(typeof(Mixin2)));
 
-
-      Assert.That(involvedTypes, Is.EquivalentTo(GetAdditonalAssemblyInvolvedTypes(expectedType1, expectedType2, expectedType3)));
+      AssertSameTypes(involvedTypes, expectedType1, expectedType2, expectedType3);
     }
 
     [Test]
@@ -169,12 +169,17 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
           .BuildConfiguration();
       var involvedTypeFinder = CreateInvolvedTypeFinder(mixinConfiguration, typeof(UselessObject).Assembly);
       var targetType = typeof(TargetClass1);
-      var classContextForTargetType = new ReflectedObject(mixinConfiguration.ClassContexts.GetWithInheritance(targetType));
+      var classContextForTargetType = mixinConfiguration.ClassContexts.GetWithInheritance(targetType);
 
-      var output = involvedTypeFinder.GetTargetClassDefinition(targetType, classContextForTargetType).To<TargetClassDefinition>();
-      var expectedOutput = TargetClassDefinitionUtility.GetConfiguration(targetType, mixinConfiguration);
+      var expectedClassContext = mixinConfiguration.ClassContexts.GetExact(targetType);
+      Assert.That(expectedClassContext, Is.Not.Null);
 
-      Assert.That(output, Is.EqualTo(expectedOutput));
+      var output = involvedTypeFinder.GetTargetClassDefinition(targetType, classContextForTargetType);
+
+      Assert.That(output, Is.Not.Null);
+      Assert.That(output.Type, Is.EqualTo(expectedClassContext.Type));
+      Assert.That(output.Mixins.Select(m => m.Type), Is.EquivalentTo(expectedClassContext.Mixins.Select(m => m.MixinType)));
+      Assert.That(output.ConfigurationContext, Is.SameAs(expectedClassContext));
     }
 
     [Test]
@@ -185,7 +190,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
           .BuildConfiguration();
       var involvedTypeFinder = CreateInvolvedTypeFinder(mixinConfiguration, typeof(UselessObject).Assembly);
       var targetType = typeof(GenericTarget<,>);
-      var classContextForTargetType = new ReflectedObject(mixinConfiguration.ClassContexts.GetWithInheritance(targetType));
+      var classContextForTargetType = mixinConfiguration.ClassContexts.GetWithInheritance(targetType);
       var output = involvedTypeFinder.GetTargetClassDefinition(targetType, classContextForTargetType);
 
       Assert.That(_configurationErrors.Exceptions.Count(), Is.EqualTo(0));
@@ -201,7 +206,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
           .BuildConfiguration();
       var involvedTypeFinder = CreateInvolvedTypeFinder(mixinConfiguration, typeof(UselessObject).Assembly);
       var targetType = typeof(IUseless);
-      var classContextForTargetType = new ReflectedObject(mixinConfiguration.ClassContexts.GetWithInheritance(targetType));
+      var classContextForTargetType = mixinConfiguration.ClassContexts.GetWithInheritance(targetType);
       var output = involvedTypeFinder.GetTargetClassDefinition(targetType, classContextForTargetType);
 
       Assert.That(_configurationErrors.Exceptions.Count(), Is.EqualTo(0));
@@ -217,7 +222,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
           .BuildConfiguration();
       var involvedTypeFinder = CreateInvolvedTypeFinder(mixinConfiguration, typeof(UselessObject).Assembly);
       var targetType = typeof(UselessObject);
-      var classContextForTargetType = new ReflectedObject(mixinConfiguration.ClassContexts.GetWithInheritance(targetType));
+      var classContextForTargetType = mixinConfiguration.ClassContexts.GetWithInheritance(targetType);
 
       var output = involvedTypeFinder.GetTargetClassDefinition(targetType, classContextForTargetType);
 
@@ -233,7 +238,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
           .BuildConfiguration();
       var involvedTypeFinder = CreateInvolvedTypeFinder(mixinConfiguration, typeof(UselessObject).Assembly);
       var targetType = typeof(UselessObject);
-      var classContextForTargetType = new ReflectedObject(mixinConfiguration.ClassContexts.GetWithInheritance(targetType));
+      var classContextForTargetType = mixinConfiguration.ClassContexts.GetWithInheritance(targetType);
 
       var output = involvedTypeFinder.GetTargetClassDefinition(targetType, classContextForTargetType);
 
@@ -244,22 +249,27 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
     private InvolvedTypeFinder CreateInvolvedTypeFinder (MixinConfiguration mixinConfiguration, params Assembly[] assemblies)
     {
       return new InvolvedTypeFinder(
-          new ReflectedObject(mixinConfiguration),
+          mixinConfiguration,
           assemblies,
           _configurationErrors,
           _validationErrors,
-          Helpers.RemotionReflectorFactory.GetRemotionReflection());
+          new RemotionReflector());
     }
 
-    private ReflectedObject CreateTargetClassDefintion<ForType> (MixinConfiguration mixinConfiguration)
+    private TargetClassDefinition CreateTargetClassDefintion<ForType> (MixinConfiguration mixinConfiguration)
     {
-      return new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(typeof(ForType), mixinConfiguration));
+      return TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetWithInheritance( typeof(ForType)));
+    }
+
+    private void AssertSameTypes (InvolvedType[] involvedTypes, params InvolvedType[] expectedTypes)
+    {
+      Assert.That(involvedTypes.Select(t => t.Type), Is.EquivalentTo(GetAdditonalAssemblyInvolvedTypes(expectedTypes).Select(t => t.Type)));
     }
 
     private InvolvedType[] GetAdditonalAssemblyInvolvedTypes (params InvolvedType[] explicitInvolvedTypes)
     {
       var implicitInvolvedTypes = new List<InvolvedType>();
-      var remotionReflector = Helpers.RemotionReflectorFactory.GetRemotionReflection();
+      var remotionReflector = new RemotionReflector();
       var assembly = typeof(Mixin1).Assembly;
 
       foreach (var type in assembly.GetTypes())

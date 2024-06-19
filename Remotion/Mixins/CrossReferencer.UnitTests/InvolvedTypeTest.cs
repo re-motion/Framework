@@ -18,9 +18,8 @@ using System;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Mixins.Context;
-using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
+using Remotion.Mixins.Definitions;
 
 namespace Remotion.Mixins.CrossReferencer.UnitTests
 {
@@ -31,9 +30,9 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
     public void Equals_True ()
     {
       var type1 = new InvolvedType(typeof(TargetClass1));
-      type1.ClassContext = new ReflectedObject(new ClassContext(typeof(TargetClass1)));
+      type1.ClassContext = ClassContextObjectMother.Create(typeof(TargetClass1));
       var type2 = new InvolvedType(typeof(TargetClass1));
-      type2.ClassContext = new ReflectedObject(new ClassContext(typeof(TargetClass1)));
+      type2.ClassContext = ClassContextObjectMother.Create(typeof(TargetClass1));
 
       Assert.That(type1, Is.EqualTo(type2));
     }
@@ -51,7 +50,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
     public void Equals_False_IsTargetDoesntMatch ()
     {
       var type1 = new InvolvedType(typeof(TargetClass1));
-      type1.ClassContext = new ReflectedObject(new ClassContext(typeof(TargetClass1)));
+      type1.ClassContext = ClassContextObjectMother.Create(typeof(TargetClass1));
       var type2 = new InvolvedType(typeof(TargetClass1));
 
       Assert.That(type1, Is.Not.EqualTo(type2));
@@ -78,8 +77,8 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
       var type1 = new InvolvedType(typeof(TargetClass1));
       var type2 = new InvolvedType(typeof(TargetClass1));
 
-      type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
-      type2.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.Last());
+      type1.ClassContext = mixinConfiguration.ClassContexts.First();
+      type2.ClassContext = mixinConfiguration.ClassContexts.Last();
 
       Assert.That(type1, Is.Not.EqualTo(type2));
     }
@@ -95,8 +94,8 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
       var type1 = new InvolvedType(typeof(TargetClass1));
       var type2 = new InvolvedType(typeof(TargetClass1));
 
-      type1.TargetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(typeof(TargetClass1), mixinConfiguration));
-      type2.TargetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(typeof(TargetClass2), mixinConfiguration));
+      type1.TargetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(typeof(TargetClass1)));
+      type2.TargetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(typeof(TargetClass2)));
 
       Assert.That(type1, Is.Not.EqualTo(type2));
     }
@@ -118,7 +117,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
           .BuildConfiguration();
 
       var type1 = new InvolvedType(typeof(TargetClass1));
-      type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      type1.ClassContext = mixinConfiguration.ClassContexts.First();
 
       Assert.That(type1.IsTarget, Is.True);
       Assert.That(type1.ClassContext, Is.Not.Null);
@@ -141,8 +140,8 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
           .BuildConfiguration();
 
       var type1 = new InvolvedType(type);
-      type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
-      type1.TargetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(type, mixinConfiguration));
+      type1.ClassContext = mixinConfiguration.ClassContexts.First();
+      type1.TargetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(type));
 
       Assert.That(type1.IsTarget, Is.True);
       Assert.That(type1.ClassContext, Is.Not.Null);
@@ -164,7 +163,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
           .BuildConfiguration();
 
       var type1 = new InvolvedType(typeof(GenericTarget<,>));
-      type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      type1.ClassContext = mixinConfiguration.ClassContexts.First();
 
       Assert.That(type1.IsTarget, Is.True);
     }

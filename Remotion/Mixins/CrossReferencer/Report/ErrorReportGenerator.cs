@@ -18,19 +18,20 @@ using System;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Utilities;
+using Remotion.Mixins.Validation;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
 {
   public class ErrorReportGenerator : IXmlReportGenerator
   {
-    private readonly ErrorAggregator<Exception> _configurationErrors;
-    private readonly ErrorAggregator<Exception> _validationErrors;
+    private readonly ErrorAggregator<ConfigurationException> _configurationErrors;
+    private readonly ErrorAggregator<ValidationException> _validationErrors;
     private readonly IRemotionReflector _reflector;
 
     public ErrorReportGenerator (
-        ErrorAggregator<Exception> configurationErrors,
-        ErrorAggregator<Exception> validationErrors,
+        ErrorAggregator<ConfigurationException> configurationErrors,
+        ErrorAggregator<ValidationException> validationErrors,
         IRemotionReflector reflector)
     {
       ArgumentUtility.CheckNotNull("configurationErrors", configurationErrors);

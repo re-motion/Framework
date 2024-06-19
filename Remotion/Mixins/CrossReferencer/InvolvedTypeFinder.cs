@@ -18,25 +18,28 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Remotion.Mixins.Context;
 using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Utilities;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Validation;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer
 {
   public class InvolvedTypeFinder : IInvolvedTypeFinder
   {
-    private readonly ReflectedObject _mixinConfiguration;
+    private readonly MixinConfiguration _mixinConfiguration;
     private readonly Assembly[] _assemblies;
-    private readonly ErrorAggregator<Exception> _configurationErrors;
-    private readonly ErrorAggregator<Exception> _validationErrors;
+    private readonly ErrorAggregator<ConfigurationException> _configurationErrors;
+    private readonly ErrorAggregator<ValidationException> _validationErrors;
     private readonly IRemotionReflector _remotionReflector;
 
     public InvolvedTypeFinder (
-        ReflectedObject mixinConfiguration,
+        MixinConfiguration mixinConfiguration,
         Assembly[] assemblies,
-        ErrorAggregator<Exception> configurationErrors,
-        ErrorAggregator<Exception> validationErrors,
+        ErrorAggregator<ConfigurationException> configurationErrors,
+        ErrorAggregator<ValidationException> validationErrors,
         IRemotionReflector remotionReflector
     )
     {
@@ -56,7 +59,7 @@ namespace Remotion.Mixins.CrossReferencer
     public InvolvedType[] FindInvolvedTypes ()
     {
       var involvedTypes = new InvolvedTypeStore();
-      var classContexts = _mixinConfiguration.GetProperty("ClassContexts");
+      var classContexts = _mixinConfiguration.ClassContexts;
 
       foreach (var assembly in _assemblies)
       {
@@ -64,7 +67,7 @@ namespace Remotion.Mixins.CrossReferencer
         {
           foreach (var type in assembly.GetTypes())
           {
-            var classContext = classContexts.CallMethod("GetWithInheritance", type);
+            var classContext = classContexts.GetWithInheritance(type);
             if (classContext != null)
             {
               var involvedType = involvedTypes.GetOrCreateValue(type);
@@ -72,9 +75,9 @@ namespace Remotion.Mixins.CrossReferencer
               involvedType.ClassContext = classContext;
               involvedType.TargetClassDefinition = targetClassDefinition;
 
-              foreach (var mixinContext in classContext.GetProperty("Mixins"))
+              foreach (var mixinContext in classContext.Mixins)
               {
-                var mixinType = mixinContext.GetProperty("MixinType").To<Type>();
+                var mixinType = mixinContext.MixinType;
                 var mixin = involvedTypes.GetOrCreateValue(mixinType);
                 mixin.TargetTypes.Add(involvedType, GetMixinDefiniton(mixinType, targetClassDefinition));
               }
@@ -126,12 +129,12 @@ namespace Remotion.Mixins.CrossReferencer
       }
     }
 
-    private ReflectedObject GetMixinDefiniton (Type mixinType, ReflectedObject targetClassDefinition)
+    private MixinDefinition GetMixinDefiniton (Type mixinType, TargetClassDefinition targetClassDefinition)
     {
-      return targetClassDefinition == null ? null : targetClassDefinition.CallMethod("GetMixinByConfiguredType", mixinType);
+      return targetClassDefinition == null ? null : targetClassDefinition.GetMixinByConfiguredType(mixinType);
     }
 
-    public ReflectedObject GetTargetClassDefinition (Type type, ReflectedObject classContext)
+    public TargetClassDefinition GetTargetClassDefinition (Type type, ClassContext classContext)
     {
       if (type.IsGenericTypeDefinition || type.IsInterface)
         return null;
@@ -144,9 +147,9 @@ namespace Remotion.Mixins.CrossReferencer
       catch (Exception configurationOrValidationException)
       {
         if (_remotionReflector.IsConfigurationException(configurationOrValidationException))
-          _configurationErrors.AddException(configurationOrValidationException);
+          _configurationErrors.AddException((ConfigurationException)configurationOrValidationException);
         else if (_remotionReflector.IsValidationException(configurationOrValidationException))
-          _validationErrors.AddException(configurationOrValidationException);
+          _validationErrors.AddException((ValidationException)configurationOrValidationException);
         else
           throw;
       }

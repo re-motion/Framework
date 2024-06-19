@@ -15,12 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
 using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Report;
 using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
+using Remotion.Mixins.Definitions;
 
 namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
@@ -35,7 +37,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           .BuildConfiguration();
 
       var type1 = new InvolvedType(typeof(TargetClass1));
-      type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      type1.ClassContext = mixinConfiguration.ClassContexts.First();
 
       var memberOverrides = GetMemberOverrides(type1, typeof(Mixin1), mixinConfiguration);
 
@@ -57,7 +59,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           .BuildConfiguration();
 
       var type1 = new InvolvedType(typeof(TargetDoSomething));
-      type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      type1.ClassContext = mixinConfiguration.ClassContexts.First();
 
       var memberOverrides = GetMemberOverrides(type1, typeof(MixinDoSomething), mixinConfiguration);
 
@@ -76,10 +78,10 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
-    private ReflectedObject GetMemberOverrides (InvolvedType targetType, Type mixinType, MixinConfiguration mixinConfiguration)
+    private IEnumerable<MemberDefinitionBase> GetMemberOverrides (InvolvedType targetType, Type mixinType, MixinConfiguration mixinConfiguration)
     {
-      var targetClassDefinition = TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration);
-      return new ReflectedObject(targetClassDefinition.GetMixinByConfiguredType(mixinType).GetAllOverrides());
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType.Type));
+      return targetClassDefinition.GetMixinByConfiguredType(mixinType).GetAllOverrides();
     }
   }
 }

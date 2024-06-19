@@ -22,6 +22,7 @@ using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Report;
 using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 using Remotion.Mixins.CrossReferencer.Utilities;
+using Remotion.Mixins.Definitions;
 
 namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
@@ -36,13 +37,13 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           .BuildConfiguration();
 
       var type1 = new InvolvedType(typeof(TargetClass2));
-      type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      type1.ClassContext = mixinConfiguration.ClassContexts.First();
 
       var attributeIntroductions = GetAttributeIntroductions(type1, typeof(Mixin1), mixinConfiguration);
       var reportGenerator = new AttributeIntroductionReportGenerator(
           attributeIntroductions,
           new IdentifierGenerator<Type>(),
-          Helpers.RemotionReflectorFactory.GetRemotionReflection());
+          new RemotionReflector());
       var output = reportGenerator.GenerateXml();
 
       var expectedOutput = new XElement("AttributeIntroductions");
@@ -59,13 +60,13 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           .BuildConfiguration();
 
       var type1 = new InvolvedType(typeof(UselessObject));
-      type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      type1.ClassContext = mixinConfiguration.ClassContexts.First();
 
       var attributeIntroductions = GetAttributeIntroductions(type1, typeof(ObjectWithInheritableAttribute), mixinConfiguration);
       var reportGenerator = new AttributeIntroductionReportGenerator(
           attributeIntroductions,
           attributeIdentifierGenerator,
-          Helpers.RemotionReflectorFactory.GetRemotionReflection());
+          new RemotionReflector());
 
       var output = reportGenerator.GenerateXml();
 
@@ -79,13 +80,13 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
-    private ReflectedObject GetAttributeIntroductions (
+    private MultiDefinitionCollection<Type,AttributeIntroductionDefinition> GetAttributeIntroductions (
         InvolvedType targetType,
         Type mixinType,
         MixinConfiguration mixinConfiguration)
     {
-      var targetClassDefinition = TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration);
-      return new ReflectedObject(targetClassDefinition.GetMixinByConfiguredType(mixinType).AttributeIntroductions);
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType.Type));
+      return targetClassDefinition.GetMixinByConfiguredType(mixinType).AttributeIntroductions;
     }
   }
 }

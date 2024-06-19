@@ -34,7 +34,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     public void SetUp ()
     {
       _outputFormatter = new OutputFormatter();
-      _remotionReflector = new DefaultReflector();
+      _remotionReflector = new RemotionReflector();
     }
 
     [Test]
@@ -83,13 +83,13 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     {
       var mixinConfiguration = MixinConfiguration.BuildNew()
           .ForClass<ComposedInterfacesTestClass.MyMixinTarget>()
-          .AddCompleteInterface<ComposedInterfacesTestClass.ICMyMixinTargetMyMixin>()
+          .AddComposedInterface<ComposedInterfacesTestClass.ICMyMixinTargetMyMixin>()
           .AddMixin<ComposedInterfacesTestClass.MyMixin>()
           .BuildConfiguration();
 
       var involvedType = new InvolvedType(typeof(ComposedInterfacesTestClass.MyMixinTarget));
       var classContext = mixinConfiguration.ClassContexts.GetWithInheritance(typeof(ComposedInterfacesTestClass.MyMixinTarget));
-      involvedType.ClassContext = new ReflectedObject(classContext);
+      involvedType.ClassContext = classContext;
 
       var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator(_remotionReflector, _outputFormatter, involvedType);
       var output = reportGenerator.GenerateXml();
@@ -121,18 +121,18 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     {
       var mixinConfiguration = MixinConfiguration.BuildNew()
           .ForClass<ComposedInterfacesTestClass.MyMixinTarget>()
-          .AddCompleteInterface<ComposedInterfacesTestClass.ICMyMixinTargetMyMixin>()
+          .AddComposedInterface<ComposedInterfacesTestClass.ICMyMixinTargetMyMixin>()
           .AddMixin<ComposedInterfacesTestClass.MyMixin>()
           .BuildConfiguration();
 
       var involvedType = new InvolvedType(typeof(ComposedInterfacesTestClass.MyMixinTarget));
       var classContext = mixinConfiguration.ClassContexts.GetWithInheritance(typeof(ComposedInterfacesTestClass.MyMixinTarget));
-      involvedType.ClassContext = new ReflectedObject(classContext);
+      involvedType.ClassContext = classContext;
 
       var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator(_remotionReflector, _outputFormatter, involvedType);
       var output = reportGenerator.GetComposedInterfaces();
 
-      Assert.That(output, Is.EquivalentTo(classContext.CompleteInterfaces));
+      Assert.That(output, Is.EquivalentTo(classContext.ComposedInterfaces));
     }
   }
 }

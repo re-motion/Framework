@@ -28,7 +28,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [Test]
     public void GenerateXml_NoErrors ()
     {
-      var errorAggregator = new ErrorAggregator<Exception>();
+      var errorAggregator = new ErrorAggregator<ConfigurationException>();
       var reportGenerator = new ConfigurationErrorReportGenerator(errorAggregator);
 
       var output = reportGenerator.GenerateXml();
@@ -40,7 +40,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [Test]
     public void GenerateXml_WithErrors ()
     {
-      var errorAggregator = new ErrorAggregator<Exception>();
+      var errorAggregator = new ErrorAggregator<ConfigurationException>();
 
       var innerException1 = SetUpExceptionWithDummyStackTrace("inner exception", null);
       var Exception1 = SetUpExceptionWithDummyStackTrace("test configuration exception 1", innerException1);
@@ -60,13 +60,13 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
-    private Exception SetUpExceptionWithDummyStackTrace (string exceptionMessage, Exception innerException)
+    private ConfigurationException SetUpExceptionWithDummyStackTrace (string exceptionMessage, Exception innerException)
     {
       try
       {
-        throw new Exception(exceptionMessage, innerException);
+        throw new ConfigurationException(exceptionMessage, innerException);
       }
-      catch (Exception caughtException)
+      catch (ConfigurationException caughtException)
       {
         return caughtException;
       }

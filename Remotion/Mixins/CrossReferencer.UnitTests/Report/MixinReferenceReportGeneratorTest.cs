@@ -24,6 +24,7 @@ using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Report;
 using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 using Remotion.Mixins.CrossReferencer.Utilities;
+using Remotion.Mixins.Definitions;
 
 namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
@@ -36,7 +37,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [SetUp]
     public void SetUp ()
     {
-      _remotionReflector = Helpers.RemotionReflectorFactory.GetRemotionReflection();
+      _remotionReflector = new RemotionReflector();
       _outputFormatter = new OutputFormatter();
     }
 
@@ -66,8 +67,8 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       var targetType = new InvolvedType(typeof(TargetClass1));
 
       var mixinConfiguration = MixinConfiguration.BuildNew().ForClass<TargetClass1>().AddMixin<Mixin1>().BuildConfiguration();
-      targetType.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
-      targetType.TargetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration));
+      targetType.ClassContext = mixinConfiguration.ClassContexts.First();
+      targetType.TargetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType.Type));
 
       var interfaceIdentifierGenerator = new IdentifierGenerator<Type>();
       var attributeIdentifierGenerator = new IdentifierGenerator<Type>();
@@ -85,7 +86,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 
       var output = reportGenerator.GenerateXml();
 
-      var targetClassDefinition = TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration);
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType.Type));
       var mixinDefinition = targetClassDefinition.GetMixinByConfiguredType(typeof(Mixin1));
 
       var expectedOutput = new XElement(
@@ -99,13 +100,13 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
               new XAttribute("introduced-member-visibility", "private"),
               // has no dependencies
               new XElement("AdditionalDependencies"),
-              new InterfaceIntroductionReportGenerator(new ReflectedObject(mixinDefinition.InterfaceIntroductions), interfaceIdentifierGenerator).GenerateXml(),
+              new InterfaceIntroductionReportGenerator(mixinDefinition.InterfaceIntroductions, interfaceIdentifierGenerator).GenerateXml(),
               new AttributeIntroductionReportGenerator(
-                  new ReflectedObject(mixinDefinition.AttributeIntroductions),
+                  mixinDefinition.AttributeIntroductions,
                   attributeIdentifierGenerator,
-                  Helpers.RemotionReflectorFactory.GetRemotionReflection()).GenerateXml(),
-              new MemberOverrideReportGenerator(new ReflectedObject(mixinDefinition.GetAllOverrides())).GenerateXml(),
-              new TargetCallDependenciesReportGenerator(new ReflectedObject(mixinDefinition), assemblyIdentifierGenerator, _remotionReflector, _outputFormatter).GenerateXml()
+                  new RemotionReflector()).GenerateXml(),
+              new MemberOverrideReportGenerator(mixinDefinition.GetAllOverrides()).GenerateXml(),
+              new TargetCallDependenciesReportGenerator( mixinDefinition, assemblyIdentifierGenerator, _remotionReflector, _outputFormatter).GenerateXml()
           ));
 
       Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
@@ -119,7 +120,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       var mixinConfiguration = MixinConfiguration.BuildNew()
           .ForClass(typeof(GenericTarget<,>)).AddMixin<ClassWithBookAttribute>().AddMixin<Mixin3>()
           .BuildConfiguration();
-      targetType.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      targetType.ClassContext = mixinConfiguration.ClassContexts.First();
 
       var interfaceIdentifierGenerator = new IdentifierGenerator<Type>();
       var attributeIdentifierGenerator = new IdentifierGenerator<Type>();

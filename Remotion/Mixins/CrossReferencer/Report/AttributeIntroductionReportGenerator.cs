@@ -19,6 +19,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Utilities;
+using Remotion.Mixins.Definitions;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
@@ -26,12 +27,12 @@ namespace Remotion.Mixins.CrossReferencer.Report
   public class AttributeIntroductionReportGenerator : IReportGenerator
   {
     // MultiDefinitionCollection<Type, AttributeIntroductionDefinition> _attributeIntroductionDefinitions
-    private readonly ReflectedObject _attributeIntroductionDefinitions;
+    private readonly MultiDefinitionCollection<Type, AttributeIntroductionDefinition> _attributeIntroductionDefinitions;
     private readonly IIdentifierGenerator<Type> _attributeIdentifierGenerator;
     private readonly IRemotionReflector _remotionReflector;
 
     public AttributeIntroductionReportGenerator (
-        ReflectedObject attributeIntroductionDefinitions,
+        MultiDefinitionCollection<Type, AttributeIntroductionDefinition> attributeIntroductionDefinitions,
         IIdentifierGenerator<Type> attributeIdentifierGenerator,
         IRemotionReflector remotionReflector)
     {
@@ -49,8 +50,8 @@ namespace Remotion.Mixins.CrossReferencer.Report
       return new XElement(
           "AttributeIntroductions",
           from introducedAttribute in _attributeIntroductionDefinitions
-          where !_remotionReflector.IsInfrastructureType(introducedAttribute.GetProperty("AttributeType").To<Type>())
-          select GenerateAttributeReferanceElement(introducedAttribute.GetProperty("AttributeType").To<Type>()));
+          where !_remotionReflector.IsInfrastructureType(introducedAttribute.AttributeType)
+          select GenerateAttributeReferanceElement(introducedAttribute.AttributeType));
     }
 
     private XElement GenerateAttributeReferanceElement (Type introducedAttribute)

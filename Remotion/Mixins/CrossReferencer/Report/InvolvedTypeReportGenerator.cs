@@ -149,7 +149,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
         if (mixinDefinition == null)
           continue;
 
-        if (mixinDefinition.GetProperty("AcceptsAlphabeticOrdering").To<bool>())
+        if (mixinDefinition.AcceptsAlphabeticOrdering)
           return "AcceptsAlphabeticOrdering ";
       }
 

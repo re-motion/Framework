@@ -17,8 +17,8 @@
 using System;
 using System.Linq;
 using System.Xml.Linq;
-using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Utilities;
+using Remotion.Mixins.Definitions;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
@@ -26,11 +26,11 @@ namespace Remotion.Mixins.CrossReferencer.Report
   public class InterfaceIntroductionReportGenerator : IReportGenerator
   {
     // UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition>
-    private readonly ReflectedObject _interfaceIntroductionDefinitions;
+    private readonly UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> _interfaceIntroductionDefinitions;
     private readonly IIdentifierGenerator<Type> _interfaceIdentifierGenerator;
 
     public InterfaceIntroductionReportGenerator (
-        ReflectedObject interfaceIntroductionDefinitions,
+        UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> interfaceIntroductionDefinitions,
         IIdentifierGenerator<Type> interfaceIdentifierGenerator)
     {
       ArgumentUtility.CheckNotNull("interfaceIntroductionDefinitions", interfaceIntroductionDefinitions);
@@ -45,7 +45,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
       return new XElement(
           "InterfaceIntroductions",
           from introducedInterface in _interfaceIntroductionDefinitions
-          select GenerateInterfaceReferenceElement(introducedInterface.GetProperty("InterfaceType").To<Type>()));
+          select GenerateInterfaceReferenceElement(introducedInterface.InterfaceType));
     }
 
     private XElement GenerateInterfaceReferenceElement (Type introducedInterface)

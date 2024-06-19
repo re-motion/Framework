@@ -22,6 +22,7 @@ using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Report;
 using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 using Remotion.Mixins.CrossReferencer.Utilities;
+using Remotion.Mixins.Definitions;
 
 namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
@@ -36,7 +37,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           .BuildConfiguration();
 
       var type1 = new InvolvedType(typeof(TargetClass2));
-      type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      type1.ClassContext = mixinConfiguration.ClassContexts.First();
 
       var interfaceIntroductions = GetInterfaceIntroductions(type1, typeof(Mixin2), mixinConfiguration);
       var reportGenerator = new InterfaceIntroductionReportGenerator(interfaceIntroductions, new IdentifierGenerator<Type>());
@@ -57,7 +58,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           .BuildConfiguration();
 
       var type1 = new InvolvedType(typeof(TargetClass2));
-      type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      type1.ClassContext = mixinConfiguration.ClassContexts.First();
 
       // TargetClass2 does not implement any interface
       // Mixin3 introduces interface IDisposable
@@ -76,10 +77,10 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }
 
-    private ReflectedObject GetInterfaceIntroductions (InvolvedType targetType, Type mixinType, MixinConfiguration mixinConfiguration)
+    private UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> GetInterfaceIntroductions (InvolvedType targetType, Type mixinType, MixinConfiguration mixinConfiguration)
     {
-      var targetClassDefinition = TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration);
-      return new ReflectedObject(targetClassDefinition.GetMixinByConfiguredType(mixinType).InterfaceIntroductions);
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType.Type));
+      return targetClassDefinition.GetMixinByConfiguredType(mixinType).InterfaceIntroductions;
     }
   }
 }

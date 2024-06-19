@@ -16,30 +16,15 @@
 // 
 using System;
 using System.Linq;
-using System.Xml.Linq;
-using Remotion.Mixins.CrossReferencer.Utilities;
-using Remotion.Utilities;
+using Remotion.Mixins.Context;
 
-namespace Remotion.Mixins.CrossReferencer.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests;
+
+public static class ClassContextObjectMother
 {
-  public class ConfigurationErrorReportGenerator : IReportGenerator
+  public static ClassContext Create (Type type = null)
   {
-    private readonly ErrorAggregator<ConfigurationException> _errorAggregator;
-
-    public ConfigurationErrorReportGenerator (ErrorAggregator<ConfigurationException> errorAggregator)
-    {
-      ArgumentUtility.CheckNotNull("errorAggregator", errorAggregator);
-
-      _errorAggregator = errorAggregator;
-    }
-
-    public XElement GenerateXml ()
-    {
-      return new XElement(
-          "ConfigurationErrors",
-          from exception in _errorAggregator.Exceptions
-          select new RecursiveExceptionReportGenerator(exception).GenerateXml()
-      );
-    }
+    type = type ?? typeof(object);
+    return new ClassContext(type, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>());
   }
 }

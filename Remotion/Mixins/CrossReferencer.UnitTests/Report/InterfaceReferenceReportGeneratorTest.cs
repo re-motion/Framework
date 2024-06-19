@@ -31,7 +31,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     public void GenerateXml_ZeroInterfaces ()
     {
       var involvedType = new InvolvedType(typeof(object));
-      var reportGenerator = new InterfaceReferenceReportGenerator(involvedType, new IdentifierGenerator<Type>(), Helpers.RemotionReflectorFactory.GetRemotionReflection());
+      var reportGenerator = new InterfaceReferenceReportGenerator(involvedType, new IdentifierGenerator<Type>(), new RemotionReflector());
 
       var output = reportGenerator.GenerateXml();
 
@@ -45,7 +45,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     {
       // TargetClass1 implements IDisposealbe
       var involvedType = new InvolvedType(typeof(TargetClass1));
-      var reportGenerator = new InterfaceReferenceReportGenerator(involvedType, new IdentifierGenerator<Type>(), Helpers.RemotionReflectorFactory.GetRemotionReflection());
+      var reportGenerator = new InterfaceReferenceReportGenerator(involvedType, new IdentifierGenerator<Type>(), new RemotionReflector());
 
       var output = reportGenerator.GenerateXml();
 
@@ -62,16 +62,16 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     {
       var mixinConfiguration = MixinConfiguration.BuildNew()
           .ForClass<ComposedInterfacesTestClass.MyMixinTarget>()
-          .AddCompleteInterface<ComposedInterfacesTestClass.ICMyMixinTargetMyMixin>()
+          .AddComposedInterface<ComposedInterfacesTestClass.ICMyMixinTargetMyMixin>()
           .AddMixin<ComposedInterfacesTestClass.MyMixin>()
           .BuildConfiguration();
 
       // MyMixinTarget does not implement any interfaces! (but ICMyMixinTargetMyMixin is added to class context as a composed interface)
       var involvedType = new InvolvedType(typeof(ComposedInterfacesTestClass.MyMixinTarget));
       var classContext = mixinConfiguration.ClassContexts.GetWithInheritance(typeof(ComposedInterfacesTestClass.MyMixinTarget));
-      involvedType.ClassContext = new ReflectedObject(classContext);
+      involvedType.ClassContext = classContext;
 
-      var reportGenerator = new InterfaceReferenceReportGenerator(involvedType, new IdentifierGenerator<Type>(), Helpers.RemotionReflectorFactory.GetRemotionReflection());
+      var reportGenerator = new InterfaceReferenceReportGenerator(involvedType, new IdentifierGenerator<Type>(), new RemotionReflector());
       var output = reportGenerator.GenerateXml();
 
       var expectedOutput = new XElement(

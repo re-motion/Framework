@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Formatting;
@@ -26,12 +27,12 @@ namespace Remotion.Mixins.CrossReferencer.Report
 {
   public class AdditionalDependencyReportGenerator : IReportGenerator
   {
-    private readonly ReflectedObject _explicitDependencies;
+    private readonly IReadOnlyCollection<Type> _explicitDependencies;
     private readonly IIdentifierGenerator<Type> _involvedTypeIdentifierGenerator;
     private readonly IOutputFormatter _outputFormatter;
 
     public AdditionalDependencyReportGenerator (
-        ReflectedObject explicitDependencies,
+        IReadOnlyCollection<Type> explicitDependencies,
         IIdentifierGenerator<Type> involvedTypeIdentifierGenerator,
         IOutputFormatter outputFormatter)
     {
@@ -51,8 +52,8 @@ namespace Remotion.Mixins.CrossReferencer.Report
           from explicitDependencyType in _explicitDependencies
           select new XElement(
               "AdditionalDependency",
-              new XAttribute("ref", _involvedTypeIdentifierGenerator.GetIdentifier(explicitDependencyType.To<Type>())),
-              new XAttribute("instance-name", _outputFormatter.GetShortFormattedTypeName(explicitDependencyType.To<Type>()))
+              new XAttribute("ref", _involvedTypeIdentifierGenerator.GetIdentifier(explicitDependencyType)),
+              new XAttribute("instance-name", _outputFormatter.GetShortFormattedTypeName(explicitDependencyType))
           )
       );
     }

@@ -21,6 +21,7 @@ using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Formatting;
 using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Utilities;
+using Remotion.Mixins.Validation;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
@@ -28,16 +29,16 @@ namespace Remotion.Mixins.CrossReferencer.Report
   public class FullReportGenerator : IXmlReportGenerator
   {
     private readonly InvolvedType[] _involvedTypes;
-    private readonly ErrorAggregator<Exception> _configurationErrors;
-    private readonly ErrorAggregator<Exception> _validationErrors;
+    private readonly ErrorAggregator<ConfigurationException> _configurationErrors;
+    private readonly ErrorAggregator<ValidationException> _validationErrors;
     private readonly IRemotionReflector _remotionReflector;
     private readonly IOutputFormatter _outputFormatter;
     private string _creationTime;
 
     public FullReportGenerator (
         InvolvedType[] involvedTypes,
-        ErrorAggregator<Exception> configurationErrors,
-        ErrorAggregator<Exception> validationErrors,
+        ErrorAggregator<ConfigurationException> configurationErrors,
+        ErrorAggregator<ValidationException> validationErrors,
         IRemotionReflector remotionReflector,
         IOutputFormatter outputFormatter)
     {

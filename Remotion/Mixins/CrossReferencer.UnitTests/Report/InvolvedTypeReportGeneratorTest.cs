@@ -19,13 +19,13 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Remotion.Mixins.Context;
 using Remotion.Mixins.CrossReferencer.Formatting;
 using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Report;
 using Remotion.Mixins.CrossReferencer.UnitTests.Helpers;
 using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 using Remotion.Mixins.CrossReferencer.Utilities;
+using Remotion.Mixins.Definitions;
 
 namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
@@ -48,7 +48,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [SetUp]
     public void SetUp ()
     {
-      _remotionReflector = Helpers.RemotionReflectorFactory.GetRemotionReflection();
+      _remotionReflector = new RemotionReflector();
       _outputFormatter = new OutputFormatter();
 
       _involvedTypeIdentifierGenerator = new IdentifierGenerator<Type>();
@@ -164,11 +164,11 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           .BuildConfiguration();
 
       var involvedType1 = new InvolvedType(typeof(TargetClass1));
-      involvedType1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
+      involvedType1.ClassContext = mixinConfiguration.ClassContexts.First();
       SetTargetClassDefinition(involvedType1, mixinConfiguration);
 
       var involvedType2 = new InvolvedType(typeof(TargetClass2));
-      involvedType2.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.Last());
+      involvedType2.ClassContext = mixinConfiguration.ClassContexts.Last();
       SetTargetClassDefinition(involvedType2, mixinConfiguration);
 
       var involvedType3 = new InvolvedType(typeof(Mixin1));
@@ -301,7 +301,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [Test]
     public void GenerateXml_DifferentAssemblies ()
     {
-      var involvedType1 = new InvolvedType(typeof(TargetClass1)) { ClassContext = new ReflectedObject(new ClassContext(typeof(TargetClass1))) };
+      var involvedType1 = new InvolvedType(typeof(TargetClass1)) { ClassContext = ClassContextObjectMother.Create(typeof(TargetClass1)) };
       var involvedType2 = new InvolvedType(typeof(object));
 
       var reportGenerator = CreateInvolvedTypeReportGenerator(involvedType1, involvedType2);
@@ -387,9 +387,10 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       var mixinConfiguration =
           MixinConfiguration.BuildNew().ForClass<UselessObject>().AddMixin<ClassWithAlphabeticOrderingAttribute>().BuildConfiguration();
       var involvedType = new InvolvedType(typeof(ClassWithAlphabeticOrderingAttribute));
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(typeof(UselessObject)));
       involvedType.TargetTypes.Add(
           new InvolvedType(typeof(UselessObject)),
-          new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(typeof(UselessObject), mixinConfiguration).Mixins[0]));
+          targetClassDefinition.Mixins[0]);
 
       var reportGenerator = ReportBuilder.CreateInvolvedTypeReportGenerator(_remotionReflector, _outputFormatter);
 
@@ -400,7 +401,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 
     private void SetTargetClassDefinition (InvolvedType involvedType, MixinConfiguration mixinConfiguration)
     {
-      involvedType.TargetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(involvedType.Type, mixinConfiguration));
+      involvedType.TargetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(involvedType.Type));
     }
 
     private InvolvedTypeReportGenerator CreateInvolvedTypeReportGenerator (params InvolvedType[] involvedTypes)

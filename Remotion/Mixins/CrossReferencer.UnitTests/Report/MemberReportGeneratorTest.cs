@@ -26,6 +26,7 @@ using Remotion.Mixins.CrossReferencer.Report;
 using Remotion.Mixins.CrossReferencer.UnitTests.Helpers;
 using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 using Remotion.Mixins.CrossReferencer.Utilities;
+using Remotion.Mixins.Definitions;
 
 namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
@@ -160,7 +161,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       var type = typeof(InheritatedTargetClass);
       var mixinConfiguration =
           MixinConfiguration.BuildNew().ForClass<InheritatedTargetClass>().AddMixin<MixinOverridesTargetClassMember>().BuildConfiguration();
-      var targetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(type, mixinConfiguration));
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(type));
 
       var involvedType = new InvolvedType(type) { TargetClassDefinition = targetClassDefinition };
 
@@ -222,8 +223,8 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 
       var mixinConfiguration =
           MixinConfiguration.BuildNew().ForClass<ClassOverridingInheritedMixinMethod>().AddMixin<MixinWithInheritedMethod>().BuildConfiguration();
-      var targetClassDefinition = TargetClassDefinitionUtility.GetConfiguration(targetType, mixinConfiguration);
-      mixin.TargetTypes.Add(target, new ReflectedObject(targetClassDefinition.GetMixinByConfiguredType(mixinType)));
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType));
+      mixin.TargetTypes.Add(target, targetClassDefinition.GetMixinByConfiguredType(mixinType));
 
       var reportGenerator = CreateMemberReportGenerator(mixinType, mixin);
       var output = reportGenerator.GenerateXml();
@@ -282,7 +283,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       var type = typeof(MemberOverrideTestClass.Target);
       var mixinConfiguration =
           MixinConfiguration.BuildNew().ForClass<MemberOverrideTestClass.Target>().AddMixin<MemberOverrideTestClass.Mixin1>().BuildConfiguration();
-      var targetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(type, mixinConfiguration));
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(type));
       var involvedType = new InvolvedType(type);
       involvedType.TargetClassDefinition = targetClassDefinition;
 
@@ -342,7 +343,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       var type = typeof(MemberOverrideTestClass.Target);
       var mixinConfiguration =
           MixinConfiguration.BuildNew().ForClass<MemberOverrideTestClass.Target>().AddMixin<MemberOverrideTestClass.Mixin1>().BuildConfiguration();
-      var targetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(type, mixinConfiguration));
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(type));;
       var involvedType = new InvolvedType(type) { TargetClassDefinition = targetClassDefinition };
 
       var reportGenerator = CreateMemberReportGenerator(type, involvedType);
@@ -371,9 +372,10 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
               .ForClass<MemberOverrideTestClass.Target>().AddMixin<MemberOverrideTestClass.Mixin1>()
               .BuildConfiguration();
       var involvedType = new InvolvedType(mixinType);
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType.Type));
       involvedType.TargetTypes.Add(
           targetType,
-          new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType.Type, mixinConfiguration).Mixins[mixinType]));
+          targetClassDefinition.Mixins[mixinType]);
       var reportGenerator = CreateMemberReportGenerator(mixinType, involvedType);
 
       var output = reportGenerator.GenerateXml().XPathSelectElement("Member[@name='OverriddenMethod']").Element("Modifiers").Element("Type");
@@ -398,11 +400,11 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           MixinConfiguration.BuildNew()
               .ForClass<TargetClass1>().AddMixin<Mixin1>()
               .BuildConfiguration();
-      var targetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType, mixinConfiguration));
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType));
       var involvedType = new InvolvedType(targetType)
                          {
                              TargetClassDefinition = targetClassDefinition,
-                             ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First())
+                             ClassContext = mixinConfiguration.ClassContexts.First()
                          };
 
       var reportGenerator = CreateMemberReportGenerator(targetType, involvedType);
@@ -421,11 +423,11 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           MixinConfiguration.BuildNew()
               .ForClass<MemberOverrideTestClass.Target>().AddMixin<MemberOverrideTestClass.Mixin1>()
               .BuildConfiguration();
-      var targetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType, mixinConfiguration));
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType));
       var involvedType = new InvolvedType(targetType)
                          {
                              TargetClassDefinition = targetClassDefinition,
-                             ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First())
+                             ClassContext = mixinConfiguration.ClassContexts.First()
                          };
 
       var reportGenerator = CreateMemberReportGenerator(targetType, involvedType);
@@ -455,11 +457,11 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           MixinConfiguration.BuildNew()
               .ForClass<BaseMemberOverrideTestClass.Target>().AddMixin<BaseMemberOverrideTestClass.Mixin1>()
               .BuildConfiguration();
-      var targetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType, mixinConfiguration));
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType));
       var involvedType = new InvolvedType(targetType)
                          {
                              TargetClassDefinition = targetClassDefinition,
-                             ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First())
+                             ClassContext = mixinConfiguration.ClassContexts.First()
                          };
 
       var reportGenerator = CreateMemberReportGenerator(targetType, involvedType);
@@ -486,11 +488,12 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           MixinConfiguration.BuildNew()
               .ForClass<HiddenMemberTestClass.Target>().AddMixin<HiddenMemberTestClass.Mixin1>()
               .BuildConfiguration();
-      var targetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(targetType, mixinConfiguration));
+
+      var targetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType));
       var involvedType = new InvolvedType(targetType)
                          {
                              TargetClassDefinition = targetClassDefinition,
-                             ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First())
+                             ClassContext = mixinConfiguration.ClassContexts.First()
                          };
 
       var reportGenerator = CreateMemberReportGenerator(targetType, involvedType);

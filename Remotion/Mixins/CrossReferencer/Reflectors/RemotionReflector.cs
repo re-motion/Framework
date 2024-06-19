@@ -17,91 +17,91 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
+using Remotion.Mixins.Context;
+using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Validation;
+using Remotion.Reflection;
+using Remotion.Reflection.TypeDiscovery;
 
 namespace Remotion.Mixins.CrossReferencer.Reflectors
 {
-  public class RemotionReflector : ReflectorProvider, IRemotionReflector
+  public class RemotionReflector : IRemotionReflector
   {
-    public RemotionReflector (string component, Version version, IEnumerable<_Assembly> assemblies, string assemblyDirectory)
-        : base(component, version, assemblies, assemblyDirectory)
-    {
-    }
+    private Assembly _assemblyToCheck;
+    private Assembly _mixinsAssembly;
 
-    public IRemotionReflector Initialize (string assemblyDirectory)
+    public RemotionReflector (Assembly assembly = null)
     {
-      return this;
-    }
-
-    public void InitializeLogging ()
-    {
-      GetCompatibleReflector(MethodBase.GetCurrentMethod()).InitializeLogging();
+      _assemblyToCheck = assembly ?? Assembly.GetAssembly(typeof(INullObject));
+      _mixinsAssembly = Assembly.GetAssembly(typeof(Mixin));
     }
 
     public ITypeDiscoveryService GetTypeDiscoveryService ()
     {
-      return GetCompatibleReflector(MethodBase.GetCurrentMethod()).GetTypeDiscoveryService();
+      return ContextAwareTypeUtility.GetTypeDiscoveryService();
     }
 
     public bool IsRelevantAssemblyForConfiguration (Assembly assembly)
     {
-      return GetCompatibleReflector(MethodBase.GetCurrentMethod()).IsRelevantAssemblyForConfiguration(assembly);
+      return assembly.GetReferencedAssemblies().Any(r => r.FullName == _assemblyToCheck.GetName().FullName);
     }
 
     public bool IsNonApplicationAssembly (Assembly assembly)
     {
-      return GetCompatibleReflector(MethodBase.GetCurrentMethod()).IsNonApplicationAssembly(assembly);
+      return assembly.IsDefined(typeof(NonApplicationAssemblyAttribute), false);
     }
 
     public bool IsConfigurationException (Exception exception)
     {
-      return GetCompatibleReflector(MethodBase.GetCurrentMethod()).IsConfigurationException(exception);
+      return exception is Remotion.Mixins.ConfigurationException;
     }
 
     public bool IsValidationException (Exception exception)
     {
-      return GetCompatibleReflector(MethodBase.GetCurrentMethod()).IsValidationException(exception);
+      return exception is Remotion.Mixins.Validation.ValidationException;
     }
 
     public bool IsInfrastructureType (Type type)
     {
-      return GetCompatibleReflector(MethodBase.GetCurrentMethod()).IsInfrastructureType(type);
+      return type.Assembly.GetName().Name == "Remotion.Mixins";
     }
 
     public bool IsInheritedFromMixin (Type type)
     {
-      return GetCompatibleReflector(MethodBase.GetCurrentMethod()).IsInheritedFromMixin(type);
+      var mixinBaseType = typeof(IInitializableMixin);
+      return mixinBaseType.IsAssignableFrom(type);
     }
 
-    public ReflectedObject GetTargetClassDefinition (Type targetType, ReflectedObject mixinConfiguration, ReflectedObject classContext)
+    public TargetClassDefinition GetTargetClassDefinition (Type targetType, MixinConfiguration mixinConfiguration, ClassContext classContext)
     {
-      return GetCompatibleReflector(MethodBase.GetCurrentMethod()).GetTargetClassDefinition(targetType, mixinConfiguration, classContext);
+      return TargetClassDefinitionFactory.CreateAndValidate(classContext);
     }
 
-    public ReflectedObject BuildConfigurationFromAssemblies (Assembly[] assemblies)
+    public MixinConfiguration BuildConfigurationFromAssemblies (Assembly[] assemblies)
     {
-      return GetCompatibleReflector(MethodBase.GetCurrentMethod()).BuildConfigurationFromAssemblies(assemblies);
+      return DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies(assemblies);
     }
 
-    public ReflectedObject GetValidationLogFromValidationException (Exception validationException)
+    public SerializableValidationLogData GetValidationLogFromValidationException (ValidationException validationException)
     {
-      return GetCompatibleReflector(MethodBase.GetCurrentMethod()).GetValidationLogFromValidationException(validationException);
+      return validationException.ValidationLogData;
     }
 
-    public ReflectedObject GetTargetCallDependencies (ReflectedObject mixinDefinition)
+    public UniqueDefinitionCollection<Type, TargetCallDependencyDefinition> GetTargetCallDependencies (MixinDefinition mixinDefinition)
     {
-      return GetCompatibleReflector(MethodBase.GetCurrentMethod()).GetTargetCallDependencies(mixinDefinition);
+      return mixinDefinition.TargetCallDependencies;
     }
 
-    public ICollection<Type> GetComposedInterfaces (ReflectedObject classContext)
+    public IReadOnlyCollection<Type> GetComposedInterfaces (ClassContext classContext)
     {
-      return GetCompatibleReflector(MethodBase.GetCurrentMethod()).GetComposedInterfaces(classContext);
+      return classContext.ComposedInterfaces;
     }
 
-    public ReflectedObject GetNextCallDependencies (ReflectedObject mixinDefinition)
+    public UniqueDefinitionCollection<Type, NextCallDependencyDefinition> GetNextCallDependencies (MixinDefinition mixinDefinition)
     {
-      return GetCompatibleReflector(MethodBase.GetCurrentMethod()).GetNextCallDependencies(mixinDefinition);
+      return mixinDefinition.NextCallDependencies;
     }
   }
 }

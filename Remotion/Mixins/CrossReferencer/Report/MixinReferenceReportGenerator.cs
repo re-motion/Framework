@@ -18,6 +18,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using Remotion.Mixins.Context;
 using Remotion.Mixins.CrossReferencer.Formatting;
 using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Utilities;
@@ -69,13 +70,13 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
       return new XElement(
           "Mixins",
-          from mixin in _involvedType.ClassContext.GetProperty("Mixins")
+          from mixin in _involvedType.ClassContext.Mixins
           select GenerateMixinElement(mixin));
     }
 
-    private XElement GenerateMixinElement (ReflectedObject mixinContext)
+    private XElement GenerateMixinElement (MixinContext mixinContext)
     {
-      var mixinType = mixinContext.GetProperty("MixinType").To<Type>();
+      var mixinType = mixinContext.MixinType;
 
       var mixinElement = new XElement(
           "Mixin",
@@ -84,42 +85,40 @@ namespace Remotion.Mixins.CrossReferencer.Report
           new XAttribute("relation", GetRelationName(mixinContext)),
           // property MixinType on mixinContext always return the generic type definition, not the type of the actual instance
           new XAttribute("instance-name", _outputFormatter.GetShortFormattedTypeName(mixinType)),
-          new XAttribute("introduced-member-visibility", mixinContext.GetProperty("IntroducedMemberVisibility").ToString().ToLower()),
+          new XAttribute("introduced-member-visibility", mixinContext.IntroducedMemberVisibility.ToString().ToLower()),
           new AdditionalDependencyReportGenerator(
-              mixinContext.GetProperty("ExplicitDependencies"),
+              mixinContext.ExplicitDependencies,
               _involvedTypeIdentifierGenerator,
               _outputFormatter).GenerateXml()
       );
 
       if (_involvedType.HasTargetClassDefintion)
       {
-        var mixinDefinition = _involvedType.TargetClassDefinition.CallMethod(
-            "GetMixinByConfiguredType",
-            mixinContext.GetProperty("MixinType").To<Type>());
+        var mixinDefinition = _involvedType.TargetClassDefinition.GetMixinByConfiguredType(mixinType);
 
         // set more specific name for mixin references
-        mixinElement.SetAttributeValue("instance-name", _outputFormatter.GetShortFormattedTypeName(mixinDefinition.GetProperty("Type").To<Type>()));
+        mixinElement.SetAttributeValue("instance-name", _outputFormatter.GetShortFormattedTypeName(mixinDefinition.Type));
         // set mixin index
-        mixinElement.SetAttributeValue("index", mixinDefinition.GetProperty("MixinIndex").To<int>());
+        mixinElement.SetAttributeValue("index", mixinDefinition.MixinIndex);
 
         mixinElement.Add(
-            new InterfaceIntroductionReportGenerator(mixinDefinition.GetProperty("InterfaceIntroductions"), _interfaceIdentifierGenerator).GenerateXml());
+            new InterfaceIntroductionReportGenerator(mixinDefinition.InterfaceIntroductions, _interfaceIdentifierGenerator).GenerateXml());
         mixinElement.Add(
             new AttributeIntroductionReportGenerator(
-                mixinDefinition.GetProperty("AttributeIntroductions"),
+                mixinDefinition.AttributeIntroductions,
                 _attributeIdentifierGenerator,
                 _remotionReflector).GenerateXml());
         mixinElement.Add(
-            new MemberOverrideReportGenerator(mixinDefinition.CallMethod("GetAllOverrides")).GenerateXml());
+            new MemberOverrideReportGenerator(mixinDefinition.GetAllOverrides()).GenerateXml());
         mixinElement.Add(new TargetCallDependenciesReportGenerator(mixinDefinition, _assemblyIdentifierGenerator, _remotionReflector, _outputFormatter).GenerateXml());
       }
 
       return mixinElement;
     }
 
-    private string GetRelationName (ReflectedObject mixinContext)
+    private string GetRelationName (MixinContext mixinContext)
     {
-      if (mixinContext.GetProperty("MixinKind").ToString().Equals("Extending"))
+      if (mixinContext.MixinKind.ToString().Equals("Extending"))
         return "Extends";
       return "Used by";
     }
