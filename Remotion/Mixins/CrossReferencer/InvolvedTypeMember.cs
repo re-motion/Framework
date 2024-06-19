@@ -165,10 +165,7 @@ namespace Remotion.Mixins.CrossReferencer
 
     public OverridingMemberInfo MemberInfo { get; private set; }
 
-    public IEnumerable<OverridingMemberInfo> SubMemberInfos
-    {
-      get { return _subMemberInfos.Values; }
-    }
+    public IEnumerable<OverridingMemberInfo> SubMemberInfos => _subMemberInfos.Values;
 
     public ReflectedObject TargetMemberDefinition { get; private set; }
     public IEnumerable<ReflectedObject> MixinMemberDefinitions { get; private set; }

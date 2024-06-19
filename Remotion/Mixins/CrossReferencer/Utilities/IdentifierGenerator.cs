@@ -22,7 +22,7 @@ namespace Remotion.Mixins.CrossReferencer.Utilities
 {
   public class IdentifierGenerator<T> : IIdentifierGenerator<T>
   {
-    private readonly Dictionary<T, string> _identifiers = new Dictionary<T, string>();
+    private readonly Dictionary<T, string> _identifiers = new();
 
     public string GetIdentifier (T item)
     {
@@ -47,9 +47,6 @@ namespace Remotion.Mixins.CrossReferencer.Utilities
       return new ReadonlyIdentifierGenerator<T>(this, defaultValue);
     }
 
-    public IEnumerable<T> Elements
-    {
-      get { return _identifiers.Keys; }
-    }
+    public IEnumerable<T> Elements => _identifiers.Keys;
   }
 }

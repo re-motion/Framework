@@ -45,9 +45,6 @@ namespace Remotion.Mixins.CrossReferencer.Utilities
       return _identifierGenerator.GetIdentifier(item, defaultIfNotPresent);
     }
 
-    public IEnumerable<T> Elements
-    {
-      get { return _identifierGenerator.Elements; }
-    }
+    public IEnumerable<T> Elements => _identifierGenerator.Elements;
   }
 }

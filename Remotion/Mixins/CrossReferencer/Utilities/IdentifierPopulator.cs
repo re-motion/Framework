@@ -22,7 +22,7 @@ namespace Remotion.Mixins.CrossReferencer.Utilities
 {
   public class IdentifierPopulator<T>
   {
-    private readonly IdentifierGenerator<T> _identifierGenerator = new IdentifierGenerator<T>();
+    private readonly IdentifierGenerator<T> _identifierGenerator = new();
 
 
     public IdentifierPopulator (IEnumerable<T> items)

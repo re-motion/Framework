@@ -39,10 +39,7 @@ namespace Remotion.Mixins.CrossReferencer
       _realType = realType;
     }
 
-    public Type Type
-    {
-      get { return _realType; }
-    }
+    public Type Type => _realType;
 
     public IEnumerable<InvolvedTypeMember> Members
     {
@@ -66,15 +63,9 @@ namespace Remotion.Mixins.CrossReferencer
       }
     }
 
-    public bool IsTarget
-    {
-      get { return _classContext != null; }
-    }
+    public bool IsTarget => _classContext != null;
 
-    public bool IsMixin
-    {
-      get { return _targetTypes.Count > 0; }
-    }
+    public bool IsMixin => _targetTypes.Count > 0;
 
     public ReflectedObject /* ClassContext */ ClassContext
     {
@@ -82,10 +73,7 @@ namespace Remotion.Mixins.CrossReferencer
       set { _classContext = value; }
     }
 
-    public bool HasTargetClassDefintion
-    {
-      get { return _targetClassDefintion != null; }
-    }
+    public bool HasTargetClassDefintion => _targetClassDefintion != null;
 
     public ReflectedObject /* TargetClassDefinition */ TargetClassDefinition
     {
@@ -163,7 +151,7 @@ namespace Remotion.Mixins.CrossReferencer
       return false;
     }
 
-    public override bool Equals (object? obj)
+    public override bool Equals (object obj)
     {
       var other = obj as InvolvedType;
       return other != null

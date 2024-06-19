@@ -32,7 +32,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
     private readonly IIdentifierGenerator<Type> _involvedTypeIdentifierGenerator;
     private readonly IIdentifierGenerator<MemberInfo> _memberIdentifierGenerator;
     private readonly IOutputFormatter _outputFormatter;
-    private readonly MemberModifierUtility _memberModifierUtility = new MemberModifierUtility();
+    private readonly MemberModifierUtility _memberModifierUtility = new();
     private readonly MemberSignatureUtility _memberSignatureUtility;
 
     public MemberReportGenerator (

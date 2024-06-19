@@ -23,7 +23,7 @@ namespace Remotion.Mixins.CrossReferencer.Utilities
   public class ErrorAggregator<TException>
       where TException : Exception
   {
-    private readonly List<TException> _exceptionList = new List<TException>();
+    private readonly List<TException> _exceptionList = new();
 
     public void AddException (TException exception)
     {
@@ -32,9 +32,6 @@ namespace Remotion.Mixins.CrossReferencer.Utilities
       _exceptionList.Add(exception);
     }
 
-    public IEnumerable<TException> Exceptions
-    {
-      get { return _exceptionList.AsReadOnly(); }
-    }
+    public IEnumerable<TException> Exceptions => _exceptionList.AsReadOnly();
   }
 }

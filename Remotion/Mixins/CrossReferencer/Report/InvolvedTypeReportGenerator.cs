@@ -37,8 +37,8 @@ namespace Remotion.Mixins.CrossReferencer.Report
     private readonly IRemotionReflector _remotionReflector;
     private readonly IOutputFormatter _outputFormatter;
 
-    private readonly SummaryPicker _summaryPicker = new SummaryPicker();
-    private readonly TypeModifierUtility _typeModifierUtility = new TypeModifierUtility();
+    private readonly SummaryPicker _summaryPicker = new();
+    private readonly TypeModifierUtility _typeModifierUtility = new();
 
     public InvolvedTypeReportGenerator (
         InvolvedType[] involvedTypes,

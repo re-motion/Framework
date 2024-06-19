@@ -21,16 +21,13 @@ namespace Remotion.Mixins.CrossReferencer
 {
   public class AdditionalTypesCollector : IInvolvedVisitor
   {
-    private readonly List<Type> _additionalTypes = new List<Type>();
+    private readonly List<Type> _additionalTypes = new();
 
     public void Visit (InvolvedTypeMember involvedTypeMember)
     {
       _additionalTypes.AddRange(involvedTypeMember.OverriddenMembersDeclaringTypes);
     }
 
-    public IEnumerable<Type> AdditionalTypes
-    {
-      get { return _additionalTypes; }
-    }
+    public IEnumerable<Type> AdditionalTypes => _additionalTypes;
   }
 }

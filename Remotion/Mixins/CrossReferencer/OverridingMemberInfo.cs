@@ -33,17 +33,11 @@ namespace Remotion.Mixins.CrossReferencer
 
     private readonly IList<MemberInfo> _overriddenTargetMembers = new List<MemberInfo>();
 
-    public IEnumerable<MemberInfo> OverriddenTargetMembers
-    {
-      get { return _overriddenTargetMembers; }
-    }
+    public IEnumerable<MemberInfo> OverriddenTargetMembers => _overriddenTargetMembers;
 
     private readonly IList<MemberInfo> _overriddenMixinMembers = new List<MemberInfo>();
 
-    public IEnumerable<MemberInfo> OverriddenMixinMembers
-    {
-      get { return _overriddenMixinMembers; }
-    }
+    public IEnumerable<MemberInfo> OverriddenMixinMembers => _overriddenMixinMembers;
 
     public OverridingMemberInfo (MemberInfo memberInfo)
     {
