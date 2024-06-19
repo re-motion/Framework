@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       try
       {
         var providers = new ProviderCollection<StorageProviderDefinition>();
-        providers.Add(new RdbmsProviderDefinition(StubStorageProvider.StorageProviderID, new StubStorageFactory(), "NonExistingRdbms"));
+        providers.Add(new RdbmsProviderDefinition(StubStorageProvider.StorageProviderID, new StubStorageFactory(), "NonExistingRdbms", "NonExistingReadOnlyRdbms"));
         var storageConfiguration = new StorageConfiguration(providers, providers[StubStorageProvider.StorageProviderID]);
         DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(storage: storageConfiguration));
 

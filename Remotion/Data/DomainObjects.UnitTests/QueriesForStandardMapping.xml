@@ -17,16 +17,16 @@
  ! along with re-motion; if not, see http://www.gnu.org/licenses.
 -->
 <queries 
-    xmlns="http://www.re-motion.org/Data/DomainObjects/Queries/1.0" 
+    xmlns="http://www.re-motion.org/Data/DomainObjects/Queries/2.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://www.re-motion.org/Data/DomainObjects/Queries/1.0 ..\..\DomainObjects\Schemas\Queries.xsd">
+    xsi:schemaLocation="http://www.re-motion.org/Data/DomainObjects/Queries/2.0 ..\..\DomainObjects\Schemas\Queries.xsd">
 
-  <query id="QueryWithoutParameter" type="scalar">
+  <query id="QueryWithoutParameter" type="scalar-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>select 42</statement>
   </query>
 
-  <query id="OrderNoSumByCustomerNameQuery" type="scalar">
+  <query id="OrderNoSumByCustomerNameQuery" type="scalar-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>
       select sum([OrderNo])
@@ -35,7 +35,7 @@
     </statement>
   </query>
 
-  <query id="OrderNoSumForMultipleCustomers" type="scalar">
+  <query id="OrderNoSumForMultipleCustomers" type="scalar-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>
       select sum([OrderNo])
@@ -44,7 +44,7 @@
     </statement>
   </query>
 
-  <query id="BulkUpdateQuery" type="scalar">
+  <query id="BulkUpdateQuery" type="scalar-readwrite">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>
       update [Order] set [DeliveryDate] = '2006/01/01' where [CustomerID] = @customerID;
@@ -52,35 +52,35 @@
     </statement>
   </query>
 
-  <query id="OrderQuery" type="collection">
+  <query id="OrderQuery" type="collection-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>select [Order].* from [Order] where [CustomerID] = @customerID order by [OrderNo] asc;</statement>
     <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
   </query>
 
-  <query id="OrderByOfficialQuery" type="collection">
+  <query id="OrderByOfficialQuery" type="collection-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>select [Order].* from [Order] where [OfficialID] = @officialID order by [OrderNo] asc;</statement>
     <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
   </query>
 
-  <query id="CustomerTypeQuery" type="collection">
+  <query id="CustomerTypeQuery" type="collection-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>select * from [Company] where [CustomerType] = @customerType order by [Name] asc;</statement>
   </query>
 
-  <query id="QueryWithDuplicates" type="collection">
+  <query id="QueryWithDuplicates" type="collection-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>SELECT [Order].* FROM [OrderItem] INNER JOIN [Order] ON [OrderItem].[OrderID] = [Order].[ID] WHERE [Order].[OrderNo] = 1;</statement>
   </query>
 
-  <query id="QueryWithSpecificCollectionType" type="collection">
+  <query id="QueryWithSpecificCollectionType" type="collection-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>select * from [Order];</statement>
     <collectionType>Remotion.Data.DomainObjects.UnitTests::TestDomain.SpecificOrderCollection</collectionType>
   </query>
 
-  <query id="QueryWithAllDataTypes" type="collection">
+  <query id="QueryWithAllDataTypes" type="collection-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <!-- SQL statement with invalid XML character value. -->
     <statement>
@@ -138,30 +138,47 @@
     </statement>
   </query>
 
-  <query id="StoredProcedureQuery" type="collection">
+  <query id="StoredProcedureQuery" type="collection-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>rpf_testSPQuery</statement>
     <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
   </query>
 
-  <query id="StoredProcedureQueryWithParameter" type="collection">
+  <query id="StoredProcedureQueryWithParameter" type="collection-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>exec rpf_testSPQueryWithParameter @customerID</statement>
     <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
   </query>
 
-  <query id="FakeQuery" type="collection">
+  <query id="FakeQuery" type="collection-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>SELECT "Dummy"</statement>
     <collectionType>Remotion.Data.DomainObjects::DomainObjectCollection</collectionType>
   </query>
 
-  <query id="CustomQuery" type="custom">
+  <query id="CollectionQueryReadOnly" type="collection-readonly">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>SELECT "Dummy"</statement>
+    <collectionType>Remotion.Data.DomainObjects::DomainObjectCollection</collectionType>
+  </query>
+
+  <query id="CollectionQueryReadWrite" type="collection-readwrite">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>SELECT "Dummy"</statement>
+    <collectionType>Remotion.Data.DomainObjects::DomainObjectCollection</collectionType>
+  </query>
+
+  <query id="CustomQueryReadOnly" type="custom-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>SELECT String, Int16, Boolean, Enum, ExtensibleEnum  FROM [TableWithAllDataTypes]</statement>
   </query>
 
-  <query id="OrderQueryWithDomainObjectCollectionType" type="collection">
+  <query id="CustomQueryReadWrite" type="custom-readwrite">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>SELECT String, Int16, Boolean, Enum, ExtensibleEnum  FROM [TableWithAllDataTypes]</statement>
+  </query>
+
+  <query id="OrderQueryWithDomainObjectCollectionType" type="collection-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>select * from [Order];</statement>
     <collectionType>Remotion.Data.DomainObjects::DomainObjectCollection</collectionType>

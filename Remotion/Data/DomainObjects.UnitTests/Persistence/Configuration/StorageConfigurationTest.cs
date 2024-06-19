@@ -21,7 +21,6 @@ using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
-using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Configuration;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
@@ -53,11 +52,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     public void Initialize_WithProviderCollectionAndProvider ()
     {
       StorageProviderDefinition providerDefinition1 = new RdbmsProviderDefinition(
-          "ProviderDefinition1", _sqlStorageObjectFactory, "ConnectionString");
+          "ProviderDefinition1", _sqlStorageObjectFactory, "ConnectionString", "ReadOnlyConnectionString");
       StorageProviderDefinition providerDefinition2 = new RdbmsProviderDefinition(
-          "ProviderDefinition2", _sqlStorageObjectFactory, "ConnectionString");
+          "ProviderDefinition2", _sqlStorageObjectFactory, "ConnectionString", "ReadOnlyConnectionString");
       StorageProviderDefinition providerDefinition3 = new RdbmsProviderDefinition(
-          "ProviderDefinition3", _sqlStorageObjectFactory, "ConnectionString");
+          "ProviderDefinition3", _sqlStorageObjectFactory, "ConnectionString", "ReadOnlyConnectionString");
       ProviderCollection<StorageProviderDefinition> providers = new ProviderCollection<StorageProviderDefinition>();
       providers.Add(providerDefinition1);
       providers.Add(providerDefinition2);
@@ -74,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     public void Initialize_WithProviderCollectionAndProvider_Expect ()
     {
       StorageProviderDefinition providerDefinition = new RdbmsProviderDefinition(
-          "ProviderDefinition", _sqlStorageObjectFactory, "ConnectionString");
+          "ProviderDefinition", _sqlStorageObjectFactory, "ConnectionString", "ReadOnlyConnectionString");
       ProviderCollection<StorageProviderDefinition> providers = new ProviderCollection<StorageProviderDefinition>();
 
       StorageConfiguration configuration = new StorageConfiguration(providers, providerDefinition);

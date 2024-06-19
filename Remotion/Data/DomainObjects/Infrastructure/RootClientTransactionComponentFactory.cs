@@ -24,6 +24,7 @@ using Remotion.Data.DomainObjects.Infrastructure.Enlistment;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Queries.EagerFetching;
 using Remotion.FunctionalProgramming;
 using Remotion.Mixins;
@@ -38,13 +39,23 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   [Serializable]
   public class RootClientTransactionComponentFactory : ClientTransactionComponentFactoryBase
   {
-    public static RootClientTransactionComponentFactory Create ()
+    private readonly IPersistenceService _persistenceService;
+    private readonly IStorageAccessResolver _storageAccessResolver;
+    public static RootClientTransactionComponentFactory Create (IPersistenceService persistenceService, IStorageAccessResolver storageAccessResolver)
     {
-      return ObjectFactory.Create<RootClientTransactionComponentFactory>(true, ParamList.Empty);
+      ArgumentUtility.CheckNotNull("persistenceService", persistenceService);
+      return ObjectFactory.Create<RootClientTransactionComponentFactory>(
+          true,
+          ParamList.Create(persistenceService, storageAccessResolver));
     }
 
-    protected RootClientTransactionComponentFactory ()
+    protected RootClientTransactionComponentFactory (IPersistenceService persistenceService, IStorageAccessResolver storageAccessResolver)
     {
+      ArgumentUtility.CheckNotNull("persistenceService", persistenceService);
+      ArgumentUtility.CheckNotNull("storageAccessResolver", storageAccessResolver);
+
+      _persistenceService = persistenceService;
+      _storageAccessResolver = storageAccessResolver;
     }
 
     public override ITransactionHierarchyManager CreateTransactionHierarchyManager (
@@ -78,7 +89,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public override IPersistenceStrategy CreatePersistenceStrategy (ClientTransaction constructedTransaction)
     {
       ArgumentUtility.CheckNotNull("constructedTransaction", constructedTransaction);
-      return ObjectFactory.Create<RootPersistenceStrategy>(true, ParamList.Create(constructedTransaction.ID));
+      return ObjectFactory.Create<RootPersistenceStrategy>(
+          true,
+          ParamList.Create(constructedTransaction.ID, _persistenceService, _storageAccessResolver)
+          );
     }
 
     protected override IEnumerable<IClientTransactionListener> CreateListeners (ClientTransaction constructedTransaction)

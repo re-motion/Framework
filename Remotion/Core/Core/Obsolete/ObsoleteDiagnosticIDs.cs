@@ -21,5 +21,6 @@ namespace Remotion.Obsolete
   public static class ObsoleteDiagnosticIDs
   {
     public const string HtmlUtility = "REMOTION0001";
+    public const string QueryTypeValue = "REMOTION0002";
   }
 }

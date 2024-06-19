@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Linq;
@@ -30,6 +31,6 @@ namespace Remotion.Data.DomainObjects.Queries
   {
     IQueryable<T> CreateQueryable<T> (IQueryParser queryParser, IQueryExecutor executor);
     IQueryParser CreateQueryParser ();
-    IQueryExecutor CreateQueryExecutor (StorageProviderDefinition providerDefinition);
+    IQueryExecutor CreateQueryExecutor (StorageProviderDefinition providerDefinition, string id, IReadOnlyDictionary<string, object> metadata);
   }
 }

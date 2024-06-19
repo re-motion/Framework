@@ -22,7 +22,6 @@ using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
-using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Configuration;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
@@ -38,25 +37,46 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       base.SetUp();
 
       _sqlStorageObjectFactory = new SqlStorageObjectFactory();
-      _definition = new RdbmsProviderDefinition("StorageProviderID", _sqlStorageObjectFactory, "ConnectionString");
+      _definition = new RdbmsProviderDefinition("StorageProviderID", _sqlStorageObjectFactory, "ConnectionString", "ReadOnlyConnectionString");
 
       FakeConfigurationWrapper configurationWrapper = new FakeConfigurationWrapper();
       configurationWrapper.SetUpConnectionString("SqlProvider", "ConnectionString", null);
+      configurationWrapper.SetUpConnectionString("ReadOnlySqlProvider", "ReadOnlyConnectionString", null);
       ConfigurationWrapper.SetCurrent(configurationWrapper);
     }
 
     [Test]
     public void Initialize_FromArguments ()
     {
-      RdbmsProviderDefinition provider = new RdbmsProviderDefinition("Provider", _sqlStorageObjectFactory, "ConnectionString");
+      RdbmsProviderDefinition provider = new RdbmsProviderDefinition("Provider", _sqlStorageObjectFactory, "ConnectionString", "ReadOnlyConnectionString");
 
       Assert.That(provider.Name, Is.EqualTo("Provider"));
       Assert.That(provider.Factory, Is.TypeOf(typeof(SqlStorageObjectFactory)));
       Assert.That(provider.ConnectionString, Is.EqualTo("ConnectionString"));
+      Assert.That(provider.ReadOnlyConnectionString, Is.EqualTo("ReadOnlyConnectionString"));
     }
 
     [Test]
     public void Initialize_FromConfig ()
+    {
+      NameValueCollection config = new NameValueCollection();
+      config.Add("description", "The Description");
+      config.Add("factoryType", "Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2014.SqlStorageObjectFactory");
+      config.Add("connectionString", "SqlProvider");
+      config.Add("readOnlyConnectionString", "ReadOnlySqlProvider");
+
+      RdbmsProviderDefinition provider = new RdbmsProviderDefinition("Provider", config);
+
+      Assert.That(provider.Name, Is.EqualTo("Provider"));
+      Assert.That(provider.Description, Is.EqualTo("The Description"));
+      Assert.That(provider.Factory, Is.TypeOf(typeof(SqlStorageObjectFactory)));
+      Assert.That(provider.ConnectionString, Is.EqualTo("ConnectionString"));
+      Assert.That(provider.ReadOnlyConnectionString, Is.EqualTo("ReadOnlyConnectionString"));
+      Assert.That(config, Is.Empty);
+    }
+
+    [Test]
+    public void Initialize_FromConfig_WithoutReadOnlyConnectionString_FallBackToConnectionString ()
     {
       NameValueCollection config = new NameValueCollection();
       config.Add("description", "The Description");
@@ -69,6 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Assert.That(provider.Description, Is.EqualTo("The Description"));
       Assert.That(provider.Factory, Is.TypeOf(typeof(SqlStorageObjectFactory)));
       Assert.That(provider.ConnectionString, Is.EqualTo("ConnectionString"));
+      Assert.That(provider.ReadOnlyConnectionString, Is.EqualTo("ConnectionString"));
       Assert.That(config, Is.Empty);
     }
 

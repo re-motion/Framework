@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     [SetUp]
     public void SetUp ()
     {
-      _rdbmsProviderDefinition = new RdbmsProviderDefinition("TestDomain", new SqlStorageObjectFactory(), "ConnectionString");
+      _rdbmsProviderDefinition = new RdbmsProviderDefinition("TestDomain", new SqlStorageObjectFactory(), "ConnectionString", "ReadOnlyConnectionString");
       _sqlProviderFactory = new SqlStorageObjectFactory();
       _persistenceExtensionStub = new Mock<IPersistenceExtension>();
       _storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage);
@@ -126,10 +126,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       var result = _sqlProviderFactory.CreateStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
 
       Assert.That(result, Is.TypeOf(typeof(RdbmsProvider)));
-      Assert.That(result.PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
-      Assert.That(result.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
+      Assert.That(result.As<RdbmsProvider>().PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
+      Assert.That(result.As<RdbmsProvider>().StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
+      Assert.That(result.As<RdbmsProvider>().ConnectionString, Is.SameAs(_rdbmsProviderDefinition.ConnectionString));
 
-      var commandFactory = (RdbmsProviderCommandFactory)PrivateInvoke.GetNonPublicProperty(result, "StorageProviderCommandFactory");
+      var commandFactory = result.As<RdbmsProvider>().RdbmsProviderCommandFactory.As<RdbmsProviderCommandFactory>();
+      Assert.That(commandFactory.DbCommandBuilderFactory, Is.TypeOf(typeof(SqlDbCommandBuilderFactory)));
+      Assert.That(commandFactory.RdbmsPersistenceModelProvider, Is.TypeOf(typeof(RdbmsPersistenceModelProvider)));
+      Assert.That(commandFactory.ObjectReaderFactory, Is.TypeOf(typeof(ObjectReaderFactory)));
+      Assert.That(commandFactory.DataStoragePropertyDefinitionFactory, Is.TypeOf(typeof(DataStoragePropertyDefinitionFactory)));
+      var dataStoragePropertyDefinitionFactory = (DataStoragePropertyDefinitionFactory)commandFactory.DataStoragePropertyDefinitionFactory;
+      var relationStoragePropertyDefinitionFactory = (RelationStoragePropertyDefinitionFactory)dataStoragePropertyDefinitionFactory.RelationStoragePropertyDefinitionFactory;
+      Assert.That(relationStoragePropertyDefinitionFactory.ForceClassIDColumnInForeignKeyProperties, Is.False);
+    }
+
+    [Test]
+    public void CreateReadOnlyStorageProvider ()
+    {
+      var result = _sqlProviderFactory.CreateReadOnlyStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
+
+      Assert.That(result, Is.TypeOf(typeof(ReadOnlyStorageProviderDecorator)));
+
+      var innerStorageProvider = result.As<ReadOnlyStorageProviderDecorator>().InnerStorageProvider;
+      Assert.That(innerStorageProvider.As<RdbmsProvider>().PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
+      Assert.That(innerStorageProvider.As<RdbmsProvider>().StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
+      Assert.That(innerStorageProvider.As<RdbmsProvider>().ConnectionString, Is.SameAs(_rdbmsProviderDefinition.ReadOnlyConnectionString));
+
+      var commandFactory = (RdbmsProviderCommandFactory)innerStorageProvider.As<RdbmsProvider>().RdbmsProviderCommandFactory;
       Assert.That(commandFactory.DbCommandBuilderFactory, Is.TypeOf(typeof(SqlDbCommandBuilderFactory)));
       Assert.That(commandFactory.RdbmsPersistenceModelProvider, Is.TypeOf(typeof(RdbmsPersistenceModelProvider)));
       Assert.That(commandFactory.ObjectReaderFactory, Is.TypeOf(typeof(ObjectReaderFactory)));

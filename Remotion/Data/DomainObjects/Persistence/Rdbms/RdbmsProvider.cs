@@ -22,7 +22,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
@@ -30,34 +29,54 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
-  public class RdbmsProvider : StorageProvider, IRdbmsProviderCommandExecutionContext
+  public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExecutionContext, IRdbmsProviderReadWriteCommandExecutionContext
   {
-    private readonly IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> _storageProviderCommandFactory;
+    private readonly RdbmsProviderDefinition _storageProviderDefinition;
+    private readonly string _connectionString;
+    private readonly IPersistenceExtension _persistenceExtension;
+    private readonly IRdbmsProviderCommandFactory _rdbmsProviderCommandFactory;
     private readonly Func<IDbConnection> _connectionFactory;
+    private bool _disposed;
 
     private TracingDbConnection? _connection;
     private TracingDbTransaction? _transaction;
 
     public RdbmsProvider (
         RdbmsProviderDefinition definition,
+        string connectionString,
         IPersistenceExtension persistenceExtension,
-        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> storageProviderCommandFactory,
+        IRdbmsProviderCommandFactory rdbmsProviderCommandFactory,
         Func<IDbConnection> connectionFactory)
-        : base(definition, persistenceExtension)
     {
-      ArgumentUtility.CheckNotNull("storageProviderCommandFactory", storageProviderCommandFactory);
+      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("rdbmsProviderCommandFactory", rdbmsProviderCommandFactory);
       ArgumentUtility.CheckNotNull("connectionFactory", connectionFactory);
 
-      _storageProviderCommandFactory = storageProviderCommandFactory;
+      if (connectionString != definition.ConnectionString && connectionString != definition.ReadOnlyConnectionString)
+      {
+        throw CreateArgumentException(
+            "connectionString",
+            "The connection string '{0}' is not defined by provider '{1}'",
+            connectionString,
+            definition.Name);
+      }
+
+      _storageProviderDefinition = definition;
+      _persistenceExtension = persistenceExtension;
+      _connectionString = connectionString;
+      _rdbmsProviderCommandFactory = rdbmsProviderCommandFactory;
       _connectionFactory = connectionFactory;
+      _disposed = false;
     }
 
-    public new RdbmsProviderDefinition StorageProviderDefinition
+    public RdbmsProviderDefinition StorageProviderDefinition
     {
       get
       {
-        // CheckDisposed is not necessary here, because StorageProvider.StorageProviderDefinition already checks this.
-        return (RdbmsProviderDefinition)base.StorageProviderDefinition;
+        CheckDisposed();
+        return _storageProviderDefinition;
       }
     }
 
@@ -72,6 +91,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
         return _connection.State != ConnectionState.Closed;
       }
     }
+
+    public string ConnectionString => _connectionString;
 
     public TracingDbConnection? Connection
     {
@@ -91,17 +112,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
-    public virtual IsolationLevel IsolationLevel
-    {
-      get { return IsolationLevel.Serializable; }
-    }
+    public virtual IsolationLevel IsolationLevel => IsolationLevel.Serializable;
 
-    protected IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> StorageProviderCommandFactory
-    {
-      get { return _storageProviderCommandFactory; }
-    }
+    public IRdbmsProviderCommandFactory RdbmsProviderCommandFactory => _rdbmsProviderCommandFactory;
 
-    public override void Dispose ()
+    public bool IsDisposed => _disposed;
+
+    public IPersistenceExtension PersistenceExtension => _persistenceExtension;
+
+    public virtual void Dispose ()
     {
       if (!IsDisposed)
       {
@@ -112,7 +131,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
         }
         finally
         {
-          base.Dispose();
+          _disposed = true;
         }
       }
     }
@@ -126,7 +145,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       {
         _connection = new TracingDbConnection(CreateConnection(), PersistenceExtension);
         if (string.IsNullOrEmpty(_connection.ConnectionString))
-          _connection.ConnectionString = StorageProviderDefinition.ConnectionString;
+          _connection.ConnectionString = _connectionString;
 
         try
         {
@@ -144,7 +163,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       Dispose();
     }
 
-    public override void BeginTransaction ()
+    public virtual void BeginTransaction ()
     {
       CheckDisposed();
 
@@ -163,7 +182,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
-    public override void Commit ()
+    public virtual void Commit ()
     {
       CheckDisposed();
 
@@ -184,7 +203,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
-    public override void Rollback ()
+    public virtual void Rollback ()
     {
       CheckDisposed();
 
@@ -205,46 +224,46 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
-    public override IEnumerable<DataContainer?> ExecuteCollectionQuery (IQuery query)
+    public virtual IEnumerable<DataContainer?> ExecuteCollectionQuery (IQuery query)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("query", query);
-      CheckQuery(query, QueryType.Collection, "query");
+      CheckQuery("query", query, QueryType.CollectionReadOnly, QueryType.CollectionReadWrite);
 
       Connect();
 
-      var command = _storageProviderCommandFactory.CreateForDataContainerQuery(query);
+      var command = _rdbmsProviderCommandFactory.CreateForDataContainerQuery(query);
       var dataContainers = command.Execute(this);
 
       var checkedSequence = CheckForDuplicates(dataContainers, "database query");
       return checkedSequence.ToArray();
     }
 
-    public override IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
+    public virtual IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("query", query);
-      CheckQuery(query, QueryType.Custom, "query");
+      CheckQuery("query", query, QueryType.CustomReadOnly, QueryType.CustomReadWrite);
 
       Connect();
 
-      var command = _storageProviderCommandFactory.CreateForCustomQuery(query);
+      var command = _rdbmsProviderCommandFactory.CreateForCustomQuery(query);
       return command.Execute(this);
     }
 
-    public override object? ExecuteScalarQuery (IQuery query)
+    public virtual object? ExecuteScalarQuery (IQuery query)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("query", query);
-      CheckQuery(query, QueryType.Scalar, "query");
+      CheckQuery("query", query, QueryType.ScalarReadOnly, QueryType.ScalarReadWrite);
 
       Connect();
 
-      var command = _storageProviderCommandFactory.CreateForScalarQuery(query);
+      var command = _rdbmsProviderCommandFactory.CreateForScalarQuery(query);
       return command.Execute(this);
     }
 
-    public override ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
+    public virtual ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("id", id);
@@ -252,11 +271,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
       Connect();
 
-      var command = _storageProviderCommandFactory.CreateForSingleIDLookup(id);
+      var command = _rdbmsProviderCommandFactory.CreateForSingleIDLookup(id);
       return command.Execute(this);
     }
 
-    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
+    public virtual IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("ids", ids);
@@ -264,11 +283,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       Connect();
 
       var checkedIDs = ids.Select(id => CheckStorageProvider(id, "ids"));
-      var command = _storageProviderCommandFactory.CreateForSortedMultiIDLookup(checkedIDs);
+      var command = _rdbmsProviderCommandFactory.CreateForSortedMultiIDLookup(checkedIDs);
       return command.Execute(this);
     }
 
-    public override IEnumerable<DataContainer> LoadDataContainersByRelatedID (
+    public virtual IEnumerable<DataContainer> LoadDataContainersByRelatedID (
         RelationEndPointDefinition relationEndPointDefinition,
         SortExpressionDefinition? sortExpressionDefinition,
         ObjectID relatedID)
@@ -283,7 +302,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       if (relationEndPointDefinition.PropertyDefinition.StorageClass == StorageClass.Transaction)
         return new DataContainerCollection();
 
-      var storageProviderCommand = _storageProviderCommandFactory.CreateForRelationLookup(
+      var storageProviderCommand = _rdbmsProviderCommandFactory.CreateForRelationLookup(
           relationEndPointDefinition,
           relatedID,
           sortExpressionDefinition);
@@ -293,18 +312,18 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       return new DataContainerCollection(checkedSequence, true);
     }
 
-    public override void Save (IReadOnlyCollection<DataContainer> dataContainers)
+    public virtual void Save (IReadOnlyCollection<DataContainer> dataContainers)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
 
       Connect();
 
-      var saveCommand = _storageProviderCommandFactory.CreateForSave(dataContainers);
+      var saveCommand = _rdbmsProviderCommandFactory.CreateForSave(dataContainers);
       saveCommand.Execute(this);
     }
 
-    public override void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers)
+    public virtual void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
@@ -312,7 +331,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       Connect();
 
       var objectIds = dataContainers.Select(dc => dc.ID);
-      var multiTimestampLookupCommand = _storageProviderCommandFactory.CreateForMultiTimestampLookup(objectIds);
+      var multiTimestampLookupCommand = _rdbmsProviderCommandFactory.CreateForMultiTimestampLookup(objectIds);
       var timestampDictionary = multiTimestampLookupCommand.Execute(this).ToDictionary(result => result.ObjectID, result => result.LocatedObject);
 
       foreach (var dataContainer in dataContainers)
@@ -326,7 +345,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
-    public override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
+    public virtual ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
@@ -358,7 +377,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       return command;
     }
 
-    IDbCommand IRdbmsProviderCommandExecutionContext.CreateDbCommand ()
+    IDbCommand IDbCommandFactory.CreateDbCommand ()
     {
       return CreateDbCommand();
     }
@@ -420,6 +439,39 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       return new RdbmsProviderException(message, innerException);
     }
 
+    protected void CheckDisposed ()
+    {
+      if (_disposed)
+        throw new ObjectDisposedException("RdbmsProvider", "A disposed RdbmsProvider cannot be accessed.");
+    }
+
+    protected ArgumentException CreateArgumentException (string argumentName, string formatString, params object[] args)
+    {
+      return new ArgumentException(string.Format(formatString, args), argumentName);
+    }
+
+    private void CheckQuery (string argumentName, IQuery query, params QueryType[] expectedQueryTypes)
+    {
+      if (query.StorageProviderDefinition != StorageProviderDefinition)
+      {
+        throw CreateArgumentException(
+            argumentName,
+            "The StorageProvider '{0}' of the provided query '{1}' does not match with this StorageProvider '{2}'.",
+            query.StorageProviderDefinition.Name,
+            query.ID,
+            StorageProviderDefinition.Name);
+      }
+
+      if (!expectedQueryTypes.Contains(query.QueryType))
+      {
+        throw CreateArgumentException(
+            argumentName,
+            "Expected query type is '{0}', but was '{1}'.",
+            string.Join("' or '", expectedQueryTypes),
+            query.QueryType);
+      }
+    }
+
     private void DisposeTransaction ()
     {
       if (_transaction != null)
@@ -447,6 +499,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
             id,
             StorageProviderDefinition.Name);
       }
+
       return id;
     }
 
@@ -474,6 +527,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
             var message = string.Format("A {0} returned duplicates of object '{1}', which is not allowed.", operation, dataContainer.ID);
             throw new RdbmsProviderException(message);
           }
+
           loadedIDs.Add(dataContainer.ID);
         }
 

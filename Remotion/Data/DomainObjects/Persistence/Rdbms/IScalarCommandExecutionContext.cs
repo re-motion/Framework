@@ -16,19 +16,15 @@
 // 
 using System;
 using System.Data;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
   /// <summary>
-  /// <see cref="IRdbmsProviderCommandExecutionContext"/> defines methods for creating and executing <see cref="IDbCommand"/> instances. These are
-  /// used by RDBMS-specific implementations of <see cref="IStorageProviderCommand{T,TExecutionContext}"/> and <see cref="IDbCommandBuilder"/>.
+  /// Represents the aspect of <see cref="IRdbmsProviderReadOnlyCommandExecutionContext"/> or <see cref="IRdbmsProviderReadWriteCommandExecutionContext"/> that enables the
+  /// execution of an <see cref="IDbCommand"/> that returns a scalar value.
   /// </summary>
-  public interface IRdbmsProviderCommandExecutionContext
+  public interface IScalarCommandExecutionContext
   {
-    IDbCommand CreateDbCommand ();
-    IDataReader ExecuteReader (IDbCommand command, CommandBehavior behavior);
     object? ExecuteScalar (IDbCommand command);
-    int ExecuteNonQuery (IDbCommand command);
   }
 }

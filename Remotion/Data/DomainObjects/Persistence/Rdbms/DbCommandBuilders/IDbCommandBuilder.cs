@@ -21,6 +21,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 {
   public interface IDbCommandBuilder
   {
-    IDbCommand Create (IRdbmsProviderCommandExecutionContext commandExecutionContext);
+    IDbCommand Create (IDbCommandFactory dbCommandFactory);
   }
 }

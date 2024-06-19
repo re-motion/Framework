@@ -8,107 +8,38 @@
 // 
 // re-motion is distributed in the hope that it will be useful, 
 // but WITHOUT ANY WARRANTY; without even the implied warranty of 
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 // 
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Diagnostics.CodeAnalysis;
-using Remotion.Data.DomainObjects.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence
 {
-public class StorageProviderManager : IDisposable
-{
-  private bool _disposed;
-  private StorageProviderCollection? _storageProviders;
-  private readonly IPersistenceExtension _persistenceExtension;
-
-  public StorageProviderManager (IPersistenceExtension persistenceExtension)
+  public sealed class StorageProviderManager : StorageProviderManagerBase<IStorageProvider>, IStorageProviderManager, IReadOnlyStorageProviderManager
   {
-    ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
-
-    _storageProviders = new StorageProviderCollection();
-    _persistenceExtension = persistenceExtension;
-  }
-
-  #region IDisposable Members
-
-  public void Dispose ()
-  {
-    if (!_disposed)
+    public StorageProviderManager (IPersistenceExtension persistenceExtension)
+        : base(persistenceExtension)
     {
-      if (_storageProviders != null)
-        _storageProviders.Dispose();
-
-      _storageProviders = null;
-
-      _disposed = true;
-      GC.SuppressFinalize(this);
-    }
-  }
-
-  #endregion
-
-  public StorageProvider GetMandatory (string storageProviderID)
-  {
-    CheckDisposed();
-    ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
-
-    StorageProvider? provider = this[storageProviderID];
-    if (provider == null)
-    {
-      throw CreatePersistenceException(
-        "Storage Provider with ID '{0}' could not be created.", storageProviderID);
     }
 
-    return provider;
-  }
-
-  public StorageProvider? this [string storageProviderID]
-  {
-    get
+    protected override IStorageProvider CreateStorageProvider (StorageProviderDefinition providerDefinition)
     {
-      CheckDisposed();
-      ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
+      ArgumentUtility.CheckNotNull(nameof(providerDefinition), providerDefinition);
 
-      if (_storageProviders.Contains(storageProviderID))
-        return _storageProviders[storageProviderID];
+      return providerDefinition.Factory.CreateStorageProvider(providerDefinition, PersistenceExtension);
+    }
 
-      var providerDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory(storageProviderID);
-      var provider = providerDefinition.Factory.CreateStorageProvider(providerDefinition, _persistenceExtension);
+    IReadOnlyStorageProvider IReadOnlyStorageProviderManager.GetMandatory (string storageProviderID)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(storageProviderID), storageProviderID);
 
-      _storageProviders.Add(provider);
-
-      return provider;
+      return GetMandatory(storageProviderID);
     }
   }
-
-  public StorageProviderCollection StorageProviders
-  {
-    get
-    {
-      CheckDisposed();
-      return _storageProviders;
-    }
-  }
-
-  private PersistenceException CreatePersistenceException (string message, params object[] args)
-  {
-    return new PersistenceException(string.Format(message, args));
-  }
-
-  [MemberNotNull(nameof(_storageProviders))]
-  private void CheckDisposed ()
-  {
-    if (_disposed)
-      throw new ObjectDisposedException("StorageProviderManager", "A disposed StorageProviderManager cannot be accessed.");
-#pragma warning disable 8774 // Disable _storageProviders-not-initialized warning
-  }
-#pragma warning restore 8774
-}
 }

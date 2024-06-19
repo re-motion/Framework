@@ -15,31 +15,39 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using NUnit.Framework;
+using Remotion.Data.DomainObjects.Persistence;
+using Remotion.ServiceLocation;
 
-namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 {
-  /// <summary>
-  /// Implements <see cref="IStorageProviderCommand{T,TExecutionContext}"/> by always returning the same, fixed value.
-  /// </summary>
-  /// <typeparam name="T">The type of the value to return.</typeparam>
-  /// <typeparam name="TExecutionContext">The type of the execution context. This is not actually used by this command.</typeparam>
-  public class FixedValueCommand<T, TExecutionContext> : IStorageProviderCommand<T, TExecutionContext>
+  [TestFixture]
+  public class IPersistenceServiceTest
   {
-    private readonly T _value;
+    private DefaultServiceLocator _serviceLocator;
 
-    public FixedValueCommand (T value)
+    [SetUp]
+    public void SetUp ()
     {
-      _value = value;
+      _serviceLocator = DefaultServiceLocator.Create();
     }
 
-    public T Value
+    [Test]
+    public void GetInstance_Once ()
     {
-      get { return _value; }
+      var service = _serviceLocator.GetInstance<IPersistenceService>();
+
+      Assert.That(service, Is.Not.Null);
+      Assert.That(service, Is.TypeOf(typeof(PersistenceService)));
     }
 
-    public T Execute (TExecutionContext executionContext)
+    [Test]
+    public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      return _value;
+      var service1 = _serviceLocator.GetInstance<IPersistenceService>();
+      var service2 = _serviceLocator.GetInstance<IPersistenceService>();
+
+      Assert.That(service1, Is.SameAs(service2));
     }
   }
 }

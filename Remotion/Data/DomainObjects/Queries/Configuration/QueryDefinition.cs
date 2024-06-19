@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Remotion.Collections;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
@@ -44,6 +46,8 @@ public class QueryDefinition
   private static readonly NonPersistentProviderDefinition s_dummyStorageProviderDefinition =
       new NonPersistentProviderDefinition("NonSerializedStorageProviderDefinition", new NonPersistentStorageObjectFactory());
 
+  private static readonly IReadOnlyDictionary<string, object> s_emptyMetadata = new Dictionary<string, object>().AsReadOnly<string, object>();
+
   // member fields
 
   private readonly string _id;
@@ -52,8 +56,9 @@ public class QueryDefinition
   private readonly QueryType _queryType;
   private readonly Type? _collectionType;
   private readonly StorageProviderDefinition _storageProviderDefinition;
+  private IReadOnlyDictionary<string,object> _metadata;
 
-  // Note: _ispartOfQueryConfiguration is used only during the deserialization process. 
+  // Note: _ispartOfQueryConfiguration is used only during the deserialization process.
   // It is set only in the deserialization constructor and is used in IObjectReference.GetRealObject.
   private readonly bool _ispartOfQueryConfiguration;
 
@@ -70,44 +75,18 @@ public class QueryDefinition
   /// The <see cref="StorageProviderDefinition"/> used for executing instances of this <b>QueryDefinition</b>. Must not be <see langword="null"/>.
   /// </param>
   /// <param name="statement">
-  /// The <paramref name="statement"/> of the <b>QueryDefinition</b>. The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>
-  /// specified through <paramref name="storageProviderDefinition"/> must understand the syntax of the <paramref name="statement"/>. Must not be <see langword="null"/>.
-  /// </param>
-  /// <param name="queryType">
-  /// One of the <see cref="QueryType"/> enumeration constants.
-  /// </param>
-  /// <exception cref="System.ArgumentNullException">
-  ///   <paramref name="queryID"/> is <see langword="null"/>.<br /> -or- <br />
-  ///   <paramref name="storageProviderDefinition"/> is <see langword="null"/>.<br /> -or- <br />
-  ///   <paramref name="statement"/> is <see langword="null"/>.
-  /// </exception>
-  /// <exception cref="System.ArgumentException">
-  ///   <paramref name="queryID"/> is an empty string.<br /> -or- <br />
-  ///   <paramref name="statement"/> is an empty string.
-  /// </exception>
-  /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="queryType"/> is not a valid enum value.</exception>
-  public QueryDefinition (string queryID, StorageProviderDefinition storageProviderDefinition, string statement, QueryType queryType)
-    : this(queryID, storageProviderDefinition, statement, queryType, null)
-  {
-  }
-
-  /// <summary>
-  /// Initializes a new instance of the <b>QueryDefinition</b> class.
-  /// </summary>
-  /// <param name="queryID">
-  /// The <paramref name="queryID"/> to be associated with this <b>QueryDefinition</b>. Must not be <see langword="null"/>.
-  /// </param>
-  /// <param name="storageProviderDefinition">
-  /// The <see cref="StorageProviderDefinition"/> used for executing instances of this <b>QueryDefinition</b>. Must not be <see langword="null"/>.
-  /// </param>
-  /// <param name="statement">
-  /// The <paramref name="statement"/> of the <b>QueryDefinition</b>. The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>
-  /// specified through <paramref name="storageProviderDefinition"/> must understand the syntax of the <paramref name="statement"/>. Must not be <see langword="null"/>.
+  /// The <paramref name="statement"/> of the <b>QueryDefinition</b>. The <see cref="Remotion.Data.DomainObjects.Persistence.IReadOnlyStorageProvider"/> or
+  /// <see cref="Remotion.Data.DomainObjects.Persistence.IReadOnlyStorageProvider"/> specified through <paramref name="storageProviderDefinition"/>
+  /// must understand the syntax of the <paramref name="statement"/>. Must not be <see langword="null"/>.
   /// </param>
   /// <param name="queryType">
   /// One of the <see cref="QueryType"/> enumeration constants.</param>
   /// <param name="collectionType">If <paramref name="queryType"/> specifies a collection to be returned, <paramref name="collectionType"/> specifies the type of the collection.
   /// If <paramref name="queryType"/> is <see langword="null"/>, <see cref="DomainObjectCollection"/> is used.
+  /// </param>
+  /// <param name="metaData">
+  /// Adds metadata to a query which can e.g. provide diagnostic information or query hints to the system.
+  /// If the project uses serialization, the metadata dictionary and it's values need to be serializable.
   /// </param>
   /// <exception cref="System.ArgumentNullException">
   ///   <paramref name="queryID"/> is <see langword="null"/>.<br /> -or- <br />
@@ -124,17 +103,21 @@ public class QueryDefinition
       StorageProviderDefinition storageProviderDefinition,
       string statement,
       QueryType queryType,
-      Type? collectionType)
+      Type? collectionType = null,
+      IReadOnlyDictionary<string, object>? metaData = null)
   {
     ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
     ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
     ArgumentUtility.CheckNotNullOrEmpty("statement", statement);
     ArgumentUtility.CheckValidEnumValue("queryType", queryType);
 
-    if (queryType == QueryType.Scalar && collectionType != null)
+    if ((queryType is QueryType.ScalarReadOnly or QueryType.ScalarReadWrite) && collectionType != null)
       throw new ArgumentException(string.Format("The scalar query '{0}' must not specify a collectionType.", queryID), "collectionType");
 
-    if (queryType == QueryType.Collection && collectionType == null)
+    if ((queryType is QueryType.CustomReadOnly or QueryType.CustomReadWrite) && collectionType != null)
+      throw new ArgumentException(string.Format("The custom query '{0}' must not specify a collectionType.", queryID), "collectionType");
+
+    if ((queryType is QueryType.CollectionReadOnly or QueryType.CollectionReadWrite) && collectionType == null)
       collectionType = typeof(DomainObjectCollection);
 
     if (collectionType != null
@@ -150,6 +133,7 @@ public class QueryDefinition
     _statement = statement;
     _queryType = queryType;
     _collectionType = collectionType;
+    _metadata = metaData ?? s_emptyMetadata;
   }
 
   /// <summary>
@@ -169,6 +153,7 @@ public class QueryDefinition
       _statement = info.GetString("Statement")!;
       _queryType = (QueryType)info.GetValue("QueryType", typeof(QueryType))!;
       _collectionType = (Type?)info.GetValue("CollectionType", typeof(Type));
+      _metadata = (IReadOnlyDictionary<string, object>)info.GetValue("Metadata", typeof(IReadOnlyDictionary<string, object>))!;
     }
     else
     {
@@ -177,6 +162,7 @@ public class QueryDefinition
       _statement = "statement has not been serialized";
       _queryType = (QueryType)(-1);
       _collectionType = null;
+      _metadata = s_emptyMetadata;
     }
   }
 
@@ -199,8 +185,9 @@ public class QueryDefinition
   }
 
   /// <summary>
-  /// Gets the statement-text of the <b>QueryDefinition</b>. The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>
-  /// specified through <see cref="StorageProviderDefinition"/> must understand the syntax of the <b>Statement</b>.
+  /// Gets the statement-text of the <b>QueryDefinition</b>. The <see cref="Remotion.Data.DomainObjects.Persistence.IReadOnlyStorageProvider"/> or
+  /// <see cref="Remotion.Data.DomainObjects.Persistence.IReadOnlyStorageProvider"/> specified through <see cref="StorageProviderDefinition"/>
+  /// must understand the syntax of the <b>Statement</b>.
   /// </summary>
   public string Statement
   {
@@ -222,6 +209,14 @@ public class QueryDefinition
   public Type? CollectionType
   {
     get { return _collectionType; }
+  }
+
+  /// <summary>
+  /// Gets the provided diagnostic information or query hints for this <b>QueryDefinition</b>.
+  /// </summary>
+  public IReadOnlyDictionary<string, object> Metadata
+  {
+    get { return _metadata; }
   }
 
   #region ISerializable Members
@@ -265,6 +260,7 @@ public class QueryDefinition
       info.AddValue("Statement", _statement);
       info.AddValue("QueryType", _queryType);
       info.AddValue("CollectionType", _collectionType);
+      info.AddValue("Metadata", _metadata);
     }
   }
 

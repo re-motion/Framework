@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
   {
     public static RdbmsProvider CreateForIntegrationTest (
         RdbmsProviderDefinition storageProviderDefinition,
-        Func<RdbmsProviderDefinition, IPersistenceExtension, IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>, RdbmsProvider> ctorCall = null)
+        Func<RdbmsProviderDefinition, IPersistenceExtension, IRdbmsProviderCommandFactory, RdbmsProvider> ctorCall = null)
     {
       var storageTypeInformationProvider =
           new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(new SqlStorageTypeInformationProvider());
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
           dataStoragePropertyDefinitionFactory);
 
       if (ctorCall == null)
-        ctorCall = (def, ext, factory) => new RdbmsProvider(def, ext, factory, () => new SqlConnection());
+        ctorCall = (def, ext, factory) => new RdbmsProvider(def, def.ConnectionString, ext, factory, () => new SqlConnection());
 
       return ctorCall(storageProviderDefinition, NullPersistenceExtension.Instance, commandFactory);
     }

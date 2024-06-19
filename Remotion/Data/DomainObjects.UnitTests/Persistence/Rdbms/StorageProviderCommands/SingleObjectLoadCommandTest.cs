@@ -34,7 +34,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     private SingleObjectLoadCommand<object> _command;
     private Mock<IObjectReader<object>> _objectReaderMock;
     private object _fakeResult;
-    private Mock<IRdbmsProviderCommandExecutionContext> _commandExecutionContextMock;
+    private Mock<IRdbmsProviderReadWriteCommandExecutionContext> _readWriteExecutionContextMock;
+    private Mock<IRdbmsProviderReadOnlyCommandExecutionContext> _readOnlyExecutionContextMock;
 
     [SetUp]
     public void SetUp ()
@@ -42,7 +43,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _fakeResult = new object();
 
       _dataReaderMock = new Mock<IDataReader>();
-      _commandExecutionContextMock = new Mock<IRdbmsProviderCommandExecutionContext>(MockBehavior.Strict);
+      _readWriteExecutionContextMock = new Mock<IRdbmsProviderReadWriteCommandExecutionContext>(MockBehavior.Strict);
+      _readOnlyExecutionContextMock = new Mock<IRdbmsProviderReadOnlyCommandExecutionContext>(MockBehavior.Strict);
       _dbCommandMock = new Mock<IDbCommand>(MockBehavior.Strict);
       _dbCommandBuilderMock = new Mock<IDbCommandBuilder>(MockBehavior.Strict);
       _objectReaderMock = new Mock<IObjectReader<object>>(MockBehavior.Strict);
@@ -60,20 +62,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     [Test]
     public void Execute ()
     {
-      _commandExecutionContextMock
+      _readWriteExecutionContextMock
           .Setup(mock => mock.ExecuteReader(_dbCommandMock.Object, CommandBehavior.SingleRow))
           .Returns(_dataReaderMock.Object)
           .Verifiable();
 
       _objectReaderMock.Setup(mock => mock.Read(_dataReaderMock.Object)).Returns(_fakeResult).Verifiable();
 
-      _dbCommandBuilderMock.Setup(mock => mock.Create(_commandExecutionContextMock.Object)).Returns(_dbCommandMock.Object).Verifiable();
+      _dbCommandBuilderMock.Setup(mock => mock.Create(_readWriteExecutionContextMock.Object)).Returns(_dbCommandMock.Object).Verifiable();
 
       _dbCommandMock.Setup(mock => mock.Dispose()).Verifiable();
 
-      var result = _command.Execute(_commandExecutionContextMock.Object);
+      var result = _command.Execute(_readWriteExecutionContextMock.Object);
 
-      _commandExecutionContextMock.Verify();
+      _readWriteExecutionContextMock.Verify();
       _objectReaderMock.Verify();
       _dbCommandBuilderMock.Verify();
       _dbCommandMock.Verify();
@@ -83,20 +85,66 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     [Test]
     public void Execute_NullContainer ()
     {
-      _commandExecutionContextMock
+      _readWriteExecutionContextMock
           .Setup(mock => mock.ExecuteReader(_dbCommandMock.Object, CommandBehavior.SingleRow))
           .Returns(_dataReaderMock.Object)
           .Verifiable();
 
       _objectReaderMock.Setup(mock => mock.Read(_dataReaderMock.Object)).Returns((object)null).Verifiable();
 
-      _dbCommandBuilderMock.Setup(mock => mock.Create(_commandExecutionContextMock.Object)).Returns(_dbCommandMock.Object).Verifiable();
+      _dbCommandBuilderMock.Setup(mock => mock.Create(_readWriteExecutionContextMock.Object)).Returns(_dbCommandMock.Object).Verifiable();
 
       _dbCommandMock.Setup(mock => mock.Dispose()).Verifiable();
 
-      var result = _command.Execute(_commandExecutionContextMock.Object);
+      var result = _command.Execute(_readWriteExecutionContextMock.Object);
 
-      _commandExecutionContextMock.Verify();
+      _readWriteExecutionContextMock.Verify();
+      _objectReaderMock.Verify();
+      _dbCommandBuilderMock.Verify();
+      _dbCommandMock.Verify();
+      Assert.That(result, Is.Null);
+    }
+
+    [Test]
+    public void ExecuteReadOnly ()
+    {
+      _readOnlyExecutionContextMock
+          .Setup(mock => mock.ExecuteReader(_dbCommandMock.Object, CommandBehavior.SingleRow))
+          .Returns(_dataReaderMock.Object)
+          .Verifiable();
+
+      _objectReaderMock.Setup(mock => mock.Read(_dataReaderMock.Object)).Returns(_fakeResult).Verifiable();
+
+      _dbCommandBuilderMock.Setup(mock => mock.Create(_readOnlyExecutionContextMock.Object)).Returns(_dbCommandMock.Object).Verifiable();
+
+      _dbCommandMock.Setup(mock => mock.Dispose()).Verifiable();
+
+      var result = _command.Execute(_readOnlyExecutionContextMock.Object);
+
+      _readOnlyExecutionContextMock.Verify();
+      _objectReaderMock.Verify();
+      _dbCommandBuilderMock.Verify();
+      _dbCommandMock.Verify();
+      Assert.That(result, Is.SameAs(_fakeResult));
+    }
+
+    [Test]
+    public void ExecuteReadOnly_NullContainer ()
+    {
+      _readOnlyExecutionContextMock
+          .Setup(mock => mock.ExecuteReader(_dbCommandMock.Object, CommandBehavior.SingleRow))
+          .Returns(_dataReaderMock.Object)
+          .Verifiable();
+
+      _objectReaderMock.Setup(mock => mock.Read(_dataReaderMock.Object)).Returns((object)null).Verifiable();
+
+      _dbCommandBuilderMock.Setup(mock => mock.Create(_readOnlyExecutionContextMock.Object)).Returns(_dbCommandMock.Object).Verifiable();
+
+      _dbCommandMock.Setup(mock => mock.Dispose()).Verifiable();
+
+      var result = _command.Execute(_readOnlyExecutionContextMock.Object);
+
+      _readOnlyExecutionContextMock.Verify();
       _objectReaderMock.Verify();
       _dbCommandBuilderMock.Verify();
       _dbCommandMock.Verify();

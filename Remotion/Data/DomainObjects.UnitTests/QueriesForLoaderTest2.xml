@@ -17,28 +17,28 @@
  ! along with re-motion; if not, see http://www.gnu.org/licenses.
 -->
 <queries 
-    xmlns="http://www.re-motion.org/Data/DomainObjects/Queries/1.0" 
+    xmlns="http://www.re-motion.org/Data/DomainObjects/Queries/2.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://www.re-motion.org/Data/DomainObjects/Queries/1.0 ..\DomainObjects\Schemas\Queries.xsd">
+    xsi:schemaLocation="http://www.re-motion.org/Data/DomainObjects/Queries/2.0 ..\DomainObjects\Schemas\Queries.xsd">
 
-  <query id="OrderQueryWithCustomCollectionType2" type="collection">
+  <query id="OrderQueryWithCustomCollectionType2" type="collection-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>select [Order].* from [Order] inner join [Company] where [Company].[ID] = @customerID order by [OrderNo] asc;</statement>
     <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
   </query>
 
-  <query id="OrderQueryWithObjectListOfOrder2" type="collection">
+  <query id="OrderQueryWithObjectListOfOrder2" type="collection-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>select [Order].* from [Order] inner join [Company] where [Company].[ID] = @customerID order by [OrderNo] asc;</statement>
     <collectionType>Remotion.Data.DomainObjects.ObjectList`1[[Remotion.Data.DomainObjects.UnitTests.TestDomain.Order, Remotion.Data.DomainObjects.UnitTests]], Remotion.Data.DomainObjects</collectionType>
   </query>
 
-  <query id="CustomerTypeQuery2" type="collection">
+  <query id="CustomerTypeQuery2" type="collection-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>select [Company].* from [Company] where [CustomerType] = @customerType order by [Name] asc;</statement>
   </query>
 
-  <query id="OrderSumQuery2" type="scalar">
+  <query id="OrderSumQuery2" type="scalar-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>select sum(quantity) from [Order] where [CustomerID] = @customerID;</statement>
   </query>

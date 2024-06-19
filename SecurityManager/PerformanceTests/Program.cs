@@ -198,7 +198,7 @@ namespace Remotion.SecurityManager.PerformanceTests
                       "id",
                       DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions["SecurityManager"],
                       "select * from PositionView",
-                      QueryType.Collection));
+                      QueryType.CollectionReadOnly));
           ClientTransaction.Current.QueryManager.GetCollection<Position>(query);
         }
       }

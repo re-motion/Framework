@@ -34,15 +34,24 @@ namespace Remotion.Data.DomainObjects.UnitTests
 {
   public class UnitTestStorageObjectFactoryStub : IRdbmsStorageObjectFactory
   {
-    public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+    public IStorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
     {
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-
-      var providerDefiniton = ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition>(
+      ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition>(
           "storageProviderDefinition",
           storageProviderDefinition);
-      return new UnitTestStorageProviderStub(providerDefiniton, persistenceExtension);
+
+      return new UnitTestStorageProviderStub();
+    }
+
+    public IReadOnlyStorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+    {
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition>(
+          "storageProviderDefinition",
+          storageProviderDefinition);
+
+      return new UnitTestStorageProviderStub();
     }
 
     public IPersistenceModelLoader CreatePersistenceModelLoader (
@@ -50,6 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("storageProviderDefinitionFinder", storageProviderDefinitionFinder);
 
       return new SqlStorageObjectFactory().CreatePersistenceModelLoader(storageProviderDefinition, storageProviderDefinitionFinder);
     }
@@ -143,7 +153,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       throw new NotImplementedException();
     }
 
-    public IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> CreateStorageProviderCommandFactory (RdbmsProviderDefinition storageProviderDefinition)
+    public IRdbmsProviderCommandFactory CreateStorageProviderCommandFactory (RdbmsProviderDefinition storageProviderDefinition)
     {
       throw new NotImplementedException();
     }

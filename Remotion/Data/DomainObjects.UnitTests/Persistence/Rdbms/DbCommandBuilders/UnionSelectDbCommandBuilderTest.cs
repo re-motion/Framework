@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     private TableDefinition _table2;
     private TableDefinition _table3;
     private Mock<ISelectedColumnsSpecification> _fullSelectedColumnsStub;
-    private Mock<IRdbmsProviderCommandExecutionContext> _commandExecutionContextStub;
+    private Mock<IDbCommandFactory> _dbCommandFactoryStub;
     private Mock<IComparedColumnsSpecification> _comparedColumnsStrictMock;
 
     public override void SetUp ()
@@ -56,8 +56,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       _dbCommandStub = new Mock<IDbCommand>();
       _dbCommandStub.SetupProperty(stub => stub.CommandText);
 
-      _commandExecutionContextStub = new Mock<IRdbmsProviderCommandExecutionContext>();
-      _commandExecutionContextStub.Setup(stub => stub.CreateDbCommand()).Returns(_dbCommandStub.Object);
+      _dbCommandFactoryStub = new Mock<IDbCommandFactory>();
+      _dbCommandFactoryStub.Setup(stub => stub.CreateDbCommand()).Returns(_dbCommandStub.Object);
 
       Guid.NewGuid();
 
@@ -105,7 +105,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
           .Callback((StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect) => statement.Append("[delimited FKID] = pFKID"))
           .Verifiable();
 
-      var result = builder.Create(_commandExecutionContextStub.Object);
+      var result = builder.Create(_dbCommandFactoryStub.Object);
 
       Assert.That(
           result.CommandText,
@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
           .Setup(stub => stub.AppendComparisons(It.IsAny<StringBuilder>(), _dbCommandStub.Object, _sqlDialectStub.Object))
           .Callback((StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect) => statement.Append("[delimited FKID] = pFKID"));
 
-      var result = builder.Create(_commandExecutionContextStub.Object);
+      var result = builder.Create(_dbCommandFactoryStub.Object);
 
       Assert.That(
           result.CommandText,
