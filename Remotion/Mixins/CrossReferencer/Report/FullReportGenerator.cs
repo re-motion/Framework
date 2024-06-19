@@ -53,12 +53,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
       _validationErrors = validationErrors;
       _remotionReflector = remotionReflector;
       _outputFormatter = outputFormatter;
-    }
-
-
-    public string CreationTime
-    {
-      get { return _creationTime; }
+      _creationTime = string.Empty;
     }
 
     public XDocument GenerateXmlDocument ()

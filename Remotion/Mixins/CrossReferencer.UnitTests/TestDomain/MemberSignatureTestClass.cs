@@ -16,13 +16,12 @@
 // 
 using System;
 using Remotion.Collections;
-using Remotion.Reflection;
 
 namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 {
   public class MemberSignatureTestClass : IExplicitInterface
   {
-    protected MemberSignatureTestClass (int Param1, string Param2, IActionInvoker Param3)
+    protected MemberSignatureTestClass (int Param1, string Param2, INullObject Param3)
     {
     }
 

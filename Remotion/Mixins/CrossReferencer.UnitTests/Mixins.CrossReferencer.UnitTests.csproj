@@ -14,7 +14,6 @@
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
-        <ProjectReference Include="..\..\Core\Extensions\Core.Extensions.csproj" />
         <ProjectReference Include="..\Core\Mixins.Core.csproj" />
         <ProjectReference Include="..\CrossReferencer\Mixins.CrossReferencer.csproj" />
     </ItemGroup>

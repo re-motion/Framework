@@ -81,7 +81,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public string GetShortAssemblyLocation (Assembly assembly)
     {
-      return assembly.GlobalAssemblyCache ? assembly.Location : "./" + Path.GetFileName(assembly.Location);
+      return "./" + Path.GetFileName(assembly.Location);
     }
   }
 }

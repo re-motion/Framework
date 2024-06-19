@@ -109,7 +109,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
               new XAttribute("id", "0"),
               new XAttribute("name", _assembly1.GetName().Name),
               new XAttribute("version", _assembly1.GetName().Version),
-              new XAttribute("location", "./" + Path.GetFileName(_assembly1.Location)),
+              new XAttribute("location", $"./{Path.GetFileName(_assembly1.Location)}"),
               new XAttribute("culture", _assembly1.GetName().CultureInfo),
               new XAttribute("publicKeyToken", Convert.ToBase64String(_assembly1.GetName().GetPublicKeyToken())),
               new XElement(
@@ -121,7 +121,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
               new XAttribute("name", _assembly2.GetName().Name),
               new XAttribute("version", _assembly2.GetName().Version),
               // _assembly2 is of type object - which is a GAC (mscorlib.dll)
-              new XAttribute("location", _assembly2.Location),
+              new XAttribute("location", $"./{Path.GetFileName(_assembly2.Location)}"),
               new XAttribute("culture", _assembly2.GetName().CultureInfo),
               new XAttribute("publicKeyToken", Convert.ToBase64String(_assembly2.GetName().GetPublicKeyToken())),
               new XElement(
@@ -146,7 +146,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
               new XAttribute("id", "0"),
               new XAttribute("name", _assembly2.GetName().Name),
               new XAttribute("version", _assembly2.GetName().Version),
-              new XAttribute("location", _assembly2.Location),
+              new XAttribute("location", $"./{Path.GetFileName(_assembly2.Location)}"),
               new XAttribute("culture", _assembly2.GetName().CultureInfo),
               new XAttribute("publicKeyToken", Convert.ToBase64String(_assembly2.GetName().GetPublicKeyToken()))
           ));
@@ -159,9 +159,9 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     {
       var reportGenerator = ReportBuilder.CreateAssemblyReportGenerator();
       // non-GAC assembly
-      Assert.That(reportGenerator.GetShortAssemblyLocation(_assembly1), Is.EqualTo("./" + Path.GetFileName(_assembly1.Location)));
+      Assert.That(reportGenerator.GetShortAssemblyLocation(_assembly1), Is.EqualTo($"./{Path.GetFileName(_assembly1.Location)}"));
       // GAC assembly
-      Assert.That(reportGenerator.GetShortAssemblyLocation(_assembly2), Is.EqualTo(_assembly2.Location));
+      Assert.That(reportGenerator.GetShortAssemblyLocation(_assembly2), Is.EqualTo($"./{Path.GetFileName(_assembly2.Location)}"));
     }
   }
 }
