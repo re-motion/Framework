@@ -370,9 +370,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Preview.U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Development.WebTesting.IntegrationTests.RequireUI", "Remotion\Web\Development.WebTesting.IntegrationTests.RequireUI\Web.Development.WebTesting.IntegrationTests.RequireUI.csproj", "{AA6F4849-99BE-42B7-892A-CDC3B73DC08A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins.CrossReferencer", "Remotion\Mixins\XRef\Mixins.CrossReferencer.csproj", "{2FE7FD64-30A8-4182-8BAE-4CE8E295113C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins.CrossReferencer", "Remotion\Mixins\CrossReferencer\Mixins.CrossReferencer.csproj", "{2FE7FD64-30A8-4182-8BAE-4CE8E295113C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins.CrossReferencer.UnitTests", "Remotion\Mixins\XRef.UnitTests\Mixins.CrossReferencer.UnitTests.csproj", "{6A7C7F77-D22D-43F4-9A09-BFB4EF8841BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins.CrossReferencer.UnitTests", "Remotion\Mixins\CrossReferencer.UnitTests\Mixins.CrossReferencer.UnitTests.csproj", "{6A7C7F77-D22D-43F4-9A09-BFB4EF8841BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
