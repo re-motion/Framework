@@ -183,7 +183,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Formatting
           new XElement("Type", "System.String", new XAttribute("languageType", "Keyword")),
           new XElement("ParameterName", "stringParam"),
           new XElement("Text", ","),
-          new XElement("Type", "MixinXRef.AssemblyResolver", new XAttribute("languageType", "Type")),
+          new XElement("Type", "Remotion.Mixins.XRef.AssemblyResolver", new XAttribute("languageType", "Type")),
           new XElement("ParameterName", "assemblyBuilderParam"),
           new XElement("Text", ")")
       );
@@ -202,7 +202,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Formatting
       var expectedOutput = new XElement(
           "Signature",
           new XElement("Text", "("),
-          new XElement("Type", "MixinXRef.UnitTests.TestDomain.MemberSignatureTestClass+NestedClassWithInterfaceAndInheritance", new XAttribute("languageType", "Type")),
+          new XElement("Type", "Remotion.Mixins.XRef.UnitTests.TestDomain.MemberSignatureTestClass+NestedClassWithInterfaceAndInheritance", new XAttribute("languageType", "Type")),
           new XElement("ParameterName", "param"),
           new XElement("Text", ")")
       );
@@ -223,7 +223,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Formatting
           new XElement("Text", "("),
           new XElement(
               "Type",
-              "MixinXRef.UnitTests.TestDomain.MemberSignatureTestClass+NestedGenericType<MixinXRef.UnitTests.TestDomain.MemberSignatureTestClass+NestedClassWithInterfaceAndInheritance>",
+              "Remotion.Mixins.XRef.UnitTests.TestDomain.MemberSignatureTestClass+NestedGenericType<Remotion.Mixins.XRef.UnitTests.TestDomain.MemberSignatureTestClass+NestedClassWithInterfaceAndInheritance>",
               new XAttribute("languageType", "Type")),
           new XElement("ParameterName", "param"),
           new XElement("Text", ")")
@@ -251,7 +251,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Formatting
     {
       var methodInfo =
           typeof(MemberSignatureTestClass).GetMethod(
-              "MixinXRef.UnitTests.TestDomain.IExplicitInterface.Version",
+              "Remotion.Mixins.XRef.UnitTests.TestDomain.IExplicitInterface.Version",
               BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 
       var output = _outputFormatter.CreateMethodMarkup(methodInfo.Name, methodInfo.ReturnType, methodInfo.GetParameters());
@@ -276,7 +276,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Formatting
       var expectedOutput = new XElement(
           "Signature",
           new XElement("Keyword", "event"),
-          new XElement("Type", "MixinXRef.UnitTests.TestDomain.ChangedEventHandler", new XAttribute("languageType", "Type")),
+          new XElement("Type", "Remotion.Mixins.XRef.UnitTests.TestDomain.ChangedEventHandler", new XAttribute("languageType", "Type")),
           new XElement("Name", "EventName")
       );
 
@@ -363,7 +363,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Formatting
           new XElement("Keyword", "class"),
           new XElement("Name", "NestedClassWithInterfaceAndInheritance"),
           new XElement("Text", ":"),
-          new XElement("Type", "MixinXRef.UnitTests.TestDomain.GenericTarget<System.String, System.Int32>"),
+          new XElement("Type", "Remotion.Mixins.XRef.UnitTests.TestDomain.GenericTarget<System.String, System.Int32>"),
           new XElement("Text", ","),
           new XElement("Type", "System.IDisposable")
       );

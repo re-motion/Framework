@@ -140,7 +140,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Reflection
     {
       var methodInfo =
           typeof(MemberSignatureTestClass).GetMethod(
-              "MixinXRef.UnitTests.TestDomain.IExplicitInterface.Version",
+              "Remotion.Mixins.XRef.UnitTests.TestDomain.IExplicitInterface.Version",
               BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 
       var output = _memberModifierUtility.GetMemberModifiers(methodInfo);

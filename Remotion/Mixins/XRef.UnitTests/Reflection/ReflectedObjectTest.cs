@@ -198,7 +198,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Reflection
       }
       catch (InvalidCastException notSupportedException)
       {
-        Assert.That(notSupportedException.Message, Is.EqualTo("Specified cast is not valid."));
+        Assert.That(notSupportedException.Message, Is.EqualTo("Unable to cast object of type 'System.Char' to type 'System.Single'."));
       }
     }
 
@@ -273,7 +273,9 @@ namespace Remotion.Mixins.XRef.UnitTests.Reflection
       var reflectedObject1 = new ReflectedObject("string");
       var reflectedObject2 = new ReflectedObject("string");
 
-      Assert.That(reflectedObject1, Is.EqualTo(reflectedObject2));
+      var result = reflectedObject1.Equals(reflectedObject2);
+
+      Assert.That(result, Is.True);
     }
 
     [Test]
@@ -282,7 +284,9 @@ namespace Remotion.Mixins.XRef.UnitTests.Reflection
       var reflectedObject1 = new ReflectedObject("string");
       var reflectedObject2 = new ReflectedObject("anotherString");
 
-      Assert.That(reflectedObject1, Is.EqualTo(reflectedObject2));
+      var result = reflectedObject1.Equals(reflectedObject2);
+
+      Assert.That(result, Is.False);
     }
 
     [Test]

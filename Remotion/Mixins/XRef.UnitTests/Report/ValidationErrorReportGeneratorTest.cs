@@ -73,7 +73,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Report
       var validationException1 = SetUpExceptionWithDummyStackTrace("test validation exception", new DefaultValidationLog());
 
       errorAggregator.AddException(validationException1);
-      var remotionReflectorStub = new Mock<RemotionReflector>();
+      var remotionReflectorStub = new Mock<IRemotionReflector>();
       var reportGenerator = new ValidationErrorReportGenerator(errorAggregator, remotionReflectorStub.Object);
 
       remotionReflectorStub

@@ -27,6 +27,7 @@ using Remotion.Utilities;
 namespace Remotion.Mixins.XRef;
 
 public class RemotionReflector
+: IRemotionReflector
 {
   private Assembly _assemblyToCheck;
   private Assembly _mixinsAssembly;
@@ -85,7 +86,7 @@ public class RemotionReflector
     ArgumentUtility.CheckNotNull("mixinConfiguration", mixinConfiguration);
 
     var targetClassDefinitionFactoryType = _mixinsAssembly.GetType("Remotion.Mixins.Definitions.TargetClassDefinitionFactory", true);
-    return (TargetClassDefinition)ReflectedObject.CallMethod(targetClassDefinitionFactoryType!, "CreateAndValidate", classContext).WrappedObject;
+    return ReflectedObject.CallMethod(targetClassDefinitionFactoryType!, "CreateAndValidate", classContext).To<TargetClassDefinition>();
   }
 
   public MixinConfiguration BuildConfigurationFromAssemblies (Assembly[] assemblies)
@@ -93,7 +94,7 @@ public class RemotionReflector
     ArgumentUtility.CheckNotNull("assemblies", assemblies);
 
     var declarativeConfigurationBuilderType = _mixinsAssembly.GetType("Remotion.Mixins.Context.DeclarativeConfigurationBuilder", true);
-    return (MixinConfiguration)ReflectedObject.CallMethod(declarativeConfigurationBuilderType!, "BuildConfigurationFromAssemblies", new object[] { assemblies }).WrappedObject;
+    return ReflectedObject.CallMethod(declarativeConfigurationBuilderType!, "BuildConfigurationFromAssemblies", [assemblies]).To<MixinConfiguration>();
   }
 
   public SerializableValidationLogData GetValidationLogFromValidationException (ValidationException validationException)

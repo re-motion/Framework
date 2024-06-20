@@ -24,9 +24,9 @@ namespace Remotion.Mixins.XRef.Report
   public class ValidationErrorReportGenerator : IReportGenerator
   {
     private readonly ErrorAggregator<ValidationException> _errorAggregator;
-    private readonly RemotionReflector _remotionReflector;
+    private readonly IRemotionReflector _remotionReflector;
 
-    public ValidationErrorReportGenerator (ErrorAggregator<ValidationException> errorAggregator, RemotionReflector remotionReflector)
+    public ValidationErrorReportGenerator (ErrorAggregator<ValidationException> errorAggregator, IRemotionReflector remotionReflector)
     {
       ArgumentUtility.CheckNotNull("errorAggregator", errorAggregator);
       ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
