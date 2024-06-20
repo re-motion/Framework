@@ -19,7 +19,7 @@
 using System;
 using Remotion.Mixins.Validation;
 
-namespace Remotion.Mixins.XRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   public class ValidationLogNullObject :SerializableValidationLogData
   {

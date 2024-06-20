@@ -23,7 +23,7 @@ using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Validation;
 using Remotion.Utilities;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer
 {
   public class InvolvedTypeFinder : IInvolvedTypeFinder
   {

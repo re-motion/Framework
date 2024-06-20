@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using Remotion.Utilities;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer
 {
   public class IdentifierPopulator<T>
   {

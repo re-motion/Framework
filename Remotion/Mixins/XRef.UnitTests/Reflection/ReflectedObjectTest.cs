@@ -18,9 +18,9 @@
 using System;
 using System.Text;
 using NUnit.Framework;
-using Remotion.Mixins.XRef.UnitTests.TestDomain;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 
-namespace Remotion.Mixins.XRef.UnitTests.Reflection
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
 {
   [TestFixture]
   public class ReflectedObjectTest

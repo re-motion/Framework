@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using Moq;
 
-namespace Remotion.Mixins.XRef.UnitTests.Helpers
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Helpers
 {
   internal static class StubFactory
   {

@@ -18,10 +18,10 @@
 using System;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Remotion.Mixins.XRef.Report;
-using Remotion.Mixins.XRef.UnitTests.Stub;
+using Remotion.Mixins.CrossReferencer.Report;
+using Remotion.Mixins.CrossReferencer.UnitTests.Stub;
 
-namespace Remotion.Mixins.XRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   [TestFixture]
   public class CompositeReportGeneratorTest

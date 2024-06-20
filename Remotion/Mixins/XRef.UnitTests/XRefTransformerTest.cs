@@ -19,7 +19,7 @@ using System;
 using System.IO;
 using NUnit.Framework;
 
-namespace Remotion.Mixins.XRef.UnitTests
+namespace Remotion.Mixins.CrossReferencer.UnitTests
 {
   [TestFixture]
   public class XRefTransformerTest

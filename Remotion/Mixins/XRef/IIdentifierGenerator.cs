@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer
 {
   public interface IIdentifierGenerator<T>
   {

@@ -21,7 +21,7 @@ using System.Linq;
 using System.Reflection;
 using Remotion.Utilities;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer
 {
   public class AssemblyResolver
   {

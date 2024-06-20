@@ -6,7 +6,7 @@ using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Validation;
 
-namespace Remotion.Mixins.XRef;
+namespace Remotion.Mixins.CrossReferencer;
 
 public interface IRemotionReflector
 {

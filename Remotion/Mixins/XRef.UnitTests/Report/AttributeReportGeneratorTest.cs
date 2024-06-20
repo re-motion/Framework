@@ -19,11 +19,11 @@ using System;
 using System.Reflection;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Remotion.Mixins.XRef.Formatting;
-using Remotion.Mixins.XRef.Report;
-using Remotion.Mixins.XRef.UnitTests.TestDomain;
+using Remotion.Mixins.CrossReferencer.Formatting;
+using Remotion.Mixins.CrossReferencer.Report;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 
-namespace Remotion.Mixins.XRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   [TestFixture]
   public class AttributeReportGeneratorTest

@@ -18,9 +18,9 @@
 using System;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Remotion.Mixins.XRef.UnitTests.TestDomain;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 
-namespace Remotion.Mixins.XRef.UnitTests
+namespace Remotion.Mixins.CrossReferencer.UnitTests
 {
   [TestFixture]
   public class SummaryPickerTest

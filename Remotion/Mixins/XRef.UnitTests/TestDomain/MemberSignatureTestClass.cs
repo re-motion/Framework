@@ -19,7 +19,7 @@ using System;
 using Remotion.Collections;
 using Remotion.Reflection;
 
-namespace Remotion.Mixins.XRef.UnitTests.TestDomain
+namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 {
   public class MemberSignatureTestClass : IExplicitInterface
   {

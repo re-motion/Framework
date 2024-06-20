@@ -21,7 +21,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using NUnit.Framework;
 
-namespace Remotion.Mixins.XRef.UnitTests.Helpers
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Helpers
 {
   public static class XElementComparisonHelper
   {

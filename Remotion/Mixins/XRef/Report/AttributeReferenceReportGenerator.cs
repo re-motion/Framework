@@ -22,7 +22,7 @@ using System.Text;
 using System.Xml.Linq;
 using Remotion.Utilities;
 
-namespace Remotion.Mixins.XRef.Report
+namespace Remotion.Mixins.CrossReferencer.Report
 {
   public class AttributeReferenceReportGenerator : IReportGenerator
   {

@@ -20,7 +20,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Remotion.Utilities;
 
-namespace Remotion.Mixins.XRef.Utility
+namespace Remotion.Mixins.CrossReferencer.Utility
 {
   public class FastMemberInvokerGenerator
   {

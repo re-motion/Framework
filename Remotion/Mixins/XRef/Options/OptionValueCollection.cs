@@ -47,7 +47,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Remotion.Mixins.XRef.Options
+namespace Remotion.Mixins.CrossReferencer.Options
 {
   public class OptionValueCollection : IList, IList<string>
   {

@@ -17,7 +17,7 @@
 // 
 using System;
 
-namespace Remotion.Mixins.XRef.UnitTests.TestDomain
+namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 {
   [Extends(typeof(TargetClass2))]
   public class Mixin3 : IDisposable

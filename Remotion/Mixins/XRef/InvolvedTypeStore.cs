@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Utilities;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer
 {
   public class InvolvedTypeStore : IEnumerable<InvolvedType>
   {

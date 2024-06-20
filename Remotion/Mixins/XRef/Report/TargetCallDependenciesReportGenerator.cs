@@ -18,10 +18,10 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using Remotion.Mixins.CrossReferencer.Formatting;
 using Remotion.Mixins.Definitions;
-using Remotion.Mixins.XRef.Formatting;
 
-namespace Remotion.Mixins.XRef.Report
+namespace Remotion.Mixins.CrossReferencer.Report
 {
   public class TargetCallDependenciesReportGenerator : IReportGenerator
   {

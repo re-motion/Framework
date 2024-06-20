@@ -17,9 +17,9 @@
 // 
 using System;
 using System.Xml.Linq;
-using Remotion.Mixins.XRef.Report;
+using Remotion.Mixins.CrossReferencer.Report;
 
-namespace Remotion.Mixins.XRef.UnitTests.Stub
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Stub
 {
   public class ReportGeneratorStub : IReportGenerator
   {

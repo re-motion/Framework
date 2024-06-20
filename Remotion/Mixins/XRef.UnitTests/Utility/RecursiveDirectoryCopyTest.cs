@@ -19,7 +19,7 @@ using System;
 using System.IO;
 using NUnit.Framework;
 
-namespace Remotion.Mixins.XRef.UnitTests.Utility
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Utility
 {
   [TestFixture]
   public class RecursiveDirectoryCopyTest

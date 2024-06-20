@@ -21,11 +21,11 @@ using System.Reflection;
 using System.Xml.Linq;
 using Moq;
 using NUnit.Framework;
-using Remotion.Mixins.XRef.Report;
-using Remotion.Mixins.XRef.UnitTests.Helpers;
-using Remotion.Mixins.XRef.UnitTests.TestDomain;
+using Remotion.Mixins.CrossReferencer.Report;
+using Remotion.Mixins.CrossReferencer.UnitTests.Helpers;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 
-namespace Remotion.Mixins.XRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   [TestFixture]
   public class AssemblyReportGeneratorTest

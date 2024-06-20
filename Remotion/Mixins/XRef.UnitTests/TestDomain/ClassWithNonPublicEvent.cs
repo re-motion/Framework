@@ -17,7 +17,7 @@
 // 
 using System;
 
-namespace Remotion.Mixins.XRef.UnitTests.TestDomain
+namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 {
   public class ClassWithNonPublicEvent
   {

@@ -14,7 +14,7 @@
             - Use mixins from your own classes
             - Apply your mixins to other classes or entire class hierarchies
         </Description>
-        <AssemblyName>Remotion.Mixins.XRef</AssemblyName>
+        <AssemblyName>Remotion.Mixins.CrossReferencer</AssemblyName>
         <RootNamespace>$(AssemblyName)</RootNamespace>
         <Nullable>annotations</Nullable>
     </PropertyGroup>

@@ -18,9 +18,9 @@
 using System;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Remotion.Mixins.XRef.Report;
+using Remotion.Mixins.CrossReferencer.Report;
 
-namespace Remotion.Mixins.XRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   [TestFixture]
   public class ConfigurationErrorReportGeneratorTest

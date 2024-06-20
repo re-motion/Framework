@@ -18,10 +18,10 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Mixins.XRef.Formatting;
-using Remotion.Mixins.XRef.UnitTests.TestDomain;
+using Remotion.Mixins.CrossReferencer.Formatting;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 
-namespace Remotion.Mixins.XRef.UnitTests.Reflection
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
 {
   [TestFixture]
   public class MemberModifierUtilityTest
@@ -140,7 +140,7 @@ namespace Remotion.Mixins.XRef.UnitTests.Reflection
     {
       var methodInfo =
           typeof(MemberSignatureTestClass).GetMethod(
-              "Remotion.Mixins.XRef.UnitTests.TestDomain.IExplicitInterface.Version",
+              "Remotion.Mixins.CrossReferencer.UnitTests.TestDomain.IExplicitInterface.Version",
               BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 
       var output = _memberModifierUtility.GetMemberModifiers(methodInfo);

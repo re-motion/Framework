@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Remotion.Mixins.XRef.UnitTests.TestDomain.FastMethodInvoker
+namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain.FastMethodInvoker
 {
   public class ClassWithMethods
   {

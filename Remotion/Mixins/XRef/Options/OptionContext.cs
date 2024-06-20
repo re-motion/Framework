@@ -45,7 +45,7 @@
 
 using System;
 
-namespace Remotion.Mixins.XRef.Options
+namespace Remotion.Mixins.CrossReferencer.Options
 {
   public class OptionContext
   {

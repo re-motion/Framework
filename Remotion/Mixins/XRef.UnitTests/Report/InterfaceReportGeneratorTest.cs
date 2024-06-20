@@ -18,11 +18,11 @@
 using System;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Remotion.Mixins.XRef.Formatting;
-using Remotion.Mixins.XRef.UnitTests.Helpers;
-using Remotion.Mixins.XRef.UnitTests.TestDomain;
+using Remotion.Mixins.CrossReferencer.Formatting;
+using Remotion.Mixins.CrossReferencer.UnitTests.Helpers;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 
-namespace Remotion.Mixins.XRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   [TestFixture]
   public class InterfaceReportGeneratorTest

@@ -21,13 +21,13 @@ using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using NUnit.Framework;
+using Remotion.Mixins.CrossReferencer.Formatting;
+using Remotion.Mixins.CrossReferencer.Report;
+using Remotion.Mixins.CrossReferencer.UnitTests.Helpers;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 using Remotion.Mixins.Definitions;
-using Remotion.Mixins.XRef.Formatting;
-using Remotion.Mixins.XRef.Report;
-using Remotion.Mixins.XRef.UnitTests.Helpers;
-using Remotion.Mixins.XRef.UnitTests.TestDomain;
 
-namespace Remotion.Mixins.XRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   [TestFixture]
   public class MemberReportGeneratorTest

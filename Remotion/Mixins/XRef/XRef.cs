@@ -19,11 +19,11 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Remotion.Mixins.CrossReferencer.Formatting;
+using Remotion.Mixins.CrossReferencer.Report;
 using Remotion.Mixins.Validation;
-using Remotion.Mixins.XRef.Formatting;
-using Remotion.Mixins.XRef.Report;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer
 {
   public static class XRef
   {

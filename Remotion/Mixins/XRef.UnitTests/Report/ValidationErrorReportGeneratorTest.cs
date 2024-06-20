@@ -19,10 +19,10 @@ using System;
 using System.Xml.Linq;
 using Moq;
 using NUnit.Framework;
+using Remotion.Mixins.CrossReferencer.Report;
 using Remotion.Mixins.Validation;
-using Remotion.Mixins.XRef.Report;
 
-namespace Remotion.Mixins.XRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   [TestFixture]
   public class ValidationErrorReportGeneratorTest

@@ -21,7 +21,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using Remotion.Utilities;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer
 {
   public class SummaryPicker
   {

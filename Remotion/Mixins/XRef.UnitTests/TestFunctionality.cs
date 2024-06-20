@@ -18,7 +18,7 @@ using System;
 using System.IO;
 using NUnit.Framework;
 
-namespace Remotion.Mixins.XRef.UnitTests;
+namespace Remotion.Mixins.CrossReferencer.UnitTests;
 
 [TestFixture]
 public class TestFunctionality
@@ -29,7 +29,7 @@ public class TestFunctionality
     var outputDirectory = Path.Combine(Path.GetTempPath(), "XRef");
     Directory.CreateDirectory(outputDirectory);
 
-    XRef.GetAssemblyInformation(outputDirectory: outputDirectory, outputFileName: "TestFileName.xml");
+    CrossReferencer.XRef.GetAssemblyInformation(outputDirectory: outputDirectory, outputFileName: "TestFileName.xml");
 
     var outputPath = Path.Combine(outputDirectory, "TestFileName.xml");
     Assert.That(File.Exists(outputPath));

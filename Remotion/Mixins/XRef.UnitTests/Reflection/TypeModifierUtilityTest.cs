@@ -18,10 +18,10 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Mixins.XRef.Formatting;
-using Remotion.Mixins.XRef.UnitTests.TestDomain;
+using Remotion.Mixins.CrossReferencer.Formatting;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 
-namespace Remotion.Mixins.XRef.UnitTests.Reflection
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
 {
   [TestFixture]
   public class TypeModifierUtilityTest

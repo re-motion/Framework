@@ -19,11 +19,11 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Remotion.Mixins.XRef.Formatting;
-using Remotion.Mixins.XRef.Report;
-using Remotion.Mixins.XRef.UnitTests.Reflection;
+using Remotion.Mixins.CrossReferencer.Formatting;
+using Remotion.Mixins.CrossReferencer.Report;
+using Remotion.Mixins.CrossReferencer.UnitTests.Reflection;
 
-namespace Remotion.Mixins.XRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   [TestFixture]
   public class AdditionalDependencyReportGeneratorTest

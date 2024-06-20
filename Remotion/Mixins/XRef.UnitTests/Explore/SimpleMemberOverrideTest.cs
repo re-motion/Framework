@@ -20,7 +20,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Mixins.Definitions;
 
-namespace Remotion.Mixins.XRef.UnitTests.Explore
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Explore
 {
   [TestFixture]
   public class SimpleMemberOverrideTest

@@ -47,7 +47,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace Remotion.Mixins.XRef.Options
+namespace Remotion.Mixins.CrossReferencer.Options
 {
   public abstract class Option
   {

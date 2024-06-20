@@ -19,10 +19,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Remotion.Mixins.XRef.Utility;
+using Remotion.Mixins.CrossReferencer.Utility;
 using Remotion.Utilities;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer
 {
   public class ReflectedObject : IEnumerable<ReflectedObject>
   {

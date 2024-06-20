@@ -19,11 +19,10 @@ using System;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Mixins.Context;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 using Remotion.Mixins.Definitions;
-using Remotion.Mixins.XRef.UnitTests.TestDomain;
 
-namespace Remotion.Mixins.XRef.UnitTests
+namespace Remotion.Mixins.CrossReferencer.UnitTests
 {
   [TestFixture]
   public class InvolvedTypeTest

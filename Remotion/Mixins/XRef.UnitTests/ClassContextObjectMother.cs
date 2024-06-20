@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Remotion.Mixins.Context;
 
-namespace Remotion.Mixins.XRef.UnitTests;
+namespace Remotion.Mixins.CrossReferencer.UnitTests;
 
 public static class ClassContextObjectMother
 {

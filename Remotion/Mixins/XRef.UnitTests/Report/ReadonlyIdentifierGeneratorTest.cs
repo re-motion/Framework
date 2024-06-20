@@ -18,7 +18,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Remotion.Mixins.XRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   [TestFixture]
   public class ReadonlyIdentifierGeneratorTest

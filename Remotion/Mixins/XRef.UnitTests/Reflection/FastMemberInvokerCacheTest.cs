@@ -18,9 +18,9 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Mixins.XRef.Utility;
+using Remotion.Mixins.CrossReferencer.Utility;
 
-namespace Remotion.Mixins.XRef.UnitTests.Reflection
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
 {
   [TestFixture]
   public class FastMemberInvokerCacheTest

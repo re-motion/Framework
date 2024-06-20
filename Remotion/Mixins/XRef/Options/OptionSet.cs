@@ -52,7 +52,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Remotion.Mixins.XRef.Options
+namespace Remotion.Mixins.CrossReferencer.Options
 {
   public sealed class OptionSet : KeyedCollection<string, Option>
   {

@@ -17,7 +17,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Remotion.Mixins.XRef
+namespace Remotion.Mixins.CrossReferencer
 {
   public enum ReflectorSource
   {

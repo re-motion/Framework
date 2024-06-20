@@ -19,7 +19,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 
-namespace Remotion.Mixins.XRef.UnitTests.Reflection
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
 {
   [TestFixture]
   public class AdditionalDependenciesTest

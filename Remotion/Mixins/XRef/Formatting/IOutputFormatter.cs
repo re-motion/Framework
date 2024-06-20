@@ -18,7 +18,7 @@ using System;
 using System.Reflection;
 using System.Xml.Linq;
 
-namespace Remotion.Mixins.XRef.Formatting
+namespace Remotion.Mixins.CrossReferencer.Formatting
 {
   public interface IOutputFormatter
   {

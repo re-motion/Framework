@@ -19,11 +19,11 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
+using Remotion.Mixins.CrossReferencer.Report;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 using Remotion.Mixins.Definitions;
-using Remotion.Mixins.XRef.Report;
-using Remotion.Mixins.XRef.UnitTests.TestDomain;
 
-namespace Remotion.Mixins.XRef.UnitTests.Report
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
 {
   [TestFixture]
   public class InterfaceIntroductionReportGeneratorTest

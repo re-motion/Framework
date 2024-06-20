@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.Mixins.XRef.Formatting
+namespace Remotion.Mixins.CrossReferencer.Formatting
 {
   public class TypeModifierUtility
   {

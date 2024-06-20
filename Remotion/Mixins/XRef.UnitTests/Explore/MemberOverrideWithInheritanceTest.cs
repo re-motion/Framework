@@ -18,7 +18,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Remotion.Mixins.XRef.UnitTests.Explore
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Explore
 {
   [TestFixture]
   public class MemberOverrideWithInheritanceTest

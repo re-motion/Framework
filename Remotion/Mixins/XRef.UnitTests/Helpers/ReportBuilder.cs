@@ -18,10 +18,10 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Remotion.Mixins.XRef.Formatting;
-using Remotion.Mixins.XRef.Report;
+using Remotion.Mixins.CrossReferencer.Formatting;
+using Remotion.Mixins.CrossReferencer.Report;
 
-namespace Remotion.Mixins.XRef.UnitTests.Helpers
+namespace Remotion.Mixins.CrossReferencer.UnitTests.Helpers
 {
   internal static class ReportBuilder
   {
