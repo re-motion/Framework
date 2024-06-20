@@ -75,11 +75,12 @@ public class ObjectIDDataParameterDefinitionFactoryTest : StandardMappingTest
         StorageSettings,
         _nextDataParameterDefinitionFactoryMock.Object);
 
+    var queryStub = new Mock<IQuery>();
     _nextDataParameterDefinitionFactoryMock
-        .Setup(_ => _.CreateDataParameterDefinition(It.IsAny<QueryParameter>()))
+        .Setup(_ => _.CreateDataParameterDefinition(It.IsAny<QueryParameter>(), queryStub.Object))
         .Throws(new AssertionException("Should not be called."));
 
-    var result = factory.CreateDataParameterDefinition(new QueryParameter("other", otherObjectID));
+    var result = factory.CreateDataParameterDefinition(new QueryParameter("other", otherObjectID), queryStub.Object);
 
     Assert.That(result, Is.InstanceOf<ObjectIDDataParameterDefinition>());
     Assert.That(result.As<ObjectIDDataParameterDefinition>().ValueStorageTypeInformation, Is.SameAs(storageTypeInformationStub.Object));
@@ -104,11 +105,12 @@ public class ObjectIDDataParameterDefinitionFactoryTest : StandardMappingTest
         StorageSettings,
         _nextDataParameterDefinitionFactoryMock.Object);
 
+    var queryStub = new Mock<IQuery>();
     _nextDataParameterDefinitionFactoryMock
-        .Setup(_ => _.CreateDataParameterDefinition(It.IsAny<QueryParameter>()))
+        .Setup(_ => _.CreateDataParameterDefinition(It.IsAny<QueryParameter>(), queryStub.Object))
         .Throws(new AssertionException("Should not be called."));
 
-    var result = factory.CreateDataParameterDefinition(new QueryParameter("other", otherObjectID));
+    var result = factory.CreateDataParameterDefinition(new QueryParameter("other", otherObjectID), queryStub.Object);
 
     Assert.That(result, Is.InstanceOf<SerializedObjectIDDataParameterDefinition>());
     Assert.That(result.As<SerializedObjectIDDataParameterDefinition>().StorageTypeInformation, Is.SameAs(storageTypeInformation));
@@ -119,6 +121,7 @@ public class ObjectIDDataParameterDefinitionFactoryTest : StandardMappingTest
   {
     var providerDefinition = new TestableStorageProviderDefinition("bla", Mock.Of<IStorageObjectFactory>());
     var dummy = "Dummy";
+    var queryStub = new Mock<IQuery>();
     var queryParameter = new QueryParameter("dummy", dummy);
 
     var storageTypeInformation = Mock.Of<IStorageTypeInformation>();
@@ -129,7 +132,7 @@ public class ObjectIDDataParameterDefinitionFactoryTest : StandardMappingTest
 
     var expectedDataParameterDefinition = Mock.Of<IDataParameterDefinition>();
     _nextDataParameterDefinitionFactoryMock
-        .Setup(_ => _.CreateDataParameterDefinition(queryParameter))
+        .Setup(_ => _.CreateDataParameterDefinition(queryParameter, queryStub.Object))
         .Returns(expectedDataParameterDefinition);
 
     var dataParameterDefinitionFactory = new ObjectIDDataParameterDefinitionFactory(
@@ -138,7 +141,7 @@ public class ObjectIDDataParameterDefinitionFactoryTest : StandardMappingTest
         StorageSettings,
         _nextDataParameterDefinitionFactoryMock.Object);
 
-    var result = dataParameterDefinitionFactory.CreateDataParameterDefinition(queryParameter);
+    var result = dataParameterDefinitionFactory.CreateDataParameterDefinition(queryParameter, queryStub.Object);
 
     Assert.That(result, Is.SameAs(expectedDataParameterDefinition));
   }

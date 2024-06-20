@@ -18,8 +18,6 @@ using System;
 using System.Collections;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using Microsoft.SqlServer.Server;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Utilities;
@@ -31,16 +29,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 /// </summary>
 public class SqlTableValuedDataParameterDefinition : IDataParameterDefinition
 {
-  public const string DistinctCollectionTableTypeNameSuffix = "_distinct";
-  public bool IsDistinct { get; }
-  public IStorageTypeInformation StorageTypeInformation { get; }
+  public RecordDefinition RecordDefinition { get; }
+  public TableTypeDefinition TableTypeDefinition { get; }
 
-  public SqlTableValuedDataParameterDefinition (IStorageTypeInformation storageTypeInformation, bool isDistinct)
+  public SqlTableValuedDataParameterDefinition (RecordDefinition recordDefinition)
   {
-    ArgumentUtility.CheckNotNull(nameof(storageTypeInformation), storageTypeInformation);
+    ArgumentUtility.CheckNotNull(nameof(recordDefinition), recordDefinition);
+    ArgumentUtility.CheckNotNullAndType<TableTypeDefinition>(nameof(recordDefinition), recordDefinition.StructuredTypeDefinition);
 
-    IsDistinct = isDistinct;
-    StorageTypeInformation = storageTypeInformation;
+    RecordDefinition = recordDefinition;
+    TableTypeDefinition = (TableTypeDefinition)recordDefinition.StructuredTypeDefinition;
   }
 
   /// <summary>
@@ -53,27 +51,15 @@ public class SqlTableValuedDataParameterDefinition : IDataParameterDefinition
     if (enumerable == null)
       return DBNull.Value;
 
-    var tableTypeNameSuffix = IsDistinct ? DistinctCollectionTableTypeNameSuffix : string.Empty;
-    var tableTypeName = $"TVP_{StorageTypeInformation.StorageDbType}{tableTypeNameSuffix}";
-
-    var sqlDbType = GetSqlDbType(StorageTypeInformation);
-    var sqlMetaData = StorageTypeInformation.StorageTypeLength.HasValue
-        ? new SqlMetaData("Value", sqlDbType, StorageTypeInformation.StorageTypeLength.Value)
-        : new SqlMetaData("Value", sqlDbType);
-
-    var columnMetaData = new[] { sqlMetaData };
-
-    var tvpValue = new SqlTableValuedParameterValue(tableTypeName, columnMetaData);
+    var tvpValue = TableTypeDefinition.CreateTableValuedParameterValue();
 
     foreach (var item in enumerable)
     {
       if (item == null)
         throw ArgumentUtility.CreateArgumentItemNullException(nameof(value), tvpValue.Count);
 
-      if (!StorageTypeInformation.DotNetType.IsInstanceOfType(item))
-        throw ArgumentUtility.CreateArgumentItemTypeException(nameof(value), tvpValue.Count, StorageTypeInformation.DotNetType, item.GetType());
-
-      tvpValue.AddRecord(StorageTypeInformation.ConvertToStorageType(item));
+      var columnValues = RecordDefinition.GetColumnValues(item);
+      tvpValue.AddRecord(columnValues);
     }
 
     return tvpValue;
@@ -95,13 +81,5 @@ public class SqlTableValuedDataParameterDefinition : IDataParameterDefinition
     sqlParameter.SqlDbType = SqlDbType.Structured;
     sqlParameter.TypeName = tvpValue.TableTypeName;
     return sqlParameter;
-  }
-
-  private SqlDbType GetSqlDbType (IStorageTypeInformation storageTypeInformation)
-  {
-    var dummy = new SqlParameter();
-    dummy.DbType = storageTypeInformation.StorageDbType;
-    var sqlDbType = dummy.SqlDbType;
-    return sqlDbType;
   }
 }
