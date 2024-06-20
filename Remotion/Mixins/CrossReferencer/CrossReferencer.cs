@@ -26,7 +26,7 @@ using Remotion.Mixins.Validation;
 
 namespace Remotion.Mixins.CrossReferencer
 {
-  public static class XRef
+  public static class CrossReferencer
   {
     private const string c_defaultXmlOutputFileName = "MixinXRef.xml";
     private const string c_defaultXmlOutputDirectory = "C:\\";
@@ -34,7 +34,6 @@ namespace Remotion.Mixins.CrossReferencer
     public static XDocument? GetAssemblyInformation (
         Assembly? assemblyToCheck = null,
         bool generateFullReport = false,
-        bool skipHtmlGeneration = true,
         string outputDirectory = c_defaultXmlOutputDirectory,
         string outputFileName = c_defaultXmlOutputFileName)
     {

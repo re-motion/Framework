@@ -21,17 +21,29 @@ using NUnit.Framework;
 namespace Remotion.Mixins.CrossReferencer.UnitTests;
 
 [TestFixture]
-public class TestFunctionality
+public class CrossReferencerTest
 {
-  [Test]
-  public void Bla ()
+  private string _tempDirectoryPath = string.Empty;
+
+  [OneTimeSetUp]
+  public void Setup ()
   {
-    var outputDirectory = Path.Combine(Path.GetTempPath(), "XRef");
-    Directory.CreateDirectory(outputDirectory);
+    _tempDirectoryPath = Path.Combine(Path.GetTempPath(), "XRef");
+    Directory.CreateDirectory(_tempDirectoryPath);
+  }
 
-    CrossReferencer.XRef.GetAssemblyInformation(outputDirectory: outputDirectory, outputFileName: "TestFileName.xml");
+  [OneTimeTearDown]
+  public void TearDown ()
+  {
+    Directory.Delete(_tempDirectoryPath, recursive: true);
+  }
 
-    var outputPath = Path.Combine(outputDirectory, "TestFileName.xml");
+  [Test]
+  public void GetAssemblyInformation_CreatesFile ()
+  {
+    CrossReferencer.GetAssemblyInformation(outputDirectory: _tempDirectoryPath, outputFileName: "TestFileName.xml");
+
+    var outputPath = Path.Combine(_tempDirectoryPath, "TestFileName.xml");
     Assert.That(File.Exists(outputPath));
   }
 }
