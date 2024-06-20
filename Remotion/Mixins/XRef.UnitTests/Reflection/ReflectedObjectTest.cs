@@ -185,6 +185,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
       }
     }
 
+#if NET8_0_OR_GREATER
     [Test]
     public void AsEnumerable_EnumerableButWrongType ()
     {
@@ -201,6 +202,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
         Assert.That(notSupportedException.Message, Is.EqualTo("Unable to cast object of type 'System.Char' to type 'System.Single'."));
       }
     }
+#endif
 
     [Test]
     public void Create_DefaultConstructor ()

@@ -28,14 +28,14 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
   public class AttributeReferenceReportGeneratorTest
   {
     private IIdentifierGenerator<Type> _identifierGenerator;
-    private Mock<RemotionReflector> _remotionReflector;
+    private Mock<IRemotionReflector> _remotionReflector;
 
     [SetUp]
     public void SetUp ()
     {
       _identifierGenerator = new IdentifierGenerator<Type>();
 
-      _remotionReflector = new Mock<RemotionReflector>();
+      _remotionReflector = new Mock<IRemotionReflector>();
       _remotionReflector.Setup(r => r.IsInfrastructureType(typeof(UsesAttribute))).Returns(true);
       _remotionReflector.Setup(r => r.IsInfrastructureType(typeof(ExtendsAttribute))).Returns(true);
     }

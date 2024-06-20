@@ -19,6 +19,7 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Formatting;
 using Remotion.Mixins.CrossReferencer.Report;
 using Remotion.Mixins.Validation;
@@ -30,7 +31,7 @@ namespace Remotion.Mixins.CrossReferencer
     private const string c_defaultXmlOutputFileName = "MixinXRef.xml";
     private const string c_defaultXmlOutputDirectory = "C:\\";
 
-    public static void GetAssemblyInformation (
+    public static XDocument? GetAssemblyInformation (
         Assembly? assemblyToCheck = null,
         bool generateFullReport = false,
         bool skipHtmlGeneration = true,
@@ -40,7 +41,7 @@ namespace Remotion.Mixins.CrossReferencer
       var reflector = new RemotionReflector(assemblyToCheck);
 
       if (!GetAssemblies(reflector, out var allAssemblies))
-        return;
+        return null;
 
       var mixinConfiguration = reflector.BuildConfigurationFromAssemblies(allAssemblies!);
       var configurationErrors = new ErrorAggregator<ConfigurationException>();
@@ -55,9 +56,7 @@ namespace Remotion.Mixins.CrossReferencer
       var xmlFile = Path.Combine(outputDirectory, outputFileName);
       outputDocument.Save(xmlFile);
 
-      var success = ProcessOutputDocument(xmlFile, outputDirectory, generateFullReport, skipHtmlGeneration);
-
-      //return success;
+      return outputDocument;
     }
 
     private static bool GetAssemblies (RemotionReflector reflector, out Assembly[]? allAssemblies)
@@ -96,28 +95,6 @@ namespace Remotion.Mixins.CrossReferencer
       return generateFullReport
           ? new ErrorReportGenerator(configurationErrors, validationErrors, reflector)
           : new FullReportGenerator(involvedTypes, configurationErrors, validationErrors, reflector, new OutputFormatter());
-    }
-
-    private static bool ProcessOutputDocument (string xmlFile, string outputDirectory, bool generateFullReport, bool skipHtmlGeneration)
-    {
-      if (generateFullReport || skipHtmlGeneration)
-      {
-        return true;
-      }
-
-      var transformerExitCode = new XRefTransformer(xmlFile, outputDirectory).GenerateHtmlFromXml();
-      if (transformerExitCode != 0)
-      {
-        return false;
-      }
-
-      // copy resources folder
-      var xRefPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-      var directoryInfo = new DirectoryInfo(Path.Combine(xRefPath!, @"xml_utilities\resources"));
-      var resourcesPath = Path.Combine(outputDirectory, "resources");
-      directoryInfo.CopyTo(resourcesPath);
-
-      return true;
     }
   }
 }

@@ -143,7 +143,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
           new[] { typeof(string) },
           BindingFlags.Public | BindingFlags.Static);
 
-      Assert.That(getFastMethodInvoker, Throws.InstanceOf<MissingMethodException>().With.Message.EqualTo("\"Method 'Foo' not found on type 'System.String'.\""));
+      Assert.That(getFastMethodInvoker, Throws.InstanceOf<MissingMethodException>().With.Message.EqualTo("Method 'Foo' not found on type 'System.String'."));
     }
 
     [Test]
@@ -164,14 +164,14 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
     public void GetFastMethodInvoker_ForVoidMethod ()
     {
       var instance = new TargetDoSomething();
-      var invoker = _generator.GetFastMethodInvoker(
+      var createInvoker = () => _generator.GetFastMethodInvoker(
           instance.GetType(),
           "DoSomething",
           new Type[0],
           Type.EmptyTypes,
           BindingFlags.Public | BindingFlags.Instance);
 
-      Assert.That(() => invoker(instance, []), Throws.InstanceOf<NotSupportedException>().With.Message.EqualTo("Void methods are not supported."));
+      Assert.That(() => createInvoker(), Throws.InstanceOf<NotSupportedException>().With.Message.EqualTo("Void methods are not supported."));
     }
   }
 }

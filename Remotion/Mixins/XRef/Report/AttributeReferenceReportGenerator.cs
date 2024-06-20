@@ -28,12 +28,12 @@ namespace Remotion.Mixins.CrossReferencer.Report
   {
     private readonly Type _type;
     private readonly IIdentifierGenerator<Type> _attributeIdentifierGenerator;
-    private readonly RemotionReflector _remotionReflector;
+    private readonly IRemotionReflector _remotionReflector;
 
     public AttributeReferenceReportGenerator (
         Type type,
         IIdentifierGenerator<Type> attributeIdentifierGenerator,
-        RemotionReflector remotionReflector)
+        IRemotionReflector remotionReflector)
     {
       ArgumentUtility.CheckNotNull("type", type);
       ArgumentUtility.CheckNotNull("attributeIdentifierGenerator", attributeIdentifierGenerator);

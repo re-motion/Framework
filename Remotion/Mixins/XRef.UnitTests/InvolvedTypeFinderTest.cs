@@ -66,7 +66,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
       var expectedType2 = new InvolvedType(typeof(Mixin1));
       expectedType2.TargetTypes.Add(expectedType1, expectedType1.TargetClassDefinition.GetMixinByConfiguredType(typeof(Mixin1)));
 
-      Assert.That(involvedTypes, Is.EquivalentTo(GetAdditonalAssemblyInvolvedTypes(expectedType1, expectedType2)));
+      AssertSameTypes(involvedTypes, expectedType1, expectedType2);
     }
 
     [Test]
@@ -94,7 +94,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
       var expectedType4 = new InvolvedType(typeof(Mixin2));
       expectedType4.TargetTypes.Add(expectedType3, expectedType3.TargetClassDefinition.GetMixinByConfiguredType(typeof(Mixin2)));
 
-      Assert.That(involvedTypes, Is.EquivalentTo(GetAdditonalAssemblyInvolvedTypes(expectedType1, expectedType2, expectedType3, expectedType4)));
+      AssertSameTypes(involvedTypes, expectedType1, expectedType2, expectedType3, expectedType4);
     }
 
     [Test]
@@ -120,7 +120,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
       var expectedType3 = new InvolvedType(typeof(Mixin2));
       expectedType3.TargetTypes.Add(expectedType2, expectedType2.TargetClassDefinition.GetMixinByConfiguredType(typeof(Mixin2)));
 
-      Assert.That(involvedTypes, Is.EquivalentTo(GetAdditonalAssemblyInvolvedTypes(expectedType1, expectedType2, expectedType3)));
+      AssertSameTypes(involvedTypes, expectedType1, expectedType2, expectedType3);
     }
 
     [Test]
@@ -145,8 +145,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
       expectedType3.TargetTypes.Add(expectedType1, expectedType1.TargetClassDefinition.GetMixinByConfiguredType(typeof(Mixin1)));
       expectedType3.TargetTypes.Add(expectedType2, expectedType2.TargetClassDefinition.GetMixinByConfiguredType(typeof(Mixin2)));
 
-
-      Assert.That(involvedTypes, Is.EquivalentTo(GetAdditonalAssemblyInvolvedTypes(expectedType1, expectedType2, expectedType3)));
+      AssertSameTypes(involvedTypes, expectedType1, expectedType2, expectedType3);
     }
 
     [Test]
@@ -171,6 +170,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
       var targetType = typeof(TargetClass1);
       var classContextForTargetType = mixinConfiguration.ClassContexts.GetWithInheritance(targetType);
 
+      //We need to assert the same targetClassDefinition here, but those have so much data and do not implement equals. Due to the Factory, we create new implementations, so reference equals does not work.
       var output = involvedTypeFinder.GetTargetClassDefinition(targetType, classContextForTargetType);
       var expectedOutput = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(targetType));;
 
@@ -253,7 +253,12 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
 
     private TargetClassDefinition CreateTargetClassDefintion<ForType> (MixinConfiguration mixinConfiguration)
     {
-      return TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(typeof(ForType)));
+      return TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetWithInheritance( typeof(ForType)));
+    }
+
+    private void AssertSameTypes (InvolvedType[] involvedTypes, params InvolvedType[] expectedTypes)
+    {
+      Assert.That(involvedTypes.Select(t => t.Type), Is.EquivalentTo(GetAdditonalAssemblyInvolvedTypes(expectedTypes).Select(t => t.Type)));
     }
 
     private InvolvedType[] GetAdditonalAssemblyInvolvedTypes (params InvolvedType[] explicitInvolvedTypes)

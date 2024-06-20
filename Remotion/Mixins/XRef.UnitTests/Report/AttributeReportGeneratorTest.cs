@@ -91,7 +91,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
               "Attribute",
               new XAttribute("id", "0"),
               new XAttribute("assembly-ref", "0"),
-              new XAttribute("namespace", "MixinXRef.UnitTests.TestDomain"),
+              new XAttribute("namespace", "Remotion.Mixins.CrossReferencer.UnitTests.TestDomain"),
               new XAttribute("name", "ClassWithNestedAttribute+NestedAttribute"),
               new XElement(
                   "AppliedTo",

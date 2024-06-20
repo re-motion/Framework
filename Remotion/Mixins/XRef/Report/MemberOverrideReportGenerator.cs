@@ -48,7 +48,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
       return new XElement(
           "OverriddenMember",
           new XAttribute("type", overriddenMember.MemberType),
-          new XAttribute("name", overriddenMember.MemberType)
+          new XAttribute("name", overriddenMember.Name)
       );
     }
   }
