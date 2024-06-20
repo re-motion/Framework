@@ -333,6 +333,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     }
 
     [Test]
+    public void CreateSingleScalarStructuredTypeDefinitionProvider ()
+    {
+      IRdbmsStorageObjectFactory testableSqlProviderFactory = new TestableSqlStorageObjectFactory(
+          _storageSettings,
+          null,
+          _storageTypeInformationProviderStub.Object,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null);
+
+      var result = testableSqlProviderFactory.CreateSingleScalarStructuredTypeDefinitionProvider(_rdbmsProviderDefinition);
+
+      Assert.That(result, Is.InstanceOf<SingleScalarSqlTableTypeDefinitionProvider>());
+      Assert.That(result.As<SingleScalarSqlTableTypeDefinitionProvider>().StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub.Object));
+    }
+
+    [Test]
     public void CreateDataParameterDefinitionFactory ()
     {
       IRdbmsStorageObjectFactory testableSqlProviderFactory = new TestableSqlStorageObjectFactory(
@@ -353,7 +376,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
 
       Assert.That(result, Is.InstanceOf<SqlTableValuedDataParameterDefinitionFactory>());
       var sqlTableValuedParameterDefinitionFactory = result.As<SqlTableValuedDataParameterDefinitionFactory>();
-      Assert.That(sqlTableValuedParameterDefinitionFactory.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub.Object));
 
       Assert.That(sqlTableValuedParameterDefinitionFactory.NextDataParameterDefinitionFactory, Is.InstanceOf<SqlFulltextDataParameterDefinitionFactory>());
       var sqlFulltextDataParameterDefinitionFactory = sqlTableValuedParameterDefinitionFactory.NextDataParameterDefinitionFactory.As<SqlFulltextDataParameterDefinitionFactory>();

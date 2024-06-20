@@ -40,6 +40,7 @@ public class SimpleDataParameterDefinitionFactoryTest
   [Test]
   public void CreateDataParameterDefinition_WithSimpleValue_ReturnsSimpleDataParameterDefinition ()
   {
+    var queryStub = new Mock<IQuery>();
     var dummy = "Dummy";
 
     var storageTypeInformation = Mock.Of<IStorageTypeInformation>();
@@ -48,7 +49,7 @@ public class SimpleDataParameterDefinitionFactoryTest
 
     var dataParameterDefinitionFactory = new SimpleDataParameterDefinitionFactory(storageTypeInformationProviderStub.Object);
 
-    var result = dataParameterDefinitionFactory.CreateDataParameterDefinition(new QueryParameter("dummy", dummy));
+    var result = dataParameterDefinitionFactory.CreateDataParameterDefinition(new QueryParameter("dummy", dummy), queryStub.Object);
 
     Assert.That(result, Is.InstanceOf<SimpleDataParameterDefinition>());
     Assert.That(result.As<SimpleDataParameterDefinition>().StorageTypeInformation, Is.SameAs(storageTypeInformation));
@@ -57,6 +58,7 @@ public class SimpleDataParameterDefinitionFactoryTest
   [Test]
   public void CreateDataParameterDefinition_WithNotSupportedValueType_ThrowsNotSupportedException ()
   {
+    var queryStub = Mock.Of<IQuery>();
     var dummy = "Dummy";
 
     var storageTypeInformationProviderStub = new Mock<IStorageTypeInformationProvider>();
@@ -65,7 +67,7 @@ public class SimpleDataParameterDefinitionFactoryTest
     var dataParameterDefinitionFactory = new SimpleDataParameterDefinitionFactory(storageTypeInformationProviderStub.Object);
 
     Assert.That(
-        () => dataParameterDefinitionFactory.CreateDataParameterDefinition(new QueryParameter("dummy", dummy)),
+        () => dataParameterDefinitionFactory.CreateDataParameterDefinition(new QueryParameter("dummy", dummy), queryStub),
         Throws.InstanceOf<NotSupportedException>().With.Message.EqualTo($"Objects of type 'System.String' cannot be used as data parameter value."));
   }
 }

@@ -31,7 +31,7 @@ using Remotion.Development.UnitTesting;
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Parameters;
 
 [TestFixture]
-public class SqlTableValuedDataParameterDefinitionFactoryTests
+public class SqlTableValuedDataParameterDefinitionFactoryTest
 {
   private static IEnumerable<(object, Type, bool, IStorageTypeInformation)> GetTestCasesForCreateParameterDefinition ()
   {
@@ -50,25 +50,47 @@ public class SqlTableValuedDataParameterDefinitionFactoryTests
 
   [Test]
   [TestCaseSource(nameof(GetTestCasesForCreateParameterDefinition))]
-  public void CreateParameterDefinition ((object, Type, bool, IStorageTypeInformation) testCase)
+  public void CreateParameterDefinition ((object value, Type dotNetType, bool isDistinct, IStorageTypeInformation storageTypeInformation) testCase)
   {
-    var value = testCase.Item1;
-    var dotNetType = testCase.Item2;
-    var isDistinct = testCase.Item3;
-    var storageTypeInformation = testCase.Item4;
+    var query = Mock.Of<IQuery>();
+    var queryParameter = new QueryParameter("Dummy", testCase.value);
+
+    var columnDefinition = new ColumnDefinition("Value", testCase.storageTypeInformation, false);
+    var storagePropertyDefinition = new SimpleStoragePropertyDefinition(testCase.dotNetType, columnDefinition);
+    var tableTypeDefinition = new TableTypeDefinition(
+        new EntityNameDefinition(null, "Test"),
+        new[]
+        {
+            storagePropertyDefinition
+        },
+        testCase.isDistinct
+            ? [ new UniqueConstraintDefinition($"UQ_Test_Value", true, new[] { columnDefinition }) ]
+            : Array.Empty<ITableConstraintDefinition>());
+
+    var propertyDefinitions = new[] { RecordPropertyDefinition.ScalarAsValue(storagePropertyDefinition) };
+
+    var recordDefinition = new RecordDefinition("Test", tableTypeDefinition, propertyDefinitions);
+
+    var recordDefinitionFactory = new Mock<IQueryParameterRecordDefinitionFinder>();
+    recordDefinitionFactory
+        .Setup(_ => _.GetRecordDefinition(queryParameter, query))
+        .Returns(recordDefinition);
 
     var storageTypeInformationProviderStub = new Mock<IStorageTypeInformationProvider>();
-    storageTypeInformationProviderStub.Setup(_ => _.GetStorageType(dotNetType)).Returns(storageTypeInformation);
+    storageTypeInformationProviderStub
+        .Setup(_ => _.GetStorageType(testCase.dotNetType))
+        .Returns(testCase.storageTypeInformation);
+    storageTypeInformationProviderStub
+        .Setup(_ => _.GetStorageType(It.Is<Type>(t => t != testCase.dotNetType)))
+        .Returns(StorageTypeInformationObjectMother.CreateStorageTypeInformation());
 
     var nextFactoryStub = new Mock<IDataParameterDefinitionFactory>();
-    var factory = new SqlTableValuedDataParameterDefinitionFactory(storageTypeInformationProviderStub.Object, nextFactoryStub.Object);
+    var factory = new SqlTableValuedDataParameterDefinitionFactory(recordDefinitionFactory.Object, nextFactoryStub.Object);
 
-    var queryParameter = new QueryParameter("Dummy", value);
-    var result = factory.CreateDataParameterDefinition(queryParameter);
+    var result = factory.CreateDataParameterDefinition(queryParameter, query);
 
     Assert.That(result, Is.InstanceOf<SqlTableValuedDataParameterDefinition>());
-    Assert.That(result.As<SqlTableValuedDataParameterDefinition>().IsDistinct, Is.EqualTo(isDistinct));
-    Assert.That(result.As<SqlTableValuedDataParameterDefinition>().StorageTypeInformation, Is.SameAs(storageTypeInformation));
+    Assert.That(result.As<SqlTableValuedDataParameterDefinition>().RecordDefinition, Is.EqualTo(recordDefinition));
   }
 
   private static IEnumerable<object?> GetNonCollectionValues ()
@@ -84,17 +106,18 @@ public class SqlTableValuedDataParameterDefinitionFactoryTests
   [TestCaseSource(nameof(GetNonCollectionValues))]
   public void CreateParameterDefinition_WithNonCollection_ReturnsResultOfNextFactory (object value)
   {
+    var query = Mock.Of<IQuery>();
     var queryParameter = new QueryParameter("SingleValue", value);
 
     var definitionStub = Mock.Of<IDataParameterDefinition>();
 
     var nextFactoryStub = new Mock<IDataParameterDefinitionFactory>();
-    nextFactoryStub.Setup(_ => _.CreateDataParameterDefinition(queryParameter)).Returns(definitionStub);
+    nextFactoryStub.Setup(_ => _.CreateDataParameterDefinition(queryParameter, query)).Returns(definitionStub);
 
-    var storageTypeInformationProviderStub = new Mock<IStorageTypeInformationProvider>();
+    var queryParameterRecordDefinitionFactory = Mock.Of<IQueryParameterRecordDefinitionFinder>();
 
-    var factory = new SqlTableValuedDataParameterDefinitionFactory(storageTypeInformationProviderStub.Object, nextFactoryStub.Object);
-    var result = factory.CreateDataParameterDefinition(queryParameter);
+    var factory = new SqlTableValuedDataParameterDefinitionFactory(queryParameterRecordDefinitionFactory, nextFactoryStub.Object);
+    var result = factory.CreateDataParameterDefinition(queryParameter, query);
     Assert.That(result, Is.SameAs(definitionStub));
   }
 }

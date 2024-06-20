@@ -23,5 +23,7 @@ public interface IDataParameterDefinitionFactory
   /// <summary>
   /// Creates a <see cref="IDataParameterDefinition"/> for the given <paramref name="queryParameter"/>.
   /// </summary>
-  IDataParameterDefinition CreateDataParameterDefinition (QueryParameter queryParameter);
+  /// <param name="queryParameter">The <see cref="QueryParameter"/> for which to create a matching <see cref="IDataParameterDefinition"/>.</param>
+  /// <param name="query">The <see cref="IQuery"/> that contains the <paramref name="queryParameter"/>, for additional context.</param>
+  IDataParameterDefinition CreateDataParameterDefinition (QueryParameter queryParameter, IQuery query);
 }

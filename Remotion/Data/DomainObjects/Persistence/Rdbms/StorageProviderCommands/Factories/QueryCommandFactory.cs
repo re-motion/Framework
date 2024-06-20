@@ -20,7 +20,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Queries;
@@ -97,11 +96,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       return new ScalarValueLoadCommand(dbCommandBuilder);
     }
 
-    protected virtual QueryParameterWithDataParameterDefinition GetQueryParameterWithDataParameterDefinition (QueryParameter parameter)
+    protected virtual QueryParameterWithDataParameterDefinition GetQueryParameterWithDataParameterDefinition (QueryParameter parameter, IQuery query)
     {
       ArgumentUtility.CheckNotNull("parameter", parameter);
+      ArgumentUtility.CheckNotNull("query", query);
 
-      var dataParameterDefinition = _dataParameterDefinitionFactory.CreateDataParameterDefinition(parameter);
+      var dataParameterDefinition = _dataParameterDefinitionFactory.CreateDataParameterDefinition(parameter, query);
       return new QueryParameterWithDataParameterDefinition(parameter, dataParameterDefinition);
     }
 
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       // Use ToList to trigger error detection here
       var queryParametersWithType = query.Parameters
           .Cast<QueryParameter>()
-          .Select(GetQueryParameterWithDataParameterDefinition)
+          .Select(queryParameter => GetQueryParameterWithDataParameterDefinition(queryParameter, query))
           .ToList();
 
       return _dbCommandBuilderFactory.CreateForQuery(query.Statement, queryParametersWithType);

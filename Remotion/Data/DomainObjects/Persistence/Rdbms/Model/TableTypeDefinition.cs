@@ -16,8 +16,13 @@
 //
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using Microsoft.SqlServer.Server;
 using System.Linq;
+using System.Threading;
 using Remotion.Collections;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
@@ -38,6 +43,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     /// </summary>
     public IReadOnlyCollection<ITableConstraintDefinition> Constraints { get; }
 
+    private readonly Lazy<IReadOnlyCollection<SqlMetaData>> _sqlMetaData;
+
     public TableTypeDefinition (
         EntityNameDefinition typeName,
         IReadOnlyCollection<IRdbmsStoragePropertyDefinition> properties,
@@ -51,6 +58,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       TypeName = typeName;
       Properties = properties.AsReadOnly();
       Constraints = constraints.AsReadOnly();
+      _sqlMetaData = new Lazy<IReadOnlyCollection<SqlMetaData>>(CreateSqlMetaData, LazyThreadSafetyMode.ExecutionAndPublication);
     }
 
     /// <summary>
@@ -62,9 +70,47 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     }
 
     /// <summary>
+    /// Creates an empty <see cref="SqlTableValuedParameterValue"/> based on <see cref="IRdbmsStructuredTypeDefinition.TypeName"/>,
+    /// <see cref="IRdbmsStructuredTypeDefinition.Properties"/>, and <see cref="Constraints"/>. 
+    /// </summary>
+    public SqlTableValuedParameterValue CreateTableValuedParameterValue ()
+    {
+      var tableTypeName = string.IsNullOrEmpty(TypeName.SchemaName) ? TypeName.EntityName : $"{TypeName.SchemaName}.{TypeName.EntityName}";
+      return new SqlTableValuedParameterValue(tableTypeName, _sqlMetaData.Value);
+    }
+
+    private IReadOnlyCollection<SqlMetaData> CreateSqlMetaData ()
+    {
+      var columnMetaData = new List<SqlMetaData>();
+      foreach (var columnDefinition in GetAllColumns())
+      {
+        var sqlDbType = GetSqlDbType(columnDefinition.StorageTypeInfo);
+        SqlMetaData sqlMetaData;
+        if(sqlDbType == SqlDbType.Decimal)
+          sqlMetaData = new SqlMetaData(columnDefinition.Name, sqlDbType, 38, 3);
+        else if (columnDefinition.StorageTypeInfo.StorageTypeLength.HasValue)
+          sqlMetaData = new SqlMetaData(columnDefinition.Name, sqlDbType, columnDefinition.StorageTypeInfo.StorageTypeLength.Value);
+        else
+          sqlMetaData = new SqlMetaData(columnDefinition.Name, sqlDbType);
+
+        columnMetaData.Add(sqlMetaData);
+      }
+
+      return columnMetaData.AsReadOnly();
+    }
+
+    private static SqlDbType GetSqlDbType (IStorageTypeInformation storageTypeInformation)
+    {
+      var dummy = new SqlParameter();
+      dummy.DbType = storageTypeInformation.StorageDbType;
+      var sqlDbType = dummy.SqlDbType;
+      return sqlDbType;
+    }
+
+    /// <summary>
     /// Calls <see cref="IRdbmsStructuredTypeDefinitionVisitor.VisitTableTypeDefinition"/> on the given <paramref name="visitor"/>.
     /// </summary>
-    public void Accept (IRdbmsStructuredTypeDefinitionVisitor visitor)
+    void IRdbmsStructuredTypeDefinition.Accept (IRdbmsStructuredTypeDefinitionVisitor visitor)
     {
       ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
 
