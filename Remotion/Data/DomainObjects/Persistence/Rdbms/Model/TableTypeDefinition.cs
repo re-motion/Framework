@@ -85,9 +85,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       foreach (var columnDefinition in GetAllColumns())
       {
         var sqlDbType = GetSqlDbType(columnDefinition.StorageTypeInfo);
-        var sqlMetaData = columnDefinition.StorageTypeInfo.StorageTypeLength.HasValue
-            ? new SqlMetaData(columnDefinition.Name, sqlDbType, columnDefinition.StorageTypeInfo.StorageTypeLength.Value)
-            : new SqlMetaData(columnDefinition.Name, sqlDbType);
+        SqlMetaData sqlMetaData;
+        if(sqlDbType == SqlDbType.Decimal)
+          sqlMetaData = new SqlMetaData(columnDefinition.Name, sqlDbType, 38, 3);
+        else if (columnDefinition.StorageTypeInfo.StorageTypeLength.HasValue)
+          sqlMetaData = new SqlMetaData(columnDefinition.Name, sqlDbType, columnDefinition.StorageTypeInfo.StorageTypeLength.Value);
+        else
+          sqlMetaData = new SqlMetaData(columnDefinition.Name, sqlDbType);
 
         columnMetaData.Add(sqlMetaData);
       }

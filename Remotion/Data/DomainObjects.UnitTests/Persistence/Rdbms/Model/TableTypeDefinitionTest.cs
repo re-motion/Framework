@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -178,5 +179,41 @@ public class TableTypeDefinitionTest
       if (expected.Current.length.HasValue)
         Assert.That(actual.MaxLength, Is.EqualTo(expected.Current.length));
     }
+  }
+
+  [Test]
+  public void CreateTableValuedParameterValue_Decimal ()
+  {
+    var storagePropertyDefinitions = new List<IRdbmsStoragePropertyDefinition>();
+    var columnDefinitions = new List<ColumnDefinition>();
+
+    var storageTypeInfo = new Mock<IStorageTypeInformation>();
+    storageTypeInfo.Setup(_ => _.StorageDbType).Returns(DbType.Decimal);
+    storageTypeInfo.Setup(_ => _.StorageTypeLength).Returns(default(int?));
+
+    var columnDefinition = new ColumnDefinition("DecimalValue", storageTypeInfo.Object, false);
+    columnDefinitions.Add(columnDefinition);
+
+    var storagePropertyDefinition = new Mock<IRdbmsStoragePropertyDefinition>();
+    storagePropertyDefinition.Setup(_ => _.GetColumns()).Returns(columnDefinitions);
+    storagePropertyDefinitions.Add(storagePropertyDefinition.Object);
+
+    var tableTypeName = new EntityNameDefinition(null, $"TestTableType");
+    var tableTypeDefinition = new TableTypeDefinition(
+        tableTypeName,
+        storagePropertyDefinitions,
+        Array.Empty<ITableConstraintDefinition>());
+
+    var result = tableTypeDefinition.CreateTableValuedParameterValue();
+    Assert.That(result.IsEmpty, Is.True);
+    Assert.That(result.TableTypeName, Is.EqualTo("TestTableType"));
+    Assert.That(result.ColumnMetaData.Count, Is.EqualTo(1));
+
+    var sqlMetaData = result.ColumnMetaData.Single();
+
+    Assert.That(sqlMetaData.Name, Is.EqualTo("DecimalValue"));
+    Assert.That(sqlMetaData.SqlDbType, Is.EqualTo(SqlDbType.Decimal));
+    Assert.That(sqlMetaData.Precision, Is.EqualTo(38));
+    Assert.That(sqlMetaData.Scale, Is.EqualTo(3));
   }
 }
