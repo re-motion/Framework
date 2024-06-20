@@ -46,15 +46,16 @@ public class ObjectIDDataParameterDefinitionFactory : IDataParameterDefinitionFa
     StorageTypeInformationProvider = storageTypeInformationProvider;
   }
 
-  public IDataParameterDefinition CreateDataParameterDefinition (QueryParameter queryParameter)
+  public IDataParameterDefinition CreateDataParameterDefinition (QueryParameter queryParameter, IQuery query)
   {
     ArgumentUtility.CheckNotNull(nameof(queryParameter), queryParameter);
+    ArgumentUtility.CheckNotNull(nameof(query), query);
 
     var objectID = queryParameter.Value as ObjectID;
     if (objectID != null)
       return CreateDataParameterDefinition(objectID);
 
-    return NextDataParameterDefinitionFactory.CreateDataParameterDefinition(queryParameter);
+    return NextDataParameterDefinitionFactory.CreateDataParameterDefinition(queryParameter, query);
   }
 
   private IDataParameterDefinition CreateDataParameterDefinition (ObjectID objectID)

@@ -16,88 +16,36 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 {
   /// <summary>
-  /// Provides an <see cref="IRdbmsStructuredTypeDefinition"/> for each simple type supported by <see cref="SqlStorageTypeInformationProvider"/>.
+  /// Provides all <see cref="IRdbmsStructuredTypeDefinition"/> for which to generate scripts.
   /// </summary>
   public class RdbmsStructuredTypeDefinitionProvider : IRdbmsStructuredTypeDefinitionProvider
   {
-    public IReadOnlyCollection<IRdbmsStructuredTypeDefinition> GetTypeDefinitions (RdbmsProviderDefinition rdbmsProviderDefinition)
+    public RdbmsStructuredTypeDefinitionProvider ()
     {
-      ArgumentUtility.CheckNotNull(nameof(rdbmsProviderDefinition), rdbmsProviderDefinition);
-
-      var storageTypeInformationProvider = rdbmsProviderDefinition.Factory.CreateStorageTypeInformationProvider(rdbmsProviderDefinition);
-
-      var ansiStringStorageTypeInformation = new StorageTypeInformation(
-          typeof(string),
-          "varchar (max)",
-          DbType.AnsiString,
-          true,
-          -1,
-          typeof(string),
-          new DefaultConverter(typeof(string)));
-
-      return new[]
-             {
-                 CreateTypeDefinition(typeof(String), false, storageTypeInformationProvider),
-                 CreateTypeDefinition(ansiStringStorageTypeInformation, false),
-                 CreateTypeDefinition(typeof(Byte[]), false, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(Boolean?), false, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(Boolean?), true, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(Byte?), false, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(Byte?), true, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(DateTime?), false, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(DateTime?), true, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(Decimal?), false, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(Decimal?), true, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(Double?), false, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(Double?), true, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(Guid?), false, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(Guid?), true, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(Int16?), false, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(Int16?), true, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(Int32?), false, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(Int32?), true, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(Int64?), false, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(Int64?), true, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(Single?), false, storageTypeInformationProvider),
-                 CreateTypeDefinition(typeof(Single?), true, storageTypeInformationProvider)
-             };
     }
 
-    private IRdbmsStructuredTypeDefinition CreateTypeDefinition (Type dotnetType, bool withUniqueConstraint, IStorageTypeInformationProvider storageTypeInformationProvider)
+    /// <summary>
+    /// Gets all <see cref="IRdbmsStructuredTypeDefinition"/>s for which to generate CREATE TYPE and DROP TYPE scripts.
+    /// </summary>
+    /// <param name="storageProviderDefinition">The storage provider for which to generate scripts.</param>
+    /// <remarks>
+    /// In order to influence the returned collection, override or mix the <see cref="IRdbmsStorageObjectFactory.CreateSingleScalarStructuredTypeDefinitionProvider"/> method
+    /// on the <paramref name="storageProviderDefinition"/>'s <see cref="RdbmsProviderDefinition.Factory"/>. 
+    /// </remarks>
+    public IReadOnlyCollection<IRdbmsStructuredTypeDefinition> GetTypeDefinitions (RdbmsProviderDefinition storageProviderDefinition)
     {
-      var storageTypeInformation = storageTypeInformationProvider.GetStorageType(dotnetType);
-      return CreateTypeDefinition(storageTypeInformation, withUniqueConstraint);
-    }
+      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
 
-    private IRdbmsStructuredTypeDefinition CreateTypeDefinition (IStorageTypeInformation storageTypeInformation, bool withUniqueConstraint)
-    {
-      var dbType = storageTypeInformation.StorageDbType;
-      var typeNameDefinition = new EntityNameDefinition(null, $"TVP_{dbType}{(withUniqueConstraint ? "_Distinct" : null)}");
-      var columnDefinition = new ColumnDefinition("Value", storageTypeInformation, false);
-      var propertyDefinitions = new[] { new SimpleStoragePropertyDefinition(storageTypeInformation.DotNetType, columnDefinition) };
-
-      var tableConstraintDefinitions = Array.Empty<ITableConstraintDefinition>();
-      if (withUniqueConstraint)
-      {
-        tableConstraintDefinitions =
-        [
-            new UniqueConstraintDefinition($"UQ_{typeNameDefinition.EntityName}_{columnDefinition.Name}", true, new[] { columnDefinition })
-        ];
-      }
-
-      return new TableTypeDefinition(
-          typeNameDefinition,
-          propertyDefinitions,
-          tableConstraintDefinitions);
+      var factory = storageProviderDefinition.Factory;
+      var simpleStructuredTypeDefinitionRepository = factory.CreateSingleScalarStructuredTypeDefinitionProvider(storageProviderDefinition);
+      return simpleStructuredTypeDefinitionRepository.GetAllStructuredTypeDefinitions().ToArray();
     }
   }
 }

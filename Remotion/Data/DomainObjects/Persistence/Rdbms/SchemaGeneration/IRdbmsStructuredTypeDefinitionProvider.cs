@@ -24,6 +24,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
   /// </summary>
   public interface IRdbmsStructuredTypeDefinitionProvider
   {
-    IReadOnlyCollection<IRdbmsStructuredTypeDefinition> GetTypeDefinitions (RdbmsProviderDefinition storageTypeInformationProvider);
+    /// <summary>
+    /// Gets all <see cref="IRdbmsStructuredTypeDefinition"/>s for which to generate CREATE TYPE and DROP TYPE scripts.
+    /// </summary>
+    IReadOnlyCollection<IRdbmsStructuredTypeDefinition> GetTypeDefinitions (RdbmsProviderDefinition storageProviderDefinition);
   }
 }

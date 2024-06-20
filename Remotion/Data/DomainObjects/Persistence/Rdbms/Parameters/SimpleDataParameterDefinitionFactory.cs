@@ -35,9 +35,10 @@ public class SimpleDataParameterDefinitionFactory : IDataParameterDefinitionFact
     StorageTypeInformationProvider = storageTypeInformationProvider;
   }
 
-  public IDataParameterDefinition CreateDataParameterDefinition (QueryParameter queryParameter)
+  public IDataParameterDefinition CreateDataParameterDefinition (QueryParameter queryParameter, IQuery query)
   {
     ArgumentUtility.CheckNotNull(nameof(queryParameter), queryParameter);
+    ArgumentUtility.CheckNotNull(nameof(query), query);
 
     try
     {

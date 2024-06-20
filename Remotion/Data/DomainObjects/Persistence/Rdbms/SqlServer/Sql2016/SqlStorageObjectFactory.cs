@@ -25,10 +25,12 @@ using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
@@ -203,7 +205,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
           storageTypeInformationProvider,
           storageNameProvider);
 
-      var dataParameterDefinitionFactory = CreateDataParameterDefinitionFactory(storageProviderDefinition, storageTypeInformationProvider);
+      var simpleStructuredTypeDefinitionRepository = CreateSingleScalarStructuredTypeDefinitionProvider(storageProviderDefinition);
+      var structuredTypeDefinitionFinder = CreateStructuredTypeDefinitionFinder(simpleStructuredTypeDefinitionRepository);
+      var queryParameterRecordDefinitionFactory = CreateQueryParameterRecordDefinitionFinder(structuredTypeDefinitionFinder);
+
+      var dataParameterDefinitionFactory = CreateDataParameterDefinitionFactory(storageProviderDefinition, queryParameterRecordDefinitionFactory, storageTypeInformationProvider);
 
       return CreateStorageProviderCommandFactory(
           storageProviderDefinition,
@@ -266,13 +272,24 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
           storageNameProvider);
     }
 
+    public virtual ISingleScalarStructuredTypeDefinitionProvider CreateSingleScalarStructuredTypeDefinitionProvider (RdbmsProviderDefinition storageProviderDefinition)
+    {
+      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
+
+      var storageTypeInformationProvider = CreateStorageTypeInformationProvider(storageProviderDefinition);
+      return CreateSingleScalarStructuredTypeDefinitionProvider(storageTypeInformationProvider);
+    }
+
     public IDataParameterDefinitionFactory CreateDataParameterDefinitionFactory (RdbmsProviderDefinition storageProviderDefinition)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
       var storageTypeInformationProvider = CreateStorageTypeInformationProvider(storageProviderDefinition);
+      var simpleStructuredTypeDefinitionRepository = CreateSingleScalarStructuredTypeDefinitionProvider(storageProviderDefinition);
+      var structuredTypeDefinitionFinder = CreateStructuredTypeDefinitionFinder(simpleStructuredTypeDefinitionRepository);
+      var queryParameterRecordDefinitionFactory = CreateQueryParameterRecordDefinitionFinder(structuredTypeDefinitionFinder);
 
-      return CreateDataParameterDefinitionFactory(storageProviderDefinition, storageTypeInformationProvider);
+      return CreateDataParameterDefinitionFactory(storageProviderDefinition, queryParameterRecordDefinitionFactory, storageTypeInformationProvider);
     }
 
     public IRelationStoragePropertyDefinitionFactory CreateRelationStoragePropertyDefinitionFactory (RdbmsProviderDefinition storageProviderDefinition)
@@ -586,15 +603,31 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
       return new DataStoragePropertyDefinitionFactory(valueStoragePropertyDefinitionFactory, relationStoragePropertyDefinitionFactory);
     }
 
+    protected virtual IRdbmsStructuredTypeDefinitionFinder CreateStructuredTypeDefinitionFinder (ISingleScalarStructuredTypeDefinitionProvider simpleStructuredTypeDefinitionProvider)
+    {
+      ArgumentUtility.CheckNotNull(nameof(simpleStructuredTypeDefinitionProvider), simpleStructuredTypeDefinitionProvider);
+
+      return new StructuredTypeDefinitionFinderForCollectionOfScalars(simpleStructuredTypeDefinitionProvider);
+    }
+
+    protected virtual IQueryParameterRecordDefinitionFinder CreateQueryParameterRecordDefinitionFinder (IRdbmsStructuredTypeDefinitionFinder structuredTypeDefinitionFinder)
+    {
+      ArgumentUtility.CheckNotNull(nameof(structuredTypeDefinitionFinder), structuredTypeDefinitionFinder);
+
+      return new SimpleTypeQueryParameterRecordDefinitionFinder(structuredTypeDefinitionFinder);
+    }
+
     protected virtual IDataParameterDefinitionFactory CreateDataParameterDefinitionFactory (
         StorageProviderDefinition storageProviderDefinition,
+        IQueryParameterRecordDefinitionFinder queryParameterRecordDefinitionFinder,
         IStorageTypeInformationProvider storageTypeInformationProvider)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("queryParameterRecordDefinitionFinder", queryParameterRecordDefinitionFinder);
       ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
 
       return new SqlTableValuedDataParameterDefinitionFactory(
-          storageTypeInformationProvider,
+          queryParameterRecordDefinitionFinder,
           new SqlFulltextDataParameterDefinitionFactory(
               new ObjectIDDataParameterDefinitionFactory(
                   storageProviderDefinition,
@@ -604,6 +637,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
               )
           )
       );
+    }
+
+    protected virtual ISingleScalarStructuredTypeDefinitionProvider CreateSingleScalarStructuredTypeDefinitionProvider (
+        IStorageTypeInformationProvider storageTypeInformationProvider)
+    {
+      ArgumentUtility.CheckNotNull(nameof(storageTypeInformationProvider), storageTypeInformationProvider);
+
+      return new SingleScalarSqlTableTypeDefinitionProvider(storageTypeInformationProvider);
     }
 
     protected virtual IValueStoragePropertyDefinitionFactory CreateValueStoragePropertyDefinitionFactory (

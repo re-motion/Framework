@@ -17,12 +17,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
@@ -33,66 +29,33 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 /// </summary>
 public class SqlTableValuedDataParameterDefinitionFactory : IDataParameterDefinitionFactory
 {
-  public IStorageTypeInformationProvider StorageTypeInformationProvider { get; }
+  public IQueryParameterRecordDefinitionFinder QueryParameterRecordDefinitionFinder { get; }
   public IDataParameterDefinitionFactory NextDataParameterDefinitionFactory { get; }
 
-  public SqlTableValuedDataParameterDefinitionFactory (IStorageTypeInformationProvider storageTypeInformationProvider, IDataParameterDefinitionFactory nextDataParameterDefinitionFactory)
+  public SqlTableValuedDataParameterDefinitionFactory (
+      IQueryParameterRecordDefinitionFinder queryParameterRecordDefinitionFinder,
+      IDataParameterDefinitionFactory nextDataParameterDefinitionFactory)
   {
-    ArgumentUtility.CheckNotNull(nameof(storageTypeInformationProvider), storageTypeInformationProvider);
+    ArgumentUtility.CheckNotNull(nameof(queryParameterRecordDefinitionFinder), queryParameterRecordDefinitionFinder);
     ArgumentUtility.CheckNotNull(nameof(nextDataParameterDefinitionFactory), nextDataParameterDefinitionFactory);
 
-    StorageTypeInformationProvider = storageTypeInformationProvider;
     NextDataParameterDefinitionFactory = nextDataParameterDefinitionFactory;
+    QueryParameterRecordDefinitionFinder = queryParameterRecordDefinitionFinder;
   }
 
   /// <summary>
   /// Creates an <see cref="IDataParameterDefinition"/> from a <paramref name="queryParameter"/> with a collection <see cref="QueryParameter.Value"/>; for other values,
   /// responsibility is passed to the <see cref="NextDataParameterDefinitionFactory"/>.
   /// </summary>
-  public IDataParameterDefinition CreateDataParameterDefinition (QueryParameter queryParameter)
+  public IDataParameterDefinition CreateDataParameterDefinition (QueryParameter queryParameter, IQuery query)
   {
     ArgumentUtility.CheckNotNull(nameof(queryParameter), queryParameter);
+    ArgumentUtility.CheckNotNull(nameof(query), query);
 
-    if (TryGetCollectionInfo(queryParameter.Value, out var itemType, out var isDistinct))
-    {
-      var storageTypeInformation = StorageTypeInformationProvider.GetStorageType(itemType);
-      return new SqlTableValuedDataParameterDefinition(storageTypeInformation, isDistinct);
-    }
-    return NextDataParameterDefinitionFactory.CreateDataParameterDefinition(queryParameter);
-  }
+    var recordDefinition = QueryParameterRecordDefinitionFinder.GetRecordDefinition(queryParameter, query);
+    if (recordDefinition != null)
+      return new SqlTableValuedDataParameterDefinition(recordDefinition);
 
-  private bool TryGetCollectionInfo (object? value, [MaybeNullWhen(false)] out Type itemType, out bool isDistinct)
-  {
-    itemType = null!;
-    isDistinct = false;
-
-    if (value == null)
-      return false;
-
-    if (value is string or char[] or byte[])
-      return false;
-
-    if (value is not IEnumerable)
-      return false;
-
-    if (value is ICollection)
-      itemType = typeof(object);
-
-    var type = value.GetType();
-    if (type.CanAscribeTo(typeof(ICollection<>)))
-    {
-      itemType = type.GetAscribedGenericArguments(typeof(ICollection<>)).Single();
-      isDistinct = type.CanAscribeTo(typeof(ISet<>));
-    }
-    else if (type.CanAscribeTo(typeof(IReadOnlyCollection<>)))
-    {
-      itemType = type.GetAscribedGenericArguments(typeof(IReadOnlyCollection<>)).Single();
-#if NET5_0_OR_GREATER
-      isDistinct = type.CanAscribeTo(typeof(IReadOnlySet<>));
-#endif
-    }
-
-    // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-    return itemType != null;
-  }
+    return NextDataParameterDefinitionFactory.CreateDataParameterDefinition(queryParameter, query);
+      }
 }
