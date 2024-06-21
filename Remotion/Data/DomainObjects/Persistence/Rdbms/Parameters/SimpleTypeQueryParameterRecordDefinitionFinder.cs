@@ -47,7 +47,10 @@ public class SimpleTypeQueryParameterRecordDefinitionFinder : IQueryParameterRec
     catch (NotSupportedException ex)
     {
       var parameterType = queryParameter.Value != null ? $"'{queryParameter.Value?.GetType()}'" : "(unknown)";
-      throw new InvalidOperationException($"The parameter value's type {parameterType} cannot be mapped by {typeof(SimpleTypeQueryParameterRecordDefinitionFinder)}.", ex);
+      throw new NotSupportedException(
+          $"The parameter value's type {parameterType} cannot be mapped by {typeof(SimpleTypeQueryParameterRecordDefinitionFinder)}. "
+          + $"Either use a collection of scalar values, or use an implementation of {typeof(IQueryParameterRecordDefinitionFinder)} that supports {parameterType}.",
+          ex);
     }
 
     if (structuredTypeDefinition.Properties.Count == 1 && structuredTypeDefinition.Properties.Single() is SimpleStoragePropertyDefinition simpleStoragePropertyDefinition)
@@ -61,8 +64,8 @@ public class SimpleTypeQueryParameterRecordDefinitionFinder : IQueryParameterRec
     var schemaName = structuredTypeDefinition.TypeName.SchemaName;
     var typeName = structuredTypeDefinition.TypeName.EntityName;
     var tableTypeName = string.IsNullOrEmpty(schemaName) ? typeName : $"{schemaName}.{typeName}";
-    throw new InvalidOperationException(
-        $"The structured type '{tableTypeName}' "
-        + $"cannot be mapped by {typeof(SimpleTypeQueryParameterRecordDefinitionFinder)}.");
+    throw new NotSupportedException(
+        $"The structured type '{tableTypeName}' cannot be mapped by {typeof(SimpleTypeQueryParameterRecordDefinitionFinder)}. "
+        + $"Either use a collection of scalar values, or use an implementation of {typeof(IQueryParameterRecordDefinitionFinder)} that supports '{tableTypeName}'.");
   }
 }

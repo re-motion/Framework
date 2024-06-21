@@ -73,9 +73,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       if (value is not IEnumerable)
         return result;
 
-      if (value is ICollection)
-        result.itemType = typeof(object);
-
       var type = value.GetType();
       if (type.CanAscribeTo(typeof(ICollection<>)))
       {
@@ -88,6 +85,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 #if NET5_0_OR_GREATER
         result.isDistinct = type.CanAscribeTo(typeof(IReadOnlySet<>));
 #endif
+      }
+      else if (value is ICollection)
+      {
+        if(type.CanAscribeTo(typeof(IEnumerable<>)))
+          result.itemType = type.GetAscribedGenericArguments(typeof(IEnumerable<>)).Single();
+        else
+          result.itemType = typeof(object);
       }
 
       return result;

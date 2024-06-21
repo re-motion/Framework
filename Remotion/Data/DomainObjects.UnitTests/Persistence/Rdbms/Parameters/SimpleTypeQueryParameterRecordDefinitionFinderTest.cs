@@ -64,7 +64,7 @@ public class SimpleTypeQueryParameterRecordDefinitionFinderTest
   }
 
   [Test]
-  public void GetRecordDefinition_FindsMultiColumnStructuredTypeDefinition_ThrowsInvalidOperationException ()
+  public void GetRecordDefinition_FindsMultiColumnStructuredTypeDefinition_ThrowsNotSupportedException ()
   {
     var queryParameter = new QueryParameter("Test", Array.Empty<ObjectID>());
     var query = Mock.Of<IQuery>();
@@ -91,12 +91,14 @@ public class SimpleTypeQueryParameterRecordDefinitionFinderTest
 
     Assert.That(
         () => simpleTypeQueryParameterRecordDefinitionFinder.GetRecordDefinition(queryParameter, query),
-        Throws.InstanceOf<InvalidOperationException>()
-            .With.Message.EqualTo($"The structured type 'Test' cannot be mapped by {typeof(SimpleTypeQueryParameterRecordDefinitionFinder)}."));
+        Throws.InstanceOf<NotSupportedException>()
+            .With.Message.EqualTo(
+                "The structured type 'Test' cannot be mapped by Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters.SimpleTypeQueryParameterRecordDefinitionFinder. "
+                + "Either use a collection of scalar values, or use an implementation of Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters.IQueryParameterRecordDefinitionFinder that supports 'Test'."));
   }
 
   [Test]
-  public void GetRecordDefinition_FindsMultiPropertyStructuredTypeDefinition_ThrowsInvalidOperationException ()
+  public void GetRecordDefinition_FindsMultiPropertyStructuredTypeDefinition_ThrowsNotSupportedException ()
   {
     var queryParameter = new QueryParameter("Test", Array.Empty<ObjectID>());
     var query = Mock.Of<IQuery>();
@@ -119,8 +121,10 @@ public class SimpleTypeQueryParameterRecordDefinitionFinderTest
 
     Assert.That(
         () => simpleTypeQueryParameterRecordDefinitionFinder.GetRecordDefinition(queryParameter, query),
-        Throws.InstanceOf<InvalidOperationException>()
-            .With.Message.EqualTo($"The structured type 'Test' cannot be mapped by {typeof(SimpleTypeQueryParameterRecordDefinitionFinder)}."));
+        Throws.InstanceOf<NotSupportedException>()
+            .With.Message.EqualTo(
+                "The structured type 'Test' cannot be mapped by Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters.SimpleTypeQueryParameterRecordDefinitionFinder. "
+                + "Either use a collection of scalar values, or use an implementation of Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters.IQueryParameterRecordDefinitionFinder that supports 'Test'."));
   }
 
   [Test]
@@ -140,7 +144,7 @@ public class SimpleTypeQueryParameterRecordDefinitionFinderTest
   }
 
   [Test]
-  public void GetRecordDefinition_NotSupportedStructuredTypeDefinition_ThrowsInvalidOperationException ()
+  public void GetRecordDefinition_NotSupportedStructuredTypeDefinition_ThrowsNotSupportedException ()
   {
     var queryParameter = new QueryParameter("Test", Array.Empty<ObjectID>());
     var query = Mock.Of<IQuery>();
@@ -153,8 +157,10 @@ public class SimpleTypeQueryParameterRecordDefinitionFinderTest
 
     Assert.That(
         () => simpleTypeQueryParameterRecordDefinitionFinder.GetRecordDefinition(queryParameter, query),
-        Throws.InstanceOf<InvalidOperationException>()
+        Throws.InstanceOf<NotSupportedException>()
             .With.InnerException.SameAs(exception)
-            .With.Message.EqualTo($"The parameter value's type '{typeof(ObjectID[])}' cannot be mapped by {typeof(SimpleTypeQueryParameterRecordDefinitionFinder)}."));
+            .With.Message.EqualTo(
+                "The parameter value's type 'Remotion.Data.DomainObjects.ObjectID[]' cannot be mapped by Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters.SimpleTypeQueryParameterRecordDefinitionFinder. "
+                + "Either use a collection of scalar values, or use an implementation of Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters.IQueryParameterRecordDefinitionFinder that supports 'Remotion.Data.DomainObjects.ObjectID[]'."));
   }
 }
