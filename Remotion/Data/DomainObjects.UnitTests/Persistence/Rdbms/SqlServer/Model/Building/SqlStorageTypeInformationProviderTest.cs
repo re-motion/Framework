@@ -259,7 +259,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           "varchar (max)",
           DbType.AnsiString,
           true,
-          null,
+          -1,
           typeof(ExtensibleEnumNotDefiningAnyValues),
           Is.TypeOf(typeof(ExtensibleEnumConverter)).With.Property("ExtensibleEnumType").EqualTo(typeof(ExtensibleEnumNotDefiningAnyValues)));
     }
