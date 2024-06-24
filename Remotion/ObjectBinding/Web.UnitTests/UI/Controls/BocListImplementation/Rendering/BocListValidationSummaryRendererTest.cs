@@ -236,6 +236,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           Html.AssertChildElementCount(a, 0);
           Html.AssertAttribute(a, "href", href);
           Html.AssertAttribute(a, "onclick", "BocList.OnInlineValidationEntryClick(event);");
+          Html.AssertAttribute(a, "tabindex", "-1");
         }
         else
         {
