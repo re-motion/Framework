@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 using Remotion.Data.DomainObjects.Tracing;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests
@@ -133,10 +134,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
               actualParameter.DbType,
               Is.EqualTo(expectedParameterData.Item2),
               $"DbType of parameter {i} doesn't match.\r\nSstatement: {expectedSql})");
-          Assert.That(
-              actualParameter.Value,
-              Is.EqualTo(expectedParameterData.Item3),
-              $"Value of parameter {i} doesn't match.\r\nStatement: {expectedSql})");
+
+          if (expectedParameterData.Item3 is SqlTableValuedParameterValue tvpValue)
+          {
+            SqlTableValuedParameterValueChecker.CheckEquals(actualParameter.Value, tvpValue);
+          }
+          else
+          {
+            Assert.That(
+                actualParameter.Value,
+                Is.EqualTo(expectedParameterData.Item3),
+                $"Value of parameter {i} doesn't match.\r\nStatement: {expectedSql})");
+          }
         }
       }
       catch (AssertionException)

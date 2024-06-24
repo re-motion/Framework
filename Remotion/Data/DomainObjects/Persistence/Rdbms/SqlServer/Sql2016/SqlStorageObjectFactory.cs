@@ -235,8 +235,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
+      var singleScalarStructuredTypeDefinitionProvider = CreateSingleScalarStructuredTypeDefinitionProvider(storageProviderDefinition);
       var sqlDialect = CreateSqlDialect(storageProviderDefinition);
-      return new SqlDbCommandBuilderFactory(sqlDialect);
+      return new SqlDbCommandBuilderFactory(singleScalarStructuredTypeDefinitionProvider, sqlDialect);
     }
 
 
