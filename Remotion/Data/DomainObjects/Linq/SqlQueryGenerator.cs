@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.Linq
     /// <returns><see cref="SqlCommandData"/> which represents the sql query.</returns>
     protected virtual SqlCommandData CreateSqlCommand (SqlStatement sqlStatement)
     {
-      var commandBuilder = new SqlCommandBuilder();
+      var commandBuilder = new TableValuedParameterSqlCommandBuilder();
       _generationStage.GenerateTextForOuterSqlStatement(commandBuilder, sqlStatement);
       return commandBuilder.GetCommand();
     }
