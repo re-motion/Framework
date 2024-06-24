@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           .Returns(fakeResolutionResult)
           .Verifiable();
       _generationStageMock
-          .Setup(mock => mock.GenerateTextForOuterSqlStatement(It.IsNotNull<SqlCommandBuilder>(), fakeResolutionResult))
+          .Setup(mock => mock.GenerateTextForOuterSqlStatement(It.IsNotNull<TableValuedParameterSqlCommandBuilder>(), fakeResolutionResult))
           .Callback(
               (ISqlCommandBuilder commandBuilder, SqlStatement _) =>
               {
