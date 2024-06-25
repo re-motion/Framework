@@ -24,7 +24,6 @@
     <ProjectReference Include="..\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj" />
     <ProjectReference Include="..\Development.WebTesting.IntegrationTests.Infrastructure\Web.Development.WebTesting.IntegrationTests.Infrastructure.csproj" />
     <ProjectReference Include="..\Development.WebTesting.WebFormsControlObjects\Web.Development.WebTesting.WebFormsControlObjects.csproj" />
-    <ProjectReference Include="..\Development.WebTesting\Web.Development.WebTesting.csproj" />
     <ProjectReference Include="..\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj" />
   </ItemGroup>
   <ItemGroup>
