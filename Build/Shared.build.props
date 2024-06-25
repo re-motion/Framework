@@ -25,8 +25,7 @@
     <LangVersion>12</LangVersion>
     <IsDotNetFramework>false</IsDotNetFramework>
     <IsDotNetFramework Condition="$([System.Text.RegularExpressions.Regex]::IsMatch($(TargetFramework), '^net\d{2,3}$'))">true</IsDotNetFramework>
-    <DebugType Condition="'$(IsDotNetFramework)' == 'true'">full</DebugType>
-    <DebugType Condition="'$(IsDotNetFramework)' == 'false'">embedded</DebugType>
+    <DebugType>embedded</DebugType>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\remotion.snk</AssemblyOriginatorKeyFile>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
@@ -47,10 +46,7 @@
 
   <PropertyGroup>
     <ProjectFeaturesRoot>$(MSBuildThisFileDirectory)ProjectFeatures\</ProjectFeaturesRoot>
-    <!-- Enable source link for .NET Core but not for .NET Framework -->
-    <SuppressImplicitGitSourceLink Condition="'$(IsDotNetFramework)' == 'true'">true</SuppressImplicitGitSourceLink>
-    <UseSourceLink Condition="'$(UseSourceLink)' == '' AND '$(IsDotNetFramework)' == 'true'">false</UseSourceLink>
-    <UseSourceLink Condition="'$(UseSourceLink)' == ''">true</UseSourceLink>
+    <UseSourceLink>true</UseSourceLink>
   </PropertyGroup>
 
   <Import Project="$(ProjectFeaturesRoot)UseWebForms.props" Condition="'$(UseWebForms)' == 'true'" />
