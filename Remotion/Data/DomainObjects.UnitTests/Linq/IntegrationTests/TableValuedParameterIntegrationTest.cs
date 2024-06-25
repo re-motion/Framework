@@ -23,7 +23,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests;
 
@@ -159,7 +158,9 @@ public class TableValuedParameterIntegrationTest : IntegrationTestBase
             orders,
             new ObjectID(typeof(Order), new Guid("F4016F41-F4E4-429E-B8D1-659C8C480A67")),
             new ObjectID(typeof(Order), new Guid("F7607CBC-AB34-465C-B282-0531D51F3B04"))),
-        Throws.InstanceOf<ArgumentNullException>().With.ArgumentExceptionMessageEqualTo("Item 1 of parameter 'value' is null.", "value"));
+        Throws.InstanceOf<NotSupportedException>().With.Message.EqualTo(
+            "Items within enumerable parameter values must not be null, because this would result in table rows with all columns being NULL. "
+            + "This does not work with WHERE IN, and is not useful in JOIN scenarios, wherefore it is not supported."));
   }
 
   [Test]
