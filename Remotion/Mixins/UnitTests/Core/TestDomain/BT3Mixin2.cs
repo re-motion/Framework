@@ -19,7 +19,6 @@ using System;
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   [Extends(typeof(BaseType3))]
-  [Serializable]
   public class BT3Mixin2 : Mixin<IBaseType32>
   {
     public int I;
@@ -39,7 +38,6 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     }
   }
 
-  [Serializable]
   public class BT3Mixin2B : Mixin<IBaseType32>
   {
     public new IBaseType32 Target

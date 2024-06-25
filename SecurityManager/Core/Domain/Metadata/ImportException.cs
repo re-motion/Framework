@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {
-  [Serializable]
   public class ImportException : Exception
   {
     // types

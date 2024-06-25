@@ -29,7 +29,6 @@ namespace Remotion.Collections.Caching
   /// <remarks>
   /// Use NullCache objects if some code expects an <see cref="ICache{TKey,TValue}"/> interface, but you don't actually want to use caching.
   /// </remarks>
-  [Serializable]
   public sealed class NullCache<TKey, TValue> : ICache<TKey, TValue>
       where TKey: notnull
   {

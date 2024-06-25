@@ -24,7 +24,6 @@ using Remotion.Web.Resources;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
-  [Serializable]
   public class ResourceObjectWithVarRef : ResourceObjectBase
   {
     private readonly WxeVariableReference _pathReference;

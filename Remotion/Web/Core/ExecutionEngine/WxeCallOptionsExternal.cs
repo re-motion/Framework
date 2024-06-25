@@ -25,7 +25,6 @@ namespace Remotion.Web.ExecutionEngine
   /// Use the <see cref="WxeCallOptionsExternal"/> type if you whish to execute a <see cref="WxeFunction"/> as a new root function, 
   /// typically in a new window. The <see cref="WxeFunction"/> will be initialized on the server and then opened via a Javascript call.
   /// </summary>
-  [Serializable]
   public sealed class WxeCallOptionsExternal : WxeCallOptionsBase
   {
     private readonly string _target;

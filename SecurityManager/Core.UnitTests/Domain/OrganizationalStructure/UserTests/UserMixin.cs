@@ -21,7 +21,6 @@ using Remotion.SecurityManager.Domain.OrganizationalStructure;
 namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.UserTests
 {
   [Extends(typeof(User))]
-  [Serializable]
   public class UserMixin : Mixin<User>, MixedUser.ITestInterface
   {
   }

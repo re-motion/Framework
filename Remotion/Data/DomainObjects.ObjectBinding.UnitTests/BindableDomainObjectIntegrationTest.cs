@@ -93,14 +93,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     }
 
     [Test]
-    public void SerializeAndDeserialize ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      Serializer.SerializeAndDeserialize(_instanceOverridingDisplayName);
-    }
-
-    [Test]
     public void GetProviderForBindableObjectType ()
     {
       BindableObjectProvider provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof(BindableDomainObject));

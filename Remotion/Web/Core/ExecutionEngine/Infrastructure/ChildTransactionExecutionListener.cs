@@ -19,7 +19,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
-  [Serializable]
   public class ChildTransactionExecutionListener : IWxeFunctionExecutionListener
   {
     private readonly ChildTransactionStrategy _transactionStrategy;

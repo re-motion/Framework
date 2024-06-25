@@ -47,26 +47,5 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var gottenInstance2 = instance.ID.GetObject<ClassDerivedFromSimpleDomainObject>();
       Assert.That(gottenInstance2, Is.SameAs(instance));
     }
-
-    [Test]
-    public void Serializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var instance = ClassDerivedFromSimpleDomainObject.NewObject();
-      instance.IntProperty = 7;
-
-      var deserializedData = Serializer.SerializeAndDeserialize(Tuple.Create(ClientTransaction.Current, instance));
-      var deserializedInstance = deserializedData.Item2;
-
-      Assert.That(deserializedInstance.ID, Is.EqualTo(instance.ID));
-      Assert.That(deserializedInstance.RootTransaction, Is.SameAs(deserializedData.Item1));
-
-      using (deserializedData.Item1.EnterNonDiscardingScope())
-      {
-        Assert.That(deserializedInstance, Is.Not.SameAs(instance));
-        Assert.That(deserializedInstance.IntProperty, Is.EqualTo(7));
-      }
-    }
   }
 }

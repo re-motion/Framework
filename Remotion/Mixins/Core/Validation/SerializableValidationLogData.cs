@@ -22,7 +22,6 @@ namespace Remotion.Mixins.Validation
   /// <summary>
   /// Serializable version of the <see cref="ValidationLogData"/> object.
   /// </summary>
-  [Serializable]
   public class SerializableValidationLogData
   {
     private readonly int _NumberOfFailures;

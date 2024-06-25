@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Serializable]
   public class SerializableBaseType31Mock : IBaseType31
   {
     public string IfcMethod ()

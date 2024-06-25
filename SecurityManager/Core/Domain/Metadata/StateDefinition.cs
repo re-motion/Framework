@@ -20,7 +20,6 @@ using Remotion.TypePipe;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {
-  [Serializable]
   [Instantiable]
   public abstract class StateDefinition : EnumValueDefinition
   {

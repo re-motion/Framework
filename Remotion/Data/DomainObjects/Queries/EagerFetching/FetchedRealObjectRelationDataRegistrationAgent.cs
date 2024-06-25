@@ -26,7 +26,6 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
   /// <summary>
   /// Implements <see cref="IRelationEndPointRegistrationAgent"/> for non-virtual object-valued relation end-points.
   /// </summary>
-  [Serializable]
   public class FetchedRealObjectRelationDataRegistrationAgent : FetchedRelationDataRegistrationAgentBase
   {
     public FetchedRealObjectRelationDataRegistrationAgent ()

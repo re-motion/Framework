@@ -24,7 +24,6 @@ namespace Remotion.Data.DomainObjects.Security
   /// <see cref="SecurityClientTransactionExtension"/> when the transaction is created in an application that has a security provider configured.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [Serializable]
   public class SecurityClientTransactionFactory : ClientTransactionFactory
   {
     protected override void OnTransactionCreated (ClientTransaction transaction)

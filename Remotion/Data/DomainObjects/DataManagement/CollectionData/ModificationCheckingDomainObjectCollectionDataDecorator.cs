@@ -24,7 +24,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// <see cref="Insert"/>, <see cref="Replace"/>, and <see cref="Remove(Remotion.Data.DomainObjects.DomainObject)"/>. Those checks are
   /// performed in a decorator so that they lead to exceptions before any events are raised by <see cref="EventRaisingDomainObjectCollectionDataDecorator"/>.
   /// </summary>
-  [Serializable]
   public class ModificationCheckingDomainObjectCollectionDataDecorator : DomainObjectCollectionDataDecoratorBase
   {
     private readonly Type? _requiredItemType;

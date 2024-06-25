@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.Development.UnitTesting.Data.SqlClient
 {
-  [Serializable]
   public class SqlBatchCommandException : Exception
   {
     /// <summary>

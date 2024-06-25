@@ -35,7 +35,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// signal the <see cref="IClientTransactionListener.FilterQueryResult{T}"/> event.
   /// </para>
   /// </remarks>
-  [Serializable]
   public class ObjectLoader : IObjectLoader
   {
     private readonly IPersistenceStrategy _persistenceStrategy;

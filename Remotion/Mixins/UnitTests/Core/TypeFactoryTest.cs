@@ -84,10 +84,8 @@ namespace Remotion.Mixins.UnitTests.Core
     }
 
     [Uses(typeof(DeserializationMixin))]
-    [Serializable]
     public class TargetType { }
 
-    [Serializable]
     public class DeserializationMixin : Mixin<object>
     {
       public new object Target

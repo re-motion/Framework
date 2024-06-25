@@ -27,7 +27,6 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
   /// <summary>
   /// Provides common functionality for implementations of <see cref="IFetchedRelationDataRegistrationAgent"/>.
   /// </summary>
-  [Serializable]
   public abstract class FetchedRelationDataRegistrationAgentBase : IFetchedRelationDataRegistrationAgent
   {
     public abstract void GroupAndRegisterRelatedObjects (

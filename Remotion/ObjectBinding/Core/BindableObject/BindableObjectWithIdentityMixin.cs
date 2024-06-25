@@ -23,7 +23,6 @@ namespace Remotion.ObjectBinding.BindableObject
   /// <summary>
   /// Apply this mixin to a type in order to add an <see cref="IBusinessObjectWithIdentity"/> implementation.
   /// </summary>
-  [Serializable]
   [BindableObjectWithIdentityProvider]
   [CopyCustomAttributes(typeof(DebuggerDisplay))]
   public abstract class BindableObjectWithIdentityMixin : BindableObjectMixinBase<object>, IBusinessObjectWithIdentity

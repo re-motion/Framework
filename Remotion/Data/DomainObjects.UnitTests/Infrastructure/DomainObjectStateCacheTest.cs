@@ -582,30 +582,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
               $"DataContainer for object '{_newOrder.ID}' has been discarded without removing the instance from the DataManager."));
     }
 
-    [Test]
-    public void Serialization ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var deserializedTuple = Serializer.SerializeAndDeserialize(Tuple.Create(_cachingListener, _transaction, _existingOrder));
-
-      var deserializedCache = deserializedTuple.Item1;
-      var deserializedTx = deserializedTuple.Item2;
-      var deserializedDomainObject = deserializedTuple.Item3;
-
-      var stateBeforeChange = deserializedCache.GetState(deserializedDomainObject.ID);
-      deserializedTx.ExecuteInScope(() => deserializedDomainObject.OrderNumber++);
-      var stateAfterChange = deserializedCache.GetState(deserializedDomainObject.ID);
-
-      Assert.That(stateBeforeChange.IsUnchanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(1));
-
-      Assert.That(stateAfterChange.IsChanged, Is.True);
-      Assert.That(stateAfterChange.IsDataChanged, Is.True);
-      Assert.That(stateAfterChange.IsPersistentDataChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(3));
-    }
-
     private int GetNumberOfSetFlags (DomainObjectState domainObjectState)
     {
       int count = 0;

@@ -20,7 +20,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.Results
 {
-  [Serializable]
   public class ValidationResult
   {
     public IReadOnlyCollection<ValidationFailure> Errors { get; }

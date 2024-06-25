@@ -20,7 +20,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {
-  [Serializable]
   public class PropertyChangeState : ChangeState
   {
     // types

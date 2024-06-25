@@ -24,7 +24,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// Listens to objects not found in the data source underlying a <see cref="ClientTransaction"/> and marks the respective 
   /// <see cref="DomainObject"/> references invalid within all descendant <see cref="ClientTransaction"/> instances in the hierarchy.
   /// </summary>
-  [Serializable]
   public class NotFoundObjectsClientTransactionListener : ClientTransactionListenerBase
   {
     public override void ObjectsNotFound (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)

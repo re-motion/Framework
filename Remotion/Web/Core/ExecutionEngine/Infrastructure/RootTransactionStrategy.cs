@@ -21,7 +21,6 @@ using Remotion.Utilities;
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
   //TODO: Doc
-  [Serializable]
   public class RootTransactionStrategy : ScopedTransactionStrategyBase
   {
     public RootTransactionStrategy (

@@ -25,7 +25,6 @@ using Remotion.Utilities;
 namespace Remotion.SecurityManager.Domain.Metadata
 {
   [SecurityManagerStorageGroup]
-  [Serializable]
   public abstract class MetadataObject : BaseSecurityManagerObject
   {
     // types

@@ -26,7 +26,6 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
   /// Holds the eager fetch queries for a given <see cref="IQuery"/> instance. See <see cref="IQuery.EagerFetchQueries"/> for more information about
   /// eager fetch queries.
   /// </summary>
-  [Serializable]
   public class EagerFetchQueryCollection : IEnumerable<KeyValuePair<IRelationEndPointDefinition, IQuery>>
   {
     private readonly Dictionary<IRelationEndPointDefinition, IQuery> _fetchQueries = new Dictionary<IRelationEndPointDefinition, IQuery>();

@@ -21,7 +21,6 @@ namespace Remotion.Development.UnitTesting.Resources
   /// <summary>
   ///Represents errors that occur during resource searching.
   /// </summary>
-  [Serializable]
   public class ResourceNotFoundException : Exception
   {
     /// <summary>

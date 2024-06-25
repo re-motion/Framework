@@ -23,7 +23,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
   /// <summary>
   /// Keeps a collection of <see cref="DomainObject"/> references that were marked as invalid in a given <see cref="ClientTransaction"/>.
   /// </summary>
-  [Serializable]
   public class InvalidDomainObjectManager : IInvalidDomainObjectManager
   {
     private readonly IClientTransactionEventSink _transactionEventSink;

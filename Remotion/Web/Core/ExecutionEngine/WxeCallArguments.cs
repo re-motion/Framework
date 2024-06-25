@@ -28,7 +28,6 @@ namespace Remotion.Web.ExecutionEngine
   /// <b>sender</b>-object and can be parameterized with <see cref="WxeCallOptions"/> to specify if the <see cref="WxeFunction"/> should execute
   /// within the same window, as a new root-function, with or without a perma-URL and so on.
   /// </summary>
-  [Serializable]
   public sealed class WxeCallArguments : IWxeCallArguments
   {
     /// <summary>

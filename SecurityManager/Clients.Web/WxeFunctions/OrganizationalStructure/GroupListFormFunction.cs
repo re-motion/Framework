@@ -23,7 +23,6 @@ using Remotion.Web.Security.ExecutionEngine;
 namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure
 {
   [WxeDemandTargetStaticMethodPermission(Group.Methods.Search)]
-  [Serializable]
   public class GroupListFormFunction : BaseListTransactedFunction
   {
     public GroupListFormFunction ()

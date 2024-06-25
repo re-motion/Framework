@@ -19,7 +19,6 @@ using Remotion.Data.DomainObjects.ObjectBinding;
 
 namespace Remotion.SecurityManager.Domain
 {
-  [Serializable]
   public abstract class BaseSecurityManagerObject : BindableDomainObject
   {
     protected BaseSecurityManagerObject ()

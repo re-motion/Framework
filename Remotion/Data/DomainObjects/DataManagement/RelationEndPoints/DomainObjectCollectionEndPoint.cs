@@ -32,7 +32,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// </summary>
   public class DomainObjectCollectionEndPoint : RelationEndPoint, IDomainObjectCollectionEndPoint
   {
-    [Serializable]
     public class EndPointLoader : IncompleteDomainObjectCollectionEndPointLoadState.IEndPointLoader
     {
       private readonly ILazyLoader _lazyLoader;

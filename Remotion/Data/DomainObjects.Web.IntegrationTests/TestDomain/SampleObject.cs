@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.Data.DomainObjects.Web.IntegrationTests.TestDomain
 {
-  [Serializable]
   [DBTable]
   public class SampleObject : DomainObject, ISupportsGetObject
   {

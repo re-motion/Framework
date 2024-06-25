@@ -22,7 +22,6 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 namespace OBWTest
 {
 
-[Serializable]
 public class TestTabbedFormWxeFunction: WxeFunction
 {
   public TestTabbedFormWxeFunction ()
@@ -72,7 +71,6 @@ public class TestTabbedFormWxeFunction: WxeFunction
 
   // steps
 
-  [Serializable]
   class Step1: WxeStepList
   {
     TestTabbedFormWxeFunction Function { get { return (TestTabbedFormWxeFunction)ParentFunction; } }

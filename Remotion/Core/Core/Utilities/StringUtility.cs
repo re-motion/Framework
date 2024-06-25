@@ -528,7 +528,6 @@ namespace Remotion.Utilities
     }
   }
 
-  [Serializable]
   public class ParseException : Exception
   {
     public ParseException (string message)

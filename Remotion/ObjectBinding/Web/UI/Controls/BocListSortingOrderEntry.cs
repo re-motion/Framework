@@ -22,7 +22,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> Represents the sorting direction for an individual column. </summary>
   /// <remarks> Used when evaluating the current or new sorting order as well as to persist it into the view state. </remarks>
-  [Serializable]
   public sealed class BocListSortingOrderEntry
   {
     /// <summary> Represents a null <see cref="BocListSortingOrderEntry"/>. </summary>
@@ -32,7 +31,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private readonly SortingDirection _direction;
     private readonly bool _isEmpty;
 
-    [NonSerialized]
     private readonly IBocSortableColumnDefinition? _column;
 
     public BocListSortingOrderEntry (IBocSortableColumnDefinition column, SortingDirection direction)

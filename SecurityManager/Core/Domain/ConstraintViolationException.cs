@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.SecurityManager.Domain
 {
-  [Serializable]
   public class ConstraintViolationException : SecurityManagerException
   {
     // types

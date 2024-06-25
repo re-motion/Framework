@@ -23,7 +23,6 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
   /// <summary>
   /// The <see cref="RedirectingToSubFunctionStateParameters"/> type provides all state required to redirect to and return from a sub-function URL.
   /// </summary>
-  [Serializable]
   public class RedirectingToSubFunctionStateParameters : ExecutionStateParameters
   {
     private readonly string _destinationUrl;

@@ -219,7 +219,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       Assert.That(hasAccess, Is.EqualTo(false));
     }
 
-    [Serializable]
     private class SerializableFactory : IDomainObjectSecurityContextFactory
     {
       public bool IsInvalid
@@ -243,7 +242,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       }
     }
 
-    [Serializable]
     private class SerializableObjectSecurityStrategy : IObjectSecurityStrategy
     {
       public bool HasAccess (ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes)

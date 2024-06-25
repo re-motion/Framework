@@ -24,7 +24,6 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
   /// has completed execution. Executing this state will transition the <see cref="IExecutionStateContext"/> into the 
   /// <see cref="NullExecutionState"/>.
   /// </summary>
-  [Serializable]
   public class PostProcessingSubFunctionState : ExecutionStateBase<ExecutionStateParameters>
   {
     public PostProcessingSubFunctionState (IExecutionStateContext executionStateContext, ExecutionStateParameters parameters)

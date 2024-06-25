@@ -20,7 +20,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
-  [Serializable]
   [DBTable]
   [TestDomain]
   [Instantiable]

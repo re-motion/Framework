@@ -27,7 +27,6 @@ namespace Remotion.Data.DomainObjects
   /// <summary>
   /// This class acts as a read-only adapter for an <see cref="IDomainObjectCollectionData"/> object.
   /// </summary>
-  [Serializable]
   public class ReadOnlyDomainObjectCollectionAdapter<T> : IReadOnlyCollectionData<T>, IList<T> where T : DomainObject
   {
     private readonly DomainObjectCollection _wrappedData;

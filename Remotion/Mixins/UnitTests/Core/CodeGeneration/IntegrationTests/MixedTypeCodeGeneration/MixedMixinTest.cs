@@ -92,7 +92,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
           Is.EqualTo("MixinMixingDerivedMixin-MixinMixingClassRequiringToBeDerived-ClassWithMixedDerivedMixin.StringMethod (3)"));
     }
 
-    [Serializable]
     public class ClassWithMixedDerivedMixin
     {
       public virtual string StringMethod (int i)
@@ -101,7 +100,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       }
     }
 
-    [Serializable]
     [Extends(typeof(ClassWithMixedDerivedMixin))]
     public class MixinMixingClassRequiringToBeDerived : Mixin<ClassWithMixedDerivedMixin, MixinMixingClassRequiringToBeDerived.IRequirements>
     {
@@ -117,7 +115,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       }
     }
 
-    [Serializable]
     [Extends(typeof(MixinMixingClassRequiringToBeDerived))]
     public class MixinMixingDerivedMixin : Mixin<MixinMixingClassRequiringToBeDerived, MixinMixingDerivedMixin.IRequirements>
     {

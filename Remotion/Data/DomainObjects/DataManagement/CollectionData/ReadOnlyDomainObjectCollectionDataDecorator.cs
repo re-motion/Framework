@@ -25,7 +25,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// Modifications are still possible via the <see cref="IDomainObjectCollectionData"/> passed into the <see cref="ReadOnlyDomainObjectCollectionDataDecorator"/>'s
   /// constructor.
   /// </summary>
-  [Serializable]
   public class ReadOnlyDomainObjectCollectionDataDecorator : DomainObjectCollectionDataDecoratorBase, ICollectionEndPointData
   {
     public ReadOnlyDomainObjectCollectionDataDecorator (IDomainObjectCollectionData wrappedData)

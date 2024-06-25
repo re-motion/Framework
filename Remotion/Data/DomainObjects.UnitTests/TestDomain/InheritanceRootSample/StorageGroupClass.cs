@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.InheritanceRootSample
 {
-  [Serializable]
   [DBTable]
   [TestDomain]
   public class StorageGroupClass : AboveInheritanceRootClass

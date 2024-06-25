@@ -26,7 +26,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// <remarks>
   /// This decorator is used to get events with stand-alone <see cref="DomainObjectCollection"/> instances.
   /// </remarks>
-  [Serializable]
   public class EventRaisingDomainObjectCollectionDataDecorator : ObservableDomainObjectCollectionDataDecoratorBase
   {
     private readonly IDomainObjectCollectionEventRaiser _eventRaiser;

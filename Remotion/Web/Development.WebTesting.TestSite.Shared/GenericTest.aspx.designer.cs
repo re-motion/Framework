@@ -7,13 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.Web.Development.WebTesting.TestSite.Shared
-{
-
-
-    public partial class GenericTest
-    {
-
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared {
+    
+    
+    public partial class GenericTest {
+        
         /// <summary>
         /// UpdatePanel control.
         /// </summary>
@@ -22,7 +20,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Shared
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanel;
-
+        
         /// <summary>
         /// PanelHiddenControl control.
         /// </summary>
@@ -31,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Shared
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel PanelHiddenControl;
-
+        
         /// <summary>
         /// PanelVisibleControl control.
         /// </summary>
@@ -40,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Shared
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel PanelVisibleControl;
-
+        
         /// <summary>
         /// PanelAmbiguousControl control.
         /// </summary>
@@ -49,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Shared
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel PanelAmbiguousControl;
-
+        
         /// <summary>
         /// PanelDisabledControl control.
         /// </summary>
@@ -58,19 +56,5 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Shared
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel PanelDisabledControl;
-
-        /// <summary>
-        /// Master property.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated property.
-        /// </remarks>
-        public new Remotion.Web.Development.WebTesting.TestSite.Shared.Layout Master
-        {
-            get
-            {
-                return ((Remotion.Web.Development.WebTesting.TestSite.Shared.Layout)(base.Master));
-            }
-        }
     }
 }

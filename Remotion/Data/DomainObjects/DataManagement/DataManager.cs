@@ -31,7 +31,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
   /// Manages the data (<see cref="DataContainer"/> instances, <see cref="IRelationEndPoint"/> instances, and invalid objects) for a 
   /// <see cref="ClientTransaction"/>.
   /// </summary>
-  [Serializable]
   public class DataManager : IDataManager
   {
     private ClientTransaction _clientTransaction;

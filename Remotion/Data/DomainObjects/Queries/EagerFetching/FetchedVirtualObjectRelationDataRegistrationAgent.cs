@@ -28,7 +28,6 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
   /// <summary>
   /// Implements <see cref="IRelationEndPointRegistrationAgent"/> for virtual object-valued relation end-points.
   /// </summary>
-  [Serializable]
   public class FetchedVirtualObjectRelationDataRegistrationAgent : FetchedRelationDataRegistrationAgentBase
   {
     private static readonly ILog s_log = LogManager.GetLogger(typeof(FetchedVirtualObjectRelationDataRegistrationAgent));

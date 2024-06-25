@@ -19,7 +19,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 {
-  [Serializable]
   [DBTable]
   [TestDomain]
   [Instantiable]

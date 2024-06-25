@@ -23,7 +23,6 @@ using Remotion.Web.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
-  [Serializable]
   public class UserControlExecutor : IUserControlExecutor
   {
     private readonly WxeFunction _function;

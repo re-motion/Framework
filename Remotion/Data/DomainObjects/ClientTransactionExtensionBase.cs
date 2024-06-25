@@ -32,7 +32,6 @@ namespace Remotion.Data.DomainObjects
   /// This class implements all notification methods of <see cref="IClientTransactionExtension"/> as virtual "no-op" methods. Concrete derivations
   /// can override one or more of these methods in order to react on the notification methods. It is not required to call the base implementation.
   /// </remarks>
-  [Serializable]
   public abstract class ClientTransactionExtensionBase : IClientTransactionExtension
   {
     private readonly string _key;

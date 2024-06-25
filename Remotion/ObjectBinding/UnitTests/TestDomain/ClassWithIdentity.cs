@@ -20,7 +20,6 @@ using Remotion.Mixins;
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
   [BindableObjectWithIdentity]
-  [Serializable]
   public class ClassWithIdentity
   {
     private string _string;

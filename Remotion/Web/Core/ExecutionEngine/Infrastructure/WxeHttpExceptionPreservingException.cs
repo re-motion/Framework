@@ -21,7 +21,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
-  [Serializable]
   public sealed class WxeHttpExceptionPreservingException : WxeException
   {
     [CanBeNull]

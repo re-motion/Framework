@@ -27,7 +27,6 @@ namespace Remotion.Validation.Implementation
   public class ValidatorBuilderSerializationDecorator
       : IValidatorBuilder
   {
-    [NonSerialized]
     private readonly IValidatorBuilder _validatorBuilder;
 
     public ValidatorBuilderSerializationDecorator (IValidatorBuilder validatorBuilder)

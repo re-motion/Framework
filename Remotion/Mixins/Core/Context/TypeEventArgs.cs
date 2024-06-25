@@ -19,7 +19,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context
 {
-  [Serializable]
   public class TypeEventArgs : EventArgs
   {
     private readonly Type _type;

@@ -27,7 +27,6 @@ namespace Remotion.Web.ExecutionEngine
   /// <see cref="IWxeExecutor"/>.<see cref="IWxeExecutor.ExecuteFunctionExternalByRedirect"/> method will return to its calling 
   /// <see cref="WxeFunction"/>. Use the <see cref="Null"/> value if you do not wish to return to the caller.
   /// </summary>
-  [Serializable]
   public sealed class WxeReturnOptions : INullObject
   {
     public static readonly WxeReturnOptions Null = new WxeReturnOptions(false, null);

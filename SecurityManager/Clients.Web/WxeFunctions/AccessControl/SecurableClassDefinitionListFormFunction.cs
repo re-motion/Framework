@@ -22,7 +22,6 @@ using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.AccessControl
 {
-  [Serializable]
   public class SecurableClassDefinitionListFormFunction : FormFunction<Tenant>
   {
     public SecurableClassDefinitionListFormFunction ()

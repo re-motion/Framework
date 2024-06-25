@@ -25,7 +25,6 @@ namespace Remotion.Web.ExecutionEngine
 
 /// <summary> Performs a single operation in a web application as part of a <see cref="WxeFunction"/>. </summary>
 /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/Class/*' />
-[Serializable]
 public abstract class WxeStep
 {
   /// <summary> Gets the <see cref="WxeFunction"/> for the passed <see cref="WxeStep"/>. </summary>
@@ -70,7 +69,6 @@ public abstract class WxeStep
   /// <summary> 
   ///   <see langword="true"/> during the execution of <see cref="Abort"/>. Used to prevent circular aborting.
   /// </summary>
-  [NonSerialized]
   private bool _isAborting = false;
 
   /// <overloads>

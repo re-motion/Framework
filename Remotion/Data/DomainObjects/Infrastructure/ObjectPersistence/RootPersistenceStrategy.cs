@@ -32,7 +32,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// <summary>
   /// Represents a top-level <see cref="ClientTransaction"/>, which does not have a parent transaction.
   /// </summary>
-  [Serializable]
   public class RootPersistenceStrategy : IFetchEnabledPersistenceStrategy
   {
     private readonly Guid _transactionID;

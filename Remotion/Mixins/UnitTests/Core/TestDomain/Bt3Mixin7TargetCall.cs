@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Serializable]
   public class Bt3Mixin7TargetCall : Mixin<ICBaseType3BT3Mixin4>
   {
     public string InvokeThisMethods ()

@@ -28,7 +28,6 @@ namespace Remotion.Data.DomainObjects.Queries
   /// <summary>
   /// <see cref="QueryManager"/> provides methods to execute queries within a <see cref="RootPersistenceStrategy"/>.
   /// </summary>
-  [Serializable]
   public class QueryManager : IQueryManager
   {
     private readonly IPersistenceStrategy _persistenceStrategy;

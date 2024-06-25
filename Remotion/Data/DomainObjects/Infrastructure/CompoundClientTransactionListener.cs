@@ -29,7 +29,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// <summary>
   /// Implements a collection of <see cref="IClientTransactionListener"/> objects.
   /// </summary>
-  [Serializable]
   public class CompoundClientTransactionListener : IClientTransactionListener
   {
     private readonly List<IClientTransactionListener> _listeners = new List<IClientTransactionListener>();

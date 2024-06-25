@@ -22,7 +22,6 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
   /// Thrown when the automatic assembly loading performed by an implementation of <see cref="IAssemblyLoader"/> yields an error during a
   /// load operation.
   /// </summary>
-  [Serializable]
   public class AssemblyLoaderException : Exception
   {
     public AssemblyLoaderException (string message, Exception innerException)

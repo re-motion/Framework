@@ -29,7 +29,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   /// implementation provided by <see cref="BindableDomainObject"/> type. This type exposes the aforementioned interfaces and delegates their 
   /// implementation to the mixin.
   /// </remarks>
-  [Serializable]
   [BindableDomainObjectProvider]
   public class BindableDomainObjectMixin : BindableObjectMixinBase<IDomainObject>, IBusinessObjectWithIdentity
   {

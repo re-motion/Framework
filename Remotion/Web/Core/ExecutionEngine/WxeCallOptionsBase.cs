@@ -22,7 +22,6 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace Remotion.Web.ExecutionEngine
 {
-  [Serializable]
   public abstract class WxeCallOptionsBase : IWxeCallOptions
   {
     private readonly WxePermaUrlOptions _permaUrlOptions;

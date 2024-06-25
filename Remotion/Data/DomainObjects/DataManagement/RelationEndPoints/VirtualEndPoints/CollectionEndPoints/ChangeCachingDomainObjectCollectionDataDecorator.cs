@@ -36,7 +36,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// <see cref="ChangeCachingDomainObjectCollectionDataDecorator"/>.
   /// </para>
   /// </remarks>
-  [Serializable]
   public class ChangeCachingDomainObjectCollectionDataDecorator : DomainObjectCollectionDataDecoratorBase
   {
     // Used for operations causing _originalData to CopyOnWrite and WrappedData_CollectionChanged to raise _stateUpdateListener events

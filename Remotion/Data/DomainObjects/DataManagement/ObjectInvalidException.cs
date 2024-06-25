@@ -42,7 +42,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
   /// </list>
   /// The <see cref="DataContainer"/> that was associated with the invalid <see cref="DomainObject"/> is discarded.
   /// </remarks>
-  [Serializable]
   public class ObjectInvalidException : DomainObjectException
   {
     private readonly ObjectID? _id;

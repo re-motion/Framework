@@ -21,7 +21,6 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// This exception represents an inconsistent validation rule configuration.
   /// </summary>
-  [Serializable]
   public class ValidationConfigurationException : Exception
   {
     public ValidationConfigurationException (string message)

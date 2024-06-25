@@ -26,6 +26,8 @@ using Wrapper = Remotion.Collections.DataStore.LazyLockingDataStoreAdapter<strin
 
 namespace Remotion.Collections.DataStore.UnitTests
 {
+  using InnerFactory = Func<IDataStore<string, Lazy<Wrapper>>, Lazy<Wrapper>>;
+
   [TestFixture]
   public class LazyLockingDataStoreAdapterTest
   {

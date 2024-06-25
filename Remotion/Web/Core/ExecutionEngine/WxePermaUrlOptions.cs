@@ -24,7 +24,6 @@ namespace Remotion.Web.ExecutionEngine
   /// browser's location bar. Use the <see cref="Null"/> value of the <see cref="WxePermaUrlOptions"/> if you do not wish to create a perma-URL for
   /// the <see cref="WxeFunction"/>.
   /// </summary>
-  [Serializable]
   public sealed class WxePermaUrlOptions : INullObject
   {
     public static readonly WxePermaUrlOptions Null = new WxePermaUrlOptions(false, false, null);

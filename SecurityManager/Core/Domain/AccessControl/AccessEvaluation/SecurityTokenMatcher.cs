@@ -25,7 +25,6 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
-  [Serializable]
   public class SecurityTokenMatcher
   {
     private readonly AccessControlEntry _ace;

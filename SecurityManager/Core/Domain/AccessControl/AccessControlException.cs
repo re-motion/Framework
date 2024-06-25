@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
-  [Serializable]
   public class AccessControlException : Exception
   {
     // types

@@ -34,7 +34,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   /// if you don't.
   /// </remarks>
   [IgnoreForMappingConfiguration]
-  [Serializable]
   public abstract class SimpleDomainObject<TDomainObject> : BindableDomainObject, ISupportsGetObject
       where TDomainObject : SimpleDomainObject<TDomainObject>
   {

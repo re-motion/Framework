@@ -20,7 +20,6 @@ using Remotion.Utilities;
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
   //TODO: Doc
-  [Serializable]
   public class NoneTransactionMode : ITransactionMode
   {
     public NoneTransactionMode ()

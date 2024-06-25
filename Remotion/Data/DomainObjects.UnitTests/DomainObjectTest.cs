@@ -150,22 +150,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void Initialize_ThrowsForDeserializedObject ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var orderItem = _transaction.ExecuteInScope(() => DomainObjectIDs.OrderItem1.GetObject<OrderItem>());
-
-
-      var deserializedOrderItem = Serializer.SerializeAndDeserialize(orderItem);
-      Assert.That(
-          () => deserializedOrderItem.Initialize(DomainObjectIDs.OrderItem1, _transaction),
-          Throws.InvalidOperationException
-              .With.Message.EqualTo(
-                  "The object cannot be initialized, it already has an ID."));
-    }
-
-    [Test]
     public void Initialize_WithUninitializedObject_SetsIDAndRootTransaction ()
     {
       var type = GetConcreteType(typeof(OrderItem));
@@ -491,31 +475,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
       PrivateInvoke.InvokeNonPublicMethod(order, typeof(DomainObject), "OnLoaded");
 
       Assert.That(order.NeedsLoadModeDataContainerOnly, Is.True);
-    }
-
-    [Test]
-    public void NeedsLoadModeDataContainerOnly_Serialization_True ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var order = _transaction.ExecuteInScope(() => Order.NewObject());
-      Assert.That(order.NeedsLoadModeDataContainerOnly, Is.True);
-
-      var deserializedOrder = Serializer.SerializeAndDeserialize(order);
-      Assert.That(deserializedOrder.NeedsLoadModeDataContainerOnly, Is.True);
-    }
-
-    [Test]
-    public void NeedsLoadModeDataContainerOnly_Serialization_False ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var order = (Order)LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Order1);
-
-      Assert.That(order.NeedsLoadModeDataContainerOnly, Is.False);
-
-      var deserializedOrder = Serializer.SerializeAndDeserialize(order);
-      Assert.That(deserializedOrder.NeedsLoadModeDataContainerOnly, Is.False);
     }
 
     [Test]

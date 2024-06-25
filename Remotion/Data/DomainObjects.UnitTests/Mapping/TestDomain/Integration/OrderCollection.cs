@@ -20,7 +20,6 @@ using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 {
-  [Serializable]
   public class OrderCollection : ObjectList<Order>
   {
     public OrderCollection ()

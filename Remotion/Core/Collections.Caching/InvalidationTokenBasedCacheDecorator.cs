@@ -23,7 +23,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Collections.Caching
 {
-  [Serializable]
   public sealed class InvalidationTokenBasedCacheDecorator<TKey, TValue> : ICache<TKey, TValue>
       where TKey : notnull
   {

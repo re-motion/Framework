@@ -20,7 +20,6 @@ using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunctionIntegrationTests.WxeFunctions
 {
-  [Serializable]
   public class CreateNoneTestTransactedFunction : WxeFunction
   {
     // types

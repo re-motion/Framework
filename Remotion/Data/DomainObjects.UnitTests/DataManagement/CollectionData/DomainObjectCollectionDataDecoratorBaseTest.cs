@@ -237,16 +237,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 
       _wrappedDataMock.Verify();
     }
-
-    [Test]
-    public void Serializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var source = new TestDomainObjectCollectionDecorator(new DomainObjectCollectionData(new[] { _order1, _order3 }));
-
-      var result = Serializer.SerializeAndDeserialize(source);
-      Assert.That(result.Count, Is.EqualTo(2));
-    }
   }
 }

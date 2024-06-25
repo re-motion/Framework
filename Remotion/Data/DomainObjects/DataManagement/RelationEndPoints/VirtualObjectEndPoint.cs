@@ -29,7 +29,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// </summary>
   public class VirtualObjectEndPoint : ObjectEndPoint, IVirtualObjectEndPoint
   {
-    [Serializable]
     public class EndPointLoader : IncompleteVirtualObjectEndPointLoadState.IEndPointLoader
     {
       private readonly ILazyLoader _lazyLoader;

@@ -19,7 +19,6 @@ using Remotion.Data.DomainObjects.Queries;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
-  [Serializable]
   public class ClientTransactionExtensionWithQueryFiltering : ClientTransactionExtensionBase
   {
     public ClientTransactionExtensionWithQueryFiltering ()

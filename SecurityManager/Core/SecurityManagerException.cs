@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.SecurityManager
 {
-  [Serializable]
   public class SecurityManagerException : Exception
   {
     // types

@@ -19,7 +19,6 @@ using System;
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
   [BindableObject]
-  [Serializable]
   public class BaseBusinessObjectClass
   {
     public BaseBusinessObjectClass ()

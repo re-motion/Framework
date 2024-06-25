@@ -23,7 +23,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// <see cref="IDomainObjectCollectionEventRaiser"/>. This is useful when the event raiser needs to be changed after e.g. the 
   /// <see cref="EventRaisingDomainObjectCollectionDataDecorator"/> has been created.
   /// </summary>
-  [Serializable]
   public class IndirectDomainObjectCollectionEventRaiser : IDomainObjectCollectionEventRaiser
   {
     public IndirectDomainObjectCollectionEventRaiser ()

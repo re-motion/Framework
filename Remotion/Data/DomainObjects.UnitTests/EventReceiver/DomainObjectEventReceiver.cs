@@ -19,7 +19,6 @@ using Remotion.Data.DomainObjects.Mapping;
 
 namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {
-  [Serializable]
   public class DomainObjectEventReceiver : EventReceiverBase
   {
     // types
@@ -34,9 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     private readonly ClientTransaction _transactionToVerify;
     private bool _hasChangingEventBeenCalled = false;
     private bool _hasChangedEventBeenCalled = false;
-    [NonSerialized]
     private PropertyDefinition _changingPropertyDefinition;
-    [NonSerialized]
     private PropertyDefinition _changedPropertyDefinition;
     private object _changingOldValue;
     private object _changingNewValue;
@@ -49,13 +46,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     private bool _hasRelationChangedEventBeenCalled = false;
     private string _changingRelationPropertyName;
     private string _changedRelationPropertyName;
-    [NonSerialized]
     private DomainObject _changingOldRelatedObject;
-    [NonSerialized]
     private DomainObject _changingNewRelatedObject;
-    [NonSerialized]
     private DomainObject _changedOldRelatedObject;
-    [NonSerialized]
     private DomainObject _changedNewRelatedObject;
 
     private bool _hasCommittingEventBeenCalled = false;

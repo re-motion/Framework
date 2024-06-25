@@ -21,7 +21,6 @@ using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
 {
-  [Serializable]
   public abstract class FormFunction<T> : BaseTransactedFunction
       where T : BaseSecurityManagerObject, ISupportsGetObject
   {

@@ -34,7 +34,6 @@ namespace Remotion.Data.DomainObjects.Security
   /// The operations are not guarded against re-entry. Instead, the security implementation itself is responsible for not performing recursive 
   /// checks on the same object instance.
   /// </remarks>
-  [Serializable]
   public class SecurityClientTransactionExtension : ClientTransactionExtensionBase
   {
     private static readonly IReadOnlyList<AccessType> s_findAccessType = ImmutableSingleton.Create(AccessType.Get(GeneralAccessTypes.Find));
@@ -46,7 +45,6 @@ namespace Remotion.Data.DomainObjects.Security
       get { return typeof(SecurityClientTransactionExtension).GetFullNameChecked(); }
     }
 
-    [NonSerialized]
     private SecurityClient? _securityClient;
 
 

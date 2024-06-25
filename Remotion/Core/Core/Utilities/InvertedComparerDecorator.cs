@@ -24,7 +24,6 @@ namespace Remotion.Utilities
   /// to invert the result.
   /// </summary>
   /// <typeparam name="T">The type of the objects to be compared.</typeparam>
-  [Serializable]
   public class InvertedComparerDecorator<T> : IComparer<T>
   {
     private readonly IComparer<T> _comparer;

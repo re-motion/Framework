@@ -29,7 +29,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// This class does not perform any fancy argument checking, use <see cref="ModificationCheckingDomainObjectCollectionDataDecorator"/> for that. It does, however,
   /// ensure that no inconsistent state can be created, even when calling its members with invalid arguments.
   /// </summary>
-  [Serializable]
   public class DomainObjectCollectionData : IDomainObjectCollectionData
   {
     private readonly List<ObjectID> _orderedObjectIDs = new List<ObjectID>();

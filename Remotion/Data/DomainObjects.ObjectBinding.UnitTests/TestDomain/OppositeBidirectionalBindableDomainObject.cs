@@ -19,7 +19,6 @@ using System;
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 {
   [Instantiable]
-  [Serializable]
   [DBTable]
   public abstract class OppositeBidirectionalBindableDomainObject : BindableDomainObject
   {

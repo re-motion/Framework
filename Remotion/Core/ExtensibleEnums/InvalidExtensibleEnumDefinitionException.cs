@@ -21,7 +21,6 @@ namespace Remotion.ExtensibleEnums
   /// <summary>
   /// Thrown when an <see cref="ExtensibleEnum{T}"/> is not defined correctly.
   /// </summary>
-  [Serializable]
   public class InvalidExtensibleEnumDefinitionException : Exception
   {
     public InvalidExtensibleEnumDefinitionException (string message)

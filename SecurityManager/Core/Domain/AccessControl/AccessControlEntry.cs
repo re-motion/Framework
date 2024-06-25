@@ -30,7 +30,6 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
-  [Serializable]
   [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.AccessControl.AccessControlEntry")]
   [Instantiable]
   [DBTable]

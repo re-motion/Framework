@@ -22,7 +22,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// Extends <see cref="RelationEndPointRegistrationAgent"/> with functionality specific to root transactions. Specifically, it optimizes
   /// end-point registration for 1:1 relations to avoid unnecessary queries.
   /// </summary>
-  [Serializable]
   public class RootRelationEndPointRegistrationAgent : RelationEndPointRegistrationAgent
   {
     public RootRelationEndPointRegistrationAgent (IVirtualEndPointProvider endPointProvider)

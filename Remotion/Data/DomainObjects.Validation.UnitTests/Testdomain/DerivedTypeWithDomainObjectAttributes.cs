@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
 {
-  [Serializable]
   public class DerivedTypeWithDomainObjectAttributes : TypeWithDomainObjectAttributes
   {
     public static DerivedTypeWithDomainObjectAttributes NewObject ()
