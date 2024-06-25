@@ -57,5 +57,5 @@ public class SqlTableValuedDataParameterDefinitionFactory : IDataParameterDefini
       return new SqlTableValuedDataParameterDefinition(recordDefinition);
 
     return NextDataParameterDefinitionFactory.CreateDataParameterDefinition(queryParameter, query);
-      }
+  }
 }
