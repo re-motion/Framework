@@ -1,3 +1,5 @@
 ﻿[*.cs]
 dotnet_diagnostic.RMSYN1001.severity = none
 dotnet_diagnostic.RMSYN1004.severity = none
+
+file_header_template = SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu\nSPDX-FileCopyrightText: (c) Microsoft Corporation All rights reserved.\nSPDX-License-Identifier: MIT
