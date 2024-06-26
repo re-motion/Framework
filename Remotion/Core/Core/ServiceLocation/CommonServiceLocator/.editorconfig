@@ -1,0 +1,2 @@
+[*.cs]
+file_header_template = \nSPDX-License-Identifier: MS-PL
