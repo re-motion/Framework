@@ -30,7 +30,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UrlMapping.xml" />
+    <Content Include="UrlMapping.xml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
