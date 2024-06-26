@@ -1,4 +1,6 @@
-﻿namespace Remotion.Context
+﻿// SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
+// SPDX-License-Identifier: LGPL-2.1-or-later
+namespace Remotion.Context
 {
   /// <summary>
   /// Implements a strategy for <see cref="SafeContextBoundary"/> to restore a previous <see cref="SafeContext"/>.
