@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Logging;
 using Remotion.Utilities;
@@ -41,11 +42,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       TLoadStateInterface LoadEndPointAndGetNewState (TEndPoint endPoint);
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(IncompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager, TLoadStateInterface>));
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<IncompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager, TLoadStateInterface>>();
 
-    protected static ILog Log
+    protected static ILogger Logger
     {
-      get { return s_log; }
+      get { return s_logger; }
     }
 
     private readonly IEndPointLoader _endPointLoader;
@@ -205,8 +206,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull("items", items);
       ArgumentUtility.CheckNotNull("stateSetter", stateSetter);
 
-      if (s_log.IsInfoEnabled())
-        s_log.InfoFormat("Virtual end-point '{0}' is transitioned to complete state.", endPoint.ID);
+      if (s_logger.IsEnabled(LogLevel.Information))
+        s_logger.LogInformation("Virtual end-point '{0}' is transitioned to complete state.", endPoint.ID);
 
       var dataManager = CreateEndPointDataManager(endPoint);
 

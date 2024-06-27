@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using Remotion.Collections;
 using Remotion.Logging;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results;
@@ -28,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
 
   public sealed class BusinessObjectPropertyPathBasedComparer : IComparer<BocListRow>
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(BusinessObjectPropertyPathBasedComparer));
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<BusinessObjectPropertyPathBasedComparer>();
 
     private readonly IBusinessObjectPropertyPath _propertyPath;
     private readonly Dictionary<BocListRow, CacheValue> _cache = new Dictionary<BocListRow, CacheValue>();
@@ -118,7 +119,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
       }
       catch (Exception e)
       {
-        s_log.ErrorFormat(
+        s_logger.LogError(
             e, "Exception thrown while evaluating the result for property path '{0}' in row {1} of BocList.", _propertyPath.Identifier, row.Index);
         return Tuple.Create((object?)null, new DoubleCheckedLockingContainer<string>(() => null!));
       }
@@ -136,7 +137,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
       }
       catch (Exception e)
       {
-        s_log.ErrorFormat(
+        s_logger.LogError(
             e, "Exception thrown while reading the value for property path '{0}' in row {1} of BocList.", _propertyPath.Identifier, row.Index);
         return null;
       }
@@ -150,7 +151,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
       }
       catch (Exception e)
       {
-        s_log.ErrorFormat(
+        s_logger.LogError(
             e, "Exception thrown while reading string value for property path '{0}' in row {1} of BocList.", _propertyPath.Identifier, row.Index);
         return string.Empty;
       }

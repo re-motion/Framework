@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.ConfigurationLoader;
 using Remotion.Data.DomainObjects.Persistence.Model;
@@ -58,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     }
 
     private static readonly Fields s_fields = new Fields();
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(MappingConfiguration));
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<MappingConfiguration>();
 
     public static IMappingConfiguration Current
     {
@@ -121,9 +122,9 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     private Mapping InitializeMapping (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader)
     {
-      s_log.Info("Building mapping configuration...");
+      s_logger.LogInformation("Building mapping configuration...");
 
-      using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to build and validate mapping configuration: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_logger, LogLevel.Information, "Time needed to build and validate mapping configuration: {elapsed}."))
       {
         var mappingConfigurationValidationHelper = new MappingConfigurationValidationHelper(mappingLoader, persistenceModelLoader);
 

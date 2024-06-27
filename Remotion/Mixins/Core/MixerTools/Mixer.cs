@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Remotion.Collections;
 using Remotion.Logging;
 using Remotion.Mixins.Context;
@@ -38,7 +39,7 @@ namespace Remotion.Mixins.MixerTools
   /// </summary>
   public class Mixer
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(Mixer));
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<Mixer>();
 
     public static Mixer Create (string assemblyName, string assemblyOutputDirectory, int degreeOfParallelism)
     {
@@ -105,7 +106,7 @@ namespace Remotion.Mixins.MixerTools
     {
       if (!Directory.Exists(AssemblyOutputDirectory))
       {
-        s_log.InfoFormat("Preparing output directory '{0}'.", AssemblyOutputDirectory);
+        s_logger.LogInformation("Preparing output directory '{0}'.", AssemblyOutputDirectory);
         Directory.CreateDirectory(AssemblyOutputDirectory);
       }
 
@@ -118,31 +119,31 @@ namespace Remotion.Mixins.MixerTools
     {
       ArgumentUtility.CheckNotNull("configuration", configuration);
 
-      using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to mix and save all types: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_logger, LogLevel.Information, "Time needed to mix and save all types: {elapsed}."))
       {
         _errors.Clear();
         _processedTypes.Clear();
         _finishedTypes.Clear();
         _generatedFiles = new string[0];
 
-        s_log.InfoFormat("The base directory is '{0}'.", AppContext.BaseDirectory);
+        s_logger.LogInformation("The base directory is '{0}'.", AppContext.BaseDirectory);
 
         var pipeline = MixerPipelineFactory.CreatePipeline(AssemblyOutputDirectory);
 
         var mixedTypes = MixedTypeFinder.FindMixedTypes(configuration).ToArray();
 
-        s_log.Info("Generating types...");
+        s_logger.LogInformation("Generating types...");
         using (configuration.EnterScope())
         {
           foreach (var mixedType in mixedTypes)
             Generate(mixedType, pipeline);
         }
 
-        s_log.Info("Saving assemblies...");
+        s_logger.LogInformation("Saving assemblies...");
         Save(pipeline);
       }
 
-      s_log.InfoFormat("Successfully generated concrete types for {0} target classes.", _finishedTypes.Count);
+      s_logger.LogInformation("Successfully generated concrete types for {0} target classes.", _finishedTypes.Count);
     }
 
     private void Generate (Type mixedType, IPipeline pipeline)
@@ -173,7 +174,7 @@ namespace Remotion.Mixins.MixerTools
       _generatedFiles = pipeline.CodeManager.FlushCodeToDisk();
 
       foreach (var generatedFile in _generatedFiles)
-        s_log.InfoFormat("Generated assembly file '{0}'.", generatedFile);
+        s_logger.LogInformation("Generated assembly file '{0}'.", generatedFile);
     }
 
     private void CleanupIfExists (string[] paths)
@@ -182,7 +183,7 @@ namespace Remotion.Mixins.MixerTools
       {
         if (File.Exists(path))
         {
-          s_log.InfoFormat("Removing file '{0}'.", path);
+          s_logger.LogInformation("Removing file '{0}'.", path);
           File.Delete(path);
         }
       }

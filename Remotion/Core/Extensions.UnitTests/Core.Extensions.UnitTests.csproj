@@ -18,6 +18,7 @@
     <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj" />
     <ProjectReference Include="..\Core\Core.Core.csproj" />
     <ProjectReference Include="..\Extensions\Core.Extensions.csproj" />
+    <ProjectReference Include="..\Logging.Log4Net\Core.Logging.Log4Net.csproj" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

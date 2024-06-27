@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Mixins.Context.DeclarativeAnalyzers;
 using Remotion.Mixins.Context.FluentBuilders;
@@ -37,7 +38,7 @@ namespace Remotion.Mixins.Context
   /// <threadsafety static="true" instance="false"/>
   public class DeclarativeConfigurationBuilder
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(DeclarativeConfigurationBuilder));
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<DeclarativeConfigurationBuilder>();
 
     /// <summary>
     /// Builds a new <see cref="MixinConfiguration"/> from the declarative configuration information in the given assemblies without inheriting
@@ -164,7 +165,7 @@ namespace Remotion.Mixins.Context
     public DeclarativeConfigurationBuilder AddAssembly (Assembly assembly)
     {
       ArgumentUtility.CheckNotNull("assembly", assembly);
-      s_log.DebugFormat("Adding assembly {0} to DeclarativeConfigurationBuilder.", assembly);
+      s_logger.LogDebug("Adding assembly {0} to DeclarativeConfigurationBuilder.", assembly);
 
       foreach (var t in AssemblyTypeCache.GetTypes(assembly))
       {
@@ -211,9 +212,9 @@ namespace Remotion.Mixins.Context
     /// <see cref="ClassContext"/> and <see cref="MixinContext"/> objects based on the information added so far.</returns>
     public MixinConfiguration BuildConfiguration ()
     {
-      s_log.InfoFormat("Building mixin configuration from {0} types.", _allTypes.Count);
+      s_logger.LogInformation("Building mixin configuration from {0} types.", _allTypes.Count);
 
-      using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to build mixin configuration: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_logger, LogLevel.Information, "Time needed to build mixin configuration: {elapsed}."))
       {
         var typeAnalyzers = new IMixinDeclarationAnalyzer<Type>[] { CreateAttributeAnalyzer<Type>(), new HasComposedInterfaceMarkerAnalyzer() };
         var assemblyAnalyzers = new IMixinDeclarationAnalyzer<Assembly>[] { CreateAttributeAnalyzer<Assembly>() };

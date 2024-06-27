@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using System.Web;
+using Microsoft.Extensions.Logging;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Logging;
 using Remotion.ServiceLocation;
@@ -28,7 +29,7 @@ namespace Remotion.Web.Test
 {
   public class Global : HttpApplication
   {
-    private static ILog s_log = LogManager.GetLogger(typeof(Global));
+    private static ILogger s_logger = LazyLoggerFactory.CreateLogger<Global>();
     private static ResourceVirtualPathProvider _resourceVirtualPathProvider;
 
     protected void Application_Start (Object sender, EventArgs e)
@@ -38,7 +39,8 @@ namespace Remotion.Web.Test
       defaultServiceLocator.RegisterSingle(() => wxeLifetimeManagementSettings);
 
       ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
-      LogManager.Initialize();
+      //TODO: RM-9195
+      // LogManager.Initialize();
 
 #if DEBUG
       const string configuration = "Debug";
@@ -101,7 +103,7 @@ namespace Remotion.Web.Test
     {
       var exception = Server.GetLastError();
 
-      s_log.Error("Application Error:", exception);
+      s_logger.LogError(exception, "Application Error:");
 
       if (exception is AsyncUnhandledException)
       {

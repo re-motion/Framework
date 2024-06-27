@@ -22,6 +22,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Microsoft.Extensions.Logging;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.Reflection;
@@ -50,7 +51,7 @@ namespace Remotion.Web.UI.Controls
     private const string c_resourceKeyTabs = "Tabs";
 
     // statics
-    private static readonly ILog s_log = LogManager.GetLogger(MethodBase.GetCurrentMethod()!.DeclaringType!);
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<WebTabStrip>();
     private static readonly object s_selectedIndexChangedEvent = new object();
     private static readonly object s_clickEvent = new object();
 
@@ -322,7 +323,7 @@ namespace Remotion.Web.UI.Controls
             default:
             {
               //  Invalid collection property
-              s_log.Warn(
+              s_logger.LogWarning(
                   "WebTabStrip '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
                   + "' does not contain a collection property named '" + collectionID + "'.");
               break;
@@ -347,7 +348,7 @@ namespace Remotion.Web.UI.Controls
         else
         {
           //  Not supported format or invalid property
-          s_log.Warn(
+          s_logger.LogWarning(
               "WebTabStrip '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
               + "' received a resource with an invalid or unknown key '" + key
               + "'. Required format: 'property' or 'collectionID:elementID:property'.");

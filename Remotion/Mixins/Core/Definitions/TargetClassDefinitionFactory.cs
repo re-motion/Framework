@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions.Building;
@@ -32,15 +33,15 @@ namespace Remotion.Mixins.Definitions
   /// </remarks>
   public static class TargetClassDefinitionFactory
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(LogManager));
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger(typeof(TargetClassDefinitionFactory));
 
     public static TargetClassDefinition CreateAndValidate (ClassContext context)
     {
       ArgumentUtility.CheckNotNull("context", context);
 
-      s_log.DebugFormat("Creating a validated class definition for: {0}.", context);
+      s_logger.LogDebug("Creating a validated class definition for: {0}.", context);
 
-      using (StopwatchScope.CreateScope(s_log, LogLevel.Debug, "Time needed to create and validate class definition: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_logger, LogLevel.Debug, "Time needed to create and validate class definition: {elapsed}."))
       {
         var definition = CreateInternal(context);
         Validate(definition);
@@ -52,9 +53,9 @@ namespace Remotion.Mixins.Definitions
     {
       ArgumentUtility.CheckNotNull("context", context);
 
-      s_log.DebugFormat("Creating an unvalidated class definition for: {0}.", context);
+      s_logger.LogDebug("Creating an unvalidated class definition for: {0}.", context);
 
-      using (StopwatchScope.CreateScope(s_log, LogLevel.Debug, "Time needed to create class definition: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_logger, LogLevel.Debug, "Time needed to create class definition: {elapsed}."))
       {
         return CreateInternal(context);
       }

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Logging;
@@ -31,7 +32,7 @@ namespace Remotion.SecurityManager
   {
     public const int Position = NullSecurityProvider.Position - 1;
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(SecurityService));
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<SecurityService>();
 
     private readonly IAccessControlListFinder _accessControlListFinder;
     private readonly ISecurityTokenBuilder _securityTokenBuilder;
@@ -67,7 +68,7 @@ namespace Remotion.SecurityManager
         }
         catch (AccessControlException e)
         {
-          s_log.Error("Error during evaluation of security query.", e);
+          s_logger.LogError(e, "Error during evaluation of security query.");
           return new AccessType[0];
         }
 
@@ -80,7 +81,7 @@ namespace Remotion.SecurityManager
         }
         catch (ObjectsNotFoundException e)
         {
-          s_log.Error("Error during evaluation of security query.", e);
+          s_logger.LogError(e, "Error during evaluation of security query.");
           return new AccessType[0];
         }
       }

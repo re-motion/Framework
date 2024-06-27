@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectType>Test</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>Remotion Logging Log4Net Unit Tests</AssemblyTitle>
+    <AssemblyName>Remotion.Logging.Log4Net.UnitTests</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Development\NUnit\UnitTesting\*.cs" Link="SharedSource\NUnit\UnitTesting\%(Filename)%(Extension)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
+    <ProjectReference Include="..\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\Logging.Log4Net\Core.Logging.Log4Net.csproj" />
+  </ItemGroup>
+  <Import Project="..\..\..\Build\Shared.build.targets" />
+</Project>

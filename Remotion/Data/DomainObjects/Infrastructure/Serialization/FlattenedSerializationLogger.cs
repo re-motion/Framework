@@ -16,23 +16,23 @@
 // 
 using System;
 using System.Linq;
-using Remotion.Logging;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
 {
   public static class FlattenedSerializationLogger
   {
-    public static void LogStatistics (ILog log, object[] objects, int[] ints, bool[] bools)
+    public static void LogStatistics (ILogger logger, object[] objects, int[] ints, bool[] bools)
     {
-      ArgumentUtility.CheckNotNull("log", log);
+      ArgumentUtility.CheckNotNull("logger", logger);
       ArgumentUtility.CheckNotNull("objects", objects);
       ArgumentUtility.CheckNotNull("ints", ints);
       ArgumentUtility.CheckNotNull("bools", bools);
 
-      if (log.IsDebugEnabled())
+      if (logger.IsEnabled(LogLevel.Debug))
       {
-        log.DebugFormat(
+        logger.LogDebug(
             "Flattened serialization: {0} objects ({1} unique), {2} integers, and {3} boolean values.",
             objects.Length,
             objects.Distinct().Count(),
@@ -47,9 +47,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
                                  select new { g.Key, Count = count };
 
         var statisticsString = string.Join(Environment.NewLine, groupingsWithCount.Select(g => g.Key + ": " + g.Count));
-        log.Debug(statisticsString);
+        logger.LogDebug(statisticsString);
       }
-
     }
   }
 }

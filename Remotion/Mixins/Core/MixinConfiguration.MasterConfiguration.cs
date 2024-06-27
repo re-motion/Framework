@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Logging;
+using Microsoft.Extensions.Logging;
 using Remotion.Mixins.Context;
 using Remotion.Utilities;
 
@@ -70,8 +70,8 @@ namespace Remotion.Mixins
 
     private static MixinConfiguration BuildMasterConfiguration ()
     {
-      s_log.Info("Building mixin master configuration...");
-      using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to build mixin master configuration: {elapsed}."))
+      s_logger.LogInformation("Building mixin master configuration...");
+      using (StopwatchScope.CreateScope(s_logger, LogLevel.Information, "Time needed to build mixin master configuration: {elapsed}."))
       {
         return DeclarativeConfigurationBuilder.BuildDefaultConfiguration();
       }

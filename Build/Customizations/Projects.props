@@ -67,6 +67,7 @@
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Collections.DataStore\Core.Collections.DataStore.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\ExtensibleEnums\Core.ExtensibleEnums.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Extensions\Core.Extensions.csproj"/>
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Logging.Log4Net\Core.Logging.Log4Net.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection\Core.Reflection.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection.CodeGeneration\Core.Reflection.CodeGeneration.csproj"/>
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection.CodeGeneration.TypePipe\Core.Reflection.CodeGeneration.TypePipe.csproj">
@@ -88,6 +89,9 @@
       <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Extensions.UnitTests\Core.Extensions.UnitTests.csproj">
+      <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
+    </UnitTestProjectFiles>
+    <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Logging.Log4Net.UnitTests\Core.Logging.Log4Net.UnitTests.csproj">
       <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
     <UnitTestProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Reflection.UnitTests\Core.Reflection.UnitTests.csproj">

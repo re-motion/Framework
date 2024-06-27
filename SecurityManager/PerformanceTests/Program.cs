@@ -24,7 +24,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
-using Remotion.Logging;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain;
@@ -64,7 +63,8 @@ namespace Remotion.SecurityManager.PerformanceTests
 
       ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
 
-      LogManager.Initialize();
+      //TODO: RM-9195
+      // LogManager.Initialize();
 
       var provider = new SecurityService(
           SafeServiceLocator.Current.GetInstance<IAccessControlListFinder>(),

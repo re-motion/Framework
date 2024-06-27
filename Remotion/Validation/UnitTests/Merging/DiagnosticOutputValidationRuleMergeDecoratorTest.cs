@@ -23,7 +23,6 @@ using log4net.Repository;
 using log4net.Repository.Hierarchy;
 using Moq;
 using NUnit.Framework;
-using Remotion.Logging;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using Remotion.Validation.Providers;
@@ -52,17 +51,13 @@ namespace Remotion.Validation.UnitTests.Merging
       _memoryAppender = new MemoryAppender();
       var hierarchy = new Hierarchy();
       ((IBasicRepositoryConfigurator)hierarchy).Configure(_memoryAppender);
-      var logger = hierarchy.GetLogger("The Name");
-      var log = new Log4NetLog(logger);
-      var logManagerStub = new Mock<ILogManager>();
-      logManagerStub.Setup(stub => stub.GetLogger(typeof(DiagnosticOutputValidationRuleMergeDecorator))).Returns(log);
 
       _logContextStub = new Mock<ILogContext>();
       _wrappedMergerStub = new Mock<IValidationRuleCollectorMerger>();
       _validatorFormatterStub = new Mock<IValidatorFormatter>();
 
       _diagnosticOutputValidationRuleMergeDecorator =
-          new DiagnosticOutputValidationRuleMergeDecorator(_wrappedMergerStub.Object, _validatorFormatterStub.Object, logManagerStub.Object);
+          new DiagnosticOutputValidationRuleMergeDecorator(_wrappedMergerStub.Object, _validatorFormatterStub.Object);
     }
 
     [Test]

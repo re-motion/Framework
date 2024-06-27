@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Queries;
@@ -45,11 +46,11 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     private const string c_userNameParameter = "<userName>";
 
-    private static readonly ILog s_log = LogManager.GetLogger(MethodBase.GetCurrentMethod()!.DeclaringType!);
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<CachedUser>();
 
     // Note: Parsing the query takes about 1/6 of the total query time when connected to a local database instance.
-    // Unfortunately, the first query also causes the initialization of various caches in re-store, 
-    // an operation that cannot be easily excluded from the meassured parsing time. Therefor, the cache mainly helps to alleviate any concerns 
+    // Unfortunately, the first query also causes the initialization of various caches in re-store,
+    // an operation that cannot be easily excluded from the meassured parsing time. Therefor, the cache mainly helps to alleviate any concerns
     // about the cost associated with this part of the cache initialization.
     private static readonly QueryCache s_queryCache = new QueryCache();
 
@@ -70,15 +71,15 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     protected override Data LoadData (GuidRevisionValue revision)
     {
-      s_log.InfoFormat("Reset CachedUser for user '{0}'.", _userName);
+      s_logger.LogInformation("Reset CachedUser for user '{0}'.", _userName);
       return new Data(revision, GetUser(_userName));
     }
 
     private User GetUser (string userName)
     {
       using (StopwatchScope.CreateScope(
-          s_log,
-          LogLevel.Info,
+          s_logger,
+          LogLevel.Information,
           "Refreshed data in CachedUser for user '" + userName + "'. Time taken: {elapsed:ms}ms"))
       {
         var clientTransaction = ClientTransaction.CreateRootTransaction();
@@ -89,7 +90,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     private User LoadUser (ClientTransaction clientTransaction, string userName)
     {
       using (StopwatchScope.CreateScope(
-          s_log,
+          s_logger,
           LogLevel.Debug,
           "Fetched data into CachedUser for user '" + userName + "'. Time taken: {elapsed:ms}ms"))
       {
