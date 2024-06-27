@@ -15,6 +15,5 @@
   </metadata>
   <files>
     <file src="RhinoMocks\UnitTesting\ListArgExtensions.cs" target="content/App_Packages/Remotion.Development.RhinoMocks.ListArgs.Sources.$version$" />
-    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Development.RhinoMocks.ListArgs.Sources.$version$" />
   </files>
 </package>

@@ -15,6 +15,5 @@
   </metadata>
   <files>
     <file src="ReSharperAnnotations\*.cs" target="content/App_Packages/Remotion.JetBrains.Annotations.Sources.$version$" />
-    <file src="ReSharperAnnotations\*.licenseheader" target="content/App_Packages/Remotion.JetBrains.Annotations.Sources.$version$" />
   </files>
 </package>

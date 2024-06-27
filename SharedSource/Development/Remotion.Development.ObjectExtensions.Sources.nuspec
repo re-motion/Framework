@@ -18,6 +18,5 @@
   </metadata>
   <files>
     <file src="UnitTesting\ObjectExtensions.cs" target="content/App_Packages/Remotion.Development.ObjectExtensions.Sources.$version$" />
-    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Development.ObjectExtensions.Sources.$version$" />
   </files>
 </package>

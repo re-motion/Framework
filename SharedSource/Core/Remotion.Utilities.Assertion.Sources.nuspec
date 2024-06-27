@@ -18,6 +18,5 @@
   </metadata>
   <files>
     <file src="Utilities\Assertion.cs" target="content/App_Packages/Remotion.Utilities.Assertion.Sources.$version$" />
-    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Utilities.Assertion.Sources.$version$" />
   </files>
 </package>

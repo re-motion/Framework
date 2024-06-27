@@ -19,6 +19,5 @@
   </metadata>
   <files>
     <file src="UnitTesting\PrivateInvoke.cs" target="content/App_Packages/Remotion.Development.PrivateInvoke.Sources.$version$" />
-    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Development.PrivateInvoke.Sources.$version$" />
   </files>
 </package>
