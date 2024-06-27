@@ -15,6 +15,5 @@
   </metadata>
   <files>
     <file src="Utilities\NullableTypeUtility.cs" target="content/App_Packages/Remotion.Utilities.NullableTypeUtility.Sources.$version$" />
-    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Utilities.NullableTypeUtility.Sources.$version$" />
   </files>
 </package>

@@ -15,6 +15,5 @@
   </metadata>
   <files>
     <file src="UnitTesting\Dev.cs" target="content/App_Packages/Remotion.Development.Dev.Sources.$version$" />
-    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Development.Dev.Sources.$version$" />
   </files>
 </package>

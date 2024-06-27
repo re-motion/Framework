@@ -21,6 +21,5 @@
   <files>
     <!-- Renaming files to shorten filepath. Otherwise, Windows filename maxlength would be exceeded. -->
     <file src="UnitTesting\Reflection\NormalizingMemberInfoFromExpressionUtility.cs" target="content/App_Packages/Remotion.Development.NormalizingMemberInfoFromExpressionUtility.Sources.$version$\NMIFRUtility.cs" />
-    <file src="..\SharedSource Apache-2.0.licenseheader" target="content/App_Packages/Remotion.Development.NormalizingMemberInfoFromExpressionUtility.Sources.$version$\Apache-2.0.licenseheader" />
   </files>
 </package>

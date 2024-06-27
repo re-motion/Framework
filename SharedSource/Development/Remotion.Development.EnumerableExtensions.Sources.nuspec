@@ -19,6 +19,5 @@
   <files>
     <file src="UnitTesting\Enumerables\EnumerableExtensions.cs" target="content/App_Packages/Remotion.Development.EnumerableExtensions.Sources.$version$" />
     <file src="UnitTesting\Enumerables\OneTimeEnumerable.cs" target="content/App_Packages/Remotion.Development.EnumerableExtensions.Sources.$version$" />
-    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Development.EnumerableExtensions.Sources.$version$" />
   </files>
 </package>
