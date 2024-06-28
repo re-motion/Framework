@@ -22,6 +22,8 @@ using System.Reflection;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Validation;
+using Remotion.Reflection;
+using Remotion.Reflection.TypeDiscovery;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer;
@@ -47,22 +49,21 @@ public class RemotionReflector
   {
     ArgumentUtility.CheckNotNull("assembly", assembly);
 
-    return assembly.GetCustomAttributes(false).Any(
-        attribute => attribute.GetType().FullName == "Remotion.Reflection.TypeDiscovery.NonApplicationAssemblyAttribute");
+    return assembly.IsDefined(typeof(NonApplicationAssemblyAttribute), false);
   }
 
   public bool IsConfigurationException (Exception exception)
   {
     ArgumentUtility.CheckNotNull("exception", exception);
 
-    return exception.GetType().FullName == "Remotion.Mixins.ConfigurationException";
+    return exception is Remotion.Mixins.ConfigurationException;
   }
 
   public bool IsValidationException (Exception exception)
   {
     ArgumentUtility.CheckNotNull("exception", exception);
 
-    return exception.GetType().FullName == "Remotion.Mixins.Validation.ValidationException";
+    return exception is Remotion.Mixins.Validation.ValidationException;
   }
 
   public bool IsInfrastructureType (Type type)
@@ -85,16 +86,14 @@ public class RemotionReflector
     ArgumentUtility.CheckNotNull("targetType", targetType);
     ArgumentUtility.CheckNotNull("mixinConfiguration", mixinConfiguration);
 
-    var targetClassDefinitionFactoryType = _mixinsAssembly.GetType("Remotion.Mixins.Definitions.TargetClassDefinitionFactory", true);
-    return ReflectedObject.CallMethod(targetClassDefinitionFactoryType!, "CreateAndValidate", classContext).To<TargetClassDefinition>();
+    return TargetClassDefinitionFactory.CreateAndValidate(classContext);
   }
 
   public MixinConfiguration BuildConfigurationFromAssemblies (Assembly[] assemblies)
   {
     ArgumentUtility.CheckNotNull("assemblies", assemblies);
 
-    var declarativeConfigurationBuilderType = _mixinsAssembly.GetType("Remotion.Mixins.Context.DeclarativeConfigurationBuilder", true);
-    return ReflectedObject.CallMethod(declarativeConfigurationBuilderType!, "BuildConfigurationFromAssemblies", [assemblies]).To<MixinConfiguration>();
+    return DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies(assemblies);
   }
 
   public SerializableValidationLogData GetValidationLogFromValidationException (ValidationException validationException)
@@ -123,7 +122,6 @@ public class RemotionReflector
 
   public ITypeDiscoveryService GetTypeDiscoveryService ()
   {
-    var type = _assemblyToCheck.GetType("Remotion.Reflection.TypeDiscovery.ContextAwareTypeDiscoveryUtility", true);
-    return ReflectedObject.CallMethod(type!, "GetTypeDiscoveryService").To<ITypeDiscoveryService>();
+    return ContextAwareTypeUtility.GetTypeDiscoveryService();
   }
 }
