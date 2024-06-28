@@ -19,10 +19,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Mixins.Definitions;
+using Remotion.Mixins.Utilities;
 using Remotion.Mixins.Validation;
 
 namespace Remotion.Mixins.CrossReferencer.UnitTests
@@ -252,8 +252,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
           mixinConfiguration,
           assemblies,
           _configurationErrors,
-          _validationErrors,
-          new RemotionReflector());
+          _validationErrors);
     }
 
     private TargetClassDefinition CreateTargetClassDefintion<ForType> (MixinConfiguration mixinConfiguration)
@@ -269,13 +268,12 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
     private InvolvedType[] GetAdditonalAssemblyInvolvedTypes (params InvolvedType[] explicitInvolvedTypes)
     {
       var implicitInvolvedTypes = new List<InvolvedType>();
-      var remotionReflector = new RemotionReflector();
       var assembly = typeof(Mixin1).Assembly;
 
       foreach (var type in assembly.GetTypes())
       {
         // also add classes which inherit from Mixin<> or Mixin<,>, but are actually not used as Mixins (not in ClassContexts)
-        if (remotionReflector.IsInheritedFromMixin(type) && !remotionReflector.IsInfrastructureType(type))
+        if (ReflectionUtility.IsMixinType(type))
           implicitInvolvedTypes.Add(new InvolvedType(type));
       }
 

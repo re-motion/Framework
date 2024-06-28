@@ -21,7 +21,6 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using NUnit.Framework;
 using Remotion.Mixins.CrossReferencer.Formatting;
-using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Report;
 using Remotion.Mixins.CrossReferencer.UnitTests.Helpers;
 using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;

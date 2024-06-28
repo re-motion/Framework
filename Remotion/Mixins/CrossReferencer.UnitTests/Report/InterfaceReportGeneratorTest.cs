@@ -18,7 +18,6 @@ using System;
 using System.Xml.Linq;
 using NUnit.Framework;
 using Remotion.Mixins.CrossReferencer.Formatting;
-using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.UnitTests.Helpers;
 using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 
@@ -28,19 +27,17 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
   public class InterfaceReportGeneratorTest
   {
     private IOutputFormatter _outputFormatter;
-    private IRemotionReflector _remotionReflector;
 
     [SetUp]
     public void SetUp ()
     {
       _outputFormatter = new OutputFormatter();
-      _remotionReflector = new RemotionReflector();
     }
 
     [Test]
     public void GenerateXml_ZeroInterfaces ()
     {
-      var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator(_remotionReflector, _outputFormatter);
+      var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator(_outputFormatter);
       var output = reportGenerator.GenerateXml();
 
       var expectedOutput = new XElement("Interfaces");
@@ -53,7 +50,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       // TargetClass1 implements IDisposable
       var involvedType = new InvolvedType(typeof(TargetClass1));
 
-      var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator(_remotionReflector, _outputFormatter, involvedType);
+      var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator(_outputFormatter, involvedType);
       var output = reportGenerator.GenerateXml();
 
       var memberReportGenerator = ReportBuilder.CreateMemberReportGenerator(typeof(IDisposable), _outputFormatter);
@@ -91,7 +88,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       var classContext = mixinConfiguration.ClassContexts.GetWithInheritance(typeof(ComposedInterfacesTestClass.MyMixinTarget));
       involvedType.ClassContext = classContext;
 
-      var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator(_remotionReflector, _outputFormatter, involvedType);
+      var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator(_outputFormatter, involvedType);
       var output = reportGenerator.GenerateXml();
 
       var memberReportGenerator = ReportBuilder.CreateMemberReportGenerator(typeof(ComposedInterfacesTestClass.ICMyMixinTargetMyMixin), _outputFormatter);
@@ -129,7 +126,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       var classContext = mixinConfiguration.ClassContexts.GetWithInheritance(typeof(ComposedInterfacesTestClass.MyMixinTarget));
       involvedType.ClassContext = classContext;
 
-      var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator(_remotionReflector, _outputFormatter, involvedType);
+      var reportGenerator = ReportBuilder.CreateInterfaceReportGenerator(_outputFormatter, involvedType);
       var output = reportGenerator.GetComposedInterfaces();
 
       Assert.That(output, Is.EquivalentTo(classContext.ComposedInterfaces));

@@ -20,7 +20,6 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Formatting;
-using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Utilities;
 
@@ -32,7 +31,6 @@ namespace Remotion.Mixins.CrossReferencer.Report
     private readonly IIdentifierGenerator<Assembly> _assemblyIdentifierGenerator;
     private readonly IIdentifierGenerator<Type> _involvedTypeIdentifierGenerator;
     private readonly IIdentifierGenerator<Type> _attributeIdentifierGenerator;
-    private readonly IRemotionReflector _remotionReflector;
     private readonly IOutputFormatter _outputFormatter;
 
     public AttributeReportGenerator (
@@ -40,7 +38,6 @@ namespace Remotion.Mixins.CrossReferencer.Report
         IIdentifierGenerator<Assembly> assemblyIdentifierGenerator,
         IIdentifierGenerator<Type> involvedTypeIdentifierGenerator,
         IIdentifierGenerator<Type> attributeIdentifierGenerator,
-        IRemotionReflector remotionReflector,
         IOutputFormatter outputFormatter
     )
     {
@@ -48,14 +45,12 @@ namespace Remotion.Mixins.CrossReferencer.Report
       ArgumentUtility.CheckNotNull("assemblyIdentifierGenerator", assemblyIdentifierGenerator);
       ArgumentUtility.CheckNotNull("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
       ArgumentUtility.CheckNotNull("attributeIdentifierGenerator", attributeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
       ArgumentUtility.CheckNotNull("outputFormatter", outputFormatter);
 
       _involvedTypes = involvedTypes;
       _assemblyIdentifierGenerator = assemblyIdentifierGenerator;
       _involvedTypeIdentifierGenerator = involvedTypeIdentifierGenerator;
       _attributeIdentifierGenerator = attributeIdentifierGenerator;
-      _remotionReflector = remotionReflector;
       _outputFormatter = outputFormatter;
     }
 
@@ -81,7 +76,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
           //var attributeType = attribute.GetType();
           var attributeType = attribute.Constructor.DeclaringType;
 
-          if (_remotionReflector.IsInfrastructureType(attributeType))
+          if (CrossReferencerReflectionUtility.IsInfrastructureType(attributeType))
             continue;
 
           if (!allAttributes.ContainsKey(attributeType))

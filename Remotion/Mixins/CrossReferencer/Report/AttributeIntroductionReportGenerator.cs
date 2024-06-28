@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using System.Xml.Linq;
-using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Mixins.Definitions;
 using Remotion.Utilities;
@@ -29,20 +28,16 @@ namespace Remotion.Mixins.CrossReferencer.Report
     // MultiDefinitionCollection<Type, AttributeIntroductionDefinition> _attributeIntroductionDefinitions
     private readonly MultiDefinitionCollection<Type, AttributeIntroductionDefinition> _attributeIntroductionDefinitions;
     private readonly IIdentifierGenerator<Type> _attributeIdentifierGenerator;
-    private readonly IRemotionReflector _remotionReflector;
 
     public AttributeIntroductionReportGenerator (
         MultiDefinitionCollection<Type, AttributeIntroductionDefinition> attributeIntroductionDefinitions,
-        IIdentifierGenerator<Type> attributeIdentifierGenerator,
-        IRemotionReflector remotionReflector)
+        IIdentifierGenerator<Type> attributeIdentifierGenerator)
     {
       ArgumentUtility.CheckNotNull("attributeIntroductionDefinitions", attributeIntroductionDefinitions);
       ArgumentUtility.CheckNotNull("attributeIdentifierGenerator", attributeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
 
       _attributeIntroductionDefinitions = attributeIntroductionDefinitions;
       _attributeIdentifierGenerator = attributeIdentifierGenerator;
-      _remotionReflector = remotionReflector;
     }
 
     public XElement GenerateXml ()
@@ -50,7 +45,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
       return new XElement(
           "AttributeIntroductions",
           from introducedAttribute in _attributeIntroductionDefinitions
-          where !_remotionReflector.IsInfrastructureType(introducedAttribute.AttributeType)
+          where !CrossReferencerReflectionUtility.IsInfrastructureType(introducedAttribute.AttributeType)
           select GenerateAttributeReferanceElement(introducedAttribute.AttributeType));
     }
 

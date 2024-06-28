@@ -20,7 +20,6 @@ using System.Reflection;
 using System.Xml.Linq;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.CrossReferencer.Formatting;
-using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Utilities;
 
@@ -33,7 +32,6 @@ namespace Remotion.Mixins.CrossReferencer.Report
     private readonly IIdentifierGenerator<Type> _involvedTypeIdentifierGenerator;
     private readonly IIdentifierGenerator<Type> _interfaceIdentifierGenerator;
     private readonly IIdentifierGenerator<Type> _attributeIdentifierGenerator;
-    private readonly IRemotionReflector _remotionReflector;
     private readonly IOutputFormatter _outputFormatter;
 
     public MixinReferenceReportGenerator (
@@ -42,7 +40,6 @@ namespace Remotion.Mixins.CrossReferencer.Report
         IIdentifierGenerator<Type> involvedTypeIdentifierGenerator,
         IIdentifierGenerator<Type> interfaceIdentifierGenerator,
         IIdentifierGenerator<Type> attributeIdentifierGenerator,
-        IRemotionReflector remotionReflector,
         IOutputFormatter outputFormatter
     )
     {
@@ -51,7 +48,6 @@ namespace Remotion.Mixins.CrossReferencer.Report
       ArgumentUtility.CheckNotNull("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
       ArgumentUtility.CheckNotNull("interfaceIdentifierGenerator", interfaceIdentifierGenerator);
       ArgumentUtility.CheckNotNull("attributeIdentifierGenerator", attributeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
       ArgumentUtility.CheckNotNull("outputFormatter", outputFormatter);
 
       _involvedType = involvedType;
@@ -59,7 +55,6 @@ namespace Remotion.Mixins.CrossReferencer.Report
       _involvedTypeIdentifierGenerator = involvedTypeIdentifierGenerator;
       _interfaceIdentifierGenerator = interfaceIdentifierGenerator;
       _attributeIdentifierGenerator = attributeIdentifierGenerator;
-      _remotionReflector = remotionReflector;
       _outputFormatter = outputFormatter;
     }
 
@@ -106,11 +101,10 @@ namespace Remotion.Mixins.CrossReferencer.Report
         mixinElement.Add(
             new AttributeIntroductionReportGenerator(
                 mixinDefinition.AttributeIntroductions,
-                _attributeIdentifierGenerator,
-                _remotionReflector).GenerateXml());
+                _attributeIdentifierGenerator).GenerateXml());
         mixinElement.Add(
             new MemberOverrideReportGenerator(mixinDefinition.GetAllOverrides()).GenerateXml());
-        mixinElement.Add(new TargetCallDependenciesReportGenerator(mixinDefinition, _assemblyIdentifierGenerator, _remotionReflector, _outputFormatter).GenerateXml());
+        mixinElement.Add(new TargetCallDependenciesReportGenerator(mixinDefinition, _assemblyIdentifierGenerator, _outputFormatter).GenerateXml());
       }
 
       return mixinElement;

@@ -20,7 +20,6 @@ using System.Reflection;
 using System.Xml.Linq;
 using NUnit.Framework;
 using Remotion.Mixins.CrossReferencer.Formatting;
-using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Report;
 using Remotion.Mixins.CrossReferencer.UnitTests.Helpers;
 using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
@@ -32,7 +31,6 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
   [TestFixture]
   public class InvolvedTypeReportGeneratorTest
   {
-    private IRemotionReflector _remotionReflector;
     private IOutputFormatter _outputFormatter;
 
     private IIdentifierGenerator<Type> _involvedTypeIdentifierGenerator;
@@ -48,7 +46,6 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [SetUp]
     public void SetUp ()
     {
-      _remotionReflector = new RemotionReflector();
       _outputFormatter = new OutputFormatter();
 
       _involvedTypeIdentifierGenerator = new IdentifierGenerator<Type>();
@@ -63,7 +60,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [Test]
     public void GenerateXml_NoInvolvedTypes ()
     {
-      var reportGenerator = ReportBuilder.CreateInvolvedTypeReportGenerator(_remotionReflector, _outputFormatter);
+      var reportGenerator = ReportBuilder.CreateInvolvedTypeReportGenerator(_outputFormatter);
       var output = reportGenerator.GenerateXml();
 
       var expectedOutput = new XElement("InvolvedTypes");
@@ -97,15 +94,14 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
               _outputFormatter.CreateModifierMarkup("", _typeModifierUtility.GetTypeModifiers(involvedType1.Type)),
               _summaryPicker.GetSummary(involvedType1.Type),
               new MemberReportGenerator(involvedType1.Type, null, null, _memberIdentifierGenerator, _outputFormatter).GenerateXml(),
-              new InterfaceReferenceReportGenerator(involvedType1, _interfaceIdentifierGenerator, _remotionReflector).GenerateXml(),
-              new AttributeReferenceReportGenerator(involvedType1.Type, _attributeIdentifierGenerator, _remotionReflector).GenerateXml(),
+              new InterfaceReferenceReportGenerator(involvedType1, _interfaceIdentifierGenerator).GenerateXml(),
+              new AttributeReferenceReportGenerator(involvedType1.Type, _attributeIdentifierGenerator).GenerateXml(),
               new MixinReferenceReportGenerator(
                   involvedType1,
                   _assemblyIdentifierGenerator,
                   _readOnlyInvolvedTypeIdentifierGenerator,
                   _interfaceIdentifierGenerator,
                   _attributeIdentifierGenerator,
-                  _remotionReflector,
                   _outputFormatter).GenerateXml(),
               new TargetReferenceReportGenerator(involvedType1, _readOnlyInvolvedTypeIdentifierGenerator).GenerateXml()
           ));
@@ -139,15 +135,14 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
               _outputFormatter.CreateModifierMarkup("", _typeModifierUtility.GetTypeModifiers(involvedType1.Type)),
               _summaryPicker.GetSummary(involvedType1.Type),
               new MemberReportGenerator(involvedType1.Type, null, null, _memberIdentifierGenerator, _outputFormatter).GenerateXml(),
-              new InterfaceReferenceReportGenerator(involvedType1, _interfaceIdentifierGenerator, _remotionReflector).GenerateXml(),
-              new AttributeReferenceReportGenerator(involvedType1.Type, _attributeIdentifierGenerator, _remotionReflector).GenerateXml(),
+              new InterfaceReferenceReportGenerator(involvedType1, _interfaceIdentifierGenerator).GenerateXml(),
+              new AttributeReferenceReportGenerator(involvedType1.Type, _attributeIdentifierGenerator).GenerateXml(),
               new MixinReferenceReportGenerator(
                   involvedType1,
                   _assemblyIdentifierGenerator,
                   _readOnlyInvolvedTypeIdentifierGenerator,
                   _interfaceIdentifierGenerator,
                   _attributeIdentifierGenerator,
-                  _remotionReflector,
                   _outputFormatter).GenerateXml(),
               new TargetReferenceReportGenerator(involvedType1, _readOnlyInvolvedTypeIdentifierGenerator).GenerateXml()
           ));
@@ -197,15 +192,14 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
               _outputFormatter.CreateModifierMarkup("", _typeModifierUtility.GetTypeModifiers(involvedType1.Type)),
               _summaryPicker.GetSummary(involvedType1.Type),
               new MemberReportGenerator(involvedType1.Type, involvedType1, _involvedTypeIdentifierGenerator, _memberIdentifierGenerator, _outputFormatter).GenerateXml(),
-              new InterfaceReferenceReportGenerator(involvedType1, _interfaceIdentifierGenerator, _remotionReflector).GenerateXml(),
-              new AttributeReferenceReportGenerator(involvedType1.Type, _attributeIdentifierGenerator, _remotionReflector).GenerateXml(),
+              new InterfaceReferenceReportGenerator(involvedType1, _interfaceIdentifierGenerator).GenerateXml(),
+              new AttributeReferenceReportGenerator(involvedType1.Type, _attributeIdentifierGenerator).GenerateXml(),
               new MixinReferenceReportGenerator(
                   involvedType1,
                   _assemblyIdentifierGenerator,
                   _readOnlyInvolvedTypeIdentifierGenerator,
                   _interfaceIdentifierGenerator,
                   _attributeIdentifierGenerator,
-                  _remotionReflector,
                   _outputFormatter).GenerateXml(),
               new TargetReferenceReportGenerator(involvedType1, _readOnlyInvolvedTypeIdentifierGenerator).GenerateXml()
           ),
@@ -225,15 +219,14 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
               _outputFormatter.CreateModifierMarkup("", _typeModifierUtility.GetTypeModifiers(involvedType2.Type)),
               _summaryPicker.GetSummary(involvedType2.Type),
               new MemberReportGenerator(involvedType2.Type, involvedType2, _involvedTypeIdentifierGenerator, _memberIdentifierGenerator, _outputFormatter).GenerateXml(),
-              new InterfaceReferenceReportGenerator(involvedType2, _interfaceIdentifierGenerator, _remotionReflector).GenerateXml(),
-              new AttributeReferenceReportGenerator(involvedType2.Type, _attributeIdentifierGenerator, _remotionReflector).GenerateXml(),
+              new InterfaceReferenceReportGenerator(involvedType2, _interfaceIdentifierGenerator).GenerateXml(),
+              new AttributeReferenceReportGenerator(involvedType2.Type, _attributeIdentifierGenerator).GenerateXml(),
               new MixinReferenceReportGenerator(
                   involvedType2,
                   _assemblyIdentifierGenerator,
                   _readOnlyInvolvedTypeIdentifierGenerator,
                   _interfaceIdentifierGenerator,
                   _attributeIdentifierGenerator,
-                  _remotionReflector,
                   _outputFormatter).GenerateXml(),
               new TargetReferenceReportGenerator(involvedType2, _readOnlyInvolvedTypeIdentifierGenerator).GenerateXml()
           ),
@@ -253,15 +246,14 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
               _outputFormatter.CreateModifierMarkup("", _typeModifierUtility.GetTypeModifiers(involvedType3.Type)),
               _summaryPicker.GetSummary(involvedType3.Type),
               new MemberReportGenerator(involvedType3.Type, involvedType3, _involvedTypeIdentifierGenerator, _memberIdentifierGenerator, _outputFormatter).GenerateXml(),
-              new InterfaceReferenceReportGenerator(involvedType3, _interfaceIdentifierGenerator, _remotionReflector).GenerateXml(),
-              new AttributeReferenceReportGenerator(involvedType3.Type, _attributeIdentifierGenerator, _remotionReflector).GenerateXml(),
+              new InterfaceReferenceReportGenerator(involvedType3, _interfaceIdentifierGenerator).GenerateXml(),
+              new AttributeReferenceReportGenerator(involvedType3.Type, _attributeIdentifierGenerator).GenerateXml(),
               new MixinReferenceReportGenerator(
                   involvedType3,
                   _assemblyIdentifierGenerator,
                   _readOnlyInvolvedTypeIdentifierGenerator,
                   _interfaceIdentifierGenerator,
                   _attributeIdentifierGenerator,
-                  _remotionReflector,
                   _outputFormatter).GenerateXml(),
               new TargetReferenceReportGenerator(involvedType3, _readOnlyInvolvedTypeIdentifierGenerator).GenerateXml()
           ),
@@ -281,15 +273,14 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
               _outputFormatter.CreateModifierMarkup("", _typeModifierUtility.GetTypeModifiers(involvedType4.Type)),
               _summaryPicker.GetSummary(involvedType4.Type),
               new MemberReportGenerator(involvedType4.Type, involvedType4, _involvedTypeIdentifierGenerator, _memberIdentifierGenerator, _outputFormatter).GenerateXml(),
-              new InterfaceReferenceReportGenerator(involvedType4, _interfaceIdentifierGenerator, _remotionReflector).GenerateXml(),
-              new AttributeReferenceReportGenerator(involvedType4.Type, _attributeIdentifierGenerator, _remotionReflector).GenerateXml(),
+              new InterfaceReferenceReportGenerator(involvedType4, _interfaceIdentifierGenerator).GenerateXml(),
+              new AttributeReferenceReportGenerator(involvedType4.Type, _attributeIdentifierGenerator).GenerateXml(),
               new MixinReferenceReportGenerator(
                   involvedType4,
                   _assemblyIdentifierGenerator,
                   _readOnlyInvolvedTypeIdentifierGenerator,
                   _interfaceIdentifierGenerator,
                   _attributeIdentifierGenerator,
-                  _remotionReflector,
                   _outputFormatter).GenerateXml(),
               new TargetReferenceReportGenerator(involvedType4, _readOnlyInvolvedTypeIdentifierGenerator).GenerateXml()
           )
@@ -325,15 +316,14 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
               _outputFormatter.CreateModifierMarkup("", _typeModifierUtility.GetTypeModifiers(involvedType1.Type)),
               _summaryPicker.GetSummary(involvedType1.Type),
               new MemberReportGenerator(involvedType1.Type, involvedType1, _involvedTypeIdentifierGenerator, _memberIdentifierGenerator, _outputFormatter).GenerateXml(),
-              new InterfaceReferenceReportGenerator(involvedType1, _interfaceIdentifierGenerator, _remotionReflector).GenerateXml(),
-              new AttributeReferenceReportGenerator(involvedType1.Type, _attributeIdentifierGenerator, _remotionReflector).GenerateXml(),
+              new InterfaceReferenceReportGenerator(involvedType1, _interfaceIdentifierGenerator).GenerateXml(),
+              new AttributeReferenceReportGenerator(involvedType1.Type, _attributeIdentifierGenerator).GenerateXml(),
               new MixinReferenceReportGenerator(
                   involvedType1,
                   _assemblyIdentifierGenerator,
                   _readOnlyInvolvedTypeIdentifierGenerator,
                   _interfaceIdentifierGenerator,
                   _attributeIdentifierGenerator,
-                  _remotionReflector,
                   _outputFormatter).GenerateXml(),
               new TargetReferenceReportGenerator(involvedType1, _readOnlyInvolvedTypeIdentifierGenerator).GenerateXml()
           ),
@@ -353,15 +343,14 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
               _outputFormatter.CreateModifierMarkup("", _typeModifierUtility.GetTypeModifiers(involvedType2.Type)),
               _summaryPicker.GetSummary(involvedType2.Type),
               new MemberReportGenerator(involvedType2.Type, involvedType2, _involvedTypeIdentifierGenerator, _memberIdentifierGenerator, _outputFormatter).GenerateXml(),
-              new InterfaceReferenceReportGenerator(involvedType2, _interfaceIdentifierGenerator, _remotionReflector).GenerateXml(),
-              new AttributeReferenceReportGenerator(involvedType2.Type, _attributeIdentifierGenerator, _remotionReflector).GenerateXml(),
+              new InterfaceReferenceReportGenerator(involvedType2, _interfaceIdentifierGenerator).GenerateXml(),
+              new AttributeReferenceReportGenerator(involvedType2.Type, _attributeIdentifierGenerator).GenerateXml(),
               new MixinReferenceReportGenerator(
                   involvedType2,
                   _assemblyIdentifierGenerator,
                   _readOnlyInvolvedTypeIdentifierGenerator,
                   _interfaceIdentifierGenerator,
                   _attributeIdentifierGenerator,
-                  _remotionReflector,
                   _outputFormatter).GenerateXml(),
               new TargetReferenceReportGenerator(involvedType2, _readOnlyInvolvedTypeIdentifierGenerator).GenerateXml()
           ));
@@ -374,7 +363,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     {
       var involvedType = new InvolvedType(typeof(object));
 
-      var reportGenerator = ReportBuilder.CreateInvolvedTypeReportGenerator(_remotionReflector, _outputFormatter);
+      var reportGenerator = ReportBuilder.CreateInvolvedTypeReportGenerator(_outputFormatter);
 
       var output = reportGenerator.GetAlphabeticOrderingAttribute(involvedType);
 
@@ -392,7 +381,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           new InvolvedType(typeof(UselessObject)),
           targetClassDefinition.Mixins[0]);
 
-      var reportGenerator = ReportBuilder.CreateInvolvedTypeReportGenerator(_remotionReflector, _outputFormatter);
+      var reportGenerator = ReportBuilder.CreateInvolvedTypeReportGenerator(_outputFormatter);
 
       var output = reportGenerator.GetAlphabeticOrderingAttribute(involvedType);
 
@@ -414,7 +403,6 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           _memberIdentifierGenerator,
           _interfaceIdentifierGenerator,
           _attributeIdentifierGenerator,
-          _remotionReflector,
           _outputFormatter);
     }
   }

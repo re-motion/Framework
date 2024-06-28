@@ -20,7 +20,6 @@ using System.Reflection;
 using System.Xml.Linq;
 using NUnit.Framework;
 using Remotion.Mixins.CrossReferencer.Formatting;
-using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Report;
 using Remotion.Mixins.CrossReferencer.UnitTests.Helpers;
 using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
@@ -32,13 +31,11 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
   [TestFixture]
   public class TargetCallDependenciesReportGeneratorTest
   {
-    private IRemotionReflector _remotionReflector;
     private IOutputFormatter _outputFormatter;
 
     [SetUp]
     public void SetUp ()
     {
-      _remotionReflector = new RemotionReflector();
       _outputFormatter = new OutputFormatter();
     }
 
@@ -58,7 +55,6 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       var output = new TargetCallDependenciesReportGenerator(
           mixinDefinition,
           assemblyIdentifierGenerator,
-          _remotionReflector,
           _outputFormatter).GenerateXml();
 
       var expectedOutput = new XElement(
@@ -92,7 +88,6 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       var output = new TargetCallDependenciesReportGenerator(
           mixinDefinition,
           assemblyIdentifierGenerator,
-          _remotionReflector,
           _outputFormatter).GenerateXml();
 
       var expectedOutput = new XElement(

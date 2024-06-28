@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Xml.Linq;
-using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Mixins.Validation;
 using Remotion.Utilities;
@@ -26,15 +25,12 @@ namespace Remotion.Mixins.CrossReferencer.Report
   public class ValidationErrorReportGenerator : IReportGenerator
   {
     private readonly ErrorAggregator<ValidationException> _errorAggregator;
-    private readonly IRemotionReflector _remotionReflector;
 
-    public ValidationErrorReportGenerator (ErrorAggregator<ValidationException> errorAggregator, IRemotionReflector remotionReflector)
+    public ValidationErrorReportGenerator (ErrorAggregator<ValidationException> errorAggregator)
     {
       ArgumentUtility.CheckNotNull("errorAggregator", errorAggregator);
-      ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
 
       _errorAggregator = errorAggregator;
-      _remotionReflector = remotionReflector;
     }
 
     public XElement GenerateXml ()
@@ -44,16 +40,16 @@ namespace Remotion.Mixins.CrossReferencer.Report
       foreach (var exception in _errorAggregator.Exceptions)
       {
         var topLevelExceptionElement = new RecursiveExceptionReportGenerator(exception).GenerateXml();
-        var validationLog = _remotionReflector.GetValidationLogFromValidationException(exception);
+        var validationLog = exception.ValidationLogData;
 
         topLevelExceptionElement.Add(
             new XElement(
                 "ValidationLog",
-                new XAttribute("number-of-rules-executed", validationLog.NumberOfRulesExecuted),
-                new XAttribute("number-of-failures", validationLog.NumberOfFailures),
-                new XAttribute("number-of-unexpected-exceptions", validationLog.NumberOfUnexpectedExceptions),
-                new XAttribute("number-of-warnings", validationLog.NumberOfWarnings),
-                new XAttribute("number-of-successes", validationLog.NumberOfSuccesses))
+                new XAttribute("number-of-rules-executed", validationLog?.NumberOfRulesExecuted),
+                new XAttribute("number-of-failures", validationLog?.NumberOfFailures),
+                new XAttribute("number-of-unexpected-exceptions", validationLog?.NumberOfUnexpectedExceptions),
+                new XAttribute("number-of-warnings", validationLog?.NumberOfWarnings),
+                new XAttribute("number-of-successes", validationLog?.NumberOfSuccesses))
         );
         validationErrors.Add(topLevelExceptionElement);
       }

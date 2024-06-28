@@ -19,7 +19,6 @@ using System.Reflection;
 using System.Xml.Linq;
 using NUnit.Framework;
 using Remotion.Mixins.CrossReferencer.Formatting;
-using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Report;
 using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 using Remotion.Mixins.CrossReferencer.Utilities;
@@ -114,7 +113,6 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           new IdentifierGenerator<Assembly>(),
           new IdentifierGenerator<Type>(),
           attributeIdentifier,
-          new RemotionReflector(),
           new OutputFormatter());
     }
   }

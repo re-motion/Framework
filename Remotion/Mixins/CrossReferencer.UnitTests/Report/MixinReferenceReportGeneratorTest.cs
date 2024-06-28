@@ -20,7 +20,6 @@ using System.Reflection;
 using System.Xml.Linq;
 using NUnit.Framework;
 using Remotion.Mixins.CrossReferencer.Formatting;
-using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Report;
 using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 using Remotion.Mixins.CrossReferencer.Utilities;
@@ -31,13 +30,11 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
   [TestFixture]
   public class MixinReferenceReportGeneratorTest
   {
-    private IRemotionReflector _remotionReflector;
     private IOutputFormatter _outputFormatter;
 
     [SetUp]
     public void SetUp ()
     {
-      _remotionReflector = new RemotionReflector();
       _outputFormatter = new OutputFormatter();
     }
 
@@ -52,7 +49,6 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           new IdentifierGenerator<Type>(),
           new IdentifierGenerator<Type>(),
           new IdentifierGenerator<Type>(),
-          _remotionReflector,
           _outputFormatter
       );
 
@@ -80,7 +76,6 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           new IdentifierGenerator<Type>(),
           interfaceIdentifierGenerator,
           attributeIdentifierGenerator,
-          _remotionReflector,
           _outputFormatter
       );
 
@@ -103,10 +98,9 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
               new InterfaceIntroductionReportGenerator(mixinDefinition.InterfaceIntroductions, interfaceIdentifierGenerator).GenerateXml(),
               new AttributeIntroductionReportGenerator(
                   mixinDefinition.AttributeIntroductions,
-                  attributeIdentifierGenerator,
-                  new RemotionReflector()).GenerateXml(),
+                  attributeIdentifierGenerator).GenerateXml(),
               new MemberOverrideReportGenerator(mixinDefinition.GetAllOverrides()).GenerateXml(),
-              new TargetCallDependenciesReportGenerator( mixinDefinition, assemblyIdentifierGenerator, _remotionReflector, _outputFormatter).GenerateXml()
+              new TargetCallDependenciesReportGenerator( mixinDefinition, assemblyIdentifierGenerator, _outputFormatter).GenerateXml()
           ));
 
       Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
@@ -133,7 +127,6 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           new IdentifierGenerator<Type>(),
           interfaceIdentifierGenerator,
           attributeIdentifierGenerator,
-          _remotionReflector,
           _outputFormatter);
 
       var output = reportGenerator.GenerateXml();

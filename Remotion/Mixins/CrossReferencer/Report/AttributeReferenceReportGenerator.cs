@@ -20,7 +20,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
-using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Utilities;
 
@@ -30,20 +29,16 @@ namespace Remotion.Mixins.CrossReferencer.Report
   {
     private readonly Type _type;
     private readonly IIdentifierGenerator<Type> _attributeIdentifierGenerator;
-    private readonly IRemotionReflector _remotionReflector;
 
     public AttributeReferenceReportGenerator (
         Type type,
-        IIdentifierGenerator<Type> attributeIdentifierGenerator,
-        IRemotionReflector remotionReflector)
+        IIdentifierGenerator<Type> attributeIdentifierGenerator)
     {
       ArgumentUtility.CheckNotNull("type", type);
       ArgumentUtility.CheckNotNull("attributeIdentifierGenerator", attributeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
 
       _type = type;
       _attributeIdentifierGenerator = attributeIdentifierGenerator;
-      _remotionReflector = remotionReflector;
     }
 
     public XElement GenerateXml ()
@@ -51,7 +46,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
       return new XElement(
           "HasAttributes",
           from attribute in CustomAttributeData.GetCustomAttributes(_type)
-          where !_remotionReflector.IsInfrastructureType(attribute.Constructor.DeclaringType)
+          where !CrossReferencerReflectionUtility.IsInfrastructureType(attribute.Constructor.DeclaringType)
           select GenerateAttributeReference(attribute)
       );
     }

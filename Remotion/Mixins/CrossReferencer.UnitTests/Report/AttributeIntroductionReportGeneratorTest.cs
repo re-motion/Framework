@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Report;
 using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 using Remotion.Mixins.CrossReferencer.Utilities;
@@ -42,8 +41,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       var attributeIntroductions = GetAttributeIntroductions(type1, typeof(Mixin1), mixinConfiguration);
       var reportGenerator = new AttributeIntroductionReportGenerator(
           attributeIntroductions,
-          new IdentifierGenerator<Type>(),
-          new RemotionReflector());
+          new IdentifierGenerator<Type>());
       var output = reportGenerator.GenerateXml();
 
       var expectedOutput = new XElement("AttributeIntroductions");
@@ -65,8 +63,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       var attributeIntroductions = GetAttributeIntroductions(type1, typeof(ObjectWithInheritableAttribute), mixinConfiguration);
       var reportGenerator = new AttributeIntroductionReportGenerator(
           attributeIntroductions,
-          attributeIdentifierGenerator,
-          new RemotionReflector());
+          attributeIdentifierGenerator);
 
       var output = reportGenerator.GenerateXml();
 

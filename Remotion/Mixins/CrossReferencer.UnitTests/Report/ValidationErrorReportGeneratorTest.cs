@@ -16,9 +16,7 @@
 // 
 using System;
 using System.Xml.Linq;
-using Moq;
 using NUnit.Framework;
-using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Report;
 using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Mixins.Validation;
@@ -32,7 +30,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     public void GenerateXml_NoErrors ()
     {
       var errorAggregator = new ErrorAggregator<ValidationException>();
-      var reportGenerator = new ValidationErrorReportGenerator(errorAggregator, new RemotionReflector());
+      var reportGenerator = new ValidationErrorReportGenerator(errorAggregator);
 
       var output = reportGenerator.GenerateXml();
       var expectedOutput = new XElement("ValidationErrors");
@@ -47,7 +45,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       var validationException1 = SetUpExceptionWithDummyStackTrace("test validation exception", new DefaultValidationLog());
 
       errorAggregator.AddException(validationException1);
-      var reportGenerator = new ValidationErrorReportGenerator(errorAggregator, new RemotionReflector());
+      var reportGenerator = new ValidationErrorReportGenerator(errorAggregator);
 
       var output = reportGenerator.GenerateXml();
 
@@ -74,12 +72,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       var validationException1 = SetUpExceptionWithDummyStackTrace("test validation exception", new DefaultValidationLog());
 
       errorAggregator.AddException(validationException1);
-      var remotionReflectorStub = new Mock<IRemotionReflector>();
-      var reportGenerator = new ValidationErrorReportGenerator(errorAggregator, remotionReflectorStub.Object);
-
-      remotionReflectorStub
-          .Setup(_ => _.GetValidationLogFromValidationException(It.IsAny<ValidationException>()))
-          .Returns((ValidationException e) => e.ValidationLogData);
+      var reportGenerator = new ValidationErrorReportGenerator(errorAggregator);
 
       var output = reportGenerator.GenerateXml();
 

@@ -18,9 +18,9 @@ using System;
 using System.Reflection;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Formatting;
-using Remotion.Mixins.CrossReferencer.Reflectors;
 using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Utilities;
+using ReflectionUtility = Remotion.Mixins.Utilities.ReflectionUtility;
 
 namespace Remotion.Mixins.CrossReferencer.Report
 {
@@ -34,7 +34,6 @@ namespace Remotion.Mixins.CrossReferencer.Report
     private readonly IIdentifierGenerator<MemberInfo> _memberIdentifierGenerator;
     private readonly IIdentifierGenerator<Type> _interfaceIdentifierGenerator;
     private readonly IIdentifierGenerator<Type> _attributeIdentifierGenerator;
-    private readonly IRemotionReflector _remotionReflector;
     private readonly IOutputFormatter _outputFormatter;
 
     private readonly SummaryPicker _summaryPicker = new();
@@ -47,7 +46,6 @@ namespace Remotion.Mixins.CrossReferencer.Report
         IIdentifierGenerator<MemberInfo> memberIdentifierGenerator,
         IIdentifierGenerator<Type> interfaceIdentifierGenerator,
         IIdentifierGenerator<Type> attributeIdentifierGenerator,
-        IRemotionReflector remotionReflector,
         IOutputFormatter outputFormatter)
     {
       ArgumentUtility.CheckNotNull("involvedTypes", involvedTypes);
@@ -56,7 +54,6 @@ namespace Remotion.Mixins.CrossReferencer.Report
       ArgumentUtility.CheckNotNull("memberIdentifierGenerator", memberIdentifierGenerator);
       ArgumentUtility.CheckNotNull("interfaceIdentifierGenerator", interfaceIdentifierGenerator);
       ArgumentUtility.CheckNotNull("attributeIdentifierGenerator", attributeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
       ArgumentUtility.CheckNotNull("outputFormatter", outputFormatter);
 
       _involvedTypes = involvedTypes;
@@ -65,7 +62,6 @@ namespace Remotion.Mixins.CrossReferencer.Report
       _memberIdentifierGenerator = memberIdentifierGenerator;
       _interfaceIdentifierGenerator = interfaceIdentifierGenerator;
       _attributeIdentifierGenerator = attributeIdentifierGenerator;
-      _remotionReflector = remotionReflector;
       _outputFormatter = outputFormatter;
     }
 
@@ -96,8 +92,8 @@ namespace Remotion.Mixins.CrossReferencer.Report
           new XAttribute(
               "is-unusedmixin",
               !involvedType.IsTarget && !involvedType.IsMixin &&
-              _remotionReflector.IsInheritedFromMixin(involvedType.Type) &&
-              !_remotionReflector.IsInfrastructureType(involvedType.Type)),
+              ReflectionUtility.IsMixinType(involvedType.Type) &&
+              !CrossReferencerReflectionUtility.IsInfrastructureType(involvedType.Type)),
           new XAttribute("is-generic-definition", realType.IsGenericTypeDefinition),
           new XAttribute("is-interface", realType.IsInterface),
           _outputFormatter.CreateModifierMarkup(
@@ -112,19 +108,16 @@ namespace Remotion.Mixins.CrossReferencer.Report
               _outputFormatter).GenerateXml(),
           new InterfaceReferenceReportGenerator(
               involvedType,
-              _interfaceIdentifierGenerator,
-              _remotionReflector).GenerateXml(),
+              _interfaceIdentifierGenerator).GenerateXml(),
           new AttributeReferenceReportGenerator(
               realType,
-              _attributeIdentifierGenerator,
-              _remotionReflector).GenerateXml(),
+              _attributeIdentifierGenerator).GenerateXml(),
           new MixinReferenceReportGenerator(
               involvedType,
               _assemblyIdentifierGenerator,
               _involvedTypeIdentifierGenerator,
               _interfaceIdentifierGenerator,
               _attributeIdentifierGenerator,
-              _remotionReflector,
               _outputFormatter).GenerateXml(),
           new TargetReferenceReportGenerator(
               involvedType,
