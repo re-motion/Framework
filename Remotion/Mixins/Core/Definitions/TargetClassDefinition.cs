@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Diagnostics;
-using System.Linq;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Utilities;
 using Remotion.Utilities;
@@ -139,52 +138,6 @@ namespace Remotion.Mixins.Definitions
     {
       Type realType = MixinTypeCloser.GetClosedMixinType(configuredType);
       return _mixins[realType];
-    }
-
-    public override bool Equals (object? obj)
-    {
-      if (obj is not TargetClassDefinition other)
-        return false;
-
-      if (base.Equals(obj))
-        return true;
-
-      if (!ComposedInterfaceDependencies.SequenceEqual(other.ComposedInterfaceDependencies))
-        return false;
-
-      if (!RequiredTargetCallTypes.SequenceEqual(other.RequiredTargetCallTypes))
-        return false;
-
-      if (!RequiredNextCallTypes.SequenceEqual(other.RequiredNextCallTypes))
-        return false;
-
-      if (!RequiredMixinTypes.SequenceEqual(other.RequiredMixinTypes))
-        return false;
-
-      if (!ReceivedInterfaces.SequenceEqual(other.ReceivedInterfaces))
-        return false;
-
-      if (!Mixins.SequenceEqual(other.Mixins))
-        return false;
-
-      if (Parent != other.Parent)
-        return false;
-
-      if (IsAbstract != other.IsAbstract)
-        return false;
-
-      if (IsInterface != other.IsInterface)
-        return false;
-
-      if (ConfigurationContext != other.ConfigurationContext)
-        return false;
-
-      return true;
-    }
-
-    public override int GetHashCode ()
-    {
-      return base.GetHashCode();
     }
   }
 }
