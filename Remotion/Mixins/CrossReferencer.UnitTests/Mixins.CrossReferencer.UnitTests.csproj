@@ -17,7 +17,6 @@
         <ProjectReference Include="..\..\Core\Extensions\Core.Extensions.csproj" />
         <ProjectReference Include="..\Core\Mixins.Core.csproj" />
         <ProjectReference Include="..\CrossReferencer\Mixins.CrossReferencer.csproj" />
-        <ProjectReference Include="..\XRef\Mixins.CrossReferencer.csproj" />
     </ItemGroup>
     <Import Project="..\..\..\Build\Shared.build.targets"/>
 </Project>
