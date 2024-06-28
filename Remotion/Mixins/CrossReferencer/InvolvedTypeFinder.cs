@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -52,8 +53,9 @@ namespace Remotion.Mixins.CrossReferencer
       _validationErrors = validationErrors;
     }
 
-    public InvolvedType[] FindInvolvedTypes ()
+    public InvolvedTypeFinderResult FindInvolvedTypes ()
     {
+      var failedAssemblies = new List<(Assembly, ReflectionTypeLoadException)>();
       var involvedTypes = new InvolvedTypeStore();
       var classContexts = _mixinConfiguration.ClassContexts;
 
@@ -86,16 +88,7 @@ namespace Remotion.Mixins.CrossReferencer
         }
         catch (ReflectionTypeLoadException ex)
         {
-          var loaderExceptionLog = new StringBuilder();
-          foreach (var loaderException in ex.LoaderExceptions)
-            loaderExceptionLog.AppendFormat("   {1}{0}", Environment.NewLine, loaderException.Message);
-
-          // XRef.Log.SendWarning(
-          //     "Unable to analyze '{1}' in '{2}' because some referenced assemblies could not be loaded: {0}{3}",
-          //     Environment.NewLine,
-          //     assembly.FullName,
-          //     assembly.Location,
-          //     loaderExceptionLog);
+          failedAssemblies.Add((assembly, ex));
         }
       }
 
@@ -109,7 +102,7 @@ namespace Remotion.Mixins.CrossReferencer
 
       AddGenericDefinitionsRecursively(involvedTypes);
 
-      return involvedTypes.ToArray();
+      return new(involvedTypes.ToArray(), failedAssemblies.ToArray());
     }
 
     private void AddGenericDefinitionsRecursively (InvolvedTypeStore involvedTypes)

@@ -20,6 +20,6 @@ namespace Remotion.Mixins.CrossReferencer
 {
   public interface IInvolvedTypeFinder
   {
-    InvolvedType[] FindInvolvedTypes ();
+    InvolvedTypeFinderResult FindInvolvedTypes ();
   }
 }

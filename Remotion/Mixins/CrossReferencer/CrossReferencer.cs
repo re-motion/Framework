@@ -15,9 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
-using System.ComponentModel.Design;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -33,52 +30,15 @@ namespace Remotion.Mixins.CrossReferencer
 {
   public static class CrossReferencer
   {
-    private const string c_defaultXmlOutputFileName = "MixinXRef.xml";
-    private const string c_defaultXmlOutputDirectory = "C:\\";
-
-    public static XDocument? GetAssemblyInformation (
-        bool generateFullReport = false,
-        string outputDirectory = c_defaultXmlOutputDirectory,
-        string outputFileName = c_defaultXmlOutputFileName)
+    public static Assembly[] GetAssemblies ()
     {
-      if (!GetAssemblies(out var allAssemblies))
-        return null;
-
-      var mixinConfiguration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies(allAssemblies!);
-      var configurationErrors = new ErrorAggregator<ConfigurationException>();
-      var validationErrors = new ErrorAggregator<ValidationException>();
-
-      var involvedTypeFinder = new InvolvedTypeFinder(mixinConfiguration, allAssemblies, configurationErrors, validationErrors);
-      var involvedTypes = involvedTypeFinder.FindInvolvedTypes();
-
-      var reportGenerator = GetReportGenerator(generateFullReport, involvedTypes, configurationErrors, validationErrors);
-      var outputDocument = reportGenerator.GenerateXmlDocument();
-
-      var xmlFile = Path.Combine(outputDirectory, outputFileName);
-      outputDocument.Save(xmlFile);
-
-      return outputDocument;
-    }
-
-    private static bool GetAssemblies (out Assembly[]? allAssemblies)
-    {
-      allAssemblies = null;
       var assemblyResolver = AssemblyResolver.Create();
       AppDomain.CurrentDomain.AssemblyResolve += assemblyResolver.HandleAssemblyResolve;
 
       var typeDiscoveryService = ContextAwareTypeUtility.GetTypeDiscoveryService();
 
-      ICollection allTypes;
-      try
-      {
-        allTypes = typeDiscoveryService.GetTypes(null, true);
-      }
-      catch
-      {
-        return false;
-      }
-
-      allAssemblies = allTypes.Cast<Type>().Select(t => t.Assembly)
+      var allTypes = typeDiscoveryService.GetTypes(null, true);
+      return allTypes.Cast<Type>().Select(t => t.Assembly)
           .Distinct()
           .Where(a =>
           {
@@ -89,8 +49,23 @@ namespace Remotion.Mixins.CrossReferencer
             return !isAssemblyAbleToDefineNonApplicationAssemblyAttribute || !a.IsDefined(nonApplicationAssemblyAttributeType, false);
           })
           .ToArray();
+    }
 
-      return allAssemblies.Any();
+    public static (XDocument ResultDocument, (Assembly, ReflectionTypeLoadException)[] FailedAssemblies) GetAssemblyInformation (Assembly[] assemblies, bool generateFullReport)
+    {
+      ArgumentUtility.CheckNotNull("assemblies", assemblies);
+
+      var mixinConfiguration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies(assemblies);
+      var configurationErrors = new ErrorAggregator<ConfigurationException>();
+      var validationErrors = new ErrorAggregator<ValidationException>();
+
+      var involvedTypeFinder = new InvolvedTypeFinder(mixinConfiguration, assemblies, configurationErrors, validationErrors);
+      var involvedTypesResult = involvedTypeFinder.FindInvolvedTypes();
+
+      var reportGenerator = GetReportGenerator(generateFullReport, involvedTypesResult.InvolvedTypes, configurationErrors, validationErrors);
+      var outputDocument = reportGenerator.GenerateXmlDocument();
+
+      return (outputDocument, involvedTypesResult.FailedAssemblies);
     }
 
     private static IXmlReportGenerator GetReportGenerator (

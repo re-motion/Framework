@@ -15,35 +15,22 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.IO;
 using NUnit.Framework;
+using Remotion.Mixins.CrossReferencer.UnitTests.TestDomain;
 
 namespace Remotion.Mixins.CrossReferencer.UnitTests;
 
 [TestFixture]
 public class CrossReferencerTest
 {
-  private string _tempDirectoryPath = string.Empty;
-
-  [OneTimeSetUp]
-  public void Setup ()
-  {
-    _tempDirectoryPath = Path.Combine(Path.GetTempPath(), "XRef");
-    Directory.CreateDirectory(_tempDirectoryPath);
-  }
-
-  [OneTimeTearDown]
-  public void TearDown ()
-  {
-    Directory.Delete(_tempDirectoryPath, recursive: true);
-  }
-
   [Test]
-  public void GetAssemblyInformation_CreatesFile ()
+  public void GetAssemblyInformation ()
   {
-    CrossReferencer.GetAssemblyInformation(outputDirectory: _tempDirectoryPath, outputFileName: "TestFileName.xml");
+    var result = CrossReferencer.GetAssemblyInformation(new[] { typeof(Mixin2).Assembly }, generateFullReport: false);
 
-    var outputPath = Path.Combine(_tempDirectoryPath, "TestFileName.xml");
-    Assert.That(File.Exists(outputPath));
+    Assert.That(result.ResultDocument.Root, Is.Not.Null);
+    Assert.That(result.ResultDocument.Root.Elements(), Is.Not.Empty);
+
+    Assert.That(result.FailedAssemblies, Is.Empty);
   }
 }

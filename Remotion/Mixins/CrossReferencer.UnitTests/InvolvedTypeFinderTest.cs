@@ -45,7 +45,8 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
       var mixinConfiguration = new MixinConfiguration();
       var involvedTypeFinder = CreateInvolvedTypeFinder(mixinConfiguration, new Assembly[0]);
 
-      var involvedTypes = involvedTypeFinder.FindInvolvedTypes();
+      var involvedTypesResult = involvedTypeFinder.FindInvolvedTypes();
+      var involvedTypes = involvedTypesResult.InvolvedTypes;
 
       Assert.That(involvedTypes, Is.Empty);
     }
@@ -57,7 +58,8 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
       var assembly = typeof(Mixin1).Assembly;
       var involvedTypeFinder = CreateInvolvedTypeFinder(mixinConfiguration, new[] { assembly });
 
-      var involvedTypes = involvedTypeFinder.FindInvolvedTypes();
+      var involvedTypesResult = involvedTypeFinder.FindInvolvedTypes();
+      var involvedTypes = involvedTypesResult.InvolvedTypes;
 
       var expectedType1 = new InvolvedType(typeof(TargetClass1));
       expectedType1.ClassContext = mixinConfiguration.ClassContexts.First();
@@ -78,7 +80,8 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
           .BuildConfiguration();
       var involvedTypeFinder = CreateInvolvedTypeFinder(mixinConfiguration, new[] { typeof(Mixin1).Assembly });
 
-      var involvedTypes = involvedTypeFinder.FindInvolvedTypes();
+      var involvedTypesResult = involvedTypeFinder.FindInvolvedTypes();
+      var involvedTypes = involvedTypesResult.InvolvedTypes;
 
       var expectedType1 = new InvolvedType(typeof(TargetClass1));
       expectedType1.ClassContext = mixinConfiguration.ClassContexts.First();
@@ -106,7 +109,8 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
           .BuildConfiguration();
       var involvedTypeFinder = CreateInvolvedTypeFinder(mixinConfiguration, new[] { typeof(Mixin1).Assembly });
 
-      var involvedTypes = involvedTypeFinder.FindInvolvedTypes();
+      var involvedTypesResult = involvedTypeFinder.FindInvolvedTypes();
+      var involvedTypes = involvedTypesResult.InvolvedTypes;
 
       var expectedType1 = new InvolvedType(typeof(TargetClass1));
       expectedType1.ClassContext = mixinConfiguration.ClassContexts.First();
@@ -131,7 +135,8 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
           .BuildConfiguration();
       var involvedTypeFinder = CreateInvolvedTypeFinder(mixinConfiguration, new[] { typeof(Mixin1).Assembly });
 
-      var involvedTypes = involvedTypeFinder.FindInvolvedTypes();
+      var involvedTypesResult = involvedTypeFinder.FindInvolvedTypes();
+      var involvedTypes = involvedTypesResult.InvolvedTypes;
 
       var expectedType1 = new InvolvedType(typeof(UselessObject));
       expectedType1.ClassContext = mixinConfiguration.ClassContexts.First();
@@ -155,7 +160,8 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
           .BuildConfiguration();
       var involvedTypeFinder = CreateInvolvedTypeFinder(mixinConfiguration, new[] { typeof(UnusedMixin).Assembly });
 
-      var involvedTypes = involvedTypeFinder.FindInvolvedTypes();
+      var involvedTypesResult = involvedTypeFinder.FindInvolvedTypes();
+      var involvedTypes = involvedTypesResult.InvolvedTypes;
 
       Assert.That(involvedTypes, Contains.Item(new InvolvedType(typeof(UnusedMixin))));
     }
