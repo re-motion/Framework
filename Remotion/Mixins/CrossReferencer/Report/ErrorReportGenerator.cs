@@ -25,20 +25,16 @@ namespace Remotion.Mixins.CrossReferencer.Report
   {
     private readonly ErrorAggregator<ConfigurationException> _configurationErrors;
     private readonly ErrorAggregator<ValidationException> _validationErrors;
-    private readonly RemotionReflector _reflector;
 
     public ErrorReportGenerator (
         ErrorAggregator<ConfigurationException> configurationErrors,
-        ErrorAggregator<ValidationException> validationErrors,
-        RemotionReflector reflector)
+        ErrorAggregator<ValidationException> validationErrors)
     {
       ArgumentUtility.CheckNotNull("configurationErrors", configurationErrors);
       ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
-      ArgumentUtility.CheckNotNull("reflector", reflector);
 
       _configurationErrors = configurationErrors;
       _validationErrors = validationErrors;
-      _reflector = reflector;
     }
 
 
@@ -55,7 +51,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
     private CompositeReportGenerator CreateCompositeReportGenerator ()
     {
       var configurationErrorReport = new ConfigurationErrorReportGenerator(_configurationErrors);
-      var validationErrorReport = new ValidationErrorReportGenerator(_validationErrors, _reflector);
+      var validationErrorReport = new ValidationErrorReportGenerator(_validationErrors);
 
       return new CompositeReportGenerator(configurationErrorReport, validationErrorReport);
     }

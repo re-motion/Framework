@@ -16,13 +16,18 @@
 // 
 using System;
 using System.Collections;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using Remotion.Mixins.Context;
 using Remotion.Mixins.CrossReferencer.Formatting;
 using Remotion.Mixins.CrossReferencer.Report;
 using Remotion.Mixins.Validation;
+using Remotion.Reflection;
+using Remotion.Reflection.TypeDiscovery;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer
 {
@@ -32,24 +37,21 @@ namespace Remotion.Mixins.CrossReferencer
     private const string c_defaultXmlOutputDirectory = "C:\\";
 
     public static XDocument? GetAssemblyInformation (
-        Assembly? assemblyToCheck = null,
         bool generateFullReport = false,
         string outputDirectory = c_defaultXmlOutputDirectory,
         string outputFileName = c_defaultXmlOutputFileName)
     {
-      var reflector = new RemotionReflector(assemblyToCheck);
-
-      if (!GetAssemblies(reflector, out var allAssemblies))
+      if (!GetAssemblies(out var allAssemblies))
         return null;
 
-      var mixinConfiguration = reflector.BuildConfigurationFromAssemblies(allAssemblies!);
+      var mixinConfiguration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies(allAssemblies!);
       var configurationErrors = new ErrorAggregator<ConfigurationException>();
       var validationErrors = new ErrorAggregator<ValidationException>();
 
-      var involvedTypeFinder = new InvolvedTypeFinder(mixinConfiguration, allAssemblies, configurationErrors, validationErrors, reflector);
+      var involvedTypeFinder = new InvolvedTypeFinder(mixinConfiguration, allAssemblies, configurationErrors, validationErrors);
       var involvedTypes = involvedTypeFinder.FindInvolvedTypes();
 
-      var reportGenerator = GetReportGenerator(generateFullReport, involvedTypes, configurationErrors, validationErrors, reflector);
+      var reportGenerator = GetReportGenerator(generateFullReport, involvedTypes, configurationErrors, validationErrors);
       var outputDocument = reportGenerator.GenerateXmlDocument();
 
       var xmlFile = Path.Combine(outputDirectory, outputFileName);
@@ -58,13 +60,13 @@ namespace Remotion.Mixins.CrossReferencer
       return outputDocument;
     }
 
-    private static bool GetAssemblies (RemotionReflector reflector, out Assembly[]? allAssemblies)
+    private static bool GetAssemblies (out Assembly[]? allAssemblies)
     {
       allAssemblies = null;
       var assemblyResolver = AssemblyResolver.Create();
       AppDomain.CurrentDomain.AssemblyResolve += assemblyResolver.HandleAssemblyResolve;
 
-      var typeDiscoveryService = reflector.GetTypeDiscoveryService();
+      var typeDiscoveryService = ContextAwareTypeUtility.GetTypeDiscoveryService();
 
       ICollection allTypes;
       try
@@ -78,7 +80,14 @@ namespace Remotion.Mixins.CrossReferencer
 
       allAssemblies = allTypes.Cast<Type>().Select(t => t.Assembly)
           .Distinct()
-          .Where(a => !reflector.IsRelevantAssemblyForConfiguration(a) || !reflector.IsNonApplicationAssembly(a))
+          .Where(a =>
+          {
+            var nonApplicationAssemblyAttributeType = typeof(NonApplicationAssemblyAttribute);
+            var isAssemblyAbleToDefineNonApplicationAssemblyAttribute = a.GetReferencedAssemblies().Contains(nonApplicationAssemblyAttributeType.Assembly.GetName());
+            // Note: This is a performance optimization: we only test for the attribute if the assembly has the required references.
+            //       This performance optimization is likely overkill since we will load the assemblies anyway.
+            return !isAssemblyAbleToDefineNonApplicationAssemblyAttribute || !a.IsDefined(nonApplicationAssemblyAttributeType, false);
+          })
           .ToArray();
 
       return allAssemblies.Any();
@@ -88,12 +97,11 @@ namespace Remotion.Mixins.CrossReferencer
         bool generateFullReport,
         InvolvedType[] involvedTypes,
         ErrorAggregator<ConfigurationException> configurationErrors,
-        ErrorAggregator<ValidationException> validationErrors,
-        RemotionReflector reflector)
+        ErrorAggregator<ValidationException> validationErrors)
     {
       return generateFullReport
-          ? new ErrorReportGenerator(configurationErrors, validationErrors, reflector)
-          : new FullReportGenerator(involvedTypes, configurationErrors, validationErrors, reflector, new OutputFormatter());
+          ? new ErrorReportGenerator(configurationErrors, validationErrors)
+          : new FullReportGenerator(involvedTypes, configurationErrors, validationErrors, new OutputFormatter());
     }
   }
 }

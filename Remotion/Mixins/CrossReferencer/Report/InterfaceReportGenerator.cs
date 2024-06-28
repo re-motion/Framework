@@ -19,7 +19,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using Remotion.Mixins.Context;
 using Remotion.Mixins.CrossReferencer.Formatting;
+using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
@@ -31,7 +33,6 @@ namespace Remotion.Mixins.CrossReferencer.Report
     private readonly IIdentifierGenerator<Type> _involvedTypeIdentifierGenerator;
     private readonly IIdentifierGenerator<MemberInfo> _memberIdentifierGenerator;
     private readonly IIdentifierGenerator<Type> _interfaceIdentifierGenerator;
-    private readonly RemotionReflector _remotionReflector;
     private readonly IOutputFormatter _outputFormatter;
 
     public InterfaceReportGenerator (
@@ -40,7 +41,6 @@ namespace Remotion.Mixins.CrossReferencer.Report
         IIdentifierGenerator<Type> involvedTypeIdentifierGenerator,
         IIdentifierGenerator<MemberInfo> memberIdentifierGenerator,
         IIdentifierGenerator<Type> interfaceIdentifierGenerator,
-        RemotionReflector remotionReflector,
         IOutputFormatter outputFormatter)
     {
       ArgumentUtility.CheckNotNull("involvedTypes", involvedTypes);
@@ -48,7 +48,6 @@ namespace Remotion.Mixins.CrossReferencer.Report
       ArgumentUtility.CheckNotNull("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
       ArgumentUtility.CheckNotNull("memberIdentifierGenerator", memberIdentifierGenerator);
       ArgumentUtility.CheckNotNull("interfaceIdentifierGenerator", interfaceIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
       ArgumentUtility.CheckNotNull("outputFormatter", outputFormatter);
 
       _involvedTypes = involvedTypes;
@@ -56,7 +55,6 @@ namespace Remotion.Mixins.CrossReferencer.Report
       _involvedTypeIdentifierGenerator = involvedTypeIdentifierGenerator;
       _memberIdentifierGenerator = memberIdentifierGenerator;
       _interfaceIdentifierGenerator = interfaceIdentifierGenerator;
-      _remotionReflector = remotionReflector;
       _outputFormatter = outputFormatter;
     }
 
@@ -69,7 +67,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
       return new XElement(
           "Interfaces",
           from usedInterface in allInterfaces.Keys
-          where !_remotionReflector.IsInfrastructureType(usedInterface)
+          where !CrossReferencerReflectionUtility.IsInfrastructureType(usedInterface)
           select GenerateInterfaceElement(usedInterface, allInterfaces, composedInterfaces.Contains(usedInterface))
       );
     }
@@ -82,8 +80,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
       {
         if (!involvedType.IsTarget) continue;
 
-        var composedInterfaces = _remotionReflector.GetComposedInterfaces(involvedType.ClassContext);
-        foreach (var composedInterface in composedInterfaces)
+        foreach (var composedInterface in involvedType.ClassContext.ComposedInterfaces)
         {
           allComposedInterfaces.Add(composedInterface);
         }
@@ -109,8 +106,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
         if (involvedType.IsTarget)
         {
-          var composedInterfaces = _remotionReflector.GetComposedInterfaces(involvedType.ClassContext);
-          foreach (var composedInterface in composedInterfaces)
+          foreach (var composedInterface in involvedType.ClassContext.ComposedInterfaces)
           {
             if (!allInterfaces.ContainsKey(composedInterface))
               allInterfaces.Add(composedInterface, new List<Type>());

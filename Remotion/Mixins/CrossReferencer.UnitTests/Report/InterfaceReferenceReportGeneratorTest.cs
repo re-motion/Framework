@@ -29,7 +29,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     public void GenerateXml_ZeroInterfaces ()
     {
       var involvedType = new InvolvedType(typeof(object));
-      var reportGenerator = new InterfaceReferenceReportGenerator(involvedType, new IdentifierGenerator<Type>(), new RemotionReflector());
+      var reportGenerator = new InterfaceReferenceReportGenerator(involvedType, new IdentifierGenerator<Type>());
 
       var output = reportGenerator.GenerateXml();
 
@@ -43,7 +43,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     {
       // TargetClass1 implements IDisposealbe
       var involvedType = new InvolvedType(typeof(TargetClass1));
-      var reportGenerator = new InterfaceReferenceReportGenerator(involvedType, new IdentifierGenerator<Type>(), new RemotionReflector());
+      var reportGenerator = new InterfaceReferenceReportGenerator(involvedType, new IdentifierGenerator<Type>());
 
       var output = reportGenerator.GenerateXml();
 
@@ -69,7 +69,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       var classContext = mixinConfiguration.ClassContexts.GetWithInheritance(typeof(ComposedInterfacesTestClass.MyMixinTarget));
       involvedType.ClassContext = classContext;
 
-      var reportGenerator = new InterfaceReferenceReportGenerator(involvedType, new IdentifierGenerator<Type>(), new RemotionReflector());
+      var reportGenerator = new InterfaceReferenceReportGenerator(involvedType, new IdentifierGenerator<Type>());
       var output = reportGenerator.GenerateXml();
 
       var expectedOutput = new XElement(

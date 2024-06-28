@@ -112,7 +112,6 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
           new IdentifierGenerator<Assembly>(),
           new IdentifierGenerator<Type>(),
           attributeIdentifier,
-          new RemotionReflector(),
           new OutputFormatter());
     }
   }

@@ -27,18 +27,15 @@ namespace Remotion.Mixins.CrossReferencer.Report
   {
     private readonly MixinDefinition _mixinDefinition;
     private readonly IIdentifierGenerator<Assembly> _assemblyIdentifierGenerator;
-    private readonly RemotionReflector _remotionReflector;
     private readonly IOutputFormatter _outputFormatter;
 
     public TargetCallDependenciesReportGenerator (
         MixinDefinition mixinDefinition,
         IIdentifierGenerator<Assembly> assemblyIdentifierGenerator,
-        RemotionReflector remotionReflector,
         IOutputFormatter outputFormatter)
     {
       _mixinDefinition = mixinDefinition;
       _assemblyIdentifierGenerator = assemblyIdentifierGenerator;
-      _remotionReflector = remotionReflector;
       _outputFormatter = outputFormatter;
     }
 
@@ -46,7 +43,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
     {
       var element = new XElement("TargetCallDependencies");
 
-      foreach (var targetCallDependencyDefinition in _remotionReflector.GetTargetCallDependencies(_mixinDefinition))
+      foreach (var targetCallDependencyDefinition in _mixinDefinition.TargetCallDependencies)
         element.Add(CreateDependencyElement(targetCallDependencyDefinition));
 
       return element;

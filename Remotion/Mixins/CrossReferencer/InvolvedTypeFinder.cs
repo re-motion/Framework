@@ -19,9 +19,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Remotion.Mixins.Context;
+using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Validation;
 using Remotion.Utilities;
+using ReflectionUtility = Remotion.Mixins.Utilities.ReflectionUtility;
 
 namespace Remotion.Mixins.CrossReferencer
 {
@@ -31,27 +33,23 @@ namespace Remotion.Mixins.CrossReferencer
     private readonly Assembly[] _assemblies;
     private readonly ErrorAggregator<ConfigurationException> _configurationErrors;
     private readonly ErrorAggregator<ValidationException> _validationErrors;
-    private readonly RemotionReflector _remotionReflector;
 
     public InvolvedTypeFinder (
         MixinConfiguration mixinConfiguration,
         Assembly[] assemblies,
         ErrorAggregator<ConfigurationException> configurationErrors,
-        ErrorAggregator<ValidationException> validationErrors,
-        RemotionReflector remotionReflector
+        ErrorAggregator<ValidationException> validationErrors
     )
     {
       ArgumentUtility.CheckNotNull("mixinConfiguration", mixinConfiguration);
       ArgumentUtility.CheckNotNull("assemblies", assemblies);
       ArgumentUtility.CheckNotNull("configurationErrors", configurationErrors);
       ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
-      ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
 
       _mixinConfiguration = mixinConfiguration;
       _assemblies = assemblies;
       _configurationErrors = configurationErrors;
       _validationErrors = validationErrors;
-      _remotionReflector = remotionReflector;
     }
 
     public InvolvedType[] FindInvolvedTypes ()
@@ -82,7 +80,7 @@ namespace Remotion.Mixins.CrossReferencer
             }
 
             // also add classes which inherit from Mixin<> or Mixin<,>, but are actually not used as Mixins (not in ClassContexts)
-            if (_remotionReflector.IsInheritedFromMixin(type) && !_remotionReflector.IsInfrastructureType(type))
+            if (ReflectionUtility.IsMixinType(type) && !CrossReferencerReflectionUtility.IsInfrastructureType(type))
               involvedTypes.GetOrCreateValue(type);
           }
         }
@@ -140,7 +138,7 @@ namespace Remotion.Mixins.CrossReferencer
       try
       {
         // may throw ConfigurationException or ValidationException
-        return _remotionReflector.GetTargetClassDefinition(type, _mixinConfiguration, classContext);
+        return TargetClassDefinitionFactory.CreateAndValidate(classContext);
       }
       catch (Exception configurationOrValidationException)
       {

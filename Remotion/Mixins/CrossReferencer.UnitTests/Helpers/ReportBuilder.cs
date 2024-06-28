@@ -34,7 +34,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Helpers
       return new AssemblyReportGenerator(types, identifierGenerator, new IdentifierGenerator<Type>());
     }
 
-    public static InterfaceReportGenerator CreateInterfaceReportGenerator (RemotionReflector remotionReflector, IOutputFormatter outputFormatter, params InvolvedType[] types)
+    public static InterfaceReportGenerator CreateInterfaceReportGenerator (IOutputFormatter outputFormatter, params InvolvedType[] types)
     {
       return new InterfaceReportGenerator(
           types,
@@ -42,7 +42,6 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Helpers
           new IdentifierGenerator<Type>(),
           new IdentifierGenerator<MemberInfo>(),
           new IdentifierGenerator<Type>(),
-          remotionReflector,
           outputFormatter);
     }
 
@@ -52,7 +51,6 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Helpers
     }
 
     public static InvolvedTypeReportGenerator CreateInvolvedTypeReportGenerator (
-        RemotionReflector remotionReflector,
         IOutputFormatter outputFormatter,
         params InvolvedType[] involvedTypes)
     {
@@ -66,7 +64,6 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Helpers
           new IdentifierGenerator<MemberInfo>(),
           new IdentifierGenerator<Type>(),
           new IdentifierGenerator<Type>(),
-          remotionReflector,
           outputFormatter);
     }
   }

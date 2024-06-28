@@ -29,7 +29,6 @@ namespace Remotion.Mixins.CrossReferencer.Report
     private readonly InvolvedType[] _involvedTypes;
     private readonly ErrorAggregator<ConfigurationException> _configurationErrors;
     private readonly ErrorAggregator<ValidationException> _validationErrors;
-    private readonly RemotionReflector _remotionReflector;
     private readonly IOutputFormatter _outputFormatter;
     private string _creationTime;
 
@@ -37,19 +36,16 @@ namespace Remotion.Mixins.CrossReferencer.Report
         InvolvedType[] involvedTypes,
         ErrorAggregator<ConfigurationException> configurationErrors,
         ErrorAggregator<ValidationException> validationErrors,
-        RemotionReflector remotionReflector,
         IOutputFormatter outputFormatter)
     {
-      ArgumentUtility.CheckNotNull("_involvedTypes", involvedTypes);
+      ArgumentUtility.CheckNotNull("involvedTypes", involvedTypes);
       ArgumentUtility.CheckNotNull("configurationErrors", configurationErrors);
       ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
-      ArgumentUtility.CheckNotNull("remotionReflector", remotionReflector);
       ArgumentUtility.CheckNotNull("outputFormatter", outputFormatter);
 
       _involvedTypes = involvedTypes;
       _configurationErrors = configurationErrors;
       _validationErrors = validationErrors;
-      _remotionReflector = remotionReflector;
       _outputFormatter = outputFormatter;
       _creationTime = string.Empty;
     }
@@ -83,7 +79,6 @@ namespace Remotion.Mixins.CrossReferencer.Report
           memberIdentifierGenerator,
           interfaceIdentiferGenerator,
           attributeIdentiferGenerator,
-          _remotionReflector,
           _outputFormatter);
       var interfaceReport = new InterfaceReportGenerator(
           _involvedTypes,
@@ -91,19 +86,17 @@ namespace Remotion.Mixins.CrossReferencer.Report
           readonlyInvolvedTypeIdentiferGenerator,
           memberIdentifierGenerator,
           interfaceIdentiferGenerator,
-          _remotionReflector,
           _outputFormatter);
       var attributeReport = new AttributeReportGenerator(
           _involvedTypes,
           assemblyIdentifierGenerator,
           readonlyInvolvedTypeIdentiferGenerator,
           attributeIdentiferGenerator,
-          _remotionReflector,
           _outputFormatter);
       var assemblyReport = new AssemblyReportGenerator(_involvedTypes, readOnlyassemblyIdentifierGenerator, readonlyInvolvedTypeIdentiferGenerator);
 
       var configurationErrorReport = new ConfigurationErrorReportGenerator(_configurationErrors);
-      var validationErrorReport = new ValidationErrorReportGenerator(_validationErrors, _remotionReflector);
+      var validationErrorReport = new ValidationErrorReportGenerator(_validationErrors);
 
       return new CompositeReportGenerator(
           involvedReport,
