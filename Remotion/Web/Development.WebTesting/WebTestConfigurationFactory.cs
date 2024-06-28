@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -57,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting
     /// Represents the latest version of Firefox verified to be compatible with Selenium WebDriver.
     /// In order to achieve a stable testing environment a standalone Firefox with a matching GeckoDriver version should be used.
     /// </summary>
-    protected const string LatestTestedFirefoxVersion = "121";
+    protected const string LatestTestedFirefoxVersion = "126";
 
     /// <summary>
     /// Creates a new <see cref="IBrowserConfiguration"/> from app.config.
