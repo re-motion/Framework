@@ -131,21 +131,21 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests
       Assert.That(type1.IsTarget, Is.False);
     }
 
-    // [Test] TODO RMTEAM-904
-    // public void TargetClassDefinitionProperty_ForNonGenericTargetClass ()
-    // {
-    //   var type = typeof(TargetClass1);
-    //   var mixinConfiguration = MixinConfiguration.BuildNew()
-    //       .ForClass(type).AddMixin<Mixin1>()
-    //       .BuildConfiguration();
-    //
-    //   var type1 = new InvolvedType(type);
-    //   type1.ClassContext = new ReflectedObject(mixinConfiguration.ClassContexts.First());
-    //   type1.TargetClassDefinition = new ReflectedObject(TargetClassDefinitionUtility.GetConfiguration(type, mixinConfiguration));
-    //
-    //   Assert.That(type1.IsTarget, Is.True);
-    //   Assert.That(type1.ClassContext, Is.Not.Null);
-    // }
+    [Test]
+    public void TargetClassDefinitionProperty_ForNonGenericTargetClass ()
+    {
+      var type = typeof(TargetClass1);
+      var mixinConfiguration = MixinConfiguration.BuildNew()
+          .ForClass(type).AddMixin<Mixin1>()
+          .BuildConfiguration();
+
+      var type1 = new InvolvedType(type);
+      type1.ClassContext = mixinConfiguration.ClassContexts.First();
+      type1.TargetClassDefinition = TargetClassDefinitionFactory.CreateWithoutValidation(mixinConfiguration.ClassContexts.GetExact(type));
+
+      Assert.That(type1.IsTarget, Is.True);
+      Assert.That(type1.ClassContext, Is.Not.Null);
+    }
 
     [Test]
     public void TargetClassDefinitionProperty_ForNonTargetClass ()

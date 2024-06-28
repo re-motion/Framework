@@ -29,11 +29,9 @@ namespace Remotion.Mixins.CrossReferencer
     private readonly Type _realType;
     private IEnumerable<InvolvedTypeMember>? _members;
 
-    private ClassContext /* ClassContext */
-        _classContext;
+    private ClassContext _classContext;
 
-    private TargetClassDefinition /* TargetClassDefinition */
-        _targetClassDefintion;
+    private TargetClassDefinition _targetClassDefintion;
 
     private readonly IDictionary<InvolvedType, MixinDefinition> _targetTypes = new Dictionary<InvolvedType, MixinDefinition>();
 
