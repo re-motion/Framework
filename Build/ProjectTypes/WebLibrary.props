@@ -15,7 +15,7 @@
       <Pack>true</Pack>
       <PackagePath>res/UI</PackagePath>
     </Content>
-    <Content Include="UrlMapping.xml" Condition="Exists('UrlMapping.xml')" CopyToOutputDirectory="Never">
+    <Content Include="UrlMapping.xml" Condition="Exists('UrlMapping.xml')" CopyToOutputDirectory="PreserveNewest">
       <Pack>true</Pack>
       <PackagePath>res</PackagePath>
     </Content>

@@ -65,6 +65,8 @@
     <None Include="ProjectTypes\Test.targets" />
     <None Include="ProjectTypes\WebApplication.props" />
     <None Include="ProjectTypes\WebApplication.targets" />
+    <None Include="ProjectTypes\WebApplicationNetFramework.props" />
+    <None Include="ProjectTypes\WebApplicationNetFramework.targets" />
     <None Include="ProjectTypes\WebLibrary.props" />
     <None Include="ProjectTypes\WebLibrary.targets" />
     <None Include="Remotion.build" />
