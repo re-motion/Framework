@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "(\r\n"
           + "  [ID] uniqueidentifier NOT NULL,\r\n"
           + "  [ClassID] varchar(100) NULL,\r\n"
-          + "  [Timestamp] datetime NULL,\r\n"
+          + "  [Timestamp] datetime2 NULL,\r\n"
           + "  [Column1] varchar(100) NOT NULL\r\n"
           + ")";
 
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "(\r\n"
           + "  [ID] uniqueidentifier NOT NULL,\r\n"
           + "  [ClassID] varchar(100) NULL,\r\n"
-          + "  [Timestamp] datetime NULL,\r\n"
+          + "  [Timestamp] datetime2 NULL,\r\n"
           + "  [Column1] varchar(100) NOT NULL,\r\n"
           + "  [Column2] bit NULL,\r\n"
           + "  CONSTRAINT [PKName] PRIMARY KEY CLUSTERED ([Column1])\r\n"
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "(\r\n"
           + "  [ID] uniqueidentifier NOT NULL,\r\n"
           + "  [ClassID] varchar(100) NULL,\r\n"
-          + "  [Timestamp] datetime NULL,\r\n"
+          + "  [Timestamp] datetime2 NULL,\r\n"
           + "  [Column1] varchar(100) NOT NULL,\r\n"
           + "  [Column2] bit NULL,\r\n"
           + "  CONSTRAINT [PKName] PRIMARY KEY NONCLUSTERED ([Column1], [Column2])\r\n"

@@ -14,7 +14,7 @@ CREATE TABLE [dbo].[IndexTestTable]
 (
   [ObjectID] integer NOT NULL,
   [ClassID] varchar NOT NULL,
-  [Timestamp] datetime NULL,
+  [Timestamp] datetime2 NULL,
   [ID] uniqueidentifier NOT NULL,
   [FirstName] varchar(100) NOT NULL,
   [LastName] varchar(100) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE [dbo].[PKTestTable]
 (
   [ObjectID] integer NOT NULL,
   [ClassID] varchar NOT NULL,
-  [Timestamp] datetime NULL,
+  [Timestamp] datetime2 NULL,
   [ID] uniqueidentifier NOT NULL,
   [Name] varchar(100) NOT NULL,
   CONSTRAINT [PK_PKTestTable_ID] PRIMARY KEY NONCLUSTERED ([ID])

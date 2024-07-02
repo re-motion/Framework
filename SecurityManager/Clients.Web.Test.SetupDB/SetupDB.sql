@@ -165,14 +165,14 @@ CREATE TYPE [dbo].[TVP_Double_Distinct] AS TABLE
   UNIQUE CLUSTERED ([Value])
 )
 GO
-CREATE TYPE [dbo].[TVP_DateTime] AS TABLE
+CREATE TYPE [dbo].[TVP_DateTime2] AS TABLE
 (
-  [Value] datetime NULL
+  [Value] datetime2 NULL
 )
 GO
-CREATE TYPE [dbo].[TVP_DateTime_Distinct] AS TABLE
+CREATE TYPE [dbo].[TVP_DateTime2_Distinct] AS TABLE
 (
-  [Value] datetime NULL
+  [Value] datetime2 NULL
   UNIQUE CLUSTERED ([Value])
 )
 GO
