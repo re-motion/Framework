@@ -45,6 +45,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
           new IRelationEndPoint[0]);
       var dataManagementCommand = new Mock<IDataManagementCommand>();
       var randomBoolean = BooleanObjectMother.GetRandomBoolean();
+      Predicate<DomainObjectState> expectedPredicate = state => state.IsUnchanged;
+      Predicate<DomainObject> domainObjectFilter = obj => true;
 
       CheckDelegation(dm => dm.GetOrCreateVirtualEndPoint(relationEndPointID), virtualEndPoint.Object);
       CheckDelegation(dm => dm.GetRelationEndPointWithLazyLoad(relationEndPointID), virtualEndPoint.Object);
@@ -57,7 +59,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       CheckDelegation(dm => dm.GetState(objectID), new DomainObjectState.Builder().SetDeleted().Value);
       CheckDelegation(dm => dm.GetDataContainerWithLazyLoad(objectID, randomBoolean), dataContainer);
       CheckDelegation(dm => dm.GetDataContainersWithLazyLoad(new[] { objectID }, true), new[] { dataContainer });
-      Predicate<DomainObjectState> expectedPredicate = state => state.IsUnchanged;
       CheckDelegation(dm => dm.GetLoadedDataByObjectState(expectedPredicate), new[] { persistableData });
       CheckDelegation(dm => dm.MarkInvalid(domainObject));
       CheckDelegation(dm => dm.MarkNotInvalid(objectID));
@@ -67,6 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       CheckDelegation(dm => dm.CreateUnloadCommand(new[] { objectID }), dataManagementCommand.Object);
       CheckDelegation(dm => dm.CreateUnloadVirtualEndPointsCommand(new[] { relationEndPointID }), dataManagementCommand.Object);
       CheckDelegation(dm => dm.CreateUnloadAllCommand(), dataManagementCommand.Object);
+      CheckDelegation(dm => dm.CreateUnloadFilteredDomainObjectsCommand(domainObjectFilter), dataManagementCommand.Object);
       CheckDelegation(dm => dm.LoadLazyCollectionEndPoint(relationEndPointID));
       CheckDelegation(dm => dm.LoadLazyVirtualObjectEndPoint(relationEndPointID));
       CheckDelegation(dm => dm.LoadLazyDataContainer(objectID), dataContainer);
