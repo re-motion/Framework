@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -30,9 +31,10 @@ namespace Remotion.Data.DomainObjects
   /// A collection of <see cref="IClientTransactionExtension"/>s.
   /// </summary>
   [Serializable]
-  public class ClientTransactionExtensionCollection : CommonCollection, IClientTransactionExtension
+  public class ClientTransactionExtensionCollection : IClientTransactionExtension, IReadOnlyList<IClientTransactionExtension>
   {
     private readonly string _key;
+    private readonly List<KeyValuePair<string, IClientTransactionExtension>> _extensions = new();
 
     public ClientTransactionExtensionCollection (string key)
     {
@@ -53,7 +55,7 @@ namespace Remotion.Data.DomainObjects
       {
         ArgumentUtility.CheckNotNullOrEmpty("key", key);
 
-        return (IClientTransactionExtension?)BaseGetObject(key);
+        return _extensions.FirstOrDefault(e => KeyPredicate(e, key)).Value;
       }
     }
 
@@ -64,7 +66,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns>The <see cref="IClientTransactionExtension"/> of the given <paramref name="index"/>.</returns>
     public IClientTransactionExtension this[int index]
     {
-      get { return (IClientTransactionExtension)BaseGetObject(index); }
+      get { return _extensions[index].Value; }
     }
 
     string IClientTransactionExtension.Key
@@ -86,10 +88,10 @@ namespace Remotion.Data.DomainObjects
       var key = clientTransactionExtension.Key;
       Assertion.IsNotNull(key, "IClientTransactionExtension.Key must not return null");
 
-      if (BaseContainsKey(key))
+      if (_extensions.Any(e => KeyPredicate(e, key)))
         throw new InvalidOperationException(string.Format("An extension with key '{0}' is already part of the collection.", key));
 
-      BaseAdd(key, clientTransactionExtension);
+      _extensions.Add(new KeyValuePair<string, IClientTransactionExtension>(key, clientTransactionExtension));
     }
 
     /// <summary>
@@ -100,7 +102,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty("key", key);
 
-      BaseRemove(key);
+      _extensions.RemoveAll(e => KeyPredicate(e, key));
     }
 
     /// <summary>
@@ -112,7 +114,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty("key", key);
 
-      return BaseIndexOfKey(key);
+      return _extensions.FindIndex(e => KeyPredicate(e, key));
     }
 
     /// <summary>
@@ -130,11 +132,19 @@ namespace Remotion.Data.DomainObjects
       var key = clientTransactionExtension.Key;
       Assertion.IsNotNull(key, "IClientTransactionExtension.Key must not return null");
 
-      if (BaseContainsKey(key))
+      if (_extensions.Any(e => KeyPredicate(e, key)))
         throw new InvalidOperationException(string.Format("An extension with key '{0}' is already part of the collection.", key));
 
-      BaseInsert(index, key, clientTransactionExtension);
+      _extensions.Insert(index, new KeyValuePair<string, IClientTransactionExtension>(key, clientTransactionExtension));
     }
+
+    IEnumerator<IClientTransactionExtension> IEnumerable<IClientTransactionExtension>.GetEnumerator () => _extensions.Select(e => e.Value).GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator () => ((IEnumerable<IClientTransactionExtension>)this).GetEnumerator();
+
+    public int Count => _extensions.Count;
+
+    private static bool KeyPredicate (KeyValuePair<string, IClientTransactionExtension> extension, string key) => string.Equals(extension.Key, key, StringComparison.Ordinal);
 
     #region Notification methods
 
@@ -212,6 +222,7 @@ namespace Remotion.Data.DomainObjects
         this[i].ObjectsLoaded(clientTransaction, loadedDomainObjects);
     }
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
       ArgumentUtility.DebugCheckNotNull("unloadedDomainObjects", unloadedDomainObjects);
@@ -220,6 +231,7 @@ namespace Remotion.Data.DomainObjects
         this[i].ObjectsUnloading(clientTransaction, unloadedDomainObjects);
     }
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
       ArgumentUtility.DebugCheckNotNull("unloadedDomainObjects", unloadedDomainObjects);
