@@ -15,11 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Data.DomainObjects.Persistence
 {
-[Serializable]
 public class StorageProviderException : PersistenceException
 {
   // types
@@ -33,11 +31,6 @@ public class StorageProviderException : PersistenceException
   public StorageProviderException () : this("A storage provider exception occurred.") {}
   public StorageProviderException (string message) : base(message) {}
   public StorageProviderException (string message, Exception? inner) : base(message, inner) {}
-
-#if NET8_0_OR_GREATER
-  [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-  protected StorageProviderException (SerializationInfo info, StreamingContext context) : base(info, context) {}
 
   // methods and properties
 

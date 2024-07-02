@@ -19,7 +19,6 @@ using Remotion.Data.DomainObjects.ObjectBinding;
 
 namespace Remotion.Data.DomainObjects.Web.Test.Domain
 {
-  [Serializable]
   [DBTable("TableWithUndefinedEnum")]
   [Instantiable]
   [DBStorageGroup]

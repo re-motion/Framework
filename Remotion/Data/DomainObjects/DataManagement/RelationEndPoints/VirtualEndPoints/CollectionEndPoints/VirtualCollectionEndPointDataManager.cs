@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
@@ -87,29 +86,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       _virtualCollectionData.ResetCachedDomainObjects();
     }
-
-    #region Serialization
-
-    // ReSharper disable UnusedMember.Local
-    private VirtualCollectionEndPointDataManager (FlattenedDeserializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      EndPointID = info.GetValueForHandle<RelationEndPointID>();
-
-      _virtualCollectionData = info.GetValueForHandle<VirtualCollectionData>();
-    }
-
-    // ReSharper restore UnusedMember.Local
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      info.AddHandle(EndPointID);
-      info.AddHandle(_virtualCollectionData);
-    }
-
-    #endregion
   }
 }

@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
@@ -135,25 +134,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       return GetType().Name + ": " + ID;
     }
-
-    #region Serialization
-
-    protected RelationEndPoint (FlattenedDeserializationInfo info)
-    {
-      _clientTransaction = info.GetValueForHandle<ClientTransaction>();
-      _id = info.GetValue<RelationEndPointID>();
-    }
-
-    protected abstract void SerializeIntoFlatStructure (FlattenedSerializationInfo info);
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      info.AddHandle(_clientTransaction);
-      info.AddValue(_id);
-
-      SerializeIntoFlatStructure(info);
-    }
-
-    #endregion
   }
 }

@@ -15,11 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Data.DomainObjects.Web.Test
 {
-[Serializable]
 public class TestFailureException : ApplicationException
 {
   // types
@@ -39,10 +37,6 @@ public class TestFailureException : ApplicationException
   }
 
   public TestFailureException (string message, Exception inner) : base(message, inner)
-  {
-  }
-
-  protected TestFailureException (SerializationInfo info, StreamingContext context) : base(info, context)
   {
   }
 

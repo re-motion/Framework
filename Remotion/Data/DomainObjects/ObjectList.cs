@@ -23,7 +23,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
 {
-  [Serializable]
   public class ObjectList<T> : DomainObjectCollection, IList<T>, IReadOnlyList<T> where T : DomainObject
   {
     private static IDomainObjectCollectionData CheckStrategy (IDomainObjectCollectionData dataStrategy)

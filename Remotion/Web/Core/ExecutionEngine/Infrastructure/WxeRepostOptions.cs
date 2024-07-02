@@ -26,7 +26,6 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   /// <see cref="IWxeExecutor"/>.<see cref="IWxeExecutor.ExecuteFunction"/> or <see cref="IWxeExecutor"/>.<see cref="IWxeExecutor.ExecuteFunctionNoRepost"/> 
   /// methods has returned to the caller.
   /// </summary>
-  [Serializable]
   public class WxeRepostOptions
   {
     public static WxeRepostOptions SuppressRepost ([NotNull] Control sender, bool usesEventTarget)

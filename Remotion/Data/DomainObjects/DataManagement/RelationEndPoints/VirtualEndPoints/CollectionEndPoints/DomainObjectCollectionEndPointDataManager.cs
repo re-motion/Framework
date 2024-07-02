@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
@@ -289,53 +288,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
                 return ep.ObjectID;
               });
     }
-
-    #region Serialization
-
-    // ReSharper disable UnusedMember.Local
-    private DomainObjectCollectionEndPointDataManager (FlattenedDeserializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      _endPointID = info.GetValueForHandle<RelationEndPointID>();
-      _changeDetectionStrategy = info.GetValueForHandle<IDomainObjectCollectionEndPointChangeDetectionStrategy>();
-
-      _changeCachingDomainObjectCollectionData = info.GetValue<ChangeCachingDomainObjectCollectionDataDecorator>();
-
-      _originalOppositeEndPoints = new HashSet<IRealObjectEndPoint>();
-      info.FillCollection(_originalOppositeEndPoints);
-
-      _originalItemsWithoutEndPoint = new HashSet<DomainObject>();
-      info.FillCollection(_originalItemsWithoutEndPoint);
-
-      var currentOppositeEndPoints = new List<IRealObjectEndPoint>();
-      info.FillCollection(currentOppositeEndPoints);
-      _currentOppositeEndPoints = currentOppositeEndPoints.ToDictionary(
-          ep =>
-          {
-            Assertion.IsFalse(ep.IsNull, "ep.IsNull");
-            Assertion.DebugIsNotNull(ep.ObjectID, "ep.ObjectID != null when ep.IsNull == false");
-
-            return ep.ObjectID;
-          });
-    }
-
-    // ReSharper restore UnusedMember.Local
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      info.AddHandle(_endPointID);
-      info.AddHandle(_changeDetectionStrategy);
-      info.AddValue(_changeCachingDomainObjectCollectionData);
-
-      info.AddCollection(_originalOppositeEndPoints);
-      info.AddCollection(_originalItemsWithoutEndPoint);
-
-      info.AddCollection(_currentOppositeEndPoints.Values);
-    }
-
-    #endregion
   }
 }

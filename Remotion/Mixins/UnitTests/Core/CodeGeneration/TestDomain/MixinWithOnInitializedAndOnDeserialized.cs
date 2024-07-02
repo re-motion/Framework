@@ -19,12 +19,9 @@ using NUnit.Framework;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
-  [Serializable]
   public class MixinWithOnInitializedAndOnDeserialized : Mixin<object, object>
   {
-    [NonSerialized]
     public bool OnInitializedCalled;
-    [NonSerialized]
     public bool OnDeserializedCalled;
 
     protected override void OnInitialized ()

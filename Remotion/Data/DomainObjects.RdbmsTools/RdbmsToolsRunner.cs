@@ -35,7 +35,6 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
   /// <b>Remotion.Data.DomainObjects.RdbmsTools</b> assembly.
   /// </summary>
 #if NETFRAMEWORK
-  [Serializable]
   public class RdbmsToolsRunner : AppDomainRunnerBase
 #else
   public class RdbmsToolsRunner : CustomAppContextRunnerBase

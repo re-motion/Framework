@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints
 {
@@ -25,7 +24,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// <typeparam name="TEndPoint">The type of the end point whose state is managed by this instance.</typeparam>
   /// <typeparam name="TData">The type of data held by the <typeparamref name="TDataManager"/>.</typeparam>
   /// <typeparam name="TDataManager">The type of <see cref="IVirtualEndPointDataManager"/> holding the data for the end-point.</typeparam>
-  public interface IVirtualEndPointLoadState<TEndPoint, TData, TDataManager> : IFlattenedSerializable
+  public interface IVirtualEndPointLoadState<TEndPoint, TData, TDataManager>
       where TEndPoint : IVirtualEndPoint<TData>
       where TDataManager : IVirtualEndPointDataManager
   {

@@ -24,7 +24,6 @@ namespace Remotion.ObjectBinding.Web.Services
   /// <summary>
   /// Contains context information required by the web services used for business object controls.
   /// </summary>
-  [Serializable]
   public class BusinessObjectWebServiceContext
   {
     public static BusinessObjectWebServiceContext Create (

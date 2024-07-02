@@ -28,12 +28,10 @@ namespace Remotion.Collections.Caching
   /// </remarks>
   /// <seealso cref="LockingInvalidationToken"/>
   /// <threadsafety static="true" instance="true" />
-  [Serializable]
   public abstract class InvalidationToken
   {
     /// <summary>Represents a cache revision for the <see cref="InvalidationToken"/> from which it was created.</summary>
     /// <threadsafety static="true" instance="true" />
-    [Serializable]
     public struct Revision
     {
       private readonly long _value;

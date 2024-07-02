@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
@@ -32,8 +31,7 @@ namespace Remotion.Data.DomainObjects
   /// <see cref="ObjectID"/> supports values of type <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
   /// </remarks>
   /// <threadsafety static="true" instance="true"/>
-  [Serializable]
-  public sealed class ObjectID : IComparable, ISerializable
+  public sealed class ObjectID : IComparable
   {
     // types
 
@@ -382,32 +380,5 @@ namespace Remotion.Data.DomainObjects
     {
       return new ArgumentException(string.Format(message, args), argumentName);
     }
-
-    #region Serialization
-
-    private ObjectID (SerializationInfo info, StreamingContext context)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      var value = info.GetValue("Value", typeof(object))!;
-      var classID = info.GetString("ClassID")!;
-      var classDefinition = MappingConfiguration.Current.GetClassDefinition(classID);
-
-      _value = value;
-      _classDefinition = classDefinition;
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      info.AddValue("Value", _value);
-      info.AddValue("ClassID", _classDefinition.ID);
-    }
-
-    #endregion
   }
 }

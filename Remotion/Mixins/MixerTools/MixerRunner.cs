@@ -28,7 +28,6 @@ using System.IO;
 namespace Remotion.Mixins.MixerTools
 {
 #if NETFRAMEWORK
-  [Serializable]
   public class MixerRunner : AppDomainRunnerBase
 #else
   public class MixerRunner : CustomAppContextRunnerBase

@@ -19,7 +19,6 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
@@ -218,14 +217,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       Assert.That(
           () => _nullEndPoint.SetDataFromSubTransaction(new Mock<IRelationEndPoint>().Object),
-          Throws.InvalidOperationException);
-    }
-
-    [Test]
-    public void SerializeIntoFlatStructure ()
-    {
-      Assert.That(
-          () => _nullEndPoint.SerializeIntoFlatStructure(new FlattenedSerializationInfo()),
           Throws.InvalidOperationException);
     }
   }

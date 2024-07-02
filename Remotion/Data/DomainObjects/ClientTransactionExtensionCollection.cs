@@ -29,7 +29,6 @@ namespace Remotion.Data.DomainObjects
   /// <summary>
   /// A collection of <see cref="IClientTransactionExtension"/>s.
   /// </summary>
-  [Serializable]
   public class ClientTransactionExtensionCollection : CommonCollection, IClientTransactionExtension
   {
     private readonly string _key;

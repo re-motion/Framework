@@ -22,7 +22,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// <summary>
   /// Decorates <see cref="IDomainObjectCollectionData"/> by raising events whenever the inner collection is modified.
   /// </summary>
-  [Serializable]
   public class ObservableDomainObjectCollectionDataDecorator : ObservableDomainObjectCollectionDataDecoratorBase
   {
     public class DataChangeEventArgs : EventArgs

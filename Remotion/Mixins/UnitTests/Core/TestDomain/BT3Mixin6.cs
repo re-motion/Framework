@@ -29,7 +29,6 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   public interface IBT3Mixin6 { }
 
   [Extends(typeof(BaseType3))]
-  [Serializable]
   public class BT3Mixin6<[BindToConstraints] TTarget, [BindToConstraints]TNext> : Mixin<TTarget, TNext>, IBT3Mixin6
       where TTarget : class, IBT3Mixin6TargetCallDependencies
       where TNext : class, IBT3Mixin6NextCallDependencies

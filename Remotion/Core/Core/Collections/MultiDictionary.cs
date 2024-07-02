@@ -22,7 +22,6 @@ namespace Remotion.Collections
   /// <summary>
   /// A dictionary that contains a <see cref="List{T}"/> of values for every key.
   /// </summary>
-  [Serializable]
   public class MultiDictionary<TKey, TValue> : AutoInitDictionary<TKey, List<TValue>>
       where TKey : notnull
   {

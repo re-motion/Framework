@@ -38,7 +38,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// <summary>
   /// Creates all parts necessary to construct a <see cref="ClientTransaction"/> with root-transaction semantics.
   /// </summary>
-  [Serializable]
   public class RootClientTransactionComponentFactory : ClientTransactionComponentFactoryBase
   {
     private readonly IStorageSettings _storageSettings;

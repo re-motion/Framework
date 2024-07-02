@@ -478,20 +478,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
               .With.Message.EqualTo("Collection was modified during enumeration."));
     }
 
-    [Test]
-    public void Serializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      Add(_order1);
-      Add(_order2);
-      Add(_order3);
-
-      var result = Serializer.SerializeAndDeserialize(_data);
-      Assert.That(result.Count, Is.EqualTo(3));
-      Assert.That(result.Version, Is.EqualTo(_data.Version));
-    }
-
     private void Add (Order order)
     {
       _data.Insert(_data.Count, order);

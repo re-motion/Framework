@@ -21,7 +21,6 @@ using Remotion.TypePipe;
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 {
   [Instantiable]
-  [Serializable]
   [DBTable]
   public abstract class SampleBindableDomainObject : BindableDomainObject, ISupportsGetObject
   {

@@ -32,7 +32,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// <summary>
   /// Holds common code required to implement the <see cref="IClientTransactionComponentFactory"/> interface.
   /// </summary>
-  [Serializable]
   public abstract class ClientTransactionComponentFactoryBase : IClientTransactionComponentFactory
   {
     public abstract ITransactionHierarchyManager CreateTransactionHierarchyManager (

@@ -21,7 +21,6 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
 {
   [Instantiable]
   [DBTable]
-  [Serializable]
   public abstract class OppositeClassWithCollectionRelationProperties : SimpleDomainObject<OppositeClassWithCollectionRelationProperties>
   {
     [DBBidirectionalRelation("Collection")]

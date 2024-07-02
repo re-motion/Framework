@@ -27,7 +27,6 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
   /// <summary>
   /// <see cref="TestResult"/> represents a single result for a test method.
   /// </summary>
-  [Serializable]
   public struct TestResult
   {
     public static TestResult CreateSucceeded (MethodInfo methodInfo)

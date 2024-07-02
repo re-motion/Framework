@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Configuration;
-using System.Runtime.Serialization;
 
 namespace Remotion.Web.ExecutionEngine
 {
@@ -25,21 +24,12 @@ namespace Remotion.Web.ExecutionEngine
   /// This exception is derived from <see cref="ConfigurationException"/> to allow the exception to bubble through the ASP.NET infrastructure 
   /// (i.e. Page.ProcessRequest) without being logged in the ASP.NET performance counters (.e.g. Total Errors).
   /// </remarks>
-  [Serializable]
   public abstract class WxeInfrastructureException : ConfigurationException
   {
     protected WxeInfrastructureException (string message)
 #pragma warning disable 612,618
         : base(message)
 #pragma warning restore 612,618
-    {
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    protected WxeInfrastructureException (SerializationInfo info, StreamingContext context)
-        : base(info, context)
     {
     }
   }

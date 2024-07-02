@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.Serialization;
 using NUnit.Framework;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
@@ -28,24 +27,6 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
   [TestFixture]
   public class InterfaceIntroductionDefinitionBuildingIntegrationTest
   {
-    public class MixinImplementingISerializable : ISerializable, IDisposable, IDeserializationCallback
-    {
-      public void Dispose ()
-      {
-        throw new NotImplementedException();
-      }
-
-      public void GetObjectData (SerializationInfo info, StreamingContext context)
-      {
-        throw new NotImplementedException();
-      }
-
-      public void OnDeserialization (object sender)
-      {
-        throw new NotImplementedException();
-      }
-    }
-
     [Test]
     public void IntroducedInterface ()
     {
@@ -220,37 +201,6 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
 
         MixinDefinition m1 = bt1.Mixins[typeof(MixinWithExplicitImplementation)];
         Assert.That(m1.Methods.ContainsKey(explicitMethod), Is.True);
-      }
-    }
-
-    [Test]
-    public void ISerializableIsNotIntroduced ()
-    {
-      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1>().Clear().AddMixins(typeof(MixinImplementingISerializable)).EnterScope())
-      {
-        Assert.That(
-            DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(BaseType1))
-                .Mixins[typeof(MixinImplementingISerializable)]
-                .InterfaceIntroductions[typeof(ISerializable)],
-            Is.Null);
-        Assert.That(
-            DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(BaseType1))
-                .Mixins[typeof(MixinImplementingISerializable)]
-                .InterfaceIntroductions[typeof(IDisposable)],
-            Is.Not.Null);
-      }
-    }
-
-    [Test]
-    public void IDeserializationCallbackIsNotIntroduced ()
-    {
-      using (MixinConfiguration.BuildFromActive().ForClass<BaseType1>().Clear().AddMixins(typeof(MixinImplementingISerializable)).EnterScope())
-      {
-        Assert.That(
-            DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(BaseType1))
-                .Mixins[typeof(MixinImplementingISerializable)]
-                .InterfaceIntroductions[typeof(IDeserializationCallback)],
-            Is.Null);
       }
     }
 

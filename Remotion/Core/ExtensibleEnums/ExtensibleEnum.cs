@@ -34,7 +34,6 @@ namespace Remotion.ExtensibleEnums
   /// leads to inherent thread-safety.
   /// </remarks>
   /// <threadsafety static="true" instance="true" />
-  [Serializable]
   public abstract class ExtensibleEnum<T> : IExtensibleEnum, IEquatable<T?>
       where T: ExtensibleEnum<T>
   {

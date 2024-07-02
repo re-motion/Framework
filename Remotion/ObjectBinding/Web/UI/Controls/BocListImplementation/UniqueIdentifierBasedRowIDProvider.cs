@@ -26,7 +26,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
   /// <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/>-based implementation of the <see cref="IRowIDProvider"/> interface. 
   /// Used when the <see cref="BocList"/> is bound to objects of type <see cref="IBusinessObjectWithIdentity"/>.
   /// </summary>
-  [Serializable]
   public class UniqueIdentifierBasedRowIDProvider : IRowIDProvider
   {
     public string GetControlRowID (BocListRow row)

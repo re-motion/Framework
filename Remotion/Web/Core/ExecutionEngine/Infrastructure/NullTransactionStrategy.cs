@@ -20,7 +20,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
-  [Serializable]
   public class NullTransactionStrategy : TransactionStrategyBase
   {
     public static readonly NullTransactionStrategy Null = new NullTransactionStrategy();

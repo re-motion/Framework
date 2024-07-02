@@ -20,8 +20,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjectEndPoints;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
-using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.RealObjectEndPoints
@@ -126,18 +124,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _oppositeEndPointMock.Verify();
       sequence.Verify();
       Assert.That(result, Is.SameAs(fakeCommand.Object));
-    }
-
-    [Test]
-    public void FlattenedSerializable ()
-    {
-      var fakeProvider = new SerializableRelationEndPointProviderFake();
-      var state = new UnknownRealObjectEndPointSyncState(fakeProvider);
-
-      var result = FlattenedSerializer.SerializeAndDeserialize(state);
-
-      Assert.That(result, Is.Not.Null);
-      Assert.That(result.VirtualEndPointProvider, Is.Not.Null);
     }
 
     private void ExpectLoadOpposite (VerifiableSequence sequence)

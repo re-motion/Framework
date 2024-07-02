@@ -26,7 +26,6 @@ namespace Remotion.ObjectBinding.Sample
 {
   [XmlRoot("Person")]
   [XmlType]
-  [Serializable]
   public class Person : BindableXmlObject
   {
     public static Person GetObject (Guid id)

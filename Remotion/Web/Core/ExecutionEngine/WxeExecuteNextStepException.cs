@@ -15,12 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Web.ExecutionEngine
 {
   /// <summary> This exception is used by the execution engine to end the execution of a <see cref="WxePageStep"/>. </summary>
-  [Serializable]
   public class WxeExecuteNextStepException : WxeExecutionControlException
   {
     public WxeExecuteNextStepException ()
@@ -28,14 +26,6 @@ namespace Remotion.Web.ExecutionEngine
             "This exception does not indicate an error. It is used to roll back the call stack. "
             + "It is recommended to disable breaking on this exeption type while debugging."
             )
-    {
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    protected WxeExecuteNextStepException (SerializationInfo info, StreamingContext context)
-        : base(info, context)
     {
     }
   }

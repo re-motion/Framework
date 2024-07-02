@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.DataManagement
 {
@@ -51,19 +50,5 @@ namespace Remotion.Data.DomainObjects.DataManagement
         return InnerDataContainerMap;
       }
     }
-
-    #region Serialization
-
-    private DelegatingDataContainerMap (FlattenedDeserializationInfo info)
-    {
-      InnerDataContainerMap = info.GetNullableValueForHandle<DataContainerMap>();
-    }
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      info.AddHandle(InnerDataContainerMap);
-    }
-
-    #endregion
   }
 }

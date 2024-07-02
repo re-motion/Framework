@@ -15,20 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
-using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests;
 
-[Serializable]
-public class SerializableStorageSettings : IStorageSettings,
-#pragma warning disable SYSLIB0050
-    IObjectReference
-#pragma warning restore SYSLIB0050
+public class SerializableStorageSettings : IStorageSettings
 {
-  [NonSerialized]
   private IStorageSettings _storageSettingsImplementation;
 
   public SerializableStorageSettings (IStorageSettings storageSettingsImplementation)
@@ -59,10 +52,5 @@ public class SerializableStorageSettings : IStorageSettings,
   public StorageProviderDefinition GetStorageProviderDefinition (string storageProviderName)
   {
     return _storageSettingsImplementation.GetStorageProviderDefinition(storageProviderName);
-  }
-
-  object IObjectReference.GetRealObject (StreamingContext context)
-  {
-    return (SerializableStorageSettings)SafeServiceLocator.Current.GetInstance<IStorageSettings>();
   }
 }

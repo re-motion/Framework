@@ -23,7 +23,6 @@ using Remotion.Web.UI.Controls.ControlReplacing;
 
 namespace Remotion.Web.ExecutionEngine
 {
-  [Serializable]
   public class WxeUserControlStep : WxeStep
   {
     private bool _isExecutionStarted;
@@ -32,7 +31,6 @@ namespace Remotion.Web.ExecutionEngine
     private WxePageStep? _pageStep;
     private IUserControlExecutor _userControlExecutor = NullUserControlExecutor.Null;
 
-    [NonSerialized]
     private WxeHandler? _wxeHandler;
 
     public WxeUserControlStep (string userControl)

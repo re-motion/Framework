@@ -21,7 +21,6 @@ using Remotion.Web.ExecutionEngine;
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 {
 
-[Serializable]
 public class WxeFunctionStateMock: WxeFunctionState
 {
   public WxeFunctionStateMock (WxeFunction function, int lifetime, bool enableCleanUp)

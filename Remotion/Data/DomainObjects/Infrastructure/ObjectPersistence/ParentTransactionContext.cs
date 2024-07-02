@@ -28,7 +28,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// <summary>
   /// Provides access to the parent transaction for <see cref="SubPersistenceStrategy"/>.
   /// </summary>
-  [Serializable]
   public class ParentTransactionContext : IParentTransactionContext
   {
     private readonly ClientTransaction _parentTransaction;

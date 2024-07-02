@@ -23,10 +23,8 @@ using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
@@ -400,17 +398,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Comparison<DomainObject> comparison = (one, two) => 0;
 
       _collectionEndPointMock.Setup(mock => mock.SortCurrentData(comparison)).Verifiable();
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      var data = new EndPointDelegatingDomainObjectCollectionData(_endPointID, new SerializableRelationEndPointProviderFake());
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(data);
-
-      Assert.That(deserializedInstance.AssociatedEndPointID, Is.EqualTo(_endPointID));
-      Assert.That(deserializedInstance.VirtualEndPointProvider, Is.Not.Null);
     }
 
     private IDomainObjectCollectionEndPoint CreateDomainObjectCollectionEndPointStub (ClientTransaction clientTransaction, Order owningOrder)

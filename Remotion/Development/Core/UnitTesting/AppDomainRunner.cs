@@ -20,7 +20,6 @@ using Remotion.Tools;
 
 namespace Remotion.Development.UnitTesting
 {
-  [Serializable]
   public class AppDomainRunner : AppDomainRunnerBase
   {
     public static void Run (Action<object[]> action, params object[] args)

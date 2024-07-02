@@ -44,7 +44,6 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   }
 
   [Uses(typeof(BT3Mixin5))]
-  [Serializable]
   public class BaseType3 : IBaseType31, IBaseType32, IBaseType34, IBaseType35
   {
     public virtual string IfcMethod ()

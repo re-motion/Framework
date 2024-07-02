@@ -28,7 +28,6 @@ namespace Remotion.ObjectBinding
   /// </remarks>
   [BindableObjectProvider]
   [BindableObjectBaseClass]
-  [Serializable]
   public abstract class BindableObjectBase : IBusinessObject
   {
     private readonly IBindableObjectBaseImplementation _implementation;

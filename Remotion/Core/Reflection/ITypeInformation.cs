@@ -230,14 +230,6 @@ namespace Remotion.Reflection
     bool IsNested { get; }
 
     /// <summary>
-    /// Gets a value indicating whether the type is serializable.
-    /// </summary>
-    /// <returns>
-    /// <see langword="true"/> if the type is serializable; otherwise, <see langword="false"/>.
-    /// </returns>
-    bool IsSerializable { get; }
-
-    /// <summary>
     /// Gets a value indicating whether the current type encompasses or refers to another type; 
     /// that is, whether the current type is an array, a pointer, or is passed by reference.
     /// </summary>

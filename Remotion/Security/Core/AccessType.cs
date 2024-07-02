@@ -26,7 +26,6 @@ namespace Remotion.Security
   /// Use the static <see cref="Get(Enum)"/> methods to convert an enum to an access type.
   /// <note>For the set of basic access types see <see cref="T:Remotion.Security.GeneralAccessTypes"/>.</note>
   /// </remarks>
-  [Serializable]
   public struct AccessType : IEquatable<AccessType>
   {
     private static readonly ConcurrentDictionary<Enum, AccessType> s_accessTypeByEnumCache = new ConcurrentDictionary<Enum, AccessType>();

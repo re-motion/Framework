@@ -25,7 +25,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
   /// Implements <see cref="IDataManager"/> by passing on all calls to an <see cref="InnerDataManager"/>. This class is used to resolve a
   /// dependency cycle between <see cref="DataManager"/> and <see cref="ObjectLoader"/>.
   /// </summary>
-  [Serializable]
   public class DelegatingDataManager : IDataManager
   {
     private IDataManager? _innerDataManager;

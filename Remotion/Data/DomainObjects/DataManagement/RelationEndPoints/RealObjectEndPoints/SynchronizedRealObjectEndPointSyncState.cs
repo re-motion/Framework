@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
@@ -114,25 +113,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
       var newOppositeID = RelationEndPointID.CreateOpposite(sourceEndPoint.Definition, oppositeObjectID);
       return (IVirtualEndPoint)_endPointProvider.GetRelationEndPointWithLazyLoad(newOppositeID);
     }
-
-    #region Serialization
-
-    public SynchronizedRealObjectEndPointSyncState (FlattenedDeserializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      _endPointProvider = info.GetValueForHandle<IRelationEndPointProvider>();
-      _transactionEventSink = info.GetValueForHandle<IClientTransactionEventSink>();
-    }
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      info.AddHandle(_endPointProvider);
-      info.AddHandle(_transactionEventSink);
-    }
-
-    #endregion
   }
 }

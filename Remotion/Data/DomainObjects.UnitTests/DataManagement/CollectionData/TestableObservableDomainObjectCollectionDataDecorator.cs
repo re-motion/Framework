@@ -19,7 +19,6 @@ using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 {
-  [Serializable]
   public class TestableObservableDomainObjectCollectionDataDecorator : ObservableDomainObjectCollectionDataDecoratorBase
   {
     public interface IEventSink

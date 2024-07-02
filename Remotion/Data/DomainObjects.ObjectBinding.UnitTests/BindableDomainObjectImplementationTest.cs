@@ -38,18 +38,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     }
 
     [Test]
-    public void Deserialization ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var wrapper = SampleBindableDomainObject.NewObject();
-      var mixin = BindableDomainObjectImplementation.Create(wrapper);
-      var deserializedData = Serializer.SerializeAndDeserialize(Tuple.Create(mixin, wrapper));
-      Assert.That(deserializedData.Item1.BusinessObjectClass, Is.Not.Null);
-      Assert.That(PrivateInvoke.GetNonPublicProperty(deserializedData.Item1, "Target"), Is.SameAs(deserializedData.Item2));
-    }
-
-    [Test]
     public void UniqueIdentifierViaImplementation ()
     {
       var instance = SampleBindableDomainObject.NewObject();

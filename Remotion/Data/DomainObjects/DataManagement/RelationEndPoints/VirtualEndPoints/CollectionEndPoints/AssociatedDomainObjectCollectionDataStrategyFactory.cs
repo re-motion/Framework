@@ -24,7 +24,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// <summary>
   /// Implements <see cref="IAssociatedDomainObjectCollectionDataStrategyFactory"/> by creating instances of <see cref="EndPointDelegatingDomainObjectCollectionData"/>.
   /// </summary>
-  [Serializable]
   public class AssociatedDomainObjectCollectionDataStrategyFactory : IAssociatedDomainObjectCollectionDataStrategyFactory
   {
     private readonly IVirtualEndPointProvider _virtualEndPointProvider;

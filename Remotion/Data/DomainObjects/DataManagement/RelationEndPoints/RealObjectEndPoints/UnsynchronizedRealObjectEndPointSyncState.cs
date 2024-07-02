@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
@@ -72,19 +71,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
               endPoint.ObjectID,
               endPoint.Definition.GetOppositeEndPointDefinition().PropertyName));
     }
-
-    #region Serialization
-
-    public UnsynchronizedRealObjectEndPointSyncState (FlattenedDeserializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-    }
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-    }
-
-    #endregion Serialization
   }
 }

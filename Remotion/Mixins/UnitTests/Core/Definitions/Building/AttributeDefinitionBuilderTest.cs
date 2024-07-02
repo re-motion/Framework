@@ -45,13 +45,6 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     }
 
     [Test]
-    public void SerializableAttributeIsIgnored ()
-    {
-      TargetClassDefinition bt1 = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof(BaseType1));
-      Assert.That(bt1.CustomAttributes.ContainsKey(typeof(SerializableAttribute)), Is.False);
-    }
-
-    [Test]
     public void ExtendsAttributeIsIgnored ()
     {
       MixinDefinition bt1m1 = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(BaseType1)).Mixins[typeof(BT1Mixin1)];

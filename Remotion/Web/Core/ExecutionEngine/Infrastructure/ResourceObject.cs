@@ -23,7 +23,6 @@ using Remotion.Web.Resources;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
-  [Serializable]
   public class ResourceObject : ResourceObjectBase
   {
     private readonly string _path;

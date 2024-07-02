@@ -25,7 +25,6 @@ using Remotion.SecurityManager.Domain.AccessControl;
 
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
-  [Serializable]
   [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.GroupType")]
   [PermanentGuid("BDBB9696-177B-4b73-98CF-321B2FBEAD0C")]
   [Instantiable]

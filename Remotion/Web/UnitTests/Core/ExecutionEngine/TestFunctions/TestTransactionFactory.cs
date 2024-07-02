@@ -19,7 +19,6 @@ using Remotion.Data;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
 {
-  [Serializable]
   public class TestTransactionFactory : ITransactionFactory
   {
     public virtual ITransaction CreateRootTransaction ()

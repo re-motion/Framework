@@ -163,16 +163,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void Serializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      StubInnerData(_order1, _order2, _order3);
-      var result = Serializer.SerializeAndDeserialize(_readOnlyAdapter);
-      Assert.That(result.Count, Is.EqualTo(3));
-    }
-
-    [Test]
     public void IList_Contains ()
     {
       StubInnerData(_order1, _order2);

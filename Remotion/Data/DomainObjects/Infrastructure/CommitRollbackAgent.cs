@@ -30,7 +30,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// gathering the commit set from the  <see cref="IDataManager"/>, raising events via the <see cref="IClientTransactionEventSink"/>, and persisting 
   /// the commit set via the  <see cref="IPersistenceStrategy"/>.
   /// </summary>
-  [Serializable]
   public class CommitRollbackAgent : ICommitRollbackAgent
   {
     private readonly ClientTransaction _clientTransaction;

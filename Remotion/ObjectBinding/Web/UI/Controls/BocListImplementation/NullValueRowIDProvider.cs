@@ -23,7 +23,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
   /// Implementation of the <see cref="IRowIDProvider"/> interface used when the <see cref="BocList"/> does not have a value set.
   /// All operations throw <see cref="NotSupportedException"/>.
   /// </summary>
-  [Serializable]
   public class NullValueRowIDProvider : IRowIDProvider
   {
     public NullValueRowIDProvider ()

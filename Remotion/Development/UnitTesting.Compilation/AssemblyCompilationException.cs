@@ -15,14 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Development.UnitTesting.Compilation
 {
   /// <summary>
   /// The <see cref="AssemblyCompilationException"/> is thrown by the <see cref="AssemblyCompiler"/> type when compilation errors occured.
   /// </summary>
-  [Serializable]
   public class AssemblyCompilationException : Exception
   {
     public AssemblyCompilationException (string message)
@@ -32,14 +30,6 @@ namespace Remotion.Development.UnitTesting.Compilation
 
     public AssemblyCompilationException (string message, Exception inner)
         : base(message, inner)
-    {
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    protected AssemblyCompilationException (SerializationInfo info, StreamingContext context)
-        : base(info, context)
     {
     }
   }

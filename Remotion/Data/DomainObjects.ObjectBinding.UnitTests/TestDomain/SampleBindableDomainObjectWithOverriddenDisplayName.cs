@@ -19,7 +19,6 @@ using System;
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 {
   [Instantiable]
-  [Serializable]
   public abstract class SampleBindableDomainObjectWithOverriddenDisplayName : SampleBindableDomainObject
   {
     public new static SampleBindableDomainObjectWithOverriddenDisplayName NewObject ()

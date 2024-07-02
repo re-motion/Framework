@@ -28,7 +28,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// Takes <see cref="ILoadedObjectData"/> instances, registers all freshly loaded ones - triggering the necessary load events - and then returns
   /// the corresponding <see cref="DomainObject"/> instances.
   /// </summary>
-  [Serializable]
   public class LoadedObjectDataRegistrationAgent : ILoadedObjectDataRegistrationAgent
   {
     private class RegisteredDataContainerGatheringVisitor : ILoadedObjectVisitor

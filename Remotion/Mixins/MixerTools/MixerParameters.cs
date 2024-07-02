@@ -19,7 +19,6 @@ using Remotion.Tools.Console.CommandLine;
 
 namespace Remotion.Mixins.MixerTools
 {
-  [Serializable]
   public class MixerParameters
   {
     [CommandLineStringArgument("baseDirectory", true,

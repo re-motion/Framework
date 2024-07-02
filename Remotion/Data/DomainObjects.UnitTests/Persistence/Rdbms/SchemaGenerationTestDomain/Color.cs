@@ -20,7 +20,6 @@ using Remotion.ExtensibleEnums;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain
 {
-  [Serializable]
   public class Color : ExtensibleEnum<Color>
   {
     public Color (MethodBase currentMethod)

@@ -49,8 +49,7 @@ namespace Remotion.Validation.Implementation
       _filterTypes = new List<Type>(
           new[]
           {
-              typeof(object),
-              typeof(ISerializable)
+              typeof(object)
           });
     }
   }

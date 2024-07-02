@@ -31,7 +31,6 @@ namespace Remotion.Security
   /// for creating the relevant <see cref="ISecurityContext"/> and caches the result returned by the <see cref="ISecurityProvider"/>.
   /// </remarks>
   /// <threadsafety static="true" instance="false" />
-  [Serializable]
   public sealed class ObjectSecurityStrategy : IObjectSecurityStrategy
   {
     /// <summary>

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
@@ -183,11 +182,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     public void SetDataFromSubTransaction (IRelationEndPoint source)
     {
       throw new InvalidOperationException("SetDataFromSubTransaction cannot be called on a NullObjectEndPoint.");
-    }
-
-    public void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      throw new InvalidOperationException("SerializeIntoFlatStructure cannot be called on a NullObjectEndPoint.");
     }
   }
 }

@@ -51,7 +51,6 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
   /// <summary>
   ///   Try-Catch block.
   /// </summary>
-  [Serializable]
   public class WxeTryCatch : WxeStep
   {
     /// <summary>
@@ -269,7 +268,6 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
     public sealed override bool IsDirtyStateEnabled => base.IsDirtyStateEnabled;
   }
 
-  [Serializable]
   public class WxeCatchBlock : WxeStepList
   {
     private Exception? _exception = null;

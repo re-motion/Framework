@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {
-  [Serializable]
   public class CollectionDeletionState : ChangeState
   {
     public CollectionDeletionState (object sender)

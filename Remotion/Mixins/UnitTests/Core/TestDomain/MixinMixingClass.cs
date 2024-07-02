@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Serializable]
   [Extends(typeof(ClassWithMixedMixin))]
   public class MixinMixingClass : Mixin<ClassWithMixedMixin, MixinMixingClass.IRequirements>
   {

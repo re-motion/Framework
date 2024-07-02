@@ -23,12 +23,7 @@ using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence;
-using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Model;
-using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
-using Remotion.Data.DomainObjects.Validation;
 using Remotion.Development.UnitTesting.Data.SqlClient;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
@@ -39,7 +34,6 @@ using Remotion.Security.Development;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Persistence;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.UnitTests
 {

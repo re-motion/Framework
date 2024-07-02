@@ -22,7 +22,6 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 namespace OBWTest
 {
 
-[Serializable]
 public class ViewPersonsWxeFunction: WxeFunction
 {
   static readonly WxeParameterDeclaration[] s_parameters =  {

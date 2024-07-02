@@ -19,8 +19,6 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
@@ -65,17 +63,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _stateUpdateListener.VirtualEndPointStateUpdated(_endPointID, false);
 
       _eventSinkWithWock.Verify(mock => mock.RaiseVirtualRelationEndPointStateUpdatedEvent(_endPointID, false), Times.AtLeastOnce());
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      var eventSink = new SerializableClientTransactionEventSinkFake();
-      var stateUpdateListener = new VirtualEndPointStateUpdateListener(eventSink);
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(stateUpdateListener);
-
-      Assert.That(deserializedInstance.TransactionEventSink, Is.Not.Null);
     }
   }
 }

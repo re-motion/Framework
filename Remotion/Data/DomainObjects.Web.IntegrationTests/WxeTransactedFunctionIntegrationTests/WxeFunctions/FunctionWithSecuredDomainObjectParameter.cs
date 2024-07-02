@@ -22,7 +22,6 @@ using Remotion.Web.Security.ExecutionEngine;
 
 namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunctionIntegrationTests.WxeFunctions
 {
-  [Serializable]
   [WxeDemandTargetMethodPermission("SecuredMethod", typeof(SecurableDomainObject), ParameterName = "SecurableParameter")]
   public class FunctionWithSecuredDomainObjectParameter : WxeFunction
   {

@@ -25,7 +25,6 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     string ImplementedEvent ();
   }
 
-  [Serializable]
   public abstract class MixinWithAbstractMembers : Mixin<object, object>, IMixinWithAbstractMembers
   {
     public int I;

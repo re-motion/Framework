@@ -19,8 +19,6 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
@@ -52,17 +50,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(result, Is.TypeOf(typeof(DomainObjectCollectionEndPointDataManager)));
       Assert.That(((DomainObjectCollectionEndPointDataManager)result).EndPointID, Is.SameAs(relationEndPointID));
       Assert.That(((DomainObjectCollectionEndPointDataManager)result).ChangeDetectionStrategy, Is.SameAs(_changeDetectionStrategy.Object));
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      var changeDetectionStrategy = new SerializableDomainObjectCollectionEndPointChangeDetectionStrategyFake();
-      var factory = new DomainObjectCollectionEndPointDataManagerFactory(changeDetectionStrategy);
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(factory);
-
-      Assert.That(deserializedInstance.ChangeDetectionStrategy, Is.Not.Null);
     }
   }
 }

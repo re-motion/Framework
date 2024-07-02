@@ -18,6 +18,5 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Serializable]
   public class NullMixin3 { }
 }

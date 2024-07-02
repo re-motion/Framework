@@ -27,7 +27,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// <summary>
   /// Extends an <see cref="IObjectLoader"/> with the ability to execute an eager fetch query.
   /// </summary>
-  [Serializable]
   public class FetchEnabledObjectLoader : ObjectLoader, IFetchEnabledObjectLoader
   {
     private readonly IFetchEnabledPersistenceStrategy _persistenceStrategy;

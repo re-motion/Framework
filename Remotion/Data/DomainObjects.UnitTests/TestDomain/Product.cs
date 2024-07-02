@@ -3,7 +3,6 @@ using System.Linq;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
-  [Serializable]
   [DBTable]
   [TestDomain]
   [Instantiable]

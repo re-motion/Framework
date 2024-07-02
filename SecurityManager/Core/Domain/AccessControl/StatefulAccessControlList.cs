@@ -23,7 +23,6 @@ using Remotion.SecurityManager.Domain.Metadata;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
-  [Serializable]
   [Instantiable]
   public abstract class StatefulAccessControlList : AccessControlList
   {

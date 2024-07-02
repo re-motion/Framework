@@ -30,7 +30,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
   /// loaded. During that phase, it is forbidden to create or delete objects, but it is allowed to modify the data of (only) the object currently
   /// being loaded.
   /// </summary>
-  [Serializable]
   public class ReadOnlyClientTransactionListenerWithLoadRules : ReadOnlyClientTransactionListener
   {
     private readonly HashSet<ObjectID> _currentlyLoadingObjectIDs = new HashSet<ObjectID>();

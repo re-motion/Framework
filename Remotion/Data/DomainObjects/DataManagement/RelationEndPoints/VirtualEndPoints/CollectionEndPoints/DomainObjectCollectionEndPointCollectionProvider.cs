@@ -24,7 +24,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// <summary>
   /// Keeps track of <see cref="DomainObjectCollection"/> references to be used by <see cref="DomainObjectCollectionEndPoint"/> instances.
   /// </summary>
-  [Serializable]
   public class DomainObjectCollectionEndPointCollectionProvider : IDomainObjectCollectionEndPointCollectionProvider
   {
     private readonly IAssociatedDomainObjectCollectionDataStrategyFactory _dataStrategyFactory;

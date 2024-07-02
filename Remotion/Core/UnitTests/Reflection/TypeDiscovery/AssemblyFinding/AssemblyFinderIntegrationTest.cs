@@ -24,14 +24,10 @@ using Remotion.Development.UnitTesting.Compilation;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
-#if !NETFRAMEWORK
-using Remotion.Development.UnitTesting.IsolatedCodeRunner;
-#endif
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 {
   [TestFixture]
-  [Serializable]
   public class AssemblyFinderIntegrationTest
   {
 #if !NETFRAMEWORK

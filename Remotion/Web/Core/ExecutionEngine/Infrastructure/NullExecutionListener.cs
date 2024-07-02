@@ -21,7 +21,6 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   /// <summary>
   /// <see cref="INullObject"/> implemention of the <see cref="IWxeFunctionExecutionListener"/> interface.
   /// </summary>
-  [Serializable]
   public class NullExecutionListener : IWxeFunctionExecutionListener
   {
     public static readonly NullExecutionListener Null = new NullExecutionListener();

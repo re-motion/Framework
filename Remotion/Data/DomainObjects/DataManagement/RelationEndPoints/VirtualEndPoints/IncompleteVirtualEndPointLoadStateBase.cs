@@ -16,8 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Logging;
 using Remotion.Utilities;
 
@@ -36,7 +34,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       where TDataManager : IVirtualEndPointDataManager
       where TLoadStateInterface : IVirtualEndPointLoadState<TEndPoint, TData, TDataManager>
   {
-    public interface IEndPointLoader : IFlattenedSerializable
+    public interface IEndPointLoader
     {
       TLoadStateInterface LoadEndPointAndGetNewState (TEndPoint endPoint);
     }
@@ -233,39 +231,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       foreach (var oppositeEndPointWithoutItem in _originalOppositeEndPoints.Values)
         endPoint.RegisterOriginalOppositeEndPoint(oppositeEndPointWithoutItem);
     }
-
-    #region Serialization
-
-    protected IncompleteVirtualEndPointLoadStateBase (FlattenedDeserializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-      _endPointLoader = info.GetValue<IEndPointLoader>();
-
-      var realObjectEndPoints = new List<IRealObjectEndPoint>();
-      info.FillCollection(realObjectEndPoints);
-      _originalOppositeEndPoints = realObjectEndPoints.ToDictionary(
-          ep =>
-          {
-            Assertion.IsFalse(ep.IsNull, "ep.IsNull");
-            Assertion.DebugIsNotNull(ep.ObjectID, "ep.ObjectID != null when ep.IsNull == false");
-
-            return ep.ObjectID;
-          });
-    }
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-      info.AddValue(_endPointLoader);
-      info.AddCollection(_originalOppositeEndPoints.Values);
-
-      SerializeSubclassData(info);
-    }
-
-    protected virtual void SerializeSubclassData (FlattenedSerializationInfo info)
-    {
-    }
-
-    #endregion
   }
 }

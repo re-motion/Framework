@@ -19,7 +19,6 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
 {
-  [Serializable]
   [DBTable]
   [Uses(typeof(MixinTypeWithDomainObjectAttributes_SomeAnnotatedPropertiesNotPartOfInterface))]
   public class MixinTarget_SomeAnnotatedPropertiesNotPartOfInterface : DomainObject

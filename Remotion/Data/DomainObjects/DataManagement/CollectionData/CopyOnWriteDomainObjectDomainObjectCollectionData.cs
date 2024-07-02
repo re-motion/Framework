@@ -35,7 +35,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// Retrieval of this collection's underlying data store will always lead to a copy operation in order to avoid invalid behavior.
   /// </para>
   /// </remarks>
-  [Serializable]
   public class CopyOnWriteDomainObjectDomainObjectCollectionData : ObservableDomainObjectCollectionDataDecoratorBase
   {
     private readonly ObservableDomainObjectCollectionDataDecorator _copiedData;

@@ -34,6 +34,7 @@ namespace Remotion.Mixins.Definitions.Building
     {
       _mixin = mixin;
       _defaultVisibility = defaultVisibility;
+      //We intentionally keep the interfaces in the types list to prevent existing code from accidentally introducing serialization stuff on the target.
       _nonIntroducedInterfaces = new HashSet<Type> { typeof(ISerializable), typeof(IDeserializationCallback), typeof(IInitializableMixin) };
       AnalyzeNonIntroducedInterfaces();
     }

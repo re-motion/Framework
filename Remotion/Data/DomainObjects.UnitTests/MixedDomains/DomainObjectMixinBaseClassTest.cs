@@ -146,14 +146,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
 
       Assert.That(_newClassWithAllDataTypesMixin.OnDomainObjectLoadedCalled, Is.False);
     }
-
-    [Test]
-    public void Serializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      Serializer.SerializeAndDeserialize(_loadedClassWithAllDataTypesMixin);
-      // no exception
-    }
   }
 }

@@ -25,7 +25,6 @@ namespace Remotion.Web.ExecutionEngine
   ///   Stores the session state for a single function token.
   /// </summary>
   /// <threadsafety static="true" instance="false" />
-  [Serializable]
   public class WxeFunctionState
   {
     private static ILog s_log = LogManager.GetLogger(typeof(WxeFunctionState));

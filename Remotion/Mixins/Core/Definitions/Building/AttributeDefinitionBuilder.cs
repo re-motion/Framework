@@ -59,7 +59,7 @@ namespace Remotion.Mixins.Definitions.Building
 
     private bool IsIgnoredAttributeType (Type type)
     {
-      return type == typeof(SerializableAttribute)
+      return type == typeof(Attribute)
           || (typeof(ExtendsAttribute).Assembly.Equals(type.Assembly) && type.GetNamespaceChecked().StartsWith("Remotion.Mixins"));
     }
 

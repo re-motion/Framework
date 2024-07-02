@@ -24,7 +24,6 @@ using Remotion.Utilities;
 namespace Remotion.Security
 {
   /// <summary>Collects all security-specific information for a securable object, and is passed as parameter during the permission check.</summary>
-  [Serializable]
   public sealed class SecurityContext : ISecurityContext, IEquatable<SecurityContext>
   {
     private static readonly ConcurrentDictionary<Type, bool> s_validAbstractRoleTypeCache = new ConcurrentDictionary<Type, bool>();

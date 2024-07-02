@@ -19,7 +19,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Validation
 {
-  [Serializable]
   public struct ValidationResultItem : IDefaultValidationResultItem
   {
     private readonly string _ruleName;

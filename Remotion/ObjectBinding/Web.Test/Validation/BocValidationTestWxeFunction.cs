@@ -21,7 +21,6 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace OBWTest.Validation
 {
-  [Serializable]
   public class BocValidationTestWxeFunction : WxeFunction
   {
     public BocValidationTestWxeFunction ()

@@ -19,10 +19,8 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
@@ -305,16 +303,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           "End-point 'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' "
           + "is not part of this map.",
           "endPoint"));
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      var agent = new RelationEndPointRegistrationAgent(new SerializableVirtualEndPointProviderFake());
-
-      var deserializedAgent = Serializer.SerializeAndDeserialize(agent);
-
-      Assert.That(deserializedAgent.VirtualEndPointProvider, Is.Not.Null);
     }
 
     private Mock<IVirtualEndPoint> CreateVirtualEndPointMock ()

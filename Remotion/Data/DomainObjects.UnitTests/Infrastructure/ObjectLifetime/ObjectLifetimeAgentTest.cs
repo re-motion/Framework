@@ -27,11 +27,9 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
-using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.TypePipe;
@@ -512,29 +510,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       _dataManagerMock.Verify();
       deleteCommandMock.Verify();
       sequence.Verify();
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var instance = new ObjectLifetimeAgent(
-          _transaction,
-          new SerializableClientTransactionEventSinkFake(),
-          new SerializableInvalidDomainObjectManagerFake(),
-          new SerializableDataManagerFake(),
-          new SerializableEnlistedDomainObjectManagerFake(),
-          new SerializablePersistenceStrategyFake());
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
-
-      Assert.That(deserializedInstance.ClientTransaction, Is.Not.Null);
-      Assert.That(deserializedInstance.EventSink, Is.Not.Null);
-      Assert.That(deserializedInstance.InvalidDomainObjectManager, Is.Not.Null);
-      Assert.That(deserializedInstance.DataManager, Is.Not.Null);
-      Assert.That(deserializedInstance.EnlistedDomainObjectManager, Is.Not.Null);
-      Assert.That(deserializedInstance.PersistenceStrategy, Is.Not.Null);
     }
 
     private Mock<IDataManagementCommand> SetupDeleteExpectations (VerifiableSequence sequence, Mock<IDataManager> dataManagerMock, DomainObject deletedObject)

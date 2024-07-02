@@ -20,7 +20,6 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace Remotion.Web.Test.Shared.ExecutionEngine
 {
-  [Serializable]
   public class ShowThirdUserControlFormFunction : WxeFunction
   {
     public ShowThirdUserControlFormFunction ()

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement
@@ -43,7 +42,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
   /// </list>
   /// The <see cref="DataContainer"/> that was associated with the invalid <see cref="DomainObject"/> is discarded.
   /// </remarks>
-  [Serializable]
   public class ObjectInvalidException : DomainObjectException
   {
     private readonly ObjectID? _id;
@@ -56,15 +54,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
     public ObjectInvalidException (string message, Exception inner)
         : base(message, inner)
     {
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    protected ObjectInvalidException (SerializationInfo info, StreamingContext context)
-        : base(info, context)
-    {
-      _id = (ObjectID?)info.GetValue("ID", typeof(ObjectID));
     }
 
     public ObjectInvalidException (ObjectID id)
@@ -86,16 +75,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
     public ObjectID? ID
     {
       get { return _id; }
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    public override void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      base.GetObjectData(info, context);
-
-      info.AddValue("ID", _id);
     }
   }
 }

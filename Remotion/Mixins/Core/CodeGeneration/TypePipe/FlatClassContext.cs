@@ -25,7 +25,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// <summary>
   /// Holds a flattened serialized <see cref="ClassContext"/>.
   /// </summary>
-  [Serializable]
   public class FlatClassContext : IFlatValue
   {
     public static FlatClassContext Create (ClassContext classContext)

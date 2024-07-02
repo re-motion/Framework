@@ -30,7 +30,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// <summary>
   /// A listener implementation logging all transaction events.
   /// </summary>
-  [Serializable]
   public class LoggingClientTransactionListener : IClientTransactionListener
   {
     private static readonly ILog s_log = LogManager.GetLogger(typeof(LoggingClientTransactionListener));

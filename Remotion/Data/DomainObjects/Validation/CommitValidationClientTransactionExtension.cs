@@ -16,10 +16,8 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Reflection;
-using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation
@@ -30,7 +28,6 @@ namespace Remotion.Data.DomainObjects.Validation
   /// <remarks>
   /// Currently, this extension only checks that all mandatory relations are set.
   /// </remarks>
-  [Serializable]
   public class CommitValidationClientTransactionExtension : ClientTransactionExtensionBase
   {
     public static string DefaultKey
@@ -38,7 +35,6 @@ namespace Remotion.Data.DomainObjects.Validation
       get { return typeof(CommitValidationClientTransactionExtension).GetFullNameChecked(); }
     }
 
-    [NonSerialized]
     private IPersistableDataValidator _validator;
 
     public CommitValidationClientTransactionExtension (IPersistableDataValidator validator)
@@ -66,23 +62,6 @@ namespace Remotion.Data.DomainObjects.Validation
 
       foreach (var item in committedData)
         _validator.Validate(clientTransaction, item);
-    }
-
-    [OnSerializing]
-    private void OnSerializing (StreamingContext context)
-    {
-      var validatorFromServiceLocator = SafeServiceLocator.Current.GetInstance<IPersistableDataValidator>();
-      if (!object.ReferenceEquals(_validator, validatorFromServiceLocator))
-      {
-        throw new InvalidOperationException(
-            "Cannot serialize CommitValidationClientTransactionExtension because the IPersistableDataValidator cannot be loaded from the ServiceLocator.");
-      }
-    }
-
-    [OnDeserialized]
-    private void OnDeserialized (StreamingContext context)
-    {
-      _validator = SafeServiceLocator.Current.GetInstance<IPersistableDataValidator>();
     }
   }
 }

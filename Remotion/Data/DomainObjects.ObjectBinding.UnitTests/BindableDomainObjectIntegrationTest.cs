@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
@@ -94,14 +93,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     }
 
     [Test]
-    public void SerializeAndDeserialize ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      Serializer.SerializeAndDeserialize(_instanceOverridingDisplayName);
-    }
-
-    [Test]
     public void GetProviderForBindableObjectType ()
     {
       BindableObjectProvider provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof(BindableDomainObject));
@@ -111,24 +102,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       Assert.That(provider, Is.SameAs(BusinessObjectProvider.GetProvider(typeof(BindableDomainObjectProviderAttribute))));
       Assert.That(provider, Is.Not.SameAs(BusinessObjectProvider.GetProvider(typeof(BindableObjectProviderAttribute))));
     }
-
-#pragma warning disable SYSLIB0050
-    [Test]
-    public void DeserializationConstructor_CallsBase ()
-    {
-      var serializable = SampleBindableDomainObject_ImplementingISerializable.NewObject();
-
-      var info = new SerializationInfo(typeof(SampleBindableDomainObject_ImplementingISerializable), new FormatterConverter());
-      var context = new StreamingContext();
-
-      serializable.GetObjectData(info, context);
-      Assert.That(info.MemberCount, Is.GreaterThan(0));
-
-      var deserialized =
-          (SampleBindableDomainObject_ImplementingISerializable)Activator.CreateInstance(((object)serializable).GetType(), info, context);
-      Assert.That(deserialized.ID, Is.EqualTo(serializable.ID));
-    }
-#pragma warning restore SYSLIB0050
 
     [Test]
     public void GetProvider ()

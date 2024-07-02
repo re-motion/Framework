@@ -26,7 +26,6 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
   /// Implements the <see cref="IFetchedRelationDataRegistrationAgent"/> interface by checking the given <see cref="IRelationEndPointDefinition"/> 
   /// and delegating to a specific <see cref="IFetchedRelationDataRegistrationAgent"/> implementation for that end-point type.
   /// </summary>
-  [Serializable]
   public class DelegatingFetchedRelationDataRegistrationAgent : IFetchedRelationDataRegistrationAgent
   {
     private readonly IFetchedRelationDataRegistrationAgent _realObjectDataRegistrationAgent;

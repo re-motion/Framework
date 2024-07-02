@@ -23,7 +23,6 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
-  [Serializable]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]

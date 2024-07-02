@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Serializable]
   public abstract class MixinWithSingleAbstractMethod : Mixin<object, object>
   {
     public int I;
@@ -31,7 +30,6 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     protected abstract string AbstractMethod (int i);
   }
 
-  [Serializable]
   public abstract class MixinWithSingleAbstractMethod2 : Mixin<object, object>
   {
     protected abstract string AbstractMethod (int i);

@@ -19,9 +19,7 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
@@ -137,16 +135,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _virtualEndPointProviderMock.Verify();
       oppositeEndPointMock.Verify();
       Assert.That(_map, Has.Member(endPointMock.Object));
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      var agent = new RootRelationEndPointRegistrationAgent(new SerializableVirtualEndPointProviderFake());
-
-      var deserializedAgent = Serializer.SerializeAndDeserialize(agent);
-
-      Assert.That(deserializedAgent.VirtualEndPointProvider, Is.Not.Null);
     }
 
     private Mock<IRealObjectEndPoint> CreateRealObjectEndPointMock (ObjectID originatingObjectID, string shortPropertyName, ObjectID oppositeObjectID)

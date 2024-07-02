@@ -33,7 +33,6 @@ namespace Remotion.Collections.Caching
   /// (e.g. thread-safe implementations, implementations with support for data invalidation, etc).
   /// </remarks>
   /// <threadsafety static="true" instance="false" />
-  [Serializable]
   public sealed class Cache<TKey, TValue> : ICache<TKey, TValue>
       where TKey: notnull
   {
@@ -82,7 +81,6 @@ namespace Remotion.Collections.Caching
       }
     }
 
-    [Serializable]
     private struct Data
     {
       public readonly TValue Value;

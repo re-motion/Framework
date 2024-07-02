@@ -21,7 +21,6 @@ using System.Collections.Generic;
 namespace Remotion.Collections
 {
   [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Collections.Caching.dll", true)]
-  [Serializable]
   public sealed class InvalidationTokenBasedCacheDecorator<TKey, TValue> : ICache<TKey, TValue>
   {
     public InvalidationTokenBasedCacheDecorator (ICache<TKey, TValue> innerCache, InvalidationToken invalidationToken)

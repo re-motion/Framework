@@ -228,17 +228,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
           Throws.InvalidOperationException.With.Message.EqualTo("The scopes returned by ActivateTransaction must be disposed inside out."));
       Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(_rootTransaction));
     }
-
-    [Test]
-    public void Serializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var deserialized = Serializer.SerializeAndDeserialize(_hierarchy);
-
-      Assert.That(deserialized.ActiveTransaction, Is.Not.Null);
-      Assert.That(deserialized.RootTransaction, Is.Not.Null);
-      Assert.That(deserialized.LeafTransaction, Is.Not.Null);
-    }
   }
 }

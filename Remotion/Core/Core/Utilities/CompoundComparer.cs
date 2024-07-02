@@ -27,7 +27,6 @@ namespace Remotion.Utilities
   /// <see cref="Enumerable.OrderBy{TSource,TKey}(System.Collections.Generic.IEnumerable{TSource},System.Func{TSource,TKey})"/> and
   /// <see cref="Enumerable.ThenBy{TSource,TKey}(System.Linq.IOrderedEnumerable{TSource},System.Func{TSource,TKey})"/> work.
   /// </summary>
-  [Serializable]
   public class CompoundComparer<T> : IComparer<T>
   {
     private readonly IComparer<T>[] _comparers;

@@ -72,14 +72,14 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
           {
             var counter = 0;
             for (int i = 0; i < items.Length; ++i)
-              counter += AttributeUtility.GetCustomAttributes(items[i], typeof(SerializableAttribute), true).Length;
+              counter += AttributeUtility.GetCustomAttributes(items[i], typeof(Attribute), true).Length;
             return counter;
           },
           items =>
           {
             var counter = 0;
             for (int i = 0; i < items.Length; ++i)
-              counter += Attribute.GetCustomAttributes(items[i], typeof(SerializableAttribute), true).Length;
+              counter += Attribute.GetCustomAttributes(items[i], typeof(Attribute), true).Length;
             return counter;
           });
     }
@@ -128,7 +128,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
             for (int i = 0; i < items.Length; ++i)
               try
               {
-                counter += AttributeUtility.GetCustomAttributes(items[i], typeof(NonSerializedAttribute), true).Length;
+                counter += AttributeUtility.GetCustomAttributes(items[i], typeof(Attribute), true).Length;
               }
               catch (AmbiguousMatchException)
               {
@@ -142,7 +142,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
             for (int i = 0; i < items.Length; ++i)
               try
               {
-                counter += Attribute.GetCustomAttributes(items[i], typeof(NonSerializedAttribute), true).Length;
+                counter += Attribute.GetCustomAttributes(items[i], typeof(Attribute), true).Length;
               }
               catch (AmbiguousMatchException)
               {

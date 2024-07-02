@@ -26,7 +26,6 @@ using Remotion.Security;
 namespace Remotion.Data.DomainObjects.Web.Test.Domain
 {
   [MultiLingualResources("Remotion.Data.DomainObjects.Web.Test.Globalization.ClassWithAllDataTypes")]
-  [Serializable]
   [DBTable("TableWithAllDataTypes")]
   [Instantiable]
   [DBStorageGroup]

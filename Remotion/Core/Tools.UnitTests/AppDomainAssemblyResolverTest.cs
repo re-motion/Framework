@@ -30,7 +30,6 @@ using Remotion.Utilities;
 namespace Remotion.Tools.UnitTests
 {
   [TestFixture]
-  [Serializable]
   public class AppDomainAssemblyResolverTest
   {
     private string _testDllPath;

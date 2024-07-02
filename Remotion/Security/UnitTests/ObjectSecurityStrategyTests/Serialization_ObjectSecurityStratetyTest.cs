@@ -27,7 +27,6 @@ namespace Remotion.Security.UnitTests.ObjectSecurityStrategyTests
   [TestFixture]
   public class Serialization_ObjectSecurityStratetyTest
   {
-    [Serializable]
     private class SerializableSecurityContextFactory : ISecurityContextFactory
     {
       private readonly ISecurityContext _securityContext;

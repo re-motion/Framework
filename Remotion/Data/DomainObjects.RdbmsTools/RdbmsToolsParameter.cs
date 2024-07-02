@@ -33,7 +33,6 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
   /// <see cref="RdbmsToolsParameters"/> type is a combination of a parameter object for <see cref="RdbmsToolsRunner"/> 
   /// and a command line arguments class as required by <see cref="CommandLineClassParser"/>.
   /// </summary>
-  [Serializable]
   public class RdbmsToolsParameters
   {
     [CommandLineModeArgument(false)]

@@ -20,7 +20,6 @@ using Remotion.Globalization;
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.TestDomain
 {
   [BindableObject]
-  [Serializable]
   [MultiLingualResources("Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.Resources.DerivedTargetClassForGlobalizationViaResources")]
   public class DerivedTargetClassForGlobalizationViaResources : TargetClassForGlobalizationViaResources
   {

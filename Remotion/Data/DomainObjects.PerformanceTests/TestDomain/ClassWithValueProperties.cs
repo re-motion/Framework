@@ -21,7 +21,6 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
 {
   [Instantiable]
   [DBTable]
-  [Serializable]
   public abstract class ClassWithValueProperties : SimpleDomainObject<ClassWithValueProperties>
   {
     public abstract int IntProperty1 { get; set; }

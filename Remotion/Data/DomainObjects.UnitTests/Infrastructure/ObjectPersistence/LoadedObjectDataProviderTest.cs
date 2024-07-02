@@ -21,10 +21,8 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 {
@@ -110,19 +108,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       Assert.That(
           loadedObject,
           Is.TypeOf<InvalidLoadedObjectData>().With.Property((InvalidLoadedObjectData obj) => obj.InvalidObjectReference).SameAs(invalidObjectReference));
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      var provider = new LoadedObjectDataProvider(
-        new SerializableLoadedDataContainerProviderFake(),
-        new SerializableInvalidDomainObjectManagerFake());
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(provider);
-
-      Assert.That(deserializedInstance.LoadedDataContainerProvider, Is.Not.Null);
-      Assert.That(deserializedInstance.InvalidDomainObjectManager, Is.Not.Null);
     }
   }
 }

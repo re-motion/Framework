@@ -23,10 +23,7 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
-using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints
@@ -206,30 +203,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       CheckOperationDelegatesToCompleteState(
           s => s.CreateDeleteCommand(_virtualObjectEndPointMock.Object),
           new Mock<IDataManagementCommand>().Object);
-    }
-
-    [Test]
-    public void FlattenedSerializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var lazyLoader = new SerializableVirtualEndPointLoaderFake<
-          IVirtualObjectEndPoint,
-          DomainObject,
-          IVirtualObjectEndPointDataManager,
-          IVirtualObjectEndPointLoadState>();
-      var dataManagerFactory = new SerializableVirtualObjectEndPointDataManagerFactoryFake();
-
-      var state = new IncompleteVirtualObjectEndPointLoadState(lazyLoader, dataManagerFactory);
-      AddOriginalOppositeEndPoint(state, new SerializableRealObjectEndPointFake(null, _relatedObject));
-
-      var result = FlattenedSerializer.SerializeAndDeserialize(state);
-
-      Assert.That(result, Is.Not.Null);
-      Assert.That(result.OriginalOppositeEndPoints, Is.Not.Null);
-      Assert.That(result.OriginalOppositeEndPoints, Is.Not.Empty);
-      Assert.That(result.EndPointLoader, Is.Not.Null);
-      Assert.That(result.DataManagerFactory, Is.Not.Null);
     }
 
     private void CheckOperationDelegatesToCompleteState<T> (Expression<Func<IVirtualObjectEndPointLoadState, T>> operation, T fakeResult)

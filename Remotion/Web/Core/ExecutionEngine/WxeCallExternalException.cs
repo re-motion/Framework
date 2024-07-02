@@ -38,7 +38,6 @@ namespace Remotion.Web.ExecutionEngine
   ///   instead.)
   ///   </para>
   /// </remarks>
-  [Serializable]
   public class WxeCallExternalException : WxeIgnorableException
   {
     public WxeCallExternalException ()

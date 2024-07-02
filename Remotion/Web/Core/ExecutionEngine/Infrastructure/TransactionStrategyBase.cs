@@ -20,7 +20,6 @@ using System.Collections;
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
   //TODO: Doc
-  [Serializable]
   public abstract class TransactionStrategyBase : ITransactionStrategy
   {
     protected TransactionStrategyBase ()

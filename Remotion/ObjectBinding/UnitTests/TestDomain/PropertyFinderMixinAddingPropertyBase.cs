@@ -23,7 +23,6 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
     string ExplicitMixedPropertyBase { get; set; }
   }
 
-  [Serializable]
   public class BaseOfMixinAddingProperty : IBaseOfMixinAddingProperty
   {
     private string _explicitMixedPropertyBase;

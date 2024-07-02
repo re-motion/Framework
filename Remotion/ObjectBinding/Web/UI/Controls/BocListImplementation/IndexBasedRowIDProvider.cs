@@ -26,7 +26,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
   /// Row-index-based implementation of the <see cref="IRowIDProvider"/> interface. 
   /// Used when the <see cref="BocList"/> is bound to objects of type <see cref="IBusinessObject"/> (without identity).
   /// </summary>
-  [Serializable]
   public class IndexBasedRowIDProvider : IRowIDProvider
   {
     private readonly List<string> _rowIDs;

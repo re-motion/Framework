@@ -21,7 +21,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
   /// <summary>
   /// Represents a container for the persisted properties of a DomainObject.
   /// </summary>
-  public sealed class DataContainer : IFlattenedSerializable
+  public sealed class DataContainer
   {
     // types
 
@@ -808,73 +807,5 @@ namespace Remotion.Data.DomainObjects.DataManagement
         throw new ArgumentException(message, "source");
       }
     }
-
-    #region Serialization
-
-    // ReSharper disable UnusedMember.Local
-    private DataContainer (FlattenedDeserializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      _id = info.GetValueForHandle<ObjectID>();
-      _timestamp = info.GetNullableValue<object>();
-      _isDiscarded = info.GetBoolValue();
-
-      _persistentPropertyValues = new Dictionary<PropertyDefinition, PropertyValue>();
-      _nonPersistentPropertyValues = new Dictionary<PropertyDefinition, PropertyValue>();
-
-      if (!_isDiscarded)
-      {
-        for (int i = 0; i < ClassDefinition.GetPropertyDefinitions().Count(); ++i)
-        {
-          var propertyName = info.GetValueForHandle<string>();
-          var propertyDefinition = ClassDefinition.GetMandatoryPropertyDefinition(propertyName);
-          var propertyValue = new PropertyValue(propertyDefinition, propertyDefinition.DefaultValue);
-          propertyValue.DeserializeFromFlatStructure(info);
-
-          if (propertyDefinition.StorageClass == StorageClass.Persistent)
-            _persistentPropertyValues.Add(propertyDefinition, propertyValue);
-          else
-            _nonPersistentPropertyValues.Add(propertyDefinition, propertyValue);
-        }
-      }
-
-      _clientTransaction = info.GetNullableValueForHandle<ClientTransaction>();
-      _eventListener = info.GetNullableValueForHandle<IDataContainerEventListener>();
-      _state = (DataContainerStateType)info.GetIntValue();
-      _domainObject = info.GetNullableValueForHandle<DomainObject>();
-      _isNewInHierarchy = info.GetBoolValue();
-      _hasBeenMarkedChanged = info.GetBoolValue();
-      _hasBeenChangedForPersistentData = info.GetNullableValue<bool?>();
-      _hasBeenChangedForNonPersistentData = info.GetNullableValue<bool?>();
-    }
-    // ReSharper restore UnusedMember.Local
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      info.AddHandle(_id);
-      info.AddValue(_timestamp);
-      info.AddBoolValue(_isDiscarded);
-      if (!_isDiscarded)
-      {
-        var allPropertyValues = _persistentPropertyValues.Concat(_nonPersistentPropertyValues);
-        foreach (var kvp in allPropertyValues)
-        {
-          info.AddHandle(kvp.Key.PropertyName);
-          kvp.Value.SerializeIntoFlatStructure(info);
-        }
-      }
-
-      info.AddHandle(_clientTransaction);
-      info.AddHandle(_eventListener);
-      info.AddIntValue((int)_state);
-      info.AddHandle(_domainObject);
-      info.AddBoolValue(_isNewInHierarchy);
-      info.AddBoolValue(_hasBeenMarkedChanged);
-      info.AddValue(_hasBeenChangedForPersistentData);
-      info.AddValue(_hasBeenChangedForNonPersistentData);
-    }
-
-    #endregion Serialization
   }
 }

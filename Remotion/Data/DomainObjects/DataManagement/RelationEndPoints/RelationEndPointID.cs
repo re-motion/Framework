@@ -18,9 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
@@ -29,8 +27,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// <summary>
   /// Identifies a relation end point on a given object (<see cref="ObjectID"/>) of a given kind (<see cref="Definition"/>).
   /// </summary>
-  [Serializable]
-  public sealed class RelationEndPointID : IFlattenedSerializable, ISerializable
+  public sealed class RelationEndPointID
   {
     public static RelationEndPointID Create (ObjectID? objectID, IRelationEndPointDefinition definition)
     {
@@ -206,58 +203,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       var propertyName = Definition.PropertyName;
       return (_objectID != null ? _objectID.GetHashCode() : 0) ^ (propertyName != null ? propertyName.GetHashCode() : 0);
     }
-
-    #region Serialization
-
-    private RelationEndPointID (SerializationInfo info, StreamingContext context)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      var objectID = (ObjectID?)info.GetValue("ObjectID", typeof(ObjectID));
-      var classDefinitionID = info.GetString("ClassID")!;
-      var propertyName = info.GetString("PropertyName")!;
-
-      var classDefinition = MappingConfiguration.Current.GetClassDefinition(classDefinitionID);
-      var relationEndPointDefinition = classDefinition.GetMandatoryRelationEndPointDefinition(propertyName);
-
-      _objectID = objectID;
-      _definition = relationEndPointDefinition;
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      info.AddValue("ObjectID", _objectID);
-      info.AddValue("ClassID", _definition.ClassDefinition.ID);
-      info.AddValue("PropertyName", _definition.PropertyName);
-    }
-
-    // ReSharper disable UnusedMember.Local
-    private RelationEndPointID (FlattenedDeserializationInfo info)
-    {
-      var classDefinitionID = info.GetValueForHandle<string>();
-      var propertyName = info.GetValueForHandle<string>();
-      var objectID = info.GetNullableValueForHandle<ObjectID>();
-
-      var classDefinition = MappingConfiguration.Current.GetClassDefinition(classDefinitionID);
-      var relationEndPointDefinition = classDefinition.GetMandatoryRelationEndPointDefinition(propertyName);
-
-      _objectID = objectID;
-      _definition = relationEndPointDefinition;
-    }
-    // ReSharper restore UnusedMember.Local
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      info.AddHandle(_definition.ClassDefinition.ID);
-      info.AddHandle(_definition.PropertyName);
-      info.AddHandle(_objectID);
-    }
-
-    #endregion
   }
 }

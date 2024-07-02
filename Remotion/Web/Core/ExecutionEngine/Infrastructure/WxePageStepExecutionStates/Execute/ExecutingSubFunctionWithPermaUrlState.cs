@@ -23,7 +23,6 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
   /// The <see cref="RedirectingToSubFunctionState"/> is responsible for executing a sub-function.
   /// Executing this state will transition the <see cref="IExecutionStateContext"/> into the <see cref="ReturningFromSubFunctionState"/>.
   /// </summary>
-  [Serializable]
   public class ExecutingSubFunctionWithPermaUrlState : ExecutionStateBase<RedirectingToSubFunctionStateParameters>
   {
     public ExecutingSubFunctionWithPermaUrlState (IExecutionStateContext executionStateContext, RedirectingToSubFunctionStateParameters parameters)

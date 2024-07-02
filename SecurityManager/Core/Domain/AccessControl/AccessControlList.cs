@@ -24,7 +24,6 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
-  [Serializable]
   [DBTable]
   [SecurityManagerStorageGroup]
   public abstract class AccessControlList : AccessControlObject

@@ -19,7 +19,6 @@ using System;
 namespace Remotion.Collections
 {
   [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Collections.DataStore.dll", true)]
-  [Serializable]
   public class LockingDataStoreDecorator<TKey, TValue> : IDataStore<TKey, TValue>
   {
     public LockingDataStoreDecorator (IDataStore<TKey, TValue> innerStore)
