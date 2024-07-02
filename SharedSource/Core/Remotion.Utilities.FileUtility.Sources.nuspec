@@ -18,6 +18,5 @@
   </metadata>
   <files>
     <file src="Utilities\FileUtility.cs" target="content/App_Packages/Remotion.Utilities.FileUtility.Sources.$version$" />
-    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Utilities.FileUtility.Sources.$version$" />
   </files>
 </package>

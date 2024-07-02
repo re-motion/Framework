@@ -18,6 +18,5 @@
   </metadata>
   <files>
     <file src="FunctionalProgramming\EnumerableExtensions.cs" target="content/App_Packages/Remotion.FunctionalProgramming.EnumerableExtensions.Sources.$version$" />
-    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.FunctionalProgramming.EnumerableExtensions.Sources.$version$" />
   </files>
 </package>

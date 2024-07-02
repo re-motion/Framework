@@ -18,6 +18,5 @@
   </metadata>
   <files>
     <file src="UnitTesting\IO\AssemblyLoader.cs" target="content/App_Packages/Remotion.Development.AssemblyLoader.Sources.$version$" />
-    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Development.AssemblyLoader.Sources.$version$" />
   </files>
 </package>

@@ -1,0 +1,17 @@
+;Core;
+[{Core/Utilities/**,Core/FunctionalProgramming/**}]
+file_header_template = SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu\nSPDX-License-Identifier: Apache-2.0
+
+[Core/ReSharperAnnotations/**]
+file_header_template = SPDX-FileCopyrightText: Copyright (c) 2016 JetBrains http://www.jetbrains.com\nSPDX-License-Identifier: MIT
+
+;Development;
+[{Development/Moq/UnitTesting/**,Development/UnitTesting/**}]
+file_header_template = SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu\nSPDX-License-Identifier: Apache-2.0
+
+[Development/UnitTesting/IO/TempFile.cs]
+file_header_template = SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu\nSPDX-License-Identifier: LGPL-2.1-or-later
+
+;UnitTesting;
+[{UnitTests/**/Enumerables/**,UnitTests/**/ObjectMothers/**,UnitTests/**/Reflection/**,UnitTests/**/Moq/**,UnitTests/**/NUnit/**,UnitTests/FunctionalProgramming/**,UnitTests/Utilities/**}]
+file_header_template = SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu\nSPDX-License-Identifier: Apache-2.0

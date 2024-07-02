@@ -1,5 +1,8 @@
 root = true
 
+[*]
+file_header_template = SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu\nSPDX-License-Identifier: LGPL-2.1-or-later
+
 ; Formatting
 [*.cs]
 insert_final_newline = true

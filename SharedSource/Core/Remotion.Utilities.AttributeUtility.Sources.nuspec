@@ -15,6 +15,5 @@
   </metadata>
   <files>
     <file src="Utilities\AttributeUtility.cs" target="content/App_Packages/Remotion.Utilities.AttributeUtility.Sources.$version$" />
-    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Utilities.AttributeUtility.Sources.$version$" />
   </files>
 </package>

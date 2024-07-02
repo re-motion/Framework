@@ -20,6 +20,5 @@
     <file src="UnitTesting\PEVerifier.cs" target="content/App_Packages/Remotion.Development.PEVerifier.Sources.$version$" />
     <file src="UnitTesting\PEVerifyException.cs" target="content/App_Packages/Remotion.Development.PEVerifier.Sources.$version$" />
     <file src="UnitTesting\PEVerifyPathSources\**.*" target="content/App_Packages/Remotion.Development.PEVerifier.Sources.$version$\PEVerifyPathSources" />
-    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Development.PEVerifier.Sources.$version$" />
   </files>
 </package>
