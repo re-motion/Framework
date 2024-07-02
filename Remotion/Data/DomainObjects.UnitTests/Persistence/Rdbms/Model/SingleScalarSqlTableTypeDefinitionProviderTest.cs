@@ -70,8 +70,8 @@ public class SingleScalarSqlTableTypeDefinitionProviderTest
                           AddType<float>(DbType.Single, true),
                           AddType<double>(DbType.Double, false),
                           AddType<double>(DbType.Double, true),
-                          AddType<DateTime>(DbType.DateTime, false),
-                          AddType<DateTime>(DbType.DateTime, true),
+                          AddType<DateTime>(DbType.DateTime2, false),
+                          AddType<DateTime>(DbType.DateTime2, true),
                           AddType<Guid>(DbType.Guid, false),
                           AddType<Guid>(DbType.Guid, true)
                       };
@@ -158,8 +158,8 @@ public class SingleScalarSqlTableTypeDefinitionProviderTest
   [TestCase(typeof(float?), DbType.Single, true)]
   [TestCase(typeof(double), DbType.Double, false)]
   [TestCase(typeof(double?), DbType.Double, true)]
-  [TestCase(typeof(DateTime), DbType.DateTime, false)]
-  [TestCase(typeof(DateTime?), DbType.DateTime, true)]
+  [TestCase(typeof(DateTime), DbType.DateTime2, false)]
+  [TestCase(typeof(DateTime?), DbType.DateTime2, true)]
   [TestCase(typeof(Guid), DbType.Guid, false)]
   [TestCase(typeof(Guid?), DbType.Guid, true)]
   [TestCase(typeof(ClassWithAllDataTypes.EnumType), DbType.AnsiString, false)]

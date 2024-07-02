@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
     public static StorageTypeInformation CreateDateTimeStorageTypeInformation (bool isNullable = false)
     {
-      return new StorageTypeInformation(typeof(DateTime), "datetime", DbType.DateTime, isNullable, null, typeof(DateTime), new DefaultConverter(typeof(DateTime)));
+      return new StorageTypeInformation(typeof(DateTime), "datetime2", DbType.DateTime2, isNullable, null, typeof(DateTime), new DefaultConverter(typeof(DateTime)));
     }
 
     public static StorageTypeInformation CreateIntStorageTypeInformation (bool isNullable = false)

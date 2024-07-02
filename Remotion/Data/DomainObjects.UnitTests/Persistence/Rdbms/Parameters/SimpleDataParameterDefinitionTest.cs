@@ -93,7 +93,7 @@ public class SimpleDataParameterDefinitionTest
   [Test]
   [TestCase(typeof(int), DbType.Int32, false, 42)]
   [TestCase(typeof(double), DbType.Double, false, 17.04d)]
-  [TestCase(typeof(DateTime?), DbType.DateTime, false, null)]
+  [TestCase(typeof(DateTime?), DbType.DateTime2, false, null)]
   [TestCase(typeof(string), DbType.String, true, "TestValue")]
   [TestCase(typeof(byte[]), DbType.Binary, true, null)]
   public void CreateDataParameter_SetsNameValueTypeSize (Type dataType, DbType dbType, bool hasSize, [CanBeNull] object testValue)

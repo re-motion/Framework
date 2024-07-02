@@ -227,7 +227,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           false);
       var timestampColumn = new ColumnDefinition(
           "Timestamp",
-          new StorageTypeInformation(typeof(DateTime), "datetime", DbType.DateTime, true, null, typeof(DateTime), new DateTimeConverter()),
+          new StorageTypeInformation(typeof(DateTime), "datetime2", DbType.DateTime2, true, null, typeof(DateTime), new DateTimeConverter()),
           false);
 
       var objectIDProperty = new ObjectIDStoragePropertyDefinition(

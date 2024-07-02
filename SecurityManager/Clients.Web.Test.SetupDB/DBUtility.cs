@@ -336,7 +336,7 @@ public class DBUtility
         }
         else if (columnType == typeof(DateTime))
         {
-          parameter = command.Parameters.Add(parameterName, SqlDbType.DateTime);
+          parameter = command.Parameters.Add(parameterName, SqlDbType.DateTime2);
           parameter.Value = isNull ? DBNull.Value : (object)DateTime.Parse(columnValue.Trim(), new CultureInfo("en-US"));
         }
         else if (columnType == typeof(Decimal))
