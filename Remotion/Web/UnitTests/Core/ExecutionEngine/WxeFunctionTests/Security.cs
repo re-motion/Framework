@@ -39,7 +39,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       _wxeContext = WxeContextFactory.Create(rootFunction);
       _mockWxeSecurityAdapter = new Mock<IWxeSecurityAdapter>(MockBehavior.Strict);
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>(() => _mockWxeSecurityAdapter.Object);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }
@@ -86,7 +86,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     [Test]
     public void HasStatelessAccessGrantedWithoutWxeSecurityProvider ()
     {
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
       using (new ServiceLocatorScope(serviceLocator))
       {

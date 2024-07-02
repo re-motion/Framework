@@ -13,7 +13,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     }
 
     [Test]

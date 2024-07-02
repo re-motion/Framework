@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     {
       var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle(() => _mockSecurityProvider.Object);
       serviceLocator.RegisterSingle(() => _stubPrincipalProvider.Object);
       serviceLocator.RegisterSingle(() => _mockMemberResolver.Object);

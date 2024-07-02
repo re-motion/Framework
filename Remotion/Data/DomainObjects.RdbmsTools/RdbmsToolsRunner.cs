@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
       if (ServiceLocator.IsLocationProviderSet == false)
       {
         var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer(_rdbmsToolsParameters.ConnectionString);
-        var serviceLocator = DefaultServiceLocator.Create();
+        var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
         serviceLocator.RegisterSingle(() => storageSettingsFactory);
         ServiceLocator.SetLocatorProvider(() => serviceLocator);
       }

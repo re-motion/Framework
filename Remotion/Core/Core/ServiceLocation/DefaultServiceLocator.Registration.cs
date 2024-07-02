@@ -85,7 +85,7 @@ namespace Remotion.ServiceLocation
 
     private Registration CreateRegistrationFromType (Type serviceType)
     {
-      var serviceConfigurationEntry = _serviceConfigurationDiscoveryService.GetDefaultConfiguration(serviceType);
+      var serviceConfigurationEntry = ServiceConfigurationDiscoveryService.GetDefaultConfiguration(serviceType);
       return CreateRegistration(serviceConfigurationEntry);
     }
 

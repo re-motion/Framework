@@ -61,7 +61,7 @@ namespace OBWTest
       string objectPath = Server.MapPath("~/objects");
       if (!Directory.Exists(objectPath))
         Directory.CreateDirectory(objectPath);
-      var defaultServiceLocator = DefaultServiceLocator.Create();
+      var defaultServiceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
 
       //defaultServiceLocator.RegisterSingle<ResourceTheme>(() => new ResourceTheme.NovaGray());
 

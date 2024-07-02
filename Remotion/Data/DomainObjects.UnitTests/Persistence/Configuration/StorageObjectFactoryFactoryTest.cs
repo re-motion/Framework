@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     [Test]
     public void Create_WithoutIoCRegistration_CreatesObject ()
     {
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       var storageObjectFactoryFactory = new StorageObjectFactoryFactory();
 
       Assert.That(((IServiceProvider)serviceLocator).GetService(typeof(UnitTestStorageObjectFactoryStub)), Is.Null);
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     [Test]
     public void Create_WithIoCRegistration_GetsFromIoC ()
     {
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       var storageObjectFactoryFactory = new StorageObjectFactoryFactory();
 
       var resultFromServiceLocator = ((IServiceProvider)serviceLocator).GetService(typeof(SqlStorageObjectFactory));

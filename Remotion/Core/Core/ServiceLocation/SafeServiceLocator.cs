@@ -51,13 +51,14 @@ namespace Remotion.ServiceLocation
   /// </remarks>
   public static class SafeServiceLocator
   {
-    private static readonly BootstrapServiceConfiguration s_bootstrapServiceConfiguration = new BootstrapServiceConfiguration();
+    /// <summary>Workaround to allow reflection to reset the fields since setting a static readonly field is not supported in .NET 3.0 and later.</summary>
+    private class Fields
+    {
+      public readonly BootstrapServiceConfiguration BootstrapConfiguration = new();
+      public readonly DoubleCheckedLockingContainer<IServiceLocator> DefaultServiceLocator = new(GetDefaultServiceLocator);
+    }
 
-    // This is a DoubleCheckedLockingContainer rather than a static field (maybe wrapped in a nested class to improve laziness) because we want
-    // any exceptions thrown by GetDefaultServiceLocator to bubble up to the caller normally. (Exceptions during static field initialization get
-    // wrapped in a TypeInitializationException.)
-    private static readonly DoubleCheckedLockingContainer<IServiceLocator> s_defaultServiceLocator =
-        new DoubleCheckedLockingContainer<IServiceLocator>(GetDefaultServiceLocator);
+    private static readonly Fields s_fields = new();
 
     /// <summary>
     /// Gets the currently configured <see cref="IServiceLocator"/>. 
@@ -75,10 +76,10 @@ namespace Remotion.ServiceLocation
       get
       {
         if (ServiceLocator.IsLocationProviderSet)
-          return ServiceLocator.Current ?? s_defaultServiceLocator.Value;
+          return ServiceLocator.Current ?? s_fields.DefaultServiceLocator.Value;
 
-        ServiceLocator.SetLocatorProvider(() => s_defaultServiceLocator.Value);
-        return s_defaultServiceLocator.Value;
+        ServiceLocator.SetLocatorProvider(() => s_fields.DefaultServiceLocator.Value);
+        return s_fields.DefaultServiceLocator.Value;
       }
     }
 
@@ -100,17 +101,21 @@ namespace Remotion.ServiceLocation
     /// </remarks>
     public static IBootstrapServiceConfiguration BootstrapConfiguration
     {
-      get { return s_bootstrapServiceConfiguration; }
+      get { return s_fields.BootstrapConfiguration; }
     }
 
     private static IServiceLocator GetDefaultServiceLocator ()
     {
+      var bootstrapServiceLocatorEntries = s_fields.BootstrapConfiguration.GetRegistrations();
+
       // Temporarily set the bootstrapper to allow for reentrancy to SafeServiceLocator.Current.
       // Since we're called from s_defaultServiceLocator.Value's getter, we can be sure that our return value will overwrite the bootstrapper.
-      s_defaultServiceLocator.Value = s_bootstrapServiceConfiguration.BootstrapServiceLocator;
+      var bootstrapServiceLocatorProvider = new DefaultServiceLocatorProvider(new BootstrapServiceConfigurationDiscoveryService());
+      var bootstrapServiceLocator = bootstrapServiceLocatorProvider.GetServiceLocator(bootstrapServiceLocatorEntries);
+      s_fields.DefaultServiceLocator.Value = bootstrapServiceLocator;
 
-      var serviceLocatorProvider = ServiceLocationConfiguration.Current.CreateServiceLocatorProvider();
-      return serviceLocatorProvider.GetServiceLocator(Array.AsReadOnly(s_bootstrapServiceConfiguration.Registrations));
+      var serviceLocatorProvider = bootstrapServiceLocator.GetInstance<IServiceLocatorProvider>();
+      return serviceLocatorProvider.GetServiceLocator(bootstrapServiceLocatorEntries);
     }
   }
 }

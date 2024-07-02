@@ -19,13 +19,10 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.Configuration.ServiceLocation
 {
+  [Obsolete("Use IoC bootstrapping to resolve the IServiceLocatorProvider (Version 6.0.0)", true)]
   public interface IServiceLocationConfiguration
   {
-    /// <summary>
-    /// Creates an <see cref="IServiceLocatorProvider"/> instance as indicated by <see cref="ServiceLocationConfiguration.ServiceLocatorProvider"/>. If no 
-    /// <see cref="ServiceLocationConfiguration.ServiceLocatorProvider"/> is set, an instance of <see cref="DefaultServiceLocatorProvider"/> is returned.
-    /// </summary>
-    /// <returns>An new <see cref="IServiceLocatorProvider"/> instance.</returns>
+    [Obsolete("Use IoC bootstrapping to resolve the IServiceLocatorProvider (Version 6.0.0)", true)]
     IServiceLocatorProvider CreateServiceLocatorProvider ();
   }
 }

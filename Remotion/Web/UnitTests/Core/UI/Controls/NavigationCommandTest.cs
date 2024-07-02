@@ -315,7 +315,7 @@ public class NavigationCommandTest
   {
     var wxeUrlSettings = WxeUrlSettings.Create(1024, defaultWxeHandler);
 
-    var serviceLocator = DefaultServiceLocator.Create();
+    var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     serviceLocator.RegisterSingle(() => wxeUrlSettings);
     return new ServiceLocatorScope(serviceLocator);
   }

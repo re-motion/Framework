@@ -54,12 +54,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       _storageProviderDefinition = (RdbmsProviderDefinition)storageSettings.GetDefaultStorageProviderDefinition();
       _storageObjectFactory = (SqlStorageObjectFactory)_storageProviderDefinition.Factory;
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle<IStorageSettings>(() => storageSettings);
       SetupServiceLocator(serviceLocator);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
-      var mappingLoader = MappingReflector.Create(
+      var mappingLoader = new MappingReflector(
           new FixedTypeDiscoveryService(GetReflectedTypes()),
           new ClassIDProvider(),
           new ReflectionBasedMemberInformationNameResolver(),

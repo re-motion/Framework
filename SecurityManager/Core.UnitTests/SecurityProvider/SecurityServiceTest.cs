@@ -217,7 +217,7 @@ namespace Remotion.SecurityManager.UnitTests
         }
       }
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle(() => new Mock<ISecurityProvider>());
       using (new ServiceLocatorScope(serviceLocator))
       {

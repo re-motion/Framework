@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
       {
         var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer(TestDomainConnectionString);
 
-        var defaultServiceLocator = DefaultServiceLocator.Create();
+        var defaultServiceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
         defaultServiceLocator.RegisterSingle(() => storageSettingsFactory);
 
         ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);

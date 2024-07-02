@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     {
       var queryDefinitionRepository = Queries;
 
-      DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
+      DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       defaultServiceLocator.RegisterSingle<IQueryDefinitionRepository>(() => queryDefinitionRepository);
       RegisterStandardConfiguration(defaultServiceLocator);
       using var scope = new ServiceLocatorScope(defaultServiceLocator);
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       QueryDefinition unknownQueryDefinition = new QueryDefinition("UnknownQuery", TestDomainStorageProviderDefinition, "select 42", QueryType.ScalarReadOnly);
       QueryDefinitionRepository queryDefinitionRepository = new QueryDefinitionRepository(new[] { unknownQueryDefinition });
 
-      DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
+      DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       defaultServiceLocator.RegisterSingle<IQueryDefinitionRepository>(() => queryDefinitionRepository);
       RegisterStandardConfiguration(defaultServiceLocator);
 
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     {
       var queryDefinitionRepository = Queries;
 
-      DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
+      DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       defaultServiceLocator.RegisterSingle<IQueryDefinitionRepository>(() => queryDefinitionRepository);
       RegisterStandardConfiguration(defaultServiceLocator);
       using var scope = new ServiceLocatorScope(defaultServiceLocator);
@@ -134,7 +134,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     {
       var queryDefinitionRepository = Queries;
 
-      DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.Create();
+      DefaultServiceLocator defaultServiceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       defaultServiceLocator.RegisterSingle<IQueryDefinitionRepository>(() => queryDefinitionRepository);
       RegisterStandardConfiguration(defaultServiceLocator);
       using var scope = new ServiceLocatorScope(defaultServiceLocator);

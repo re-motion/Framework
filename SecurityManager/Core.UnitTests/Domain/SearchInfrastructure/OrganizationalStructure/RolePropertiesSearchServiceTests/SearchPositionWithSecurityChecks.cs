@@ -72,7 +72,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
       _mockPrincipalProvider = new Mock<IPrincipalProvider>(MockBehavior.Strict);
       _stubFunctionalSecurityStrategy = new Mock<IFunctionalSecurityStrategy>(MockBehavior.Strict);
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle(() => _stubFunctionalSecurityStrategy.Object);
       serviceLocator.RegisterSingle(() => _mockSecurityProvider.Object);
       serviceLocator.RegisterSingle(() => _mockPrincipalProvider.Object);

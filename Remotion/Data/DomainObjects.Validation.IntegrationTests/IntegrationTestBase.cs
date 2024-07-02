@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
     {
       var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle<IClientTransactionExtensionFactory>(
           () => new ValidationClientTransactionExtensionFactory(serviceLocator.GetInstance<IValidatorProvider>()));
       serviceLocator.RegisterSingle(() => storageSettings);

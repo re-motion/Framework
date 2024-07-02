@@ -39,7 +39,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
       _mockWebSecurityAdapter = new Mock<IWebSecurityAdapter>(MockBehavior.Strict);
       _mockNavigationCommand = new Mock<NavigationCommand>(MockBehavior.Strict);
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterMultiple<IWebSecurityAdapter>(() => _mockWebSecurityAdapter.Object);
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);

@@ -16,6 +16,12 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using Remotion.Logging;
+using Remotion.Reflection.TypeDiscovery;
+using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
+using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
+using Remotion.Reflection.TypeResolution;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -27,28 +33,38 @@ namespace Remotion.ServiceLocation
   public class BootstrapServiceConfiguration : IBootstrapServiceConfiguration
   {
     private readonly object _lock = new object();
-    private readonly List<ServiceConfigurationEntry> _registrations = new List<ServiceConfigurationEntry>();
-
-    private DefaultServiceLocator _bootstrapServiceLocator = DefaultServiceLocator.Create();
+    private readonly Dictionary<Type, ServiceConfigurationEntry> _registrations = new();
 
     public BootstrapServiceConfiguration ()
     {
+      // Logging
+      RegisterInstanceAsSingleton<ILogManager, Log4NetLogManager>(() => new Log4NetLogManager());
 
+      // Type resolution
+      RegisterImplementationAsSingleton<ITypeResolutionService, DefaultTypeResolutionService>();
+
+      // Type discovery
+      RegisterInstanceAsSingleton<IAssemblyLoaderFilter, ApplicationAssemblyLoaderFilter>(() => ApplicationAssemblyLoaderFilter.Instance);
+      RegisterImplementationAsSingleton<IAssemblyLoader, FilteringAssemblyLoader>();
+      RegisterImplementationAsSingleton<IAppContextProvider, AppContextProvider>();
+#if NETFRAMEWORK
+      RegisterImplementationAsSingleton<IRootAssemblyFinder, CurrentAppDomainBasedRootAssemblyFinder>();
+#else
+      RegisterImplementationAsSingleton<IRootAssemblyFinder, AppContextBasedRootAssemblyFinder>();
+#endif
+      RegisterDecoratedImplementationAsSingleton<IAssemblyFinder, AssemblyFinder, CachingAssemblyFinderDecorator>();
+      RegisterImplementationAsSingleton<ITypeDiscoveryService, AssemblyFinderTypeDiscoveryService>();
+
+      // Service Location
+      RegisterImplementationAsSingleton<IServiceLocatorProvider, DefaultServiceLocatorProvider>();
+      RegisterImplementationAsSingleton<IServiceConfigurationDiscoveryService, DefaultServiceConfigurationDiscoveryService>();
     }
 
-    public IServiceLocator BootstrapServiceLocator
+    public IReadOnlyCollection<ServiceConfigurationEntry> GetRegistrations ()
     {
-      get { return _bootstrapServiceLocator; }
-    }
-
-    public ServiceConfigurationEntry[] Registrations
-    {
-      get
+      lock (_lock)
       {
-        lock (_lock)
-        {
-          return _registrations.ToArray();
-        }
+        return _registrations.Values;
       }
     }
 
@@ -58,26 +74,48 @@ namespace Remotion.ServiceLocation
 
       lock (_lock)
       {
-        _bootstrapServiceLocator.Register(entry);
-        _registrations.Add(entry);
+        _registrations[entry.ServiceType] = entry;
       }
     }
 
-    public void Register (Type serviceType, Type implementationType, LifetimeKind lifetime)
-    {
-      ArgumentUtility.CheckNotNull("serviceType", serviceType);
-      ArgumentUtility.CheckNotNull("implementationType", implementationType);
-
-      var entry = new ServiceConfigurationEntry(serviceType, new ServiceImplementationInfo(implementationType, lifetime));
-      Register(entry);
-    }
-
-    public void Reset ()
+    private void RegisterImplementationAsSingleton<TService, TImplementation> ()
+        where TService : class
+        where TImplementation : class, TService
     {
       lock (_lock)
       {
-        _bootstrapServiceLocator = DefaultServiceLocator.Create();
-        _registrations.Clear();
+        _registrations.Add(
+            typeof(TService),
+            new ServiceConfigurationEntry(typeof(TService), new ServiceImplementationInfo(typeof(TImplementation), LifetimeKind.Singleton, RegistrationType.Single)));
+      }
+    }
+
+    private void RegisterDecoratedImplementationAsSingleton<TService, TImplementation, TDecorator> ()
+        where TService : class
+        where TImplementation : class, TService
+        where TDecorator : class, TService
+    {
+      lock (_lock)
+      {
+        _registrations.Add(
+            typeof(TService),
+            new ServiceConfigurationEntry(
+                typeof(TService),
+                new ServiceImplementationInfo(typeof(TImplementation), LifetimeKind.Singleton, RegistrationType.Single),
+                new ServiceImplementationInfo(typeof(TDecorator), LifetimeKind.InstancePerDependency, RegistrationType.Decorator)));
+      }
+    }
+
+    private void RegisterInstanceAsSingleton<TService, TImplementation> (Func<TImplementation> factory)
+        where TService : class
+        where TImplementation : class, TService
+    {
+      lock (_lock)
+      {
+        var singleton = new Lazy<TImplementation>(factory);
+        _registrations.Add(
+            typeof(TService),
+            new ServiceConfigurationEntry(typeof(TService), ServiceImplementationInfo.CreateSingle(() => singleton.Value, LifetimeKind.Singleton)));
       }
     }
   }
