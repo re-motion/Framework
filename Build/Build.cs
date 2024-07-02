@@ -16,6 +16,7 @@
 //
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Customizations;
 using Nuke.Common;
@@ -40,14 +41,29 @@ class Build : RemotionBuild
   [Parameter(ValueProviderMember = nameof(SupportedTestSqlServers), Separator = "+")]
   public string[] TestSqlServers { get; set; } = [];
 
+  [Parameter]
+  public bool HostTestSitesInDocker { get; set; } = IsServerBuild;
+
 
   public static int Main () => Execute<Build>();
 
   public override void ConfigureProjects (ProjectsBuilder projects)
   {
-    var normalTestConfiguration = TestMatrices.Single(e => e.Name == "NormalTestConfiguration");
-    var webTestingTestConfiguration = TestMatrices.Single(e => e.Name == "WebTestingTestConfiguration");
-    var databaseTestConfiguration = TestMatrices.Single(e => e.Name == "DatabaseTestConfiguration");
+    var normalTestConfiguration = new TestConfiguration(
+        DefaultTestExecutionRuntimeFactory.Instance,
+        TestMatrices.Single(e => e.Name == "NormalTestMatrix"),
+        ImmutableArray<ITestExecutionWrapper>.Empty);
+
+    var webTestingTestConfiguration = new TestConfiguration(
+        DefaultTestExecutionRuntimeFactory.Instance,
+        TestMatrices.Single(e => e.Name == "WebTestingTestMatrix"),
+        [new WebTestingTestSetup(HostTestSitesInDocker)]);
+
+    var databaseTestConfiguration = new TestConfiguration(
+        DefaultTestExecutionRuntimeFactory.Instance,
+        TestMatrices.Single(e => e.Name == "DatabaseTestMatrix"),
+        [new DatabaseTestSetup()]);
+
 
     projects.AddUnitTestProject("SharedSource.UnitTests", normalTestConfiguration);
     projects.AddReleaseProject("Core.Development.Analyzers");
@@ -102,10 +118,10 @@ class Build : RemotionBuild
     projects.AddReleaseProject("Validation.Globalization");
     projects.AddReleaseProject("Validation.Mixins");
     projects.AddUnitTestProject("Validation.UnitTests", normalTestConfiguration);
-    projects.AddIntegrationTestProject("Validation.IntegrationTests", normalTestConfiguration);
+    projects.AddUnitTestProject("Validation.IntegrationTests", normalTestConfiguration);
     projects.AddUnitTestProject("Validation.Globalization.UnitTests", normalTestConfiguration);
     projects.AddUnitTestProject("Validation.Mixins.UnitTests", normalTestConfiguration);
-    projects.AddIntegrationTestProject("Validation.Mixins.IntegrationTests", normalTestConfiguration);
+    projects.AddUnitTestProject("Validation.Mixins.IntegrationTests", normalTestConfiguration);
     projects.AddReleaseProject("Data.Core");
     projects.AddReleaseProject("Data.DomainObjects");
     projects.AddReleaseProject("Data.DomainObjects.ObjectBinding");
@@ -113,19 +129,15 @@ class Build : RemotionBuild
     projects.AddReleaseProject("Data.DomainObjects.Security");
     projects.AddReleaseProject("Data.DomainObjects.UberProfIntegration");
     projects.AddReleaseProject("Data.DomainObjects.Validation");
-    projects.AddUnitTestProject("Data.DomainObjects.UnitTests", databaseTestConfiguration)
-        .SetTestSetup<DatabaseTestSetup>();
+    projects.AddUnitTestProject("Data.DomainObjects.UnitTests", databaseTestConfiguration);
     projects.AddUnitTestProject("Data.DomainObjects.ObjectBinding.UnitTests", normalTestConfiguration);
-    projects.AddUnitTestProject("Data.DomainObjects.ObjectBinding.IntegrationTests", databaseTestConfiguration)
-        .SetTestSetup<DatabaseTestSetup>();
+    projects.AddUnitTestProject("Data.DomainObjects.ObjectBinding.IntegrationTests", databaseTestConfiguration);
     projects.AddUnitTestProject("Data.DomainObjects.RdbmsTools.UnitTests", normalTestConfiguration);
     projects.AddUnitTestProject("Data.DomainObjects.Security.UnitTests", normalTestConfiguration);
-    projects.AddUnitTestProject("Data.DomainObjects.UberProfIntegration.UnitTests", databaseTestConfiguration)
-        .SetTestSetup<DatabaseTestSetup>();
-    projects.AddIntegrationTestProject("Data.DomainObjects.Web.IntegrationTests", databaseTestConfiguration)
-        .SetTestSetup<DatabaseTestSetup>();
+    projects.AddUnitTestProject("Data.DomainObjects.UberProfIntegration.UnitTests", databaseTestConfiguration);
+    projects.AddUnitTestProject("Data.DomainObjects.Web.IntegrationTests", databaseTestConfiguration);
     projects.AddUnitTestProject("Data.DomainObjects.Validation.UnitTests", normalTestConfiguration);
-    projects.AddIntegrationTestProject("Data.DomainObjects.Validation.IntegrationTests", normalTestConfiguration);
+    projects.AddUnitTestProject("Data.DomainObjects.Validation.IntegrationTests", normalTestConfiguration);
     projects.AddReleaseProject("ObjectBinding.Core");
     projects.AddReleaseProject("ObjectBinding.Security");
     projects.AddReleaseProject("ObjectBinding.Validation");
@@ -143,10 +155,8 @@ class Build : RemotionBuild
     projects.AddUnitTestProject("ObjectBinding.Web.Compatibility.UnitTests", normalTestConfiguration);
     projects.AddUnitTestProject("ObjectBinding.Web.Validation.UnitTests", normalTestConfiguration);
     projects.AddUnitTestProject("ObjectBinding.Web.Preview.UnitTests", normalTestConfiguration);
-    projects.AddIntegrationTestProject("ObjectBinding.Web.Development.WebTesting.IntegrationTests", webTestingTestConfiguration)
-        .SetTestSetup<WebTestingTestSetup>();
-    projects.AddIntegrationTestProject("ObjectBinding.Web.IntegrationTests", webTestingTestConfiguration)
-        .SetTestSetup<WebTestingTestSetup>();
+    projects.AddUnitTestProject("ObjectBinding.Web.Development.WebTesting.IntegrationTests", webTestingTestConfiguration);
+    projects.AddUnitTestProject("ObjectBinding.Web.IntegrationTests", webTestingTestConfiguration);
     projects.AddReleaseProject("Security.Core");
     projects.AddReleaseProject("Security.Metadata.Extractor");
     projects.AddReleaseProject("Security.MSBuild.Tasks");
@@ -155,7 +165,7 @@ class Build : RemotionBuild
     projects.AddReleaseProject("Web.Core");
     projects.AddReleaseProject("Web.ClientScript");
     projects.AddReleaseProject("Web.Development.Analyzers");
-    projects.AddIntegrationTestProject("Web.Development.Analyzers.IntegrationTests", normalTestConfiguration);
+    projects.AddUnitTestProject("Web.Development.Analyzers.IntegrationTests", normalTestConfiguration);
     projects.AddReleaseProject("Web.Development.WebTesting");
     projects.AddReleaseProject("Web.Development.WebTesting.ControlObjects");
     projects.AddReleaseProject("Web.Development.WebTesting.ExecutionEngine");
@@ -163,12 +173,9 @@ class Build : RemotionBuild
     projects.AddReleaseProject("Web.Security");
     projects.AddUnitTestProject("Web.Development.WebTesting.UnitTests", normalTestConfiguration);
     projects.AddUnitTestProject("Web.UnitTests", normalTestConfiguration);
-    projects.AddIntegrationTestProject("Web.Development.WebTesting.IntegrationTests", webTestingTestConfiguration)
-        .SetTestSetup<WebTestingTestSetup>();
-    projects.AddIntegrationTestProject("Web.Development.WebTesting.IntegrationTests.RequireUI", webTestingTestConfiguration)
-        .SetTestSetup<WebTestingTestSetup>();
-    projects.AddIntegrationTestProject("Web.IntegrationTests", webTestingTestConfiguration)
-        .SetTestSetup<WebTestingTestSetup>();
+    projects.AddUnitTestProject("Web.Development.WebTesting.IntegrationTests", webTestingTestConfiguration);
+    projects.AddUnitTestProject("Web.Development.WebTesting.IntegrationTests.RequireUI", webTestingTestConfiguration);
+    projects.AddUnitTestProject("Web.IntegrationTests", webTestingTestConfiguration);
     projects.AddReleaseProject("Integration.Domain");
     projects.AddReleaseProject("Integration.Web");
     projects.AddReleaseProject("SecurityManager.AclTools.Expander")
@@ -180,8 +187,7 @@ class Build : RemotionBuild
         .SetExcludeFromDocumentation(true);
     projects.AddReleaseProject("SecurityManager.Metadata.Importer")
         .SetExcludeFromDocumentation(true);
-    projects.AddUnitTestProject("SecurityManager.Core.UnitTests", databaseTestConfiguration)
-        .SetTestSetup<DatabaseTestSetup>();
+    projects.AddUnitTestProject("SecurityManager.Core.UnitTests", databaseTestConfiguration);
   }
 
   public override void ConfigureSupportedTestDimensions (SupportedTestDimensionsBuilder supportedTestDimensions)
@@ -206,7 +212,6 @@ class Build : RemotionBuild
   {
     base.ConfigureEnabledTestDimensions(enabledTestDimensions);
 
-    Log.Warning(string.Join(", ", TestBrowsers));
     if (SupportedTestDimensions.IsSupported<Browsers>())
     {
       var testBrowsers = SupportedTestDimensions.ParseTestDimensionValuesOrDefault<Browsers>(TestBrowsers)
@@ -235,7 +240,7 @@ class Build : RemotionBuild
   public override void ConfigureTestMatrix (TestMatricesBuilder builder)
   {
     builder.AddTestMatrix(
-        "WebTestingTestConfiguration",
+        "WebTestingTestMatrix",
         new TestDimension[,] // todo docker images need to be wired to the config file
         {
             { Chrome, NET48, Debug, x86, NoDB, EnforcedLocalMachine },
@@ -247,7 +252,7 @@ class Build : RemotionBuild
         allowEmpty: true);
 
     builder.AddTestMatrix(
-        "DatabaseTestConfiguration",
+        "DatabaseTestMatrix",
         new TestDimension[,]
         {
             { Docker_Win_NET48, NET48, NoBrowser, SqlServer2016, Debug, x86 },
@@ -267,10 +272,11 @@ class Build : RemotionBuild
             // { Docker_Win_NET50 , NET50, NoBrowser, SqlServer2019, Release, x64 },
             // { Docker_Win_NET50 , NET50, NoBrowser, SqlServer2017, Release, x64 },
             // { Docker_Win_NET50 , NET50, NoBrowser, SqlServer2016, Release, x64 },
-        });
+        },
+        allowEmpty: true);
 
     builder.AddTestMatrix(
-        "NormalTestConfiguration",
+        "NormalTestMatrix",
         new TestDimension[,]
         {
             { Docker_Win_NET48, NET48, NoBrowser, NoDB, Debug, x86 },
@@ -287,7 +293,8 @@ class Build : RemotionBuild
             //  Exercise compatibility between installed .NET version, target framework and SQL Server
             //  { Docker_Win_NET50, NET50, NoBrowser, NoDB, Debug, x64 },
             //  { Docker_Win_NET50, NET50, NoBrowser, NoDB, Release, x64 },
-        });
+        },
+        allowEmpty: true);
   }
 
   protected IEnumerable<string> SupportedTestBrowsers => GetTestDimensionValueList<Browsers>();

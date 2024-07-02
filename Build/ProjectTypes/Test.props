@@ -9,6 +9,7 @@
     <DefineConstants>$(DefineConstants);</DefineConstants>
     <Nullable>disable</Nullable>
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
   <ItemGroup>

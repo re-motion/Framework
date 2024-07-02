@@ -22,13 +22,25 @@ public class SqlServers : TestDimension
 {
   public static readonly SqlServers NoDB = new(nameof(NoDB));
   public static readonly SqlServers SqlServerDefault = new(nameof(SqlServerDefault));
-  public static readonly SqlServers SqlServer2016 = new(nameof(SqlServer2016));
-  public static readonly SqlServers SqlServer2017 = new(nameof(SqlServer2017));
-  public static readonly SqlServers SqlServer2019 = new(nameof(SqlServer2019));
-  public static readonly SqlServers SqlServer2022 = new(nameof(SqlServer2022));
+  public static readonly SqlServers SqlServer2016 = new(nameof(SqlServer2016), 2016);
+  public static readonly SqlServers SqlServer2017 = new(nameof(SqlServer2017), 2017);
+  public static readonly SqlServers SqlServer2019 = new(nameof(SqlServer2019), 2019);
+  public static readonly SqlServers SqlServer2022 = new(nameof(SqlServer2022), 2022);
+
+  public bool HasSpecificVersion { get; }
+
+  public int Version { get; }
 
   public SqlServers (string value)
       : base(value)
   {
+    HasSpecificVersion = false;
+  }
+
+  public SqlServers (string value, int version)
+      : base(value)
+  {
+    HasSpecificVersion = true;
+    Version = version;
   }
 }
