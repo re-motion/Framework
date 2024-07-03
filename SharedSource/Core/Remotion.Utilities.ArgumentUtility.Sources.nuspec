@@ -19,6 +19,5 @@
   </metadata>
   <files>
     <file src="Utilities\ArgumentUtility.cs" target="content/App_Packages/Remotion.Utilities.ArgumentUtility.Sources.$version$" />
-    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Utilities.ArgumentUtility.Sources.$version$" />
   </files>
 </package>

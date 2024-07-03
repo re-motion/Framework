@@ -57,9 +57,6 @@
 
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)..\remotion.snk" Link="remotion.snk" />
-    <None Include="$(MSBuildThisFileDirectory)..\Remotion\Remotion LGPL.licenseheader" Link="Remotion LGPL.licenseheader" Condition="'$(ProductType)' == 'Default'" />
-    <None Include="$(MSBuildThisFileDirectory)..\Remotion\Remotion LGPL.licenseheader" Link="Remotion LGPL.licenseheader" Condition="'$(ProductType)' == 'Mixins'" />
-    <None Include="$(MSBuildThisFileDirectory)..\Remotion\Remotion LGPL.licenseheader" Link="Remotion LGPL.licenseheader" Condition="'$(ProductType)' == 'SecurityManager'" />
   </ItemGroup>
 
   <ItemGroup>

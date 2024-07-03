@@ -19,9 +19,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Update="..\..\Remotion LGPL.licenseheader" Pack="true" PackagePath="res/" Visible="false" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Web.Contracts.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj" />
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />

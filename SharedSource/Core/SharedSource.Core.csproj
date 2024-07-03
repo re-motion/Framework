@@ -12,9 +12,6 @@
     <SignAssembly>False</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="ReSharperAnnotations\ReSharperAnnotations MIT.licenseheader" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Remove="JetBrains.Annotations" />
   </ItemGroup>
   <Import Project="..\..\Build\Shared.build.targets" />

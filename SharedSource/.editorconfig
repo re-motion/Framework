@@ -1,0 +1,5 @@
+[*]
+file_header_template = SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu\nSPDX-License-Identifier: Apache-2.0
+
+[Core/ReSharperAnnotations/**]
+file_header_template = SPDX-FileCopyrightText: Copyright (c) 2016 JetBrains http://www.jetbrains.com\nSPDX-License-Identifier: MIT
