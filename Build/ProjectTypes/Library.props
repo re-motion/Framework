@@ -7,8 +7,8 @@
     <IsPackable>True</IsPackable>
     <TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
     <DefineConstants>$(DefineConstants);JETBRAINS_ANNOTATIONS;</DefineConstants>
-    <Nullable Condition="'$(TargetFramework)' == 'net48'">annotations</Nullable>
-    <Nullable Condition="'$(TargetFramework)' != 'net48'">enable</Nullable>
+    <Nullable Condition="'$(IsDotNetFramework)' == 'true'">annotations</Nullable>
+    <Nullable Condition="'$(IsDotNetFramework)' == 'false'">enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

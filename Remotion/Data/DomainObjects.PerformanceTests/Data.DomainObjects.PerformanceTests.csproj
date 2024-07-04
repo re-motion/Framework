@@ -9,7 +9,7 @@
     <Description>Performance Tests for Remotion DomainObjects Library</Description>
     <AssemblyName>Remotion.Data.DomainObjects.PerformanceTests</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <OutputType Condition="'$(TargetFramework)' == 'net48'">Exe</OutputType>
+    <OutputType Condition="'$(IsDotNetFramework)' == 'true'">Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Database\*.sql" CopyToOutputDirectory="PreserveNewest" />

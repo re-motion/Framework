@@ -45,7 +45,7 @@
     <PackageReference Include="Remotion.Linq.SqlBackend.Development" />
     <PackageReference Include="Remotion.TypePipe.Development" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
     <Reference Include="System.Transactions" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

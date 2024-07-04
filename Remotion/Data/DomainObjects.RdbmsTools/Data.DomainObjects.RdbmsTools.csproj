@@ -19,7 +19,7 @@
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj" />
     <ProjectReference Include="..\Core\Data.Core.csproj" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
