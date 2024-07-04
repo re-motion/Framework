@@ -10,7 +10,7 @@
     <Nullable>disable</Nullable>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>

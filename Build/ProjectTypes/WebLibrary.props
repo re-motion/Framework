@@ -21,7 +21,7 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
+  <ItemGroup Condition="'$(IsDotNetFramework)' == 'false'">
     <FrameworkReference Include="Microsoft.AspNetCore.App"/>
   </ItemGroup>
 

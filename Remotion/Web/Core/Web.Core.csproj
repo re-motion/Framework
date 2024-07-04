@@ -31,7 +31,7 @@
     <ProjectReference Include="..\..\Security\Core\Security.Core.csproj" />
     <ProjectReference Include="..\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
@@ -40,7 +40,7 @@
   <ItemGroup>
     <PackageReference Include="Remotion.ThirdPartyDependency.RobotoFonts" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
+  <ItemGroup Condition="'$(IsDotNetFramework)' == 'false'">
     <PackageReference Include="Remotion.ThirdPartyDependency.System.Web" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

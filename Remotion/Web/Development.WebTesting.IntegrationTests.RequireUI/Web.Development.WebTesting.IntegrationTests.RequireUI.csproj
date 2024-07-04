@@ -14,10 +14,10 @@
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\*.png" LogicalName="$(AssemblyName).SavedTestScreenshots.$(RootNamespace).ScreenshotTest.%(Filename)%(Extension)"/>
     <EmbeddedResource Include="SavedTestScreenshots\MouseTest\*.png" LogicalName="$(AssemblyName).SavedTestScreenshots.$(RootNamespace).MouseTest.%(Filename)%(Extension)"/>
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
     <ProjectReference Include="..\Development.WebTesting.TestSite.NetFramework\Web.Development.WebTesting.TestSite.NetFramework.csproj" ReferenceOutputAssembly="false" ExcludeAssets="all" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
+  <ItemGroup Condition="'$(IsDotNetFramework)' == 'false'">
     <ProjectReference Include="..\Development.WebTesting.TestSite\Web.Development.WebTesting.TestSite.csproj" ReferenceOutputAssembly="false" ExcludeAssets="all" />
   </ItemGroup>
   <ItemGroup>

@@ -28,10 +28,10 @@
     <ProjectReference Include="..\Web.Contracts.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj" />
     <ProjectReference Include="..\Web.Development.WebTesting\ObjectBinding.Web.Development.WebTesting.csproj" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
     <ProjectReference Include="..\Web.Development.WebTesting.TestSite.NetFramework\ObjectBinding.Web.Development.WebTesting.TestSite.NetFramework.csproj" ReferenceOutputAssembly="false" ExcludeAssets="all" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
+  <ItemGroup Condition="'$(IsDotNetFramework)' == 'false'">
     <ProjectReference Include="..\Web.Development.WebTesting.TestSite\ObjectBinding.Web.Development.WebTesting.TestSite.csproj" ReferenceOutputAssembly="false" ExcludeAssets="all" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

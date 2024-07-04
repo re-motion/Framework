@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
-#if !NET48
+#if !NETFRAMEWORK
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Http;
