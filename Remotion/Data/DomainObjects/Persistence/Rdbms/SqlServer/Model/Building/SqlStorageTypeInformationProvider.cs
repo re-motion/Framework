@@ -203,7 +203,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
       if (dotNetType == typeof(Byte))
         return new StorageTypeInformation(typeof(Byte), "tinyint", DbType.Byte, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
       if (dotNetType == typeof(DateTime))
-        return new StorageTypeInformation(typeof(DateTime), "datetime", DbType.DateTime, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
+        return new StorageTypeInformation(typeof(DateTime), "datetime2", DbType.DateTime2, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
       if (dotNetType == typeof(Decimal))
         return new StorageTypeInformation(typeof(Decimal), "decimal (38, 3)", DbType.Decimal, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
       if (dotNetType == typeof(Double))

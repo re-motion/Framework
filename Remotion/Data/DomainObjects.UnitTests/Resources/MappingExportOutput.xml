@@ -38,10 +38,10 @@
           <column name="Byte" dbType="Byte" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.DateProperty" displayName="DateProperty" type="System.DateTime" isNullable="false">
-          <column name="Date" dbType="DateTime" />
+          <column name="Date" dbType="DateTime2" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.DateTimeProperty" displayName="DateTimeProperty" type="System.DateTime" isNullable="false">
-          <column name="DateTime" dbType="DateTime" />
+          <column name="DateTime" dbType="DateTime2" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.DecimalProperty" displayName="DecimalProperty" type="System.Decimal" isNullable="false">
           <column name="Decimal" dbType="Decimal" />
@@ -89,10 +89,10 @@
           <column name="NaByte" dbType="Byte" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDateProperty" displayName="NaDateProperty" type="System.DateTime" isNullable="true">
-          <column name="NaDate" dbType="DateTime" />
+          <column name="NaDate" dbType="DateTime2" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDateTimeProperty" displayName="NaDateTimeProperty" type="System.DateTime" isNullable="true">
-          <column name="NaDateTime" dbType="DateTime" />
+          <column name="NaDateTime" dbType="DateTime2" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDecimalProperty" displayName="NaDecimalProperty" type="System.Decimal" isNullable="true">
           <column name="NaDecimal" dbType="Decimal" />
@@ -131,10 +131,10 @@
           <column name="NaByteWithNullValue" dbType="Byte" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDateWithNullValueProperty" displayName="NaDateWithNullValueProperty" type="System.DateTime" isNullable="true">
-          <column name="NaDateWithNullValue" dbType="DateTime" />
+          <column name="NaDateWithNullValue" dbType="DateTime2" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDateTimeWithNullValueProperty" displayName="NaDateTimeWithNullValueProperty" type="System.DateTime" isNullable="true">
-          <column name="NaDateTimeWithNullValue" dbType="DateTime" />
+          <column name="NaDateTimeWithNullValue" dbType="DateTime2" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDecimalWithNullValueProperty" displayName="NaDecimalWithNullValueProperty" type="System.Decimal" isNullable="true">
           <column name="NaDecimalWithNullValue" dbType="Decimal" />
