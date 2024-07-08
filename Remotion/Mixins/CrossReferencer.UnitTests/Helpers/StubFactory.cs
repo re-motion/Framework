@@ -25,27 +25,27 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Helpers
   {
     public static IIdentifierGenerator<T> CreateIdentifierGeneratorStub<T> (IDictionary<string, T> values)
     {
-      var identifierGeneratorStub = MockRepository.GenerateStub<IIdentifierGenerator<T>>();
+      var identifierGeneratorStub = new Mock<IIdentifierGenerator<T>>();
 
       foreach (var value in values)
-        identifierGeneratorStub.Stub(ig => ig.GetIdentifier(value.Value)).Return(value.Key);
+        identifierGeneratorStub.Setup(ig => ig.GetIdentifier(value.Value)).Returns(value.Key);
 
-      identifierGeneratorStub.Stub(ig => ig.Elements).Return(values.Values);
+      identifierGeneratorStub.Setup(ig => ig.Elements).Returns(values.Values);
 
-      return identifierGeneratorStub;
+      return identifierGeneratorStub.Object;
     }
 
     public static IIdentifierGenerator<T> CreateIdentifierGeneratorStub<T> (IEnumerable<T> values)
     {
-      var identifierGeneratorStub = MockRepository.GenerateStub<IIdentifierGenerator<T>>();
+      var identifierGeneratorStub = new Mock<IIdentifierGenerator<T>>();
 
       var i = 0;
       foreach (var value in values)
-        identifierGeneratorStub.Stub(ig => ig.GetIdentifier(value)).Return((i++).ToString());
+        identifierGeneratorStub.Setup(ig => ig.GetIdentifier(value)).Returns((i++).ToString());
 
-      identifierGeneratorStub.Stub(ig => ig.Elements).Return(values);
+      identifierGeneratorStub.Setup(ig => ig.Elements).Returns(values);
 
-      return identifierGeneratorStub;
+      return identifierGeneratorStub.Object;
     }
   }
 }

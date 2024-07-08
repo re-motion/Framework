@@ -74,11 +74,11 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       var validationException1 = SetUpExceptionWithDummyStackTrace("test validation exception", new DefaultValidationLog());
 
       errorAggregator.AddException(validationException1);
-      var remotionReflectorStub = MockRepository.GenerateStub<RemotionReflector>();
-      var reportGenerator = new ValidationErrorReportGenerator(errorAggregator, remotionReflectorStub);
+      var remotionReflectorStub = new Mock<IRemotionReflector>();
+      var reportGenerator = new ValidationErrorReportGenerator(errorAggregator, remotionReflectorStub.Object);
 
-      remotionReflectorStub.Stub(_ => _.GetValidationLogFromValidationException(null)).IgnoreArguments()
-          .Return(new ReflectedObject(new ValidationLogNullObject()));
+      remotionReflectorStub.Setup(_ => _.GetValidationLogFromValidationException(It.IsAny<Exception>()))
+          .Returns(new ReflectedObject(new ValidationLogNullObject()));
 
       var output = reportGenerator.GenerateXml();
 

@@ -29,21 +29,22 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
   public class AttributeReferenceReportGeneratorTest
   {
     private IIdentifierGenerator<Type> _identifierGenerator;
-    private IRemotionReflector _remotionReflector;
+    private Mock<IRemotionReflector> _remotionReflector;
 
     [SetUp]
     public void SetUp ()
     {
       _identifierGenerator = new IdentifierGenerator<Type>();
-      _remotionReflector = MockRepository.GenerateStub<IRemotionReflector>();
-      _remotionReflector.Stub(r => r.IsInfrastructureType(typeof(UsesAttribute))).Return(true);
-      _remotionReflector.Stub(r => r.IsInfrastructureType(typeof(ExtendsAttribute))).Return(true);
+
+      _remotionReflector = new Mock<IRemotionReflector>();
+      _remotionReflector.Setup(r => r.IsInfrastructureType(typeof(UsesAttribute))).Returns(true);
+      _remotionReflector.Setup(r => r.IsInfrastructureType(typeof(ExtendsAttribute))).Returns(true);
     }
 
     [Test]
     public void GenerateXml_ZeroAttributes ()
     {
-      var reportGenerator = new AttributeReferenceReportGenerator(typeof(UselessObject), _identifierGenerator, _remotionReflector);
+      var reportGenerator = new AttributeReferenceReportGenerator(typeof(UselessObject), _identifierGenerator, _remotionReflector.Object);
       var output = reportGenerator.GenerateXml();
 
       var expectedOutput = new XElement("HasAttributes");
@@ -54,10 +55,10 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [Test]
     public void GenerateXml_WithAttributes ()
     {
-      _remotionReflector.Stub(r => r.IsInfrastructureType(typeof(SerializableAttribute))).Return(false);
+      _remotionReflector.Setup(r => r.IsInfrastructureType(typeof(SerializableAttribute))).Returns(false);
 
       // Mixin2 has SerializableAttribute which has no parameters
-      var reportGenerator = new AttributeReferenceReportGenerator(typeof(Mixin2), _identifierGenerator, _remotionReflector);
+      var reportGenerator = new AttributeReferenceReportGenerator(typeof(Mixin2), _identifierGenerator, _remotionReflector.Object);
       var output = reportGenerator.GenerateXml();
 
       var expectedOutput = new XElement(
@@ -71,10 +72,10 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [Test]
     public void GenerateXml_WithAttributesWithParameters ()
     {
-      _remotionReflector.Stub(r => r.IsInfrastructureType(typeof(BookAttribute))).Return(false);
+      _remotionReflector.Setup(r => r.IsInfrastructureType(typeof(BookAttribute))).Returns(false);
 
       // ClassWithBookAttribute has the following attribute: [Book (1, Title = "C# in depth")]
-      var reportGenerator = new AttributeReferenceReportGenerator(typeof(ClassWithBookAttribute), _identifierGenerator, _remotionReflector);
+      var reportGenerator = new AttributeReferenceReportGenerator(typeof(ClassWithBookAttribute), _identifierGenerator, _remotionReflector.Object);
 
       var output = reportGenerator.GenerateXml();
 
@@ -103,10 +104,10 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [Test]
     public void GenerateXml_WithAttributesWithFieldParameter ()
     {
-      _remotionReflector.Stub(r => r.IsInfrastructureType(typeof(FieldParamAttribute))).Return(false);
+      _remotionReflector.Setup(r => r.IsInfrastructureType(typeof(FieldParamAttribute))).Returns(false);
 
       // ClassWithAttributeFieldParam has the following attribute: [FieldParam(new[] { "AttributeParam1", "AttributeParam2"})]
-      var reportGenerator = new AttributeReferenceReportGenerator(typeof(ClassWithAttributeFieldParam), _identifierGenerator, _remotionReflector);
+      var reportGenerator = new AttributeReferenceReportGenerator(typeof(ClassWithAttributeFieldParam), _identifierGenerator, _remotionReflector.Object);
 
       var output = reportGenerator.GenerateXml();
 

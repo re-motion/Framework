@@ -85,19 +85,19 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
     [Test]
     public void GenerateXml_MoreAssemblies ()
     {
-      var typeStub1 = MockRepository.GenerateStub<Type>();
-      typeStub1.Stub(t => t.Assembly).Return(_assembly1);
+      var typeStub1 = new Mock<Type>();
+      typeStub1.Setup(t => t.Assembly).Returns(_assembly1);
 
-      var typeStub2 = MockRepository.GenerateStub<Type>();
-      typeStub2.Stub(t => t.Assembly).Return(_assembly2);
+      var typeStub2 = new Mock<Type>();
+      typeStub2.Setup(t => t.Assembly).Returns(_assembly2);
 
       var assemblyIdentifierGeneratorStub =
           StubFactory.CreateIdentifierGeneratorStub(new[] { _assembly1, _assembly2 });
 
       var typeIdentifierGeneratorStub =
-          StubFactory.CreateIdentifierGeneratorStub(new[] { typeStub1, typeStub2 });
+          StubFactory.CreateIdentifierGeneratorStub(new[] { typeStub1.Object, typeStub2.Object });
 
-      var involvedTypes = new[] { new InvolvedType(typeStub1), new InvolvedType(typeStub2) };
+      var involvedTypes = new[] { new InvolvedType(typeStub1.Object), new InvolvedType(typeStub2.Object) };
 
       var reportGenerator = new AssemblyReportGenerator(involvedTypes, assemblyIdentifierGeneratorStub, typeIdentifierGeneratorStub);
       var output = reportGenerator.GenerateXml();
@@ -114,7 +114,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
               new XAttribute("publicKeyToken", Convert.ToBase64String(_assembly1.GetName().GetPublicKeyToken())),
               new XElement(
                   "InvolvedType-Reference",
-                  new XAttribute("ref", typeIdentifierGeneratorStub.GetIdentifier(typeStub1)))),
+                  new XAttribute("ref", typeIdentifierGeneratorStub.GetIdentifier(typeStub1.Object)))),
           new XElement(
               "Assembly",
               new XAttribute("id", "1"),
@@ -126,7 +126,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
               new XAttribute("publicKeyToken", Convert.ToBase64String(_assembly2.GetName().GetPublicKeyToken())),
               new XElement(
                   "InvolvedType-Reference",
-                  new XAttribute("ref", typeIdentifierGeneratorStub.GetIdentifier(typeStub2)))));
+                  new XAttribute("ref", typeIdentifierGeneratorStub.GetIdentifier(typeStub2.Object)))));
 
       Assert.That(output.ToString(), Is.EqualTo(expectedOutput.ToString()));
     }

@@ -73,14 +73,12 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
     }
 
     [Test]
-    [ExpectedException(typeof(NotSupportedException), ExpectedMessage = "Void methods are not supported.")]
     public void CallMethod_ExistingMethod_Void ()
     {
       // TargetDoSomething has method: public void DoSomething()
       var reflectedObject = new ReflectedObject(new TargetDoSomething());
-      var output = reflectedObject.CallMethod("DoSomething");
 
-      Assert.That(output, Is.Null);
+      Assert.That(() => reflectedObject.CallMethod("DoSomething"), Throws.InstanceOf<NotSupportedException>().With.Message.EqualTo("Void methods are not supported."));
     }
 
     [Test]
@@ -187,6 +185,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
       }
     }
 
+#if NET8_0_OR_GREATER
     [Test]
     public void AsEnumerable_EnumerableButWrongType ()
     {
@@ -200,9 +199,10 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
       }
       catch (InvalidCastException notSupportedException)
       {
-        Assert.That(notSupportedException.Message, Is.EqualTo("Specified cast is not valid."));
+        Assert.That(notSupportedException.Message, Is.EqualTo("Unable to cast object of type 'System.Char' to type 'System.Single'."));
       }
     }
+#endif
 
     [Test]
     public void Create_DefaultConstructor ()
@@ -275,7 +275,9 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
       var reflectedObject1 = new ReflectedObject("string");
       var reflectedObject2 = new ReflectedObject("string");
 
-      Assert.True(reflectedObject1.Equals(reflectedObject2));
+      var result = reflectedObject1.Equals(reflectedObject2);
+
+      Assert.That(result, Is.True);
     }
 
     [Test]
@@ -284,7 +286,9 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Reflection
       var reflectedObject1 = new ReflectedObject("string");
       var reflectedObject2 = new ReflectedObject("anotherString");
 
-      Assert.False(reflectedObject1.Equals(reflectedObject2));
+      var result = reflectedObject1.Equals(reflectedObject2);
+
+      Assert.That(result, Is.False);
     }
 
     [Test]
