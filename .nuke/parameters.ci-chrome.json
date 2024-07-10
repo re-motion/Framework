@@ -4,8 +4,8 @@
   "Target": [ "CIBuild" ],
   "TestConfigurations": [ "Debug", "Release" ],
   "TestExecutionRuntimes": [ "EnforcedLocalMachine" ],
-  "TestPlatforms": [ "x86", "x64" ],
-  "TestTargetRuntimes": [ "NET48" ],
+  "TestPlatforms": [ "x64" ],
+  "TestTargetRuntimes": [ "NET8_0_WINDOWS" ],
   "TestBrowsers": [ "Chrome" ],
   "TestSqlServers": [ "NoDB" ]
 }

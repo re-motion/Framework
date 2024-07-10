@@ -3,9 +3,9 @@
   "Solution": "Remotion.sln",
   "Target": [ "CIBuild" ],
   "TestConfigurations": [ "Debug" ],
-  "TestExecutionRuntimes": [ "Docker_Win_NET48", "EnforcedLocalMachine" ],
-  "TestPlatforms": [ "x86" ],
-  "TestTargetRuntimes": [ "NET48" ],
+  "TestExecutionRuntimes": [ "Docker_Win_NET8_0", "EnforcedLocalMachine" ],
+  "TestPlatforms": [ "x64" ],
+  "TestTargetRuntimes": [ "NET8_0_WINDOWS" ],
   "TestBrowsers": [ "NoBrowser", "Chrome" ],
   "TestSqlServers": [ "NoDB", "SqlServer2016" ],
   "TestFilter": "TestCategory!=LongRunning"

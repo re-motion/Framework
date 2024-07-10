@@ -211,12 +211,11 @@ class Build : RemotionBuild
   public override void ConfigureSupportedTestDimensions (SupportedTestDimensionsBuilder supportedTestDimensions)
   {
     supportedTestDimensions.AddSupportedDimension<ExecutionRuntimes>(
-        LocalMachine, EnforcedLocalMachine(Docker_Win_NET6_0),
-        Docker_Win_NET48, Docker_Win_NET481,
+        LocalMachine, ExecutionRuntimes.EnforcedLocalMachine,
         Docker_Win_NET8_0);
-    supportedTestDimensions.AddSupportedDimension<TargetFrameworks>(NET48, NET481, NET8_0);
+    supportedTestDimensions.AddSupportedDimension<TargetFrameworks>(NET8_0_WINDOWS);
     supportedTestDimensions.AddSupportedDimension<Configurations>(Debug, Release);
-    supportedTestDimensions.AddSupportedDimension<Platforms>(x64, x86);
+    supportedTestDimensions.AddSupportedDimension<Platforms>(x64);
 
     supportedTestDimensions.AddSupportedDimension<Browsers>(
         NoBrowser,
@@ -261,10 +260,10 @@ class Build : RemotionBuild
         "WebTestingTestMatrix",
         new TestDimension[,] // todo docker images need to be wired to the config file
         {
-            { Chrome, NET48, Debug, x86, NoDB, EnforcedLocalMachine(Docker_Win_NET48) },
-            { Chrome, NET481, Release, x86, NoDB, EnforcedLocalMachine(Docker_Win_NET481) },
-            { Firefox, NET48, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET481) },
-            { Edge, NET48, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET48) },
+            { Chrome, NET8_0_WINDOWS, Debug, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
+            { Chrome, NET8_0_WINDOWS, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
+            { Firefox, NET8_0_WINDOWS, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
+            { Edge, NET8_0_WINDOWS, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
             // { Edge, NET50, Release, x64, NoDB, Docker_Win_NET50, EnforcedLocalMachine },
         },
         allowEmpty: true);
@@ -273,18 +272,16 @@ class Build : RemotionBuild
         "DatabaseTestMatrix",
         new TestDimension[,]
         {
-            { Docker_Win_NET48, NET48, NoBrowser, SqlServer2016, Debug, x86 },
-            { Docker_Win_NET48, NET48, NoBrowser, SqlServer2016, Release, x86 },
-            { Docker_Win_NET48, NET48, NoBrowser, SqlServer2016, Debug, x64 },
-            { Docker_Win_NET48, NET48, NoBrowser, SqlServer2016, Release, x64 },
+            { Docker_Win_NET8_0, NET8_0_WINDOWS, NoBrowser, SqlServer2016, Debug, x64 },
+            { Docker_Win_NET8_0, NET8_0_WINDOWS, NoBrowser, SqlServer2016, Release, x64 },
 
             // Local-->
-            { LocalMachine, NET48, NoBrowser, SqlServerDefault, Debug, x86 },
+            { LocalMachine, NET8_0_WINDOWS, NoBrowser, SqlServerDefault, Debug, x64 },
 
             // Exercise compatibility between installed .NET version, target framework and SQL Server
-            { Docker_Win_NET481, NET481, NoBrowser, SqlServer2022, Release, x64 },
-            { Docker_Win_NET481, NET48, NoBrowser, SqlServer2019, Release, x64 },
-            { Docker_Win_NET48, NET48, NoBrowser, SqlServer2017, Release, x64 },
+            { Docker_Win_NET8_0, NET8_0_WINDOWS, NoBrowser, SqlServer2022, Release, x64 },
+            { Docker_Win_NET8_0, NET8_0_WINDOWS, NoBrowser, SqlServer2019, Release, x64 },
+            { Docker_Win_NET8_0, NET8_0_WINDOWS, NoBrowser, SqlServer2017, Release, x64 },
             // { Docker_Win_NET48 , NET48, NoBrowser, SqlServer2016, Release, x64 },
             // { Docker_Win_NET50 , NET50, NoBrowser, SqlServer2022, Release, x64 },
             // { Docker_Win_NET50 , NET50, NoBrowser, SqlServer2019, Release, x64 },
@@ -297,16 +294,11 @@ class Build : RemotionBuild
         "NormalTestMatrix",
         new TestDimension[,]
         {
-            { Docker_Win_NET48, NET48, NoBrowser, NoDB, Debug, x86 },
-            { Docker_Win_NET48, NET48, NoBrowser, NoDB, Release, x86 },
-            { Docker_Win_NET48, NET48, NoBrowser, NoDB, Debug, x64 },
-            { Docker_Win_NET48, NET48, NoBrowser, NoDB, Release, x64 },
-            { Docker_Win_NET481, NET481, NoBrowser, NoDB, Debug, x64 },
-            { Docker_Win_NET481, NET481, NoBrowser, NoDB, Release, x64 },
-            { Docker_Win_NET481, NET48, NoBrowser, NoDB, Release, x64 },
+            { Docker_Win_NET8_0, NET8_0_WINDOWS, NoBrowser, NoDB, Debug, x64 },
+            { Docker_Win_NET8_0, NET8_0_WINDOWS, NoBrowser, NoDB, Release, x64 },
 
             //  Local-->
-            { LocalMachine, NET48, NoBrowser, SqlServerDefault, Debug, x86 },
+            { LocalMachine, NET8_0_WINDOWS, NoBrowser, SqlServerDefault, Debug, x64 },
 
             //  Exercise compatibility between installed .NET version, target framework and SQL Server
             //  { Docker_Win_NET50, NET50, NoBrowser, NoDB, Debug, x64 },

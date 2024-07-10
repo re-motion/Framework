@@ -161,10 +161,8 @@
           "items": {
             "type": "string",
             "enum": [
-              "Docker_Win_NET48",
-              "Docker_Win_NET481",
               "Docker_Win_NET8_0",
-              "EnforcedLocalMachine(Docker_Win_NET6_0)",
+              "EnforcedLocalMachine",
               "LocalMachine"
             ]
           }
@@ -178,8 +176,7 @@
           "items": {
             "type": "string",
             "enum": [
-              "x64",
-              "x86"
+              "x64"
             ]
           }
         },
@@ -202,9 +199,7 @@
           "items": {
             "type": "string",
             "enum": [
-              "NET48",
-              "NET481",
-              "NET8_0"
+              "NET8_0_WINDOWS"
             ]
           }
         },
