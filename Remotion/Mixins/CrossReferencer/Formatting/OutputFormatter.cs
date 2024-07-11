@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -33,7 +34,10 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
       var name = BuildUnnestedTypeName(type);
 
       if (type.IsNested)
-        name = GetShortFormattedTypeName(type.DeclaringType) + "+" + name;
+      {
+        var declaringType = Assertion.IsNotNull( type.DeclaringType, "declaringType != null when type.IsNested");
+        name = GetShortFormattedTypeName(declaringType) + "+" + name;
+      }
 
       return name;
     }
@@ -44,9 +48,13 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
 
       var name = BuildUnnestedTypeName(type);
 
-      return type.IsNested
-          ? string.Format("{0}.{1}+{2}", type.DeclaringType.Namespace, GetShortFormattedTypeName(type.DeclaringType), name)
-          : string.Format("{0}.{1}", type.Namespace, name);
+      if (type.IsNested)
+      {
+        var declaringType = Assertion.IsNotNull(type.DeclaringType, "declaringType != null when type.IsNested");
+        return string.Format("{0}.{1}+{2}", declaringType.Namespace, GetShortFormattedTypeName(declaringType), name);
+      }
+      else
+        return string.Format("{0}.{1}", type.Namespace, name);
     }
 
     public string GetConstructorName (Type type)
@@ -199,7 +207,7 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
       return nestedTypeMarkup;
     }
 
-    private XElement CreateMemberMarkup (string? prefix, Type type, string memberName, ParameterInfo[]? parameterInfos, Type[]? genericParameters = null)
+    private XElement CreateMemberMarkup (string? prefix, Type? type, string memberName, ParameterInfo[]? parameterInfos, Type[]? genericParameters = null)
     {
       var markup = new XElement("Signature");
       markup.Add(CreateElement("Keyword", prefix));
@@ -236,12 +244,12 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
       return markup;
     }
 
-    private XElement CreateTypeElement (Type type)
+    private XElement? CreateTypeElement (Type? type)
     {
       if (type == null)
         return null;
 
-      XElement element;
+      XElement? element;
       if (type.IsGenericParameter)
       {
         element = CreateElement("Type", type.Name);
@@ -253,6 +261,7 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
         }
         else
         {
+          Assertion.IsNotNull(type.DeclaringType, "type.DeclaringType != null || type.DeclaringMethod != null");
           var index = type.DeclaringType.GetGenericArguments().Select(t => t.Name).ToList().IndexOf(type.Name);
           element.Add(new XAttribute("genericParameter", string.Format("!{0}", index)));
         }
@@ -270,7 +279,8 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
       return element;
     }
 
-    private XElement CreateElement (string elementName, string content)
+    [return: NotNullIfNotNull(nameof(content))]
+    private XElement? CreateElement (string elementName, string? content)
     {
       return content == null ? null : new XElement(elementName, content);
     }

@@ -58,7 +58,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
       _outputFormatter = outputFormatter;
     }
 
-    public XElement GenerateXml ()
+    public XElement? GenerateXml ()
     {
       if (!_involvedType.IsTarget)
         return null;

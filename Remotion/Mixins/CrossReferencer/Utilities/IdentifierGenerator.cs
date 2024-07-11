@@ -21,6 +21,7 @@ using Remotion.Utilities;
 namespace Remotion.Mixins.CrossReferencer.Utilities
 {
   public class IdentifierGenerator<T> : IIdentifierGenerator<T>
+      where T : notnull
   {
     private readonly Dictionary<T, string> _identifiers = new();
 

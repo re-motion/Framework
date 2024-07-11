@@ -36,7 +36,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
       _involvedTypeIdentifierGenerator = involvedTypeIdentifierGenerator;
     }
 
-    public XElement GenerateXml ()
+    public XElement? GenerateXml ()
     {
       if (!_mixinType.IsMixin)
         return null;

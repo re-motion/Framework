@@ -16,8 +16,10 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using Remotion.Collections;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Mixins.Definitions;
@@ -28,10 +30,10 @@ namespace Remotion.Mixins.CrossReferencer
   public class InvolvedType : IVisitableInvolved
   {
     private readonly Type _realType;
-    private IEnumerable<InvolvedTypeMember> _members;
-    private ClassContext _classContext;
-    private TargetClassDefinition _targetClassDefintion;
-    private readonly IDictionary<InvolvedType, MixinDefinition> _targetTypes = new Dictionary<InvolvedType, MixinDefinition>();
+    private IEnumerable<InvolvedTypeMember>? _members;
+    private ClassContext? _classContext;
+    private TargetClassDefinition? _targetClassDefintion;
+    private readonly IDictionary<InvolvedType, MixinDefinition?> _targetTypes = new Dictionary<InvolvedType, MixinDefinition?>();
 
     public InvolvedType (Type realType)
     {
@@ -47,44 +49,47 @@ namespace Remotion.Mixins.CrossReferencer
       get
       {
         if (_members == null)
-            // TODO remove constructors
+        {
+          // TODO remove constructors
           _members = _realType.GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)
               .Where(m => !HasSpecialName(m))
               .OrderBy(m => m.Name)
               .Select(
                   m =>
                   {
-                    MemberDefinitionBase targetMemberDefinition;
-                    List<MemberDefinitionBase> mixinMemberDefinitions;
-                    TargetMemberDefinitions.TryGetValue(m, out targetMemberDefinition);
-                    MixinMemberDefinitions.TryGetValue(m, out mixinMemberDefinitions);
+                    var targetMemberDefinition = TargetMemberDefinitions.GetValueOrDefault(m);
+                    var mixinMemberDefinitions = MixinMemberDefinitions.GetValueOrDefault(m);
                     return new InvolvedTypeMember(m, targetMemberDefinition, mixinMemberDefinitions);
                   });
+        }
+
         return _members;
       }
     }
 
+    [MemberNotNullWhen(true, nameof(ClassContext))]
     public bool IsTarget => _classContext != null;
 
     public bool IsMixin => _targetTypes.Count > 0;
 
-    public ClassContext ClassContext
+    public ClassContext? ClassContext
     {
       get => _classContext;
       set => _classContext = value;
     }
 
+    [MemberNotNullWhen(true, nameof(TargetClassDefinition))]
     public bool HasTargetClassDefintion => _targetClassDefintion != null;
 
-    public TargetClassDefinition TargetClassDefinition
+    public TargetClassDefinition? TargetClassDefinition
     {
       get => _targetClassDefintion;
       set => _targetClassDefintion = value;
     }
 
-    public IDictionary<InvolvedType, MixinDefinition> TargetTypes => _targetTypes;
+    public IDictionary<InvolvedType, MixinDefinition?> TargetTypes => _targetTypes;
 
-    private IDictionary<MemberInfo, MemberDefinitionBase> _targetMemberDefinitions;
+    private IDictionary<MemberInfo, MemberDefinitionBase>? _targetMemberDefinitions;
 
     public IDictionary<MemberInfo, MemberDefinitionBase> TargetMemberDefinitions
     {
@@ -106,7 +111,7 @@ namespace Remotion.Mixins.CrossReferencer
       get
       {
         if (_mixinMemberDefinitions == null)
-          _mixinMemberDefinitions = TargetTypes.Values.Where(t => t != null).SelectMany(t => t.GetAllMembers())
+          _mixinMemberDefinitions = TargetTypes.Values.Where(t => t != null).SelectMany(t => t!.GetAllMembers())
               .GroupBy(m => m.MemberInfo).ToDictionary(m => m.Key, m => m.ToList(), new MemberDefinitionEqualityComparer());
 
         return _mixinMemberDefinitions;
@@ -149,7 +154,7 @@ namespace Remotion.Mixins.CrossReferencer
       return false;
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       var other = obj as InvolvedType;
       return other != null

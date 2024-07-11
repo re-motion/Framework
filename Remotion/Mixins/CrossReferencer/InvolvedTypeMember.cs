@@ -30,8 +30,8 @@ namespace Remotion.Mixins.CrossReferencer
 
     public InvolvedTypeMember (
         MemberInfo memberInfo,
-        MemberDefinitionBase targetMemberDefinition,
-        IEnumerable<MemberDefinitionBase> mixinMemberDefinitions)
+        MemberDefinitionBase? targetMemberDefinition,
+        IReadOnlyCollection<MemberDefinitionBase>? mixinMemberDefinitions)
     {
       ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
 
@@ -41,7 +41,7 @@ namespace Remotion.Mixins.CrossReferencer
       SetMixinOverride(targetMemberDefinition);
       AddTargetOverrides(mixinMemberDefinitions);
 
-      MixinMemberDefinitions = mixinMemberDefinitions ?? Enumerable.Empty<MemberDefinitionBase>();
+      MixinMemberDefinitions = mixinMemberDefinitions ?? Array.Empty<MemberDefinitionBase>();
       TargetMemberDefinition = targetMemberDefinition;
 
       OverridingMixinTypes = GetOverridingMixinTypes();
@@ -56,11 +56,13 @@ namespace Remotion.Mixins.CrossReferencer
       {
         var overriddenProperty = (PropertyInfo)overriddenMember;
 
-        if (overriddenProperty.GetGetMethod() != null && _subMemberInfos.ContainsKey(SubMemberType.PropertyGet))
-          _subMemberInfos[SubMemberType.PropertyGet].AddOverriddenMember(overriddenProperty.GetGetMethod(), type);
+        var overriddenMethodGetAccessor = overriddenProperty.GetGetMethod();
+        if (overriddenMethodGetAccessor != null && _subMemberInfos.ContainsKey(SubMemberType.PropertyGet))
+          _subMemberInfos[SubMemberType.PropertyGet].AddOverriddenMember(overriddenMethodGetAccessor, type);
 
-        if (overriddenProperty.GetSetMethod() != null && _subMemberInfos.ContainsKey(SubMemberType.PropertySet))
-          _subMemberInfos[SubMemberType.PropertyGet].AddOverriddenMember(overriddenProperty.GetSetMethod(), type);
+        var overriddenMethodSetAccessor = overriddenProperty.GetSetMethod();
+        if (overriddenMethodSetAccessor != null && _subMemberInfos.ContainsKey(SubMemberType.PropertySet))
+          _subMemberInfos[SubMemberType.PropertyGet].AddOverriddenMember(overriddenMethodSetAccessor, type);
       }
 
       if (overriddenMember.MemberType == MemberTypes.Event)
@@ -68,14 +70,14 @@ namespace Remotion.Mixins.CrossReferencer
         var overriddenEvent = (EventInfo)overriddenMember;
 
         if (_subMemberInfos.ContainsKey(SubMemberType.EventAdd))
-          _subMemberInfos[SubMemberType.PropertyGet].AddOverriddenMember(overriddenEvent.GetAddMethod(), type);
+          _subMemberInfos[SubMemberType.PropertyGet].AddOverriddenMember(Assertion.IsNotNull(overriddenEvent.GetAddMethod(), "overriddenEvent.GetAddMethod() != null"), type);
 
         if (_subMemberInfos.ContainsKey(SubMemberType.EventRemove))
-          _subMemberInfos[SubMemberType.PropertyGet].AddOverriddenMember(overriddenEvent.GetRemoveMethod(), type);
+          _subMemberInfos[SubMemberType.PropertyGet].AddOverriddenMember(Assertion.IsNotNull(overriddenEvent.GetRemoveMethod(), "overriddenEvent.GetRemoveMethod() != null"), type);
       }
     }
 
-    private void AddTargetOverrides (IEnumerable<MemberDefinitionBase> mixinMemberDefinitions)
+    private void AddTargetOverrides (IReadOnlyCollection<MemberDefinitionBase>? mixinMemberDefinitions)
     {
       if (mixinMemberDefinitions == null || !mixinMemberDefinitions.Any())
         return;
@@ -83,14 +85,14 @@ namespace Remotion.Mixins.CrossReferencer
       var overriddenMembers = mixinMemberDefinitions
           .Select(m => m.BaseAsMember)
           .Where(m => m != null)
-          .Select(m => m.MemberInfo)
+          .Select(m => m!.MemberInfo)
           .Distinct();
 
       foreach (var overriddenMember in overriddenMembers)
         AddOverriddenMember(overriddenMember, OverridingMemberInfo.OverrideType.Target);
     }
 
-    private void SetMixinOverride (MemberDefinitionBase targetMemberDefinition)
+    private void SetMixinOverride (MemberDefinitionBase? targetMemberDefinition)
     {
       if (targetMemberDefinition == null)
         return;
@@ -167,16 +169,16 @@ namespace Remotion.Mixins.CrossReferencer
 
     public IEnumerable<OverridingMemberInfo> SubMemberInfos => _subMemberInfos.Values;
 
-    public MemberDefinitionBase TargetMemberDefinition { get; private set; }
-    public IEnumerable<MemberDefinitionBase> MixinMemberDefinitions { get; private set; }
+    public MemberDefinitionBase? TargetMemberDefinition { get; private set; }
+    public IReadOnlyCollection<MemberDefinitionBase> MixinMemberDefinitions { get; private set; }
 
     public IEnumerable<Type> OverriddenMembersDeclaringTypes
     {
       get
       {
         return
-            MemberInfo.OverriddenMixinMembers.Select(m => m.DeclaringType).Concat(
-                MemberInfo.OverriddenTargetMembers.Select(m => m.DeclaringType));
+            MemberInfo.OverriddenMixinMembers.Select(m => Assertion.IsNotNull(m.DeclaringType, "OverriddenMixinMembers: m.DeclaringType != null"))
+                .Concat(MemberInfo.OverriddenTargetMembers.Select(m => Assertion.IsNotNull(m.DeclaringType, "OverriddenTargetMembers: m.DeclaringType != null")));
       }
     }
 

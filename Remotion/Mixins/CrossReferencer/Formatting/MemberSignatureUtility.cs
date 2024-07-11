@@ -32,7 +32,7 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
       _outputFormatter = outputFormatter;
     }
 
-    public XElement GetMemberSignature (MemberInfo memberInfo)
+    public XElement? GetMemberSignature (MemberInfo memberInfo)
     {
       ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
 
@@ -44,11 +44,13 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
 
         case MemberTypes.Constructor:
           var constructorInfo = (ConstructorInfo)memberInfo;
-          return _outputFormatter.CreateConstructorMarkup(_outputFormatter.GetConstructorName(memberInfo.DeclaringType), constructorInfo.GetParameters());
+          var constructorInfoDeclaringType = Assertion.IsNotNull(memberInfo.DeclaringType, "memberInfo.DeclaringType != null");
+          return _outputFormatter.CreateConstructorMarkup(_outputFormatter.GetConstructorName(constructorInfoDeclaringType), constructorInfo.GetParameters());
 
         case MemberTypes.Event:
           var eventInfo = (EventInfo)memberInfo;
-          return _outputFormatter.CreateEventMarkup(eventInfo.Name, eventInfo.EventHandlerType);
+          var eventInfoEventHandlerType = Assertion.IsNotNull(eventInfo.EventHandlerType, "eventInfo.EventHandlerType != null");
+          return _outputFormatter.CreateEventMarkup(eventInfo.Name, eventInfoEventHandlerType);
 
         case MemberTypes.Field:
           var fieldInfo = (FieldInfo)memberInfo;

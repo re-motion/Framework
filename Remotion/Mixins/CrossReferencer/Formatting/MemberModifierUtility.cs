@@ -64,11 +64,13 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
 
         case MemberTypes.Property:
           var propertyInfo = (PropertyInfo)memberInfo;
-          return GetMethodModifiers(propertyInfo.GetGetMethod(true) ?? propertyInfo.GetSetMethod(true), memberInfo);
+          var propertyAccessorMethod = Assertion.IsNotNull(propertyInfo.GetGetMethod(true) ?? propertyInfo.GetSetMethod(true), "propertyInfo has no accessor");
+          return GetMethodModifiers(propertyAccessorMethod, memberInfo);
 
         case MemberTypes.Event:
           var eventInfo = (EventInfo)memberInfo;
-          return GetMethodModifiers(eventInfo.GetAddMethod(true), memberInfo);
+          var eventAccessorMethod =Assertion.IsNotNull(eventInfo.GetAddMethod(true), "eventInfo.GetAddMethod(true) != null");
+          return GetMethodModifiers( eventAccessorMethod, memberInfo);
 
         case MemberTypes.NestedType:
           return _typeModifierUtility.GetTypeModifiers((Type)memberInfo);
@@ -153,7 +155,7 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
       return modifiers;
     }
 
-    private bool IsOverriddenMethod (MethodInfo methodInfo)
+    private bool IsOverriddenMethod (MethodInfo? methodInfo)
     {
       return methodInfo != null && methodInfo.DeclaringType != methodInfo.GetBaseDefinition().DeclaringType;
     }

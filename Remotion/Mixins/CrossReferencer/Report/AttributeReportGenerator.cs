@@ -74,7 +74,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
         foreach (var attribute in CustomAttributeData.GetCustomAttributes(involvedType.Type))
         {
           //var attributeType = attribute.GetType();
-          var attributeType = attribute.Constructor.DeclaringType;
+          var attributeType = Assertion.IsNotNull(attribute.Constructor.DeclaringType, "attribute.Constructor.DeclaringType != null");
 
           if (CrossReferencerReflectionUtility.IsInfrastructureType(attributeType))
             continue;
@@ -97,7 +97,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
           "Attribute",
           new XAttribute("id", _attributeIdentifierGenerator.GetIdentifier(attribute)),
           new XAttribute("assembly-ref", _assemblyIdentifierGenerator.GetIdentifier(attribute.Assembly)),
-          new XAttribute("namespace", attribute.Namespace),
+          new XAttribute("namespace", attribute.Namespace ?? ""),
           new XAttribute("name", _outputFormatter.GetShortFormattedTypeName(attribute)),
           new XElement(
               "AppliedTo",

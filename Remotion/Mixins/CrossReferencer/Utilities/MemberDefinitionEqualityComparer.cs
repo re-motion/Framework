@@ -22,7 +22,7 @@ namespace Remotion.Mixins.CrossReferencer.Utilities
 {
   public class MemberDefinitionEqualityComparer : IEqualityComparer<MemberInfo>
   {
-    public bool Equals (MemberInfo x, MemberInfo y)
+    public bool Equals (MemberInfo? x, MemberInfo? y)
     {
       return x != null && y != null
                        && x.DeclaringType == y.DeclaringType
@@ -31,7 +31,7 @@ namespace Remotion.Mixins.CrossReferencer.Utilities
 
     public int GetHashCode (MemberInfo obj)
     {
-      return obj.DeclaringType.GetHashCode() ^ obj.MetadataToken.GetHashCode();
+      return obj.DeclaringType!.GetHashCode() ^ obj.MetadataToken.GetHashCode();
     }
   }
 }

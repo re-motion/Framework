@@ -118,12 +118,12 @@ namespace Remotion.Mixins.CrossReferencer
       }
     }
 
-    private MixinDefinition GetMixinDefiniton (Type mixinType, TargetClassDefinition targetClassDefinition)
+    private MixinDefinition? GetMixinDefiniton (Type mixinType, TargetClassDefinition? targetClassDefinition)
     {
       return targetClassDefinition == null ? null : targetClassDefinition.GetMixinByConfiguredType(mixinType);
     }
 
-    public TargetClassDefinition GetTargetClassDefinition (Type type, ClassContext classContext)
+    public TargetClassDefinition? GetTargetClassDefinition (Type type, ClassContext classContext)
     {
       if (type.IsGenericTypeDefinition || type.IsInterface)
         return null;

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Remotion.Utilities;
 
@@ -36,7 +37,8 @@ namespace Remotion.Mixins.CrossReferencer.Report
       return GenerateExceptionElement(_exception);
     }
 
-    private XElement GenerateExceptionElement (Exception exception)
+    [return:NotNullIfNotNull(nameof(exception))]
+    private XElement? GenerateExceptionElement (Exception? exception)
     {
       if (exception == null)
         return null;
@@ -45,7 +47,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
           "Exception",
           new XAttribute("type", exception.GetType()),
           new XElement("Message", new XCData(exception.Message)),
-          new XElement("StackTrace", new XCData(exception.StackTrace)),
+          new XElement("StackTrace", exception.StackTrace != null ? new XCData(exception.StackTrace) : ""),
           GenerateExceptionElement(exception.InnerException));
     }
   }

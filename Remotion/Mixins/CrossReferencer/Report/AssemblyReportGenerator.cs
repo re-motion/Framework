@@ -65,18 +65,18 @@ namespace Remotion.Mixins.CrossReferencer.Report
       return new XElement(
           "Assembly",
           new XAttribute("id", _assemblyIdentifierGenerator.GetIdentifier(assembly)),
-          new XAttribute("name", assembly.GetName().Name),
-          new XAttribute("version", assembly.GetName().Version),
+          new XAttribute("name", assembly.GetName().Name ?? ""),
+          new XAttribute("version", assembly.GetName().Version?.ToString() ?? ""),
           new XAttribute("location", GetShortAssemblyLocation(assembly)),
-          new XAttribute("culture", assembly.GetName().CultureInfo),
-          new XAttribute("publicKeyToken", Convert.ToBase64String(assembly.GetName().GetPublicKeyToken())),
+          new XAttribute("culture", assembly.GetName().CultureInfo?.ToString() ?? ""),
+          new XAttribute("publicKeyToken", Convert.ToBase64String(assembly.GetName().GetPublicKeyToken() ?? Array.Empty<byte>())),
           from involvedType in involvedTypesForAssembly
           select
               new XElement(
                   "InvolvedType-Reference",
                   new XAttribute("ref", _involvedTypeIdentifierGenerator.GetIdentifier(involvedType.Type))
-              )
-      );
+                  )
+          );
     }
 
     public string GetShortAssemblyLocation (Assembly assembly)

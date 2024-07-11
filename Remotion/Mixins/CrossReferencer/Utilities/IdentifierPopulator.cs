@@ -21,6 +21,7 @@ using Remotion.Utilities;
 namespace Remotion.Mixins.CrossReferencer.Utilities
 {
   public class IdentifierPopulator<T>
+      where T : notnull
   {
     private readonly IdentifierGenerator<T> _identifierGenerator = new();
 

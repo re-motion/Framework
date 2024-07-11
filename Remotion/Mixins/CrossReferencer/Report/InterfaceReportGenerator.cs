@@ -124,7 +124,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
           "Interface",
           new XAttribute("id", _interfaceIdentifierGenerator.GetIdentifier(usedInterface)),
           new XAttribute("assembly-ref", _assemblyIdentifierGenerator.GetIdentifier(usedInterface.Assembly)),
-          new XAttribute("namespace", usedInterface.Namespace),
+          new XAttribute("namespace", usedInterface.Namespace ?? ""),
           new XAttribute("name", _outputFormatter.GetShortFormattedTypeName(usedInterface)),
           new XAttribute("is-composed-interface", isComposedInterface),
           new MemberReportGenerator(usedInterface, new InvolvedType(usedInterface), _involvedTypeIdentifierGenerator, _memberIdentifierGenerator, _outputFormatter).GenerateXml(),

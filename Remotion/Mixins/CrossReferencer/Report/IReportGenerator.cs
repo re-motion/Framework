@@ -21,6 +21,6 @@ namespace Remotion.Mixins.CrossReferencer.Report
 {
   public interface IReportGenerator
   {
-    XElement GenerateXml ();
+    XElement? GenerateXml ();
   }
 }

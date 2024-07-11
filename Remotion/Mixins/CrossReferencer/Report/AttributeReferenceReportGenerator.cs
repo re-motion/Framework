@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -46,7 +46,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
       return new XElement(
           "HasAttributes",
           from attribute in CustomAttributeData.GetCustomAttributes(_type)
-          where !CrossReferencerReflectionUtility.IsInfrastructureType(attribute.Constructor.DeclaringType)
+          where !CrossReferencerReflectionUtility.IsInfrastructureType(Assertion.IsNotNull(attribute.Constructor.DeclaringType, "attribute.Constructor.DeclaringType != null"))
           select GenerateAttributeReference(attribute)
       );
     }
@@ -55,7 +55,9 @@ namespace Remotion.Mixins.CrossReferencer.Report
     {
       var attributeElement = new XElement(
           "HasAttribute",
-          new XAttribute("ref", _attributeIdentifierGenerator.GetIdentifier(attribute.Constructor.DeclaringType)));
+          new XAttribute(
+              "ref",
+              _attributeIdentifierGenerator.GetIdentifier(Assertion.IsNotNull(attribute.Constructor.DeclaringType, "attribute.Constructor.DeclaringType != null"))));
 
       for (int i = 0; i < attribute.ConstructorArguments.Count; i++)
       {
@@ -73,7 +75,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
       return attributeElement;
     }
 
-    private XElement GenerateParameterElement (string kind, Type type, string name, object value)
+    private XElement GenerateParameterElement (string kind, Type type, string name, object? value)
     {
       var demultiplexedValue = RecursiveToString(type, value);
 
@@ -85,16 +87,16 @@ namespace Remotion.Mixins.CrossReferencer.Report
           new XAttribute("value", demultiplexedValue));
     }
 
-    private string RecursiveToString (Type argumentType, object argumentValue)
+    private string RecursiveToString (Type argumentType, object? argumentValue)
     {
       if (!argumentType.IsArray)
       {
         if (argumentValue == null)
           return "";
-        return argumentValue.ToString();
+        return argumentValue.ToString() ?? "";
       }
 
-      var valueCollection = (ReadOnlyCollection<CustomAttributeTypedArgument>)argumentValue;
+      var valueCollection = (IReadOnlyList<CustomAttributeTypedArgument>?)argumentValue ?? Array.Empty<CustomAttributeTypedArgument>();
 
       var concatenatedValues = new StringBuilder("{");
       for (int i = 0; i < valueCollection.Count; i++)

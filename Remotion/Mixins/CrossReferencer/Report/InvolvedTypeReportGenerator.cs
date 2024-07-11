@@ -83,7 +83,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
           new XAttribute("id", _involvedTypeIdentifierGenerator.GetIdentifier(realType)),
           new XAttribute("metadataToken", realType.MetadataToken),
           new XAttribute("assembly-ref", _assemblyIdentifierGenerator.GetIdentifier(realType.Assembly)),
-          new XAttribute("namespace", realType.Namespace),
+          new XAttribute("namespace", realType.Namespace ?? ""),
           new XAttribute("name", _outputFormatter.GetShortFormattedTypeName(realType)),
           new XAttribute("base", GetCSharpLikeNameForBaseType(realType)),
           new XAttribute("base-ref", GetBaseReference(realType)),

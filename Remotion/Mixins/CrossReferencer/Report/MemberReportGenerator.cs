@@ -77,12 +77,12 @@ namespace Remotion.Mixins.CrossReferencer.Report
         memberInfo = ((PropertyInfo)memberInfo).GetAccessors(true).First();
 
       if (memberInfo.MemberType == MemberTypes.Event)
-        memberInfo = ((EventInfo)memberInfo).GetAddMethod(true);
+        memberInfo = Assertion.IsNotNull(((EventInfo)memberInfo).GetAddMethod(true), $"Event '{memberInfo.Name}' has no Add-accessor");
 
       return memberInfo.MetadataToken;
     }
 
-    private XElement CreateMemberElement (InvolvedTypeMember member)
+    private XElement? CreateMemberElement (InvolvedTypeMember member)
     {
       MemberInfo memberInfo = member.MemberInfo;
 
@@ -94,8 +94,8 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
       var attributes = new StringBuilder();
 
-      XElement overridesElement = null;
-      XElement overriddenElement = null;
+      XElement? overridesElement = null;
+      XElement? overriddenElement = null;
       if (_involvedType != null)
       {
         if (HasOverrideMixinAttribute(memberInfo))
@@ -126,7 +126,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
       return element;
     }
 
-    private XElement CreateSubMemberElement (OverridingMemberInfo subMember)
+    private XElement? CreateSubMemberElement (OverridingMemberInfo subMember)
     {
       MemberInfo memberInfo = subMember;
 
@@ -150,7 +150,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
       return element;
     }
 
-    private XElement CreateOverridesElement (InvolvedTypeMember member)
+    private XElement? CreateOverridesElement (InvolvedTypeMember member)
     {
       var overridesElement = new XElement("Overrides");
 
@@ -169,7 +169,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
       return overridesElement;
     }
 
-    private XElement CreateOverriddenElement (OverridingMemberInfo member)
+    private XElement? CreateOverriddenElement (OverridingMemberInfo member)
     {
       var overriddenMembersElement = new XElement("OverriddenMembers");
 
@@ -200,7 +200,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
           new XAttribute("ref", _memberIdentifierGenerator.GetIdentifier(member)),
           new XAttribute("type", typeName),
           new XAttribute("member-name", member.Name),
-          new XAttribute("member-signature", member.ToString()));
+          new XAttribute("member-signature", member.ToString() ?? ""));
     }
 
     private static bool HasOverrideMixinAttribute (MemberInfo memberInfo)

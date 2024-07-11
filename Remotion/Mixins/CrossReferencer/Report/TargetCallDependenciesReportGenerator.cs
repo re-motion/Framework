@@ -60,7 +60,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
               "assembly-ref",
               _assemblyIdentifierGenerator.GetIdentifier(requiredType.Assembly)),
           new XAttribute("metadataToken", requiredType.MetadataToken),
-          new XAttribute("namespace", requiredType.Namespace),
+          new XAttribute("namespace", requiredType.Namespace ?? ""),
           new XAttribute("name", _outputFormatter.GetShortFormattedTypeName(requiredType)),
           new XAttribute("is-interface", requiredType.IsInterface));
       if (requiredType.IsInterface)
