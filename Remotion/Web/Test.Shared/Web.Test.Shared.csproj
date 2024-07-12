@@ -8,8 +8,9 @@
     <AssemblyName>Remotion.Web.Test.Shared</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <Nullable>disable</Nullable>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
@@ -19,6 +20,9 @@
     <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj" />
     <ProjectReference Include="..\..\Security\Core\Security.Core.csproj" />
     <ProjectReference Include="..\Core\Web.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Resources.Extensions" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

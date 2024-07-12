@@ -23,8 +23,9 @@
 
   <PropertyGroup>
     <LangVersion>12</LangVersion>
-    <DebugType Condition="'$(TargetFramework)' == 'net48'">full</DebugType>
-    <DebugType Condition="'$(TargetFramework)' != 'net48'">embedded</DebugType>
+    <IsDotNetFramework>false</IsDotNetFramework>
+    <IsDotNetFramework Condition="$([System.Text.RegularExpressions.Regex]::IsMatch($(TargetFramework), '^net\d{2,3}$'))">true</IsDotNetFramework>
+    <DebugType>embedded</DebugType>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\remotion.snk</AssemblyOriginatorKeyFile>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
@@ -32,8 +33,8 @@
     <PackageTags>re-motion</PackageTags>
     <PackageTags Condition="'$(ProductType)' == 'SecurityManager'">$(PackageTags) SecurityManager</PackageTags>
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-    <DefineConstants Condition="'$(TargetFramework)' == 'net48'">$(DefineConstants);FEATURE_GAC;FEATURE_SERIALIZATION;FEATURE_ASSEMBLYBUILDER_SAVE;FEATURE_THREAD_ABORT;FEATURE_STRONGNAMESIGNING</DefineConstants>
-    <DefineConstants Condition="'$(TargetFramework)' == 'net48'">$(DefineConstants);ENABLE_PEVERIFY</DefineConstants>
+    <DefineConstants Condition="'$(IsDotNetFramework)' == 'true'">$(DefineConstants);FEATURE_GAC;FEATURE_SERIALIZATION;FEATURE_ASSEMBLYBUILDER_SAVE;FEATURE_THREAD_ABORT;FEATURE_STRONGNAMESIGNING</DefineConstants>
+    <DefineConstants Condition="'$(IsDotNetFramework)' == 'true'">$(DefineConstants);ENABLE_PEVERIFY</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -45,10 +46,7 @@
 
   <PropertyGroup>
     <ProjectFeaturesRoot>$(MSBuildThisFileDirectory)ProjectFeatures\</ProjectFeaturesRoot>
-    <!-- Enable source link for .NET Core but not for .NET Framework -->
-    <SuppressImplicitGitSourceLink Condition="'$(TargetFramework)' == 'net48'">true</SuppressImplicitGitSourceLink>
-    <UseSourceLink Condition="'$(UseSourceLink)' == '' AND '$(TargetFramework)' == 'net48'">false</UseSourceLink>
-    <UseSourceLink Condition="'$(UseSourceLink)' == ''">true</UseSourceLink>
+    <UseSourceLink>true</UseSourceLink>
   </PropertyGroup>
 
   <Import Project="$(ProjectFeaturesRoot)UseWebForms.props" Condition="'$(UseWebForms)' == 'true'" />
