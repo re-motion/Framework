@@ -26,11 +26,11 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
 
 /// <summary>
-/// The <see cref="TableTypeScriptElementFactory"/> is responsible for creating script-elements for table types in an SQL Server database.
+/// The <see cref="SqlTableTypeScriptElementFactory"/> is responsible for creating script-elements for table types in an SQL Server database.
 /// </summary>
-public class TableTypeScriptElementFactory : SqlElementFactoryBase, IStructuredTypeScriptElementFactory
+public class SqlTableTypeScriptElementFactory : SqlElementFactoryBase, IStructuredTypeScriptElementFactory
 {
-  public TableTypeScriptElementFactory ()
+  public SqlTableTypeScriptElementFactory ()
   {
   }
 

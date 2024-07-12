@@ -25,9 +25,9 @@ using Remotion.Development.UnitTesting;
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGeneration
 {
   [TestFixture]
-  public class TableTypeScriptElementFactoryTest : SchemaGenerationTestBase
+  public class SqlTableTypeScriptElementFactoryTest : SchemaGenerationTestBase
   {
-    private TableTypeScriptElementFactory _factory;
+    private SqlTableTypeScriptElementFactory _factory;
     private TableTypeDefinition _tableTypeDefinitionPlain;
     private TableTypeDefinition _tableTypeDefinitionWithClusteredPrimaryKeyConstraint;
     private TableTypeDefinition _tableTypeDefinitionWithNonClusteredPrimaryKeyConstraint;
@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     {
       base.SetUp();
 
-      _factory = new TableTypeScriptElementFactory();
+      _factory = new SqlTableTypeScriptElementFactory();
 
       var column1 = new ColumnDefinition("Column1", StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation(false), false);
       var column2 = new ColumnDefinition("Column2", StorageTypeInformationObjectMother.CreateBitStorageTypeInformation(true), false);

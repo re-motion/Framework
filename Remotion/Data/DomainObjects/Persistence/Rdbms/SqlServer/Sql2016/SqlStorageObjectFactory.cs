@@ -452,7 +452,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
 
     public virtual IScriptBuilder CreateTableTypeBuilder ()
     {
-      return new TableTypeScriptBuilder(new TableTypeScriptElementFactory(), new SqlCommentScriptElementFactory());
+      return new TableTypeScriptBuilder(new SqlTableTypeScriptElementFactory(), new SqlCommentScriptElementFactory());
     }
 
     protected virtual IStorageProvider CreateStorageProvider (
