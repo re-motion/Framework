@@ -40,5 +40,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     {
       WithSecondsCurrentValueLabel.Text = value;
     }
+
+    public void SetCurrentValueDateOnlyType (string value)
+    {
+      DateOnlyTypeLabel.Text = value;
+    }
   }
 }

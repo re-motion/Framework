@@ -148,4 +148,34 @@
     </td>
     <td>(with seconds)</td>
   </tr>
+  <tr>
+    <td></td>
+    <td>
+      <remotion:BocDateTimeValue ID="DateOfCitizenship_DateOnlyType"
+                                 DataSourceControl="CurrentObject"
+                                 PropertyIdentifier="DateOfCitizenship"
+
+                                 DateTimeTextBoxStyle-AutoPostBack="true"
+                                 Enabled="true"
+                                 ReadOnly="false"
+
+                                 runat="server"/>
+    </td>
+    <td>(DateOnly type)</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <remotion:BocDateTimeValue ID="DateOfCitizenship_ReadOnlyDateOnlyType"
+                                 DataSourceControl="CurrentObject"
+                                 PropertyIdentifier="DateOfCitizenship"
+
+                                 DateTimeTextBoxStyle-AutoPostBack="true"
+                                 Enabled="true"
+                                 ReadOnly="true"
+
+                                 runat="server"/>
+    </td>
+    <td>(read-only, DateOnly type)</td>
+  </tr>
 </table>

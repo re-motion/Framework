@@ -89,6 +89,17 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
       Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Date"));
     }
 
+#if NET6_0_OR_GREATER
+    [Test]
+    public void GetMetadata_WithDateOnly ()
+    {
+      var businessObjectProperty = GetMetadataFromPropertyReflector("DateOnly");
+
+      Assert.That(businessObjectProperty, Is.TypeOf<DateOnlyProperty>());
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("DateOnly"));
+    }
+#endif
+
     [Test]
     public void GetMetadata_WithDateTime ()
     {
