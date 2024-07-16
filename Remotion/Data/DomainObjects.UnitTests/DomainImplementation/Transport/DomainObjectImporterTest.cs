@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       Assert.That(
           () => DomainObjectTransporterTestHelper.Import(new byte[] { 1, 2, 3 }),
           Throws.InstanceOf<TransportationException>()
-              .With.Message.EqualTo("Invalid data specified: End of Stream encountered before parsing was completed."));
+              .With.Message.EqualTo("Invalid data specified: There is an error in XML document (1, 1)."));
     }
 
     [Test]

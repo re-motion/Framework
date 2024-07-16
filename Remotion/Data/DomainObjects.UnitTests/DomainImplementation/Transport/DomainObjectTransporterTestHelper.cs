@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     {
       using (var stream = new MemoryStream())
       {
-        transporter.Export(stream);
+        transporter.Export(stream, new XmlExportStrategy());
         return stream.ToArray();
       }
     }
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     {
       using (var stream = new MemoryStream(binaryData))
       {
-        return DomainObjectImporter.CreateImporterFromStream(stream, BinaryImportStrategy.Instance).GetImportedObjects();
+        return DomainObjectImporter.CreateImporterFromStream(stream, new XmlImportStrategy()).GetImportedObjects();
       }
     }
   }
