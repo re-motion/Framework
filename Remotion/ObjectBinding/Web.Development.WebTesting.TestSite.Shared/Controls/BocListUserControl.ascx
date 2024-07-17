@@ -54,7 +54,7 @@
         ShowOptionsMenu="true"
         ShowSortingOrder="True"
         
-        Width="835px"
+        Width="970px"
         Height="10em"
         runat="server">
         <OptionsMenuItems>
@@ -481,7 +481,7 @@
         ShowOptionsMenu="true"
         ShowSortingOrder="True"
 
-        Width="835px"
+        Width="970px"
         Height="10em"
         runat="server">
         <FixedColumns>

@@ -279,7 +279,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
       Assert.That(
           bocList.GetColumnDefinitions().Select(cd => cd.Title),
-          Is.EquivalentTo(new[] { "I_ndex", "", "Command", "Menu", "Title", "StartDate", "EndDate", "DisplayName", "TitleWithCmd" }));
+          Is.EquivalentTo(new[] { "I_ndex", "", "Command", "Menu", "Title", "StartDate", "EndDate", "PromotionDate", "DisplayName", "TitleWithCmd" }));
     }
 
     [Test]
