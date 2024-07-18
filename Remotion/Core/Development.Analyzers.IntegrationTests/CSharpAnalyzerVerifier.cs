@@ -24,7 +24,6 @@ using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.CSharp.Testing.NUnit;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Testing;
-using Microsoft.CodeAnalysis.Testing.Verifiers;
 using Remotion.Context;
 
 namespace Remotion.Core.Development.Analyzers.IntegrationTests
@@ -32,7 +31,7 @@ namespace Remotion.Core.Development.Analyzers.IntegrationTests
   public static class CSharpAnalyzerVerifier<TAnalyzer>
       where TAnalyzer : DiagnosticAnalyzer, new()
   {
-    private class Test : CSharpAnalyzerTest<TAnalyzer, NUnitVerifier>
+    private class Test : CSharpAnalyzerTest<TAnalyzer, DefaultVerifier>
     {
     }
 
