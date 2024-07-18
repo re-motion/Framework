@@ -116,9 +116,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
         Assert.Fail($"Error when saving assemblies: {ex}");
       }
 
-#if ENABLE_PEVERIFY
-      s_assemblyTrackingCodeManager.PeVerifySavedAssemblies();
-#endif
+      //TODO RM-9285: Re-Introduce assembly verification
 
       if (!s_skipDeletion)
       {

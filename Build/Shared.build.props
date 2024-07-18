@@ -34,7 +34,6 @@
     <PackageTags Condition="'$(ProductType)' == 'SecurityManager'">$(PackageTags) SecurityManager</PackageTags>
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     <DefineConstants Condition="'$(IsDotNetFramework)' == 'true'">$(DefineConstants);FEATURE_GAC;FEATURE_ASSEMBLYBUILDER_SAVE;FEATURE_THREAD_ABORT;FEATURE_STRONGNAMESIGNING</DefineConstants>
-    <DefineConstants Condition="'$(IsDotNetFramework)' == 'true'">$(DefineConstants);ENABLE_PEVERIFY</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup>

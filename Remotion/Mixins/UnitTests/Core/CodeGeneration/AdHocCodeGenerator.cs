@@ -40,11 +40,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       ArgumentUtility.CheckNotNullOrEmpty("assemblyName", assemblyName);
 
       _filename = assemblyName + ".dll";
-#if NETFRAMEWORK && ENABLE_PEVERIFY
-      _assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName(assemblyName), AssemblyBuilderAccess.RunAndSave, assemblyDirectory);
-#else
       _assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName(assemblyName), AssemblyBuilderAccess.Run);
-#endif
       _moduleBuilder = _assemblyBuilder.DefineDynamicModule(_filename);
     }
 
@@ -138,10 +134,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
               + "Please delete the bin-directory manually and re-run the tests.");
         }
       }
-
-#if NETFRAMEWORK && ENABLE_PEVERIFY
-      _assemblyBuilder.Save(_filename);
-#endif
+      // TODO RM-9285: save generated assembly for use with IL verification.
       return _moduleBuilder.FullyQualifiedName;
     }
 

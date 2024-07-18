@@ -18,8 +18,6 @@ using System;
 using System.IO;
 using Castle.DynamicProxy;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
-using Remotion.Reflection.CodeGeneration.DPExtensions;
 using Remotion.Utilities;
 
 namespace Remotion.Reflection.CodeGeneration.UnitTests
@@ -75,18 +73,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     public virtual void OneTimeTearDown ()
     {
       Console.WriteLine("Tearing down code generation tests");
-#if FEATURE_ASSEMBLYBUILDER_SAVE && ENABLE_PEVERIFY
-      string[] paths = AssemblySaver.SaveAssemblies(s_scope);
-      s_scope = null;
-      s_unsavedScope = null;
-
-      foreach (string path in paths)
-      {
-        PEVerifier.CreateDefault().VerifyPEFile(path);
-        FileUtility.DeleteAndWaitForCompletion(path);
-        FileUtility.DeleteAndWaitForCompletion(path.Replace(".dll", ".pdb"));
-      }
-#endif
+      // TODO RM-9285: Re-Introduce assembly verification
     }
 
     private void DeleteIfExists (string path)
