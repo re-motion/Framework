@@ -110,21 +110,6 @@ namespace Remotion.UnitTests.Logging
     }
 #endif
 
-#if NETFRAMEWORK && DEBUG
-    [Test]
-    public void Test_Write_WithDebug ()
-    {
-      Debug.Listeners.Add(_listener);
-      Debug.Write("The message.");
-      Debug.Listeners.Remove(_listener);
-
-      LoggingEvent[] events = _memoryAppender.GetEvents();
-      Assert.That(events.Length, Is.EqualTo(1));
-      Assert.That(events[0].Level, Is.EqualTo(Level.Debug));
-      Assert.That(events[0].MessageObject.ToString(), Is.EqualTo("The message."));
-    }
-#endif
-
     [Test]
     public void Test_TraceInformation_WithTraceSource ()
     {

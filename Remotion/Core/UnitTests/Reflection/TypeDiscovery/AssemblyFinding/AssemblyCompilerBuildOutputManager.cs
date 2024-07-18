@@ -23,9 +23,6 @@ using Remotion.Utilities;
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 {
-#if NETFRAMEWORK
-  [Serializable]
-#endif
   public class AssemblyCompilerBuildOutputManager : IDisposable
   {
     private readonly string _buildOutputDirectory;

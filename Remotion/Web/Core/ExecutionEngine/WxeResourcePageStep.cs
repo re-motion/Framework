@@ -33,9 +33,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary>
     ///   Calls the page using the calling assemby's resource directory.
     /// </summary>
-#if !NETFRAMEWORK
     [Obsolete("Use a constructor with type/assembly argument instead.", error: true, DiagnosticId = WebDiagnosticIDs.RMWEB0002_ObsoleteWxeResourcePageStepConstructor)]
-#endif
     public WxeResourcePageStep (string pageName)
         : this(Assembly.GetCallingAssembly(), pageName)
     {
@@ -44,9 +42,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary>
     ///   Calls the page using the calling assemby's resource directory.
     /// </summary>
-#if !NETFRAMEWORK
     [Obsolete("Use a constructor with type/assembly argument instead.", error: true, DiagnosticId = WebDiagnosticIDs.RMWEB0002_ObsoleteWxeResourcePageStepConstructor)]
-#endif
     public WxeResourcePageStep (WxeVariableReference page)
         : this(Assembly.GetCallingAssembly(), page)
     {

@@ -421,19 +421,6 @@ namespace Remotion.UnitTests.FunctionalProgramming
       Assert.That(first.SetEquals(second), Is.False);
     }
 
-#if NETFRAMEWORK
-    [Test]
-    public void Zip_Tuples ()
-    {
-      IEnumerable<int> first = new[] { 1, 2, 3 };
-      IEnumerable<string> second = new[] { "a", "b" };
-
-      var result = first.Zip(second);
-
-      Assert.That(result, Is.EqualTo(new[] { Tuple.Create(1, "a"), Tuple.Create(2, "b") }));
-    }
-#endif
-
     [Test]
     public void Interleave ()
     {

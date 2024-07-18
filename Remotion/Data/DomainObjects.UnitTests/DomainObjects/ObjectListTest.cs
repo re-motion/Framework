@@ -261,11 +261,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(
           () => _orderItemListAsIList.CopyTo(destination, -1),
           Throws.InstanceOf<ArgumentOutOfRangeException>()
-#if NET8_0_OR_GREATER
               .With.Message.EqualTo("destinationIndex ('-1') must be greater than or equal to '0'. (Parameter 'destinationIndex')\r\nActual value was -1."));
-#else
-              .With.Message.Contains("Number was less than the array's lower bound in the first dimension."));
-#endif
     }
 
     [Test]
@@ -275,13 +271,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(
           () => _orderItemListAsIList.CopyTo(destination, 5),
           Throws.ArgumentException
-#if NETFRAMEWORK
-              .With.Message.EqualTo(
-                  "Destination array was not long enough. Check destIndex and length, and the array's lower bounds.")
-#else
               .With.ArgumentExceptionMessageEqualTo(
                   "Destination array was not long enough. Check the destination index, length, and the array's lower bounds.", "destinationArray")
-#endif
           );
     }
 
@@ -292,13 +283,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(
           () => _orderItemListAsIList.CopyTo(destination, 4),
           Throws.ArgumentException
-#if NETFRAMEWORK
-              .With.Message.EqualTo(
-                  "Destination array was not long enough. Check destIndex and length, and the array's lower bounds.")
-#else
               .With.ArgumentExceptionMessageEqualTo(
                   "Destination array was not long enough. Check the destination index, length, and the array's lower bounds.", "destinationArray")
-#endif
           );
     }
 

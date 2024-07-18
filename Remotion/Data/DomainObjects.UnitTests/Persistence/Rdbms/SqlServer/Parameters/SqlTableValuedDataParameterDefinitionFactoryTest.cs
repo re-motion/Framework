@@ -43,9 +43,7 @@ public class SqlTableValuedDataParameterDefinitionFactoryTest
     yield return (Mock.Of<ICollection<DateTime>>(), typeof(DateTime), false, StorageTypeInformationObjectMother.CreateDateTimeStorageTypeInformation());
     yield return (Mock.Of<IReadOnlyCollection<Guid>>(), typeof(Guid), false, StorageTypeInformationObjectMother.CreateUniqueIdentifierStorageTypeInformation());
     yield return (Mock.Of<ISet<string>>(), typeof(string), true, StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation());
-#if NET5_0_OR_GREATER
     yield return (Mock.Of<IReadOnlySet<int>>(), typeof(int), true, StorageTypeInformationObjectMother.CreateIntStorageTypeInformation());
-#endif
   }
 
   [Test]

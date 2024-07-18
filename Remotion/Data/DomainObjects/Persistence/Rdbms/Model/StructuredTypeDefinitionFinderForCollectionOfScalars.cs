@@ -82,9 +82,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       else if (type.CanAscribeTo(typeof(IReadOnlyCollection<>)))
       {
         result.itemType = type.GetAscribedGenericArguments(typeof(IReadOnlyCollection<>)).Single();
-#if NET5_0_OR_GREATER
         result.isDistinct = type.CanAscribeTo(typeof(IReadOnlySet<>));
-#endif
       }
       else if (value is ICollection)
       {

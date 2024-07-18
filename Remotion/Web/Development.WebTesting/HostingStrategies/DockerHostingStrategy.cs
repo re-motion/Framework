@@ -57,12 +57,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
       var dockerIsolationMode = properties["dockerIsolationMode"];
       var dockerPullTimeout = TimeSpan.Parse(properties["dockerPullTimeout"]);
       var hostname = properties["hostname"];
-#if NET6_0_OR_GREATER
       var innerType = properties.GetValueOrDefault("innerType");
-#else
-      string? innerType;
-      properties.TryGetValue("innerType", out innerType);
-#endif
 
       var absoluteWebApplicationPath = testSiteLayoutConfiguration.RootPath;
       var is32BitProcess = !Environment.Is64BitProcess;

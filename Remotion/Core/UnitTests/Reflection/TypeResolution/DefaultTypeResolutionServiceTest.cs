@@ -205,17 +205,6 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     }
 
     [Test]
-#if !NETFRAMEWORK
-    [Ignore("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
-#endif
-    public void GetPathOfAssembly_WithHashInDirectoryName ()
-    {
-      // See Remotion.Data.DomainObjects.UnitTests.Utilities.ReflectionUtilityTest
-#if NETFRAMEWORK
-#endif
-    }
-
-    [Test]
     public void GetPathOfAssembly_WithInvalidAssemblyName_ReturnsNull ()
     {
       var service = CreateTypeResolutionService();

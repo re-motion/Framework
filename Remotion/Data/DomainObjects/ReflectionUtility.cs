@@ -100,20 +100,6 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull("assembly", assembly);
 
-#if NETFRAMEWORK
-      var assemblyNameWithoutShadowCopy = assembly.GetName(copiedName: false);
-      var escapedCodeBase = assemblyNameWithoutShadowCopy.EscapedCodeBase;
-      if (escapedCodeBase == null)
-        throw new InvalidOperationException(String.Format("The code base of assembly '{0}' is not set.", assemblyNameWithoutShadowCopy.Name));
-      var codeBaseUri = new Uri(escapedCodeBase);
-      if (!codeBaseUri.IsFile)
-      {
-        throw new InvalidOperationException(
-            string.Format("The code base '{0}' of assembly '{1}' is not a local path.", codeBaseUri.OriginalString, assemblyNameWithoutShadowCopy.Name));
-      }
-
-      return Path.GetDirectoryName(codeBaseUri.LocalPath)!;
-#else
       var assemblyLocation = assembly.Location;
       if (string.IsNullOrEmpty(assemblyLocation))
         throw new InvalidOperationException(string.Format("Assembly '{0}' does not have a location. It was likely loaded from a byte array.", assembly.FullName));
@@ -123,7 +109,6 @@ namespace Remotion.Data.DomainObjects
       var assemblyDirectory = Path.GetDirectoryName(assemblyLocation);
       Assertion.IsNotNull(assemblyDirectory, "Assembly location '{0}' does not contain a valid directory name.", assemblyLocation);
       return assemblyDirectory;
-#endif
     }
 
     /// <summary>

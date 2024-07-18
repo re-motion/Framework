@@ -21,20 +21,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 {
   public static class XmlSerializationStrings
   {
-#if !NETFRAMEWORK
     private const char c_bom = (char)65279;
-#endif
 
     public static string XmlForComputer1
     {
       get
       {
         return
-#if NETFRAMEWORK
-            @"<?xml version=""1.0""?>"
-#else
             c_bom + @"<?xml version=""1.0"" encoding=""utf-8""?>"
-#endif
                   + @"
 <XmlTransportItem ID=""Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid"">
   <Properties>
@@ -61,11 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       get
       {
         return
-#if NETFRAMEWORK
-            @"<?xml version=""1.0""?>"
-#else
             c_bom + @"<?xml version=""1.0"" encoding=""utf-8""?>"
-#endif
                   + @"
 <XmlTransportItem ID=""Computer|d6f50e77-2041-46b8-a840-aaa4d2e1bf5a|System.Guid"">
   <Properties>
@@ -94,11 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       get
       {
         return
-#if NETFRAMEWORK
-            @"<?xml version=""1.0""?>"
-#else
             c_bom + @"<?xml version=""1.0"" encoding=""utf-8""?>"
-#endif
                   + @"
 <XmlTransportItem ID=""Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid"">
   <Properties>
@@ -115,11 +101,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       get
       {
         return
-#if NETFRAMEWORK
-            @"<?xml version=""1.0""?>"
-#else
             c_bom + @"<?xml version=""1.0"" encoding=""utf-8""?>"
-#endif
                   + @"
 <XmlTransportItem ID=""Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid"">
   <Properties>
@@ -134,11 +116,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       get
       {
         return
-#if NETFRAMEWORK
-            @"<?xml version=""1.0""?>"
-#else
             c_bom + @"<?xml version=""1.0"" encoding=""utf-8""?>"
-#endif
                   + @"
 <XmlTransportItem ID=""Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid"">
   <Properties>
@@ -155,11 +133,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       get
       {
         return
-#if NETFRAMEWORK
-            @"<?xml version=""1.0""?>"
-#else
             c_bom + @"<?xml version=""1.0"" encoding=""utf-8""?>"
-#endif
                   + @"
 <XmlTransportItem ID=""Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid"">
   <Properties>
@@ -174,11 +148,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       get
       {
         return
-#if NETFRAMEWORK
-            @"<?xml version=""1.0""?>"
-#else
             c_bom + @"<?xml version=""1.0"" encoding=""utf-8""?>"
-#endif
                   + @"
 <ArrayOfXmlTransportItem xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <XmlTransportItem ID=""Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid"">

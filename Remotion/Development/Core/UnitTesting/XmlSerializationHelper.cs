@@ -32,15 +32,11 @@ namespace Remotion.Development.UnitTesting
       using (MemoryStream stream = new MemoryStream())
       {
         XmlSerializer serializer = new XmlSerializer(o.GetType());
-#if NETFRAMEWORK
-        serializer.Serialize(stream, o);
-#else
         var xmlWriterSettings = new XmlWriterSettings() { Indent = true };
         using (XmlWriter xmlWriter = XmlWriter.Create(stream, xmlWriterSettings))
         {
           serializer.Serialize(xmlWriter, o);
         }
-#endif
         return stream.ToArray();
       }
     }

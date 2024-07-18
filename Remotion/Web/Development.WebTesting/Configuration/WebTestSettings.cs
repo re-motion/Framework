@@ -18,12 +18,10 @@
 using System;
 using System.Configuration;
 using Remotion.Utilities;
-#if !NETFRAMEWORK
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Remotion.Web.Development.WebTesting.Configuration.IConfiguration;
-#endif
 
 namespace Remotion.Web.Development.WebTesting.Configuration
 {
@@ -69,7 +67,6 @@ namespace Remotion.Web.Development.WebTesting.Configuration
       return settings;
     }
 
-#if !NETFRAMEWORK
     /// <summary>
     /// Creates <see cref="IWebTestSettings"/> using the default <see cref="Host"/> configuration.
     /// Reads settings from appsettings.json and environment variables.
@@ -114,15 +111,10 @@ namespace Remotion.Web.Development.WebTesting.Configuration
       var value = host.Services.GetRequiredService<IOptions<WebTestSettingsDto>>().Value;
       return value;
     }
-#endif
 
     private static IWebTestSettings CreateDefaultWebTestSettings ()
     {
-#if NETFRAMEWORK
-      return CreateAppConfigBasedWebTestSettings();
-#else
       return CreateAppSettingsJsonBasedWebTestSettings();
-#endif
     }
   }
 }

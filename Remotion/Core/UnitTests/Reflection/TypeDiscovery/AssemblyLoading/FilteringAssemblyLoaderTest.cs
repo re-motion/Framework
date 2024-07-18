@@ -65,11 +65,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       SetupFilterTrue();
 
       Assembly referenceAssembly = typeof(FilteringAssemblyLoaderTest).Assembly;
-#if NETFRAMEWORK
-      string path = new Uri(referenceAssembly.GetName(copiedName: false).CodeBase).LocalPath;
-#else
       string path = referenceAssembly.Location;
-#endif
       Assembly loadedAssembly = _loader.TryLoadAssembly(path);
       Assert.That(loadedAssembly, Is.SameAs(referenceAssembly));
     }
@@ -78,11 +74,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     public void TryLoadAssembly_FilterConsiderTrue_IncludeTrue ()
     {
       Assembly referenceAssembly = typeof(FilteringAssemblyLoaderTest).Assembly;
-#if NETFRAMEWORK
-      string path = new Uri(referenceAssembly.GetName(copiedName: false).CodeBase).LocalPath;
-#else
       string path = referenceAssembly.Location;
-#endif
 
       _filterMock
           .Setup(_ => _.ShouldConsiderAssembly(It.Is<AssemblyName>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
@@ -102,11 +94,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     public void TryLoadAssembly_FilterConsiderTrue_IncludeFalse ()
     {
       Assembly referenceAssembly = typeof(FilteringAssemblyLoaderTest).Assembly;
-#if NETFRAMEWORK
-      string path = new Uri(referenceAssembly.GetName(copiedName: false).CodeBase).LocalPath;
-#else
       string path = referenceAssembly.Location;
-#endif
 
       _filterMock
           .Setup(_ => _.ShouldConsiderAssembly(It.Is<AssemblyName>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
@@ -126,11 +114,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     public void TryLoadAssembly_FilterConsiderFalse ()
     {
       Assembly referenceAssembly = typeof(FilteringAssemblyLoaderTest).Assembly;
-#if NETFRAMEWORK
-      string path = new Uri(referenceAssembly.GetName(copiedName: false).CodeBase).LocalPath;
-#else
       string path = referenceAssembly.Location;
-#endif
 
       _filterMock
           .Setup(_ => _.ShouldConsiderAssembly(It.Is<AssemblyName>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
@@ -168,97 +152,6 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       finally
       {
         FileUtility.DeleteAndWaitForCompletion(path);
-      }
-    }
-
-    // Assembly.Load will lock a file when it throws a FileLoadException, making it impossible to restore the previous state
-    // for naive tests. We therefore run the actual test in another process using Process.Start; that way, the locked file
-    // will be unlocked when the process exits and we can delete it after the test has run.
-    [Test]
-#if !NETFRAMEWORK
-    [Ignore("This test only works in .NET Framework")]
-#endif
-    public void TryLoadAssembly_WithFileLoadException ()
-    {
-      string program = Compile(
-          Path.Combine(TestContext.CurrentContext.TestDirectory, "Reflection\\TypeDiscovery\\TestAssemblies\\FileLoadExceptionConsoleApplication"),
-          "FileLoadExceptionConsoleApplication.exe",
-          true,
-          null);
-      string programConfig = program + ".config";
-      File.Copy(
-          Path.Combine(TestContext.CurrentContext.TestDirectory, "Reflection\\TypeDiscovery\\TestAssemblies\\FileLoadExceptionConsoleApplication\\app.config"), programConfig);
-      string delaySignAssembly = Compile(
-          Path.Combine(TestContext.CurrentContext.TestDirectory, "Reflection\\TypeDiscovery\\TestAssemblies\\DelaySignAssembly"),
-          "DelaySignAssembly.dll",
-          false,
-          "/delaysign+ /keyfile:" + Path.Combine(TestContext.CurrentContext.TestDirectory, "Reflection\\TypeDiscovery\\TestAssemblies\\DelaySignAssembly\\PublicKey.snk"));
-
-      try
-      {
-        var startInfo = new ProcessStartInfo(program);
-        startInfo.UseShellExecute = false;
-        startInfo.CreateNoWindow = true;
-        startInfo.RedirectStandardOutput = true;
-        startInfo.Arguments = delaySignAssembly + " false";
-
-        Process process = Process.Start(startInfo);
-        // ReSharper disable PossibleNullReferenceException
-        string output = process.StandardOutput.ReadToEnd();
-        // ReSharper restore PossibleNullReferenceException
-        process.WaitForExit();
-        Assert.That(process.ExitCode, Is.EqualTo(0), output);
-
-        CheckLogRegEx(
-          output,
-            @"WARN : The assembly 'DelaySignAssembly, Version=0.0.0.0, Culture=neutral, PublicKeyToken=.*' \(loaded in the context of '"
-            + Regex.Escape(Path.Combine(TestContext.CurrentContext.TestDirectory, "DelaySignAssembly.dll"))
-            + @"'\) triggered a FileLoadException and will be ignored - maybe the assembly is DelaySigned, but signing has not been completed?");
-      }
-      finally
-      {
-        FileUtility.DeleteAndWaitForCompletion(program);
-        FileUtility.DeleteAndWaitForCompletion(programConfig);
-        FileUtility.DeleteAndWaitForCompletion(delaySignAssembly);
-      }
-    }
-
-    [Test]
-#if !NETFRAMEWORK
-    [Ignore("This test only works in .NET Framework")]
-#endif
-    public void TryLoadAssembly_WithFileLoadException_AndShadowCopying ()
-    {
-      string program = Compile(
-          Path.Combine(TestContext.CurrentContext.TestDirectory, "Reflection\\TypeDiscovery\\TestAssemblies\\FileLoadExceptionConsoleApplication"),
-          "FileLoadExceptionConsoleApplication.exe",
-          true,
-          null);
-      string delaySignAssembly = Compile(
-          Path.Combine(TestContext.CurrentContext.TestDirectory, "Reflection\\TypeDiscovery\\TestAssemblies\\DelaySignAssembly"),
-          "DelaySignAssembly.dll",
-          false,
-          "/delaysign+ /keyfile:" + Path.Combine(TestContext.CurrentContext.TestDirectory, "Reflection\\TypeDiscovery\\TestAssemblies\\DelaySignAssembly\\PublicKey.snk"));
-
-      try
-      {
-        var startInfo = new ProcessStartInfo(program);
-        startInfo.UseShellExecute = false;
-        startInfo.CreateNoWindow = true;
-        startInfo.RedirectStandardOutput = true;
-        startInfo.Arguments = delaySignAssembly + " true";
-
-        Process process = Process.Start(startInfo);
-        // ReSharper disable PossibleNullReferenceException
-        string output = process.StandardOutput.ReadToEnd();
-        // ReSharper restore PossibleNullReferenceException
-        process.WaitForExit();
-        Assert.That(process.ExitCode, Is.EqualTo(0), output);
-      }
-      finally
-      {
-        FileUtility.DeleteAndWaitForCompletion(program);
-        FileUtility.DeleteAndWaitForCompletion(delaySignAssembly);
       }
     }
 

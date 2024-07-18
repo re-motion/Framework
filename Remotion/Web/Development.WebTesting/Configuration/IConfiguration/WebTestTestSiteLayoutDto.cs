@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
-#if !NETFRAMEWORK
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
@@ -37,4 +36,3 @@ namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
     public string? ProcessPath { get; init; }
   }
 }
-#endif

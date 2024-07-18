@@ -278,30 +278,6 @@ namespace Remotion.FunctionalProgramming
       return new HashSet<T>(sequence1).SetEquals(sequence2);
     }
 
-#if NETFRAMEWORK
-    /// <summary>
-    /// Combines two sequences into a single sequence of <see cref="Tuple{T1,T2}"/> values.
-    /// </summary>
-    /// <typeparam name="T1">The item type of the first sequence.</typeparam>
-    /// <typeparam name="T2">The item type of the second sequence.</typeparam>
-    /// <param name="first">The first sequence.</param>
-    /// <param name="second">The second sequence.</param>
-    /// <returns>
-    /// A "zipped" sequence, consisting of the combined elements of the <paramref name="first"/> and the <paramref name="second"/> sequence.
-    /// </returns>
-    /// <exception cref="ArgumentNullException">One of the parameters is null.</exception>
-    /// <remarks>
-    /// If the input sequences do not have the same number of arguments, the result sequence will have as many arguments as the smaller input sequence.
-    /// </remarks>
-    public static IEnumerable<Tuple<T1, T2>> Zip<T1, T2> (this IEnumerable<T1> first, IEnumerable<T2> second)
-    {
-      ArgumentUtility.CheckNotNull("first", first);
-      ArgumentUtility.CheckNotNull("second", second);
-
-      return first.Zip(second, Tuple.Create);
-    }
-#endif
-
     /// <summary>
     /// Interleaves the elements of two sequences.
     /// </summary>

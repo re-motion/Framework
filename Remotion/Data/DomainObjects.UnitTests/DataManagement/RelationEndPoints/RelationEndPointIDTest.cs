@@ -172,13 +172,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           () => RelationEndPointID.Resolve(instance, o => ((OrderItem)(object)o).Product),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-#if NETFRAMEWORK
-                  "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' does not have a mapping property identified by expression "
-                  + "'o => Convert(Convert(o)).Product'.", "propertyAccessExpression"
-#else
                   "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' does not have a mapping property identified by expression "
                   + "'o => Convert(Convert(o, Object), OrderItem).Product'.", "propertyAccessExpression"
-#endif
           ));
     }
 

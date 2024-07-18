@@ -42,17 +42,6 @@ namespace Remotion.Mixins.MixerTools.UnitTests
       Assert.That(_parameters.AssemblyName, Is.EqualTo("Remotion.Mixins.Persistent.{counter}"));
     }
 
-#if NETFRAMEWORK
-    [Test]
-    public void CreateAppDomainSetup_Default ()
-    {
-      var setup = MixerRunner.CreateAppDomainSetup(_parameters);
-
-      Assert.That(setup.ApplicationName, Is.EqualTo("Mixer"));
-      Assert.That(setup.ApplicationBase, Is.EqualTo(_parameters.BaseDirectory));
-    }
-#endif
-
     [Test]
     public void CreateMixer_Default ()
     {

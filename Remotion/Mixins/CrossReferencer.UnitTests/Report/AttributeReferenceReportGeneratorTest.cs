@@ -106,11 +106,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
                   "Argument",
                   new XAttribute("kind", "constructor"),
                   new XAttribute("type", "Byte"),
-#if NETFRAMEWORK
-                  new XAttribute("name", "P_0"),
-#else
                   new XAttribute("name", "value"),
-#endif                  
                   new XAttribute("value", "2"))
               ),
           new XElement(
@@ -120,11 +116,7 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
                   "Argument",
                   new XAttribute("kind", "constructor"),
                   new XAttribute("type", "Byte"),
-#if NETFRAMEWORK
-                  new XAttribute("name", "P_0"),
-#else
                   new XAttribute("name", "value"),
-#endif                  
                   new XAttribute("value", "0"))
               ));
 

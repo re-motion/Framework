@@ -22,9 +22,7 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
-#if !NETFRAMEWORK
 using Remotion.Development.UnitTesting.IsolatedCodeRunner;
-#endif
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 {
@@ -96,10 +94,6 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
         var log4NetAssembly = typeof(log4net.LogManager).Assembly;
         var remotionAssembly = typeof(AssemblyFinder).Assembly;
         var referencingAssemblyFullPath = CompileReferencingAssembly(outputManager, remotionAssembly);
-#if NETFRAMEWORK
-        var referencingAssembly = Assembly.ReflectionOnlyLoad(File.ReadAllBytes(referencingAssemblyFullPath));
-        Test(log4NetAssembly, remotionAssembly, referencingAssembly);
-#else
         var isolatedCodeRunner = new IsolatedCodeRunner(TestMain);
         isolatedCodeRunner.Run(referencingAssemblyFullPath);
 
@@ -109,7 +103,6 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
           var remotionAssembly = typeof(AssemblyFinder).Assembly;
           Test(log4NetAssembly, remotionAssembly, Assembly.LoadFile(args[0]));
         }
-#endif
       }
 
       static void Test (Assembly log4NetAssembly, Assembly remotionAssembly, Assembly referencingAssembly)

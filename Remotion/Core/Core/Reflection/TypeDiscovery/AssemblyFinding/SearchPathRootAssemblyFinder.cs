@@ -45,13 +45,8 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     {
       ArgumentUtility.CheckNotNull("assemblyLoader", assemblyLoader);
 
-#if NETFRAMEWORK
-      var relativeSearchPath = AppDomain.CurrentDomain.RelativeSearchPath;
-      var dynamicDirectory = AppDomain.CurrentDomain.DynamicDirectory;
-#else 
       string? relativeSearchPath = null;
       string? dynamicDirectory = null;
-#endif
 
       var searchPathRootAssemblyFinder = new SearchPathRootAssemblyFinder(
           AppContext.BaseDirectory,
@@ -119,12 +114,10 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     public virtual CompositeRootAssemblyFinder CreateCombinedFinder ()
     {
       var fileSearchService = new FileSystemSearchService();
-      var specifications = new[] {
-#if NETFRAMEWORK
-          new FilePatternSpecification("*.exe", FilePatternSpecificationKind.IncludeFollowReferences),
-#endif
-          new FilePatternSpecification("*.dll", FilePatternSpecificationKind.IncludeFollowReferences)
-      };
+      var specifications = new[]
+                           {
+                             new FilePatternSpecification("*.dll", FilePatternSpecificationKind.IncludeFollowReferences)
+                           };
 
       var finders = new List<IRootAssemblyFinder> { new FilePatternRootAssemblyFinder(_baseDirectory, specifications, fileSearchService, _assemblyLoader) };
 

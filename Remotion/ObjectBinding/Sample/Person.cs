@@ -51,11 +51,7 @@ namespace Remotion.ObjectBinding.Sample
     private Gender _gender;
     private MarriageStatus _marriageStatus;
     private DateTime _dateOfDeath;
-#if NET6_0_OR_GREATER
     private DateOnly _dateOfCitizenship;
-#else
-    private DateTime _dateOfCitizenship;
-#endif
     private bool _deceased = false;
     private string[] _cv;
     private Guid _partnerID;
@@ -240,7 +236,6 @@ namespace Remotion.ObjectBinding.Sample
       set { _dateOfDeath = value; }
     }
 
-#if NET6_0_OR_GREATER
     [XmlIgnore]
     public DateOnly DateOfCitizenship
     {
@@ -256,15 +251,6 @@ namespace Remotion.ObjectBinding.Sample
       get => _dateOfCitizenship.ToString("yyyy-MM-dd");
       set => DateOfCitizenship = DateOnly.Parse(value);
     }
-#else
-    [XmlAttribute(DataType="date")]
-    [DateProperty]
-    public DateTime DateOfCitizenship
-    {
-      get { return _dateOfCitizenship; }
-      set { _dateOfCitizenship = value; }
-    }
-#endif
 
     [XmlElement]
     public bool Deceased

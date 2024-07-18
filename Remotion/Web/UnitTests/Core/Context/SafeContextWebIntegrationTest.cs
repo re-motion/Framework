@@ -17,9 +17,6 @@
 using System;
 using NUnit.Framework;
 using Remotion.Context;
-#if NETFRAMEWORK
-using Remotion.Web.Context;
-#endif
 
 namespace Remotion.Web.UnitTests.Core.Context
 {
@@ -29,11 +26,7 @@ namespace Remotion.Web.UnitTests.Core.Context
     [Test]
     public void StorageProvider_IsHttpProvider_InWebProject ()
     {
-#if NETFRAMEWORK
-      Assert.That(SafeContext.Instance, Is.InstanceOf(typeof(HttpContextStorageProviderWithCallContextBasedFallback)));
-#else
       Assert.That(SafeContext.Instance, Is.InstanceOf(typeof(AsyncLocalStorageProvider)));
-#endif
     }
   }
 }

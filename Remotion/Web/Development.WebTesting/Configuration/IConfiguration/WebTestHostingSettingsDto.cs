@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
-#if !NETFRAMEWORK
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -39,4 +38,3 @@ namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
     public IReadOnlyDictionary<string, string> Parameters { get; init; } = ReadOnlyDictionary<string, string>.Empty;
   }
 }
-#endif
