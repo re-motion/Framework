@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.Analyzers
     public static readonly DiagnosticDescriptor DiagnosticDescriptor = new DiagnosticDescriptor(
         WebDiagnosticIDs.RMWEB0001_WrongWebStringUsage,
         "Wrong WebString or PlainTextString usage",
-        "'{0}' should not be used with a '{1}' argument. {2}.",
+        "'{0}' should not be used with a '{1}' argument, {2}",
         "Usage",
         DiagnosticSeverity.Error,
         true);
@@ -121,7 +121,7 @@ namespace Remotion.Web.Development.Analyzers
             node.Expression.GetLocation(),
             "$\"\"",
             symbol.ToString(),
-            $"Encode the {symbol.ToString()} instance first.");
+            $"encode the {symbol.ToString()} instance first");
         ctx.ReportDiagnostic(diagnostic);
       }
     }
@@ -148,7 +148,7 @@ namespace Remotion.Web.Development.Analyzers
             location,
             "+",
             symbol.ToString(),
-            $"Encode the {symbol.ToString()} instance first.");
+            $"encode the {symbol.ToString()} instance first");
         ctx.ReportDiagnostic(diagnostic);
       }
     }
@@ -176,7 +176,7 @@ namespace Remotion.Web.Development.Analyzers
               ctx.Node.GetLocation(),
               symbols.StringBuilderAppendMethodSymbol.ToString(),
               argumentType.ToString(),
-              $"Call '.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks)' on the {argumentType.ToString()} instance instead.");
+              $"call '.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks)' on the {argumentType.ToString()} instance instead");
           ctx.ReportDiagnostic(diagnostic);
         }
       }
@@ -193,7 +193,7 @@ namespace Remotion.Web.Development.Analyzers
               ctx.Node.GetLocation(),
               symbols.HtmlTextWriterWriteMethodSymbol.ToString(),
               argumentType.ToString(),
-              $"Use '{argumentType.ToString()}.WriteTo(HtmlTextWriter)' instead.");
+              $"use '{argumentType.ToString()}.WriteTo(HtmlTextWriter)' instead");
           ctx.ReportDiagnostic(diagnostic);
         }
       }
@@ -218,7 +218,7 @@ namespace Remotion.Web.Development.Analyzers
               ctx.Node.GetLocation(),
               stringJoinMethodSymbol.ToString(),
               result.ToString(),
-              $"Encode the {result.ToString()} instances first.");
+              $"encode the {result.ToString()} instances first");
           ctx.ReportDiagnostic(diagnostic);
         }
       }
@@ -241,7 +241,7 @@ namespace Remotion.Web.Development.Analyzers
               ctx.Node.GetLocation(),
               stringFormatMethodSymbol.ToString(),
               result.ToString(),
-              $"Encode the {result.ToString()} instances first.");
+              $"encode the {result.ToString()} instances first");
           ctx.ReportDiagnostic(diagnostic);
         }
       }
@@ -266,7 +266,7 @@ namespace Remotion.Web.Development.Analyzers
               ctx.Node.GetLocation(),
               stringFormatConcatSymbol.ToString(),
               result.ToString(),
-              $"Encode the {result.ToString()} instances first.");
+              $"encode the {result.ToString()} instances first");
           ctx.ReportDiagnostic(diagnostic);
         }
       }

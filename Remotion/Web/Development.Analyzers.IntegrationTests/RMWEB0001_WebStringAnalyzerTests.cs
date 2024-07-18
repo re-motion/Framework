@@ -43,8 +43,8 @@ public class A
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(10, 5, 10, 25)
           .WithMessage(
-              "'System.Text.StringBuilder.Append(object?)' should not be used with a 'Remotion.Web.WebString' argument. "
-              + "Call '.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks)' on the Remotion.Web.WebString instance instead.");
+              "'System.Text.StringBuilder.Append(object?)' should not be used with a 'Remotion.Web.WebString' argument, "
+              + "call '.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks)' on the Remotion.Web.WebString instance instead");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -67,8 +67,8 @@ public class A
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(10, 5, 10, 31)
           .WithMessage(
-              "'System.Text.StringBuilder.Append(object?)' should not be used with a 'Remotion.Web.PlainTextString' argument. "
-              + "Call '.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks)' on the Remotion.Web.PlainTextString instance instead.");
+              "'System.Text.StringBuilder.Append(object?)' should not be used with a 'Remotion.Web.PlainTextString' argument, "
+              + "call '.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks)' on the Remotion.Web.PlainTextString instance instead");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -109,8 +109,8 @@ public class A
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(9, 5, 9, 28)
           .WithMessage(
-              "'System.Web.UI.HtmlTextWriter.Write(object)' should not be used with a 'Remotion.Web.WebString' argument. "
-              + "Use 'Remotion.Web.WebString.WriteTo(HtmlTextWriter)' instead.");
+              "'System.Web.UI.HtmlTextWriter.Write(object)' should not be used with a 'Remotion.Web.WebString' argument, "
+              + "use 'Remotion.Web.WebString.WriteTo(HtmlTextWriter)' instead");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -132,8 +132,8 @@ public class A
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(9, 5, 9, 34)
           .WithMessage(
-              "'System.Web.UI.HtmlTextWriter.Write(object)' should not be used with a 'Remotion.Web.PlainTextString' argument. "
-              + "Use 'Remotion.Web.PlainTextString.WriteTo(HtmlTextWriter)' instead.");
+              "'System.Web.UI.HtmlTextWriter.Write(object)' should not be used with a 'Remotion.Web.PlainTextString' argument, "
+              + "use 'Remotion.Web.PlainTextString.WriteTo(HtmlTextWriter)' instead");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -172,8 +172,8 @@ public class A
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(8, 12, 8, 76)
           .WithMessage(
-              "'string.Join(string?, params object?[])' should not be used with a 'Remotion.Web.WebString' argument. "
-              + "Encode the Remotion.Web.WebString instances first.");
+              "'string.Join(string?, params object?[])' should not be used with a 'Remotion.Web.WebString' argument, "
+              + "encode the Remotion.Web.WebString instances first");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -194,8 +194,8 @@ public class A
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(8, 12, 8, 41)
           .WithMessage(
-              "'string.Join<T>(string?, System.Collections.Generic.IEnumerable<T>)' should not be used with a 'Remotion.Web.WebString[]' argument. "
-              + "Encode the Remotion.Web.WebString[] instances first.");
+              "'string.Join<T>(string?, System.Collections.Generic.IEnumerable<T>)' should not be used with a 'Remotion.Web.WebString[]' argument, "
+              + "encode the Remotion.Web.WebString[] instances first");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -216,8 +216,8 @@ public class A
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(8, 12, 8, 88)
           .WithMessage(
-              "'string.Join(string?, params object?[])' should not be used with a 'Remotion.Web.PlainTextString' argument. "
-              + "Encode the Remotion.Web.PlainTextString instances first.");
+              "'string.Join(string?, params object?[])' should not be used with a 'Remotion.Web.PlainTextString' argument, "
+              + "encode the Remotion.Web.PlainTextString instances first");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -238,8 +238,8 @@ public class A
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(8, 12, 8, 47)
           .WithMessage(
-              "'string.Join<T>(string?, System.Collections.Generic.IEnumerable<T>)' should not be used with a 'Remotion.Web.PlainTextString[]' argument. "
-              + "Encode the Remotion.Web.PlainTextString[] instances first.");
+              "'string.Join<T>(string?, System.Collections.Generic.IEnumerable<T>)' should not be used with a 'Remotion.Web.PlainTextString[]' argument, "
+              + "encode the Remotion.Web.PlainTextString[] instances first");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -260,8 +260,8 @@ public class A
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(8, 12, 8, 84)
           .WithMessage(
-              "'string.Format(string, object?, object?)' should not be used with a 'Remotion.Web.WebString' argument. "
-              + "Encode the Remotion.Web.WebString instances first.");
+              "'string.Format(string, object?, object?)' should not be used with a 'Remotion.Web.WebString' argument, "
+              + "encode the Remotion.Web.WebString instances first");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -282,8 +282,8 @@ public class A
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(8, 12, 8, 107)
           .WithMessage(
-              "'string.Format(string, params object?[])' should not be used with a 'Remotion.Web.WebString' argument. "
-              + "Encode the Remotion.Web.WebString instances first.");
+              "'string.Format(string, params object?[])' should not be used with a 'Remotion.Web.WebString' argument, "
+              + "encode the Remotion.Web.WebString instances first");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -304,8 +304,8 @@ public class A
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(8, 12, 8, 96)
           .WithMessage(
-              "'string.Format(string, object?, object?)' should not be used with a 'Remotion.Web.PlainTextString' argument. "
-              + "Encode the Remotion.Web.PlainTextString instances first.");
+              "'string.Format(string, object?, object?)' should not be used with a 'Remotion.Web.PlainTextString' argument, "
+              + "encode the Remotion.Web.PlainTextString instances first");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -326,8 +326,8 @@ public class A
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(8, 12, 8, 137)
           .WithMessage(
-              "'string.Format(string, params object?[])' should not be used with a 'Remotion.Web.PlainTextString' argument. "
-              + "Encode the Remotion.Web.PlainTextString instances first.");
+              "'string.Format(string, params object?[])' should not be used with a 'Remotion.Web.PlainTextString' argument, "
+              + "encode the Remotion.Web.PlainTextString instances first");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -348,8 +348,8 @@ public class A
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(8, 12, 8, 84)
           .WithMessage(
-              "'string.Concat(object?, object?)' should not be used with a 'Remotion.Web.PlainTextString' argument. "
-              + "Encode the Remotion.Web.PlainTextString instances first.");
+              "'string.Concat(object?, object?)' should not be used with a 'Remotion.Web.PlainTextString' argument, "
+              + "encode the Remotion.Web.PlainTextString instances first");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -370,8 +370,8 @@ public class A
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(8, 12, 8, 43)
           .WithMessage(
-              "'string.Concat<T>(System.Collections.Generic.IEnumerable<T>)' should not be used with a 'Remotion.Web.PlainTextString[]' argument. "
-              + "Encode the Remotion.Web.PlainTextString[] instances first.");
+              "'string.Concat<T>(System.Collections.Generic.IEnumerable<T>)' should not be used with a 'Remotion.Web.PlainTextString[]' argument, "
+              + "encode the Remotion.Web.PlainTextString[] instances first");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -392,8 +392,8 @@ public class A
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(8, 12, 8, 72)
           .WithMessage(
-              "'string.Concat(object?, object?)' should not be used with a 'Remotion.Web.WebString' argument. "
-              + "Encode the Remotion.Web.WebString instances first.");
+              "'string.Concat(object?, object?)' should not be used with a 'Remotion.Web.WebString' argument, "
+              + "encode the Remotion.Web.WebString instances first");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -414,8 +414,8 @@ public class A
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(8, 12, 8, 37)
           .WithMessage(
-              "'string.Concat<T>(System.Collections.Generic.IEnumerable<T>)' should not be used with a 'Remotion.Web.WebString[]' argument. "
-              + "Encode the Remotion.Web.WebString[] instances first.");
+              "'string.Concat<T>(System.Collections.Generic.IEnumerable<T>)' should not be used with a 'Remotion.Web.WebString[]' argument, "
+              + "encode the Remotion.Web.WebString[] instances first");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -436,8 +436,8 @@ public class A
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(8, 17, 8, 32)
           .WithMessage(
-              "'+' should not be used with a 'Remotion.Web.PlainTextString' argument. "
-              + "Encode the Remotion.Web.PlainTextString instance first.");
+              "'+' should not be used with a 'Remotion.Web.PlainTextString' argument, "
+              + "encode the Remotion.Web.PlainTextString instance first");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -458,13 +458,13 @@ public class A
       var diagnostic1 = Verifier.Diagnostic()
           .WithSpan(8, 17, 8, 56)
           .WithMessage(
-              "'+' should not be used with a 'Remotion.Web.PlainTextString' argument. "
-              + "Encode the Remotion.Web.PlainTextString instance first.");
+              "'+' should not be used with a 'Remotion.Web.PlainTextString' argument, "
+              + "encode the Remotion.Web.PlainTextString instance first");
       var diagnostic2 = Verifier.Diagnostic()
           .WithSpan(8, 59, 8, 75)
           .WithMessage(
-              "'+' should not be used with a 'Remotion.Web.PlainTextString' argument. "
-              + "Encode the Remotion.Web.PlainTextString instance first.");
+              "'+' should not be used with a 'Remotion.Web.PlainTextString' argument, "
+              + "encode the Remotion.Web.PlainTextString instance first");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic1, diagnostic2);
     }
 
@@ -485,8 +485,8 @@ public class A
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(8, 17, 8, 26)
           .WithMessage(
-              "'+' should not be used with a 'Remotion.Web.WebString' argument. "
-              + "Encode the Remotion.Web.WebString instance first.");
+              "'+' should not be used with a 'Remotion.Web.WebString' argument, "
+              + "encode the Remotion.Web.WebString instance first");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -507,13 +507,13 @@ public class A
       var diagnostic1 = Verifier.Diagnostic()
           .WithSpan(8, 17, 8, 50)
           .WithMessage(
-              "'+' should not be used with a 'Remotion.Web.WebString' argument. "
-              + "Encode the Remotion.Web.WebString instance first.");
+              "'+' should not be used with a 'Remotion.Web.WebString' argument, "
+              + "encode the Remotion.Web.WebString instance first");
       var diagnostic2 = Verifier.Diagnostic()
           .WithSpan(8, 53, 8, 63)
           .WithMessage(
-              "'+' should not be used with a 'Remotion.Web.WebString' argument. "
-              + "Encode the Remotion.Web.WebString instance first.");
+              "'+' should not be used with a 'Remotion.Web.WebString' argument, "
+              + "encode the Remotion.Web.WebString instance first");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic1, diagnostic2);
     }
 
@@ -534,13 +534,13 @@ public class A
       var diagnostic1 = Verifier.Diagnostic()
           .WithSpan(8, 16, 8, 49)
           .WithMessage(
-              "'$\"\"' should not be used with a 'Remotion.Web.WebString' argument. "
-                  + "Encode the Remotion.Web.WebString instance first.");
+              "'$\"\"' should not be used with a 'Remotion.Web.WebString' argument, "
+                  + "encode the Remotion.Web.WebString instance first");
       var diagnostic2 = Verifier.Diagnostic()
           .WithSpan(8, 53, 8, 63)
           .WithMessage(
-              "'$\"\"' should not be used with a 'Remotion.Web.WebString' argument. "
-              + "Encode the Remotion.Web.WebString instance first.");
+              "'$\"\"' should not be used with a 'Remotion.Web.WebString' argument, "
+              + "encode the Remotion.Web.WebString instance first");
 
       await Verifier.VerifyAnalyzerAsync(input, diagnostic1, diagnostic2);
     }
@@ -562,13 +562,13 @@ public class A
       var diagnostic1 = Verifier.Diagnostic()
           .WithSpan(8, 16, 8, 55)
           .WithMessage(
-              "'$\"\"' should not be used with a 'Remotion.Web.PlainTextString' argument. "
-              + "Encode the Remotion.Web.PlainTextString instance first.");
+              "'$\"\"' should not be used with a 'Remotion.Web.PlainTextString' argument, "
+              + "encode the Remotion.Web.PlainTextString instance first");
       var diagnostic2 = Verifier.Diagnostic()
           .WithSpan(8, 59, 8, 75)
           .WithMessage(
-              "'$\"\"' should not be used with a 'Remotion.Web.PlainTextString' argument. "
-              + "Encode the Remotion.Web.PlainTextString instance first.");
+              "'$\"\"' should not be used with a 'Remotion.Web.PlainTextString' argument, "
+              + "encode the Remotion.Web.PlainTextString instance first");
 
       await Verifier.VerifyAnalyzerAsync(input, diagnostic1, diagnostic2);
     }
