@@ -335,7 +335,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       LoadValueInternal(value, interim);
     }
 
-    /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
+#if NET6_0_OR_GREATER
+    /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
+    /// <include file='..\..\doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
+    public void LoadUnboundValue (DateOnly? value, bool interim)
+    {
+      LoadValueInternal(value?.ToDateTime(TimeOnly.MinValue), interim);
+    }
+#endif
+
+    /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue(DateTime?,bool)"/>. </summary>
     protected virtual void LoadValueInternal (DateTime? value, bool interim)
     {
       if (interim)

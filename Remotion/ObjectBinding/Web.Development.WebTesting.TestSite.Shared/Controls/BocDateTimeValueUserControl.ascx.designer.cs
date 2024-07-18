@@ -112,5 +112,23 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfBirthField_WithSeconds;
+
+        /// <summary>
+        /// DateOfCitizenship_DateOnlyType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfCitizenship_DateOnlyType;
+
+        /// <summary>
+        /// DateOfCitizenship_ReadOnlyDateOnlyType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfCitizenship_ReadOnlyDateOnlyType;
     }
 }

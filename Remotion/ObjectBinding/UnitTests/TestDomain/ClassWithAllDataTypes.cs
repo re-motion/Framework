@@ -35,6 +35,10 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
 
     public DateTime DateTime { get; set; }
 
+#if NET6_0_OR_GREATER
+    public DateOnly DateOnly { get; set; }
+#endif
+
     public decimal Decimal { get; set; }
 
     public double Double { get; set; }

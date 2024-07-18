@@ -103,6 +103,31 @@
             disabled, bound, read-only</td>
           <td style="WIDTH: 20%"><asp:label id=DisabledReadOnlyBirthdayFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
         <tr>
+          <td></td>
+          <td><remotion:bocdatetimevalue id=CitizenshipField runat="server" PropertyIdentifier="DateOfCitizenship" datasourcecontrol="CurrentObject" readonly="False" showseconds="False" enabled=true></remotion:bocdatetimevalue></td>
+          <td>
+            date-only-type, bound</td>
+          <td style="WIDTH: 20%"><asp:label id=CitizenshipFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><remotion:bocdatetimevalue id=ReadOnlyCitizenshipField runat="server" PropertyIdentifier="DateOfCitizenship" datasourcecontrol="CurrentObject" readonly="True" showseconds="False" enabled=true></remotion:bocdatetimevalue></td>
+          <td>
+            date-only-type, bound, read-only</td>
+          <td style="WIDTH: 20%"><asp:label id=ReadOnlyCitizenshipFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
+        <tr>
+          <td></td>
+          <td><remotion:bocdatetimevalue id=DisabledReadOnlyCitizenshipField runat="server" PropertyIdentifier="DateOfCitizenship" datasourcecontrol="CurrentObject" readonly="True" showseconds="False" enabled=false></remotion:bocdatetimevalue></td>
+          <td>
+            date-only-type, disabled, bound, read-only</td>
+          <td style="WIDTH: 20%"><asp:label id=DisabledReadOnlyCitizenshipFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
+        <tr>
+          <td><remotion:SmartLabel ID="UnboundCitizenshipFieldLabel" runat="server" ForControl="UnboundCitizenshipField" Text="Citizenship"/></td>
+          <td><remotion:bocdatetimevalue id=UnboundCitizenshipField runat="server" readonly="False" required="False" ShowSeconds="false"></remotion:bocdatetimevalue></td>
+          <td>
+            date-only-type, unbound, value not set, not required</td>
+          <td style="WIDTH: 20%"><asp:label id=UnboundCitizenshipFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
+        <tr>
           <td><remotion:SmartLabel ID="DisabledUnboundBirthdayFieldLabel" runat="server" ForControl="DisabledUnboundBirthdayField" Text="Birthday"/></td>
           <td><remotion:bocdatetimevalue id=DisabledUnboundBirthdayField runat="server" readonly="False" required="False" enabled=false></remotion:bocdatetimevalue></td>
           <td>

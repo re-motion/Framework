@@ -42,6 +42,11 @@ namespace Remotion.ObjectBinding.Sample
     private string _title;
     private DateTime _startDate;
     private DateTime _endDate;
+#if NET6_0_OR_GREATER
+    private DateOnly _promotionDate;
+#else
+    private DateTime _promotionDate;
+#endif
 
     protected Job ()
     {
@@ -69,6 +74,32 @@ namespace Remotion.ObjectBinding.Sample
       get { return _endDate; }
       set { _endDate = value; }
     }
+
+#if NET6_0_OR_GREATER
+    [XmlIgnore]
+    public DateOnly PromotionDate
+    {
+      get { return _promotionDate; }
+      set { _promotionDate = value; }
+    }
+
+    // DateOnly is not supported by the XmlSerializer so we have to add a conversion property ourselves
+    [XmlAttribute(AttributeName = nameof(PromotionDate))]
+    [ObjectBinding(Visible = false)]
+    public string PromotionDateValue
+    {
+      get => _promotionDate.ToString("yyyy-MM-dd");
+      set => PromotionDate = DateOnly.Parse(value);
+    }
+#else
+    [XmlAttribute(DataType="date")]
+    [DateProperty]
+    public DateTime PromotionDate
+    {
+      get { return _promotionDate; }
+      set { _promotionDate = value; }
+    }
+#endif
 
     public override string DisplayName
     {

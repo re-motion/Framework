@@ -236,6 +236,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       bocDateTimeValue = home.DateTimeValues().GetByLocalID("DateOfBirthField_WithSeconds");
       bocDateTimeValue.SetTime(new TimeSpan(13, 37, 42));
       Assert.That(bocDateTimeValue.GetDateTime(), Is.EqualTo(new DateTime(2008, 4, 4, 13, 37, 42)));
+
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID("DateOfCitizenship_DateOnlyType");
+      Assert.That(bocDateTimeValue.GetDateTime(), Is.EqualTo(new DateTime(2009, 5, 2, 0, 0, 0)));
     }
 
     [Test]
@@ -264,6 +267,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       bocDateTimeValue = home.DateTimeValues().GetByLocalID("DateOfBirthField_WithSeconds");
       bocDateTimeValue.SetTime(new TimeSpan(13, 37, 42));
       Assert.That(bocDateTimeValue.GetDateTimeAsString(), Is.EqualTo("04.04.2008 13:37:42"));
+
+      bocDateTimeValue = home.DateTimeValues().GetByLocalID("DateOfCitizenship_DateOnlyType");
+      Assert.That(bocDateTimeValue.GetDateTimeAsString(), Is.EqualTo("02.05.2009"));
     }
 
     [Test]
@@ -320,6 +326,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
         bocDateTimeValue.SetDateTime(withSeconds);
         Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
         Assert.That(DateTime.Parse(home.Scope.FindIdEndingWith("WithSecondsCurrentValueLabel").Text), Is.EqualTo(withSeconds));
+      }
+
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID("DateOfCitizenship_DateOnlyType");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(bocDateTimeValue);
+        bocDateTimeValue.SetDateTime(dateTime);
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That(DateTime.Parse(home.Scope.FindIdEndingWith("DateOnlyTypeLabel").Text), Is.EqualTo(dateTime.Date));
       }
     }
 
@@ -379,6 +393,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
         bocDateTimeValue.SetDate(withSeconds);
         Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
         Assert.That(DateTime.Parse(home.Scope.FindIdEndingWith("WithSecondsCurrentValueLabel").Text), Is.EqualTo(setWithSeconds));
+      }
+
+      {
+        var bocDateTimeValue = home.DateTimeValues().GetByLocalID("DateOfCitizenship_DateOnlyType");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(bocDateTimeValue);
+        bocDateTimeValue.SetDate(dateTime);
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That(DateTime.Parse(home.Scope.FindIdEndingWith("DateOnlyTypeLabel").Text), Is.EqualTo(setDateTime.Date));
       }
     }
 

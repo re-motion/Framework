@@ -20,4 +20,5 @@
   <tr><td>Current value (no auto postback):</td><td><asp:Label ID="NoAutoPostBackCurrentValueLabel" ViewStateMode="Disabled" runat="server"></asp:Label></td></tr>
   <tr><td>Current value (date-only):</td><td><asp:Label ID="DateOnlyCurrentValueLabel" ViewStateMode="Disabled" runat="server"></asp:Label></td></tr>
   <tr><td>Current value (with seconds):</td><td><asp:Label ID="WithSecondsCurrentValueLabel" ViewStateMode="Disabled" runat="server"></asp:Label></td></tr>
+  <tr><td>Current value (DateOnly data type):</td><td><asp:Label ID="DateOnlyTypeLabel" ViewStateMode="Disabled" runat="server"></asp:Label></td></tr>
 </table>

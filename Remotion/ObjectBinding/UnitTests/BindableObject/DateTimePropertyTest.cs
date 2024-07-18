@@ -51,5 +51,62 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
       Assert.That(property.Type, Is.EqualTo(DateTimeType.DateTime));
     }
+
+#if NET6_0_OR_GREATER
+    [Test]
+    public void Initialize_DateOnlyProperty ()
+    {
+      IBusinessObjectDateTimeProperty property = new DateOnlyProperty(
+          GetPropertyParameters(GetPropertyInfo(typeof(ClassWithAllDataTypes), propertyName: "DateOnly"), _businessObjectProvider));
+
+      Assert.That(property.Type, Is.EqualTo(DateTimeType.Date));
+    }
+
+    [Test]
+    public void ConvertFromNativePropertyType_DateOnlyPropertliy ()
+    {
+      var property = new DateOnlyProperty(
+          GetPropertyParameters(GetPropertyInfo(typeof(ClassWithAllDataTypes), propertyName: "DateOnly"), _businessObjectProvider));
+
+      var result = property.ConvertFromNativePropertyType(new DateOnly(2042, 4, 2));
+
+      Assert.That(result, Is.InstanceOf<DateTime>());
+      Assert.That(result, Is.EqualTo(new DateTime(2042, 4, 2)));
+    }
+
+    [Test]
+    public void ConvertFromNativePropertyType_DateOnlyPropertyWithNullValue ()
+    {
+      var property = new DateOnlyProperty(
+          GetPropertyParameters(GetPropertyInfo(typeof(ClassWithAllDataTypes), propertyName: "DateOnly"), _businessObjectProvider));
+
+      var result = property.ConvertFromNativePropertyType(null);
+
+      Assert.That(result, Is.Null);
+    }
+
+    [Test]
+    public void ConvertToNativePropertyType_DateOnlyProperty ()
+    {
+      var property = new DateOnlyProperty(
+          GetPropertyParameters(GetPropertyInfo(typeof(ClassWithAllDataTypes), propertyName: "DateOnly"), _businessObjectProvider));
+
+      var result = property.ConvertToNativePropertyType(new DateTime(2042, 4, 2, 13, 34, 20));
+
+      Assert.That(result, Is.InstanceOf<DateOnly>());
+      Assert.That(result, Is.EqualTo(new DateOnly(2042, 4, 2)));
+    }
+
+    [Test]
+    public void ConvertToNativePropertyType_DateOnlyPropertyWithNullValue ()
+    {
+      var property = new DateOnlyProperty(
+          GetPropertyParameters(GetPropertyInfo(typeof(ClassWithAllDataTypes), propertyName: "DateOnly"), _businessObjectProvider));
+
+      var result = property.ConvertToNativePropertyType(null);
+
+      Assert.That(result, Is.Null);
+    }
+#endif
   }
 }
