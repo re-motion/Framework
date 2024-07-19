@@ -32,7 +32,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'false'">
+  <ItemGroup>
     <ProjectReference Include="..\..\Development\UnitTesting.IsolatedCodeRunner\Development.UnitTesting.IsolatedCodeRunner.csproj" />
   </ItemGroup>
   <!-- BEGIN: ensure that required DLLs available in output directory for IsolatedCodeRunner to work correctly.
@@ -42,17 +42,17 @@
 
        NOTE: If the versions do not intersect, the file is always copied locally. This is the reason why no workaround is needed for .NET 6.
   -->
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'false'">
+  <ItemGroup>
     <PackageReference Include="System.CodeDom" GeneratePathProperty="true" />
     <PackageReference Include="System.Configuration.ConfigurationManager" GeneratePathProperty="true" />
   </ItemGroup>
   <Target Name="CopySystemConfigurationConfigurationManager" AfterTargets="ResolveAssemblyReferences" Condition="'$(PkgSystem_Configuration_ConfigurationManager)' != ''">
-    <ItemGroup Condition="'$(IsDotNetFramework)' == 'false'">
+    <ItemGroup>
       <ReferenceCopyLocalPaths Include="$(PkgSystem_Configuration_ConfigurationManager)/lib/net8.0/System.Configuration.ConfigurationManager.dll"/>
     </ItemGroup>
   </Target>
   <Target Name="CopySystemCodeDom" AfterTargets="ResolveAssemblyReferences" Condition="'$(PkgSystem_CodeDom)' != ''">
-    <ItemGroup Condition="'$(IsDotNetFramework)' == 'false'">
+    <ItemGroup>
       <ReferenceCopyLocalPaths Include="$(PkgSystem_CodeDom)/lib/net8.0/System.CodeDom.dll"/>
     </ItemGroup>
   </Target>

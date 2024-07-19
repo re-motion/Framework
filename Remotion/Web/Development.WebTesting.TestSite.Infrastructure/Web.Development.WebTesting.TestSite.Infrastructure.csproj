@@ -24,8 +24,5 @@
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\Core\Web.Core.csproj" />
   </ItemGroup>
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
-    <PackageReference Include="System.Text.Json" />
-  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

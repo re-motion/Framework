@@ -5,10 +5,9 @@
     <NoWarn>1591</NoWarn>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <IsPackable>True</IsPackable>
-    <TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
     <DefineConstants>$(DefineConstants);JETBRAINS_ANNOTATIONS;</DefineConstants>
-    <Nullable Condition="'$(IsDotNetFramework)' == 'true'">annotations</Nullable>
-    <Nullable Condition="'$(IsDotNetFramework)' == 'false'">enable</Nullable>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

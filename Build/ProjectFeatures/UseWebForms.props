@@ -1,15 +1,9 @@
 <Project>
 
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'false'">
+  <ItemGroup>
     <PackageReference Include="CoreForms.Web" />
     <PackageReference Include="CoreForms.Web.Extensions" />
     <PackageReference Include="CoreForms.Web.Services" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Services" />
   </ItemGroup>
 
 </Project>

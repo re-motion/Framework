@@ -9,9 +9,6 @@
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <Nullable>disable</Nullable>
   </PropertyGroup>
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />

@@ -16,8 +16,5 @@
     <ProjectReference Include="..\..\Web\Development.WebTesting\Web.Development.WebTesting.csproj" />
     <ProjectReference Include="..\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj" />
   </ItemGroup>
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
-    <PackageReference Include="System.Text.Json" />
-  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

@@ -13,8 +13,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Configuration.ConfigurationManager" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'false'">
     <PackageReference Include="System.Data.SqlClient" />
   </ItemGroup>
   <Import Project="..\..\Build\Shared.build.targets" />

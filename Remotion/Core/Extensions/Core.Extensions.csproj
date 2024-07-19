@@ -19,9 +19,5 @@
     <ProjectReference Include="..\Core\Core.Core.csproj" />
     <ProjectReference Include="..\Reflection\Core.Reflection.csproj" />
   </ItemGroup>
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Transactions" />
-  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

@@ -26,13 +26,8 @@
     <PackageReference Include="log4net" />
     <PackageReference Include="Selenium.Support" />
     <PackageReference Include="Selenium.WebDriver" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'false'">
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
-    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\SharedSource\Core\Utilities\ArgumentUtility.cs" Link="SharedSource\Utilities\ArgumentUtility.cs" />
