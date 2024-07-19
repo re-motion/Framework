@@ -106,12 +106,10 @@ class Build : RemotionBuild
     projects.AddReleaseProject("Development.Data");
     projects.AddReleaseProject("Development.Mixins");
     projects.AddReleaseProject("Development.Web");
-    projects.AddReleaseProject("Development.Sandboxing.NUnit2");
     projects.AddReleaseProject("Development.UnitTesting.Compilation");
     projects.AddReleaseProject("Development.UnitTesting.IsolatedCodeRunner");
     projects.AddUnitTestProject("Development.UnitTests", normalTestConfiguration);
     projects.AddUnitTestProject("Development.Moq.UnitTests", normalTestConfiguration);
-    projects.AddUnitTestProject("Development.Sandboxing.NUnit2.UnitTests", normalTestConfiguration);
     projects.AddUnitTestProject("Development.UnitTesting.IsolatedCodeRunner.UnitTests", normalTestConfiguration);
     projects.AddReleaseProject("Mixins.Core");
     projects.AddReleaseProject("Mixins.CrossReferencer");
