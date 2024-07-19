@@ -330,8 +330,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Test.Shared", "Remotion
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mixins.MixerTools.UnitTests", "Remotion\Mixins\MixerTools.UnitTests\Mixins.MixerTools.UnitTests.csproj", "{F1BC7876-2782-4B4E-AC69-B39042F86D9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Test.NetFramework", "Remotion\Web\Test.NetFramework\Web.Test.NetFramework.csproj", "{BECC37C8-FA47-4B2B-B5BE-7432C97CC716}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Development.WebTesting.TestSite.Shared", "Remotion\ObjectBinding\Web.Development.WebTesting.TestSite.Shared\ObjectBinding.Web.Development.WebTesting.TestSite.Shared.csproj", "{2AFB52EA-5D1C-4F1A-B564-22B99D118A82}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Development.WebTesting.TestSite.NetFramework", "Remotion\ObjectBinding\Web.Development.WebTesting.TestSite.NetFramework\ObjectBinding.Web.Development.WebTesting.TestSite.NetFramework.csproj", "{EED60950-410B-4D21-A60A-96AFE0422381}"
@@ -1364,14 +1362,6 @@ Global
 		{F1BC7876-2782-4B4E-AC69-B39042F86D9D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F1BC7876-2782-4B4E-AC69-B39042F86D9D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F1BC7876-2782-4B4E-AC69-B39042F86D9D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{BECC37C8-FA47-4B2B-B5BE-7432C97CC716}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BECC37C8-FA47-4B2B-B5BE-7432C97CC716}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BECC37C8-FA47-4B2B-B5BE-7432C97CC716}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{BECC37C8-FA47-4B2B-B5BE-7432C97CC716}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{BECC37C8-FA47-4B2B-B5BE-7432C97CC716}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BECC37C8-FA47-4B2B-B5BE-7432C97CC716}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BECC37C8-FA47-4B2B-B5BE-7432C97CC716}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{BECC37C8-FA47-4B2B-B5BE-7432C97CC716}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{2AFB52EA-5D1C-4F1A-B564-22B99D118A82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2AFB52EA-5D1C-4F1A-B564-22B99D118A82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2AFB52EA-5D1C-4F1A-B564-22B99D118A82}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -1641,7 +1631,6 @@ Global
 		{F49B0545-2AD6-401E-8DB9-F11A3E01C07B} = {9F4D90EC-6AD2-495D-BFC3-270DC15974DD}
 		{C3639187-F24D-4F9E-9C02-B1BF911A035A} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 		{F1BC7876-2782-4B4E-AC69-B39042F86D9D} = {5D41A27E-2DB6-4BFB-B65E-CE4344369B88}
-		{BECC37C8-FA47-4B2B-B5BE-7432C97CC716} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
 		{2AFB52EA-5D1C-4F1A-B564-22B99D118A82} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
 		{EED60950-410B-4D21-A60A-96AFE0422381} = {72195525-BF6C-43D6-AC96-39E34D02EA34}
 		{20E931B4-FE85-4909-95EF-2E312FE4A167} = {2E32EB1E-B3AA-4ACF-BA20-EC6FD44CC05B}
