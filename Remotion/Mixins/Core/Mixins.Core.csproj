@@ -19,7 +19,6 @@
   <ItemGroup>
     <Compile Include="..\..\..\SharedSource\Core\Collections\*.cs" Link="SharedSource\Collections\%(Filename)%(Extension)" />
     <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\*.cs" Link="SharedSource\ReSharperAnnotations\%(Filename)%(Extension)" />
-    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Remove="JetBrains.Annotations" />

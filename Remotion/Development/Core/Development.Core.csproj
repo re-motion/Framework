@@ -15,7 +15,6 @@
     <Compile Include="..\..\..\SharedSource\Development\UnitTesting\**\*"
              Link="SharedSource\UnitTesting\%(RecursiveDir)%(Filename)%(Extension)"
              Exclude="**\NUnit\**" />
-    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Tools\Core.Tools.csproj" />

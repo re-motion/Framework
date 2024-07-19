@@ -15,7 +15,6 @@
     <Compile Include="..\..\..\SharedSource\Core\Reflection\*.cs" Link="SharedSource\Reflection\%(Filename)%(Extension)" />
     <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\*.cs" Link="SharedSource\ReSharperAnnotations\%(Filename)%(Extension)" />
     <Compile Include="..\..\..\SharedSource\Core\Utilities\*.cs" Link="SharedSource\Utilities\%(Filename)%(Extension).cs" />
-    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="log4net" />
