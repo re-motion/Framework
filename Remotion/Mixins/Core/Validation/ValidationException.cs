@@ -29,17 +29,8 @@ namespace Remotion.Mixins.Validation
   [Serializable]
   public class ValidationException : Exception
   {
-    private readonly SerializableValidationLogData? _serializableValidationLogData;
-
-    public SerializableValidationLogData? ValidationLogData
-    {
-      get { return _serializableValidationLogData; }
-    }
-
     private static string BuildExceptionString (ValidationLogData data)
     {
-      ArgumentUtility.CheckNotNull("data", data);
-
       var sb = new StringBuilder("Some parts of the mixin configuration could not be validated.");
       foreach (ValidationResult item in data.GetResults())
       {
@@ -81,15 +72,29 @@ namespace Remotion.Mixins.Validation
       }
     }
 
+    public int NumberOfRulesExecuted { get; }
+
+    public int NumberOfUnexpectedExceptions { get; }
+
+    public int NumberOfFailures { get; }
+
+    public int NumberOfWarnings { get; }
+
+    public int NumberOfSuccesses { get; }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ValidationException"/> class and creates a descriptive message from the validation log.
     /// </summary>
     /// <param name="validationLogData">The validation log data.</param>
     /// <exception cref="ArgumentNullException">The log is empty.</exception>
     public ValidationException (ValidationLogData validationLogData)
-        : base(BuildExceptionString(validationLogData))
+        : base(BuildExceptionString(ArgumentUtility.CheckNotNull("validationLogData", validationLogData)))
     {
-      _serializableValidationLogData = validationLogData.MakeSerializable();
+      NumberOfFailures = validationLogData.GetNumberOfFailures();
+      NumberOfRulesExecuted = validationLogData.GetNumberOfRulesExecuted();
+      NumberOfSuccesses = validationLogData.GetNumberOfSuccesses();
+      NumberOfUnexpectedExceptions = validationLogData.GetNumberOfUnexpectedExceptions();
+      NumberOfWarnings = validationLogData.GetNumberOfWarnings();
     }
 
     /// <summary>
