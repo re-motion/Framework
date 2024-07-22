@@ -49,5 +49,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
     IDataManagementCommand CreateUnloadCommand (params ObjectID[] objectIDs);
     IDataManagementCommand CreateUnloadVirtualEndPointsCommand (params RelationEndPointID[] endPointIDs);
     IDataManagementCommand CreateUnloadAllCommand ();
+    IDataManagementCommand CreateUnloadFilteredDomainObjectsCommand (Predicate<DomainObject> domainObjectFilter);
   }
 }

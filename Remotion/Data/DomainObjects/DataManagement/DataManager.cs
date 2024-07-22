@@ -444,6 +444,19 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return new UnloadAllCommand(_relationEndPointManager, _dataContainerMap, _invalidDomainObjectManager, _transactionEventSink);
     }
 
+    public IDataManagementCommand CreateUnloadFilteredDomainObjectsCommand (Predicate<DomainObject> domainObjectFilter)
+    {
+      ArgumentUtility.CheckNotNull("domainObjectFilter", domainObjectFilter);
+
+      return new UnloadFilteredDomainObjectsCommand(
+          _dataContainerMap,
+          _invalidDomainObjectManager,
+          //TODO RM-8240: refactor UnloadFilteredDomainObjectsCommand to move relation endpoint unloading to separate command created by RelationEndPointManager
+          (RelationEndPointMap)_relationEndPointManager.RelationEndPoints,
+          _transactionEventSink,
+          domainObjectFilter);
+    }
+
     private ClientTransactionsDifferException CreateClientTransactionsDifferException (string message, params object?[] args)
     {
       return new ClientTransactionsDifferException(String.Format(message, args));

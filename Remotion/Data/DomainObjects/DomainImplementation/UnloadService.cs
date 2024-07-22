@@ -281,6 +281,16 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
       executor.ExecuteCommandForTransactionHierarchy(clientTransaction);
     }
 
+    public static void UnloadFiltered (ClientTransaction clientTransaction, Predicate<DomainObject> domainObjectFilter)
+    {
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("domainObjectFilter", domainObjectFilter);
+
+      Func<ClientTransaction, IDataManagementCommand> commandFactory = tx => tx.DataManager.CreateUnloadFilteredDomainObjectsCommand(domainObjectFilter);
+      var executor = new TransactionHierarchyCommandExecutor(commandFactory);
+      executor.ExecuteCommandForTransactionHierarchy(clientTransaction);
+    }
+
     private static void CheckVirtualEndPointID (RelationEndPointID endPointID)
     {
       if (!endPointID.Definition.IsVirtual)
