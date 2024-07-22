@@ -43,28 +43,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="customRootAssemblyFinder" minOccurs="0">
-          <xs:complexType>
-            <xs:attribute name="type" use="required" type="c:DotNetType"/>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="customTypeDiscoveryService" minOccurs="0">
-          <xs:complexType>
-            <xs:attribute name="type" use="required" type="c:DotNetType"/>
-          </xs:complexType>
-        </xs:element>
       </xs:choice>
-
-      <xs:attribute name="mode" default="Automatic" use="optional">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="Automatic"/>
-            <xs:enumeration value="CustomRootAssemblyFinder"/>
-            <xs:enumeration value="SpecificRootAssemblies"/>
-            <xs:enumeration value="CustomTypeDiscoveryService"/>
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:attribute>
     </xs:complexType>
   </xs:element>
 
@@ -72,31 +51,6 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="true"/>
       <xs:enumeration value="false"/>
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="DotNetType">
-    <xs:restriction base="c:RequiredStringType">
-      <!--  Class, Assembly; Namespace.Class, Assembly; Namespace.Namespace.Class, Assembly; 
-            Class+Class, Assembly; Namespace.Class+Class, Assembly; Namespace.Namespace.Class+Class, Assembly
-            Class,Assembly; Namespace.Class,Assembly; Namespace.Namespace.Class,Assembly; 
-            Class+Class,Assembly; Namespace.Class+Class,Assembly; Namespace.Namespace.Class+Class,Assembly -->
-      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*),\s?([\p{L}\d]+\.)*([\p{L}\d]+)" />
-
-      <!--  Class; Namespace.Class; Namespace.Namespace.Class; 
-            Class+Class; Namespace.Class+Class; Namespace.Namespace.Class+Class -->
-      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*)" />
-
-      <!--  Namespace::Class; Namespace.Namespace::Class; 
-            Namespace::Class+Class; Namespace::Namespace.Class+Class -->
-      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*::)(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*)" />
-    </xs:restriction>
-  </xs:simpleType>
-
-  <xs:simpleType name="RequiredStringType">
-    <xs:restriction base="xs:string">
-      <xs:minLength value="1" />
-      <xs:whiteSpace value="collapse" />
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>

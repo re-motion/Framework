@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Development.Mixins.Validation;
@@ -27,6 +28,7 @@ using Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain;
 using Remotion.Mixins.Validation;
 using Remotion.Mixins.Validation.Rules;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Mixins.UnitTests.Core.Validation
 {
@@ -40,9 +42,10 @@ namespace Remotion.Mixins.UnitTests.Core.Validation
     {
       var validationTestDomainNamespace = typeof(AbstractMixinWithoutBase).Namespace;
       var globalTestDomainNamespace = typeof(BaseType1).Namespace;
-      var typeDiscoveryService = FilteringTypeDiscoveryService.CreateFromNamespaceWhitelist(
-          ContextAwareTypeUtility.GetTypeDiscoveryService(), validationTestDomainNamespace, globalTestDomainNamespace);
-      var types = typeDiscoveryService.GetTypes(null, false);
+      var typeDiscoveryService = SafeServiceLocator.Current.GetInstance<ITypeDiscoveryService>();
+      var filteringTypeDiscoveryService = FilteringTypeDiscoveryService.CreateFromNamespaceWhitelist(
+          typeDiscoveryService, validationTestDomainNamespace, globalTestDomainNamespace);
+      var types = filteringTypeDiscoveryService.GetTypes(null, false);
       _configurationScope = DeclarativeConfigurationBuilder.BuildConfigurationFromTypes(null, types.Cast<Type>()).EnterScope();
     }
 

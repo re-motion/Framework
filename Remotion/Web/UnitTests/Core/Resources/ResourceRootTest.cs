@@ -10,7 +10,7 @@ namespace Remotion.Web.UnitTests.Core.Resources
     [Test]
     public void GetInstance_Once ()
     {
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
 
       var factory = serviceLocator.GetInstance<ResourceRoot>();
 
@@ -21,7 +21,7 @@ namespace Remotion.Web.UnitTests.Core.Resources
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
 
       var factory1 = serviceLocator.GetInstance<ResourceRoot>();
       var factory2 = serviceLocator.GetInstance<ResourceRoot>();

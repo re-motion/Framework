@@ -82,7 +82,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
       UrlMappingConfiguration.SetCurrent(null!);
 
       var fileFinder = BaseDirectoryBasedUrlMappingFileFinder.Create(@"Res\UrlMapping.xml");
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle<IUrlMappingFileFinder>(() => fileFinder);
       using var _ = new ServiceLocatorScope(serviceLocator);
 

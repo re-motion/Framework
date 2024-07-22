@@ -28,7 +28,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     }
 
     [Test]

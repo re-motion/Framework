@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
       {
         var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer(TestDomainConnectionString);
 
-        var defaultServiceLocator = DefaultServiceLocator.Create();
+        var defaultServiceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
         defaultServiceLocator.RegisterSingle(() => storageSettingsFactory);
 
         ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);

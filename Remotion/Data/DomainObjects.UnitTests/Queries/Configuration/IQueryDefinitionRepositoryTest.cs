@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     {
       base.SetUp();
 
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     }
 
     [Test]

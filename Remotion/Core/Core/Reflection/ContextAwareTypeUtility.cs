@@ -16,9 +16,7 @@
 // 
 using System;
 using System.ComponentModel.Design;
-using System.Threading;
-using Remotion.Configuration.TypeDiscovery;
-using Remotion.Configuration.TypeResolution;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Reflection
 {
@@ -29,46 +27,26 @@ namespace Remotion.Reflection
   /// <threadsafety static="true" instance="false"/>
   public static class ContextAwareTypeUtility
   {
-    /// <summary>Workaround to allow reflection to reset the fields since setting a static readonly field is not supported in .NET 3.0 and later.</summary>
-    private class Fields
-    {
-      public readonly Lazy<ITypeDiscoveryService> DefaultTypeDiscoveryService =
-          new Lazy<ITypeDiscoveryService>(
-              () => TypeDiscoveryConfiguration.Current.CreateTypeDiscoveryService(),
-              LazyThreadSafetyMode.ExecutionAndPublication);
-
-      public readonly Lazy<ITypeResolutionService> DefaultTypeResolutionService =
-          new Lazy<ITypeResolutionService>(
-              () => TypeResolutionConfiguration.Current.CreateTypeResolutionService(),
-              LazyThreadSafetyMode.ExecutionAndPublication);
-    }
-
-    private static readonly Fields s_fields = new Fields();
-
     /// <summary>
-    /// Gets the current context-specific <see cref="ITypeDiscoveryService"/>. If an <see cref="T:System.ComponentModel.Design.IDesignerHost"/> is available,
-    /// the designer's <see cref="ITypeDiscoveryService"/> is returned. Otherwise, the <see cref="T:Remotion.Configuration.TypeDiscovery.TypeDiscoveryConfiguration"/> 
-    /// is used to create a new  <see cref="ITypeDiscoveryService"/> when the property is first retrieved. That instance is stored for later uses.
+    /// Gets the current context-specific <see cref="ITypeDiscoveryService"/>.
     /// </summary>
-    /// <returns>The current context-specific <see cref="ITypeDiscoveryService"/>.</returns>
+    [Obsolete("Retrieve via the application's IoC container, e.g. SafeServiceLocator.Current.GetInstance<ITypeDiscoveryService>(). (Version 6.0.0)")]
     public static ITypeDiscoveryService GetTypeDiscoveryService ()
     {
       // Here you could choose to get the ITypeDiscoveryService from IDesignerHost.GetService (typeof (ITypeDiscoveryService)) instead of the resolved one.
 
-      return s_fields.DefaultTypeDiscoveryService.Value;
+      return SafeServiceLocator.Current.GetInstance<ITypeDiscoveryService>();
     }
 
     /// <summary>
-    /// Gets the current context-specific <see cref="ITypeResolutionService"/>. If an <see cref="T:System.ComponentModel.Design.IDesignerHost"/> is available,
-    /// the designer's <see cref="ITypeResolutionService"/> is returned. Otherwise, the <see cref="T:Remotion.Configuration.TypeDiscovery.TypeDiscoveryConfiguration"/> 
-    /// is used to create a new  <see cref="ITypeResolutionService"/> when the property is first retrieved. That instance is stored for later uses.
+    /// Gets the <see cref="ITypeResolutionService"/> from the <see cref="SafeServiceLocator"/>.
     /// </summary>
-    /// <returns>The current context-specific <see cref="ITypeResolutionService"/>.</returns>
+    [Obsolete("Retrieve via the application's IoC container, e.g. SafeServiceLocator.Current.GetInstance<ITypeResolutionService>(). (Version 6.0.0)")]
     public static ITypeResolutionService GetTypeResolutionService ()
     {
       // Here you could choose to get the ITypeResolutionService from IDesignerHost.GetService (typeof (ITypeResolutionService)) instead of the resolved one.
 
-      return s_fields.DefaultTypeResolutionService.Value;
+      return SafeServiceLocator.Current.GetInstance<ITypeResolutionService>();
     }
   }
 }

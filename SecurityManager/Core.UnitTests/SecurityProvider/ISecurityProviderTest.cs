@@ -30,7 +30,7 @@ namespace Remotion.SecurityManager.UnitTests.SecurityProvider
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     }
 
     [Test]

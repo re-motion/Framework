@@ -50,9 +50,10 @@ namespace Remotion.ServiceLocation
 
     private readonly bool _excludeGlobalTypesForDefaultConfiguration = !AssemblyTypeCache.IsGacAssembly(typeof(ImplementationForAttribute).Assembly);
 
+    [Obsolete("Use the constructor instead, and pass ContextAwareTypeUtility.GetTypeDiscoveryService() as parameter. (Version 6.0.0)", true)]
     public static DefaultServiceConfigurationDiscoveryService Create ()
     {
-      return new DefaultServiceConfigurationDiscoveryService(ContextAwareTypeUtility.GetTypeDiscoveryService());
+      throw new NotSupportedException("Use the constructor instead, and pass ContextAwareTypeUtility.GetTypeDiscoveryService() as parameter. (Version 6.0.0)");
     }
 
     public DefaultServiceConfigurationDiscoveryService (ITypeDiscoveryService typeDiscoveryService)

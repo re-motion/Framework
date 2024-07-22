@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel.Design;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
@@ -27,27 +28,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.ServiceLocation
   [TestFixture]
   public class ParticipantRegistrationTest
   {
+    private DefaultServiceLocator _serviceLocator;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
+    }
+
     [Test]
     public void DefaultServiceLocator_ReturnsDomainObjectParticipant ()
     {
-      var serviceLocator = DefaultServiceLocator.Create();
-      var participants = serviceLocator.GetAllInstances<IParticipant>().ToArray();
+      var participants = _serviceLocator.GetAllInstances<IParticipant>().ToArray();
       Assert.That(participants.Select(p => p.GetType()), Has.Member(typeof(DomainObjectParticipant)));
     }
 
     [Test]
     public void DefaultServiceLocator_OrdersDomainObjectParticipantAfterMixinParticipant ()
     {
-      var serviceLocator = DefaultServiceLocator.Create();
-      var participants = serviceLocator.GetAllInstances<IParticipant>().ToArray();
+      var participants = _serviceLocator.GetAllInstances<IParticipant>().ToArray();
       Assert.That(participants.Select(p => p.GetType()), Is.EqualTo(new[] { typeof(MixinParticipant), typeof(DomainObjectParticipant) }));
     }
 
     [Test]
     public void DefaultServiceConfigurationDiscoveryService_ReturnsDomainObjectParticipant ()
     {
-      var discoveryService = DefaultServiceConfigurationDiscoveryService.Create();
-      var services = discoveryService.GetDefaultConfiguration();
+      var typeDiscoveryService = _serviceLocator.GetInstance<ITypeDiscoveryService>();
+      var defaultServiceConfigurationDiscoveryService = new DefaultServiceConfigurationDiscoveryService(typeDiscoveryService);
+      var services = defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration();
       var participantService = services.SingleOrDefault(s => s.ServiceType == typeof(IParticipant));
 
       Assert.That(participantService, Is.Not.Null);
@@ -55,10 +63,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.ServiceLocation
     }
 
     [Test]
-    public void DefaultServiceConfigurationDiscoveryService_ReturnsMixinParticpant ()
+    public void DefaultServiceConfigurationDiscoveryService_ReturnsMixinParticipant ()
     {
-      var discoveryService = DefaultServiceConfigurationDiscoveryService.Create();
-      var services = discoveryService.GetDefaultConfiguration();
+      var typeDiscoveryService = _serviceLocator.GetInstance<ITypeDiscoveryService>();
+      var defaultServiceConfigurationDiscoveryService = new DefaultServiceConfigurationDiscoveryService(typeDiscoveryService);
+      var services = defaultServiceConfigurationDiscoveryService.GetDefaultConfiguration();
       var participantService = services.SingleOrDefault(s => s.ServiceType == typeof(IParticipant));
 
       Assert.That(participantService, Is.Not.Null);

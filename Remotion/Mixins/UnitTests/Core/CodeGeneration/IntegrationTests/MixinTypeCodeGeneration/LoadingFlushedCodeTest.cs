@@ -39,7 +39,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
       // Use a dedicated pipeline to ensure that this test does not interfere with other tests.
       _savedPipeline = CreatePipeline();
       var pipelineRegistry = new DefaultPipelineRegistry(_savedPipeline);
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle<IPipelineRegistry>(() => pipelineRegistry);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 

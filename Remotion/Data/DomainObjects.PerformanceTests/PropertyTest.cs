@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle<IBindablePropertyReadAccessStrategy>(() => bindablePropertyReadAccessStrategy);
       serviceLocator.RegisterSingle<IBindablePropertyWriteAccessStrategy>(() => bindablePropertyWriteAccessStrategy);
       serviceLocator.RegisterSingle(() => storageSettings);

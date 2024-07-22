@@ -28,7 +28,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void GetInstance_TypeWithGenericServiceInterface ()
     {
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
 
       Assert.That(serviceLocator.GetInstance(typeof(ITestOpenGenericService<int>)), Is.TypeOf(typeof(TestOpenGenericIntImplementation)));
       Assert.That(serviceLocator.GetInstance(typeof(ITestOpenGenericService<string>)), Is.TypeOf(typeof(TestOpenGenericStringImplementation)));

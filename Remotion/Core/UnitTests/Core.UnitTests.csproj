@@ -46,6 +46,9 @@
     <PackageReference Include="System.CodeDom" GeneratePathProperty="true" />
     <PackageReference Include="System.Configuration.ConfigurationManager" GeneratePathProperty="true" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Configuration\TypeDiscovery\IntegrationTests\" />
+  </ItemGroup>
   <Target Name="CopySystemConfigurationConfigurationManager" AfterTargets="ResolveAssemblyReferences" Condition="'$(PkgSystem_Configuration_ConfigurationManager)' != ''">
     <ItemGroup Condition="'$(IsDotNetFramework)' == 'false'">
       <ReferenceCopyLocalPaths Include="$(PkgSystem_Configuration_ConfigurationManager)/lib/net8.0/System.Configuration.ConfigurationManager.dll"/>

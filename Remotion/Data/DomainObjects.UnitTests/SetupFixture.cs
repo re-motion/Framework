@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       StandardConfiguration.EnsureInitialized();
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       StandardConfiguration.Instance.Register(serviceLocator);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 

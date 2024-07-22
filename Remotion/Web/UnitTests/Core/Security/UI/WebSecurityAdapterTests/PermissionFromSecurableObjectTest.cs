@@ -39,7 +39,7 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
 
       _testHelper = new WebPermissionProviderTestHelper();
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle(() => _testHelper.SecurityProvider);
       serviceLocator.RegisterSingle(() => _testHelper.PrincipalProvider);
       serviceLocator.RegisterSingle(() => _testHelper.FunctionalSecurityStrategy);

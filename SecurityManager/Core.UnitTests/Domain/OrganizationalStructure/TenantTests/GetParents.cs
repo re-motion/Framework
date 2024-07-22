@@ -155,7 +155,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
           .Setup(stub => stub.GetAccess(grandParent1SecurityContext, It.IsAny<ISecurityPrincipal>()))
           .Returns(new AccessType[0]);
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle(() => securityProviderStub.Object);
       serviceLocator.RegisterSingle<IPrincipalProvider>(() => new NullPrincipalProvider());
       using (new ServiceLocatorScope(serviceLocator))
@@ -179,7 +179,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
           .Setup(stub => stub.GetAccess(It.IsAny<SecurityContext>(), It.IsAny<ISecurityPrincipal>()))
           .Returns(new AccessType[0]);
 
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterSingle(() => securityProviderStub.Object);
       serviceLocator.RegisterSingle<IPrincipalProvider>(() => new NullPrincipalProvider());
       using (new ServiceLocatorScope(serviceLocator))

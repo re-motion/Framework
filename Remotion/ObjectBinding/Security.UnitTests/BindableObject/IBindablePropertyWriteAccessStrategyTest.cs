@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     }
 
     [Test]

@@ -33,36 +33,6 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   [ImplementationFor(typeof(IMappingLoader), Lifetime = LifetimeKind.Singleton)]
   public class MappingReflector : IMappingLoader
   {
-    public static MappingReflector Create (
-        ITypeDiscoveryService typeDiscoveryService,
-        IClassIDProvider classIDProvider,
-        IMemberInformationNameResolver nameResolver,
-        IPropertyMetadataProvider propertyMetadataProvider,
-        IDomainModelConstraintProvider domainModelConstraintProvider,
-        IPropertyDefaultValueProvider propertyDefaultValueProvider,
-        ISortExpressionDefinitionProvider sortExpressionDefinitionProvider,
-        IDomainObjectCreator domainObjectCreator)
-    {
-      ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
-      ArgumentUtility.CheckNotNull("classIDProvider", classIDProvider);
-      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
-      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull("propertyDefaultValueProvider", propertyDefaultValueProvider);
-      ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
-      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
-      ArgumentUtility.CheckNotNull("domainObjectCreator", domainObjectCreator);
-
-      return new MappingReflector(
-          typeDiscoveryService,
-          classIDProvider,
-          nameResolver,
-          propertyMetadataProvider,
-          domainModelConstraintProvider,
-          propertyDefaultValueProvider,
-          sortExpressionDefinitionProvider,
-          domainObjectCreator);
-    }
-
     private static readonly ILog s_log = LogManager.GetLogger(typeof(MappingReflector));
     private readonly IMemberInformationNameResolver _nameResolver;
     private readonly IMappingObjectFactory _mappingObjectFactory;
@@ -74,26 +44,6 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     private readonly IPropertyDefaultValueProvider _propertyDefaultValueProvider;
 
     public MappingReflector (
-        IClassIDProvider classIDProvider,
-        IMemberInformationNameResolver nameResolver,
-        IPropertyMetadataProvider propertyMetadataProvider,
-        IDomainModelConstraintProvider domainModelConstraintProvider,
-        IPropertyDefaultValueProvider propertyDefaultValueProvider,
-        ISortExpressionDefinitionProvider sortExpressionDefinitionProvider,
-        IDomainObjectCreator domainObjectCreator)
-        : this(
-            ContextAwareTypeUtility.GetTypeDiscoveryService(),
-            classIDProvider,
-            nameResolver,
-            propertyMetadataProvider,
-            domainModelConstraintProvider,
-            propertyDefaultValueProvider,
-            sortExpressionDefinitionProvider,
-            domainObjectCreator)
-    {
-    }
-
-    private MappingReflector (
         ITypeDiscoveryService typeDiscoveryService,
         IClassIDProvider classIDProvider,
         IMemberInformationNameResolver nameResolver,

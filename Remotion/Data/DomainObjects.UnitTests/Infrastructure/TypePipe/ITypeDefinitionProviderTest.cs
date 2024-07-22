@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
     }
 
     [Test]

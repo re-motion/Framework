@@ -20,7 +20,7 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void SerializeAndDeserializeReturnsSameInstance ()
     {
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.Register(
           new ServiceConfigurationEntry(
               typeof(IValidatorBuilder),

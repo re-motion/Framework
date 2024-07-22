@@ -16,8 +16,9 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
-using Remotion.Logging;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -61,23 +62,34 @@ namespace Remotion.ServiceLocation
   /// <threadsafety static="true" instance="true" />
   public sealed partial class DefaultServiceLocator : IServiceLocator
   {
-    private readonly IServiceConfigurationDiscoveryService _serviceConfigurationDiscoveryService;
+    [Obsolete("Use DefaultServiceLocator.CreateWithBootstrappedServices() instead. (Version 6.0.0)")]
+    public static DefaultServiceLocator Create () => CreateWithBootstrappedServices();
 
-    public static DefaultServiceLocator Create ()
+    public static DefaultServiceLocator CreateWithBootstrappedServices ()
     {
-      return new DefaultServiceLocator(DefaultServiceConfigurationDiscoveryService.Create());
+      var bootstrapServiceLocatorEntries = SafeServiceLocator.BootstrapConfiguration.GetRegistrations();
+
+      var provider = new DefaultServiceLocatorProvider(new BootstrapServiceConfigurationDiscoveryService());
+      var bootstrapServiceLocator = provider.GetServiceLocator(bootstrapServiceLocatorEntries);
+      var typeDiscoveryService = bootstrapServiceLocator.GetInstance<ITypeDiscoveryService>();
+
+      var defaultServiceLocator = new DefaultServiceLocator(new DefaultServiceConfigurationDiscoveryService(typeDiscoveryService));
+      foreach (var serviceConfigurationEntry in bootstrapServiceLocatorEntries)
+        defaultServiceLocator.Register(serviceConfigurationEntry);
+
+      return defaultServiceLocator;
     }
+
+    public IServiceConfigurationDiscoveryService ServiceConfigurationDiscoveryService { get; }
 
     public DefaultServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService)
     {
       ArgumentUtility.CheckNotNull("serviceConfigurationDiscoveryService", serviceConfigurationDiscoveryService);
 
-      _serviceConfigurationDiscoveryService = serviceConfigurationDiscoveryService;
+      ServiceConfigurationDiscoveryService = serviceConfigurationDiscoveryService;
 
       // Optimized for memory allocations
       _createRegistrationFromTypeFunc = CreateRegistrationFromType;
-
-      Register(new ServiceConfigurationEntry(typeof(ILogManager), new ServiceImplementationInfo(typeof(Log4NetLogManager), LifetimeKind.Singleton)));
     }
 
     /// <summary>
@@ -203,16 +215,16 @@ namespace Remotion.ServiceLocation
       if (registration.CompoundFactory != null)
         return InvokeInstanceFactoryWithActivationException(registration.CompoundFactory, serviceType);
 
-      if (registration.SingleFactory == null && registration.MultipleFactories.Any())
+      if (registration.SingleFactory != null)
+        return InvokeInstanceFactoryWithActivationException(registration.SingleFactory, serviceType);
+
+      if (registration.SingleFactory == null && registration.MultipleFactories.Count > 0)
       {
         throw new ActivationException(
             string.Format(
                 "Multiple implementations are configured for service type '{0}'. Use GetAllInstances() to retrieve the implementations.",
                 serviceType));
       }
-
-      if (registration.SingleFactory != null)
-        return InvokeInstanceFactoryWithActivationException(registration.SingleFactory, serviceType);
 
       return null;
     }

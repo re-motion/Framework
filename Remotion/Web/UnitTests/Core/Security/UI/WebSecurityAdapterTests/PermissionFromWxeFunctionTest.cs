@@ -38,7 +38,7 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
       _securityAdapter = new WebSecurityAdapter();
 
       _testHelper = new WebPermissionProviderTestHelper();
-      var serviceLocator = DefaultServiceLocator.Create();
+      var serviceLocator = DefaultServiceLocator.CreateWithBootstrappedServices();
       serviceLocator.RegisterMultiple<IWebSecurityAdapter>();
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>(() => _testHelper.WxeSecurityAdapter);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
