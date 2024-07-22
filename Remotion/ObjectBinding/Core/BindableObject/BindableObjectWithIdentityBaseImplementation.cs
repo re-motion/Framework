@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.BindableObject
     {
       ArgumentUtility.CheckNotNull("wrapper", wrapper);
       var impl = new BindableObjectWithIdentityBaseImplementation(wrapper);
-      ((IInitializableMixin)impl).Initialize(wrapper, null, false);
+      ((IInitializableMixin)impl).Initialize(wrapper, null);
       return impl;
     }
 

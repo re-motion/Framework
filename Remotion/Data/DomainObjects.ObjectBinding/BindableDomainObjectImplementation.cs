@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     {
       ArgumentUtility.CheckNotNull("wrapper", wrapper);
       var impl = new BindableDomainObjectImplementation(wrapper);
-      ((IInitializableMixin)impl).Initialize(wrapper, null, false);
+      ((IInitializableMixin)impl).Initialize(wrapper, null);
       return impl;
     }
 

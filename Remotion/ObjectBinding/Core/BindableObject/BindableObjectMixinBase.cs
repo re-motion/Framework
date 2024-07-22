@@ -124,16 +124,6 @@ namespace Remotion.ObjectBinding.BindableObject
       _bindableObjectClass = new DoubleCheckedLockingContainer<BindableObjectClass>(InitializeBindableObjectClass);
     }
 
-    protected override void OnDeserialized ()
-    {
-      base.OnDeserialized();
-
-      var typeForBindableObjectClass = GetTypeForBindableObjectClass();
-      _mixinConfigurationAtInstantiationTime = MixinConfiguration.ActiveConfiguration;
-      _bindableObjectProvider = BindableObjectProvider.GetProviderForBindableObjectType(typeForBindableObjectClass);
-      _bindableObjectClass = new DoubleCheckedLockingContainer<BindableObjectClass>(InitializeBindableObjectClass);
-    }
-
     private BindableObjectClass InitializeBindableObjectClass ()
     {
       // reactivate the mixin configuration to get the bindable object class originally expected

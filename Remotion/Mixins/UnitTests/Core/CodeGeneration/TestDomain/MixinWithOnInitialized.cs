@@ -19,13 +19,9 @@ using NUnit.Framework;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
-  [Serializable]
-  public class MixinWithOnInitializedAndOnDeserialized : Mixin<object, object>
+  public class MixinWithOnInitialized : Mixin<object, object>
   {
-    [NonSerialized]
     public bool OnInitializedCalled;
-    [NonSerialized]
-    public bool OnDeserializedCalled;
 
     protected override void OnInitialized ()
     {
@@ -33,14 +29,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
       Assert.That(Target, Is.Not.Null);
       Assert.That(Next, Is.Not.Null);
       base.OnInitialized();
-    }
-
-    protected override void OnDeserialized ()
-    {
-      OnDeserializedCalled = true;
-      Assert.That(Target, Is.Not.Null);
-      Assert.That(Next, Is.Not.Null);
-      base.OnDeserialized();
     }
   }
 }
