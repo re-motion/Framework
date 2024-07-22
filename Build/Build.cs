@@ -69,7 +69,9 @@ class Build : RemotionBuild
         Assert.FileExists(packageJsonPath);
 
         var outputFolder = ((IBaseBuild)this).OutputFolder / "Npm" / "remotion.dependencies" / "package.json";
-        FileSystemTasks.CopyFile(packageJsonPath, outputFolder);
+        var packageJsonContent = packageJsonPath.ReadAllText()
+                .Replace("$version$", ((IBuildMetadata)this).BuildMetadataPerConfiguration.First().Value.Version);
+        outputFolder.WriteAllText(packageJsonContent);
       });
 
   public override void ConfigureProjects (ProjectsBuilder projects)
