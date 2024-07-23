@@ -1223,42 +1223,5 @@ namespace Remotion.Data.DomainObjects.UnitTests
       _objectLifetimeAgentMock.Verify();
       Assert.That(result, Is.EqualTo(new[] { _fakeDomainObject1, _fakeDomainObject2 }));
     }
-
-    [Test]
-    public void Serialization ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var clientTransaction = ClientTransaction.CreateRootTransaction();
-      var subTransaction = clientTransaction.CreateSubTransaction();
-
-      var deserializedClientTransaction = Serializer.SerializeAndDeserialize(clientTransaction);
-
-      Assert.That(deserializedClientTransaction, Is.Not.Null);
-      Assert.That(deserializedClientTransaction.ParentTransaction, Is.Null);
-      Assert.That(deserializedClientTransaction.ApplicationData, Is.Not.Null);
-      Assert.That(deserializedClientTransaction.Extensions, Is.Not.Null);
-      Assert.That(ClientTransactionTestHelper.GetEventBroker(deserializedClientTransaction), Is.Not.Null);
-      Assert.That(ClientTransactionTestHelper.GetEnlistedDomainObjectManager(deserializedClientTransaction), Is.Not.Null);
-      Assert.That(ClientTransactionTestHelper.GetInvalidDomainObjectManager(deserializedClientTransaction), Is.Not.Null);
-      Assert.That(ClientTransactionTestHelper.GetIDataManager(deserializedClientTransaction), Is.Not.Null);
-      Assert.That(ClientTransactionTestHelper.GetPersistenceStrategy(deserializedClientTransaction), Is.Not.Null);
-      Assert.That(deserializedClientTransaction.QueryManager, Is.Not.Null);
-      Assert.That(ClientTransactionTestHelper.GetCommitRollbackAgent(deserializedClientTransaction), Is.Not.Null);
-      Assert.That(deserializedClientTransaction.SubTransaction, Is.Not.Null);
-      Assert.That(deserializedClientTransaction.IsDiscarded, Is.False);
-      Assert.That(deserializedClientTransaction.ID, Is.EqualTo(clientTransaction.ID));
-
-      var deserializedSubTransaction = Serializer.SerializeAndDeserialize(subTransaction);
-
-      Assert.That(deserializedSubTransaction.ParentTransaction, Is.Not.Null);
-      Assert.That(deserializedSubTransaction.SubTransaction, Is.Null);
-
-      clientTransaction.Discard();
-
-      var deserializedDiscardedTransaction = Serializer.SerializeAndDeserialize(clientTransaction);
-
-      Assert.That(deserializedDiscardedTransaction.IsDiscarded, Is.True);
-    }
   }
 }

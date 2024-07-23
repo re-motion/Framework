@@ -21,7 +21,6 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 namespace OBWTest
 {
 
-[Serializable]
 public class ViewPersonDetailsWxeFunction: WxeFunction
 {
   public ViewPersonDetailsWxeFunction ()

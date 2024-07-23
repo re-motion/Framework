@@ -21,7 +21,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Security
 {
-  [Serializable]
   public sealed class DomainObjectSecurityStrategyDecorator : IObjectSecurityStrategy
   {
     private readonly IObjectSecurityStrategy _innerStrategy;

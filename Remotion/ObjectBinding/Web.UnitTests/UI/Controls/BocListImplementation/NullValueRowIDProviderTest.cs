@@ -17,7 +17,6 @@
 using System;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 
@@ -62,13 +61,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var rowIDProvider = new NullValueRowIDProvider();
 
       Assert.That(() => rowIDProvider.RemoveRow(new BocListRow(0, CreateObject())), Throws.TypeOf<NotSupportedException>());
-    }
-
-    [Test]
-    public void SerializeAndDeserialize ()
-    {
-      var obj = new NullValueRowIDProvider();
-      Assert.That(Serializer.SerializeAndDeserialize(obj), Is.Not.SameAs(obj));
     }
 
     private IBusinessObject CreateObject ()

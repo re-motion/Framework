@@ -26,7 +26,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManagement
 {
@@ -346,16 +345,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       Assert.That(
           () => _listener.DataContainerStateUpdated(_transaction, someDataContainer, new DataContainerState.Builder().SetChanged().Value),
           Throws.TypeOf<ClientTransactionReadOnlyException>());
-    }
-
-    [Test]
-    public void Serializability ()
-    {
-      _listener.AddCurrentlyLoadingObjectIDs(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(_listener);
-
-      Assert.That(deserializedInstance.CurrentlyLoadingObjectIDs, Is.EquivalentTo(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }));
     }
 
     private void CheckForbiddenOperationWithLoadMode (TestDelegate forbiddenOperation, string specificMessage)

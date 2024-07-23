@@ -371,10 +371,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     {
       using (var stream = new MemoryStream())
       {
-        transporter.Export(stream);
+        transporter.Export(stream, new XmlExportStrategy());
         stream.Seek(0, SeekOrigin.Begin);
 
-        return DomainObjectTransporter.LoadTransportData(stream);
+        return DomainObjectTransporter.LoadTransportData(stream, new XmlImportStrategy());
       }
     }
 

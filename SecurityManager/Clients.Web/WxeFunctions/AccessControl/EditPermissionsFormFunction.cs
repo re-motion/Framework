@@ -26,7 +26,6 @@ using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.AccessControl
 {
-  [Serializable]
   public class EditPermissionsFormFunction : FormFunction<SecurableClassDefinition>
   {
     public EditPermissionsFormFunction (ITransactionMode transactionMode, [NotNull] IDomainObjectHandle<SecurableClassDefinition> currentObjectHandle)

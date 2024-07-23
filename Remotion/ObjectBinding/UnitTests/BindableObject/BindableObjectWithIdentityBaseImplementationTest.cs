@@ -37,16 +37,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    public void Deserialization ()
-    {
-      var wrapper = new ClassDerivedFromBindableObjectWithIdentityBase();
-      var mixin = BindableObjectWithIdentityBaseImplementation.Create(wrapper);
-      var deserializedData = Serializer.SerializeAndDeserialize(Tuple.Create(mixin, wrapper));
-      Assert.That(deserializedData.Item1.BusinessObjectClass, Is.Not.Null);
-      Assert.That(PrivateInvoke.GetNonPublicProperty(deserializedData.Item1, "Target"), Is.SameAs(deserializedData.Item2));
-    }
-
-    [Test]
     public void UniqueIdentifierViaImplementation ()
     {
       var instance = new ClassDerivedFromBindableObjectWithIdentityBase();

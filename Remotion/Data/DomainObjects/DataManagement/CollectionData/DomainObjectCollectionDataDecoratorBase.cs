@@ -26,7 +26,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// Provides a common base class for classes decorating a <see cref="IDomainObjectCollectionData"/> instance. If not overridden, all
   /// the methods directly delegate to an inner <see cref="WrappedData"/> object.
   /// </summary>
-  [Serializable]
   public abstract class DomainObjectCollectionDataDecoratorBase : IDomainObjectCollectionData
   {
     private IDomainObjectCollectionData _wrappedData;

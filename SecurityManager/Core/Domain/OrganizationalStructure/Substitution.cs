@@ -27,7 +27,6 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   /// The <see cref="Substitution"/> type defines the association between two <see cref="User"/>s and optionally a <see cref="Role"/> where the 
   /// <see cref="SubstitutingUser"/> can act as a stand-in for the <see cref="SubstitutedUser"/> and <see cref="SubstitutedRole"/>.
   /// </summary>
-  [Serializable]
   [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Substitution")]
   [PermanentGuid("5F3FEEE1-38E3-4ecb-AC2F-2D74AFFE3A27")]
   [Instantiable]

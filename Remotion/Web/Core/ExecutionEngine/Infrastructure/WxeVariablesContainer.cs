@@ -33,7 +33,6 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   /// <summary>
   /// Holds all variables available in a <see cref="WxeFunction"/>.
   /// </summary>
-  [Serializable]
   public class WxeVariablesContainer
   {
     private static readonly ITypeConversionProvider s_typeConversionProvider = SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>();

@@ -28,7 +28,6 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
-  [Serializable]
   public class TestableClientTransaction : ClientTransaction
   {
     public TestableClientTransaction ()

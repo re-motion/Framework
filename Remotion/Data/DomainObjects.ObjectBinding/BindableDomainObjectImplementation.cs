@@ -15,21 +15,19 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 using Remotion.Mixins;
 using Remotion.ObjectBinding;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding
 {
-  [Serializable]
-  public class BindableDomainObjectImplementation : BindableDomainObjectMixin, IDeserializationCallback, IBindableDomainObjectImplementation
+  public class BindableDomainObjectImplementation : BindableDomainObjectMixin, IBindableDomainObjectImplementation
   {
     public static BindableDomainObjectImplementation Create (BindableDomainObject wrapper)
     {
       ArgumentUtility.CheckNotNull("wrapper", wrapper);
       var impl = new BindableDomainObjectImplementation(wrapper);
-      ((IInitializableMixin)impl).Initialize(wrapper, null, false);
+      ((IInitializableMixin)impl).Initialize(wrapper, null);
       return impl;
     }
 
@@ -39,11 +37,6 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     {
       ArgumentUtility.CheckNotNull("wrapper", wrapper);
       _wrapper = wrapper;
-    }
-
-    void IDeserializationCallback.OnDeserialization (object? sender)
-    {
-      MixinTargetMockUtility.MockMixinTargetAfterDeserialization(this, _wrapper);
     }
 
     public string BaseDisplayName

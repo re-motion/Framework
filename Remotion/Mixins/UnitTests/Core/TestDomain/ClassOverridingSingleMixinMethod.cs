@@ -19,7 +19,6 @@ using System;
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   [Uses(typeof(MixinWithSingleAbstractMethod))]
-  [Serializable]
   public class ClassOverridingSingleMixinMethod
   {
     [OverrideMixin]

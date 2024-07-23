@@ -20,7 +20,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.ExecuteExternalByRedirect
 {
-  [Serializable]
   public class RedirectingToSubFunctionState : ExecutionStateBase<RedirectingToSubFunctionStateParameters>
   {
     /// <summary>

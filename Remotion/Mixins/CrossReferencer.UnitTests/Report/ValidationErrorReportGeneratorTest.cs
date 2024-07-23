@@ -53,11 +53,11 @@ namespace Remotion.Mixins.CrossReferencer.UnitTests.Report
       validationExceptionElement.Add(
           new XElement(
               "ValidationLog",
-              new XAttribute("number-of-rules-executed", validationException1.ValidationLogData.NumberOfRulesExecuted),
-              new XAttribute("number-of-failures", validationException1.ValidationLogData.NumberOfFailures),
-              new XAttribute("number-of-unexpected-exceptions", validationException1.ValidationLogData.NumberOfUnexpectedExceptions),
-              new XAttribute("number-of-warnings", validationException1.ValidationLogData.NumberOfWarnings),
-              new XAttribute("number-of-successes", validationException1.ValidationLogData.NumberOfSuccesses)
+              new XAttribute("number-of-rules-executed", validationException1.NumberOfRulesExecuted),
+              new XAttribute("number-of-failures", validationException1.NumberOfFailures),
+              new XAttribute("number-of-unexpected-exceptions", validationException1.NumberOfUnexpectedExceptions),
+              new XAttribute("number-of-warnings", validationException1.NumberOfWarnings),
+              new XAttribute("number-of-successes", validationException1.NumberOfSuccesses)
           ));
 
       var expectedOutput = new XElement("ValidationErrors", validationExceptionElement);

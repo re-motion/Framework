@@ -40,16 +40,15 @@ namespace Remotion.Mixins.CrossReferencer.Report
       foreach (var exception in _errorAggregator.Exceptions)
       {
         var topLevelExceptionElement = new RecursiveExceptionReportGenerator(exception).GenerateXml();
-        var validationLog = exception.ValidationLogData;
 
         topLevelExceptionElement.Add(
             new XElement(
                 "ValidationLog",
-                new XAttribute("number-of-rules-executed", validationLog?.NumberOfRulesExecuted ?? -1),
-                new XAttribute("number-of-failures", validationLog?.NumberOfFailures ?? 0),
-                new XAttribute("number-of-unexpected-exceptions", validationLog?.NumberOfUnexpectedExceptions ?? -1),
-                new XAttribute("number-of-warnings", validationLog?.NumberOfWarnings ?? -1),
-                new XAttribute("number-of-successes", validationLog?.NumberOfSuccesses ?? -1))
+                new XAttribute("number-of-rules-executed", exception.NumberOfRulesExecuted),
+                new XAttribute("number-of-failures", exception.NumberOfFailures),
+                new XAttribute("number-of-unexpected-exceptions", exception.NumberOfUnexpectedExceptions),
+                new XAttribute("number-of-warnings", exception.NumberOfWarnings),
+                new XAttribute("number-of-successes", exception.NumberOfSuccesses))
         );
         validationErrors.Add(topLevelExceptionElement);
       }

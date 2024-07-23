@@ -16,7 +16,6 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
@@ -43,19 +42,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Assert.That(proxy.ID, Is.EqualTo(user.ID));
       Assert.That(proxy.UniqueIdentifier, Is.EqualTo(((IBusinessObjectWithIdentity)user).UniqueIdentifier));
       Assert.That(proxy.DisplayName, Is.EqualTo(((IBusinessObjectWithIdentity)user).DisplayName));
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      var user = CreateUser();
-      var proxy = UserProxy.Create(user);
-
-      var deserialized = Serializer.SerializeAndDeserialize(proxy);
-
-      Assert.That(deserialized.ID, Is.EqualTo(proxy.ID));
-      Assert.That(deserialized.UniqueIdentifier, Is.EqualTo(proxy.UniqueIdentifier));
-      Assert.That(deserialized.DisplayName, Is.EqualTo(proxy.DisplayName));
     }
 
     [Test]

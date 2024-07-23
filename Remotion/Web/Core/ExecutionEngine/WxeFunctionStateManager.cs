@@ -32,7 +32,6 @@ namespace Remotion.Web.ExecutionEngine
   public class WxeFunctionStateManager
   {
     /// <threadsafety static="true" instance="true" />
-    [Serializable]
     public class WxeFunctionStateMetaData : Tuple<string, int, DateTime>
     {
       public WxeFunctionStateMetaData (string functionToken, int lifetimeInMinutes, DateTime lastAccessUtc)

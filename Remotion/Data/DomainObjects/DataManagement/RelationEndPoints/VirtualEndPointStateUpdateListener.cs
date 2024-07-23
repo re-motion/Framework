@@ -24,7 +24,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// Implements the <see cref="IVirtualEndPointStateUpdateListener"/> interface by passing information about state updates on to a 
   /// <see cref="ClientTransaction"/>.
   /// </summary>
-  [Serializable]
   public class VirtualEndPointStateUpdateListener : IVirtualEndPointStateUpdateListener
   {
     private readonly IClientTransactionEventSink _transactionEventSink;

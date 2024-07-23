@@ -12,7 +12,6 @@ namespace Remotion.Collections
   /// <summary>
   /// Read-only wrapper around an <see cref="IReadOnlyCollection{T}"/> to prevent casting an <see cref="IReadOnlyCollection{T}"/> back to mutable type.
   /// </summary>
-  [Serializable]
   sealed class ReadOnlyCollectionWrapper<T> : IReadOnlyCollection<T>
       //TODO: RM-7614: Update Mixin XRef and then remove ICollection<T>
       , ICollection<T>

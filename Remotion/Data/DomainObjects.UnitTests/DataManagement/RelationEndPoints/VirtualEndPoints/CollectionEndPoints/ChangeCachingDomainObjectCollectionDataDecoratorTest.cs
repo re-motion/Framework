@@ -661,27 +661,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       CheckChangeFlagInvalidated(decorator);
     }
 
-    [Test]
-    public void Serializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var wrappedData = new DomainObjectCollectionData(new[] { _domainObject });
-      var decorator = new ChangeCachingDomainObjectCollectionDataDecorator(wrappedData);
-
-      WarmUpCache(decorator, false);
-
-      Assert.That(decorator.Count, Is.EqualTo(1));
-      Assert.That(decorator.IsCacheUpToDate, Is.True);
-      Assert.That(decorator.HasChanged(_strategyStrictMock.Object), Is.False);
-
-      var deserializedDecorator = Serializer.SerializeAndDeserialize(decorator);
-
-      Assert.That(deserializedDecorator.Count, Is.EqualTo(1));
-      Assert.That(deserializedDecorator.IsCacheUpToDate, Is.True);
-      Assert.That(deserializedDecorator.HasChanged(_strategyStrictMock.Object), Is.False);
-    }
-
     private void WarmUpCache (ChangeCachingDomainObjectCollectionDataDecorator decorator, bool hasChanged)
     {
       _strategyStrictMock.Setup(mock => mock.HasDataChanged(decorator, It.IsAny<IDomainObjectCollectionData>())).Returns(hasChanged);

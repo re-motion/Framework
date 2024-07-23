@@ -16,7 +16,6 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Mixins.Context;
 
@@ -41,15 +40,6 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       var result = _flatClassContext.GetRealValue();
 
       Assert.That(result, Is.EqualTo(_originalClassContext));
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      var result = Serializer.SerializeAndDeserialize(_flatClassContext);
-
-      Assert.That(result, Is.Not.Null);
-      Assert.That(result.GetRealValue(), Is.EqualTo(_originalClassContext));
     }
   }
 }

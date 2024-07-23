@@ -22,7 +22,6 @@ using Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructu
 
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
-  [Serializable]
   [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Role")]
   [PermanentGuid("23C68C62-5B0F-4857-8DF2-C161C0077745")]
   [Instantiable]

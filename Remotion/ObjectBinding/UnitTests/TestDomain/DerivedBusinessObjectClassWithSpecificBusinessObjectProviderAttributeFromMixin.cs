@@ -21,7 +21,6 @@ using Remotion.ObjectBinding.BindableObject;
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
   [Uses(typeof(MixnWithProviderAttribute))]
-  [Serializable]
   public class DerivedBusinessObjectClassWithSpecificBusinessObjectProviderAttributeFromMixin : BaseBusinessObjectClass
   {
     [BindableObjectWithIdentityProvider]

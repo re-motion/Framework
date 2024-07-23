@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints
@@ -203,31 +202,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
             "When committing a current virtual relation value from a sub-transaction, the opposite end-point is guaranteed to exist.");
       }
     }
-
-    #region Serialization
-
-    public VirtualObjectEndPointDataManager (FlattenedDeserializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      _endPointID = info.GetValueForHandle<RelationEndPointID>();
-      _originalOppositeEndPoint = info.GetNullableValue<IRealObjectEndPoint>();
-      _originalOppositeObject = info.GetNullableValueForHandle<DomainObject>();
-      _currentOppositeEndPoint = info.GetNullableValue<IRealObjectEndPoint>();
-      _currentOppositeObject = info.GetNullableValueForHandle<DomainObject>();
-    }
-
-    public void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      info.AddHandle(_endPointID);
-      info.AddValue(_originalOppositeEndPoint);
-      info.AddHandle(_originalOppositeObject);
-      info.AddValue(_currentOppositeEndPoint);
-      info.AddHandle(_currentOppositeObject);
-    }
-
-    #endregion
   }
 }

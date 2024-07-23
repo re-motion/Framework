@@ -23,7 +23,6 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
   /// <summary>
   /// The <see cref="PreparingRedirectToSubFunctionStateParameters"/> group the parameters necessary for setting up the the redirect to a sub-function URL.
   /// </summary>
-  [Serializable]
   public class PreparingRedirectToSubFunctionStateParameters : ExecutionStateParameters
   {
     private readonly WxePermaUrlOptions _permaUrlOptions;

@@ -19,7 +19,6 @@ using System;
 namespace Remotion.Collections
 {
   [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Collections.Caching.dll", true)]
-  [Serializable]
   public sealed class LockingInvalidationToken : InvalidationToken
   {
     internal LockingInvalidationToken ()

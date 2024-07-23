@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Logging;
 using Remotion.Utilities;
 
@@ -286,43 +285,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       return _unsynchronizedOppositeEndPoints.ContainsKey(objectID);
     }
-
-    #region Serialization
-
-    protected CompleteVirtualEndPointLoadStateBase (FlattenedDeserializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      _dataManager = info.GetValueForHandle<TDataManager>();
-      _endPointProvider = info.GetValueForHandle<IRelationEndPointProvider>();
-      _transactionEventSink = info.GetValueForHandle<IClientTransactionEventSink>();
-      var unsynchronizedOppositeEndPoints = new List<IRealObjectEndPoint>();
-      info.FillCollection(unsynchronizedOppositeEndPoints);
-      _unsynchronizedOppositeEndPoints = unsynchronizedOppositeEndPoints.ToDictionary(
-          ep =>
-          {
-            Assertion.IsFalse(ep.IsNull, "ep.IsNull");
-            Assertion.DebugIsNotNull(ep.ObjectID, "ep.ObjectID != null when ep.IsNull == false");
-
-            return ep.ObjectID;
-          });
-    }
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      SerializeIntoFlatStructure(info);
-    }
-
-    protected virtual void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      info.AddHandle(_dataManager);
-      info.AddHandle(_endPointProvider);
-      info.AddHandle(_transactionEventSink);
-      info.AddCollection(_unsynchronizedOppositeEndPoints.Values);
-    }
-
-    #endregion
   }
 }

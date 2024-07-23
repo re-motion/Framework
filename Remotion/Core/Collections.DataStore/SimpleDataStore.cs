@@ -29,7 +29,6 @@ namespace Remotion.Collections.DataStore
   /// </summary>
   /// <typeparam name="TKey">The type of the keys.</typeparam>
   /// <typeparam name="TValue">The type of the values.</typeparam>
-  [Serializable]
   public sealed class SimpleDataStore<TKey, TValue> : IDataStore<TKey, TValue>, IEnumerable<KeyValuePair<TKey, TValue>>
       where TKey : notnull
   {
@@ -78,7 +77,6 @@ namespace Remotion.Collections.DataStore
       }
     }
 
-    [Serializable]
     private struct Data
     {
       public readonly TValue Value;

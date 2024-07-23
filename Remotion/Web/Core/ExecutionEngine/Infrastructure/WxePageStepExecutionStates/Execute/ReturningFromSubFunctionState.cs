@@ -25,7 +25,6 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
   /// has completed execution and a perma-URL was used. Executing this state will transition the <see cref="IExecutionStateContext"/> into the 
   /// <see cref="PostProcessingSubFunctionState"/>.
   /// </summary>
-  [Serializable]
   public class ReturningFromSubFunctionState : ExecutionStateBase<RedirectingToSubFunctionStateParameters>
   {
     public ReturningFromSubFunctionState (IExecutionStateContext executionStateContext, RedirectingToSubFunctionStateParameters parameters)

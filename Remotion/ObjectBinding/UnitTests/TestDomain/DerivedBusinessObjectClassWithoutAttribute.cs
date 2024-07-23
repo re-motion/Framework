@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
-  [Serializable]
   public class DerivedBusinessObjectClassWithoutAttribute : BaseBusinessObjectClass
   {
     private string _public;

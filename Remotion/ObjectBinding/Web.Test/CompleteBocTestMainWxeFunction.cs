@@ -21,7 +21,6 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 namespace OBWTest
 {
 
-[Serializable]
 public class CompleteBocTestMainWxeFunction: WxeFunction
 {
   public CompleteBocTestMainWxeFunction ()

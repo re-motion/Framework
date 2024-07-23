@@ -21,7 +21,6 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
 {
   [Instantiable]
   [DBTable]
-  [Serializable]
   public abstract class ClassWithRelationProperties : SimpleDomainObject<ClassWithRelationProperties>
   {
     public abstract OppositeClassWithAnonymousRelationProperties Unary1 { get; set; }

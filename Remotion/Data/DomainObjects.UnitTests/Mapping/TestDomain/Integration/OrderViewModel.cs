@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 {
-  [Serializable]
   [NonPersistentTestDomain]
   public class OrderViewModel : TestDomainBase
   {

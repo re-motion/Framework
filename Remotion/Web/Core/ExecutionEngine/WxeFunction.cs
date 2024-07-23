@@ -31,7 +31,6 @@ namespace Remotion.Web.ExecutionEngine
   /// <summary>
   /// The new <see cref="WxeFunction"/>. Will replace the <see cref="WxeFunction"/> type once implemtation is completed.
   /// </summary>
-  [Serializable]
   public abstract class WxeFunction : WxeStepList, IWxeFunctionExecutionContext
   {
     public static bool HasAccess (Type functionType)

@@ -112,15 +112,6 @@ namespace Remotion.Development.UnitTesting.Reflection
       return genericParameter;
     }
 
-    public static Type GetSomeSerializableType ()
-    {
-      var type = GetRandomElement(s_serializableTypes);
-#pragma warning disable SYSLIB0050
-      Assertion.IsTrue(type.IsSerializable);
-#pragma warning restore SYSLIB0050
-      return type;
-    }
-
     public static Type GetSomeSubclassableType ()
     {
       var type = GetRandomElement(s_unsealedTypes);

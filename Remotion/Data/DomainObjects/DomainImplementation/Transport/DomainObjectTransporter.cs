@@ -33,24 +33,6 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
   public class DomainObjectTransporter
   {
     /// <summary>
-    /// Loads the data transported from another system into a <see cref="TransportedDomainObjects"/> container using the <see cref="BinaryImportStrategy"/>.
-    /// </summary>
-    /// <param name="stream">The <see cref="Stream"/> from which to load the data.</param>
-    /// <returns>A container holding the objects loaded from the given data.</returns>
-    /// <exception cref="ObjectsNotFoundException">A referenced related object is not part of the transported data and does not exist on the
-    /// target system.</exception>
-    /// <remarks>
-    /// Given a <see cref="DomainObjectTransporter"/>, the binary data can be retrieved from <see cref="Export(System.IO.Stream)"/>.
-    /// </remarks>
-    public static TransportedDomainObjects LoadTransportData (Stream stream)
-    {
-      ArgumentUtility.CheckNotNull("stream", stream);
-
-      BinaryImportStrategy strategy = BinaryImportStrategy.Instance;
-      return LoadTransportData(stream, strategy);
-    }
-
-    /// <summary>
     /// Loads the data transported from another system into a <see cref="TransportedDomainObjects"/> container.
     /// </summary>
     /// <param name="stream">The <see cref="Stream"/> from which to load the data.</param>
@@ -132,11 +114,11 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <para>
     /// If an object has the foreign key side of a relationship and the related object is not loaded into this transporter, the relationship
     /// will still be transported. The related object must exist at the target system, otherwise an exception is thrown in
-    /// <see cref="LoadTransportData(System.IO.Stream)"/>.
+    /// <see cref="LoadTransportData"/>.
     /// </para>
     /// <para>
     /// If an object has the virtual side of a relationship and the related object is not loaded into this transporter, the relationship
-    /// will not be transported. Its status after <see cref="LoadTransportData(System.IO.Stream)"/> depends on the objects at the target system. This
+    /// will not be transported. Its status after <see cref="LoadTransportData"/> depends on the objects at the target system. This
     /// also applies to the 1-side of a 1-to-n relationship because the n-side is the foreign key side.
     /// </para>
     /// </remarks>
@@ -226,16 +208,6 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
         throw new ArgumentException(message, "loadedObjectID");
       }
       return _transportTransaction.GetObject(loadedObjectID, false);
-    }
-
-    /// <summary>
-    /// Exports the objects loaded into this transporter (including their contents) in a binary format for transport to another system using 
-    /// <see cref="BinaryExportStrategy"/>. At the target system, the data can be loaded via <see cref="LoadTransportData(Stream)"/>.
-    /// </summary>
-    /// <param name="stream">The <see cref="Stream"/> to which to export the loaded objects.</param>
-    public void Export (Stream stream)
-    {
-      Export(stream, BinaryExportStrategy.Instance);
     }
 
     /// <summary>

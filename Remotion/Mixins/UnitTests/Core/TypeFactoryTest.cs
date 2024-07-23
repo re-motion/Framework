@@ -62,38 +62,5 @@ namespace Remotion.Mixins.UnitTests.Core
       Assert.That(mixin, Is.Not.Null, "Mixin must have been created");
       Assert.That(mixin.Target, Is.SameAs(target), "Mixin must have been initialized");
     }
-
-    [Test]
-    public void InitializeUnconstructedInstance_DeserializationSemantics ()
-    {
-      var concreteType = TypeFactory.GetConcreteType(typeof(TargetType));
-#if NETFRAMEWORK
-      var target = FormatterServices.GetSafeUninitializedObject(concreteType);
-#else
-      var target = RuntimeHelpers.GetUninitializedObject(concreteType);
-#endif
-      // Simulate a deserialzed instance.
-      var mixins = new object[] { new DeserializationMixin() };
-      PrivateInvoke.SetNonPublicField(target, "__extensions", mixins);
-
-      TypeFactory.InitializeUnconstructedInstance(target as IMixinTarget, InitializationSemantics.Deserialization);
-
-      var mixin = Mixin.Get<DeserializationMixin>(target);
-      Assert.That(mixin, Is.SameAs(mixins[0]));
-      Assert.That(mixin.Target, Is.SameAs(target), "Mixin must have been initialized");
-    }
-
-    [Uses(typeof(DeserializationMixin))]
-    [Serializable]
-    public class TargetType { }
-
-    [Serializable]
-    public class DeserializationMixin : Mixin<object>
-    {
-      public new object Target
-      {
-        get { return base.Target; }
-      }
-    }
   }
 }

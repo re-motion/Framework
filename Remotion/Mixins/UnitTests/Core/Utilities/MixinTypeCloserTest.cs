@@ -131,8 +131,8 @@ namespace Remotion.Mixins.UnitTests.Core.Utilities
                   "The generic mixin "
                   + "'Remotion.Mixins.UnitTests.Core.TestDomain.GenericMixinWithUnsatisfiableConstraints`1[T]' applied to class "
                   + "'Remotion.Mixins.UnitTests.Core.TestDomain.BaseType3' cannot be automatically closed because the constraints of its type parameter 'T' cannot "
-                  + "be unified into a single type. The generic type parameter has inconclusive constraints 'System.ICloneable' "
-                  + "and 'System.Runtime.Serialization.ISerializable', which cannot be unified into a single type."));
+                  + "be unified into a single type. The generic type parameter has inconclusive constraints 'Remotion.Mixins.UnitTests.Core.TestDomain.IUnsatisfiableInterface' "
+                  + "and 'System.ICloneable', which cannot be unified into a single type."));
     }
 
     [Test]

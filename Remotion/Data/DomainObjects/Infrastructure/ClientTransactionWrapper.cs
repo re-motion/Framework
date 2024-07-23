@@ -24,7 +24,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// <summary>
   /// <see cref="ClientTransactionWrapper"/> provides a wrapper for ClientTransactions that implements the <see cref="ITransaction"/> interface.
   /// </summary>
-  [Serializable]
   public class ClientTransactionWrapper : ITransaction
   {
     private readonly ClientTransaction _wrappedInstance;

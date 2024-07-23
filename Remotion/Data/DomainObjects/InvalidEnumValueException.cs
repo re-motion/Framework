@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Utilities;
 
@@ -24,7 +23,6 @@ namespace Remotion.Data.DomainObjects
   /// <summary>
   /// The exception that is thrown when a <see cref="PropertyValue"/> is set with an enum value that does not match the property's type.
   /// </summary>
-  [Serializable]
   public class InvalidEnumValueException : DomainObjectException
   {
     private readonly string _propertyName;
@@ -43,17 +41,6 @@ namespace Remotion.Data.DomainObjects
       _invalidValue = invalidValue;
     }
 
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    protected InvalidEnumValueException (SerializationInfo info, StreamingContext context)
-        : base(info, context)
-    {
-      _propertyName = info.GetString("PropertyName")!;
-      _underlyingPropertyType = (Type)info.GetValue("UnderlyingPropertyType", typeof(Type))!;
-      _invalidValue = info.GetValue("InvalidValue", typeof(object))!;
-    }
-
     public string PropertyName
     {
       get { return _propertyName; }
@@ -67,18 +54,6 @@ namespace Remotion.Data.DomainObjects
     public object InvalidValue
     {
       get { return _invalidValue; }
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    public override void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      base.GetObjectData(info, context);
-
-      info.AddValue("PropertyName", _propertyName);
-      info.AddValue("UnderlyingPropertyType", _underlyingPropertyType);
-      info.AddValue("InvalidValue", _invalidValue);
     }
   }
 }

@@ -27,7 +27,6 @@ namespace Remotion.Web.ExecutionEngine
   /// <summary>
   ///   Performs a sequence of steps in a web application.
   /// </summary>
-  [Serializable]
   public class WxeStepList : WxeStep
   {
     private List<WxeStep> _steps = new List<WxeStep>();

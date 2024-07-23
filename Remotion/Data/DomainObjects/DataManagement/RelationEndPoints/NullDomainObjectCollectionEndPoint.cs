@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
@@ -257,11 +256,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     public void Rollback ()
     {
       throw new InvalidOperationException("Rollback cannot be called on a NullDomainObjectCollectionEndPoint.");
-    }
-
-    public void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      throw new InvalidOperationException("SerializeIntoFlatStructure cannot be called on a NullDomainObjectCollectionEndPoint.");
     }
   }
 }

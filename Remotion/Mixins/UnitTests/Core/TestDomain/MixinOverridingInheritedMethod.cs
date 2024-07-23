@@ -46,7 +46,6 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     }
   }
 
-  [Serializable]
   public class BaseClassWithInheritedMethod
   {
     protected internal virtual string ProtectedInternalInheritedMethod ()

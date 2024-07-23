@@ -31,7 +31,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// Implements the <see cref="IDomainObjectCollectionData"/> by forwarding all requests to an implementation of 
   /// <see cref="IDomainObjectCollectionEndPoint"/>.
   /// </summary>
-  [Serializable]
   public class EndPointDelegatingDomainObjectCollectionData : IDomainObjectCollectionData
   {
     private readonly RelationEndPointID _endPointID;

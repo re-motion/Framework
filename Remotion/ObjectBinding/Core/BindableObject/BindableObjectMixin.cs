@@ -23,7 +23,6 @@ namespace Remotion.ObjectBinding.BindableObject
   /// Apply this mixin to a type in order to add an <see cref="IBusinessObject"/> implementation if you cannot derive from 
   /// <see cref="BindableObjectBase"/>.
   /// </summary>
-  [Serializable]
   [BindableObjectProvider]
   public class BindableObjectMixin : BindableObjectMixinBase<object>
   {

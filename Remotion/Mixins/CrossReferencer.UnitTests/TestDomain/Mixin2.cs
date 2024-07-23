@@ -18,9 +18,13 @@ using System;
 
 namespace Remotion.Mixins.CrossReferencer.UnitTests.TestDomain
 {
-  [Serializable]
+  [AttributeWithoutParameters]
   [Extends(typeof(TargetClass2))]
   public class Mixin2
+  {
+  }
+
+  public class AttributeWithoutParametersAttribute : Attribute
   {
   }
 }

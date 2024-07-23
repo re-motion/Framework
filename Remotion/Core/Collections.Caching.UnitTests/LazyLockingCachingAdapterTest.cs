@@ -298,14 +298,6 @@ namespace Remotion.Collections.Caching.UnitTests
     }
 
     [Test]
-    public void Serializable ()
-    {
-      Serializer.SerializeAndDeserialize(
-          new LazyLockingCachingAdapter<string, string>(
-              new Cache<string, Lazy<LazyLockingCachingAdapter<string, string>.Wrapper>>()));
-    }
-
-    [Test]
     [TestCase(1, 6000)]
     [TestCase(2, 13000)]
     [TestCase(3, 21000)]

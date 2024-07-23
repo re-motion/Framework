@@ -31,7 +31,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
   /// <summary>
   /// Implements creation, retrieval, and deletion of <see cref="DomainObject"/> references.
   /// </summary>
-  [Serializable]
   public class ObjectLifetimeAgent : IObjectLifetimeAgent
   {
     private readonly ClientTransaction _clientTransaction;

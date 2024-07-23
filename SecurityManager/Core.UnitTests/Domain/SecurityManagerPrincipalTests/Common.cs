@@ -117,36 +117,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     }
 
     [Test]
-    public void Serialization ()
-    {
-      var user = User.FindByUserName("substituting.user");
-      var tenant = user.Tenant;
-      var roles = user.Roles.Take(2).ToArray();
-      var substitution = user.GetActiveSubstitutions().First();
-
-      var principal = CreateSecurityManagerPrincipal(tenant, user, roles, substitution);
-      var deserializedPrincipal = Serializer.SerializeAndDeserialize(principal);
-
-      Assert.That(deserializedPrincipal.Tenant.ID, Is.EqualTo(principal.Tenant.ID));
-      Assert.That(deserializedPrincipal.Tenant, Is.Not.SameAs(principal.Tenant));
-
-      Assert.That(deserializedPrincipal.User.ID, Is.EqualTo(principal.User.ID));
-      Assert.That(deserializedPrincipal.User, Is.Not.SameAs(principal.User));
-
-      Assert.That(principal.Roles.Select(r => r.ID), Is.EqualTo(roles.Select(r => r.ID)));
-      Assert.That(principal.Roles, Is.Not.EquivalentTo(roles));
-
-      Assert.That(deserializedPrincipal.Substitution.ID, Is.EqualTo(principal.Substitution.ID));
-      Assert.That(deserializedPrincipal.Substitution, Is.Not.SameAs(principal.Substitution));
-
-      Assert.That(() => deserializedPrincipal.GetTenants(true), Throws.Nothing);
-      Assert.That(() => deserializedPrincipal.GetTenants(false), Throws.Nothing);
-      Assert.That(() => deserializedPrincipal.GetTenants(false), Is.Not.Empty);
-      Assert.That(() => deserializedPrincipal.GetActiveSubstitutions(), Throws.Nothing);
-      Assert.That(() => deserializedPrincipal.GetActiveSubstitutions(), Is.Not.Empty);
-    }
-
-    [Test]
     public void Test_IsNull ()
     {
       User user = User.FindByUserName("substituting.user");

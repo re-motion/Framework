@@ -26,7 +26,6 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {
-  [Serializable]
   [Instantiable]
   public abstract class AbstractRoleDefinition : EnumValueDefinition, ISupportsGetObject
   {

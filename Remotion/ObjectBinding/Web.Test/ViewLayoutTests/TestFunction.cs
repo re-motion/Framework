@@ -20,7 +20,6 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace OBWTest.ViewLayoutTests
 {
-  [Serializable]
   public class TestFunction : WxeFunction
   {
     public TestFunction ()

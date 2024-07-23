@@ -120,12 +120,6 @@ namespace Remotion.Collections.DataStore.UnitTests
     }
 
     [Test]
-    public void Serializable ()
-    {
-      Serializer.SerializeAndDeserialize(new LockingDataStoreDecorator<string, int>(new SimpleDataStore<string, int>()));
-    }
-
-    [Test]
     public void GetOrCreateValue_WithNestedTryGetValue_HasNoNestedValue ()
     {
       int expected = 13;

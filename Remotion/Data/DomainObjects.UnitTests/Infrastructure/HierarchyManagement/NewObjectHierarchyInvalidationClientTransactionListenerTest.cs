@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManagement
 {
@@ -130,12 +129,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
 
       Assert.That(middleBottomTransaction.IsInvalid(DomainObjectIDs.Order1), Is.False);
       Assert.That(subTransaction.IsInvalid(DomainObjectIDs.Order1), Is.False);
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      Serializer.SerializeAndDeserialize(_listener);
     }
 
     private ClientTransaction CreateSubTransactionAndClearListeners (ClientTransaction parentTransaction)

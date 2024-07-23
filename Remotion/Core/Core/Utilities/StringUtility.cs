@@ -22,7 +22,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using System.Text;
 
 namespace Remotion.Utilities
@@ -529,7 +528,6 @@ namespace Remotion.Utilities
     }
   }
 
-  [Serializable]
   public class ParseException : Exception
   {
     public ParseException (string message)
@@ -539,14 +537,6 @@ namespace Remotion.Utilities
 
     public ParseException (string message, Exception innerException)
         : base(message, innerException)
-    {
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    public ParseException (SerializationInfo info, StreamingContext context)
-        : base(info, context)
     {
     }
   }

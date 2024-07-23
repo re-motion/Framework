@@ -20,7 +20,6 @@ using Remotion.Mixins;
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.TestDomain
 {
   [BindableObject]
-  [Serializable]
   public class TargetClassWithOverrideMixinForGlobalizationViaAttributes : TargetClassForGlobalizationViaAttributes
   {
     public TargetClassWithOverrideMixinForGlobalizationViaAttributes ()

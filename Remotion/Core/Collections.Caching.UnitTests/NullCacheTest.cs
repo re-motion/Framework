@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Collections.Caching.UnitTests.Utilities;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Collections.Caching.UnitTests
 {
@@ -83,14 +82,6 @@ namespace Remotion.Collections.Caching.UnitTests
     public void GetIsNull ()
     {
       Assert.That(_cache.IsNull, Is.True);
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      ICache<string, object> deserializedCache = Serializer.SerializeAndDeserialize(_cache);
-      Assert.That(deserializedCache is NullCache<string, object>, Is.True);
-      Assert.That(deserializedCache, Is.Not.SameAs(_cache));
     }
   }
 }

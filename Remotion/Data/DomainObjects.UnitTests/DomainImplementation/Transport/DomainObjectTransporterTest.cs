@@ -220,9 +220,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       using (var stream = new MemoryStream(new byte[] { 1, 2, 3 }))
       {
         Assert.That(
-            () => DomainObjectTransporter.LoadTransportData(stream),
+            () => DomainObjectTransporter.LoadTransportData(stream, new XmlImportStrategy()),
             Throws.InstanceOf<TransportationException>()
-                .With.Message.EqualTo("Invalid data specified: End of Stream encountered before parsing was completed."));
+                .With.Message.EqualTo("Invalid data specified: There is an error in XML document (1, 1)."));
       }
     }
 
@@ -254,7 +254,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     public void Export ()
     {
       _transporter.Load(DomainObjectIDs.Order1);
-      _transporter.Export(_stream);
+      _transporter.Export(_stream, new XmlExportStrategy());
       Assert.That(_stream.Position > 0);
     }
 
@@ -349,9 +349,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 
     private TransportedDomainObjects ExportAndLoadTransportData ()
     {
-      _transporter.Export(_stream);
+      _transporter.Export(_stream, new XmlExportStrategy());
       _stream.Seek(0, SeekOrigin.Begin);
-      return DomainObjectTransporter.LoadTransportData(_stream);
+      return DomainObjectTransporter.LoadTransportData(_stream, new XmlImportStrategy());
     }
 
     private TransportedDomainObjects ExportAndLoadTransportData (IImportStrategy importStrategy, IExportStrategy exportStrategy)

@@ -17,7 +17,6 @@
 using System;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding.Web.Services;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.Services
@@ -146,18 +145,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Services
       var serviceContext = BusinessObjectWebServiceContext.Create(null, null, "Args");
 
       Assert.That(serviceContext.Arguments, Is.EqualTo("Args"));
-    }
-
-    [Test]
-    public void SerializeAndDeserialize ()
-    {
-      _dataSourceStub.Object.BusinessObject = _businessObjectWithIdentityStub.Object;
-      var serviceContext = BusinessObjectWebServiceContext.Create(_dataSourceStub.Object, _propertyStub.Object, "args");
-      var deserialized = Serializer.SerializeAndDeserialize(serviceContext);
-      Assert.That(deserialized.BusinessObjectClass, Is.EqualTo(serviceContext.BusinessObjectClass));
-      Assert.That(deserialized.BusinessObjectProperty, Is.EqualTo(serviceContext.BusinessObjectProperty));
-      Assert.That(deserialized.BusinessObjectIdentifier, Is.EqualTo(serviceContext.BusinessObjectIdentifier));
-      Assert.That(deserialized.Arguments, Is.EqualTo(serviceContext.Arguments));
     }
   }
 }

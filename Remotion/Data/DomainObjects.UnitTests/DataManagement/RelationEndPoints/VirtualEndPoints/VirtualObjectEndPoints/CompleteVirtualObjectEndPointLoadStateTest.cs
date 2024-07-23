@@ -23,10 +23,7 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
-using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints
@@ -367,28 +364,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var result = (IEnumerable<DomainObject>)PrivateInvoke.InvokeNonPublicMethod(_loadState, "GetOriginalItemsWithoutEndPoints");
 
       Assert.That(result, Is.Empty);
-    }
-
-    [Test]
-    public void FlattenedSerializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var state = new CompleteVirtualObjectEndPointLoadState(
-          new SerializableVirtualObjectEndPointDataManagerFake(),
-          new SerializableRelationEndPointProviderFake(),
-          new SerializableClientTransactionEventSinkFake());
-
-      var oppositeEndPoint = new SerializableRealObjectEndPointFake(null, _relatedObject);
-      AddUnsynchronizedOppositeEndPoint(state, oppositeEndPoint);
-
-      var result = FlattenedSerializer.SerializeAndDeserialize(state);
-
-      Assert.That(result, Is.Not.Null);
-      Assert.That(result.DataManager, Is.Not.Null);
-      Assert.That(result.TransactionEventSink, Is.Not.Null);
-      Assert.That(result.EndPointProvider, Is.Not.Null);
-      Assert.That(result.UnsynchronizedOppositeEndPoints.Count, Is.EqualTo(1));
     }
 
     private void AddUnsynchronizedOppositeEndPoint (CompleteVirtualObjectEndPointLoadState loadState, IRealObjectEndPoint oppositeEndPoint)

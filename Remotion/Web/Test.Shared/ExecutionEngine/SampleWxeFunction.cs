@@ -22,7 +22,6 @@ using Remotion.Web.ExecutionEngine.Obsolete;
 
 namespace Remotion.Web.Test.Shared.ExecutionEngine
 {
-  [Serializable]
   public class SampleWxeFunction : WxeFunction, ISampleFunctionVariables
   {
     public SampleWxeFunction ()
@@ -58,7 +57,6 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     private WxeStep Step4 = new WxeResourcePageStep(typeof(WebForm1), "ExecutionEngine/WebForm1.aspx");
   }
 
-  [Serializable]
   public class SampleWxeSubFunction : WxeFunction, ISampleFunctionVariables
   {
     public SampleWxeSubFunction ()
@@ -94,10 +92,8 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     // steps
 
-    [Serializable]
     private class Step1 : WxeTryCatch
     {
-      [Serializable]
       private class Try : WxeStepList
       {
         private SampleWxeSubFunction Function
@@ -125,7 +121,6 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
         }
       }
 
-      [Serializable]
       [WxeException(typeof(ApplicationException))]
       private class Catch1 : WxeCatchBlock
       {
@@ -134,7 +129,6 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
           get { return (SampleWxeSubFunction)ParentFunction; }
         }
 
-        [Serializable]
         private class Step1 : WxeIf
         {
           private SampleWxeSubFunction Function
@@ -147,7 +141,6 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
             return CurrentException.Message != null && CurrentException.Message.Length > 0;
           }
 
-          [Serializable]
           private class Then : WxeStepList
           {
             private SampleWxeSubFunction Function
@@ -172,7 +165,6 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
         private WxeStep Step3 = new WxeResourcePageStep(typeof(WebForm1), "ExecutionEngine/WebForm1.aspx");
       }
 
-      [Serializable]
       private class Finally : WxeStepList
       {
         private SampleWxeSubFunction Function

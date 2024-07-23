@@ -16,7 +16,6 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
@@ -66,12 +65,6 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     public void IsNull ()
     {
       Assert.That(_executionListener.IsNull);
-    }
-
-    [Test]
-    public void IsSerializeable ()
-    {
-      Assert.That(Serializer.SerializeAndDeserialize(_executionListener), Is.Not.Null);
     }
   }
 }

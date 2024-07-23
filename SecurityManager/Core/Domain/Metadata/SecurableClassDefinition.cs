@@ -29,7 +29,6 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {
-  [Serializable]
   [Instantiable]
   [DBTable]
   public abstract class SecurableClassDefinition : MetadataObject, ISupportsGetObject

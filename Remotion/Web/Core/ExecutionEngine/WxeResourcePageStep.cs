@@ -28,7 +28,6 @@ namespace Remotion.Web.ExecutionEngine
   /// <remarks>
   ///   The resource directory is <c>&lt;ApplicationRoot&gt;/res/&lt;AssemblyName&gt;/</c>.
   /// </remarks>
-  [Serializable]
   public class WxeResourcePageStep : WxePageStep
   {
     /// <summary>

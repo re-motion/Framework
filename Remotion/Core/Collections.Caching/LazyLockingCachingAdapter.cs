@@ -38,7 +38,6 @@ namespace Remotion.Collections.Caching
   /// even if the factory delegate for a specific value takes a long time to execute.
   /// </remarks>
   [Obsolete("This type is only used in conjunction by obsolete factory method CacheFactory.CreateWithLazyLocking(...). (Version: 1.19.3)")]
-  [Serializable]
   public class LazyLockingCachingAdapter<TKey, TValue> : ICache<TKey, TValue>
       where TKey : notnull
       where TValue : class?
