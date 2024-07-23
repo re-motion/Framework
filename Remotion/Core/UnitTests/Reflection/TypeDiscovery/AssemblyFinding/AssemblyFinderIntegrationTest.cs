@@ -31,7 +31,9 @@ using Remotion.Development.UnitTesting.IsolatedCodeRunner;
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 {
   [TestFixture]
+#if NETFRAMEWORK
   [Serializable]
+#endif
   public class AssemblyFinderIntegrationTest
   {
 #if !NETFRAMEWORK

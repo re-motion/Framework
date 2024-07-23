@@ -15,10 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Security;
 
 namespace Remotion.Data.DomainObjects.Security.UnitTests
@@ -217,56 +215,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       _stubContextFactory.Verify();
       sequence.Verify();
       Assert.That(hasAccess, Is.EqualTo(false));
-    }
-
-    [Serializable]
-    private class SerializableFactory : IDomainObjectSecurityContextFactory
-    {
-      public bool IsInvalid
-      {
-        get { return false; }
-      }
-
-      public bool IsNew
-      {
-        get { return false; }
-      }
-
-      public bool IsDeleted
-      {
-        get { return false; }
-      }
-
-      public ISecurityContext CreateSecurityContext ()
-      {
-        throw new NotImplementedException();
-      }
-    }
-
-    [Serializable]
-    private class SerializableObjectSecurityStrategy : IObjectSecurityStrategy
-    {
-      public bool HasAccess (ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes)
-      {
-        return true;
-      }
-    }
-
-    [Test]
-    public void Serialize ()
-    {
-      IDomainObjectSecurityContextFactory factory = new SerializableFactory();
-      IObjectSecurityStrategy objectSecurityStrategy = new SerializableObjectSecurityStrategy();
-
-      var strategy = new DomainObjectSecurityStrategyDecorator(objectSecurityStrategy, factory, RequiredSecurityForStates.NewAndDeleted);
-      var deserializedStrategy = Serializer.SerializeAndDeserialize(strategy);
-
-      Assert.That(deserializedStrategy, Is.Not.SameAs(strategy));
-      Assert.That(deserializedStrategy.RequiredSecurityForStates, Is.EqualTo(RequiredSecurityForStates.NewAndDeleted));
-      Assert.That(deserializedStrategy.SecurityContextFactory, Is.Not.SameAs(factory));
-      Assert.That(deserializedStrategy.SecurityContextFactory, Is.InstanceOf(typeof(SerializableFactory)));
-      Assert.That(deserializedStrategy.InnerStrategy, Is.Not.SameAs(objectSecurityStrategy));
-      Assert.That(deserializedStrategy.InnerStrategy, Is.InstanceOf(typeof(SerializableObjectSecurityStrategy)));
     }
   }
 }

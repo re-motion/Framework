@@ -18,7 +18,6 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 {
@@ -119,17 +118,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public void GetSafeHandle_Null ()
     {
       Assert.That(((Order)null).GetSafeHandle(), Is.Null);
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      var handle = DomainObjectIDs.Order1.GetHandle<Order>();
-
-      var deserialized = Serializer.SerializeAndDeserialize(handle);
-
-      Assert.That(deserialized, Is.TypeOf<DomainObjectHandle<Order>>());
-      Assert.That(deserialized.ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
     }
   }
 }

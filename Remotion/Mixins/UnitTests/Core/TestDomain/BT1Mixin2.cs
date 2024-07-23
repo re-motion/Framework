@@ -19,7 +19,6 @@ using System;
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   [Extends(typeof(BaseType1))]
-  [Serializable]
   [AcceptsAlphabeticOrdering]
   public class BT1Mixin2
   {

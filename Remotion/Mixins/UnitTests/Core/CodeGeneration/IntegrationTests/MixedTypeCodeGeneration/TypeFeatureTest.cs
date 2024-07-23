@@ -225,9 +225,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       Type concreteType = CreateMixedType(typeof(BaseType1), typeof(BT1Mixin1));
       Assert.That(
           concreteType.GetField("__first", BindingFlags.NonPublic | BindingFlags.Instance).Attributes,
-#pragma warning disable SYSLIB0050
-          Is.EqualTo(FieldAttributes.Private | FieldAttributes.NotSerialized));
-#pragma warning restore SYSLIB0050
+          Is.EqualTo(FieldAttributes.Private));
     }
 
     [Test]

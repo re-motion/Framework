@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Serializable]
   public class MixinOverridingClassMethod : Mixin<object, MixinOverridingClassMethod.IRequirements>, IMixinOverridingClassMethod
   {
     public interface IRequirements

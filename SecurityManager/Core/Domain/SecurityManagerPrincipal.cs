@@ -47,7 +47,6 @@ namespace Remotion.SecurityManager.Domain
   /// </para>
   /// </remarks>
   /// <threadsafety static="true" instance="true"/>
-  [Serializable]
   public sealed class SecurityManagerPrincipal : ISecurityManagerPrincipal
   {
     public static readonly ISecurityManagerPrincipal Null = new NullSecurityManagerPrincipal();
@@ -84,7 +83,6 @@ namespace Remotion.SecurityManager.Domain
     private readonly SubstitutionProxy? _substitutionProxy;
     private readonly SecurityPrincipal _securityPrincipal;
 
-    [NonSerialized]
     private SecurityClientTransactionFactory? _securityTransactionFactory;
 
     public SecurityManagerPrincipal (

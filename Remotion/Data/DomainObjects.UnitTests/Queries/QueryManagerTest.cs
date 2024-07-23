@@ -392,17 +392,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       _transactionEventSinkWithMock.Verify();
       Assert.That(result.ToArray(), Is.EqualTo(new[] { "Fake1", "Fake2" }));
     }
-
-    [Test]
-    public void Serialization ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var queryManager = ClientTransactionScope.CurrentTransaction.QueryManager;
-
-      var deserializedQueryManager = Serializer.SerializeAndDeserialize(queryManager);
-
-      Assert.That(deserializedQueryManager, Is.Not.Null);
-    }
   }
 }

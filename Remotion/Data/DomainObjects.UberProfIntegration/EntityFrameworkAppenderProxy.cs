@@ -17,7 +17,6 @@
 using System;
 using System.Data;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UberProfIntegration
@@ -29,11 +28,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
   /// The wrapper uses runtime-binding to redirect the calls to Entity Framework Profiler's API. This removes the static dependency on Entity Framework Profiler.
   /// </remarks>
   /// <threadsafety static="true" instance="true" />
-  [Serializable]
   public sealed class EntityFrameworkAppenderProxy
-#pragma warning disable SYSLIB0050
-      : IObjectReference
-#pragma warning restore SYSLIB0050
   {
     private static readonly DoubleCheckedLockingContainer<EntityFrameworkAppenderProxy> s_instance =
         new DoubleCheckedLockingContainer<EntityFrameworkAppenderProxy>(
@@ -51,37 +46,26 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     public static EntityFrameworkAppenderProxy Instance => s_instance.Value;
 
-    [NonSerialized]
     private readonly object _entityFrameworkAppender;
 
-    [NonSerialized]
     private readonly Action<Guid> _connectionStarted;
 
-    [NonSerialized]
     private readonly Action<Guid> _connectionDisposed;
 
-    [NonSerialized]
     private readonly Action<Guid, Guid, int> _statementRowCount;
 
-    [NonSerialized]
     private readonly Action<Guid, Exception> _statementError;
 
-    [NonSerialized]
     private readonly Action<Guid, long, int?> _commandDurationAndRowCount;
 
-    [NonSerialized]
     private readonly Action<Guid, Guid, string> _statementExecuted;
 
-    [NonSerialized]
     private readonly Action<Guid, IsolationLevel> _transactionBegan;
 
-    [NonSerialized]
     private readonly Action<Guid> _transactionCommit;
 
-    [NonSerialized]
     private readonly Action<Guid> _transactionDisposed;
 
-    [NonSerialized]
     private readonly Action<Guid> _transactionRolledBack;
 
     private EntityFrameworkAppenderProxy (
@@ -163,11 +147,6 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     public void TransactionRolledBack (Guid sessionID)
     {
       _transactionRolledBack(sessionID);
-    }
-
-    object IObjectReference.GetRealObject (StreamingContext context)
-    {
-      return Instance;
     }
   }
 }

@@ -11,7 +11,6 @@ namespace Remotion.Data.DomainObjects
   /// <summary>
   /// Indicates the state of a <see cref="DomainObject"/>.
   /// </summary>
-  [Serializable]
   public struct DomainObjectState
   {
     [Flags]

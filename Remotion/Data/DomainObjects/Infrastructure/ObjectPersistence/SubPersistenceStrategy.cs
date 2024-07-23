@@ -29,7 +29,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// <summary>
   /// Implements the persistence of a subtransaction. Data is loaded via and persisted into the parent transaction.
   /// </summary>
-  [Serializable]
   public class SubPersistenceStrategy : IPersistenceStrategy
   {
     private enum PeristenceStateType

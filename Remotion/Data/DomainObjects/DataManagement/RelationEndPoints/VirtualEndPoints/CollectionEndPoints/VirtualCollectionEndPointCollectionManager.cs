@@ -23,7 +23,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// Implements <see cref="IVirtualCollectionEndPointCollectionManager"/>, storing the original and current <see cref="IObjectList{IDomainObject}"/> reference
   /// for a <see cref="VirtualCollectionEndPoint"/>.
   /// </summary>
-  [Serializable]
   public class VirtualCollectionEndPointCollectionManager : IVirtualCollectionEndPointCollectionManager
   {
     private readonly RelationEndPointID _endPointID;

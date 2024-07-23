@@ -17,13 +17,11 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
-using Remotion.Reflection;
 using Remotion.TypePipe;
 using Remotion.Utilities;
 
@@ -32,17 +30,7 @@ namespace Remotion.Data.DomainObjects
   /// <summary>
   /// Base class for all objects that are persisted by the framework.
   /// </summary>
-  /// <remarks>
-  /// <para>
-  /// If a class implementing <see cref="ISerializable"/> is derived from this base class, it must provide a deserialization constructor invoking
-  /// this class' deserialization constructor, and it must call <see cref="BaseGetObjectData"/> from the <see cref="ISerializable.GetObjectData"/>
-  /// implementation.
-  /// </para>
-  /// </remarks>
   [IgnoreForMappingConfiguration]
-#if FEATURE_SERIALIZATION
-  [Serializable]
-#endif
   public class DomainObject : IDomainObject
   {
     #region Creation and GetObject factory methods
@@ -210,56 +198,6 @@ namespace Remotion.Data.DomainObjects
       _needsLoadModeDataContainerOnly = true;
     }
 
-#pragma warning disable 168
-    // ReSharper disable UnusedParameter.Local
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DomainObject"/> class in the process of deserialization.
-    /// </summary>
-    /// <param name="info">The <see cref="SerializationInfo"/> coming from the .NET serialization infrastructure.</param>
-    /// <param name="context">The <see cref="StreamingContext"/> coming from the .NET serialization infrastructure.</param>
-    /// <remarks>Be sure to call this base constructor from the deserialization constructor of any concrete <see cref="DomainObject"/> type
-    /// implementing the <see cref="ISerializable"/> interface.</remarks>
-    protected DomainObject (SerializationInfo info, StreamingContext context)
-        // ReSharper restore UnusedParameter.Local
-#pragma warning restore 168
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      _transactionContextImplementation = new DomainObjectTransactionContextImplementation(this);
-      try
-      {
-        _id = (ObjectID)info.GetValue("DomainObject.ID", typeof(ObjectID))!;
-        _rootTransaction = (ClientTransaction)info.GetValue("DomainObject._rootTransaction", typeof(ClientTransaction))!;
-        _needsLoadModeDataContainerOnly = info.GetBoolean("DomainObject._needsLoadModeDataContainerOnly");
-
-        PropertyChanging =
-            (EventHandler<PropertyChangeEventArgs>?)info.GetValue("DomainObject.PropertyChanging", typeof(EventHandler<PropertyChangeEventArgs>));
-        PropertyChanged =
-            (EventHandler<PropertyChangeEventArgs>?)info.GetValue("DomainObject.PropertyChanged", typeof(EventHandler<PropertyChangeEventArgs>));
-        RelationChanging =
-            (EventHandler<RelationChangingEventArgs>?)info.GetValue("DomainObject.RelationChanging", typeof(EventHandler<RelationChangingEventArgs>));
-        RelationChanged =
-            (EventHandler<RelationChangedEventArgs>?)info.GetValue("DomainObject.RelationChanged", typeof(EventHandler<RelationChangedEventArgs>));
-        Deleting = (EventHandler?)info.GetValue("DomainObject.Deleting", typeof(EventHandler));
-        Deleted = (EventHandler?)info.GetValue("DomainObject.Deleted", typeof(EventHandler));
-        Committing =
-            (EventHandler<DomainObjectCommittingEventArgs>?)info.GetValue("DomainObject.Committing", typeof(EventHandler<DomainObjectCommittingEventArgs>));
-        Committed = (EventHandler?)info.GetValue("DomainObject.Committed", typeof(EventHandler));
-        RollingBack = (EventHandler?)info.GetValue("DomainObject.RollingBack", typeof(EventHandler));
-        RolledBack = (EventHandler?)info.GetValue("DomainObject.RolledBack", typeof(EventHandler));
-      }
-      catch (SerializationException ex)
-      {
-        // ReSharper disable DoNotCallOverridableMethodsInConstructor
-        Type publicDomainObjectType = GetPublicDomainObjectType();
-        // ReSharper restore DoNotCallOverridableMethodsInConstructor
-        string message = String.Format(
-            "The GetObjectData method on type {0} did not call DomainObject's BaseGetObjectData method.",
-            publicDomainObjectType.GetFullNameSafe());
-        throw new SerializationException(message, ex);
-      }
-    }
-
     /// <summary>
     /// Gets the <see cref="ObjectID"/> of the <see cref="DomainObject"/>.
     /// </summary>
@@ -349,38 +287,6 @@ namespace Remotion.Data.DomainObjects
       throw new InvalidOperationException(
           "DomainObject constructors must not be called directly. Use DomainObject.NewObject to create DomainObject "
           + "instances.");
-    }
-
-    /// <summary>
-    /// Serializes the base data needed to deserialize a <see cref="DomainObject"/> instance.
-    /// </summary>
-    /// <param name="info">The <see cref="SerializationInfo"/> coming from the .NET serialization infrastructure.</param>
-    /// <param name="context">The <see cref="StreamingContext"/> coming from the .NET serialization infrastructure.</param>
-    /// <remarks>Be sure to call this method from the <see cref="ISerializable.GetObjectData"/> implementation of any concrete
-    /// <see cref="DomainObject"/> type implementing the <see cref="ISerializable"/> interface.</remarks>
-    // ReSharper disable UnusedParameter.Global
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    protected void BaseGetObjectData (SerializationInfo info, StreamingContext context)
-        // ReSharper restore UnusedParameter.Global
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      info.AddValue("DomainObject.ID", ID);
-      info.AddValue("DomainObject._rootTransaction", _rootTransaction);
-      info.AddValue("DomainObject._needsLoadModeDataContainerOnly", _needsLoadModeDataContainerOnly);
-
-      info.AddValue("DomainObject.PropertyChanging", PropertyChanging);
-      info.AddValue("DomainObject.PropertyChanged", PropertyChanged);
-      info.AddValue("DomainObject.RelationChanging", RelationChanging);
-      info.AddValue("DomainObject.RelationChanged", RelationChanged);
-      info.AddValue("DomainObject.Deleted", Deleted);
-      info.AddValue("DomainObject.Deleting", Deleting);
-      info.AddValue("DomainObject.Committing", Committing);
-      info.AddValue("DomainObject.Committed", Committed);
-      info.AddValue("DomainObject.RollingBack", RollingBack);
-      info.AddValue("DomainObject.RolledBack", RolledBack);
     }
 
     /// <summary>
@@ -550,9 +456,7 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>
     /// <para>
     /// Override this method to initialize fields and properties of a <see cref="DomainObject"/> that do not depend on the object's mapped data
-    /// properties, no matter how the object is created. Object deserialization is not regarded as the initialization of a reference. Use the 
-    /// deserialization hooks provided by the .NET framework (deserialization constructor, <see cref="IDeserializationCallback"/>) to react on the 
-    /// deserialization of an object, or simply include the fields in the serialization process. 
+    /// properties, no matter how the object is created.
     /// </para>
     /// <para>
     /// While this method is being executed, it is not possible to access any properties or methods of the DomainObject that read or modify the state 

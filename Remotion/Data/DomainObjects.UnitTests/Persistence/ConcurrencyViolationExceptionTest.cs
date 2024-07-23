@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 {
@@ -50,19 +49,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
                   DomainObjectIDs.Order3)));
       Assert.That(exception.IDs, Is.Not.SameAs(expectedIDs));
       Assert.That(exception.IDs, Is.EqualTo(expectedIDs));
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      var innerException = new Exception("Test");
-      var exception = new ConcurrencyViolationException("Message", new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }, innerException);
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(exception);
-
-      Assert.That(deserializedInstance.Message, Is.EqualTo("Message"));
-      Assert.That(deserializedInstance.IDs, Is.EqualTo(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }));
-      Assert.That(deserializedInstance.InnerException, Is.Not.Null);
     }
   }
 }

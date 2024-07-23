@@ -18,7 +18,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
@@ -30,7 +29,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// </summary>
   public class VirtualObjectEndPoint : ObjectEndPoint, IVirtualObjectEndPoint
   {
-    [Serializable]
     public class EndPointLoader : IncompleteVirtualObjectEndPointLoadState.IEndPointLoader
     {
       private readonly ILazyLoader _lazyLoader;
@@ -52,22 +50,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         _lazyLoader.LoadLazyVirtualObjectEndPoint(virtualObjectEndPoint.ID);
         return virtualObjectEndPoint._loadState;
       }
-
-      #region Serialization
-      public EndPointLoader (FlattenedDeserializationInfo info)
-      {
-        ArgumentUtility.CheckNotNull("info", info);
-
-        _lazyLoader = info.GetValueForHandle<ILazyLoader>();
-      }
-
-      void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-      {
-        ArgumentUtility.CheckNotNull("info", info);
-
-        info.AddHandle(_lazyLoader);
-      }
-      #endregion
     }
 
     private readonly ILazyLoader _lazyLoader;
@@ -294,34 +276,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       _loadState = new CompleteVirtualObjectEndPointLoadState(dataManager, EndPointProvider, _transactionEventSink);
     }
-
-    #region Serialization
-
-    protected VirtualObjectEndPoint (FlattenedDeserializationInfo info)
-        : base(info)
-    {
-      _lazyLoader = info.GetValueForHandle<ILazyLoader>();
-      _endPointProvider = info.GetValueForHandle<IRelationEndPointProvider>();
-      _transactionEventSink = info.GetValueForHandle<IClientTransactionEventSink>();
-      _dataManagerFactory = info.GetValueForHandle<IVirtualObjectEndPointDataManagerFactory>();
-
-      _loadState = info.GetValue<IVirtualObjectEndPointLoadState>();
-      _hasBeenTouched = info.GetBoolValue();
-    }
-
-    protected override void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      base.SerializeIntoFlatStructure(info);
-
-      info.AddHandle(_lazyLoader);
-      info.AddHandle(_endPointProvider);
-      info.AddHandle(_transactionEventSink);
-      info.AddHandle(_dataManagerFactory);
-
-      info.AddValue(_loadState);
-      info.AddBoolValue(_hasBeenTouched);
-    }
-
-    #endregion
   }
 }

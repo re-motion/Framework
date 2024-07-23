@@ -22,8 +22,6 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
-using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
 using Remotion.Development.NUnit.UnitTesting;
@@ -252,37 +250,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(
           () => _factory.CreateDomainObjectCollectionEndPoint(endPointID),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("End point ID must not refer to an anonymous end point.", "id"));
-    }
-
-    [Test]
-    public void FlattenedSerializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var factory = new RelationEndPointFactory(
-          _clientTransaction,
-          new SerializableRelationEndPointProviderFake(),
-          new SerializableLazyLoaderFake(),
-          new SerializableClientTransactionEventSinkFake(),
-          new SerializableVirtualObjectEndPointDataManagerFactoryFake(),
-          new SerializableDomainObjectCollectionEndPointDataManagerFactoryFake(),
-          new SerializableDomainObjectCollectionEndPointCollectionProviderFake(),
-          new SerializableAssociatedDomainObjectCollectionDataStrategyFactoryFake(),
-          new SerializableVirtualCollectionEndPointCollectionProviderFake(),
-          new SerializableVirtualCollectionEndPointDataManagerFactoryFake());
-
-      var deserializedInstance = FlattenedSerializer.SerializeAndDeserialize(factory);
-
-      Assert.That(deserializedInstance.ClientTransaction, Is.Not.Null);
-      Assert.That(deserializedInstance.EndPointProvider, Is.Not.Null);
-      Assert.That(deserializedInstance.LazyLoader, Is.Not.Null);
-      Assert.That(deserializedInstance.TransactionEventSink, Is.Not.Null);
-      Assert.That(deserializedInstance.VirtualObjectEndPointDataManagerFactory, Is.Not.Null);
-      Assert.That(deserializedInstance.DomainObjectCollectionEndPointDataManagerFactory, Is.Not.Null);
-      Assert.That(deserializedInstance.DomainObjectCollectionEndPointCollectionProvider, Is.Not.Null);
-      Assert.That(deserializedInstance.AssociatedDomainObjectCollectionDataStrategyFactory, Is.Not.Null);
-      Assert.That(deserializedInstance.VirtualCollectionEndPointCollectionProvider, Is.Not.Null);
-      Assert.That(deserializedInstance.VirtualCollectionEndPointDataManagerFactory, Is.Not.Null);
     }
   }
 }

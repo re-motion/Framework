@@ -28,7 +28,6 @@ using Remotion.TypePipe;
 
 namespace Remotion.Mixins.MixerTools.UnitTests
 {
-  [Serializable]
   [TestFixture]
   public class Mixer_IntegrationTest
   {

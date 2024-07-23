@@ -19,21 +19,12 @@ using System.Reflection;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
   [TestFixture]
   public class InvalidatedTransactionListenerTest
   {
-    [Test]
-    public void ListenerIsSerializable ()
-    {
-      var listener = new InvalidatedTransactionListener();
-      InvalidatedTransactionListener deserializedListener = Serializer.SerializeAndDeserialize(listener);
-      Assert.That(deserializedListener, Is.Not.Null);
-    }
-
     [Test]
     public void AllMethodsMustThrow ()
     {

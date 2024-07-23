@@ -28,7 +28,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
   /// Implementation of the <see cref="IObjectList{TDomainObject}"/> interface for use in relations (i.e. <see cref="IVirtualCollectionEndPoint"/>).
   /// </summary>
   /// <typeparam name="T"></typeparam>
-  [Serializable]
   public class VirtualObjectList<T> : IObjectList<T>, IReadOnlyCollectionData<T>
       where T : DomainObject
   {

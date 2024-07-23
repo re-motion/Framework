@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 {
@@ -390,23 +389,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       _decoratorWithRealData.ResetCachedDomainObjects();
 
       CheckChangeFlagInvalidated(_decoratorWithRealData);
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      var decorator = new VirtualCollectionData(_endPointID, _dataContainerMapStub.Object, ValueAccess.Current);
-      //decorator.Add (_domainObject);
-
-      WarmUpCache(decorator, false);
-
-      Assert.That(decorator.Count, Is.EqualTo(1));
-      Assert.That(decorator.IsCacheUpToDate, Is.True);
-
-      var deserializedDecorator = Serializer.SerializeAndDeserialize(decorator);
-
-      Assert.That(deserializedDecorator.Count, Is.EqualTo(1));
-      Assert.That(deserializedDecorator.IsCacheUpToDate, Is.True);
     }
 
     private void WarmUpCache (VirtualCollectionData decorator, bool hasChanged)

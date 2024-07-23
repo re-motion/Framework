@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
-  [Serializable]
   public class MixinWithState
   {
     public string State;

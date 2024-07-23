@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
@@ -23,7 +22,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   /// This exception is thrown when the property interception mechanism cannot be applied to a specific <see cref="DomainObject"/> type
   /// because of problems with that type's declaration.
   /// </summary>
-  [Serializable]
   public class NonInterceptableTypeException : DomainObjectException
   {
     private readonly Type _type;
@@ -40,30 +38,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       _type = type;
     }
 
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    protected NonInterceptableTypeException (SerializationInfo info, StreamingContext context)
-        : base(info, context)
-    {
-      _type = (Type)info.GetValue("_type", typeof(Type))!;
-    }
-
     /// <summary>
     /// The type that cannot be intercepted.
     /// </summary>
     public Type Type
     {
       get { return _type; }
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    public override void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      base.GetObjectData(info, context);
-      info.AddValue("_type", _type);
     }
   }
 }

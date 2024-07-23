@@ -17,13 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
@@ -33,20 +31,17 @@ namespace Remotion.Data.DomainObjects.DataManagement
   /// Manages the data (<see cref="DataContainer"/> instances, <see cref="IRelationEndPoint"/> instances, and invalid objects) for a 
   /// <see cref="ClientTransaction"/>.
   /// </summary>
-  [Serializable]
-  public class DataManager : ISerializable, IDeserializationCallback, IDataManager
+  public class DataManager : IDataManager
   {
-    private ClientTransaction _clientTransaction;
-    private IClientTransactionEventSink _transactionEventSink;
-    private IDataContainerEventListener _dataContainerEventListener;
-    private IInvalidDomainObjectManager _invalidDomainObjectManager;
-    private IObjectLoader _objectLoader;
-    private IRelationEndPointManager _relationEndPointManager;
+    private readonly ClientTransaction _clientTransaction;
+    private readonly IClientTransactionEventSink _transactionEventSink;
+    private readonly IDataContainerEventListener _dataContainerEventListener;
+    private readonly IInvalidDomainObjectManager _invalidDomainObjectManager;
+    private readonly IObjectLoader _objectLoader;
+    private readonly IRelationEndPointManager _relationEndPointManager;
 
-    private DataContainerMap _dataContainerMap;
-    private DomainObjectStateCache _domainObjectStateCache;
-
-    private object[]? _deserializedData; // only used for deserialization
+    private readonly DataContainerMap _dataContainerMap;
+    private readonly DomainObjectStateCache _domainObjectStateCache;
 
     public DataManager (
         ClientTransaction clientTransaction,
@@ -453,57 +448,5 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       return new UnregisterDataContainerCommand(objectID, _dataContainerMap);
     }
-
-    #region Serialization
-
-    protected DataManager (SerializationInfo info, StreamingContext context)
-    {
-      _deserializedData = (object[])info.GetValue("doInfo.GetData", typeof(object[]))!;
-      _clientTransaction = null!;
-      _transactionEventSink = null!;
-      _dataContainerEventListener = null!;
-      _dataContainerMap = null!;
-      _relationEndPointManager = null!;
-      _domainObjectStateCache = null!;
-      _invalidDomainObjectManager = null!;
-      _objectLoader = null!;
-    }
-
-    void IDeserializationCallback.OnDeserialization (object? sender)
-    {
-      Assertion.IsNotNull(_deserializedData, "_deserializedData != null");
-      var doInfo = new FlattenedDeserializationInfo(_deserializedData);
-      _clientTransaction = doInfo.GetValueForHandle<ClientTransaction>();
-      _transactionEventSink = doInfo.GetValueForHandle<IClientTransactionEventSink>();
-      _dataContainerEventListener = doInfo.GetValueForHandle<IDataContainerEventListener>();
-      _dataContainerMap = doInfo.GetValue<DataContainerMap>();
-      _relationEndPointManager = doInfo.GetValueForHandle<RelationEndPointManager>();
-      _domainObjectStateCache = doInfo.GetValue<DomainObjectStateCache>();
-      _invalidDomainObjectManager = doInfo.GetValue<IInvalidDomainObjectManager>();
-      _objectLoader = doInfo.GetValueForHandle<IObjectLoader>();
-
-      _deserializedData = null;
-      doInfo.SignalDeserializationFinished();
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      var doInfo = new FlattenedSerializationInfo();
-      doInfo.AddHandle(_clientTransaction);
-      doInfo.AddHandle(_transactionEventSink);
-      doInfo.AddHandle(_dataContainerEventListener);
-      doInfo.AddValue(_dataContainerMap);
-      doInfo.AddHandle(_relationEndPointManager);
-      doInfo.AddValue(_domainObjectStateCache);
-      doInfo.AddValue(_invalidDomainObjectManager);
-      doInfo.AddHandle(_objectLoader);
-
-      info.AddValue("doInfo.GetData", doInfo.GetData());
-    }
-
-    #endregion
   }
 }

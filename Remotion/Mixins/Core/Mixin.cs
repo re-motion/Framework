@@ -155,12 +155,10 @@ namespace Remotion.Mixins
   /// <see cref="BindToGenericTargetParameterAttribute"/> is used.
   /// </para>
   /// </remarks>
-  [Serializable]
   public class Mixin<TTarget, TNext> : Mixin<TTarget>, IInitializableMixin
       where TTarget: class
       where TNext: class
   {
-    [NonSerialized]
     private TNext? _next;
 
     /// <summary>
@@ -198,14 +196,11 @@ namespace Remotion.Mixins
       }
     }
 
-    void IInitializableMixin.Initialize (object target, object? next, bool deserialization)
+    void IInitializableMixin.Initialize (object target, object? next)
     {
       _target = (TTarget)target;
       _next = (TNext?)next;
-      if (deserialization)
-        OnDeserialized();
-      else
-        OnInitialized();
+      OnInitialized();
     }
   }
 
@@ -251,12 +246,10 @@ namespace Remotion.Mixins
   /// <see cref="BindToGenericTargetParameterAttribute"/> is used.
   /// </para>
   /// </remarks>
-  [Serializable]
   public class Mixin<TTarget> : IInitializableMixin
       where TTarget: class
   {
     // TODO RM-7688 Should be private
-    [NonSerialized]
     internal TTarget? _target;
 
     /// <summary>
@@ -293,21 +286,10 @@ namespace Remotion.Mixins
       // nothing
     }
 
-    /// <summary>
-    /// Called when the mixin has been deserialized and its properties can be safely accessed.
-    /// </summary>
-    protected virtual void OnDeserialized ()
-    {
-      // nothing
-    }
-
-    void IInitializableMixin.Initialize (object target, object? next, bool deserialization)
+    void IInitializableMixin.Initialize (object target, object? next)
     {
       _target = (TTarget)target;
-      if (deserialization)
-        OnDeserialized();
-      else
-        OnInitialized();
+      OnInitialized();
     }
   }
 }

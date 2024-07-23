@@ -26,16 +26,10 @@
         A <b>WxeStep</b> can be embedded in a <see cref="WxeStepList"/> or <see cref="WxeFunction"/> in the
         form of a non-public instance field or as a non-public nested class.
       </para>
-      <note type="inheritinfo">
-        In order to allow the usage of a state server, is is required to apply the 
-        <see cref="SerializableAttribute"/> when extending <b>WxeStep</b>. In addition, all fields not marked with 
-        the <see cref="NonSerializedAttribute"/> must be of a serializable type.
-      </note>
     </remarks>
     <example>
       An advanced step, derived from <b>WxeStep</b>.
       <code escaped="true" lang="C#">
-[Serializable]
 public class WxeAdvancedStep: WxeStep
 {
   public override void Execute (WxeContext context)
@@ -55,7 +49,6 @@ public class WxeAdvancedStep: WxeStep
       An example where the 3rd step of the <see cref="WxeFunction"/> <b> MyFunction</b> is a field set to the 
       advanced step.
       <code escaped="true" lang="C#">
-[Serializable]
 public class MyFunction: WxeFunction
 {
   ...
@@ -70,13 +63,11 @@ public class MyFunction: WxeFunction
       An example where the 3rd step of the <see cref="WxeFunction"/> <b> MyFunction</b> is a class derived from
       <see cref="WxeStep"/>.
       <code escaped="true" lang="C#">
-[Serializable]
 public class MyFunction: WxeFunction
 {
   ...
   // Step 2
   
-  [Serializable]
   class Step3: WxeStep
   {
     public override void Execute (WxeContext context)

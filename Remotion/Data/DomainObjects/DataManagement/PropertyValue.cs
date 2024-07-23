@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -236,25 +235,5 @@ namespace Remotion.Data.DomainObjects.DataManagement
         }
       }
     }
-
-    #region Serialization
-    internal void DeserializeFromFlatStructure (FlattenedDeserializationInfo info)
-    {
-      _hasBeenTouched = info.GetBoolValue();
-      _value = info.GetNullableValue<object>();
-      if (_hasBeenTouched)
-        _originalValue = info.GetNullableValue<object>();
-      else
-        _originalValue = _value;
-    }
-
-    internal void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      info.AddBoolValue(_hasBeenTouched);
-      info.AddValue(_value);
-      if (_hasBeenTouched)
-        info.AddValue(_originalValue);
-    }
-    #endregion
   }
 }

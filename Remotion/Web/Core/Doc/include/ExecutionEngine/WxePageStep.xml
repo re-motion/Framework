@@ -84,7 +84,6 @@
       An example where the 3rd step of the <see cref="WxeFunction"/> <b> MyFunction</b> is a <b>WxePageStep</b>
       dislaying a the ASPX page <c>MyWebForm.aspx</c>.
       <code escaped="true" lang="C#">
-[Serializable]
 public class MyFunction: WxeFunction
 {
   ...

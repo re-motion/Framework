@@ -19,7 +19,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine
 {
-  [Serializable]
   public class WxeVariableReference
   {
     private readonly string _name;

@@ -20,7 +20,6 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 {
@@ -74,13 +73,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       CheckThrowOnNoEventRaiser(raiser => raiser.BeginDelete());
       CheckThrowOnNoEventRaiser(raiser => raiser.EndDelete());
       CheckDelegation(raiser => raiser.WithinReplaceData());
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      var indirectRaiser = new IndirectDomainObjectCollectionEventRaiser();
-      Serializer.SerializeAndDeserialize(indirectRaiser);
     }
 
     private void CheckDelegation (Expression<Action<IDomainObjectCollectionEventRaiser>> action)

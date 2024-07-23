@@ -20,7 +20,6 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace Remotion.Web.ExecutionEngine
 {
-  [Serializable]
   public abstract class WxeCallArgumentsBase : IWxeCallArguments
   {
     private readonly IWxeCallOptions _options;

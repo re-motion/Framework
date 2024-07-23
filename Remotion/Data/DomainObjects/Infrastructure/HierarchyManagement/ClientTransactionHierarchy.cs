@@ -23,7 +23,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
   /// <summary>
   /// Represents and tracks a <see cref="ClientTransaction"/> hierarchy.
   /// </summary>
-  [Serializable]
   public class ClientTransactionHierarchy : IClientTransactionHierarchy
   {
     [NotNull]

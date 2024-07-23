@@ -23,7 +23,6 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.IntegrationTests;
@@ -32,8 +31,6 @@ using Remotion.Data.DomainObjects.UnitTests.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
-using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.FunctionalProgramming;
 
@@ -859,24 +856,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       CheckEventWithListenersOnly(
           s => s.RaiseVirtualRelationEndPointStateUpdatedEvent(endPointID, newEndPointChangeState),
           l => l.VirtualRelationEndPointStateUpdated(_clientTransaction, endPointID, newEndPointChangeState));
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var clientTransaction = ClientTransaction.CreateRootTransaction();
-      var instance = new ClientTransactionEventBroker(clientTransaction);
-      instance.AddListener(new SerializableClientTransactionListenerFake());
-      instance.Extensions.Add(new SerializableClientTransactionExtensionFake("bla"));
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
-
-      Assert.That(deserializedInstance.ClientTransaction, Is.Not.Null);
-
-      Assert.That(deserializedInstance.Listeners, Is.Not.Empty);
-      Assert.That(deserializedInstance.Extensions, Is.Not.Empty);
     }
 
     [Test]

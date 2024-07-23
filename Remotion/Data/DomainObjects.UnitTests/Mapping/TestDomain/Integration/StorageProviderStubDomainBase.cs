@@ -20,7 +20,6 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 {
-  [Serializable]
   public abstract class StorageProviderStubDomainBase : DomainObject
   {
     protected StorageProviderStubDomainBase ()

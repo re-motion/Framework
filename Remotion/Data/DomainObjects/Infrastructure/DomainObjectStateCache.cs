@@ -26,13 +26,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// <summary>
   /// Implements <see cref="IClientTransactionListener"/> in order to cache the values of <see cref="DomainObject.State"/>.
   /// </summary>
-  [Serializable]
   public class DomainObjectStateCache
   {
     private readonly ClientTransaction _clientTransaction;
     private readonly Dictionary<ObjectID, DomainObjectState> _stateCache = new Dictionary<ObjectID, DomainObjectState>();
 
-    [Serializable]
     private class StateUpdateListener : ClientTransactionListenerBase
     {
       private readonly DomainObjectStateCache _cache;

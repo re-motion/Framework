@@ -17,35 +17,20 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
-using System.Runtime.Serialization;
 
 namespace Remotion.Collections
 {
   /// <summary>
   /// Case-sensitive name/object dictionary.
   /// </summary>
-  [Serializable]
   [DebuggerDisplay("Count={Count}")]
-  public class NameObjectCollection : ICollection, IDictionary, ISerializable, ICloneable
+  public class NameObjectCollection : ICollection, IDictionary, ICloneable
   {
     private Hashtable _hashtable;
 
     public NameObjectCollection ()
     {
       _hashtable = new Hashtable();
-    }
-
-    protected NameObjectCollection (SerializationInfo info, StreamingContext context)
-    {
-      _hashtable = (Hashtable)info.GetValue("_hashtable", typeof(Hashtable))!;
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      info.AddValue("_hashtable", _hashtable);
     }
 
     public object? this [string name]

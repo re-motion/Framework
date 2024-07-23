@@ -20,7 +20,6 @@ using System.Xml.Serialization;
 namespace Remotion.ObjectBinding
 {
   /// <summary> The <see langword="abstract"/> default implementation of the <see cref="IBusinessObject"/> interface. </summary>
-  [Serializable]
   public abstract class BusinessObject : IBusinessObject
   {
     /// <overloads> Gets the value accessed through the specified property. </overloads>

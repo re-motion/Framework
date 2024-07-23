@@ -32,7 +32,6 @@ using Remotion.Utilities;
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
 {
   [TestFixture]
-  [Serializable]
   public class FilteringAssemblyLoaderTest
   {
     private Mock<IAssemblyLoaderFilter> _filterMock;

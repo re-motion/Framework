@@ -18,7 +18,6 @@ using System;
 
 namespace Remotion.SecurityManager.Domain
 {
-  [Serializable]
   public sealed class GuidRevisionValue : IRevisionValue
   {
     private readonly DateTime _timestamp;

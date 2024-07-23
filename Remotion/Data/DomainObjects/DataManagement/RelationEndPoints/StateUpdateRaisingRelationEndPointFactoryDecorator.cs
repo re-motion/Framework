@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
@@ -72,21 +71,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       var endPoint = _innerFactory.CreateDomainObjectCollectionEndPoint(endPointID);
       return new StateUpdateRaisingDomainObjectCollectionEndPointDecorator(endPoint, _listener);
     }
-
-    #region Serialization
-
-    private StateUpdateRaisingRelationEndPointFactoryDecorator (FlattenedDeserializationInfo info)
-    {
-      _innerFactory = info.GetValueForHandle<IRelationEndPointFactory>();
-      _listener = info.GetValueForHandle<IVirtualEndPointStateUpdateListener>();
-    }
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      info.AddHandle(_innerFactory);
-      info.AddHandle(_listener);
-    }
-
-    #endregion
   }
 }

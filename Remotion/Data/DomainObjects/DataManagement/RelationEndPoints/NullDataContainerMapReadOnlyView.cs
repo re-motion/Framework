@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
@@ -28,18 +27,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       return GetEnumerator();
     }
-
-
-    #region Serialization
-
-    private NullDataContainerMapReadOnlyView (FlattenedDeserializationInfo info)
-    {
-    }
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-    }
-
-    #endregion
   }
 }

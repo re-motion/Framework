@@ -25,7 +25,6 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
   /// Note that the assemblies have to be loaded in memory in order to check whether the attribute is present. This will also lock those assembly 
   /// files that are rejected.
   /// </summary>
-  [Serializable]
   public class AttributeAssemblyLoaderFilter : IAssemblyLoaderFilter
   {
     private readonly Type _attributeType;

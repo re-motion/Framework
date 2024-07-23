@@ -15,12 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   public class GenericMixinWithUnsatisfiableConstraints<[BindToConstraints]T>
-      where T : ICloneable, ISerializable
+      where T : ICloneable, IUnsatisfiableInterface
+  {
+  }
+
+  public interface IUnsatisfiableInterface
   {
   }
 }

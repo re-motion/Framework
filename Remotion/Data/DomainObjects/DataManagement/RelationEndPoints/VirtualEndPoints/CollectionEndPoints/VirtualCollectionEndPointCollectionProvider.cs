@@ -25,7 +25,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// <summary>
   /// Keeps track of <see cref="IObjectList{IDomainObject}"/> references to be used by <see cref="VirtualCollectionEndPoint"/> instances.
   /// </summary>
-  [Serializable]
   public class VirtualCollectionEndPointCollectionProvider : IVirtualCollectionEndPointCollectionProvider
   {
     private readonly Dictionary<RelationEndPointID, IObjectList<IDomainObject>> _collections = new Dictionary<RelationEndPointID, IObjectList<IDomainObject>>();

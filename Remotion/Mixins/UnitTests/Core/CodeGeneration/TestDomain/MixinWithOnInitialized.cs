@@ -15,22 +15,20 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
-using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
-using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Queries.EagerFetching;
+using NUnit.Framework;
 
-namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
+namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
-  [Serializable]
-  public class SerializableFetchedRelationDataRegistrationAgentFake : IFetchedRelationDataRegistrationAgent
+  public class MixinWithOnInitialized : Mixin<object, object>
   {
-    public void GroupAndRegisterRelatedObjects (
-        IRelationEndPointDefinition relationEndPointDefinition,
-        ICollection<ILoadedObjectData> originatingObjects,
-        ICollection<LoadedObjectDataWithDataSourceData> relatedObjects)
+    public bool OnInitializedCalled;
+
+    protected override void OnInitialized ()
     {
-      throw new NotImplementedException();
+      OnInitializedCalled = true;
+      Assert.That(Target, Is.Not.Null);
+      Assert.That(Next, Is.Not.Null);
+      base.OnInitialized();
     }
   }
 }

@@ -22,7 +22,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// <summary>
   /// Registers and unregisters end-points in/from a <see cref="RelationEndPointManager"/>.
   /// </summary>
-  [Serializable]
   public class RelationEndPointRegistrationAgent : IRelationEndPointRegistrationAgent
   {
     private readonly IVirtualEndPointProvider _virtualEndPointProvider;

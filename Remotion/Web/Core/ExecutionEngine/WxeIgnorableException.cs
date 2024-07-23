@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Web.ExecutionEngine
 {
@@ -49,19 +48,10 @@ namespace Remotion.Web.ExecutionEngine
   /// is not executed) without breaking the rest of the page lifecycle (with other options, ASP.NET would actually 
   /// stop processing the page at all).
   /// </example>
-  [Serializable]
   public abstract class WxeIgnorableException : WxeInfrastructureException
   {
     protected WxeIgnorableException (string message)
       : base(message)
-    {
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    protected WxeIgnorableException (SerializationInfo info, StreamingContext context)
-      : base(info, context)
     {
     }
   }

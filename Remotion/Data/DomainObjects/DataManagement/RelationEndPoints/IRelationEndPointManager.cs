@@ -16,14 +16,13 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
   /// <summary>
   /// Provides an API to manage the <see cref="IRelationEndPoint"/> instances loaded into a <see cref="ClientTransaction"/>.
   /// </summary>
-  public interface IRelationEndPointManager : IFlattenedSerializable, IRelationEndPointProvider
+  public interface IRelationEndPointManager : IRelationEndPointProvider
   {
     IRelationEndPointMapReadOnlyView RelationEndPoints { get; }
 

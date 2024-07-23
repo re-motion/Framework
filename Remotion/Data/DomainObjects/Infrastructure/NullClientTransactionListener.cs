@@ -15,19 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
   /// <see cref="INullObject"/> implementation of <see cref="IClientTransactionListener"/>.
   /// </summary>
-  [Serializable]
   public sealed class NullClientTransactionListener
-      : ClientTransactionListenerBase,
-#pragma warning disable SYSLIB0050
-          IObjectReference
-#pragma warning restore SYSLIB0050
+      : ClientTransactionListenerBase
   {
     public static readonly IClientTransactionListener Instance = new NullClientTransactionListener();
 
@@ -38,11 +33,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public override bool IsNull
     {
       get { return true; }
-    }
-
-    object IObjectReference.GetRealObject (StreamingContext context)
-    {
-      return Instance;
     }
   }
 }

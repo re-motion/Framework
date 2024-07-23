@@ -24,7 +24,6 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
   /// The <see cref="ExecutionStateParameters"/> type groups a basic set of parameters passed between the individual implementations of the
   /// <see cref="IExecutionState"/> interface during the various state transistions. 
   /// </summary>
-  [Serializable]
   public class ExecutionStateParameters : IExecutionStateParameters
   {
     private readonly WxeFunction _subFunction;

@@ -22,7 +22,6 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
   /// <summary>
   /// The <see cref="PreProcessingSubFunctionStateParameters"/> group the parameters necessary for setting up the execution of a sub-function.
   /// </summary>
-  //NotSerializable
   public class PreProcessingSubFunctionStateParameters : IExecutionStateParameters
   {
     private readonly IWxePage _page;

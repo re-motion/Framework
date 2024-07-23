@@ -22,7 +22,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
 {
-  [Serializable]
   public class TestTransaction: ITransaction
   {
     [ThreadStatic]

@@ -28,15 +28,11 @@ namespace Remotion.ObjectBinding.BindableObject
   /// <remarks>
   /// The default mixin derived from this class is <see cref="BindableObjectMixin"/>, but a custom implementation exists for OPF's domain objects.
   /// </remarks>
-  [Serializable]
   public abstract class BindableObjectMixinBase<TBindableObject> : Mixin<TBindableObject>, IBusinessObject
       where TBindableObject: class
   {
-    [NonSerialized]
     private MixinConfiguration _mixinConfigurationAtInstantiationTime = null!;
-    [NonSerialized]
     private BindableObjectProvider _bindableObjectProvider = null!;
-    [NonSerialized]
     private DoubleCheckedLockingContainer<BindableObjectClass> _bindableObjectClass = null!;
 
     protected abstract Type GetTypeForBindableObjectClass ();
@@ -117,16 +113,6 @@ namespace Remotion.ObjectBinding.BindableObject
     protected override void OnInitialized ()
     {
       base.OnInitialized();
-
-      var typeForBindableObjectClass = GetTypeForBindableObjectClass();
-      _mixinConfigurationAtInstantiationTime = MixinConfiguration.ActiveConfiguration;
-      _bindableObjectProvider = BindableObjectProvider.GetProviderForBindableObjectType(typeForBindableObjectClass);
-      _bindableObjectClass = new DoubleCheckedLockingContainer<BindableObjectClass>(InitializeBindableObjectClass);
-    }
-
-    protected override void OnDeserialized ()
-    {
-      base.OnDeserialized();
 
       var typeForBindableObjectClass = GetTypeForBindableObjectClass();
       _mixinConfigurationAtInstantiationTime = MixinConfiguration.ActiveConfiguration;

@@ -16,7 +16,6 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.SecurityManager.Domain;
 
 namespace Remotion.SecurityManager.UnitTests.Domain
@@ -64,16 +63,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       ISecurityManagerPrincipal principal = SecurityManagerPrincipal.Null;
 
       Assert.That(principal.GetSecurityPrincipal().IsNull, Is.True);
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      var principal = SecurityManagerPrincipal.Null;
-
-      var deserializedPrincipal = Serializer.SerializeAndDeserialize(principal);
-
-      Assert.That(principal, Is.SameAs(deserializedPrincipal));
     }
 
     [Test]

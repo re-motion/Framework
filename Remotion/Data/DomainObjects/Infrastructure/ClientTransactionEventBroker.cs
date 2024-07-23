@@ -31,7 +31,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// The event notifications are forwarded to <see cref="IClientTransactionListener"/>, <see cref="IClientTransactionExtension"/>, 
   /// <see cref="ClientTransaction"/>, and <see cref="DomainObject"/> instances.
   /// </summary>
-  [Serializable]
   public class ClientTransactionEventBroker : IClientTransactionEventBroker
   {
     private readonly ClientTransaction _clientTransaction;

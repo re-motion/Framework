@@ -23,7 +23,6 @@ using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
@@ -34,7 +33,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// <see cref="IVirtualCollectionData"/> interface. The data is retrieved from from the <see cref="ClientTransaction"/>'s <see cref="T:DataContainerMap"/>
   /// and cached locally.
   /// </summary>
-  public class VirtualCollectionData : IVirtualCollectionData, IFlattenedSerializable
+  public class VirtualCollectionData : IVirtualCollectionData
   {
     private readonly RelationEndPointID _associatedEndPointID;
     private readonly IDataContainerMapReadOnlyView _dataContainerMap;
@@ -229,34 +228,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
         return idComparer;
       }
     }
-
-    #region Serialization
-
-    private VirtualCollectionData (FlattenedDeserializationInfo info)
-    {
-      _associatedEndPointID = info.GetValueForHandle<RelationEndPointID>();
-      _dataContainerMap = info.GetValueForHandle<IDataContainerMapReadOnlyView>();
-      _valueAccess = (ValueAccess)info.GetIntValue();
-      var hasCachedDomainObjects = info.GetBoolValue();
-      if (hasCachedDomainObjects)
-      {
-        var cachedDomainObjects = new List<DomainObject>();
-        info.FillCollection(cachedDomainObjects);
-        _cachedDomainObjects = cachedDomainObjects.ToDictionary(obj => obj.ID);
-      }
-    }
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      info.AddHandle(_associatedEndPointID);
-      info.AddHandle(_dataContainerMap);
-      info.AddIntValue((int)_valueAccess);
-      var hasCachedDomainObjects = _cachedDomainObjects != null;
-      info.AddBoolValue(hasCachedDomainObjects);
-      if (hasCachedDomainObjects)
-        info.AddCollection((ICollection<DomainObject>)_cachedDomainObjects!.Values);
-    }
-
-    #endregion
   }
 }

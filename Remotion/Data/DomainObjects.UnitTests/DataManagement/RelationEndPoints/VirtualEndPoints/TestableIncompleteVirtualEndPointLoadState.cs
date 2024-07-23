@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints
 {
@@ -30,11 +29,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   {
     public TestableIncompleteVirtualEndPointLoadState (IEndPointLoader endPointLoader)
         : base(endPointLoader)
-    {
-    }
-
-    public TestableIncompleteVirtualEndPointLoadState (FlattenedDeserializationInfo info)
-        : base(info)
     {
     }
 
