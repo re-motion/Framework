@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
     [StorageClassNone]
     public string[] StringArray
     {
-      get { return DelimitedStringArrayProperty.Split(';'); }
+      get { return (DelimitedStringArrayProperty ?? string.Empty).Split(';'); }
       set
       {
         if (value == null)
