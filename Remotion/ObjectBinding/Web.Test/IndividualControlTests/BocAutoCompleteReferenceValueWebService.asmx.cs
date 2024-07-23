@@ -22,6 +22,7 @@ using System.Threading;
 using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
+using JetBrains.Annotations;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.Services;
@@ -209,6 +210,7 @@ namespace OBWTest.IndividualControlTests
         string searchString,
         int completionSetOffset,
         int? completionSetCount,
+        string context,
         string businessObjectClass,
         string businessObjectProperty,
         string businessObject,
@@ -274,7 +276,7 @@ namespace OBWTest.IndividualControlTests
           Thread.Sleep(delay);
       }
 
-      var resultWithValueList = Search(searchString, 0, 2, businessObjectClass, businessObjectProperty, businessObject, args);
+      var resultWithValueList = Search(searchString, 0, 2, null, businessObjectClass, businessObjectProperty, businessObject, args);
       var result = ((BocAutoCompleteReferenceValueSearchResultWithValueList)resultWithValueList).Values;
       if (result.Length == 0)
         return null;

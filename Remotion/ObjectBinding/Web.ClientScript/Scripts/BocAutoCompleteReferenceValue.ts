@@ -157,7 +157,8 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
 
             return {
               cacheRow,
-              hasMoreSearchResults: valueList.HasMoreSearchResults
+              hasMoreSearchResults: valueList.HasMoreSearchResults,
+              context: typeof valueList.Context === "string" ? valueList.Context : null
             };
           }
           else

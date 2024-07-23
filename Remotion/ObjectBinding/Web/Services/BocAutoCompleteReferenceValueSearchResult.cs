@@ -24,8 +24,13 @@ namespace Remotion.ObjectBinding.Web.Services
     /// <summary>
     /// Creates a new <see cref="BocAutoCompleteReferenceValueSearchResult"/> based on the <paramref name="values"/>.
     /// </summary>
-    public static BocAutoCompleteReferenceValueSearchResult CreateForValueList (BusinessObjectWithIdentityProxy[] values, bool hasMoreSearchResults) =>
-        new BocAutoCompleteReferenceValueSearchResultWithValueList(values, hasMoreSearchResults);
+    public static BocAutoCompleteReferenceValueSearchResult CreateForValueList (
+        BusinessObjectWithIdentityProxy[] values,
+        bool hasMoreSearchResults,
+        string? context = null)
+    {
+      return new BocAutoCompleteReferenceValueSearchResultWithValueList(values, hasMoreSearchResults, context);
+    }
 
     /// <summary>
     /// The discriminator for different <see cref="BocAutoCompleteReferenceValueSearchResult"/> variants, used during Javascript deserialization.

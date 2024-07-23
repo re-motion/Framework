@@ -83,6 +83,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
         string searchString,
         int completionSetOffset,
         int? completionSetCount,
+        string? context,
         string? businessObjectClass,
         string? businessObjectProperty,
         string? businessObject,
@@ -117,7 +118,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
         string? businessObject,
         string? args)
     {
-      var resultWithValueList = Search(searchString, 0, 2, businessObjectClass, businessObjectProperty, businessObject, args);
+      var resultWithValueList = Search(searchString, 0, 2, null, businessObjectClass, businessObjectProperty, businessObject, args);
       var result = ((BocAutoCompleteReferenceValueSearchResultWithValueList)resultWithValueList).Values;
       var hasSingleMatch = result.Length == 1;
       if (hasSingleMatch)

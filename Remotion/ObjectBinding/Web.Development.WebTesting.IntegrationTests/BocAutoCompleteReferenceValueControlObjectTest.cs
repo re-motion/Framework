@@ -505,7 +505,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That(searchResults.Count, Is.EqualTo(4));
       Assert.That(searchResults[0].DisplayName, Is.EqualTo("D, "));
 
-      var offsetSearchResults = bocAutoComplete.GetSearchServiceResults("D", 1, 4);
+      var offsetSearchResults = bocAutoComplete.GetSearchServiceResults("D", 1, 4, "1");
       Assert.That(offsetSearchResults, Is.EqualTo(searchResults.Skip(1)));
 
       searchResults = bocAutoComplete.GetSearchServiceResults("unexistentValue", 0, 5);

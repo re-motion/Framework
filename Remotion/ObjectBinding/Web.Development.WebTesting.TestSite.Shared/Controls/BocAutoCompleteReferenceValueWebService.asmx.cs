@@ -17,10 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
+using JetBrains.Annotations;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -70,6 +72,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
         string searchString,
         int completionSetOffset,
         int? completionSetCount,
+        string context,
         string businessObjectClass,
         string businessObjectProperty,
         string businessObject,
@@ -77,6 +80,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     {
       if (searchString == "throw")
         throw new InvalidOperationException("I'm always going to throw an exception if you search for 'throw'!");
+
+      // In this service we assume that context is always the same as the offset (or null if offset == 0)
+      // The following asserts ensure that the client behaves correctly and sends back the correct context information
+      if (completionSetOffset == 0 && context != null)
+        throw new InvalidOperationException($"The specified context '{context}' was not expected.");
+      if (completionSetOffset != 0 && context != completionSetOffset.ToString())
+        throw new InvalidOperationException($"The specified context '{context}' did not match the expected context '{completionSetOffset}'.");
 
       if (searchString == "testlist")
       {
@@ -86,7 +96,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
             .Take(count)
             .Select(e => new BusinessObjectWithIdentityProxy { DisplayName = $"testlist Person {e}", UniqueIdentifier = e.ToString() })
             .ToArray();
-        return BocAutoCompleteReferenceValueSearchResult.CreateForValueList(resultItems, completionSetOffset + count < 20);
+
+        return BocAutoCompleteReferenceValueSearchResult.CreateForValueList(
+            resultItems,
+            completionSetOffset + count < 20,
+            (completionSetOffset + count).ToString());
       }
 
       var persons = new List<BusinessObjectWithIdentityProxy>();
@@ -104,7 +118,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
       var resultArray = filteredPersons.Skip(completionSetOffset).Take(completionSetCount ?? int.MaxValue).ToArray();
       var hasMoreSearchResults = completionSetCount.HasValue && resultArray.Length >= completionSetCount.Value;
-      return BocAutoCompleteReferenceValueSearchResult.CreateForValueList(resultArray, hasMoreSearchResults);
+      return BocAutoCompleteReferenceValueSearchResult.CreateForValueList(resultArray, hasMoreSearchResults, (completionSetOffset + (completionSetCount ?? 0)).ToString());
     }
 
     [WebMethod]
@@ -119,7 +133,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
       if (searchString == "throw")
         throw new InvalidOperationException("I'm always going to throw an exception if you search for 'throw'!");
 
-      var resultWithValueList = Search(searchString, 0, 2, businessObjectClass, businessObjectProperty, businessObject, args);
+      var resultWithValueList = Search(searchString, 0, 2, null, businessObjectClass, businessObjectProperty, businessObject, args);
       var result = ((BocAutoCompleteReferenceValueSearchResultWithValueList)resultWithValueList).Values;
       if (result.Length == 0)
         return null;

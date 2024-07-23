@@ -42,6 +42,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
     {
         Type: 'ValueList';
         Values: Remotion.BocAutoCompleteReferenceValue.Item[];
+        Context: Nullable<string>;
         HasMoreSearchResults: boolean;
     }
 
@@ -49,6 +50,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
     {
         cacheRow: CacheRow;
         hasMoreSearchResults: boolean;
+        context: Nullable<string>;
     }
 
     export type Item = {
@@ -796,7 +798,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
             return true;
         }
 
-        function requestMoreData(term: string, offset: number): Promise<BocAutoCompleteReferenceValueCacheableSearchResult> {
+        function requestMoreData(term: string, offset: number, context: Nullable<string>): Promise<BocAutoCompleteReferenceValueCacheableSearchResult> {
             return new Promise((resolve, reject) => {
                 const successHandler = (term: string, result: BocAutoCompleteReferenceValueCacheableSearchResult) => {
                     resolve(result);
@@ -806,7 +808,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                     reject();
                 };
 
-                requestData(term, offset, successHandler, failureHandler);
+                requestData(term, offset, context, successHandler, failureHandler);
             });
         }
 
@@ -846,7 +848,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                     closeDropDownListAndSetValue(state.previousValue, false);
                 };
 
-                requestData(searchString, 0, successHandler, failureHandler);
+                requestData(searchString, 0, null, successHandler, failureHandler);
             } else {
                 stopLoading();
                 select.hide();
@@ -939,7 +941,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
             }
         };
 
-        function requestData(term: string, offset: number, success: (term: string, result: BocAutoCompleteReferenceValueCacheableSearchResult) => void, failure: (term: string) => void) {
+        function requestData(term: string, offset: number, context: Nullable<string>, success: (term: string, result: BocAutoCompleteReferenceValueCacheableSearchResult) => void, failure: (term: string) => void) {
             // re-motion: cancel an already running request
             abortRequest();
 
@@ -969,7 +971,8 @@ namespace Remotion.BocAutoCompleteReferenceValue
                 const params: Dictionary<unknown> = {
                     searchString: term,
                     completionSetOffset: offset,
-                    completionSetCount: options.max
+                    completionSetCount: options.max,
+                    context: context
                 };
                 for (const propertyName in options.extraParams)
                     params[propertyName] = options.extraParams[propertyName];
@@ -1023,7 +1026,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                                                         executingRequest = null;
                                                         let parsed: Nullable<CacheRowEntry> = null;
                                                         if (result != null) {
-                                                            const resultArray: BocAutoCompleteReferenceValueSearchResultWithValueList = { Type: "ValueList", Values: [result], HasMoreSearchResults: false };
+                                                            const resultArray: BocAutoCompleteReferenceValueSearchResultWithValueList = { Type: "ValueList", Values: [result], HasMoreSearchResults: false, Context: null };
                                                             const parsedArray = options.parse(resultArray);
                                                             parsed = parsedArray.cacheRow![0];
                                                         }
@@ -1091,6 +1094,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                 if (existingData && existingData.cacheRow.length === offset) {
                     existingData.cacheRow.push(...value.cacheRow);
                     existingData.hasMoreSearchResults = value.hasMoreSearchResults;
+                    existingData.context = value.context;
                 }
                 // ignore offset data that does not append to an existing cache line
             }
@@ -1119,7 +1123,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
         private readonly options: Options;
         private readonly input: HTMLInputElement;
         private readonly select: (value: boolean) => void;
-        private readonly loadMoreData: (term: string, offset: number) => Promise<BocAutoCompleteReferenceValueCacheableSearchResult>
+        private readonly loadMoreData: (term: string, offset: number, context: Nullable<string>) => Promise<BocAutoCompleteReferenceValueCacheableSearchResult>
         private readonly config: SelectConfig;
 
         private readonly ac_data: WeakMap<HTMLElement, CacheRowEntry> = new WeakMap();
@@ -1128,7 +1132,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
             options: Options,
             input: HTMLInputElement,
             select: (value: boolean) => void,
-            loadMoreData: (term: string, offset: number) => Promise<BocAutoCompleteReferenceValueCacheableSearchResult>,
+            loadMoreData: (term: string, offset: number, context: Nullable<string>) => Promise<BocAutoCompleteReferenceValueCacheableSearchResult>,
             config: SelectConfig) {
             this.options = options;
             this.input = input;
@@ -1145,6 +1149,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
         private active: number = -1;
         private data: Nullable<CacheRow> = null;
         private term: string = "";
+        private context: Nullable<string> = null;
         private needsInit: boolean = true;
         private element: Nullable<HTMLElement> = undefined!;
         private announcementElement: HTMLElement = undefined!;
@@ -1359,12 +1364,13 @@ namespace Remotion.BocAutoCompleteReferenceValue
 
             this.clearAnnouncements();
 
-            const loadingPromise = this.loadMoreData(this.term, this.listItems.length);
+            const loadingPromise = this.loadMoreData(this.term, this.listItems.length, this.context);
             this.addLoadingAnnouncement();
             this.isLoadingMoreData = true;
             this.placeholderItem.classList.add("ac_placeholder_loading");
             loadingPromise.then(searchResult => {
                 this.addListItems(searchResult.cacheRow, searchResult.hasMoreSearchResults);
+                this.context = searchResult.context;
                 this.isLoadingMoreData = false;
                 this.addLoadedAnnouncement();
             }, _ => {
@@ -1511,6 +1517,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
             this.init();
             this.data = [];
             this.term = q;
+            this.context = d.context;
             this.listItems = [];
             this.list.innerHTML = '';
             this.addListItems(d.cacheRow, d.hasMoreSearchResults);
