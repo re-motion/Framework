@@ -35,6 +35,9 @@ namespace Remotion.ObjectBinding.Web.Services
     /// <param name="completionSetCount">
     ///   The maximum number of items to be returned or <see langword="null" /> if the search service implementation can define the result set size.
     /// </param>
+    /// <param name="context">
+    ///   Arbitrary context information that will be sent back to the server as part of the next pagination request.
+    /// </param>
     /// <param name="businessObjectClass">
     ///   The <see cref="IBusinessObjectClass.Identifier"/> of the <see cref="IBusinessObjectClass"/> the control is bound to or <see langword="null" />.
     ///   This value is either the <see cref="IBusinessObject.BusinessObjectClass"/> of the bound <see cref="IBusinessObject"/> or the
@@ -56,6 +59,7 @@ namespace Remotion.ObjectBinding.Web.Services
         string searchString,
         int completionSetOffset,
         int? completionSetCount,
+        string? context,
         string? businessObjectClass,
         string? businessObjectProperty,
         string? businessObject,
