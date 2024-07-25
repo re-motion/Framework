@@ -23,6 +23,9 @@ namespace Remotion.Web.Development.WebTesting.TestSite
         app.UseDeveloperExceptionPage();
       }
 
+      app.UseDefaultFiles();
+      app.UseStaticFiles();
+
       app.UseRouting();
 
       app.UseEndpoints(
