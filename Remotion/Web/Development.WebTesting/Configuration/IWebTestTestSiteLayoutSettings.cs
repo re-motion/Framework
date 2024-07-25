@@ -32,5 +32,11 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// Gets the resources needed by the test site.
     /// </summary>
     IReadOnlyList<string> Resources { get; }
+
+    /// <summary>
+    /// Gets the path to the test site's executable used in the integration test project. Relative paths are considered to be relative to the <see cref="RootPath"/>.
+    /// Used with Kestrel-based hosting.
+    /// </summary>
+    string? ProcessPath { get; }
   }
 }
