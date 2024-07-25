@@ -33,6 +33,8 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
     /// <inheritdoc />
     public IReadOnlyList<ITestSiteResource> Resources { get; }
 
+    public string? ProcessPath { get; }
+
     public TestSiteLayoutConfiguration ([NotNull] IWebTestSettings webTestSettings)
     {
       ArgumentUtility.CheckNotNull("webTestSettings", webTestSettings);
@@ -41,6 +43,18 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
       Resources = webTestSettings.TestSiteLayout.Resources
           .Select(resourceElement => EnsureRootedPath(RootPath, resourceElement))
           .Select(rootedPath => new TestSiteResource(rootedPath)).ToArray();
+
+      ProcessPath = GetRootedProcessPathOrNull(RootPath, webTestSettings.TestSiteLayout.ProcessPath);
+    }
+
+    private string? GetRootedProcessPathOrNull (string rootPath, string? processPath)
+    {
+      if (processPath == null)
+        return null;
+      if (!processPath.EndsWith(".exe"))
+        throw new ArgumentException("The 'processPath' defined in the 'testSiteLayout' did not end with '.exe'. The path must lead to an executable.");
+
+      return EnsureRootedPath(rootPath, processPath);
     }
 
     private string GetRootedRootPath ([NotNull] string path)

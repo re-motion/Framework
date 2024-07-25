@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
   public interface ITestSiteLayoutConfiguration
   {
     /// <summary>
-    /// Gets the absolute path to the test site used in the integration test project.
+    /// Gets the absolute path to the test site hosted when running web tests.
     /// </summary>
     [NotNull]
     string RootPath { get; }
@@ -36,5 +36,10 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
     /// </summary>
     [NotNull]
     IReadOnlyList<ITestSiteResource> Resources { get; }
+
+    /// <summary>
+    /// Gets the path to the test site's executable. The path may be relative to the <see cref="RootPath"/>. Used with Kestrel-based hosting.
+    /// </summary>
+    string? ProcessPath { get; }
   }
 }

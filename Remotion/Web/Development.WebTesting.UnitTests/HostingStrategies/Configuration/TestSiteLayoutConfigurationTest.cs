@@ -39,12 +39,14 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
       webTestSettingsStub
           .Setup(m => m.TestSiteLayout.Resources)
           .Returns(new List<string>() { @".\Some\Resource" });
+      webTestSettingsStub
 
       var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration(webTestSettingsStub.Object);
 
       Assert.That(testSiteLayoutConfiguration.RootPath, Is.EqualTo(Path.Combine(currentBasePath, @"Some\Path")));
       Assert.That(testSiteLayoutConfiguration.Resources.Count, Is.EqualTo(1));
       Assert.That(testSiteLayoutConfiguration.Resources[0].Path, Is.EqualTo(Path.Combine(currentBasePath, @"Some\Path\Some\Resource")));
+      Assert.That(testSiteLayoutConfiguration.ProcessPath, Is.EqualTo(Path.Combine(currentBasePath, @"Some\Path\BinFolder\Executable.exe")));
     }
 
     [Test]
@@ -57,13 +59,16 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
       webTestSettingsStub
           .Setup(m => m.TestSiteLayout.Resources)
           .Returns(new List<string>() { @"C:\Some\Resource", @"Some\Other\Resource" });
-
+      webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.ProcessPath)
+          .Returns(@"C:\BinFolder\Executable.exe");
       var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration(webTestSettingsStub.Object);
 
       Assert.That(testSiteLayoutConfiguration.RootPath, Is.EqualTo(@"C:\Some\Path"));
       Assert.That(testSiteLayoutConfiguration.Resources.Count, Is.EqualTo(2));
       Assert.That(testSiteLayoutConfiguration.Resources[0].Path, Is.EqualTo(@"C:\Some\Resource"));
       Assert.That(testSiteLayoutConfiguration.Resources[1].Path, Is.EqualTo(@"C:\Some\Path\Some\Other\Resource"));
+      Assert.That(testSiteLayoutConfiguration.ProcessPath, Is.EqualTo(@"C:\BinFolder\Executable.exe"));
     }
   }
 }
