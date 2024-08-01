@@ -21,6 +21,8 @@ DROP TYPE IF EXISTS [dbo].[TVP_Double]
 DROP TYPE IF EXISTS [dbo].[TVP_Double_Distinct]
 DROP TYPE IF EXISTS [dbo].[TVP_DateTime2]
 DROP TYPE IF EXISTS [dbo].[TVP_DateTime2_Distinct]
+DROP TYPE IF EXISTS [dbo].[TVP_Date]
+DROP TYPE IF EXISTS [dbo].[TVP_Date_Distinct]
 DROP TYPE IF EXISTS [dbo].[TVP_Guid]
 DROP TYPE IF EXISTS [dbo].[TVP_Guid_Distinct]
 -- Drop all synonyms

@@ -72,6 +72,8 @@ public class SingleScalarSqlTableTypeDefinitionProviderTest
                           AddType<double>(DbType.Double, true),
                           AddType<DateTime>(DbType.DateTime2, false),
                           AddType<DateTime>(DbType.DateTime2, true),
+                          AddType<DateOnly>(DbType.Date, false),
+                          AddType<DateOnly>(DbType.Date, true),
                           AddType<Guid>(DbType.Guid, false),
                           AddType<Guid>(DbType.Guid, true)
                       };
@@ -160,6 +162,8 @@ public class SingleScalarSqlTableTypeDefinitionProviderTest
   [TestCase(typeof(double?), DbType.Double, true)]
   [TestCase(typeof(DateTime), DbType.DateTime2, false)]
   [TestCase(typeof(DateTime?), DbType.DateTime2, true)]
+  [TestCase(typeof(DateOnly), DbType.Date, false)]
+  [TestCase(typeof(DateOnly?), DbType.Date, true)]
   [TestCase(typeof(Guid), DbType.Guid, false)]
   [TestCase(typeof(Guid?), DbType.Guid, true)]
   [TestCase(typeof(ClassWithAllDataTypes.EnumType), DbType.AnsiString, false)]
@@ -211,6 +215,7 @@ public class SingleScalarSqlTableTypeDefinitionProviderTest
 
   [TestCase(typeof(int?), typeof(int))]
   [TestCase(typeof(DateTime?), typeof(DateTime))]
+  [TestCase(typeof(DateOnly?), typeof(DateOnly))]
   [TestCase(typeof(Guid?), typeof(Guid))]
   public void GetStructuredTypeDefinition_ForValueType_ReturnsValueForNullable (Type nullableType, Type underlyingType)
   {

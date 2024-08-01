@@ -58,8 +58,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       Assert.That(item.ID, Is.EqualTo(expectedData.ID));
       foreach (var propertyDefinition in expectedData.ClassDefinition.GetPropertyDefinitions())
       {
-        Assert.That(item.Properties.ContainsKey(propertyDefinition.PropertyName), Is.True);
-        Assert.That(item.Properties[propertyDefinition.PropertyName], Is.EqualTo(expectedData.GetValue(propertyDefinition)));
+        Assert.That(item.Properties.ContainsKey(propertyDefinition.PropertyName), Is.True, $"Property '{propertyDefinition.PropertyName}'");
+        Assert.That(item.Properties[propertyDefinition.PropertyName], Is.EqualTo(expectedData.GetValue(propertyDefinition)), $"Property '{propertyDefinition.PropertyName}'");
       }
     }
 

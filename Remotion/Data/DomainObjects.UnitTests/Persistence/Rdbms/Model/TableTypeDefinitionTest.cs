@@ -117,7 +117,8 @@ public class TableTypeDefinitionTest
     yield return
     [
         new RecordPropertyData { Columns = [ new ColumnData { Name = "Guid", DbType = DbType.Guid, Length = null, SqlDbType = SqlDbType.UniqueIdentifier } ] },
-        new RecordPropertyData { Columns = [ new ColumnData { Name = "DateTime", DbType = DbType.DateTime2, Length = null, SqlDbType = SqlDbType.DateTime2 } ] }
+        new RecordPropertyData { Columns = [ new ColumnData { Name = "DateTime", DbType = DbType.DateTime2, Length = null, SqlDbType = SqlDbType.DateTime2 } ] },
+        new RecordPropertyData { Columns = [ new ColumnData { Name = "Date", DbType = DbType.DateTime, Length = null, SqlDbType = SqlDbType.DateTime } ] }
     ];
 
     // one property with multiple columns

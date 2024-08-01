@@ -223,7 +223,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     private ClassWithAllDataTypes CreateClassWithAllDataTypes ()
     {
       ClassWithAllDataTypes newObject = ClassWithAllDataTypes.NewObject();
-      newObject.DateProperty = DateTime.Now;
+      newObject.DateProperty = DateOnly.FromDateTime(DateTime.Today);
       newObject.DateTimeProperty = DateTime.Now;
       newObject.StringProperty = "value";
       newObject.StringPropertyWithoutMaxLength = "value";

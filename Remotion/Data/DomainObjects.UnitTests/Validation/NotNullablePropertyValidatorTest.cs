@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       dataContainer.SetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "BinaryProperty"), new byte[] { 08, 15 });
       dataContainer.SetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "TransactionOnlyBinaryProperty"), new byte[] { 47, 11 });
       dataContainer.SetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "DateTimeProperty"), new DateTime(2012, 12, 12));
-      dataContainer.SetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "DateProperty"), new DateTime(2012, 12, 12));
+      dataContainer.SetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "DateProperty"), new DateOnly(2012, 12, 12));
       dataContainer.SetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "TransactionOnlyStringProperty"), "Value is longer than the allowed maximum of one hundred characters. To achieve this, these words have been added.");
 
       Assert.That(() => _validator.Validate(dataContainer), Throws.Nothing);

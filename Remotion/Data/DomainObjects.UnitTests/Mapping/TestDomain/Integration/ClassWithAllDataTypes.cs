@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     public abstract byte ByteProperty { get; set; }
 
     [DBColumn("Date")]
-    public abstract DateTime DateProperty { get; set; }
+    public abstract DateOnly DateProperty { get; set; }
 
     [DBColumn("DateTime")]
     public abstract DateTime DateTimeProperty { get; set; }
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     public abstract byte? NaByteProperty { get; set; }
 
     [DBColumn("NaDate")]
-    public abstract DateTime? NaDateProperty { get; set; }
+    public abstract DateOnly? NaDateProperty { get; set; }
 
     [DBColumn("NaDateTime")]
     public abstract DateTime? NaDateTimeProperty { get; set; }
@@ -157,7 +157,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     public abstract byte? NaByteWithNullValueProperty { get; set; }
 
     [DBColumn("NaDateWithNullValue")]
-    public abstract DateTime? NaDateWithNullValueProperty { get; set; }
+    public abstract DateOnly? NaDateWithNullValueProperty { get; set; }
 
     [DBColumn("NaDateTimeWithNullValue")]
     public abstract DateTime? NaDateTimeWithNullValueProperty { get; set; }

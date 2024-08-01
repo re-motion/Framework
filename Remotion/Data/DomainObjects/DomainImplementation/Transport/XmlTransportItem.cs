@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -146,6 +147,11 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
         {
           writer.WriteString(((IExtensibleEnum)value).ID);
         }
+        else if (IsDateOnlyType(Assertion.IsNotNull(valueType)))
+        {
+          var dateOnly = value as DateOnly?;
+          writer.WriteString(dateOnly.HasValue ? dateOnly.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) : "");
+        }
         else
         {
           var valueSerializer = new XmlSerializer(valueType);
@@ -165,6 +171,11 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       {
         reader.ReadStartElement("null"); // no end element for null
         value = null;
+      }
+      else if (IsDateOnlyType(Assertion.IsNotNull(valueType)))
+      {
+        var valueString = reader.ReadContentAsString();
+        value = DateOnly.ParseExact(valueString, "yyyy-MM-dd", CultureInfo.InvariantCulture);
       }
       else if (ExtensibleEnumUtility.IsExtensibleEnumType(Assertion.IsNotNull(valueType)))
       {
@@ -215,9 +226,14 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       }
     }
 
-     private static bool IsObjectID (Type valueType)
-     {
-       return typeof(ObjectID).IsAssignableFrom(valueType);
-     }
+    private bool IsDateOnlyType (Type type)
+    {
+      return type == typeof(DateOnly) || type == typeof(DateOnly?);
+    }
+
+    private static bool IsObjectID (Type valueType)
+    {
+      return typeof(ObjectID).IsAssignableFrom(valueType);
+    }
   }
 }

@@ -144,6 +144,17 @@ CREATE TYPE [dbo].[TVP_DateTime2_Distinct] AS TABLE
   UNIQUE CLUSTERED ([Value])
 )
 GO
+CREATE TYPE [dbo].[TVP_Date] AS TABLE
+(
+  [Value] date NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Date_Distinct] AS TABLE
+(
+  [Value] date NULL
+  UNIQUE CLUSTERED ([Value])
+)
+GO
 CREATE TYPE [dbo].[TVP_Guid] AS TABLE
 (
   [Value] uniqueidentifier NULL

@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "BooleanProperty", true);
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "ByteProperty", (byte)42);
-      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty", new DateTime(1974, 10, 25));
+      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty", new DateOnly(1974, 10, 25));
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateTimeProperty", new DateTime(
           1974, 10, 26, 18, 9, 18));
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "DecimalProperty", (decimal)564.956);
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaBooleanProperty", false);
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty", (byte)21);
-      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateProperty", new DateTime(2007, 1, 18));
+      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateProperty", new DateOnly(2007, 1, 18));
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateTimeProperty", new DateTime(
           2005, 1, 18, 11, 11, 11));
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDecimalProperty", 50m);
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BooleanProperty"), Is.EqualTo(true));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "ByteProperty"), Is.EqualTo(42));
-      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty"), Is.EqualTo(new DateTime(1974, 10, 25)));
+      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty"), Is.EqualTo(new DateOnly(1974, 10, 25)));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateTimeProperty"), Is.EqualTo(new DateTime(1974, 10, 26, 18, 9, 18)));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DecimalProperty"), Is.EqualTo(564.956));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DoubleProperty"), Is.EqualTo(5334.2456d));
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaBooleanProperty"), Is.EqualTo(false));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty"), Is.EqualTo(21));
-      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateProperty"), Is.EqualTo(new DateTime(2007, 1, 18)));
+      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateProperty"), Is.EqualTo(new DateOnly(2007, 1, 18)));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateTimeProperty"), Is.EqualTo(new DateTime(2005, 1, 18, 11, 11, 11)));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDecimalProperty"), Is.EqualTo(50m));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDoubleProperty"), Is.EqualTo(56.87d));
@@ -146,7 +146,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       ObjectID newID = classWithAllDataTypes.ID;
 
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "BinaryProperty", Array.Empty<byte>());
-      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty", new DateTime(1753, 1, 1));
+      SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty", new DateOnly(1753, 1, 1));
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateTimeProperty", new DateTime(
           1753, 1, 1, 0, 0, 0));
       SetPropertyValue(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "DecimalProperty", 0m);
@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BooleanProperty"), Is.EqualTo(false));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "ByteProperty"), Is.EqualTo((byte)0));
-      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty"), Is.EqualTo(new DateTime(1753, 1, 1)));
+      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty"), Is.EqualTo(new DateOnly(1753, 1, 1)));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateTimeProperty"), Is.EqualTo(new DateTime(1753, 1, 1, 0, 0, 0)));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DoubleProperty"), Is.EqualTo(0d));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "EnumProperty"), Is.EqualTo(ClassWithAllDataTypes.EnumType.Value0));
@@ -340,7 +340,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     private void SetDefaultValues (DataContainer classWithAllDataTypesContainer)
     {
       // Note: Date properties must be set, because SQL Server only accepts dates past 1/1/1753.
-      SetPropertyValue(classWithAllDataTypesContainer, typeof(ClassWithAllDataTypes), "DateProperty", DateTime.Now);
+      SetPropertyValue(classWithAllDataTypesContainer, typeof(ClassWithAllDataTypes), "DateProperty", DateOnly.FromDateTime(DateTime.Today));
       SetPropertyValue(classWithAllDataTypesContainer, typeof(ClassWithAllDataTypes), "DateTimeProperty", DateTime.Now);
 
       // Note: SqlDecimal has problems with Decimal.MinValue => Set this property too.

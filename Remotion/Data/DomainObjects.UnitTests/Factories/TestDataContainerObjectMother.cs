@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BooleanProperty"], false);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ByteProperty"], (byte)85);
-      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateProperty"], new DateTime(2005, 1, 1));
+      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateProperty"], new DateOnly(2005, 1, 1));
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DateTimeProperty"], new DateTime(2005, 1, 1, 17, 0, 0));
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DecimalProperty"], (decimal)123456.789);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.DoubleProperty"], 987654.321);
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"], true);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaByteProperty"], (byte)78);
-      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"], new DateTime(2005, 2, 1));
+      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateProperty"], new DateOnly(2005, 2, 1));
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDateTimeProperty"], new DateTime(2005, 2, 1, 5, 0, 0));
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalProperty"], 765.098m);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleProperty"], 654321.789d);

@@ -82,6 +82,8 @@ public class SingleScalarSqlTableTypeDefinitionProvider : ISingleScalarStructure
 
     yield return GetStructuredTypeDefinition(typeof(DateTime), false);
     yield return GetStructuredTypeDefinition(typeof(DateTime), true);
+    yield return GetStructuredTypeDefinition(typeof(DateOnly), false);
+    yield return GetStructuredTypeDefinition(typeof(DateOnly), true);
     yield return GetStructuredTypeDefinition(typeof(Guid), false);
     yield return GetStructuredTypeDefinition(typeof(Guid), true);
   }

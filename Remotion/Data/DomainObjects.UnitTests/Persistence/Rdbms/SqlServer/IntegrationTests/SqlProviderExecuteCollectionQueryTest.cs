@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var query = QueryFactory.CreateQuery(Queries.GetMandatory("QueryWithAllDataTypes"));
       query.Parameters.Add("@boolean", false);
       query.Parameters.Add("@byte", (byte)85);
-      query.Parameters.Add("@date", new DateTime(2005, 1, 1));
+      query.Parameters.Add("@date", new DateOnly(2005, 1, 1));
       query.Parameters.Add("@dateTime", new DateTime(2005, 1, 1, 17, 0, 0));
       query.Parameters.Add("@decimal", (decimal)123456.789);
       query.Parameters.Add("@doubleLowerBound", 987654D);
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       query.Parameters.Add("@naBoolean", true);
       query.Parameters.Add("@naByte", (byte)78);
-      query.Parameters.Add("@naDate", new DateTime(2005, 2, 1));
+      query.Parameters.Add("@naDate", new DateOnly(2005, 2, 1));
       query.Parameters.Add("@naDateTime", new DateTime(2005, 2, 1, 5, 0, 0));
       query.Parameters.Add("@naDecimal", 765.098m);
       query.Parameters.Add("@naDoubleLowerBound", 654321D);

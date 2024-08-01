@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
     {
       var item = ClassWithAllDataTypes.NewObject();
       item.Int32Property = i;
-      item.DateProperty = DateTime.Today;
+      item.DateProperty = DateOnly.FromDateTime(DateTime.Today);
       item.StringProperty = "Child " + i;
       item.ClassForRelationTestMandatory = parent;
       return item;

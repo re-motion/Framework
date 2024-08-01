@@ -25,6 +25,8 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.ExtensibleEnums;
 using Remotion.Utilities;
 
+using DateOnlyConverter = Remotion.Utilities.DateOnlyConverter;
+
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
 {
   /// <summary>
@@ -204,6 +206,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
         return new StorageTypeInformation(typeof(Byte), "tinyint", DbType.Byte, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
       if (dotNetType == typeof(DateTime))
         return new StorageTypeInformation(typeof(DateTime), "datetime2", DbType.DateTime2, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
+      if (dotNetType == typeof(DateOnly))
+        return new StorageTypeInformation(typeof(DateTime), "date", DbType.Date, isNullableInDatabase, null, dotNetType, new DateOnlyConverter());
       if (dotNetType == typeof(Decimal))
         return new StorageTypeInformation(typeof(Decimal), "decimal (38, 3)", DbType.Decimal, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
       if (dotNetType == typeof(Double))
@@ -257,6 +261,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     {
       if (underlyingType.IsEnum)
         return new AdvancedEnumConverter(nullableValueType);
+      else if (underlyingType == typeof(DateOnly))
+        return new DateOnlyConverter();
       else
         return new DefaultConverter(nullableValueType);
     }
