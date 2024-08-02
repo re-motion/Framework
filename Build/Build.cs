@@ -263,10 +263,10 @@ class Build : RemotionBuild
         "WebTestingTestMatrix",
         new TestDimension[,] // todo docker images need to be wired to the config file
         {
-            { Chrome, NET48, Debug, x86, NoDB, EnforcedLocalMachine(Docker_Win_NET48) },
-            { Chrome, NET481, Release, x86, NoDB, EnforcedLocalMachine(Docker_Win_NET481) },
-            { Firefox, NET48, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET481) },
-            { Edge, NET48, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET48) },
+            { Chrome, NET48, Debug, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
+            { Chrome, NET481, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
+            { Firefox, NET48, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
+            { Edge, NET48, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
             // { Edge, NET50, Release, x64, NoDB, Docker_Win_NET50, EnforcedLocalMachine },
         },
         allowEmpty: true);
