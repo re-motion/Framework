@@ -40,6 +40,8 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
           .Setup(m => m.TestSiteLayout.Resources)
           .Returns(new List<string>() { @".\Some\Resource" });
       webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.ProcessPath)
+          .Returns(@".\BinFolder\Executable.exe");
 
       var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration(webTestSettingsStub.Object);
 
