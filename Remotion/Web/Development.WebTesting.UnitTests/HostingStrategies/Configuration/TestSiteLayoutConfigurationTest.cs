@@ -40,6 +40,8 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
           .Setup(m => m.TestSiteLayout.Resources)
           .Returns(new List<string>() { @".\Some\Resource" });
       webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.ProcessPath)
+          .Returns(@".\BinFolder\Executable.exe");
 
       var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration(webTestSettingsStub.Object);
 
@@ -69,6 +71,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
       Assert.That(testSiteLayoutConfiguration.Resources[0].Path, Is.EqualTo(@"C:\Some\Resource"));
       Assert.That(testSiteLayoutConfiguration.Resources[1].Path, Is.EqualTo(@"C:\Some\Path\Some\Other\Resource"));
       Assert.That(testSiteLayoutConfiguration.ProcessPath, Is.EqualTo(@"C:\BinFolder\Executable.exe"));
+
     }
   }
 }
