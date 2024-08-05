@@ -7,12 +7,12 @@
 
   <ItemGroup>
     <PackageVersion Include="Castle.Core" Version="4.4.0" />
-    <PackageVersion Include="CoreForms.Web" Version="8.1.2" />
-    <PackageVersion Include="CoreForms.Web.Extensions" Version="8.1.2" />
-    <PackageVersion Include="CoreForms.Web.Infrastructure" Version="8.1.2" />
-    <PackageVersion Include="CoreForms.Web.Infrastructure.MachineConfig" Version="8.1.2" />
-    <PackageVersion Include="CoreForms.Web.Infrastructure.Roslyn" Version="8.1.2" />
-    <PackageVersion Include="CoreForms.Web.Services" Version="8.1.2" />
+    <PackageVersion Include="CoreForms.Web" Version="8.2.1" />
+    <PackageVersion Include="CoreForms.Web.Extensions" Version="8.2.1" />
+    <PackageVersion Include="CoreForms.Web.Infrastructure" Version="8.2.1" />
+    <PackageVersion Include="CoreForms.Web.Infrastructure.MachineConfig" Version="8.2.1" />
+    <PackageVersion Include="CoreForms.Web.Infrastructure.Roslyn" Version="8.2.1" />
+    <PackageVersion Include="CoreForms.Web.Services" Version="8.2.1" />
     <PackageVersion Include="Fork.Coypu" Version="3.4.0" />
     <PackageVersion Include="JetBrains.Annotations" Version="2023.3.0" />
     <PackageVersion Include="log4net" Version="2.0.17" />
