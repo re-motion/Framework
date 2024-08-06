@@ -834,8 +834,10 @@ namespace Remotion.Web.UI.Controls
       writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.TreeItem);
       writer.AddAttribute("tabindex", _focusededNode == node ? "0" : "-1");
 
-      if(node.IsSelected)
-        writer.AddAttribute(HtmlTextWriterAttribute2.AriaSelected, HtmlAriaSelectedAttributeValue.True);
+      var ariaSelectedAttributeValue = node.IsSelected
+        ? HtmlAriaSelectedAttributeValue.True
+        : HtmlAriaSelectedAttributeValue.False;
+      writer.AddAttribute(HtmlTextWriterAttribute2.AriaSelected, ariaSelectedAttributeValue);
 
       bool hasChildren = node.Children.Count > 0;
       bool isEvaluated = node.IsEvaluated;
