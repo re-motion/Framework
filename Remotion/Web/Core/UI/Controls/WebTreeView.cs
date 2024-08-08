@@ -583,7 +583,7 @@ namespace Remotion.Web.UI.Controls
       var cssClassBackup = CssClass;
 
       if (_enableScrollBars)
-        CssClass += " " + CssClassDefinition.Themed + " " + CssClassDefinition.Scrollable;
+        CssClass += " " + CssClassDefinition.Scrollable;
 
       base.Render(writer);
 

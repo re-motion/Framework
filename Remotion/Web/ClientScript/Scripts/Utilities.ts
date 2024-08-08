@@ -469,6 +469,6 @@ class LayoutUtility
  */
 class CssClassDefinition
 {
-  public static Scrollable = "scrollable";
+  public static Scrollable = "remotion-scrollable";
   public static Themed = "remotion-themed";
 }

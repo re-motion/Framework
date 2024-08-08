@@ -50,7 +50,7 @@ namespace Remotion.Web.UI.Controls
     /// </remarks>
     public static string Scrollable
     {
-      get { return "scrollable"; } // also change in Utilities.ts class CssClassDefinition 
+      get { return "remotion-scrollable"; } // also change in Utilities.ts class CssClassDefinition
     }
 
     /// <summary>

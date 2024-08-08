@@ -471,6 +471,7 @@ img.disabled,
   filter: grayscale(100%);
 }
 
+.remotion-scrollable,
 .remotion-themed.scrollable
 {
   overflow: auto;
@@ -478,6 +479,7 @@ img.disabled,
   scrollbar-color: var(--remotion-themed-scrollbar-color);
 }
 
+.remotion-scrollable > *,
 .remotion-themed.scrollable > *
 {
   scrollbar-color: initial; /* Stop inheriting the scrollbar color to child elements */
