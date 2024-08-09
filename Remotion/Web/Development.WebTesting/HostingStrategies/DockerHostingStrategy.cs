@@ -16,7 +16,7 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using JetBrains.Annotations;
@@ -32,19 +32,37 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
   /// </summary>
   public class DockerHostingStrategy : IHostingStrategy
   {
-    private readonly IisDockerContainerWrapper _iisDockerContainerWrapper;
+    private readonly DockerContainerWrapperBase _dockerContainerWrapper;
 
-    public DockerHostingStrategy (
-        [NotNull] ITestSiteLayoutConfiguration testSiteLayoutConfiguration,
-        int port,
-        [NotNull] string dockerImageName,
-        [CanBeNull] string? dockerIsolationMode,
-        TimeSpan dockerPullTimeout,
-        [CanBeNull] string? hostname)
+    public DockerHostingStrategy (DockerContainerWrapperBase dockerContainerWrapper)
     {
-      ArgumentUtility.CheckNotNull("testSiteLayoutConfiguration", testSiteLayoutConfiguration);
-      ArgumentUtility.CheckNotNullOrEmpty("dockerImageName", dockerImageName);
-      ArgumentUtility.CheckNotEmpty("hostname", hostname);
+      ArgumentUtility.CheckNotNull("dockerContainerWrapper", dockerContainerWrapper);
+
+      _dockerContainerWrapper = dockerContainerWrapper;
+    }
+
+    /// <summary>
+    /// Constructor required for direct usage in <see cref="WebTestConfigurationSection"/>.
+    /// </summary>
+    /// <param name="testSiteLayoutConfiguration">The configuration of the used test site.</param>
+    /// <param name="properties">The configuration properties.</param>
+    [UsedImplicitly]
+    public DockerHostingStrategy ([NotNull] ITestSiteLayoutConfiguration testSiteLayoutConfiguration, [NotNull] IReadOnlyDictionary<string, string> properties)
+    {
+      ArgumentUtility.CheckNotNull(nameof(testSiteLayoutConfiguration), testSiteLayoutConfiguration);
+      ArgumentUtility.CheckNotNull(nameof(properties), properties);
+
+      var port = int.Parse(properties["port"]);
+      var dockerImageName = properties["dockerImageName"];
+      var dockerIsolationMode = properties["dockerIsolationMode"];
+      var dockerPullTimeout = TimeSpan.Parse(properties["dockerPullTimeout"]);
+      var hostname = properties["hostname"];
+#if NET6_0_OR_GREATER
+      var innerType = properties.GetValueOrDefault("innerType");
+#else
+      string? innerType;
+      properties.TryGetValue("innerType", out innerType);
+#endif
 
       var absoluteWebApplicationPath = testSiteLayoutConfiguration.RootPath;
       var is32BitProcess = !Environment.Is64BitProcess;
@@ -57,49 +75,62 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
           .Distinct(StringComparer.OrdinalIgnoreCase)
           .ToArray();
 
-      var configurationParameters = new IisDockerContainerConfigurationParameters(
-          absoluteWebApplicationPath,
-          port,
-          dockerImageName,
-          dockerIsolationMode,
-          hostname,
-          is32BitProcess,
-          mounts);
+      _dockerContainerWrapper = innerType switch
+      {
+        null => ThrowNoInnerTypeException(),
+        _ when innerType.Equals("iisExpress", StringComparison.OrdinalIgnoreCase) => CreateIisDockerContainer(),
+        _ when innerType.Equals("aspnetcore", StringComparison.OrdinalIgnoreCase) => CreateAspNetCoreDockerContainer(),
+        _ => ThrowNoInnerTypeException()
+      };
 
-      _iisDockerContainerWrapper = new IisDockerContainerWrapper(docker, configurationParameters);
-    }
+      DockerContainerWrapperBase CreateIisDockerContainer ()
+      {
+        var configurationParameters = new DockerContainerConfigurationParameters(
+            absoluteWebApplicationPath,
+            port,
+            dockerImageName,
+            dockerIsolationMode,
+            hostname,
+            is32BitProcess,
+            mounts);
 
-    /// <summary>
-    /// Constructor required for direct usage in <see cref="WebTestConfigurationSection"/>.
-    /// </summary>
-    /// <param name="testSiteLayoutConfiguration">The configuration of the used test site.</param>
-    /// <param name="properties">The configuration properties.</param>
-    [UsedImplicitly]
-    public DockerHostingStrategy ([NotNull] ITestSiteLayoutConfiguration testSiteLayoutConfiguration, [NotNull] IReadOnlyDictionary<string, string> properties)
-        : this(
-            testSiteLayoutConfiguration,
-            int.Parse(ArgumentUtility.CheckNotNull("properties", properties)["port"]!),
-            properties["dockerImageName"]!,
-            properties["dockerIsolationMode"],
-            TimeSpan.Parse(properties["dockerPullTimeout"]!),
-            properties["hostname"])
-    {
-      // TODO RM-8113: Guard used properties against null values.
+        return new IisDockerContainerWrapper(docker, configurationParameters);
+      }
+
+      DockerContainerWrapperBase CreateAspNetCoreDockerContainer ()
+      {
+        var configurationParameters = new AspNetDockerContainerConfigurationParameters(
+            absoluteWebApplicationPath,
+            port,
+            dockerImageName,
+            dockerIsolationMode,
+            hostname,
+            is32BitProcess,
+            mounts,
+            testSiteLayoutConfiguration.ProcessPath);
+
+        return new AspNetDockerContainerWrapper(docker, configurationParameters);
+      }
+
+      DockerContainerWrapperBase ThrowNoInnerTypeException ()
+      {
+        throw new ConfigurationErrorsException($"Could not resolve inner Type '{innerType}'. (Possible values: 'iisExpress' or 'aspnetcore')");
+      }
     }
 
     /// <inheritdoc />
     public void DeployAndStartWebApplication ()
     {
-      _iisDockerContainerWrapper.Run();
+      _dockerContainerWrapper.Run();
     }
 
     /// <inheritdoc />
     public void StopAndUndeployWebApplication ()
     {
-      _iisDockerContainerWrapper.Dispose();
+      _dockerContainerWrapper.Dispose();
     }
 
-    private string GetAbsolutePath (string path, string workingDirectory)
+    private static string GetAbsolutePath (string path, string workingDirectory)
     {
       if (Path.IsPathRooted(path))
         return Path.GetFullPath(path);

@@ -32,6 +32,7 @@
               </xs:element>
             </xs:all>
             <xs:attribute name="rootPath" type="c:RequiredStringType" use="required" />
+            <xs:attribute name="processPath" type="xs:string"/>
           </xs:complexType>
         </xs:element>
         <xs:element name="chrome" type="c:ChromiumConfigurationElement" minOccurs="0" maxOccurs="1" />

@@ -32,6 +32,9 @@ namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
 
     /// <inheritdoc />
     public IReadOnlyList<string> Resources { get; init; } = ReadOnlyCollection<string>.Empty;
+
+    /// <inheritdoc />
+    public string? ProcessPath { get; init; }
   }
 }
 #endif
