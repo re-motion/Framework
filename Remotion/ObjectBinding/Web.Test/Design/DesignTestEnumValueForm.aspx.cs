@@ -26,10 +26,10 @@ public class DesignTestEnumValueForm : DesignTestWxeBasePage
 {
   protected BindableObjectDataSourceControl CurrentObject;
   protected WebButton PostBackButton;
-  protected BocEnumValue Bocenumvalue1;
-  protected BocEnumValue Bocenumvalue2;
-  protected BocEnumValue Bocenumvalue3;
-  protected BocEnumValue Bocenumvalue4;
+  protected BocEnumValue BocEnumValue1;
+  protected BocEnumValue BocEnumValue2;
+  protected BocEnumValue BocEnumValue3;
+  protected BocEnumValue BocEnumValue4;
   protected BocEnumValue Bocenumvalue5;
   protected BocEnumValue Bocenumvalue6;
   protected BocEnumValue Bocenumvalue7;
@@ -40,16 +40,12 @@ public class DesignTestEnumValueForm : DesignTestWxeBasePage
   protected BocEnumValue Bocenumvalue12;
   protected BocEnumValue Bocenumvalue13;
   protected BocEnumValue Bocenumvalue14;
-  protected BocEnumValue BocEnumValue1;
   protected BocEnumValue BocEnumValue36;
   protected BocEnumValue BocEnumValue37;
-  protected BocEnumValue BocEnumValue2;
   protected BocEnumValue BocEnumValue38;
   protected BocEnumValue BocEnumValue39;
-  protected BocEnumValue BocEnumValue3;
   protected BocEnumValue BocEnumValue40;
   protected BocEnumValue BocEnumValue41;
-  protected BocEnumValue BocEnumValue4;
   protected BocEnumValue BocEnumValue42;
   protected BocEnumValue BocEnumValue43;
   protected BocEnumValue BocEnumValue17;

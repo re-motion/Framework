@@ -1,7 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <ProjectType>WebApplicationNetFramework</ProjectType>
+    <ProjectType>WebApplication</ProjectType>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <Import Project="..\..\..\Build\Shared.build.props" />
