@@ -25,7 +25,7 @@ namespace Remotion.SecurityManager.Clients.Web.Test
   public class UrlMappingFileFinder : BaseDirectoryBasedUrlMappingFileFinder
   {
     public UrlMappingFileFinder (IAppContextProvider appContextProvider)
-        : base(appContextProvider, "bin\\UrlMapping.xml")
+        : base(appContextProvider, "UrlMapping.xml")
     {
     }
   }

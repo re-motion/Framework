@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.IO;
 using Remotion.Data.DomainObjects;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Security;
@@ -85,6 +86,23 @@ namespace Remotion.SecurityManager.Clients.Web.Test
     protected void Application_BeginRequest (Object sender, EventArgs e)
     {
       _resourceVirtualPathProvider.HandleBeginRequest();
+    }
+
+    protected void Application_PostRequestHandlerExecute (Object sender, EventArgs e)
+    {
+      var mimeType = GetMimeType(Path.GetExtension((ReadOnlySpan<char>)Request.PhysicalPath));
+
+      if (mimeType != null)
+        Response.ContentType = mimeType;
+
+      static string GetMimeType (ReadOnlySpan<char> extension)
+      {
+        var svg = (ReadOnlySpan<char>)".svg";
+        if (extension.Equals(svg, StringComparison.OrdinalIgnoreCase))
+          return "image/svg+xml";
+
+        return null;
+      }
     }
   }
 }
