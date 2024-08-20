@@ -36,6 +36,7 @@ public class WebTestingTestSetup : ITestExecutionWrapper, IRequiresTestParameter
   private const string c_dockerHostName = "RemotionWebTestContainer";
   private const string c_dockerPortNumber = "60402";
   private const string c_dockerWebApplicationRoot = $"http://{c_dockerHostName}.local:{c_dockerPortNumber}/";
+  private const bool c_dockerUseHttps = false;
   private const string c_dockerPullTimeout = "00:15:00";
   private const string c_dockerVerifyWebApplicationStartedTimeout = "00:01:30";
 
@@ -126,6 +127,7 @@ public class WebTestingTestSetup : ITestExecutionWrapper, IRequiresTestParameter
       appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:hosting", "dockerIsolationMode", dockerIsolationMode);
       appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:hosting", "dockerPullTimeout", c_dockerPullTimeout);
       appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:hosting", "hostname", c_dockerHostName);
+      appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:hosting", "useHttps", c_dockerUseHttps.ToString());
     }
 
     appConfig.WriteToFile(configFile);

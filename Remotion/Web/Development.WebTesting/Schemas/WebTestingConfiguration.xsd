@@ -97,6 +97,7 @@
         <xs:restriction base="xs:string">
           <xs:enumeration value="IisExpress" />
           <xs:enumeration value="Docker" />
+          <xs:enumeration value="AspNetCore" />
         </xs:restriction>
       </xs:simpleType>
       <xs:simpleType>
