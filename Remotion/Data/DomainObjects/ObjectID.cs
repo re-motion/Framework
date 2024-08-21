@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
@@ -31,6 +33,7 @@ namespace Remotion.Data.DomainObjects
   /// <see cref="ObjectID"/> supports values of type <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
   /// </remarks>
   /// <threadsafety static="true" instance="true"/>
+  [TypeConverter(typeof(ObjectIDConverter))]
   public sealed class ObjectID : IComparable
   {
     // types
