@@ -54,18 +54,22 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     public string Run (
         IDictionary<int, int> ports,
         IDictionary<string, string> mounts,
+        IDictionary<string, string> environmentVariables,
         string imageName,
         string? isolationMode,
         string? hostname,
         bool remove,
         string? entryPoint,
+        string? workingDirectory,
         string? args)
     {
       ArgumentUtility.CheckNotNull("ports", ports);
       ArgumentUtility.CheckNotNull("mounts", mounts);
+      ArgumentUtility.CheckNotNull("environmentVariables", environmentVariables);
       ArgumentUtility.CheckNotNullOrEmpty("imageName", imageName);
       ArgumentUtility.CheckNotEmpty("hostname", hostname);
       ArgumentUtility.CheckNotEmpty("entryPoint", entryPoint);
+      ArgumentUtility.CheckNotEmpty("workingDirectory", workingDirectory);
       ArgumentUtility.CheckNotEmpty("args", args);
 
       var commandBuilder = new StringBuilder()
@@ -86,12 +90,21 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
 
       if (mounts.Any())
       {
-        var mountFlags = string.Join(" ", mounts.Select(kvp => $@"-v ""{kvp.Key}"":""{kvp.Value}"""));
+        var mountFlags = string.Join(" ", mounts.Select(kvp => $@"-v ""{kvp.Key}"":""{kvp.Value.Trim('\\')}"""));
         commandBuilder.Append(mountFlags).Append(' ');
+      }
+
+      if (environmentVariables.Any())
+      {
+        var environmentFlags = string.Join(" ", environmentVariables.Select(kvp => $@"-e ""{kvp.Key}""=""{kvp.Value}"""));
+        commandBuilder.Append(environmentFlags).Append(' ');
       }
 
       if (entryPoint != null)
         commandBuilder.Append($@"--entrypoint=""{entryPoint}""").Append(' ');
+
+      if (workingDirectory != null)
+        commandBuilder.Append($@"--workdir ""{workingDirectory.Trim('\\')}""").Append(' ');
 
       if (hostname != null)
         commandBuilder.Append($@"--hostname ""{hostname}""").Append(' ');
