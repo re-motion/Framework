@@ -445,7 +445,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Browsable(false)]
     public string? FocusID
     {
-      get { return IsReadOnly ? null : GetValueName(); }
+      get
+      {
+        if (IsReadOnly)
+          return null;
+
+        // Note: The ID is calculated by System.Web.UI.ListBox
+        if (ListControlStyle.ControlType == ListControlType.RadioButtonList)
+          return GetValueName() + "_0";
+
+        return GetValueName();
+      }
     }
 
     /// <summary>
