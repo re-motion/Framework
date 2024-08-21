@@ -113,7 +113,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       var descriptionLabelControl = new Label { ID = renderingContext.Control.ClientID + "_Description", ClientIDMode = ClientIDMode.Static };
       var requiredLabelControl = new Label { ID = renderingContext.Control.ClientID + "_Required", ClientIDMode = ClientIDMode.Static };
       var imageControl = new Image();
-      var hiddenFieldControl = new HiddenField { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
+      var inputControl = new HtmlInputText() { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
       var dataValueReadOnlyControl = new Label { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
       var checkboxControl = new HtmlGenericControl("span") { ID = renderingContext.Control.GetDisplayValueName(), ClientIDMode = ClientIDMode.Static };
 
@@ -160,9 +160,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       }
       else
       {
-        hiddenFieldControl.Value = renderingContext.Control.Value.HasValue ? renderingContext.Control.Value.ToString()! : c_nullString;
-        hiddenFieldControl.Visible = true;
-        hiddenFieldControl.RenderControl(renderingContext.Writer);
+        inputControl.Value = renderingContext.Control.Value.HasValue ? renderingContext.Control.Value.ToString()! : c_nullString;
+        inputControl.Visible = true;
+        inputControl.Attributes.Add(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+        inputControl.RenderControl(renderingContext.Writer);
       }
 
       checkboxControl.Controls.Add(imageControl);

@@ -538,10 +538,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     private void CheckHiddenField (XmlNode outerSpan, string value)
     {
       var hiddenField = Html.GetAssertedChildElement(outerSpan, "input", 0);
-      Html.AssertAttribute(hiddenField, "type", "hidden");
+      Html.AssertAttribute(hiddenField, "type", "text");
       Html.AssertAttribute(hiddenField, "id", c_keyValueName);
       Html.AssertAttribute(hiddenField, "name", c_keyValueName);
       Html.AssertAttribute(hiddenField, "value", value);
+      Html.AssertAttribute(hiddenField, "hidden", "hidden");
     }
 
     private void CheckDataValueField (XmlNode outerSpan, string value)
