@@ -164,7 +164,7 @@
               "Docker_Win_NET48",
               "Docker_Win_NET481",
               "Docker_Win_NET8_0",
-              "EnforcedLocalMachine(Docker_Win_NET6_0)",
+              "EnforcedLocalMachine(Docker_Win_NET8_0)",
               "LocalMachine"
             ]
           }

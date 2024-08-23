@@ -213,7 +213,7 @@ class Build : RemotionBuild
   public override void ConfigureSupportedTestDimensions (SupportedTestDimensionsBuilder supportedTestDimensions)
   {
     supportedTestDimensions.AddSupportedDimension<ExecutionRuntimes>(
-        LocalMachine, EnforcedLocalMachine(Docker_Win_NET6_0),
+        LocalMachine, EnforcedLocalMachine(Docker_Win_NET8_0),
         Docker_Win_NET48, Docker_Win_NET481,
         Docker_Win_NET8_0);
     supportedTestDimensions.AddSupportedDimension<TargetFrameworks>(NET48, NET481, NET8_0);
