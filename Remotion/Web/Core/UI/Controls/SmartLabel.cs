@@ -184,20 +184,14 @@ public class SmartLabel: WebControl, IControl
   private string? GetClientIDForTarget ()
   {
     Control? target = ControlHelper.FindControl(NamingContainer, ForControl);
-    if (target is ISmartControl && target is IFocusableControl)
+
+    return target switch
     {
-      if (((ISmartControl)target).UseLabel)
-        return ((IFocusableControl)target).FocusID;
-
-      return null;
-    }
-
-    if (target != null)
-    {
-      return target.ClientID;
-    }
-
-    return null;
+      ISmartControl { UseLabel: false } => null,
+      IFocusableControl focusableControl => focusableControl.FocusID,
+      null => null,
+      _ => target.ClientID
+    };
   }
 
   public new IPage? Page
