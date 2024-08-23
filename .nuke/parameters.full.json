@@ -4,9 +4,9 @@
   "Target": [ "FullBuild" ],
   "UseReleaseVersioning": true,
   "TestConfigurations": [ "Debug", "Release" ],
-  "TestExecutionRuntimes": [ "Docker_Win_NET48", "Docker_Win_NET481", "EnforcedLocalMachine" ],
+  "TestExecutionRuntimes": [ "Docker_Win_NET8_0", "EnforcedLocalMachine" ],
   "TestPlatforms": [ "x86", "x64" ],
-  "TestTargetRuntimes": [ "NET48", "NET481" ],
+  "TestTargetRuntimes": [ "NET8_0_WINDOWS" ],
   "TestBrowsers": [ "NoBrowser", "Chrome", "Edge", "Firefox" ],
   "TestSqlServers": [ "NoDB", "SqlServer2016", "SqlServer2017", "SqlServer2019", "SqlServer2022" ]
 }
