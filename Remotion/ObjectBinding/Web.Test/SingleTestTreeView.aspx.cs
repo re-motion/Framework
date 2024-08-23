@@ -188,12 +188,12 @@ namespace OBWTest
 
     private void TreeView_Click (object sender, WebTreeNodeClickEventArgs e)
     {
-      TreeViewLabel.Text = "Node = " + e.Node.Text;
+      TreeViewLabel.Text = "Node = " + e.Node.Text.GetValue();
     }
 
     private void PersonTreeView_Click (object sender, BocTreeNodeClickEventArgs e)
     {
-      TreeViewLabel.Text = "Node = " + e.Node.Text;
+      TreeViewLabel.Text = "Node = " + e.Node.Text.GetValue();
     }
 
     private void RefreshPesonTreeViewButton_Click (object sender, EventArgs e)
