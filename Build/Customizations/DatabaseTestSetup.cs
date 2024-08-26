@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using System.IO;
 using Nuke.Common;
-using Nuke.Common.IO;
 using Remotion.BuildScript;
 using Remotion.BuildScript.Test;
 using Remotion.BuildScript.Test.Dimensions;
@@ -101,15 +101,9 @@ public class DatabaseTestSetup : ITestExecutionWrapper, IRequiresTestParameters
     appConfig.SetAppSetting("Password", password);
 
     appConfig.WriteToFile(configFile);
+    File.Copy(configFile, configFile.Parent / "testhost.dll.config", true);
+    File.Copy(configFile, configFile.Parent / "testhost.x86.dll.config", true);
 
     next(context);
-  }
-
-  private static void UpdateConfigFile (AbsolutePath configFile, string xPath, string value)
-  {
-    XmlTasks.XmlPoke(
-        configFile,
-        xPath,
-        value);
   }
 }
