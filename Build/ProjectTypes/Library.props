@@ -16,10 +16,6 @@
       <Pack>true</Pack>
       <PackagePath>schema</PackagePath>
     </EmbeddedResource>
-    <Content Include="FacetManifest.xml" Condition="Exists('FacetManifest.xml')">
-      <Pack>true</Pack>
-      <PackagePath>.</PackagePath>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>

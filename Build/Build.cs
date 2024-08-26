@@ -52,18 +52,6 @@ class Build : RemotionBuild
       .TriggeredBy<IPack>()
       .Executes(() =>
       {
-        // Copy GlobalFacetManifest.xml to output folder
-        var globalFacetManifestPath = BuildProjectDirectory / "GlobalFacetManifest.xml";
-        Assert.FileExists(globalFacetManifestPath);
-
-        FileSystemTasks.CopyFile(globalFacetManifestPath, ((IBaseBuild)this).OutputFolder / globalFacetManifestPath.Name);
-
-        // Copy GlobalFacetManifest.NetFramework.xml to output folder
-        var globalFacetManifestNetFrameworkPath = BuildProjectDirectory / "GlobalFacetManifest.NetFramework.xml";
-        Assert.FileExists(globalFacetManifestNetFrameworkPath);
-
-        FileSystemTasks.CopyFile(globalFacetManifestNetFrameworkPath, ((IBaseBuild)this).OutputFolder / globalFacetManifestNetFrameworkPath.Name);
-
         // Create NPM package
         var packageJsonPath = ((IBaseBuild)this).Solution.Directory / "Remotion" / "Web" / "Dependencies.JavaScript" / "package.json";
         Assert.FileExists(packageJsonPath);
