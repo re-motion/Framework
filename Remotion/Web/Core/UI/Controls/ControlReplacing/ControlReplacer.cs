@@ -117,7 +117,9 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
     public string SaveAllState ()
     {
       Pair state = new Pair(_memberCaller.SaveChildControlState(this), _memberCaller.SaveViewStateRecursive(this));
+#pragma warning disable CFW0001
       LosFormatter formatter = new LosFormatter();
+#pragma warning restore CFW0001
       StringWriter writer = new StringWriter();
       formatter.Serialize(writer, state);
       return writer.ToString();

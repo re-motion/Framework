@@ -326,7 +326,9 @@ namespace Remotion.Web.ExecutionEngine
 
       try
       {
+#pragma warning disable CFW0001
         var serializer = new ObjectStateFormatter();
+#pragma warning restore CFW0001
         serializer.Serialize(outputStream, state);
 
         // For the finished page state, a new byte-array must be allocated, i.e. the original array cannot be used.
@@ -348,7 +350,9 @@ namespace Remotion.Web.ExecutionEngine
     {
       using (var inputStream = new MemoryStream(_pageState!, writable: false)) // TODO RM-8118: not null assertion
       {
+#pragma warning disable CFW0001
         var serializer = new ObjectStateFormatter();
+#pragma warning restore CFW0001
         return serializer.Deserialize(inputStream);
       }
     }

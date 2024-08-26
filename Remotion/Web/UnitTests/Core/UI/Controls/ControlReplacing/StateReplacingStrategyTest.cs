@@ -38,7 +38,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       _replacer = new ControlReplacer(MemberCallerMock.Object);
 
       Pair state = new Pair(new Hashtable(), new object());
+#pragma warning disable CFW0001
       LosFormatter formatter = new LosFormatter();
+#pragma warning restore CFW0001
       StringWriter writer = new StringWriter();
       formatter.Serialize(writer, state);
 
