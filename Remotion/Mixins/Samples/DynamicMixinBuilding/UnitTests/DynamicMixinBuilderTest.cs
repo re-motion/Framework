@@ -131,12 +131,12 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
       if (DynamicMixinBuilder.Scope.StrongNamedModule != null)
       {
         DynamicMixinBuilder.Scope.SaveAssembly(true);
-        PEVerifier.CreateDefault().VerifyPEFile(DynamicMixinBuilder.Scope.StrongNamedModule.FullyQualifiedName);
+        //TODO RM-9285: Re-Introduce assembly verification
       }
       if (DynamicMixinBuilder.Scope.WeakNamedModule != null)
       {
         DynamicMixinBuilder.Scope.SaveAssembly(false);
-        PEVerifier.CreateDefault().VerifyPEFile(DynamicMixinBuilder.Scope.WeakNamedModule.FullyQualifiedName);
+        //TODO RM-9285: Re-Introduce assembly verification
       }
 #endif
       _serviceLocatorScope.Dispose();

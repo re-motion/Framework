@@ -19,7 +19,6 @@ using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Utilities;
 
 namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
@@ -47,16 +46,9 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
 
       var assemblyName = new AssemblyName("Remotion.Reflection.CodeGeneration.MethodWrapperEmitterTests.Generated.Unsigned");
       var moduleName = assemblyName + ".dll";
-#if NETFRAMEWORK && ENABLE_PEVERIFY
-      s_assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(
-                assemblyName,
-                AssemblyBuilderAccess.RunAndSave,
-                TestContext.CurrentContext.TestDirectory);
-      s_moduleBuilder = s_assemblyBuilder.DefineDynamicModule(moduleName, emitSymbolInfo: false);
-#else
+
       s_assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
       s_moduleBuilder = s_assemblyBuilder.DefineDynamicModule(moduleName);
-#endif
 
       DeleteIfExists(s_moduleBuilder.FullyQualifiedName);
     }
@@ -65,17 +57,7 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     public virtual void OneTimeTearDown ()
     {
       Console.WriteLine("Tearing down MethodWrapperEmitterTests");
-#if NETFRAMEWORK && ENABLE_PEVERIFY
-
-      s_assemblyBuilder.Save(s_moduleBuilder.ScopeName);
-      var path = s_moduleBuilder.FullyQualifiedName;
-
-      s_assemblyBuilder = null;
-      s_moduleBuilder = null;
-
-      PEVerifier.CreateDefault().VerifyPEFile(path);
-      FileUtility.DeleteAndWaitForCompletion(path);
-#endif
+      //TODO RM-9285: Re-Introduce assembly verification
     }
 
     private void DeleteIfExists (string path)
