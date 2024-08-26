@@ -53,6 +53,7 @@ namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
 
     public FakePageForAsyncPostBack ()
     {
+      PrivateInvoke.SetNonPublicStaticProperty(typeof(ScriptManager), "DefaultAjaxFrameworkAssembly", typeof(ScriptManager).Assembly);
       _scriptManager = new FakeScriptManager();
     }
 
