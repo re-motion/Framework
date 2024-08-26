@@ -4,7 +4,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
 
-    <CoreFormsVersion>8.2.2</CoreFormsVersion>
+    <CoreFormsVersion>9.0.0-alpha.2</CoreFormsVersion>
   </PropertyGroup>
 
   <ItemGroup>

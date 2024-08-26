@@ -35,7 +35,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       ControlReplacer replacer = SetupControlReplacerForIntegrationTest(testPageHolder.NamingContainer, new StateLoadingStrategy());
       testPageHolder.PageInvoker.InitRecursive();
 
+#pragma warning disable CFW0001
       var formatter = new LosFormatter();
+#pragma warning restore CFW0001
       var state = (Pair)formatter.Deserialize(replacer.SaveAllState());
 
       Pair replacerViewState = (Pair)state.Second;
@@ -227,7 +229,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       var replacer = SetupControlReplacerForIntegrationTest(testPageHolder.NamingContainer, new StateLoadingStrategy());
       testPageHolder.PageInvoker.InitRecursive();
 
+#pragma warning disable CFW0001
       var formatter = new LosFormatter();
+#pragma warning restore CFW0001
       var state = (Pair)formatter.Deserialize(replacer.SaveAllState());
 
       IDictionary controlState = (IDictionary)state.First;

@@ -35,7 +35,9 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
     {
       ArgumentUtility.CheckNotNullOrEmpty("serializedState", serializedState);
 
+#pragma warning disable CFW0001
       var formatter = new LosFormatter();
+#pragma warning restore CFW0001
       var state = (Pair)formatter.Deserialize(serializedState);
 
       _controlState = (IDictionary)state.First!; // TODO RM-8118: not null assertion
