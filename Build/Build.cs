@@ -169,7 +169,6 @@ class Build : RemotionBuild
     projects.AddUnitTestProject("ObjectBinding.Web.IntegrationTests", webTestingTestConfiguration);
     projects.AddReleaseProject("Security.Core");
     projects.AddReleaseProject("Security.Metadata.Extractor");
-    projects.AddReleaseProject("Security.MSBuild.Tasks");
     projects.AddUnitTestProject("Security.UnitTests", normalTestConfiguration);
     projects.AddReleaseProject("Web.Contracts.DiagnosticMetadata");
     projects.AddReleaseProject("Web.Core");
