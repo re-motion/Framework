@@ -17,6 +17,7 @@
 #if !NETFRAMEWORK
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.Extensions.Options;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Resources;
@@ -37,8 +38,14 @@ public static class CachingApplicationBuilderExtensions
   {
     ArgumentUtility.CheckNotNull(nameof(builder), builder);
     ArgumentUtility.CheckNotNull(nameof(options), options);
+    ArgumentUtility.CheckNotNull(nameof(cachingOptions), cachingOptions);
 
-    builder.UseRewriter(new RewriteOptions().Add(new RemotionStaticFilesCacheKeyRemovalRewriteRule(options.RequestPath, stopProcessing: true)));
+    var rewriteOptions = new RewriteOptions()
+        .Add(new RemotionStaticFilesCacheKeyRemovalRewriteRule(options.RequestPath, stopProcessing: true));
+
+    // Manually register the RewriteMiddleware to prevent auto-route discovery shenanigans
+    // Otherwise, the static file middleware might be skipped because an endpoint is already assigned
+    builder.UseMiddleware<RewriteMiddleware>(Options.Create(rewriteOptions));
 
     var originalOnPrepareResponse = options.OnPrepareResponse;
     options.OnPrepareResponse = context =>
