@@ -5,7 +5,6 @@
   </PropertyGroup>
   <Import Project="..\..\..\Build\Shared.build.props" />
   <PropertyGroup>
-    <TargetFrameworks>net48</TargetFrameworks>
     <AssemblyTitle>Unit Tests for Remotion DomainObjects RdmbsTools</AssemblyTitle>
     <AssemblyName>Remotion.Data.DomainObjects.RdbmsTools.UnitTests</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.IO;
 using NUnit.Framework;
 
 namespace Remotion.Data.DomainObjects.RdbmsTools.UnitTests
@@ -24,19 +23,9 @@ namespace Remotion.Data.DomainObjects.RdbmsTools.UnitTests
   public class RdbmsToolsRunnerTest
   {
     [Test]
-    public void CreateAppDomainSetup ()
+    [Ignore("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
+    public void IntegrationTest ()
     {
-      var parameter = new RdbmsToolsParameters();
-      parameter.BaseDirectory = @"c:\foobar";
-      AppDomainSetup setup = RdbmsToolsRunner.CreateAppDomainSetup(parameter);
-      Assert.That(setup.ApplicationName, Is.EqualTo("RdbmsTools"));
-      Assert.That(setup.ApplicationBase, Is.EqualTo(@"c:\foobar"));
-      Assert.That(setup.ConfigurationFile, Is.Null);
-    }
-
-    private string GetConfigPath (string configFileName)
-    {
-      return Path.Combine(AppContext.BaseDirectory, configFileName);
     }
   }
 }
