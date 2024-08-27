@@ -67,20 +67,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
       try
       {
         File.Copy(originalAssemblyPath, newAssemblyPath);
-#if NETFRAMEWORK
-        AppDomainRunner.Run(
-            delegate (object[] args)
-            {
-              string directory = (string)args[0];
-              string assemblyPath = (string)args[1];
-
-              Assembly assembly = Assembly.LoadFile(assemblyPath);
-              Assert.That(Path.GetDirectoryName(assembly.Location), Is.EqualTo(directory));
-              Assert.That(ReflectionUtility.GetAssemblyDirectory(assembly), Is.EqualTo(directory));
-            },
-            directoryPath,
-            newAssemblyPath);
-#else
         using var assemblyContext = new UnloadableAssemblyContext();
         assemblyContext.RunWithAssemblyLoadContext(
             context =>
@@ -89,7 +75,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
               Assert.That(Path.GetDirectoryName(assembly.Location), Is.EqualTo(directoryPath));
               Assert.That(ReflectionUtility.GetAssemblyDirectory(assembly), Is.EqualTo(Path.TrimEndingDirectorySeparator(directoryPath)));
             });
-#endif
       }
       finally
       {
@@ -100,17 +85,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void GetAssemblyPath_FromNonPersistentAssembly ()
     {
-#if NETFRAMEWORK
-      var assemblyMock = new Mock<FakeAssembly>(MockBehavior.Strict);
-      AssemblyName fakeAssemblyName = new AssemblyName();
-      fakeAssemblyName.Name = "FakeAssembly";
-
-      assemblyMock.Setup(_ => _.GetName(false)).Returns(fakeAssemblyName);
-      Assert.That(
-          () => ReflectionUtility.GetAssemblyDirectory(assemblyMock.Object),
-          Throws.InvalidOperationException
-              .With.Message.EqualTo("The code base of assembly 'FakeAssembly' is not set."));
-#else
       var assemblyMock = new Mock<FakeAssembly>(MockBehavior.Strict);
       assemblyMock.Setup(_ => _.Location).Returns("");
       assemblyMock.Setup(_=>_.FullName).Returns("FakeAssembly");
@@ -119,27 +93,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
           () => ReflectionUtility.GetAssemblyDirectory(assemblyMock.Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo("Assembly 'FakeAssembly' does not have a location. It was likely loaded from a byte array."));
-#endif
     }
 
-#if NETFRAMEWORK
-    [Test]
-    public void GetAssemblyPath_FromNonLocalUri ()
-    {
-      var assemblyMock = new Mock<FakeAssembly>(MockBehavior.Strict);
-      AssemblyName fakeAssemblyName = new AssemblyName();
-      fakeAssemblyName.Name = "FakeAssembly";
-      fakeAssemblyName.CodeBase = "http://server/File.ext";
-
-      assemblyMock.Setup(_ => _.GetName(false)).Returns(fakeAssemblyName);
-      Assert.That(
-          () => ReflectionUtility.GetAssemblyDirectory(assemblyMock.Object),
-          Throws.InvalidOperationException
-              .With.Message.EqualTo("The code base 'http://server/File.ext' of assembly 'FakeAssembly' is not a local path."));
-    }
-#endif
-
-#if !NETFRAMEWORK
     [Test]
     public void GetAssemblyPath_FromUncPath ()
     {
@@ -147,7 +102,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
       assemblyMock.Setup(_ => _.Location).Returns(@"\\server\share\directory\assembly.dll");
       Assert.That(() => ReflectionUtility.GetAssemblyDirectory(assemblyMock.Object), Is.EqualTo(@"\\server\share\directory"));
     }
-#endif
 
     [Test]
     public void GetDomainObjectAssemblyDirectory ()

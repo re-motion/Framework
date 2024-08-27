@@ -143,7 +143,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       Assert.That(_bocDateTimeValue.IsDirty, Is.True);
     }
 
-#if NET6_0_OR_GREATER
     [Test]
     public void IBusinessObjectBoundControl_SetValueToDateOnly_ThrowsArgumentException ()
     {
@@ -153,7 +152,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("Parameter 'value' has type 'System.DateOnly' when type 'System.Nullable`1[System.DateTime]' was expected.", "value"));
     }
-#endif
 
     [Test]
     public void IBusinessObjectBoundControl_SetValueToDateTime ()
@@ -365,7 +363,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       Assert.That(_bocDateTimeValue.IsDirty, Is.False);
     }
 
-#if NET6_0_OR_GREATER
     [Test]
     public void LoadUnboundValue_DateOnlyAndInterimTrue ()
     {
@@ -425,7 +422,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       Assert.That(_bocDateTimeValue.Value, Is.EqualTo(null));
       Assert.That(_bocDateTimeValue.IsDirty, Is.False);
     }
-#endif
 
     [Test]
     public void SaveValueAndInterimTrue ()

@@ -123,13 +123,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
       var valuePart = objectIDString.Substring(indexOfValuePart, indexOfTypeDelimiter - indexOfValuePart);
       var typePart = objectIDString.Substring(indexOfTypePart);
 
-#if NETFRAMEWORK
-      var typeParts = typePart.Split(new[] { ',' }, 3);
-      var isFromMscorlib = typeParts.Length < 2 || typeParts[1].Trim() == "mscorlib";
-      var typeName = isFromMscorlib ? typeParts[0].Trim() : null;
-#else
       var typeName = typePart;
-#endif
 
       IObjectIDValueParser? valueParser = typeName switch
       {

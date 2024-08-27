@@ -426,22 +426,6 @@ namespace Remotion.Collections.Caching.UnitTests
               ));
     }
 
-#if NETFRAMEWORK
-    [Test]
-    public void GetEnumerator_Generic_Reset_ThrowsNotSupportedException ()
-    {
-      object expected1 = new object();
-      _cache.GetOrCreateValue("key1", delegate { return expected1; });
-
-      using (var enumerator = _cache.GetEnumerator())
-      {
-        Assert.That(enumerator.MoveNext(), Is.True);
-        Assert.That(enumerator.Current, Is.EqualTo(new KeyValuePair<string, object>("key1", expected1)));
-
-        Assert.That(() => enumerator.Reset(), Throws.Exception.TypeOf<NotSupportedException>());
-      }
-    }
-#else
     [Test]
     public void GetEnumerator_Generic_Reset_ResetsEnumerator ()
     {
@@ -458,7 +442,6 @@ namespace Remotion.Collections.Caching.UnitTests
         Assert.That(enumerator.Current, Is.EqualTo(new KeyValuePair<string, object>("key1", expected1)));
       }
     }
-#endif
 
     [Test]
     public void GetEnumerator_NonGeneric ()

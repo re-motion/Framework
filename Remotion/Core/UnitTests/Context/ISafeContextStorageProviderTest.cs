@@ -36,14 +36,10 @@ namespace Remotion.UnitTests.Context
     {
       var instance = _serviceLocator.GetInstance<ISafeContextStorageProvider>();
 
-#if NETFRAMEWORK
-      Assert.That(instance, Is.InstanceOf(typeof(CallContextStorageProvider)));
-#else
 // Ignore the obsolete warnings for AsyncLocalStorageProvider
 #pragma warning disable 618
       Assert.That(instance, Is.InstanceOf(typeof(AsyncLocalStorageProvider)));
 #pragma warning restore 618
-#endif
     }
 
     [Test]

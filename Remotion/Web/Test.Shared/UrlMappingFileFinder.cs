@@ -26,11 +26,7 @@ namespace Remotion.Web.Test.Shared
   public class UrlMappingFileFinder : BaseDirectoryBasedUrlMappingFileFinder
   {
     public UrlMappingFileFinder ([NotNull] IAppContextProvider appContextProvider)
-#if NETFRAMEWORK
-        : base(appContextProvider, "bin\\UrlMapping.xml")
-#else
         : base(appContextProvider, "UrlMapping.xml")
-#endif
     {
     }
   }

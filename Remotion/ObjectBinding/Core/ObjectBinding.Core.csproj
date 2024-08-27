@@ -23,8 +23,5 @@
     <ProjectReference Include="..\..\Globalization\Mixins\Globalization.Mixins.csproj" />
     <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
-  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

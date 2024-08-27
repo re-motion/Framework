@@ -41,11 +41,7 @@ namespace Remotion.ObjectBinding.Sample
     private string _title;
     private DateTime _startDate;
     private DateTime _endDate;
-#if NET6_0_OR_GREATER
     private DateOnly _promotionDate;
-#else
-    private DateTime _promotionDate;
-#endif
 
     protected Job ()
     {
@@ -74,7 +70,6 @@ namespace Remotion.ObjectBinding.Sample
       set { _endDate = value; }
     }
 
-#if NET6_0_OR_GREATER
     [XmlIgnore]
     public DateOnly PromotionDate
     {
@@ -90,15 +85,6 @@ namespace Remotion.ObjectBinding.Sample
       get => _promotionDate.ToString("yyyy-MM-dd");
       set => PromotionDate = DateOnly.Parse(value);
     }
-#else
-    [XmlAttribute(DataType="date")]
-    [DateProperty]
-    public DateTime PromotionDate
-    {
-      get { return _promotionDate; }
-      set { _promotionDate = value; }
-    }
-#endif
 
     public override string DisplayName
     {

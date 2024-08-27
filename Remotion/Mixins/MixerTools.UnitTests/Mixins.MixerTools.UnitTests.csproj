@@ -6,7 +6,6 @@
   </PropertyGroup>
   <Import Project="..\..\..\Build\Shared.build.props" />
   <PropertyGroup>
-    <TargetFrameworks>net48</TargetFrameworks>
     <AssemblyTitle>Remotion Mixins Mixer Tools Console Unit Tests</AssemblyTitle>
     <AssemblyName>Remotion.Mixins.MixerTools.UnitTests</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>

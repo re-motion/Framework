@@ -588,23 +588,6 @@ namespace Remotion.Collections.DataStore.UnitTests
               ));
     }
 
-#if NETFRAMEWORK
-    [Test]
-    public void GetEnumerator_Generic_Reset_ThrowsNotSupportedException ()
-    {
-      object expected1 = new object();
-      _store.GetOrCreateValue("key1", delegate { return expected1; });
-
-      using (var enumerator = _store.GetEnumerator())
-      {
-        Assert.That(enumerator.MoveNext(), Is.True);
-        Assert.That(enumerator.Current.Key, Is.AnyOf("a", "b", "key1"));
-
-        Assert.That(() => enumerator.Reset(), Throws.Exception.TypeOf<NotSupportedException>());
-      }
-    }
-
-#else
     [Test]
     public void GetEnumerator_Generic_Reset_ResetsEnumerator ()
     {
@@ -623,7 +606,6 @@ namespace Remotion.Collections.DataStore.UnitTests
         Assert.That(enumerator.Current.Key, Is.AnyOf("a", "b", "key1"));
       }
     }
-#endif
 
     [Test]
     public void GetEnumerator_NonGeneric ()

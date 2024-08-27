@@ -675,21 +675,5 @@ namespace Remotion.UnitTests.Context
 
       Assert.That(_provider.GetData(c_testKey), Is.EqualTo("initial"));
     }
-
-
-#if NETFRAMEWORK && DEBUG
-    [Test]
-    public void SetData_WithClassImplementingILogicalThreadAffinative_ThrowsPlatformNotSupportedException ()
-    {
-      var data = new ClassImplementingILogicalThreadAffinative();
-      Assert.That(
-          () => _provider.SetData(c_testKey, data),
-          Throws.InstanceOf<NotSupportedException>().With.Message.EqualTo("Remoting is not supported."));
-    }
-
-    private class ClassImplementingILogicalThreadAffinative : System.Runtime.Remoting.Messaging.ILogicalThreadAffinative
-    {
-    }
-#endif
   }
 }

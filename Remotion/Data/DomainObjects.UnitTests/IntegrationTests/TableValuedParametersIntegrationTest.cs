@@ -112,7 +112,6 @@ public class TableValuedParametersIntegrationTest : ClientTransactionBaseTest
             .With.Message.Contains("Cannot insert duplicate key in object 'dbo.@1'. The duplicate key value is (83445473-844a-4d3f-a8c3-c27f8d98e8ba)."));
   }
 
-#if NET5_0_OR_GREATER
   [Test]
   public void Contains_WithReadOnlySetOfT ()
   {
@@ -141,7 +140,6 @@ public class TableValuedParametersIntegrationTest : ClientTransactionBaseTest
             .With.Message.Contains("Error while executing SQL command: Violation of UNIQUE KEY constraint")
             .With.Message.Contains("Cannot insert duplicate key in object 'dbo.@1'. The duplicate key value is (83445473-844a-4d3f-a8c3-c27f8d98e8ba)."));
   }
-#endif
 
   [Test]
   public void Contains_UsingTableValuedParameter_NullValue ()

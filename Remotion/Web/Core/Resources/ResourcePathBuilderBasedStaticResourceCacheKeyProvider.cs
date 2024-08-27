@@ -100,11 +100,7 @@ namespace Remotion.Web.Resources
     private readonly IReadOnlyList<ResourceType> _resourceTypes;
 
     private readonly DoubleCheckedLockingContainer<string?> _cacheKey;
-#if NETFRAMEWORK
-    private readonly HashSet<string> _resourceTypeLookup;
-#else
     private readonly IReadOnlySet<string> _resourceTypeLookup;
-#endif
 
     private string? _physicalPath;
     private FileSystemWatcher? _fileSystemWatcher;
@@ -181,11 +177,7 @@ namespace Remotion.Web.Resources
           // Use only the relative path from the root to calculate the cache key.
           // This removes a lot of stuff to cache while also allowing multiple servers
           // to generate the same cache key even if they are store on different paths.
-#if NETFRAMEWORK
-          binaryWriter.Write(name.Substring(_physicalPath.Length));
-#else
           binaryWriter.Write(name.AsSpan()[_physicalPath.Length..]);
-#endif
           binaryWriter.Write(length);
           binaryWriter.Write(lastWriteTime);
         }
@@ -256,11 +248,7 @@ namespace Remotion.Web.Resources
 
     private static string FormatAsHex (byte[] data)
     {
-#if NETFRAMEWORK
-      return string.Concat(data.Select(e => e.ToString("X2")));
-#else
       return Convert.ToHexString(data);
-#endif
     }
 
     /// <inheritdoc />

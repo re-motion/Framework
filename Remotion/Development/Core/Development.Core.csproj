@@ -15,16 +15,12 @@
     <Compile Include="..\..\..\SharedSource\Development\UnitTesting\**\*"
              Link="SharedSource\UnitTesting\%(RecursiveDir)%(Filename)%(Extension)"
              Exclude="**\NUnit\**" />
-    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Tools\Core.Tools.csproj" />
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
   </ItemGroup>
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'false'">
+  <ItemGroup>
     <PackageReference Include="System.Data.SqlClient" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

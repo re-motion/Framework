@@ -352,13 +352,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           () => _orderCache.ResolveMandatoryPropertyAccessorData((Order o) => ((OrderItem)(object)o).Product),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-#if NETFRAMEWORK
-                  "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' does not have a mapping property identified by expression "
-                  + "'o => Convert(Convert(o)).Product'."
-#else
                   "The domain object type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' does not have a mapping property identified by expression "
                   + "'o => Convert(Convert(o, Object), OrderItem).Product'."
-#endif
                   ));
     }
 

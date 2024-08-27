@@ -12,7 +12,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\..\SharedSource\Core\Collections\*.cs" Link="SharedSource\Collections\%(Filename)%(Extension)" />
-    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
@@ -28,11 +27,6 @@
     <PackageReference Include="Remotion.Linq.EagerFetching" />
     <PackageReference Include="Remotion.Linq.SqlBackend" />
     <PackageReference Include="Remotion.TypePipe" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'false'">
     <PackageReference Include="System.Data.SqlClient" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

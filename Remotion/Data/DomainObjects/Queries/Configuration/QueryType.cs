@@ -15,9 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-#if !NETFRAMEWORK
 using Remotion.Obsolete;
-#endif
 
 namespace Remotion.Data.DomainObjects.Queries.Configuration
 {
@@ -26,28 +24,6 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
   /// </summary>
   public enum QueryType
   {
-    // We need to check for .NetFramework because the ToString() method on enums creates different values for .NetFramework and .Net if both enum variants have the same value
-    // This is ok at this point, as .NetFramework will be kicked soon anyways (RM-8683).
-#if NETFRAMEWORK
-    /// <summary>
-    /// Instances of a <see cref="QueryDefinition"/> return a collection of <see cref="DomainObject"/>s.
-    /// </summary>
-    [Obsolete("'QueryType.Collection' has been replaced with 'QueryType.CollectionReadWrite'. (Version 7.0.0)", false)]
-    Collection = CollectionReadWrite,
-
-    /// <summary>
-    /// Instances of a <see cref="QueryDefinition"/> return only a single value.
-    /// </summary>
-    [Obsolete("'QueryType.Scalar' has been replaced with 'QueryType.ScalarReadWrite'. (Version 7.0.0)", false)]
-    Scalar = ScalarReadWrite,
-
-    /// <summary>
-    /// Instances of a <see cref="QueryDefinition"/> return a sequence of arbitrary objects.
-    /// </summary>
-    [Obsolete("'QueryType.Custom' has been replaced with 'QueryType.CustomReadWrite'. (Version 7.0.0)")]
-    Custom = CustomReadWrite,
-#endif
-
     /// <summary>
     /// Instances of a <see cref="QueryDefinition"/> return a collection of <see cref="DomainObject"/>s and can write to the domain.
     /// </summary>
@@ -78,7 +54,6 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     /// </summary>
     CustomReadOnly = 5,
 
-#if !NETFRAMEWORK
     /// <summary>
     /// Instances of a <see cref="QueryDefinition"/> return a collection of <see cref="DomainObject"/>s.
     /// </summary>
@@ -96,6 +71,5 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     /// </summary>
     [Obsolete("'QueryType.Custom' has been replaced with 'QueryType.CustomReadWrite'. (Version 7.0.0)", false, DiagnosticId = ObsoleteDiagnosticIDs.QueryTypeValue)]
     Custom = CustomReadWrite,
-#endif
   }
 }

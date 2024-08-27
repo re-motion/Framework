@@ -20,7 +20,6 @@
       <Pack>true</Pack>
       <PackagePath>res/HTML</PackagePath>
     </Content>
-    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
@@ -31,16 +30,11 @@
     <ProjectReference Include="..\..\Security\Core\Security.Core.csproj" />
     <ProjectReference Include="..\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />
   </ItemGroup>
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
   <ItemGroup>
     <None Include="..\Development.Analyzers\bin\$(Configuration)\netstandard2.0\Remotion.Web.Development.Analyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Remotion.ThirdPartyDependency.RobotoFonts" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'false'">
     <PackageReference Include="Remotion.ThirdPartyDependency.System.Web" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

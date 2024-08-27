@@ -286,16 +286,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
     [Test]
     public void Parse_WithAssemblyNameValidForNetFramwork (string idString, Type type, string typePart)
     {
-#if NETFRAMEWORK
-      ObjectID id = ObjectIDStringSerializer.Instance.Parse(idString);
-
-      Assert.That(id.Value.GetType(), Is.EqualTo(type));
-#else
       Assert.That(
           () => ObjectIDStringSerializer.Instance.Parse(idString),
           Throws.TypeOf<FormatException>().With.Message.EqualTo(
               $"Serialized ObjectID '{idString}' is invalid: type '{typePart}' is not supported."));
-#endif
     }
 
     [TestCase("Official|5d09030c-25c2-4735-b514-46333bd28ac8|System.Goid, mscorlib", "System.Goid, mscorlib")]
@@ -555,12 +549,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
     [Test]
     public void TryParse_WithAssemblyNameValidForNetFramework (string idString, Type type)
     {
-#if NETFRAMEWORK
-      Assert.That(ObjectIDStringSerializer.Instance.TryParse(idString, out var id), Is.True);
-      Assert.That(id.Value.GetType(), Is.EqualTo(type));
-#else
       Assert.That(ObjectIDStringSerializer.Instance.TryParse(idString, out _), Is.False);
-#endif
     }
 
     [TestCase("Official|5d09030c-25c2-4735-b514-46333bd28ac8|System.Goid, mscorlib")]

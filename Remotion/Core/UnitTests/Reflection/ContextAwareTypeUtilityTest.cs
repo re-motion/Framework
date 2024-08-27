@@ -26,9 +26,7 @@ using Remotion.Reflection;
 using Remotion.Reflection.TypeResolution;
 using Remotion.UnitTests.Configuration.TypeDiscovery;
 using Remotion.Utilities;
-#if !NETFRAMEWORK
 using Remotion.Development.UnitTesting.IsolatedCodeRunner;
-#endif
 
 namespace Remotion.UnitTests.Reflection
 {
@@ -131,22 +129,11 @@ namespace Remotion.UnitTests.Reflection
       var fullPath = Path.Combine(TestContext.CurrentContext.TestDirectory, relativePath);
       Assert.That(File.Exists(fullPath));
 
-      // We run this in a new appdomain/process to ensure that the config can be loaded
+      // We run this in a new process to ensure that the config can be loaded
       // without any initialization problems causing recursive initialization (see RM-8064)
-#if NETFRAMEWORK
-      var appDomainSetup = AppDomain.CurrentDomain.SetupInformation;
-      appDomainSetup.ConfigurationFile = fullPath;
-
-      var appDomainRunner = new AppDomainRunner(
-          appDomainSetup,
-          args => TestAction(Array.Empty<string>()));
-
-      Assert.That(() => appDomainRunner.Run(), Throws.Nothing);
-#else
       var isolatedCodeRunner = new IsolatedCodeRunner(TestAction);
       isolatedCodeRunner.ConfigFile = fullPath;
       Assert.That(() => isolatedCodeRunner.Run(), Throws.Nothing);
-#endif
 
       static void TestAction (string[] args)
       {

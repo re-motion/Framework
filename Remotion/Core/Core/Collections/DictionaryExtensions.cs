@@ -37,18 +37,6 @@ namespace Remotion.Collections
       return GetValueOrDefault(dictionary, key, default(TValue)!);
     }
 
-#if NETFRAMEWORK
-    [return: MaybeNull]
-    public static TValue GetValueOrDefault<TKey, TValue> (this IReadOnlyDictionary<TKey, TValue> dictionary, TKey key)
-        where TKey : notnull
-    {
-      ArgumentUtility.CheckNotNull("dictionary", dictionary);
-      // Implementations of IDictionary<TKey, TValue> are free to allow null keys.
-
-      return GetValueOrDefault(dictionary, key, default(TValue)!);
-    }
-#endif
-
     [return: MaybeNull]
     public static TValue GetValueOrDefault<TKey, TValue> (this Dictionary<TKey, TValue> dictionary, TKey key)
         where TKey : notnull
@@ -121,18 +109,5 @@ namespace Remotion.Collections
       dictionary.Add(key, newValue);
       return newValue;
     }
-
-#if NETFRAMEWORK
-    public static ReadOnlyDictionary<TKey, TValue> AsReadOnly<TKey, TValue> (this IDictionary<TKey, TValue> dict)
-        where TKey : notnull
-    {
-      ArgumentUtility.CheckNotNull("dict", dict);
-
-      if (dict is ReadOnlyDictionary<TKey, TValue> readOnlyDict)
-        return readOnlyDict;
-
-      return new ReadOnlyDictionary<TKey, TValue>(dict);
-    }
-#endif
   }
 }

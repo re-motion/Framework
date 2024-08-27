@@ -31,15 +31,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     public void ThreadAbortException ()
     {
       var function = new ThreadAbortTestTransactedFunction();
-      try
-      {
-        function.Execute(Context);
-        Assert.Fail("Expected ThreadAbortException");
-      }
-      catch (ThreadAbortException)
-      {
-        WxeThreadAbortHelper.ResetAbort();
-      }
+      Assert.That(() => function.Execute(Context), Throws.TypeOf<ThreadAbortException>());
 
       Assert.That(function.FirstStepExecuted, Is.True);
       Assert.That(function.SecondStepExecuted, Is.False);
@@ -59,15 +51,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       var parentFunction =
           new CreateRootWithChildTestTransactedFunction(ClientTransactionScope.CurrentTransaction, nestedFunction);
 
-      try
-      {
-        parentFunction.Execute(Context);
-        Assert.Fail("Expected ThreadAbortException");
-      }
-      catch (ThreadAbortException)
-      {
-        WxeThreadAbortHelper.ResetAbort();
-      }
+      Assert.That(() => parentFunction.Execute(Context), Throws.TypeOf<ThreadAbortException>());
 
       Assert.That(ClientTransactionScope.ActiveScope, Is.SameAs(originalScope));
 
@@ -92,15 +76,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       var parentFunction =
           new CreateRootWithChildTestTransactedFunction(ClientTransactionScope.CurrentTransaction, nestedFunction);
 
-      try
-      {
-        parentFunction.Execute(Context);
-        Assert.Fail("Expected ThreadAbortException");
-      }
-      catch (ThreadAbortException)
-      {
-        WxeThreadAbortHelper.ResetAbort();
-      }
+      Assert.That(() => parentFunction.Execute(Context), Throws.TypeOf<ThreadAbortException>());
 
       Assert.That(ClientTransactionScope.ActiveScope, Is.SameAs(originalScope));
 

@@ -12,6 +12,8 @@
     <PackageId>Remotion.Mixins.MixerTools</PackageId>
     <RootNamespace>$(PackageId)</RootNamespace>
     <Nullable>disable</Nullable>
+    <!-- NuGet Package for MixerTools is disabled until APIs are fixed -->
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />

@@ -15,9 +15,6 @@
     <EmbeddedResource Include="AclTools\Expansion\AclExpansion.css" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Remotion\Core\Collections.Caching\Core.Collections.Caching.csproj" />
     <ProjectReference Include="..\..\Remotion\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Remotion\Core\Reflection\Core.Reflection.csproj" />
@@ -31,9 +28,6 @@
     <ProjectReference Include="..\..\Remotion\Mixins\Core\Mixins.Core.csproj" />
     <ProjectReference Include="..\..\Remotion\ObjectBinding\Core\ObjectBinding.Core.csproj" />
     <ProjectReference Include="..\..\Remotion\Security\Core\Security.Core.csproj" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
-    <Reference Include="System.Configuration" />
   </ItemGroup>
   <PropertyGroup>
 <!--    <PostBuildEvent>cd ..\..\..\;.\GenerateSetupDBScript.cmd $(ConfigurationName)</PostBuildEvent>-->

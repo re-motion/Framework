@@ -118,11 +118,7 @@ public class BocDateTimeValueUserControl : BaseUserControl
     DirectlySetBocDateTimeValueField.LoadUnboundValue(DateTime.Now, IsPostBack);
     ReadOnlyDirectlySetBocDateTimeValueField.LoadUnboundValue(DateTime.Now, IsPostBack);
 
-#if NETFRAMEWORK
-    UnboundCitizenshipField.LoadUnboundValue(DateTime.Today, IsPostBack);
-#else
     UnboundCitizenshipField.LoadUnboundValue(DateOnly.FromDateTime(DateTime.Today), IsPostBack);
-#endif
 
     if (!IsPostBack)
     {

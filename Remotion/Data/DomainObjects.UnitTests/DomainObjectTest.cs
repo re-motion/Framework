@@ -16,11 +16,7 @@
 // 
 using System;
 using System.Reflection;
-#if NETFRAMEWORK
-using System.Runtime.Serialization;
-#else
 using System.Runtime.CompilerServices;
-#endif
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
@@ -153,11 +149,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void Initialize_WithUninitializedObject_SetsIDAndRootTransaction ()
     {
       var type = GetConcreteType(typeof(OrderItem));
-#if NETFRAMEWORK
-      var orderItem = (OrderItem)FormatterServices.GetSafeUninitializedObject(type);
-#else
       var orderItem = (OrderItem)RuntimeHelpers.GetUninitializedObject(type);
-#endif
       orderItem.Initialize(DomainObjectIDs.OrderItem1, _transaction);
 
       Assert.That(orderItem.ID, Is.EqualTo(DomainObjectIDs.OrderItem1));
@@ -168,11 +160,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void Initialize_ThrowsForNonRootTransaction ()
     {
       var type = GetConcreteType(typeof(OrderItem));
-#if NETFRAMEWORK
-      var orderItem = (OrderItem)FormatterServices.GetSafeUninitializedObject(type);
-#else
       var orderItem = (OrderItem)RuntimeHelpers.GetUninitializedObject(type);
-#endif
       Assert.That(
           () => orderItem.Initialize(DomainObjectIDs.OrderItem1, _transaction.CreateSubTransaction()),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(

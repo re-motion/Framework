@@ -5,7 +5,6 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject.Properties
 {
-#if NET6_0_OR_GREATER
   public class DateOnlyProperty : DateTimePropertyBase
   {
     public DateOnlyProperty (Parameters parameters)
@@ -36,5 +35,4 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       get { return DateTimeType.Date; }
     }
   }
-#endif
 }

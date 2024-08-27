@@ -34,11 +34,9 @@ namespace Remotion.Web.Utilities
       return string.Format(htmlFormatString, (object[])htmlParameters);
     }
 
-#if !NETFRAMEWORK
     [Obsolete(
         "HtmlUtility.HtmlEncode(string) is obsolete. Use WebString.CreateFromText(string).ToString(WebStringEncoding.HtmlWithTransformedLineBreaks) instead. (Version 3.0.0)",
         DiagnosticId = ObsoleteDiagnosticIDs.HtmlUtility)]
-#endif
     public static string HtmlEncode (string nonHtmlString)
     {
       return WebString.CreateFromText(nonHtmlString).ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);

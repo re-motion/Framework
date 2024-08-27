@@ -16,11 +16,7 @@
 // 
 using System;
 using System.Linq;
-#if NETFRAMEWORK
-using System.Runtime.Serialization;
-#else
 using System.Runtime.CompilerServices;
-#endif
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain;

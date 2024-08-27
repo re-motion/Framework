@@ -28,8 +28,5 @@
     <ProjectReference Include="..\DomainObjects.Security\Data.DomainObjects.Security.csproj" />
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj" />
   </ItemGroup>
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
-    <Reference Include="System.Transactions" />
-  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

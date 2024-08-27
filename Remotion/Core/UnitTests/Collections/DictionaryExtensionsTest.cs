@@ -66,21 +66,6 @@ namespace Remotion.UnitTests.Collections
       Assert.That(notFoundValue, Is.EqualTo(0));
     }
 
-#if NETFRAMEWORK
-    [Test]
-    public void GetValueOrDefault_WithReadOnlyDictionary_ValueTypes ()
-    {
-      var dictionary = new Dictionary<string, int> { { "a", 7 } };
-      ReadOnlyDictionary<string, int> readOnlyDictionary =  dictionary.AsReadOnly();
-
-      var foundValue = readOnlyDictionary.GetValueOrDefault("a");
-      Assert.That(foundValue, Is.EqualTo(7));
-
-      var notFoundValue = readOnlyDictionary.GetValueOrDefault("z");
-      Assert.That(notFoundValue, Is.EqualTo(0));
-    }
-#endif
-
     [Test]
     public void GetValueOrDefault_WithIReadOnlyDictionary_NullKey ()
     {
@@ -133,18 +118,6 @@ namespace Remotion.UnitTests.Collections
       Assert.That(substitutedDefaultValue, Is.EqualTo("Beta"));
     }
 
-#if NETFRAMEWORK
-    [Test]
-    public void GetValueOrDefault_WithReadOnlyDictionary_WithDefaultValue ()
-    {
-      var foundValue = ((ReadOnlyDictionary<string, string>)_dictionary.AsReadOnly()).GetValueOrDefault("a", "Beta");
-      Assert.That(foundValue, Is.EqualTo("Alpha"));
-
-      var substitutedDefaultValue = ((ReadOnlyDictionary<string, string>)_dictionary.AsReadOnly()).GetValueOrDefault("z", "Beta");
-      Assert.That(substitutedDefaultValue, Is.EqualTo("Beta"));
-    }
-#endif
-
     [Test]
     public void GetValueOrDefault_WithIReadOnlyDictionary_WithDefaultValue_NullDefaultValue ()
     {
@@ -165,15 +138,6 @@ namespace Remotion.UnitTests.Collections
       var substitutedDefaultValue = ((Dictionary<string, string>)_dictionary).GetValueOrDefault("z", null);
       Assert.That(substitutedDefaultValue, Is.Null);
     }
-
-#if NETFRAMEWORK
-    [Test]
-    public void GetValueOrDefault_WithReadOnlyDictionary_WithDefaultValue_NullDefaultValue ()
-    {
-      var substitutedDefaultValue = ((ReadOnlyDictionary<string, string>)_dictionary.AsReadOnly()).GetValueOrDefault("z", null);
-      Assert.That(substitutedDefaultValue, Is.Null);
-    }
-#endif
 
     [Test]
     public void GetOrCreateValue_WithDictionary_WithNewKey ()
@@ -197,25 +161,5 @@ namespace Remotion.UnitTests.Collections
     {
       Assert.That(() => ((Dictionary<string, string>)_dictionary).GetOrCreateValue(null, key => throw new InvalidOperationException()), Throws.ArgumentNullException);
     }
-
-#if NETFRAMEWORK
-    [Test]
-    public void AsReadOnly ()
-    {
-      ReadOnlyDictionary<string, string> readOnlyDictionary = ((IDictionary<string, string>)_dictionary).AsReadOnly();
-
-      Assert.That(readOnlyDictionary, Is.EqualTo(_dictionary));
-    }
-
-    [Test]
-    public void AsReadOnly_WithReadOnlyDictionary_ReturnsSameInstance ()
-    {
-      var dictionary = new ReadOnlyDictionary<string, string>(_dictionary);
-
-      var readOnlyDictionary = dictionary.AsReadOnly();
-
-      Assert.That(readOnlyDictionary, Is.SameAs(dictionary));
-    }
-#endif
   }
 }

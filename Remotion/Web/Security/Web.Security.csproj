@@ -17,8 +17,5 @@
     <ProjectReference Include="..\Core\Web.Core.csproj" />
     <ProjectReference Include="..\..\Security\Core\Security.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
-  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

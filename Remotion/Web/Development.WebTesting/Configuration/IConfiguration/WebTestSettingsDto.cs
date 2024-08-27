@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
-#if !NETFRAMEWORK
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -101,4 +100,3 @@ namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
     IWebTestTestSiteLayoutSettings IWebTestSettings.TestSiteLayout => TestSiteLayout;
   }
 }
-#endif

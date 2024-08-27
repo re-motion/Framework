@@ -24,9 +24,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
   [TestFixture]
   public class XmlSerializationHelperTest
   {
-#if !NETFRAMEWORK
     private const char c_bom = (char)65279;
-#endif
 
     [Test]
     public void XmlSerialize ()
@@ -64,11 +62,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     private string GetExpectedXmlString ()
     {
       return
-#if NETFRAMEWORK
-          @"<?xml version=""1.0""?>"
-#else
             c_bom + @"<?xml version=""1.0"" encoding=""utf-8""?>"
-#endif
           + @"
 <ArrayOfInt xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
   <int>1</int>

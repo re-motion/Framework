@@ -23,8 +23,6 @@
 
   <PropertyGroup>
     <LangVersion>12</LangVersion>
-    <IsDotNetFramework>false</IsDotNetFramework>
-    <IsDotNetFramework Condition="$([System.Text.RegularExpressions.Regex]::IsMatch($(TargetFramework), '^net\d{2,3}$'))">true</IsDotNetFramework>
     <DebugType>embedded</DebugType>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\remotion.snk</AssemblyOriginatorKeyFile>
@@ -33,7 +31,6 @@
     <PackageTags>re-motion</PackageTags>
     <PackageTags Condition="'$(ProductType)' == 'SecurityManager'">$(PackageTags) SecurityManager</PackageTags>
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-    <DefineConstants Condition="'$(IsDotNetFramework)' == 'true'">$(DefineConstants);FEATURE_GAC;FEATURE_ASSEMBLYBUILDER_SAVE;FEATURE_THREAD_ABORT;FEATURE_STRONGNAMESIGNING</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup>

@@ -17,8 +17,6 @@
     <ProjectReference Include="..\..\Web\Development.WebTesting\Web.Development.WebTesting.csproj" />
     <ProjectReference Include="..\Web.Development.WebTesting.IntegrationTests\ObjectBinding.Web.Development.WebTesting.IntegrationTests.csproj" />
     <ProjectReference Include="..\Web.Development.WebTesting\ObjectBinding.Web.Development.WebTesting.csproj" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'false'">
     <ProjectReference Include="..\Web.Development.WebTesting.TestSite\ObjectBinding.Web.Development.WebTesting.TestSite.csproj" ReferenceOutputAssembly="false" ExcludeAssets="all" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

@@ -15,19 +15,13 @@
     <Compile Include="..\..\..\SharedSource\Core\Reflection\*.cs" Link="SharedSource\Reflection\%(Filename)%(Extension)" />
     <Compile Include="..\..\..\SharedSource\Core\ReSharperAnnotations\*.cs" Link="SharedSource\ReSharperAnnotations\%(Filename)%(Extension)" />
     <Compile Include="..\..\..\SharedSource\Core\Utilities\*.cs" Link="SharedSource\Utilities\%(Filename)%(Extension).cs" />
-    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="log4net" />
     <PackageReference Remove="JetBrains.Annotations" />
     <PackageReference Include="Remotion.ThirdParty.Dependency.Jetbrains.Annotations" />
     <PackageReference Include="Remotion.ThirdPartyDependency.CommonServiceLocator" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'true'">
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
-  <!-- Including System.Configuration.ConfigurationManager is required because log4net takes a hard dependency on an older version of this assembly. -->
-  <ItemGroup Condition="'$(IsDotNetFramework)' == 'false'">
+    <!-- Including System.Configuration.ConfigurationManager is required because log4net takes a hard dependency on an older version of this assembly. -->
     <PackageReference Include="System.Configuration.ConfigurationManager" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

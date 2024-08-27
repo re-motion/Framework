@@ -52,7 +52,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       Assert.That(property.Type, Is.EqualTo(DateTimeType.DateTime));
     }
 
-#if NET6_0_OR_GREATER
     [Test]
     public void Initialize_DateOnlyProperty ()
     {
@@ -107,6 +106,5 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
       Assert.That(result, Is.Null);
     }
-#endif
   }
 }
