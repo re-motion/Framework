@@ -77,15 +77,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       SubFunction.InVerifiableSequence(sequence).Setup(mock => mock.Execute(WxeContext)).Callback((WxeContext _) => executeCallbacks.Dequeue().Invoke()).Verifiable();
       ExecutionStateContextMock.InVerifiableSequence(sequence).Setup(mock => mock.SetExecutionState(It.IsNotNull<IExecutionState>())).Verifiable();
 
-      try
-      {
-        _executionState.ExecuteSubFunction(WxeContext);
-        Assert.Fail();
-      }
-      catch (ThreadAbortException)
-      {
-        WxeThreadAbortHelper.ResetAbort();
-      }
+      Assert.That(() => _executionState.ExecuteSubFunction(WxeContext), Throws.TypeOf<ThreadAbortException>());
 
       _executionState.ExecuteSubFunction(WxeContext);
 

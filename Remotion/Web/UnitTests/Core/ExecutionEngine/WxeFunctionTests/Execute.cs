@@ -98,15 +98,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       _executionListenerMock.InVerifiableSequence(sequence1).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
       _executionListenerMock.InVerifiableSequence(sequence1).Setup(mock => mock.OnExecutionPause(_context)).Verifiable();
 
-      try
-      {
-        function.Execute(_context);
-        Assert.Fail();
-      }
-      catch (ThreadAbortException)
-      {
-        WxeThreadAbortHelper.ResetAbort();
-      }
+      Assert.That(() => function.Execute(_context), Throws.TypeOf<ThreadAbortException>());
 
       _executionListenerMock.Verify();
       sequence1.Verify();
@@ -145,16 +137,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       _executionListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
       _executionListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionPause(_context)).Throws(fatalExecutionException).Verifiable();
 
-      try
-      {
-        function.Execute(_context);
-        Assert.Fail();
-      }
-      catch (WxeFatalExecutionException actualException)
-      {
-        Assert.That(actualException, Is.SameAs(fatalExecutionException));
-        WxeThreadAbortHelper.ResetAbort();
-      }
+      Assert.That(() => function.Execute(_context), Throws.TypeOf<WxeFatalExecutionException>().And.SameAs(fatalExecutionException));
+
       sequence.Verify();
     }
 

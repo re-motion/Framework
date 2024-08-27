@@ -319,15 +319,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
 
       function.Add(notCompletedStepStub.Object);
 
-      try
-      {
-        function.Execute(CurrentWxeContext);
-        Assert.Fail();
-      }
-      catch (ThreadAbortException)
-      {
-        WxeThreadAbortHelper.ResetAbort();
-      }
+      Assert.That(() => function.Execute(CurrentWxeContext), Throws.TypeOf<ThreadAbortException>());
 
       Assert.That(function.IsDirty, Is.False);
       Assert.That(function.EvaluateDirtyState(), Is.True);
@@ -360,15 +352,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
 
       function.Add(notCompletedStepStub.Object);
 
-      try
-      {
-        function.Execute(CurrentWxeContext);
-        Assert.Fail();
-      }
-      catch (ThreadAbortException)
-      {
-        WxeThreadAbortHelper.ResetAbort();
-      }
+      Assert.That(() => function.Execute(CurrentWxeContext), Throws.TypeOf<ThreadAbortException>());
 
       Assert.That(function.IsDirty, Is.True);
       Assert.That(function.EvaluateDirtyState(), Is.True);

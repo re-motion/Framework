@@ -10,9 +10,5 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine
       var exception = (ThreadAbortException)Activator.CreateInstance(typeof(ThreadAbortException), nonPublic: true)!;
       throw exception;
     }
-
-    public static void ResetAbort ()
-    {
-    }
   }
 }
