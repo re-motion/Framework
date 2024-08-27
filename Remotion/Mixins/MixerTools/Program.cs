@@ -41,6 +41,10 @@ namespace Remotion.Mixins.MixerTools
 
       try
       {
+        throw new PlatformNotSupportedException("MixerTools is not supported on this platform");
+#pragma warning disable CS0162 // Unreachable code detected
+
+        // TODO: re-enable nuget packaging in project file.
         MixerRunner mixerRunner = new MixerRunner(parameters);
         mixerRunner.Run();
       }

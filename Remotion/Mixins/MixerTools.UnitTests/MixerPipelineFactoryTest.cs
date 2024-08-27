@@ -44,8 +44,10 @@ namespace Remotion.Mixins.MixerTools.UnitTests
       Assert.That(
           pipeline.Settings.EnableSerializationWithoutAssemblySaving,
           Is.EqualTo(defaultPipeline.Settings.EnableSerializationWithoutAssemblySaving));
+#if FEATURE_STRONGNAMESIGNING      
       Assert.That(pipeline.Settings.ForceStrongNaming, Is.EqualTo(defaultPipeline.Settings.ForceStrongNaming));
       Assert.That(pipeline.Settings.KeyFilePath, Is.EqualTo(defaultPipeline.Settings.KeyFilePath));
+#endif
       Assert.That(pipeline.Settings.DegreeOfParallelism, Is.EqualTo(2));
     }
 
