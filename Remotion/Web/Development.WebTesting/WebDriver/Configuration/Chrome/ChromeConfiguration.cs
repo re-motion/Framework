@@ -117,6 +117,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       chromeOptions.AddArgument("no-first-run");
       chromeOptions.AddArgument("disable-features=ChromeWhatsNewUI");
       chromeOptions.AddArgument("force-device-scale-factor=1");
+      chromeOptions.AddArgument("disable-search-engine-choice-screen");
 
       chromeOptions.AddUserProfilePreference("safebrowsing.enabled", true);
       chromeOptions.AddUserProfilePreference("download.default_directory", DownloadDirectory);
