@@ -29,7 +29,7 @@
     <PackageVersion Include="microsoft-ajax.TypeScript.DefinitelyTyped" Version="0.1.4" />
     <PackageVersion Include="Moq" Version="4.16.1" />
     <PackageVersion Include="Moq.VerifiableSequence" Version="4.16.1.2" />
-    <PackageVersion Include="NUnit" Version="4.1.0" />
+    <PackageVersion Include="NUnit" Version="4.2.1" />
     <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageVersion Include="NUnitTestAdapter" Version="2.3.0" />
     <PackageVersion Include="Remotion.Infrastructure.Styles.Analyzer" Version="1.1.3" />
