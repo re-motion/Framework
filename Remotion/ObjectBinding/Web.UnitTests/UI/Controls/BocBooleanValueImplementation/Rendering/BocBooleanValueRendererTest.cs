@@ -436,14 +436,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       if (!_booleanValue.Object.IsReadOnly && _booleanValue.Object.Enabled)
       {
         Html.AssertAttribute(outerSpan, "onclick", GetClickScript(_booleanValue.Object.IsRequired, _booleanValue.Object.IsAutoPostBackEnabled));
-        Html.AssertAttribute(outerSpan, "onmouseover", "BocBooleanValue.OnMouseOver (this);");
-        Html.AssertAttribute(outerSpan, "onmouseout", "BocBooleanValue.OnMouseOut (this);");
       }
       else
       {
         Html.AssertNoAttribute(outerSpan, "onclick");
-        Html.AssertNoAttribute(outerSpan, "onmouseover");
-        Html.AssertNoAttribute(outerSpan, "onmouseout");
       }
 
       AssertValidationErrors(Html.GetAssertedChildElement(outerSpan, "fake", 4));
@@ -473,10 +469,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
 
     private void checkImageAttributes (XmlNode image, string iconUrl, string iconHoverUrl)
     {
-      Html.AssertAttribute(image, "src", iconUrl);
+      Html.AssertAttribute(image, "src", "/fake/Remotion.Development.Web/Image/Spacer.gif");
+      Html.AssertStyleAttribute(image, "--standard-background-image", "url('" + iconUrl + "')");
+      Html.AssertStyleAttribute(image, "--hover-background-image", "url('" + iconHoverUrl + "')");
       Html.AssertAttribute(image, "alt", "");
-      Html.AssertAttribute(image, "data-src", iconUrl);
-      Html.AssertAttribute(image, "data-src-hover", iconHoverUrl);
     }
 
     private void CheckCheckboxAttributes (XmlNode checkbox, string checkedState, bool isReadOnly, bool isRequired)
