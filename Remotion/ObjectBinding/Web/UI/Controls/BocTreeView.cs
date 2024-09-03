@@ -718,22 +718,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary>
-    ///   Gets a flag that determines whether it is valid to generate HTML &lt;label&gt; tags referencing the
-    ///   <see cref="TargetControl"/>.
+    ///   Gets a flag that determines whether it is valid to generate HTML &lt;label&gt; tags referencing this control.
     /// </summary>
     /// <value> Returns always <see langword="true"/>. </value>
     public override bool UseLabel
     {
       get { return true; }
-    }
-
-    /// <summary>
-    ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its 
-    ///   <see cref="Control.ClientID"/>.
-    /// </summary>
-    public override Control TargetControl
-    {
-      get { return (Control)this; }
     }
 
     /// <summary> The <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to. </summary>

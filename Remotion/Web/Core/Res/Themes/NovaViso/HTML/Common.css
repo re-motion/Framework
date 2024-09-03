@@ -205,6 +205,16 @@ select.remotion-themed:not(:disabled) option:hover,
   background-color: var(--remotion-themed-background-color-hover);
 }
 
+/* This rule highlights all items in the SELECT element when overhing over the LABEL element.
+   The rule expects that there is a parent element for the SELECT element that is not a common 
+   ancestor with the label. For typical scenarios, this is an acceptable constraint. */
+*:not(:hover) > select.remotion-themed:not(:disabled):hover option:not(:checked),
+.remotion-themed *:not(:hover) > select:not(:disabled):hover option:not(:checked),
+.remotion-themed:not(:hover) > select:not(:disabled):hover option:not(:checked)
+{
+  background-color: var(--remotion-themed-background-color-hover);
+}
+
 .mozilla select.remotion-themed:disabled option:checked,
 .mozilla .remotion-themed select:disabled option:checked
 {
@@ -268,6 +278,8 @@ input[type="password"].remotion-themed,
   box-sizing: border-box;
 }
 
+.remotion-themed input[type=checkbox]:not(:hover) + label::before,
+.remotion-themed input[type=checkbox]:not(:hover) + span::before,
 .remotion-themed input[type=checkbox] + label:not(:hover)::before,
 .remotion-themed input[type=checkbox] + span:not(:hover)::before,
 .remotion-themed input[type=checkbox]:disabled + label::before,
@@ -276,6 +288,8 @@ input[type="password"].remotion-themed,
   background-image: url('../Image/sprite.svg#CheckBoxFalse');
 }
 
+.remotion-themed input[type=checkbox]:not(:disabled):hover + label::before,
+.remotion-themed input[type=checkbox]:not(:disabled):hover + span::before,
 .remotion-themed input[type=checkbox]:not(:disabled) + label:hover::before,
 .remotion-themed input[type=checkbox]:not(:disabled) + span:hover::before
 {
@@ -288,6 +302,8 @@ input[type="password"].remotion-themed,
   cursor: pointer;
 }
 
+.remotion-themed input[type=radio]:not(:hover) + label::before,
+.remotion-themed input[type=radio]:not(:hover) + span::before,
 .remotion-themed input[type=radio] + label:not(:hover)::before,
 .remotion-themed input[type=radio] + span:not(:hover)::before,
 .remotion-themed input[type=radio]:disabled + label::before,
@@ -296,6 +312,8 @@ input[type="password"].remotion-themed,
   background-image: url('../Image/sprite.svg#RadioButtonFalse');
 }
 
+.remotion-themed input[type=radio]:not(:disabled):hover + label::before,
+.remotion-themed input[type=radio]:not(:disabled):hover + span::before,
 .remotion-themed input[type=radio]:not(:disabled) + label:hover::before,
 .remotion-themed input[type=radio]:not(:disabled) + span:hover::before
 {
@@ -308,6 +326,8 @@ input[type="password"].remotion-themed,
   cursor: pointer;
 }
 
+.remotion-themed input[type=checkbox]:checked:not(:hover) + label::before,
+.remotion-themed input[type=checkbox]:checked:not(:hover) + span::before,
 .remotion-themed input[type=checkbox]:checked + label:not(:hover)::before,
 .remotion-themed input[type=checkbox]:checked + span:not(:hover)::before,
 .remotion-themed input[type=checkbox]:checked:disabled + label::before,
@@ -316,12 +336,16 @@ input[type="password"].remotion-themed,
   background-image: url('../Image/sprite.svg#CheckBoxTrue');
 }
 
+.remotion-themed input[type=checkbox]:checked:not(:disabled):hover + label::before,
+.remotion-themed input[type=checkbox]:checked:not(:disabled):hover + span::before,
 .remotion-themed input[type=checkbox]:checked:not(:disabled) + label:hover::before,
 .remotion-themed input[type=checkbox]:checked:not(:disabled) + span:hover::before
 {
   background-image: url('../Image/sprite.svg#CheckBoxTrueHover');
 }
 
+.remotion-themed input[type=radio]:checked:not(:hover) + label::before,
+.remotion-themed input[type=radio]:checked:not(:hover) + span::before,
 .remotion-themed input[type=radio]:checked + label:not(:hover)::before,
 .remotion-themed input[type=radio]:checked + span:not(:hover)::before,
 .remotion-themed input[type=radio]:disabled:checked + label::before,
@@ -330,6 +354,8 @@ input[type="password"].remotion-themed,
   background-image: url('../Image/sprite.svg#RadioButtonTrue');
 }
 
+.remotion-themed input[type=radio]:checked:not(:disabled):hover + label::before,
+.remotion-themed input[type=radio]:checked:not(:disabled):hover + span::before,
 .remotion-themed input[type=radio]:checked:not(:disabled) + label:hover::before,
 .remotion-themed input[type=radio]:checked:not(:disabled) + span:hover::before
 {

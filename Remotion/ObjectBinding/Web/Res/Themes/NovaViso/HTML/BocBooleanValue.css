@@ -9,6 +9,8 @@
   box-sizing: border-box;
   vertical-align: middle;
   min-width: min-content;
+  --standard-background-image: initial;
+  --hover-background-image: initial;
 }
 
 .bocBooleanValue span[role=checkbox]
@@ -22,11 +24,6 @@
 .bocBooleanValue span[role=checkbox]:focus
 {
   outline: none;
-}
-
-.bocBooleanValue span[role=checkbox]:hover
-{
-  cursor: default;
 }
 
 .bocBooleanValue span.description
@@ -52,10 +49,31 @@
   padding-left: var(--remotion-themed-spacing-large);
 }
 
-.bocBooleanValue img
+.bocBooleanValue span[role=checkbox] img
 {
   height: var(--remotion-themed-img-width);
   width: var(--remotion-themed-img-width);
+}
+
+.bocBooleanValue:not(:hover) input + span[role=checkbox] img,
+.bocBooleanValue input:not(:hover) + span[role=checkbox] img,
+.bocBooleanValue.readonly:not(:hover) input + span[role=checkbox] img,
+.bocBooleanValue.readonly input:not(:hover) + span[role=checkbox] img,
+.bocBooleanValue.disabled:not(:hover) input + span[role=checkbox] img,
+.bocBooleanValue.disabled input:not(:hover) + span[role=checkbox] img
+{
+  background-image: var(--standard-background-image);
+}
+
+.bocBooleanValue:not(.readOnly, .disabled):hover input + span[role=checkbox] img,
+.bocBooleanValue:not(.readOnly, .disabled) input:hover + span[role=checkbox] img
+{
+  background-image: var(--hover-background-image);
+}
+
+.bocBooleanValue:not(.readOnly, .disabled):hover
+{
+  cursor: pointer;
 }
 
 .bocBooleanValue:not(.readOnly, .disabled):focus-within
@@ -74,11 +92,6 @@
   border: var(--remotion-themed-border-readonly-focus);
   background-color: var(--remotion-themed-background-color-readonly-focus);
   box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
-}
-
-.bocBooleanValue:not(.readOnly, .disabled):hover
-{
-  cursor: pointer;
 }
 
 .bocBooleanValue.disabled span.description
