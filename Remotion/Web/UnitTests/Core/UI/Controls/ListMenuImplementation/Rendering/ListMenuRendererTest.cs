@@ -402,10 +402,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
 
     private void SetUpGetPostBackLinkExpectations (bool withHrefItem)
     {
-      _clientScriptManagerMock.Setup(mock => mock.GetPostBackClientHyperlink(_control.Object, "0")).Returns("PostBackLink: 0").Verifiable();
-      _clientScriptManagerMock.Setup(mock => mock.GetPostBackClientHyperlink(_control.Object, "1")).Returns("PostBackLink: 1").Verifiable();
+      _clientScriptManagerMock.Setup(mock => mock.GetPostBackEventReference(_control.Object, "0")).Returns("PostBackLink: 0").Verifiable();
+      _clientScriptManagerMock.Setup(mock => mock.GetPostBackEventReference(_control.Object, "1")).Returns("PostBackLink: 1").Verifiable();
       if (withHrefItem)
-        _clientScriptManagerMock.Setup(mock => mock.GetPostBackClientHyperlink(_control.Object, "2")).Returns("PostBackLink: 2").Verifiable();
+        _clientScriptManagerMock.Setup(mock => mock.GetPostBackEventReference(_control.Object, "2")).Returns("PostBackLink: 2").Verifiable();
     }
 
     private void AddMenuItem (
@@ -432,27 +432,26 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
 
     private string GetItemScript (int itemIndex)
     {
-      const string itemTemplate = "new ListMenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, '{9}', {10}, {11})";
+      const string itemTemplate = "new ListMenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11})";
       var menuItem = (WebMenuItem)_control.Object.MenuItems[itemIndex];
       const string diagnosticMetadata = "null";
       const string diagnosticMetadataForCommand = "null";
-      const string fallbackNavigationUrl = "fakeFallbackUrl";
 
       string href;
       string target = "null";
+      string onclick = "null";
 
       if (menuItem.Command.Type == CommandType.Href)
       {
         href = menuItem.Command.HrefCommand.FormatHref(itemIndex.ToString(), menuItem.ItemID);
         href = "'" + href + "'";
-        target = "'" + menuItem.Command.HrefCommand.Target + "'";
+        if (!string.IsNullOrEmpty(menuItem.Command.HrefCommand.Target))
+          target = "'" + menuItem.Command.HrefCommand.Target + "'";
       }
       else
       {
-        string argument = itemIndex.ToString();
-        href = _control.Object.Page.ClientScript.GetPostBackClientHyperlink(_control.Object, argument);
-        href = ScriptUtility.EscapeClientScript(href);
-        href = "'" + href + "'";
+        href = "'fakeFallbackUrl'";
+        onclick = "function() { PostBackLink: " + itemIndex.ToString() + "; return false; }";
       }
 
       return string.Format(
@@ -466,7 +465,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
           (itemIndex == 4) ? "true" : "false",
           href,
           target,
-          fallbackNavigationUrl,
+          onclick,
           diagnosticMetadata,
           diagnosticMetadataForCommand);
     }
