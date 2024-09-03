@@ -190,6 +190,22 @@ public class TableValuedParametersIntegrationTest : ClientTransactionBaseTest
   }
 
   [Test]
+  public void Contains_UsingTableValuedParameter_DateOnly ()
+  {
+    var dates = new[] { new DateOnly(2005,1,2), new DateOnly(2005,1,1) };
+
+    var query = QueryFactory.CreateQuery(
+        new QueryDefinition("Test", TestDomainStorageProviderDefinition, "SELECT * FROM [TableWithAllDataTypes] c WHERE c.[Date] IN (SELECT [Value] FROM @1)", QueryType.CollectionReadOnly),
+        new QueryParameterCollection { { "@1", dates } });
+
+    var queryResult = TestableClientTransaction.QueryManager.GetCollection<ClassWithAllDataTypes>(query);
+    CheckQueryResult(
+        queryResult,
+        new ObjectID(typeof(ClassWithAllDataTypes), new Guid("583EC716-8443-4B55-92BF-09F7C8768529")),
+        new ObjectID(typeof(ClassWithAllDataTypes), new Guid("3F647D79-0CAF-4A53-BAA7-A56831F8CE2D")));
+  }
+
+  [Test]
   public void Contains_UsingTableValuedParameter_String ()
   {
     var products = new[] { "Hitchhiker's guide", "Rubik's Cube" };

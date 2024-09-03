@@ -28,7 +28,7 @@ CREATE TABLE [dbo].[TableWithAllDataTypes]
   [Timestamp] rowversion NOT NULL,
   [Boolean] bit NOT NULL,
   [Byte] tinyint NOT NULL,
-  [Date] datetime2 NOT NULL,
+  [Date] date NOT NULL,
   [DateTime] datetime2 NOT NULL,
   [Decimal] decimal (38, 3) NOT NULL,
   [Double] float NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE [dbo].[TableWithAllDataTypes]
   [BinaryWithoutMaxLength] varbinary (max) NOT NULL,
   [NaBoolean] bit NULL,
   [NaByte] tinyint NULL,
-  [NaDate] datetime2 NULL,
+  [NaDate] date NULL,
   [NaDateTime] datetime2 NULL,
   [NaDecimal] decimal (38, 3) NULL,
   [NaDouble] float NULL,
@@ -59,7 +59,7 @@ CREATE TABLE [dbo].[TableWithAllDataTypes]
   [ExtensibleEnumWithNullValue] varchar (104) NULL,
   [NaBooleanWithNullValue] bit NULL,
   [NaByteWithNullValue] tinyint NULL,
-  [NaDateWithNullValue] datetime2 NULL,
+  [NaDateWithNullValue] date NULL,
   [NaDateTimeWithNullValue] datetime2 NULL,
   [NaDecimalWithNullValue] decimal (38, 3) NULL,
   [NaDoubleWithNullValue] float NULL,
@@ -543,6 +543,17 @@ GO
 CREATE TYPE [dbo].[TVP_DateTime2_Distinct] AS TABLE
 (
   [Value] datetime2 NULL
+  UNIQUE CLUSTERED ([Value])
+)
+GO
+CREATE TYPE [dbo].[TVP_Date] AS TABLE
+(
+  [Value] date NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Date_Distinct] AS TABLE
+(
+  [Value] date NULL
   UNIQUE CLUSTERED ([Value])
 )
 GO

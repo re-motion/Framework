@@ -37,8 +37,8 @@
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.ByteProperty" displayName="ByteProperty" type="System.Byte" isNullable="false">
           <column name="Byte" dbType="Byte" />
         </property>
-        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.DateProperty" displayName="DateProperty" type="System.DateTime" isNullable="false">
-          <column name="Date" dbType="DateTime2" />
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.DateProperty" displayName="DateProperty" type="System.DateOnly" isNullable="false">
+          <column name="Date" dbType="Date" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.DateTimeProperty" displayName="DateTimeProperty" type="System.DateTime" isNullable="false">
           <column name="DateTime" dbType="DateTime2" />
@@ -88,8 +88,8 @@
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaByteProperty" displayName="NaByteProperty" type="System.Byte" isNullable="true">
           <column name="NaByte" dbType="Byte" />
         </property>
-        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDateProperty" displayName="NaDateProperty" type="System.DateTime" isNullable="true">
-          <column name="NaDate" dbType="DateTime2" />
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDateProperty" displayName="NaDateProperty" type="System.DateOnly" isNullable="true">
+          <column name="NaDate" dbType="Date" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDateTimeProperty" displayName="NaDateTimeProperty" type="System.DateTime" isNullable="true">
           <column name="NaDateTime" dbType="DateTime2" />
@@ -130,8 +130,8 @@
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaByteWithNullValueProperty" displayName="NaByteWithNullValueProperty" type="System.Byte" isNullable="true">
           <column name="NaByteWithNullValue" dbType="Byte" />
         </property>
-        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDateWithNullValueProperty" displayName="NaDateWithNullValueProperty" type="System.DateTime" isNullable="true">
-          <column name="NaDateWithNullValue" dbType="DateTime2" />
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDateWithNullValueProperty" displayName="NaDateWithNullValueProperty" type="System.DateOnly" isNullable="true">
+          <column name="NaDateWithNullValue" dbType="Date" />
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithAllDataTypes.NaDateTimeWithNullValueProperty" displayName="NaDateTimeWithNullValueProperty" type="System.DateTime" isNullable="true">
           <column name="NaDateTimeWithNullValue" dbType="DateTime2" />

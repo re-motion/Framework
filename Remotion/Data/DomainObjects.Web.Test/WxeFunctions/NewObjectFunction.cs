@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
       ClassWithAllDataTypes test = ClassWithAllDataTypes.NewObject();
 
       test.ByteProperty = 23;
-      test.DateProperty = DateTime.Now;
+      test.DateProperty = DateOnly.FromDateTime(DateTime.Today);
       test.DateTimeProperty = DateTime.Now;
       test.DecimalProperty = 23.2m;
       test.DoubleProperty = 23.2;

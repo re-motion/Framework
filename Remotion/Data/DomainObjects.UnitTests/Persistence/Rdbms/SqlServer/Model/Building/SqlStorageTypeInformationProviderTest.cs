@@ -96,6 +96,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           typeof(DateTime),
           Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(DateTime)));
       CheckGetStorageType_ForProperty(
+          typeof(DateOnly),
+          null,
+          false,
+          false,
+          typeof(DateTime),
+          "date",
+          DbType.Date,
+          false,
+          null,
+          typeof(DateOnly),
+          Is.TypeOf(typeof(DateOnlyConverter)));
+      CheckGetStorageType_ForProperty(
           typeof(Decimal),
           null,
           false,
