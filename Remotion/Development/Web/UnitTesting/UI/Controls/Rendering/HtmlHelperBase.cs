@@ -35,7 +35,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
   /// </remarks>
   public abstract class HtmlHelperBase : IDisposable
   {
-    public delegate void BinaryAssertDelegate (IComparable? actual, IComparable? expected, string message, params object[] args);
+    public delegate void BinaryAssertDelegate (IComparable? expected, IComparable? actual, string message, params object[] args);
 
     public delegate void UnaryAssertDelegate ([NotNull]object? actual, string message, params object[] args);
 

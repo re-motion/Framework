@@ -20,9 +20,9 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
 {
   public interface IAsserter
   {
-    void AreEqual (object actual, object expected, string message, params object[] args);
+    void AreEqual (object expected, object actual, string message, params object[] args);
 
-    void GreaterThan (IComparable actual, IComparable expected, string message, params object[] args);
+    void GreaterThan (IComparable left, IComparable right, string message, params object[] args);
 
     void NotNull (object actual, string message, params object[] args);
 
