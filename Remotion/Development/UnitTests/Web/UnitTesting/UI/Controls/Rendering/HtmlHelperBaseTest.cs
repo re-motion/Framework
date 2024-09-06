@@ -68,7 +68,7 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
       _asserter
           .Setup(stub => stub.AreEqual(It.IsAny<object>(), It.IsAny<object>(), It.IsAny<string>(), It.IsAny<object[]>()))
           .Callback(
-              (object actual, object expected, string message, object[] args) =>
+              (object expected, object actual, string message, object[] args) =>
               {
                 if (actual != null)
                 {
@@ -82,11 +82,11 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
       _asserter
           .Setup(stub => stub.GreaterThan(It.IsAny<IComparable>(), It.IsAny<IComparable>(), It.IsAny<string>(), It.IsAny<object[]>()))
           .Callback(
-              (IComparable actual, IComparable expected, string message, object[] args) =>
+              (IComparable left, IComparable right, string message, object[] args) =>
               {
-                if (actual != null)
+                if (left != null)
                 {
-                  if (actual.CompareTo(expected) <= 0)
+                  if (left.CompareTo(right) <= 0)
                     throw new Exception(string.Format(message, args));
                 }
               });

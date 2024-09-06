@@ -26,8 +26,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
   {
     public HtmlHelper ()
         : base(
-            (actual, expected, message, args) => Assert.That(actual, Is.EqualTo(expected), FormattableStringFactory.Create(message, args)),
-            (actual, expected, message, args) => Assert.That(actual, Is.GreaterThan(expected), FormattableStringFactory.Create(message, args)),
+            (expected, actual, message, args) => Assert.That(actual, Is.EqualTo(expected), FormattableStringFactory.Create(message, args)),
+            (left, right, message, args) => Assert.That(left, Is.GreaterThan(right), FormattableStringFactory.Create(message, args)),
             (actual, message, args) => Assert.That(actual, Is.Not.Null, FormattableStringFactory.Create(message, args)),
             (actual, message, args) => Assert.That(actual, Is.Null, FormattableStringFactory.Create(message, args)),
             (actual, message, args) => Assert.That(actual, Is.True, FormattableStringFactory.Create(message, args))
