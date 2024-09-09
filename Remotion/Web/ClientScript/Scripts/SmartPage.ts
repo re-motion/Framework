@@ -914,12 +914,15 @@ class SmartPage_Context
   private GetFunctionPointer<TFunction extends AnyFunction>(functionName: string): Nullable<TFunction>
   {
     ArgumentUtility.CheckTypeIsString('functionName', functionName);
+    if (functionName.indexOf('.') !== -1)
+      throw `Error: The value of parameter "functionName" must not contain dot-separators. value: "${functionName}"`;
+
     if (StringUtility.IsNullOrEmpty(functionName))
       return null;
-    let fct = null;
+    let fct: unknown = null;
     try
     {
-      fct = eval(functionName);
+      fct = (window as any)[functionName];
     }
     catch (e)
     {
