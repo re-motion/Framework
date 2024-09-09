@@ -15,6 +15,8 @@
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
 <%@ Page Trace="false" language="c#" Codebehind="StartForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.StartForm" %>
+<%@ Import Namespace="Remotion" %>
+<%@ Import Namespace="Remotion.ServiceLocation" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -53,6 +55,12 @@ href="WxeHandler.ashx?WxeFunctionType=OBWTest.Design.DesignTestFunction,OBWTest"
 <p>Tests for reference data sources<br />
 <a href="ReferenceDataSourceTest.wxe?WxeReturnToSelf=True">ReferenceDataSourceTest.wxe</a></p>
 <p>BOC-validation tests<br /><A href="WxeHandler.ashx?WxeFunctionType=OBWTest.Validation.BocValidationTestWxeFunction,OBWTest" >WxeHandler.ashx?WxeFunctionType=OBWTest.Validation.BocValidationTestWxeFunction,OBWTest</A></p>
+  <ul>
+  <% foreach (var inst in SafeServiceLocator.Current.GetAllInstances<ITestInterface>())
+     { %>
+      <li><%= inst.GetOutput() %>
+  <% } %>
+  </ul>
 </form>
   </body>
 </html>

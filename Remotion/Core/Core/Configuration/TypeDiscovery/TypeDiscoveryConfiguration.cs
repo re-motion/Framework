@@ -17,6 +17,8 @@
 using System;
 using System.ComponentModel.Design;
 using System.Configuration;
+using System.IO;
+using Remotion.PluginResolution;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
@@ -189,8 +191,17 @@ namespace Remotion.Configuration.TypeDiscovery
     private ITypeDiscoveryService CreateServiceWithAssemblyFinder (IRootAssemblyFinder customRootAssemblyFinder)
     {
       var filteringAssemblyLoader = CreateApplicationAssemblyLoader();
-      var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(customRootAssemblyFinder, filteringAssemblyLoader));
-      return new AssemblyFinderTypeDiscoveryService(assemblyFinder);
+      var assemblyFinder = new AssemblyFinder(customRootAssemblyFinder, filteringAssemblyLoader);
+
+      var pluginFinder = new NestedDirectoriesPluginFinder(Path.Combine(AppContext.BaseDirectory, "plugins"));
+      var pluginRepository = new PluginRepository(pluginFinder);
+
+      var pluginAssemblyFinder = new PluginAssemblyFinder(pluginRepository, new LoadAllPluginAssemblyFilter());
+
+      var compositeAssemblyFinderDecorator = new CompositeAssemblyFinderDecorator([assemblyFinder, pluginAssemblyFinder]);
+      var cachingAssemblyFinder = new CachingAssemblyFinderDecorator(compositeAssemblyFinderDecorator);
+
+      return new AssemblyFinderTypeDiscoveryService(cachingAssemblyFinder);
     }
 
     private string GetConfigurationBodyErrorMessage (string modeValue, string modeSpecificBodyElement)
