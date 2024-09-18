@@ -10,5 +10,9 @@
     <AssemblyName>Remotion.Web.ClientScript</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <TypeScriptCompile Remove="bin\Debug\dist\Remotion.Web.ClientScript.d.ts"/>
+    <TypeScriptCompile Remove="bin\Release\dist\Remotion.Web.ClientScript.d.ts"/>
+  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
