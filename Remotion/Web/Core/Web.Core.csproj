@@ -16,7 +16,8 @@
       <Link>WebDiagnosticIds.cs</Link>
     </Compile>
     <EmbeddedResource Include="UI\SmartPageImplementation\Generic_Error_Async_Remote.htm" />
-    <Content Include="..\ClientScript\bin\$(Configuration)\dist\*" LinkBase="Res.ClientScript\HTML" CopyToOutputDirectory="Never">
+    <_clientScriptResources Include="..\ClientScript\bin\$(Configuration)\dist\*"/>
+    <Content Include="@(_clientScriptResources)" LinkBase="Res.ClientScript\HTML" CopyToOutputDirectory="Never">
       <Pack>true</Pack>
       <PackagePath>res/HTML</PackagePath>
     </Content>
@@ -37,5 +38,8 @@
     <PackageReference Include="Remotion.ThirdPartyDependency.RobotoFonts" />
     <PackageReference Include="Remotion.ThirdPartyDependency.System.Web" />
   </ItemGroup>
+  <Target Name="EnsureClientScriptResourcesAreIncluded" BeforeTargets="Pack">
+    <Error Text="Client script resources were not found." Condition="'@(_clientScriptResources)' == ''"/>
+  </Target>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
