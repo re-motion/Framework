@@ -13,7 +13,8 @@
     <NoWarn>$(NoWarn);0419</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="..\Web.ClientScript\bin\$(Configuration)\dist\*" LinkBase="Res.ClientScript\HTML" CopyToOutputDirectory="Never">
+    <_clientScriptResources Include="..\Web.ClientScript\bin\$(Configuration)\dist\*"/>
+    <Content Include="@(_clientScriptResources)" LinkBase="Res.ClientScript\HTML" CopyToOutputDirectory="Never">
       <Pack>true</Pack>
       <PackagePath>res/HTML</PackagePath>
     </Content>
@@ -29,5 +30,8 @@
     <ProjectReference Include="..\..\Web\Core\Web.Core.csproj" />
     <ProjectReference Include="..\Core\ObjectBinding.Core.csproj" />
   </ItemGroup>
+  <Target Name="EnsureClientScriptResourcesAreIncluded" BeforeTargets="Pack">
+    <Error Text="Client script resources were not found." Condition="'@(_clientScriptResources)' == ''"/>
+  </Target>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
