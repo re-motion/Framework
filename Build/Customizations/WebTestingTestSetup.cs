@@ -16,6 +16,7 @@
 //
 using System;
 using System.IO;
+using System.Threading;
 using Nuke.Common;
 using Remotion.BuildScript;
 using Remotion.BuildScript.Test;
@@ -33,11 +34,12 @@ public class WebTestingTestSetup : ITestExecutionWrapper, IRequiresTestParameter
   private const string c_firefoxVersionArchiveParameterName = "FirefoxVersionArchive";
 
   private const string c_dockerHostName = "RemotionWebTestContainer";
-  private const string c_dockerPortNumber = "60402";
-  private const string c_dockerWebApplicationRoot = $"http://{c_dockerHostName}.local:{c_dockerPortNumber}/";
+  private const string c_dockerWebApplicationRootTemplate = $"http://{c_dockerHostName}.local:{{0}}/";
   private const bool c_dockerUseHttps = false;
   private const string c_dockerPullTimeout = "00:15:00";
   private const string c_dockerVerifyWebApplicationStartedTimeout = "00:01:30";
+
+  private static int s_nextPortNumber = 60402;
 
   public WebTestingTestSetup ()
   {
@@ -116,12 +118,15 @@ public class WebTestingTestSetup : ITestExecutionWrapper, IRequiresTestParameter
 
     if (hostTestSitesInDocker)
     {
-      appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting", "webApplicationRoot", c_dockerWebApplicationRoot);
+      var portNumber = Interlocked.Increment(ref s_nextPortNumber);
+      var applicationRoot = string.Format(c_dockerWebApplicationRootTemplate, portNumber);
+
+      appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting", "webApplicationRoot", applicationRoot);
       appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting", "verifyWebApplicationStartedTimeout", c_dockerVerifyWebApplicationStartedTimeout);
       appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:hosting", "name", "Docker");
       appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:hosting", "type", "Docker");
       appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:hosting", "innerType", "aspnetcore");
-      appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:hosting", "port", c_dockerPortNumber);
+      appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:hosting", "port", portNumber.ToString());
       appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:hosting", "dockerImageName", dockerImage);
       appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:hosting", "dockerIsolationMode", dockerIsolationMode);
       appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:hosting", "dockerPullTimeout", c_dockerPullTimeout);

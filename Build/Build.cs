@@ -72,10 +72,7 @@ class Build : RemotionBuild
     var webTestingTestConfiguration = new TestConfiguration(
         DefaultTestExecutionRuntimeFactory.Instance,
         TestMatrices.Single(e => e.Name == "WebTestingTestMatrix"),
-        [new WebTestingTestSetup()])
-                                      {
-                                              ParallelizationSharedResources = ["web"]
-                                      };
+        [new WebTestingTestSetup()]);
 
     var databaseTestConfiguration = new TestConfiguration(
         DefaultTestExecutionRuntimeFactory.Instance,
