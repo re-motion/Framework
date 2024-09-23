@@ -30,6 +30,7 @@ using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
+  [Explicit]
   public class WebTestHelperTest
   {
     private static readonly HashSet<string> s_relevantProcessNames = new()

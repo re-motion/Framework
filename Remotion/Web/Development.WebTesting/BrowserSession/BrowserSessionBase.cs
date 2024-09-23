@@ -128,7 +128,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       // Dispose the underlying BrowserSession
       _value.Dispose();
 
-      ProcessUtils.GracefulProcessShutdown(processesToClose, _browserProcessesShutdownTime);
+      //ProcessUtils.GracefulProcessShutdown(processesToClose, _browserProcessesShutdownTime);
     }
 
     /// <summary>

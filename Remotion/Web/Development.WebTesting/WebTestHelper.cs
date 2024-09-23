@@ -353,7 +353,7 @@ namespace Remotion.Web.Development.WebTesting
       if (browserProcessName == null)
         return;
 
-      ProcessUtils.KillAllProcessesWithName(browserProcessName);
+      //ProcessUtils.KillAllProcessesWithName(browserProcessName);
     }
 
     private void EnsureCursorIsOutsideBrowserWindow ()
