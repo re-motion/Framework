@@ -18,15 +18,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Compilation;
-#if !NETFRAMEWORK
-using System.IO;
 using Remotion.Web.ContentSecurityPolicy;
-#endif
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.SmartPageImplementation;
@@ -244,9 +242,8 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   private bool? _enableSmartScrolling;
   private bool? _enableSmartFocusing;
   private readonly SmartPageClientScriptManager _clientScriptManager;
-#if !NETFRAMEWORK
   private readonly INonceGenerator _nonceGenerator;
-#endif
+  private string? _cspNonceValue;
 
   public SmartPage ()
   {
@@ -254,41 +251,43 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     _validatableControlInitializer = new ValidatableControlInitializer(this);
     _postLoadInvoker = new PostLoadInvoker(this);
     _clientScriptManager = new SmartPageClientScriptManager(base.ClientScript);
-#if !NETFRAMEWORK
     _nonceGenerator = new NonceGenerator();
-#endif
   }
 
-#if !NETFRAMEWORK
-  protected override void OnPreRenderComplete (EventArgs e)
-  {
-    base.OnPreRenderComplete(e);
-
-    var scriptManager = ScriptManager.GetCurrent(this);
-
-    if (scriptManager == null || !scriptManager.IsInAsyncPostBack)
-    {
-      ViewState["nonce"] = _nonceGenerator.GenerateAlphaNumericNonce();
-    }
-  }
+  // protected override void OnPreRenderComplete (EventArgs e)
+  // {
+  //   base.OnPreRenderComplete(e);
+  //
+  //   var scriptManager = ScriptManager.GetCurrent(this);
+  //
+  //   if (scriptManager == null || !scriptManager.IsInAsyncPostBack)
+  //   {
+  //     _cspNonceValue = _nonceGenerator.GenerateAlphaNumericNonce();
+  //   }
+  // }
 
   protected override void Render (HtmlTextWriter writer)
   {
-    Response.Headers.Add("Content-Security-Policy",  $"default-src 'self'; script-src 'unsafe-eval' 'self' 'nonce-{GetCspNonceValue()}'; script-src-attr 'unsafe-inline';");
+    // "style-src 'unsafe-inline'" is required so we can do inline-css
+    // "img-src 'self'" is required to block "url('javascript: eval(evil)');" and "background-image: url("evil.png");".
+    Response.Headers.Add("Content-Security-Policy", $"default-src 'self'; script-src 'self' 'nonce-{_cspNonceValue}'; style-src 'self' 'unsafe-inline'; img-src 'self';");
 
     base.Render(writer);
   }
 
-  private string GetCspNonceValue ()
-  {
-    return (string)ViewState["nonce"]!;
-  }
+  // private string GetCspNonceValue ()
+  // {
+  //   if (_cspNonceValue == null)
+  //     throw new HttpException("CSP nonce cannot be retrieved before OnPreRenderComplete was executed.");
+  //   return _cspNonceValue;
+  // }
 
   protected override HtmlTextWriter CreateHtmlTextWriter (TextWriter writer)
   {
-    return new CspEnabledHtmlTextWriter(this, writer, _nonceGenerator, GetCspNonceValue());
+    if (_cspNonceValue == null)
+     _cspNonceValue = _nonceGenerator.GenerateAlphaNumericNonce();
+    return new CspEnabledHtmlTextWriter(this, writer, _nonceGenerator, _cspNonceValue);
   }
-#endif
 
   protected override NameValueCollection? DeterminePostBackMode ()
   {
@@ -613,13 +612,15 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     object?[] values = (object?[])savedState!;
     base.LoadControlState(values[0]);
     _isDirty = (bool)values[1]!;
+    _cspNonceValue = (string?)values[2];
   }
 
   protected override object? SaveControlState ()
   {
-    object?[] values = new object?[2];
+    object?[] values = new object?[3];
     values[0] = base.SaveControlState();
     values[1] = _isDirty;
+    values[2] = _cspNonceValue;
     return values;
   }
 
