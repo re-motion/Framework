@@ -268,6 +268,14 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
   protected override void Render (HtmlTextWriter writer)
   {
+    /*
+     *Problems:
+     * 1. ASP.NET rendered setTimeout using a string instead of a function
+     * 2. ListMenu renders a stub onclick event which was previously stripped out during the update but now remains.
+     * 3. WebTreeView: oncontextmenu
+     * 4. EVAL problem during AJAX postback
+     * 
+     */
     // "style-src 'unsafe-inline'" is required so we can do inline-css
     // "img-src 'self'" is required to block "url('javascript: eval(evil)');" and "background-image: url("evil.png");".
     Response.Headers.Add("Content-Security-Policy", $"default-src 'self'; script-src 'self' 'nonce-{_cspNonceValue}'; style-src 'self' 'unsafe-inline'; img-src 'self';");
