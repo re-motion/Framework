@@ -72,12 +72,18 @@ class Build : RemotionBuild
     var webTestingTestConfiguration = new TestConfiguration(
         DefaultTestExecutionRuntimeFactory.Instance,
         TestMatrices.Single(e => e.Name == "WebTestingTestMatrix"),
-        [new WebTestingTestSetup()]);
+        [new WebTestingTestSetup()])
+                                      {
+                                              ParallelizationSharedResources = ["web"]
+                                      };
 
     var databaseTestConfiguration = new TestConfiguration(
         DefaultTestExecutionRuntimeFactory.Instance,
         TestMatrices.Single(e => e.Name == "DatabaseTestMatrix"),
-        [new DatabaseTestSetup()]);
+        [new DatabaseTestSetup()])
+                                    {
+                                            ParallelizationSharedResources = ["db"]
+                                    };
 
     projects.AddUnitTestProject("SharedSource.UnitTests", normalTestConfiguration);
     projects.AddReleaseProject("Core.Development.Analyzers");

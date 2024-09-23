@@ -10,6 +10,7 @@
     <Nullable>disable</Nullable>
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
     <IsTestProject>true</IsTestProject>
+    <RemotionBuildParallelTests>true</RemotionBuildParallelTests>
   </PropertyGroup>
 
   <ItemGroup>
