@@ -50,7 +50,7 @@ namespace Remotion.Web.ContentSecurityPolicy
       ArgumentUtility.CheckNotNull("page", page);
       ArgumentUtility.CheckNotNull("writer", writer);
       ArgumentUtility.CheckNotNull("nonceGenerator", nonceGenerator);
-      ArgumentUtility.CheckNotEmpty("requestNonce", requestNonce);
+      ArgumentUtility.CheckNotNullOrEmpty("requestNonce", requestNonce);
 
       _page = page;
       _nonceGenerator = nonceGenerator;
@@ -72,7 +72,7 @@ namespace Remotion.Web.ContentSecurityPolicy
         foreach (var registeredEvent in _registeredEvents)
         {
           var script =
-              $"document.querySelector([data-inline-event-target='{eventTargetID}']).addEventListener('{registeredEvent.Type}', function (event){{{registeredEvent.Value}}});";
+              $"document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]').addEventListener('{registeredEvent.Type}', function (event){{{registeredEvent.Value}}});";
           _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(CspEnabledHtmlTextWriter), eventTargetID, script);
         }
 
@@ -82,7 +82,7 @@ namespace Remotion.Web.ContentSecurityPolicy
       base.RenderBeginTag(tagKey);
     }
 
-    public override void AddAttribute (string name, string? value)
+    protected override void AddAttribute (string name, string? value, HtmlTextWriterAttribute key, bool encode, bool isUrl)
     {
       ArgumentUtility.CheckNotNull("name", name);
 
@@ -95,6 +95,11 @@ namespace Remotion.Web.ContentSecurityPolicy
             throw new ArgumentException($"Event handler '{name}' cannot be registered more than once.");
           }
 
+          var trimmedValue = value.TrimStart();
+          const string javascriptPrefix = "javascript:";
+          if (trimmedValue.StartsWith(javascriptPrefix, StringComparison.OrdinalIgnoreCase))
+            value = trimmedValue.Substring(javascriptPrefix.Length).TrimStart();
+
           _registeredEvents.Add((Type: eventType, Value: value));
         }
         else
@@ -106,7 +111,7 @@ namespace Remotion.Web.ContentSecurityPolicy
       }
       else
       {
-        base.AddAttribute(name, value);
+        base.AddAttribute(name, value!, key, encode, isUrl);
       }
     }
   }

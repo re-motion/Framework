@@ -118,7 +118,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
                       _pageStub.Object,
                       typeof(CspEnabledHtmlTextWriter),
                       "eventTargetID",
-                      $"document.querySelector([data-inline-event-target='eventTargetID']).addEventListener('{value}', function (event){{console.info('test');}});"),
+                      $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').addEventListener('{value}', function (event){{console.info(&#39;test&#39;);}});"),
               Times.Once);
 
       _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
@@ -205,7 +205,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID",
-              "document.querySelector([data-inline-event-target='eventTargetID']).addEventListener('click', function (event){console.info('test1');});"),
+              "document.querySelector('[data-inline-event-target=\"eventTargetID\"]').addEventListener('click', function (event){console.info(&#39;test1&#39;);});"),
           Times.Once);
 
       _clientScriptStub.Verify(
@@ -213,7 +213,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID",
-              "document.querySelector([data-inline-event-target='eventTargetID']).addEventListener('change', function (event){console.info('test2');});"),
+              "document.querySelector('[data-inline-event-target=\"eventTargetID\"]').addEventListener('change', function (event){console.info(&#39;test2&#39;);});"),
           Times.Once);
 
       _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
@@ -261,7 +261,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID1",
-              "document.querySelector([data-inline-event-target='eventTargetID1']).addEventListener('click', function (event){console.info('test1');});"),
+              "document.querySelector('[data-inline-event-target=\"eventTargetID1\"]').addEventListener('click', function (event){console.info(&#39;test1&#39;);});"),
           Times.Once);
 
       _clientScriptStub.Verify(
@@ -276,7 +276,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID2",
-              "document.querySelector([data-inline-event-target='eventTargetID2']).addEventListener('change', function (event){console.info('test2');});"),
+              "document.querySelector('[data-inline-event-target=\"eventTargetID2\"]').addEventListener('change', function (event){console.info(&#39;test2&#39;);});"),
           Times.Once);
     }
 
@@ -302,6 +302,117 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
           },
           Throws.InstanceOf<ArgumentException>()
               .With.Message.EqualTo("Event handler 'onchange' cannot be registered more than once."));
+    }
+
+    [Test]
+    public void AddAttribute_WithEnumOverload_WithSupportedEventType_ScriptIsRegistered ()
+    {
+      _randomNumberGeneratorStub
+          .Setup(m => m.GenerateAlphaNumericNonce())
+          .Returns("eventTargetID")
+          .Verifiable();
+
+      _writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "console.info('test');");
+      _writer.RenderBeginTag(HtmlTextWriterTag.Button);
+      _writer.RenderEndTag();
+
+      var document = _htmlHelper.GetResultDocument();
+      var element = _htmlHelper.GetAssertedChildElement(document, "button", 0);
+      _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
+
+      _clientScriptStub.Verify(
+          m => m.RegisterStartupScriptBlock(
+              _pageStub.Object,
+              typeof(CspEnabledHtmlTextWriter),
+              "eventTargetID",
+              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').addEventListener('click', function (event){{console.info('test');}});"),
+          Times.Once);
+
+      _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
+    }
+
+    [Test]
+    public void AddAttribute_WithEnumOverloadAndEncodeFlag_WithSupportedEventType_ScriptIsRegistered ()
+    {
+      _randomNumberGeneratorStub
+          .Setup(m => m.GenerateAlphaNumericNonce())
+          .Returns("eventTargetID")
+          .Verifiable();
+
+      _writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "console.info('test');", false);
+      _writer.RenderBeginTag(HtmlTextWriterTag.Button);
+      _writer.RenderEndTag();
+
+      var document = _htmlHelper.GetResultDocument();
+      var element = _htmlHelper.GetAssertedChildElement(document, "button", 0);
+      _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
+
+      _clientScriptStub.Verify(
+          m => m.RegisterStartupScriptBlock(
+              _pageStub.Object,
+              typeof(CspEnabledHtmlTextWriter),
+              "eventTargetID",
+              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').addEventListener('click', function (event){{console.info('test');}});"),
+          Times.Once);
+
+      _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
+    }
+
+    [Test]
+    public void AddAttribute_WithEnumEncodeFlag_WithSupportedEventType_ScriptIsRegistered ()
+    {
+      _randomNumberGeneratorStub
+          .Setup(m => m.GenerateAlphaNumericNonce())
+          .Returns("eventTargetID")
+          .Verifiable();
+
+      _writer.AddAttribute("onclick", "console.info('test');", false);
+      _writer.RenderBeginTag(HtmlTextWriterTag.Button);
+      _writer.RenderEndTag();
+
+      var document = _htmlHelper.GetResultDocument();
+      var element = _htmlHelper.GetAssertedChildElement(document, "button", 0);
+      _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
+
+      _clientScriptStub.Verify(
+          m => m.RegisterStartupScriptBlock(
+              _pageStub.Object,
+              typeof(CspEnabledHtmlTextWriter),
+              "eventTargetID",
+              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').addEventListener('click', function (event){{console.info('test');}});"),
+          Times.Once);
+
+      _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
+    }
+
+    [TestCase("javascript: console.info('test');", "console.info(&#39;test&#39;);")]
+    [TestCase("javascript:console.info('test');", "console.info(&#39;test&#39;);")]
+    [TestCase("  javascript:  console.info('test');", "console.info(&#39;test&#39;);")]
+    [TestCase("JavaScript: console.info('test');", "console.info(&#39;test&#39;);")]
+    public void AddAttribute_WithJavascriptPrefix_RemovesPrefix (string actual, string expected)
+    {
+      _randomNumberGeneratorStub
+          .Setup(m => m.GenerateAlphaNumericNonce())
+          .Returns("eventTargetID")
+          .Verifiable();
+
+      _writer.AddAttribute("onclick", actual);
+      _writer.RenderBeginTag(HtmlTextWriterTag.Button);
+      _writer.RenderEndTag();
+
+      var document = _htmlHelper.GetResultDocument();
+      var element = _htmlHelper.GetAssertedChildElement(document, "button", 0);
+      _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
+
+      _clientScriptStub.Verify(
+          m => m.RegisterStartupScriptBlock(
+              _pageStub.Object,
+              typeof(CspEnabledHtmlTextWriter),
+              "eventTargetID",
+              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').addEventListener('click', function (event){{{expected}}});"),
+          Times.Once);
+
+      _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
     }
   }
 }
