@@ -32,6 +32,8 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
   {
     private static readonly ILog s_log = LogManager.GetLogger(typeof(DockerCommandLineClient));
 
+    private static readonly object s_dockerLock = new();
+
     private readonly string _dockerExeFullPath;
     private readonly TimeSpan _pullTimeout;
     private readonly TimeSpan _commandTimeout = TimeSpan.FromSeconds(15);
@@ -185,8 +187,9 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
       startInfo.FileName = _dockerExeFullPath;
       startInfo.Arguments = dockerCommand;
 
-      using (var dockerProcess = new Process { StartInfo = startInfo })
+      lock (s_dockerLock)
       {
+        using var dockerProcess = new Process { StartInfo = startInfo };
         dockerProcess.Start();
 
         dockerProcess.OutputDataReceived += (sender, outputLine) =>
