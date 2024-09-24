@@ -9,6 +9,7 @@
     <AssemblyName>Remotion.Web.Development.WebTesting.IntegrationTests.RequireUI</AssemblyName>
     <RootNamespace>Remotion.Web.Development.WebTesting.IntegrationTests</RootNamespace>
     <SignAssembly>False</SignAssembly>
+    <RemotionBuildParallelTests>false</RemotionBuildParallelTests>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="SavedTestScreenshots\ScreenshotTest\*.png" LogicalName="$(AssemblyName).SavedTestScreenshots.$(RootNamespace).ScreenshotTest.%(Filename)%(Extension)"/>
