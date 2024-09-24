@@ -3,9 +3,9 @@
   "Solution": "Remotion.sln",
   "Target": [ "CIBuild" ],
   "TestConfigurations": [ "Debug"],
-  "TestExecutionRuntimes": [ "LocalMachine" ],
-  "TestPlatforms": [ "x86" ],
+  "TestExecutionRuntimes": [ "LocalMachine", "EnforcedLocalMachine" ],
+  "TestPlatforms": [ "x64" ],
   "TestTargetRuntimes": [ "NET8_0_WINDOWS" ],
-  "TestBrowsers": [ "NoBrowser" ],
-  "TestSqlServers": [ "SqlServerDefault" ]
+  "TestBrowsers": [ "NoBrowser", "Chrome" ],
+  "TestSqlServers": [ "NoDB", "SqlServerDefault" ]
 }
