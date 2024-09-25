@@ -29,10 +29,5 @@
     <ProjectReference Include="..\..\Validation\Globalization\Validation.Globalization.csproj" />
     <ProjectReference Include="..\..\Validation\Mixins\Validation.Mixins.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Remotion.IO" />
-    <PackageReference Include="Remotion.IO.Archive.Zip" />
-    <PackageReference Include="Remotion.TypePipe" />
-  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

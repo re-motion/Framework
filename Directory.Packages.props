@@ -33,8 +33,6 @@
     <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageVersion Include="NUnitTestAdapter" Version="2.3.0" />
     <PackageVersion Include="Remotion.Infrastructure.Styles.Analyzer" Version="1.1.3" />
-    <PackageVersion Include="Remotion.IO" Version="3.0.0" />
-    <PackageVersion Include="Remotion.IO.Archive.Zip" Version="3.0.0" />
     <PackageVersion Include="Remotion.Linq" Version="2.2.0" />
     <PackageVersion Include="Remotion.Linq.Development" Version="2.2.0" />
     <PackageVersion Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
