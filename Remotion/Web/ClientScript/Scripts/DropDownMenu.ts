@@ -817,10 +817,13 @@ class DropDownMenu
     return item;
   }
 
-  private static OnItemClick (anchor: HTMLAnchorElement, ev: MouseEvent, clickHandler: Nullable<() => boolean>): boolean
+  private static OnItemClick (anchor: HTMLAnchorElement, ev: MouseEvent, clickHandler: Nullable<() => boolean>): void
   {
     if (anchor.href === null || anchor.href === '')
-      return false;
+    {
+      ev.preventDefault();
+      return;
+    }
 
     DropDownMenu._itemClicked = true;
     DropDownMenu.ClosePopUp(true);
@@ -835,7 +838,9 @@ class DropDownMenu
     {
     }
     setTimeout (function () { DropDownMenu._itemClicked = false; }, 10);
-    return result;
+
+    if (!result)
+      ev.preventDefault();
   }
 
   public static OnKeyDown (event: KeyboardEvent, dropDownMenuOrSelector: CssSelectorOrElement<HTMLAnchorElement>, getSelectionCount: Nullable<DropDownMenu_SelectionCountGetter>, hasDedicatedDropDownMenuElement: boolean): void
