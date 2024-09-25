@@ -36,7 +36,7 @@ class ListMenuItemInfo
     public readonly IsDisabled: boolean,
     public readonly Href: Nullable<string>,
     public readonly Target: Nullable<string>,
-    public readonly ClickHandler: Nullable<(this: HTMLAnchorElement, event: MouseEvent) => boolean>,
+    public readonly ClickHandler: Nullable<(this: HTMLAnchorElement, event: MouseEvent) => void>,
     public readonly DiagnosticMetadata: Dictionary<string | boolean>,
     public readonly DiagnosticMetadataForCommand: Dictionary<string | boolean>)
   {
