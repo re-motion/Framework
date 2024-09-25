@@ -451,7 +451,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       else
       {
         href = "'fakeFallbackUrl'";
-        onclick = "function() { PostBackLink: " + itemIndex.ToString() + "; return false; }";
+        onclick = "function(evt) { evt.preventDefault(); PostBackLink: " + itemIndex.ToString() + "; }";
       }
 
       return string.Format(
