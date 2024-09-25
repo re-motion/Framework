@@ -322,7 +322,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
           if (isPostBackCommand)
           {
             string argument = menuItemIndex.ToString();
-            clickHandler = "function() { " + renderingContext.Control.Page!.ClientScript.GetPostBackEventReference(renderingContext.Control, argument) + "; return false; }";
+            clickHandler = "function(evt) { evt.preventDefault(); " + renderingContext.Control.Page!.ClientScript.GetPostBackEventReference(renderingContext.Control, argument) + "; }";
             href = "'" + ScriptUtility.EscapeClientScript(_fallbackNavigationUrlProvider.GetURL()) + "'";
 
             diagnosticMetadataTriggersPostBack = true;
