@@ -17,6 +17,7 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using Remotion.Utilities;
@@ -34,13 +35,19 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     /// <param name="scope">The <see cref="ElementScope"/> on which the action is performed.</param>
     /// <param name="context">The corresponding control object's context.</param>
-    public static void ContextClick ([NotNull] this ElementScope scope, [NotNull] WebTestObjectContext context)
+    /// <param name="logger">
+    /// The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output. The <paramref name="logger"/> can be retrieved from
+    /// <see cref="WebTestObject{TWebTestObjectContext}"/>.<see cref="WebTestObject{TWebTestObjectContext}.Logger"/>.
+    /// </param>
+    public static void ContextClick ([NotNull] this ElementScope scope, [NotNull] WebTestObjectContext context, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
       ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       // Hack: Coypu does not directly support the Actions interface, therefore we need to fall back to using Selenium.
       RetryUntilTimeout.Run(
+          logger,
           () =>
           {
             var webDriver = (IWebDriver)context.Browser.Driver.Native;
@@ -56,8 +63,12 @@ namespace Remotion.Web.Development.WebTesting
     /// Focuses an element.
     /// </summary>
     /// <param name="scope">The <see cref="ElementScope"/> on which the action is performed.</param>
+    /// <param name="logger">
+    /// The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output. The <paramref name="logger"/> can be retrieved from
+    /// <see cref="WebTestObject{TWebTestObjectContext}"/>.<see cref="WebTestObject{TWebTestObjectContext}.Logger"/>.
+    /// </param>
     /// <exception cref="WebTestException">The element is currently disabled.</exception>
-    public static void Focus ([NotNull] this ElementScope scope)
+    public static void Focus ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
 
@@ -71,11 +82,15 @@ namespace Remotion.Web.Development.WebTesting
     /// Focuses a link before actually clicking it.
     /// </summary>
     /// <param name="scope">The <see cref="ElementScope"/> on which the action is performed.</param>
-    public static void FocusClick ([NotNull] this ElementScope scope)
+    /// <param name="logger">
+    /// The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output. The <paramref name="logger"/> can be retrieved from
+    /// <see cref="WebTestObject{TWebTestObjectContext}"/>.<see cref="WebTestObject{TWebTestObjectContext}.Logger"/>.
+    /// </param>
+    public static void FocusClick ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
 
-      scope.Focus();
+      scope.Focus(logger);
       scope.Click();
     }
   }

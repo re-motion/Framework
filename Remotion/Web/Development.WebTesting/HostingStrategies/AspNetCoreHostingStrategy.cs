@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.HostingStrategies.Configuration;
 
@@ -47,8 +48,9 @@ public class AspNetCoreHostingStrategy : IHostingStrategy
   /// </summary>
   /// <param name="testSiteLayoutConfiguration">The configuration of the layout of the used test site.</param>
   /// <param name="properties">The configuration properties.</param>
+  /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used when creating an <see cref="ILogger"/>.</param>
   [UsedImplicitly]
-  public AspNetCoreHostingStrategy ( ITestSiteLayoutConfiguration testSiteLayoutConfiguration, IReadOnlyDictionary<string, string> properties)
+  public AspNetCoreHostingStrategy ( ITestSiteLayoutConfiguration testSiteLayoutConfiguration, IReadOnlyDictionary<string, string> properties, ILoggerFactory loggerFactory)
       : this(
           ArgumentUtility.CheckNotNull(nameof(testSiteLayoutConfiguration), testSiteLayoutConfiguration),
           int.Parse(ArgumentUtility.CheckNotNull(nameof(properties), properties)["port"]!),

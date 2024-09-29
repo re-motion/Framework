@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting.Utilities;
@@ -42,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public IReadOnlyList<ItemDefinition> GetItemDefinitions ()
     {
-      return GetMenuItemOrSubMenuItemDefinitions(GetMainMenuScope());
+      return GetMenuItemOrSubMenuItemDefinitions(GetMainMenuScope(), Logger);
     }
 
     /// <summary>
@@ -153,10 +154,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       return SelectMenuItem(menuItemCommand, actionOptions);
     }
 
-    private static IReadOnlyList<ItemDefinition> GetMenuItemOrSubMenuItemDefinitions (ElementScope scope)
+    private static IReadOnlyList<ItemDefinition> GetMenuItemOrSubMenuItemDefinitions (ElementScope scope, ILogger logger)
     {
       return
           RetryUntilTimeout.Run(
+              logger,
               () =>
                   scope.FindAllXPath(".//li/span/span[2]")
                       .Select(
@@ -205,7 +207,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
       public IReadOnlyList<ItemDefinition> GetItemDefinitions ()
       {
-        return GetMenuItemOrSubMenuItemDefinitions(GetSubMenuScope());
+        return GetMenuItemOrSubMenuItemDefinitions(GetSubMenuScope(), Logger);
       }
 
       public IFluentControlObjectWithSelectableItems SelectItem ()

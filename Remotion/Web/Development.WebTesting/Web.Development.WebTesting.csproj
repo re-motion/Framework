@@ -23,7 +23,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fork.Coypu" />
-    <PackageReference Include="log4net" />
     <PackageReference Include="Selenium.Support" />
     <PackageReference Include="Selenium.WebDriver" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />

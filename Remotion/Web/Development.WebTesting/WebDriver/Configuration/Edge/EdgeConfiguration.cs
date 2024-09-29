@@ -92,7 +92,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
           webTestSettings.DownloadStartedTimeout,
           webTestSettings.DownloadUpdatedTimeout,
           downloadStartedGracePeriod,
-          webTestSettings.CleanUpUnmatchedDownloadedFiles);
+          webTestSettings.CleanUpUnmatchedDownloadedFiles,
+          webTestSettings.LoggerFactory);
 
       DisableSecurityWarningsBehavior = webTestSettings.Edge.DisableSecurityWarningsBehavior;
     }
@@ -140,6 +141,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
       return userDirectory;
     }
 
-    public override IBrowserFactory BrowserFactory => new EdgeBrowserFactory(this);
+    public override IBrowserFactory BrowserFactory => new EdgeBrowserFactory(this, LoggerFactory);
   }
 }

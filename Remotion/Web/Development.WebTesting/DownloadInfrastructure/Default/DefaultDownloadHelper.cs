@@ -31,11 +31,8 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
   /// </summary>
   public class DefaultDownloadHelper : DownloadHelperBase
   {
-    private static ILogger s_logger = LogManager.GetLogger(typeof(DefaultDownloadHelper));
-
-    [NotNull]
+    private readonly ILogger _logger;
     private string DownloadDirectory { get; }
-    [NotNull]
     private string PartialFileExtension { get; }
     public TimeSpan DownloadStartedGracePeriod { get; }
     public bool CleanUpDownloadFolderOnError { get; }
@@ -44,36 +41,39 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
     /// Creates a new <see cref="DefaultDownloadHelper"/>.
     /// </summary>
     /// <param name="downloadDirectory">
-    /// Directory where the browser saves the downloaded files. Must not be <see langword="null" /> or empty.
+    ///   Directory where the browser saves the downloaded files. Must not be <see langword="null" /> or empty.
     /// </param>
     /// <param name="partialFileExtension">
-    /// File extension for partially downloaded files.
+    ///   File extension for partially downloaded files.
     /// </param>
     /// <param name="downloadStartedTimeout">
-    /// Specifies how long the <see cref="DownloadHelperBase"/> should wait before looking for the downloaded file.
+    ///   Specifies how long the <see cref="DownloadHelperBase"/> should wait before looking for the downloaded file.
     /// </param>
     /// <param name="downloadUpdatedTimeout">
-    /// Specifies how long the <see cref="DownloadHelperBase"/> should wait for a downloaded partial file to update.
+    ///   Specifies how long the <see cref="DownloadHelperBase"/> should wait for a downloaded partial file to update.
     /// </param>
     /// <param name="downloadStartedGracePeriod">
-    /// Specifies the max time between triggering the download and calling <see cref="DownloadedFileFinder"/>.<see cref="DownloadedFileFinder.WaitForDownloadCompleted"/>. 
-    /// All files created before this time span will be ignored.
+    ///   Specifies the max time between triggering the download and calling <see cref="DownloadedFileFinder"/>.<see cref="DownloadedFileFinder.WaitForDownloadCompleted"/>. 
+    ///   All files created before this time span will be ignored.
     /// </param>
     /// <param name="cleanUpDownloadFolderOnError">
-    /// Clean up the download folder on error.
+    ///   Clean up the download folder on error.
     /// </param>
+    /// <param name="loggerFactory"></param>
     public DefaultDownloadHelper (
         [NotNull] string downloadDirectory,
         [NotNull] string partialFileExtension,
         TimeSpan downloadStartedTimeout,
         TimeSpan downloadUpdatedTimeout,
         TimeSpan downloadStartedGracePeriod,
-        bool cleanUpDownloadFolderOnError)
+        bool cleanUpDownloadFolderOnError,
+        ILoggerFactory loggerFactory)
         : base(downloadStartedTimeout, downloadUpdatedTimeout)
     {
       ArgumentUtility.CheckNotNullOrEmpty("downloadDirectory", downloadDirectory);
       ArgumentUtility.CheckNotNullOrEmpty("partialFileExtension", partialFileExtension);
 
+      _logger = loggerFactory.CreateLogger<DefaultDownloadHelper>();
       DownloadDirectory = downloadDirectory;
       PartialFileExtension = partialFileExtension;
       DownloadStartedGracePeriod = downloadStartedGracePeriod;
@@ -125,7 +125,8 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
           DownloadDirectory,
           PartialFileExtension,
           DownloadStartedGracePeriod,
-          new DefaultNamedExpectedFileNameFinderStrategy(fileName));
+          new DefaultNamedExpectedFileNameFinderStrategy(fileName),
+          _logger);
     }
 
     protected override DownloadedFileFinder CreateDownloadedFileFinderForUnknownFileName ()
@@ -134,7 +135,8 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
           DownloadDirectory,
           PartialFileExtension,
           DownloadStartedGracePeriod,
-          new DefaultUnknownFileNameFinderStrategy(PartialFileExtension));
+          new DefaultUnknownFileNameFinderStrategy(PartialFileExtension),
+          _logger);
     }
 
     protected override void AdditionalCleanup ()
@@ -147,7 +149,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
         }
         catch (IOException ex)
         {
-          s_logger.LogWarning(
+          _logger.LogWarning(
               @"Could not delete '{0}'.
 {1}",
               DownloadDirectory,
@@ -178,7 +180,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
         }
         catch (IOException ex)
         {
-          s_logger.LogWarning(
+          _logger.LogWarning(
               @"Could not delete '{0}'.
 {1}",
               fullFilePath,

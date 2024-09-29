@@ -87,7 +87,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
       var actualActionOptions = MergeWithDefaultActionOptions(actionOptions, finishInputWith);
-      ExecuteAction(new FillWithAction(this, GetValueScope(), text, finishInputWith), actualActionOptions);
+      ExecuteAction(new FillWithAction(this, GetValueScope(), text, finishInputWith, Logger), actualActionOptions);
       return UnspecifiedPage();
     }
 

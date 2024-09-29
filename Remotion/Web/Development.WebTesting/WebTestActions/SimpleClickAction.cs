@@ -17,6 +17,7 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.WebTestActions
@@ -26,8 +27,8 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
   /// </summary>
   public class SimpleClickAction : WebTestAction
   {
-    public SimpleClickAction ([NotNull] ControlObject control, [NotNull] ElementScope scope)
-        : base(control, scope)
+    public SimpleClickAction ([NotNull] ControlObject control, [NotNull] ElementScope scope, [NotNull] ILogger logger)
+        : base(control, scope, logger)
     {
     }
 

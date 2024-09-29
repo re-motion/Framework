@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     {
       ArgumentUtility.CheckNotNull("fluentRow", fluentRow);
 
-      var hasValidationRow = fluentRow.Target.Row.Scope.GetAttribute("class").Split(' ').Contains("hasValidationRow");
+      var hasValidationRow = fluentRow.Target.Row.Scope.GetAttribute("class", fluentRow.Target.Row.Logger).Split(' ').Contains("hasValidationRow");
       if (!hasValidationRow)
         throw new InvalidOperationException("The current row does not have a validation error row.");
 

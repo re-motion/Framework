@@ -33,15 +33,14 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   /// </remarks>
   public class RetryUntilTimeout
   {
-    private static readonly ILogger s_logger = LogManager.GetLogger<RetryUntilTimeout>();
-
     private readonly RetryUntilTimeout<object?> _retryUntilTimeout;
 
-    public RetryUntilTimeout ([NotNull] Action action, TimeSpan timeout, TimeSpan retryInterval)
+    public RetryUntilTimeout ([NotNull] ILogger logger, [NotNull] Action action, TimeSpan timeout, TimeSpan retryInterval)
     {
       ArgumentUtility.CheckNotNull("action", action);
 
       _retryUntilTimeout = new RetryUntilTimeout<object?>(
+          logger,
           () =>
           {
             action();
@@ -60,6 +59,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// Executes a given <see cref="Action"/> repeatedly (using the given retry interval) until no exception is thrown during execution or until the
     /// given timeout has been reached (in which case the last exception is rethrown).
     /// </summary>
+    /// <param name="logger">
+    /// The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output. The <paramref name="logger"/> can be retrieved from
+    /// <see cref="WebTestObject{TWebTestObjectContext}"/>.<see cref="WebTestObject{TWebTestObjectContext}.Logger"/>.
+    /// </param>
     /// <param name="action">The <see cref="Action"/> to be executed repeatedly.</param>
     /// <param name="timeout">
     /// The timeout after which no more retries are made and the last exception is rethrown. Defaults to the value of the <see cref="DriverConfiguration.SearchTimeout"/>
@@ -69,12 +72,13 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// The interval to wait between two executions. Defaults to the value of the <see cref="DriverConfiguration.RetryInterval"/> property of the
     /// <see cref="DriverConfiguration"/> retrieved by calling <see cref="WebTestConfigurationFactory.CreateDriverConfiguration"/> if no value is provided.
     /// </param>
-    public static void Run ([NotNull] Action action, TimeSpan? timeout = null, TimeSpan? retryInterval = null)
+    public static void Run ([NotNull] ILogger logger, [NotNull] Action action, TimeSpan? timeout = null, TimeSpan? retryInterval = null)
     {
       ArgumentUtility.CheckNotNull("action", action);
       var configuration = new WebTestConfigurationFactory().CreateDriverConfiguration();
 
       var retryUntilTimeout = new RetryUntilTimeout(
+          logger,
           action,
           timeout ?? configuration.SearchTimeout,
           retryInterval ?? configuration.RetryInterval);
@@ -85,6 +89,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// Executes a given <see cref="Func{TReturnType}"/> repeatedly (using the given retry interval) until no exception is thrown during execution or
     /// until the given timeout has been reached (in which case the last exception is rethrown).
     /// </summary>
+    /// <param name="logger">
+    /// The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output. The <paramref name="logger"/> can be retrieved from
+    /// <see cref="WebTestObject{TWebTestObjectContext}"/>.<see cref="WebTestObject{TWebTestObjectContext}.Logger"/>.
+    /// </param>
     /// <param name="func">The <see cref="Func{TReturnType}"/> to be executed repeatedly.</param>
     /// <param name="timeout">
     /// The timeout after which no more retries are made and the last exception is rethrown. Defaults to the value of the <see cref="DriverConfiguration.SearchTimeout"/>
@@ -95,12 +103,13 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <see cref="DriverConfiguration"/> retrieved by calling <see cref="WebTestConfigurationFactory.CreateDriverConfiguration"/> if no value is provided.
     /// </param>
     /// <returns>Returns the <typeparamref name="TReturnType"/> object returned by <paramref name="func"/>.</returns>
-    public static TReturnType Run<TReturnType> ([NotNull] Func<TReturnType> func, TimeSpan? timeout = null, TimeSpan? retryInterval = null)
+    public static TReturnType Run<TReturnType> ([NotNull] ILogger logger, [NotNull] Func<TReturnType> func, TimeSpan? timeout = null, TimeSpan? retryInterval = null)
     {
       ArgumentUtility.CheckNotNull("func", func);
       var configuration = new WebTestConfigurationFactory().CreateDriverConfiguration();
 
       var retryUntilTimeout = new RetryUntilTimeout<TReturnType>(
+          logger,
           func,
           timeout ?? configuration.SearchTimeout,
           retryInterval ?? configuration.RetryInterval);
@@ -119,16 +128,17 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   {
     // Todo RM-6337: Find out why DriverScope.RetryUntilTimeout is so slow.
 
-    private static readonly ILogger s_logger = LogManager.GetLogger<RetryUntilTimeout<TReturnType>>();
-
+    private readonly ILogger _logger;
     private readonly Func<TReturnType> _func;
     private readonly TimeSpan _timeout;
     private readonly TimeSpan _retryInterval;
 
-    public RetryUntilTimeout ([NotNull] Func<TReturnType> func, TimeSpan timeout, TimeSpan retryInterval)
+    public RetryUntilTimeout ([NotNull] ILogger logger, [NotNull] Func<TReturnType> func, TimeSpan timeout, TimeSpan retryInterval)
     {
       ArgumentUtility.CheckNotNull("func", func);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
+      _logger = logger;
       _func = func;
       _timeout = timeout;
       _retryInterval = retryInterval;
@@ -148,12 +158,12 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         {
           if (stopwatch.ElapsedMilliseconds < _timeout.TotalMilliseconds)
           {
-            s_logger.LogDebug("RetryUntilTimeout failed with " + ex.GetType().Name + " - trying again.");
+            _logger.LogDebug("RetryUntilTimeout failed with " + ex.GetType().Name + " - trying again.");
             Thread.Sleep(_retryInterval);
           }
           else
           {
-            s_logger.LogWarning("RetryUntilTimeout failed with " + ex.GetType().Name + " - timeout elapsed, failing.");
+            _logger.LogWarning("RetryUntilTimeout failed with " + ex.GetType().Name + " - timeout elapsed, failing.");
             throw;
           }
         }

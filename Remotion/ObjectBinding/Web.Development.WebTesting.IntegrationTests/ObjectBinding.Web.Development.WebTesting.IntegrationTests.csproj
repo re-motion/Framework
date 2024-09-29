@@ -18,6 +18,7 @@
     <Compile Include="..\..\..\SharedSource\Core\Utilities\Assertion.cs" Link="SharedSource\Utilites\%(Filename)%(Extension)" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Logging.Log4Net\Core.Logging.Log4Net.csproj" />
     <ProjectReference Include="..\..\Web\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />
     <ProjectReference Include="..\..\Web\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj" />
     <ProjectReference Include="..\..\Web\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj" />

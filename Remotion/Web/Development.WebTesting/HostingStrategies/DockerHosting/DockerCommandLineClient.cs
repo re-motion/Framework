@@ -30,14 +30,16 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
   /// </summary>
   public class DockerCommandLineClient : IDockerClient
   {
-    private static readonly ILogger s_logger = LogManager.GetLogger<DockerCommandLineClient>();
-
+    private  readonly ILogger _logger;
     private readonly string _dockerExeFullPath;
     private readonly TimeSpan _pullTimeout;
     private readonly TimeSpan _commandTimeout = TimeSpan.FromSeconds(15);
 
-    public DockerCommandLineClient (TimeSpan pullTimeout)
+    public DockerCommandLineClient (TimeSpan pullTimeout, ILoggerFactory loggerFactory)
     {
+      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+
+      _logger = loggerFactory.CreateLogger<DockerCommandLineClient>();
       _pullTimeout = pullTimeout;
       _dockerExeFullPath = GetDockerExeFullPath();
     }
@@ -166,7 +168,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
 
     private string RunDockerCommand (string dockerCommand, string? workingDirectory = null, TimeSpan? timeout = null)
     {
-      s_logger.LogInformation($"Running: 'docker {dockerCommand}'");
+      _logger.LogInformation($"Running: 'docker {dockerCommand}'");
 
       var startInfo = new ProcessStartInfo
                       {
@@ -192,7 +194,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
         dockerProcess.OutputDataReceived += (sender, outputLine) =>
         {
           if (outputLine.Data != null)
-            s_logger.LogInformation(outputLine.Data);
+            _logger.LogInformation(outputLine.Data);
         };
 
         var error = dockerProcess.StandardError.ReadToEnd();
@@ -204,7 +206,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
         {
           var errorMessage = $"Docker command '{dockerCommand}' failed: {error}";
 
-          s_logger.LogError(errorMessage);
+          _logger.LogError(errorMessage);
           throw new DockerOperationException(errorMessage, dockerProcess.ExitCode);
         }
 
@@ -225,7 +227,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
       }
     }
 
-    private static string GetDockerExeFullPath ()
+    private string GetDockerExeFullPath ()
     {
       var programFiles = Environment.GetEnvironmentVariable("ProgramW6432");
       if (string.IsNullOrEmpty(programFiles))
@@ -245,7 +247,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
                            Environment.NewLine +
                            string.Join(Environment.NewLine, listOfKnownDockerLocations.ToArray());
 
-        s_logger.LogCritical(errorMessage);
+        _logger.LogCritical(errorMessage);
         throw new FileNotFoundException(errorMessage);
       }
 

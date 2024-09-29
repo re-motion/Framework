@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
@@ -25,17 +26,19 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
   public class NullCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
     /// <inheritdoc/>
-    public object? PrepareWaitForCompletion (PageObjectContext context)
+    public object? PrepareWaitForCompletion (PageObjectContext context, ILogger logger)
     {
       ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       return null;
     }
 
     /// <inheritdoc/>
-    public void WaitForCompletion (PageObjectContext context, object? state)
+    public void WaitForCompletion (PageObjectContext context, object? state, ILogger logger)
     {
       ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("logger", logger);
     }
   }
 }

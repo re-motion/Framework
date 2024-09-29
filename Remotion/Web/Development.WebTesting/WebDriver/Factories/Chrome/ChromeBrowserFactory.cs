@@ -19,6 +19,7 @@ using System.IO;
 using Coypu;
 using Coypu.Drivers;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using OpenQA.Selenium.Chrome;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
@@ -37,11 +38,16 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
   {
     private readonly IChromeConfiguration _chromeConfiguration;
     private readonly IBrowserSessionCleanUpStrategy _registryCleanUpStrategy;
+    private readonly ILoggerFactory _loggerFactory;
+    private readonly ILogger _logger;
 
-    public ChromeBrowserFactory ([NotNull] IChromeConfiguration chromeConfiguration)
+    public ChromeBrowserFactory ([NotNull] IChromeConfiguration chromeConfiguration, [NotNull] ILoggerFactory loggerFactory)
     {
       ArgumentUtility.CheckNotNull("chromeConfiguration", chromeConfiguration);
+      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
 
+      _loggerFactory = loggerFactory;
+      _logger = _loggerFactory.CreateLogger(typeof(ChromeBrowserFactory));
       _chromeConfiguration = chromeConfiguration;
       _registryCleanUpStrategy = ChromiumSecurityWarningsRegistryCleanUpStrategyFactory.CreateForChrome(_chromeConfiguration.DisableSecurityWarningsBehavior);
     }
@@ -70,7 +76,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
           new[]
           {
               _registryCleanUpStrategy,
-              new ChromiumUserDirectoryCleanUpStrategy(_chromeConfiguration.UserDirectoryRoot, extendedChromeOptions.UserDirectory!)
+              new ChromiumUserDirectoryCleanUpStrategy(
+                  _chromeConfiguration.UserDirectoryRoot,
+                  extendedChromeOptions.UserDirectory!,
+                  _loggerFactory.CreateLogger<ChromeBrowserSession>())
           });
     }
 
@@ -106,7 +115,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
       var driverService = ChromeDriverService.CreateDefaultService(driverDirectory, driverExecutable);
 
       driverService.EnableVerboseLogging = false;
-      driverService.LogPath = WebDriverLogUtility.CreateLogFile(_chromeConfiguration.LogsDirectory, _chromeConfiguration.BrowserName);
+      driverService.LogPath = WebDriverLogUtility.CreateLogFile(_chromeConfiguration.LogsDirectory, _chromeConfiguration.BrowserName, _logger);
 
       return driverService;
     }

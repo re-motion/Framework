@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public void Select ()
     {
       var scope = GetRowSelectorScope();
-      ExecuteAction(new CheckAction(this, scope), Opt.ContinueImmediately());
+      ExecuteAction(new CheckAction(this, scope, Logger), Opt.ContinueImmediately());
     }
 
     /// <summary>
@@ -61,14 +61,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public void Deselect ()
     {
       var scope = GetRowSelectorScope();
-      if (scope.GetAttribute("type") == "radio")
+      if (scope.GetAttribute("type", Logger) == "radio")
       {
         throw AssertionExceptionUtility.CreateExpectationException(
             Driver,
             "Unable to de-select the row because the list uses radio buttons for row selection instead of checkboxes.");
       }
 
-      ExecuteAction(new UncheckAction(this, scope), Opt.ContinueImmediately());
+      ExecuteAction(new UncheckAction(this, scope, Logger), Opt.ContinueImmediately());
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       get
       {
         var rowSelectorCheckboxScope = GetRowSelectorScope();
-        return rowSelectorCheckboxScope.IsSelected();
+        return rowSelectorCheckboxScope.IsSelected(Logger);
       }
     }
 
@@ -147,7 +147,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public BocListValidationError[] GetValidationErrors ()
     {
       return Scope.FindAllCss(".bocListDataCellValidationFailureIndicator ul li")
-          .Select(BocListValidationError.Parse)
+          .Select(scope => BocListValidationError.Parse(scope, Logger))
           .ToArray();
     }
 

@@ -15,7 +15,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
   /// </summary>
   public abstract class DockerContainerWrapperBase : IDisposable
   {
-    private static readonly ILogger s_logger = LogManager.GetLogger<DockerContainerWrapperBase>();
+    private readonly ILogger _logger;
 
     protected IDockerClient Docker { get; }
 
@@ -25,11 +25,14 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
 
     protected DockerContainerWrapperBase (
         IDockerClient docker,
-        DockerContainerConfigurationParameters configurationParameters)
+        DockerContainerConfigurationParameters configurationParameters,
+        ILoggerFactory loggerFactory)
     {
       ArgumentUtility.CheckNotNull("docker", docker);
       ArgumentUtility.CheckNotNull("configurationParameters", configurationParameters);
+      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
 
+      _logger = loggerFactory.CreateLogger<DockerContainerWrapperBase>();
       Docker = docker;
       ConfigurationParameters = configurationParameters;
     }
@@ -55,7 +58,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
       }
       catch (DockerOperationException ex)
       {
-        s_logger.LogError($"Pulling the docker image '{ConfigurationParameters.DockerImageName}' failed. Trying to proceed with a locally cached image.", ex);
+        _logger.LogError($"Pulling the docker image '{ConfigurationParameters.DockerImageName}' failed. Trying to proceed with a locally cached image.", ex);
       }
 
       var mounts = GetMountsWithWebApplicationPath(ConfigurationParameters.Mounts);

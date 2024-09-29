@@ -15,6 +15,7 @@
     <EmbeddedResource Include="SavedTestScreenshots\MouseTest\*.png" LogicalName="$(AssemblyName).SavedTestScreenshots.$(RootNamespace).MouseTest.%(Filename)%(Extension)"/>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Logging.Log4Net\Core.Logging.Log4Net.csproj" />
     <ProjectReference Include="..\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj" />
     <ProjectReference Include="..\Development.WebTesting.IntegrationTests.Infrastructure\Web.Development.WebTesting.IntegrationTests.Infrastructure.csproj" />
     <ProjectReference Include="..\Development.WebTesting.WebFormsControlObjects\Web.Development.WebTesting.WebFormsControlObjects.csproj" />

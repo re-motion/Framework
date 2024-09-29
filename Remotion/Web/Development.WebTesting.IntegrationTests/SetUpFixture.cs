@@ -16,7 +16,10 @@
 // 
 using System;
 using System.IO;
+using log4net.Config;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
+using Remotion.Logging.Log4Net;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 
@@ -34,7 +37,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       try
       {
-        WebTestSettings.SetCurrent(WebTestSettings.CreateAppConfigBasedWebTestSettings());
+        var loggerFactory = new LoggerFactory(new[] { new Log4NetLoggerProvider() });
+        WebTestSettings.SetCurrent(WebTestSettings.CreateAppConfigBasedWebTestSettings(loggerFactory));
 
         _setUpFixtureHelper = WebTestSetUpFixtureHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
         var screenshotDirectory = _setUpFixtureHelper.ScreenshotDirectory;
@@ -42,6 +46,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
         if (Directory.Exists(screenshotDirectory))
           Directory.Delete(screenshotDirectory, true);
 
+        XmlConfigurator.Configure();
         _setUpFixtureHelper.OnSetUp();
       }
       catch (Exception e)

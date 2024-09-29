@@ -17,6 +17,7 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 
@@ -30,8 +31,8 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <summary>
     /// Private constructor, may be obtained only via a <see cref="PageObjectContext"/> or <see cref="ControlObjectContext"/>.
     /// </summary>
-    internal ControlSelectionContext ([NotNull] PageObject pageObject, [NotNull] ElementScope scope)
-        : base(pageObject, scope)
+    internal ControlSelectionContext ([NotNull] PageObject pageObject, [NotNull] ElementScope scope, [NotNull] ILoggerFactory loggerFactory)
+        : base(pageObject, scope, loggerFactory)
     {
     }
 

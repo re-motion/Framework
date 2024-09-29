@@ -68,11 +68,12 @@ public class BocAutoCompleteReferenceValueSearchResultControlObject : ControlObj
     return new NullCompletionDetectionStrategy();
   }
 
-  public bool IsVisible => Scope.IsVisible();
+  public bool IsVisible => Scope.IsVisible(Logger);
 
   public Item[] GetItems (Predicate<Item[]> predicate)
   {
     return RetryUntilTimeout.Run(
+        Logger,
         () =>
         {
           var result = Scope.FindAllCss("li", options: Options.NoWait)

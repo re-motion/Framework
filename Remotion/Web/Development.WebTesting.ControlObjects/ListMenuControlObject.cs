@@ -43,6 +43,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       return
           RetryUntilTimeout.Run(
+              Logger,
               () =>
                   Scope.FindAllCss("span.listMenuItem, span.listMenuItemDisabled")
                       .Select(

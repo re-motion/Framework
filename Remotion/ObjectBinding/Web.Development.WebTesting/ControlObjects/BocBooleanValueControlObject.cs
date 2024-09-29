@@ -122,7 +122,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       for (var i = 0; i < numberOfClicks; ++i)
       {
         var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
-        ExecuteAction(new ClickAction(this, linkScope), actualActionOptions);
+        ExecuteAction(new ClickAction(this, linkScope, Logger), actualActionOptions);
       }
 
       return UnspecifiedPage();

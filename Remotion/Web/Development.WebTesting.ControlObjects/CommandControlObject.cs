@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         throw AssertionExceptionUtility.CreateCommandDisabledException(Driver);
 
       var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
-      ExecuteAction(new ClickAction(this, Scope), actualActionOptions);
+      ExecuteAction(new ClickAction(this, Scope, Logger), actualActionOptions);
       return UnspecifiedPage();
     }
 

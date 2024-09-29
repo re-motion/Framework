@@ -16,7 +16,9 @@
 // 
 using System;
 using System.Collections.Generic;
-using log4net;
+using System.Linq;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Testing;
 using Moq;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -35,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
     private Mock<IAccessibilityConfiguration> _configStub;
     private Mock<IJavaScriptExecutor> _jsExecutorStub;
     private Mock<IWebDriver> _webDriverStub;
-    private Mock<ILog> _loggerStub;
+    private FakeLogCollector _fakeLogCollector;
 
     [SetUp]
     public void SetUp ()
@@ -46,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
       _configStub = new Mock<IAccessibilityConfiguration>();
       _webDriverStub = new Mock<IWebDriver>();
       _resultMapperStub = new Mock<IAccessibilityResultMapper>();
-      _loggerStub = new Mock<ILog>();
+      _fakeLogCollector = new FakeLogCollector();
     }
 
     [Test]
@@ -147,7 +149,9 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
 
       analyzer.Analyze("SomeCssSelector");
 
-      _loggerStub.Verify(_ => _.DebugFormat("aXe has been injected. [took: {0}]", It.IsAny<TimeSpan>()), Times.AtLeastOnce());
+      var logRecords = _fakeLogCollector.GetSnapshot();
+      var debugLogRecords = logRecords.Where(l => l.Level == Microsoft.Extensions.Logging.LogLevel.Debug).ToArray();
+      Assert.That(debugLogRecords, Has.Some.With.Property(nameof(FakeLogRecord.Message)).Match(@"aXe has been injected. \[took: 00:00:00.000\d\d\d\d\]"));
     }
 
     [Test]
@@ -167,7 +171,9 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
 
       analyzer.Analyze("SomeCssSelector");
 
-      _loggerStub.Verify(_ => _.DebugFormat("Accessibility analysis has been performed. [took: {0}]", It.IsAny<TimeSpan>()), Times.AtLeastOnce());
+      var logRecords = _fakeLogCollector.GetSnapshot();
+      var debugLogRecords = logRecords.Where(l => l.Level == Microsoft.Extensions.Logging.LogLevel.Debug).ToArray();
+      Assert.That(debugLogRecords, Has.Some.With.Property(nameof(FakeLogRecord.Message)).Match(@"Accessibility analysis has been performed. \[took: 00:00:00.000\d\d\d\d\]"));
     }
 
     private TestableAccessibilityAnalyzer CreateAccessibilityAnalyzer ()
@@ -179,7 +185,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
           _configStub.Object,
           _sourceProviderStub.Object,
           _resultMapperStub.Object,
-          _loggerStub.Object);
+          new FakeLogger(_fakeLogCollector));
     }
 
     private class TestableAccessibilityAnalyzer : AccessibilityAnalyzer
@@ -191,7 +197,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
           IAccessibilityConfiguration configuration,
           IAxeSourceProvider sourceProvider,
           IAccessibilityResultMapper mapper,
-          ILog logger)
+          ILogger logger)
           : base(webDriver, jsExecutor, resultParser, configuration, sourceProvider, mapper, logger)
       {
       }

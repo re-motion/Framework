@@ -17,6 +17,7 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ControlSelection;
@@ -46,8 +47,9 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] BrowserWindow window,
         [NotNull] IRequestErrorDetectionStrategy requestErrorDetectionStrategy,
         [NotNull] ElementScope scope,
-        [CanBeNull] PageObjectContext? parentContext)
-        : base(scope)
+        [CanBeNull] PageObjectContext? parentContext,
+        [NotNull] ILoggerFactory loggerFactory)
+        : base(scope, loggerFactory)
     {
       ArgumentUtility.CheckNotNull("browser", browser);
       ArgumentUtility.CheckNotNull("window", window);
@@ -64,6 +66,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     /// <param name="browser">The <see cref="IBrowserSession"/> on which the <see cref="PageObject"/> resides.</param>
     /// <param name="requestErrorDetectionStrategy">The <see cref="IRequestErrorDetectionStrategy"/> which defines the used request error detection.</param>
+    /// <param name="loggerFactory">The logger factory used by the web testing infrastructure.</param>
     /// <returns>A new root context.</returns>
     /// <remarks>
     /// <see cref="New"/> does not perform an error page detection via <see cref="IRequestErrorDetectionStrategy"/>
@@ -71,16 +74,20 @@ namespace Remotion.Web.Development.WebTesting
     /// The error page detection is performed during the control selection. If you require an explicit error page detection
     /// use <see cref="WebTestHelper"/>.<see cref="WebTestHelper.CheckPageForError"/>.
     /// </remarks>
-    public static PageObjectContext New ([NotNull] IBrowserSession browser, [NotNull] IRequestErrorDetectionStrategy requestErrorDetectionStrategy)
+    public static PageObjectContext New (
+        [NotNull] IBrowserSession browser,
+        [NotNull] IRequestErrorDetectionStrategy requestErrorDetectionStrategy,
+        [NotNull] ILoggerFactory loggerFactory)
     {
       ArgumentUtility.CheckNotNull("browser", browser);
       ArgumentUtility.CheckNotNull("requestErrorDetectionStrategy", requestErrorDetectionStrategy);
+      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
 
       var scope = browser.Window.GetRootScope();
 
       // No error page detection. See remarks documentation on this method.
 
-      return new PageObjectContext(browser, browser.Window, requestErrorDetectionStrategy, scope, null);
+      return new PageObjectContext(browser, browser.Window, requestErrorDetectionStrategy, scope, null, loggerFactory);
     }
 
     /// <inheritdoc/>
@@ -128,7 +135,7 @@ namespace Remotion.Web.Development.WebTesting
 
       var rootScope = browserSession.Window.GetRootScope();
 
-      var pageObjectContext = new PageObjectContext(browserSession, browserSession.Window, RequestErrorDetectionStrategy, rootScope, this);
+      var pageObjectContext = new PageObjectContext(browserSession, browserSession.Window, RequestErrorDetectionStrategy, rootScope, this, LoggerFactory);
 
       // No error page detection. See remarks documentation on this method.
 
@@ -152,7 +159,7 @@ namespace Remotion.Web.Development.WebTesting
 
       try
       {
-        return new PageObjectContext(Browser, Window, RequestErrorDetectionStrategy, frameRootElement, this);
+        return new PageObjectContext(Browser, Window, RequestErrorDetectionStrategy, frameRootElement, this, LoggerFactory);
       }
       catch (WebTestException)
       {
@@ -175,7 +182,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       var rootScope = Window.GetRootScope();
 
-      var cloneForNewPage = new PageObjectContext(Browser, Window, RequestErrorDetectionStrategy, rootScope, ParentContext);
+      var cloneForNewPage = new PageObjectContext(Browser, Window, RequestErrorDetectionStrategy, rootScope, ParentContext, LoggerFactory);
 
       // No error page detection. See remarks documentation on this method.
 
@@ -202,7 +209,7 @@ namespace Remotion.Web.Development.WebTesting
 
       try
       {
-        return new ControlObjectContext(pageObject, scope);
+        return new ControlObjectContext(pageObject, scope, LoggerFactory);
       }
       catch (WebTestException)
       {
@@ -227,7 +234,7 @@ namespace Remotion.Web.Development.WebTesting
 
       // No error page detection. See remarks documentation on this method.
 
-      return new ControlSelectionContext(pageObject, Scope);
+      return new ControlSelectionContext(pageObject, Scope, LoggerFactory);
     }
   }
 }

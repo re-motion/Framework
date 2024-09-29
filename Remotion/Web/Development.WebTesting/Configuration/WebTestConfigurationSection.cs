@@ -17,7 +17,9 @@
 using System;
 using System.Configuration;
 using System.IO;
+using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
+using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration.Legacy;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 
@@ -48,6 +50,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private readonly ConfigurationProperty _edge;
     private readonly ConfigurationProperty _testSiteLayoutProperty;
     private readonly ConfigurationProperty _headless;
+    private ILoggerFactory? _loggerFactory;
 
     private WebTestConfigurationSection ()
     {
@@ -285,5 +288,18 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     IWebTestHostingSettings IWebTestSettings.Hosting => new WebTestHostingAdapter(HostingProviderSettings);
 
     IWebTestTestSiteLayoutSettings IWebTestSettings.TestSiteLayout => TestSiteLayoutConfiguration;
+
+    ILoggerFactory IWebTestSettings.LoggerFactory =>
+        _loggerFactory ?? throw new InvalidOperationException("The LoggerFactory was not initialized via WebTestSettingsDto.SetLoggerFactory(...).");
+
+    /// <summary>
+    /// Sets the <see cref="ILoggerFactory"/> used by the web test infrastructure.
+    /// </summary>
+    public void SetLoggerFactory (ILoggerFactory loggerFactory)
+    {
+      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+
+      _loggerFactory = loggerFactory;
+    }
   }
 }

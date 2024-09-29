@@ -43,17 +43,18 @@ namespace Remotion.Web.Development.WebTesting
       }
     }
 
-    private static readonly ILogger s_logger = LogManager.CreateLogger<WebTestAction>();
-
+    private readonly ILogger _logger;
     private readonly ControlObject _control;
     private readonly ElementScope _scope;
     private int _actionID;
 
-    protected WebTestAction ([NotNull] ControlObject control, [NotNull] ElementScope scope)
+    protected WebTestAction ([NotNull] ControlObject control, [NotNull] ElementScope scope, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("control", control);
       ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
+      _logger = logger;
       _control = control;
       _scope = scope;
     }
@@ -62,6 +63,14 @@ namespace Remotion.Web.Development.WebTesting
     /// Template property for the action's name (e.g. "Click").
     /// </summary>
     protected abstract string ActionName { get; }
+
+    /// <summary>
+    /// Gets the <see cref="ILogger"/> used by the <see cref="WebTestAction"/> for diagnostic output.
+    /// </summary>
+    protected ILogger Logger
+    {
+      get { return _logger; }
+    }
 
     /// <summary>
     /// Executes the action using the given <paramref name="options"/>. This method blocks until the action is completed (i.e. all triggered
@@ -80,7 +89,7 @@ namespace Remotion.Web.Development.WebTesting
       OutputDebugMessage("Started.");
 
       OutputDebugMessage("Collecting state for completion detection...");
-      var state = completionDetectionStrategy.PrepareWaitForCompletion(pageObjectContext);
+      var state = completionDetectionStrategy.PrepareWaitForCompletion(pageObjectContext, _logger);
 
       OutputDebugMessage(string.Format("Performing '{0}'...", ActionName));
       ExecuteInteraction(_scope);
@@ -92,7 +101,7 @@ namespace Remotion.Web.Development.WebTesting
       }
 
       OutputDebugMessage("Waiting for completion...");
-      completionDetectionStrategy.WaitForCompletion(pageObjectContext, state);
+      completionDetectionStrategy.WaitForCompletion(pageObjectContext, state, _logger);
 
       OutputDebugMessage("Finished.");
     }
@@ -109,7 +118,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNullOrEmpty("message", message);
 
-      s_logger.LogDebug("Action {0}: {1}", _actionID, message);
+      _logger.LogDebug("Action {0}: {1}", _actionID, message);
     }
   }
 }

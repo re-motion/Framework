@@ -50,13 +50,13 @@ namespace Remotion.Web.Development.WebTesting
     /// <inheritdoc/>
     public WebColor GetBackgroundColor ()
     {
-      return _styledScope.GetComputedBackgroundColor(_controlObject.Context);
+      return _styledScope.GetComputedBackgroundColor(_controlObject.Logger);
     }
 
     /// <inheritdoc/>
     public WebColor GetTextColor ()
     {
-      return _styledScope.GetComputedTextColor(_controlObject.Context);
+      return _styledScope.GetComputedTextColor(_controlObject.Logger);
     }
   }
 }

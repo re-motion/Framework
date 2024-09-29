@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests;
 using Remotion.Web.Development.WebTesting;
@@ -29,6 +30,8 @@ public class BocTreeViewTest : IntegrationTest
   [Category("LongRunning")]
   public void WebTreeView_ExpansionOfEmptyEmitsNoItemFoundText ()
   {
+    var logger = Helper.LoggerFactory.CreateLogger<BocTreeViewTest>();
+
     var home = Start();
     var webTreeView = home.TreeViews().GetByLocalID("NoLookAheadEvaluation");
 
@@ -38,14 +41,14 @@ public class BocTreeViewTest : IntegrationTest
     var ariaTreeAlertSpan = webTreeView.Scope.FindCss(".bocTreeView span[aria-live=assertive] span");
 
     Assert.That(ariaTreeAlertSpan.InnerHTML, Is.Empty);
-    Assert.That(ariaTreeAlertSpan.GetAttribute("aria-hidden"), Is.EqualTo("true"));
+    Assert.That(ariaTreeAlertSpan.GetAttribute("aria-hidden", logger), Is.EqualTo("true"));
 
     notExpandableNode.Expand();
 
     Assert.That(ariaTreeAlertSpan.InnerHTML, Is.EqualTo("B, D Does not contain any items."));
-    Assert.That(ariaTreeAlertSpan.GetAttribute("aria-hidden"), Is.EqualTo("false"));
+    Assert.That(ariaTreeAlertSpan.GetAttribute("aria-hidden", logger), Is.EqualTo("false"));
 
-    Assert.That(() => ariaTreeAlertSpan.GetAttribute("aria-hidden"), Is.EqualTo("true").After(7).Seconds.PollEvery(200).MilliSeconds);
+    Assert.That(() => ariaTreeAlertSpan.GetAttribute("aria-hidden", logger), Is.EqualTo("true").After(7).Seconds.PollEvery(200).MilliSeconds);
   }
 
   private WxePageObject Start ()

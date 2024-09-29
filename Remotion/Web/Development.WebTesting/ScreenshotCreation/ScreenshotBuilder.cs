@@ -29,8 +29,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
   /// </summary>
   public class ScreenshotBuilder : IDisposable
   {
-    private static readonly ILogger s_logger = LogManager.GetLogger<ScreenshotBuilder>();
-
     /// <summary>
     /// Returns <see langword="true" /> if the mouse cursor should be drawn onto the screenshot, otherwise <see langword="false" />.
     /// </summary>
@@ -59,10 +57,15 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     [NotNull]
     protected ScreenshotLayer AnnotationLayer { get; }
 
-    public ScreenshotBuilder ([NotNull] Screenshot screenshot, [NotNull] IBrowserContentLocator locator)
+    private readonly ILogger _logger;
+
+    public ScreenshotBuilder ([NotNull] Screenshot screenshot, [NotNull] IBrowserContentLocator locator, [NotNull] ILoggerFactory loggerFactory)
     {
       ArgumentUtility.CheckNotNull("screenshot", screenshot);
       ArgumentUtility.CheckNotNull("locator", locator);
+      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+
+      _logger = loggerFactory.CreateLogger<ScreenshotBuilder>();
 
       Screenshot = screenshot;
       DrawMouseCursor = false;
@@ -141,7 +144,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         throw new InvalidOperationException(string.Format("A screenshot with the file name '{0}' does already exist.", path));
 
       if (isFileExisting)
-        s_logger.LogInformation("Overwriting existing screenshot with file name '{0}'.", path);
+        _logger.LogInformation("Overwriting existing screenshot with file name '{0}'.", path);
 
       var directory = Path.GetDirectoryName(path);
       if (directory != null)

@@ -17,6 +17,7 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ControlSelection;
@@ -38,8 +39,8 @@ namespace Remotion.Web.Development.WebTesting
     /// <para>- or -</para>
     /// If multiple matching controls are found.
     /// </exception>
-    internal ControlObjectContext ([NotNull] PageObject pageObject, [NotNull] ElementScope scope)
-        : base(scope)
+    internal ControlObjectContext ([NotNull] PageObject pageObject, [NotNull] ElementScope scope, [NotNull] ILoggerFactory loggerFactory)
+        : base(scope, loggerFactory)
     {
       ArgumentUtility.CheckNotNull("pageObject", pageObject);
 
@@ -90,7 +91,7 @@ namespace Remotion.Web.Development.WebTesting
 
       try
       {
-        return new ControlObjectContext(PageObject, scope);
+        return new ControlObjectContext(PageObject, scope, LoggerFactory);
       }
       catch (WebTestException)
       {
@@ -113,7 +114,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       var rootScope = Window.GetRootScope();
 
-      var cloneForNewPage = new PageObjectContext(Browser, Window, PageObject.Context.RequestErrorDetectionStrategy, rootScope, PageObject.Context.ParentContext);
+      var cloneForNewPage = new PageObjectContext(Browser, Window, PageObject.Context.RequestErrorDetectionStrategy, rootScope, PageObject.Context.ParentContext, LoggerFactory);
 
       // No error page detection. See remarks documentation on this method.
 
@@ -165,7 +166,7 @@ namespace Remotion.Web.Development.WebTesting
       var window = Browser.FindWindow(windowLocator);
       var rootScope = window.GetRootScope();
 
-      return new PageObjectContext(Browser, window, PageObject.Context.RequestErrorDetectionStrategy, rootScope, PageObject.Context);
+      return new PageObjectContext(Browser, window, PageObject.Context.RequestErrorDetectionStrategy, rootScope, PageObject.Context, LoggerFactory);
     }
 
     /// <summary>
@@ -180,7 +181,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       // No error page detection. See remarks documentation on this method.
 
-      return new ControlSelectionContext(PageObject, Scope);
+      return new ControlSelectionContext(PageObject, Scope, LoggerFactory);
     }
   }
 }

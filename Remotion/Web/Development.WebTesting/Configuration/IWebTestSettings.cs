@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 
@@ -134,5 +135,10 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// Gets the test site layout configuration.
     /// </summary>
     IWebTestTestSiteLayoutSettings TestSiteLayout { get; }
+
+    /// <summary>
+    /// Gets the <see cref="ILoggerFactory"/> used by the web test infrastructure.
+    /// </summary>
+    ILoggerFactory LoggerFactory { get; }
   }
 }

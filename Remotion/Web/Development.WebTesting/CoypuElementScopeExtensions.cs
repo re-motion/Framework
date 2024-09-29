@@ -22,6 +22,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Coypu;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
@@ -207,13 +208,18 @@ namespace Remotion.Web.Development.WebTesting
     /// Returns the computed background color of the control. This method ignores background images as well as transparencies - the first
     /// non-transparent color set in the node's hierarchy is returned. The returned color's alpha value is always 255 (opaque).
     /// </summary>
+    /// <param name="scope">The <see cref="ElementScope"/> for which the background color is computed.</param>
+    /// <param name="logger">
+    /// The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output. The <paramref name="logger"/> can be retrieved from
+    /// <see cref="WebTestObject{TWebTestObjectContext}"/>.<see cref="WebTestObject{TWebTestObjectContext}.Logger"/>.
+    /// </param>
     /// <returns>The background color or <see cref="WebColor.Transparent"/> if no background color is set (not even on any parent node).</returns>
-    public static WebColor GetComputedBackgroundColor ([NotNull] this ElementScope scope, [NotNull] ControlObjectContext context)
+    public static WebColor GetComputedBackgroundColor ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
-      var computedBackgroundColor = (string)context.Browser.Driver.ExecuteScript(CommonJavaScripts.GetComputedBackgroundColor, scope, scope.Native);
+      var computedBackgroundColor = (string)scope.GetDriver().ExecuteScript(CommonJavaScripts.GetComputedBackgroundColor, scope, scope.Native);
 
       if (IsTransparent(computedBackgroundColor))
         return WebColor.Transparent;
@@ -225,13 +231,18 @@ namespace Remotion.Web.Development.WebTesting
     /// Returns the computed text color of the control. This method ignores transparencies - the first non-transparent color set in the node's
     /// DOM hierarchy is returned. The returned color's alpha value is always 255 (opaque).
     /// </summary>
+    /// <param name="scope">The <see cref="ElementScope"/> for which the text color is computed.</param>
+    /// <param name="logger">
+    /// The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output. The <paramref name="logger"/> can be retrieved from
+    /// <see cref="WebTestObject{TWebTestObjectContext}"/>.<see cref="WebTestObject{TWebTestObjectContext}.Logger"/>.
+    /// </param>
     /// <returns>The text color or <see cref="WebColor.Transparent"/> if no text color is set (not even on any parent node).</returns>
-    public static WebColor GetComputedTextColor ([NotNull] this ElementScope scope, [NotNull] ControlObjectContext context)
+    public static WebColor GetComputedTextColor ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
-      var computedTextColor = (string)context.Browser.Driver.ExecuteScript(CommonJavaScripts.GetComputedTextColor, scope, scope.Native);
+      var computedTextColor = (string)scope.GetDriver().ExecuteScript(CommonJavaScripts.GetComputedTextColor, scope, scope.Native);
 
       if (IsTransparent(computedTextColor))
         return WebColor.Transparent;
@@ -273,12 +284,19 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Returns whether the given <paramref name="scope"/>, which must represent a suitable HTML element (e.g. a checkbox), is currently selected.
     /// </summary>
+    /// <param name="scope">The <see cref="ElementScope"/> of the element for which the HTML selection state is checked.</param>
+    /// <param name="logger">
+    /// The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output. The <paramref name="logger"/> can be retrieved from
+    /// <see cref="WebTestObject{TWebTestObjectContext}"/>.<see cref="WebTestObject{TWebTestObjectContext}.Logger"/>.
+    /// </param>
     /// <returns>True if the HTML element is selected, otherwise false.</returns>
-    public static bool IsSelected ([NotNull] this ElementScope scope)
+    public static bool IsSelected ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       return RetryUntilTimeout.Run(
+          logger,
           () =>
           {
             var webElement = (IWebElement)scope.Native;
@@ -290,12 +308,19 @@ namespace Remotion.Web.Development.WebTesting
     /// Returns whether the given <paramref name="scope"/> is currently displayed (visible). The given <paramref name="scope"/> must exist, otherwise
     /// this method will throw an <see cref="MissingHtmlException"/>.
     /// </summary>
+    /// <param name="scope">The <see cref="ElementScope"/> of the element for which the visibility is checked.</param>
+    /// <param name="logger">
+    /// The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output. The <paramref name="logger"/> can be retrieved from
+    /// <see cref="WebTestObject{TWebTestObjectContext}"/>.<see cref="WebTestObject{TWebTestObjectContext}.Logger"/>.
+    /// </param>
     /// <returns>True if the given <paramref name="scope"/> is visible, otherwise false.</returns>
-    public static bool IsVisible ([NotNull] this ElementScope scope)
+    public static bool IsVisible ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       return RetryUntilTimeout.Run(
+          logger,
           () =>
           {
             var webElement = (IWebElement)scope.Native;
@@ -306,7 +331,12 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Ensures unhovering of the given <paramref name="scope"/> by placing the cursor back at 0/0 in the top-left corner.
     /// </summary>
-    public static void Unhover ([NotNull] this ElementScope scope)
+    /// <param name="scope">The <see cref="ElementScope"/> of the element against which the unhover operation is performed.</param>
+    /// <param name="logger">
+    /// The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output. The <paramref name="logger"/> can be retrieved from
+    /// <see cref="WebTestObject{TWebTestObjectContext}"/>.<see cref="WebTestObject{TWebTestObjectContext}.Logger"/>.
+    /// </param>
+    public static void Unhover ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
 
@@ -316,16 +346,23 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Gets the specified HTML attribute's value from the <paramref name="scope"/>.
     /// </summary>
+    /// <param name="scope">The <see cref="ElementScope"/> where the HTML attribute is defined.</param>
+    /// <param name="attributeName">The name of the HTML attribute for which the value should be retrieved.</param>
+    /// <param name="logger">
+    /// The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output. The <paramref name="logger"/> can be retrieved from
+    /// <see cref="WebTestObject{TWebTestObjectContext}"/>.<see cref="WebTestObject{TWebTestObjectContext}.Logger"/>.
+    /// </param>
     /// <remarks>
     /// Accessing HTML attributes through <see cref="ElementScope.this"/> returns <see langword="null"/> if the attribute does not exist.
     /// By using <see cref="GetAttribute"/> instead, a <see cref="MissingHtmlException"/> is thrown if the HTML attribute does not exist on the scope.
     /// </remarks>
     /// <exception cref="MissingHtmlException">If the attribute cannot be found.</exception>
     [NotNull]
-    public static string GetAttribute ([NotNull] this ElementScope scope, [NotNull] string attributeName)
+    public static string GetAttribute ([NotNull] this ElementScope scope, [NotNull] string attributeName, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
       ArgumentUtility.CheckNotNullOrEmpty("attributeName", attributeName);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       var result = scope[attributeName];
 

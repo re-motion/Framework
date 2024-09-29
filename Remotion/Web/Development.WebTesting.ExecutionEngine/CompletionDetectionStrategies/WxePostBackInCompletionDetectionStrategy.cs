@@ -26,7 +26,6 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
   /// </summary>
   public class WxePostBackInCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
-    private static readonly ILogger s_logger = LogManager.GetLogger<WxePostBackInCompletionDetectionStrategy>();
     private readonly PageObjectContext _context;
     private readonly int _expectedWxePostBackSequenceNumberIncrease;
     private readonly TimeSpan? _timeout;
@@ -41,23 +40,25 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     }
 
     /// <inheritdoc/>
-    public object? PrepareWaitForCompletion (PageObjectContext context)
+    public object? PrepareWaitForCompletion (PageObjectContext context, ILogger logger)
     {
       ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       return WxeCompletionDetectionHelpers.GetWxePostBackSequenceNumber(_context);
     }
 
     /// <inheritdoc/>
-    public void WaitForCompletion (PageObjectContext context, object? state)
+    public void WaitForCompletion (PageObjectContext context, object? state, ILogger logger)
     {
       ArgumentUtility.CheckNotNull("context", context);
       ArgumentUtility.CheckNotNull("state", state!);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       var oldWxePostBackSequenceNumber = (int)state;
 
       WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber(
-          s_logger,
+          logger,
           _context,
           oldWxePostBackSequenceNumber,
           _expectedWxePostBackSequenceNumberIncrease,

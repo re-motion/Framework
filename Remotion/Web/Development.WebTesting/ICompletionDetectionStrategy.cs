@@ -16,6 +16,7 @@
 // 
 using System;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -38,8 +39,9 @@ namespace Remotion.Web.Development.WebTesting
     /// subsequently determining whether the action has completed.
     /// </summary>
     /// <param name="context">The reloading page's <see cref="PageObjectContext"/>.</param>
+    /// <param name="logger">The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output.</param>
     /// <returns>A state object which is subsequently passed to <see cref="WaitForCompletion"/>. May be null.</returns>
-    object? PrepareWaitForCompletion ([NotNull] PageObjectContext context);
+    object? PrepareWaitForCompletion ([NotNull] PageObjectContext context, [NotNull] ILogger logger);
 
     /// <summary>
     /// Called immediately after the action has been performed. This method should block until the DOM fulfills certain characteristics (i.e. a page
@@ -47,6 +49,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     /// <param name="context">The reloading page's <see cref="PageObjectContext"/>.</param>
     /// <param name="state">The state object obtained from <see cref="PrepareWaitForCompletion"/>.</param>
-    void WaitForCompletion ([NotNull] PageObjectContext context, [CanBeNull] object? state);
+    /// <param name="logger">The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output.</param>
+    void WaitForCompletion ([NotNull] PageObjectContext context, [CanBeNull] object? state, [NotNull] ILogger logger);
   }
 }

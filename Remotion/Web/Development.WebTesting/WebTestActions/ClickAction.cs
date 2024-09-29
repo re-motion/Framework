@@ -17,6 +17,7 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
 
@@ -27,8 +28,8 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
   /// </summary>
   public class ClickAction : WebTestAction
   {
-    public ClickAction ([NotNull] ControlObject control, [NotNull] ElementScope scope)
-        : base(control, scope)
+    public ClickAction ([NotNull] ControlObject control, [NotNull] ElementScope scope, [NotNull] ILogger logger)
+        : base(control, scope, logger)
     {
     }
 
@@ -44,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
       ArgumentUtility.CheckNotNull("scope", scope);
 
       if (scope.Browser.IsFirefox())
-        scope.FocusClick();
+        scope.FocusClick(Logger);
       else
         scope.Click();
     }

@@ -16,6 +16,7 @@
 // 
 using System;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
@@ -31,6 +32,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
   /// </summary>
   public abstract class BrowserConfigurationBase : IBrowserConfiguration
   {
+    private readonly ILoggerFactory _loggerFactory;
     private readonly string _browserName;
     private readonly TimeSpan _searchTimeout;
     private readonly TimeSpan _retryInterval;
@@ -44,6 +46,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     {
       ArgumentUtility.CheckNotNull("webTestSettings", webTestSettings);
 
+      _loggerFactory = webTestSettings.LoggerFactory;
       _browserName = webTestSettings.BrowserName;
       _searchTimeout = webTestSettings.SearchTimeout;
       _retryInterval = webTestSettings.RetryInterval;
@@ -57,6 +60,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     public abstract string BrowserExecutableName { get; }
 
     public abstract string WebDriverExecutableName { get; }
+
+    public ILoggerFactory LoggerFactory
+    {
+      get { return _loggerFactory; }
+    }
 
     public BrowserAnnotateHelper BrowserAnnotateHelper
     {

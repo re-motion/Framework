@@ -26,7 +26,6 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
   /// </summary>
   public class WxeResetCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
-    private static readonly ILogger s_logger = LogManager.GetLogger<WxeResetCompletionDetectionStrategy>();
     private readonly TimeSpan? _timeout;
 
     public WxeResetCompletionDetectionStrategy (TimeSpan? timeout = null)
@@ -35,24 +34,26 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     }
 
     /// <inheritdoc/>
-    public object? PrepareWaitForCompletion (PageObjectContext context)
+    public object? PrepareWaitForCompletion (PageObjectContext context, ILogger logger)
     {
       ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       return WxeCompletionDetectionHelpers.GetWxeFunctionToken(context);
     }
 
     /// <inheritdoc/>
-    public void WaitForCompletion (PageObjectContext context, object? state)
+    public void WaitForCompletion (PageObjectContext context, object? state, ILogger logger)
     {
       ArgumentUtility.CheckNotNull("context", context);
       ArgumentUtility.CheckNotNull("state", state!);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       var oldWxeFunctionToken = (string)state;
-      WxeCompletionDetectionHelpers.WaitForNewWxeFunctionToken(s_logger, context, oldWxeFunctionToken, _timeout);
+      WxeCompletionDetectionHelpers.WaitForNewWxeFunctionToken(logger, context, oldWxeFunctionToken, _timeout);
 
       const int expectedWxePostBackSequenceNumber = 2;
-      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber(s_logger, context, expectedWxePostBackSequenceNumber, _timeout);
+      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber(logger, context, expectedWxePostBackSequenceNumber, _timeout);
     }
   }
 }
