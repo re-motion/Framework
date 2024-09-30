@@ -20,6 +20,7 @@ using System.Drawing;
 using System.Linq;
 using System.Threading;
 using Coypu;
+using Coypu.Drivers;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
@@ -152,7 +153,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
     private HtmlPageObject Start ()
     {
-      return Start<HtmlPageObject>("MouseTest.aspx");
+      var htmlPageObject = Start<HtmlPageObject>("MouseTest.aspx");
+
+      //RM-9307 We seem to run tests too fast for firefox to load properly, so we need to delay all firefox tests a bit.
+      if (htmlPageObject.Scope.Browser == Browser.Firefox)
+        Thread.Sleep(200);
+
+      return htmlPageObject;
     }
   }
 }
