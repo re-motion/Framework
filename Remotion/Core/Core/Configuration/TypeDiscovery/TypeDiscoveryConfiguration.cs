@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel.Design;
 using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
@@ -34,6 +35,8 @@ namespace Remotion.Configuration.TypeDiscovery
     private static readonly DoubleCheckedLockingContainer<TypeDiscoveryConfiguration> s_current =
         new DoubleCheckedLockingContainer<TypeDiscoveryConfiguration>(GetTypeDiscoveryConfiguration);
 
+    private static Func<IAssemblyFinder, IAssemblyFinder>? s_assemblyFinderHook;
+
     /// <summary>
     /// Gets the current <see cref="TypeDiscoveryConfiguration"/> instance. This is used by 
     /// <see cref="ContextAwareTypeUtility.GetTypeDiscoveryService"/> to retrieve a <see cref="ITypeDiscoveryService"/> instance
@@ -43,6 +46,21 @@ namespace Remotion.Configuration.TypeDiscovery
     public static TypeDiscoveryConfiguration Current
     {
       get { return s_current.Value; }
+    }
+
+    /// <summary>
+    /// Sets the hook used to influence the <see cref="IAssemblyFinder"/> instance used for type discovery.
+    /// The <see cref="IAssemblyFinder"/> instance returned by the hook will be used for type discovery.
+    /// The hook is also passed the original <see cref="IAssemblyFinder"/> instance which can be used for decoration purposes.
+    /// </summary>
+    /// <remarks>
+    /// This API is marked as experimental as it is going to be removed when RM-5931 is implemented and the problem can be solved without
+    /// needing this hook into the type discovery logic. To use this API, suppress the reported diagnostic using `#pragma warning disable RM5931`.
+    /// </remarks>
+    [Experimental("RM5931")]
+    public static void SetAssemblyFinderHook (Func<IAssemblyFinder, IAssemblyFinder>? assemblyFinderHook)
+    {
+      s_assemblyFinderHook = assemblyFinderHook;
     }
 
     /// <summary>
@@ -189,8 +207,15 @@ namespace Remotion.Configuration.TypeDiscovery
     private ITypeDiscoveryService CreateServiceWithAssemblyFinder (IRootAssemblyFinder customRootAssemblyFinder)
     {
       var filteringAssemblyLoader = CreateApplicationAssemblyLoader();
-      var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(customRootAssemblyFinder, filteringAssemblyLoader));
-      return new AssemblyFinderTypeDiscoveryService(assemblyFinder);
+      IAssemblyFinder assemblyFinder = new AssemblyFinder(customRootAssemblyFinder, filteringAssemblyLoader);
+
+      // TODO RM-5931: Refactor the service locator lookup to make this assembly finder hook obsolete
+      var assemblyFinderHook = s_assemblyFinderHook;
+      if (assemblyFinderHook != null)
+        assemblyFinder = assemblyFinderHook(assemblyFinder);
+
+      var cachingAssemblyFinder = new CachingAssemblyFinderDecorator(assemblyFinder);
+      return new AssemblyFinderTypeDiscoveryService(cachingAssemblyFinder);
     }
 
     private string GetConfigurationBodyErrorMessage (string modeValue, string modeSpecificBodyElement)
