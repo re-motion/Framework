@@ -20,6 +20,7 @@ using System.Web;
 using Microsoft.Extensions.Logging;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Logging;
+using Remotion.Logging.Log4Net;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Test.Shared.ErrorHandling;
@@ -34,6 +35,7 @@ namespace Remotion.Web.Test
 
     protected void Application_Start (Object sender, EventArgs e)
     {
+      BootstrapServiceConfiguration.SetLoggerFactory(new LoggerFactory([new Log4NetLoggerProvider()]));
       log4net.Config.XmlConfigurator.Configure();
 
       var defaultServiceLocator = DefaultServiceLocator.Create();

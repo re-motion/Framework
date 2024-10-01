@@ -18,11 +18,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Remove="JetBrains.Annotations" />
-    <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="Remotion.ThirdParty.Dependency.Jetbrains.Annotations" />
     <PackageReference Include="Remotion.ThirdPartyDependency.CommonServiceLocator" />
-    <!-- Including System.Configuration.ConfigurationManager is required because log4net takes a hard dependency on an older version of this assembly. -->
     <PackageReference Include="System.Configuration.ConfigurationManager" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
@@ -31,8 +29,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="THIRD-PARTY-NOTICES.txt" Pack="true" PackagePath=""/>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Logging.Log4Net\Core.Logging.Log4Net.csproj" />
   </ItemGroup>
 </Project>

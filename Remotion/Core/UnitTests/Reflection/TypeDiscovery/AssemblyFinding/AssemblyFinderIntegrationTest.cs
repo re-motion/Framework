@@ -18,6 +18,8 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.Compilation;
@@ -25,6 +27,7 @@ using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
 using Remotion.Development.UnitTesting.IsolatedCodeRunner;
+using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 {
@@ -51,9 +54,13 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     private string _markedAssemblyInDynamicDirectoryPath;
     private string _markedExeAssemblyInDynamicDirectoryPath;
 
+    private ILoggerFactory _bootstrapLoggerFactory;
+
     [OneTimeSetUp]
     public void OneTimeSetUp ()
     {
+      _bootstrapLoggerFactory = BootstrapServiceConfiguration.GetLoggerFactory();
+
       Environment.CurrentDirectory = TestContext.CurrentContext.TestDirectory;
       var searchPathForDlls = Path.Combine(AppContext.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Dlls");
       var searchPathForExes = Path.Combine(AppContext.BaseDirectory, "Reflection.AssemblyFinderIntegrationTest.Exes");
@@ -87,6 +94,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [OneTimeTearDown]
     public void TeastFixtureTearDown ()
     {
+      Assert.That(BootstrapServiceConfiguration.GetLoggerFactory(), Is.SameAs(_bootstrapLoggerFactory));
+
       _baseDirectoryBuildOutputManager.Dispose();
       _dynamicDirectoryBuildOutputManager.Dispose();
       _searchPathForDllsBuildOutputManager.Dispose();
@@ -102,6 +111,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
       static void TestMain (string[] args)
       {
+        BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
+
         var firstInMemoryAssembly = CompileTestAssemblyInMemory("FirstInMemoryAssembly", "MarkedReferencedAssembly.dll");
         var secondInMemoryAssembly = CompileTestAssemblyInMemory("SecondInMemoryAssembly");
         CompileTestAssemblyInMemory("UnmarkedInMemoryAssembly");
@@ -141,6 +152,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
       static void TestMain (string[] args)
       {
+        BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
+
         var firstInMemoryAssembly = CompileTestAssemblyInMemory("FirstInMemoryAssembly", "MarkedReferencedAssembly.dll");
         var secondInMemoryAssembly = CompileTestAssemblyInMemory("SecondInMemoryAssembly");
         CompileTestAssemblyInMemory("UnmarkedInMemoryAssembly");
@@ -180,6 +193,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
       static void TestMain (string[] args)
       {
+        BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
+
         var markedAssemblyPath = args[0];
         var markedReferencedAssemblyPath = args[1];
 
@@ -210,6 +225,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
       static void TestMain (string[] args)
       {
+        BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
+
         Test();
       }
 
@@ -238,6 +255,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
       static void TestMain (string[] args)
       {
+        BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
+
         Test();
       }
 

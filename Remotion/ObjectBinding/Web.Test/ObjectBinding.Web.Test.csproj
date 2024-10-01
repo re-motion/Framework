@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Core\Extensions\Core.Extensions.csproj" />
+    <ProjectReference Include="..\..\Core\Logging.Log4Net\Core.Logging.Log4Net.csproj" />
     <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
     <ProjectReference Include="..\..\Data\Core\Data.Core.csproj" />
     <ProjectReference Include="..\..\Data\DomainObjects\Data.DomainObjects.csproj" />

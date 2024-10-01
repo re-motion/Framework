@@ -12,6 +12,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Remotion\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Remotion\Core\Logging.Log4Net\Core.Logging.Log4Net.csproj" />
     <ProjectReference Include="..\..\Remotion\Data\Core\Data.Core.csproj" />
     <ProjectReference Include="..\..\Remotion\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj" />
     <ProjectReference Include="..\..\Remotion\Data\DomainObjects.Security\Data.DomainObjects.Security.csproj" />
@@ -21,6 +22,9 @@
     <ProjectReference Include="..\..\Remotion\ObjectBinding\Core\ObjectBinding.Core.csproj" />
     <ProjectReference Include="..\..\Remotion\Security\Core\Security.Core.csproj" />
     <ProjectReference Include="..\Core\SecurityManager.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" />
   </ItemGroup>
   <Import Project="..\..\Build\Shared.build.targets" />
 </Project>

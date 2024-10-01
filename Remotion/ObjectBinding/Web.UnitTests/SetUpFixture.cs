@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Infrastructure;
@@ -39,6 +40,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests
     [OneTimeSetUp]
     public void OneTimeSetUp ()
     {
+      BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
+
       XmlNodeExtensions.Helper = new HtmlHelper();
 
       var serviceLocator = DefaultServiceLocator.Create();

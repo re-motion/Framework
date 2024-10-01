@@ -33,29 +33,63 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Parameters;
 [TestFixture]
 public class SimpleDataParameterDefinitionTest
 {
-  private static IEnumerable<object> GetParameterValueTestCases ()
+  [Test]
+  public void GetParameterValue_ConvertsGivenValueViaStorageTypeInformation_WithDateTime ()
   {
-    StandardConfiguration.EnsureInitialized();
-    var domainObjectIDs = StandardConfiguration.Instance.GetDomainObjectIDs();
-    yield return "StringValue";
-    yield return 42;
-    yield return (long)42;
-    yield return (short)42;
-    yield return (byte)42;
-    yield return 17.04d;
-    yield return 17.04f;
-    yield return 17.04m;
-    yield return new DateTime(2024, 04, 22, 14, 15, 42);
-    yield return domainObjectIDs.Location1;
-    yield return domainObjectIDs.Official1;
-    yield return new Guid("7ACD972D-37BA-4BB0-BA11-8DFA0763DB9F");
-    yield return ClassWithAllDataTypes.EnumType.Value1;
-    yield return TestExtensibleEnum.Values.Value2();
-    yield return new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
+    GetParameterValue_ConvertsGivenValueViaStorageTypeInformation(new DateTime(2024, 04, 22, 14, 15, 42));
   }
 
   [Test]
-  [TestCaseSource(nameof(GetParameterValueTestCases))]
+  public void GetParameterValue_ConvertsGivenValueViaStorageTypeInformation_WithDecimal ()
+  {
+    GetParameterValue_ConvertsGivenValueViaStorageTypeInformation(17.04m);
+  }
+
+  [Test]
+  public void GetParameterValue_ConvertsGivenValueViaStorageTypeInformation_WitGuidBasedObjectID ()
+  {
+    StandardConfiguration.EnsureInitialized();
+    var domainObjectIDs = StandardConfiguration.Instance.GetDomainObjectIDs();
+
+    GetParameterValue_ConvertsGivenValueViaStorageTypeInformation(domainObjectIDs.Location1);
+  }
+
+  [Test]
+  public void GetParameterValue_ConvertsGivenValueViaStorageTypeInformation_WithObjectIDFromCustomStorageProvider ()
+  {
+    StandardConfiguration.EnsureInitialized();
+    var domainObjectIDs = StandardConfiguration.Instance.GetDomainObjectIDs();
+
+    GetParameterValue_ConvertsGivenValueViaStorageTypeInformation(domainObjectIDs.Official1);
+  }
+
+  [Test]
+  public void GetParameterValue_ConvertsGivenValueViaStorageTypeInformation_WithGuid ()
+  {
+    GetParameterValue_ConvertsGivenValueViaStorageTypeInformation(new Guid("7ACD972D-37BA-4BB0-BA11-8DFA0763DB9F"));
+  }
+
+  [Test]
+  public void GetParameterValue_ConvertsGivenValueViaStorageTypeInformation_WithExtensibleEnum ()
+  {
+    GetParameterValue_ConvertsGivenValueViaStorageTypeInformation(TestExtensibleEnum.Values.Value2());
+  }
+
+  [Test]
+  public void GetParameterValue_ConvertsGivenValueViaStorageTypeInformation_WithBinary ()
+  {
+    GetParameterValue_ConvertsGivenValueViaStorageTypeInformation(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 });
+  }
+
+  [Test]
+  [TestCase("StringValue")]
+  [TestCase(42)]
+  [TestCase((long)42)]
+  [TestCase((short)42)]
+  [TestCase((byte)42)]
+  [TestCase(17.04d)]
+  [TestCase(17.04f)]
+  [TestCase(ClassWithAllDataTypes.EnumType.Value1)]
   public void GetParameterValue_ConvertsGivenValueViaStorageTypeInformation (object dummyValue)
   {
     var storageTypeInformationStub = new Mock<IStorageTypeInformation>(MockBehavior.Strict);

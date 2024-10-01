@@ -16,6 +16,7 @@
 // 
 using System;
 using System.IO;
+using Microsoft.Extensions.Logging.Abstractions;
 using Remotion.Data.DomainObjects;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Security;
@@ -34,6 +35,8 @@ namespace Remotion.SecurityManager.Clients.Web.Test
 
     protected void Application_Start (object sender, EventArgs e)
     {
+      BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
+
       var defaultServiceLocator = DefaultServiceLocator.Create();
 
       var storageSettingsFactory =

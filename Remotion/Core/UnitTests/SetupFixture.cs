@@ -15,41 +15,20 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using log4net;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.UnitTests.Factories;
-using Remotion.Development.UnitTesting;
 using Remotion.Logging.Log4Net;
 using Remotion.ServiceLocation;
 
-namespace Remotion.Data.DomainObjects.UnitTests
+namespace Remotion.UnitTests
 {
   [SetUpFixture]
   public class SetUpFixture
   {
-    private ServiceLocatorScope _serviceLocatorScope;
-
     [OneTimeSetUp]
     public void OneTimeSetUp ()
     {
       BootstrapServiceConfiguration.SetLoggerFactory(new LoggerFactory([new Log4NetLoggerProvider()]));
-
-      StandardConfiguration.EnsureInitialized();
-
-      var serviceLocator = DefaultServiceLocator.Create();
-      StandardConfiguration.Instance.Register(serviceLocator);
-      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
-
-      LogManager.ResetConfiguration();
-      Assert.That(LogManager.GetLogger(typeof(LoggingClientTransactionListener)).IsDebugEnabled, Is.False);
-    }
-
-    [OneTimeTearDown]
-    public void OneTimeTeardown ()
-    {
-      _serviceLocatorScope.Dispose();
     }
   }
 }

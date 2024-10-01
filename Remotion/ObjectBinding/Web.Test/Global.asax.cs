@@ -20,7 +20,9 @@ using System.IO;
 using System.Threading;
 using System.Web;
 using System.Web.Configuration;
+using Microsoft.Extensions.Logging;
 using Remotion.Development.Web.ResourceHosting;
+using Remotion.Logging.Log4Net;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Sample;
@@ -52,6 +54,7 @@ namespace OBWTest
 
     protected void Application_Start (Object sender, EventArgs e)
     {
+      BootstrapServiceConfiguration.SetLoggerFactory(new LoggerFactory([new Log4NetLoggerProvider()]));
       log4net.Config.XmlConfigurator.Configure();
 
       string objectPath = Server.MapPath("~/objects");

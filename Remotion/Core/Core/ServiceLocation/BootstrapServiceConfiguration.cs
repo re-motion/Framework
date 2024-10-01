@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -26,6 +27,45 @@ namespace Remotion.ServiceLocation
   /// <threadsafety static="true" instance="true" />
   public class BootstrapServiceConfiguration : IBootstrapServiceConfiguration
   {
+    private static readonly object s_loggerFactoryLock = new object();
+    private static ILoggerFactory? s_loggerFactory;
+
+    public static void SetLoggerFactory (ILoggerFactory loggerFactory)
+    {
+      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+
+      lock (s_loggerFactoryLock)
+      {
+        s_loggerFactory = loggerFactory;
+      }
+    }
+
+    public static ILoggerFactory GetLoggerFactory ()
+    {
+      var loggerFactory = s_loggerFactory;
+      if (loggerFactory != null)
+        return loggerFactory;
+
+      lock (s_loggerFactoryLock)
+      {
+        if (s_loggerFactory != null)
+          return s_loggerFactory;
+
+        throw new InvalidOperationException(
+            """
+            The BootstrapServiceConfiguration.SetLoggerFactory(...) method must be called before accessing the service configuration.
+
+            Example based on log4net:
+            1. Add reference to Remotion.Logging.Log4Net Nuget package.
+            2. Add the following code in your startup code (the application's Main() method or a SetupFixture in the tests) before performing other operations.
+                var loggerFactory = new LoggerFactory(new[] { new Log4NetLoggerProvider() });
+                BootstrapServiceConfiguration.SetLoggerFactory(loggerFactory);
+
+            Alternatively, you can supply a different logging framework or chose to have no logging at all by passing the NullLoggerFactory.Instance. 
+            """);
+      }
+    }
+
     private readonly object _lock = new object();
     private readonly List<ServiceConfigurationEntry> _registrations = new List<ServiceConfigurationEntry>();
 
