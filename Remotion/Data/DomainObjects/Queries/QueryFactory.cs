@@ -94,11 +94,11 @@ namespace Remotion.Data.DomainObjects.Queries
     ///  var result = query.ToArray();
     /// </code>
     /// </example>
-    public static IQueryable<T> CreateLinqQuery<T> (string id, IReadOnlyDictionary<string, object> metadata)
+    public static IQueryable<T> CreateLinqQuery<T> (string id, IReadOnlyDictionary<string, object>? metadata = null)
         where T: DomainObject
     {
       ArgumentUtility.CheckNotNullOrEmpty("id", id);
-      ArgumentUtility.CheckNotNull("metadata", metadata);
+      metadata ??= s_emptyMetadata;
 
       var startingClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(T));
       var providerDefinition = startingClassDefinition.StorageEntityDefinition.StorageProviderDefinition;

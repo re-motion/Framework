@@ -330,6 +330,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       }
     }
 
+    [Test]
+    public void CreateLinqQuery_WithoutMetadata_UsesEmptyMetadata ()
+    {
+      var factoryMock = new Mock<ILinqProviderComponentFactory>(MockBehavior.Strict);
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterSingle(() => factoryMock.Object);
+      RegisterStandardConfiguration(serviceLocator);
+
+      using (new ServiceLocatorScope(serviceLocator))
+      {
+        var fakeExecutor = new Mock<IQueryExecutor>();
+        var fakeQueryParser = new Mock<IQueryParser>();
+        var fakeResult = new Mock<IQueryable<Order>>();
+
+        factoryMock
+            .Setup(
+                mock => mock.CreateQueryExecutor(
+                    TestDomainStorageProviderDefinition,
+                    "dummyID",
+                    It.Is<IReadOnlyDictionary<string, object>>(d => d.Count == 0)))
+            .Returns(fakeExecutor.Object);
+        factoryMock
+            .Setup(mock => mock.CreateQueryParser())
+            .Returns(fakeQueryParser.Object);
+        factoryMock
+            .Setup(mock => mock.CreateQueryable<Order>(fakeQueryParser.Object, fakeExecutor.Object))
+            .Returns(fakeResult.Object);
+
+        var result = QueryFactory.CreateLinqQuery<Order>("dummyID");
+        Assert.That(result, Is.SameAs(fakeResult.Object));
+      }
+    }
+
     private void ResetCaches ()
     {
       var linqProviderComponentFactoryCache =
