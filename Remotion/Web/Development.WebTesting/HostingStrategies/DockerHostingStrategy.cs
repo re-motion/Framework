@@ -20,6 +20,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.HostingStrategies.Configuration;
@@ -37,7 +38,6 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     public DockerHostingStrategy (DockerContainerWrapperBase dockerContainerWrapper)
     {
       ArgumentUtility.CheckNotNull("dockerContainerWrapper", dockerContainerWrapper);
-
       _dockerContainerWrapper = dockerContainerWrapper;
     }
 
@@ -46,11 +46,16 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     /// </summary>
     /// <param name="testSiteLayoutConfiguration">The configuration of the used test site.</param>
     /// <param name="properties">The configuration properties.</param>
+    /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used when creating an <see cref="ILogger"/>.</param>
     [UsedImplicitly]
-    public DockerHostingStrategy ([NotNull] ITestSiteLayoutConfiguration testSiteLayoutConfiguration, [NotNull] IReadOnlyDictionary<string, string> properties)
+    public DockerHostingStrategy (
+        [NotNull] ITestSiteLayoutConfiguration testSiteLayoutConfiguration,
+        [NotNull] IReadOnlyDictionary<string, string> properties,
+        [NotNull] ILoggerFactory loggerFactory)
     {
       ArgumentUtility.CheckNotNull(nameof(testSiteLayoutConfiguration), testSiteLayoutConfiguration);
       ArgumentUtility.CheckNotNull(nameof(properties), properties);
+      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
 
       var port = int.Parse(properties["port"]);
       var dockerImageName = properties["dockerImageName"];
@@ -62,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
       var absoluteWebApplicationPath = testSiteLayoutConfiguration.RootPath;
       var is32BitProcess = !Environment.Is64BitProcess;
 
-      var docker = new DockerCommandLineClient(dockerPullTimeout);
+      var docker = new DockerCommandLineClient(dockerPullTimeout, loggerFactory);
 
       var resources = testSiteLayoutConfiguration.Resources.Select(resource => resource.Path);
       var mounts = resources
@@ -89,7 +94,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
             is32BitProcess,
             mounts);
 
-        return new IisDockerContainerWrapper(docker, configurationParameters);
+        return new IisDockerContainerWrapper(docker, configurationParameters, loggerFactory);
       }
 
       DockerContainerWrapperBase CreateAspNetCoreDockerContainer ()
@@ -104,7 +109,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
             mounts,
             testSiteLayoutConfiguration.ProcessPath);
 
-        return new AspNetDockerContainerWrapper(docker, configurationParameters);
+        return new AspNetDockerContainerWrapper(docker, configurationParameters, loggerFactory);
       }
 
       DockerContainerWrapperBase ThrowNoInnerTypeException ()

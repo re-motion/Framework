@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using Remotion.Configuration;
@@ -55,6 +56,8 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
     {
       try
       {
+        BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
+
         var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer(TestDomainConnectionString);
 
         var defaultServiceLocator = DefaultServiceLocator.Create();

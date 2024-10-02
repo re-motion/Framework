@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
@@ -33,11 +32,12 @@ public static class BocAutoCompleteReferenceValueControlObjectExtensions
         new WebTestActionOptions { CompletionDetectionStrategy = new NullCompletionDetectionStrategy() });
 
     var searchBoxScope = RetryUntilTimeout.Run(
+        bocAutoComplete.Logger,
         () =>
         {
           var searchId = bocAutoComplete.GetHtmlID() + "_Results";
           var searchBoxScope = bocAutoComplete.Context.RootScope.FindId(searchId);
-          if (!searchBoxScope.IsVisible())
+          if (!searchBoxScope.IsVisible(bocAutoComplete.Logger))
             throw new InvalidOperationException("Cannot find the search box.");
 
           return searchBoxScope;

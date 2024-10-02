@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Data.SqlClient;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
@@ -25,6 +27,7 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Development.UnitTesting.Data.SqlClient;
+using Remotion.Logging.Log4Net;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
@@ -55,6 +58,8 @@ namespace Remotion.SecurityManager.UnitTests
     {
       try
       {
+        BootstrapServiceConfiguration.SetLoggerFactory(new LoggerFactory([new Log4NetLoggerProvider()]));
+
         var securityProvider = new FakeSecurityProvider();
         var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer<SecurityManagerSqlStorageObjectFactory>(TestDomainConnectionString);
 

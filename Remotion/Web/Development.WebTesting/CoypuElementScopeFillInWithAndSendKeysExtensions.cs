@@ -18,10 +18,9 @@ using System;
 using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
-using log4net;
+using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -31,8 +30,6 @@ namespace Remotion.Web.Development.WebTesting
   /// </summary>
   public static class CoypuElementScopeFillInWithAndSendKeysExtensions
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(CoypuElementScopeFillInWithAndSendKeysExtensions));
-
     /// <summary>
     /// ASP.NET WebForms-ready &amp; IE-compatible version for Coypu's <see cref="ElementScope.SendKeys"/> method.
     /// </summary>
@@ -53,19 +50,22 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="scope">The <see cref="ElementScope"/> on which the action is performed.</param>
     /// <param name="value">A string consisting only of printable characters or only of values defined in <see cref="Keys"/>.</param>
     /// <param name="finishInputWithAction"><see cref="FinishInputWithAction"/> for this action.</param>
+    /// <param name="logger">The <see cref="ILogger"/> used for diagnostig output. </param>
     public static void FillInWithFixed (
         [NotNull] this ElementScope scope,
         [NotNull] string value,
-        [NotNull] FinishInputWithAction finishInputWithAction)
+        [NotNull] FinishInputWithAction finishInputWithAction,
+        [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
       ArgumentUtility.CheckNotNull("value", value);
       ArgumentUtility.CheckNotNull("finishInputWithAction", finishInputWithAction);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       if (ContainsKeysAndChars(value))
         throw new ArgumentException("Value may not contain both text and keys at the same time.", "value");
 
-      scope.SetValueUsingSendKeys(value);
+      scope.SetValueUsingSendKeys(value, logger);
 
       finishInputWithAction(scope);
     }
@@ -73,7 +73,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// IEDriverServer gets stuck after sending large amounts of characters with Coypu's FillInWith. Using JavaScript has proven to be reliable.
     /// </summary>
-    private static void SetValueUsingJavaScriptAndSendKeys ([NotNull] this ElementScope scope, [NotNull] string value)
+    private static void SetValueUsingJavaScriptAndSendKeys ([NotNull] this ElementScope scope, [NotNull] string value, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
       ArgumentUtility.CheckNotNull("value", value);
@@ -88,7 +88,7 @@ namespace Remotion.Web.Development.WebTesting
 
       var command = GetFillInJavaScriptCommand(id);
 
-      s_log.DebugFormat("FillInWith using JavaScript: '{0}'.", value);
+      logger.LogDebug("FillInWith using JavaScript: '{0}'.", value);
 
       driver.ExecuteScript(command, scope, valueWithoutLastCharacter);
       scope.SendKeys(Keys.End);
@@ -99,7 +99,7 @@ namespace Remotion.Web.Development.WebTesting
     /// We cannot use Coypu's <see cref="ElementScope.FillInWith"/> here, as it internally calls Selenium's <see cref="IWebElement.Clear"/> which
     /// unfortunately triggers a post back. See https://groups.google.com/forum/#!topic/selenium-users/fBWLmL8iEzA for more information.
     /// </summary>
-    private static void SetValueUsingSendKeys ([NotNull] this ElementScope scope, [NotNull] string value)
+    private static void SetValueUsingSendKeys ([NotNull] this ElementScope scope, [NotNull] string value, [NotNull] ILogger logger)
     {
       // GeckoDriver treats \r as its own newline character, which causes double newlines inserts. Since all browsers can deal with \n, we can simply remove \r.
       value = value.Replace("\r", "");
@@ -107,7 +107,7 @@ namespace Remotion.Web.Development.WebTesting
       var clearTextBoxWithoutTriggeringPostBack = Keys.Control + "a" + Keys.Control + Keys.Delete;
       value = clearTextBoxWithoutTriggeringPostBack + value;
 
-      s_log.DebugFormat("FillInWith without triggering PostBack on clear: '{0}'.", value);
+      logger.LogDebug("FillInWith without triggering PostBack on clear: '{0}'.", value);
 
       scope.SendKeys(value);
     }

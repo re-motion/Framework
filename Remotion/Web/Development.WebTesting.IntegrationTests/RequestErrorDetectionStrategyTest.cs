@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -126,7 +127,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
 
 
-      PageObjectContext.New(Helper.MainBrowserSession, _requestErrorDetectionStrategy);
+      PageObjectContext.New(Helper.MainBrowserSession, _requestErrorDetectionStrategy, NullLoggerFactory.Instance);
 
       // Note: Does not call requestErrorDetection
       Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount));

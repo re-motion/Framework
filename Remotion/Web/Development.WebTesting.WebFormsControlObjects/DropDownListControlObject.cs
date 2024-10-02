@@ -45,13 +45,14 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     public OptionDefinition GetSelectedOption ()
     {
-      return Scope.GetSelectedOption();
+      return Scope.GetSelectedOption(Logger);
     }
 
     /// <inheritdoc/>
     public IReadOnlyList<OptionDefinition> GetOptionDefinitions ()
     {
       return RetryUntilTimeout.Run(
+          Logger,
           () => Scope.FindAllCss("option")
               .Select((optionScope, i) => new OptionDefinition(optionScope.Value, i + 1, optionScope.Text, optionScope.Selected))
               .ToList());
@@ -60,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     public string GetText ()
     {
-      return Scope.GetSelectedOption().Text;
+      return Scope.GetSelectedOption(Logger).Text;
     }
 
     /// <inheritdoc />
@@ -94,7 +95,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithItemID");
 
-      Action<ElementScope> selectAction = s => s.SelectOptionByValue(value);
+      Action<ElementScope> selectAction = s => s.SelectOptionByValue(value, Logger);
       return SelectOption(selectAction, actionOptions);
     }
 
@@ -104,7 +105,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithIndex");
 
-      Action<ElementScope> selectAction = s => s.SelectOptionByIndex(oneBasedIndex);
+      Action<ElementScope> selectAction = s => s.SelectOptionByIndex(oneBasedIndex, Logger);
       return SelectOption(selectAction, actionOptions);
     }
 
@@ -116,7 +117,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithDisplayText");
 
-      Action<ElementScope> selectAction = s => s.SelectOptionByDisplayText(displayText);
+      Action<ElementScope> selectAction = s => s.SelectOptionByDisplayText(displayText, Logger);
       return SelectOption(selectAction, actionOptions);
     }
 
@@ -131,7 +132,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       ArgumentUtility.CheckNotNull("selectAction", selectAction);
 
       var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
-      ExecuteAction(new CustomAction(this, Scope, "Select", selectAction), actualActionOptions);
+      ExecuteAction(new CustomAction(this, Scope, "Select", selectAction, Logger), actualActionOptions);
       return UnspecifiedPage();
     }
   }

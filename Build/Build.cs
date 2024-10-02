@@ -87,6 +87,7 @@ class Build : RemotionBuild
     projects.AddReleaseProject("Core.Collections.DataStore");
     projects.AddReleaseProject("Core.ExtensibleEnums");
     projects.AddReleaseProject("Core.Extensions");
+    projects.AddReleaseProject("Core.Logging.Log4Net");
     projects.AddReleaseProject("Core.Reflection");
     projects.AddReleaseProject("Core.Reflection.CodeGeneration");
     projects.AddReleaseProject("Core.Reflection.CodeGeneration.TypePipe");
@@ -97,6 +98,7 @@ class Build : RemotionBuild
     projects.AddUnitTestProject("Core.Collections.DataStore.UnitTests", normalTestConfiguration);
     projects.AddUnitTestProject("Core.ExtensibleEnums.UnitTests", normalTestConfiguration);
     projects.AddUnitTestProject("Core.Extensions.UnitTests", normalTestConfiguration);
+    projects.AddUnitTestProject("Core.Logging.Log4Net.UnitTests", normalTestConfiguration);
     projects.AddUnitTestProject("Core.Reflection.UnitTests", normalTestConfiguration);
     projects.AddUnitTestProject("Core.Reflection.CodeGeneration.UnitTests", normalTestConfiguration);
     projects.AddUnitTestProject("Core.Reflection.CodeGeneration.TypePipe.UnitTests", normalTestConfiguration);

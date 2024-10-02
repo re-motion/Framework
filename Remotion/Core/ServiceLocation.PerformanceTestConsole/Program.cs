@@ -17,6 +17,8 @@
 using System;
 using System.Linq;
 using log4net.Config;
+using Microsoft.Extensions.Logging;
+using Remotion.Logging.Log4Net;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -28,6 +30,7 @@ namespace Core.ServiceLocation.PerformanceTestConsole
     private static void Main (string[] args)
     {
       Console.WriteLine("{0} - Application started", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss,fff"));
+      BootstrapServiceConfiguration.SetLoggerFactory(new LoggerFactory([new Log4NetLoggerProvider()]));
       XmlConfigurator.Configure();
       var typeDiscoveryService = ContextAwareTypeUtility.GetTypeDiscoveryService();
       var domainObjectType = Type.GetType("Remotion.Data.DomainObjects.DomainObject, Remotion.Data.DomainObjects", true, false);

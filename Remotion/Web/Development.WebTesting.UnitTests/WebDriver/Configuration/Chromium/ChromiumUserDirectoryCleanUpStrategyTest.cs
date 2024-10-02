@@ -16,6 +16,7 @@
 //
 using System;
 using System.IO;
+using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 
@@ -32,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.WebDriver.Configuration.
       var anotherUserDirectoryPath = Path.Combine(userDirectoryRootPath, "1");
       Directory.CreateDirectory(userDirectoryPath);
       Directory.CreateDirectory(anotherUserDirectoryPath);
-      var cleanUpStrategy = new ChromiumUserDirectoryCleanUpStrategy(userDirectoryRootPath, userDirectoryPath);
+      var cleanUpStrategy = new ChromiumUserDirectoryCleanUpStrategy(userDirectoryRootPath, userDirectoryPath, NullLogger.Instance);
 
       try
       {
@@ -54,7 +55,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.WebDriver.Configuration.
       var userDirectoryRootPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
       var userDirectoryPath = Path.Combine(userDirectoryRootPath, "0");
       Directory.CreateDirectory(userDirectoryPath);
-      var cleanUpStrategy = new ChromiumUserDirectoryCleanUpStrategy(userDirectoryRootPath, userDirectoryPath);
+      var cleanUpStrategy = new ChromiumUserDirectoryCleanUpStrategy(userDirectoryRootPath, userDirectoryPath, NullLogger.Instance);
 
       try
       {

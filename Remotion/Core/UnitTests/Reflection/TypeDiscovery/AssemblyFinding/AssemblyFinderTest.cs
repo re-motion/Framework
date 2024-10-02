@@ -18,11 +18,14 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using NUnit.Framework;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Development.UnitTesting.IsolatedCodeRunner;
+using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 {
@@ -32,6 +35,20 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     private Assembly _assembly1;
     private Assembly _assembly2;
     private Assembly _assembly3;
+
+    private ILoggerFactory _bootstrapLoggerFactory;
+
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
+    {
+      _bootstrapLoggerFactory = BootstrapServiceConfiguration.GetLoggerFactory();
+    }
+
+    [OneTimeTearDown]
+    public void TeastFixtureTearDown ()
+    {
+      Assert.That(BootstrapServiceConfiguration.GetLoggerFactory(), Is.SameAs(_bootstrapLoggerFactory));
+    }
 
     [SetUp]
     public void SetUp ()
@@ -90,8 +107,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
       using (var outputManager = new AssemblyCompilerBuildOutputManager(buildOutputDirectory, true, sourceDirectoryRoot))
       {
-        // dependency chain: mixinSamples -> remotion -> log4net
-        var log4NetAssembly = typeof(log4net.LogManager).Assembly;
+        // dependency chain: mixinSamples -> remotion -> logging
+        var loggingAbstractionsAssembly = typeof(Microsoft.Extensions.Logging.ILogger).Assembly;
         var remotionAssembly = typeof(AssemblyFinder).Assembly;
         var referencingAssemblyFullPath = CompileReferencingAssembly(outputManager, remotionAssembly);
         var isolatedCodeRunner = new IsolatedCodeRunner(TestMain);
@@ -99,13 +116,15 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 
         static void TestMain (string[] args)
         {
-          var log4NetAssembly = typeof(log4net.LogManager).Assembly;
+          BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
+
+          var loggingAbstractionsAssembly = typeof(Microsoft.Extensions.Logging.ILogger).Assembly;
           var remotionAssembly = typeof(AssemblyFinder).Assembly;
-          Test(log4NetAssembly, remotionAssembly, Assembly.LoadFile(args[0]));
+          Test(loggingAbstractionsAssembly, remotionAssembly, Assembly.LoadFile(args[0]));
         }
       }
 
-      static void Test (Assembly log4NetAssembly, Assembly remotionAssembly, Assembly referencingAssembly)
+      static void Test (Assembly loggingAbstractionsAssembly, Assembly remotionAssembly, Assembly referencingAssembly)
       {
         var loaderMock = new Mock<IAssemblyLoader>();
         loaderMock
@@ -114,9 +133,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
             .Returns(remotionAssembly)
             .Verifiable();
         loaderMock
-            .Setup(mock => mock.TryLoadAssembly(ArgReferenceMatchesDefinition(log4NetAssembly), remotionAssembly.FullName))
-            // load log4net via re-motion
-            .Returns(log4NetAssembly)
+            .Setup(mock => mock.TryLoadAssembly(ArgReferenceMatchesDefinition(loggingAbstractionsAssembly), remotionAssembly.FullName))
+            // load logging via re-motion
+            .Returns(loggingAbstractionsAssembly)
             .Verifiable();
 
         var rootAssemblyFinderStub = new Mock<IRootAssemblyFinder>();
@@ -128,7 +147,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
         var result = finder.FindAssemblies();
 
         loaderMock.Verify();
-        Assert.That(result, Is.EquivalentTo(new[] { referencingAssembly, remotionAssembly, log4NetAssembly }));
+        Assert.That(result, Is.EquivalentTo(new[] { referencingAssembly, remotionAssembly, loggingAbstractionsAssembly }));
       }
     }
 

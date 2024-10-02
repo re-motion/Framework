@@ -21,6 +21,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 
@@ -88,16 +89,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
 
       if (type.HasFlag(ScreenshotTestingType.Desktop) && !helper.MainBrowserSession.Headless)
       {
-        using (var diagnosticScreenshotBuilder = DiagnosticScreenshotBuilder.CreateDesktopScreenshot(helper.BrowserConfiguration.Locator))
+        using (var diagnosticScreenshotBuilder = DiagnosticScreenshotBuilder.CreateDesktopScreenshot(helper.BrowserConfiguration.Locator, helper.LoggerFactory))
         {
-          results.Add(
-              RunSubTest<TValue, TTarget>(helper, diagnosticScreenshotBuilder, test, value, "Desktop", testName, savePath, maxVariance, maxRatio));
+          results.Add(RunSubTest<TValue, TTarget>(helper, diagnosticScreenshotBuilder, test, value, "Desktop", testName, savePath, maxVariance, maxRatio));
         }
       }
 
       if (type.HasFlag(ScreenshotTestingType.Browser))
       {
-        using (var diagnosticScreenshotBuilder = DiagnosticScreenshotBuilder.CreateBrowserScreenshot(helper.BrowserConfiguration.Locator, helper.MainBrowserSession))
+        using (var diagnosticScreenshotBuilder = DiagnosticScreenshotBuilder.CreateBrowserScreenshot(
+                   helper.BrowserConfiguration.Locator,
+                   helper.MainBrowserSession,
+                   helper.LoggerFactory))
         {
           results.Add(
               RunSubTest<TValue, TTarget>(

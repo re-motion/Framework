@@ -74,6 +74,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       var dropDownMenuScope = GetDropDownMenuScope();
 
       var itemDefinitions = RetryUntilTimeout.Run(
+          Logger,
           () => dropDownMenuScope.FindAllCss("li.DropDownMenuItem, li.DropDownMenuItemDisabled")
               .Select(
                   (itemScope, i) =>
@@ -268,6 +269,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         PerformOpen(menuButtonScope);
 
         RetryUntilTimeout.Run(
+            Logger,
             () =>
             {
               if (GetDropDownMenuPopupID(menuButtonScope) == null)

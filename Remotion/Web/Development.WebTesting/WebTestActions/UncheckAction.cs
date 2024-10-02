@@ -17,6 +17,7 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
@@ -28,8 +29,8 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
   /// </summary>
   public class UncheckAction : WebTestAction
   {
-    public UncheckAction ([NotNull] ControlObject control, [NotNull] ElementScope scope)
-        : base(control, scope)
+    public UncheckAction ([NotNull] ControlObject control, [NotNull] ElementScope scope, [NotNull] ILogger logger)
+        : base(control, scope, logger)
     {
     }
 

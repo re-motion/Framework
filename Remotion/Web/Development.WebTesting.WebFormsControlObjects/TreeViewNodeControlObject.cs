@@ -171,7 +171,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// </summary>
     public int GetNumberOfChildren ()
     {
-      return RetryUntilTimeout.Run(() => GetChildrenScope(Scope).FindAllXPath("./table").Count());
+      return RetryUntilTimeout.Run(Logger, () => GetChildrenScope(Scope).FindAllXPath("./table").Count());
     }
 
     /// <summary>
@@ -183,7 +183,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
 
       const string xpath = "./tbody/tr/td/a[contains(@href,\"','t\")]";
       var expandLinkScope = Scope.FindXPath(xpath);
-      ExecuteAction(new SimpleClickAction(this, expandLinkScope), actualCompletionDetector);
+      ExecuteAction(new SimpleClickAction(this, expandLinkScope, Logger), actualCompletionDetector);
       return this;
     }
 
@@ -201,7 +201,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     public UnspecifiedPageObject Check ([CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       var actualCompletionDetector = actionOptions ?? Opt.ContinueImmediately();
-      ExecuteAction(new CheckAction(this, GetCheckboxScope()), actualCompletionDetector);
+      ExecuteAction(new CheckAction(this, GetCheckboxScope(), Logger), actualCompletionDetector);
       return UnspecifiedPage();
     }
 
@@ -211,7 +211,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     public UnspecifiedPageObject Uncheck ([CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       var actualCompletionDetector = actionOptions ?? Opt.ContinueImmediately();
-      ExecuteAction(new UncheckAction(this, GetCheckboxScope()), actualCompletionDetector);
+      ExecuteAction(new UncheckAction(this, GetCheckboxScope(), Logger), actualCompletionDetector);
       return UnspecifiedPage();
     }
 
@@ -239,7 +239,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       const string nodeClickScopeXpath = "./tbody/tr/td[a[contains(@onclick, 'TreeView_SelectNode')]][last()]/a[last()]";
       try
       {
-        ExecuteAction(new ClickAction(this, Scope.FindXPath(nodeClickScopeXpath)), actualCompletionDetector);
+        ExecuteAction(new ClickAction(this, Scope.FindXPath(nodeClickScopeXpath), Logger), actualCompletionDetector);
       }
       catch (ElementNotInteractableException ex)
       {

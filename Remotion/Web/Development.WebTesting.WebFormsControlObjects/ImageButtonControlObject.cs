@@ -57,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
-      ExecuteAction(new ClickAction(this, Scope), actualActionOptions);
+      ExecuteAction(new ClickAction(this, Scope, Logger), actualActionOptions);
       return UnspecifiedPage();
     }
 

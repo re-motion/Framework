@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -35,22 +36,22 @@ namespace Remotion.Validation.Merging
   [ImplementationFor(typeof(IValidationRuleCollectorMerger), Position = 0, RegistrationType = RegistrationType.Decorator)]
   public class DiagnosticOutputValidationRuleMergeDecorator : IValidationRuleCollectorMerger
   {
-    private readonly ILog _logger;
+    private readonly ILogger _logger;
     private readonly IValidationRuleCollectorMerger _validationRuleCollectorMerger;
     private readonly IValidatorFormatter _validatorFormatter;
 
     public DiagnosticOutputValidationRuleMergeDecorator (
         IValidationRuleCollectorMerger validationRuleCollectorMerger,
         IValidatorFormatter validatorFormatter,
-        ILogManager logManager)
+        ILoggerFactory loggerFactory)
     {
       ArgumentUtility.CheckNotNull("validationRuleCollectorMerger", validationRuleCollectorMerger);
       ArgumentUtility.CheckNotNull("validatorFormatter", validatorFormatter);
-      ArgumentUtility.CheckNotNull("logManager", logManager);
+      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
 
       _validationRuleCollectorMerger = validationRuleCollectorMerger;
       _validatorFormatter = validatorFormatter;
-      _logger = logManager.GetLogger(typeof(DiagnosticOutputValidationRuleMergeDecorator));
+      _logger = loggerFactory.CreateLogger<DiagnosticOutputValidationRuleMergeDecorator>();
     }
 
     public IValidationRuleCollectorMerger ValidationRuleCollectorMerger
@@ -70,24 +71,24 @@ namespace Remotion.Validation.Merging
       var collectorInfos = validationCollectorInfos.ToArray();
 
       var beforeMergeLog = string.Empty;
-      if (_logger.IsInfoEnabled())
+      if (_logger.IsEnabled(LogLevel.Information))
         beforeMergeLog = GetLogBefore(collectorInfos);
 
       var validationCollectorMergeResult = _validationRuleCollectorMerger.Merge(collectorInfos);
 
       var afterMergeLog = string.Empty;
-      if (_logger.IsInfoEnabled())
+      if (_logger.IsEnabled(LogLevel.Information))
         afterMergeLog = GetLogAfter(
             validationCollectorMergeResult.CollectedPropertyValidationRules,
             validationCollectorMergeResult.CollectedObjectValidationRules,
             validationCollectorMergeResult.LogContext);
 
-      if (_logger.IsInfoEnabled())
+      if (_logger.IsEnabled(LogLevel.Information))
       {
         //"after"-output provides better initial diagnostics. 
         //"before"-output is usually only analyzed when the problem is not obvious from the "after"-output.
-        _logger.Info(afterMergeLog);
-        _logger.Info(beforeMergeLog);
+        _logger.LogInformation(afterMergeLog);
+        _logger.LogInformation(beforeMergeLog);
       }
 
       return validationCollectorMergeResult;

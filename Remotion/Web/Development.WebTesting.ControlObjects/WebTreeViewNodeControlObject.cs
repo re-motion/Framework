@@ -300,7 +300,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       var selectAnchorScope = Scope.FindCss("span > span > a");
 
       var actualCompletionDetector = MergeWithDefaultActionOptions(selectAnchorScope, actionOptions);
-      ExecuteAction(new ClickAction(this, selectAnchorScope), actualCompletionDetector);
+      ExecuteAction(new ClickAction(this, selectAnchorScope, Logger), actualCompletionDetector);
     }
 
     public ContextMenuControlObject GetContextMenu ()
@@ -323,7 +323,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       var toggleAnchor = Scope.FindCss("span > a");
 
       var actionOptions = MergeWithDefaultActionOptions(toggleAnchor, null);
-      ExecuteAction(new ClickAction(this, toggleAnchor), actionOptions);
+      ExecuteAction(new ClickAction(this, toggleAnchor, Logger), actionOptions);
     }
   }
 }

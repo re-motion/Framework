@@ -17,6 +17,7 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.WebTestActions
@@ -33,8 +34,9 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
         [NotNull] ControlObject control,
         [NotNull] ElementScope scope,
         [NotNull] string value,
-        [NotNull] FinishInputWithAction finishInputWithAction)
-        : base(control, scope)
+        [NotNull] FinishInputWithAction finishInputWithAction,
+        [NotNull] ILogger logger)
+        : base(control, scope, logger)
     {
       ArgumentUtility.CheckNotNull("value", value);
       ArgumentUtility.CheckNotNull("finishInputWithAction", finishInputWithAction);
@@ -55,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
       ArgumentUtility.CheckNotNull("scope", scope);
 
       OutputDebugMessage(string.Format("New value: '{0}'", _value));
-      scope.FillInWithFixed(_value, _finishInputWithAction);
+      scope.FillInWithFixed(_value, _finishInputWithAction, Logger);
     }
   }
 }

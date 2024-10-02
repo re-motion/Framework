@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Extensions.Logging;
 using Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting;
 
 namespace Remotion.Web.Development.WebTesting.HostingStrategies;
@@ -14,8 +15,8 @@ public class AspNetDockerContainerWrapper : DockerContainerWrapperBase
 {
   private readonly string _processPath;
 
-  public AspNetDockerContainerWrapper (IDockerClient docker, AspNetDockerContainerConfigurationParameters configurationParameters)
-      : base(docker, configurationParameters)
+  public AspNetDockerContainerWrapper (IDockerClient docker, AspNetDockerContainerConfigurationParameters configurationParameters, ILoggerFactory loggerFactory)
+      : base(docker, configurationParameters, loggerFactory)
   {
     if (configurationParameters.ProcessPath == null)
     {

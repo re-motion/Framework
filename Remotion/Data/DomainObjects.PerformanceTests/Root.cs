@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     [STAThread]
     public static void Main (string[] args)
     {
-      // LogManager.Initialize();
+      // log4net.Config.XmlConfigurator.Configure();
 
       var setUpFixture = new SetUpFixture();
       setUpFixture.OneTimeSetUp();

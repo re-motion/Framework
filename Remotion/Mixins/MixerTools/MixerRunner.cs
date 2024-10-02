@@ -15,9 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
-using Remotion.Logging;
-using Remotion.Reflection;
 using Remotion.Tools.Console;
 using Remotion.Utilities;
 using Remotion.Tools;
@@ -56,19 +53,22 @@ namespace Remotion.Mixins.MixerTools
 
     private void ConfigureLogging ()
     {
-      if (_parameters.Verbose)
-      {
-        LogManager.InitializeConsole();
-      }
-      else
-      {
-        var mixerLoggers = from t in AssemblyTypeCache.GetTypes(typeof(Mixer).Assembly)
-            where t.Namespace == typeof(Mixer).GetNamespaceChecked()
-            select LogManager.GetLogger(t);
-        var logThresholds = from l in mixerLoggers
-            select new LogThreshold(l, LogLevel.Info);
-        LogManager.InitializeConsole(LogLevel.Warn, logThresholds.ToArray());
-      }
+      //TODO: RM-9195
+      // if (_parameters.Verbose)
+      // {
+      //   Configure console logging 
+      //   log4net.Config.BaseConfigurator.Configure();
+      // }
+      // else
+      // {
+      //   var mixerLoggers = from t in AssemblyTypeCache.GetTypes(typeof(Mixer).Assembly)
+      //       where t.Namespace == typeof(Mixer).GetNamespaceChecked()
+      //       select LogManager.GetLogger(t);
+      //   var logThresholds = from l in mixerLoggers
+      //       select new LogThreshold(l, LogLevel.Info);
+      //   LogManager.InitializeConsole(LogLevel.Warn, logThresholds.ToArray());
+      //   log4net.Config.BaseConfigurator.Configure();
+      // }
     }
 
     private Mixer CreateMixer ()

@@ -16,10 +16,12 @@
 // 
 using System;
 using log4net;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.UnitTesting;
+using Remotion.Logging.Log4Net;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests
@@ -32,6 +34,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [OneTimeSetUp]
     public void OneTimeSetUp ()
     {
+      BootstrapServiceConfiguration.SetLoggerFactory(new LoggerFactory([new Log4NetLoggerProvider()]));
+
       StandardConfiguration.EnsureInitialized();
 
       var serviceLocator = DefaultServiceLocator.Create();

@@ -246,13 +246,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         else
         {
           var scope = _controlObject.GetValueScope();
-          return scope.GetSelectedOption();
+          return scope.GetSelectedOption(_controlObject.Logger);
         }
       }
 
       public IReadOnlyList<OptionDefinition> GetOptionDefinitions ()
       {
         return RetryUntilTimeout.Run(
+            _controlObject.Logger,
             () => _controlObject.GetValueScope().FindAllCss("option")
                 .Select((optionScope, i) => new OptionDefinition(optionScope.Value, i + 1, optionScope.Text, optionScope.Selected))
                 .ToList());
@@ -262,13 +263,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       {
         ArgumentUtility.CheckNotNull("itemID", itemID);
 
-        Action<ElementScope> selectAction = s => s.SelectOptionByValue(itemID);
+        Action<ElementScope> selectAction = s => s.SelectOptionByValue(itemID, _controlObject.Logger);
         return SelectOption(selectAction, actionOptions);
       }
 
       public UnspecifiedPageObject SelectOption (int oneBasedIndex, IWebTestActionOptions? actionOptions)
       {
-        Action<ElementScope> selectAction = s => s.SelectOptionByIndex(oneBasedIndex);
+        Action<ElementScope> selectAction = s => s.SelectOptionByIndex(oneBasedIndex, _controlObject.Logger);
         return SelectOption(selectAction, actionOptions);
       }
 
@@ -286,7 +287,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
         var actualActionOptions = _controlObject.MergeWithDefaultActionOptions(_controlObject.Scope, actionOptions);
 
-        var customAction = new CustomAction(_controlObject, _controlObject.GetValueScope(), "Select", selectAction);
+        var customAction = new CustomAction(_controlObject, _controlObject.GetValueScope(), "Select", selectAction, _controlObject.Logger);
         ActionExecute?.Invoke(customAction, actualActionOptions);
         customAction.Execute(actualActionOptions);
 
@@ -336,6 +337,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       public IReadOnlyList<OptionDefinition> GetOptionDefinitions ()
       {
         return RetryUntilTimeout.Run(
+            _controlObject.Logger,
             () => _controlObject.Scope.FindAllCss("input[type='radio']")
                 .Select((radioScope, i) => CreateOptionDefinitionFromRadioScope(radioScope, i + 1))
                 .ToList());
@@ -377,7 +379,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
         var actualActionOptions = _controlObject.MergeWithDefaultActionOptions(_controlObject.Scope, actionOptions);
 
-        var checkAction = new CheckAction(_controlObject, scope);
+        var checkAction = new CheckAction(_controlObject, scope, _controlObject.Logger);
         ActionExecute?.Invoke(checkAction, actualActionOptions);
         checkAction.Execute(actualActionOptions);
 

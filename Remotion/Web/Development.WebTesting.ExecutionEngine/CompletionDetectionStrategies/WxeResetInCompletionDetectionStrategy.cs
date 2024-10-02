@@ -16,7 +16,7 @@
 // 
 using System;
 using JetBrains.Annotations;
-using log4net;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies
@@ -27,7 +27,6 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
   /// </summary>
   public class WxeResetInCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(WxeResetInCompletionDetectionStrategy));
     private readonly PageObjectContext _context;
     private readonly TimeSpan? _timeout;
 
@@ -40,24 +39,26 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     }
 
     /// <inheritdoc/>
-    public object? PrepareWaitForCompletion (PageObjectContext context)
+    public object? PrepareWaitForCompletion (PageObjectContext context, ILogger logger)
     {
       ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       return WxeCompletionDetectionHelpers.GetWxeFunctionToken(_context);
     }
 
     /// <inheritdoc/>
-    public void WaitForCompletion (PageObjectContext context, object? state)
+    public void WaitForCompletion (PageObjectContext context, object? state, ILogger logger)
     {
       ArgumentUtility.CheckNotNull("context", context);
       ArgumentUtility.CheckNotNull("state", state!);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       var oldWxeFunctionToken = (string)state;
-      WxeCompletionDetectionHelpers.WaitForNewWxeFunctionToken(s_log, _context, oldWxeFunctionToken, _timeout);
+      WxeCompletionDetectionHelpers.WaitForNewWxeFunctionToken(logger, _context, oldWxeFunctionToken, _timeout);
 
       const int expectedWxePostBackSequenceNumber = 2;
-      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber(s_log, _context, expectedWxePostBackSequenceNumber, _timeout);
+      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber(logger, _context, expectedWxePostBackSequenceNumber, _timeout);
     }
   }
 }

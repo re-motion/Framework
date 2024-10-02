@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using Microsoft.Extensions.Logging;
 using Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting;
 
 namespace Remotion.Web.Development.WebTesting.HostingStrategies
@@ -26,8 +27,9 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
   {
     public IisDockerContainerWrapper (
         IDockerClient docker,
-        DockerContainerConfigurationParameters configurationParameters)
-        : base(docker, configurationParameters)
+        DockerContainerConfigurationParameters configurationParameters,
+        ILoggerFactory loggerFactory)
+        : base(docker, configurationParameters, loggerFactory)
     {
     }
 

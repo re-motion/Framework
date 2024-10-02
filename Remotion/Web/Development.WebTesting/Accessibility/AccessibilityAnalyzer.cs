@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
-using log4net;
+using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using Remotion.Utilities;
@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] IAccessibilityConfiguration configuration,
         [NotNull] IAxeSourceProvider sourceProvider,
         [NotNull] IAccessibilityResultMapper mapper,
-        [NotNull] ILog logger)
+        [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("webDriver", webDriver);
       ArgumentUtility.CheckNotNull("axeResultParser", axeResultParser);
@@ -72,7 +72,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] IAccessibilityConfiguration configuration,
         [NotNull] IAxeSourceProvider sourceProvider,
         [NotNull] IAccessibilityResultMapper mapper,
-        [NotNull] ILog logger)
+        [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("remoteWebDriver", remoteWebDriver);
       ArgumentUtility.CheckNotNull("axeResultParser", axeResultParser);
@@ -100,7 +100,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     private IAxeResultParser AxeResultParser { get; }
     private IAccessibilityConfiguration Configuration { get; }
     private IAccessibilityResultMapper Mapper { get; }
-    private ILog Logger { get; }
+    private ILogger Logger { get; }
     private List<string> ExcludedElements { get; } = new List<string>();
     private List<string> ExcludedRules { get; } = new List<string>();
 
@@ -111,7 +111,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] IAccessibilityConfiguration configuration,
         [NotNull] IAxeSourceProvider axeSourceProvider,
         [NotNull] IAccessibilityResultMapper mapper,
-        [NotNull] ILog logger)
+        [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("webDriver", webDriver);
       ArgumentUtility.CheckNotNull("axeResultParser", axeResultParser);

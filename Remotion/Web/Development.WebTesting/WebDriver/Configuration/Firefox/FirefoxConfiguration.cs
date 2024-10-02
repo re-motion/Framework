@@ -77,7 +77,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
           webTestSettings.DownloadStartedTimeout,
           webTestSettings.DownloadUpdatedTimeout,
           downloadStartedGracePeriod,
-          webTestSettings.CleanUpUnmatchedDownloadedFiles);
+          webTestSettings.CleanUpUnmatchedDownloadedFiles,
+          webTestSettings.LoggerFactory);
     }
 
     /// <inheritdoc />

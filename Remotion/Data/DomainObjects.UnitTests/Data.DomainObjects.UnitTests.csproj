@@ -26,6 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Core\ExtensibleEnums\Core.ExtensibleEnums.csproj" />
+    <ProjectReference Include="..\..\Core\Logging.Log4Net\Core.Logging.Log4Net.csproj" />
     <ProjectReference Include="..\..\Core\Reflection.CodeGeneration.TypePipe\Core.Reflection.CodeGeneration.TypePipe.csproj" />
     <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
     <ProjectReference Include="..\..\Core\Tools\Core.Tools.csproj" />
@@ -40,6 +41,7 @@
     <ProjectReference Include="..\Core\Data.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="Remotion.Linq.EagerFetching" />
     <PackageReference Include="Remotion.Linq.Development" />
     <PackageReference Include="Remotion.Linq.SqlBackend.Development" />

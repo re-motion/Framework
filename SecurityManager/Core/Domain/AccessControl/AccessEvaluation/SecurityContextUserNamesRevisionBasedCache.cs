@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Queries;
@@ -43,7 +44,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       }
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger(MethodInfo.GetCurrentMethod()!.DeclaringType!);
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<SecurityContextUserNamesRevisionBasedCache>();
 
     public SecurityContextUserNamesRevisionBasedCache (IUserNamesRevisionProvider revisionProvider)
         : base(revisionProvider)
@@ -64,8 +65,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        s_log.Info("Reset SecurityContextUserRevisionBasedCache cache.");
-        using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Refreshed data in SecurityContextUserRevisionBasedCache. Time taken: {elapsed:ms}ms"))
+        s_logger.LogInformation("Reset SecurityContextUserRevisionBasedCache cache.");
+        using (StopwatchScope.CreateScope(s_logger, LogLevel.Information, "Refreshed data in SecurityContextUserRevisionBasedCache. Time taken: {elapsed:ms}ms"))
         {
           var users = LoadUsers();
 

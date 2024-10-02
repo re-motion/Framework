@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 
@@ -32,7 +33,7 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void IsLocationProviderSet_WithSetProvider_ReturnsTrue ()
     {
-      ServiceLocator.SetLocatorProvider(() => new DefaultServiceLocator(DefaultServiceConfigurationDiscoveryService.Create()));
+      ServiceLocator.SetLocatorProvider(() => new DefaultServiceLocator(DefaultServiceConfigurationDiscoveryService.Create(), NullLoggerFactory.Instance));
 
       Assert.That(ServiceLocator.IsLocationProviderSet, Is.True);
     }

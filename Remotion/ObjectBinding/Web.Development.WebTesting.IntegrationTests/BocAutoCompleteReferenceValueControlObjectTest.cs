@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -548,6 +549,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void JS_clear_WithAutoPostBack_ClearsBothInputs ()
     {
+      var logger = Helper.LoggerFactory.CreateLogger<BocAutoCompleteReferenceValueControlObjectTest>();
+
       var home = Start();
       var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
       var jsExecutor = JavaScriptExecutor.GetJavaScriptExecutor(bocAutoComplete);
@@ -555,9 +558,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var hiddenInputScope = bocAutoComplete.Scope.FindChild("KeyValue");
 
       var completionDetectionStrategy = new WxePostBackCompletionDetectionStrategy(1);
-      var sequenceNumber = completionDetectionStrategy.PrepareWaitForCompletion(home.Context);
+      var sequenceNumber = completionDetectionStrategy.PrepareWaitForCompletion(home.Context, logger);
       JavaScriptExecutor.ExecuteVoidStatement(jsExecutor, "arguments[0].clear()", inputScope.Native);
-      completionDetectionStrategy.WaitForCompletion(home.Context, sequenceNumber);
+      completionDetectionStrategy.WaitForCompletion(home.Context, sequenceNumber, logger);
 
       var inputText = bocAutoComplete.GetText();
       var hiddenInputValue = hiddenInputScope.Value;

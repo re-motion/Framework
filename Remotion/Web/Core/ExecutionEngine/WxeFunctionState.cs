@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -27,7 +28,7 @@ namespace Remotion.Web.ExecutionEngine
   /// <threadsafety static="true" instance="false" />
   public class WxeFunctionState
   {
-    private static ILog s_log = LogManager.GetLogger(typeof(WxeFunctionState));
+    private static ILogger s_logger = LazyLoggerFactory.CreateLogger<WxeFunctionState>();
 
     private WxeFunction _function;
     private int _lifetime;
@@ -54,7 +55,7 @@ namespace Remotion.Web.ExecutionEngine
       _function.SetFunctionToken(_functionToken);
       _isCleanUpEnabled = enableCleanUp;
       _postBackID = 0;
-      s_log.Debug(string.Format("Created WxeFunctionState {0}.", _functionToken));
+      s_logger.LogDebug(string.Format("Created WxeFunctionState {0}.", _functionToken));
     }
 
     public WxeFunction Function
@@ -101,7 +102,7 @@ namespace Remotion.Web.ExecutionEngine
     {
       if (! _isAborted)
       {
-        s_log.Debug(string.Format("Aborting WxeFunctionState {0}.", _functionToken));
+        s_logger.LogDebug(string.Format("Aborting WxeFunctionState {0}.", _functionToken));
         AbortRecursive();
         _isAborted = true;
       }

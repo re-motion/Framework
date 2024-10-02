@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web;
+using Microsoft.Extensions.Logging.Abstractions;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.ServiceLocation;
 using Remotion.Web.Development.WebTesting.TestSite.Shared;
@@ -30,6 +31,8 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     protected void Application_Start (object sender, EventArgs e)
     {
+      BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
+
       RegisterResourceVirtualPathProvider();
       SetRenderingFeatures(RenderingFeatures.WithDiagnosticMetadata, new ResourceTheme.NovaGray());
     }

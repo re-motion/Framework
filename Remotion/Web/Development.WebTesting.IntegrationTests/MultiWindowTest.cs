@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
@@ -127,6 +128,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       if (Helper.BrowserConfiguration.IsFirefox())
         Assert.Ignore("Firefox does not show a dialog.");
 
+      var logger = Helper.LoggerFactory.CreateLogger<MultiWindowTest>();
+
       var home = Start();
 
       var mainLabel = home.Labels().GetByID("MainLabel");
@@ -142,16 +145,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       // We need to manually setup WXE post back detection since we do Opt.ContinueImmediately() later
       var mainPostBackCompletionDetectionStrategy = new WxePostBackCompletionDetectionStrategy(1, TimeSpan.FromSeconds(15));
-      var mainPostBackState = mainPostBackCompletionDetectionStrategy.PrepareWaitForCompletion(home.Context);
+      var mainPostBackState = mainPostBackCompletionDetectionStrategy.PrepareWaitForCompletion(home.Context, logger);
 
       var framePostBackCompletionDetectionStrategy = new WxePostBackCompletionDetectionStrategy(-1, TimeSpan.FromSeconds(15));
-      var framePostBackState = framePostBackCompletionDetectionStrategy.PrepareWaitForCompletion(home.Frame.Context);
+      var framePostBackState = framePostBackCompletionDetectionStrategy.PrepareWaitForCompletion(home.Frame.Context, logger);
 
       var loadFrameFunctionInFrameButton = home.WebButtons().GetByID("LoadFrameFunctionInFrameWithoutPostback");
       loadFrameFunctionInFrameButton.Click(Opt.ContinueImmediately().AcceptModalDialog());
 
-      mainPostBackCompletionDetectionStrategy.WaitForCompletion(home.Context, mainPostBackState);
-      framePostBackCompletionDetectionStrategy.WaitForCompletion(home.Frame.Context, framePostBackState);
+      mainPostBackCompletionDetectionStrategy.WaitForCompletion(home.Context, mainPostBackState, logger);
+      framePostBackCompletionDetectionStrategy.WaitForCompletion(home.Frame.Context, framePostBackState, logger);
 
       AssertPostBackSequenceNumber(frameLabel, 1);
       AssertPostBackSequenceNumber(mainLabel, 2);

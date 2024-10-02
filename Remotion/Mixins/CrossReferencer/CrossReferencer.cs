@@ -18,6 +18,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using Microsoft.Extensions.Logging.Abstractions;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.CrossReferencer.Formatting;
 using Remotion.Mixins.CrossReferencer.Report;
@@ -25,6 +26,7 @@ using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Mixins.Validation;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer
@@ -33,6 +35,7 @@ namespace Remotion.Mixins.CrossReferencer
   {
     public static Assembly[] GetAssemblies ()
     {
+      BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
       var assemblyResolver = AssemblyResolver.Create();
       AppDomain.CurrentDomain.AssemblyResolve += assemblyResolver.HandleAssemblyResolve;
 
@@ -55,6 +58,8 @@ namespace Remotion.Mixins.CrossReferencer
     public static (XDocument ResultDocument, (Assembly, ReflectionTypeLoadException)[] FailedAssemblies) GetAssemblyInformation (Assembly[] assemblies, bool generateFullReport)
     {
       ArgumentUtility.CheckNotNull("assemblies", assemblies);
+
+      BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
 
       var mixinConfiguration = DeclarativeConfigurationBuilder.BuildConfigurationFromAssemblies(assemblies);
       var configurationErrors = new ErrorAggregator<ConfigurationException>();

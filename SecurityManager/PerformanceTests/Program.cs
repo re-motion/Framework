@@ -19,12 +19,13 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
-using Remotion.Logging;
+using Remotion.Logging.Log4Net;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain;
@@ -41,6 +42,8 @@ namespace Remotion.SecurityManager.PerformanceTests
   {
     private static void Main (string[] args)
     {
+      BootstrapServiceConfiguration.SetLoggerFactory(new LoggerFactory([new Log4NetLoggerProvider()]));
+
       var defaultServiceLocator = DefaultServiceLocator.Create();
 
       defaultServiceLocator.Register(
@@ -64,7 +67,7 @@ namespace Remotion.SecurityManager.PerformanceTests
 
       ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
 
-      LogManager.Initialize();
+      log4net.Config.XmlConfigurator.Configure();
 
       var provider = new SecurityService(
           SafeServiceLocator.Current.GetInstance<IAccessControlListFinder>(),

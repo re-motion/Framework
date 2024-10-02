@@ -310,7 +310,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         sortColumnLinkScope.Hover();
 
       ExecuteAction(
-          new ClickAction(this, sortColumnLinkScope),
+          new ClickAction(this, sortColumnLinkScope, Logger),
           Opt.ContinueWhen(((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
@@ -332,7 +332,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      ChangeViewTo(scope => scope.SelectOptionByDMA(DiagnosticMetadataAttributes.ItemID, itemID), actionOptions);
+      ChangeViewTo(scope => scope.SelectOptionByDMA(DiagnosticMetadataAttributes.ItemID, itemID, Logger), actionOptions);
     }
 
     /// <summary>
@@ -340,7 +340,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public void ChangeViewTo (int oneBasedIndex, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
-      ChangeViewTo(scope => scope.SelectOptionByIndex(oneBasedIndex), actionOptions);
+      ChangeViewTo(scope => scope.SelectOptionByIndex(oneBasedIndex, Logger), actionOptions);
     }
 
     /// <summary>
@@ -359,7 +359,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
       var availableViewsScope = GetAvailableViewsScope();
-      ExecuteAction(new CustomAction(this, availableViewsScope, "Select", selectAction), actualActionOptions);
+      ExecuteAction(new CustomAction(this, availableViewsScope, "Select", selectAction, Logger), actualActionOptions);
     }
 
     /// <inheritdoc/>

@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public BocListValidationError[] GetValidationErrors ()
     {
       return Scope.FindAllCss("div.screenReaderText:last-child ul li", options: Options.NoWait)
-          .Select(BocListValidationError.Parse)
+          .Select(scope => BocListValidationError.Parse(scope, Logger))
           .ToArray();
     }
 

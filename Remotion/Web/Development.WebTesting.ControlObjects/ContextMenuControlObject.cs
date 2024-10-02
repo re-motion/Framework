@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     protected override void PerformOpen (ElementScope menuButtonScope)
     {
-      menuButtonScope.ContextClick(Context);
+      menuButtonScope.ContextClick(Context, Logger);
     }
   }
 }

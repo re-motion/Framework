@@ -17,6 +17,8 @@
 using System;
 using Coypu.Drivers;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using Remotion.Utilities;
@@ -58,6 +60,19 @@ namespace Remotion.Web.Development.WebTesting
     /// In order to achieve a stable testing environment a standalone Firefox with a matching GeckoDriver version should be used.
     /// </summary>
     protected const string LatestTestedFirefoxVersion = "126";
+
+    /// <summary>
+    /// Gets the <see cref="ILoggerFactory"/> used by the web test infrastructure.
+    /// </summary>
+    /// <value>The <see cref="ILoggerFactory"/> initialized via <see cref="WebTestSettings.SetCurrent"/>.</value>
+    public ILoggerFactory LoggerFactory
+    {
+      get
+      {
+        var configSettings = WebTestSettings.Current;
+        return configSettings.LoggerFactory;
+      }
+    }
 
     /// <summary>
     /// Creates a new <see cref="IBrowserConfiguration"/> from app.config.

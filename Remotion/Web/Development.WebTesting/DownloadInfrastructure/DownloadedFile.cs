@@ -16,8 +16,8 @@
 // 
 using System;
 using System.IO;
-using System.Threading;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
@@ -30,14 +30,16 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
   {
     private readonly string _fullFilePath;
     private readonly string _fileName;
+    private readonly ILogger _logger;
 
-    public DownloadedFile ([NotNull] string fullFilePath, [NotNull] string fileName)
+    public DownloadedFile ([NotNull] string fullFilePath, [NotNull] string fileName, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNullOrEmpty("fullFilePath", fullFilePath);
       ArgumentUtility.CheckNotNullOrEmpty("fileName", fileName);
 
       _fullFilePath = fullFilePath;
       _fileName = fileName;
+      _logger = logger;
     }
 
     /// <inheritdoc/>
@@ -80,11 +82,12 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
       // In racy cases the file we are trying to move is still used, resulting in an IOException.
       // So we retry the move a couple of times, allowing the browser to finish the download.
       return RetryUntilTimeout.Run(
+          _logger,
           () =>
           {
             File.Move(_fullFilePath, newFilePath);
 
-            return new DownloadedFile(newFilePath, _fileName);
+            return new DownloadedFile(newFilePath, _fileName, _logger);
           },
           TimeSpan.FromMilliseconds(500),
           TimeSpan.FromMilliseconds(50));
@@ -97,7 +100,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     {
       ArgumentUtility.CheckNotNull("newName", newName);
 
-      return new DownloadedFile(_fullFilePath, newName);
+      return new DownloadedFile(_fullFilePath, newName, _logger);
     }
   }
 }

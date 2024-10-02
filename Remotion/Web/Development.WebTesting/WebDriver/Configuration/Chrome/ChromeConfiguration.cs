@@ -94,12 +94,13 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
           webTestSettings.DownloadStartedTimeout,
           webTestSettings.DownloadUpdatedTimeout,
           downloadStartedGracePeriod,
-          webTestSettings.CleanUpUnmatchedDownloadedFiles);
+          webTestSettings.CleanUpUnmatchedDownloadedFiles,
+          webTestSettings.LoggerFactory);
 
       DisableSecurityWarningsBehavior = webTestSettings.Chrome.DisableSecurityWarningsBehavior;
     }
 
-    public override IBrowserFactory BrowserFactory => new ChromeBrowserFactory(this);
+    public override IBrowserFactory BrowserFactory => new ChromeBrowserFactory(this, LoggerFactory);
 
     public virtual ExtendedChromeOptions CreateChromeOptions ()
     {

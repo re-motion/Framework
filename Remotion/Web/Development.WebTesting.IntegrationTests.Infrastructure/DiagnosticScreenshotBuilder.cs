@@ -18,6 +18,7 @@ using System;
 using System.Drawing.Imaging;
 using System.IO;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
@@ -30,26 +31,32 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
   public class DiagnosticScreenshotBuilder : ScreenshotBuilder
   {
     [NotNull]
-    public static DiagnosticScreenshotBuilder CreateDesktopScreenshot ([NotNull] IBrowserContentLocator contentLocator)
+    public static DiagnosticScreenshotBuilder CreateDesktopScreenshot ([NotNull] IBrowserContentLocator contentLocator, [NotNull] ILoggerFactory loggerFactory)
     {
       ArgumentUtility.CheckNotNull("contentLocator", contentLocator);
+      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
 
-      return new DiagnosticScreenshotBuilder(Screenshot.TakeDesktopScreenshot(), contentLocator);
+      return new DiagnosticScreenshotBuilder(Screenshot.TakeDesktopScreenshot(), contentLocator, loggerFactory);
     }
 
     [NotNull]
-    public static DiagnosticScreenshotBuilder CreateBrowserScreenshot ([NotNull] IBrowserContentLocator contentLocator, [NotNull] IBrowserSession browserSession)
+    public static DiagnosticScreenshotBuilder CreateBrowserScreenshot (
+        [NotNull] IBrowserContentLocator contentLocator,
+        [NotNull] IBrowserSession browserSession,
+        [NotNull] ILoggerFactory loggerFactory)
     {
       ArgumentUtility.CheckNotNull("contentLocator", contentLocator);
       ArgumentUtility.CheckNotNull("browserSession", browserSession);
+      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
 
       return new DiagnosticScreenshotBuilder(
           Screenshot.TakeBrowserScreenshot(browserSession, contentLocator),
-          contentLocator);
+          contentLocator,
+          loggerFactory);
     }
 
-    private DiagnosticScreenshotBuilder ([NotNull] Screenshot screenshot, [NotNull] IBrowserContentLocator locator)
-        : base(screenshot, locator)
+    private DiagnosticScreenshotBuilder ([NotNull] Screenshot screenshot, [NotNull] IBrowserContentLocator locator, ILoggerFactory loggerFactory)
+        : base(screenshot, locator, loggerFactory)
     {
     }
 

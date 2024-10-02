@@ -22,7 +22,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using JetBrains.Annotations;
-using log4net;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
@@ -50,8 +51,6 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
       internal IntPtr InheritedFromUniqueProcessID;
     }
-
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(ProcessUtils));
 
     /// <summary>
     /// Retrieves information about the specified process. See https://msdn.microsoft.com/en-us/library/windows/desktop/ms684280.aspx .
@@ -250,22 +249,24 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// Kills all processes with the given <paramref name="processName"/>. All exceptions are swallowed => this method is a best-effort approach.
     /// </summary>
     /// <param name="processName">The process name without the file extension.</param>
-    public static void KillAllProcessesWithName ([NotNull] string processName)
+    /// <param name="logger">The <see cref="ILogger"/> used when generating diagnostic outout. Use <see cref="NullLogger"/> if no logs are required.</param>
+    public static void KillAllProcessesWithName ([NotNull] string processName, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNullOrEmpty("processName", processName);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
-      s_log.DebugFormat("Process killing has been called for '{0}'...", processName);
+      logger.LogDebug("Process killing has been called for '{0}'...", processName);
 
       foreach (var process in Process.GetProcessesByName(processName))
       {
         try
         {
-          s_log.DebugFormat("Killing process '{0}'...", processName);
+          logger.LogDebug("Killing process '{0}'...", processName);
           process.Kill();
         }
         catch (Exception ex)
         {
-          s_log.Warn(string.Format("Killing process '{0}' failed.", processName), ex);
+          logger.LogWarning(string.Format("Killing process '{0}' failed.", processName), ex);
           // Ignore exception, process is already closing or we do not have the required privileges anyway.
         }
       }

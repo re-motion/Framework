@@ -19,6 +19,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Web;
+using Microsoft.Extensions.Logging.Abstractions;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Security;
@@ -45,6 +46,8 @@ namespace Remotion.Data.DomainObjects.Web.Test
 
     protected void Application_Start (Object sender, EventArgs e)
     {
+      BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
+
 #if DEBUG
       const string configuration = "Debug";
 #else

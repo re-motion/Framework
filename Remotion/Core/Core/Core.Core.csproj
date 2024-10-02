@@ -17,11 +17,10 @@
     <Compile Include="..\..\..\SharedSource\Core\Utilities\*.cs" Link="SharedSource\Utilities\%(Filename)%(Extension).cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="log4net" />
     <PackageReference Remove="JetBrains.Annotations" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="Remotion.ThirdParty.Dependency.Jetbrains.Annotations" />
     <PackageReference Include="Remotion.ThirdPartyDependency.CommonServiceLocator" />
-    <!-- Including System.Configuration.ConfigurationManager is required because log4net takes a hard dependency on an older version of this assembly. -->
     <PackageReference Include="System.Configuration.ConfigurationManager" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

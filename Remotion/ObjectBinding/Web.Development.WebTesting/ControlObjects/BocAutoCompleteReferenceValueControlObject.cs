@@ -20,6 +20,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
@@ -68,8 +69,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
           [NotNull] ControlObject control,
           [NotNull] ElementScope scope,
           [NotNull] SearchServiceResultItem autoCompleteResultItem,
-          [NotNull] FinishInputWithAction finishInputWith)
-          : base(control, scope)
+          [NotNull] FinishInputWithAction finishInputWith,
+          [NotNull] ILogger logger)
+          : base(control, scope, logger)
       {
         ArgumentUtility.CheckNotNull("autoCompleteResultItem", autoCompleteResultItem);
         ArgumentUtility.CheckNotNull("finishInputWith", finishInputWith);
@@ -87,7 +89,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       {
         var displayName = _autoCompleteResultItem.DisplayName;
 
-        scope.FillInWithFixed(displayName, FinishInput.Promptly);
+        scope.FillInWithFixed(displayName, FinishInput.Promptly, Logger);
 
         var executor = JavaScriptExecutor.GetJavaScriptExecutor(scope);
 
@@ -138,7 +140,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
       var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
-      ExecuteAction(new FillWithAction(this, Scope.FindChild("TextValue"), text, finishInputWith), actualActionOptions);
+      ExecuteAction(new FillWithAction(this, Scope.FindChild("TextValue"), text, finishInputWith, Logger), actualActionOptions);
       return UnspecifiedPage();
     }
 
@@ -251,7 +253,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       var textField = Scope.FindChild("TextValue");
 
       var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
-      ExecuteAction(new SelectAutoCompleteAction(this, textField, firstAutoCompleteResult, finishInputWith), actualActionOptions);
+      ExecuteAction(new SelectAutoCompleteAction(this, textField, firstAutoCompleteResult, finishInputWith, Logger), actualActionOptions);
 
       return UnspecifiedPage();
     }

@@ -21,6 +21,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Web.UI;
+using Microsoft.Extensions.Logging;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.Reflection;
@@ -34,7 +35,7 @@ namespace Remotion.Web.UI.Controls
   /// </summary>
   public class ControlItemCollection : CollectionBase
   {
-    private static readonly ILog s_log = LogManager.GetLogger(MethodBase.GetCurrentMethod()!.DeclaringType!);
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<ControlItemCollection>();
 
     private IControl? _ownerControl;
     private readonly Type[] _supportedTypes;
@@ -308,7 +309,7 @@ namespace Remotion.Web.UI.Controls
           ResourceDispatcher.DispatchGeneric(item, entry.Value);
         else //  Invalid collection element
         {
-          s_log.Debug(
+          s_logger.LogDebug(
               "'" + parentID + "' on page '" + page + "' does not contain an item with an ID of '" + id + "' inside the collection '" + collectionName
               + "'.");
         }

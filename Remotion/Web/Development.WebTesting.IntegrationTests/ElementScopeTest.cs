@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Diagnostics;
+using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -36,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       Assert.That(disabledButton.Disabled, Is.True);
       Assert.That(
-          () => disabledButton.Focus(),
+          () => disabledButton.Focus(NullLogger.Instance),
           Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "Focus").Message));
     }
 
@@ -48,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var normalButton = home.Scope.FindId("NormalButton");
 
       Assert.That(normalButton.Disabled, Is.False);
-      Assert.That(() => normalButton.Focus(), Throws.Nothing);
+      Assert.That(() => normalButton.Focus(NullLogger.Instance), Throws.Nothing);
     }
 
     [Test]

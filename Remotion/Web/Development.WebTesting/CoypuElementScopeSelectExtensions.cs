@@ -19,6 +19,7 @@ using System.Linq;
 using Coypu;
 using Coypu.Drivers;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using Remotion.Utilities;
@@ -40,10 +41,15 @@ namespace Remotion.Web.Development.WebTesting
     /// Returns the text of the currently selected option. If more than one option is selected, this method returns the first selected item's text.
     /// </summary>
     /// <param name="scope">The <see cref="ElementScope"/> on which the action is performed.</param>
+    /// <param name="logger">
+    /// The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output. The <paramref name="logger"/> can be retrieved from
+    /// <see cref="WebTestObject{TWebTestObjectContext}"/>.<see cref="WebTestObject{TWebTestObjectContext}.Logger"/>.
+    /// </param>
     /// <returns>The text of the currently selected option.</returns>
-    public static OptionDefinition GetSelectedOption ([NotNull] this ElementScope scope)
+    public static OptionDefinition GetSelectedOption ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       var selectedOptions = scope.FindAllCss("option[selected]").ToList();
 
@@ -52,6 +58,7 @@ namespace Remotion.Web.Development.WebTesting
 
       // If we cant uniquely find an item per selected attribute, we have to use selenium directly
       return RetryUntilTimeout.Run(
+          logger,
           () =>
           {
             var webElement = (IWebElement)scope.Native;
@@ -67,9 +74,14 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     /// <param name="scope">The <see cref="ElementScope"/> on which the action is performed.</param>
     /// <param name="oneBasedIndex">The one-based index of the option to select.</param>
-    public static void SelectOptionByIndex ([NotNull] this ElementScope scope, int oneBasedIndex)
+    /// <param name="logger">
+    /// The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output. The <paramref name="logger"/> can be retrieved from
+    /// <see cref="WebTestObject{TWebTestObjectContext}"/>.<see cref="WebTestObject{TWebTestObjectContext}.Logger"/>.
+    /// </param>
+    public static void SelectOptionByIndex ([NotNull] this ElementScope scope, int oneBasedIndex, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       var targetOption = scope.FindXPath(string.Format("({0})[{1}]", s_html.Child("option"), oneBasedIndex));
       targetOption.Click();
@@ -80,10 +92,15 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     /// <param name="scope">The <see cref="ElementScope"/> on which the action is performed.</param>
     /// <param name="displayText">The display text to select.</param>
-    public static void SelectOptionByDisplayText ([NotNull] this ElementScope scope, [NotNull] string displayText)
+    /// <param name="logger">
+    /// The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output. The <paramref name="logger"/> can be retrieved from
+    /// <see cref="WebTestObject{TWebTestObjectContext}"/>.<see cref="WebTestObject{TWebTestObjectContext}.Logger"/>.
+    /// </param>
+    public static void SelectOptionByDisplayText ([NotNull] this ElementScope scope, [NotNull] string displayText, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
       ArgumentUtility.CheckNotNull("displayText", displayText);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       var targetOption = scope.FindXPath(s_html.Child("option") + XPath.Where(s_xpath.IsText(displayText, Options.Exact)));
       targetOption.Click();
@@ -94,10 +111,15 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     /// <param name="scope">The <see cref="ElementScope"/> on which the action is performed.</param>
     /// <param name="value">The value to select.</param>
-    public static void SelectOptionByValue ([NotNull] this ElementScope scope, [NotNull] string value)
+    /// <param name="logger">
+    /// The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output. The <paramref name="logger"/> can be retrieved from
+    /// <see cref="WebTestObject{TWebTestObjectContext}"/>.<see cref="WebTestObject{TWebTestObjectContext}.Logger"/>.
+    /// </param>
+    public static void SelectOptionByValue ([NotNull] this ElementScope scope, [NotNull] string value, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
       ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       var targetOption = scope.FindXPath(s_html.Child("option") + XPath.Where(s_xpath.Is("@value", value, Options.Exact)));
       targetOption.Click();
@@ -110,14 +132,20 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="scope">The <see cref="ElementScope"/> on which the action is performed.</param>
     /// <param name="diagnosticMetadataAttributeName">The diagnostic metadata attribute name.</param>
     /// <param name="diagnosticMetadataAttributeValue">The diagnostic metadata attribute value.</param>
+    /// <param name="logger">
+    /// The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output. The <paramref name="logger"/> can be retrieved from
+    /// <see cref="WebTestObject{TWebTestObjectContext}"/>.<see cref="WebTestObject{TWebTestObjectContext}.Logger"/>.
+    /// </param>
     public static void SelectOptionByDMA (
         [NotNull] this ElementScope scope,
         [NotNull] string diagnosticMetadataAttributeName,
-        [NotNull] string diagnosticMetadataAttributeValue)
+        [NotNull] string diagnosticMetadataAttributeValue,
+        [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
       ArgumentUtility.CheckNotNullOrEmpty("diagnosticMetadataAttributeName", diagnosticMetadataAttributeName);
       ArgumentUtility.CheckNotNullOrEmpty("diagnosticMetadataAttributeValue", diagnosticMetadataAttributeValue);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       var targetOption =
           scope.FindXPath(
