@@ -861,26 +861,19 @@ class SmartPage_Context
     }
     else
     {
-      const xhr = new XMLHttpRequest();
-
-      const readStateDone = 4;
       const httpStatusSuccess = 299;
-      const method = 'GET';
-      const isAsyncCall = true;
-
-      xhr.open (method, url, isAsyncCall);
-      xhr.onreadystatechange = function ()
-      {
-        if (this.readyState === readStateDone)
-        {
-          const args = { Status : this.status };
-          if (this.status > 0 && this.status <= httpStatusSuccess)
-            successHandler (args);
-          else
-            errorHandler (args);
-        }
-      };
-      xhr.send();
+      fetch(url, {
+        method: "get"
+      }).then(response => {
+        const args = { Status : response.status };
+        if (response.status > 0 && response.status <= httpStatusSuccess)
+          successHandler (args);
+        else
+          errorHandler (args);
+      }, error => {
+        const args = { Status : 0 };
+        errorHandler (args);
+      });
     }
   };
 
