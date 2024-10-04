@@ -296,7 +296,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
             lastKeyPressCode: -1,
             mouseDownOnSelect: false,
             // holds the last text the user entered into the input element
-            previousValue: '',
+            previousValue: input.value,
             lastKeyPressValue: null as Nullable<string>
         };
 
