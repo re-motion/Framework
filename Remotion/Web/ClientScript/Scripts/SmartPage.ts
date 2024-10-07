@@ -100,6 +100,14 @@ class SmartPage_Context
   private _statusMessageWindow: Nullable<HTMLElement> = null;
   private _hasUnloaded: boolean = false;
 
+  /**
+   * In Firefox, the load event will be triggered right after the postback, which is not the
+   * case in other browsers and causes logic bugs. As such, we manually disable the load event
+   * for a short amount of time right after a postback happens. The onload event should already
+   * be queued by the browser due to the post back so we can use 0ms delay for the timeout.
+   */
+  private _ignoreOnLoadEventImmediatelyAfterPostBack: boolean = false;
+
   private _aspnetFormOnSubmit: Nullable<() => boolean> = null;
   private _aspnetDoPostBack: Nullable<Sys.WebForms.DoPostBack> = null;
   // Sepcial flag to support the Form.OnSubmit event being executed by the ASP.NET __doPostBack function.
@@ -422,6 +430,9 @@ class SmartPage_Context
   // Event handler for window.OnLoad
   public OnLoad(): void
   {
+    if (this._ignoreOnLoadEventImmediatelyAfterPostBack)
+      return;
+
     const pageRequestManager = this.GetPageRequestManager();
     if (pageRequestManager != null)
     {
@@ -696,6 +707,10 @@ class SmartPage_Context
         this.SetCacheDetectionFieldSubmitted();
 
         this._aspnetDoPostBack!(eventTarget, eventArgument);
+
+        // See field doc comment on why we disable the onload comment
+        this._ignoreOnLoadEventImmediatelyAfterPostBack = true;
+        setTimeout(() => this._ignoreOnLoadEventImmediatelyAfterPostBack = false, 0);
       }
       finally
       {
