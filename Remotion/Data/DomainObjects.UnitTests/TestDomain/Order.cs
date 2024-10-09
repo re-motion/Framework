@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Data;
 using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
@@ -46,6 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       get { return RedirectedOrderNumber; }
     }
 
+    [DateTimeStorageType(DateTimeStorageType.DateTime)]
     public abstract DateTime DeliveryDate { get; set; }
 
     [Mandatory]

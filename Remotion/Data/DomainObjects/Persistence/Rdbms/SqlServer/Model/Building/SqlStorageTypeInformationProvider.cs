@@ -17,12 +17,14 @@
 using System;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.ExtensibleEnums;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 using DateOnlyConverter = Remotion.Utilities.DateOnlyConverter;
@@ -124,7 +126,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
 
       var dotNetType = propertyDefinition.PropertyType;
       var isNullableInDatabase = propertyDefinition.IsNullable || forceNullable;
-      var storageType = GetStorageType(dotNetType, propertyDefinition.MaxLength, isNullableInDatabase);
+
+      var storageType = GetStorageType(dotNetType, propertyDefinition.MaxLength, isNullableInDatabase, propertyDefinition.PropertyInfo);
       if (storageType == null)
         throw new NotSupportedException(string.Format("Type '{0}' is not supported by this storage provider.", dotNetType));
       return storageType;
@@ -143,7 +146,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     {
       ArgumentUtility.CheckNotNull("type", type);
 
-      var storageType = GetStorageType(type, null, IsNullSupported(type));
+      var storageType = GetStorageType(type, null, IsNullSupported(type), null);
       if(storageType == null)
         throw new NotSupportedException(string.Format("Type '{0}' is not supported by this storage provider.", type));
       return storageType;
@@ -162,11 +165,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     }
 
     [CanBeNull]
-    private StorageTypeInformation? GetStorageType (Type dotNetType, int? maxLength, bool isNullableInDatabase)
+    private StorageTypeInformation? GetStorageType (Type dotNetType, int? maxLength, bool isNullableInDatabase, IPropertyInformation? propertyInformation)
     {
       var underlyingTypeOfNullable = Nullable.GetUnderlyingType(dotNetType);
       if (underlyingTypeOfNullable != null)
-        return GetStorageTypeForNullableValueType(dotNetType, underlyingTypeOfNullable, maxLength, isNullableInDatabase);
+        return GetStorageTypeForNullableValueType(dotNetType, underlyingTypeOfNullable, maxLength, isNullableInDatabase, propertyInformation);
 
       if (dotNetType.IsEnum)
         return GetStorageTypeForEnumType(dotNetType, maxLength, isNullableInDatabase);
@@ -205,7 +208,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
       if (dotNetType == typeof(Byte))
         return new StorageTypeInformation(typeof(Byte), "tinyint", DbType.Byte, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
       if (dotNetType == typeof(DateTime))
-        return new StorageTypeInformation(typeof(DateTime), "datetime2", DbType.DateTime2, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
+        return GetDateTimeStorageType(isNullableInDatabase, dotNetType, propertyInformation);
       if (dotNetType == typeof(DateOnly))
         return new StorageTypeInformation(typeof(DateTime), "date", DbType.Date, isNullableInDatabase, null, dotNetType, new DateOnlyConverter());
       if (dotNetType == typeof(Decimal))
@@ -226,6 +229,41 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
       return null;
     }
 
+    private StorageTypeInformation GetDateTimeStorageType (bool isNullableInDatabase, Type dotNetType, IPropertyInformation? propertyInformation)
+    {
+      if (propertyInformation != null)
+      {
+        var storageTypeFromPropertyInfo = GetDateTimeStorageTypeFromPropertyInformation(propertyInformation, isNullableInDatabase, dotNetType);
+        if (storageTypeFromPropertyInfo != null)
+          return storageTypeFromPropertyInfo;
+      }
+      return new StorageTypeInformation(typeof(DateTime), "datetime2", DbType.DateTime2, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
+    }
+
+    private StorageTypeInformation? GetDateTimeStorageTypeFromPropertyInformation (IPropertyInformation propertyInfo, bool isNullableInDatabase, Type dotNetType)
+    {
+      var dateTimeStorageTypeAttribute = propertyInfo.GetCustomAttribute<DateTimeStorageTypeAttribute>(inherited: false);
+
+      if (dateTimeStorageTypeAttribute == null)
+        return null;
+
+      var (dbType, storageTypeName) = dateTimeStorageTypeAttribute.StorageType switch
+      {
+        DateTimeStorageType.DateTime => (DbType.DateTime, "datetime"),
+        DateTimeStorageType.DateTime2 => (DbType.DateTime2, "datetime2"),
+        _ => throw new InvalidOperationException($"Enum value {dateTimeStorageTypeAttribute.StorageType} is not valid for {nameof(DateTimeStorageType)}.")
+      };
+
+      return new StorageTypeInformation(
+          typeof(DateTime),
+          storageTypeName,
+          dbType,
+          isNullableInDatabase,
+          null,
+          dotNetType,
+          new DefaultConverter(dotNetType));
+    }
+
     private StorageTypeInformation GetStorageTypeForExtensibleEnumType (Type extensibleEnumType, bool isNullableInDatabase)
     {
       var storageTypeLength = GetColumnWidthForExtensibleEnum(extensibleEnumType);
@@ -241,9 +279,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     }
 
     [CanBeNull]
-    private StorageTypeInformation? GetStorageTypeForNullableValueType (Type nullableValueType, Type underlyingType, int? maxLength, bool isNullableInDatabase)
+    private StorageTypeInformation? GetStorageTypeForNullableValueType (Type nullableValueType, Type underlyingType, int? maxLength, bool isNullableInDatabase, IPropertyInformation? propertyInformation)
     {
-      var underlyingStorageInformation = GetStorageType(underlyingType, maxLength, false);
+      var underlyingStorageInformation = GetStorageType(underlyingType, maxLength, false, propertyInformation);
       if (underlyingStorageInformation == null)
         return null;
 
@@ -269,7 +307,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
 
     private StorageTypeInformation? GetStorageTypeForEnumType (Type enumType, int? maxLength, bool isNullableInDatabase)
     {
-      var underlyingStorageInformation = GetStorageType(Enum.GetUnderlyingType(enumType), maxLength, isNullableInDatabase);
+      var underlyingStorageInformation = GetStorageType(Enum.GetUnderlyingType(enumType), maxLength, isNullableInDatabase, null);
       if (underlyingStorageInformation == null)
         return null;
 
