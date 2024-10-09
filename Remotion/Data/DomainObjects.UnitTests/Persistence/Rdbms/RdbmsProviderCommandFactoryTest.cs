@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       base.SetUp();
 
       var rdbmsPersistenceModelProvider = new RdbmsPersistenceModelProvider();
-      var storageTypeInformationProvider = new SqlStorageTypeInformationProvider();
+      var storageTypeInformationProvider = new SqlStorageTypeInformationProvider(new DateTime2DefaultStorageTypeProvider());
       var dataContainerValidator = new CompoundDataContainerValidator(Enumerable.Empty<IDataContainerValidator>());
 
       var storageNameProvider = new ReflectionBasedStorageNameProvider();

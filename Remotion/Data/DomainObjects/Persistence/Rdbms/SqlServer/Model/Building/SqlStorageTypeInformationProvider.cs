@@ -37,9 +37,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
   public class SqlStorageTypeInformationProvider : IStorageTypeInformationProvider
   {
     internal const int StorageTypeLengthRepresentingMax = -1;
+    private readonly IDateTimeDefaultStorageTypeProvider _dateTimeDefaultStorageTypeProvider;
 
-    public SqlStorageTypeInformationProvider ()
+    public SqlStorageTypeInformationProvider (IDateTimeDefaultStorageTypeProvider dateTimeDefaultStorageTypeProvider)
     {
+      ArgumentUtility.CheckNotNull(nameof(dateTimeDefaultStorageTypeProvider),dateTimeDefaultStorageTypeProvider);
+      _dateTimeDefaultStorageTypeProvider = dateTimeDefaultStorageTypeProvider;
     }
 
     IStorageTypeInformation IStorageTypeInformationProvider.GetStorageTypeForID (bool isStorageTypeNullable)
@@ -237,7 +240,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
         if (storageTypeFromPropertyInfo != null)
           return storageTypeFromPropertyInfo;
       }
-      return new StorageTypeInformation(typeof(DateTime), "datetime2", DbType.DateTime2, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
+      return new StorageTypeInformation(
+          typeof(DateTime),
+          _dateTimeDefaultStorageTypeProvider.StorageTypeName,
+          _dateTimeDefaultStorageTypeProvider.DbType,
+          isNullableInDatabase,
+          null,
+          dotNetType,
+          new DefaultConverter(dotNetType));
     }
 
     private StorageTypeInformation? GetDateTimeStorageTypeFromPropertyInformation (IPropertyInformation propertyInfo, bool isNullableInDatabase, Type dotNetType)
