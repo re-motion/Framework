@@ -59,7 +59,7 @@ namespace Remotion.Web.Development.WebTesting
     /// Represents the latest version of Firefox verified to be compatible with Selenium WebDriver.
     /// In order to achieve a stable testing environment a standalone Firefox with a matching GeckoDriver version should be used.
     /// </summary>
-    protected const string LatestTestedFirefoxVersion = "126";
+    protected const string LatestTestedFirefoxVersion = "130";
 
     /// <summary>
     /// Gets the <see cref="ILoggerFactory"/> used by the web test infrastructure.
