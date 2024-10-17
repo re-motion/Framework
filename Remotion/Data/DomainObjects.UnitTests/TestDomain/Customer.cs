@@ -37,6 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
+    [DateTimeStorageType(DateTimeStorageType.DateTime)]
     public abstract DateTime? CustomerSince { get; set; }
 
     [DBColumn("CustomerType")]
