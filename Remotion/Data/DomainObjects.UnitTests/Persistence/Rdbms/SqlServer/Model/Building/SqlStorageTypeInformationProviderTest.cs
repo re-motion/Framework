@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
@@ -60,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     [DateTimeStorageType(DateTimeStorageType.DateTime2)]
     public DateTime DateTime2 { get; set; }
 
-    public DateTime DefaultDateTime2 { get; set; }
+    public DateTime DefaultDateTimeWithoutAttribute { get; set; }
 
     [SetUp]
     public void SetUp ()
@@ -473,17 +474,42 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           Is.TypeOf(typeof(AdvancedEnumConverter)));
     }
 
-    [Test]
-    [TestCase(nameof(DateTime), "datetime", DbType.DateTime)]
-    [TestCase(nameof(DateTime2), "datetime2", DbType.DateTime2)]
-    [TestCase(nameof(DefaultDateTime2), "datetime2", DbType.DateTime2)]
-    public void GetStorageType_ForDateTimeProperties (string propertyName, string expectedStorageTypeName, DbType expectedDbType)
+
+    static IEnumerable<(IDateTimeDefaultStorageTypeProvider, string, string, DbType)> TestCaseSource ()
     {
+        var possibleProviders = new (IDateTimeDefaultStorageTypeProvider provider, string defaultName, DbType defaultDbType)[]
+                                {
+                                    (new DateTime2DefaultStorageTypeProvider(), "datetime2", DbType.DateTime2),
+                                    (new DateTimeDefaultStorageTypeProvider(), "datetime", DbType.DateTime)
+                                };
+        var properties = new (string property, string name, DbType? dbType)[]
+                         {
+                             (nameof(DateTime), "datetime", DbType.DateTime),
+                             (nameof(DateTime2), "datetime2", DbType.DateTime2),
+                             (nameof(DefaultDateTimeWithoutAttribute), null, null)
+                         };
+
+        foreach (var (provider, defaultName, defaultDbType) in possibleProviders)
+        {
+            foreach (var (property, name, dbType) in properties)
+            {
+                yield return (provider, property, name ?? defaultName, dbType ?? defaultDbType);
+            }
+        }
+    }
+
+    [Test, TestCaseSource(nameof(TestCaseSource))]
+    public void GetStorageType_ForDateTimeProperties ((IDateTimeDefaultStorageTypeProvider dateTimeDefaultStorageTypeProvider, string propertyName, string expectedStorageTypeName, DbType expectedDbType) obj)
+    {
+        var (dateTimeDefaultStorageTypeProvider, propertyName, expectedStorageTypeName, expectedDbType) = obj;
+
+        IStorageTypeInformationProvider storageTypeInformationProvider = new SqlStorageTypeInformationProvider(dateTimeDefaultStorageTypeProvider);
+
         var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(
                 ClassDefinitionObjectMother.CreateClassDefinition(),
                 typeof(SqlStorageTypeInformationProviderTest),
                 propertyName);
-        var storageTypeInformation = (StorageTypeInformation)_storageTypeInformationProvider.GetStorageType(propertyDefinition, false);
+        var storageTypeInformation = (StorageTypeInformation)storageTypeInformationProvider.GetStorageType(propertyDefinition, false);
 
         CheckStorageTypeInformation(
                 storageTypeInformation,
