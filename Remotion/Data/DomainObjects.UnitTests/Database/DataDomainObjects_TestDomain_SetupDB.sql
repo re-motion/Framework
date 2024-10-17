@@ -345,7 +345,7 @@ CREATE TABLE [dbo].[Company]
   [ContactPersonID] uniqueidentifier NULL,
   [NumberOfShops] int NULL,
   [SupplierQuality] int NULL,
-  [CustomerSince] datetime2 NULL,
+  [CustomerSince] datetime NULL,
   [CustomerType] int NULL,
   CONSTRAINT [PK_Company] PRIMARY KEY CLUSTERED ([ID])
 )
@@ -400,7 +400,7 @@ CREATE TABLE [dbo].[Order]
   [ClassID] varchar (100) NOT NULL,
   [Timestamp] rowversion NOT NULL,
   [OrderNo] int NOT NULL,
-  [DeliveryDate] datetime2 NOT NULL,
+  [DeliveryDate] datetime NOT NULL,
   [OfficialID] varchar (255) NULL,
   [CustomerID] uniqueidentifier NULL,
   [CustomerIDClassID] varchar (100) NULL,

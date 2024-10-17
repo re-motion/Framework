@@ -50,6 +50,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     {
     }
 
+    [DateTimeStorageType(DateTimeStorageType.DateTime)]
+    public DateTime? NullableDateTime { get; set; }
+
+    [DateTimeStorageType(DateTimeStorageType.DateTime)]
+    public DateTime DateTime { get; set; }
+
+    [DateTimeStorageType(DateTimeStorageType.DateTime2)]
+    public DateTime DateTime2 { get; set; }
+
+    public DateTime DefaultDateTime2 { get; set; }
+
     [SetUp]
     public void SetUp ()
     {
@@ -459,6 +470,51 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           null,
           typeof(Int16Enum?),
           Is.TypeOf(typeof(AdvancedEnumConverter)));
+    }
+
+    [Test]
+    [TestCase(nameof(DateTime), "datetime", DbType.DateTime)]
+    [TestCase(nameof(DateTime2), "datetime2", DbType.DateTime2)]
+    [TestCase(nameof(DefaultDateTime2), "datetime2", DbType.DateTime2)]
+    public void GetStorageType_ForDateTimeProperties (string propertyName, string expectedStorageTypeName, DbType expectedDbType)
+    {
+        var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(
+                ClassDefinitionObjectMother.CreateClassDefinition(),
+                typeof(SqlStorageTypeInformationProviderTest),
+                propertyName);
+        var storageTypeInformation = (StorageTypeInformation)_storageTypeInformationProvider.GetStorageType(propertyDefinition, false);
+
+        CheckStorageTypeInformation(
+                storageTypeInformation,
+                typeof(DateTime),
+                expectedStorageTypeName,
+                expectedDbType,
+                false,
+                null,
+                typeof(DateTime),
+                Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(DateTime))
+        );
+    }
+
+    [Test]
+    public void GetStorageType_ForNullableDateTimeProperty_WithDateTimeStorageTypeAttribute ()
+    {
+        var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(
+                ClassDefinitionObjectMother.CreateClassDefinition(),
+                typeof(SqlStorageTypeInformationProviderTest),
+                nameof(NullableDateTime));
+        var storageTypeInformation = (StorageTypeInformation)_storageTypeInformationProvider.GetStorageType(propertyDefinition, false);
+
+        CheckStorageTypeInformation(
+                storageTypeInformation,
+                typeof(DateTime?),
+                "datetime",
+                DbType.DateTime,
+                true,
+                null,
+                typeof(DateTime?),
+                Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(DateTime?))
+        );
     }
 
     [Test]

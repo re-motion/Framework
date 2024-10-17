@@ -183,7 +183,7 @@ insert into [Company] (ID, ClassID, [Name], CustomerSince, CustomerType, [Indust
     values ('{DD3E3D55-C16F-497f-A3E1-384D08DE0D66}', 'Customer', 'Kunde 3', '2000/03/01', 2, '{8565A077-EA01-4b5d-BEAA-293DC484BDDC}')
 
 insert into [Company] (ID, ClassID, [Name], CustomerSince, CustomerType, [IndustrialSectorID]) 
-    values ('{B3F0A333-EC2A-4ddd-9035-9ADA34052450}', 'Customer', 'Kunde 4', '1999/03/01', 2, null)
+    values ('{B3F0A333-EC2A-4ddd-9035-9ADA34052450}', 'Customer', 'Kunde 4', null, 2, null)
 
 -- The Order pointing to this customer is invalid
 insert into [Company] (ID, ClassID, [Name], CustomerSince, CustomerType, [IndustrialSectorID]) 
@@ -231,7 +231,7 @@ insert into [Company] (ID, ClassID, [Name], ContactPersonID, NumberOfShops, [Ind
 
 -- Order
 insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID, OfficialID) 
-    values ('{5682F032-2F0B-494b-A31C-C97F02B89C36}', 'Order', 1, '2005/01/01', 
+    values ('{5682F032-2F0B-494b-A31C-C97F02B89C36}', 'Order', 1, '2005/01/01',
     '{55B52E75-514B-4e82-A91B-8F0BB59B80AD}', 'Customer', 'Official|1|System.Int32')
     
 insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID, OfficialID) 
