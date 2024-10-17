@@ -18,11 +18,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Compilation;
+using Remotion.Web.ContentSecurityPolicy;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.SmartPageImplementation;
@@ -240,6 +242,8 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   private bool? _enableSmartScrolling;
   private bool? _enableSmartFocusing;
   private readonly SmartPageClientScriptManager _clientScriptManager;
+  private readonly INonceGenerator _nonceGenerator;
+  private string? _cspNonceValue;
 
   public SmartPage ()
   {
@@ -247,6 +251,50 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     _validatableControlInitializer = new ValidatableControlInitializer(this);
     _postLoadInvoker = new PostLoadInvoker(this);
     _clientScriptManager = new SmartPageClientScriptManager(base.ClientScript);
+    _nonceGenerator = new NonceGenerator();
+  }
+
+  // protected override void OnPreRenderComplete (EventArgs e)
+  // {
+  //   base.OnPreRenderComplete(e);
+  //
+  //   var scriptManager = ScriptManager.GetCurrent(this);
+  //
+  //   if (scriptManager == null || !scriptManager.IsInAsyncPostBack)
+  //   {
+  //     _cspNonceValue = _nonceGenerator.GenerateAlphaNumericNonce();
+  //   }
+  // }
+
+  protected override void Render (HtmlTextWriter writer)
+  {
+    /*
+     *Problems:
+     * 1. ASP.NET rendered setTimeout using a string instead of a function
+     * 2. ListMenu renders a stub onclick event which was previously stripped out during the update but now remains.
+     * 3. WebTreeView: oncontextmenu
+     * 4. EVAL problem during AJAX postback
+     * 
+     */
+    // "style-src 'unsafe-inline'" is required so we can do inline-css
+    // "img-src 'self'" is required to block "url('javascript: eval(evil)');" and "background-image: url("evil.png");".
+    Response.Headers.Add("Content-Security-Policy", $"default-src 'self'; script-src 'self' 'nonce-{_cspNonceValue}'; style-src 'self' 'unsafe-inline'; img-src 'self';");
+
+    base.Render(writer);
+  }
+
+  // private string GetCspNonceValue ()
+  // {
+  //   if (_cspNonceValue == null)
+  //     throw new HttpException("CSP nonce cannot be retrieved before OnPreRenderComplete was executed.");
+  //   return _cspNonceValue;
+  // }
+
+  protected override HtmlTextWriter CreateHtmlTextWriter (TextWriter writer)
+  {
+    if (_cspNonceValue == null)
+     _cspNonceValue = _nonceGenerator.GenerateAlphaNumericNonce();
+    return new CspEnabledHtmlTextWriter(this, writer, _nonceGenerator, _cspNonceValue);
   }
 
   protected override NameValueCollection? DeterminePostBackMode ()
@@ -572,13 +620,15 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     object?[] values = (object?[])savedState!;
     base.LoadControlState(values[0]);
     _isDirty = (bool)values[1]!;
+    _cspNonceValue = (string?)values[2];
   }
 
   protected override object? SaveControlState ()
   {
-    object?[] values = new object?[2];
+    object?[] values = new object?[3];
     values[0] = base.SaveControlState();
     values[1] = _isDirty;
+    values[2] = _cspNonceValue;
     return values;
   }
 

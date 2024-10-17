@@ -204,10 +204,6 @@ namespace Remotion.Web.UI.Controls
 
         if (!string.IsNullOrEmpty(onClick))
           writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
-
-        writer.AddAttribute("onmousedown", "WebButton.MouseDown (this, '" + CssClassMouseDown + "');");
-        writer.AddAttribute("onmouseup", "WebButton.MouseUp (this, '" + CssClassMouseDown + "');");
-        writer.AddAttribute("onmouseout", "WebButton.MouseOut (this, '" + CssClassMouseDown + "');");
       }
 
 
@@ -596,18 +592,6 @@ namespace Remotion.Web.UI.Controls
     public virtual string CssClassSupplemental
     {
       get { return CssClassDefinition.ButtonTypeSupplemental; }
-    }
-
-    /// <summary> Gets the CSS-Class applied when the section is empty. </summary>
-    /// <remarks> 
-    ///   <para> Class: <c>mouseDown</c>. </para>
-    ///   <para> 
-    ///     Applied in addition to the regular CSS-Class. Use <c>a.webButton.mouseDown</c>as a selector.
-    ///   </para>
-    /// </remarks>
-    protected virtual string CssClassMouseDown
-    {
-      get { return "mouseDown"; }
     }
 
     #endregion
