@@ -3,6 +3,7 @@
   <PropertyGroup>
     <ProjectType>Test</ProjectType>
     <UseNetOnly>true</UseNetOnly>
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
   <Import Project="..\..\..\Build\Shared.build.props" />
