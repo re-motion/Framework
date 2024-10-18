@@ -50,10 +50,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     {
     }
 
+    public DateTime DefaultDateTimeProperty { get; set; }
+
+    public DateTime? NullableDefaultDateTimeProperty { get; set; }
+
     [SetUp]
     public void SetUp ()
     {
-      _storageTypeInformationProvider = new SqlStorageTypeInformationProvider();
+      _storageTypeInformationProvider = new SqlStorageTypeInformationProvider(new DateTime2DefaultStorageTypeProvider());
     }
 
     [Test]
@@ -459,6 +463,114 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           null,
           typeof(Int16Enum?),
           Is.TypeOf(typeof(AdvancedEnumConverter)));
+    }
+
+    [Test]
+    [TestCase(nameof(DefaultDateTimeProperty), false)]
+    [TestCase(nameof(NullableDefaultDateTimeProperty), true)]
+    public void GetStorageType_ForDateTimeProperties_WithDateTime2StorageProvider_ReturnsDateTime2StorageType (string propertyName, bool nullable)
+    {
+        var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(
+                ClassDefinitionObjectMother.CreateClassDefinition(),
+                typeof(SqlStorageTypeInformationProviderTest),
+                propertyName);
+        var expectedType = nullable ? typeof(DateTime?) : typeof(DateTime);
+
+        IStorageTypeInformationProvider storageTypeInformationProvider = new SqlStorageTypeInformationProvider(new DateTime2DefaultStorageTypeProvider());
+
+        var storageTypeInformation = (StorageTypeInformation)storageTypeInformationProvider.GetStorageType(propertyDefinition, false);
+
+        CheckStorageTypeInformation(storageTypeInformation,
+                expectedType,
+                "datetime2",
+                DbType.DateTime2,
+                nullable,
+                null,
+                expectedType,
+                Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(expectedType));
+    }
+
+    [Test]
+    [TestCase(nameof(DefaultDateTimeProperty), false)]
+    [TestCase(nameof(NullableDefaultDateTimeProperty), true)]
+    public void GetStorageType_ForDateTimeProperties_WithDateTimeStorageProvider_ReturnsDateTimeStorageType (string propertyName, bool nullable)
+    {
+        var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(
+                ClassDefinitionObjectMother.CreateClassDefinition(),
+                typeof(SqlStorageTypeInformationProviderTest),
+                propertyName);
+        var expectedType = nullable ? typeof(DateTime?) : typeof(DateTime);
+
+        IStorageTypeInformationProvider storageTypeInformationProvider = new SqlStorageTypeInformationProvider(new DateTimeDefaultStorageTypeProvider());
+
+        var storageTypeInformation = (StorageTypeInformation)storageTypeInformationProvider.GetStorageType(propertyDefinition, false);
+
+        CheckStorageTypeInformation(storageTypeInformation,
+                expectedType,
+                "datetime",
+                DbType.DateTime,
+                nullable,
+                null,
+                expectedType,
+                Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(expectedType));
+    }
+
+    [Test]
+    [TestCase(DbType.DateTime2, true)]
+    [TestCase(DbType.DateTime, true)]
+    [TestCase(DbType.DateTime2, false)]
+    [TestCase(DbType.DateTime, false)]
+    public void GetStorageType_ForDateTimeType_WithCorrespondingDateTimeStorageProvider (DbType expectedDbType, bool nullable)
+    {
+        (IDateTimeDefaultStorageTypeProvider provider, string expectedStorageTypeName)  testData = expectedDbType switch
+        {
+            DbType.DateTime2 => (new DateTime2DefaultStorageTypeProvider(), "datetime2"),
+            DbType.DateTime => (new DateTimeDefaultStorageTypeProvider(), "datetime"),
+            _ => throw new NotImplementedException()
+        };
+
+        var expectedType = nullable ? typeof(DateTime?) : typeof(DateTime);
+
+        IStorageTypeInformationProvider storageTypeInformationProvider = new SqlStorageTypeInformationProvider(testData.provider);
+
+        var storageTypeInformation = (StorageTypeInformation)storageTypeInformationProvider.GetStorageType(expectedType);
+
+        CheckStorageTypeInformation(storageTypeInformation,
+                expectedType,
+                testData.expectedStorageTypeName,
+                expectedDbType,
+                nullable,
+                null,
+                expectedType,
+                Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(expectedType));
+    }
+
+    [Test]
+    [TestCase(DbType.DateTime2)]
+    [TestCase(DbType.DateTime)]
+    public void GetStorageType_ForDateTimeObject_WithDateTimeCorrespondingStorageProvider (DbType expectedDbType)
+    {
+        (IDateTimeDefaultStorageTypeProvider provider, string expectedStorageTypeName)  testData = expectedDbType switch
+        {
+            DbType.DateTime2 => (new DateTime2DefaultStorageTypeProvider(), "datetime2"),
+            DbType.DateTime => (new DateTimeDefaultStorageTypeProvider(), "datetime"),
+            _ => throw new NotImplementedException()
+        };
+
+        IStorageTypeInformationProvider storageTypeInformationProvider = new SqlStorageTypeInformationProvider(testData.provider);
+
+        var obj = new DateTime(1, 2, 3);
+
+        var storageTypeInformation = (StorageTypeInformation)storageTypeInformationProvider.GetStorageType(obj);
+
+        CheckStorageTypeInformation(storageTypeInformation,
+                typeof(DateTime),
+                testData.expectedStorageTypeName,
+                expectedDbType,
+                false,
+                null,
+                typeof(DateTime),
+                Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(DateTime)));
     }
 
     [Test]

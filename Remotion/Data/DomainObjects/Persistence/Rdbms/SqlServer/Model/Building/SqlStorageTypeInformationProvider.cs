@@ -35,9 +35,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
   public class SqlStorageTypeInformationProvider : IStorageTypeInformationProvider
   {
     internal const int StorageTypeLengthRepresentingMax = -1;
+    private readonly IDateTimeDefaultStorageTypeProvider _dateTimeDefaultStorageTypeProvider;
 
-    public SqlStorageTypeInformationProvider ()
+    public SqlStorageTypeInformationProvider (IDateTimeDefaultStorageTypeProvider dateTimeDefaultStorageTypeProvider)
     {
+      ArgumentUtility.CheckNotNull(nameof(dateTimeDefaultStorageTypeProvider),dateTimeDefaultStorageTypeProvider);
+      _dateTimeDefaultStorageTypeProvider = dateTimeDefaultStorageTypeProvider;
     }
 
     IStorageTypeInformation IStorageTypeInformationProvider.GetStorageTypeForID (bool isStorageTypeNullable)
@@ -205,7 +208,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
       if (dotNetType == typeof(Byte))
         return new StorageTypeInformation(typeof(Byte), "tinyint", DbType.Byte, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
       if (dotNetType == typeof(DateTime))
-        return new StorageTypeInformation(typeof(DateTime), "datetime2", DbType.DateTime2, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
+        return GetDateTimeStorageType(isNullableInDatabase, dotNetType);
       if (dotNetType == typeof(DateOnly))
         return new StorageTypeInformation(typeof(DateTime), "date", DbType.Date, isNullableInDatabase, null, dotNetType, new DateOnlyConverter());
       if (dotNetType == typeof(Decimal))
@@ -224,6 +227,18 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
         return new StorageTypeInformation(typeof(Single), "real", DbType.Single, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
 
       return null;
+    }
+
+    private StorageTypeInformation GetDateTimeStorageType (bool isNullableInDatabase, Type dotNetType)
+    {
+      return new StorageTypeInformation(
+          typeof(DateTime),
+          _dateTimeDefaultStorageTypeProvider.StorageTypeName,
+          _dateTimeDefaultStorageTypeProvider.DbType,
+          isNullableInDatabase,
+          null,
+          dotNetType,
+          new DefaultConverter(dotNetType));
     }
 
     private StorageTypeInformation GetStorageTypeForExtensibleEnumType (Type extensibleEnumType, bool isNullableInDatabase)
