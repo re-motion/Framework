@@ -161,7 +161,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
     {
       ArgumentUtility.CheckNotNull("rdmsStorageProviderDefinition", rdmsStorageProviderDefinition);
 
-      return new SqlStorageTypeInformationProvider();
+      var dateTimeDefaultStorageTypeProvider = CreateDateTimeDefaultStorageTypeProvider(rdmsStorageProviderDefinition);
+      return new SqlStorageTypeInformationProvider(dateTimeDefaultStorageTypeProvider);
+    }
+
+    protected virtual IDateTimeDefaultStorageTypeProvider CreateDateTimeDefaultStorageTypeProvider (RdbmsProviderDefinition rdbmsStorageProviderDefinition)
+    {
+      ArgumentUtility.CheckNotNull("rdbmsStorageProviderDefinition", rdbmsStorageProviderDefinition);
+
+      return new DateTime2DefaultStorageTypeProvider();
     }
 
     public virtual IStorageNameProvider CreateStorageNameProvider (RdbmsProviderDefinition storageProviderDefiniton)
