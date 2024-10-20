@@ -39,8 +39,8 @@
     <PackageVersion Include="Remotion.Linq" Version="2.2.0" />
     <PackageVersion Include="Remotion.Linq.Development" Version="2.2.0" />
     <PackageVersion Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
-    <PackageVersion Include="Remotion.Linq.SqlBackend" Version="3.0.0-alpha.3" />
-    <PackageVersion Include="Remotion.Linq.SqlBackend.Development" Version="3.0.0-alpha.2" />
+    <PackageVersion Include="Remotion.Linq.SqlBackend" Version="3.0.0" />
+    <PackageVersion Include="Remotion.Linq.SqlBackend.Development" Version="3.0.0" />
     <PackageVersion Include="Remotion.ThirdParty.Dependency.Jetbrains.Annotations" Version="2022.1.0" />
     <PackageVersion Include="Remotion.ThirdPartyDependency.CommonServiceLocator" Version="2.0.6" />
     <PackageVersion Include="Remotion.ThirdPartyDependency.DynamicLanguageRuntime" Version="1.1.0.10" />
