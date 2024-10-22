@@ -21,6 +21,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Reflection;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -134,7 +135,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           classDefinition,
           fullPropertyName,
           isObjectID,
-          true,
+          NullableTypeUtility.IsNullableType(propertyInfo.PropertyType),
           null,
           StorageClass.Persistent,
           propertyInformation,
