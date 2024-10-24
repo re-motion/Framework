@@ -59,7 +59,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected ISecurityManagerPrincipal LoadPrincipalFromSession ()
     {
-      return (ISecurityManagerPrincipal)Session[s_principalKey] ?? SecurityManagerPrincipal.Null;
+      return (ISecurityManagerPrincipal?)Session[s_principalKey] ?? SecurityManagerPrincipal.Null;
     }
 
     protected void SavePrincipalToSession (ISecurityManagerPrincipal principal)
