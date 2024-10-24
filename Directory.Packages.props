@@ -4,7 +4,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
 
-    <CoreFormsVersion>8.2.3</CoreFormsVersion>
+    <CoreFormsVersion>8.2.4</CoreFormsVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -52,7 +52,7 @@
     <PackageVersion Include="Selenium.Support" Version="4.11.0" />
     <PackageVersion Include="Selenium.WebDriver" Version="4.11.0" />
     <PackageVersion Include="System.CodeDom" Version="8.0.0" />
-    <PackageVersion Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+    <PackageVersion Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
     <PackageVersion Include="System.Data.SqlClient" Version="4.8.6" />
     <PackageVersion Include="System.Text.Json" Version="8.0.4" />
   </ItemGroup>
