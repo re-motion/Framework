@@ -16,7 +16,7 @@
     <PackageVersion Include="CoreForms.Web.Infrastructure.Roslyn" Version="$(CoreFormsVersion)" />
     <PackageVersion Include="CoreForms.Web.Services" Version="$(CoreFormsVersion)" />
     <PackageVersion Include="Fork.Coypu" Version="3.4.0" />
-    <PackageVersion Include="JetBrains.Annotations" Version="2023.3.0" />
+    <PackageVersion Include="JetBrains.Annotations" Version="2024.3.0" />
     <PackageVersion Include="log4net" Version="2.0.17" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.NUnit" Version="1.1.1" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.9.2" />
@@ -41,7 +41,7 @@
     <PackageVersion Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
     <PackageVersion Include="Remotion.Linq.SqlBackend" Version="3.0.0" />
     <PackageVersion Include="Remotion.Linq.SqlBackend.Development" Version="3.0.0" />
-    <PackageVersion Include="Remotion.ThirdParty.Dependency.Jetbrains.Annotations" Version="2022.1.0" />
+    <PackageVersion Include="Remotion.ThirdParty.Dependency.Jetbrains.Annotations" Version="2024.3.0" />
     <PackageVersion Include="Remotion.ThirdPartyDependency.CommonServiceLocator" Version="2.0.6" />
     <PackageVersion Include="Remotion.ThirdPartyDependency.DynamicLanguageRuntime" Version="1.1.0.10" />
     <PackageVersion Include="Remotion.ThirdPartyDependency.JQuery.Autocomplete" Version="1.1.0-pre" />
