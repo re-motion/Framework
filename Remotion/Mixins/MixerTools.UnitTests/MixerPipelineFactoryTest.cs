@@ -41,9 +41,6 @@ namespace Remotion.Mixins.MixerTools.UnitTests
 
       Assert.That(pipeline.Settings.AssemblyNamePattern, Is.EqualTo("Assembly_{counter}"));
       Assert.That(pipeline.Settings.AssemblyDirectory, Is.EqualTo(@"c:\directory"));
-      Assert.That(
-          pipeline.Settings.EnableSerializationWithoutAssemblySaving,
-          Is.EqualTo(defaultPipeline.Settings.EnableSerializationWithoutAssemblySaving));
 #if FEATURE_STRONGNAMESIGNING      
       Assert.That(pipeline.Settings.ForceStrongNaming, Is.EqualTo(defaultPipeline.Settings.ForceStrongNaming));
       Assert.That(pipeline.Settings.KeyFilePath, Is.EqualTo(defaultPipeline.Settings.KeyFilePath));
