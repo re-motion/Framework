@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Reflection;
 using Remotion.Mixins.Context;
 using Remotion.TypePipe.Caching;
 using Remotion.TypePipe.Dlr.Ast;
@@ -28,8 +27,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// </summary>
   public class MixinParticipantTypeIdentifierProvider : ITypeIdentifierProvider
   {
-    private static readonly MethodInfo s_createFlatClassContext = MemberInfoFromExpressionUtility.GetMethod(() => FlatClassContext.Create(null!));
-
     public object? GetID (Type requestedType)
     {
       ArgumentUtility.DebugCheckNotNull("requestedType", requestedType);
@@ -43,14 +40,6 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
       var classContextExpression = GetClassContextExpression(classContext);
       return Expression.Convert(classContextExpression, typeof(object));
-    }
-
-    public Expression GetFlatValueExpressionForSerialization (object id)
-    {
-      var classContext = ArgumentUtility.CheckNotNullAndType<ClassContext>("id", id);
-
-      var classContextExpression = GetClassContextExpression(classContext);
-      return Expression.Call(s_createFlatClassContext, classContextExpression);
     }
 
     private Expression GetClassContextExpression (ClassContext classContext)

@@ -81,17 +81,5 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
 
       Assert.That(evaluatedResult, Is.EqualTo(_classContext));
     }
-
-    [Test]
-    public void GetFlatValueExpressionForSerialization_ReturnsExpressionSerializingClassContext ()
-    {
-      var result = _provider.GetFlatValueExpressionForSerialization(_classContext);
-
-      var compiledResult = Expression.Lambda<Func<object>>(result).Compile();
-      var evaluatedResult = compiledResult();
-
-      Assert.That(evaluatedResult, Is.TypeOf<FlatClassContext>());
-      Assert.That(((FlatClassContext)evaluatedResult).GetRealValue(), Is.EqualTo(_classContext));
-    }
   }
 }

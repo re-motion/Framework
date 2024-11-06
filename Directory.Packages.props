@@ -3,6 +3,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
     <CoreFormsVersion>9.0.0-alpha.3</CoreFormsVersion>
+    <TypePipeVersion>4.0.0</TypePipeVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Castle.Core" Version="4.4.0" />
@@ -44,9 +45,9 @@
     <PackageVersion Include="Remotion.ThirdPartyDependency.JQuery.Autocomplete" Version="1.1.0-pre" />
     <PackageVersion Include="Remotion.ThirdPartyDependency.RobotoFonts" Version="2.137.0" />
     <PackageVersion Include="Remotion.ThirdPartyDependency.System.Web" Version="4.8.0" />
-    <PackageVersion Include="Remotion.TypePipe" Version="3.2.0" />
-    <PackageVersion Include="Remotion.TypePipe.Development" Version="3.2.0" />
-    <PackageVersion Include="Remotion.TypePipe.Documentation" Version="3.2.0" />
+    <PackageVersion Include="Remotion.TypePipe" Version="$(TypePipeVersion)" />
+    <PackageVersion Include="Remotion.TypePipe.Development" Version="$(TypePipeVersion)" />
+    <PackageVersion Include="Remotion.TypePipe.Documentation" Version="$(TypePipeVersion)" />
     <PackageVersion Include="Selenium.Support" Version="4.21.0" />
     <PackageVersion Include="Selenium.WebDriver" Version="4.21.0" />
     <PackageVersion Include="System.CodeDom" Version="8.0.0" />
