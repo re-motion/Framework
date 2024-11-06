@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel;
 
 namespace Remotion.ObjectBinding.UnitTests
 {
@@ -34,12 +35,14 @@ namespace Remotion.ObjectBinding.UnitTests
       get { return _businessObjectClass; }
     }
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public override IBusinessObject BusinessObject
     {
       get { return _BusinessObject; }
       set { _BusinessObject = value; }
     }
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public override DataSourceMode Mode
     {
       get { return _mode; }
