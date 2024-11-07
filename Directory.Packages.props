@@ -59,6 +59,10 @@
         <PackageVersion Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
         <PackageVersion Include="System.Resources.Extensions" Version="8.0.0" />
       </ItemGroup>
+      <ItemGroup>
+        <!-- Transitive pinned packages - check if they are still needed on package upgrades -->
+        <PackageVersion Include="System.Formats.Asn1" Version="8.0.1" />
+      </ItemGroup>
     </When>
   </Choose>
   <ItemGroup>
