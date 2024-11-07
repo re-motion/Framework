@@ -18,11 +18,6 @@
     <PackageVersion Include="log4net" Version="2.0.17" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.NUnit" Version="1.1.1" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.11.0" />
-    <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="8.10.0" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.1" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
-    <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Net.Compilers.Toolset" Version="4.11.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.11.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
@@ -50,9 +45,29 @@
     <PackageVersion Include="Remotion.TypePipe.Documentation" Version="$(TypePipeVersion)" />
     <PackageVersion Include="Selenium.Support" Version="4.21.0" />
     <PackageVersion Include="Selenium.WebDriver" Version="4.21.0" />
-    <PackageVersion Include="System.CodeDom" Version="8.0.0" />
-    <PackageVersion Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <PackageVersion Include="System.Data.SqlClient" Version="4.8.6" />
-    <PackageVersion Include="System.Resources.Extensions" Version="8.0.0" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="$(TargetFramework.StartsWith('net8.0'))">
+      <ItemGroup>
+        <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="8.10.0" />
+        <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+        <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.1" />
+        <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+        <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" />
+        <PackageVersion Include="System.CodeDom" Version="8.0.0" />
+        <PackageVersion Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+        <PackageVersion Include="System.Resources.Extensions" Version="8.0.0" />
+      </ItemGroup>
+      <ItemGroup>
+        <!-- Transitive pinned packages - check if they are still needed on package upgrades -->
+        <PackageVersion Include="System.Formats.Asn1" Version="8.0.1" />
+      </ItemGroup>
+    </When>
+  </Choose>
+  <ItemGroup>
+    <!-- Transitive pinned packages - check if they are still needed on package upgrades -->
+    <PackageVersion Include="System.Net.Http" Version="4.3.4" />
+    <PackageVersion Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
 </Project>
