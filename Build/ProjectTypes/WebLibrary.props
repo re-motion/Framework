@@ -21,8 +21,9 @@
     </Content>
   </ItemGroup>
 
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+  <ItemGroup Condition="'$(UsingMicrosoftNETSdkWebProjectSystem)' != 'true'">
+    <!-- Projects that already use the SDK "Microsoft.NET.Sdk.Web" do not need to manually import the FrameworkReference. -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>
