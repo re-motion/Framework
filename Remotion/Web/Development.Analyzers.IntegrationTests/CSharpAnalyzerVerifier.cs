@@ -22,7 +22,6 @@ using System.Threading.Tasks;
 using System.Web.UI;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Testing;
-using Microsoft.CodeAnalysis.CSharp.Testing.NUnit;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Testing;
 
@@ -38,9 +37,9 @@ namespace Remotion.Web.Development.Analyzers.IntegrationTests
     private static readonly Lazy<ReferenceAssemblies> s_net80 =
         new(() => new ReferenceAssemblies("net8.0", new PackageIdentity("Microsoft.NETCore.App.Ref", "8.0.0"), Path.Combine("ref", "net8.0")));
 
-    public static DiagnosticResult Diagnostic () => AnalyzerVerifier<TAnalyzer>.Diagnostic();
+    public static DiagnosticResult Diagnostic () => CSharpAnalyzerVerifier<TAnalyzer, DefaultVerifier>.Diagnostic();
 
-    public static DiagnosticResult Diagnostic (DiagnosticDescriptor descriptor) => AnalyzerVerifier<TAnalyzer>.Diagnostic(descriptor);
+    public static DiagnosticResult Diagnostic (DiagnosticDescriptor descriptor) => CSharpAnalyzerVerifier<TAnalyzer, DefaultVerifier>.Diagnostic(descriptor);
 
     public static Task VerifyAnalyzerAsync (string source, params DiagnosticResult[] expected)
     {
