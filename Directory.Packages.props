@@ -2,7 +2,7 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
-    <CoreFormsVersion>9.0.0-alpha.3</CoreFormsVersion>
+    <CoreFormsVersion>9.0.0-rc.2</CoreFormsVersion>
     <TypePipeVersion>4.0.0</TypePipeVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -56,7 +56,7 @@
         <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
         <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" />
         <PackageVersion Include="System.CodeDom" Version="8.0.0" />
-        <PackageVersion Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+        <PackageVersion Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
         <PackageVersion Include="System.Resources.Extensions" Version="8.0.0" />
       </ItemGroup>
       <ItemGroup>
