@@ -253,6 +253,29 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
+    public void CreateScope_Log_WithPartialFormatStringPlaceholders ()
+    {
+      var fakeLogger = new FakeLogger();
+
+      var scope = StopwatchScope.CreateScope(fakeLogger, LogLevel.Information, "{context}#{elapsed:ms}#{elapsedCP:ms}");
+
+      Wait(TimeSpan.FromMilliseconds(1.0));
+
+      scope.Pause();
+
+      var firstElapsed = scope.ElapsedTotal;
+      var firstElapsedCP = scope.ElapsedSinceLastCheckpoint;
+      scope.Checkpoint("one");
+
+      scope.Dispose();
+
+      var logEntries = fakeLogger.Collector.GetSnapshot();
+      Assert.That(logEntries.Count, Is.EqualTo(2));
+      Assert.That(logEntries[0].Level, Is.EqualTo(LogLevel.Information));
+      Assert.That(logEntries[0].Message, Is.EqualTo($"one#{firstElapsed.TotalMilliseconds}#{firstElapsedCP.TotalMilliseconds}"));
+    }
+
+    [Test]
     public void CreateScope_Console ()
     {
       var oldOut = Console.Out;
