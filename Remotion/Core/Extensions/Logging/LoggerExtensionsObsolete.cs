@@ -88,21 +88,6 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
-  /// Log a formatted string with the specified <paramref name="logLevel"/>.
-  /// </summary>
-  /// <param name="logger">The <see cref="ILogger"/> instance where the message is to be logged.</param>
-  /// <param name="logLevel">The <see cref="Microsoft.Extensions.Logging.LogLevel"/> of the message to be logged.</param>
-  /// <param name="format">A string containing zero or more format items for the description of the context.</param>
-  /// <param name="args">An array containing zero or more objects to format.</param>
-  [StringFormatMethod("format")]
-  [Obsolete("Use logger.Log(logLevel, format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
-  public static void LogFormat (this ILogger logger, LogLevel logLevel, string? format, params object?[] args)
-  {
-    ArgumentUtility.CheckNotNull("logger", logger);
-    logger.Log(logLevel, format, args);
-  }
-
-  /// <summary>
   /// Log a formatted string with the specified <paramref name="logLevel"/>,  including the stack trace of <paramref name="exceptionObject"/>.
   /// </summary>
   /// <param name="logger">The <see cref="ILogger"/> instance where the message is to be logged.</param>
@@ -117,22 +102,6 @@ public static class LoggerExtensionsObsolete
   {
     ArgumentUtility.CheckNotNull("logger", logger);
     logger.Log(logLevel, new EventId(eventID), exceptionObject, format, args);
-  }
-
-  /// <summary>
-  /// Log a formatted string with the specified <paramref name="logLevel"/>,  including the stack trace of <paramref name="exceptionObject"/>.
-  /// </summary>
-  /// <param name="logger">The <see cref="ILogger"/> instance where the message is to be logged.</param>
-  /// <param name="logLevel">The <see cref="Microsoft.Extensions.Logging.LogLevel"/> of the message to be logged.</param>
-  /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
-  /// <param name="format">A string containing zero or more format items for the description of the context.</param>
-  /// <param name="args">An array containing zero or more objects to format.</param>
-  [StringFormatMethod("format")]
-  [Obsolete("Use logger.Log(logLevel, exceptionObject, format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
-  public static void LogFormat (this ILogger logger, LogLevel logLevel, Exception exceptionObject, string? format, params object?[] args)
-  {
-    ArgumentUtility.CheckNotNull("logger", logger);
-    logger.Log(logLevel, exceptionObject, format, args);
   }
 
   /// <overloads>Log a message object with the <see cref="Microsoft.Extensions.Logging.LogLevel.Debug"/> level.</overloads>

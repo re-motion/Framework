@@ -25,7 +25,7 @@ namespace Remotion.Logging
   /// <summary>
   /// Provides extension methods used for logging.
   /// </summary>
-  public static class LoggerExtensions
+  public static partial class LoggerExtensions
   {
     private static readonly DoubleCheckedLockingContainer<IEnumerationGlobalizationService> s_globalizationService =
         new DoubleCheckedLockingContainer<IEnumerationGlobalizationService>(
