@@ -203,11 +203,11 @@ public static class LoggerExtensionsObsolete
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
   [StringFormatMethod("format")]
-  [Obsolete("Use logger.LogDebug(format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
-  public static void DebugFormat (this ILogger logger, string? format, params object?[] args)
+  [Obsolete("Use logger.LogDebugFormat(format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
+  public static void DebugFormat (this ILogger logger, string format, params object?[] args)
   {
     ArgumentUtility.CheckNotNull("logger", logger);
-    logger.LogDebug(format, args);
+    logger.LogDebugFormat(format, args);
   }
 
   /// <summary>
@@ -219,11 +219,11 @@ public static class LoggerExtensionsObsolete
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
   [StringFormatMethod("format")]
-  [Obsolete("Use logger.LogDebug(exceptionObject, format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
-  public static void DebugFormat (this ILogger logger, Exception exceptionObject, string? format, params object?[] args)
+  [Obsolete("Use logger.LogDebugFormat(exceptionObject, format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
+  public static void DebugFormat (this ILogger logger, Exception exceptionObject, string format, params object?[] args)
   {
     ArgumentUtility.CheckNotNull("logger", logger);
-    logger.LogDebug(exceptionObject, format, args);
+    logger.LogDebugFormat(exceptionObject, format, args);
   }
 
   /// <overloads>Log a message object with the <see cref="Microsoft.Extensions.Logging.LogLevel.Information"/> level.</overloads>
@@ -323,11 +323,11 @@ public static class LoggerExtensionsObsolete
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
   [StringFormatMethod("format")]
-  [Obsolete("Use logger.LogInformation(new EventID(eventID), format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
-  public static void InfoFormat (this ILogger logger, string? format, params object?[] args)
+  [Obsolete("Use logger.LogInformationFormat(format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
+  public static void InfoFormat (this ILogger logger, string format, params object?[] args)
   {
     ArgumentUtility.CheckNotNull("logger", logger);
-    logger.LogInformation(format, args);
+    logger.LogInformationFormat(format, args);
   }
 
   /// <summary>
@@ -339,11 +339,11 @@ public static class LoggerExtensionsObsolete
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
   [StringFormatMethod("format")]
-  [Obsolete("Use logger.LogInformation(exceptionObject, format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
-  public static void InfoFormat (this ILogger logger, Exception exceptionObject, string? format, params object?[] args)
+  [Obsolete("Use logger.LogInformationFormat(exceptionObject, format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
+  public static void InfoFormat (this ILogger logger, Exception exceptionObject, string format, params object?[] args)
   {
     ArgumentUtility.CheckNotNull("logger", logger);
-    logger.LogInformation(exceptionObject, format, args);
+    logger.LogInformationFormat(exceptionObject, format, args);
   }
 
   /// <overloads>Log a message object with the <see cref="Microsoft.Extensions.Logging.LogLevel.Warning"/> level.</overloads>
@@ -443,11 +443,11 @@ public static class LoggerExtensionsObsolete
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
   [StringFormatMethod("format")]
-  [Obsolete("Use logger.LogWarning(format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
-  public static void WarnFormat (this ILogger logger, string? format, params object?[] args)
+  [Obsolete("Use logger.LogWarningFormat(format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
+  public static void WarnFormat (this ILogger logger, string format, params object?[] args)
   {
     ArgumentUtility.CheckNotNull("logger", logger);
-    logger.LogWarning(format, args);
+    logger.LogWarningFormat(format, args);
   }
 
   /// <summary>
@@ -459,11 +459,11 @@ public static class LoggerExtensionsObsolete
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
   [StringFormatMethod("format")]
-  [Obsolete("Use logger.LogWarning(exceptionObject, format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
-  public static void WarnFormat (this ILogger logger, Exception exceptionObject, string? format, params object?[] args)
+  [Obsolete("Use logger.LogWarningFormat(exceptionObject, format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
+  public static void WarnFormat (this ILogger logger, Exception exceptionObject, string format, params object?[] args)
   {
     ArgumentUtility.CheckNotNull("logger", logger);
-    logger.LogWarning(exceptionObject, format, args);
+    logger.LogWarningFormat(exceptionObject, format, args);
   }
 
   /// <overloads>Log a message object with the <see cref="Microsoft.Extensions.Logging.LogLevel.Error"/> level.</overloads>
@@ -563,11 +563,11 @@ public static class LoggerExtensionsObsolete
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
   [StringFormatMethod("format")]
-  [Obsolete("Use logger.LogError(format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
-  public static void ErrorFormat (this ILogger logger, string? format, params object?[] args)
+  [Obsolete("Use logger.LogErrorFormat(format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
+  public static void ErrorFormat (this ILogger logger, string format, params object?[] args)
   {
     ArgumentUtility.CheckNotNull("logger", logger);
-    logger.LogError(format, args);
+    logger.LogErrorFormat(format, args);
   }
 
   /// <summary>
@@ -579,11 +579,11 @@ public static class LoggerExtensionsObsolete
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
   [StringFormatMethod("format")]
-  [Obsolete("Use logger.LogError(exceptionObject, format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
-  public static void ErrorFormat (this ILogger logger, Exception exceptionObject, string? format, params object?[] args)
+  [Obsolete("Use logger.LogErrorFormat(exceptionObject, format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
+  public static void ErrorFormat (this ILogger logger, Exception exceptionObject, string format, params object?[] args)
   {
     ArgumentUtility.CheckNotNull("logger", logger);
-    logger.LogError(exceptionObject, format, args);
+    logger.LogErrorFormat(exceptionObject, format, args);
   }
 
   /// <overloads>Log a message object with the <c>LogLevel.Fatal</c>.</overloads>
@@ -674,7 +674,7 @@ public static class LoggerExtensionsObsolete
   /// <param name="logger">The <see cref="ILogger"/> instance where the message is to be logged.</param>
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
-  [Obsolete("LogLevel.Fatal is not supported by Microsoft Logging. Use logger.LogCritical(format, args) instead. (Version 7.0.0)", true)]
+  [Obsolete("LogLevel.Fatal is not supported by Microsoft Logging. Use logger.LogCriticalFormat(format, args) instead. (Version 7.0.0)", true)]
   [StringFormatMethod("format")]
   public static void FatalFormat (this ILogger logger, string? format, params object?[] args)
   {
@@ -689,7 +689,7 @@ public static class LoggerExtensionsObsolete
   /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
   /// <param name="format">A string containing zero or more format items for the description of the context.</param>
   /// <param name="args">An array containing zero or more objects to format.</param>
-  [Obsolete("LogLevel.Fatal is not supported by Microsoft Logging. Use logger.LogCritical(exceptionObject, format, args) instead. (Version 7.0.0)", true)]
+  [Obsolete("LogLevel.Fatal is not supported by Microsoft Logging. Use logger.LogCriticalFormat(exceptionObject, format, args) instead. (Version 7.0.0)", true)]
   [StringFormatMethod("format")]
   public static void FatalFormat (this ILogger logger, Exception exceptionObject, string? format, params object?[] args)
   {
