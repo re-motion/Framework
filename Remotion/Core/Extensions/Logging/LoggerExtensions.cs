@@ -41,12 +41,11 @@ namespace Remotion.Logging
     {
       ArgumentUtility.CheckNotNull("logger", logger);
 
-      logger.Log(
-          logLevel,
-          new EventId(Convert.ToInt32(messageEnum)),
-          exceptionObject,
-          s_globalizationService.Value.GetEnumerationValueDisplayName(messageEnum),
-          args);
+      if (logger.IsEnabled(logLevel))
+      {
+        var logMessage = string.Format(s_globalizationService.Value.GetEnumerationValueDisplayName(messageEnum), args);
+        logger.Log(logLevel, new EventId(Convert.ToInt32(messageEnum)), exceptionObject, logMessage);
+      }
     }
 
     /// <summary>
