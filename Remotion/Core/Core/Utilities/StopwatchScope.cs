@@ -135,14 +135,22 @@ namespace Remotion.Utilities
     public static StopwatchScope CreateScope (ILogger logger, LogLevel logLevel, string formatString)
     {
       var actualFormatString = ReplacePlaceholders(formatString);
-      return new StopwatchScope((context, scope) => logger.Log(
-              logLevel,
+      return new StopwatchScope(Log, "end");
+
+      void Log (string context, StopwatchScope scope)
+      {
+        if (logger.IsEnabled(logLevel))
+        {
+          var logMessage = string.Format(
               actualFormatString,
               context,
               scope.ElapsedTotal.ToString(),
               scope.ElapsedTotal.TotalMilliseconds.ToString(),
               scope.ElapsedSinceLastCheckpoint.ToString(),
-              scope.ElapsedSinceLastCheckpoint.TotalMilliseconds.ToString()), "end");
+              scope.ElapsedSinceLastCheckpoint.TotalMilliseconds.ToString());
+          logger.Log(logLevel, logMessage);
+        }
+      }
     }
 
     /// <summary>
