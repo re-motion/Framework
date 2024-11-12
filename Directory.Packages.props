@@ -57,7 +57,7 @@
          4.11.0: MSBuild 17.11 / .NET SDK 8.0.4xx
          4.12.0: MSBuild 17.12 / .NET SDK 9.0.1xx
     -->
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.11.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.10.0" />
   </ItemGroup>
   <Choose>
     <When Condition="$(TargetFramework.StartsWith('net8.0'))">
