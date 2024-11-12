@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 
@@ -29,6 +30,7 @@ namespace Remotion.ServiceLocation
   {
     private static readonly object s_loggerFactoryLock = new object();
     private static ILoggerFactory? s_loggerFactory;
+    private static string? s_getLoggerFactoryFirstExceptionStackTrace;
 
     public static void SetLoggerFactory (ILoggerFactory loggerFactory)
     {
@@ -51,6 +53,18 @@ namespace Remotion.ServiceLocation
         if (s_loggerFactory != null)
           return s_loggerFactory;
 
+        if (s_getLoggerFactoryFirstExceptionStackTrace == null)
+        {
+          try
+          {
+            s_getLoggerFactoryFirstExceptionStackTrace = new StackTrace().ToString();
+          }
+          catch
+          {
+            s_getLoggerFactoryFirstExceptionStackTrace = "No StackTrace is available.";
+          }
+        }
+
         throw new InvalidOperationException(
             """
             The BootstrapServiceConfiguration.SetLoggerFactory(...) method must be called before accessing the service configuration.
@@ -61,7 +75,18 @@ namespace Remotion.ServiceLocation
                 var loggerFactory = new LoggerFactory(new[] { new Log4NetLoggerProvider() });
                 BootstrapServiceConfiguration.SetLoggerFactory(loggerFactory);
 
-            Alternatively, you can supply a different logging framework or chose to have no logging at all by passing the NullLoggerFactory.Instance. 
+            Alternatively, you can supply a different logging framework or chose to have no logging at all by passing the NullLoggerFactory.Instance.
+
+            --- Begin of diagnostic stack trace for this exception's first occurance ---
+
+
+            """
+            + s_getLoggerFactoryFirstExceptionStackTrace
+            +
+            """
+
+            --- End of diagnostic stack trace ---
+
             """);
       }
     }

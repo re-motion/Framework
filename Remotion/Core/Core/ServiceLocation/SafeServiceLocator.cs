@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Threading;
 using Remotion.Configuration.ServiceLocation;
 
 namespace Remotion.ServiceLocation
@@ -51,7 +52,8 @@ namespace Remotion.ServiceLocation
   /// </remarks>
   public static class SafeServiceLocator
   {
-    private static readonly BootstrapServiceConfiguration s_bootstrapServiceConfiguration = new BootstrapServiceConfiguration();
+    private static readonly Lazy<BootstrapServiceConfiguration> s_bootstrapServiceConfiguration =
+        new(() => new BootstrapServiceConfiguration(), LazyThreadSafetyMode.ExecutionAndPublication);
 
     // This is a DoubleCheckedLockingContainer rather than a static field (maybe wrapped in a nested class to improve laziness) because we want
     // any exceptions thrown by GetDefaultServiceLocator to bubble up to the caller normally. (Exceptions during static field initialization get
@@ -100,17 +102,17 @@ namespace Remotion.ServiceLocation
     /// </remarks>
     public static IBootstrapServiceConfiguration BootstrapConfiguration
     {
-      get { return s_bootstrapServiceConfiguration; }
+      get { return s_bootstrapServiceConfiguration.Value; }
     }
 
     private static IServiceLocator GetDefaultServiceLocator ()
     {
       // Temporarily set the bootstrapper to allow for reentrancy to SafeServiceLocator.Current.
       // Since we're called from s_defaultServiceLocator.Value's getter, we can be sure that our return value will overwrite the bootstrapper.
-      s_defaultServiceLocator.Value = s_bootstrapServiceConfiguration.BootstrapServiceLocator;
+      s_defaultServiceLocator.Value = s_bootstrapServiceConfiguration.Value.BootstrapServiceLocator;
 
       var serviceLocatorProvider = ServiceLocationConfiguration.Current.CreateServiceLocatorProvider();
-      return serviceLocatorProvider.GetServiceLocator(Array.AsReadOnly(s_bootstrapServiceConfiguration.Registrations));
+      return serviceLocatorProvider.GetServiceLocator(Array.AsReadOnly(s_bootstrapServiceConfiguration.Value.Registrations));
     }
   }
 }
