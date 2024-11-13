@@ -2,7 +2,7 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
-    <CoreFormsVersion>9.0.0-rc.3</CoreFormsVersion>
+    <CoreFormsVersion>9.0.0</CoreFormsVersion>
     <TypePipeVersion>4.0.0</TypePipeVersion>
   </PropertyGroup>
   <ItemGroup>
