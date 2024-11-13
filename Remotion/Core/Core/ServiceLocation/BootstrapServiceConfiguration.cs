@@ -17,7 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -31,6 +34,7 @@ namespace Remotion.ServiceLocation
     private static readonly object s_loggerFactoryLock = new object();
     private static ILoggerFactory? s_loggerFactory;
     private static string? s_getLoggerFactoryFirstExceptionStackTrace;
+    private static readonly string[] s_knownTestHosts = ["testhost.dll", "testhost.x86.dll", "ReSharperTestRunner.dll", "ReSharperTestRunner32.dll", "ReSharperTestRunner64.dll"];
 
     public static void SetLoggerFactory (ILoggerFactory loggerFactory)
     {
@@ -52,6 +56,18 @@ namespace Remotion.ServiceLocation
       {
         if (s_loggerFactory != null)
           return s_loggerFactory;
+
+        if (IsEntryAssemblyPartOfAKnownTestingFramework(out string entryAssemblyLocation))
+        {
+        //   // When code is executed as part of a unit test suite, the test runner itself is normally not part of the test fixture's BIN directory.
+        //   // Based on this assumption we can deduce that we are in a unit test scenario and substitute the NullLoggerFactory as a default initialization.
+        //   s_loggerFactory = NullLoggerFactory.Instance;
+        //
+        //   Console.WriteLine("Logging was not configured programmatically and NullLogger was chosen as a default.");
+        //   Console.WriteLine("Entry assembly location: " + entryAssemblyLocation);
+        //
+        //   return s_loggerFactory;
+        }
 
         if (s_getLoggerFactoryFirstExceptionStackTrace == null)
         {
@@ -77,6 +93,14 @@ namespace Remotion.ServiceLocation
 
             Alternatively, you can supply a different logging framework or chose to have no logging at all by passing the NullLoggerFactory.Instance.
 
+
+            """
+            + "Entry assembly location: " + entryAssemblyLocation
+
+            +
+            """
+
+
             --- Begin of diagnostic stack trace for this exception's first occurance ---
 
 
@@ -89,6 +113,43 @@ namespace Remotion.ServiceLocation
 
             """);
       }
+    }
+
+    private static bool IsEntryAssemblyPartOfAKnownTestingFramework (out string entryAssemblyLocation)
+    {
+      // Unknown entry assembly means we cannot make an assumption about the execution.
+      var entryAssembly = Assembly.GetEntryAssembly();
+      if (entryAssembly == null)
+      {
+        entryAssemblyLocation = "<unknown>";
+        return false;
+      }
+
+      entryAssemblyLocation = entryAssembly.Location;
+
+      // Application is run via a known testhost
+      if (Array.Find(s_knownTestHosts, knownTestHost => knownTestHost.Equals(entryAssembly.ManifestModule.Name, StringComparison.CurrentCultureIgnoreCase)) != null)
+        return true;
+
+      // Unknown entry assembly location means we cannot make an assumption about the execution.
+      var entryAssemblyDirectory = Directory.GetParent(entryAssembly.Location);
+      if (entryAssemblyDirectory == null)
+      {
+        entryAssemblyLocation = "<unknown>";
+        return false;
+      }
+
+      // Unknown Remotion.dll location means we cannot make an assumption about the execution.
+      var currentAssemblyDirectory = Directory.GetParent(typeof(BootstrapServiceConfiguration).Assembly.Location);
+      if (currentAssemblyDirectory == null)
+        return false;
+
+      // Application is deployed in a separate location from the Remotion.dll. This is known to only happen for testing frameworks. 
+      if (currentAssemblyDirectory.FullName != entryAssemblyDirectory.FullName)
+        return true;
+
+      // Fallback, we assume it's a normal application run.
+      return false;
     }
 
     private readonly object _lock = new object();
