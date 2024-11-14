@@ -15,18 +15,26 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
+using System.Reflection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.Compilation;
+using Remotion.Development.UnitTesting.IsolatedCodeRunner;
 using Remotion.Logging;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
 
 namespace Remotion.UnitTests.ServiceLocation.BootstrapServiceConfigurationTests
 {
   [TestFixture]
   public class GetLoggerFactoryTest
   {
+    private const string c_testAssemblySourceDirectoryRoot = @"ServiceLocation\BootstrapServiceConfigurationTests\TestAssemblies";
+
     private ILoggerFactory _backupLoggerFactory;
     private string _backupStacktraceForFirstCallToGetLoggerFactory;
 
@@ -123,6 +131,32 @@ namespace Remotion.UnitTests.ServiceLocation.BootstrapServiceConfigurationTests
           );
     }
 
+    [Test]
+    public void GetLoggerFactory_WithDefaultLogger_ReturnsNullLoggerFactory ()
+    {
+      var isolatedCodeRunner = new IsolatedCodeRunner(TestMain);
+      isolatedCodeRunner.Run();
+
+      static void TestMain (string[] args)
+      {
+        var firstInMemoryAssembly = CompileTestAssemblyInMemory(
+            "AssemblyWithDefaultLogger",
+            typeof(BootstrapServiceConfiguration).Module.Name,
+            typeof(NullLoggerFactory).Module.Name);
+
+        Test(firstInMemoryAssembly);
+      }
+
+      static void Test (Assembly firstInMemoryAssembly)
+      {
+        var programType = firstInMemoryAssembly.GetTypes().Single(t => t.Name == "Program");
+        var methodInfo = programType.GetMethod("Main");
+        Assertion.IsNotNull(methodInfo);
+        var result = methodInfo.Invoke(null, []);
+        Assert.That(result, Is.TypeOf<NullLoggerFactory>());
+      }
+    }
+
     private static ILoggerFactory GetLoggerFactoryOnBootstrapServiceConfiguration ()
     {
       return (ILoggerFactory)PrivateInvoke.GetNonPublicStaticField(typeof(BootstrapServiceConfiguration), "s_loggerFactory");
@@ -141,6 +175,13 @@ namespace Remotion.UnitTests.ServiceLocation.BootstrapServiceConfigurationTests
     private static void SetStackTraceForFirstCallToGetLoggerFactoryOnBootstrapServiceConfiguration (string value)
     {
       PrivateInvoke.SetNonPublicStaticField(typeof(BootstrapServiceConfiguration), "s_stackTraceForFirstCallToGetLoggerFactory", value);
+    }
+
+    private static Assembly CompileTestAssemblyInMemory (string assemblyName, params string[] referencedAssemblies)
+    {
+      AssemblyCompiler assemblyCompiler = AssemblyCompiler.CreateInMemoryAssemblyCompiler(c_testAssemblySourceDirectoryRoot + "\\" + assemblyName, referencedAssemblies);
+      assemblyCompiler.Compile();
+      return assemblyCompiler.CompiledAssembly;
     }
   }
 }
