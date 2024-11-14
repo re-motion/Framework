@@ -28,6 +28,7 @@ namespace Remotion.UnitTests.ServiceLocation
   {
     private BootstrapServiceConfiguration _configuration;
     private ILoggerFactory _backupLoggerFactory;
+    private string _backupStacktraceForFirstCallToGetLoggerFactory;
 
     [SetUp]
     public void SetUp ()
@@ -35,12 +36,14 @@ namespace Remotion.UnitTests.ServiceLocation
       _configuration = new BootstrapServiceConfiguration();
 
       _backupLoggerFactory = GetLoggerFactoryOnBootstrapServiceConfiguration();
+      _backupStacktraceForFirstCallToGetLoggerFactory = GetStackTraceForFirstCallToGetLoggerFactoryOnBootstrapServiceConfiguration();
     }
 
     [TearDown]
     public void TearDown ()
     {
       SetLoggerFactoryOnBootstrapServiceConfiguration(_backupLoggerFactory);
+      SetStackTraceForFirstCallToGetLoggerFactoryOnBootstrapServiceConfiguration(_backupStacktraceForFirstCallToGetLoggerFactory);
     }
 
     [Test]
@@ -102,11 +105,26 @@ namespace Remotion.UnitTests.ServiceLocation
     public void GetLoggerFactory_AfterSetLoggerFactory_ReturnsLoggerFactory ()
     {
       SetLoggerFactoryOnBootstrapServiceConfiguration(null);
+      SetStackTraceForFirstCallToGetLoggerFactoryOnBootstrapServiceConfiguration(null);
 
       var loggerFactoryStub = Mock.Of<ILoggerFactory>();
       BootstrapServiceConfiguration.SetLoggerFactory(loggerFactoryStub);
 
       Assert.That(BootstrapServiceConfiguration.GetLoggerFactory(), Is.SameAs(loggerFactoryStub));
+    }
+
+    [Test]
+    public void GetLoggerFactory_AfterMultipleCallsToSetLoggerFactory_ReturnsLastConfiguredLoggerFactory ()
+    {
+      SetLoggerFactoryOnBootstrapServiceConfiguration(null);
+      SetStackTraceForFirstCallToGetLoggerFactoryOnBootstrapServiceConfiguration(null);
+
+      BootstrapServiceConfiguration.SetLoggerFactory(Mock.Of<ILoggerFactory>());
+
+      var secondLoggerFactoryStub = Mock.Of<ILoggerFactory>();
+      BootstrapServiceConfiguration.SetLoggerFactory(secondLoggerFactoryStub);
+
+      Assert.That(BootstrapServiceConfiguration.GetLoggerFactory(), Is.SameAs(secondLoggerFactoryStub));
     }
 
     [Test]
@@ -120,6 +138,40 @@ namespace Remotion.UnitTests.ServiceLocation
               .With.Message.StartsWith("The BootstrapServiceConfiguration.SetLoggerFactory(...) method must be called before accessing the service configuration."));
     }
 
+    [Test]
+    public void SetLoggerFactory_AfterGetLoggerFactory_ThrowsInvalidOperationException ()
+    {
+      SetLoggerFactoryOnBootstrapServiceConfiguration(null);
+      SetStackTraceForFirstCallToGetLoggerFactoryOnBootstrapServiceConfiguration(null);
+
+      SetLoggerFactoryOnBootstrapServiceConfiguration(Mock.Of<ILoggerFactory>());
+      Dev.Null = BootstrapServiceConfiguration.GetLoggerFactory();
+
+      Assert.That(
+          () => BootstrapServiceConfiguration.SetLoggerFactory(Mock.Of<ILoggerFactory>()),
+          Throws.InvalidOperationException
+              .With.Message.StartsWith(
+                  """
+                  The BootstrapServiceConfiguration.SetLoggerFactory(...) method must not be called after the configured value has been read via BootstrapServiceConfiguration.GetLoggerFactory().
+
+                  The first call to BootstrapServiceConfiguration.GetLoggerFactory() generated the following stack trace:
+
+                  --- Begin of diagnostic stack trace ---
+
+                     at Remotion.ServiceLocation.BootstrapServiceConfiguration.GetLoggerFactory()
+                     at Remotion.UnitTests.ServiceLocation.BootstrapServiceConfigurationTest.SetLoggerFactory_AfterGetLoggerFactory_ThrowsInvalidOperationException()
+                     at
+                  """)
+              .And.Message.EndsWith(
+                  """
+                  )
+
+                  --- End of diagnostic stack trace ---
+                  """
+                  )
+          );
+    }
+
     private static ILoggerFactory GetLoggerFactoryOnBootstrapServiceConfiguration ()
     {
       return (ILoggerFactory)PrivateInvoke.GetNonPublicStaticField(typeof(BootstrapServiceConfiguration), "s_loggerFactory");
@@ -128,6 +180,16 @@ namespace Remotion.UnitTests.ServiceLocation
     private static void SetLoggerFactoryOnBootstrapServiceConfiguration (ILoggerFactory value)
     {
       PrivateInvoke.SetNonPublicStaticField(typeof(BootstrapServiceConfiguration), "s_loggerFactory", value);
+    }
+
+    private static string GetStackTraceForFirstCallToGetLoggerFactoryOnBootstrapServiceConfiguration ()
+    {
+      return (string)PrivateInvoke.GetNonPublicStaticField(typeof(BootstrapServiceConfiguration), "s_stackTraceForFirstCallToGetLoggerFactory");
+    }
+
+    private static void SetStackTraceForFirstCallToGetLoggerFactoryOnBootstrapServiceConfiguration (string value)
+    {
+      PrivateInvoke.SetNonPublicStaticField(typeof(BootstrapServiceConfiguration), "s_stackTraceForFirstCallToGetLoggerFactory", value);
     }
 
     public interface IService { }

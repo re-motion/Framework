@@ -16,7 +16,9 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -29,25 +31,67 @@ namespace Remotion.ServiceLocation
   {
     private static readonly object s_loggerFactoryLock = new object();
     private static ILoggerFactory? s_loggerFactory;
+    private static string? s_stackTraceForFirstCallToGetLoggerFactory;
 
+    /// <summary>
+    /// Sets the <see cref="ILoggerFactory"/> returned by <see cref="GetLoggerFactory"/>. This <see cref="ILoggerFactory"/> is later used to create the <see cref="ILogger"/> instances.
+    /// </summary>
+    /// <param name="loggerFactory">
+    /// An instance implementing the <see cref="ILoggerFactory"/> interface. Use <see cref="NullLoggerFactory"/> to permanently disable logging. Must not be <see langword="null" />.
+    /// </param>
+    /// <exception cref="InvalidOperationException">Thrown if <see cref="SetLoggerFactory"/> is called after <see cref="GetLoggerFactory"/>.</exception>
     public static void SetLoggerFactory (ILoggerFactory loggerFactory)
     {
       ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
 
       lock (s_loggerFactoryLock)
       {
-        s_loggerFactory = loggerFactory;
+        if (s_stackTraceForFirstCallToGetLoggerFactory == null)
+        {
+          s_loggerFactory = loggerFactory;
+        }
+        else
+        {
+          throw new InvalidOperationException(
+              """
+              The BootstrapServiceConfiguration.SetLoggerFactory(...) method must not be called after the configured value has been read via BootstrapServiceConfiguration.GetLoggerFactory().
+
+              The first call to BootstrapServiceConfiguration.GetLoggerFactory() generated the following stack trace:
+
+              --- Begin of diagnostic stack trace ---
+
+
+              """
+              + s_stackTraceForFirstCallToGetLoggerFactory
+              +
+              """
+  
+              --- End of diagnostic stack trace ---
+              """);
+        }
       }
     }
 
+    /// <summary>
+    /// Returns the <see cref="ILoggerFactory"/> supplied when calling <see cref="SetLoggerFactory"/>.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Thrown if no <see cref="ILoggerFactory"/> has been configured.</exception>
     public static ILoggerFactory GetLoggerFactory ()
     {
-      var loggerFactory = s_loggerFactory;
-      if (loggerFactory != null)
-        return loggerFactory;
-
       lock (s_loggerFactoryLock)
       {
+        if (s_stackTraceForFirstCallToGetLoggerFactory == null)
+        {
+          try
+          {
+            s_stackTraceForFirstCallToGetLoggerFactory = new StackTrace().ToString();
+          }
+          catch
+          {
+            s_stackTraceForFirstCallToGetLoggerFactory = "No StackTrace is available.";
+          }
+        }
+
         if (s_loggerFactory != null)
           return s_loggerFactory;
 
