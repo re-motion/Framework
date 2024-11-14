@@ -18,10 +18,10 @@ using System;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 
-namespace Remotion.UnitTests.ServiceLocation
+namespace Remotion.UnitTests.ServiceLocation.BootstrapServiceConfigurationTests
 {
   [TestFixture]
-  public class BootstrapServiceConfigurationTest
+  public class RegisterTest
   {
     private BootstrapServiceConfiguration _configuration;
 
