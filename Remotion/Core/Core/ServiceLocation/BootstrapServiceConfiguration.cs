@@ -17,8 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Remotion.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -80,11 +82,13 @@ namespace Remotion.ServiceLocation
     {
       lock (s_loggerFactoryLock)
       {
+        StackTrace? stackTrace = null;
         if (s_stackTraceForFirstCallToGetLoggerFactory == null)
         {
           try
           {
-            s_stackTraceForFirstCallToGetLoggerFactory = new StackTrace().ToString();
+            stackTrace = new StackTrace();
+            s_stackTraceForFirstCallToGetLoggerFactory = stackTrace.ToString();
           }
           catch
           {
@@ -94,6 +98,13 @@ namespace Remotion.ServiceLocation
 
         if (s_loggerFactory != null)
           return s_loggerFactory;
+
+        var fallbackLoggerFactory = GetFallbackLoggerFactory(stackTrace);
+        if (fallbackLoggerFactory != null)
+        {
+          s_loggerFactory = fallbackLoggerFactory;
+          return s_loggerFactory;
+        }
 
         throw new InvalidOperationException(
             """
@@ -105,9 +116,47 @@ namespace Remotion.ServiceLocation
                 var loggerFactory = new LoggerFactory(new[] { new Log4NetLoggerProvider() });
                 BootstrapServiceConfiguration.SetLoggerFactory(loggerFactory);
 
-            Alternatively, you can supply a different logging framework or chose to have no logging at all by passing the NullLoggerFactory.Instance. 
-            """);
+            You can supply a different logging framework or chose to have no logging at all by passing the NullLoggerFactory.Instance.
+
+            """
+            + "For testing purposes or if no logging is required in your application, you may instead apply the "
+            + typeof(EnableNullLoggerFactoryAsFallbackInBootstrapServiceConfigurationAttribute).FullName + " "
+            + "on your testing assembly or your application's main assembly. "
+            + "This change will configure the infrastructure to use the NullLoggerFactory as the default for logging."
+            + """
+
+
+              --- Begin of diagnostic stack trace for this exception's first occurance ---
+
+
+              """
+            + s_stackTraceForFirstCallToGetLoggerFactory
+            + """
+
+              --- End of diagnostic stack trace ---
+              """);
       }
+    }
+
+    /// <summary>
+    /// Returns the <see cref="NullLoggerFactory"/> if any <see cref="Assembly"/> on the stack trace
+    /// defines the <see cref="EnableNullLoggerFactoryAsFallbackInBootstrapServiceConfigurationAttribute"/>.
+    /// </summary>
+    private static ILoggerFactory? GetFallbackLoggerFactory (StackTrace? stackTrace)
+    {
+      if (stackTrace == null)
+        return null;
+
+      var assembliesInStackTrace = new HashSet<Assembly>();
+      for (int i = 0; i < stackTrace.FrameCount; i++)
+      {
+        var assembly = stackTrace.GetFrame(i)?.GetMethod()?.DeclaringType?.Assembly;
+        var isNewAssmebly = assembly != null && assembliesInStackTrace.Add(assembly);
+        if (isNewAssmebly && assembly!.IsDefined(typeof(EnableNullLoggerFactoryAsFallbackInBootstrapServiceConfigurationAttribute)))
+          return NullLoggerFactory.Instance;
+      }
+
+      return null;
     }
 
     private readonly object _lock = new object();

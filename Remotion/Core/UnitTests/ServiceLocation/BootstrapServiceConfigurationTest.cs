@@ -19,6 +19,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Logging;
 using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation
@@ -131,11 +132,29 @@ namespace Remotion.UnitTests.ServiceLocation
     public void GetLoggerFactory_WithoutSetLoggerFactory_ThrowsInvalidOperationException ()
     {
       SetLoggerFactoryOnBootstrapServiceConfiguration(null);
+      SetStackTraceForFirstCallToGetLoggerFactoryOnBootstrapServiceConfiguration(null);
 
       Assert.That(
           () => BootstrapServiceConfiguration.GetLoggerFactory(),
           Throws.InvalidOperationException
-              .With.Message.StartsWith("The BootstrapServiceConfiguration.SetLoggerFactory(...) method must be called before accessing the service configuration."));
+              .With.Message.StartsWith("The BootstrapServiceConfiguration.SetLoggerFactory(...) method must be called before accessing the service configuration.")
+              .And.Message.Contains("Remotion.Logging." + nameof(EnableNullLoggerFactoryAsFallbackInBootstrapServiceConfigurationAttribute))
+              .And.Message.Contains(
+                  """
+                  as the default for logging.
+
+                  --- Begin of diagnostic stack trace for this exception's first occurance ---
+
+                     at Remotion.ServiceLocation.BootstrapServiceConfiguration.GetLoggerFactory()
+                     at Remotion.UnitTests.ServiceLocation.BootstrapServiceConfigurationTest.
+                  """)
+              .And.Message.EndsWith(
+                  """
+                  )
+
+                  --- End of diagnostic stack trace ---
+                  """)
+          );
     }
 
     [Test]
