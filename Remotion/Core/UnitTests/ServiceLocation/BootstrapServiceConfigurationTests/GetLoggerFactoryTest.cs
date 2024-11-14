@@ -22,23 +22,22 @@ using Remotion.Development.UnitTesting;
 using Remotion.Logging;
 using Remotion.ServiceLocation;
 
-namespace Remotion.UnitTests.ServiceLocation
+namespace Remotion.UnitTests.ServiceLocation.BootstrapServiceConfigurationTests
 {
   [TestFixture]
-  public class BootstrapServiceConfigurationTest
+  public class GetLoggerFactoryTest
   {
-    private BootstrapServiceConfiguration _configuration;
     private ILoggerFactory _backupLoggerFactory;
     private string _backupStacktraceForFirstCallToGetLoggerFactory;
 
     [SetUp]
     public void SetUp ()
     {
-      _configuration = new BootstrapServiceConfiguration();
-
       _backupLoggerFactory = GetLoggerFactoryOnBootstrapServiceConfiguration();
       _backupStacktraceForFirstCallToGetLoggerFactory = GetStackTraceForFirstCallToGetLoggerFactoryOnBootstrapServiceConfiguration();
-    }
+
+      SetLoggerFactoryOnBootstrapServiceConfiguration(null);
+      SetStackTraceForFirstCallToGetLoggerFactoryOnBootstrapServiceConfiguration(null);    }
 
     [TearDown]
     public void TearDown ()
@@ -48,66 +47,8 @@ namespace Remotion.UnitTests.ServiceLocation
     }
 
     [Test]
-    public void Register_ServiceConfigurationEntry_AddsEntryToRegistrations_AndToBootstrapLocator ()
-    {
-      var entry = new ServiceConfigurationEntry(typeof(IService), new ServiceImplementationInfo(typeof(Service), LifetimeKind.Singleton));
-      _configuration.Register(entry);
-
-      Assert.That(_configuration.Registrations, Is.EqualTo(new[] { entry }));
-      Assert.That(_configuration.BootstrapServiceLocator.GetInstance<IService>(), Is.Not.Null.And.TypeOf<Service>());
-    }
-
-    [Test]
-    public void Register_ServiceConfigurationEntry_IfLocatorThrows_NoRegistrationIsAdded ()
-    {
-      // This causes the association between IServiceWithAttribute and ServiceWithAttribute1 to be stored in the BootstrapServiceLocator, so it will
-      // later throw on Register.
-      _configuration.BootstrapServiceLocator.GetInstance<IServiceWithAttribute>();
-
-      var entry = new ServiceConfigurationEntry(
-          typeof(IServiceWithAttribute),
-          new ServiceImplementationInfo(typeof(ServiceWithAttribute2), LifetimeKind.Singleton));
-      Assert.That(() => _configuration.Register(entry), Throws.InvalidOperationException);
-
-      Assert.That(_configuration.Registrations, Is.Empty);
-      Assert.That(_configuration.BootstrapServiceLocator.GetInstance<IServiceWithAttribute>(), Is.Not.Null.And.TypeOf<ServiceWithAttribute1>());
-    }
-
-    [Test]
-    public void Register_Types_AddsEntry ()
-    {
-      _configuration.Register(typeof(IService), typeof(Service), LifetimeKind.InstancePerDependency);
-
-      Assert.That(_configuration.Registrations, Has.Length.EqualTo(1));
-      Assert.That(_configuration.Registrations[0].ServiceType, Is.SameAs(typeof(IService)));
-
-      Assert.That(_configuration.Registrations[0].ImplementationInfos.Count, Is.EqualTo(1));
-      Assert.That(_configuration.Registrations[0].ImplementationInfos[0].ImplementationType, Is.EqualTo(typeof(Service)));
-      Assert.That(_configuration.Registrations[0].ImplementationInfos[0].Lifetime, Is.EqualTo(LifetimeKind.InstancePerDependency));
-
-      Assert.That(_configuration.BootstrapServiceLocator.GetInstance<IService>(), Is.Not.Null.And.TypeOf<Service>());
-    }
-
-    [Test]
-    public void Reset ()
-    {
-      _configuration.Register(typeof(IService), typeof(Service), LifetimeKind.InstancePerDependency);
-
-      Assert.That(_configuration.Registrations, Is.Not.Empty);
-      Assert.That(_configuration.BootstrapServiceLocator.GetInstance<IService>(), Is.Not.Null.And.TypeOf<Service>());
-
-      _configuration.Reset();
-
-      Assert.That(_configuration.Registrations, Is.Empty);
-      Assert.That(() => _configuration.BootstrapServiceLocator.GetInstance<IService>(), Throws.TypeOf<ActivationException>());
-    }
-
-    [Test]
     public void GetLoggerFactory_AfterSetLoggerFactory_ReturnsLoggerFactory ()
     {
-      SetLoggerFactoryOnBootstrapServiceConfiguration(null);
-      SetStackTraceForFirstCallToGetLoggerFactoryOnBootstrapServiceConfiguration(null);
-
       var loggerFactoryStub = Mock.Of<ILoggerFactory>();
       BootstrapServiceConfiguration.SetLoggerFactory(loggerFactoryStub);
 
@@ -117,9 +58,6 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetLoggerFactory_AfterMultipleCallsToSetLoggerFactory_ReturnsLastConfiguredLoggerFactory ()
     {
-      SetLoggerFactoryOnBootstrapServiceConfiguration(null);
-      SetStackTraceForFirstCallToGetLoggerFactoryOnBootstrapServiceConfiguration(null);
-
       BootstrapServiceConfiguration.SetLoggerFactory(Mock.Of<ILoggerFactory>());
 
       var secondLoggerFactoryStub = Mock.Of<ILoggerFactory>();
@@ -131,9 +69,6 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void GetLoggerFactory_WithoutSetLoggerFactory_ThrowsInvalidOperationException ()
     {
-      SetLoggerFactoryOnBootstrapServiceConfiguration(null);
-      SetStackTraceForFirstCallToGetLoggerFactoryOnBootstrapServiceConfiguration(null);
-
       Assert.That(
           () => BootstrapServiceConfiguration.GetLoggerFactory(),
           Throws.InvalidOperationException
@@ -146,7 +81,7 @@ namespace Remotion.UnitTests.ServiceLocation
                   --- Begin of diagnostic stack trace for this exception's first occurance ---
 
                      at Remotion.ServiceLocation.BootstrapServiceConfiguration.GetLoggerFactory()
-                     at Remotion.UnitTests.ServiceLocation.BootstrapServiceConfigurationTest.
+                     at Remotion.UnitTests.ServiceLocation.BootstrapServiceConfigurationTests.GetLoggerFactoryTest.
                   """)
               .And.Message.EndsWith(
                   """
@@ -160,9 +95,6 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void SetLoggerFactory_AfterGetLoggerFactory_ThrowsInvalidOperationException ()
     {
-      SetLoggerFactoryOnBootstrapServiceConfiguration(null);
-      SetStackTraceForFirstCallToGetLoggerFactoryOnBootstrapServiceConfiguration(null);
-
       SetLoggerFactoryOnBootstrapServiceConfiguration(Mock.Of<ILoggerFactory>());
       Dev.Null = BootstrapServiceConfiguration.GetLoggerFactory();
 
@@ -178,7 +110,7 @@ namespace Remotion.UnitTests.ServiceLocation
                   --- Begin of diagnostic stack trace ---
 
                      at Remotion.ServiceLocation.BootstrapServiceConfiguration.GetLoggerFactory()
-                     at Remotion.UnitTests.ServiceLocation.BootstrapServiceConfigurationTest.SetLoggerFactory_AfterGetLoggerFactory_ThrowsInvalidOperationException()
+                     at Remotion.UnitTests.ServiceLocation.BootstrapServiceConfigurationTests.GetLoggerFactoryTest.SetLoggerFactory_AfterGetLoggerFactory_ThrowsInvalidOperationException()
                      at
                   """)
               .And.Message.EndsWith(
@@ -209,22 +141,6 @@ namespace Remotion.UnitTests.ServiceLocation
     private static void SetStackTraceForFirstCallToGetLoggerFactoryOnBootstrapServiceConfiguration (string value)
     {
       PrivateInvoke.SetNonPublicStaticField(typeof(BootstrapServiceConfiguration), "s_stackTraceForFirstCallToGetLoggerFactory", value);
-    }
-
-    public interface IService { }
-    public class Service : IService { }
-
-    public interface IServiceWithAttribute
-    {
-    }
-
-    [ImplementationFor(typeof(IServiceWithAttribute))]
-    public class ServiceWithAttribute1 : IServiceWithAttribute
-    {
-    }
-
-    public class ServiceWithAttribute2 : IServiceWithAttribute
-    {
     }
   }
 }
