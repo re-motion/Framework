@@ -21,6 +21,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web;
 using System.Web.SessionState;
+using Microsoft.Extensions.Logging;
 using Remotion.Context;
 using Remotion.Logging;
 using Remotion.Reflection;
@@ -32,7 +33,6 @@ namespace Remotion.Web.ExecutionEngine
   public class WxeFunctionStateManager
   {
     /// <threadsafety static="true" instance="true" />
-    [Serializable]
     public class WxeFunctionStateMetaData : Tuple<string, int, DateTime>
     {
       public WxeFunctionStateMetaData (string functionToken, int lifetimeInMinutes, DateTime lastAccessUtc)
@@ -68,7 +68,7 @@ namespace Remotion.Web.ExecutionEngine
       }
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(WxeFunctionStateManager));
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<WxeFunctionStateManager>();
 
     private static readonly string s_key = typeof(WxeFunctionStateManager).GetAssemblyQualifiedNameChecked();
     private static readonly string s_sessionKeyForFunctionStates = s_key + "|WxeFunctionStates";
@@ -219,7 +219,7 @@ namespace Remotion.Web.ExecutionEngine
       if (hasOutOfProcessSession)
       {
         stopwatch!.Stop();
-        s_log.DebugFormat("Deserialized WxeFunctionState {0} in {1} ms.", functionToken, stopwatch.ElapsedMilliseconds);
+        s_logger.LogDebug("Deserialized WxeFunctionState {0} in {1} ms.", functionToken, stopwatch.ElapsedMilliseconds);
       }
 
       return functionState;
@@ -287,7 +287,7 @@ namespace Remotion.Web.ExecutionEngine
       {
         CheckFunctionTokenExists(functionToken);
 
-        s_log.Debug(string.Format("Refreshing WxeFunctionState {0}.", functionToken));
+        s_logger.LogDebug(string.Format("Refreshing WxeFunctionState {0}.", functionToken));
         WxeFunctionStateMetaData old = _functionStates[functionToken];
         _functionStates[functionToken] = new WxeFunctionStateMetaData(old.FunctionToken, old.LifetimeInMinutes, DateTime.UtcNow);
       }

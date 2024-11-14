@@ -94,12 +94,13 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
           webTestSettings.DownloadStartedTimeout,
           webTestSettings.DownloadUpdatedTimeout,
           downloadStartedGracePeriod,
-          webTestSettings.CleanUpUnmatchedDownloadedFiles);
+          webTestSettings.CleanUpUnmatchedDownloadedFiles,
+          webTestSettings.LoggerFactory);
 
       DisableSecurityWarningsBehavior = webTestSettings.Chrome.DisableSecurityWarningsBehavior;
     }
 
-    public override IBrowserFactory BrowserFactory => new ChromeBrowserFactory(this);
+    public override IBrowserFactory BrowserFactory => new ChromeBrowserFactory(this, LoggerFactory);
 
     public virtual ExtendedChromeOptions CreateChromeOptions ()
     {
@@ -117,6 +118,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       chromeOptions.AddArgument("no-first-run");
       chromeOptions.AddArgument("disable-features=ChromeWhatsNewUI");
       chromeOptions.AddArgument("force-device-scale-factor=1");
+      chromeOptions.AddArgument("disable-search-engine-choice-screen");
 
       chromeOptions.AddUserProfilePreference("safebrowsing.enabled", true);
       chromeOptions.AddUserProfilePreference("download.default_directory", DownloadDirectory);

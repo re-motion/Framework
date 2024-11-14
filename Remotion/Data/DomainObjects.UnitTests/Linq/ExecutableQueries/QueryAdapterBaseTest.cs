@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
       testHelper.CheckDelegation(q => q.Statement, "Some Statement");
       testHelper.CheckDelegation(q => q.StorageProviderDefinition, TestDomainStorageProviderDefinition);
       testHelper.CheckDelegation(q => q.CollectionType, typeof(OrderCollection));
-      testHelper.CheckDelegation(q => q.QueryType, QueryType.Collection);
+      testHelper.CheckDelegation(q => q.QueryType, QueryType.CollectionReadOnly);
       testHelper.CheckDelegation(q => q.Parameters, parameterCollection);
       testHelper.CheckDelegation(q => q.EagerFetchQueries, eagerFetchQueries);
     }

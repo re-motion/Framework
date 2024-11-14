@@ -96,11 +96,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       PrivateInvoke.InvokeNonPublicMethod(
           _observableDomainObjectDecorator, "OnDataChanged", ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Insert, _order1, 12);
     }
-
-    [Test]
-    public void Serialization ()
-    {
-      Serializer.SerializeAndDeserialize(_observableDomainObjectDecorator);
-    }
   }
 }

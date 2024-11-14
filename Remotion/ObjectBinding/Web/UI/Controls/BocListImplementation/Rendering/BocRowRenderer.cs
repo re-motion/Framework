@@ -249,6 +249,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
       var columnIndexProvider = new BocListColumnIndexProvider(columnRenderers);

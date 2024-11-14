@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using System.Text;
 using Remotion.Utilities;
 
@@ -26,20 +25,10 @@ namespace Remotion.Mixins.Validation
   /// Thrown when there is an error in the mixin configuration which is detected during validation of the configuration. The problem prevents
   /// code being generated from the configuration. See also <see cref="ConfigurationException"/>.
   /// </summary>
-  [Serializable]
   public class ValidationException : Exception
   {
-    private readonly SerializableValidationLogData? _serializableValidationLogData;
-
-    public SerializableValidationLogData? ValidationLogData
-    {
-      get { return _serializableValidationLogData; }
-    }
-
     private static string BuildExceptionString (ValidationLogData data)
     {
-      ArgumentUtility.CheckNotNull("data", data);
-
       var sb = new StringBuilder("Some parts of the mixin configuration could not be validated.");
       foreach (ValidationResult item in data.GetResults())
       {
@@ -81,40 +70,29 @@ namespace Remotion.Mixins.Validation
       }
     }
 
+    public int NumberOfRulesExecuted { get; }
+
+    public int NumberOfUnexpectedExceptions { get; }
+
+    public int NumberOfFailures { get; }
+
+    public int NumberOfWarnings { get; }
+
+    public int NumberOfSuccesses { get; }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ValidationException"/> class and creates a descriptive message from the validation log.
     /// </summary>
     /// <param name="validationLogData">The validation log data.</param>
     /// <exception cref="ArgumentNullException">The log is empty.</exception>
     public ValidationException (ValidationLogData validationLogData)
-        : base(BuildExceptionString(validationLogData))
+        : base(BuildExceptionString(ArgumentUtility.CheckNotNull("validationLogData", validationLogData)))
     {
-      _serializableValidationLogData = validationLogData.MakeSerializable();
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ValidationException"/> class during deserialization.
-    /// </summary>
-    /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"></see> that holds the serialized object data about the exception being thrown.</param>
-    /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"></see> that contains contextual information about the source or destination.</param>
-    /// <exception cref="T:System.ArgumentNullException">The info parameter is null. </exception>
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    protected ValidationException (SerializationInfo info, StreamingContext context)
-        : base(info, context)
-    {
-      _serializableValidationLogData =
-          (SerializableValidationLogData?)info.GetValue("SerializableValidationLogData", typeof(SerializableValidationLogData));
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    public override void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      base.GetObjectData(info, context);
-      info.AddValue("SerializableValidationLogData", _serializableValidationLogData);
+      NumberOfFailures = validationLogData.GetNumberOfFailures();
+      NumberOfRulesExecuted = validationLogData.GetNumberOfRulesExecuted();
+      NumberOfSuccesses = validationLogData.GetNumberOfSuccesses();
+      NumberOfUnexpectedExceptions = validationLogData.GetNumberOfUnexpectedExceptions();
+      NumberOfWarnings = validationLogData.GetNumberOfWarnings();
     }
   }
 }

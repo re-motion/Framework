@@ -42,6 +42,15 @@ namespace Remotion.BocAutoCompleteReferenceValue
     {
         Type: 'ValueList';
         Values: Remotion.BocAutoCompleteReferenceValue.Item[];
+        Context: Nullable<string>;
+        HasMoreSearchResults: boolean;
+    }
+
+    export interface BocAutoCompleteReferenceValueCacheableSearchResult
+    {
+        cacheRow: CacheRow;
+        hasMoreSearchResults: boolean;
+        context: Nullable<string>;
     }
 
     export type Item = {
@@ -79,7 +88,10 @@ namespace Remotion.BocAutoCompleteReferenceValue
         dropDownDisplayDelay: number;
         dropDownRefreshDelay: number;
         selectionUpdateDelay: number;
+        loadingMatchesMessageDelay: number;
         noDataFoundMessage: string;
+        loadingMoreMatchesMessage: string;
+        loadedMoreMatchesMessage: string;
         matchContains: boolean;
         cacheLength: number;
         max: number;
@@ -90,20 +102,20 @@ namespace Remotion.BocAutoCompleteReferenceValue
         dropDownButtonID: string;
         dataType: string;
         selectFirst(inputValue: string, searchTerm: Nullable<string>): boolean;
-        formatItem(item: Item, index: number, length: number, value: string, term: string): FormatResult;
-        formatMatch(item: Item, index: number, length: number): string | false;
+        formatItem(item: Item, value: string, term: string): FormatResult;
+        formatPlaceholderElement(placeholderElement: HTMLElement): void;
+        formatMatch(item: Item): string | false;
         formatResult?(item: Item): string;
         autoFill: boolean;
         highlight(value: string, term: string): string;
         scroll: boolean;
         repositionInterval: number;
-        parse(data: BocAutoCompleteReferenceValueSearchResult): Remotion.BocAutoCompleteReferenceValue.CacheRow;
+        parse(data: BocAutoCompleteReferenceValueSearchResult): BocAutoCompleteReferenceValueCacheableSearchResult;
         handleRequestError(err: Sys.Net.WebServiceError): void;
         clearRequestError(err?: Sys.Net.WebServiceError): void;
         serviceUrl: string;
         serviceMethodSearch: string;
         serviceMethodSearchExact: string;
-        data: Nullable<Item[]>;
     };
 
     // This type contains the properties that are required to be passed into the .autocomplete() function
@@ -118,7 +130,10 @@ namespace Remotion.BocAutoCompleteReferenceValue
             dropDownTriggerRegexFailedMessage: string;
             getDropDownSearchString?(searchString: string): string;
         },
+        loadingMoreMatchesMessage: Options["loadingMoreMatchesMessage"];
+        loadedMoreMatchesMessage: Options["loadedMoreMatchesMessage"];
         formatItem: Options["formatItem"];
+        formatPlaceholderElement: Options["formatPlaceholderElement"];
         formatMatch: Options["formatMatch"];
         selectListID: Options["selectListID"];
         informationPopUpID: Options["informationPopUpID"];
@@ -201,6 +216,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
         dropDownDisplayDelay: 400,
         dropDownRefreshDelay: 400,
         selectionUpdateDelay: 400,
+        loadingMatchesMessageDelay: 1000,
         noDataFoundMessage: '',
         matchContains: false,
         cacheLength: 10,
@@ -234,7 +250,6 @@ namespace Remotion.BocAutoCompleteReferenceValue
             serviceUrl: serviceUrl,
             serviceMethodSearch: serviceMethodSearch,
             serviceMethodSearchExact: serviceMethodSearchExact,
-            data: null,
         }, initialOptions as RequiredOptions);
 
         // if highlight is set to false, replace it with a do-nothing function
@@ -296,11 +311,11 @@ namespace Remotion.BocAutoCompleteReferenceValue
             lastKeyPressCode: -1,
             mouseDownOnSelect: false,
             // holds the last text the user entered into the input element
-            previousValue: '',
+            previousValue: input.value,
             lastKeyPressValue: null as Nullable<string>
         };
 
-        const select = new Select(options, input, selectCurrent, state);
+        const select = new Select(options, input, selectCurrent, requestMoreData, state);
         // Perform initialize on load to ensure that screenreader can recognize the BocAutoCompleteReferenceValue as a combobox.
         // With IE 11 / JAWS 18, the input element is announced as an 'edit' input element until there is a listbox element available as well,
         // Chrome 63 does not show this behavior, so it's just some weird issue that needs to be worked around.
@@ -312,9 +327,6 @@ namespace Remotion.BocAutoCompleteReferenceValue
             // track last key pressed
             state.lastKeyPressCode = event.keyCode;
             clearTimeout(timeout);
-            // re-motion: cancel an already running request
-            stopLoading();
-            abortRequest();
             if (state.lastKeyPressValue !== null && state.lastKeyPressValue != input.value) {
                 invalidateResult();
             }
@@ -373,6 +385,9 @@ namespace Remotion.BocAutoCompleteReferenceValue
                 case KEY.RETURN:
                 case KEY.TAB:
                 case KEY.ESC:
+                    // re-motion: cancel an already running request
+                    stopLoading();
+                    abortRequest();
                     // re-motion: block event bubbling
                     event.stopPropagation();
                     const wasVisible = select.visible();
@@ -415,6 +430,9 @@ namespace Remotion.BocAutoCompleteReferenceValue
                     }
 
                 default:
+                    // re-motion: cancel an already running request
+                    stopLoading();
+                    abortRequest();
                     // allow default for remaining keys.
                     return;
             }
@@ -595,10 +613,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
             },
             setOptions: function(newOptions: Options): AutoCompletePublicApi {
                 Object.assign(options, newOptions);
-                // if we've updated the data, repopulate
-                if ("data" in newOptions)
-                    cache.populate();
-                
+
                 return this;
             },
             showInformationPopUp: function (message: string): AutoCompletePublicApi {
@@ -783,7 +798,24 @@ namespace Remotion.BocAutoCompleteReferenceValue
             return true;
         }
 
+        function requestMoreData(term: string, offset: number, context: Nullable<string>): Promise<BocAutoCompleteReferenceValueCacheableSearchResult> {
+            return new Promise((resolve, reject) => {
+                const successHandler = (term: string, result: BocAutoCompleteReferenceValueCacheableSearchResult) => {
+                    resolve(result);
+                };
+                const failureHandler = (error: string) => {
+                    select.hide();
+                    reject();
+                };
+
+                requestData(term, offset, context, successHandler, failureHandler);
+            });
+        }
+
         function onChange(dropDownTriggered: boolean, currentValue: string): void {
+            if (informationPopUp.visible() && currentValue == state.previousValue)
+                return;
+
             informationPopUp.hide();
 
             if (!dropDownTriggered && currentValue == state.previousValue)
@@ -800,7 +832,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                 if (dropDownTriggered)
                     searchString = options.searchStringValidationParams.getDropDownSearchString(searchString);
 
-                const successHandler = function (q: string, data: Nullable<CacheRow>) {
+                const successHandler = function (q: string, data: BocAutoCompleteReferenceValueCacheableSearchResult) {
                     stopLoading();
                     receiveData (q, data);
                     if (!select.visible() && options.noDataFoundMessage) {
@@ -816,7 +848,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                     closeDropDownListAndSetValue(state.previousValue, false);
                 };
 
-                requestData(searchString, successHandler, failureHandler);
+                requestData(searchString, 0, null, successHandler, failureHandler);
             } else {
                 stopLoading();
                 select.hide();
@@ -891,12 +923,12 @@ namespace Remotion.BocAutoCompleteReferenceValue
             state.lastKeyPressValue = null;
         };
 
-        function receiveData(q: string, data: Nullable<CacheRow>): void {
+        function receiveData(q: string, data: BocAutoCompleteReferenceValueCacheableSearchResult): void {
             informationPopUp.hide();
             if (data && hasFocus) {
                 select.display(data, q);
-                if (data.length) {
-                    autoFill(q, data[0].result);
+                if (data.cacheRow.length) {
+                    autoFill(q, data.cacheRow[0].result);
                     select.show();
                     if (options.selectFirst (input.value, q)) {
                         select.selectItem (0);
@@ -909,7 +941,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
             }
         };
 
-        function requestData(term: string, success: (term: string, result: Nullable<CacheRow>) => void, failure: (term: string) => void) {
+        function requestData(term: string, offset: number, context: Nullable<string>, success: (term: string, result: BocAutoCompleteReferenceValueCacheableSearchResult) => void, failure: (term: string) => void) {
             // re-motion: cancel an already running request
             abortRequest();
 
@@ -922,10 +954,10 @@ namespace Remotion.BocAutoCompleteReferenceValue
 
             options.clearRequestError();
 
-            const data = cache.load(term);
-            // recieve the cached data
-            if (data && data.length) {
-                success(term, data);
+            const cachedSearchResult = cache.load(term, offset);
+            // receive the cached data
+            if (cachedSearchResult && cachedSearchResult.cacheRow.length) {
+                success(term, cachedSearchResult);
 
                 // re-motion: if a webservice url and a method name have been supplied, try loading the data now
             } else if ((typeof options.serviceUrl == "string") && (options.serviceUrl.length > 0)
@@ -938,7 +970,9 @@ namespace Remotion.BocAutoCompleteReferenceValue
                 //           under "JSON, objects, and strings: oh my!" for details.
                 const params: Dictionary<unknown> = {
                     searchString: term,
-                    completionSetCount: options.max
+                    completionSetOffset: offset,
+                    completionSetCount: options.max,
+                    context: context
                 };
                 for (const propertyName in options.extraParams)
                     params[propertyName] = options.extraParams[propertyName];
@@ -947,7 +981,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                                             function(result: BocAutoCompleteReferenceValueSearchResult) {
                                                 executingRequest = null;
                                                 const parsed = options.parse(result);
-                                                cache.add(term, parsed);
+                                                cache.add(term, offset, parsed);
                                                 success(term, parsed);
                                             } as any,
                                             function(err: Sys.Net.WebServiceError) {
@@ -992,9 +1026,9 @@ namespace Remotion.BocAutoCompleteReferenceValue
                                                         executingRequest = null;
                                                         let parsed: Nullable<CacheRowEntry> = null;
                                                         if (result != null) {
-                                                            const resultArray: BocAutoCompleteReferenceValueSearchResultWithValueList = { Type: "ValueList", Values: [result] };
+                                                            const resultArray: BocAutoCompleteReferenceValueSearchResultWithValueList = { Type: "ValueList", Values: [result], HasMoreSearchResults: false, Context: null };
                                                             const parsedArray = options.parse(resultArray);
-                                                            parsed = parsedArray[0];
+                                                            parsed = parsedArray.cacheRow![0];
                                                         }
                                                         success(term, parsed);
                                                     } as any,
@@ -1039,94 +1073,42 @@ namespace Remotion.BocAutoCompleteReferenceValue
         result: string;
     };
     export type CacheRow = CacheRowEntry[];
-    export type CacheLookup = { [firstChar: string]: CacheRow | undefined };
 
     export class Cache {
         private readonly options: Options;
+        private readonly data = new Map<string, BocAutoCompleteReferenceValueCacheableSearchResult>();
 
-        private data: CacheLookup = {};
-        private length: number = 0;
-        public add(q: string, value: CacheRow): void {
-            if (this.length > this.options.cacheLength) {
-                this.flush();
-            }
-            if (!this.data[q]) {
-                this.length++;
-            }
-            this.data[q] = value;
+        constructor(options: Options) {
+            this.options = options;
         }
 
-        public populate(): Optional<boolean> {
-            if (!this.options.data) return false;
-            // track the matches
-            const stMatchSets: Dictionary<CacheRow> = {};
-            let nullData = 0;
+        public add(q: string, offset: number, value: BocAutoCompleteReferenceValueCacheableSearchResult): void {
+            if (this.data.size > this.options.cacheLength) {
+                this.flush();
+            }
 
-            // no url was specified, we need to adjust the cache length to make sure it fits the local data store
-            if (!this.options.serviceUrl) this.options.cacheLength = 1;
-
-            // track all options for empty search strings
-            stMatchSets[""] = [];
-
-            // loop through the array and create a lookup structure
-            for (let i = 0, ol = this.options.data.length; i < ol; i++) {
-                let rawValue = this.options.data[i];
-
-                const value = this.options.formatMatch(rawValue, i + 1, this.options.data.length);
-                if (value === false)
-                    continue;
-
-                const firstChar = value.charAt(0).toLowerCase();
-                // if no lookup array for this character exists, look it up now
-                if (!stMatchSets[firstChar])
-                    stMatchSets[firstChar] = [];
-
-                // if the match is a string
-                const row: CacheRowEntry = {
-                    value: value,
-                    data: rawValue,
-                    result: this.options.formatResult && this.options.formatResult(rawValue) || value
-                };
-
-                // push the current match into the set list
-                stMatchSets[firstChar]!.push(row);
-
-                // keep track of empty search string items
-                if (nullData++ < this.options.max) {
-                    stMatchSets[""].push(row);
+            if (offset === 0) {
+                this.data.set(q, value);
+            } else {
+                const existingData = this.data.get(q);
+                if (existingData && existingData.cacheRow.length === offset) {
+                    existingData.cacheRow.push(...value.cacheRow);
+                    existingData.hasMoreSearchResults = value.hasMoreSearchResults;
+                    existingData.context = value.context;
                 }
-            };
-
-            // add the data items to the cache
-            for (const [key, value] of Object.entries(stMatchSets)) {
-                // increase the cache size
-                this.options.cacheLength++;
-                // add to the cache
-                this.add(key, value!);
+                // ignore offset data that does not append to an existing cache line
             }
         }
 
         public flush(): void {
-            this.data = {};
-            this.length = 0;
+            this.data.clear();
         }
 
-        public load(q: string): Nullable<CacheRow> {
-            if (!this.options.cacheLength || !this.length)
+        public load(q: string, offset: number): Nullable<BocAutoCompleteReferenceValueCacheableSearchResult> {
+            if (offset !== 0)
                 return null;
 
-            // if the exact item exists, use it
-            if (this.data[q]) {
-                return this.data[q]!;
-            }
-            return null;
-        }
-
-        constructor(options: Options) {
-            this.options = options;
-
-            // populate any existing data
-            setTimeout(this.populate.bind(this), 25);
+            return this.data.get(q) || null;
         }
     }
 
@@ -1141,14 +1123,21 @@ namespace Remotion.BocAutoCompleteReferenceValue
         private readonly options: Options;
         private readonly input: HTMLInputElement;
         private readonly select: (value: boolean) => void;
+        private readonly loadMoreData: (term: string, offset: number, context: Nullable<string>) => Promise<BocAutoCompleteReferenceValueCacheableSearchResult>
         private readonly config: SelectConfig;
 
         private readonly ac_data: WeakMap<HTMLElement, CacheRowEntry> = new WeakMap();
 
-        constructor(options: Options, input: HTMLInputElement, select: (value: boolean) => void, config: SelectConfig) {
+        constructor(
+            options: Options,
+            input: HTMLInputElement,
+            select: (value: boolean) => void,
+            loadMoreData: (term: string, offset: number, context: Nullable<string>) => Promise<BocAutoCompleteReferenceValueCacheableSearchResult>,
+            config: SelectConfig) {
             this.options = options;
             this.input = input;
             this.select = select;
+            this.loadMoreData = loadMoreData;
             this.config = config;
         }
 
@@ -1160,9 +1149,14 @@ namespace Remotion.BocAutoCompleteReferenceValue
         private active: number = -1;
         private data: Nullable<CacheRow> = null;
         private term: string = "";
+        private context: Nullable<string> = null;
         private needsInit: boolean = true;
         private element: Nullable<HTMLElement> = undefined!;
+        private announcementElement: HTMLElement = undefined!;
+        private queuedLoadingAnnouncementTimeout: Nullable<number> = null;
+        private placeholderItem: Nullable<HTMLLIElement> = null;
         private list: HTMLElement = undefined!;
+        private isLoadingMoreData = false;
 
         // Create results
         public init() {
@@ -1173,6 +1167,11 @@ namespace Remotion.BocAutoCompleteReferenceValue
             this.element.setAttribute('class', this.options.resultsClass);
             this.element.style.position = 'fixed';
             LayoutUtility.Hide(this.element);
+
+            this.announcementElement = document.createElement("span");
+            this.announcementElement.role = "status";
+            this.announcementElement.classList.add("screenReaderText");
+            this.element.appendChild(this.announcementElement);
 
             this.input.closest('div, td, th, body')!.appendChild(this.element);
 
@@ -1194,6 +1193,14 @@ namespace Remotion.BocAutoCompleteReferenceValue
             const innerDiv = document.createElement("div");
             this.element.appendChild(innerDiv);
             innerDiv.addEventListener('scroll', () => {
+                // If more data is available, the bottom element will be the placeholder. Start loading new elements
+                // when the placeholder is getting scrolled into view.
+                const heightPerListItem = Math.max(1, innerDiv.clientHeight / this.listItems.length);
+                const scrolledToLastRealElement = Math.abs(innerDiv.scrollHeight - innerDiv.clientHeight - innerDiv.scrollTop) <= heightPerListItem;
+                if (scrolledToLastRealElement && this.visible()) {
+                    this.loadMoreDataIfAvailable();
+                }
+
                 this.config.mouseDownOnSelect = true;
                 if (revertInputStatusTimeout) 
                     clearTimeout(revertInputStatusTimeout);
@@ -1257,6 +1264,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                 Sys.WebForms.PageRequestManager.getInstance().remove_beginRequest(beginRequestHandler);
                 this.element!.remove();
                 this.element = null;
+                this.clearAnnouncements();
                 this.needsInit = true;
             }
             Sys.WebForms.PageRequestManager.getInstance().add_beginRequest(beginRequestHandler);
@@ -1317,6 +1325,10 @@ namespace Remotion.BocAutoCompleteReferenceValue
                         resultsElement.scrollTop = offset;
                     }
                 }
+
+                if (position === this.listItems.length - 1) {
+                    this.loadMoreDataIfAvailable();
+                }
             }
         }
 
@@ -1346,6 +1358,28 @@ namespace Remotion.BocAutoCompleteReferenceValue
 
         private repositionTimer: Nullable<number> = null;
 
+        private loadMoreDataIfAvailable() {
+            if (!this.placeholderItem || this.isLoadingMoreData)
+                return;
+
+            this.clearAnnouncements();
+
+            const loadingPromise = this.loadMoreData(this.term, this.listItems.length, this.context);
+            this.addLoadingAnnouncement();
+            this.isLoadingMoreData = true;
+            this.placeholderItem.classList.add("ac_placeholder_loading");
+            loadingPromise.then(searchResult => {
+                this.addListItems(searchResult.cacheRow, searchResult.hasMoreSearchResults);
+                this.context = searchResult.context;
+                this.isLoadingMoreData = false;
+                this.addLoadedAnnouncement();
+            }, _ => {
+                // Ignore the error and reset to allow triggering a load again. If there has been an error during the
+                // request, the select box is closed and an information popup is shown so we don't have to handle it here.
+                this.isLoadingMoreData = false;
+            });
+        }
+
         private applyPositionToDropDown(): void {
             NotNullAssert(this.element);
             const reference = this.input.closest('.' + this.options.inputAreaClass) as HTMLElement;
@@ -1356,47 +1390,84 @@ namespace Remotion.BocAutoCompleteReferenceValue
             applyPositionToPopUp(reference, this.element, positionOptions);
         }
 
-        private fillList(): void {
+        private addListItems(items: CacheRow, hasMoreData: boolean): void {
             NotNullAssert(this.data);
             NotNullAssert(this.element);
 
-            this.list.innerHTML = '';
-            const max = this.data.length;
-            for (let i = 0; i < max; i++) {
-                if (!this.data[i])
-                    continue;
-                const item = this.options.formatItem(this.data[i].data, i + 1, max, this.data[i].value, this.term);
-                const termElement = document.createElement("div");
-                termElement.innerText = this.term;
-                const termAsHtml = termElement.innerHTML;
+            this.removePlaceholder();
 
-                const li = document.createElement("li");
-                li.setAttribute("role", "option");
-                li.setAttribute("aria-selected", "false");
-                li.setAttribute("id", this.options.selectListID + "_" + i);
-                li.setAttribute("aria-setsize", "" + max);
-                li.setAttribute("aria-posinset", "" + (i + 1));
+            const escapeHelper = document.createElement("div");
+            escapeHelper.innerText = this.term;
+            const escapedTerm = escapeHelper.innerHTML;
 
-                li.innerHTML = this.options.highlight (item.html, termAsHtml);
-                li.classList.add(i % 2 === 0 ? "ac_even" : "ac_odd")
+            const initialInsert = this.data.length === 0;
+            for (const item of items) {
+                const index = this.data.length;
+                this.data.push(item);
 
-                if (item.class != null)
-                    li.classList.add(item.class);
-                if (item.isAnnotation) {
-                    li.dataset['isAnnotation'] = 'true';
-                    li.classList.add('ac_disabled');
-                }
+                const formatResult = this.options.formatItem(item.data, item.value, this.term);
+                const li = this.createListItem(formatResult, index, escapedTerm);
                 this.list.appendChild(li);
-                this.ac_data.set(li, this.data[i]);
+                this.listItems.push(li);
+                this.ac_data.set(li, item);
             }
-            this.listItems = Array.from(this.list.querySelectorAll("li"));
-            if (this.options.selectFirst(this.input.value, this.term) && this.listItems.length > 0) {
+
+            if (hasMoreData) {
+                const placeholder = document.createElement("li");
+                placeholder.role = "option";
+                placeholder.ariaSelected = "false";
+                placeholder.id = `${this.options.selectListID}_placeholder`;
+
+                placeholder.dataset["isAnnotation"] = "true";
+                placeholder.addEventListener("click", () => this.loadMoreDataIfAvailable());
+                this.options.formatPlaceholderElement(placeholder);
+
+                this.list.appendChild(placeholder);
+                this.placeholderItem = placeholder;
+            }
+
+            [...this.listItems].forEach((e, i) => {
+                e.ariaSetSize = hasMoreData
+                    ? "-1"
+                    : "" + this.listItems.length;
+                e.ariaPosInSet = "" + (i + 1);
+            })
+
+            if (initialInsert && this.options.selectFirst(this.input.value, this.term) && this.listItems.length > 0) {
                 const activeItem = this.listItems[0];
                 this.input.setAttribute("aria-activedescendant", activeItem.id);
                 activeItem.classList.add (this.CLASSES.ACTIVE);
                 activeItem.setAttribute ("aria-selected", "true");
                 this.active = 0;
             }
+        }
+
+        private removePlaceholder() {
+            if (this.placeholderItem) {
+                this.placeholderItem.remove();
+                this.placeholderItem = null;
+            }
+        }
+
+        private createListItem(formatResult: FormatResult, index: number, escapedTerm: Nullable<string>){
+            const li = document.createElement("li");
+            li.role = "option";
+            li.ariaSelected = "false";
+            li.id = `${this.options.selectListID}_${index}`;
+
+            li.innerHTML = escapedTerm
+                ? this.options.highlight(formatResult.html, escapedTerm)
+                : formatResult.html;
+            li.classList.add(index % 2 === 0 ? "ac_even" : "ac_odd");
+
+            if (formatResult.class != null)
+                li.classList.add(formatResult.class);
+            if (formatResult.isAnnotation) {
+                li.dataset['isAnnotation'] = 'true';
+                li.classList.add('ac_disabled');
+            }
+
+            return li;
         }
 
         // re-motion: Gets the index of first item matching the term. The lookup starts with the active item, 
@@ -1442,11 +1513,14 @@ namespace Remotion.BocAutoCompleteReferenceValue
             return -1;
         }
 
-        public display(d: CacheRow, q: string): void {
+        public display(d: BocAutoCompleteReferenceValueCacheableSearchResult, q: string): void {
             this.init();
-            this.data = d;
+            this.data = [];
             this.term = q;
-            this.fillList();
+            this.context = d.context;
+            this.listItems = [];
+            this.list.innerHTML = '';
+            this.addListItems(d.cacheRow, d.hasMoreSearchResults);
         }
 
         public getElement(): Nullable<HTMLElement> {
@@ -1482,6 +1556,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                 clearTimeout(this.repositionTimer);
             this.input.setAttribute("aria-expanded", "false");
             this.input.setAttribute("aria-activedescendant", "");
+            this.clearAnnouncements();
             this.element && LayoutUtility.Hide(this.element);
             if (this.listItems) {
                 for (const listItem of this.listItems) {
@@ -1587,6 +1662,33 @@ namespace Remotion.BocAutoCompleteReferenceValue
 
         public unbind(): void {
             this.element && this.element.remove();
+        }
+
+        private addLoadingAnnouncement() {
+            this.clearQueuedLoadingAnnouncement();
+            this.queuedLoadingAnnouncementTimeout = setTimeout(() => {
+                if (this.visible()) {
+                    this.announcementElement.innerText = this.options.loadingMoreMatchesMessage;
+                }
+            }, this.options.loadingMatchesMessageDelay);
+        }
+
+        private addLoadedAnnouncement() {
+            this.clearQueuedLoadingAnnouncement();
+            if (this.visible()) {
+                this.announcementElement.innerText = this.options.loadedMoreMatchesMessage;
+            }
+        }
+
+        private clearAnnouncements() {
+            this.announcementElement.innerText = "";
+        }
+
+        private clearQueuedLoadingAnnouncement() {
+            if (this.queuedLoadingAnnouncementTimeout !== null) {
+                clearTimeout(this.queuedLoadingAnnouncementTimeout);
+                this.queuedLoadingAnnouncementTimeout = null;
+            }
         }
     };
 

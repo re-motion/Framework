@@ -43,7 +43,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
      Assert.That(result, Is.InstanceOf<NonPersistentProvider>());
      var nonPersistentProvider = (NonPersistentProvider)result;
      Assert.That(nonPersistentProvider.StorageProviderDefinition, Is.SameAs(_storageProviderDefinition));
-     Assert.That(nonPersistentProvider.PersistenceExtension, Is.SameAs(persistenceExtensionStub.Object));
+    }
+
+    [Test]
+    public void CreateReadOnlyStorageProvider ()
+    {
+      var factory = new NonPersistentStorageObjectFactory();
+      var persistenceExtensionStub = new Mock<IPersistenceExtension>();
+
+      var result = factory.CreateReadOnlyStorageProvider(_storageProviderDefinition, persistenceExtensionStub.Object);
+      Assert.That(result, Is.InstanceOf<NonPersistentProvider>());
+      var nonPersistentProvider = (NonPersistentProvider)result;
+      Assert.That(nonPersistentProvider.StorageProviderDefinition, Is.SameAs(_storageProviderDefinition));
     }
 
     [Test]

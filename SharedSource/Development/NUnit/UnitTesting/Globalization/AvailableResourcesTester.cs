@@ -1,4 +1,6 @@
-﻿using System;
+﻿// SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
+// SPDX-License-Identifier: Apache-2.0
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -21,6 +23,7 @@ namespace Remotion.Development.NUnit.UnitTesting.Globalization
       var attribute = targetAssembly.GetCustomAttribute<TAttribute>();
       var availableResourcesByAssembly = ((string[])typeof(TAttribute).GetProperty("CultureNames")!.GetValue(attribute)!)
           .Distinct()
+          .Select(name => name.ToLower())
           .ToArray();
 
       var resourceFileName = $"{targetAssembly.GetName().Name}.resources.dll";
@@ -28,14 +31,14 @@ namespace Remotion.Development.NUnit.UnitTesting.Globalization
       var availableResourcesByOutputFolder = Directory.EnumerateDirectories(assemblyDirectory)
           .Where(e => File.Exists(Path.Combine(e, resourceFileName)))
           .Select(Path.GetFileName)
+          .Select(name => name?.ToLower())
           .Concat(new [] { "" }) // Assume that the "invariant" culture is always supported as it is embedded in the target assembly and not stored in a directory
           .ToArray();
 
       Assert.That(
           availableResourcesByOutputFolder,
           Is.EquivalentTo(availableResourcesByAssembly),
-          "The available resources declared by the assembly '{0}' does not match the available resources in the output directory.",
-          targetAssembly.GetName().Name);
+          $"The available resources declared by the assembly '{targetAssembly.GetName().Name}' does not match the available resources in the output directory.");
     }
   }
 }

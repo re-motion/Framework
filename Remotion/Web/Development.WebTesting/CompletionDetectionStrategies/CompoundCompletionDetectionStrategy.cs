@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
@@ -37,16 +38,17 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
     }
 
     /// <inheritdoc/>
-    public object PrepareWaitForCompletion (PageObjectContext context)
+    public object PrepareWaitForCompletion (PageObjectContext context, ILogger logger)
     {
       ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       var states = new List<object?>();
 
       // ReSharper disable once LoopCanBeConvertedToQuery
       foreach (var strategy in _strategies)
       {
-        var state = strategy.PrepareWaitForCompletion(context);
+        var state = strategy.PrepareWaitForCompletion(context, logger);
         states.Add(state);
       }
 
@@ -54,14 +56,15 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
     }
 
     /// <inheritdoc/>
-    public void WaitForCompletion (PageObjectContext context, object? state)
+    public void WaitForCompletion (PageObjectContext context, object? state, ILogger logger)
     {
       ArgumentUtility.CheckNotNull("context", context);
       var states = ArgumentUtility.CheckNotNullAndType<List<object?>>("state", state!);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       var stragiesWithState = _strategies.Zip(states, (s, ss) => new { Strategy = s, State = ss });
       foreach (var strategyWithState in stragiesWithState)
-        strategyWithState.Strategy.WaitForCompletion(context, strategyWithState.State);
+        strategyWithState.Strategy.WaitForCompletion(context, strategyWithState.State, logger);
     }
   }
 }

@@ -18,12 +18,11 @@
 using System;
 using System.Configuration;
 using Remotion.Utilities;
-#if !NETFRAMEWORK
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Remotion.Web.Development.WebTesting.Configuration.IConfiguration;
-#endif
 
 namespace Remotion.Web.Development.WebTesting.Configuration
 {
@@ -49,7 +48,24 @@ namespace Remotion.Web.Development.WebTesting.Configuration
 
         lock (s_lock)
         {
-          return s_current ??= CreateDefaultWebTestSettings();
+          if (s_current != null)
+            return s_current;
+
+          throw new InvalidOperationException(
+            """
+            The WebTestSettings.SetCurrent(...) method must be called before using the WebTest infrastructure.
+
+            Example based on log4net:
+            1. Add reference to Remotion.Logging.Log4Net Nuget package.
+            2. Add the following code in your SetupFixture class, before calling WebTestSetUpFixtureHelper.CreateFromConfiguration();
+                var loggerFactory = new LoggerFactory(new[] { new Log4NetLoggerProvider() });
+                WebTestSettings.SetCurrent(WebTestSettings.CreateAppConfigBasedWebTestSettings(loggerFactory));
+                var setupFixtureHelper = WebTestSetUpFixtureHelper.CreateFromConfiguration<MyWebTestConfigurationFactory>();
+                // additional initialization logic
+                XmlConfigurator.Configure();
+                setupFixtureHelper.OnSetUp();
+            Alternatively, you can supply a different logging framework or chose to have no logging at all by passing the NullLoggerFactory.Instance. 
+            """);
         }
       }
     }
@@ -62,14 +78,17 @@ namespace Remotion.Web.Development.WebTesting.Configuration
       }
     }
 
-    public static IWebTestSettings CreateAppConfigBasedWebTestSettings ()
+    public static IWebTestSettings CreateAppConfigBasedWebTestSettings (ILoggerFactory loggerFactory)
     {
+      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+
       var settings = (WebTestConfigurationSection)ConfigurationManager.GetSection("remotion.webTesting");
       Assertion.IsNotNull(settings, "Configuration section 'remotion.webTesting' missing.");
+      settings.SetLoggerFactory(loggerFactory);
+
       return settings;
     }
 
-#if !NETFRAMEWORK
     /// <summary>
     /// Creates <see cref="IWebTestSettings"/> using the default <see cref="Host"/> configuration.
     /// Reads settings from appsettings.json and environment variables.
@@ -102,8 +121,10 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     ///   <item>'Remotion__WebTesting__TestSiteLayout__RootPath=newRootPath'</item>
     /// </list>
     /// </remarks>
-    public static IWebTestSettings CreateAppSettingsJsonBasedWebTestSettings ()
+    public static IWebTestSettings CreateAppSettingsJsonBasedWebTestSettings (ILoggerFactory loggerFactory)
     {
+      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+
       var hostApplicationBuilder = Host.CreateApplicationBuilder();
       hostApplicationBuilder.Services
           .AddOptions<WebTestSettingsDto>()
@@ -112,17 +133,9 @@ namespace Remotion.Web.Development.WebTesting.Configuration
 
       var host = hostApplicationBuilder.Build();
       var value = host.Services.GetRequiredService<IOptions<WebTestSettingsDto>>().Value;
-      return value;
-    }
-#endif
+      value.SetLoggerFactory(loggerFactory);
 
-    private static IWebTestSettings CreateDefaultWebTestSettings ()
-    {
-#if NETFRAMEWORK
-      return CreateAppConfigBasedWebTestSettings();
-#else
-      return CreateAppSettingsJsonBasedWebTestSettings();
-#endif
+      return value;
     }
   }
 }

@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using Remotion.Collections;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
@@ -40,15 +42,20 @@ namespace Remotion.Data.DomainObjects.Queries
         new DoubleCheckedLockingContainer<ILinqProviderComponentFactory>(() => SafeServiceLocator.Current.GetInstance<ILinqProviderComponentFactory>());
     private static readonly DoubleCheckedLockingContainer<IQueryParser> s_queryParser =
         new DoubleCheckedLockingContainer<IQueryParser>(() => s_linqProviderComponentFactory.Value.CreateQueryParser());
+    private static readonly IReadOnlyDictionary<string, object> s_emptyMetadata = new Dictionary<string, object>().AsReadOnly<string, object>();
 
     /// <summary>
-    /// Creates a <see cref="DomainObjectQueryable{T}"/> used as the entry point to a LINQ query with the default implementation of the SQL 
+    /// Creates a <see cref="DomainObjectQueryable{T}"/> used as the entry point to a LINQ query with the default implementation of the SQL
     /// generation.
     /// </summary>
     /// <typeparam name="T">The <see cref="DomainObject"/> type to be queried.</typeparam>
     /// <returns>A <see cref="DomainObjectQueryable{T}"/> object as an entry point to a LINQ query.</returns>
+    /// <remarks>
+    /// Calls <see cref="CreateLinqQuery{T}()"/> with a default id set to '&lt;dynamic query&gt;' and
+    /// an empty metadata dictionary.
+    /// </remarks>
     /// <example>
-    /// The following example used <see cref="CreateLinqQuery{T}()"/> to retrieve 
+    /// The following example used <see cref="CreateLinqQuery{T}()"/> to retrieve
     /// an entry point for a query that selects a number of <c>Order</c> objects, filters them by <c>OrderNumber</c>, and orders them by name of
     /// customer (which includes an implicit join between <c>Order</c> and <c>Customer</c> objects).
     /// <code>
@@ -63,10 +70,40 @@ namespace Remotion.Data.DomainObjects.Queries
     public static IQueryable<T> CreateLinqQuery<T> ()
         where T: DomainObject
     {
+      return CreateLinqQuery<T>("<dynamic query>", s_emptyMetadata);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="DomainObjectQueryable{T}"/> used as the entry point to a LINQ query with the default implementation of the SQL 
+    /// generation.
+    /// </summary>
+    /// <typeparam name="T">The <see cref="DomainObject"/> type to be queried.</typeparam>
+    /// <returns>A <see cref="DomainObjectQueryable{T}"/> object as an entry point to a LINQ query.</returns>
+    /// <param name="id">The id that is configured for the create <see cref="IQueryable{T}"/>.</param>
+    /// <param name="metadata">The metadata can be used to e.g. provide diagnostic information or query hints.</param>
+    /// <example>
+    /// The following example used <see cref="CreateLinqQuery{T}(string, IReadOnlyDictionary{string,object})"/> to retrieve
+    /// an entry point for a query that selects a number of <c>Order</c> objects, filters them by <c>OrderNumber</c>, and orders them by name of
+    /// customer (which includes an implicit join between <c>Order</c> and <c>Customer</c> objects).
+    /// <code>
+    /// var query =
+    ///     from o in QueryFactory.CreateLinqQuery&lt;Order&gt; ("id", metadataDictionary)
+    ///     where o.OrderNumber &lt;= 4
+    ///     orderby o.Customer.Name
+    ///     select o;
+    ///  var result = query.ToArray();
+    /// </code>
+    /// </example>
+    public static IQueryable<T> CreateLinqQuery<T> (string id, IReadOnlyDictionary<string, object>? metadata = null)
+        where T: DomainObject
+    {
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      metadata ??= s_emptyMetadata;
+
       var startingClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(T));
       var providerDefinition = startingClassDefinition.StorageEntityDefinition.StorageProviderDefinition;
 
-      var executor = s_linqProviderComponentFactory.Value.CreateQueryExecutor(providerDefinition);
+      var executor = s_linqProviderComponentFactory.Value.CreateQueryExecutor(providerDefinition, id, metadata);
       return CreateLinqQuery<T>(s_queryParser.Value, executor);
     }
 
@@ -161,7 +198,8 @@ namespace Remotion.Data.DomainObjects.Queries
           id,
           queryExecutor.StorageProviderDefinition,
           queryModel,
-          fetchQueryModelBuilders);
+          fetchQueryModelBuilders,
+          queryExecutor.Metadata);
     }
 
 
@@ -198,19 +236,20 @@ namespace Remotion.Data.DomainObjects.Queries
     /// methods should usually be preferred to this method.
     /// </summary>
     /// <param name="id">A string identifying the query.</param>
-    /// <param name="storageProviderDefinition">The <see cref="StorageProviderDefinition"/> used to execute the query.</param>
     /// <param name="statement">The scalar query statement.</param>
+    /// <param name="storageProviderDefinition">The <see cref="StorageProviderDefinition"/> used to execute the query.</param>
+    /// <param name="metaData">The optional metadata can be used to e.g. provide diagnostic information or query hints.</param>
     /// <param name="queryParameterCollection">The parameter collection to be used for the query.</param>
     /// <returns>An implementation of <see cref="IQuery"/> with the given statement, parameters, and metadata.</returns>
     public static IQuery CreateScalarQuery (
-        string id, StorageProviderDefinition storageProviderDefinition, string statement, QueryParameterCollection queryParameterCollection)
+        string id, StorageProviderDefinition storageProviderDefinition, string statement, QueryParameterCollection queryParameterCollection, IReadOnlyDictionary<string, object>? metaData = null)
     {
       ArgumentUtility.CheckNotNull("id", id);
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
       ArgumentUtility.CheckNotNull("statement", statement);
       ArgumentUtility.CheckNotNull("queryParameterCollection", queryParameterCollection);
 
-      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.Scalar);
+      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.ScalarReadOnly, metaData: metaData);
       return new Query(definition, queryParameterCollection);
     }
 
@@ -226,13 +265,15 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <param name="queryParameterCollection">The parameter collection to be used for the query.</param>
     /// <param name="collectionType">The collection type to be returned from the query. Pass <see cref="DomainObjectCollection"/> if you don't care
     /// about the collection type. The type passed here is used by <see cref="QueryResult{T}.ToCustomCollection"/>.</param>
+    /// <param name="metaData">The optional metadata can be used to e.g. provide diagnostic information or query hints.</param>
     /// <returns>An implementation of <see cref="IQuery"/> with the given statement, parameters, and metadata.</returns>
     public static IQuery CreateCollectionQuery (
         string id,
         StorageProviderDefinition storageProviderDefinition,
         string statement,
         QueryParameterCollection queryParameterCollection,
-        Type collectionType)
+        Type collectionType,
+        IReadOnlyDictionary<string, object>? metaData = null)
     {
       ArgumentUtility.CheckNotNull("id", id);
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
@@ -240,7 +281,7 @@ namespace Remotion.Data.DomainObjects.Queries
       ArgumentUtility.CheckNotNull("queryParameterCollection", queryParameterCollection);
       ArgumentUtility.CheckNotNull("collectionType", collectionType);
 
-      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.Collection, collectionType);
+      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.CollectionReadOnly, collectionType, metaData);
       return new Query(definition, queryParameterCollection);
     }
 
@@ -254,14 +295,16 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <param name="storageProviderDefinition">The <see cref="StorageProviderDefinition"/> of the storage provider used to execute the query.</param>
     /// <param name="statement">The custom query statement.</param>
     /// <param name="queryParameterCollection">The parameter collection to be used for the query.</param>
+    /// <param name="metaData">The optional metadata can be used to e.g. provide diagnostic information or query hints.</param>
     /// <returns>An implementation of <see cref="IQuery"/> with the given statement, parameters, and metadata.</returns>
     public static IQuery CreateCustomQuery (
         string id,
         StorageProviderDefinition storageProviderDefinition,
         string statement,
-        QueryParameterCollection queryParameterCollection)
+        QueryParameterCollection queryParameterCollection,
+        IReadOnlyDictionary<string, object>? metaData = null)
     {
-      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.Custom, null);
+      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.CustomReadOnly, metaData: metaData);
       return new Query(definition, queryParameterCollection);
     }
   }

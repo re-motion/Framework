@@ -18,6 +18,5 @@
   </metadata>
   <files>
     <file src="UnitTesting\IO\TempFile.cs" target="content/App_Packages/Remotion.Development.TempFile.Sources.$version$" />
-    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Development.TempFile.Sources.$version$" />
   </files>
 </package>

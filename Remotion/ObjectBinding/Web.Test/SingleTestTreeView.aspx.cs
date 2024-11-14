@@ -161,8 +161,10 @@ namespace OBWTest
 
       WebTreeView.SetEvaluateTreeNodeDelegate(new EvaluateWebTreeNode(EvaluateTreeNode));
 
+#pragma warning disable CS0618 // Type or member is obsolete
       WebTreeView.MenuItemProvider = new TestWebTreeViewMenuItemProvider();
       PersonTreeViewWithMenus.MenuItemProvider = new TestBocTreeViewMenuItemProvider();
+#pragma warning restore CS0618 // Type or member is obsolete
     }
 
     private void EvaluateTreeNode (WebTreeNode node)
@@ -186,12 +188,12 @@ namespace OBWTest
 
     private void TreeView_Click (object sender, WebTreeNodeClickEventArgs e)
     {
-      TreeViewLabel.Text = "Node = " + e.Node.Text;
+      TreeViewLabel.Text = "Node = " + e.Node.Text.GetValue();
     }
 
     private void PersonTreeView_Click (object sender, BocTreeNodeClickEventArgs e)
     {
-      TreeViewLabel.Text = "Node = " + e.Node.Text;
+      TreeViewLabel.Text = "Node = " + e.Node.Text.GetValue();
     }
 
     private void RefreshPesonTreeViewButton_Click (object sender, EventArgs e)

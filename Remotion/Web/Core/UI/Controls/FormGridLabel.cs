@@ -102,11 +102,6 @@ public class FormGridLabel: Label, ISmartControl
     return Enumerable.Empty<BaseValidator>();
   }
 
-  Control ISmartControl.TargetControl
-  {
-    get { return this; }
-  }
-
   bool ISmartControl.UseLabel
   {
     get { return true; }

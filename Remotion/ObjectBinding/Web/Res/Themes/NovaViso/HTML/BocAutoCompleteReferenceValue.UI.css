@@ -11,6 +11,7 @@
   box-sizing: border-box;
   padding: var(--remotion-themed-spacing);
   background-color: var(--remotion-themed-background-color-control);
+  --AutoCompleteReferenceValueRequestInProgressIndicator: url('../Image/sprite.svg#AutoCompleteReferenceValueRequestInProgressIndicator');
 }
 
 .ac_results > div
@@ -92,9 +93,17 @@
 
 .ac_loading
 {
-  background-image: url('../Image/sprite.svg#AutoCompleteReferenceValueRequestInProgressIndicator');
+  background-image: var(--AutoCompleteReferenceValueRequestInProgressIndicator);
   background-size: var(--remotion-themed-line-height) var(--remotion-themed-line-height);
   background-position: right var(--remotion-themed-img-width) center;
+  background-repeat: no-repeat;
+}
+
+.ac_placeholder_loading > div:first-child
+{
+  background-image: var(--AutoCompleteReferenceValueRequestInProgressIndicator);
+  background-size: var(--remotion-themed-line-height) var(--remotion-themed-line-height);
+  background-position: center center;
   background-repeat: no-repeat;
 }
 

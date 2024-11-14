@@ -20,8 +20,9 @@ using System.IO;
 using System.Threading;
 using System.Web;
 using System.Web.Configuration;
+using Microsoft.Extensions.Logging;
 using Remotion.Development.Web.ResourceHosting;
-using Remotion.Logging;
+using Remotion.Logging.Log4Net;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Sample;
@@ -29,7 +30,6 @@ using Remotion.ObjectBinding.Sample.ReferenceDataSourceTestDomain;
 using Remotion.ObjectBinding.Web;
 using Remotion.ServiceLocation;
 using Remotion.Web;
-using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Infrastructure;
 
 namespace OBWTest
@@ -42,8 +42,6 @@ namespace OBWTest
 
     public Global ()
     {
-      //  Initialize Logger
-      LogManager.GetLogger(typeof(Global));
       InitializeComponent();
     }
 
@@ -56,7 +54,8 @@ namespace OBWTest
 
     protected void Application_Start (Object sender, EventArgs e)
     {
-      LogManager.Initialize();
+      BootstrapServiceConfiguration.SetLoggerFactory(new LoggerFactory([new Log4NetLoggerProvider()]));
+      log4net.Config.XmlConfigurator.Configure();
 
       string objectPath = Server.MapPath("~/objects");
       if (!Directory.Exists(objectPath))
@@ -171,6 +170,19 @@ namespace OBWTest
 
     protected void Application_PostRequestHandlerExecute (Object sender, EventArgs e)
     {
+      var mimeType = GetMimeType(Path.GetExtension((ReadOnlySpan<char>)Request.PhysicalPath));
+
+      if (mimeType != null)
+        Response.ContentType = mimeType;
+
+      static string GetMimeType (ReadOnlySpan<char> extension)
+      {
+        var svg = (ReadOnlySpan<char>)".svg";
+        if (extension.Equals(svg, StringComparison.OrdinalIgnoreCase))
+          return "image/svg+xml";
+
+        return null;
+      }
     }
 
     protected void Application_EndRequest (Object sender, EventArgs e)

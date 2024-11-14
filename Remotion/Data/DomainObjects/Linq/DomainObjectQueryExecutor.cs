@@ -33,14 +33,20 @@ namespace Remotion.Data.DomainObjects.Linq
   {
     private readonly StorageProviderDefinition _storageProviderDefinition;
     private readonly IDomainObjectQueryGenerator _queryGenerator;
+    private readonly string _id;
+    private readonly IReadOnlyDictionary<string, object> _metadata;
 
-    public DomainObjectQueryExecutor (StorageProviderDefinition storageProviderDefinition, IDomainObjectQueryGenerator queryGenerator)
+    public DomainObjectQueryExecutor (StorageProviderDefinition storageProviderDefinition, IDomainObjectQueryGenerator queryGenerator, string id, IReadOnlyDictionary<string, object> metadata)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
       ArgumentUtility.CheckNotNull("queryGenerator", queryGenerator);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNull("metadata", metadata);
 
       _storageProviderDefinition = storageProviderDefinition;
       _queryGenerator = queryGenerator;
+      _id = id;
+      _metadata = metadata;
     }
 
     public StorageProviderDefinition StorageProviderDefinition
@@ -52,6 +58,10 @@ namespace Remotion.Data.DomainObjects.Linq
     {
       get { return _queryGenerator; }
     }
+
+    public string ID => _id;
+
+    public IReadOnlyDictionary<string, object> Metadata => _metadata;
 
     /// <summary>
     /// Creates and executes a given <see cref="QueryModel"/> as an <see cref="IQuery"/> using the current <see cref="ClientTransaction"/>'s
@@ -73,7 +83,7 @@ namespace Remotion.Data.DomainObjects.Linq
       if (fetchQueryModelBuilders.Any())
         throw new NotSupportedException("Scalar queries cannot perform eager fetching.");
 
-      var query = _queryGenerator.CreateScalarQuery<T>("<dynamic query>", _storageProviderDefinition, queryModel);
+      var query = _queryGenerator.CreateScalarQuery<T>(_id, _storageProviderDefinition, queryModel, _metadata);
       return query.Execute(ClientTransaction.Current.QueryManager);
     }
 
@@ -122,10 +132,11 @@ namespace Remotion.Data.DomainObjects.Linq
       var fetchQueryModelBuilders = RemoveTrailingFetchRequests(queryModel);
 
       var query = _queryGenerator.CreateSequenceQuery<T>(
-          "<dynamic query>",
+          _id,
           _storageProviderDefinition,
           queryModel,
-          fetchQueryModelBuilders);
+          fetchQueryModelBuilders,
+          _metadata);
       return query.Execute(ClientTransaction.Current.QueryManager);
     }
 

@@ -47,7 +47,9 @@ namespace Remotion.Web.UI
     public const string TabList = "tablist";
     public const string TabPanel = "tabpanel";
     public const string Textbox = "textbox";
+    public const string Toolbar = "toolbar";
     public const string Tree = "tree";
     public const string TreeItem = "treeitem";
+    public const string Alert = "alert";
   }
 }

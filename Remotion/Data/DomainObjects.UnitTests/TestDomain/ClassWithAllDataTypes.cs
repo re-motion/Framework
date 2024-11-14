@@ -15,15 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
   [DBTable("TableWithAllDataTypes")]
   [TestDomain]
   [Instantiable]
-  [Serializable]
-  public abstract class ClassWithAllDataTypes : TestDomainBase, ISerializable
+  public abstract class ClassWithAllDataTypes : TestDomainBase
   {
     public enum EnumType
     {
@@ -50,18 +48,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    protected ClassWithAllDataTypes (SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-    }
-
-#pragma warning disable SYSLIB0051
-    public void GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      BaseGetObjectData(info, context);
-    }
-#pragma warning restore SYSLIB0051
-
     [StorageClassNone]
     public object ObjectProperty
     {
@@ -76,7 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     public abstract byte ByteProperty { get; set; }
 
     [DBColumn("Date")]
-    public abstract DateTime DateProperty { get; set; }
+    public abstract DateOnly DateProperty { get; set; }
 
     [DBColumn("DateTime")]
     public abstract DateTime DateTimeProperty { get; set; }
@@ -131,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     public abstract byte? NaByteProperty { get; set; }
 
     [DBColumn("NaDate")]
-    public abstract DateTime? NaDateProperty { get; set; }
+    public abstract DateOnly? NaDateProperty { get; set; }
 
     [DBColumn("NaDateTime")]
     public abstract DateTime? NaDateTimeProperty { get; set; }
@@ -177,7 +163,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     public abstract byte? NaByteWithNullValueProperty { get; set; }
 
     [DBColumn("NaDateWithNullValue")]
-    public abstract DateTime? NaDateWithNullValueProperty { get; set; }
+    public abstract DateOnly? NaDateWithNullValueProperty { get; set; }
 
     [DBColumn("NaDateTimeWithNullValue")]
     public abstract DateTime? NaDateTimeWithNullValueProperty { get; set; }
@@ -230,7 +216,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       TransactionOnlyStringProperty = "TransactionOnly";
       TransactionOnlyBinaryProperty = new byte[] { 47, 11 };
       DateTimeProperty = new DateTime(2012, 12, 12);
-      DateProperty = new DateTime(2012, 12, 12);
+      DateProperty = new DateOnly(2012, 12, 12);
     }
   }
 }

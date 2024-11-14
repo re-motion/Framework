@@ -112,12 +112,5 @@ namespace Remotion.UnitTests.Collections
               .With.Message.EqualTo(
                   "'Clear' ist not supported for read-only collections."));
     }
-
-    [Test]
-    public void Serialization ()
-    {
-      Assert.That(_collection, Is.BinarySerializable);
-    }
-
   }
 }

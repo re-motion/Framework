@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.ExtensibleEnums.Infrastructure;
 using Remotion.ExtensibleEnums.UnitTests.TestDomain;
 using Remotion.ServiceLocation;
@@ -290,15 +289,6 @@ namespace Remotion.ExtensibleEnums.UnitTests
     {
       var value = new Color("Red");
       Assert.That(value.GetValueInfo(), Is.SameAs(Color.Values.GetValueInfoByID("Red")));
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      var value = new EnumWithDifferentCtors("Prefix", "Name");
-      var deserializedValue = Serializer.SerializeAndDeserialize(value);
-
-      Assert.That(deserializedValue, Is.EqualTo(value));
     }
   }
 }

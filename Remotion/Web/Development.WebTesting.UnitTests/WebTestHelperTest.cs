@@ -17,6 +17,9 @@
 using System;
 using System.Linq;
 using Coypu;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging.Testing;
 using Moq;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.BrowserSession;
@@ -33,6 +36,28 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
     private readonly TimeSpan _configSearchTimeout = TimeSpan.FromSeconds(30);
     private readonly TimeSpan _configRetryInterval = TimeSpan.FromMilliseconds(25);
     private readonly TimeSpan _configAsyncJavaScriptTimeout = TimeSpan.FromHours(12) + TimeSpan.FromMinutes(34);
+
+    [SetUp]
+    public void SetUp ()
+    {
+      WebTestSettings.SetCurrent(WebTestSettings.CreateAppConfigBasedWebTestSettings(NullLoggerFactory.Instance));
+    }
+
+    [TearDown]
+    public void TearDown ()
+    {
+      WebTestSettings.SetCurrent(null);
+    }
+
+    [Test]
+    public void WebTestHelper_HasLoggerFactory ()
+    {
+      var loggerFactory = new LoggerFactory(new[] { new FakeLoggerProvider() });
+      WebTestSettings.SetCurrent(WebTestSettings.CreateAppConfigBasedWebTestSettings(loggerFactory));
+
+      var webTestHelper = WebTestHelper.CreateFromConfiguration<TestWebTestConfigurationFactory>();
+      Assert.That(webTestHelper.LoggerFactory, Is.SameAs(loggerFactory));
+    }
 
     [Test]
     public void CreateNewBrowserSession_ValuesFromConfiguration_WithoutOverride ()

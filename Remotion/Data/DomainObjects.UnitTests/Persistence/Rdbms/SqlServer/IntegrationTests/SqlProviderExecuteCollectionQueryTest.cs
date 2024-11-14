@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var query = QueryFactory.CreateQuery(Queries.GetMandatory("QueryWithAllDataTypes"));
       query.Parameters.Add("@boolean", false);
       query.Parameters.Add("@byte", (byte)85);
-      query.Parameters.Add("@date", new DateTime(2005, 1, 1));
+      query.Parameters.Add("@date", new DateOnly(2005, 1, 1));
       query.Parameters.Add("@dateTime", new DateTime(2005, 1, 1, 17, 0, 0));
       query.Parameters.Add("@decimal", (decimal)123456.789);
       query.Parameters.Add("@doubleLowerBound", 987654D);
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       query.Parameters.Add("@naBoolean", true);
       query.Parameters.Add("@naByte", (byte)78);
-      query.Parameters.Add("@naDate", new DateTime(2005, 2, 1));
+      query.Parameters.Add("@naDate", new DateOnly(2005, 2, 1));
       query.Parameters.Add("@naDateTime", new DateTime(2005, 2, 1, 5, 0, 0));
       query.Parameters.Add("@naDecimal", 765.098m);
       query.Parameters.Add("@naDoubleLowerBound", 654321D);
@@ -140,23 +140,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
-    public void ScalarQuery ()
-    {
-      Assert.That(
-          () => Provider.ExecuteCollectionQuery(QueryFactory.CreateQuery(Queries.GetMandatory("OrderNoSumByCustomerNameQuery"))),
-          Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo(
-                  "Expected query type is 'Collection', but was 'Scalar'.", "query"));
-    }
-
-    [Test]
     public void DifferentStorageProviderID ()
     {
       var definition = new QueryDefinition(
           "QueryWithDifferentStorageProviderID",
           UnitTestStorageProviderDefinition,
           "select 42",
-          QueryType.Collection);
+          QueryType.CollectionReadOnly);
       Assert.That(
           () => Provider.ExecuteCollectionQuery(QueryFactory.CreateQuery(definition)),
           Throws.ArgumentException);

@@ -11,9 +11,6 @@
     <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Core\Core.Core.csproj" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

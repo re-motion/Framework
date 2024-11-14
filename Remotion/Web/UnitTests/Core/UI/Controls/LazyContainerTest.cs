@@ -133,7 +133,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       _lazyContainer.RealControls.Add(_parent);
       NamingContainerInvoker.InitRecursive();
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
 
       expectedEvents.Add(FormatInitEvent(_child));
       expectedEvents.Add(FormatInitEvent(_childSecond));
@@ -141,7 +141,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       _lazyContainer.Ensure();
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
     }
 
     [Test]
@@ -153,7 +153,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       NamingContainerInvoker.InitRecursive();
       _lazyContainer.Ensure();
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
 
       expectedEvents.Add(FormatInitEvent(_child));
       expectedEvents.Add(FormatInitEvent(_childSecond));
@@ -161,7 +161,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       _lazyContainer.RealControls.Add(_parent);
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
     }
 
 
@@ -176,7 +176,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       NamingContainerInvoker.InitRecursive();
       NamingContainerInvoker.LoadRecursive();
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
 
       expectedEvents.Add(FormatInitEvent(_child));
       expectedEvents.Add(FormatInitEvent(_childSecond));
@@ -187,7 +187,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       _lazyContainer.Ensure();
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
     }
 
     [Test]
@@ -201,7 +201,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       _lazyContainer.RealControls.Add(_parent);
       NamingContainerInvoker.LoadRecursive();
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
 
       expectedEvents.Add(FormatInitEvent(_child));
       expectedEvents.Add(FormatInitEvent(_childSecond));
@@ -212,7 +212,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       _lazyContainer.Ensure();
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
     }
 
     [Test]
@@ -226,7 +226,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       NamingContainerInvoker.LoadRecursive();
       _lazyContainer.RealControls.Add(_parent);
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
 
       expectedEvents.Add(FormatInitEvent(_child));
       expectedEvents.Add(FormatInitEvent(_childSecond));
@@ -237,7 +237,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       _lazyContainer.Ensure();
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
     }
 
     [Test]
@@ -251,7 +251,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       NamingContainerInvoker.LoadRecursive();
       _lazyContainer.RealControls.Add(_parent);
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
 
       expectedEvents.Add(FormatInitEvent(_child));
       expectedEvents.Add(FormatInitEvent(_childSecond));
@@ -262,7 +262,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       _lazyContainer.Ensure();
 
-      CollectionAssert.AreEqual(expectedEvents, _actualEvents);
+      Assert.That(_actualEvents, Is.EqualTo(expectedEvents));
     }
 
     [Test]
@@ -382,7 +382,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       Assert.That(controlState is Triplet, Is.True);
       Triplet values = (Triplet)controlState;
-      Assert.IsInstanceOf((typeof(HybridDictionary)), values.Third);
+      Assert.That(values.Third, Is.InstanceOf((typeof(HybridDictionary))));
       IDictionary actualControlStates = (IDictionary)values.Third;
       Assert.That(actualControlStates.Count, Is.EqualTo(2));
 
@@ -393,8 +393,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
         object actualControlState = actualControlStates[expectedKey];
         Assert.That(actualControlState is Pair, Is.True);
         Pair actualValues = (Pair)actualControlState;
-        Assert.AreEqual(expectedValues.First, actualValues.First, expectedKey);
-        Assert.AreEqual(expectedValues.Second, actualValues.Second, expectedKey);
+        Assert.That(actualValues.First, Is.EqualTo(expectedValues.First), expectedKey);
+        Assert.That(actualValues.Second, Is.EqualTo(expectedValues.Second), expectedKey);
       }
     }
 

@@ -31,7 +31,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
       BaseType1 bt1 = CreateMixedObject<BaseType1>(typeof(MixinWithPropsEventAtts));
 
       Assert.That(bt1.GetType().IsDefined(typeof(BT1Attribute), false), Is.False);
-      Assert.IsTrue(bt1.GetType().IsDefined(typeof(BT1Attribute), true), "Attribute is inherited");
+      Assert.That(bt1.GetType().IsDefined(typeof(BT1Attribute), true), Is.True, "Attribute is inherited");
       Assert.That(bt1.GetType().IsDefined(typeof(ReplicatableAttribute), false), Is.True);
 
       var atts = (ReplicatableAttribute[])bt1.GetType().GetCustomAttributes(typeof(ReplicatableAttribute), false);

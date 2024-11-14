@@ -17,8 +17,5 @@
     <ProjectReference Include="..\..\Core\Xml\Core.Xml.csproj" />
     <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

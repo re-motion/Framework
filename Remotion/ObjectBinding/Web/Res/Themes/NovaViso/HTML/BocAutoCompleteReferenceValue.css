@@ -134,6 +134,17 @@
   border: var(--remotion-themed-border-focus);
 }
 
+.bocAutoCompleteReferenceValue:not(.disabled) span.content:focus-within span.bocAutoCompleteReferenceValueButton:hover
+{
+  background-color: var(--color-highlight);
+  border: var(--remotion-themed-border-focus);
+  /* We use border here as left side should be thinner than the rest, which is not possible with outline */
+  border-width: calc(var(--remotion-themed-border-width) + var(--remotion-themed-outline-width));
+  border-left-width: var(--remotion-themed-border-width);
+  /* Since we add a border pixel to the right but not to the left we need to compensate for the layout to be stable */
+  padding-left: var(--remotion-themed-outline-width);
+}
+
 .bocAutoCompleteReferenceValue .bocAutoCompleteReferenceValueButton img
 {
   width: 100%;
@@ -164,7 +175,8 @@
 
 .bocAutoCompleteReferenceValue.readOnly span.content:focus-within
 {
-  outline: none;
+  outline: var(--remotion-themed-outline-readonly-focus);
+  outline-offset: var(--remotion-themed-outline-offset-readonly-focus);
   border: var(--remotion-themed-border-readonly-focus);
   background-color: var(--remotion-themed-background-color-readonly-focus);
   box-shadow: var(--remotion-themed-box-shadow-readonly-focus);

@@ -6,6 +6,7 @@
   vertical-align: middle;
   display: inline-block;
   white-space: nowrap;
+  --standard-background-image: initial;
 }
 
 .bocBooleanValue.readOnly
@@ -50,6 +51,11 @@
 .bocBooleanValue:not(.readOnly) span[role=checkbox]
 {
   cursor: default;
+}
+
+.bocBooleanValue input + span[role=checkbox] img
+{
+  background-image: var(--standard-background-image);
 }
 
 .bocBooleanValue img

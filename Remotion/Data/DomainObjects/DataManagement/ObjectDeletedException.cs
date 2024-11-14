@@ -15,12 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement
 {
-[Serializable]
 public class ObjectDeletedException : DomainObjectException
 {
   // types
@@ -45,14 +43,6 @@ public class ObjectDeletedException : DomainObjectException
   {
   }
 
-#if NET8_0_OR_GREATER
-  [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-  protected ObjectDeletedException (SerializationInfo info, StreamingContext context) : base(info, context)
-  {
-    _id = (ObjectID?)info.GetValue("ID", typeof(ObjectID));
-  }
-
   public ObjectDeletedException (ObjectID id) : this(string.Format("Object '{0}' is already deleted.", id), id)
   {
   }
@@ -69,16 +59,6 @@ public class ObjectDeletedException : DomainObjectException
   public ObjectID? ID
   {
     get { return _id; }
-  }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-  public override void GetObjectData (SerializationInfo info, StreamingContext context)
-  {
-    base.GetObjectData(info, context);
-
-    info.AddValue("ID", _id);
   }
 }
 }

@@ -1,19 +1,18 @@
-// This file is part of re-strict (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Affero General Public License version 3.0 
-// as published by the Free Software Foundation.
+// The re-motion Core Framework is free software; you can redistribute it 
+// and/or modify it under the terms of the GNU Lesser General Public License 
+// as published by the Free Software Foundation; either version 2.1 of the 
+// License, or (at your option) any later version.
 // 
-// This program is distributed in the hope that it will be useful, 
+// re-motion is distributed in the hope that it will be useful, 
 // but WITHOUT ANY WARRANTY; without even the implied warranty of 
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-// GNU Affero General Public License for more details.
+// GNU Lesser General Public License for more details.
 // 
-// You should have received a copy of the GNU Affero General Public License
-// along with this program; if not, see http://www.gnu.org/licenses.
-// 
-// Additional permissions are listed in the file re-motion_exceptions.txt.
+// You should have received a copy of the GNU Lesser General Public License
+// along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
 using System.Linq;
@@ -126,7 +125,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
         IObjectSecurityStrategy objectSecurityStrategy = position.GetSecurityStrategy();
         Assert.That(objectSecurityStrategy, Is.Not.Null);
-        Assert.IsInstanceOf(typeof(DomainObjectSecurityStrategyDecorator), objectSecurityStrategy);
+        Assert.That(objectSecurityStrategy, Is.InstanceOf(typeof(DomainObjectSecurityStrategyDecorator)));
         DomainObjectSecurityStrategyDecorator domainObjectSecurityStrategyDecorator = (DomainObjectSecurityStrategyDecorator)objectSecurityStrategy;
         Assert.That(domainObjectSecurityStrategyDecorator.RequiredSecurityForStates, Is.EqualTo(RequiredSecurityForStates.None));
       }
@@ -203,7 +202,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       {
         Position position = testHelper.CreatePosition("Position");
 
-        Assert.IsNotEmpty(position.UniqueIdentifier);
+        Assert.That(position.UniqueIdentifier, Is.Not.Empty);
       }
     }
 

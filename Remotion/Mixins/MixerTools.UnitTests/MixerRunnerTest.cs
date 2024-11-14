@@ -43,15 +43,6 @@ namespace Remotion.Mixins.MixerTools.UnitTests
     }
 
     [Test]
-    public void CreateAppDomainSetup_Default ()
-    {
-      var setup = MixerRunner.CreateAppDomainSetup(_parameters);
-
-      Assert.That(setup.ApplicationName, Is.EqualTo("Mixer"));
-      Assert.That(setup.ApplicationBase, Is.EqualTo(_parameters.BaseDirectory));
-    }
-
-    [Test]
     public void CreateMixer_Default ()
     {
       var runner = new MixerRunner(_parameters);
@@ -62,6 +53,7 @@ namespace Remotion.Mixins.MixerTools.UnitTests
     }
 
     [Test]
+    [Ignore("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
     public void RunDefault ()
     {
       _parameters.AssemblyOutputDirectory = "MixerRunnerTest";

@@ -109,5 +109,15 @@ namespace Remotion.Security.UnitTests.XmlAsserter
       ShowNodeStack(expectedNode, Messages.Add);
       ShowNodeStack(actualNode, Messages.Add);
     }
+
+    public override string Description
+    {
+      get
+      {
+        // typically, NUnit prints the entire content of the expected value since XMLDocument can be long blocks of texts,
+        // we are skipping this because it does not seem helpful.
+        return "equal to the expected XmlDocument.";
+      }
+    }
   }
 }

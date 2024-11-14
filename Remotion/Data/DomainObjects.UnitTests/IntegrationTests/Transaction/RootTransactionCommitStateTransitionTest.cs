@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       ClassWithAllDataTypes obj = GetNewUnchanged();
       obj.PopulateMandatoryProperties();
-      obj.DateProperty = DateTime.Today;
+      obj.DateProperty = DateOnly.FromDateTime(DateTime.Today);
       obj.DateTimeProperty = DateTime.Now;
       Assert.That(obj.State.IsNew, Is.True);
       Assert.That(obj.State.IsNewInHierarchy, Is.True);

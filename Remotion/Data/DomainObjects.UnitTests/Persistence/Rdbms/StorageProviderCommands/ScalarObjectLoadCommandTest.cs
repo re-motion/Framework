@@ -31,14 +31,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     private Mock<IDbCommand> _dbCommandMock;
     private ScalarValueLoadCommand _command;
     private object _fakeResult;
-    private Mock<IRdbmsProviderCommandExecutionContext> _commandExecutionContextMock;
 
     [SetUp]
     public void SetUp ()
     {
       _fakeResult = new object();
 
-      _commandExecutionContextMock = new Mock<IRdbmsProviderCommandExecutionContext>(MockBehavior.Strict);
       _dbCommandMock = new Mock<IDbCommand>(MockBehavior.Strict);
       _dbCommandBuilderMock = new Mock<IDbCommandBuilder>(MockBehavior.Strict);
 
@@ -54,15 +52,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     [Test]
     public void Execute ()
     {
-      _commandExecutionContextMock.Setup(mock => mock.ExecuteScalar(_dbCommandMock.Object)).Returns(_fakeResult).Verifiable();
+      var executionContextMock = new Mock<IRdbmsProviderReadWriteCommandExecutionContext>(MockBehavior.Strict);
+      executionContextMock.Setup(mock => mock.ExecuteScalar(_dbCommandMock.Object)).Returns(_fakeResult).Verifiable();
 
-      _dbCommandBuilderMock.Setup(mock => mock.Create(_commandExecutionContextMock.Object)).Returns(_dbCommandMock.Object).Verifiable();
+      _dbCommandBuilderMock.Setup(mock => mock.Create(executionContextMock.Object)).Returns(_dbCommandMock.Object).Verifiable();
 
       _dbCommandMock.Setup(mock => mock.Dispose()).Verifiable();
 
-      var result = _command.Execute(_commandExecutionContextMock.Object);
+      var result = _command.Execute(executionContextMock.Object);
 
-      _commandExecutionContextMock.Verify();
+      executionContextMock.Verify();
+      _dbCommandBuilderMock.Verify();
+      _dbCommandMock.Verify();
+      Assert.That(result, Is.SameAs(_fakeResult));
+    }
+
+    [Test]
+    public void ExecuteReadOnly ()
+    {
+      var executionContextMock = new Mock<IRdbmsProviderReadOnlyCommandExecutionContext>(MockBehavior.Strict);
+      executionContextMock.Setup(mock => mock.ExecuteScalar(_dbCommandMock.Object)).Returns(_fakeResult).Verifiable();
+
+      _dbCommandBuilderMock.Setup(mock => mock.Create(executionContextMock.Object)).Returns(_dbCommandMock.Object).Verifiable();
+
+      _dbCommandMock.Setup(mock => mock.Dispose()).Verifiable();
+
+      var result = _command.Execute(executionContextMock.Object);
+
+      executionContextMock.Verify();
       _dbCommandBuilderMock.Verify();
       _dbCommandMock.Verify();
       Assert.That(result, Is.SameAs(_fakeResult));

@@ -15,11 +15,7 @@ namespace Remotion.Utilities
     {
       get
       {
-#if NETFRAMEWORK
-        return AppDomain.CurrentDomain.RelativeSearchPath;
-#else
         return null;
-#endif
       }
     }
   }

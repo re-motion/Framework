@@ -284,11 +284,7 @@ namespace Remotion.Web.UnitTests.Core.Resources
       {
         foreach (var (name, length, lastWriteTime) in entries)
         {
-#if NETFRAMEWORK
-          binaryWriter.Write(name);
-#else
           binaryWriter.Write(name.AsSpan());
-#endif
           binaryWriter.Write(length);
           binaryWriter.Write(lastWriteTime);
         }
@@ -299,11 +295,7 @@ namespace Remotion.Web.UnitTests.Core.Resources
       using var sha256 = SHA256.Create();
       var data = sha256.ComputeHash(memoryStream);
 
-#if NETFRAMEWORK
-      var hashString = string.Concat(data.Select(e => e.ToString("X2")));
-#else
       var hashString = Convert.ToHexString(data);
-#endif
 
       Assert.That(hashString, Does.Match("^[A-F0-9]{64}$"));
       return hashString;

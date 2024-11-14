@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using System.Threading;
+using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -63,7 +64,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestExecutionScreenshotRecorderTest_TakeDesktopScreenshot_SavesToCorrectPath ()
     {
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath, NullLoggerFactory.Instance);
       var tempFileName = "RandomFileName";
       var suffix = "Desktop";
       var extension = "png";
@@ -78,7 +79,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestExecutionScreenshotRecorderTest_TakeDesktopScreenshot_ReplacesInvalidFileNameChars ()
     {
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath, NullLoggerFactory.Instance);
       var tempFileName = "<Random\"File\"Na|me>";
       var suffix = "Desktop";
       var extension = "png";
@@ -97,7 +98,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       //Just open the browser so we can take a browser Screenshot
       Start();
 
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath, NullLoggerFactory.Instance);
       var tempFileName = "RandomFileName";
       var suffix = "Browser0-0";
       var extension = "png";
@@ -115,7 +116,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       //Just open the browser so we can take a browser Screenshot
       Start();
 
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath, NullLoggerFactory.Instance);
       var tempFileName = "<Random\"File\"Na|me>";
       var suffix = "Browser0-0";
       var extension = "png";
@@ -131,7 +132,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestExecutionScreenshotRecorderTest_TakeBrowserScreenshot_DoesNotThrowWhenBrowserDisposed ()
     {
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath, NullLoggerFactory.Instance);
       var fileName = "RandomFileName";
       var fullPath = CombineToFullPath(_tempSavePath, fileName, "Browser0-0", "png");
 
@@ -155,7 +156,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       //Just open the browser so we can take a browser Screenshot
       Start();
 
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath, NullLoggerFactory.Instance);
       var fileName = "RandomFileName";
       var fullPath = CombineToFullPath(_tempSavePath, fileName, "Browser1-0", "png");
 
@@ -186,7 +187,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       if (Helper.BrowserConfiguration.IsFirefox())
         Assert.Ignore("Firefox does not show an alert dialog.");
 
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath, NullLoggerFactory.Instance);
       var fileName = "RandomFileName";
 
       var home = Start();
@@ -213,7 +214,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Ignore("Is currently not working. See RM-6837 for Details.")]
     public void TestExecutionScreenshotRecorderTest_TakeBrowserScreenshot_DoesCreateScreenshotWhenAlertWindowIsOpen ()
     {
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath, NullLoggerFactory.Instance);
       var fileName = "RandomFileName";
       var fullPath = CombineToFullPath(_tempSavePath, fileName, "Browser0-0", "png");
 
@@ -242,7 +243,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       //Just open the browser
       Start();
 
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath, NullLoggerFactory.Instance);
       var fileName = new String('A', 300);
       var suffix = "Browser0-0";
       var extension = "png";
@@ -271,7 +272,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var fileNameShortened = new String('A', 259 - (_tempSavePath.Length + suffix.Length + extension.Length + 3));
       var fullPath = CombineToFullPath(_tempSavePath, fileNameShortened, suffix, extension);
 
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath, NullLoggerFactory.Instance);
 
       Assert.That(File.Exists(fullPath), Is.False);
       Assert.That(

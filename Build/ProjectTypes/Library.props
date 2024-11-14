@@ -5,10 +5,9 @@
     <NoWarn>1591</NoWarn>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <IsPackable>True</IsPackable>
-    <TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
     <DefineConstants>$(DefineConstants);JETBRAINS_ANNOTATIONS;</DefineConstants>
-    <Nullable Condition="'$(TargetFramework)' == 'net48'">annotations</Nullable>
-    <Nullable Condition="'$(TargetFramework)' != 'net48'">enable</Nullable>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,14 +15,10 @@
       <Pack>true</Pack>
       <PackagePath>schema</PackagePath>
     </EmbeddedResource>
-    <Content Include="FacetManifest.xml" Condition="Exists('FacetManifest.xml')">
-      <Pack>true</Pack>
-      <PackagePath>.</PackagePath>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+    <PackageReference Include="JetBrains.Annotations" />
   </ItemGroup>
 
 </Project>

@@ -442,7 +442,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var bocList = home.Lists().GetByLocalID("JobList_Normal");
       Assert.That(
           bocList.GetColumnDefinitions().Select(cd => cd.Title),
-          Is.EquivalentTo(new[] { "I_ndex", "", "", "Command", "Menu", "Title", "StartDate", "EndDate", "DisplayName", "TitleWithCmd" }));
+          Is.EquivalentTo(new[] { "I_ndex", "", "", "Command", "Menu", "Title", "StartDate", "EndDate", "PromotionDate", "DisplayName", "TitleWithCmd" }));
     }
 
     [Test]
@@ -1116,7 +1116,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       Assert.That(row.GetCell("DisplayName").GetText(), Is.EqualTo("Developer"));
 
       var columnTitles = bocList.GetColumnDefinitions().Select(cd => cd.Title);
-      Assert.That(columnTitles, Is.EquivalentTo(new[] { "Edit", "Title", "StartDate", "EndDate", "DisplayName" }));
+      Assert.That(columnTitles, Is.EquivalentTo(new[] { "Edit", "Title", "StartDate", "EndDate", "DisplayName", "PromotionDate" }));
     }
 
     [Test]

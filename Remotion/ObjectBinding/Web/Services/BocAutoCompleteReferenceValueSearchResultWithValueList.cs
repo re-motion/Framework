@@ -31,9 +31,21 @@ namespace Remotion.ObjectBinding.Web.Services
     /// </summary>
     public BusinessObjectWithIdentityProxy[] Values { get; }
 
-    internal BocAutoCompleteReferenceValueSearchResultWithValueList (BusinessObjectWithIdentityProxy[] values)
+    /// <summary>
+    /// Indicates that more search results are available to be queried on-demand by the client.
+    /// </summary>
+    public bool HasMoreSearchResults { get; }
+
+    /// <summary>
+    /// Arbitrary context information that will be sent back to the server as part of the next pagination request.
+    /// </summary>
+    public string? Context { get; }
+
+    internal BocAutoCompleteReferenceValueSearchResultWithValueList (BusinessObjectWithIdentityProxy[] values, bool hasMoreSearchResults, string? context)
     {
       Values = values;
+      HasMoreSearchResults = hasMoreSearchResults;
+      Context = context;
     }
   }
 }

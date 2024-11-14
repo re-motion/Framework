@@ -64,14 +64,14 @@ CREATE TABLE [dbo].[TableInheritance_Person]
   [ClassID] varchar (100) NOT NULL,
   [Timestamp] rowversion NOT NULL,
   [CreatedBy] nvarchar (100) NOT NULL,
-  [CreatedAt] datetime NOT NULL,
+  [CreatedAt] datetime2 NOT NULL,
   [ClientID] uniqueidentifier NULL,
   [FirstName] nvarchar (100) NOT NULL,
   [LastName] nvarchar (100) NOT NULL,
-  [DateOfBirth] datetime NOT NULL,
+  [DateOfBirth] datetime2 NOT NULL,
   [Photo] varbinary (max) NULL,
   [CustomerType] int NULL,
-  [CustomerSince] datetime NULL,
+  [CustomerSince] datetime2 NULL,
   [RegionID] uniqueidentifier NULL,
   CONSTRAINT [PK_TableInheritance_Person] PRIMARY KEY CLUSTERED ([ID])
 )
@@ -84,7 +84,7 @@ CREATE TABLE [dbo].[TableInheritance_File]
   [ParentFolderID] uniqueidentifier NULL,
   [ParentFolderIDClassID] varchar (100) NULL,
   [Size] int NOT NULL,
-  [FileCreatedAt] datetime NOT NULL,
+  [FileCreatedAt] datetime2 NOT NULL,
   CONSTRAINT [PK_TableInheritance_File] PRIMARY KEY CLUSTERED ([ID])
 )
 CREATE TABLE [dbo].[TableInheritance_HistoryEntry]
@@ -92,7 +92,7 @@ CREATE TABLE [dbo].[TableInheritance_HistoryEntry]
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
   [Timestamp] rowversion NOT NULL,
-  [HistoryDate] datetime NOT NULL,
+  [HistoryDate] datetime2 NOT NULL,
   [Text] nvarchar (250) NOT NULL,
   [OwnerID] uniqueidentifier NULL,
   [OwnerIDClassID] varchar (100) NULL,
@@ -104,7 +104,7 @@ CREATE TABLE [dbo].[TableInheritance_Order]
   [ClassID] varchar (100) NOT NULL,
   [Timestamp] rowversion NOT NULL,
   [Number] int NOT NULL,
-  [OrderDate] datetime NOT NULL,
+  [OrderDate] datetime2 NOT NULL,
   [CustomerID] uniqueidentifier NULL,
   [CustomerIDClassID] varchar (100) NULL,
   CONSTRAINT [PK_TableInheritance_Order] PRIMARY KEY CLUSTERED ([ID])
@@ -115,7 +115,7 @@ CREATE TABLE [dbo].[TableInheritance_OrganizationalUnit]
   [ClassID] varchar (100) NOT NULL,
   [Timestamp] rowversion NOT NULL,
   [CreatedBy] nvarchar (100) NOT NULL,
-  [CreatedAt] datetime NOT NULL,
+  [CreatedAt] datetime2 NOT NULL,
   [ClientID] uniqueidentifier NULL,
   [Name] nvarchar (100) NOT NULL,
   CONSTRAINT [PK_TableInheritance_OrganizationalUnit] PRIMARY KEY CLUSTERED ([ID])
@@ -136,7 +136,7 @@ CREATE TABLE [dbo].[TableInheritance_Folder]
   [Name] nvarchar (100) NOT NULL,
   [ParentFolderID] uniqueidentifier NULL,
   [ParentFolderIDClassID] varchar (100) NULL,
-  [FolderCreatedAt] datetime NOT NULL,
+  [FolderCreatedAt] datetime2 NOT NULL,
   CONSTRAINT [PK_TableInheritance_Folder] PRIMARY KEY CLUSTERED ([ID])
 )
 -- Create foreign key constraints for tables that were created above
@@ -282,3 +282,4 @@ CREATE VIEW [dbo].[TI_SpecificFolderView] ([ID], [ClassID], [Timestamp], [Name],
 GO
 -- Create indexes for tables that were created above
 -- Create synonyms for tables that were created above
+-- Create all structured types

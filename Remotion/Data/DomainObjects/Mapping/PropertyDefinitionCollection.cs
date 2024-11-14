@@ -23,7 +23,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {
-  [Serializable]
   public class PropertyDefinitionCollection : CommonCollection, IEnumerable<PropertyDefinition>
   {
     public static PropertyDefinitionCollection CreateForAllProperties (ClassDefinition classDefinition, bool makeCollectionReadOnly)

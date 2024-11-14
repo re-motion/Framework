@@ -77,7 +77,7 @@ class DropDownMenu_ItemInfo
       public IsDisabled: boolean,
       public readonly Href: Nullable<string>,
       public readonly Target: Nullable<string>,
-      public readonly FallbackNavigationUrl: string,
+      public readonly ClickHandler: Nullable<() => boolean>,
       public readonly DiagnosticMetadata: Nullable<Dictionary<string | boolean>>,
       public readonly DiagnosticMetadataForCommand: Nullable<Dictionary<string | boolean>>)
   {
@@ -731,34 +731,21 @@ class DropDownMenu
     const anchor = document.createElement("a");
     anchor.setAttribute('role', 'menuitem');
     anchor.setAttribute('tabindex', '-1');
-    if (isEnabled)
+    if (isEnabled && itemInfo.Href !== null)
     {
-      anchor.setAttribute('href', itemInfo.FallbackNavigationUrl);
+      anchor.setAttribute('href', itemInfo.Href);
+      if (itemInfo.Target !== null)
+        anchor.setAttribute('target', itemInfo.Target);
     }
     else
     {
       anchor.setAttribute('aria-disabled', 'true');
     }
 
-    anchor.addEventListener ('click', DropDownMenu.OnItemClick);
+    const itemClickHandler = isEnabled ? itemInfo.ClickHandler : null;
+    anchor.addEventListener ('click', function (ev: MouseEvent) { DropDownMenu.OnItemClick(this, ev, itemClickHandler) });
 
     item.appendChild(anchor);
-    if (isEnabled && itemInfo.Href != null)
-    {
-      const isJavaScript = itemInfo.Href.toLowerCase().indexOf('javascript:') >= 0;
-      if (isJavaScript)
-      {
-        anchor.setAttribute('javascript', itemInfo.Href);
-      }
-      else
-      {
-        const href = itemInfo.Href;
-        const target = itemInfo.Target != null && itemInfo.Target.length > 0
-            ? itemInfo.Target
-            : '_self';
-        anchor.setAttribute('javascript', 'window.open (\'' + href + '\', \'' + target + '\');');
-      }
-    }
 
     if (itemInfo.Icon != null)
     {
@@ -830,24 +817,30 @@ class DropDownMenu
     return item;
   }
 
-  private static OnItemClick (this: HTMLAnchorElement, ev: MouseEvent): boolean
+  private static OnItemClick (anchor: HTMLAnchorElement, ev: MouseEvent, clickHandler: Nullable<() => boolean>): void
   {
-    ev.preventDefault();
-
-    if (this.href == null || this.href === '')
-      return false;
+    if (anchor.href === null || anchor.href === '')
+    {
+      ev.preventDefault();
+      return;
+    }
 
     DropDownMenu._itemClicked = true;
     DropDownMenu.ClosePopUp(true);
+
+    let result = true;
     try
     {
-      eval(this.getAttribute('javascript')!);
+      if (clickHandler !== null)
+        result = clickHandler();
     }
     catch (e)
     {
     }
     setTimeout (function () { DropDownMenu._itemClicked = false; }, 10);
-    return false;
+
+    if (!result)
+      ev.preventDefault();
   }
 
   public static OnKeyDown (event: KeyboardEvent, dropDownMenuOrSelector: CssSelectorOrElement<HTMLAnchorElement>, getSelectionCount: Nullable<DropDownMenu_SelectionCountGetter>, hasDedicatedDropDownMenuElement: boolean): void

@@ -22,11 +22,7 @@ using Remotion.Development.UnitTesting.Compilation;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
-#if NETFRAMEWORK
-using Remotion.Development.UnitTesting;
-#else
 using Remotion.Development.UnitTesting.IsolatedCodeRunner;
-#endif
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
 {
@@ -102,12 +98,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       string compiledAssemblyPath = Path.Combine(AppContext.BaseDirectory, "NonApplicationMarkedAssembly.dll");
       try
       {
-#if NETFRAMEWORK
-        AppDomainRunner.Run(args => Test(new []{ (string)args[0] }), compiledAssemblyPath);
-#else
         var isolatedCodeRunner = new IsolatedCodeRunner(Test);
         isolatedCodeRunner.Run(compiledAssemblyPath);
-#endif
       }
       finally
       {

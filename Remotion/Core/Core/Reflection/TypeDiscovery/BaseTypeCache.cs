@@ -19,6 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Utilities;
 
@@ -29,14 +30,14 @@ namespace Remotion.Reflection.TypeDiscovery
   /// </summary>
   public sealed class BaseTypeCache
   {
-    private static readonly Lazy<ILog> s_log = new Lazy<ILog>(() => LogManager.GetLogger(typeof(BaseTypeCache)));
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<BaseTypeCache>();
 
     public static BaseTypeCache Create (IEnumerable<Type> types)
     {
       ArgumentUtility.CheckNotNull("types", types);
 
-      s_log.Value.DebugFormat("Beginning to build BaseTypeCache...");
-      using (StopwatchScope.CreateScope(s_log.Value, LogLevel.Debug, string.Format("Built BaseTypeCache. Time taken: {{elapsed}}")))
+      s_logger.LogDebug("Beginning to build BaseTypeCache...");
+      using (StopwatchScope.CreateScope(s_logger, LogLevel.Debug, string.Format("Built BaseTypeCache. Time taken: {{elapsed}}")))
       {
         // Note: there is no measurable impact when switching this code to parallel execution.
         var classes = new List<KeyValuePair<Type, Type>>();

@@ -130,16 +130,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       Assert.That(_copyOnWriteData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2, _domainObject3 }));
       Assert.That(_copiedData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2 }));
     }
-
-    [Test]
-    public void Serializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-     Assert.That(_copyOnWriteData.Count, Is.EqualTo(2));
-
-      var deserialized = Serializer.SerializeAndDeserialize(_copyOnWriteData);
-      Assert.That(deserialized.Count, Is.EqualTo(2));
-    }
   }
 }

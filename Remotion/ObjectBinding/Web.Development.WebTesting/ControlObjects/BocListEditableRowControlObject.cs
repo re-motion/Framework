@@ -81,7 +81,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public BocListValidationError[] GetValidationErrors ()
     {
       return Scope.FindAllCss(".bocListDataCellValidationFailureIndicator ul li")
-          .Select(BocListValidationError.Parse)
+          .Select(scope => BocListValidationError.Parse(scope, Logger))
           .ToArray();
     }
 

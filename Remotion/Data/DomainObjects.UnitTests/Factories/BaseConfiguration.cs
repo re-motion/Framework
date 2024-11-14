@@ -132,21 +132,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       var defaultStorageProvider = new RdbmsProviderDefinition(
           DatabaseTest.DefaultStorageProviderID,
           sqlStorageObjectFactory,
-          DatabaseTest.TestDomainConnectionString);
-      storageProviderDefinitionCollection.Add(defaultStorageProvider);
+          connectionString: DatabaseTest.TestDomainConnectionString,
+          readOnlyConnectionString: DatabaseTest.TestDomainConnectionString);
+      storageProviderDefinitionCollection.Add(item: defaultStorageProvider);
 
       storageProviderDefinitionCollection.Add(
           new RdbmsProviderDefinition(
               DatabaseTest.c_testDomainProviderID,
               sqlStorageObjectFactory,
-              DatabaseTest.TestDomainConnectionString,
-              assignedStorageGroups: new[] { typeof(TestDomainAttribute) }));
+              connectionString: DatabaseTest.TestDomainConnectionString,
+              readOnlyConnectionString: DatabaseTest.TestDomainConnectionString,
+              new[] { typeof(TestDomainAttribute) }));
 
       storageProviderDefinitionCollection.Add(
           new NonPersistentProviderDefinition(
               DatabaseTest.c_nonPersistentTestDomainProviderID,
               nonPersistentStorageObjectFactory,
-              assignedStorageGroups: new[] { typeof(NonPersistentTestDomainAttribute) }));
+              new[] { typeof(NonPersistentTestDomainAttribute) }));
 
       storageProviderDefinitionCollection.Add(
           new UnitTestStorageProviderStubDefinition(
@@ -157,8 +159,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           new RdbmsProviderDefinition(
               TableInheritanceMappingTest.TableInheritanceTestDomainProviderID,
               sqlStorageObjectFactory,
-              DatabaseTest.TestDomainConnectionString,
-              assignedStorageGroups: new[] { typeof(TableInheritanceTestDomainAttribute) }));
+              connectionString: DatabaseTest.TestDomainConnectionString,
+              readOnlyConnectionString: DatabaseTest.TestDomainConnectionString,
+              new[] { typeof(TableInheritanceTestDomainAttribute) }));
 
       var storageSettings = new StorageSettings(
           defaultStorageProvider,

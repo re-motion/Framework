@@ -57,6 +57,14 @@ public class BocDateTimeValueUserControl : BaseUserControl
   protected BocDateTimeValue DisabledBirthdayField;
   protected Label DisabledBirthdayFieldValueLabel;
   protected BocDateTimeValue DisabledReadOnlyBirthdayField;
+  protected Label DisabledReadOnlyCitizenshipFieldValueLabel;
+  protected BocDateTimeValue DisabledReadOnlyCitizenshipField;
+  protected Label ReadOnlyCitizenshipFieldValueLabel;
+  protected BocDateTimeValue ReadOnlyCitizenshipField;
+  protected Label CitizenshipFieldValueLabel;
+  protected BocDateTimeValue CitizenshipField;
+  protected Label UnboundCitizenshipFieldValueLabel;
+  protected BocDateTimeValue UnboundCitizenshipField;
   protected Label DisabledReadOnlyBirthdayFieldValueLabel;
   protected BocDateTimeValue DisabledUnboundBirthdayField;
   protected Label DisabledUnboundBirthdayFieldValueLabel;
@@ -110,6 +118,8 @@ public class BocDateTimeValueUserControl : BaseUserControl
     DirectlySetBocDateTimeValueField.LoadUnboundValue(DateTime.Now, IsPostBack);
     ReadOnlyDirectlySetBocDateTimeValueField.LoadUnboundValue(DateTime.Now, IsPostBack);
 
+    UnboundCitizenshipField.LoadUnboundValue(DateOnly.FromDateTime(DateTime.Today), IsPostBack);
+
     if (!IsPostBack)
     {
       if (Page is ISmartNavigablePage)
@@ -142,6 +152,10 @@ public class BocDateTimeValueUserControl : BaseUserControl
     SetDebugLabel(DisabledReadOnlyBirthdayField, DisabledReadOnlyBirthdayFieldValueLabel);
     SetDebugLabel(DisabledUnboundBirthdayField, DisabledUnboundBirthdayFieldValueLabel);
     SetDebugLabel(DisabledUnboundReadOnlyBirthdayField, DisabledUnboundReadOnlyBirthdayFieldValueLabel);
+    SetDebugLabel(CitizenshipField, CitizenshipFieldValueLabel);
+    SetDebugLabel(ReadOnlyCitizenshipField, ReadOnlyCitizenshipFieldValueLabel);
+    SetDebugLabel(DisabledReadOnlyCitizenshipField, DisabledReadOnlyCitizenshipFieldValueLabel);
+    SetDebugLabel(UnboundCitizenshipField, UnboundCitizenshipFieldValueLabel);
   }
 
   private void SetDebugLabel (IBusinessObjectBoundWebControl control, Label label)

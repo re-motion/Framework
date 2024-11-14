@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Moq;
 using NUnit.Framework;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
@@ -142,6 +143,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       Assert.That(_bocDateTimeValue.IsDirty, Is.True);
     }
 
+    [Test]
+    public void IBusinessObjectBoundControl_SetValueToDateOnly_ThrowsArgumentException ()
+    {
+      DateOnly dateOnly = new DateOnly(2006, 1, 1);
+      _bocDateTimeValue.IsDirty = false;
+      Assert.That(() => { ((IBusinessObjectBoundControl)_bocDateTimeValue).Value = dateOnly;},
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo("Parameter 'value' has type 'System.DateOnly' when type 'System.Nullable`1[System.DateTime]' was expected.", "value"));
+    }
 
     [Test]
     public void IBusinessObjectBoundControl_SetValueToDateTime ()
@@ -353,6 +363,65 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       Assert.That(_bocDateTimeValue.IsDirty, Is.False);
     }
 
+    [Test]
+    public void LoadUnboundValue_DateOnlyAndInterimTrue ()
+    {
+      var value = new DateOnly(2006, 1, 1);
+      _bocDateTimeValue.Value = null;
+      _bocDateTimeValue.IsDirty = true;
+
+      _bocDateTimeValue.LoadUnboundValue(value, true);
+      Assert.That(_bocDateTimeValue.Value, Is.EqualTo(null));
+      Assert.That(_bocDateTimeValue.IsDirty, Is.True);
+    }
+
+    [Test]
+    public void LoadUnboundValue_DateOnlyAndInterimFalseWithDateTime ()
+    {
+      var value = new DateOnly(2006, 1, 1);
+      _bocDateTimeValue.Value = null;
+      _bocDateTimeValue.IsDirty = true;
+
+      _bocDateTimeValue.LoadUnboundValue(value, false);
+      Assert.That(_bocDateTimeValue.Value, Is.EqualTo(value.ToDateTime(TimeOnly.MinValue)));
+      Assert.That(_bocDateTimeValue.IsDirty, Is.False);
+    }
+
+    [Test]
+    public void LoadUnboundValue_DateOnlyAndInterimFalseWithValueNull ()
+    {
+      DateOnly? value = null;
+      _bocDateTimeValue.Value = DateTime.Now;
+      _bocDateTimeValue.IsDirty = true;
+
+      _bocDateTimeValue.LoadUnboundValue(value, false);
+      Assert.That(_bocDateTimeValue.Value, Is.EqualTo(null));
+      Assert.That(_bocDateTimeValue.IsDirty, Is.False);
+    }
+
+    [Test]
+    public void LoadUnboundValue_DateOnlyAndInterimFalseWithValueNullableDateTime ()
+    {
+      DateOnly? value = new DateOnly(2006, 1, 1);
+      _bocDateTimeValue.Value = null;
+      _bocDateTimeValue.IsDirty = true;
+
+      _bocDateTimeValue.LoadUnboundValue(value, false);
+      Assert.That(_bocDateTimeValue.Value, Is.EqualTo(value.Value.ToDateTime(TimeOnly.MinValue)));
+      Assert.That(_bocDateTimeValue.IsDirty, Is.False);
+    }
+
+    [Test]
+    public void LoadUnboundValue_DateOnlyAndInterimFalseWithValueNullableDateTimeNull ()
+    {
+      DateOnly? value = null;
+      _bocDateTimeValue.Value = DateTime.Now;
+      _bocDateTimeValue.IsDirty = true;
+
+      _bocDateTimeValue.LoadUnboundValue(value, false);
+      Assert.That(_bocDateTimeValue.Value, Is.EqualTo(null));
+      Assert.That(_bocDateTimeValue.IsDirty, Is.False);
+    }
 
     [Test]
     public void SaveValueAndInterimTrue ()

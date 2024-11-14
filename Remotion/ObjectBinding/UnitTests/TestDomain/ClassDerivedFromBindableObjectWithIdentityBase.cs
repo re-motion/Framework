@@ -19,7 +19,6 @@ using Remotion.ObjectBinding.BindableObject;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
-  [Serializable]
   public class ClassDerivedFromBindableObjectWithIdentityBase : BindableObjectWithIdentityBase
   {
     private string _uniqueIdentifier;

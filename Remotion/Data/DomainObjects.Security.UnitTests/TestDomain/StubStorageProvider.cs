@@ -20,35 +20,32 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Persistence;
-using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
 {
-  public class StubStorageProvider : StorageProvider
+  public class StubStorageProvider : IStorageProvider
   {
     public const string StorageProviderID = "StubStorageProvider";
     public const string GetSecurableObjectsQueryID = "StubQueryID";
 
-    public StubStorageProvider (StorageProviderDefinition definition, IPersistenceExtension persistenceExtension)
-      : base(definition, persistenceExtension)
+    public StubStorageProvider ()
     {
     }
 
-    public override ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
-    {
-      throw new NotImplementedException();
-    }
-
-    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
+    public ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
     {
       throw new NotImplementedException();
     }
 
-    public override IEnumerable<DataContainer> ExecuteCollectionQuery (IQuery query)
+    public IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
+    {
+      throw new NotImplementedException();
+    }
+
+    public IEnumerable<DataContainer> ExecuteCollectionQuery (IQuery query)
     {
       ArgumentUtility.CheckNotNull("query", query);
 
@@ -59,27 +56,27 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
       return collection.ToArray();
     }
 
-    public override IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
+    public IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
     {
       ArgumentUtility.CheckNotNull("query", query);
 
       return new QueryResultRow[0];
     }
 
-    public override object ExecuteScalarQuery (IQuery query)
+    public object ExecuteScalarQuery (IQuery query)
     {
       throw new NotImplementedException();
     }
 
-    public override void Save (IReadOnlyCollection<DataContainer> dataContainers)
+    public void Save (IReadOnlyCollection<DataContainer> dataContainers)
     {
     }
 
-    public override void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers)
+    public void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers)
     {
     }
 
-    public override IEnumerable<DataContainer> LoadDataContainersByRelatedID (
+    public IEnumerable<DataContainer> LoadDataContainersByRelatedID (
         RelationEndPointDefinition relationEndPointDefinition,
         SortExpressionDefinition sortExpressionDefinition,
         ObjectID relatedID)
@@ -87,37 +84,27 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
       throw new NotImplementedException();
     }
 
-    public override void BeginTransaction ()
+    public void BeginTransaction ()
     {
     }
 
-    public override void Commit ()
+    public void Commit ()
     {
     }
 
-    public override void Rollback ()
+    public void Rollback ()
     {
     }
 
-    public override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
+    public ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
-      CheckDisposed();
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      CheckClassDefinition(classDefinition, "classDefinition");
 
       return new ObjectID(classDefinition.ID, Guid.NewGuid());
     }
 
-    private void CheckClassDefinition (ClassDefinition classDefinition, string argumentName)
+    public void Dispose ()
     {
-      if (classDefinition.StorageEntityDefinition.StorageProviderDefinition != StorageProviderDefinition)
-      {
-        throw CreateArgumentException(
-            argumentName,
-            "The StorageProviderID '{0}' of the provided ClassDefinition does not match with this StorageProvider's ID '{1}'.",
-            classDefinition.StorageEntityDefinition.StorageProviderDefinition.Name,
-            StorageProviderDefinition.Name);
-      }
     }
   }
 }

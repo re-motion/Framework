@@ -34,14 +34,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
         Type dotNetType = null,
         TypeConverter dotNetTypeConverter = null)
     {
+      var dbType = storageDbType ?? DbType.String;
+      var dbTypeSize = storageTypeLength ?? GetDefaultSize(dbType);
+
       return new StorageTypeInformation(
           storageType ?? typeof(string),
           storageTypeName ?? "nvarchar(max)",
-          storageDbType ?? DbType.String,
+          dbType,
           isStorageTypeNullable ?? true,
-          storageTypeLength ?? -1,
+          dbTypeSize,
           dotNetType ?? typeof(string),
           dotNetTypeConverter ?? new DefaultConverter(typeof(string)));
+    }
+
+    private static int? GetDefaultSize (DbType dbType)
+    {
+      return dbType switch
+      {
+          DbType.AnsiString => -1,
+          DbType.AnsiStringFixedLength => -1,
+          DbType.Binary => -1,
+          DbType.String => -1,
+          DbType.StringFixedLength => -1,
+          _ => null
+      };
     }
 
     public static StorageTypeInformation CreateUniqueIdentifierStorageTypeInformation (bool isNullable = false)
@@ -56,7 +72,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
     public static StorageTypeInformation CreateDateTimeStorageTypeInformation (bool isNullable = false)
     {
-      return new StorageTypeInformation(typeof(DateTime), "datetime", DbType.DateTime, isNullable, null, typeof(DateTime), new DefaultConverter(typeof(DateTime)));
+      return new StorageTypeInformation(typeof(DateTime), "datetime2", DbType.DateTime2, isNullable, null, typeof(DateTime), new DefaultConverter(typeof(DateTime)));
+    }
+
+    public static StorageTypeInformation CreateIntStorageTypeInformation (bool isNullable = false)
+    {
+      return new StorageTypeInformation(typeof(int), "int", DbType.Int32, isNullable, null, typeof(int), new DefaultConverter(typeof(int)));
     }
 
     public static IStorageTypeInformation CreateBitStorageTypeInformation (bool isNullable = false)

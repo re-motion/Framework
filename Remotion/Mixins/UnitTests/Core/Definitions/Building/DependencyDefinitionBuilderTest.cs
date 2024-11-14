@@ -69,9 +69,9 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     {
       TargetClassDefinition targetClass = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(BaseType6));
 
-      Assert.IsTrue(targetClass.RequiredTargetCallTypes.ContainsKey(typeof(ICBT6Mixin1)), "This is added via a dependency of BT6Mixin3.");
-      Assert.IsTrue(targetClass.RequiredTargetCallTypes.ContainsKey(typeof(ICBT6Mixin2)), "This is added via a dependency of BT6Mixin3.");
-      Assert.IsTrue(targetClass.RequiredTargetCallTypes.ContainsKey(typeof(ICBT6Mixin3)), "This is added because of the ComposedInterfaceAttribute.");
+      Assert.That(targetClass.RequiredTargetCallTypes.ContainsKey(typeof(ICBT6Mixin1)), Is.True, "This is added via a dependency of BT6Mixin3.");
+      Assert.That(targetClass.RequiredTargetCallTypes.ContainsKey(typeof(ICBT6Mixin2)), Is.True, "This is added via a dependency of BT6Mixin3.");
+      Assert.That(targetClass.RequiredTargetCallTypes.ContainsKey(typeof(ICBT6Mixin3)), Is.True, "This is added because of the ComposedInterfaceAttribute.");
     }
 
     [Test]
@@ -297,7 +297,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       Assert.That(bt3Mixin6.NextCallDependencies.ContainsKey(typeof(IBT3Mixin4)), Is.True);
       Assert.That(bt3Mixin6.NextCallDependencies.ContainsKey(typeof(IBaseType31)), Is.False);
       Assert.That(bt3Mixin6.NextCallDependencies.ContainsKey(typeof(IBaseType32)), Is.False);
-      Assert.IsTrue(bt3Mixin6.NextCallDependencies.ContainsKey(typeof(IBaseType33)), "indirect dependency");
+      Assert.That(bt3Mixin6.NextCallDependencies.ContainsKey(typeof(IBaseType33)), Is.True, "indirect dependency");
 
       Assert.That(bt3Mixin6.NextCallDependencies[typeof(IBaseType34)].RequiredType, Is.SameAs(bt3Mixin6.TargetClass.RequiredNextCallTypes[typeof(IBaseType34)]));
 
@@ -560,7 +560,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
 
       Assert.That(requirement.RequiringDependencies.ContainsKey(mixin.MixinDependencies[typeof(IMixinWithAdditionalClassDependency)]), Is.True);
 
-      Assert.AreEqual(0, requirement.Methods.Count, "mixin type requirements do not contain method requirements");
+      Assert.That(requirement.Methods.Count, Is.EqualTo(0), "mixin type requirements do not contain method requirements");
 
       Assert.That(mixin.MixinDependencies[typeof(IMixinWithAdditionalClassDependency)].RequiredType, Is.SameAs(requirement));
     }
@@ -582,7 +582,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
 
       Assert.That(requirement.RequiringDependencies.ContainsKey(mixin.MixinDependencies[typeof(MixinWithNoAdditionalDependency)]), Is.True);
 
-      Assert.AreEqual(0, requirement.Methods.Count, "mixin type requirements do not contain method requirements");
+      Assert.That(requirement.Methods.Count, Is.EqualTo(0), "mixin type requirements do not contain method requirements");
 
       Assert.That(mixin.MixinDependencies[typeof(MixinWithNoAdditionalDependency)].RequiredType, Is.SameAs(requirement));
     }

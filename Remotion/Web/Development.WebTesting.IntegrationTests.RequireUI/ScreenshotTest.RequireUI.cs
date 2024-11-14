@@ -60,7 +60,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     /// </summary>
     [Category("Screenshot")]
     [Test]
-    public void DrawCursorTooltip_WithFollowingBoxAnnotation ()
+    public void DrawCursorTooltip_WithBoxAnnotation ()
     {
       ScreenshotTestingDelegate<ElementScope> test = (builder, target) =>
       {

@@ -23,6 +23,6 @@ namespace Remotion.Mixins
   /// </summary>
   public interface IInitializableMixin
   {
-    void Initialize (object target, object? next, bool deserialization);
+    void Initialize (object target, object? next);
   }
 }

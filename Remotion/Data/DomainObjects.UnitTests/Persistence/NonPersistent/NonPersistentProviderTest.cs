@@ -7,7 +7,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
 
@@ -16,13 +15,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
   [TestFixture]
   public class NonPersistentProviderTest : StandardMappingTest
   {
-    private StorageProvider _provider;
+    private IStorageProvider _provider;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _provider = new NonPersistentProvider(NonPersistentStorageProviderDefinition, NullPersistenceExtension.Instance);
+      _provider = new NonPersistentProvider(NonPersistentStorageProviderDefinition);
     }
 
     [Test]
@@ -44,15 +43,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.CreateNewObjectID(DomainObjectIDs.OrderViewModel1.ClassDefinition),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
+              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
     }
 
     [Test]
     public void CreateNewObjectID_ClassDefinitionWithDifferentStorageProviderDefinition ()
     {
-      var providerWithDifferentID = new NonPersistentProvider(
-          new NonPersistentProviderDefinition("Test", new NonPersistentStorageObjectFactory()),
-          NullPersistenceExtension.Instance);
+      var providerWithDifferentID = new NonPersistentProvider(new NonPersistentProviderDefinition("Test", new NonPersistentStorageObjectFactory()));
 
       Assert.That(
           () => providerWithDifferentID.CreateNewObjectID(DomainObjectIDs.OrderViewModel1.ClassDefinition),
@@ -93,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.LoadDataContainer(objectID),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
+              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
     }
 
     [Test]
@@ -120,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.LoadDataContainers(new[] { objectID }),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
+              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
     }
 
     [Test]
@@ -157,15 +154,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.LoadDataContainersByRelatedID(relationEndPointDefinition, null, objectID),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
+              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
     }
 
     [Test]
     public void LoadDataContainersByRelatedID_ClassDefinitionWithDifferentStorageProviderDefinition ()
     {
-      var providerWithDifferentID = new NonPersistentProvider(
-          new NonPersistentProviderDefinition("Test", new NonPersistentStorageObjectFactory()),
-          NullPersistenceExtension.Instance);
+      var providerWithDifferentID = new NonPersistentProvider(new NonPersistentProviderDefinition("Test", new NonPersistentStorageObjectFactory()));
       var objectID = DomainObjectIDs.OrderViewModel1;
       var relationEndPointDefinition = (RelationEndPointDefinition)GetEndPointDefinition(typeof(OrderViewModel), "Object");
 
@@ -192,7 +187,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.Save(new DataContainerCollection()),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
+              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
     }
 
     [Test]
@@ -216,7 +211,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.UpdateTimestamps(new DataContainerCollection()),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
+              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
     }
 
     [Test]
@@ -238,7 +233,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.ExecuteCollectionQuery(queryStub.Object),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
+              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
     }
 
 
@@ -261,7 +256,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.ExecuteCustomQuery(queryStub.Object),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
+              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
     }
 
     [Test]
@@ -283,7 +278,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.ExecuteScalarQuery(queryStub.Object),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
+              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
     }
 
     [Test]
@@ -300,7 +295,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.BeginTransaction(),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
+              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
     }
 
     [Test]
@@ -317,7 +312,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.Commit(),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
+              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
     }
 
     [Test]
@@ -334,7 +329,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.Rollback(),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
+              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
     }
   }
 }

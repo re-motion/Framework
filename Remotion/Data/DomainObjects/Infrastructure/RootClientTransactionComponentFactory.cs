@@ -24,13 +24,13 @@ using Remotion.Data.DomainObjects.Infrastructure.Enlistment;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries.EagerFetching;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.FunctionalProgramming;
 using Remotion.Mixins;
 using Remotion.TypePipe;
-using Remotion.TypePipe.Implementation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
@@ -38,31 +38,48 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// <summary>
   /// Creates all parts necessary to construct a <see cref="ClientTransaction"/> with root-transaction semantics.
   /// </summary>
-  [Serializable]
   public class RootClientTransactionComponentFactory : ClientTransactionComponentFactoryBase
   {
     private readonly IStorageSettings _storageSettings;
+    private readonly IPersistenceService _persistenceService;
     private readonly IPersistenceExtensionFactory _persistenceExtensionFactory;
+    private readonly IStorageAccessResolver _storageAccessResolver;
 
-    public static RootClientTransactionComponentFactory Create (IStorageSettings storageSettings, IPersistenceExtensionFactory persistenceExtensionFactory)
+    public static RootClientTransactionComponentFactory Create (
+            IStorageSettings storageSettings,
+            IPersistenceService persistenceService,
+            IPersistenceExtensionFactory persistenceExtensionFactory,
+            IStorageAccessResolver storageAccessResolver)
     {
       ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
+      ArgumentUtility.CheckNotNull("persistenceService", persistenceService);
       ArgumentUtility.CheckNotNull("persistenceExtensionFactory", persistenceExtensionFactory);
+      ArgumentUtility.CheckNotNull("storageAccessResolver", storageAccessResolver);
 
       return ObjectFactory.Create<RootClientTransactionComponentFactory>(
           true,
-          new ParamListImplementation<IStorageSettings, IPersistenceExtensionFactory>(
+          ParamList.Create(
               storageSettings,
-              persistenceExtensionFactory));
+              persistenceService,
+              persistenceExtensionFactory,
+              storageAccessResolver));
     }
 
-    protected RootClientTransactionComponentFactory (IStorageSettings storageSettings, IPersistenceExtensionFactory persistenceExtensionFactory)
+    protected RootClientTransactionComponentFactory (
+        IStorageSettings storageSettings,
+        IPersistenceService persistenceService,
+        IPersistenceExtensionFactory persistenceExtensionFactory,
+        IStorageAccessResolver storageAccessResolver)
     {
       ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
+      ArgumentUtility.CheckNotNull("persistenceService", persistenceService);
       ArgumentUtility.CheckNotNull("persistenceExtensionFactory", persistenceExtensionFactory);
+      ArgumentUtility.CheckNotNull("storageAccessResolver", storageAccessResolver);
 
       _storageSettings = storageSettings;
+      _persistenceService = persistenceService;
       _persistenceExtensionFactory = persistenceExtensionFactory;
+      _storageAccessResolver = storageAccessResolver;
     }
 
     public override ITransactionHierarchyManager CreateTransactionHierarchyManager (
@@ -101,7 +118,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
           ParamList.Create(
               constructedTransaction.ID,
               _storageSettings,
-              _persistenceExtensionFactory)
+              _persistenceService,
+              _persistenceExtensionFactory,
+              _storageAccessResolver)
           );
     }
 

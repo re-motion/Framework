@@ -19,7 +19,6 @@ using System.Reflection;
 
 namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
 {
-  [Serializable]
   public class EnumWithDifferentCtors : ExtensibleEnum<EnumWithDifferentCtors>
   {
     public EnumWithDifferentCtors (string id)

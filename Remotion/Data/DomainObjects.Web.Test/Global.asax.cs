@@ -17,7 +17,9 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Web;
+using Microsoft.Extensions.Logging.Abstractions;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Security;
@@ -44,6 +46,8 @@ namespace Remotion.Data.DomainObjects.Web.Test
 
     protected void Application_Start (Object sender, EventArgs e)
     {
+      BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
+
 #if DEBUG
       const string configuration = "Debug";
 #else
@@ -97,6 +101,19 @@ namespace Remotion.Data.DomainObjects.Web.Test
 
     protected void Application_PostRequestHandlerExecute (Object sender, EventArgs e)
     {
+      var mimeType = GetMimeType(Path.GetExtension((ReadOnlySpan<char>)Request.PhysicalPath));
+
+      if (mimeType != null)
+        Response.ContentType = mimeType;
+
+      static string GetMimeType (ReadOnlySpan<char> extension)
+      {
+        var svg = (ReadOnlySpan<char>)".svg";
+        if (extension.Equals(svg, StringComparison.OrdinalIgnoreCase))
+          return "image/svg+xml";
+
+        return null;
+      }
     }
 
     protected void Application_Error (Object sender, EventArgs e)

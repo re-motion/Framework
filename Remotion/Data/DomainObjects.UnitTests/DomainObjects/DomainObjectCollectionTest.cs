@@ -466,13 +466,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(
           () => _collection.CopyTo(array, 0),
           Throws.ArgumentException
-#if NETFRAMEWORK
-              .With.Message.EqualTo(
-                  "Destination array was not long enough. Check destIndex and length, and the array's lower bounds.")
-#else
               .With.ArgumentExceptionMessageEqualTo(
                   "Destination array was not long enough. Check the destination index, length, and the array's lower bounds.", "destinationArray")
-#endif
           );
     }
 

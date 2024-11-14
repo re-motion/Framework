@@ -23,6 +23,7 @@
   right: 0;
   bottom: 0;
   padding: 0.5em;
+  z-index: var(--z-index-max);
 }
 
 .SmartPageErrorBody > div

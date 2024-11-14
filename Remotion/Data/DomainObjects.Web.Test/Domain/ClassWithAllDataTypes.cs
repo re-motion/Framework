@@ -26,7 +26,6 @@ using Remotion.Security;
 namespace Remotion.Data.DomainObjects.Web.Test.Domain
 {
   [MultiLingualResources("Remotion.Data.DomainObjects.Web.Test.Globalization.ClassWithAllDataTypes")]
-  [Serializable]
   [DBTable("TableWithAllDataTypes")]
   [Instantiable]
   [DBStorageGroup]
@@ -57,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
     [StorageClassNone]
     public string[] StringArray
     {
-      get { return DelimitedStringArrayProperty.Split(';'); }
+      get { return (DelimitedStringArrayProperty ?? string.Empty).Split(';'); }
       set
       {
         if (value == null)
@@ -110,14 +109,13 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
     public abstract byte ByteProperty { get; set; }
 
     [DBColumn("Date")]
-    [DateProperty]
-    public abstract DateTime DateProperty { get; set; }
+    public abstract DateOnly DateProperty { get; set; }
 
     [DBColumn("DateTime")]
     public abstract DateTime DateTimeProperty { get; set; }
 
     [StorageClassNone]
-    public DateTime ReadOnlyDateTimeProperty { get { return DateProperty; } }
+    public DateTime ReadOnlyDateTimeProperty { get { return DateTimeProperty; } }
 
     [DBColumn("Decimal")]
     public abstract decimal DecimalProperty { get; set; }
@@ -166,8 +164,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
     public abstract byte? NaByteProperty { get; set; }
 
     [DBColumn("NaDate")]
-    [DateProperty]
-    public abstract DateTime? NaDateProperty { get; set; }
+    public abstract DateOnly? NaDateProperty { get; set; }
 
     [DBColumn("NaDateTime")]
     public abstract DateTime? NaDateTimeProperty { get; set; }
@@ -210,8 +207,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
     public abstract byte? NaByteWithNullValueProperty { get; set; }
 
     [DBColumn("NaDateWithNullValue")]
-    [DateProperty]
-    public abstract DateTime? NaDateWithNullValueProperty { get; set; }
+    public abstract DateOnly? NaDateWithNullValueProperty { get; set; }
 
     [DBColumn("NaDateTimeWithNullValue")]
     public abstract DateTime? NaDateTimeWithNullValueProperty { get; set; }
@@ -266,7 +262,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
     {
       BooleanProperty = true;
       ByteProperty = 8;
-      DateProperty = DateTime.Now;
+      DateProperty = DateOnly.FromDateTime(DateTime.Today);
       DateTimeProperty = DateTime.Now;
       DecimalProperty = 10.3m;
       DoubleProperty = 2.0;

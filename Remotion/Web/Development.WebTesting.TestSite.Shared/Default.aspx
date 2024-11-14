@@ -42,6 +42,7 @@
           <tr><td><a href="ScopeTest.aspx">ScopeTest</a></td></tr>
           <tr><td><a href="<%= ResolveUrl("~/") %>ElementScopeTest.wxe">ElementScopeTest</a></td></tr>
           <tr><td><a href="<%= ResolveUrl("~/") %>ScreenshotTest.wxe">ScreenshotTest</a></td></tr>
+          <tr><td><a href="ScreenshotBorderTest.aspx">ScreenshotBorderTest</a></td></tr>
           <tr><td><a href="ScrollTest.aspx">ScrollTest</a></td></tr>
           <tr><td><a href="SingleViewTest.aspx">SingleViewTest</a></td></tr>
           <tr><td><a href="<%= ResolveUrl("~/") %>TabbedMenuTest.wxe">TabbedMenuTest</a></td></tr>

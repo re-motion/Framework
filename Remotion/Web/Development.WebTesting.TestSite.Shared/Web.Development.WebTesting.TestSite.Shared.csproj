@@ -9,15 +9,18 @@
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <Nullable>disable</Nullable>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Development\Web\Development.Web.csproj" />
     <ProjectReference Include="..\..\Security\Core\Security.Core.csproj" />
     <ProjectReference Include="..\..\Web\Core\Web.Core.csproj" />
     <ProjectReference Include="..\Development.WebTesting.TestSite.Infrastructure\Web.Development.WebTesting.TestSite.Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="ScreenshotBorderTest.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>ScreenshotBorderTest.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

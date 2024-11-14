@@ -16,11 +16,11 @@
       <Link>WebDiagnosticIds.cs</Link>
     </Compile>
     <EmbeddedResource Include="UI\SmartPageImplementation\Generic_Error_Async_Remote.htm" />
-    <Content Include="..\ClientScript\bin\$(Configuration)\dist\*" LinkBase="Res.ClientScript\HTML" CopyToOutputDirectory="Never">
+    <_clientScriptResources Include="..\ClientScript\bin\$(Configuration)\dist\*"/>
+    <Content Include="@(_clientScriptResources)" LinkBase="Res.ClientScript\HTML" CopyToOutputDirectory="Never">
       <Pack>true</Pack>
       <PackagePath>res/HTML</PackagePath>
     </Content>
-    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
@@ -31,18 +31,15 @@
     <ProjectReference Include="..\..\Security\Core\Security.Core.csproj" />
     <ProjectReference Include="..\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
   <ItemGroup>
     <None Include="..\Development.Analyzers\bin\$(Configuration)\netstandard2.0\Remotion.Web.Development.Analyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-    <None Update="..\..\Remotion LGPL.licenseheader" Pack="true" PackagePath="res/" Visible="false" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Remotion.ThirdPartyDependency.RobotoFonts" Version="2.137.0" />
+    <PackageReference Include="Remotion.ThirdPartyDependency.RobotoFonts" />
+    <PackageReference Include="Remotion.ThirdPartyDependency.System.Web" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
-    <PackageReference Include="Remotion.ThirdPartyDependency.System.Web" Version="4.8.0" />
-  </ItemGroup>
+  <Target Name="EnsureClientScriptResourcesAreIncluded" BeforeTargets="Pack">
+    <Error Text="Client script resources were not found." Condition="'@(_clientScriptResources)' == ''"/>
+  </Target>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

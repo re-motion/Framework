@@ -20,7 +20,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -181,16 +180,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var handle = new DomainObjectHandle<Order>(DomainObjectIDs.Order1);
       Assert.That(handle.ToString(), Is.EqualTo("Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid (handle)"));
-    }
-
-    [Test]
-    public void Serializable ()
-    {
-      var handle = new DomainObjectHandle<Order>(DomainObjectIDs.Order1);
-
-      var result = Serializer.SerializeAndDeserialize(handle);
-
-      Assert.That(result, Is.EqualTo(handle));
     }
 
     [Test]

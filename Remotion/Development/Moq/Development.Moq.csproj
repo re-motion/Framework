@@ -14,12 +14,11 @@
     <Compile Include="..\..\..\SharedSource\Core\FunctionalProgramming\*.cs" Link="SharedSource\FunctionalProgramming\%(Filename)%(Extension)" />
     <Compile Include="..\..\..\SharedSource\Core\Utilities\*.cs" Link="SharedSource\Utilities\%(Filename)%(Extension).cs" />
     <Compile Include="..\..\..\SharedSource\Development\Moq\UnitTesting\**\*.cs" Link="SharedSource\Moq\UnitTesting\%(RecursiveDir)%(Filename)%(Extension).cs" />
-    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Moq" Version="4.16.1" />
-    <PackageReference Include="Moq.VerifiableSequence" Version="4.16.1.2" />
-    <PackageReference Include="NUnit" Version="3.13.3" />
+    <PackageReference Include="Moq" />
+    <PackageReference Include="Moq.VerifiableSequence" />
+    <PackageReference Include="NUnit" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Development.Core.csproj" />

@@ -14,12 +14,9 @@
     <ProjectReference Include="..\Core\Core.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Remotion.ThirdPartyDependency.DynamicLanguageRuntime" Version="1.1.0.10" />
-    <PackageReference Include="Remotion.TypePipe" Version="3.2.0" />
+    <PackageReference Include="Remotion.ThirdPartyDependency.DynamicLanguageRuntime" />
+    <PackageReference Include="Remotion.TypePipe" />
     <PackageReference Remove="JetBrains.Annotations" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-    <Reference Include="System.Configuration" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

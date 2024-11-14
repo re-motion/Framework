@@ -15,69 +15,23 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
-using Remotion.Logging;
-using Remotion.Reflection;
 using Remotion.Tools.Console;
 using Remotion.Utilities;
 using Remotion.Tools;
-#if NETFRAMEWORK
-using System.IO;
-#endif
 
 namespace Remotion.Mixins.MixerTools
 {
-#if NETFRAMEWORK
-  [Serializable]
-  public class MixerRunner : AppDomainRunnerBase
-#else
   public class MixerRunner : CustomAppContextRunnerBase
-#endif
   {
-#if NETFRAMEWORK
-    public static AppDomainSetup CreateAppDomainSetup (MixerParameters parameters)
-    {
-      ArgumentUtility.CheckNotNull("parameters", parameters);
-
-      var setup = new AppDomainSetup
-                  {
-                      ApplicationName = "Mixer",
-                      ApplicationBase = parameters.BaseDirectory
-                  };
-
-      if (!string.IsNullOrEmpty(parameters.ConfigFile))
-      {
-        setup.ConfigurationFile = parameters.ConfigFile;
-        if (!File.Exists(setup.ConfigurationFile))
-        {
-          throw new FileNotFoundException(
-              string.Format(
-                  "The configuration file supplied by the 'config' parameter was not found.\r\nFile: {0}",
-                  setup.ConfigurationFile),
-              setup.ConfigurationFile);
-        }
-      }
-      return setup;
-    }
-#endif
-
     private readonly MixerParameters _parameters;
 
     public MixerRunner (MixerParameters parameters)
-#if NETFRAMEWORK
-        : base(CreateAppDomainSetup(ArgumentUtility.CheckNotNull("parameters", parameters)))
-#else
         : base(ArgumentUtility.CheckNotNull("parameters", parameters).BaseDirectory, parameters.ConfigFile)
-#endif
     {
       _parameters = parameters;
     }
 
-#if NETFRAMEWORK
-    protected override void CrossAppDomainCallbackHandler ()
-#else
     protected override void RunImplementation ()
-#endif
     {
       ConfigureLogging();
 
@@ -99,19 +53,22 @@ namespace Remotion.Mixins.MixerTools
 
     private void ConfigureLogging ()
     {
-      if (_parameters.Verbose)
-      {
-        LogManager.InitializeConsole();
-      }
-      else
-      {
-        var mixerLoggers = from t in AssemblyTypeCache.GetTypes(typeof(Mixer).Assembly)
-            where t.Namespace == typeof(Mixer).GetNamespaceChecked()
-            select LogManager.GetLogger(t);
-        var logThresholds = from l in mixerLoggers
-            select new LogThreshold(l, LogLevel.Info);
-        LogManager.InitializeConsole(LogLevel.Warn, logThresholds.ToArray());
-      }
+      //TODO: RM-9195
+      // if (_parameters.Verbose)
+      // {
+      //   Configure console logging 
+      //   log4net.Config.BaseConfigurator.Configure();
+      // }
+      // else
+      // {
+      //   var mixerLoggers = from t in AssemblyTypeCache.GetTypes(typeof(Mixer).Assembly)
+      //       where t.Namespace == typeof(Mixer).GetNamespaceChecked()
+      //       select LogManager.GetLogger(t);
+      //   var logThresholds = from l in mixerLoggers
+      //       select new LogThreshold(l, LogLevel.Info);
+      //   LogManager.InitializeConsole(LogLevel.Warn, logThresholds.ToArray());
+      //   log4net.Config.BaseConfigurator.Configure();
+      // }
     }
 
     private Mixer CreateMixer ()

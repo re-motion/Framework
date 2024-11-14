@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
-#if !NET48
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Rewrite;
 using NUnit.Framework;
@@ -101,4 +100,3 @@ public class RemotionStaticFilesCacheKeyRemovalRewriteRuleTest
     Assert.That(actualCacheKey, Is.EqualTo(cacheKey));
   }
 }
-#endif

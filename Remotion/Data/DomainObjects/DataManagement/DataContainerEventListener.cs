@@ -24,7 +24,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
   /// <summary>
   /// Listens to the events raised by a <see cref="DataContainer"/>, forwarding them to the <see cref="IClientTransactionEventSink"/>.
   /// </summary>
-  [Serializable]
   public class DataContainerEventListener : IDataContainerEventListener
   {
     private readonly IClientTransactionEventSink _eventSink;

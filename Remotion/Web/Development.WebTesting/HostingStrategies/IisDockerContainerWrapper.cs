@@ -15,12 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using JetBrains.Annotations;
-using log4net;
-using Remotion.Utilities;
+using Microsoft.Extensions.Logging;
 using Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting;
 
 namespace Remotion.Web.Development.WebTesting.HostingStrategies
@@ -28,109 +23,33 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
   /// <summary>
   /// Represents an IIS Docker container and manages its lifecycle.
   /// </summary>
-  public class IisDockerContainerWrapper : IDisposable
+  public class IisDockerContainerWrapper : DockerContainerWrapperBase
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(IisDockerContainerWrapper));
-
-    private readonly IDockerClient _docker;
-    private readonly IisDockerContainerConfigurationParameters _configurationParameters;
-    private string? _containerName;
-
     public IisDockerContainerWrapper (
-        [NotNull] IDockerClient docker,
-        [NotNull] IisDockerContainerConfigurationParameters configurationParameters)
+        IDockerClient docker,
+        DockerContainerConfigurationParameters configurationParameters,
+        ILoggerFactory loggerFactory)
+        : base(docker, configurationParameters, loggerFactory)
     {
-      ArgumentUtility.CheckNotNull("docker", docker);
-      ArgumentUtility.CheckNotNull("configurationParameters", configurationParameters);
-
-      _docker = docker;
-      _configurationParameters = configurationParameters;
     }
 
-    /// <summary>
-    /// Pulls and starts the configured docker image as a container with the settings specified in the App.config.
-    /// </summary>
-    public void Run ()
+    protected override string GetEntryPoint ()
     {
-      try
-      {
-        _docker.Pull(_configurationParameters.DockerImageName);
-      }
-      catch (DockerOperationException ex)
-      {
-        s_log.Error($"Pulling the docker image '{_configurationParameters.DockerImageName}' failed. Trying to proceed with a locally cached image.", ex);
-      }
+      return "powershell";
+    }
 
-      var mounts = GetMountsWithWebApplicationPath(_configurationParameters.Mounts);
-      var portMappings = new Dictionary<int, int> { { _configurationParameters.WebApplicationPort, _configurationParameters.WebApplicationPort } };
+    protected override string? GetWorkingDirectory ()
+    {
+      return null;
+    }
 
-      _containerName = _docker.Run(
-          portMappings,
-          mounts,
-          _configurationParameters.DockerImageName,
-          _configurationParameters.DockerIsolationMode,
-          _configurationParameters.Hostname,
-          true,
-          "powershell",
-          $@"-Command ""
-C:\Windows\System32\inetsrv\appcmd.exe set apppool /apppool.name:DefaultAppPool /enable32bitapponwin64:{_configurationParameters.Is32BitProcess};
-C:\Windows\System32\inetsrv\appcmd.exe add site /name:WebTestingSite /physicalPath:""{_configurationParameters.AbsoluteWebApplicationPath}"" /bindings:""http://*:{_configurationParameters.WebApplicationPort}"";
+    protected override string GetArguments ()
+    {
+      return $@"-Command ""
+C:\Windows\System32\inetsrv\appcmd.exe set apppool /apppool.name:DefaultAppPool /enable32bitapponwin64:{ConfigurationParameters.Is32BitProcess};
+C:\Windows\System32\inetsrv\appcmd.exe add site /name:WebTestingSite /physicalPath:""{ConfigurationParameters.AbsoluteWebApplicationPath}"" /bindings:""http://*:{ConfigurationParameters.WebApplicationPort}"";
 C:\ServiceMonitor.exe w3svc;
-""");
-    }
-
-    /// <inheritdoc />
-    public void Dispose ()
-    {
-      Assertion.DebugIsNotNull(_containerName, "No container was started.");
-      _docker.Stop(_containerName);
-      var isContainerRemovedAfterStop = IsContainerRemoved(retries: 15, interval: TimeSpan.FromMilliseconds(100));
-
-      if (isContainerRemovedAfterStop)
-        return;
-
-      Assertion.DebugIsNotNull(_containerName, "No container was started.");
-      _docker.Remove(_containerName, true);
-      var isContainerRemovedAfterForceRemove = IsContainerRemoved(retries: 15, interval: TimeSpan.FromMilliseconds(100));
-
-      if (isContainerRemovedAfterForceRemove)
-        return;
-
-      throw new InvalidOperationException($"The container with the id '{_containerName}' could not be removed.");
-    }
-
-    private bool IsContainerRemoved (int retries, TimeSpan interval)
-    {
-      Assertion.DebugIsNotNull(_containerName, "No container was started.");
-
-      for (var i = 0; i <= retries; i++)
-      {
-        if (!_docker.ContainerExists(_containerName))
-          return true;
-
-        Thread.Sleep((int)interval.TotalMilliseconds);
-      }
-
-      return false;
-    }
-
-    private Dictionary<string, string> GetMountsWithWebApplicationPath (IEnumerable<string> additionalMounts)
-    {
-      var mounts = new Dictionary<string, string>
-                   {
-                       {
-                           _configurationParameters.AbsoluteWebApplicationPath,
-                           _configurationParameters.AbsoluteWebApplicationPath
-                       }
-                   };
-
-      foreach (var mount in additionalMounts)
-      {
-        var absoluteMountPath = Path.Combine(_configurationParameters.AbsoluteWebApplicationPath, mount);
-        mounts.Add(absoluteMountPath, absoluteMountPath);
-      }
-
-      return mounts;
+""";
     }
   }
 }

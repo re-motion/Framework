@@ -16,13 +16,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Logging.Log4Net\Core.Logging.Log4Net.csproj" />
     <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
     <ProjectReference Include="..\..\Development\UnitTesting.Compilation\Development.UnitTesting.Compilation.csproj" />
     <ProjectReference Include="..\Core\Globalization.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.8.0-3.final" GeneratePathProperty="true" ExcludeAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" GeneratePathProperty="true" ExcludeAssets="all" />
   </ItemGroup>
   <Target Name="CopyTestAssemblyFilesToOutputPath" AfterTargets="Build" Condition="'$(TargetFramework)' != ''">
     <Copy SourceFiles="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)Remotion.Globalization.UnitTests.TestDomain.Resources.ClassWithResources.resources"

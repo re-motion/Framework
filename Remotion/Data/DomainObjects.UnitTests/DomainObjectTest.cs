@@ -16,11 +16,7 @@
 // 
 using System;
 using System.Reflection;
-#if NETFRAMEWORK
-using System.Runtime.Serialization;
-#else
 using System.Runtime.CompilerServices;
-#endif
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
@@ -150,30 +146,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void Initialize_ThrowsForDeserializedObject ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var orderItem = _transaction.ExecuteInScope(() => DomainObjectIDs.OrderItem1.GetObject<OrderItem>());
-
-
-      var deserializedOrderItem = Serializer.SerializeAndDeserialize(orderItem);
-      Assert.That(
-          () => deserializedOrderItem.Initialize(DomainObjectIDs.OrderItem1, _transaction),
-          Throws.InvalidOperationException
-              .With.Message.EqualTo(
-                  "The object cannot be initialized, it already has an ID."));
-    }
-
-    [Test]
     public void Initialize_WithUninitializedObject_SetsIDAndRootTransaction ()
     {
       var type = GetConcreteType(typeof(OrderItem));
-#if NETFRAMEWORK
-      var orderItem = (OrderItem)FormatterServices.GetSafeUninitializedObject(type);
-#else
       var orderItem = (OrderItem)RuntimeHelpers.GetUninitializedObject(type);
-#endif
       orderItem.Initialize(DomainObjectIDs.OrderItem1, _transaction);
 
       Assert.That(orderItem.ID, Is.EqualTo(DomainObjectIDs.OrderItem1));
@@ -184,11 +160,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void Initialize_ThrowsForNonRootTransaction ()
     {
       var type = GetConcreteType(typeof(OrderItem));
-#if NETFRAMEWORK
-      var orderItem = (OrderItem)FormatterServices.GetSafeUninitializedObject(type);
-#else
       var orderItem = (OrderItem)RuntimeHelpers.GetUninitializedObject(type);
-#endif
       Assert.That(
           () => orderItem.Initialize(DomainObjectIDs.OrderItem1, _transaction.CreateSubTransaction()),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
@@ -494,78 +466,12 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void NeedsLoadModeDataContainerOnly_Serialization_True ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var order = _transaction.ExecuteInScope(() => Order.NewObject());
-      Assert.That(order.NeedsLoadModeDataContainerOnly, Is.True);
-
-      var deserializedOrder = Serializer.SerializeAndDeserialize(order);
-      Assert.That(deserializedOrder.NeedsLoadModeDataContainerOnly, Is.True);
-    }
-
-    [Test]
-    public void NeedsLoadModeDataContainerOnly_Serialization_False ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var order = (Order)LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Order1);
-
-      Assert.That(order.NeedsLoadModeDataContainerOnly, Is.False);
-
-      var deserializedOrder = Serializer.SerializeAndDeserialize(order);
-      Assert.That(deserializedOrder.NeedsLoadModeDataContainerOnly, Is.False);
-    }
-
-    [Test]
-    public void NeedsLoadModeDataContainerOnly_Serialization_ISerializable_True ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var classWithAllDataTypes = _transaction.ExecuteInScope(() => ClassWithAllDataTypes.NewObject());
-      Assert.That(classWithAllDataTypes.NeedsLoadModeDataContainerOnly, Is.True);
-
-      var deserializedClassWithAllDataTypes = Serializer.SerializeAndDeserialize(classWithAllDataTypes);
-      Assert.That(deserializedClassWithAllDataTypes.NeedsLoadModeDataContainerOnly, Is.True);
-    }
-
-    [Test]
-    public void NeedsLoadModeDataContainerOnly_Serialization_ISerializable_False ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var classWithAllDataTypes = (ClassWithAllDataTypes)LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.ClassWithAllDataTypes1);
-
-      Assert.That(classWithAllDataTypes.NeedsLoadModeDataContainerOnly, Is.False);
-
-      var deserializedClassWithAllDataTypes = Serializer.SerializeAndDeserialize(classWithAllDataTypes);
-      Assert.That(deserializedClassWithAllDataTypes.NeedsLoadModeDataContainerOnly, Is.False);
-    }
-
-    [Test]
     public void Properties ()
     {
       var order = _transaction.ExecuteInScope(() => Order.NewObject());
       var propertyIndexer = _transaction.ExecuteInScope(() => order.Properties);
       Assert.That(propertyIndexer, Is.Not.Null);
       Assert.That(propertyIndexer.DomainObject, Is.SameAs(order));
-    }
-
-    [Test]
-    public void Properties_Serialization ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var order = _transaction.ExecuteInScope(() => Order.NewObject());
-      var propertyIndexer = _transaction.ExecuteInScope(() => order.Properties);
-      Assert.That(propertyIndexer, Is.Not.Null);
-      Assert.That(propertyIndexer.DomainObject, Is.SameAs(order));
-
-      var deserializedOrder = Serializer.SerializeAndDeserialize(order);
-      var newPropertyIndexer = _transaction.ExecuteInScope(() => deserializedOrder.Properties);
-      Assert.That(newPropertyIndexer, Is.Not.Null);
-      Assert.That(newPropertyIndexer.DomainObject, Is.SameAs(deserializedOrder));
     }
 
     [Test]

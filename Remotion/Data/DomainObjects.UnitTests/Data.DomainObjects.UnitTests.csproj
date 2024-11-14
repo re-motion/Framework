@@ -16,6 +16,9 @@
     <Content Include="Database\*.sql" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Queries*.xml" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="ScalarQueryWithCollectionType.xml" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="CustomQueryWithCollectionType.xml" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="ScalarQueryWithCollectionTypeReadWrite.xml" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="CustomQueryWithCollectionTypeReadWrite.xml" CopyToOutputDirectory="PreserveNewest" />
     <EmbeddedResource Include="..\DomainObjects\Persistence\Rdbms\MappingExport\RdbmsMapping.xsd" Link="Resources\RdbmsMapping.xsd" />
     <EmbeddedResource Include="Persistence\Rdbms\SqlServer\SchemaGeneration\IntegrationTests\TestData\*.sql" />
     <EmbeddedResource Include="Resources\*.*" Exclude="**\*.cs" />
@@ -23,6 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Core\ExtensibleEnums\Core.ExtensibleEnums.csproj" />
+    <ProjectReference Include="..\..\Core\Logging.Log4Net\Core.Logging.Log4Net.csproj" />
     <ProjectReference Include="..\..\Core\Reflection.CodeGeneration.TypePipe\Core.Reflection.CodeGeneration.TypePipe.csproj" />
     <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
     <ProjectReference Include="..\..\Core\Tools\Core.Tools.csproj" />
@@ -37,13 +41,11 @@
     <ProjectReference Include="..\Core\Data.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
-    <PackageReference Include="Remotion.Linq.Development" Version="2.2.0" />
-    <PackageReference Include="Remotion.Linq.SqlBackend.Development" Version="2.2.0" />
-    <PackageReference Include="Remotion.TypePipe.Development" Version="3.2.0" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-    <Reference Include="System.Transactions" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Remotion.Linq.EagerFetching" />
+    <PackageReference Include="Remotion.Linq.Development" />
+    <PackageReference Include="Remotion.Linq.SqlBackend.Development" />
+    <PackageReference Include="Remotion.TypePipe.Development" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

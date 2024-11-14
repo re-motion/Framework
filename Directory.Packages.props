@@ -1,0 +1,85 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+    <CoreFormsVersion>9.0.0</CoreFormsVersion>
+    <TypePipeVersion>4.0.0</TypePipeVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Castle.Core" Version="4.4.0" />
+    <PackageVersion Include="CoreForms.Web" Version="$(CoreFormsVersion)" />
+    <PackageVersion Include="CoreForms.Web.Extensions" Version="$(CoreFormsVersion)" />
+    <PackageVersion Include="CoreForms.Web.Infrastructure" Version="$(CoreFormsVersion)" />
+    <PackageVersion Include="CoreForms.Web.Infrastructure.MachineConfig" Version="$(CoreFormsVersion)" />
+    <PackageVersion Include="CoreForms.Web.Infrastructure.Roslyn" Version="$(CoreFormsVersion)" />
+    <PackageVersion Include="CoreForms.Web.Services" Version="$(CoreFormsVersion)" />
+    <PackageVersion Include="Fork.Coypu" Version="3.4.0" />
+    <PackageVersion Include="JetBrains.Annotations" Version="2024.3.0" />
+    <PackageVersion Include="log4net" Version="2.0.17" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" Version="1.1.2" />
+    <PackageVersion Include="Microsoft.Net.Compilers.Toolset" Version="4.11.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.11.0" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.TypeScript.MSBuild" Version="5.6.2" />
+    <PackageVersion Include="microsoft-ajax.TypeScript.DefinitelyTyped" Version="0.1.4" />
+    <PackageVersion Include="Moq" Version="4.16.1" />
+    <PackageVersion Include="Moq.VerifiableSequence" Version="4.16.1.2" />
+    <PackageVersion Include="NUnit" Version="4.2.1" />
+    <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
+    <PackageVersion Include="NUnitTestAdapter" Version="2.3.0" />
+    <PackageVersion Include="Remotion.Infrastructure.Styles.Analyzer" Version="1.1.3" />
+    <PackageVersion Include="Remotion.Linq" Version="2.2.0" />
+    <PackageVersion Include="Remotion.Linq.Development" Version="2.2.0" />
+    <PackageVersion Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
+    <PackageVersion Include="Remotion.Linq.SqlBackend" Version="3.0.0" />
+    <PackageVersion Include="Remotion.Linq.SqlBackend.Development" Version="3.0.0" />
+    <PackageVersion Include="Remotion.ThirdParty.Dependency.Jetbrains.Annotations" Version="2024.3.0" />
+    <PackageVersion Include="Remotion.ThirdPartyDependency.CommonServiceLocator" Version="2.0.6" />
+    <PackageVersion Include="Remotion.ThirdPartyDependency.DynamicLanguageRuntime" Version="1.1.0.10" />
+    <PackageVersion Include="Remotion.ThirdPartyDependency.JQuery.Autocomplete" Version="1.1.0-pre" />
+    <PackageVersion Include="Remotion.ThirdPartyDependency.RobotoFonts" Version="2.137.0" />
+    <PackageVersion Include="Remotion.ThirdPartyDependency.System.Web" Version="4.8.0" />
+    <PackageVersion Include="Remotion.TypePipe" Version="$(TypePipeVersion)" />
+    <PackageVersion Include="Remotion.TypePipe.Development" Version="$(TypePipeVersion)" />
+    <PackageVersion Include="Remotion.TypePipe.Documentation" Version="$(TypePipeVersion)" />
+    <PackageVersion Include="Selenium.Support" Version="4.21.0" />
+    <PackageVersion Include="Selenium.WebDriver" Version="4.21.0" />
+    <PackageVersion Include="System.Data.SqlClient" Version="4.8.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Roslyn Analzyers depend on the installed version of MSBuild and .NET SDK.
+         It must not be upgraded higher than the version installed on all build environment.
+
+         List of NuGet package versions: https://github.com/dotnet/roslyn/blob/main/docs/wiki/NuGet-packages.md
+         List of MSBuild and .NET SDK versions: https://learn.microsoft.com/en-us/dotnet/core/porting/versioning-sdk-msbuild-vs#lifecycle
+
+         4.10.0: MSBuild 17.10 / .NET SDK 8.0.3xx
+         4.11.0: MSBuild 17.11 / .NET SDK 8.0.4xx
+         4.12.0: MSBuild 17.12 / .NET SDK 9.0.1xx
+    -->
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.10.0" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="$(TargetFramework.StartsWith('net8.0'))">
+      <ItemGroup>
+        <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="8.10.0" />
+        <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+        <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.1" />
+        <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+        <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" />
+        <PackageVersion Include="System.CodeDom" Version="8.0.0" />
+        <PackageVersion Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
+        <PackageVersion Include="System.Resources.Extensions" Version="8.0.0" />
+      </ItemGroup>
+      <ItemGroup>
+        <!-- Transitive pinned packages - check if they are still needed on package upgrades -->
+        <PackageVersion Include="System.Formats.Asn1" Version="8.0.1" />
+      </ItemGroup>
+    </When>
+  </Choose>
+  <ItemGroup>
+    <!-- Transitive pinned packages - check if they are still needed on package upgrades -->
+    <PackageVersion Include="System.Net.Http" Version="4.3.4" />
+    <PackageVersion Include="System.Text.RegularExpressions" Version="4.3.1" />
+  </ItemGroup>
+</Project>

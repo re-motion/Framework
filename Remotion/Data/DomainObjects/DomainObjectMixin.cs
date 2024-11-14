@@ -32,7 +32,6 @@ namespace Remotion.Data.DomainObjects
   /// <remarks>Use this base class to implement a mixin adding persistent properties to a domain object which does not need to call the base 
   /// implementation of any overridden methods. Use <see cref="DomainObjectMixin{TDomainObject,TNextCallRequirements}"/> if the mixin needs to call overridden
   /// base methods.</remarks>
-  [Serializable]
   public class DomainObjectMixin<TDomainObject> : DomainObjectMixin<TDomainObject, IDomainObject>
     where TDomainObject : class, IDomainObject
   {
@@ -57,7 +56,6 @@ namespace Remotion.Data.DomainObjects
   /// have to actually implement this interface.</para>
   /// <para>Use <see cref="DomainObjectMixin{TDomainObject}"/> if the mixin does not need to call any base implementations of overridden members.</para></remarks>
   [NonIntroduced(typeof(IDomainObjectMixin))]
-  [Serializable]
   public class DomainObjectMixin<TDomainObject, TNextCallRequirements>
       : Mixin<TDomainObject, TNextCallRequirements>, IDomainObjectMixin
       where TDomainObject : class, IDomainObject

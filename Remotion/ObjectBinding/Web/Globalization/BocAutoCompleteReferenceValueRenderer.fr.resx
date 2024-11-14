@@ -132,4 +132,10 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.ScreenReaderLabelForComboboxReadOnly" xml:space="preserve">
       <value>Zone de liste déroulante et d’édition en lecture seule</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.LoadedMoreMatchesMessage" xml:space="preserve">
+    <value>D’autres résultats ont été chargés.</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocAutoCompleteReferenceValueRenderer.LoadingMoreMatchesMessage" xml:space="preserve">
+    <value>D’autres résultats sont chargés.</value>
+  </data>
 </root>

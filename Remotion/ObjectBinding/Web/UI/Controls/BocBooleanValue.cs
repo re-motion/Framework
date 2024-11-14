@@ -279,7 +279,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Browsable(false)]
     public override string? FocusID
     {
-      get { return IsReadOnly ? null : GetDisplayValueName(); }
+      get { return IsReadOnly ? null : GetValueName(); }
     }
 
     /// <summary>

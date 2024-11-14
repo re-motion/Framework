@@ -50,11 +50,11 @@ public class A
       var diagnosticFunc = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(9, 5, 9, 54)
           .WithMessage(
-              "'System.Threading.Tasks.Task.Run' should not be used with SafeContext, use 'Remotion.Context.SafeContext.Task.Run' instead.");
+              "'System.Threading.Tasks.Task.Run' should not be used with SafeContext, use 'Remotion.Context.SafeContext.Task.Run' instead");
       var diagnosticAction = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(11, 5, 11, 33)
           .WithMessage(
-              "'System.Threading.Tasks.Task.Run' should not be used with SafeContext, use 'Remotion.Context.SafeContext.Task.Run' instead.");
+              "'System.Threading.Tasks.Task.Run' should not be used with SafeContext, use 'Remotion.Context.SafeContext.Task.Run' instead");
 
       await Verifier.VerifyAnalyzerAsync(input, true, diagnosticFunc, diagnosticAction);
     }
@@ -79,7 +79,7 @@ public class A
       var diagnostic = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(11, 5, 11, 34)
           .WithMessage(
-              "'System.Threading.Tasks.Task.ContinueWith' should not be used with SafeContext, use 'Remotion.Context.SafeContext.Task.ContinueWith' instead.");
+              "'System.Threading.Tasks.Task.ContinueWith' should not be used with SafeContext, use 'Remotion.Context.SafeContext.Task.ContinueWith' instead");
 
       await Verifier.VerifyAnalyzerAsync(input, true, diagnostic);
     }
@@ -107,7 +107,7 @@ public class A
       var diagnosticFunc = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(11, 5, 14, 14)
           .WithMessage(
-              "'System.Threading.ExecutionContext.Run' should not be used with SafeContext, use 'Remotion.Context.SafeContext.ExecutionContext.Run' instead.");
+              "'System.Threading.ExecutionContext.Run' should not be used with SafeContext, use 'Remotion.Context.SafeContext.ExecutionContext.Run' instead");
 
       await Verifier.VerifyAnalyzerAsync(input, true, diagnosticFunc);
     }
@@ -143,22 +143,22 @@ public class A
       var diagnosticFor = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(12, 5, 12, 77)
           .WithMessage(
-              "'System.Threading.Tasks.Parallel.For' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary.");
+              "'System.Threading.Tasks.Parallel.For' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary");
 
       var diagnosticForEach = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(14, 5, 14, 78)
           .WithMessage(
-              "'System.Threading.Tasks.Parallel.ForEach' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary.");
+              "'System.Threading.Tasks.Parallel.ForEach' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary");
 
       var diagnosticForEachAsync = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(16, 5, 20, 6)
           .WithMessage(
-              "'System.Threading.Tasks.Parallel.ForEachAsync' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary.");
+              "'System.Threading.Tasks.Parallel.ForEachAsync' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary");
 
       var diagnosticInvoke = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(22, 5, 22, 46)
           .WithMessage(
-              "'System.Threading.Tasks.Parallel.Invoke' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary.");
+              "'System.Threading.Tasks.Parallel.Invoke' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary");
 
       await Verifier.VerifyAnalyzerAsync(input, true, diagnosticFor, diagnosticForEach, diagnosticForEachAsync, diagnosticInvoke);
     }
@@ -262,22 +262,22 @@ public class A
       var diagnosticFor = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(12, 5, 12, 77)
           .WithMessage(
-              "'System.Threading.Tasks.Parallel.For' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary.");
+              "'System.Threading.Tasks.Parallel.For' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary");
 
       var diagnosticForEach = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(14, 5, 14, 78)
           .WithMessage(
-              "'System.Threading.Tasks.Parallel.ForEach' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary.");
+              "'System.Threading.Tasks.Parallel.ForEach' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary");
 
       var diagnosticForEachAsync = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(16, 5, 20, 6)
           .WithMessage(
-              "'System.Threading.Tasks.Parallel.ForEachAsync' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary.");
+              "'System.Threading.Tasks.Parallel.ForEachAsync' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary");
 
       var diagnosticInvoke = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(22, 5, 22, 46)
           .WithMessage(
-              "'System.Threading.Tasks.Parallel.Invoke' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary.");
+              "'System.Threading.Tasks.Parallel.Invoke' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary");
 
       await Verifier.VerifyAnalyzerAsync(input, true, diagnosticFor, diagnosticForEach, diagnosticForEachAsync, diagnosticInvoke);
     }
@@ -316,22 +316,22 @@ public class A
       var diagnosticFor = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(15, 5, 15, 77)
           .WithMessage(
-              "'System.Threading.Tasks.Parallel.For' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary.");
+              "'System.Threading.Tasks.Parallel.For' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary");
 
       var diagnosticForEach = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(17, 5, 17, 78)
           .WithMessage(
-              "'System.Threading.Tasks.Parallel.ForEach' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary.");
+              "'System.Threading.Tasks.Parallel.ForEach' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary");
 
       var diagnosticForEachAsync = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(19, 5, 23, 6)
           .WithMessage(
-              "'System.Threading.Tasks.Parallel.ForEachAsync' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary.");
+              "'System.Threading.Tasks.Parallel.ForEachAsync' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary");
 
       var diagnosticInvoke = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(25, 5, 25, 46)
           .WithMessage(
-              "'System.Threading.Tasks.Parallel.Invoke' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary.");
+              "'System.Threading.Tasks.Parallel.Invoke' should not be used with SafeContext by itself, use 'Remotion.Context.SafeContext.Parallel.OpenSafeContextBoundary()' to create a safe context boundary");
 
       await Verifier.VerifyAnalyzerAsync(input, true, diagnosticFor, diagnosticForEach, diagnosticForEachAsync, diagnosticInvoke);
     }
@@ -530,7 +530,7 @@ public class A
       var diagnosticFunc = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(9, 5, 9, 56)
           .WithMessage(
-              "'new System.Threading.Thread' should not be used with SafeContext, use 'Remotion.Context.SafeContext.Thread.New' instead.");
+              "'new System.Threading.Thread' should not be used with SafeContext, use 'Remotion.Context.SafeContext.Thread.New' instead");
 
       await Verifier.VerifyAnalyzerAsync(input, true, diagnosticFunc);
     }
@@ -553,7 +553,7 @@ public class A
       var diagnosticFunc = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(9, 17, 9, 55)
           .WithMessage(
-              "'new System.Threading.Timer' should not be used with SafeContext, use 'Remotion.Context.SafeContext.Threading.NewTimer' instead.");
+              "'new System.Threading.Timer' should not be used with SafeContext, use 'Remotion.Context.SafeContext.Threading.NewTimer' instead");
 
       await Verifier.VerifyAnalyzerAsync(input, true, diagnosticFunc);
     }
@@ -578,7 +578,7 @@ public class A
       var diagnosticFunc = Verifier.Diagnostic(Analyzer.AlternativeDescriptor)
           .WithSpan(11, 5, 11, 72)
           .WithMessage(
-              "'System.Timers.Timer.add_Elapsed' should not be used with SafeContext, use 'Remotion.Context.SafeContext.Timers.AddElapsedEventHandler' instead.");
+              "'System.Timers.Timer.add_Elapsed' should not be used with SafeContext, use 'Remotion.Context.SafeContext.Timers.AddElapsedEventHandler' instead");
 
       await Verifier.VerifyAnalyzerAsync(input, true, diagnosticFunc);
     }

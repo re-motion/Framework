@@ -70,16 +70,10 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
       if (!Path.IsPathRooted(sqlFileName))
       {
         var assembly = typeof(DatabaseAgent).Assembly;
-#if NETFRAMEWORK
-        var assemblyNameWithoutShadowCopy = assembly.GetName(copiedName: false);
-        var codeBaseUri = new Uri(assemblyNameWithoutShadowCopy.EscapedCodeBase!);
-        var assemblyDirectory = Path.GetDirectoryName(codeBaseUri.LocalPath)!;
-#else
         var assemblyLocation = assembly.Location;
         Assertion.IsFalse(string.IsNullOrEmpty(assemblyLocation), "typeof(DatabaseAgent).Assembly does not have a location on disk.");
         var assemblyDirectory = Path.GetDirectoryName(assemblyLocation);
         Assertion.IsNotNull(assemblyDirectory, "typeof(DatabaseAgent).Assembly.Location ('{0}') does not contain a valid directory name.", assemblyLocation);
-#endif
         sqlFileName = Path.Combine(assemblyDirectory, sqlFileName);
       }
       return ExecuteBatchString(File.ReadAllText(sqlFileName, Encoding.UTF8), useTransaction, replacementDictionary);

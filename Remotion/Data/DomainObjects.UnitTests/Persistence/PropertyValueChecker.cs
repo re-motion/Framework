@@ -49,7 +49,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
       if (expectedValue != null)
       {
-        Assert.AreEqual(expectedValue.GetType(), actualValue.GetType(),
+        Assert.That(
+            actualValue.GetType(),
+            Is.EqualTo(expectedValue.GetType()),
             string.Format("Type of Value, expected property name: '{0}'", propertyDefinition.PropertyName));
       }
 
@@ -59,14 +61,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
       if (expectedOriginalValue != null)
       {
-        Assert.AreEqual(expectedOriginalValue.GetType(), actualOriginalValue.GetType(),
+        Assert.That(
+            actualOriginalValue.GetType(),
+            Is.EqualTo(expectedOriginalValue.GetType()),
             string.Format("Type of OriginalValue, expected property name: '{0}'", propertyDefinition.PropertyName));
       }
 
-      Assert.AreEqual(containerWithExpectedValue.HasValueChanged(propertyDefinition), actualContainer.HasValueChanged(propertyDefinition),
+      Assert.That(
+          actualContainer.HasValueChanged(propertyDefinition),
+          Is.EqualTo(containerWithExpectedValue.HasValueChanged(propertyDefinition)),
           string.Format("HasChanged, expected property name: '{0}'", propertyDefinition.PropertyName));
 
-      Assert.AreEqual(containerWithExpectedValue.HasValueBeenTouched(propertyDefinition), actualContainer.HasValueBeenTouched(propertyDefinition),
+      Assert.That(
+          actualContainer.HasValueBeenTouched(propertyDefinition),
+          Is.EqualTo(containerWithExpectedValue.HasValueBeenTouched(propertyDefinition)),
           string.Format("HasBeenTouched, expected property name: '{0}'", propertyDefinition.PropertyName));
     }
 
@@ -76,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
         return;
 
       if (expected == null || expected.GetType() != typeof(byte[]))
-        Assert.AreEqual(expected, actual, message);
+        Assert.That(actual, Is.EqualTo(expected), message);
       else
         ResourceManager.AreEqual((byte[])expected, (byte[])actual, message);
     }

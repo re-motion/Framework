@@ -49,8 +49,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var query = new Query(new QueryDefinition("QueryOverUnionView", TestDomainStorageProviderDefinition,
-                                                    "SELECT * FROM [SingleInheritanceBaseClassView]", QueryType.Collection), new QueryParameterCollection());
+        var query = new Query(new QueryDefinition(
+                "QueryOverUnionView",
+                TestDomainStorageProviderDefinition,
+                "SELECT * FROM [SingleInheritanceBaseClassView]",
+                QueryType.CollectionReadOnly),
+            new QueryParameterCollection());
         var actualObjects = ClientTransaction.Current.QueryManager.GetCollection<SingleInheritanceBaseClass>(query);
 
         Assert.That(actualObjects.Count, Is.EqualTo(2));
@@ -84,8 +88,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        Assert.IsInstanceOf(typeof(SingleInheritanceFirstDerivedClass), LifetimeService.GetObject(ClientTransaction.Current, firstDerivedClassObjectID, false));
-        Assert.IsInstanceOf(typeof(SingleInheritanceSecondDerivedClass), LifetimeService.GetObject(ClientTransaction.Current, secondDerivedClassObjectID, false));
+        Assert.That(LifetimeService.GetObject(ClientTransaction.Current, firstDerivedClassObjectID, false), Is.InstanceOf(typeof(SingleInheritanceFirstDerivedClass)));
+        Assert.That(LifetimeService.GetObject(ClientTransaction.Current, secondDerivedClassObjectID, false), Is.InstanceOf(typeof(SingleInheritanceSecondDerivedClass)));
       }
     }
 
@@ -105,11 +109,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var query = new Query(new QueryDefinition("QueryOverUnionView", TestDomainStorageProviderDefinition,
-                                               "SELECT * FROM [SingleInheritanceObjectWithRelationsView]", QueryType.Collection), new QueryParameterCollection());
+                                               "SELECT * FROM [SingleInheritanceObjectWithRelationsView]", QueryType.CollectionReadOnly), new QueryParameterCollection());
         var actualObjectWithRelations = ClientTransaction.Current.QueryManager.GetCollection<SingleInheritanceObjectWithRelations>(query)
           .AsEnumerable().Single();
 
-        Assert.IsInstanceOf(typeof(SingleInheritanceFirstDerivedClass), actualObjectWithRelations.ScalarProperty);
+        Assert.That(actualObjectWithRelations.ScalarProperty, Is.InstanceOf(typeof(SingleInheritanceFirstDerivedClass)));
         Assert.That(actualObjectWithRelations.VectorProperty.Count, Is.EqualTo(2));
         Assert.That(actualObjectWithRelations.VectorProperty.OfType<SingleInheritanceFirstDerivedClass>().Single(), Is.Not.Null);
         Assert.That(actualObjectWithRelations.VectorProperty.OfType<SingleInheritanceSecondDerivedClass>().Single(), Is.Not.Null);
@@ -138,7 +142,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var query = new Query(new QueryDefinition("QueryOverUnionView", TestDomainStorageProviderDefinition,
-                                                    "SELECT * FROM [ConcreteInheritanceBaseClassView]", QueryType.Collection), new QueryParameterCollection());
+                                                    "SELECT * FROM [ConcreteInheritanceBaseClassView]", QueryType.CollectionReadOnly), new QueryParameterCollection());
         var actualObjects = ClientTransaction.Current.QueryManager.GetCollection<ConcreteInheritanceBaseClass>(query);
 
         Assert.That(actualObjects.Count, Is.EqualTo(2));
@@ -172,8 +176,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        Assert.IsInstanceOf(typeof(ConcreteInheritanceFirstDerivedClass), LifetimeService.GetObject(ClientTransaction.Current, firstDerivedClassObjectID, false));
-        Assert.IsInstanceOf(typeof(ConcreteInheritanceSecondDerivedClass), LifetimeService.GetObject(ClientTransaction.Current, secondDerivedClassObjectID, false));
+        Assert.That(LifetimeService.GetObject(ClientTransaction.Current, firstDerivedClassObjectID, false), Is.InstanceOf(typeof(ConcreteInheritanceFirstDerivedClass)));
+        Assert.That(LifetimeService.GetObject(ClientTransaction.Current, secondDerivedClassObjectID, false), Is.InstanceOf(typeof(ConcreteInheritanceSecondDerivedClass)));
       }
     }
 
@@ -193,11 +197,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var query = new Query(new QueryDefinition("QueryOverUnionView", TestDomainStorageProviderDefinition,
-                                               "SELECT * FROM [ConcreteInheritanceObjectWithRelationsView]", QueryType.Collection), new QueryParameterCollection());
+                                               "SELECT * FROM [ConcreteInheritanceObjectWithRelationsView]", QueryType.CollectionReadOnly), new QueryParameterCollection());
         var actualObjectWithRelations = ClientTransaction.Current.QueryManager.GetCollection<ConcreteInheritanceObjectWithRelations>(query)
           .AsEnumerable().Single();
 
-        Assert.IsInstanceOf(typeof(ConcreteInheritanceFirstDerivedClass), actualObjectWithRelations.ScalarProperty);
+        Assert.That(actualObjectWithRelations.ScalarProperty, Is.InstanceOf(typeof(ConcreteInheritanceFirstDerivedClass)));
         Assert.That(actualObjectWithRelations.VectorProperty.Count, Is.EqualTo(2));
         Assert.That(actualObjectWithRelations.VectorProperty.OfType<ConcreteInheritanceFirstDerivedClass>().Single(), Is.Not.Null);
         Assert.That(actualObjectWithRelations.VectorProperty.OfType<ConcreteInheritanceSecondDerivedClass>().Single(), Is.Not.Null);

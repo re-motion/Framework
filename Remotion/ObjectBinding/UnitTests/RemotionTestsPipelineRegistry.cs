@@ -34,7 +34,6 @@ namespace Remotion.ObjectBinding.UnitTests
     {
       var remotionPipelineFactory = new RemotionPipelineFactory();
       var settings = PipelineSettings.From(new PipelineSettingsProvider().GetSettings())
-          .SetEnableSerializationWithoutAssemblySaving(true)
           .Build();
       return remotionPipelineFactory.Create("remotion-test-pipeline", settings, defaultPipelineParticipants);
     }

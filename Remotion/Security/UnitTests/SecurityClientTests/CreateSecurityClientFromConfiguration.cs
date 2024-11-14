@@ -62,7 +62,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     {
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
 
-      Assert.IsInstanceOf(typeof(SecurityClient), securityClient);
+      Assert.That(securityClient, Is.InstanceOf(typeof(SecurityClient)));
       Assert.That(securityClient.SecurityProvider , Is.SameAs(_stubSecurityProvider.Object));
       Assert.That(securityClient.PrincipalProvider , Is.SameAs(_stubPrincipalProvider.Object));
       Assert.That(securityClient.PermissionProvider , Is.SameAs(_stubPermissionProvider.Object));

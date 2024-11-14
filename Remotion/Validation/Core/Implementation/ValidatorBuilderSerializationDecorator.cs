@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -24,15 +23,10 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Enables <see cref="IValidatorBuilder"/> to be serialized/deserialized.
   /// </summary>
-  [Serializable]
   [ImplementationFor(typeof(IValidatorBuilder), RegistrationType = RegistrationType.Decorator, Position = Int32.MinValue)]
   public class ValidatorBuilderSerializationDecorator
-      : IValidatorBuilder,
-#pragma warning disable SYSLIB0050
-          IObjectReference
-#pragma warning restore SYSLIB0050
+      : IValidatorBuilder
   {
-    [NonSerialized]
     private readonly IValidatorBuilder _validatorBuilder;
 
     public ValidatorBuilderSerializationDecorator (IValidatorBuilder validatorBuilder)
@@ -52,11 +46,6 @@ namespace Remotion.Validation.Implementation
       ArgumentUtility.CheckNotNull("validatedType", validatedType);
 
       return _validatorBuilder.BuildValidator(validatedType);
-    }
-
-    object IObjectReference.GetRealObject (StreamingContext context)
-    {
-      return SafeServiceLocator.Current.GetInstance<IValidatorBuilder>();
     }
   }
 }

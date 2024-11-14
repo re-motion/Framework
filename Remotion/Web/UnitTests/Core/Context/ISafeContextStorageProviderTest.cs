@@ -2,9 +2,6 @@
 using NUnit.Framework;
 using Remotion.Context;
 using Remotion.ServiceLocation;
-#if NETFRAMEWORK
-using Remotion.Web.Context;
-#endif
 
 namespace Remotion.Web.UnitTests.Core.Context
 {
@@ -24,11 +21,7 @@ namespace Remotion.Web.UnitTests.Core.Context
     {
       var instances = _serviceLocator.GetInstance<ISafeContextStorageProvider>();
 
-#if NETFRAMEWORK
-      Assert.That(instances, Is.InstanceOf(typeof(HttpContextStorageProviderWithCallContextBasedFallback)));
-#else
       Assert.That(instances, Is.InstanceOf(typeof(AsyncLocalStorageProvider)));
-#endif
     }
 
     [Test]

@@ -23,9 +23,6 @@ namespace Remotion.Utilities
   /// Implements <see cref="IComparer{T}"/> by calling a <see cref="Comparison{T}"/> delegate.
   /// </summary>
   /// <typeparam name="T">The type of the objects to be compared.</typeparam>
-#if FEATURE_SERIALIZATION
-  [Serializable]
-#endif
   public class DelegateBasedComparer<T> : IComparer<T>
   {
     private readonly Comparison<T?> _comparison;

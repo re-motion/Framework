@@ -1,0 +1,11 @@
+{
+  "$schema": "./build.schema.json",
+  "Solution": "Remotion.sln",
+  "Target": [ "CIBuild" ],
+  "TestConfigurations": [ "Debug", "Release" ],
+  "TestExecutionRuntimes": [ "EnforcedLocalMachine" ],
+  "TestPlatforms": [ "x86", "x64" ],
+  "TestTargetRuntimes": [ "NET8_0_WINDOWS" ],
+  "TestBrowsers": [ "Edge" ],
+  "TestSqlServers": [ "NoDB" ]
+}

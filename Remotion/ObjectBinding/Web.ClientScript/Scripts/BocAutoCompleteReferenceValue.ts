@@ -124,6 +124,8 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
         selectionUpdateDelay: selectionUpdateDelay,
 
         noDataFoundMessage: resources.NoDataFoundMessage,
+        loadingMoreMatchesMessage: resources.LoadingMoreMatchesMessage,
+        loadedMoreMatchesMessage: resources.LoadedMoreMatchesMessage,
         autoFill: true,
         matchContains: true,
         selectListID: this._selectListID,
@@ -142,7 +144,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
           {
             const valueList = data as Remotion.BocAutoCompleteReferenceValue.BocAutoCompleteReferenceValueSearchResultWithValueList;
 
-            return valueList.Values.map(function (row)
+            const cacheRow = valueList.Values.map(function (row)
             {
               row.IsAnnotation = row.UniqueIdentifier === nullValueString;
 
@@ -152,6 +154,12 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
                 result: row.IsAnnotation ? '' : row.DisplayName
               };
             });
+
+            return {
+              cacheRow,
+              hasMoreSearchResults: valueList.HasMoreSearchResults,
+              context: typeof valueList.Context === "string" ? valueList.Context : null
+            };
           }
           else
           {
@@ -162,6 +170,9 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
         {
           const row = document.createElement('li');
 
+          const imgContainer = document.createElement('div');
+          row.append(imgContainer);
+
           if (item.IconUrl != '')
           {
             const img = document.createElement('img');
@@ -169,10 +180,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
             img.alt = '';
             img.setAttribute('aria-hidden', 'true');
 
-            const imgContainer = document.createElement('div');
             imgContainer.appendChild(img);
-
-            row.append(imgContainer);
           }
 
           const displayName = document.createElement('span');
@@ -187,6 +195,10 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
             class: null,
             isAnnotation: item.IsAnnotation
           };
+        },
+        formatPlaceholderElement(placeholderElement)
+        {
+          placeholderElement.innerHTML = "<div></div><div><span>...</span></div>";
         },
         formatMatch: function (item: Remotion.BocAutoCompleteReferenceValue.Item) //The value used by the cache
         {

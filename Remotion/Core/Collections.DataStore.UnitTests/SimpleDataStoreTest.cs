@@ -21,7 +21,6 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Collections.DataStore.UnitTests.Utilities;
 using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Collections.DataStore.UnitTests
 {
@@ -499,41 +498,6 @@ namespace Remotion.Collections.DataStore.UnitTests
                   new KeyValuePair<string, int?>("b", 2)
               }
               ));
-    }
-
-    [Test]
-    public void SerializeEmptyDataStore ()
-    {
-      IDataStore<string, int?> deserializedDataStore = Serializer.SerializeAndDeserialize(_store);
-      Assert.That(deserializedDataStore, Is.Not.Null);
-
-      int? result;
-      Assert.That(deserializedDataStore.TryGetValue("bla", out result), Is.False);
-      deserializedDataStore.GetOrCreateValue("bla", delegate { return 17; });
-      Assert.That(deserializedDataStore.TryGetValue("bla", out result), Is.True);
-
-      Assert.That(result, Is.EqualTo(17));
-
-      Assert.That(_store.TryGetValue("bla", out result), Is.False);
-    }
-
-    [Test]
-    public void SerializeNonEmptyDataStore ()
-    {
-      int? result;
-
-      _store.GetOrCreateValue("bla", delegate { return 19; });
-      Assert.That(_store.TryGetValue("bla", out result), Is.True);
-
-      IDataStore<string, int?> deserializedCache = Serializer.SerializeAndDeserialize(_store);
-      Assert.That(deserializedCache, Is.Not.Null);
-
-      Assert.That(deserializedCache.TryGetValue("bla", out result), Is.True);
-      Assert.That(result, Is.EqualTo(19));
-
-      deserializedCache.GetOrCreateValue("whatever", delegate { return 23; });
-      Assert.That(deserializedCache.TryGetValue("whatever", out result), Is.True);
-      Assert.That(_store.TryGetValue("whatever", out result), Is.False);
     }
 
     [Test]

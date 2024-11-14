@@ -49,12 +49,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       ArgumentUtility.CheckNotNull("actualDefinitions", actualDefinitions);
 
       if (!ignoreUnknown)
-        Assert.AreEqual(expectedDefinitions.Count(), actualDefinitions.Count, "Number of relation definitions does not match.");
+        Assert.That(actualDefinitions.Count, Is.EqualTo(expectedDefinitions.Count()), "Number of relation definitions does not match.");
 
       foreach (RelationDefinition expectedDefinition in expectedDefinitions)
       {
         RelationDefinition actualDefinition = actualDefinitions.GetValueOrDefault(expectedDefinition.ID);
-        Assert.IsNotNull(actualDefinition, "Relation '{0}' was not found.", expectedDefinition.ID);
+        Assert.That(actualDefinition, Is.Not.Null, $"Relation '{expectedDefinition.ID}' was not found.");
         Check(expectedDefinition, actualDefinition);
       }
     }
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       ArgumentUtility.CheckNotNull("expectedDefinition", expectedDefinition);
       ArgumentUtility.CheckNotNull("actualDefinition", actualDefinition);
 
-      Assert.AreEqual(expectedDefinition.ID, actualDefinition.ID, "IDs of relation definitions do not match.");
+      Assert.That(actualDefinition.ID, Is.EqualTo(expectedDefinition.ID), "IDs of relation definitions do not match.");
 
       CheckEndPointDefinitions(expectedDefinition, actualDefinition);
     }
@@ -76,23 +76,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         IRelationEndPointDefinition actualEndPointDefinition = actualRelationDefinition.GetEndPointDefinition(
           expectedEndPointDefinition.ClassDefinition.ID, expectedEndPointDefinition.PropertyName);
 
-        Assert.IsNotNull(
+        Assert.That(
             actualEndPointDefinition,
-            "End point definition was not found (relation definition: '{0}', class: '{1}', property name: '{2}').",
-            expectedRelationDefinition.ID,
-            expectedEndPointDefinition.ClassDefinition.ID,
-            expectedEndPointDefinition.PropertyName);
+            Is.Not.Null,
+            $"End point definition was not found ("
+            + $"relation definition: '{expectedRelationDefinition.ID}', "
+            + $"class: '{expectedEndPointDefinition.ClassDefinition.ID}', "
+            + $"property name: '{expectedEndPointDefinition.PropertyName}').");
 
         var endPointDefinitionChecker = new RelationEndPointDefinitionChecker();
         endPointDefinitionChecker.Check(expectedEndPointDefinition, actualEndPointDefinition, true);
 
-        Assert.AreSame(
-            actualRelationDefinition,
+        Assert.That(
             actualEndPointDefinition.RelationDefinition,
-            "End point definition does not reference the correct relation definition (relation definition: '{0}', class: '{1}', property name: '{2}').",
-            actualRelationDefinition.ID,
-            actualEndPointDefinition.ClassDefinition.ID,
-            actualEndPointDefinition.PropertyName);
+            Is.SameAs(actualRelationDefinition),
+            $"End point definition does not reference the correct relation definition ("
+            + $"relation definition: '{actualRelationDefinition.ID}', "
+            + $"class: '{actualEndPointDefinition.ClassDefinition.ID}', "
+            + $"property name: '{actualEndPointDefinition.PropertyName}').");
       }
     }
   }

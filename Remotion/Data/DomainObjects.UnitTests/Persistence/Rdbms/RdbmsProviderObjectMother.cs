@@ -22,8 +22,10 @@ using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories;
 using Remotion.Data.DomainObjects.Tracing;
@@ -36,14 +38,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public static RdbmsProvider CreateForIntegrationTest (
         IStorageSettings storageSettings,
         RdbmsProviderDefinition storageProviderDefinition,
-        Func<RdbmsProviderDefinition, IPersistenceExtension, IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>, RdbmsProvider> ctorCall = null)
+        Func<RdbmsProviderDefinition, IPersistenceExtension, IRdbmsProviderCommandFactory, RdbmsProvider> ctorCall = null)
     {
       if (!storageSettings.GetStorageProviderDefinitions().Contains(storageProviderDefinition))
         throw new ArgumentException($"RdbmsProviderDefinition '{storageProviderDefinition.Name}' is not part of the storage settings.", nameof(storageProviderDefinition));
 
-      var storageTypeInformationProvider =
-          new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(new SqlStorageTypeInformationProvider());
-      var dbCommandBuilderFactory = new SqlDbCommandBuilderFactory(new SqlDialect());
+      var storageTypeInformationProvider = new SqlStorageTypeInformationProvider(new DateTime2DefaultStorageTypeProvider());
+      var dbCommandBuilderFactory = new SqlDbCommandBuilderFactory(new SingleScalarSqlTableTypeDefinitionProvider(storageTypeInformationProvider), new SqlDialect());
       var storageNameProvider = new ReflectionBasedStorageNameProvider();
       var rdbmsPersistenceModelProvider = new RdbmsPersistenceModelProvider();
       var infrastructureStoragePropertyDefinitionProvider = new InfrastructureStoragePropertyDefinitionProvider(
@@ -62,16 +63,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
           infrastructureStoragePropertyDefinitionProvider,
           storageTypeInformationProvider,
           dataContainerValidator);
+      var dataParameterDefinitionFactoryChain =
+          new ObjectIDDataParameterDefinitionFactory(storageProviderDefinition, storageTypeInformationProvider, storageSettings,
+          new SimpleDataParameterDefinitionFactory(storageTypeInformationProvider));
       var commandFactory = new RdbmsProviderCommandFactory(
           storageProviderDefinition,
           dbCommandBuilderFactory,
           rdbmsPersistenceModelProvider,
           objectReaderFactory,
           new TableDefinitionFinder(rdbmsPersistenceModelProvider),
-          dataStoragePropertyDefinitionFactory);
+          dataStoragePropertyDefinitionFactory,
+          dataParameterDefinitionFactoryChain);
 
       if (ctorCall == null)
-        ctorCall = (def, ext, factory) => new RdbmsProvider(def, ext, factory, () => new SqlConnection());
+        ctorCall = (def, ext, factory) => new RdbmsProvider(def, def.ConnectionString, ext, factory, () => new SqlConnection());
 
       return ctorCall(storageProviderDefinition, NullPersistenceExtension.Instance, commandFactory);
     }

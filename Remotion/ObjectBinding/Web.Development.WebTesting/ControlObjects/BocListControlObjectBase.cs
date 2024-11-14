@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
-using log4net;
+using Microsoft.Extensions.Logging;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -93,14 +93,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       }
     }
 
-    private readonly ILog _log;
     private readonly IBocListRowControlObjectHostAccessor _accessor;
     private readonly bool _hasFakeTableHead;
 
     protected BocListControlObjectBase ([NotNull] ControlObjectContext context)
         : base(context)
     {
-      _log = LogManager.GetLogger(typeof(BocListControlObjectBase<TRowControlObject, TCellControlObject>).Assembly, GetType());
       _accessor = new BocListRowControlObjectHostAccessor(this);
 
       EnsureBocListHasBeenFullyInitialized();
@@ -174,7 +172,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       var currentPageTextInputScope = Scope.FindIdEndingWith("Boc_CurrentPage_TextBox");
       ExecuteAction(
-          new FillWithAction(this, currentPageTextInputScope, oneBasedPageNumber.ToString(), FinishInput.WithTab),
+          new FillWithAction(this, currentPageTextInputScope, oneBasedPageNumber.ToString(), FinishInput.WithTab, Logger),
           Opt.ContinueWhen(((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
@@ -188,7 +186,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       var firstPageLinkScope = Scope.FindChild("Navigation_First");
       ExecuteAction(
-          new ClickAction(this, firstPageLinkScope),
+          new ClickAction(this, firstPageLinkScope, Logger),
           Opt.ContinueWhen(((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
@@ -202,7 +200,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       var previousPageLinkScope = Scope.FindChild("Navigation_Previous");
       ExecuteAction(
-          new ClickAction(this, previousPageLinkScope),
+          new ClickAction(this, previousPageLinkScope, Logger),
           Opt.ContinueWhen(((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
@@ -216,7 +214,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       var nextPageLinkScope = Scope.FindChild("Navigation_Next");
       ExecuteAction(
-          new ClickAction(this, nextPageLinkScope),
+          new ClickAction(this, nextPageLinkScope, Logger),
           Opt.ContinueWhen(((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
@@ -230,7 +228,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       var lastPageLinkScope = Scope.FindChild("Navigation_Last");
       ExecuteAction(
-          new ClickAction(this, lastPageLinkScope),
+          new ClickAction(this, lastPageLinkScope, Logger),
           Opt.ContinueWhen(((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
@@ -241,6 +239,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public IReadOnlyList<BocListColumnDefinition<TRowControlObject, TCellControlObject>> GetColumnDefinitions ()
     {
       return RetryUntilTimeout.Run(
+          Logger,
           () => Scope.FindAllCss(_hasFakeTableHead ? ".bocListFakeTableHead thead .bocListTitleCell" : ".bocListTableContainer thead .bocListTitleCell")
               .Select(
                   (s, i) =>
@@ -263,6 +262,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       var cssSelector = ".bocListTable .bocListTableBody .bocListDataRow";
       return RetryUntilTimeout.Run(
+          Logger,
           () => Scope.FindAllCss(cssSelector).Select(rowScope => CreateRowControlObject(GetHtmlID(), rowScope, _accessor)).ToList());
     }
 
@@ -304,7 +304,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public int GetNumberOfRows ()
     {
-      return RetryUntilTimeout.Run(() => Scope.FindAllCss(".bocListTable .bocListTableBody > tr.bocListDataRow").Count());
+      return RetryUntilTimeout.Run(Logger, () => Scope.FindAllCss(".bocListTable .bocListTableBody > tr.bocListDataRow").Count());
     }
 
     /// <summary>
@@ -313,7 +313,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public void SelectAll ()
     {
       var scope = GetSelectAllCheckboxScope();
-      ExecuteAction(new CheckAction(this, scope), Opt.ContinueImmediately());
+      ExecuteAction(new CheckAction(this, scope, Logger), Opt.ContinueImmediately());
     }
 
     /// <summary>
@@ -322,7 +322,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public void DeselectAll ()
     {
       var scope = GetSelectAllCheckboxScope();
-      ExecuteAction(new UncheckAction(this, scope), Opt.ContinueImmediately());
+      ExecuteAction(new UncheckAction(this, scope, Logger), Opt.ContinueImmediately());
     }
 
     private ElementScope GetSelectAllCheckboxScope ()
@@ -463,9 +463,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     private void EnsureBocListHasBeenFullyInitialized ()
     {
-      var bocListIsInitialized = RetryUntilTimeout.Run(() => Scope[DiagnosticMetadataAttributesForObjectBinding.BocListIsInitialized] == "true");
+      var bocListIsInitialized = RetryUntilTimeout.Run(Logger, () => Scope[DiagnosticMetadataAttributesForObjectBinding.BocListIsInitialized] == "true");
       if (!bocListIsInitialized)
-        _log.WarnFormat("Client side initialization of BocList '{0}' never finished.", GetHtmlID());
+        Logger.LogWarning("Client side initialization of BocList '{0}' never finished.", GetHtmlID());
     }
 
     private void EnsureNavigationPossible ()

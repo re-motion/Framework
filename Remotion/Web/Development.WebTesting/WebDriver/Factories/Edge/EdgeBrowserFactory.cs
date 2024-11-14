@@ -19,6 +19,7 @@ using System.IO;
 using Coypu;
 using Coypu.Drivers;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using OpenQA.Selenium.Edge;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
@@ -37,11 +38,16 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
   {
     private readonly IEdgeConfiguration _edgeConfiguration;
     private readonly IBrowserSessionCleanUpStrategy _registryCleanUpStrategy;
+    private readonly ILoggerFactory _loggerFactory;
+    private readonly ILogger _logger;
 
-    public EdgeBrowserFactory ([NotNull] IEdgeConfiguration edgeConfiguration)
+    public EdgeBrowserFactory ([NotNull] IEdgeConfiguration edgeConfiguration, [NotNull] ILoggerFactory loggerFactory)
     {
       ArgumentUtility.CheckNotNull("edgeConfiguration", edgeConfiguration);
+      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
 
+      _loggerFactory = loggerFactory;
+      _logger = _loggerFactory.CreateLogger(typeof(EdgeBrowserFactory));
       _edgeConfiguration = edgeConfiguration;
       _registryCleanUpStrategy = ChromiumSecurityWarningsRegistryCleanUpStrategyFactory.CreateForEdge(_edgeConfiguration.DisableSecurityWarningsBehavior);
     }
@@ -70,7 +76,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
           new[]
           {
               _registryCleanUpStrategy,
-              new ChromiumUserDirectoryCleanUpStrategy(_edgeConfiguration.UserDirectoryRoot, extendedEdgeOptions.UserDirectory!)
+              new ChromiumUserDirectoryCleanUpStrategy(
+                  _edgeConfiguration.UserDirectoryRoot,
+                  extendedEdgeOptions.UserDirectory!,
+                  _loggerFactory.CreateLogger<EdgeBrowserSession>())
           });
     }
 
@@ -104,8 +113,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
 
       var driverService = EdgeDriverService.CreateDefaultService(driverDirectory, driverExecutable);
 
-      driverService.UseVerboseLogging = false;
-      driverService.LogPath = WebDriverLogUtility.CreateLogFile(_edgeConfiguration.LogsDirectory, _edgeConfiguration.BrowserName);
+      driverService.EnableVerboseLogging = false;
+      driverService.LogPath = WebDriverLogUtility.CreateLogFile(_edgeConfiguration.LogsDirectory, _edgeConfiguration.BrowserName, _logger);
 
       return driverService;
     }

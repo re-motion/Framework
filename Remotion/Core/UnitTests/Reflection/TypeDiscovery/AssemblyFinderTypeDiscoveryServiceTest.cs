@@ -79,6 +79,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
       assemblies.Add(_remotionAssembly);
       assemblies.Add(_dotnetAssembly);
       assemblies.Add(typeof(log4net.ILog).Assembly);
+      assemblies.Add(typeof(Microsoft.Extensions.Logging.ILogger).Assembly);
       assemblies.Add(typeof(System.Collections.Specialized.StringCollection).Assembly);
       assemblies.Add(typeof(System.Collections.CollectionBase).Assembly);
       assemblies.Add(typeof(System.IServiceProvider).Assembly);
@@ -113,6 +114,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
       assemblies.Add(_remotionAssembly);
       assemblies.Add(_dotnetAssembly);
       assemblies.Add(typeof(log4net.ILog).Assembly);
+      assemblies.Add(typeof(Microsoft.Extensions.Logging.ILogger).Assembly);
       assemblies.Add(typeof(System.Collections.Specialized.StringCollection).Assembly);
       assemblies.Add(typeof(System.Collections.CollectionBase).Assembly);
       assemblies.Add(typeof(System.IServiceProvider).Assembly);

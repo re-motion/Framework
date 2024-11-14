@@ -21,7 +21,6 @@ namespace Remotion.ObjectBinding.Sample
 {
   [XmlRoot("Job")]
   [XmlType]
-  [Serializable]
   public class Job : BindableXmlObject
   {
     public static Job GetObject (Guid id)
@@ -42,6 +41,7 @@ namespace Remotion.ObjectBinding.Sample
     private string _title;
     private DateTime _startDate;
     private DateTime _endDate;
+    private DateOnly _promotionDate;
 
     protected Job ()
     {
@@ -68,6 +68,22 @@ namespace Remotion.ObjectBinding.Sample
     {
       get { return _endDate; }
       set { _endDate = value; }
+    }
+
+    [XmlIgnore]
+    public DateOnly PromotionDate
+    {
+      get { return _promotionDate; }
+      set { _promotionDate = value; }
+    }
+
+    // DateOnly is not supported by the XmlSerializer so we have to add a conversion property ourselves
+    [XmlAttribute(AttributeName = nameof(PromotionDate))]
+    [ObjectBinding(Visible = false)]
+    public string PromotionDateValue
+    {
+      get => _promotionDate.ToString("yyyy-MM-dd");
+      set => PromotionDate = DateOnly.Parse(value);
     }
 
     public override string DisplayName

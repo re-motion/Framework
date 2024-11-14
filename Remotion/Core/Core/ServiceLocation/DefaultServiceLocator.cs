@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Logging;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -65,19 +65,20 @@ namespace Remotion.ServiceLocation
 
     public static DefaultServiceLocator Create ()
     {
-      return new DefaultServiceLocator(DefaultServiceConfigurationDiscoveryService.Create());
+      return new DefaultServiceLocator(DefaultServiceConfigurationDiscoveryService.Create(), BootstrapServiceConfiguration.GetLoggerFactory());
     }
 
-    public DefaultServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService)
+    public DefaultServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService, ILoggerFactory loggerFactory)
     {
       ArgumentUtility.CheckNotNull("serviceConfigurationDiscoveryService", serviceConfigurationDiscoveryService);
+      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
 
       _serviceConfigurationDiscoveryService = serviceConfigurationDiscoveryService;
 
       // Optimized for memory allocations
       _createRegistrationFromTypeFunc = CreateRegistrationFromType;
 
-      Register(new ServiceConfigurationEntry(typeof(ILogManager), new ServiceImplementationInfo(typeof(Log4NetLogManager), LifetimeKind.Singleton)));
+      Register(new ServiceConfigurationEntry(typeof(ILoggerFactory), ServiceImplementationInfo.CreateSingle(() => loggerFactory, LifetimeKind.Singleton)));
     }
 
     /// <summary>

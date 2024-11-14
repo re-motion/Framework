@@ -1,24 +1,24 @@
-// This file is part of re-strict (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Affero General Public License version 3.0 
-// as published by the Free Software Foundation.
+// The re-motion Core Framework is free software; you can redistribute it 
+// and/or modify it under the terms of the GNU Lesser General Public License 
+// as published by the Free Software Foundation; either version 2.1 of the 
+// License, or (at your option) any later version.
 // 
-// This program is distributed in the hope that it will be useful, 
+// re-motion is distributed in the hope that it will be useful, 
 // but WITHOUT ANY WARRANTY; without even the implied warranty of 
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-// GNU Affero General Public License for more details.
+// GNU Lesser General Public License for more details.
 // 
-// You should have received a copy of the GNU Affero General Public License
-// along with this program; if not, see http://www.gnu.org/licenses.
-// 
-// Additional permissions are listed in the file re-motion_exceptions.txt.
+// You should have received a copy of the GNU Lesser General Public License
+// along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Persistence;
@@ -35,7 +35,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
   [ImplementationFor(typeof(IAccessResolver), Lifetime = LifetimeKind.Singleton)]
   public class AccessResolver : IAccessResolver
   {
-    private static readonly ILog s_log = LogManager.GetLogger(MethodInfo.GetCurrentMethod()!.DeclaringType!);
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<AccessResolver>();
     private static readonly QueryCache s_queryCache = new QueryCache();
 
     public AccessType[] GetAccessTypes (IDomainObjectHandle<AccessControlList> aclHandle, SecurityToken token)
@@ -49,8 +49,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
         using (clientTransaction.EnterDiscardingScope())
         {
           using (StopwatchScope.CreateScope(
-              s_log,
-              LogLevel.Info,
+              s_logger,
+              LogLevel.Information,
               string.Format(
                   "Evaluated access types of ACL '{0}' for principal '{1}'. Time taken: {{elapsed:ms}}ms",
                   aclHandle.ObjectID,
@@ -72,7 +72,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     private AccessControlList LoadAccessControlList (ClientTransaction clientTransaction, IDomainObjectHandle<AccessControlList> aclHandle)
     {
       using (StopwatchScope.CreateScope(
-          s_log,
+          s_logger,
           LogLevel.Debug,
           "Fetched ACL '" + aclHandle.ObjectID + "' for AccessResolver. Time taken: {elapsed:ms}ms"))
       {
@@ -94,7 +94,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     private void LoadAccessTypeDefinitions (ClientTransaction clientTransaction)
     {
-      using (StopwatchScope.CreateScope(s_log, LogLevel.Debug, "Fetched access types for AccessResolver. Time taken: {elapsed:ms}ms"))
+      using (StopwatchScope.CreateScope(s_logger, LogLevel.Debug, "Fetched access types for AccessResolver. Time taken: {elapsed:ms}ms"))
       {
         s_queryCache.ExecuteCollectionQuery<AccessTypeDefinition>(
             clientTransaction,

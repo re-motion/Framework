@@ -12,7 +12,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\..\SharedSource\Core\Collections\*.cs" Link="SharedSource\Collections\%(Filename)%(Extension)" />
-    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
@@ -24,16 +23,11 @@
     <ProjectReference Include="..\Core\Data.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Remotion.Linq" Version="2.2.0" />
-    <PackageReference Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
-    <PackageReference Include="Remotion.Linq.SqlBackend" Version="2.2.0" />
-    <PackageReference Include="Remotion.TypePipe" Version="3.2.0" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageReference Include="Remotion.Linq" />
+    <PackageReference Include="Remotion.Linq.EagerFetching" />
+    <PackageReference Include="Remotion.Linq.SqlBackend" />
+    <PackageReference Include="Remotion.TypePipe" />
+    <PackageReference Include="System.Data.SqlClient" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

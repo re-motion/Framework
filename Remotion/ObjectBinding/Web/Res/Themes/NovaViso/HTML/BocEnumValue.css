@@ -62,6 +62,7 @@
 .bocEnumValue input[type=radio] + label::before
 {
   border: unset;
+  outline: unset;
   min-height: unset;
   height: var(--remotion-themed-img-width);
   width: var(--remotion-themed-img-width);
@@ -69,6 +70,8 @@
 
 .bocEnumValue input[type=radio]:focus + label
 {
+  outline: var(--remotion-themed-outline-focus);
+  outline-offset: var(--remotion-themed-outline-offset-focus);
   background-color: var(--remotion-themed-background-color-focus);
   border: var(--remotion-themed-border-focus);
   box-shadow: var(--remotion-themed-box-shadow-focus);
@@ -77,6 +80,7 @@
 .bocEnumValue input[type=radio]:focus + label::before
 {
   border: unset;
+  outline: unset;
   box-shadow: unset;
 }
 
@@ -100,7 +104,8 @@
 .bocEnumValue.readOnly input:read-only:focus-visible + span,
 .bocEnumValue.readOnly span[role=radiogroup]:focus-within + span
 {
-  outline: none;
+  outline: var(--remotion-themed-outline-readonly-focus);
+  outline-offset: var(--remotion-themed-outline-offset-readonly-focus);
   border: var(--remotion-themed-border-readonly-focus);
   background-color: var(--remotion-themed-background-color-readonly-focus);
   box-shadow: var(--remotion-themed-box-shadow-readonly-focus);

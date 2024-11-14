@@ -1,19 +1,18 @@
-// This file is part of re-strict (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Affero General Public License version 3.0 
-// as published by the Free Software Foundation.
+// The re-motion Core Framework is free software; you can redistribute it 
+// and/or modify it under the terms of the GNU Lesser General Public License 
+// as published by the Free Software Foundation; either version 2.1 of the 
+// License, or (at your option) any later version.
 // 
-// This program is distributed in the hope that it will be useful, 
+// re-motion is distributed in the hope that it will be useful, 
 // but WITHOUT ANY WARRANTY; without even the implied warranty of 
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-// GNU Affero General Public License for more details.
+// GNU Lesser General Public License for more details.
 // 
-// You should have received a copy of the GNU Affero General Public License
-// along with this program; if not, see http://www.gnu.org/licenses.
-// 
-// Additional permissions are listed in the file re-motion_exceptions.txt.
+// You should have received a copy of the GNU Lesser General Public License
+// along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
 using System.Linq;
@@ -115,36 +114,6 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
         Assert.That(principal.Substitution.ID, Is.EqualTo(substitution.ID));
         Assert.That(principal.Substitution, Is.Not.SameAs(substitution));
       }
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      var user = User.FindByUserName("substituting.user");
-      var tenant = user.Tenant;
-      var roles = user.Roles.Take(2).ToArray();
-      var substitution = user.GetActiveSubstitutions().First();
-
-      var principal = CreateSecurityManagerPrincipal(tenant, user, roles, substitution);
-      var deserializedPrincipal = Serializer.SerializeAndDeserialize(principal);
-
-      Assert.That(deserializedPrincipal.Tenant.ID, Is.EqualTo(principal.Tenant.ID));
-      Assert.That(deserializedPrincipal.Tenant, Is.Not.SameAs(principal.Tenant));
-
-      Assert.That(deserializedPrincipal.User.ID, Is.EqualTo(principal.User.ID));
-      Assert.That(deserializedPrincipal.User, Is.Not.SameAs(principal.User));
-
-      Assert.That(principal.Roles.Select(r => r.ID), Is.EqualTo(roles.Select(r => r.ID)));
-      Assert.That(principal.Roles, Is.Not.EquivalentTo(roles));
-
-      Assert.That(deserializedPrincipal.Substitution.ID, Is.EqualTo(principal.Substitution.ID));
-      Assert.That(deserializedPrincipal.Substitution, Is.Not.SameAs(principal.Substitution));
-
-      Assert.That(() => deserializedPrincipal.GetTenants(true), Throws.Nothing);
-      Assert.That(() => deserializedPrincipal.GetTenants(false), Throws.Nothing);
-      Assert.That(() => deserializedPrincipal.GetTenants(false), Is.Not.Empty);
-      Assert.That(() => deserializedPrincipal.GetActiveSubstitutions(), Throws.Nothing);
-      Assert.That(() => deserializedPrincipal.GetActiveSubstitutions(), Is.Not.Empty);
     }
 
     [Test]

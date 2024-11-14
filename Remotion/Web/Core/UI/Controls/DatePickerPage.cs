@@ -127,13 +127,11 @@ public class DatePickerPage : Page
     //  Force the creation of the postback function
     Page.ClientScript.GetPostBackEventReference(this, "");
 
-#if !NETFRAMEWORK
     var globalizationService = SafeServiceLocator.Current.GetInstance<IGlobalizationService>();
     var resourceManager = globalizationService.GetResourceManager(typeof(ResourceIdentifier));
     Calendar.TitleText = resourceManager.GetString(ResourceIdentifier.TitleText);
     Calendar.PreviousMonthTitle = resourceManager.GetString(ResourceIdentifier.PreviousMonthTitle);
     Calendar.NextMonthTitle = resourceManager.GetString(ResourceIdentifier.NextMonthTitle);
-#endif
 
     base.OnInit(e);
 

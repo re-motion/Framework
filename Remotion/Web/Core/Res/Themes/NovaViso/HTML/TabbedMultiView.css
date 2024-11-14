@@ -50,7 +50,8 @@ div.tabbedMultiViewActiveView > div.contentBorder
 
 div.tabbedMultiViewActiveView > div.contentBorder:focus-visible
 {
-  outline: none;
+  outline: var(--remotion-themed-outline-focus);
+  outline-offset: var(--remotion-themed-outline-offset-focus);
   border: var(--remotion-themed-border-focus);
 }
 
@@ -129,7 +130,8 @@ div.tabbedMultiViewTabStrip .tabStripTabSelected:not(.disabled) a:hover
 div.tabbedMultiViewTabStrip .tabStripTab:not(.disabled) a:focus,
 div.tabbedMultiViewTabStrip .tabStripTabSelected:not(.disabled) a:focus
 {
-  outline: none;
+  outline: var(--remotion-themed-outline-focus);
+  outline-offset: var(--remotion-themed-outline-offset-focus);
   border: var(--remotion-themed-border-focus);
   box-shadow: var(--remotion-themed-box-shadow-focus);
 }
@@ -147,6 +149,8 @@ div.tabbedMultiViewTabStrip .tabStripTabSelected:not(.disabled) a:focus
 div.tabbedMultiViewTabStrip .tabStripTab:not(.disabled) a:focus:hover,
 div.tabbedMultiViewTabStrip .tabStripTabSelected:not(.disabled) a:focus:hover
 {
+  outline: var(--remotion-themed-outline-focus-hover);
+  outline-offset: var(--remotion-themed-outline-offset-focus-hover);
   background-color: var(--remotion-themed-background-color-focus-hover);
   border: var(--remotion-themed-border-focus-hover);
   box-shadow: var(--remotion-themed-box-shadow-focus-hover);

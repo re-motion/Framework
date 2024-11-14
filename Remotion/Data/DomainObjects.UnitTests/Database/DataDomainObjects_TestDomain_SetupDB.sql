@@ -206,8 +206,8 @@ CREATE TABLE [dbo].[TableWithAllDataTypes]
   [Timestamp] rowversion NOT NULL,
   [Boolean] bit NOT NULL,
   [Byte] tinyint NOT NULL,
-  [Date] datetime NOT NULL,
-  [DateTime] datetime NOT NULL,
+  [Date] date NOT NULL,
+  [DateTime] datetime2 NOT NULL,
   [Decimal] decimal (38, 3) NOT NULL,
   [Double] float NOT NULL,
   [Enum] int NOT NULL,
@@ -223,8 +223,8 @@ CREATE TABLE [dbo].[TableWithAllDataTypes]
   [Binary] varbinary (max) NOT NULL,
   [NaBoolean] bit NULL,
   [NaByte] tinyint NULL,
-  [NaDate] datetime NULL,
-  [NaDateTime] datetime NULL,
+  [NaDate] date NULL,
+  [NaDateTime] datetime2 NULL,
   [NaDecimal] decimal (38, 3) NULL,
   [NaDouble] float NULL,
   [NaEnum] int NULL,
@@ -238,8 +238,8 @@ CREATE TABLE [dbo].[TableWithAllDataTypes]
   [ExtensibleEnumWithNullValue] varchar (70) NULL,
   [NaBooleanWithNullValue] bit NULL,
   [NaByteWithNullValue] tinyint NULL,
-  [NaDateWithNullValue] datetime NULL,
-  [NaDateTimeWithNullValue] datetime NULL,
+  [NaDateWithNullValue] date NULL,
+  [NaDateTimeWithNullValue] datetime2 NULL,
   [NaDecimalWithNullValue] decimal (38, 3) NULL,
   [NaDoubleWithNullValue] float NULL,
   [NaEnumWithNullValue] int NULL,
@@ -345,7 +345,7 @@ CREATE TABLE [dbo].[Company]
   [ContactPersonID] uniqueidentifier NULL,
   [NumberOfShops] int NULL,
   [SupplierQuality] int NULL,
-  [CustomerSince] datetime NULL,
+  [CustomerSince] datetime2 NULL,
   [CustomerType] int NULL,
   CONSTRAINT [PK_Company] PRIMARY KEY CLUSTERED ([ID])
 )
@@ -400,7 +400,7 @@ CREATE TABLE [dbo].[Order]
   [ClassID] varchar (100) NOT NULL,
   [Timestamp] rowversion NOT NULL,
   [OrderNo] int NOT NULL,
-  [DeliveryDate] datetime NOT NULL,
+  [DeliveryDate] datetime2 NOT NULL,
   [OfficialID] varchar (255) NULL,
   [CustomerID] uniqueidentifier NULL,
   [CustomerIDClassID] varchar (100) NULL,
@@ -451,7 +451,7 @@ CREATE TABLE [dbo].[ProductReview]
   [Timestamp] rowversion NOT NULL,
   [ProductID] uniqueidentifier NULL,
   [ReviewerID] uniqueidentifier NULL,
-  [CreatedAt] datetime NOT NULL,
+  [CreatedAt] datetime2 NOT NULL,
   [Comment] nvarchar (1000) NOT NULL,
   CONSTRAINT [PK_ProductReview] PRIMARY KEY CLUSTERED ([ID])
 )
@@ -1159,3 +1159,140 @@ CREATE VIEW [dbo].[SupplierView] ([ID], [ClassID], [Timestamp], [Name], [Industr
 GO
 -- Create indexes for tables that were created above
 -- Create synonyms for tables that were created above
+-- Create all structured types
+CREATE TYPE [dbo].[TVP_String] AS TABLE
+(
+  [Value] nvarchar (max) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Binary] AS TABLE
+(
+  [Value] varbinary (max) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_AnsiString] AS TABLE
+(
+  [Value] varchar (max) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Boolean] AS TABLE
+(
+  [Value] bit NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Boolean_Distinct] AS TABLE
+(
+  [Value] bit NULL
+  UNIQUE CLUSTERED ([Value])
+)
+GO
+CREATE TYPE [dbo].[TVP_Byte] AS TABLE
+(
+  [Value] tinyint NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Byte_Distinct] AS TABLE
+(
+  [Value] tinyint NULL
+  UNIQUE CLUSTERED ([Value])
+)
+GO
+CREATE TYPE [dbo].[TVP_Int16] AS TABLE
+(
+  [Value] smallint NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Int16_Distinct] AS TABLE
+(
+  [Value] smallint NULL
+  UNIQUE CLUSTERED ([Value])
+)
+GO
+CREATE TYPE [dbo].[TVP_Int32] AS TABLE
+(
+  [Value] int NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Int32_Distinct] AS TABLE
+(
+  [Value] int NULL
+  UNIQUE CLUSTERED ([Value])
+)
+GO
+CREATE TYPE [dbo].[TVP_Int64] AS TABLE
+(
+  [Value] bigint NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Int64_Distinct] AS TABLE
+(
+  [Value] bigint NULL
+  UNIQUE CLUSTERED ([Value])
+)
+GO
+CREATE TYPE [dbo].[TVP_Decimal] AS TABLE
+(
+  [Value] decimal (38, 3) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Decimal_Distinct] AS TABLE
+(
+  [Value] decimal (38, 3) NULL
+  UNIQUE CLUSTERED ([Value])
+)
+GO
+CREATE TYPE [dbo].[TVP_Single] AS TABLE
+(
+  [Value] real NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Single_Distinct] AS TABLE
+(
+  [Value] real NULL
+  UNIQUE CLUSTERED ([Value])
+)
+GO
+CREATE TYPE [dbo].[TVP_Double] AS TABLE
+(
+  [Value] float NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Double_Distinct] AS TABLE
+(
+  [Value] float NULL
+  UNIQUE CLUSTERED ([Value])
+)
+GO
+CREATE TYPE [dbo].[TVP_DateTime2] AS TABLE
+(
+  [Value] datetime2 NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_DateTime2_Distinct] AS TABLE
+(
+  [Value] datetime2 NULL
+  UNIQUE CLUSTERED ([Value])
+)
+GO
+CREATE TYPE [dbo].[TVP_Date] AS TABLE
+(
+  [Value] date NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Date_Distinct] AS TABLE
+(
+  [Value] date NULL
+  UNIQUE CLUSTERED ([Value])
+)
+GO
+CREATE TYPE [dbo].[TVP_Guid] AS TABLE
+(
+  [Value] uniqueidentifier NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Guid_Distinct] AS TABLE
+(
+  [Value] uniqueidentifier NULL
+  UNIQUE CLUSTERED ([Value])
+)
+GO

@@ -191,8 +191,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets the displayed value of the column title. </summary>
     /// <remarks> 
-    ///   If <see cref="BocColumnDefinition.ColumnTitle"/> is empty or <see langowrd="null"/>, 
-    ///   the <c>DisplayName</c> of the <see cref="IBusinessObjectProperty"/> is returned.
+    ///   Equal to <see cref="BocColumnDefinition.ColumnTitle"/> if that property has a non-empty value.
+    ///   Otherwise <see cref="WebString.Empty"/> if <see cref="IsDynamic"/> is <see langword="true"/>, or equal to the <c>DisplayName</c> of the last
+    ///   <see cref="IBusinessObjectProperty"/> in the <see cref="PropertyPathIdentifier"/> if <see cref="IsDynamic"/> is <see langword="false"/>.
     /// </remarks>
     /// <value> A <see cref="string"/> representing this column's title row contents. </value>
     public override WebString ColumnTitleDisplayValue
@@ -201,6 +202,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (!ColumnTitle.IsEmpty)
           return ColumnTitle;
+
+        if (IsDynamic)
+          return WebString.Empty;
 
         IBusinessObjectPropertyPath propertyPath;
         try

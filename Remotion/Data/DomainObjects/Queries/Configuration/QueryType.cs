@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Obsolete;
 
 namespace Remotion.Data.DomainObjects.Queries.Configuration
 {
@@ -24,18 +25,51 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
   public enum QueryType
   {
     /// <summary>
+    /// Instances of a <see cref="QueryDefinition"/> return a collection of <see cref="DomainObject"/>s and can write to the domain.
+    /// </summary>
+    CollectionReadWrite = 0,
+
+    /// <summary>
+    /// Instances of a <see cref="QueryDefinition"/> return only a single value and can write to the domain.
+    /// </summary>
+    ScalarReadWrite = 1,
+
+    /// <summary>
+    /// Instances of a <see cref="QueryDefinition"/> return a sequence of arbitrary objects and can write to the domain.
+    /// </summary>
+    CustomReadWrite = 2,
+
+    /// <summary>
+    /// Instances of a <see cref="QueryDefinition"/> return a collection of <see cref="DomainObject"/>s and cannot write to the domain.
+    /// </summary>
+    CollectionReadOnly = 3,
+
+    /// <summary>
+    /// Instances of a <see cref="QueryDefinition"/> return only a single value and cannot write to the domain.
+    /// </summary>
+    ScalarReadOnly = 4,
+
+    /// <summary>
+    /// Instances of a <see cref="QueryDefinition"/> return a sequence of arbitrary objects and cannot write to the domain.
+    /// </summary>
+    CustomReadOnly = 5,
+
+    /// <summary>
     /// Instances of a <see cref="QueryDefinition"/> return a collection of <see cref="DomainObject"/>s.
     /// </summary>
-    Collection = 0,
+    [Obsolete("'QueryType.Collection' has been replaced with 'QueryType.CollectionReadWrite'. (Version 7.0.0)", false, DiagnosticId = ObsoleteDiagnosticIDs.QueryTypeValue)]
+    Collection = CollectionReadWrite,
 
     /// <summary>
     /// Instances of a <see cref="QueryDefinition"/> return only a single value.
     /// </summary>
-    Scalar = 1,
+    [Obsolete("'QueryType.Scalar' has been replaced with 'QueryType.ScalarReadWrite'. (Version 7.0.0)", false, DiagnosticId = ObsoleteDiagnosticIDs.QueryTypeValue)]
+    Scalar = ScalarReadWrite,
 
     /// <summary>
     /// Instances of a <see cref="QueryDefinition"/> return a sequence of arbitrary objects.
     /// </summary>
-    Custom = 2
+    [Obsolete("'QueryType.Custom' has been replaced with 'QueryType.CustomReadWrite'. (Version 7.0.0)", false, DiagnosticId = ObsoleteDiagnosticIDs.QueryTypeValue)]
+    Custom = CustomReadWrite,
   }
 }

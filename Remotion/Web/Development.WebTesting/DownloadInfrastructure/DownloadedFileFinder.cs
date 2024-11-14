@@ -21,6 +21,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
@@ -55,6 +57,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     private readonly string _partialFileExtension;
     private readonly IDownloadFileFinderStrategy _downloadFileFinderStrategy;
     private readonly TimeSpan _downloadStartedGracePeriod;
+    private readonly ILogger _logger;
 
     /// <summary>
     /// Creates a new <see cref="DownloadedFileFinder"/>.
@@ -72,20 +75,24 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     /// <param name="downloadFileFinderStrategy">
     /// Specifies the <see cref="IDownloadFileFinderStrategy"/>.
     /// </param>
+    /// <param name="logger">The <see cref="ILogger"/> used for diagnostic output when performing a file download</param>
     public DownloadedFileFinder (
       [JetBrains.Annotations.NotNull] string downloadDirectory,
       [JetBrains.Annotations.NotNull] string partialFileExtension,
       TimeSpan downloadStartedGracePeriod,
-      [JetBrains.Annotations.NotNull] IDownloadFileFinderStrategy downloadFileFinderStrategy)
+      [JetBrains.Annotations.NotNull] IDownloadFileFinderStrategy downloadFileFinderStrategy,
+      [JetBrains.Annotations.NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNullOrEmpty("downloadDirectory", downloadDirectory);
       ArgumentUtility.CheckNotNullOrEmpty("partialFileExtension", partialFileExtension);
       ArgumentUtility.CheckNotNull("downloadFileFinderStrategy", downloadFileFinderStrategy);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       _downloadDirectory = downloadDirectory;
       _partialFileExtension = partialFileExtension;
       _downloadStartedGracePeriod = downloadStartedGracePeriod;
       _downloadFileFinderStrategy = downloadFileFinderStrategy;
+      _logger = logger;
     }
 
     public DownloadedFile WaitForDownloadCompleted (
@@ -135,7 +142,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
         {
           var fileName = _downloadFileFinderStrategy.FindDownloadedFile(newFiles);
 
-          return new DownloadedFile(Path.Combine(_downloadDirectory, fileName), fileName);
+          return new DownloadedFile(Path.Combine(_downloadDirectory, fileName), fileName, _logger);
         }
         else
         {

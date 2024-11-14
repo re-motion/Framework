@@ -15,6 +15,5 @@
   </metadata>
   <files>
     <file src="Utilities\EqualityUtility.cs" target="content/App_Packages/Remotion.Utilities.EqualityUtility.Sources.$version$" />
-    <file src="..\*.licenseheader" target="content/App_Packages/Remotion.Utilities.EqualityUtility.Sources.$version$" />
   </files>
 </package>

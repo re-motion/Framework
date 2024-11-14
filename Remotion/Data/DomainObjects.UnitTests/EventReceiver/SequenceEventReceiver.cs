@@ -21,7 +21,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {
-  [Serializable]
   public class SequenceEventReceiver : EventReceiverBase
   {
     // types
@@ -131,7 +130,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
         }
       }
 
-      Assert.AreEqual(expectedStates.Length, _states.Count, "Length");
+      Assert.That(_states.Count, Is.EqualTo(expectedStates.Length), "Length");
     }
 
     public void Unregister ()

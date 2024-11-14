@@ -17,6 +17,7 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting
@@ -27,13 +28,23 @@ namespace Remotion.Web.Development.WebTesting
   public abstract class WebTestObject<TWebTestObjectContext>
       where TWebTestObjectContext : WebTestObjectContext
   {
+    private readonly ILogger _logger;
     private readonly TWebTestObjectContext _context;
 
     protected WebTestObject ([NotNull] TWebTestObjectContext context)
     {
       ArgumentUtility.CheckNotNull("context", context);
 
+      _logger = context.LoggerFactory.CreateLogger(GetType());
       _context = context;
+    }
+
+    /// <summary>
+    /// The <see cref="ILogger"/> associated with this <see cref="WebTestObject{TWebTestObjectContext}"/>'s type.
+    /// </summary>
+    public ILogger Logger
+    {
+      get { return _logger; }
     }
 
     /// <summary>

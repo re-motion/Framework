@@ -17,6 +17,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Logging.Log4Net\Core.Logging.Log4Net.csproj" />
     <ProjectReference Include="..\..\Development\Web\Development.Web.csproj" />
     <ProjectReference Include="..\Core\Web.Core.csproj" />
     <ProjectReference Include="..\Test.Shared\Web.Test.Shared.csproj" />

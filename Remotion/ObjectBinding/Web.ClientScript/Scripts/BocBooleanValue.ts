@@ -106,13 +106,10 @@ class BocBooleanValue_Resource
             description = trueDescription;
     } // RM-7676: Handle invalid check box states in BocBooleanValue_Resource.SelectNextCheckboxValue
 
-
     checkboxSpan.setAttribute('aria-checked', checkedState!);
 
-    const isHover = icon.src == icon.dataset['srcHover'];
-    icon.dataset["src"] = iconSrc!;
-    icon.dataset['srcHover'] = iconHoverSrc!;
-    icon.src = isHover ? icon.dataset["src"] : icon.dataset['srcHover'];
+    icon.style.setProperty("--standard-background-image", "url('" + iconSrc! + "')");
+    icon.style.setProperty("--hover-background-image", "url('" + iconHoverSrc! + "')");
 
     if (label == null)
     {
@@ -201,17 +198,5 @@ class BocBooleanValue
       event.cancelBubble = true;
       event.returnValue = false;
     }
-  }
-
-  public static OnMouseOver (context: HTMLElement): void
-  {
-    const img = context.querySelector('img')!;
-    img.src = img.dataset['srcHover']!;
-  }
-
-  public static OnMouseOut (context: HTMLElement): void
-  {
-    const img = context.querySelector('img')!;
-    img.src = img.dataset["src"]!;
   }
 }

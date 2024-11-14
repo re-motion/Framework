@@ -19,10 +19,8 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.InvalidObjects
 {
@@ -169,25 +167,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.InvalidObjects
               .With.ArgumentExceptionMessageEqualTo(
                   "The object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' has not been marked invalid.", "id"));
     }
-
-    [Test]
-    public void Serializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var order = DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order1);
-
-      var transactionEventSink = new SerializableClientTransactionEventSinkFake();
-      var manager = new InvalidDomainObjectManager(transactionEventSink);
-
-      manager.MarkInvalid(order);
-
-      var deserializedInstance = Serializer.SerializeAndDeserialize(manager);
-
-      Assert.That(deserializedInstance.TransactionEventSink, Is.Not.Null);
-      Assert.That(deserializedInstance.InvalidObjectIDs, Has.Member(order.ID));
-    }
-
-
   }
 }

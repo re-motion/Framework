@@ -48,6 +48,11 @@ public interface IValidatableControl: IControl
   /// This may include populating control values from the view state explicitly.
   /// </summary>
   void PrepareValidation ();
+
+  /// <summary>
+  ///   Gets the input control that can be referenced by the <see cref="BaseValidator"/>.
+  /// </summary>
+  Control TargetControl { get; }
 }
 
 /// <summary>
@@ -88,7 +93,7 @@ public class ValidatableControlInitializer
         {
           if (   parentControl is IValidatableControl
               && parentControl is ISmartControl
-              && ((ISmartControl)parentControl).TargetControl == validatedControl)
+              && ((IValidatableControl)parentControl).TargetControl == validatedControl)
           {
             ((IValidatableControl)parentControl).RegisterValidator(validator);
           }

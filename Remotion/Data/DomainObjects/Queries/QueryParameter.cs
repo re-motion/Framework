@@ -22,7 +22,6 @@ namespace Remotion.Data.DomainObjects.Queries
 /// <summary>
 /// Represents a parameter that is used in a query.
 /// </summary>
-[Serializable]
 public class QueryParameter
 {
   // types

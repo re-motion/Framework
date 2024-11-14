@@ -24,7 +24,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting.Compilation
 {
-  [Serializable]
   public class AssemblyCompiler
   {
     public static AssemblyCompiler CreateInMemoryAssemblyCompiler (string sourceDirectory, params string[] referencedAssemblies)

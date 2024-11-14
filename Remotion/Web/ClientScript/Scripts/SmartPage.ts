@@ -100,6 +100,14 @@ class SmartPage_Context
   private _statusMessageWindow: Nullable<HTMLElement> = null;
   private _hasUnloaded: boolean = false;
 
+  /**
+   * In Firefox, the load event will be triggered right after the postback, which is not the
+   * case in other browsers and causes logic bugs. As such, we manually disable the load event
+   * for a short amount of time right after a postback happens. The onload event should already
+   * be queued by the browser due to the post back so we can use 0ms delay for the timeout.
+   */
+  private _ignoreOnLoadEventImmediatelyAfterPostBack: boolean = false;
+
   private _aspnetFormOnSubmit: Nullable<() => boolean> = null;
   private _aspnetDoPostBack: Nullable<Sys.WebForms.DoPostBack> = null;
   // Sepcial flag to support the Form.OnSubmit event being executed by the ASP.NET __doPostBack function.
@@ -422,6 +430,9 @@ class SmartPage_Context
   // Event handler for window.OnLoad
   public OnLoad(): void
   {
+    if (this._ignoreOnLoadEventImmediatelyAfterPostBack)
+      return;
+
     const pageRequestManager = this.GetPageRequestManager();
     if (pageRequestManager != null)
     {
@@ -696,6 +707,10 @@ class SmartPage_Context
         this.SetCacheDetectionFieldSubmitted();
 
         this._aspnetDoPostBack!(eventTarget, eventArgument);
+
+        // See field doc comment on why we disable the onload comment
+        this._ignoreOnLoadEventImmediatelyAfterPostBack = true;
+        setTimeout(() => this._ignoreOnLoadEventImmediatelyAfterPostBack = false, 0);
       }
       finally
       {
@@ -861,26 +876,19 @@ class SmartPage_Context
     }
     else
     {
-      const xhr = new XMLHttpRequest();
-
-      const readStateDone = 4;
       const httpStatusSuccess = 299;
-      const method = 'GET';
-      const isAsyncCall = true;
-
-      xhr.open (method, url, isAsyncCall);
-      xhr.onreadystatechange = function ()
-      {
-        if (this.readyState === readStateDone)
-        {
-          const args = { Status : this.status };
-          if (this.status > 0 && this.status <= httpStatusSuccess)
-            successHandler (args);
-          else
-            errorHandler (args);
-        }
-      };
-      xhr.send();
+      fetch(url, {
+        method: "get"
+      }).then(response => {
+        const args = { Status : response.status };
+        if (response.status > 0 && response.status <= httpStatusSuccess)
+          successHandler (args);
+        else
+          errorHandler (args);
+      }, error => {
+        const args = { Status : 0 };
+        errorHandler (args);
+      });
     }
   };
 
@@ -914,12 +922,15 @@ class SmartPage_Context
   private GetFunctionPointer<TFunction extends AnyFunction>(functionName: string): Nullable<TFunction>
   {
     ArgumentUtility.CheckTypeIsString('functionName', functionName);
+    if (functionName.indexOf('.') !== -1)
+      throw `Error: The value of parameter "functionName" must not contain dot-separators. value: "${functionName}"`;
+
     if (StringUtility.IsNullOrEmpty(functionName))
       return null;
-    let fct = null;
+    let fct: unknown = null;
     try
     {
-      fct = eval(functionName);
+      fct = (window as any)[functionName];
     }
     catch (e)
     {

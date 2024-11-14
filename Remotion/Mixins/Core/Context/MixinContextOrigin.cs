@@ -97,13 +97,8 @@ namespace Remotion.Mixins.Context
 
     public override string ToString ()
     {
-#if NETFRAMEWORK
-      var assemblyName = Assembly.GetName(copiedName: false);
-      return String.Format("{0}, Location: '{1}' (Assembly: '{2}', code base: {3})", Kind, Location, assemblyName.GetNameSafe(), assemblyName.CodeBase);
-#else
       var assemblyName = Assembly.GetName();
       return string.Format("{0}, Location: '{1}' (assembly: '{2}', location: {3})", Kind, Location, assemblyName.GetNameSafe(), Assembly.Location);
-#endif
     }
 
     public void Serialize (IMixinContextOriginSerializer serializer)

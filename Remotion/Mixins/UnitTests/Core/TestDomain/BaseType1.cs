@@ -20,7 +20,6 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   public class BT1Attribute : Attribute { }
 
-  [Serializable]
   [BT1]
   public class BaseType1
   {

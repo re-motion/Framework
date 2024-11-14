@@ -43,16 +43,7 @@ namespace Remotion.Web.UI.Controls
     IEnumerable<BaseValidator> CreateValidators ();
 
     /// <summary>
-    ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its ClientID.
-    /// </summary>
-    /// <remarks>
-    ///   For compound controls that accept user input in text boxes, lists etc., this is the control that
-    ///   actually accepts user input. For all other controls, this is the control itself.
-    /// </remarks>
-    Control TargetControl { get; }
-
-    /// <summary>
-    ///   If UseLabel is true, it is valid to generate HTML &lt;label&gt; tags referencing <see cref="TargetControl"/>.
+    ///   If UseLabel is true, it is valid to generate HTML &lt;label&gt; tags referencing this control.
     /// </summary>
     /// <remarks>
     ///   This flag is usually true, except for controls that render combo boxes or other HTML tags that do not function properly

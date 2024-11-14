@@ -36,8 +36,8 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
     {
       ArgumentUtility.CheckNotNull("resultConversion", resultConversion);
 
-      if (query.QueryType != QueryType.Custom)
-        throw new ArgumentException("Only custom queries can be used to load custom results.", "query");
+      if (query.QueryType != QueryType.CustomReadOnly)
+        throw new ArgumentException("Only custom readonly queries can be used to load custom results.", "query");
 
       _resultConversion = resultConversion;
     }

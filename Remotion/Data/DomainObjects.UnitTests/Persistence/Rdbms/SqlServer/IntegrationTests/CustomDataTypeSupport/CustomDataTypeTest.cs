@@ -161,6 +161,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var scriptGenerator = new ScriptGenerator(
           pd => pd.Factory.CreateSchemaScriptBuilder(pd),
           new RdbmsStorageEntityDefinitionProvider(),
+          new FakeStructuredTypeDefinitionProvider(),
           new ScriptToStringConverter());
       var scripts = scriptGenerator.GetScripts(MappingConfiguration.Current.GetTypeDefinitions()).ToArray();
       Assert.That(scripts.Length, Is.EqualTo(1));
@@ -190,6 +191,7 @@ CREATE VIEW [dbo].[CustomDataType_ClassWithCustomDataTypeView] ([ID], [ClassID],
 GO
 -- Create indexes for tables that were created above
 -- Create synonyms for tables that were created above
+-- Create all structured types
 ".ApplyDatabaseConfiguration()));
     }
   }

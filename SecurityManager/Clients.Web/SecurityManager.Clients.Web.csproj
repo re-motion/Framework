@@ -12,12 +12,6 @@
     <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <None Update="..\SecurityManager AGPL.licenseheader" Pack="true" PackagePath="res/" Visible="false" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Remotion\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Remotion\Core\Reflection\Core.Reflection.csproj" />
     <ProjectReference Include="..\..\Remotion\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj" />

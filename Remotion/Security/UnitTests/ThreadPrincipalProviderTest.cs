@@ -56,11 +56,7 @@ namespace Remotion.Security.UnitTests
     public void GetPrincipal_WithCurrentPrincipalNull_ReturnsNullObject ()
     {
       Thread.CurrentPrincipal = null;
-#if NETFRAMEWORK
-      Assert.That(Thread.CurrentPrincipal, Is.Not.Null);
-#else
       Assert.That(Thread.CurrentPrincipal, Is.Null);
-#endif
       Assert.That(_principalProvider.GetPrincipal().IsNull, Is.True);
     }
 

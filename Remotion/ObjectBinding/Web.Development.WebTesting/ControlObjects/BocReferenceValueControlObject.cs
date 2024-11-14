@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       else
       {
         var scope = GetValueScope();
-        return scope.GetSelectedOption();
+        return scope.GetSelectedOption(Logger);
       }
     }
 
@@ -85,6 +85,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
       return RetryUntilTimeout.Run(
+          Logger,
           () => GetValueScope().FindAllCss("option")
               .Select((optionScope, i) => new OptionDefinition(optionScope.Value, i + 1, optionScope.Text, optionScope.Selected))
               .ToList());
@@ -101,7 +102,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       else
       {
         var scope = GetValueScope();
-        return scope.GetSelectedOption().Text;
+        return scope.GetSelectedOption(Logger).Text;
       }
     }
 
@@ -140,7 +141,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (Scope.Browser.IsFirefox() && GetSelectedOption().ItemID == itemID)
         return UnspecifiedPage();
 
-      Action<ElementScope> selectAction = s => s.SelectOptionByValue(itemID);
+      Action<ElementScope> selectAction = s => s.SelectOptionByValue(itemID, Logger);
       return SelectOption(selectAction, actionOptions);
     }
 
@@ -157,7 +158,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (Scope.Browser.IsFirefox() && GetSelectedOption().Index == oneBasedIndex)
         return UnspecifiedPage();
 
-      Action<ElementScope> selectAction = s => s.SelectOptionByIndex(oneBasedIndex);
+      Action<ElementScope> selectAction = s => s.SelectOptionByIndex(oneBasedIndex, Logger);
       return SelectOption(selectAction, actionOptions);
     }
 
@@ -185,7 +186,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       ArgumentUtility.CheckNotNull("selectAction", selectAction);
 
       var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
-      ExecuteAction(new CustomAction(this, GetValueScope(), "Select", selectAction), actualActionOptions);
+      ExecuteAction(new CustomAction(this, GetValueScope(), "Select", selectAction, Logger), actualActionOptions);
       return UnspecifiedPage();
     }
 

@@ -28,7 +28,6 @@ namespace Remotion.Data.DomainObjects.Queries
   /// <summary>
   /// <see cref="QueryManager"/> provides methods to execute queries within a <see cref="RootPersistenceStrategy"/>.
   /// </summary>
-  [Serializable]
   public class QueryManager : IQueryManager
   {
     private readonly IPersistenceStrategy _persistenceStrategy;
@@ -82,13 +81,14 @@ namespace Remotion.Data.DomainObjects.Queries
     ///   <paramref name="query"/> is <see langword="null"/>.
     /// </exception>
     /// <exception cref="System.ArgumentException">
-    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Scalar"/>.
+    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of
+    ///   of <see cref="Configuration.QueryType.ScalarReadOnly"/> or <see cref="Configuration.QueryType.ScalarReadWrite"/>.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
     ///   The <see cref="IQuery.StorageProviderDefinition"/> of <paramref name="query"/> could not be found.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.PersistenceException">
-    ///   The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
+    ///   The <see cref="Remotion.Data.DomainObjects.Persistence.IReadOnlyStorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.StorageProviderException">
     ///   An error occurred while executing the query.
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.Queries
     {
       ArgumentUtility.CheckNotNull("query", query);
 
-      if (query.QueryType != QueryType.Scalar)
+      if (query.QueryType != QueryType.ScalarReadOnly && query.QueryType != QueryType.ScalarReadWrite)
         throw new ArgumentException("A collection or custom query cannot be used with GetScalar.", "query");
 
       return _persistenceStrategy.ExecuteScalarQuery(query);
@@ -112,13 +112,14 @@ namespace Remotion.Data.DomainObjects.Queries
     ///   <paramref name="query"/> is <see langword="null"/>.
     /// </exception>
     /// <exception cref="System.ArgumentException">
-    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.
+    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of
+    ///   <see cref="Configuration.QueryType.CollectionReadOnly"/> or <see cref="Configuration.QueryType.CollectionReadWrite"/>.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
     ///   The <see cref="IQuery.StorageProviderDefinition"/> of <paramref name="query"/> could not be found.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.PersistenceException">
-    ///   The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
+    ///   The <see cref="Remotion.Data.DomainObjects.Persistence.IReadOnlyStorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.StorageProviderException">
     ///   An error occurred while executing the query.
@@ -146,13 +147,14 @@ namespace Remotion.Data.DomainObjects.Queries
     ///   <typeparamref name="T"/> or the configured collection type is not assignable to <see cref="ObjectList{T}"/> with the given <typeparamref name="T"/>.
     /// </exception>
     /// <exception cref="System.ArgumentException">
-    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.
+    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of
+    ///   <see cref="Configuration.QueryType.CollectionReadOnly"/> or <see cref="Configuration.QueryType.CollectionReadWrite"/>.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
     /// The <see cref="IQuery.StorageProviderDefinition"/> of <paramref name="query"/> could not be found.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.PersistenceException">
-    /// The <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
+    /// The <see cref="Remotion.Data.DomainObjects.Persistence.IReadOnlyStorageProvider"/> for the given <see cref="IQuery"/> could not be instantiated.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.StorageProviderException">
     /// An error occurred while executing the query.
@@ -161,7 +163,7 @@ namespace Remotion.Data.DomainObjects.Queries
     {
       ArgumentUtility.CheckNotNull("query", query);
 
-      if (query.QueryType != QueryType.Collection)
+      if (query.QueryType != QueryType.CollectionReadOnly && query.QueryType != QueryType.CollectionReadWrite)
         throw new ArgumentException("A scalar or custom query cannot be used with GetCollection.", "query");
 
       var resultArray = _objectLoader
@@ -173,7 +175,7 @@ namespace Remotion.Data.DomainObjects.Queries
 
     /// <summary>
     /// Executes a given <see cref="IQuery"/> and uses a delegate to convert the results into arbitrary objects. The result sequence may be lazy and 
-    /// streamed, i.e., the query results may be gathered while the sequence is enumerated. The underlying <see cref="StorageProvider" /> may keep 
+    /// streamed, i.e., the query results may be gathered while the sequence is enumerated. The underlying <see cref="IReadOnlyStorageProvider" /> may keep 
     /// resources (such as a database connection) open while the sequence is enumerated, see remarks. 
     /// </summary>
     /// <typeparam name="T">The type of values to be returned by the query.</typeparam>
@@ -182,7 +184,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// into the query result type, <typeparamref name="T"/>.</param>
     /// <returns>A collection containing the objects produced by the <paramref name="rowReader"/>-delegate.</returns>
     /// <remarks>
-    /// The underlying <see cref="StorageProvider" /> may implement this method in such a way that the query is only executed when the returned 
+    /// The underlying <see cref="IReadOnlyStorageProvider" /> may implement this method in such a way that the query is only executed when the returned 
     /// <see cref="IEnumerable{T}"/> is enumerated. Resources, such as a database connection or transaction, may be kept open during that 
     /// enumeration until the <see cref="IEnumerator{T}"/> is disposed. Use "<see cref="Enumerable"/>.ToArray()" or iterate immediately if you require 
     /// those resources to be freed as quickly as possible.
@@ -192,7 +194,7 @@ namespace Remotion.Data.DomainObjects.Queries
       ArgumentUtility.CheckNotNull("query", query);
       ArgumentUtility.CheckNotNull("rowReader", rowReader);
 
-      if (query.QueryType != QueryType.Custom)
+      if (query.QueryType != QueryType.CustomReadOnly && query.QueryType != QueryType.CustomReadWrite)
         throw new ArgumentException("A collection or scalar query cannot be used with GetCustom.", "query");
 
       if (query.EagerFetchQueries.Count > 0)

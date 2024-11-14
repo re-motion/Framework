@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<Person xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" FirstName="John" LastName="45345" DateOfBirth="2008-04-04T12:00:00" Height="179" Gender="Male" MarriageStatus="Married" DateOfDeath="2070-01-01">
+<Person xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" FirstName="John" LastName="45345" DateOfBirth="2008-04-04T12:00:00" Height="179" Gender="Male" MarriageStatus="Married" DateOfDeath="2070-01-01" DateOfCitizenship="2009-05-02">
   <Income>2000</Income>
   <PartnerID>00000000-0000-0000-0000-000000000009</PartnerID>
   <FatherID>b66f599e-eab6-42cd-a569-f6c0572f1832</FatherID>

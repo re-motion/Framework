@@ -42,13 +42,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
     private ColumnValue _columnValue2;
     private OrderedColumn _orderColumn1;
     private OrderedColumn _orderColumn2;
+    private Mock<ISingleScalarStructuredTypeDefinitionProvider> _singleScalarStructuredTypeDefinitionProviderStub;
 
     public override void SetUp ()
     {
       base.SetUp();
 
       _sqlDialectStub = new Mock<ISqlDialect>();
-      _factory = new SqlDbCommandBuilderFactory(_sqlDialectStub.Object);
 
       _tableDefinition = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "Table"));
 
@@ -59,6 +59,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
 
       _orderColumn1 = new OrderedColumn(_column1, SortOrder.Ascending);
       _orderColumn2 = new OrderedColumn(_column2, SortOrder.Descending);
+
+      _singleScalarStructuredTypeDefinitionProviderStub = new Mock<ISingleScalarStructuredTypeDefinitionProvider>();
+      _factory = new SqlDbCommandBuilderFactory(_singleScalarStructuredTypeDefinitionProviderStub.Object, _sqlDialectStub.Object);
     }
 
     [Test]
@@ -91,14 +94,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
             new ColumnValueTable.Row(new object[] { 13 }),
           }
           );
+
+      var dotNetType = _column1.StorageTypeInfo.DotNetType;
+
+      _singleScalarStructuredTypeDefinitionProviderStub.Setup(_ => _.GetStructuredTypeDefinition(dotNetType, false))
+          .Returns(
+              new TableTypeDefinition(
+                  new EntityNameDefinition(null, "Test"),
+                  [new SimpleStoragePropertyDefinition(dotNetType, _column1)],
+                  Array.Empty<ITableConstraintDefinition>()));
+
       var result = _factory.CreateForSelect(_tableDefinition, new[] { _column1, _column2 }, columnValueTable, new[] { _orderColumn1, _orderColumn2 });
 
       Assert.That(result, Is.TypeOf(typeof(SelectDbCommandBuilder)));
       var dbCommandBuilder = (SelectDbCommandBuilder)result;
       Assert.That(dbCommandBuilder.Table, Is.SameAs(_tableDefinition));
       Assert.That(((SelectedColumnsSpecification)dbCommandBuilder.SelectedColumns).SelectedColumns, Is.EqualTo(new[] { _column1, _column2 }));
-      Assert.That(((SqlXmlSetComparedColumnSpecification)dbCommandBuilder.ComparedColumns).ColumnDefinition, Is.SameAs(_column1));
-      Assert.That(((SqlXmlSetComparedColumnSpecification)dbCommandBuilder.ComparedColumns).ObjectValues, Is.EqualTo(new[] { 12, 13 }));
+      Assert.That(((SqlTableValuedParameterComparedColumnSpecification)dbCommandBuilder.ComparedColumns).ComparedColumnDefinition, Is.SameAs(_column1));
+      Assert.That(((SqlTableValuedParameterComparedColumnSpecification)dbCommandBuilder.ComparedColumns).ObjectValues, Is.EqualTo(new[] { 12, 13 }));
       Assert.That(((OrderedColumnsSpecification)dbCommandBuilder.OrderedColumns).Columns, Is.EqualTo(new[] { _orderColumn1, _orderColumn2 }));
     }
 
@@ -148,7 +161,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
     [Test]
     public void CreateForQuery ()
     {
-      var result = _factory.CreateForQuery("statement", new QueryParameterWithType[0]);
+      var result = _factory.CreateForQuery("statement", new QueryParameterWithDataParameterDefinition[0]);
 
       Assert.That(result, Is.TypeOf(typeof(QueryDbCommandBuilder)));
       Assert.That(((QueryDbCommandBuilder)result).SqlDialect, Is.SameAs(_sqlDialectStub.Object));

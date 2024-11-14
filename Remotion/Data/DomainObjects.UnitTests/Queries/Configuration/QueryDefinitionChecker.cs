@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
   {
     public void Check (IReadOnlyList<QueryDefinition> expectedQueries, IReadOnlyList<QueryDefinition> actualQueries)
     {
-      Assert.AreEqual(expectedQueries.Count, actualQueries.Count, "Number of queries does not match.");
+      Assert.That(actualQueries.Count, Is.EqualTo(expectedQueries.Count), "Number of queries does not match.");
 
       var actualQueriesLookup = actualQueries.ToDictionary(e => e.ID, e => e);
       foreach (var expectedQuery in expectedQueries)
@@ -40,21 +40,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
 
     private void CheckQuery (QueryDefinition expectedQuery, QueryDefinition actualQuery)
     {
-      Assert.AreEqual(
-          expectedQuery.StorageProviderDefinition,
+      Assert.That(
           actualQuery.StorageProviderDefinition,
-          "ProviderID of query definition {0} does not match.",
-          expectedQuery.ID);
+          Is.EqualTo(expectedQuery.StorageProviderDefinition),
+          $"ProviderID of query definition {expectedQuery.ID} does not match.");
 
-      Assert.AreEqual(expectedQuery.Statement, actualQuery.Statement, "Statement of query definition {0} does not match.", expectedQuery.ID);
+      Assert.That(
+          actualQuery.Statement,
+          Is.EqualTo(expectedQuery.Statement),
+          $"Statement of query definition {expectedQuery.ID} does not match.");
 
-      Assert.AreEqual(expectedQuery.QueryType, actualQuery.QueryType, "QueryType of query definition {0} does not match.", expectedQuery.ID);
+      Assert.That(
+          actualQuery.QueryType,
+          Is.EqualTo(expectedQuery.QueryType),
+          $"QueryType of query definition {expectedQuery.ID} does not match.");
 
-      Assert.AreEqual(
-          expectedQuery.CollectionType,
+      Assert.That(
           actualQuery.CollectionType,
-          "CollectionType of query definition {0} does not match.",
-          expectedQuery.ID);
+          Is.EqualTo(expectedQuery.CollectionType),
+          $"CollectionType of query definition {expectedQuery.ID} does not match.");
     }
   }
 }

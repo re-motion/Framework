@@ -16,8 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Utilities;
 
@@ -36,16 +35,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       where TDataManager : IVirtualEndPointDataManager
       where TLoadStateInterface : IVirtualEndPointLoadState<TEndPoint, TData, TDataManager>
   {
-    public interface IEndPointLoader : IFlattenedSerializable
+    public interface IEndPointLoader
     {
       TLoadStateInterface LoadEndPointAndGetNewState (TEndPoint endPoint);
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(IncompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager, TLoadStateInterface>));
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<IncompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager, TLoadStateInterface>>();
 
-    protected static ILog Log
+    protected static ILogger Logger
     {
-      get { return s_log; }
+      get { return s_logger; }
     }
 
     private readonly IEndPointLoader _endPointLoader;
@@ -205,8 +204,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull("items", items);
       ArgumentUtility.CheckNotNull("stateSetter", stateSetter);
 
-      if (s_log.IsInfoEnabled())
-        s_log.InfoFormat("Virtual end-point '{0}' is transitioned to complete state.", endPoint.ID);
+      if (s_logger.IsEnabled(LogLevel.Information))
+        s_logger.LogInformation("Virtual end-point '{0}' is transitioned to complete state.", endPoint.ID);
 
       var dataManager = CreateEndPointDataManager(endPoint);
 
@@ -233,39 +232,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       foreach (var oppositeEndPointWithoutItem in _originalOppositeEndPoints.Values)
         endPoint.RegisterOriginalOppositeEndPoint(oppositeEndPointWithoutItem);
     }
-
-    #region Serialization
-
-    protected IncompleteVirtualEndPointLoadStateBase (FlattenedDeserializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-      _endPointLoader = info.GetValue<IEndPointLoader>();
-
-      var realObjectEndPoints = new List<IRealObjectEndPoint>();
-      info.FillCollection(realObjectEndPoints);
-      _originalOppositeEndPoints = realObjectEndPoints.ToDictionary(
-          ep =>
-          {
-            Assertion.IsFalse(ep.IsNull, "ep.IsNull");
-            Assertion.DebugIsNotNull(ep.ObjectID, "ep.ObjectID != null when ep.IsNull == false");
-
-            return ep.ObjectID;
-          });
-    }
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-      info.AddValue(_endPointLoader);
-      info.AddCollection(_originalOppositeEndPoints.Values);
-
-      SerializeSubclassData(info);
-    }
-
-    protected virtual void SerializeSubclassData (FlattenedSerializationInfo info)
-    {
-    }
-
-    #endregion
   }
 }

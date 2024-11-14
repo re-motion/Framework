@@ -177,12 +177,6 @@ namespace Remotion.Collections.Caching.UnitTests
     }
 
     [Test]
-    public void Serializable ()
-    {
-      Serializer.SerializeAndDeserialize(new LockingCacheDecorator<string, int>(new Cache<string, int>()));
-    }
-
-    [Test]
     [TestCase(1, 5800)]
     [TestCase(2, 12500)]
     [TestCase(3, 19000)]

@@ -22,10 +22,7 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
-using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
@@ -273,32 +270,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       CheckOperationDelegatesToCompleteState(
           s => s.CreateReplaceCommand(_collectionEndPointMock.Object, 0, _relatedObject),
           new Mock<IDataManagementCommand>().Object);
-    }
-
-    [Test]
-    public void FlattenedSerializable ()
-    {
-      Assert2.IgnoreIfFeatureSerializationIsDisabled();
-
-      var endPointLoader = new SerializableVirtualEndPointLoaderFake<
-          IDomainObjectCollectionEndPoint,
-          ReadOnlyDomainObjectCollectionDataDecorator,
-          IDomainObjectCollectionEndPointDataManager,
-          IDomainObjectCollectionEndPointLoadState>();
-      var dataManagerFactory = new SerializableDomainObjectCollectionEndPointDataManagerFactoryFake();
-
-      var state = new IncompleteDomainObjectCollectionEndPointLoadState(endPointLoader, dataManagerFactory);
-
-      var oppositeEndPoint = new SerializableRealObjectEndPointFake(null, _relatedObject);
-      state.RegisterOriginalOppositeEndPoint(_collectionEndPointMock.Object, oppositeEndPoint);
-
-      var result = FlattenedSerializer.SerializeAndDeserialize(state);
-
-      Assert.That(result, Is.Not.Null);
-      Assert.That(result.OriginalOppositeEndPoints, Is.Not.Null);
-      Assert.That(result.OriginalOppositeEndPoints, Is.Not.Empty);
-      Assert.That(result.EndPointLoader, Is.Not.Null);
-      Assert.That(result.DataManagerFactory, Is.Not.Null);
     }
 
     private void CheckOperationDelegatesToCompleteState<T> (Expression<Func<IDomainObjectCollectionEndPointLoadState, T>> operation, T fakeResult)

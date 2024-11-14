@@ -23,7 +23,9 @@ using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
@@ -36,12 +38,20 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
 {
   public class StubStorageFactory : IRdbmsStorageObjectFactory
   {
-    public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+    public IStorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
     {
       ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
-      return new StubStorageProvider(storageProviderDefinition, persistenceExtension);
+      return new StubStorageProvider();
+    }
+
+    public IReadOnlyStorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+    {
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+
+      return new StubStorageProvider();
     }
 
     public IPersistenceModelLoader CreatePersistenceModelLoader (StorageProviderDefinition storageProviderDefinition)
@@ -71,6 +81,11 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
     }
 
     public IEnumSerializer CreateEnumSerializer ()
+    {
+      throw new NotImplementedException();
+    }
+
+    public ISingleScalarStructuredTypeDefinitionProvider CreateSingleScalarStructuredTypeDefinitionProvider (RdbmsProviderDefinition storageProviderDefinition)
     {
       throw new NotImplementedException();
     }
@@ -115,6 +130,11 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
       throw new NotImplementedException();
     }
 
+    public IDataParameterDefinitionFactory CreateDataParameterDefinitionFactory (RdbmsProviderDefinition storageProviderDefinition)
+    {
+      throw new NotImplementedException();
+    }
+
     public IScriptBuilder CreateTableBuilder (RdbmsProviderDefinition storageProviderDefinition)
     {
       return new TableScriptBuilder(new SqlTableScriptElementFactory(), new SqlCommentScriptElementFactory());
@@ -140,7 +160,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
       throw new NotImplementedException();
     }
 
-    public IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> CreateStorageProviderCommandFactory (RdbmsProviderDefinition storageProviderDefinition)
+    public IRdbmsProviderCommandFactory CreateStorageProviderCommandFactory (RdbmsProviderDefinition storageProviderDefinition)
     {
       throw new NotImplementedException();
     }

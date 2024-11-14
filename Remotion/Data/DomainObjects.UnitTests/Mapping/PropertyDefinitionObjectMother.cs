@@ -21,6 +21,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Reflection;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -123,7 +124,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var propertyInfo = declaringClassType.GetProperty(
           propertyName,
           BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance);
-      Assert.IsNotNull(propertyInfo, "Property '" + propertyName + "' on type '" + declaringClassType + "'.");
+      Assert.That(propertyInfo, Is.Not.Null, "Property '" + propertyName + "' on type '" + declaringClassType + "'.");
 
       var fullPropertyName = declaringClassType.FullName + "." + propertyName;
 
@@ -134,7 +135,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           classDefinition,
           fullPropertyName,
           isObjectID,
-          true,
+          NullableTypeUtility.IsNullableType(propertyInfo.PropertyType),
           null,
           StorageClass.Persistent,
           propertyInformation,

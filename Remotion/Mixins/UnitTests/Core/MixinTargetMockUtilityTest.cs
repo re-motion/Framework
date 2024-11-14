@@ -17,7 +17,6 @@
 using System;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
 
 namespace Remotion.Mixins.UnitTests.Core
@@ -110,35 +109,6 @@ namespace Remotion.Mixins.UnitTests.Core
       BT3Mixin2 mixin = MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin2, IBaseType32>(thisMock.Object, 7);
       Assert.That(mixin.Target, Is.SameAs(thisMock.Object));
       Assert.That(mixin.I, Is.EqualTo(7));
-    }
-
-    [Test]
-    public void SignalOnDeserialized_This ()
-    {
-      var thisMock = new SerializableBaseType32Mock();
-
-      BT3Mixin2 mixin = MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin2, IBaseType32>(thisMock);
-      var deserializedData = Serializer.SerializeAndDeserialize(Tuple.Create(thisMock, mixin));
-
-      MixinTargetMockUtility.MockMixinTargetAfterDeserialization(deserializedData.Item2, deserializedData.Item1);
-      Assert.That(deserializedData.Item2.Target, Is.Not.Null);
-      Assert.That(deserializedData.Item2.Target, Is.SameAs(deserializedData.Item1));
-    }
-
-    [Test]
-    public void SignalOnDeserialized_ThisBase ()
-    {
-      var thisMock = new SerializableBaseType31Mock();
-      var baseMock = new SerializableBaseType31Mock();
-
-      BT3Mixin1 mixin = MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin1, IBaseType31, IBaseType31>(thisMock, baseMock);
-      var deserializedData = Serializer.SerializeAndDeserialize(Tuple.Create(thisMock, baseMock, mixin));
-
-      MixinTargetMockUtility.MockMixinTargetAfterDeserialization(deserializedData.Item3, deserializedData.Item1, deserializedData.Item2);
-      Assert.That(deserializedData.Item3.Target, Is.Not.Null);
-      Assert.That(deserializedData.Item3.Target, Is.SameAs(deserializedData.Item1));
-      Assert.That(deserializedData.Item3.Next, Is.Not.Null);
-      Assert.That(deserializedData.Item3.Next, Is.SameAs(deserializedData.Item2));
     }
   }
 }

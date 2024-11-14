@@ -86,28 +86,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     }
 
     [Test]
-    public void SerializeAndDeserialize ()
-    {
-      ClassWithIdentity value = ObjectFactory.Create<ClassWithIdentity>(ParamList.Empty);
-      value.String = "TheString";
-      ClassWithIdentity deserialized = Serializer.SerializeAndDeserialize(value);
-
-      Assert.That(deserialized.String, Is.EqualTo("TheString"));
-      Assert.That(((IBusinessObject)deserialized).BusinessObjectClass, Is.SameAs(((IBusinessObject)value).BusinessObjectClass));
-    }
-
-    [Test]
-    public void SerializeAndDeserialize_WithNewBindableObjectProvider ()
-    {
-      ClassWithIdentity value = ObjectFactory.Create<ClassWithIdentity>(ParamList.Empty);
-      byte[] serialized = Serializer.Serialize(value);
-      BusinessObjectProvider.SetProvider(typeof(BindableObjectWithIdentityProviderAttribute), null);
-      ClassWithIdentity deserialized = (ClassWithIdentity)Serializer.Deserialize(serialized);
-
-      Assert.That(((IBusinessObject)deserialized).BusinessObjectClass, Is.Not.SameAs(((IBusinessObject)value).BusinessObjectClass));
-    }
-
-    [Test]
     public void HasMixin ()
     {
       Assert.That(MixinTypeUtility.HasMixin(typeof(ClassWithIdentity), typeof(BindableObjectWithIdentityMixin)), Is.True);

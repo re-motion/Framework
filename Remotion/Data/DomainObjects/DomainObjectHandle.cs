@@ -25,7 +25,6 @@ namespace Remotion.Data.DomainObjects
   /// </summary>
   /// <typeparam name="T">The type of <see cref="IDomainObject"/> identified by this class.</typeparam>
   /// <threadsafety static="true" instance="true"/>
-  [Serializable]
   public class DomainObjectHandle<T> : IDomainObjectHandle<T>
       where T : IDomainObject
   {

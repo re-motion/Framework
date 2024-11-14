@@ -19,7 +19,6 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
-  [Serializable]
   public class MixinAddingInterface : Mixin<DomainObject>, IInterfaceAddedByMixin
   {
     public string GetGreetings ()

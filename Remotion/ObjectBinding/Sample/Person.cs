@@ -26,7 +26,6 @@ namespace Remotion.ObjectBinding.Sample
 {
   [XmlRoot("Person")]
   [XmlType]
-  [Serializable]
   public class Person : BindableXmlObject
   {
     public static Person GetObject (Guid id)
@@ -52,6 +51,7 @@ namespace Remotion.ObjectBinding.Sample
     private Gender _gender;
     private MarriageStatus _marriageStatus;
     private DateTime _dateOfDeath;
+    private DateOnly _dateOfCitizenship;
     private bool _deceased = false;
     private string[] _cv;
     private Guid _partnerID;
@@ -234,6 +234,22 @@ namespace Remotion.ObjectBinding.Sample
     {
       get { return _dateOfDeath; }
       set { _dateOfDeath = value; }
+    }
+
+    [XmlIgnore]
+    public DateOnly DateOfCitizenship
+    {
+      get { return _dateOfCitizenship; }
+      set { _dateOfCitizenship = value; }
+    }
+
+    // DateOnly is not supported by the XmlSerializer so we have to add a conversion property ourselves
+    [XmlAttribute(AttributeName = nameof(DateOfCitizenship))]
+    [ObjectBinding(Visible = false)]
+    public string DateOfCitizenshipValue
+    {
+      get => _dateOfCitizenship.ToString("yyyy-MM-dd");
+      set => DateOfCitizenship = DateOnly.Parse(value);
     }
 
     [XmlElement]

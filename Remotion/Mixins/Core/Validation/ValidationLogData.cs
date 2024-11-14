@@ -111,11 +111,6 @@ namespace Remotion.Mixins.Validation
       return _successes + _warnings + _failures + _exceptions;
     }
 
-    public SerializableValidationLogData MakeSerializable ()
-    {
-      return new SerializableValidationLogData(this);
-    }
-
     private ValidationResult? FindMatchingResult (IVisitableDefinition validatedDefinition)
     {
       foreach (var result in GetResults())

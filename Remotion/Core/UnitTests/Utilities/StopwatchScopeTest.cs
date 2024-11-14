@@ -18,9 +18,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Testing;
 using Moq;
 using NUnit.Framework;
-using Remotion.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.UnitTests.Utilities
@@ -220,9 +221,9 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void CreateScope_Log ()
     {
-      var logMock = new Mock<ILog>();
+      var fakeLogger = new FakeLogger();
 
-      var scope = StopwatchScope.CreateScope(logMock.Object, LogLevel.Error, "{context}#{elapsed}#{elapsed:ms}#{elapsedCP}#{elapsedCP:ms}");
+      var scope = StopwatchScope.CreateScope(fakeLogger, LogLevel.Error, "{context}#{elapsed}#{elapsed:ms}#{elapsedCP}#{elapsedCP:ms}");
 
       Wait(TimeSpan.FromMilliseconds(1.0));
 
@@ -231,6 +232,8 @@ namespace Remotion.UnitTests.Utilities
       var firstElapsed = scope.ElapsedTotal;
       var firstElapsedCP = scope.ElapsedSinceLastCheckpoint;
       scope.Checkpoint("one");
+
+      Assert.That(fakeLogger.Collector.Count, Is.EqualTo(1));
 
       scope.Resume();
 
@@ -241,38 +244,35 @@ namespace Remotion.UnitTests.Utilities
       var secondElapsedCP = scope.ElapsedSinceLastCheckpoint;
       scope.Dispose();
 
-      var expectedFirstArgs = new[] {
-          "one",
-          firstElapsed.ToString(),
-          firstElapsed.TotalMilliseconds.ToString(),
-          firstElapsedCP.ToString(),
-          firstElapsedCP.TotalMilliseconds.ToString()
-      };
-      logMock.Verify(
-          mock =>
-              mock.LogFormat(
-                  LogLevel.Error,
-                  null,
-                  null,
-                  "{0}#{1}#{2}#{3}#{4}",
-                  expectedFirstArgs),
-          Times.AtLeastOnce());
+      var logEntries = fakeLogger.Collector.GetSnapshot();
+      Assert.That(logEntries.Count, Is.EqualTo(2));
+      Assert.That(logEntries[0].Level, Is.EqualTo(LogLevel.Error));
+      Assert.That(logEntries[0].Message, Is.EqualTo($"one#{firstElapsed}#{firstElapsed.TotalMilliseconds}#{firstElapsedCP}#{firstElapsedCP.TotalMilliseconds}"));
+      Assert.That(logEntries[1].Level, Is.EqualTo(LogLevel.Error));
+      Assert.That(logEntries[1].Message, Is.EqualTo($"end#{secondElapsed}#{secondElapsed.TotalMilliseconds}#{secondElapsedCP}#{secondElapsedCP.TotalMilliseconds}"));
+    }
 
-      var expectedSecondArgs = new[] {
-          "end",
-          secondElapsed.ToString(),
-          secondElapsed.TotalMilliseconds.ToString(),
-          secondElapsedCP.ToString(),
-          secondElapsedCP.TotalMilliseconds.ToString()
-      };
-      logMock.Verify(
-          mock => mock.LogFormat(
-              LogLevel.Error,
-              null,
-              null,
-              "{0}#{1}#{2}#{3}#{4}",
-              expectedSecondArgs),
-          Times.AtLeastOnce());
+    [Test]
+    public void CreateScope_Log_WithPartialFormatStringPlaceholders ()
+    {
+      var fakeLogger = new FakeLogger();
+
+      var scope = StopwatchScope.CreateScope(fakeLogger, LogLevel.Information, "{context}#{elapsed:ms}#{elapsedCP:ms}");
+
+      Wait(TimeSpan.FromMilliseconds(1.0));
+
+      scope.Pause();
+
+      var firstElapsed = scope.ElapsedTotal;
+      var firstElapsedCP = scope.ElapsedSinceLastCheckpoint;
+      scope.Checkpoint("one");
+
+      scope.Dispose();
+
+      var logEntries = fakeLogger.Collector.GetSnapshot();
+      Assert.That(logEntries.Count, Is.EqualTo(2));
+      Assert.That(logEntries[0].Level, Is.EqualTo(LogLevel.Information));
+      Assert.That(logEntries[0].Message, Is.EqualTo($"one#{firstElapsed.TotalMilliseconds}#{firstElapsedCP.TotalMilliseconds}"));
     }
 
     [Test]

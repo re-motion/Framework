@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BooleanProperty"), Is.EqualTo(false));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "ByteProperty"), Is.EqualTo(85));
-      Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty"), Is.EqualTo(new DateTime(2005, 1, 1)));
+      Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty"), Is.EqualTo(new DateOnly(2005, 1, 1)));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateTimeProperty"), Is.EqualTo(new DateTime(2005, 1, 1, 17, 0, 0)));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DecimalProperty"), Is.EqualTo(123456.789));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DoubleProperty"), Is.EqualTo(987654.321));
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BooleanProperty", true);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "ByteProperty", (byte)42);
-      SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty", new DateTime(1972, 10, 26));
+      SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty", new DateOnly(1972, 10, 26));
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateTimeProperty", new DateTime(1974, 10, 26, 15, 17, 19));
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DecimalProperty", (decimal)564.956);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DoubleProperty", 5334.2456);
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BooleanProperty"), Is.EqualTo(true));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "ByteProperty"), Is.EqualTo(42));
-      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty"), Is.EqualTo(new DateTime(1972, 10, 26)));
+      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty"), Is.EqualTo(new DateOnly(1972, 10, 26)));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateTimeProperty"), Is.EqualTo(new DateTime(1974, 10, 26, 15, 17, 19)));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DecimalProperty"), Is.EqualTo(564.956));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DoubleProperty"), Is.EqualTo(5334.2456));
@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaBooleanProperty"), Is.EqualTo(true));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty"), Is.EqualTo((byte)78));
-      Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateProperty"), Is.EqualTo(new DateTime(2005, 2, 1)));
+      Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateProperty"), Is.EqualTo(new DateOnly(2005, 2, 1)));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateTimeProperty"), Is.EqualTo(new DateTime(2005, 2, 1, 5, 0, 0)));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDecimalProperty"), Is.EqualTo(765.098m));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDoubleProperty"), Is.EqualTo(654321.789d));
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaBooleanProperty", false);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty", (byte)100);
-      SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateProperty", new DateTime(2007, 1, 18));
+      SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateProperty", new DateOnly(2007, 1, 18));
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateTimeProperty", new DateTime(
           2005, 1, 18, 10, 10, 10));
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDecimalProperty", 20.123m);
@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaBooleanProperty"), Is.EqualTo(false));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty"), Is.EqualTo((byte)100));
-      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateProperty"), Is.EqualTo(new DateTime(2007, 1, 18)));
+      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateProperty"), Is.EqualTo(new DateOnly(2007, 1, 18)));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateTimeProperty"), Is.EqualTo(new DateTime(2005, 1, 18, 10, 10, 10)));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDecimalProperty"), Is.EqualTo(20.123m));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDoubleProperty"), Is.EqualTo(56.87d));
@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaBooleanProperty"), Is.EqualTo(true));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaByteProperty"), Is.EqualTo((byte)78));
-      Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateProperty"), Is.EqualTo(new DateTime(2005, 2, 1)));
+      Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateProperty"), Is.EqualTo(new DateOnly(2005, 2, 1)));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDateTimeProperty"), Is.EqualTo(new DateTime(2005, 2, 1, 5, 0, 0)));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDecimalProperty"), Is.EqualTo(765.098m));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaDoubleProperty"), Is.EqualTo(654321.789d));

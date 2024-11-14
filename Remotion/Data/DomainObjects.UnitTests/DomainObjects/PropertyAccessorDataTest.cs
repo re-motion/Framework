@@ -170,112 +170,151 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetPropertyKind ()
     {
-      Assert.AreEqual(PropertyKind.PropertyValue,
-          PropertyAccessorData.GetPropertyKind(MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector)),
-          "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name"),
+      Assert.That(
+          PropertyAccessorData.GetPropertyKind(
+              MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector)),
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name"),
+          Is.EqualTo(PropertyKind.PropertyValue),
           "Property value type");
 
-      Assert.AreEqual(PropertyKind.RelatedObjectCollection,
-          PropertyAccessorData.GetPropertyKind(MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector)),
-          "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies"),
+      Assert.That(
+          PropertyAccessorData.GetPropertyKind(
+              MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector)),
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies"),
+          Is.EqualTo(PropertyKind.RelatedObjectCollection),
           "Related object collection type - bidirectional relation 1:n, 1 side");
 
-      Assert.AreEqual(PropertyKind.RelatedObject,
-          PropertyAccessorData.GetPropertyKind(MappingConfiguration.Current.GetTypeDefinition(typeof(Company)),
-          "Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector"),
+      Assert.That(
+          PropertyAccessorData.GetPropertyKind(
+              MappingConfiguration.Current.GetTypeDefinition(typeof(Company)),
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector"),
+          Is.EqualTo(PropertyKind.RelatedObject),
           "Related object type - bidirectional relation 1:n, n side");
 
-      Assert.AreEqual(PropertyKind.RelatedObject,
-          PropertyAccessorData.GetPropertyKind(MappingConfiguration.Current.GetTypeDefinition(typeof(Employee)),
-          "Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"),
+      Assert.That(
+          PropertyAccessorData.GetPropertyKind(
+              MappingConfiguration.Current.GetTypeDefinition(typeof(Employee)),
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"),
+          Is.EqualTo(PropertyKind.RelatedObject),
           "Related object type - bidirectional relation 1:1, referenced side");
 
-      Assert.AreEqual(PropertyKind.RelatedObject,
-          PropertyAccessorData.GetPropertyKind(MappingConfiguration.Current.GetTypeDefinition(typeof(Computer)),
-          "Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"),
+      Assert.That(
+          PropertyAccessorData.GetPropertyKind(
+              MappingConfiguration.Current.GetTypeDefinition(typeof(Computer)),
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"),
+          Is.EqualTo(PropertyKind.RelatedObject),
           "Related object type - bidirectional relation 1:1, foreign key side");
 
-      Assert.AreEqual(PropertyKind.RelatedObject,
-          PropertyAccessorData.GetPropertyKind(MappingConfiguration.Current.GetTypeDefinition(typeof(Client)),
-          "Remotion.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient"),
+      Assert.That(
+          PropertyAccessorData.GetPropertyKind(
+              MappingConfiguration.Current.GetTypeDefinition(typeof(Client)),
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient"),
+          Is.EqualTo(PropertyKind.RelatedObject),
           "Related object type - unidirectional relation 1:n, 1 side");
     }
 
     [Test]
     public void Kind ()
     {
-      Assert.AreEqual(PropertyKind.PropertyValue,
-          CreateAccessorData(typeof(IndustrialSector), "Name").Kind, "Property value type");
+      Assert.That(CreateAccessorData(typeof(IndustrialSector), "Name").Kind, Is.EqualTo(PropertyKind.PropertyValue), "Property value type");
 
-      Assert.AreEqual(PropertyKind.RelatedObjectCollection,
-          CreateAccessorData(typeof(IndustrialSector), "Companies").Kind, "Related object collection type - bidirectional relation 1:n, 1 side");
+      Assert.That(
+          CreateAccessorData(typeof(IndustrialSector), "Companies").Kind,
+          Is.EqualTo(PropertyKind.RelatedObjectCollection),
+          "Related object collection type - bidirectional relation 1:n, 1 side");
 
-      Assert.AreEqual(PropertyKind.RelatedObject,
-          CreateAccessorData(typeof(Company), "IndustrialSector").Kind, "Related object type - bidirectional relation 1:n, n side");
+      Assert.That(CreateAccessorData(typeof(Company), "IndustrialSector").Kind, Is.EqualTo(PropertyKind.RelatedObject), "Related object type - bidirectional relation 1:n, n side");
 
-      Assert.AreEqual(PropertyKind.RelatedObject,
-          CreateAccessorData(typeof(Employee), "Computer").Kind, "Related object type - bidirectional relation 1:1, referenced side");
+      Assert.That(
+          CreateAccessorData(typeof(Employee), "Computer").Kind,
+          Is.EqualTo(PropertyKind.RelatedObject),
+          "Related object type - bidirectional relation 1:1, referenced side");
 
-      Assert.AreEqual(PropertyKind.RelatedObject,
-          CreateAccessorData(typeof(Computer), "Employee").Kind, "Related object type - bidirectional relation 1:1, foreign key side");
+      Assert.That(
+          CreateAccessorData(typeof(Computer), "Employee").Kind,
+          Is.EqualTo(PropertyKind.RelatedObject),
+          "Related object type - bidirectional relation 1:1, foreign key side");
 
-      Assert.AreEqual(PropertyKind.RelatedObject,
-          CreateAccessorData(typeof(Client), "ParentClient").Kind, "Related object type - unidirectional relation 1:n, 1 side");
+      Assert.That(CreateAccessorData(typeof(Client), "ParentClient").Kind, Is.EqualTo(PropertyKind.RelatedObject), "Related object type - unidirectional relation 1:n, 1 side");
     }
 
     [Test]
     public void GetPropertyType ()
     {
-      Assert.AreEqual(typeof(string),
-          PropertyAccessorData.GetPropertyType(MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector)),
-          "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name"),
+      Assert.That(
+          PropertyAccessorData.GetPropertyType(
+              MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector)),
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name"),
+          Is.EqualTo(typeof(string)),
           "Property value type");
 
-      Assert.AreEqual(typeof(ObjectList<Company>),
-          PropertyAccessorData.GetPropertyType(MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector)),
-          "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies"),
+      Assert.That(
+          PropertyAccessorData.GetPropertyType(
+              MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector)),
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies"),
+          Is.EqualTo(typeof(ObjectList<Company>)),
           "Related object collection type - bidirectional relation 1:n, 1 side");
 
-      Assert.AreEqual(typeof(IndustrialSector),
-          PropertyAccessorData.GetPropertyType(MappingConfiguration.Current.GetTypeDefinition(typeof(Company)),
-          "Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector"),
+      Assert.That(
+          PropertyAccessorData.GetPropertyType(
+              MappingConfiguration.Current.GetTypeDefinition(typeof(Company)),
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector"),
+          Is.EqualTo(typeof(IndustrialSector)),
           "Related object type - bidirectional relation 1:n, n side");
 
-      Assert.AreEqual(typeof(Computer),
-          PropertyAccessorData.GetPropertyType(MappingConfiguration.Current.GetTypeDefinition(typeof(Employee)),
-          "Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"),
+      Assert.That(
+          PropertyAccessorData.GetPropertyType(
+              MappingConfiguration.Current.GetTypeDefinition(typeof(Employee)),
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"),
+          Is.EqualTo(typeof(Computer)),
           "Related object type - bidirectional relation 1:1, referenced side");
 
-      Assert.AreEqual(typeof(Employee),
-          PropertyAccessorData.GetPropertyType(MappingConfiguration.Current.GetTypeDefinition(typeof(Computer)),
-          "Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"),
+      Assert.That(
+          PropertyAccessorData.GetPropertyType(
+              MappingConfiguration.Current.GetTypeDefinition(typeof(Computer)),
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"),
+          Is.EqualTo(typeof(Employee)),
           "Related object type - bidirectional relation 1:1, foreign key side");
 
-      Assert.AreEqual(typeof(Client),
-          PropertyAccessorData.GetPropertyType(MappingConfiguration.Current.GetTypeDefinition(typeof(Client)),
-          "Remotion.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient"),
+      Assert.That(
+          PropertyAccessorData.GetPropertyType(
+              MappingConfiguration.Current.GetTypeDefinition(typeof(Client)),
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient"),
+          Is.EqualTo(typeof(Client)),
           "Related object type - unidirectional relation 1:n, 1 side");
     }
 
     [Test]
     public void PropertyType ()
     {
-      Assert.AreEqual(typeof(string), CreateAccessorData(typeof(IndustrialSector), "Name").PropertyType,
+      Assert.That(
+          CreateAccessorData(typeof(IndustrialSector), "Name").PropertyType,
+          Is.EqualTo(typeof(string)),
           "Property value type");
 
-      Assert.AreEqual(typeof(ObjectList<Company>), CreateAccessorData(typeof(IndustrialSector), "Companies").PropertyType,
+      Assert.That(
+          CreateAccessorData(typeof(IndustrialSector), "Companies").PropertyType,
+          Is.EqualTo(typeof(ObjectList<Company>)),
           "Related object collection type - bidirectional relation 1:n, 1 side");
 
-      Assert.AreEqual(typeof(IndustrialSector), CreateAccessorData(typeof(Company), "IndustrialSector").PropertyType,
+      Assert.That(
+          CreateAccessorData(typeof(Company), "IndustrialSector").PropertyType,
+          Is.EqualTo(typeof(IndustrialSector)),
           "Related object type - bidirectional relation 1:n, n side");
 
-      Assert.AreEqual(typeof(Computer), CreateAccessorData(typeof(Employee), "Computer").PropertyType,
+      Assert.That(
+          CreateAccessorData(typeof(Employee), "Computer").PropertyType,
+          Is.EqualTo(typeof(Computer)),
           "Related object type - bidirectional relation 1:1, referenced side");
 
-      Assert.AreEqual(typeof(Employee), CreateAccessorData(typeof(Computer), "Employee").PropertyType,
+      Assert.That(
+          CreateAccessorData(typeof(Computer), "Employee").PropertyType,
+          Is.EqualTo(typeof(Employee)),
           "Related object type - bidirectional relation 1:1, foreign key side");
 
-      Assert.AreEqual(typeof(Client), CreateAccessorData(typeof(Client), "ParentClient").PropertyType,
+      Assert.That(
+          CreateAccessorData(typeof(Client), "ParentClient").PropertyType,
+          Is.EqualTo(typeof(Client)),
           "Related object type - unidirectional relation 1:n, 1 side");
     }
 

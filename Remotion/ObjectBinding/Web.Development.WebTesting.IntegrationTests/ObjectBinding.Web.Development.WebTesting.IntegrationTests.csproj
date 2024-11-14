@@ -11,10 +11,14 @@
     <SignAssembly>False</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\SharedSource\Development\NUnit\UnitTesting\*.cs" Link="SharedSource\NUnit\UnitTesting\%(Filename)%(Extension)" />
     <EmbeddedResource Include="SavedTestScreenshots\**\*.png" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Development\NUnit\UnitTesting\*.cs" Link="SharedSource\NUnit\UnitTesting\%(Filename)%(Extension)" />
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\Assertion.cs" Link="SharedSource\Utilites\%(Filename)%(Extension)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Logging.Log4Net\Core.Logging.Log4Net.csproj" />
     <ProjectReference Include="..\..\Web\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />
     <ProjectReference Include="..\..\Web\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj" />
     <ProjectReference Include="..\..\Web\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj" />
@@ -23,11 +27,6 @@
     <ProjectReference Include="..\..\Web\Development.WebTesting\Web.Development.WebTesting.csproj" />
     <ProjectReference Include="..\Web.Contracts.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj" />
     <ProjectReference Include="..\Web.Development.WebTesting\ObjectBinding.Web.Development.WebTesting.csproj" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-    <ProjectReference Include="..\Web.Development.WebTesting.TestSite.NetFramework\ObjectBinding.Web.Development.WebTesting.TestSite.NetFramework.csproj" ReferenceOutputAssembly="false" ExcludeAssets="all" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
     <ProjectReference Include="..\Web.Development.WebTesting.TestSite\ObjectBinding.Web.Development.WebTesting.TestSite.csproj" ReferenceOutputAssembly="false" ExcludeAssets="all" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

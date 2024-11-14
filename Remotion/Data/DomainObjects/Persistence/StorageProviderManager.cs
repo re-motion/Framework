@@ -8,121 +8,38 @@
 // 
 // re-motion is distributed in the hope that it will be useful, 
 // but WITHOUT ANY WARRANTY; without even the implied warranty of 
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU Lesser General Public License for more details.
 // 
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence
 {
-public class StorageProviderManager : IDisposable
-{
-  private bool _disposed;
-  private StorageProviderCollection? _storageProviders;
-  private readonly IPersistenceExtension _persistenceExtension;
-  private readonly IStorageSettings _storageSettings;
-
-  public StorageProviderManager (IPersistenceExtension persistenceExtension, IStorageSettings storageSettings)
+  public sealed class StorageProviderManager : StorageProviderManagerBase<IStorageProvider>, IStorageProviderManager, IReadOnlyStorageProviderManager
   {
-    ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
-    ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
-
-    _storageProviders = new StorageProviderCollection();
-    _persistenceExtension = persistenceExtension;
-    _storageSettings = storageSettings;
-  }
-
-  #region IDisposable Members
-
-  public void Dispose ()
-  {
-    if (!_disposed)
+    public StorageProviderManager (IPersistenceExtension persistenceExtension, IStorageSettings storageSettings)
+        : base(persistenceExtension, storageSettings)
     {
-      if (_storageProviders != null)
-        _storageProviders.Dispose();
+    }
 
-      _storageProviders = null;
+    protected override IStorageProvider CreateStorageProvider (StorageProviderDefinition providerDefinition)
+    {
+      ArgumentUtility.CheckNotNull(nameof(providerDefinition), providerDefinition);
 
-      _disposed = true;
-      GC.SuppressFinalize(this);
+      return providerDefinition.Factory.CreateStorageProvider(providerDefinition, PersistenceExtension);
+    }
+
+    IReadOnlyStorageProvider IReadOnlyStorageProviderManager.GetMandatory (StorageProviderDefinition providerDefinition)
+    {
+      ArgumentUtility.CheckNotNull(nameof(providerDefinition), providerDefinition);
+
+      return GetMandatory(providerDefinition);
     }
   }
-
-  #endregion
-
-  public StorageProvider GetMandatory (string storageProviderID)
-  {
-    CheckDisposed();
-    ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
-
-    if (_storageProviders.Contains(storageProviderID))
-      return _storageProviders[storageProviderID]!;
-
-    var providerDefinition = _storageSettings.GetStorageProviderDefinition(storageProviderID);
-    var provider = providerDefinition.Factory.CreateStorageProvider(providerDefinition, _persistenceExtension);
-
-    if (provider == null)
-      throw CreatePersistenceException("Storage provider '{0}' could not be created.", storageProviderID);
-
-    _storageProviders.Add(provider);
-
-    return provider;
-  }
-
-  public StorageProvider GetMandatory (StorageProviderDefinition providerDefinition)
-  {
-    CheckDisposed();
-    ArgumentUtility.CheckNotNull("providerDefinition", providerDefinition);
-
-#if DEBUG
-    if (providerDefinition != _storageSettings.GetStorageProviderDefinition(providerDefinition.Name))
-    {
-      throw new InvalidOperationException(
-          $"Supplied provider definition '{providerDefinition.Name}' does not match the provider definition with the same name in the IStorageSettings object.");
-    }
-#endif
-
-    if (_storageProviders.Contains(providerDefinition.Name))
-      return _storageProviders[providerDefinition.Name]!;
-
-    var provider = providerDefinition.Factory.CreateStorageProvider(providerDefinition, _persistenceExtension);
-
-    if (provider == null)
-      throw CreatePersistenceException("Storage provider '{0}' could not be created.", providerDefinition.Name);
-
-    _storageProviders.Add(provider);
-
-    return provider;
-  }
-
-  public StorageProviderCollection StorageProviders
-  {
-    get
-    {
-      CheckDisposed();
-      return _storageProviders;
-    }
-  }
-
-  private PersistenceException CreatePersistenceException (string message, params object[] args)
-  {
-    return new PersistenceException(string.Format(message, args));
-  }
-
-  [MemberNotNull(nameof(_storageProviders))]
-  private void CheckDisposed ()
-  {
-    if (_disposed)
-      throw new ObjectDisposedException("StorageProviderManager", "A disposed StorageProviderManager cannot be accessed.");
-#pragma warning disable 8774 // Disable _storageProviders-not-initialized warning
-  }
-#pragma warning restore 8774
-}
 }

@@ -20,10 +20,10 @@
     <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupDBSpecialTables.sql" />
     <None Include="@(DatabaseFiles)" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="AclTools\Code Repository.txt" />
-    <None Include="..\SecurityManager AGPL.licenseheader" Link="SecurityManager AGPL.licenseheader" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Remotion\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Remotion\Core\Logging.Log4Net\Core.Logging.Log4Net.csproj" />
     <ProjectReference Include="..\..\Remotion\Core\Reflection.CodeGeneration.TypePipe\Core.Reflection.CodeGeneration.TypePipe.csproj" />
     <ProjectReference Include="..\..\Remotion\Core\Reflection\Core.Reflection.csproj" />
     <ProjectReference Include="..\..\Remotion\Core\Tools\Core.Tools.csproj" />
@@ -38,6 +38,9 @@
     <ProjectReference Include="..\..\Remotion\ObjectBinding\Core\ObjectBinding.Core.csproj" />
     <ProjectReference Include="..\..\Remotion\Security\Core\Security.Core.csproj" />
     <ProjectReference Include="..\Core\SecurityManager.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" />
   </ItemGroup>
   <Import Project="..\..\Build\Shared.build.targets" />
 </Project>

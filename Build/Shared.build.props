@@ -11,11 +11,9 @@
     <Product Condition="'$(ProductType)' == 'Mixins'" >$(ProductNameForMixins)</Product>
     <Product Condition="'$(ProductType)' == 'SecurityManager'">$(ProductNameForSecurityManager)</Product>
     <Company>$(CompanyName)</Company>
-    <Copyright Condition="'$(ProductType)' == 'Default' OR '$(ProductType)' == 'Mixins'">$(Copyright)</Copyright>
-    <Copyright Condition="'$(ProductType)' == 'SecurityManager'">$(CopyrightForSecurityManager)</Copyright>
+    <Copyright>$(Copyright)</Copyright>
     <Authors>$(Company)</Authors>
-    <PackageLicenseExpression Condition="'$(ProductType)' == 'Default' OR '$(ProductType)' == 'Mixins'">LGPL-2.1-or-later</PackageLicenseExpression>
-    <PackageLicenseExpression Condition="'$(ProductType)' == 'SecurityManager'">AGPL-3.0-only</PackageLicenseExpression>
+    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
     <PackageProjectUrl>http://www.re-motion.org</PackageProjectUrl>
     <RepositoryUrl>https://github.com/re-motion/Framework/</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -25,8 +23,7 @@
 
   <PropertyGroup>
     <LangVersion>12</LangVersion>
-    <DebugType Condition="'$(TargetFramework)' == 'net48'">full</DebugType>
-    <DebugType Condition="'$(TargetFramework)' != 'net48'">embedded</DebugType>
+    <DebugType>embedded</DebugType>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\remotion.snk</AssemblyOriginatorKeyFile>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
@@ -34,8 +31,6 @@
     <PackageTags>re-motion</PackageTags>
     <PackageTags Condition="'$(ProductType)' == 'SecurityManager'">$(PackageTags) SecurityManager</PackageTags>
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-    <DefineConstants Condition="'$(TargetFramework)' == 'net48'">$(DefineConstants);FEATURE_GAC;FEATURE_SERIALIZATION;FEATURE_ASSEMBLYBUILDER_SAVE;FEATURE_THREAD_ABORT;FEATURE_STRONGNAMESIGNING</DefineConstants>
-    <DefineConstants Condition="'$(TargetFramework)' == 'net48'">$(DefineConstants);ENABLE_PEVERIFY</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -47,10 +42,7 @@
 
   <PropertyGroup>
     <ProjectFeaturesRoot>$(MSBuildThisFileDirectory)ProjectFeatures\</ProjectFeaturesRoot>
-    <!-- Enable source link for .NET Core but not for .NET Framework -->
-    <SuppressImplicitGitSourceLink Condition="'$(TargetFramework)' == 'net48'">true</SuppressImplicitGitSourceLink>
-    <UseSourceLink Condition="'$(UseSourceLink)' == '' AND '$(TargetFramework)' == 'net48'">false</UseSourceLink>
-    <UseSourceLink Condition="'$(UseSourceLink)' == ''">true</UseSourceLink>
+    <UseSourceLink>true</UseSourceLink>
   </PropertyGroup>
 
   <Import Project="$(ProjectFeaturesRoot)UseWebForms.props" Condition="'$(UseWebForms)' == 'true'" />
@@ -59,9 +51,6 @@
 
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)..\remotion.snk" Link="remotion.snk" />
-    <None Include="$(MSBuildThisFileDirectory)..\Remotion\Remotion LGPL.licenseheader" Link="Remotion LGPL.licenseheader" Condition="'$(ProductType)' == 'Default'" />
-    <None Include="$(MSBuildThisFileDirectory)..\Remotion\Remotion LGPL.licenseheader" Link="Remotion LGPL.licenseheader" Condition="'$(ProductType)' == 'Mixins'" />
-    <None Include="$(MSBuildThisFileDirectory)..\SecurityManager\SecurityManager AGPL.licenseheader" Link="SecurityManager AGPL.licenseheader" Condition="'$(ProductType)' == 'SecurityManager'" />
   </ItemGroup>
 
   <ItemGroup>
@@ -69,7 +58,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Remotion.Infrastructure.Styles.Analyzer" Version="1.1.3" PrivateAssets="All" />
+    <PackageReference Include="Remotion.Infrastructure.Styles.Analyzer" PrivateAssets="All" />
     <ProjectReference Include="$(SolutionDir)Remotion\Core\Development.Analyzers\Core.Development.Analyzers.csproj"
                       PrivateAssets="all"
                       ReferenceOutputAssembly="false"

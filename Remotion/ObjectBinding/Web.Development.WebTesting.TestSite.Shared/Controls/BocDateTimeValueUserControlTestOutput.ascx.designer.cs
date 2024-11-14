@@ -7,45 +7,56 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls {
-    
-    
-    public partial class BocDateTimeValueUserControlTestOutput {
-        
+namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
+{
+
+
+    public partial class BocDateTimeValueUserControlTestOutput
+    {
+
         /// <summary>
         /// NormalCurrentValueLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label NormalCurrentValueLabel;
-        
+
         /// <summary>
         /// NoAutoPostBackCurrentValueLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label NoAutoPostBackCurrentValueLabel;
-        
+
         /// <summary>
         /// DateOnlyCurrentValueLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label DateOnlyCurrentValueLabel;
-        
+
         /// <summary>
         /// WithSecondsCurrentValueLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label WithSecondsCurrentValueLabel;
+
+        /// <summary>
+        /// DateOnlyTypeLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label DateOnlyTypeLabel;
     }
 }

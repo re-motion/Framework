@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using Remotion.Configuration;
@@ -55,6 +56,8 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
     {
       try
       {
+        BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
+
         var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer(TestDomainConnectionString);
 
         var defaultServiceLocator = DefaultServiceLocator.Create();
@@ -67,6 +70,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
         var scriptGenerator = new ScriptGenerator(
             pd => pd.Factory.CreateSchemaScriptBuilder(pd),
             new RdbmsStorageEntityDefinitionProvider(),
+            new RdbmsStructuredTypeDefinitionProvider(),
             new ScriptToStringConverter());
         var scripts = scriptGenerator.GetScripts(MappingConfiguration.Current.GetTypeDefinitions()).Single();
 

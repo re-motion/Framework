@@ -20,8 +20,8 @@ using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Utilities;
 
@@ -35,19 +35,23 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     private readonly IObjectReaderFactory _objectReaderFactory;
     private readonly IDbCommandBuilderFactory _dbCommandBuilderFactory;
     private readonly IDataStoragePropertyDefinitionFactory _dataStoragePropertyDefinitionFactory;
+    private readonly IDataParameterDefinitionFactory _dataParameterDefinitionFactory;
 
     public QueryCommandFactory (
         IObjectReaderFactory objectReaderFactory,
         IDbCommandBuilderFactory dbCommandBuilderFactory,
-        IDataStoragePropertyDefinitionFactory dataStoragePropertyDefinitionFactory)
+        IDataStoragePropertyDefinitionFactory dataStoragePropertyDefinitionFactory,
+        IDataParameterDefinitionFactory dataParameterDefinitionFactory)
     {
       ArgumentUtility.CheckNotNull("objectReaderFactory", objectReaderFactory);
       ArgumentUtility.CheckNotNull("dbCommandBuilderFactory", dbCommandBuilderFactory);
       ArgumentUtility.CheckNotNull("dataStoragePropertyDefinitionFactory", dataStoragePropertyDefinitionFactory);
+      ArgumentUtility.CheckNotNull("dataParameterDefinitionFactory", dataParameterDefinitionFactory);
 
       _objectReaderFactory = objectReaderFactory;
       _dbCommandBuilderFactory = dbCommandBuilderFactory;
       _dataStoragePropertyDefinitionFactory = dataStoragePropertyDefinitionFactory;
+      _dataParameterDefinitionFactory = dataParameterDefinitionFactory;
     }
 
     public IObjectReaderFactory ObjectReaderFactory
@@ -65,7 +69,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       get { return _dataStoragePropertyDefinitionFactory; }
     }
 
-    public virtual IStorageProviderCommand<IEnumerable<DataContainer?>, IRdbmsProviderCommandExecutionContext> CreateForDataContainerQuery (IQuery query)
+    public virtual IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer?>> CreateForDataContainerQuery (IQuery query)
     {
       ArgumentUtility.CheckNotNull("query", query);
 
@@ -74,7 +78,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       return new MultiObjectLoadCommand<DataContainer?>(new[] { Tuple.Create(dbCommandBuilder, dataContainerReader) });
     }
 
-    public virtual IStorageProviderCommand<IEnumerable<IQueryResultRow>, IRdbmsProviderCommandExecutionContext> CreateForCustomQuery (IQuery query)
+    public virtual IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<IQueryResultRow>> CreateForCustomQuery (IQuery query)
     {
       ArgumentUtility.CheckNotNull("query", query);
 
@@ -84,7 +88,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       return new MultiObjectLoadCommand<IQueryResultRow>(new[] { Tuple.Create(dbCommandBuilder, resultRowReader) });
     }
 
-    public virtual IStorageProviderCommand<object?, IRdbmsProviderCommandExecutionContext> CreateForScalarQuery (IQuery query)
+    public virtual IRdbmsProviderCommandWithReadOnlySupport<object?> CreateForScalarQuery (IQuery query)
     {
       ArgumentUtility.CheckNotNull("query", query);
 
@@ -92,31 +96,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       return new ScalarValueLoadCommand(dbCommandBuilder);
     }
 
-    protected virtual QueryParameterWithType GetQueryParameterWithType (QueryParameter parameter)
+    protected virtual QueryParameterWithDataParameterDefinition GetQueryParameterWithDataParameterDefinition (QueryParameter parameter, IQuery query)
     {
-      var storagePropertyDefinition = _dataStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(parameter.Value);
-      ColumnValue[] columnValues;
-      try
-      {
-        columnValues = storagePropertyDefinition.SplitValueForComparison(parameter.Value).ToArray();
-      }
-      catch (NotSupportedException ex)
-      {
-        var message = string.Format("The query parameter '{0}' cannot be converted to a database value: {1}", parameter.Name, ex.Message);
-        throw new InvalidOperationException(message, ex);
-      }
-      if (columnValues.Length != 1)
-      {
-        var message = string.Format(
-            "The query parameter '{0}' is mapped to {1} database-level values. Only values that map to a single database-level value can be used "
-            + "as query parameters.",
-            parameter.Name,
-            columnValues.Length);
-        throw new InvalidOperationException(message);
-      }
+      ArgumentUtility.CheckNotNull("parameter", parameter);
+      ArgumentUtility.CheckNotNull("query", query);
 
-      var adaptedParameter = new QueryParameter(parameter.Name, columnValues[0].Value, parameter.ParameterType);
-      return new QueryParameterWithType(adaptedParameter, columnValues[0].Column.StorageTypeInfo);
+      var dataParameterDefinition = _dataParameterDefinitionFactory.CreateDataParameterDefinition(parameter, query);
+      return new QueryParameterWithDataParameterDefinition(parameter, dataParameterDefinition);
     }
 
     private IDbCommandBuilder CreateDbCommandBuilder (IQuery query)
@@ -124,7 +110,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       // Use ToList to trigger error detection here
       var queryParametersWithType = query.Parameters
           .Cast<QueryParameter>()
-          .Select(GetQueryParameterWithType)
+          .Select(queryParameter => GetQueryParameterWithDataParameterDefinition(queryParameter, query))
           .ToList();
 
       return _dbCommandBuilderFactory.CreateForQuery(query.Statement, queryParametersWithType);

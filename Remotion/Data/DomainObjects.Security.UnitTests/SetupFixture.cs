@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
@@ -33,7 +34,14 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
     {
       try
       {
-        var storageProviderDefinition = new RdbmsProviderDefinition(StubStorageProvider.StorageProviderID, new StubStorageFactory(), "NonExistingRdbms");
+        BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
+
+        var storageProviderDefinition = new RdbmsProviderDefinition(
+            StubStorageProvider.StorageProviderID,
+            new StubStorageFactory(),
+            "NonExistingRdbms",
+            "NonExistingReadOnlyRdbms");
+
         var storageSettings = new StorageSettings(storageProviderDefinition, new[] { storageProviderDefinition });
 
         var defaultServiceLocator = DefaultServiceLocator.Create();

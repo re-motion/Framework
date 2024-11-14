@@ -296,50 +296,34 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
     [Category("Screenshot")]
     [Test]
-    public void ResolveBorderElementA ()
+    [TestCase("Bottom", $"{nameof(ResolveBorderElement)}Bottom")]
+    [TestCase("Right", $"{nameof(ResolveBorderElement)}Right")]
+    [TestCase("Top", $"{nameof(ResolveBorderElement)}Top")]
+    [TestCase("Left", $"{nameof(ResolveBorderElement)}Left")]
+    public void ResolveBorderElement (string testSide, string testName)
     {
       // TODO: Remove when RM-7187 is resolved, use the RetryAttribute provided by NUnit instead.
       RetryTest(
           () =>
           {
-            var home = Start();
+            var home = Start<HtmlPageObject>("ScreenshotBorderTest.aspx");
 
             // Chromium browsers show the remote control overlay since RM-7184, which is drawn shortly after the page load. The
             // content however needs a small timespan to be adapted to the slightly smaller viewport.
             if (Helper.BrowserConfiguration.IsChromium())
               Thread.Sleep(100);
 
-            ScreenshotTestingDelegate<IFluentScreenshotElement<ElementScope>> test =
-                (builder, target) => { builder.Crop(target, new WebPadding(1)); };
-
-            var element = home.Scope.FindId("borderElementA").ForElementScopeScreenshot();
-
-            Helper.RunScreenshotTestExact<IFluentScreenshotElement<ElementScope>, ScreenshotTest>(element, ScreenshotTestingType.Both, test);
-          },
-          2);
-    }
-
-    [Category("Screenshot")]
-    [Test]
-    public void ResolveBorderElementB ()
-    {
-      // TODO: Remove when RM-7187 is resolved, use the RetryAttribute provided by NUnit instead.
-      RetryTest(
-          () =>
-          {
-            var home = Start();
-
-            // Chromium browsers show the remote control overlay since RM-7184, which is drawn shortly after the page load. The
-            // content however needs a small timespan to be adapted to the slightly smaller viewport.
-            if (Helper.BrowserConfiguration.IsChromium())
-              Thread.Sleep(100);
+            // Due to race conditions, we need to wait for the Browser to fully finish drawing it's contents before we take the screenshot.
+            // More infos in RM-9140
+            if (GetType().Assembly.ToString().Contains("RequireUI"))
+              Thread.Sleep(2000);
 
             ScreenshotTestingDelegate<IFluentScreenshotElement<ElementScope>> test =
                 (builder, target) => { builder.Crop(target, new WebPadding(1)); };
 
-            var element = home.Scope.FindId("borderElementB").ForElementScopeScreenshot();
+            var element = home.Scope.FindId($"borderElement{testSide}").ForElementScopeScreenshot();
 
-            Helper.RunScreenshotTestExact<IFluentScreenshotElement<ElementScope>, ScreenshotTest>(element, ScreenshotTestingType.Both, test);
+            Helper.RunScreenshotTestExact<IFluentScreenshotElement<ElementScope>, ScreenshotTest>(element, ScreenshotTestingType.Both, test, memberName: testName);
           },
           2);
     }

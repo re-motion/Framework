@@ -1,19 +1,18 @@
-// This file is part of re-strict (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Affero General Public License version 3.0 
-// as published by the Free Software Foundation.
+// The re-motion Core Framework is free software; you can redistribute it 
+// and/or modify it under the terms of the GNU Lesser General Public License 
+// as published by the Free Software Foundation; either version 2.1 of the 
+// License, or (at your option) any later version.
 // 
-// This program is distributed in the hope that it will be useful, 
+// re-motion is distributed in the hope that it will be useful, 
 // but WITHOUT ANY WARRANTY; without even the implied warranty of 
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-// GNU Affero General Public License for more details.
+// GNU Lesser General Public License for more details.
 // 
-// You should have received a copy of the GNU Affero General Public License
-// along with this program; if not, see http://www.gnu.org/licenses.
-// 
-// Additional permissions are listed in the file re-motion_exceptions.txt.
+// You should have received a copy of the GNU Lesser General Public License
+// along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
 using System.Collections.Generic;
@@ -214,7 +213,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
 
         Assert.That(result.Count, Is.EqualTo(10));
         for (int i = 0; i < result.Count; i++)
-          Assert.AreEqual(expectedClassDefinitions[i].ID, result[i].ID, "Wrong Index.");
+          Assert.That(result[i].ID, Is.EqualTo(expectedClassDefinitions[i].ID), "Wrong Index.");
       }
     }
 
@@ -235,7 +234,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
 
         Assert.That(result.Count, Is.EqualTo(10));
         for (int i = 0; i < result.Count; i++)
-          Assert.AreEqual(expectedClassDefinitions[i].ID, result[i].ID, "Wrong Index.");
+          Assert.That(result[i].ID, Is.EqualTo(expectedClassDefinitions[i].ID), "Wrong Index.");
       }
     }
 
@@ -259,7 +258,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
 
         Assert.That(actualBaseClassDefinition.DerivedClasses.Count, Is.EqualTo(10));
         for (int i = 0; i < actualBaseClassDefinition.DerivedClasses.Count; i++)
-          Assert.AreEqual(expectedDerivedClasses[i].ID, actualBaseClassDefinition.DerivedClasses[i].ID, "Wrong Index.");
+          Assert.That(actualBaseClassDefinition.DerivedClasses[i].ID, Is.EqualTo(expectedDerivedClasses[i].ID), "Wrong Index.");
       }
     }
 
@@ -277,7 +276,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
           StatelessAccessControlList accessControlList = classDefinition.CreateStatelessAccessControlList();
 
           Assert.That(accessControlList.Class, Is.SameAs(classDefinition));
-          Assert.IsNotEmpty(accessControlList.AccessControlEntries);
+          Assert.That(accessControlList.AccessControlEntries, Is.Not.Empty);
           Assert.That(classDefinition.State.IsChanged, Is.True);
         }
       }
@@ -317,8 +316,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
           StatefulAccessControlList accessControlList = classDefinition.CreateStatefulAccessControlList();
 
           Assert.That(accessControlList.Class, Is.SameAs(classDefinition));
-          Assert.IsNotEmpty(accessControlList.AccessControlEntries);
-          Assert.IsNotEmpty(accessControlList.StateCombinations);
+          Assert.That(accessControlList.AccessControlEntries, Is.Not.Empty);
+          Assert.That(accessControlList.StateCombinations, Is.Not.Empty);
           Assert.That(classDefinition.State.IsChanged, Is.True);
         }
       }

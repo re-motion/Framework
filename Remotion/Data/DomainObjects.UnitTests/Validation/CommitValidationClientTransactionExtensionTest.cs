@@ -19,7 +19,6 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.IntegrationTests;
 using Remotion.Data.DomainObjects.Validation;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Validation
 {
@@ -56,15 +55,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       extension.CommitValidate(transaction, Array.AsReadOnly(new[] { data1, data2 }));
 
       validatorMock.Verify();
-    }
-
-    [Test]
-    [Ignore("TODO: RM-6265")]
-    public void Serialization ()
-    {
-      var extension = new CommitValidationClientTransactionExtension(new CompoundPersistableDataValidator(new IPersistableDataValidator[0]));
-      var deserializedInstance = Serializer.SerializeAndDeserialize(extension);
-      Assert.That(deserializedInstance.Validator, Is.Not.Null);
     }
   }
 }

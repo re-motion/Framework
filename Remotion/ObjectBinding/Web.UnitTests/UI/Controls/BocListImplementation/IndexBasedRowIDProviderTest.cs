@@ -17,7 +17,6 @@
 using System;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 
@@ -204,21 +203,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var row = rowIDProvider.GetRowFromItemRowID(values, rowID);
       Assert.That(row.Index, Is.EqualTo(1));
       Assert.That(row.BusinessObject, Is.SameAs(values[1]));
-    }
-
-    [Test]
-    public void SerializeAndDeserialize ()
-    {
-      var obj = new IndexBasedRowIDProvider(new IBusinessObject[6]);
-
-      obj.RemoveRow(new BocListRow(3, CreateObject()));
-      obj.AddRow(new BocListRow(3, CreateObject()));
-
-      var deseralizedObject = Serializer.SerializeAndDeserialize(obj);
-      Assert.That(deseralizedObject, Is.Not.SameAs(obj));
-      Assert.That(deseralizedObject.GetItemRowID(new BocListRow(2, CreateObject())), Is.EqualTo("2"));
-      Assert.That(deseralizedObject.GetItemRowID(new BocListRow(3, CreateObject())), Is.EqualTo("6"));
-      Assert.That(deseralizedObject.GetItemRowID(new BocListRow(4, CreateObject())), Is.EqualTo("4"));
     }
 
     private IBusinessObject CreateObject ()

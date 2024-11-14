@@ -13,10 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="microsoft-ajax.TypeScript.DefinitelyTyped" Version="0.1.4">
+    <PackageReference Include="microsoft-ajax.TypeScript.DefinitelyTyped">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.2.2">
+    <PackageReference Include="Microsoft.TypeScript.MSBuild">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -32,5 +32,18 @@
     <!-- dotnet does not contain a distribution of node.js -->
     <NodePath Condition="'$(NodePath)' == '' AND '$(MSBuildPath)' != '' AND '$(OS)' == 'Windows_NT' AND Exists('$(MSBuildPath)\Microsoft\VisualStudio\NodeJs\node.exe')">$(MSBuildPath)\Microsoft\VisualStudio\NodeJs</NodePath>
   </PropertyGroup>
+
+  <!--
+       The TypeScript build infrastructure will delete generated output from other configurations.
+       This is bad for us because we build Debug and Release before packing. As such, we need to
+       remove any existing TypeScript build info files to prevent the cleanup.
+   -->
+  <Target Name="PreventDeletionOfTypeScriptFilesFromOtherConfigurations" BeforeTargets="TypeScriptDeleteOutputFromOtherConfigs">
+    <ItemGroup>
+      <_typeScriptBuildFilesToDelete Remove="@(_typeScriptBuildFilesToDelete)"/>
+      <_typeScriptBuildFilesToDelete Include="$(BaseIntermediateOutputPath)\**\Tsc*.out"/>
+    </ItemGroup>
+    <Delete Files="@(_typeScriptBuildFilesToDelete)"/>
+  </Target>
 
 </Project>

@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       var loadedIDs = new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.Company1 };
       var imported = DomainObjectTransporterTestHelper.ImportObjects(loadedIDs);
 
-      Assert.IsNotEmpty(imported);
+      Assert.That(imported, Is.Not.Empty);
       List<ObjectID> ids = imported.ConvertAll(obj => obj.ID);
       Assert.That(ids, Is.EquivalentTo(loadedIDs));
     }
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       Assert.That(
           () => DomainObjectTransporterTestHelper.Import(new byte[] { 1, 2, 3 }),
           Throws.InstanceOf<TransportationException>()
-              .With.Message.EqualTo("Invalid data specified: End of Stream encountered before parsing was completed."));
+              .With.Message.EqualTo("Invalid data specified: There is an error in XML document (1, 1)."));
     }
 
     [Test]

@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
       var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub.Object);
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("type"));
-      Assert.That(actual.Attribute("type").Value, Is.EqualTo("System.DateTime"));
+      Assert.That(actual.Attribute("type").Value, Is.EqualTo("System.DateOnly"));
     }
 
     [Test]

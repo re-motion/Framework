@@ -6,7 +6,6 @@
   </PropertyGroup>
   <Import Project="..\..\..\Build\Shared.build.props" />
   <PropertyGroup>
-    <TargetFrameworks>net48</TargetFrameworks>
     <AssemblyTitle>Remotion Mixins Mixer Tools Console Unit Tests</AssemblyTitle>
     <AssemblyName>Remotion.Mixins.MixerTools.UnitTests</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
@@ -26,8 +25,8 @@
     <ProjectReference Include="..\MixerTools\Mixins.MixerTools.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.8.0-3.final" GeneratePathProperty="true" ExcludeAssets="all" />
-    <PackageReference Include="Remotion.TypePipe.Development" Version="3.2.0" />
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" GeneratePathProperty="true" ExcludeAssets="all" />
+    <PackageReference Include="Remotion.TypePipe.Development" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
   <Import Project="..\..\Development\UnitTesting.Compilation\build\Remotion.Development.UnitTesting.Compilation.targets" />

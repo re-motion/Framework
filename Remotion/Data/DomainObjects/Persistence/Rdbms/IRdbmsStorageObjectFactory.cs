@@ -18,7 +18,9 @@ using System;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 
@@ -34,12 +36,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     IStorageTypeInformationProvider CreateStorageTypeInformationProvider (RdbmsProviderDefinition rdmsStorageProviderDefinition);
     IStorageNameProvider CreateStorageNameProvider (RdbmsProviderDefinition storageProviderDefiniton);
     IRdbmsPersistenceModelProvider CreateRdbmsPersistenceModelProvider (RdbmsProviderDefinition storageProviderDefinition);
+    ISingleScalarStructuredTypeDefinitionProvider CreateSingleScalarStructuredTypeDefinitionProvider (RdbmsProviderDefinition storageProviderDefinition);
+
 
     ISqlQueryGenerator CreateSqlQueryGenerator (
         RdbmsProviderDefinition storageProviderDefinition,
         IMethodCallTransformerProvider methodCallTransformerProvider,
         ResultOperatorHandlerRegistry resultOperatorHandlerRegistry);
-    IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> CreateStorageProviderCommandFactory (
+    IRdbmsProviderCommandFactory CreateStorageProviderCommandFactory (
         RdbmsProviderDefinition storageProviderDefinition);
     IDbCommandBuilderFactory CreateDbCommandBuilderFactory (RdbmsProviderDefinition storageProviderDefinition);
 
@@ -50,6 +54,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     IValueStoragePropertyDefinitionFactory CreateValueStoragePropertyDefinitionFactory (RdbmsProviderDefinition storageProviderDefinition);
     IRelationStoragePropertyDefinitionFactory CreateRelationStoragePropertyDefinitionFactory (RdbmsProviderDefinition storageProviderDefinition);
     IForeignKeyConstraintDefinitionFactory CreateForeignKeyConstraintDefinitionsFactory (RdbmsProviderDefinition storageProviderDefinition);
+    IDataParameterDefinitionFactory CreateDataParameterDefinitionFactory (RdbmsProviderDefinition storageProviderDefinition);
+
 
     IStorageProviderSerializer CreateStorageProviderSerializer (IEnumSerializer enumSerializer);
 

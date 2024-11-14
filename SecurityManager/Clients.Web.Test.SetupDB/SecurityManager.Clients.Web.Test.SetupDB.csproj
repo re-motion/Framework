@@ -12,10 +12,8 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" />
+    <PackageReference Include="System.Data.SqlClient" />
   </ItemGroup>
   <Import Project="..\..\Build\Shared.build.targets" />
 </Project>

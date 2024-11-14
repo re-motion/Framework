@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     public UnspecifiedPageObject Click (IWebTestActionOptions? actionOptions = null)
     {
       var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
-      ExecuteAction(new ClickAction(this, Scope), actualActionOptions);
+      ExecuteAction(new ClickAction(this, Scope, Logger), actualActionOptions);
       return UnspecifiedPage();
     }
 

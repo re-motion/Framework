@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -42,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateQuery_FromDefinition ()
     {
-      var definition = new QueryDefinition("Test", TestDomainStorageProviderDefinition, "y", QueryType.Collection, typeof(OrderCollection));
+      var definition = new QueryDefinition("Test", TestDomainStorageProviderDefinition, "y", QueryType.CollectionReadWrite, typeof(OrderCollection));
 
       IQuery query = QueryFactory.CreateQuery(definition);
       Assert.That(query.CollectionType, Is.EqualTo(definition.CollectionType));
@@ -56,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateQuery_FromDefinition_WithParameterCollection ()
     {
-      var definition = new QueryDefinition("Test", TestDomainStorageProviderDefinition, "y", QueryType.Collection, typeof(OrderCollection));
+      var definition = new QueryDefinition("Test", TestDomainStorageProviderDefinition, "y", QueryType.CollectionReadWrite, typeof(OrderCollection));
       var parameterCollection = new QueryParameterCollection();
 
       IQuery query = QueryFactory.CreateQuery(definition, parameterCollection);
@@ -113,14 +114,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var id = "id";
       var statement = "stmt";
       var parameterCollection = new QueryParameterCollection();
+      var metaData = new Dictionary<string, object>
+                     {
+                       { "dummyKey", "dummyValue" }
+                     };
 
-      IQuery query = QueryFactory.CreateScalarQuery(id, TestDomainStorageProviderDefinition, statement, parameterCollection);
+      IQuery query = QueryFactory.CreateScalarQuery(id, TestDomainStorageProviderDefinition, statement, parameterCollection, metaData);
       Assert.That(query.CollectionType, Is.Null);
       Assert.That(query.ID, Is.EqualTo(id));
       Assert.That(query.Parameters, Is.SameAs(parameterCollection));
-      Assert.That(query.QueryType, Is.EqualTo(QueryType.Scalar));
+      Assert.That(query.QueryType, Is.EqualTo(QueryType.ScalarReadOnly));
       Assert.That(query.Statement, Is.EqualTo(statement));
       Assert.That(query.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
+      Assert.That(query.Metadata, Is.SameAs(metaData));
+    }
+
+    [Test]
+    public void CreateScalarQuery_WithNullMetadata_EmptyMetadataCollection ()
+    {
+      var id = "id";
+      var statement = "stmt";
+      var parameterCollection = new QueryParameterCollection();
+
+      IQuery query = QueryFactory.CreateScalarQuery(id, TestDomainStorageProviderDefinition, statement, parameterCollection, null);
+      Assert.That(query.CollectionType, Is.Null);
+      Assert.That(query.ID, Is.EqualTo(id));
+      Assert.That(query.Parameters, Is.SameAs(parameterCollection));
+      Assert.That(query.QueryType, Is.EqualTo(QueryType.ScalarReadOnly));
+      Assert.That(query.Statement, Is.EqualTo(statement));
+      Assert.That(query.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
+      Assert.That(query.Metadata, Is.Empty);
     }
 
     [Test]
@@ -130,14 +153,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var statement = "stmt";
       var parameterCollection = new QueryParameterCollection();
       var collectionType = typeof(OrderCollection);
+      var metaData = new Dictionary<string, object>
+                     {
+                       { "dummyKey", "dummyValue" }
+                     };
 
-      IQuery query = QueryFactory.CreateCollectionQuery(id, TestDomainStorageProviderDefinition, statement, parameterCollection, collectionType);
+      IQuery query = QueryFactory.CreateCollectionQuery(id, TestDomainStorageProviderDefinition, statement, parameterCollection, collectionType, metaData);
       Assert.That(query.ID, Is.EqualTo(id));
       Assert.That(query.CollectionType, Is.SameAs(collectionType));
       Assert.That(query.Parameters, Is.SameAs(parameterCollection));
-      Assert.That(query.QueryType, Is.EqualTo(QueryType.Collection));
+      Assert.That(query.QueryType, Is.EqualTo(QueryType.CollectionReadOnly));
       Assert.That(query.Statement, Is.EqualTo(statement));
       Assert.That(query.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
+      Assert.That(query.Metadata, Is.SameAs(metaData));
+    }
+
+    [Test]
+    public void CreateCollectionQuery_WithNullMetadata_EmptyMetadataCollection ()
+    {
+      var id = "id";
+      var statement = "stmt";
+      var parameterCollection = new QueryParameterCollection();
+      var collectionType = typeof(OrderCollection);
+
+      IQuery query = QueryFactory.CreateCollectionQuery(id, TestDomainStorageProviderDefinition, statement, parameterCollection, collectionType, null);
+      Assert.That(query.ID, Is.EqualTo(id));
+      Assert.That(query.CollectionType, Is.SameAs(collectionType));
+      Assert.That(query.Parameters, Is.SameAs(parameterCollection));
+      Assert.That(query.QueryType, Is.EqualTo(QueryType.CollectionReadOnly));
+      Assert.That(query.Statement, Is.EqualTo(statement));
+      Assert.That(query.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
+      Assert.That(query.Metadata, Is.Empty);
     }
 
     [Test]
@@ -146,14 +192,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var id = "id";
       var statement = "stmt";
       var parameterCollection = new QueryParameterCollection();
+      var metaData = new Dictionary<string, object>
+                     {
+                       { "dummyKey", "dummyValue" }
+                     };
 
-      IQuery query = QueryFactory.CreateCustomQuery(id, TestDomainStorageProviderDefinition, statement, parameterCollection);
+      IQuery query = QueryFactory.CreateCustomQuery(id, TestDomainStorageProviderDefinition, statement, parameterCollection, metaData);
       Assert.That(query.ID, Is.EqualTo(id));
       Assert.That(query.CollectionType, Is.Null);
       Assert.That(query.Parameters, Is.SameAs(parameterCollection));
-      Assert.That(query.QueryType, Is.EqualTo(QueryType.Custom));
+      Assert.That(query.QueryType, Is.EqualTo(QueryType.CustomReadOnly));
       Assert.That(query.Statement, Is.EqualTo(statement));
       Assert.That(query.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
+      Assert.That(query.Metadata, Is.SameAs(metaData));
+    }
+
+    [Test]
+    public void CreateCustomQuery_WithNullMetadata_EmptyMetadataCollection ()
+    {
+      var id = "id";
+      var statement = "stmt";
+      var parameterCollection = new QueryParameterCollection();
+
+      IQuery query = QueryFactory.CreateCustomQuery(id, TestDomainStorageProviderDefinition, statement, parameterCollection, null);
+      Assert.That(query.ID, Is.EqualTo(id));
+      Assert.That(query.CollectionType, Is.Null);
+      Assert.That(query.Parameters, Is.SameAs(parameterCollection));
+      Assert.That(query.QueryType, Is.EqualTo(QueryType.CustomReadOnly));
+      Assert.That(query.Statement, Is.EqualTo(statement));
+      Assert.That(query.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
+      Assert.That(query.Metadata, Is.Empty);
     }
 
     [Test]
@@ -169,7 +237,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
         +"FROM [OrderView] AS [t0] WHERE ([t0].[OrderNo] > @1)"));
       Assert.That(query.Parameters.Count, Is.EqualTo(1));
       Assert.That(query.ID, Is.EqualTo("<dynamico queryo>"));
-      Assert.That(query.QueryType, Is.EqualTo(QueryType.Collection));
+      Assert.That(query.QueryType, Is.EqualTo(QueryType.CollectionReadOnly));
       Assert.That(query.StorageProviderDefinition, Is.EqualTo(TestDomainStorageProviderDefinition));
     }
 
@@ -231,6 +299,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle<ILinqProviderComponentFactory>(() => factoryMock.Object);
       RegisterStandardConfiguration(serviceLocator);
+
+      var metadata = new Dictionary<string, object>
+                     {
+                       { "dummyKey", "dummyValue" }
+                     };
       using (new ServiceLocatorScope(serviceLocator))
       {
         var fakeExecutor = new Mock<IQueryExecutor>();
@@ -238,7 +311,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
         var fakeResult = new Mock<IQueryable<Order>>();
 
         factoryMock
-            .Setup(mock => mock.CreateQueryExecutor(TestDomainStorageProviderDefinition))
+            .Setup(mock => mock.CreateQueryExecutor(TestDomainStorageProviderDefinition, "dummyID", metadata))
             .Returns(fakeExecutor.Object)
             .Verifiable();
         factoryMock
@@ -250,9 +323,42 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
             .Returns(fakeResult.Object)
             .Verifiable();
 
-        var result = QueryFactory.CreateLinqQuery<Order>();
+        var result = QueryFactory.CreateLinqQuery<Order>("dummyID", metadata);
 
         factoryMock.Verify();
+        Assert.That(result, Is.SameAs(fakeResult.Object));
+      }
+    }
+
+    [Test]
+    public void CreateLinqQuery_WithoutMetadata_UsesEmptyMetadata ()
+    {
+      var factoryMock = new Mock<ILinqProviderComponentFactory>(MockBehavior.Strict);
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterSingle(() => factoryMock.Object);
+      RegisterStandardConfiguration(serviceLocator);
+
+      using (new ServiceLocatorScope(serviceLocator))
+      {
+        var fakeExecutor = new Mock<IQueryExecutor>();
+        var fakeQueryParser = new Mock<IQueryParser>();
+        var fakeResult = new Mock<IQueryable<Order>>();
+
+        factoryMock
+            .Setup(
+                mock => mock.CreateQueryExecutor(
+                    TestDomainStorageProviderDefinition,
+                    "dummyID",
+                    It.Is<IReadOnlyDictionary<string, object>>(d => d.Count == 0)))
+            .Returns(fakeExecutor.Object);
+        factoryMock
+            .Setup(mock => mock.CreateQueryParser())
+            .Returns(fakeQueryParser.Object);
+        factoryMock
+            .Setup(mock => mock.CreateQueryable<Order>(fakeQueryParser.Object, fakeExecutor.Object))
+            .Returns(fakeResult.Object);
+
+        var result = QueryFactory.CreateLinqQuery<Order>("dummyID");
         Assert.That(result, Is.SameAs(fakeResult.Object));
       }
     }

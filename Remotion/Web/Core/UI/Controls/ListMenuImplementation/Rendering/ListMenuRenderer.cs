@@ -103,7 +103,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
         renderingContext.Writer.RenderEndTag();
       }
 
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Menu);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Toolbar);
       if(hasHeading)
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaLabelledBy, headingID);
 
@@ -215,13 +215,16 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
       var attributes = new NameValueCollection();
-      attributes.Add(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.MenuItem);
       if (renderingContext.Control.Enabled)
         attributes.Add("tabindex", isFirst ? "0" : "-1");
 
       var command = !menuItem.IsDisabled
           ? Assertion.IsNotNull(menuItem.Command, "Command must not be null for an enabled menu item.")
           : new Command(CommandType.None) { OwnerControl = menuItem.OwnerControl };
+
+      bool isEnabledHrefCommand = command.Type == CommandType.Href && !menuItem.IsDisabled && renderingContext.Control.Enabled;
+      if (!isEnabledHrefCommand)
+        attributes.Add(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Button);
 
       if (string.IsNullOrEmpty(command.ItemID))
         command.ItemID = "MenuItem_" + index + "_Command";
@@ -301,6 +304,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       int menuItemIndex = renderingContext.Control.MenuItems.IndexOf(menuItem);
       string href = "null";
       string target = "null";
+      string clickHandler = "null";
       bool isCommandEnabled = true;
       var diagnosticMetadataTriggersNavigation = false;
       var diagnosticMetadataTriggersPostBack = false;
@@ -317,20 +321,19 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
                                    || menuItem.Command.Type == CommandType.WxeFunction;
           if (isPostBackCommand)
           {
-            // Clientside script creates an anchor with href="#" and onclick=function
-            // The function will be executed using eval(...) and must therefor not end with a return statement.
             string argument = menuItemIndex.ToString();
-            href = renderingContext.Control.Page!.ClientScript.GetPostBackClientHyperlink(renderingContext.Control, argument);
-            href = ScriptUtility.EscapeClientScript(href);
-            href = "'" + href + "'";
+            clickHandler = "function(evt) { evt.preventDefault(); " + renderingContext.Control.Page!.ClientScript.GetPostBackEventReference(renderingContext.Control, argument) + "; }";
+            href = "'" + ScriptUtility.EscapeClientScript(_fallbackNavigationUrlProvider.GetURL()) + "'";
 
             diagnosticMetadataTriggersPostBack = true;
           }
           else if (menuItem.Command.Type == CommandType.Href)
           {
-            href = menuItem.Command.HrefCommand.FormatHref(menuItemIndex.ToString(), menuItem.ItemID);
-            href = "'" + renderingContext.Control.ResolveClientUrl(href) + "'";
-            target = "'" + menuItem.Command.HrefCommand.Target + "'";
+            href = "'"
+                   + ScriptUtility.EscapeClientScript(renderingContext.Control.ResolveClientUrl(menuItem.Command.HrefCommand.FormatHref(menuItemIndex.ToString(), menuItem.ItemID)))
+                   + "'";
+            if (!string.IsNullOrEmpty(menuItem.Command.HrefCommand.Target))
+              target = "'" + ScriptUtility.EscapeClientScript(menuItem.Command.HrefCommand.Target) + "'";
 
             diagnosticMetadataTriggersNavigation = true;
           }
@@ -352,9 +355,8 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       bool isDisabled = !renderingContext.Control.Enabled
                         || !menuItem.EvaluateEnabled()
                         || !isCommandEnabled;
-      var fallbackNavigationUrl = ScriptUtility.EscapeClientScript(_fallbackNavigationUrlProvider.GetURL());
       stringBuilder.AppendFormat(
-          "\t\tnew ListMenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, '{9}', ",
+          "\t\tnew ListMenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, ",
           GetMenuItemClientID(renderingContext, menuItemIndex),
           ScriptUtility.EscapeClientScript(menuItem.Category),
           text,
@@ -364,7 +366,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
           isDisabled ? "true" : "false",
           href,
           target,
-          fallbackNavigationUrl);
+          clickHandler);
 
       if (IsDiagnosticMetadataRenderingEnabled)
       {

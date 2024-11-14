@@ -15,8 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Serialization;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
@@ -32,8 +33,8 @@ namespace Remotion.Data.DomainObjects
   /// <see cref="ObjectID"/> supports values of type <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
   /// </remarks>
   /// <threadsafety static="true" instance="true"/>
-  [Serializable]
-  public sealed class ObjectID : IComparable, ISerializable
+  [TypeConverter(typeof(ObjectIDConverter))]
+  public sealed class ObjectID : IComparable
   {
     // types
 
@@ -139,7 +140,7 @@ namespace Remotion.Data.DomainObjects
     ///   Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
-    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
+    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.IReadOnlyStorageProvider"/>.
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classID"/> could not be found in the mapping configuration.
     public ObjectID (string classID, object value)
@@ -163,7 +164,7 @@ namespace Remotion.Data.DomainObjects
     ///   Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
-    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
+    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.IReadOnlyStorageProvider"/>.
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classType"/> could not be found in the mapping configuration.
     public ObjectID (Type classType, object value)
@@ -187,7 +188,7 @@ namespace Remotion.Data.DomainObjects
     ///   Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
-    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
+    ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.IReadOnlyStorageProvider"/>.
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classDefinition"/> could not be found in the mapping configuration.
     public ObjectID (ClassDefinition classDefinition, object value)
@@ -213,7 +214,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Gets the <see cref="Persistence.Configuration.StorageProviderDefinition"/> of the <see cref="Persistence.StorageProvider"/> which stores the object.
+    /// Gets the <see cref="Persistence.Configuration.StorageProviderDefinition"/> of the <see cref="Persistence.IReadOnlyStorageProvider"/> which stores the object.
     /// </summary>
     public StorageProviderDefinition StorageProviderDefinition
     {
@@ -382,32 +383,5 @@ namespace Remotion.Data.DomainObjects
     {
       return new ArgumentException(string.Format(message, args), argumentName);
     }
-
-    #region Serialization
-
-    private ObjectID (SerializationInfo info, StreamingContext context)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      var value = info.GetValue("Value", typeof(object))!;
-      var classID = info.GetString("ClassID")!;
-      var classDefinition = MappingConfiguration.Current.GetClassDefinition(classID);
-
-      _value = value;
-      _classDefinition = classDefinition;
-    }
-
-#if NET8_0_OR_GREATER
-    [Obsolete("This API supports obsolete formatter-based serialization. It should not be called or extended by application code.", DiagnosticId = "SYSLIB0051", UrlFormat = "https://aka.ms/dotnet-warnings/{0}")]
-#endif
-    void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      info.AddValue("Value", _value);
-      info.AddValue("ClassID", _classDefinition.ID);
-    }
-
-    #endregion
   }
 }

@@ -11,17 +11,13 @@
     <SignAssembly>False</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Logging.Log4Net\Core.Logging.Log4Net.csproj" />
     <ProjectReference Include="..\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj" />
     <ProjectReference Include="..\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj" />
     <ProjectReference Include="..\Development.WebTesting.IntegrationTests.Infrastructure\Web.Development.WebTesting.IntegrationTests.Infrastructure.csproj" />
     <ProjectReference Include="..\Development.WebTesting.IntegrationTests\Web.Development.WebTesting.IntegrationTests.csproj" />
     <ProjectReference Include="..\Development.WebTesting.WebFormsControlObjects\Web.Development.WebTesting.WebFormsControlObjects.csproj" />
     <ProjectReference Include="..\Development.WebTesting\Web.Development.WebTesting.csproj" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-    <ProjectReference Include="..\Development.WebTesting.TestSite.NetFramework\Web.Development.WebTesting.TestSite.NetFramework.csproj" ReferenceOutputAssembly="false" ExcludeAssets="all" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
     <ProjectReference Include="..\Development.WebTesting.TestSite\Web.Development.WebTesting.TestSite.csproj" ReferenceOutputAssembly="false" ExcludeAssets="all" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

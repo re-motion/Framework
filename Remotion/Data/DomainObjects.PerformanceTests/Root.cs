@@ -32,23 +32,20 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     private Root ()
     {
     }
-
-#if NETFRAMEWORK
+/*
     [STAThread]
     public static void Main (string[] args)
     {
-      // LogManager.Initialize();
+      // log4net.Config.XmlConfigurator.Configure();
 
       var setUpFixture = new SetUpFixture();
       setUpFixture.OneTimeSetUp();
 
-      // Have all xml files loaded, so if the code is instrumented by a profiler, 
+      // Have all xml files loaded, so if the code is instrumented by a profiler,
       // the loading does not falsify the method run times during the first call of GetObject.
       Dev.Null = MappingConfiguration.Current;
 
       //RunLoadObjectsTest();
-
-      //RunSerializationTest();
 
       //RunHasRelationChangedTest();
       //RunCommitTest ();
@@ -69,8 +66,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       Console.WriteLine("Tests complete");
       //Console.ReadLine();
     }
-#endif
-
+*/
     private static void RunHasRelationChangedTest ()
     {
       var test = new HasRelationChangedTest();
@@ -109,25 +105,6 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       test.SetUp();
       test.LoadObjectsOverRelationWithAbstractBaseClass();
       test.TearDown();
-
-      test.TestFixtureTearDown();
-    }
-
-    private static void RunSerializationTest ()
-    {
-      var test = new SerializationTest();
-      test.OneTimeSetUp();
-
-      var testMethods = from m in test.GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance)
-                        where m.IsDefined(typeof(TestAttribute), true) && !m.IsDefined(typeof(IgnoreAttribute), true)
-                        orderby m.Name
-                        select m;
-      foreach (MethodInfo testMethod in testMethods)
-      {
-        test.SetUp();
-        testMethod.Invoke(test, new object[0]);
-        test.TearDown();
-      }
 
       test.TestFixtureTearDown();
     }

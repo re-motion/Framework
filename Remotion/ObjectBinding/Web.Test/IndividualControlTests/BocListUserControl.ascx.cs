@@ -175,7 +175,9 @@ public class BocListUserControl : BaseUserControl
     menuItem.Text = WebString.CreateFromText("Delete");
     menuItem.Category = "Edit";
     menuItem.Icon.Url = "~/Images/DeleteItem.gif";
+    menuItem.Icon.AlternateText = "Delete";
     menuItem.DisabledIcon.Url = "~/Images/DeleteItemDisabled.gif";
+    menuItem.DisabledIcon.AlternateText = "Delete";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Style = WebMenuItemStyle.Icon;
     menuItem.Command.Type = CommandType.Event;
@@ -185,6 +187,7 @@ public class BocListUserControl : BaseUserControl
     menuItem.ItemID = "Copy";
     menuItem.Category = "Edit";
     menuItem.Icon.Url = "~/Images/CopyItem.gif";
+    menuItem.Icon.AlternateText = "Copy";
     menuItem.RequiredSelection = RequiredSelection.ExactlyOne;
     menuItem.Command.Type = CommandType.Event;
     ChildrenList.ListMenuItems.Add(menuItem);

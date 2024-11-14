@@ -23,6 +23,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 using Remotion.Data.DomainObjects.Tracing;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests
@@ -42,9 +43,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       _provider = RdbmsProviderObjectMother.CreateForIntegrationTest(
           storageSettings,
           rdbmsProviderDefinition,
-          (providerDefinition, persistenceListener, commandFactory) =>
+          (providerDefinition, _, commandFactory) =>
               new ObservableRdbmsProvider(
                   providerDefinition,
+                  providerDefinition.ConnectionString,
                   NullPersistenceExtension.Instance,
                   commandFactory,
                   () => new SqlConnection(),
@@ -110,9 +112,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         Assert.That(
             sqlCommand.CommandText,
             Is.EqualTo(expectedSql),
-            "Command text doesn't match.\r\nActual statement: {0}\r\nExpected statement: {1})",
-            sqlCommand.CommandText,
-            expectedSql);
+            $"Command text doesn't match.\r\nActual statement: {sqlCommand.CommandText}\r\nExpected statement: {expectedSql})");
         Assert.That(
             sqlCommand.CommandType,
             Is.EqualTo(CommandType.Text),
@@ -120,8 +120,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         Assert.That(
             sqlCommand.Parameters.Count,
             Is.EqualTo(expectedParametersData.Length),
-            "Number of parameters doesn't match.\r\nStatement: {0})",
-            expectedSql);
+            $"Number of parameters doesn't match.\r\nStatement: {expectedSql})");
         for (int i = 0; i < expectedParametersData.Length; ++i)
         {
           var actualParameter = (IDataParameter)sqlCommand.Parameters[i];
@@ -130,18 +129,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           Assert.That(
               actualParameter.ParameterName,
               Is.EqualTo(expectedParameterData.Item1),
-              "Name of parameter " + i + " doesn't match.\r\nStatement: {0})",
-              expectedSql);
+              $"Name of parameter {i} doesn't match.\r\nStatement: {expectedSql})");
           Assert.That(
               actualParameter.DbType,
               Is.EqualTo(expectedParameterData.Item2),
-              "DbType of parameter " + i + " doesn't match.\r\nSstatement: {0})",
-              expectedSql);
-          Assert.That(
-              actualParameter.Value,
-              Is.EqualTo(expectedParameterData.Item3),
-              "Value of parameter " + i + " doesn't match.\r\nStatement: {0})",
-              expectedSql);
+              $"DbType of parameter {i} doesn't match.\r\nSstatement: {expectedSql})");
+
+          if (expectedParameterData.Item3 is SqlTableValuedParameterValue tvpValue)
+          {
+            SqlTableValuedParameterValueChecker.CheckEquals(actualParameter.Value, tvpValue);
+          }
+          else
+          {
+            Assert.That(
+                actualParameter.Value,
+                Is.EqualTo(expectedParameterData.Item3),
+                $"Value of parameter {i} doesn't match.\r\nStatement: {expectedSql})");
+          }
         }
       }
       catch (AssertionException)

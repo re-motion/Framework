@@ -37,7 +37,6 @@ namespace Remotion.Web.ExecutionEngine
 {
   /// <summary> This step interrupts the server side execution to display a page to the user. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Class/*' />
-  [Serializable]
   public class WxePageStep : WxeStep, IExecutionStateContext
   {
     private const int c_estimatedLargeObjectHeapThreshold = 85000;
@@ -66,7 +65,6 @@ namespace Remotion.Web.ExecutionEngine
     private bool _isPageDirty;
     private bool _isDirtyFromReturnState;
 
-    [NonSerialized]
     private WxeHandler? _wxeHandler;
 
     private IExecutionState _executionState = NullExecutionState.Null;
@@ -328,7 +326,9 @@ namespace Remotion.Web.ExecutionEngine
 
       try
       {
+#pragma warning disable CFW0001
         var serializer = new ObjectStateFormatter();
+#pragma warning restore CFW0001
         serializer.Serialize(outputStream, state);
 
         // For the finished page state, a new byte-array must be allocated, i.e. the original array cannot be used.
@@ -350,7 +350,9 @@ namespace Remotion.Web.ExecutionEngine
     {
       using (var inputStream = new MemoryStream(_pageState!, writable: false)) // TODO RM-8118: not null assertion
       {
+#pragma warning disable CFW0001
         var serializer = new ObjectStateFormatter();
+#pragma warning restore CFW0001
         return serializer.Deserialize(inputStream);
       }
     }

@@ -17,11 +17,11 @@
  ! along with re-motion; if not, see http://www.gnu.org/licenses.
 -->
 <queries
-    xmlns="http://www.re-motion.org/Data/DomainObjects/Queries/1.0" 
+    xmlns="http://www.re-motion.org/Data/DomainObjects/Queries/2.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://www.re-motion.org/Data/DomainObjects/Queries/1.0 ..\DomainObjects\Schemas\Queries.xsd">
+    xsi:schemaLocation="http://www.re-motion.org/Data/DomainObjects/Queries/2.0 ..\DomainObjects\Schemas\Queries.xsd">
     
-  <query id="GetAllRelatedObjects" type="collection">
+  <query id="GetAllRelatedObjects" type="collection-readonly">
     <statement>SELECT * FROM [TableForRelationTest];</statement>
   </query>
 

@@ -32,7 +32,6 @@ public delegate void WxeMethodWithContext (WxeContext context);
 
 /// <summary> Performs a step implemented by an instance method of a <see cref="WxeFunction"/>. </summary>
 /// <include file='..\doc\include\ExecutionEngine\WxeMethodStep.xml' path='WxeMethodStep/Class/*' />
-[Serializable]
 public class WxeMethodStep: WxeStep
 {
   private static WxeStepList GetTargetFromDelegate (Delegate method)
@@ -65,10 +64,8 @@ public class WxeMethodStep: WxeStep
   /// <summary> <see langword="true"/> if the method has a parameter of type <see cref="WxeContext"/>. </summary>
   private bool _hasContext;
   /// <summary> The cached <see cref="WxeMethod"/> delegate used during execution of this <b>WxeMethodStep</b>. </summary>
-  [NonSerialized]
   private WxeMethod? _method;
   /// <summary> The cached <see cref="WxeMethodWithContext"/> delegate used during execution of this <b>WxeMethodStep</b>. </summary>
-  [NonSerialized]
   private WxeMethodWithContext? _methodWithContext;
 
   /// <summary> Initalizes a new instance of the <b>WxeMethodStep</b> type. </summary>

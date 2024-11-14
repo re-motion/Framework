@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using log4net;
+using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.Accessibility;
@@ -269,7 +270,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
           config,
           new AxeSourceProvider(),
           new AccessibilityResultMapper(),
-          LogManager.GetLogger(typeof(AccessibilityAnalyzer)));
+          NullLogger.Instance);
     }
   }
 }

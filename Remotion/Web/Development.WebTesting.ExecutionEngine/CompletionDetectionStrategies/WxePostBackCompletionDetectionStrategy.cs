@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using log4net;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies
@@ -25,7 +25,6 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
   /// </summary>
   public class WxePostBackCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(WxePostBackCompletionDetectionStrategy));
     private readonly int _expectedWxePostBackSequenceNumberIncrease;
     private readonly TimeSpan? _timeout;
 
@@ -36,23 +35,25 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     }
 
     /// <inheritdoc/>
-    public object? PrepareWaitForCompletion (PageObjectContext context)
+    public object? PrepareWaitForCompletion (PageObjectContext context, ILogger logger)
     {
       ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       return WxeCompletionDetectionHelpers.GetWxePostBackSequenceNumber(context);
     }
 
     /// <inheritdoc/>
-    public void WaitForCompletion (PageObjectContext context, object? state)
+    public void WaitForCompletion (PageObjectContext context, object? state, ILogger logger)
     {
       ArgumentUtility.CheckNotNull("context", context);
       ArgumentUtility.CheckNotNull("state", state!);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       var oldWxePostBackSequenceNumber = (int)state;
 
       WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber(
-          s_log,
+          logger,
           context,
           oldWxePostBackSequenceNumber,
           _expectedWxePostBackSequenceNumberIncrease,

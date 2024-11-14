@@ -64,7 +64,8 @@ namespace Remotion.Data.DomainObjects.Linq
           string id,
           StorageProviderDefinition storageProviderDefinition,
           QueryModel queryModel,
-          IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders);
+          IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders,
+          IReadOnlyDictionary<string, object> metadata);
     }
 
     private class GenericCallHelper<T> : GenericCallHelper
@@ -78,9 +79,10 @@ namespace Remotion.Data.DomainObjects.Linq
           string id,
           StorageProviderDefinition storageProviderDefinition,
           QueryModel queryModel,
-          IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders)
+          IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders,
+          IReadOnlyDictionary<string, object> metadata)
       {
-        return domainObjectQueryGenerator.CreateSequenceQuery<T>(id, storageProviderDefinition, queryModel, fetchQueryModelBuilders);
+        return domainObjectQueryGenerator.CreateSequenceQuery<T>(id, storageProviderDefinition, queryModel, fetchQueryModelBuilders, metadata);
       }
     }
 
@@ -128,16 +130,21 @@ namespace Remotion.Data.DomainObjects.Linq
       get { return _mappingConfiguration; }
     }
 
-    public virtual IExecutableQuery<T> CreateScalarQuery<T> (string id, StorageProviderDefinition storageProviderDefinition, QueryModel queryModel)
+    public virtual IExecutableQuery<T> CreateScalarQuery<T> (
+        string id,
+        StorageProviderDefinition storageProviderDefinition,
+        QueryModel queryModel,
+        IReadOnlyDictionary<string, object> metadata)
     {
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
       ArgumentUtility.CheckNotNull("queryModel", queryModel);
+      ArgumentUtility.CheckNotNull("metadata", metadata);
 
       var sqlQuery = _sqlQueryGenerator.CreateSqlQuery(queryModel);
       var sqlCommand = sqlQuery.SqlCommand;
 
-      var query = CreateQuery(id, storageProviderDefinition, sqlCommand.CommandText, sqlCommand.Parameters, QueryType.Scalar, selectedEntityType: null);
+      var query = CreateQuery(id, storageProviderDefinition, sqlCommand.CommandText, sqlCommand.Parameters, QueryType.ScalarReadOnly, selectedEntityType: null, metadata);
 
       var projection = sqlCommand.GetInMemoryProjection<T>().Compile();
       return new ScalarQueryAdapter<T>(query, o => projection(new ScalarResultRowAdapter(o, _storageTypeInformationProvider)));
@@ -147,26 +154,28 @@ namespace Remotion.Data.DomainObjects.Linq
         string id,
         StorageProviderDefinition storageProviderDefinition,
         QueryModel queryModel,
-        IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders)
+        IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders,
+        IReadOnlyDictionary<string, object> metadata)
     {
       ArgumentUtility.CheckNotNullOrEmpty("id", id);
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
       ArgumentUtility.CheckNotNull("queryModel", queryModel);
       ArgumentUtility.CheckNotNull("fetchQueryModelBuilders", fetchQueryModelBuilders);
+      ArgumentUtility.CheckNotNull("metadata", metadata);
 
       var sqlQuery = _sqlQueryGenerator.CreateSqlQuery(queryModel);
       var command = sqlQuery.SqlCommand;
 
-      var queryType = sqlQuery.SelectedEntityType != null ? QueryType.Collection : QueryType.Custom;
-      var query = CreateQuery(id, storageProviderDefinition, command.CommandText, command.Parameters, queryType, sqlQuery.SelectedEntityType);
+      var queryType = sqlQuery.SelectedEntityType != null ? QueryType.CollectionReadOnly : QueryType.CustomReadOnly;
+      var query = CreateQuery(id, storageProviderDefinition, command.CommandText, command.Parameters, queryType, sqlQuery.SelectedEntityType, metadata);
 
-      if (queryType == QueryType.Collection)
+      if (queryType == QueryType.CollectionReadOnly)
       {
         Assertion.DebugIsNotNull(sqlQuery.SelectedEntityType, "sqlQuery.SelectedEntityType != null");
         var selectedEntityClassDefinition = _mappingConfiguration.GetTypeDefinition(sqlQuery.SelectedEntityType);
         Assertion.IsNotNull(selectedEntityClassDefinition, "We assume that in a re-store LINQ query, entities always have a mapping.");
 
-        var fetchQueries = CreateEagerFetchQueries(selectedEntityClassDefinition, fetchQueryModelBuilders);
+        var fetchQueries = CreateEagerFetchQueries(selectedEntityClassDefinition, fetchQueryModelBuilders, metadata);
         foreach (var fetchQuery in fetchQueries)
           query.EagerFetchQueries.Add(fetchQuery.Item1, fetchQuery.Item2);
 
@@ -188,28 +197,32 @@ namespace Remotion.Data.DomainObjects.Linq
         string statement,
         CommandParameter[] commandParameters,
         QueryType queryType,
-        Type? selectedEntityType)
+        Type? selectedEntityType,
+        IReadOnlyDictionary<string, object> metadata)
     {
       ArgumentUtility.CheckNotNullOrEmpty("id", id);
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
       ArgumentUtility.CheckNotNull("statement", statement);
       ArgumentUtility.CheckNotNull("commandParameters", commandParameters);
+      ArgumentUtility.CheckNotNull("metadata", metadata);
 
       var queryParameters = new QueryParameterCollection();
       foreach (var commandParameter in commandParameters)
         queryParameters.Add(commandParameter.Name, commandParameter.Value, QueryParameterType.Value);
 
-      if (queryType == QueryType.Scalar)
-        return QueryFactory.CreateScalarQuery(id, storageProviderDefinition, statement, queryParameters);
-      else if (queryType == QueryType.Collection)
-        return QueryFactory.CreateCollectionQuery(id, storageProviderDefinition, statement, queryParameters, GetCollectionType(selectedEntityType));
-      else
-        return QueryFactory.CreateCustomQuery(id, storageProviderDefinition, statement, queryParameters);
+      return queryType switch
+      {
+        QueryType.ScalarReadOnly => QueryFactory.CreateScalarQuery(id, storageProviderDefinition, statement, queryParameters, metadata),
+        QueryType.CollectionReadOnly => QueryFactory.CreateCollectionQuery(id, storageProviderDefinition, statement, queryParameters, GetCollectionType(selectedEntityType), metadata),
+        QueryType.CustomReadOnly => QueryFactory.CreateCustomQuery(id, storageProviderDefinition, statement, queryParameters, metadata),
+        _ => throw new ArgumentException("The requested query type '{0}' cannot be used with LiNQ. Only read-only query types are supported.", "queryType")
+      };
     }
 
     private IEnumerable<Tuple<IRelationEndPointDefinition, IQuery>> CreateEagerFetchQueries (
         ClassDefinition previousClassDefinition,
-        IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders)
+        IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders,
+        IReadOnlyDictionary<string, object> metadata)
     {
       foreach (var fetchQueryModelBuilder in fetchQueryModelBuilders)
       {
@@ -244,7 +257,8 @@ namespace Remotion.Data.DomainObjects.Linq
             "<fetch query for " + fetchQueryModelBuilder.FetchRequest.RelationMember.Name + ">",
             previousClassDefinition.StorageEntityDefinition.StorageProviderDefinition,
             fetchQueryModel,
-            fetchQueryModelBuilder.CreateInnerBuilders());
+            fetchQueryModelBuilder.CreateInnerBuilders(),
+            metadata);
 
         yield return Tuple.Create(relationEndPointDefinition, fetchQuery);
       }

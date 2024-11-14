@@ -17,7 +17,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
@@ -25,7 +24,6 @@ using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
-  [Serializable]
   public abstract class TestDomainBase : DomainObject, ISupportsGetObject
   {
     public static event EventHandler StaticCtorHandler;
@@ -42,54 +40,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       }
     }
 
-    [NonSerialized]
     private IUnloadEventReceiver _unloadEventReceiver;
-    [NonSerialized]
     private ILoadEventReceiver _loadEventReceiver;
 
     public event EventHandler ProtectedLoaded;
 
-    [NonSerialized]
     public bool CtorCalled;
-    [NonSerialized]
     public ClientTransaction CtorTx;
 
-    [NonSerialized]
     public bool OnReferenceInitializingCalledBeforeCtor;
-    [NonSerialized]
     public bool OnReferenceInitializingCalled;
-    [NonSerialized]
     public ClientTransaction OnReferenceInitializingTx;
-    [NonSerialized]
     public ClientTransaction OnReferenceInitializingActiveTx;
-    [NonSerialized]
     public ObjectID OnReferenceInitializingID;
 
-    [NonSerialized]
     public bool OnLoadedCalled;
-    [NonSerialized]
     public ClientTransaction OnLoadedTx;
-    [NonSerialized]
     public LoadMode OnLoadedLoadMode;
-    [NonSerialized]
     public int OnLoadedCallCount;
 
-    [NonSerialized]
     public bool OnUnloadingCalled;
-    [NonSerialized]
     public ClientTransaction OnUnloadingTx;
-    [NonSerialized]
     public DateTime OnUnloadingDateTime;
-    [NonSerialized]
     public DomainObjectState UnloadingState;
 
-    [NonSerialized]
     public bool OnUnloadedCalled;
-    [NonSerialized]
     public ClientTransaction OnUnloadedTx;
-    [NonSerialized]
     public DateTime OnUnloadedDateTime;
-    [NonSerialized]
     public DomainObjectState UnloadedState;
 
     protected TestDomainBase ()
@@ -99,11 +76,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       CtorCalled = true;
       CtorTx = ClientTransaction.Current;
       OnReferenceInitializingCalledBeforeCtor = OnReferenceInitializingCalled;
-    }
-
-    protected TestDomainBase (SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
     }
 
     [StorageClassNone]

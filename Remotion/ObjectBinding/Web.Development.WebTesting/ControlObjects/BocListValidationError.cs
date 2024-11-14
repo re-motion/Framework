@@ -16,6 +16,7 @@
 //
 using System;
 using Coypu;
+using Microsoft.Extensions.Logging;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
@@ -27,13 +28,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   /// </summary>
   public class BocListValidationError
   {
-    public static BocListValidationError Parse (ElementScope elementScope)
+    public static BocListValidationError Parse (ElementScope elementScope, ILogger logger)
     {
+      ArgumentUtility.CheckNotNull("elementScope", elementScope);
+      ArgumentUtility.CheckNotNull("logger", logger);
+
       var errorMessage = elementScope.FindCss("span, a").InnerHTML ?? string.Empty; // .InnerHTML is used instead of .Text as it would return an empty string instead
-      var rowItemID = elementScope.GetAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListValidationFailureSourceRow);
-      var columnItemID = elementScope.GetAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListValidationFailureSourceColumn);
-      var businessObjectUniqueIdentifier = elementScope.GetAttribute(DiagnosticMetadataAttributesForObjectBinding.ValidationFailureSourceBusinessObject);
-      var propertyIdentifier = elementScope.GetAttribute(DiagnosticMetadataAttributesForObjectBinding.ValidationFailureSourceProperty);
+      var rowItemID = elementScope.GetAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListValidationFailureSourceRow, logger);
+      var columnItemID = elementScope.GetAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListValidationFailureSourceColumn, logger);
+      var businessObjectUniqueIdentifier = elementScope.GetAttribute(DiagnosticMetadataAttributesForObjectBinding.ValidationFailureSourceBusinessObject, logger);
+      var propertyIdentifier = elementScope.GetAttribute(DiagnosticMetadataAttributesForObjectBinding.ValidationFailureSourceProperty, logger);
 
       return new BocListValidationError(
           errorMessage,

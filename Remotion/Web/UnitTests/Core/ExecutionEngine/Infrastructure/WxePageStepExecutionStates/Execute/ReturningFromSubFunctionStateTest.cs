@@ -59,15 +59,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
           .Callback((IExecutionState executionState) => CheckExecutionState((PostProcessingSubFunctionState)executionState))
           .Verifiable();
 
-      try
-      {
-        _executionState.ExecuteSubFunction(WxeContext);
-        Assert.Fail();
-      }
-      catch (ThreadAbortException)
-      {
-        WxeThreadAbortHelper.ResetAbort();
-      }
+      Assert.That(() => _executionState.ExecuteSubFunction(WxeContext), Throws.TypeOf<ThreadAbortException>());
 
       VerifyAll();
       sequence.Verify();

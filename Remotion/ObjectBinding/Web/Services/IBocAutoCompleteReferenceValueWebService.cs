@@ -29,13 +29,19 @@ namespace Remotion.ObjectBinding.Web.Services
     /// Retrieves a list of objects based on the <paramref name="searchString"/> and the search context (i.e. the <paramref name="businessObjectClass"/> etc).
     /// </summary>
     /// <param name="searchString">The <see cref="string"/> all returned values must match.</param>
+    /// <param name="completionSetOffset">
+    ///   The number of items to skip before returning results or zero if no offset should be used and results should be returned from the beginning.
+    /// </param>
     /// <param name="completionSetCount">
-    /// The maximum number of items to be returned or <see langword="null" /> if the search service implementation can define the result set size.
+    ///   The maximum number of items to be returned or <see langword="null" /> if the search service implementation can define the result set size.
+    /// </param>
+    /// <param name="context">
+    ///   Arbitrary context information that will be sent back to the server as part of the next pagination request.
     /// </param>
     /// <param name="businessObjectClass">
-    /// The <see cref="IBusinessObjectClass.Identifier"/> of the <see cref="IBusinessObjectClass"/> the control is bound to or <see langword="null" />.
-    /// This value is either the <see cref="IBusinessObject.BusinessObjectClass"/> of the bound <see cref="IBusinessObject"/> or the 
-    /// <see cref="IBusinessObjectDataSource.BusinessObjectClass"/> of the <see cref="IBusinessObjectDataSource"/>.
+    ///   The <see cref="IBusinessObjectClass.Identifier"/> of the <see cref="IBusinessObjectClass"/> the control is bound to or <see langword="null" />.
+    ///   This value is either the <see cref="IBusinessObject.BusinessObjectClass"/> of the bound <see cref="IBusinessObject"/> or the
+    ///   <see cref="IBusinessObjectDataSource.BusinessObjectClass"/> of the <see cref="IBusinessObjectDataSource"/>.
     /// </param>
     /// <param name="businessObjectProperty">
     ///   The <see cref="IBusinessObjectProperty.Identifier"/> of the bound <see cref="IBusinessObjectProperty"/> or <see langword="null" />.
@@ -51,7 +57,9 @@ namespace Remotion.ObjectBinding.Web.Services
     /// </remarks>
     BocAutoCompleteReferenceValueSearchResult Search (
         string searchString,
+        int completionSetOffset,
         int? completionSetCount,
+        string? context,
         string? businessObjectClass,
         string? businessObjectProperty,
         string? businessObject,

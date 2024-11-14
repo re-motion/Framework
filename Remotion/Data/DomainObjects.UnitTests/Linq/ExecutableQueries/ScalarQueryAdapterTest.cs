@@ -40,17 +40,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
     [Test]
     public void Initialization_QueryTypeNotScalar ()
     {
-      _queryStub.Setup(stub => stub.QueryType).Returns(QueryType.Collection);
+      _queryStub.Setup(stub => stub.QueryType).Returns(QueryType.CollectionReadOnly);
       Assert.That(
           () => new ScalarQueryAdapter<string>(_queryStub.Object, _resultConversion),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo("Only scalar queries can be used to load scalar results.", "query"));
+              .With.ArgumentExceptionMessageEqualTo("Only readonly scalar queries can be used to load scalar results.", "query"));
     }
 
     [Test]
     public void Execute ()
     {
-      _queryStub.Setup(stub => stub.QueryType).Returns(QueryType.Scalar);
+      _queryStub.Setup(stub => stub.QueryType).Returns(QueryType.ScalarReadOnly);
       var scalarQueryAdapter = new ScalarQueryAdapter<string>(_queryStub.Object, _resultConversion);
 
       var queryManagerMock = new Mock<IQueryManager>(MockBehavior.Strict);

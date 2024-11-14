@@ -15,15 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Serialization;
 using Remotion.Mixins;
 using Remotion.Utilities;
 using TypeExtensions = Remotion.Reflection.TypeExtensions;
 
 namespace Remotion.ObjectBinding.BindableObject
 {
-  [Serializable]
-  public class BindableObjectBaseImplementation : BindableObjectMixin, IDeserializationCallback, IBindableObjectBaseImplementation
+  public class BindableObjectBaseImplementation : BindableObjectMixin, IBindableObjectBaseImplementation
   {
     public static BindableObjectBaseImplementation Create (BindableObjectBase wrapper)
     {
@@ -31,7 +29,7 @@ namespace Remotion.ObjectBinding.BindableObject
       Assertion.DebugAssert(!TypeExtensions.CanAscribeTo(typeof(BindableObjectBaseImplementation), typeof(Mixin<,>)),
           "we assume the mixin does not have a base object");
       var impl = new BindableObjectBaseImplementation(wrapper);
-      ((IInitializableMixin)impl).Initialize(wrapper, null, false);
+      ((IInitializableMixin)impl).Initialize(wrapper, null);
       return impl;
     }
 
@@ -41,13 +39,6 @@ namespace Remotion.ObjectBinding.BindableObject
     {
       ArgumentUtility.CheckNotNull("wrapper", wrapper);
       _wrapper = wrapper;
-    }
-
-    void IDeserializationCallback.OnDeserialization (object? sender)
-    {
-      Assertion.DebugAssert(!TypeExtensions.CanAscribeTo(typeof(BindableObjectMixin), typeof(Mixin<,>)),
-          "we assume the mixin does not have a base object");
-      ((IInitializableMixin)this).Initialize(_wrapper, null, true);
     }
   }
 }

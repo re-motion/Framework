@@ -14,9 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
-#if !NETFRAMEWORK
 using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.Logging;
+using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
 {
@@ -25,6 +26,8 @@ namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
   /// </summary>
   public record WebTestSettingsDto : IWebTestSettings
   {
+    private ILoggerFactory? _loggerFactory;
+
     /// <inheritdoc />
     [Required]
     [RegularExpression("(Chrome|Edge|Firefox)")]
@@ -99,6 +102,18 @@ namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
 
     /// <inheritdoc />
     IWebTestTestSiteLayoutSettings IWebTestSettings.TestSiteLayout => TestSiteLayout;
+
+    ILoggerFactory IWebTestSettings.LoggerFactory =>
+        _loggerFactory ?? throw new InvalidOperationException("The LoggerFactory was not initialized via WebTestSettingsDto.SetLoggerFactory(...).");
+
+    /// <summary>
+    /// Sets the <see cref="ILoggerFactory"/> used by the web test infrastructure.
+    /// </summary>
+    public void SetLoggerFactory (ILoggerFactory loggerFactory)
+    {
+      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+
+      _loggerFactory = loggerFactory;
+    }
   }
 }
-#endif

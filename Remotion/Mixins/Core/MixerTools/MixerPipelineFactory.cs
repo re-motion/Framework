@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.Reflection.CodeGeneration.TypePipe;
@@ -28,7 +29,7 @@ namespace Remotion.Mixins.MixerTools
 {
   public class MixerPipelineFactory : IMixerPipelineFactory
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(MixerPipelineFactory));
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<MixerPipelineFactory>();
 
     private readonly string _assemblyName;
     private readonly int _degreeOfParallelism;
@@ -58,7 +59,7 @@ namespace Remotion.Mixins.MixerTools
       var participants = defaultPipeline.Participants.ToArray();
 
       var participantTypeNames = participants.Select(p => p.GetType().Name).ToArray();
-      s_log.InfoFormat(
+      s_logger.LogInformation(
           "Using pipeline '{0}' with the following participants: {1}.",
           defaultPipeline.ParticipantConfigurationID,
           string.Join(", ", participantTypeNames));

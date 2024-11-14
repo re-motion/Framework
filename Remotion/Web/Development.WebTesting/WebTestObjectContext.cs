@@ -17,6 +17,7 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 
@@ -28,6 +29,7 @@ namespace Remotion.Web.Development.WebTesting
   public abstract class WebTestObjectContext
   {
     private readonly ElementScope _scope;
+    private readonly ILoggerFactory _loggerFactory;
 
     /// <summary>
     /// Creates a new context for a given DOM element <paramref name="scope"/>.
@@ -37,11 +39,14 @@ namespace Remotion.Web.Development.WebTesting
     /// <para>- or -</para>
     /// If multiple matching controls are found.
     /// </exception>
-    protected WebTestObjectContext ([NotNull] ElementScope scope)
+    protected WebTestObjectContext ([NotNull] ElementScope scope, ILoggerFactory loggerFactory)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
 
       _scope = scope;
+      _loggerFactory = loggerFactory;
+
       _scope.EnsureExistence();
     }
 
@@ -54,6 +59,14 @@ namespace Remotion.Web.Development.WebTesting
     /// The browser window on which the <see cref="WebTestObject{TWebTestObjectContext}"/> resides.
     /// </summary>
     public abstract BrowserWindow Window { get; }
+
+    /// <summary>
+    /// The <see cref="ILoggerFactory"/> set up for the web testing infrastructure
+    /// </summary>
+    public ILoggerFactory LoggerFactory
+    {
+      get { return _loggerFactory; }
+    }
 
     /// <summary>
     /// The scope of the <see cref="WebTestObject{TWebTestObjectContext}"/>.

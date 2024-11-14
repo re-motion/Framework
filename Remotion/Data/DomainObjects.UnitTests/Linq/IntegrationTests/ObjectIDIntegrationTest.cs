@@ -46,19 +46,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           () => CheckQueryResult(query, DomainObjectIDs.Employee2),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
-#if NETFRAMEWORK
-                  "There was an error preparing or resolving query "
-                  + "'from Employee e in DomainObjectQueryable<Employee> "
-                  + "where (([e].Computer ?? Convert([e])).ID == Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid) select [e]' for SQL generation. "
-                  + "Cannot use a complex expression ('new ObjectID(ClassID = [t1].[ClassID] AS ClassID, Value = Convert([t1].[ID] AS Value))') in a place "
-                  + "where SQL requires a single value."
-#else
                   "There was an error preparing or resolving query "
                   + "'from Employee e in DomainObjectQueryable<Employee> "
                   + "where (([e].Computer ?? Convert([e], DomainObject)).ID == Employee|c3b2bbc3-e083-4974-bac7-9cee1fb85a5e|System.Guid) select [e]' for SQL generation. "
                   + "Cannot use a complex expression ('new ObjectID(ClassID = [t1].[ClassID] AS ClassID, Value = Convert([t1].[ID] AS Value, Object))') in a place "
                   + "where SQL requires a single value."
-#endif
                   ));
     }
 
@@ -82,19 +74,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           () => CheckQueryResult(query, DomainObjectIDs.Employee3),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
-#if NETFRAMEWORK
-                  "There was an error preparing or resolving query "
-                  + "'from Employee e in DomainObjectQueryable<Employee> "
-                  + "where (IIF(([e].Computer.ID == Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid), Convert([e].Computer), Convert([e])).ID == "
-                  + "Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid) select [e]' for SQL generation. Cannot use a complex expression "
-                  + "('new ObjectID(ClassID = [t1].[ClassID] AS ClassID, Value = Convert([t1].[ID] AS Value))') in a place where SQL requires a single value."
-#else
                   "There was an error preparing or resolving query "
                   + "'from Employee e in DomainObjectQueryable<Employee> "
                   + "where (IIF(([e].Computer.ID == Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid), Convert([e].Computer, DomainObject), Convert([e], DomainObject)).ID == "
                   + "Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid) select [e]' for SQL generation. Cannot use a complex expression "
                   + "('new ObjectID(ClassID = [t1].[ClassID] AS ClassID, Value = Convert([t1].[ID] AS Value, Object))') in a place where SQL requires a single value."
-#endif
                   ));
     }
 
@@ -208,6 +192,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           where possibleItems.Contains(o.ID.Value)
           select o;
 
+      Assert.That(
+          () => CheckQueryResult(orders, DomainObjectIDs.Order1, DomainObjectIDs.Order3),
+          Throws.InstanceOf<NotSupportedException>().With.Message.EqualTo(
+              $"The parameter value's type 'System.Object[]' cannot be mapped by "
+              + "Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters.SimpleTypeQueryParameterRecordDefinitionFinder. "
+              + "Either use a collection of scalar values, or use an implementation of "
+              + "Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters.IQueryParameterRecordDefinitionFinder "
+              + "that supports 'System.Object[]'."));
+    }
+
+    [Test]
+    public void QueryWithContainsInWhere_OnCollection_WithObjectIDValuesAsGuid ()
+    {
+      var possibleItems = new[] { (Guid)DomainObjectIDs.Order1.Value, (Guid)DomainObjectIDs.Order3.Value };
+      var orders =
+          from o in QueryFactory.CreateLinqQuery<Order>()
+          where possibleItems.Contains((Guid)o.ID.Value)
+          select o;
+
       CheckQueryResult(orders, DomainObjectIDs.Order1, DomainObjectIDs.Order3);
     }
 
@@ -223,21 +226,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           () => CheckQueryResult(orders, DomainObjectIDs.Order1, DomainObjectIDs.Order3),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
-#if NETFRAMEWORK
-                  "There was an error preparing or resolving query "
-                  + "'from Order o in DomainObjectQueryable<Order> where {value(Remotion.Data.DomainObjects.ObjectID[]) => Contains([o].ID)} select [o]' for "
-                  + "SQL generation. The SQL 'IN' operator (originally probably a call to a 'Contains' method) requires a single value, so the following "
-                  + "expression cannot be translated to SQL: "
-                  + "'new ObjectID(ClassID = [t0].[ClassID] AS ClassID, Value = Convert([t0].[ID] AS Value)) "
-                  + "IN (Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid,Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid)'."
-#else
                   "There was an error preparing or resolving query "
                   + "'from Order o in DomainObjectQueryable<Order> where {value(Remotion.Data.DomainObjects.ObjectID[]) => Contains([o].ID)} select [o]' for "
                   + "SQL generation. The SQL 'IN' operator (originally probably a call to a 'Contains' method) requires a single value, so the following "
                   + "expression cannot be translated to SQL: "
                   + "'new ObjectID(ClassID = [t0].[ClassID] AS ClassID, Value = Convert([t0].[ID] AS Value, Object)) "
-                  + "IN (Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid,Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid)'."
-#endif
+                  + "IN [Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid, Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid]'."
                   ));
     }
 
@@ -255,13 +249,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           select o;
       Assert.That(
           () => CheckQueryResult(orders, DomainObjectIDs.Order1, DomainObjectIDs.Order3),
-          Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo(
-                  "There was an error preparing or resolving query "
-                  + "'from Order o in DomainObjectQueryable<Order> where {value(Remotion.Data.DomainObjects.DomainObject[]) => Contains([o])} select [o]' for "
-                  + "SQL generation. The SQL 'IN' operator (originally probably a call to a 'Contains' method) requires a single value, so the following "
-                  + "expression cannot be translated to SQL: "
-                  + "'[t0].[ID] IN (ENTITY(Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid),ENTITY(Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid))'."));
+          Throws.InstanceOf<NotSupportedException>().With.Message.EqualTo(
+              "The parameter value's type 'Remotion.Data.DomainObjects.DomainObject[]' cannot be mapped by "
+              + "Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters.SimpleTypeQueryParameterRecordDefinitionFinder. "
+              + "Either use a collection of scalar values, or use an implementation of "
+              + "Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters.IQueryParameterRecordDefinitionFinder "
+              + "that supports 'Remotion.Data.DomainObjects.DomainObject[]'."));
     }
 
     [Test]

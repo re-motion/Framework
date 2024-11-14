@@ -84,15 +84,8 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     {
       var origin = new MixinContextOrigin("SomeKind", _someAssembly, "some location");
 
-#if NETFRAMEWORK
-      var expectedCodeBase = _someAssembly.GetName().CodeBase;
-      var expected = string.Format(
-          "SomeKind, Location: 'some location' (Assembly: 'Remotion.Mixins.UnitTests', code base: {0})",
-          expectedCodeBase);
-#else
       var expectedLocation = _someAssembly.Location;
       var expected = string.Format("SomeKind, Location: 'some location' (assembly: 'Remotion.Mixins.UnitTests', location: {0})", expectedLocation);
-#endif
       Assert.That(origin.ToString(), Is.EqualTo(expected));
     }
 

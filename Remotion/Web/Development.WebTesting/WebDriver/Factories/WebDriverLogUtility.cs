@@ -16,20 +16,20 @@
 // 
 using System;
 using System.IO;
-using log4net;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
 {
   public static class WebDriverLogUtility
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(WebDriverLogUtility));
     private const string SubDirectoryName = "BrowserLogs";
 
-    public static string CreateLogFile (string logsDirectory, string browserName)
+    public static string CreateLogFile (string logsDirectory, string browserName, ILogger logger)
     {
       ArgumentUtility.CheckNotNullOrEmpty("logsDirectory", logsDirectory);
       ArgumentUtility.CheckNotNullOrEmpty("browserName", browserName);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       var finalLogsDirectory = Path.Combine(logsDirectory, SubDirectoryName);
 
@@ -51,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
         }
 
         // Log file name in order to give the user the chance to correlate the log file to test executions.
-        s_log.InfoFormat("{0} driver logs to: '{1}'.", browserName, fileName);
+        logger.LogInformation("{0} driver logs to: '{1}'.", browserName, fileName);
         return logFile;
       }
     }

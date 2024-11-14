@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using System.Web;
+using Microsoft.Extensions.Logging.Abstractions;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Sample;
@@ -33,6 +34,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
 
     protected void Application_Start (object sender, EventArgs e)
     {
+      BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
+
       var objectPath = Server.MapPath("~/objects");
       if (!Directory.Exists(objectPath))
         Directory.CreateDirectory(objectPath);

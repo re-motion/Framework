@@ -146,17 +146,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
 
       _pageExecutorMock.InVerifiableSequence(sequence).Setup(mock => mock.ExecutePage(_wxeContext, "~/ThePage", true)).Verifiable();
 
-      try
-      {
-        WxePermaUrlOptions permaUrlOptions = WxePermaUrlOptions.Null;
-        WxeRepostOptions repostOptions = WxeRepostOptions.DoRepost(null);
-        _pageStep.Object.ExecuteFunction(new PreProcessingSubFunctionStateParameters(_pageMock.Object, _subFunction.Object, permaUrlOptions), repostOptions);
-        Assert.Fail();
-      }
-      catch (ThreadAbortException)
-      {
-        WxeThreadAbortHelper.ResetAbort();
-      }
+      WxePermaUrlOptions permaUrlOptions = WxePermaUrlOptions.Null;
+      WxeRepostOptions repostOptions = WxeRepostOptions.DoRepost(null);
+      Assert.That(
+          () => _pageStep.Object.ExecuteFunction(new PreProcessingSubFunctionStateParameters(_pageMock.Object, _subFunction.Object, permaUrlOptions), repostOptions),
+          Throws.TypeOf<ThreadAbortException>());
+
       _pageStep.Object.Execute();
 
       _subFunction.Verify();
@@ -187,17 +182,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
 
       _pageExecutorMock.InVerifiableSequence(sequence).Setup(mock => mock.ExecutePage(_wxeContext, "~/ThePage", true)).Verifiable();
 
-      try
-      {
-        WxePermaUrlOptions permaUrlOptions = WxePermaUrlOptions.Null;
-        WxeRepostOptions repostOptions = WxeRepostOptions.DoRepost(null);
-        _pageStep.Object.ExecuteFunction(new PreProcessingSubFunctionStateParameters(_pageMock.Object, _subFunction.Object, permaUrlOptions), repostOptions);
-        Assert.Fail();
-      }
-      catch (ThreadAbortException)
-      {
-        WxeThreadAbortHelper.ResetAbort();
-      }
+      WxePermaUrlOptions permaUrlOptions = WxePermaUrlOptions.Null;
+      WxeRepostOptions repostOptions = WxeRepostOptions.DoRepost(null);
+      Assert.That(
+          () => _pageStep.Object.ExecuteFunction(new PreProcessingSubFunctionStateParameters(_pageMock.Object, _subFunction.Object, permaUrlOptions), repostOptions),
+          Throws.TypeOf<ThreadAbortException>());
+
       _pageStep.Object.Execute();
 
       _subFunction.Verify();
@@ -278,49 +268,21 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
           .Verifiable();
 
       WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions();
-      try
-      {
-        //Redirect to subfunction
-        WxeRepostOptions repostOptions = WxeRepostOptions.DoRepost(null);
-        _pageStep.Object.ExecuteFunction(new PreProcessingSubFunctionStateParameters(_pageMock.Object, _subFunction.Object, permaUrlOptions), repostOptions);
-        Assert.Fail();
-      }
-      catch (ThreadAbortException)
-      {
-        WxeThreadAbortHelper.ResetAbort();
-      }
 
-      try
-      {
-        //Show sub function
-        _pageStep.Object.Execute();
-        Assert.Fail();
-      }
-      catch (ThreadAbortException)
-      {
-        WxeThreadAbortHelper.ResetAbort();
-      }
+      //Redirect to subfunction
+      WxeRepostOptions repostOptions = WxeRepostOptions.DoRepost(null);
+      Assert.That(
+          () => _pageStep.Object.ExecuteFunction(new PreProcessingSubFunctionStateParameters(_pageMock.Object, _subFunction.Object, permaUrlOptions), repostOptions),
+          Throws.TypeOf<ThreadAbortException>());
 
-      try
-      {
-        //Return from sub function part 1
-        _pageStep.Object.Execute();
-        Assert.Fail();
-      }
-      catch (WxeExecuteNextStepException)
-      {
-      }
+      //Show sub function
+      Assert.That(() => _pageStep.Object.Execute(), Throws.TypeOf<ThreadAbortException>());
 
-      try
-      {
-        //Return from sub function part 2
-        _pageStep.Object.Execute();
-        Assert.Fail();
-      }
-      catch (ThreadAbortException)
-      {
-        WxeThreadAbortHelper.ResetAbort();
-      }
+      //Return from sub function part 1
+      Assert.That(() => _pageStep.Object.Execute(), Throws.TypeOf<WxeExecuteNextStepException>());
+
+      //Return from sub function part 2
+      Assert.That(() => _pageStep.Object.Execute(), Throws.TypeOf<ThreadAbortException>());
 
       //Show current page
       _pageStep.Object.Execute();

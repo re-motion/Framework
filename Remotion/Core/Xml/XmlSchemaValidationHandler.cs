@@ -18,13 +18,14 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
+using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 
 namespace Remotion.Xml
 {
   public class XmlSchemaValidationHandler
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(XmlSchemaValidationHandler));
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<XmlSchemaValidationHandler>();
 
     private bool _failOnError;
 
@@ -65,7 +66,7 @@ namespace Remotion.Xml
       // TODO: verify for 2.0
       if (args.Message.IndexOf("http://www.w3.org/XML/1998/namespace:base") >= 0)
       {
-        s_log.DebugFormat(
+        s_logger.LogDebug(
             "Ignoring the following schema validation error in {0}, because it is considered a known .NET framework bug: {1}",
             reader.BaseURI,
             args.Message);
@@ -78,7 +79,7 @@ namespace Remotion.Xml
 
       if (args.Severity == XmlSeverityType.Error)
       {
-        s_log.Error(errorInfo);
+        s_logger.LogError(errorInfo.ToString());
         ++ _errors;
         if (_failOnError)
           throw args.Exception;
@@ -91,7 +92,7 @@ namespace Remotion.Xml
       }
       else
       {
-        s_log.Warn(errorInfo);
+        s_logger.LogWarning(errorInfo.ToString());
         ++ _warnings;
       }
     }

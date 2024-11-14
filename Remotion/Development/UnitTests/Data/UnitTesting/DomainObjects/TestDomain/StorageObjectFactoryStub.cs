@@ -21,7 +21,9 @@ using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Linq.SqlBackend.SqlPreparation;
@@ -34,7 +36,12 @@ public class StorageObjectFactoryStub: IRdbmsStorageObjectFactory
   {
   }
 
-  public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+  public IStorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
+  {
+    throw new System.NotImplementedException();
+  }
+
+  public IReadOnlyStorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
   {
     throw new System.NotImplementedException();
   }
@@ -81,7 +88,7 @@ public class StorageObjectFactoryStub: IRdbmsStorageObjectFactory
     throw new System.NotImplementedException();
   }
 
-  public IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> CreateStorageProviderCommandFactory (RdbmsProviderDefinition storageProviderDefinition)
+  public IRdbmsProviderCommandFactory CreateStorageProviderCommandFactory (RdbmsProviderDefinition storageProviderDefinition)
   {
     throw new System.NotImplementedException();
   }
@@ -117,6 +124,11 @@ public class StorageObjectFactoryStub: IRdbmsStorageObjectFactory
   }
 
   public IForeignKeyConstraintDefinitionFactory CreateForeignKeyConstraintDefinitionsFactory (RdbmsProviderDefinition storageProviderDefinition)
+  {
+    throw new System.NotImplementedException();
+  }
+
+  public IDataParameterDefinitionFactory CreateDataParameterDefinitionFactory (RdbmsProviderDefinition storageProviderDefinition)
   {
     throw new System.NotImplementedException();
   }
@@ -157,6 +169,11 @@ public class StorageObjectFactoryStub: IRdbmsStorageObjectFactory
   }
 
   public IEnumSerializer CreateEnumSerializer ()
+  {
+    throw new System.NotImplementedException();
+  }
+
+  public ISingleScalarStructuredTypeDefinitionProvider CreateSingleScalarStructuredTypeDefinitionProvider (RdbmsProviderDefinition storageProviderDefinition)
   {
     throw new System.NotImplementedException();
   }

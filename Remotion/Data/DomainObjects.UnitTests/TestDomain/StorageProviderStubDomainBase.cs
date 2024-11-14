@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects.Infrastructure;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
-  [Serializable]
   public abstract class StorageProviderStubDomainBase : DomainObject
   {
     protected StorageProviderStubDomainBase ()

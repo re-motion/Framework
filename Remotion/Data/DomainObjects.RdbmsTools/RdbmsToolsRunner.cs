@@ -21,12 +21,8 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
-using Remotion.Logging;
 using Remotion.ServiceLocation;
 using Remotion.Tools;
-#if NETFRAMEWORK
-using System.IO;
-#endif
 
 namespace Remotion.Data.DomainObjects.RdbmsTools
 {
@@ -34,44 +30,24 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
   /// The <see cref="RdbmsToolsRunner"/> type contains the encapsulates the execution of the various functionality provided by the 
   /// <b>Remotion.Data.DomainObjects.RdbmsTools</b> assembly.
   /// </summary>
-#if NETFRAMEWORK
-  [Serializable]
-  public class RdbmsToolsRunner : AppDomainRunnerBase
-#else
   public class RdbmsToolsRunner : CustomAppContextRunnerBase
-#endif
   {
-#if NETFRAMEWORK
-    public static AppDomainSetup CreateAppDomainSetup (RdbmsToolsParameters rdbmsToolsParameters)
-    {
-      AppDomainSetup appDomainSetup = new AppDomainSetup();
-      appDomainSetup.ApplicationName = "RdbmsTools";
-      appDomainSetup.ApplicationBase = rdbmsToolsParameters.BaseDirectory;
-
-      return appDomainSetup;
-    }
-#endif
-
     private readonly RdbmsToolsParameters _rdbmsToolsParameters;
 
     public RdbmsToolsRunner (RdbmsToolsParameters rdbmsToolsParameters)
-#if NETFRAMEWORK
-        : base(CreateAppDomainSetup(rdbmsToolsParameters))
-#else
         : base(rdbmsToolsParameters.BaseDirectory, null)
-#endif
     {
       _rdbmsToolsParameters = rdbmsToolsParameters;
     }
 
-#if NETFRAMEWORK
-    protected override void CrossAppDomainCallbackHandler ()
-#else
     protected override void RunImplementation ()
-#endif
     {
       if (_rdbmsToolsParameters.Verbose)
-        LogManager.InitializeConsole();
+      {
+        //TODO: RM-9195
+        // Configure console logging 
+        // log4net.Config.BaseConfigurator.Configure();
+      }
 
       InitializeConfiguration();
 
@@ -101,7 +77,8 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
     protected virtual void BuildSchema ()
     {
       var scriptGenerator = new ScriptGenerator(
-          pd => pd.Factory.CreateSchemaScriptBuilder(pd), new RdbmsStorageEntityDefinitionProvider(), new ScriptToStringConverter());
+          pd => pd.Factory.CreateSchemaScriptBuilder(pd), new RdbmsStorageEntityDefinitionProvider(), new RdbmsStructuredTypeDefinitionProvider(),
+          new ScriptToStringConverter());
       var scripts = scriptGenerator.GetScripts(MappingConfiguration.Current.GetTypeDefinitions());
       var fileGenerator = new FileGenerator(_rdbmsToolsParameters.SchemaOutputDirectory);
       var includeStorageProviderName = scripts.Count() > 1;

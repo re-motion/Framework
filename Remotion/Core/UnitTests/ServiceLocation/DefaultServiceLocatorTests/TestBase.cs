@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Remotion.ServiceLocation;
 using Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain;
@@ -27,7 +28,8 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     protected DefaultServiceLocator CreateServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService = null)
     {
       return new DefaultServiceLocator(
-          serviceConfigurationDiscoveryService ?? new Mock<IServiceConfigurationDiscoveryService>(MockBehavior.Strict).Object);
+          serviceConfigurationDiscoveryService ?? new Mock<IServiceConfigurationDiscoveryService>(MockBehavior.Strict).Object,
+          NullLoggerFactory.Instance);
     }
 
     protected ServiceConfigurationEntry CreateSingleServiceConfigurationEntry (

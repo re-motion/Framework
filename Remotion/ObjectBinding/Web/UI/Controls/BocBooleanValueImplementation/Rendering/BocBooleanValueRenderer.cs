@@ -113,7 +113,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       var descriptionLabelControl = new Label { ID = renderingContext.Control.ClientID + "_Description", ClientIDMode = ClientIDMode.Static };
       var requiredLabelControl = new Label { ID = renderingContext.Control.ClientID + "_Required", ClientIDMode = ClientIDMode.Static };
       var imageControl = new Image();
-      var hiddenFieldControl = new HiddenField { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
+      var inputControl = new HtmlInputText() { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
       var dataValueReadOnlyControl = new Label { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
       var checkboxControl = new HtmlGenericControl("span") { ID = renderingContext.Control.GetDisplayValueName(), ClientIDMode = ClientIDMode.Static };
 
@@ -142,8 +142,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         var script = GetClickScript(renderingContext, resourceSet);
         checkboxControl.Attributes.Add("onkeydown", "BocBooleanValue.OnKeyDown (this);");
         renderingContext.Writer.AddAttribute("onclick", script);
-        renderingContext.Writer.AddAttribute("onmouseover", "BocBooleanValue.OnMouseOver (this);");
-        renderingContext.Writer.AddAttribute("onmouseout", "BocBooleanValue.OnMouseOut (this);");
       }
       AddAttributesToRender(renderingContext);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
@@ -160,9 +158,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       }
       else
       {
-        hiddenFieldControl.Value = renderingContext.Control.Value.HasValue ? renderingContext.Control.Value.ToString()! : c_nullString;
-        hiddenFieldControl.Visible = true;
-        hiddenFieldControl.RenderControl(renderingContext.Writer);
+        inputControl.Value = renderingContext.Control.Value.HasValue ? renderingContext.Control.Value.ToString()! : c_nullString;
+        inputControl.Visible = true;
+        inputControl.Attributes.Add(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+        inputControl.RenderControl(renderingContext.Writer);
       }
 
       checkboxControl.Controls.Add(imageControl);
@@ -329,10 +328,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         checkboxControl.Attributes.Add("class", CssClassDefinition.ScreenReaderText);
       }
 
-      imageControl.ImageUrl = imageUrl;
+      imageControl.ImageUrl = IconInfo.CreateSpacer(ResourceUrlFactory).Url;
       imageControl.GenerateEmptyAlternateText = true;
-      imageControl.Attributes.Add("data-src", imageUrl);
-      imageControl.Attributes.Add("data-src-hover", imageHoverUrl);
+      imageControl.Style.Add("--standard-background-image", $"url('{imageUrl}');");
+      imageControl.Style.Add("--hover-background-image", $"url('{imageHoverUrl}');");
 
       labelControl.Text = description.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
       if (renderingContext.Control.IsReadOnly)

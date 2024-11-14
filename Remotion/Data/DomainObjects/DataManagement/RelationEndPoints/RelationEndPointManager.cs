@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -263,33 +262,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         throw new ArgumentException(message, argumentName);
       }
     }
-
-    #region Serialization
-
-    protected RelationEndPointManager (FlattenedDeserializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      _clientTransaction = info.GetValueForHandle<ClientTransaction>();
-      _lazyLoader = info.GetValueForHandle<ILazyLoader>();
-      _endPointFactory = info.GetValueForHandle<IRelationEndPointFactory>();
-      _registrationAgent = info.GetValueForHandle<IRelationEndPointRegistrationAgent>();
-      _map = info.GetValue<RelationEndPointMap>();
-
-      _dataContainerEndPointsRegistrationAgent = new DelegatingDataContainerEndPointsRegistrationAgent(_endPointFactory, _registrationAgent);
-    }
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      ArgumentUtility.CheckNotNull("info", info);
-
-      info.AddHandle(_clientTransaction);
-      info.AddHandle(_lazyLoader);
-      info.AddHandle(_endPointFactory);
-      info.AddHandle(_registrationAgent);
-      info.AddValue(_map);
-    }
-
-    #endregion
   }
 }

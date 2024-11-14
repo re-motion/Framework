@@ -2,7 +2,7 @@
 
   <Target Name="CopyRoslynBinariesToOutput" AfterTargets="CopyFilesToOutputDirectory">
     <Error Text="Could not locate the required Nuget package 'Microsoft.Net.Compilers.Toolset'. Please install the package and make sure to set 'GeneratePathProperty=&quot;true&quot;':
-&lt;PackageReference Include=&quot;Microsoft.Net.Compilers.Toolset&quot; Version=&quot;4.8.0-3.final&quot; GeneratePathProperty=&quot;true&quot; ExcludeAssets=&quot;build&quot; /&gt;
+&lt;PackageReference Include=&quot;Microsoft.Net.Compilers.Toolset&quot; Version=&quot;4.10.0-3.final&quot; GeneratePathProperty=&quot;true&quot; ExcludeAssets=&quot;build&quot; /&gt;
 This package needs to be installed in all leaf projects as the 'GeneratePathProperty' does not work transitively across projects." 
            Condition="'$(PkgMicrosoft_Net_Compilers_Toolset)' == '' AND '$(RoslynBinariesPath)' == ''" />
 

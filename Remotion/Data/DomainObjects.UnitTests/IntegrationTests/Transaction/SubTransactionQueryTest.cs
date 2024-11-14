@@ -42,11 +42,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomQuery"));
+        var query = QueryFactory.CreateQuery(Queries.GetMandatory("CustomQueryReadOnly"));
 
         var result = ClientTransactionScope.CurrentTransaction.QueryManager.GetCustom(query, qrr => qrr.GetRawValue(0));
 
-        CollectionAssert.AreEquivalent(new[] { "üäöfedcba", "abcdeföäü" }, result);
+        Assert.That(result, Is.EquivalentTo(new[] { "üäöfedcba", "abcdeföäü" }));
       }
     }
 

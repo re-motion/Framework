@@ -51,7 +51,7 @@ namespace Remotion.Mixins
       ArgumentUtility.CheckNotNull("targetMock", targetMock);
       ArgumentUtility.CheckNotNull("nextMock", nextMock);
 
-      ((IInitializableMixin)mixin).Initialize(targetMock, nextMock, false);
+      ((IInitializableMixin)mixin).Initialize(targetMock, nextMock);
     }
 
     /// <summary>
@@ -75,7 +75,7 @@ namespace Remotion.Mixins
       ArgumentUtility.CheckNotNull("mixin", mixin);
       ArgumentUtility.CheckNotNull("targetMock", targetMock);
 
-      ((IInitializableMixin)mixin).Initialize(targetMock, null, false);
+      ((IInitializableMixin)mixin).Initialize(targetMock, null);
     }
 
     /// <summary>
@@ -140,37 +140,6 @@ namespace Remotion.Mixins
       var mixin = ObjectFactory.Create<TMixin>(true, ParamList.CreateDynamic(args));
       MockMixinTarget(mixin, targetMock);
       return mixin;
-    }
-
-    /// <summary>
-    /// Simulates the mixin initialization occurring after deserialization, mocking its <see cref="Mixin{TTarget}.Target"/> property and invoking its
-    /// <see cref="Mixin{TTarget}.OnDeserialized"/> method.
-    /// </summary>
-    /// <typeparam name="TTarget">The TTarget parameter of the mixin.</typeparam>
-    /// <param name="mixin">The mixin to simulate deserialization with.</param>
-    /// <param name="targetMock">The mock object to use for the mixin's <see cref="Mixin{TTarget}.Target"/> property.</param>
-    public static void MockMixinTargetAfterDeserialization<TTarget> (Mixin<TTarget> mixin, TTarget targetMock)
-        where TTarget : class
-    {
-      ArgumentUtility.CheckNotNull("mixin", mixin);
-      ((IInitializableMixin)mixin).Initialize(targetMock, null, true);
-    }
-
-    /// <summary>
-    /// Simulates the mixin initialization occurring after deserialization, mocking its <see cref="Mixin{TTarget,TNext}.Next"/> property and invoking its
-    /// <see cref="Mixin{TTarget}.OnDeserialized"/> method.
-    /// </summary>
-    /// <typeparam name="TTarget">The TTarget parameter of the mixin.</typeparam>
-    /// <typeparam name="TNext">The TNext parameter of the mixin.</typeparam>
-    /// <param name="mixin">The mixin to simulate deserialization with.</param>
-    /// <param name="targetMock">The mock object to use for the mixin's <see cref="Mixin{TTarget}.Target"/> property.</param>
-    /// <param name="nextMock">The mock object to use for the mixin's <see cref="Mixin{TTarget,TNext}.Next"/> property.</param>
-    public static void MockMixinTargetAfterDeserialization<TTarget, TNext> (Mixin<TTarget, TNext> mixin, TTarget targetMock, TNext nextMock)
-        where TTarget : class
-        where TNext : class
-    {
-      ArgumentUtility.CheckNotNull("mixin", mixin);
-      ((IInitializableMixin)mixin).Initialize(targetMock, nextMock, true);
     }
   }
 }

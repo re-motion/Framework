@@ -55,17 +55,10 @@ public class LanguageFeaturesTest
     // C# 11 Generic Attributes
     // -> don't work under .NET Framework
 
-#if NETFRAMEWORK
-    Assert.That(
-        () => typeof(AttrTarget).GetCustomAttributes().ToArray(),
-        Throws.TypeOf<NotSupportedException>()
-            .With.Message.EqualTo("Generic types are not valid."));
-#else
     var attributes = typeof(AttrTarget).GetCustomAttributes().ToArray();
 
     Assert.That(attributes.Length, Is.EqualTo(1));
     Assert.That(attributes[0].GetType(), Is.EqualTo(typeof(MyAttr<int>)));
-#endif
   }
 
 

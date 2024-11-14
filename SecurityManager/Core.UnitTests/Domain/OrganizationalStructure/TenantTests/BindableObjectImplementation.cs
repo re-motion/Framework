@@ -1,19 +1,18 @@
-// This file is part of re-strict (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Affero General Public License version 3.0 
-// as published by the Free Software Foundation.
+// The re-motion Core Framework is free software; you can redistribute it 
+// and/or modify it under the terms of the GNU Lesser General Public License 
+// as published by the Free Software Foundation; either version 2.1 of the 
+// License, or (at your option) any later version.
 // 
-// This program is distributed in the hope that it will be useful, 
+// re-motion is distributed in the hope that it will be useful, 
 // but WITHOUT ANY WARRANTY; without even the implied warranty of 
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-// GNU Affero General Public License for more details.
+// GNU Lesser General Public License for more details.
 // 
-// You should have received a copy of the GNU Affero General Public License
-// along with this program; if not, see http://www.gnu.org/licenses.
-// 
-// Additional permissions are listed in the file re-motion_exceptions.txt.
+// You should have received a copy of the GNU Lesser General Public License
+// along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
 using Moq;
@@ -36,7 +35,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
     {
       Tenant tenant = TestHelper.CreateTenant("TestTenant", "UID: testTenant");
 
-      Assert.IsNotEmpty(tenant.UniqueIdentifier);
+      Assert.That(tenant.UniqueIdentifier, Is.Not.Empty);
     }
 
     [Test]
@@ -100,7 +99,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
 
       IBusinessObjectProperty property = businessObject.BusinessObjectClass.GetPropertyDefinition("UniqueIdentifier");
 
-      Assert.IsInstanceOf(typeof(IBusinessObjectStringProperty), property);
+      Assert.That(property, Is.InstanceOf(typeof(IBusinessObjectStringProperty)));
       Assert.That(businessObject.GetProperty(property), Is.EqualTo("My Unique Identifier"));
     }
 
@@ -122,7 +121,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
         }
       }
 
-      Assert.IsTrue(isFound, "Property UnqiueIdentifier declared on Tenant was not found.");
+      Assert.That(isFound, Is.True, "Property UnqiueIdentifier declared on Tenant was not found.");
     }
 
     [Test]

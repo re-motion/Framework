@@ -1,20 +1,5 @@
-// Copyright (c) rubicon IT GmbH, www.rubicon.eu
-//
-// See the NOTICE file distributed with this work for additional information
-// regarding copyright ownership.  rubicon licenses this file to you under 
-// the Apache License, Version 2.0 (the "License"); you may not use this 
-// file except in compliance with the License.  You may obtain a copy of the 
-// License at
-//
-//   http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software 
-// distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
-// WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the 
-// License for the specific language governing permissions and limitations
-// under the License.
-// 
-
+// SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
+// SPDX-License-Identifier: Apache-2.0
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -292,30 +277,6 @@ namespace Remotion.FunctionalProgramming
 
       return new HashSet<T>(sequence1).SetEquals(sequence2);
     }
-
-#if NETFRAMEWORK
-    /// <summary>
-    /// Combines two sequences into a single sequence of <see cref="Tuple{T1,T2}"/> values.
-    /// </summary>
-    /// <typeparam name="T1">The item type of the first sequence.</typeparam>
-    /// <typeparam name="T2">The item type of the second sequence.</typeparam>
-    /// <param name="first">The first sequence.</param>
-    /// <param name="second">The second sequence.</param>
-    /// <returns>
-    /// A "zipped" sequence, consisting of the combined elements of the <paramref name="first"/> and the <paramref name="second"/> sequence.
-    /// </returns>
-    /// <exception cref="ArgumentNullException">One of the parameters is null.</exception>
-    /// <remarks>
-    /// If the input sequences do not have the same number of arguments, the result sequence will have as many arguments as the smaller input sequence.
-    /// </remarks>
-    public static IEnumerable<Tuple<T1, T2>> Zip<T1, T2> (this IEnumerable<T1> first, IEnumerable<T2> second)
-    {
-      ArgumentUtility.CheckNotNull("first", first);
-      ArgumentUtility.CheckNotNull("second", second);
-
-      return first.Zip(second, Tuple.Create);
-    }
-#endif
 
     /// <summary>
     /// Interleaves the elements of two sequences.

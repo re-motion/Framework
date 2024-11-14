@@ -1,25 +1,25 @@
-// This file is part of re-strict (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU Affero General Public License version 3.0 
-// as published by the Free Software Foundation.
+// The re-motion Core Framework is free software; you can redistribute it 
+// and/or modify it under the terms of the GNU Lesser General Public License 
+// as published by the Free Software Foundation; either version 2.1 of the 
+// License, or (at your option) any later version.
 // 
-// This program is distributed in the hope that it will be useful, 
+// re-motion is distributed in the hope that it will be useful, 
 // but WITHOUT ANY WARRANTY; without even the implied warranty of 
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-// GNU Affero General Public License for more details.
+// GNU Lesser General Public License for more details.
 // 
-// You should have received a copy of the GNU Affero General Public License
-// along with this program; if not, see http://www.gnu.org/licenses.
-// 
-// Additional permissions are listed in the file re-motion_exceptions.txt.
+// You should have received a copy of the GNU Lesser General Public License
+// along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Linq.ExecutableQueries;
@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       where TRevisionKey : IRevisionKey
       where TRevisionValue : IRevisionValue
   {
-    private static readonly ILog s_log = LogManager.GetLogger(MethodInfo.GetCurrentMethod()!.DeclaringType!);
+    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<SecurityContextRevisionBasedCacheBase<TData, TRevisionKey, TRevisionValue>>();
     private static readonly ConcurrentDictionary<string, IQuery> s_queryCache = new ConcurrentDictionary<string, IQuery>();
 
     protected SecurityContextRevisionBasedCacheBase (IRevisionProvider<TRevisionKey, TRevisionValue> revisionProvider)
@@ -47,7 +47,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     private StopwatchScope CreateStopwatchScopeForQueryParsing (string queryName)
     {
       return StopwatchScope.CreateScope(
-          s_log,
+          s_logger,
           LogLevel.Debug,
           "Parsed query for " + GetType().Name + "." + queryName + "(). Time taken: {elapsed:ms}ms");
     }
@@ -55,7 +55,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     protected StopwatchScope CreateStopwatchScopeForQueryExecution (string queryName)
     {
       return StopwatchScope.CreateScope(
-          s_log,
+          s_logger,
           LogLevel.Debug,
           "Fetched " + queryName + " into " + GetType().Name + ". Time taken: {elapsed:ms}ms");
     }
@@ -84,7 +84,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
             "<dynamic query>",
             queryExecutor.StorageProviderDefinition,
             queryModel,
-            Enumerable.Empty<FetchQueryModelBuilder>());
+            Enumerable.Empty<FetchQueryModelBuilder>(),
+            queryExecutor.Metadata);
       }
     }
   }

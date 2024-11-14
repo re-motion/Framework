@@ -20,7 +20,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
-  [Serializable]
   public class WxePageExecutor : IWxePageExecutor
   {
     private const int HttpStatusCode_NotFound = 404;

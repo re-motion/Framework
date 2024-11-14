@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
@@ -287,22 +286,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var state = new DomainObjectState.Builder().SetRelationChanged().Value;
       Assert.That(state.IsChanged, Is.False);
-    }
-
-
-    [Test]
-    public void SerializeAndDeserialize ()
-    {
-      var state = new DomainObjectState.Builder().SetChanged().SetNew().Value;
-      Assert.That(state.IsChanged, Is.True);
-      Assert.That(state.IsNew, Is.True);
-      Assert.That(state.IsDeleted, Is.False);
-
-      var deserializedState = Serializer.SerializeAndDeserialize(state);
-
-      Assert.That(deserializedState.IsChanged, Is.True);
-      Assert.That(deserializedState.IsNew, Is.True);
-      Assert.That(deserializedState.IsDeleted, Is.False);
     }
   }
 }

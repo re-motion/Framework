@@ -115,11 +115,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var expectedIdentifier = new ConcreteMixinTypeIdentifier(typeof(object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
 
       var method1 = ReflectionObjectMother.GetSomeNonPublicMethod();
-#if NETFRAMEWORK
-      var method2 = typeof(DateTime).GetMethod("get_InternalTicks", BindingFlags.NonPublic | BindingFlags.Instance);
-#else
       var method2 = typeof(DateTime).GetMethod("get_UTicks", BindingFlags.NonPublic | BindingFlags.Instance);
-#endif
       var wrapper1 = typeof(DateTime).GetMethod("get_Month");
       var wrapper2 = typeof(DateTime).GetMethod("get_Year");
 

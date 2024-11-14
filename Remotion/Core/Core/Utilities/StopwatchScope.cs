@@ -17,7 +17,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using Remotion.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace Remotion.Utilities
 {
@@ -99,9 +99,9 @@ namespace Remotion.Utilities
 
     /// <summary>
     /// Creates a <see cref="StopwatchScope"/> that measures the time, writing the result to the given
-    /// <paramref name="log"/> when the scope is disposed or a <see cref="Checkpoint"/> is reached.
+    /// <paramref name="logger"/> when the scope is disposed or a <see cref="Checkpoint"/> is reached.
     /// </summary>
-    /// <param name="log">The <see cref="ILog"/> to receive the result.</param>
+    /// <param name="logger">The <see cref="ILogger"/> to receive the result.</param>
     /// <param name="logLevel">The log level to log the result with.</param>
     /// <param name="formatString">A string to format the result with. The string can contain the following placeholders:
     /// <list type="bullet">
@@ -132,17 +132,25 @@ namespace Remotion.Utilities
     /// <returns>
     /// A <see cref="StopwatchScope"/> that measures the time in milliseconds.
     /// </returns>
-    public static StopwatchScope CreateScope (ILog log, LogLevel logLevel, string formatString)
+    public static StopwatchScope CreateScope (ILogger logger, LogLevel logLevel, string formatString)
     {
       var actualFormatString = ReplacePlaceholders(formatString);
-      return new StopwatchScope((context, scope) => log.LogFormat(
-          logLevel,
-          actualFormatString,
-          context,
-          scope.ElapsedTotal.ToString(),
-          scope.ElapsedTotal.TotalMilliseconds.ToString(),
-          scope.ElapsedSinceLastCheckpoint.ToString(),
-          scope.ElapsedSinceLastCheckpoint.TotalMilliseconds.ToString()), "end");
+      return new StopwatchScope(Log, "end");
+
+      void Log (string context, StopwatchScope scope)
+      {
+        if (logger.IsEnabled(logLevel))
+        {
+          var logMessage = string.Format(
+              actualFormatString,
+              context,
+              scope.ElapsedTotal.ToString(),
+              scope.ElapsedTotal.TotalMilliseconds.ToString(),
+              scope.ElapsedSinceLastCheckpoint.ToString(),
+              scope.ElapsedSinceLastCheckpoint.TotalMilliseconds.ToString());
+          logger.Log(logLevel, logMessage);
+        }
+      }
     }
 
     /// <summary>

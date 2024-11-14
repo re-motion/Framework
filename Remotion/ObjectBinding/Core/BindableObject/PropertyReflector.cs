@@ -129,6 +129,8 @@ namespace Remotion.ObjectBinding.BindableObject
         return new DateProperty(parameters);
       else if (underlyingType == typeof(DateTime))
         return new DateTimeProperty(parameters);
+      else if (underlyingType == typeof(DateOnly))
+        return new DateOnlyProperty(parameters);
       else if (underlyingType == typeof(Decimal))
         return new DecimalProperty(parameters);
       else if (underlyingType == typeof(Double))

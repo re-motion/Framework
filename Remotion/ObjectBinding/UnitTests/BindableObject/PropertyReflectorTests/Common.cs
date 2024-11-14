@@ -90,6 +90,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     }
 
     [Test]
+    public void GetMetadata_WithDateOnly ()
+    {
+      var businessObjectProperty = GetMetadataFromPropertyReflector("DateOnly");
+
+      Assert.That(businessObjectProperty, Is.TypeOf<DateOnlyProperty>());
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("DateOnly"));
+    }
+
+    [Test]
     public void GetMetadata_WithDateTime ()
     {
       IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("DateTime");

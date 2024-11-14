@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
-using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
@@ -512,21 +511,5 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       return new VirtualEndPointStateUpdatedRaisingCommandDecorator(command, _innerEndPoint.ID, _listener, () => _innerEndPoint.HasChanged);
     }
-
-    #region Serialization
-
-    public StateUpdateRaisingVirtualCollectionEndPointDecorator (FlattenedDeserializationInfo info)
-    {
-      _innerEndPoint = info.GetValue<IVirtualCollectionEndPoint>();
-      _listener = info.GetValueForHandle<IVirtualEndPointStateUpdateListener>();
-    }
-
-    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
-    {
-      info.AddValue(_innerEndPoint);
-      info.AddHandle(_listener);
-    }
-
-    #endregion
   }
 }

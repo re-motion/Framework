@@ -22,7 +22,6 @@ namespace Remotion.Security
   /// <summary>
   /// The <see cref="SecurityPrincipalRole"/> type defines a role the user can be in.
   /// </summary>
-  [Serializable]
   public sealed class SecurityPrincipalRole : ISecurityPrincipalRole, IEquatable<SecurityPrincipalRole>
   {
     private readonly string _group;

@@ -20,7 +20,6 @@ namespace Remotion.Data.DomainObjects
 {
   /// <summary>The <see cref="ClientTransactionFactory"/> is the default implementation of the <see cref="ITransactionFactory"/> interface.</summary>
   /// <threadsafety static="true" instance="true"/>
-  [Serializable]
   public class ClientTransactionFactory : ITransactionFactory
   {
     /// <summary>

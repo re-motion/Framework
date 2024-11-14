@@ -31,8 +31,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public void Instantiate_WithDefaultValues ()
     {
       BindableDomainObjectProvider provider = new BindableDomainObjectProvider();
-      Assert.IsInstanceOf(typeof(BindableDomainObjectMetadataFactory), provider.MetadataFactory);
-      Assert.IsInstanceOf(typeof(BindableObjectServiceFactory), provider.ServiceFactory);
+      Assert.That(provider.MetadataFactory, Is.InstanceOf(typeof(BindableDomainObjectMetadataFactory)));
+      Assert.That(provider.ServiceFactory, Is.InstanceOf(typeof(BindableObjectServiceFactory)));
     }
 
     [Test]

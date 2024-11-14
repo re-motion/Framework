@@ -20,7 +20,7 @@ using System.Resources;
 using Remotion.Globalization;
 
 [assembly: NeutralResourcesLanguage("en")]
-[assembly: AvailableResourcesLanguages("", "de", "de-ch", "fr", "it")]
+[assembly: AvailableResourcesLanguages("", "de", "de-CH", "fr", "it")]
 
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

@@ -16,5 +16,8 @@
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
     <ProjectReference Include="..\Core\Validation.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.Testing" />
+  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

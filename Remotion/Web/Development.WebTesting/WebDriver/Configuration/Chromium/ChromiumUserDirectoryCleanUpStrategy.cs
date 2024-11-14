@@ -18,7 +18,7 @@ using System;
 using System.IO;
 using System.Threading;
 using JetBrains.Annotations;
-using log4net;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
@@ -28,17 +28,18 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
   /// </summary>
   public class ChromiumUserDirectoryCleanUpStrategy : IBrowserSessionCleanUpStrategy
   {
-    private static readonly ILog s_log = LogManager.GetLogger(typeof(ChromiumUserDirectoryCleanUpStrategy));
-
+    private readonly ILogger _logger;
     private readonly string _userDirectoryRoot;
     private readonly string _userDirectory;
 
-    public ChromiumUserDirectoryCleanUpStrategy ([NotNull] string userDirectoryRoot, [NotNull] string userDirectory)
+    public ChromiumUserDirectoryCleanUpStrategy ([NotNull] string userDirectoryRoot, [NotNull] string userDirectory, [NotNull] ILogger logger)
     {
       // TODO RM-8117: userDirectory should be nullable.
       ArgumentUtility.CheckNotNullOrEmpty("userDirectoryRoot", userDirectoryRoot);
       ArgumentUtility.CheckNotNullOrEmpty("userDirectory", userDirectory);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
+      _logger = logger;
       _userDirectoryRoot = userDirectoryRoot;
       _userDirectory = userDirectory;
     }
@@ -84,7 +85,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
 
           if (tries == maxTries - 1)
           {
-            s_log.InfoFormat(
+            _logger.LogInformation(
                 @"Could not delete the user data folder '{0}' because of an '{1}':
 {2}",
                 _userDirectory,

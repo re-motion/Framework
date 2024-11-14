@@ -20,7 +20,6 @@ using Remotion.ExtensibleEnums;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
-  [Serializable]
   public class Color : ExtensibleEnum<Color>
   {
     public Color (MethodBase currentMethod)

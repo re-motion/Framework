@@ -52,6 +52,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       const string cssSelector = "span.tabStripTab, span.tabStripTabSelected";
       return RetryUntilTimeout.Run(
+          Logger,
           () =>
               Scope.FindAllCss(cssSelector)
                   .Select(

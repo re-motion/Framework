@@ -27,468 +27,522 @@ using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms;
+
+public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExecutionContext, IRdbmsProviderReadWriteCommandExecutionContext
 {
-  public class RdbmsProvider : StorageProvider, IRdbmsProviderCommandExecutionContext
+  private readonly RdbmsProviderDefinition _storageProviderDefinition;
+  private readonly string _connectionString;
+  private readonly IPersistenceExtension _persistenceExtension;
+  private readonly IRdbmsProviderCommandFactory _rdbmsProviderCommandFactory;
+  private readonly Func<IDbConnection> _connectionFactory;
+  private bool _disposed;
+
+  private TracingDbConnection? _connection;
+  private TracingDbTransaction? _transaction;
+
+  public RdbmsProvider (
+      RdbmsProviderDefinition definition,
+      string connectionString,
+      IPersistenceExtension persistenceExtension,
+      IRdbmsProviderCommandFactory rdbmsProviderCommandFactory,
+      Func<IDbConnection> connectionFactory)
   {
-    private readonly IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> _storageProviderCommandFactory;
-    private readonly Func<IDbConnection> _connectionFactory;
+    ArgumentUtility.CheckNotNull("definition", definition);
+    ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
+    ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+    ArgumentUtility.CheckNotNull("rdbmsProviderCommandFactory", rdbmsProviderCommandFactory);
+    ArgumentUtility.CheckNotNull("connectionFactory", connectionFactory);
 
-    private TracingDbConnection? _connection;
-    private TracingDbTransaction? _transaction;
-
-    public RdbmsProvider (
-        RdbmsProviderDefinition definition,
-        IPersistenceExtension persistenceExtension,
-        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> storageProviderCommandFactory,
-        Func<IDbConnection> connectionFactory)
-        : base(definition, persistenceExtension)
+    if (connectionString != definition.ConnectionString && connectionString != definition.ReadOnlyConnectionString)
     {
-      ArgumentUtility.CheckNotNull("storageProviderCommandFactory", storageProviderCommandFactory);
-      ArgumentUtility.CheckNotNull("connectionFactory", connectionFactory);
-
-      _storageProviderCommandFactory = storageProviderCommandFactory;
-      _connectionFactory = connectionFactory;
+      throw CreateArgumentException(
+          "connectionString",
+          "The connection string '{0}' is not defined by provider '{1}'",
+          connectionString,
+          definition.Name);
     }
 
-    public new RdbmsProviderDefinition StorageProviderDefinition
-    {
-      get
-      {
-        // CheckDisposed is not necessary here, because StorageProvider.StorageProviderDefinition already checks this.
-        return (RdbmsProviderDefinition)base.StorageProviderDefinition;
-      }
-    }
+    _storageProviderDefinition = definition;
+    _persistenceExtension = persistenceExtension;
+    _connectionString = connectionString;
+    _rdbmsProviderCommandFactory = rdbmsProviderCommandFactory;
+    _connectionFactory = connectionFactory;
+    _disposed = false;
+  }
 
-    [MemberNotNullWhen(true, nameof(_connection))]
-    public virtual bool IsConnected
-    {
-      get
-      {
-        if (_connection == null)
-          return false;
-
-        return _connection.State != ConnectionState.Closed;
-      }
-    }
-
-    public TracingDbConnection? Connection
-    {
-      get
-      {
-        CheckDisposed();
-        return _connection;
-      }
-    }
-
-    public TracingDbTransaction? Transaction
-    {
-      get
-      {
-        CheckDisposed();
-        return _transaction;
-      }
-    }
-
-    public virtual IsolationLevel IsolationLevel
-    {
-      get { return IsolationLevel.Serializable; }
-    }
-
-    protected IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> StorageProviderCommandFactory
-    {
-      get { return _storageProviderCommandFactory; }
-    }
-
-    public override void Dispose ()
-    {
-      if (!IsDisposed)
-      {
-        try
-        {
-          DisposeTransaction();
-          DisposeConnection();
-        }
-        finally
-        {
-          base.Dispose();
-        }
-      }
-    }
-
-    [MemberNotNull(nameof(_connection))]
-    public virtual void Connect ()
+  public RdbmsProviderDefinition StorageProviderDefinition
+  {
+    get
     {
       CheckDisposed();
-
-      if (!IsConnected)
-      {
-        _connection = new TracingDbConnection(CreateConnection(), PersistenceExtension);
-        if (string.IsNullOrEmpty(_connection.ConnectionString))
-          _connection.ConnectionString = StorageProviderDefinition.ConnectionString;
-
-        try
-        {
-          _connection.Open();
-        }
-        catch (Exception e)
-        {
-          throw CreateRdbmsProviderException(e, "Error while opening connection.");
-        }
-      }
+      return _storageProviderDefinition;
     }
+  }
 
-    public virtual void Disconnect ()
+  [MemberNotNullWhen(true, nameof(_connection))]
+  public virtual bool IsConnected
+  {
+    get
     {
-      Dispose();
-    }
+      if (_connection == null)
+        return false;
 
-    public override void BeginTransaction ()
+      return _connection.State != ConnectionState.Closed;
+    }
+  }
+
+  public string ConnectionString => _connectionString;
+
+  public TracingDbConnection? Connection
+  {
+    get
     {
       CheckDisposed();
+      return _connection;
+    }
+  }
 
-      Connect();
+  public TracingDbTransaction? Transaction
+  {
+    get
+    {
+      CheckDisposed();
+      return _transaction;
+    }
+  }
 
-      if (_transaction != null)
-        throw new InvalidOperationException("Cannot call BeginTransaction when a transaction is already in progress.");
+  public virtual IsolationLevel IsolationLevel => IsolationLevel.Serializable;
 
+  public IRdbmsProviderCommandFactory RdbmsProviderCommandFactory => _rdbmsProviderCommandFactory;
+
+  public bool IsDisposed => _disposed;
+
+  public IPersistenceExtension PersistenceExtension => _persistenceExtension;
+
+  public virtual void Dispose ()
+  {
+    if (!IsDisposed)
+    {
       try
       {
-        _transaction = _connection.BeginTransaction(IsolationLevel);
-      }
-      catch (Exception e)
-      {
-        throw CreateRdbmsProviderException(e, "Error while executing BeginTransaction.");
-      }
-    }
-
-    public override void Commit ()
-    {
-      CheckDisposed();
-
-      if (_transaction == null)
-        throw new InvalidOperationException("Commit cannot be called without calling BeginTransaction first.");
-
-      try
-      {
-        _transaction.Commit();
-      }
-      catch (Exception e)
-      {
-        throw CreateRdbmsProviderException(e, "Error while executing Commit.");
+        DisposeTransaction();
+        DisposeConnection();
       }
       finally
       {
-        DisposeTransaction();
+        _disposed = true;
       }
     }
+  }
 
-    public override void Rollback ()
+  [MemberNotNull(nameof(_connection))]
+  public virtual void Connect ()
+  {
+    CheckDisposed();
+
+    if (!IsConnected)
     {
-      CheckDisposed();
-
-      if (_transaction == null)
-        throw new InvalidOperationException("Rollback cannot be called without calling BeginTransaction first.");
+      _connection = new TracingDbConnection(CreateConnection(), PersistenceExtension);
+      if (string.IsNullOrEmpty(_connection.ConnectionString))
+        _connection.ConnectionString = _connectionString;
 
       try
       {
-        _transaction.Rollback();
+        _connection.Open();
       }
       catch (Exception e)
       {
-        throw CreateRdbmsProviderException(e, "Error while executing Rollback.");
-      }
-      finally
-      {
-        DisposeTransaction();
+        throw CreateRdbmsProviderException(e, "Error while opening connection.");
       }
     }
+  }
 
-    public override IEnumerable<DataContainer?> ExecuteCollectionQuery (IQuery query)
+  public virtual void Disconnect ()
+  {
+    Dispose();
+  }
+
+  public virtual void BeginTransaction ()
+  {
+    CheckDisposed();
+
+    Connect();
+
+    if (_transaction != null)
+      throw new InvalidOperationException("Cannot call BeginTransaction when a transaction is already in progress.");
+
+    try
     {
-      CheckDisposed();
-      ArgumentUtility.CheckNotNull("query", query);
-      CheckQuery(query, QueryType.Collection, "query");
+      _transaction = _connection.BeginTransaction(IsolationLevel);
+    }
+    catch (Exception e)
+    {
+      throw CreateRdbmsProviderException(e, "Error while executing BeginTransaction.");
+    }
+  }
 
-      Connect();
+  public virtual void Commit ()
+  {
+    CheckDisposed();
 
-      var command = _storageProviderCommandFactory.CreateForDataContainerQuery(query);
-      var dataContainers = command.Execute(this);
+    if (_transaction == null)
+      throw new InvalidOperationException("Commit cannot be called without calling BeginTransaction first.");
 
-      var checkedSequence = CheckForDuplicates(dataContainers, "database query");
-      return checkedSequence.ToArray();
+    try
+    {
+      _transaction.Commit();
+    }
+    catch (Exception e)
+    {
+      throw CreateRdbmsProviderException(e, "Error while executing Commit.");
+    }
+    finally
+    {
+      DisposeTransaction();
+    }
+  }
+
+  public virtual void Rollback ()
+  {
+    CheckDisposed();
+
+    if (_transaction == null)
+      throw new InvalidOperationException("Rollback cannot be called without calling BeginTransaction first.");
+
+    try
+    {
+      _transaction.Rollback();
+    }
+    catch (Exception e)
+    {
+      throw CreateRdbmsProviderException(e, "Error while executing Rollback.");
+    }
+    finally
+    {
+      DisposeTransaction();
+    }
+  }
+
+  public virtual IEnumerable<DataContainer?> ExecuteCollectionQuery (IQuery query)
+  {
+    CheckDisposed();
+    ArgumentUtility.CheckNotNull("query", query);
+    CheckQuery("query", query, QueryType.CollectionReadOnly, QueryType.CollectionReadWrite);
+
+    Connect();
+
+    var command = _rdbmsProviderCommandFactory.CreateForDataContainerQuery(query);
+    var dataContainers = command.Execute(this);
+
+    var checkedSequence = CheckForDuplicates(dataContainers, "database query");
+    return checkedSequence.ToArray();
+  }
+
+  public virtual IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
+  {
+    CheckDisposed();
+    ArgumentUtility.CheckNotNull("query", query);
+    CheckQuery("query", query, QueryType.CustomReadOnly, QueryType.CustomReadWrite);
+
+    Connect();
+
+    var command = _rdbmsProviderCommandFactory.CreateForCustomQuery(query);
+    return command.Execute(this);
+  }
+
+  public virtual object? ExecuteScalarQuery (IQuery query)
+  {
+    CheckDisposed();
+    ArgumentUtility.CheckNotNull("query", query);
+    CheckQuery("query", query, QueryType.ScalarReadOnly, QueryType.ScalarReadWrite);
+
+    Connect();
+
+    var command = _rdbmsProviderCommandFactory.CreateForScalarQuery(query);
+    return command.Execute(this);
+  }
+
+  public virtual ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
+  {
+    CheckDisposed();
+    ArgumentUtility.CheckNotNull("id", id);
+    CheckStorageProvider(id, "id");
+
+    Connect();
+
+    var command = _rdbmsProviderCommandFactory.CreateForSingleIDLookup(id);
+    return command.Execute(this);
+  }
+
+  public virtual IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
+  {
+    CheckDisposed();
+    ArgumentUtility.CheckNotNull("ids", ids);
+
+    Connect();
+
+    var checkedIDs = ids.Select(id => CheckStorageProvider(id, "ids"));
+    var command = _rdbmsProviderCommandFactory.CreateForSortedMultiIDLookup(checkedIDs);
+    return command.Execute(this);
+  }
+
+  public virtual IEnumerable<DataContainer> LoadDataContainersByRelatedID (
+      RelationEndPointDefinition relationEndPointDefinition,
+      SortExpressionDefinition? sortExpressionDefinition,
+      ObjectID relatedID)
+  {
+    CheckDisposed();
+    ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+    ArgumentUtility.CheckNotNull("relatedID", relatedID);
+    CheckClassDefinition(relationEndPointDefinition.ClassDefinition, "classDefinition");
+
+    Connect();
+
+    if (relationEndPointDefinition.PropertyDefinition.StorageClass == StorageClass.Transaction)
+      return new DataContainerCollection();
+
+    var storageProviderCommand = _rdbmsProviderCommandFactory.CreateForRelationLookup(
+        relationEndPointDefinition,
+        relatedID,
+        sortExpressionDefinition);
+    var dataContainers = storageProviderCommand.Execute(this);
+
+    var checkedSequence = CheckForNulls(CheckForDuplicates(dataContainers, "relation lookup"), "relation lookup");
+    return new DataContainerCollection(checkedSequence, true);
+  }
+
+  public virtual void Save (IReadOnlyCollection<DataContainer> dataContainers)
+  {
+    CheckDisposed();
+    ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
+
+    Connect();
+
+    var saveCommand = _rdbmsProviderCommandFactory.CreateForSave(dataContainers);
+    saveCommand.Execute(this);
+  }
+
+  public virtual void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers)
+  {
+    CheckDisposed();
+    ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
+
+    Connect();
+
+    var objectIds = dataContainers.Select(dc => dc.ID);
+    var multiTimestampLookupCommand = _rdbmsProviderCommandFactory.CreateForMultiTimestampLookup(objectIds);
+    var timestampDictionary = multiTimestampLookupCommand.Execute(this).ToDictionary(result => result.ObjectID, result => result.LocatedObject);
+
+    foreach (var dataContainer in dataContainers)
+    {
+      if (!timestampDictionary.TryGetValue(dataContainer.ID, out var timestamp))
+        throw new RdbmsProviderException(string.Format("No timestamp found for object '{0}'.", dataContainer.ID));
+
+      // TODO RM-8523: guard against null-values of timestamp
+
+      dataContainer.SetTimestamp(timestamp);
+    }
+  }
+
+  public virtual ObjectID CreateNewObjectID (ClassDefinition classDefinition)
+  {
+    CheckDisposed();
+    ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+    CheckClassDefinition(classDefinition, "classDefinition");
+
+    return new ObjectID(classDefinition.ID, Guid.NewGuid());
+  }
+
+  public virtual TracingDbCommand CreateDbCommand ()
+  {
+    CheckDisposed();
+
+    if (!IsConnected)
+      throw new InvalidOperationException("Connect must be called before a command can be created.");
+
+    var command = _connection.CreateCommand();
+
+    try
+    {
+      command.SetInnerConnection(_connection);
+      command.SetInnerTransaction(_transaction);
+    }
+    catch (Exception)
+    {
+      command.Dispose();
+      throw;
     }
 
-    public override IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
+    return command;
+  }
+
+  IDbCommand IDbCommandFactory.CreateDbCommand ()
+  {
+    return CreateDbCommand();
+  }
+
+  public virtual IDataReader ExecuteReader (IDbCommand command, CommandBehavior behavior)
+  {
+    CheckDisposed();
+    ArgumentUtility.CheckNotNull("command", command);
+    ArgumentUtility.CheckValidEnumValue("behavior", behavior);
+
+    try
     {
-      CheckDisposed();
-      ArgumentUtility.CheckNotNull("query", query);
-      CheckQuery(query, QueryType.Custom, "query");
+      return command.ExecuteReader(behavior);
+    }
+    catch (Exception e)
+    {
+      throw CreateRdbmsProviderException(e, "Error while executing SQL command: " + e.Message);
+    }
+  }
 
-      Connect();
+  public virtual object? ExecuteScalar (IDbCommand command)
+  {
+    CheckDisposed();
+    ArgumentUtility.CheckNotNull("command", command);
 
-      var command = _storageProviderCommandFactory.CreateForCustomQuery(query);
-      return command.Execute(this);
+    try
+    {
+      return command.ExecuteScalar();
+    }
+    catch (Exception e)
+    {
+      throw CreateRdbmsProviderException(e, "Error while executing SQL command: " + e.Message);
+    }
+  }
+
+  public virtual int ExecuteNonQuery (IDbCommand command)
+  {
+    CheckDisposed();
+    ArgumentUtility.CheckNotNull("command", command);
+
+    try
+    {
+      return command.ExecuteNonQuery();
+    }
+    catch (Exception e)
+    {
+      throw CreateRdbmsProviderException(e, "Error while executing SQL command: " + e.Message);
+    }
+  }
+
+  protected IDbConnection CreateConnection ()
+  {
+    return _connectionFactory();
+  }
+
+  protected RdbmsProviderException CreateRdbmsProviderException (Exception innerException, string formatString, params object[] args)
+  {
+    var message = string.Format(formatString, args);
+    return new RdbmsProviderException(message, innerException);
+  }
+
+  protected void CheckDisposed ()
+  {
+    if (_disposed)
+      throw new ObjectDisposedException("RdbmsProvider", "A disposed RdbmsProvider cannot be accessed.");
+  }
+
+  protected ArgumentException CreateArgumentException (string argumentName, string formatString, params object[] args)
+  {
+    return new ArgumentException(string.Format(formatString, args), argumentName);
+  }
+
+  private void CheckQuery (string argumentName, IQuery query, params QueryType[] expectedQueryTypes)
+  {
+    if (query.StorageProviderDefinition != StorageProviderDefinition)
+    {
+      throw CreateArgumentException(
+          argumentName,
+          "The StorageProvider '{0}' of the provided query '{1}' does not match with this StorageProvider '{2}'.",
+          query.StorageProviderDefinition.Name,
+          query.ID,
+          StorageProviderDefinition.Name);
     }
 
-    public override object? ExecuteScalarQuery (IQuery query)
+    if (!expectedQueryTypes.Contains(query.QueryType))
     {
-      CheckDisposed();
-      ArgumentUtility.CheckNotNull("query", query);
-      CheckQuery(query, QueryType.Scalar, "query");
+      throw CreateArgumentException(
+          argumentName,
+          "Expected query type is '{0}', but was '{1}'.",
+          string.Join("' or '", expectedQueryTypes),
+          query.QueryType);
+    }
+  }
 
-      Connect();
+  private void DisposeTransaction ()
+  {
+    if (_transaction != null)
+      _transaction.Dispose();
 
-      var command = _storageProviderCommandFactory.CreateForScalarQuery(query);
-      return command.Execute(this);
+    _transaction = null;
+  }
+
+  private void DisposeConnection ()
+  {
+    if (_connection != null)
+      _connection.Close();
+
+    _connection = null;
+  }
+
+  private ObjectID CheckStorageProvider (ObjectID id, string argumentName)
+  {
+    if (id.StorageProviderDefinition != StorageProviderDefinition)
+    {
+      throw CreateArgumentException(
+          argumentName,
+          "The StorageProvider '{0}' of the provided ObjectID '{1}' does not match with this StorageProvider '{2}'.",
+          id.StorageProviderDefinition.Name,
+          id,
+          StorageProviderDefinition.Name);
     }
 
-    public override ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
+    return id;
+  }
+
+  private void CheckClassDefinition (ClassDefinition classDefinition, string argumentName)
+  {
+    if (classDefinition.StorageEntityDefinition.StorageProviderDefinition != StorageProviderDefinition)
     {
-      CheckDisposed();
-      ArgumentUtility.CheckNotNull("id", id);
-      CheckStorageProvider(id, "id");
-
-      Connect();
-
-      var command = _storageProviderCommandFactory.CreateForSingleIDLookup(id);
-      return command.Execute(this);
+      throw CreateArgumentException(
+          argumentName,
+          "The StorageProvider '{0}' of the provided ClassDefinition does not match with this StorageProvider '{1}'.",
+          classDefinition.StorageEntityDefinition.StorageProviderDefinition.Name,
+          StorageProviderDefinition.Name);
     }
+  }
 
-    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
+  private IEnumerable<DataContainer?> CheckForDuplicates (IEnumerable<DataContainer?> dataContainers, string operation)
+  {
+    var loadedIDs = new HashSet<ObjectID>();
+    foreach (var dataContainer in dataContainers)
     {
-      CheckDisposed();
-      ArgumentUtility.CheckNotNull("ids", ids);
-
-      Connect();
-
-      var checkedIDs = ids.Select(id => CheckStorageProvider(id, "ids"));
-      var command = _storageProviderCommandFactory.CreateForSortedMultiIDLookup(checkedIDs);
-      return command.Execute(this);
-    }
-
-    public override IEnumerable<DataContainer> LoadDataContainersByRelatedID (
-        RelationEndPointDefinition relationEndPointDefinition,
-        SortExpressionDefinition? sortExpressionDefinition,
-        ObjectID relatedID)
-    {
-      CheckDisposed();
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull("relatedID", relatedID);
-      CheckClassDefinition(relationEndPointDefinition.ClassDefinition, "classDefinition");
-
-      Connect();
-
-      if (relationEndPointDefinition.PropertyDefinition.StorageClass == StorageClass.Transaction)
-        return new DataContainerCollection();
-
-      var storageProviderCommand = _storageProviderCommandFactory.CreateForRelationLookup(
-          relationEndPointDefinition,
-          relatedID,
-          sortExpressionDefinition);
-      var dataContainers = storageProviderCommand.Execute(this);
-
-      var checkedSequence = CheckForNulls(CheckForDuplicates(dataContainers, "relation lookup"), "relation lookup");
-      return new DataContainerCollection(checkedSequence, true);
-    }
-
-    public override void Save (IReadOnlyCollection<DataContainer> dataContainers)
-    {
-      CheckDisposed();
-      ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
-
-      Connect();
-
-      var saveCommand = _storageProviderCommandFactory.CreateForSave(dataContainers);
-      saveCommand.Execute(this);
-    }
-
-    public override void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers)
-    {
-      CheckDisposed();
-      ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
-
-      Connect();
-
-      var objectIds = dataContainers.Select(dc => dc.ID);
-      var multiTimestampLookupCommand = _storageProviderCommandFactory.CreateForMultiTimestampLookup(objectIds);
-      var timestampDictionary = multiTimestampLookupCommand.Execute(this).ToDictionary(result => result.ObjectID, result => result.LocatedObject);
-
-      foreach (var dataContainer in dataContainers)
+      if (dataContainer != null)
       {
-        if (!timestampDictionary.TryGetValue(dataContainer.ID, out var timestamp))
-          throw new RdbmsProviderException(string.Format("No timestamp found for object '{0}'.", dataContainer.ID));
-
-        // TODO RM-8523: guard against null-values of timestamp
-
-        dataContainer.SetTimestamp(timestamp);
-      }
-    }
-
-    public override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
-    {
-      CheckDisposed();
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      CheckClassDefinition(classDefinition, "classDefinition");
-
-      return new ObjectID(classDefinition.ID, Guid.NewGuid());
-    }
-
-    public virtual TracingDbCommand CreateDbCommand ()
-    {
-      CheckDisposed();
-
-      if (!IsConnected)
-        throw new InvalidOperationException("Connect must be called before a command can be created.");
-
-      var command = _connection.CreateCommand();
-
-      try
-      {
-        command.SetInnerConnection(_connection);
-        command.SetInnerTransaction(_transaction);
-      }
-      catch (Exception)
-      {
-        command.Dispose();
-        throw;
-      }
-
-      return command;
-    }
-
-    IDbCommand IRdbmsProviderCommandExecutionContext.CreateDbCommand ()
-    {
-      return CreateDbCommand();
-    }
-
-    public virtual IDataReader ExecuteReader (IDbCommand command, CommandBehavior behavior)
-    {
-      CheckDisposed();
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckValidEnumValue("behavior", behavior);
-
-      try
-      {
-        return command.ExecuteReader(behavior);
-      }
-      catch (Exception e)
-      {
-        throw CreateRdbmsProviderException(e, "Error while executing SQL command: " + e.Message);
-      }
-    }
-
-    public virtual object? ExecuteScalar (IDbCommand command)
-    {
-      CheckDisposed();
-      ArgumentUtility.CheckNotNull("command", command);
-
-      try
-      {
-        return command.ExecuteScalar();
-      }
-      catch (Exception e)
-      {
-        throw CreateRdbmsProviderException(e, "Error while executing SQL command: " + e.Message);
-      }
-    }
-
-    public virtual int ExecuteNonQuery (IDbCommand command)
-    {
-      CheckDisposed();
-      ArgumentUtility.CheckNotNull("command", command);
-
-      try
-      {
-        return command.ExecuteNonQuery();
-      }
-      catch (Exception e)
-      {
-        throw CreateRdbmsProviderException(e, "Error while executing SQL command: " + e.Message);
-      }
-    }
-
-    protected IDbConnection CreateConnection ()
-    {
-      return _connectionFactory();
-    }
-
-    protected RdbmsProviderException CreateRdbmsProviderException (Exception innerException, string formatString, params object[] args)
-    {
-      var message = string.Format(formatString, args);
-      return new RdbmsProviderException(message, innerException);
-    }
-
-    private void DisposeTransaction ()
-    {
-      if (_transaction != null)
-        _transaction.Dispose();
-
-      _transaction = null;
-    }
-
-    private void DisposeConnection ()
-    {
-      if (_connection != null)
-        _connection.Close();
-
-      _connection = null;
-    }
-
-    private ObjectID CheckStorageProvider (ObjectID id, string argumentName)
-    {
-      if (id.StorageProviderDefinition != StorageProviderDefinition)
-      {
-        throw CreateArgumentException(
-            argumentName,
-            "The StorageProvider '{0}' of the provided ObjectID '{1}' does not match with this StorageProvider '{2}'.",
-            id.StorageProviderDefinition.Name,
-            id,
-            StorageProviderDefinition.Name);
-      }
-      return id;
-    }
-
-    private void CheckClassDefinition (ClassDefinition classDefinition, string argumentName)
-    {
-      if (classDefinition.StorageEntityDefinition.StorageProviderDefinition != StorageProviderDefinition)
-      {
-        throw CreateArgumentException(
-            argumentName,
-            "The StorageProvider '{0}' of the provided ClassDefinition does not match with this StorageProvider '{1}'.",
-            classDefinition.StorageEntityDefinition.StorageProviderDefinition.Name,
-            StorageProviderDefinition.Name);
-      }
-    }
-
-    private IEnumerable<DataContainer?> CheckForDuplicates (IEnumerable<DataContainer?> dataContainers, string operation)
-    {
-      var loadedIDs = new HashSet<ObjectID>();
-      foreach (var dataContainer in dataContainers)
-      {
-        if (dataContainer != null)
+        if (loadedIDs.Contains(dataContainer.ID))
         {
-          if (loadedIDs.Contains(dataContainer.ID))
-          {
-            var message = string.Format("A {0} returned duplicates of object '{1}', which is not allowed.", operation, dataContainer.ID);
-            throw new RdbmsProviderException(message);
-          }
-          loadedIDs.Add(dataContainer.ID);
+          var message = string.Format("A {0} returned duplicates of object '{1}', which is not allowed.", operation, dataContainer.ID);
+          throw new RdbmsProviderException(message);
         }
 
-        yield return dataContainer;
+        loadedIDs.Add(dataContainer.ID);
       }
+
+      yield return dataContainer;
     }
+  }
 
-    private IEnumerable<DataContainer> CheckForNulls (IEnumerable<DataContainer?> dataContainers, string operation)
+  private IEnumerable<DataContainer> CheckForNulls (IEnumerable<DataContainer?> dataContainers, string operation)
+  {
+    foreach (var dataContainer in dataContainers)
     {
-      foreach (var dataContainer in dataContainers)
-      {
-        if (dataContainer == null)
-          throw new RdbmsProviderException(string.Format("A {0} returned a NULL ID, which is not allowed.", operation));
+      if (dataContainer == null)
+        throw new RdbmsProviderException(string.Format("A {0} returned a NULL ID, which is not allowed.", operation));
 
-        yield return dataContainer;
-      }
+      yield return dataContainer;
     }
   }
 }

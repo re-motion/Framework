@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.That(classWithAllDataTypes.BooleanProperty, Is.EqualTo(false), "BooleanProperty");
       Assert.That(classWithAllDataTypes.ByteProperty, Is.EqualTo(85), "ByteProperty");
-      Assert.That(classWithAllDataTypes.DateProperty, Is.EqualTo(new DateTime(2005, 1, 1)), "DateProperty");
+      Assert.That(classWithAllDataTypes.DateProperty, Is.EqualTo(new DateOnly(2005, 1, 1)), "DateProperty");
       Assert.That(classWithAllDataTypes.DateTimeProperty, Is.EqualTo(new DateTime(2005, 1, 1, 17, 0, 0)), "DateTimeProperty");
       Assert.That(classWithAllDataTypes.DecimalProperty, Is.EqualTo(123456.789m), "DecimalProperty");
       Assert.That(classWithAllDataTypes.DoubleProperty, Is.EqualTo(987654.321d), "DoubleProperty");
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.That(classWithAllDataTypes.NaBooleanProperty, Is.EqualTo(true), "NaBooleanProperty");
       Assert.That(classWithAllDataTypes.NaByteProperty, Is.EqualTo((byte)78), "NaByteProperty");
-      Assert.That(classWithAllDataTypes.NaDateProperty, Is.EqualTo(new DateTime(2005, 2, 1)), "NaDateProperty");
+      Assert.That(classWithAllDataTypes.NaDateProperty, Is.EqualTo(new DateOnly(2005, 2, 1)), "NaDateProperty");
       Assert.That(classWithAllDataTypes.NaDateTimeProperty, Is.EqualTo(new DateTime(2005, 2, 1, 5, 0, 0)), "NaDateTimeProperty");
       Assert.That(classWithAllDataTypes.NaDecimalProperty, Is.EqualTo(765.098m), "NaDecimalProperty");
       Assert.That(classWithAllDataTypes.NaDoubleProperty, Is.EqualTo(654321.789d), "NaDoubleProperty");

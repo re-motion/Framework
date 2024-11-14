@@ -2,15 +2,11 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <!-- Special settings for re-mix: -->
-    <AssemblyInfoFileForMixins>$(SolutionDirectory)Remotion\Mixins\AssemblyInfoShared.cs</AssemblyInfoFileForMixins>
     <ProductNameForMixins>re-motion Framework: re-mix (www.re-motion.org)</ProductNameForMixins>
 
     <!-- Special settigns for re-strict: -->
-    <AssemblyInfoFileForSecurityManager>$(SolutionDirectory)SecurityManager\AssemblyInfoShared.cs</AssemblyInfoFileForSecurityManager>
     <ProductNameForSecurityManager>re-motion Framework: re-strict (www.re-motion.org)</ProductNameForSecurityManager>
-    <CopyrightForSecurityManager>Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under GNU AGPL 3.0</CopyrightForSecurityManager>
 
-    <AssemblyInfoFile>$(SolutionDirectory)Remotion\AssemblyInfoShared.*;$(AssemblyInfoFileForMixins);$(AssemblyInfoFileForSecurityManager)</AssemblyInfoFile>
     <CompanyName>rubicon IT GmbH</CompanyName>
     <CompanyUrl>http://www.rubicon.eu</CompanyUrl>
     <Copyright>Copyright (c) rubicon IT GmbH, www.rubicon.eu - Licensed under GNU LGPL 2.1 (or later)</Copyright>

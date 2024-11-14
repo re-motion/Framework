@@ -1,25 +1,9 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
-// Copyright (c) rubicon IT GmbH, www.rubicon.eu
-//
-// The re-motion Core Framework is free software; you can redistribute it
-// and/or modify it under the terms of the GNU Lesser General Public License
-// as published by the Free Software Foundation; either version 2.1 of the
-// License, or (at your option) any later version.
-//
-// re-motion is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public License
-// along with re-motion; if not, see http://www.gnu.org/licenses.
-//
+// SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
+// SPDX-License-Identifier: LGPL-2.1-or-later
 using System;
 using System.Collections;
 using System.Threading;
-#if !NETFRAMEWORK
 using Remotion.ServiceLocation;
-#endif
 using Remotion.Utilities;
 
 namespace Remotion.Context
@@ -28,9 +12,7 @@ namespace Remotion.Context
   /// Implements a storage mechanism for <see cref="SafeContext"/> that uses <see cref="AsyncLocal{T}"/> to store the values.
   /// Values flow by default and <see cref="OpenSafeContextBoundary"/> is necessary to prevent flow. 
   /// </summary>
-#if !NETFRAMEWORK
   [ImplementationFor(typeof(ISafeContextStorageProvider), Lifetime = LifetimeKind.Singleton, Position = 1)]
-#endif
   public class AsyncLocalStorageProvider : ISafeContextStorageProvider, ISafeContextBoundaryStrategy
   {
     private readonly AsyncLocal<Hashtable?> _context = new();
@@ -60,11 +42,6 @@ namespace Remotion.Context
     public void SetData (string key, object? value)
     {
       ArgumentUtility.CheckNotNull(nameof(key), key);
-
-#if DEBUG && NETFRAMEWORK
-      if (value is System.Runtime.Remoting.Messaging.ILogicalThreadAffinative)
-        throw new NotSupportedException("Remoting is not supported.");
-#endif
 
       var hashtable = _context.Value;
       if (hashtable == null)

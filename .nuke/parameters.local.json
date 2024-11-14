@@ -1,0 +1,11 @@
+{
+  "$schema": "./build.schema.json",
+  "Solution": "Remotion.sln",
+  "Target": [ "CIBuild" ],
+  "TestConfigurations": [ "Debug"],
+  "TestExecutionRuntimes": [ "LocalMachine" ],
+  "TestPlatforms": [ "x86" ],
+  "TestTargetRuntimes": [ "NET8_0_WINDOWS" ],
+  "TestBrowsers": [ "NoBrowser" ],
+  "TestSqlServers": [ "SqlServerDefault" ]
+}

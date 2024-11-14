@@ -16,8 +16,8 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 
@@ -41,16 +41,19 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
         {
             { "IisExpress", typeof(IisExpressHostingStrategy) },
             { "Docker", typeof(DockerHostingStrategy) },
+            { "AspNetCore", typeof(AspNetCoreHostingStrategy) }
         };
 
+    private readonly ILoggerFactory _loggerFactory;
     private readonly IWebTestHostingSettings _hostingSettings;
-    private TimeSpan _verifyWebApplicationStartedTimeout;
+    private readonly TimeSpan _verifyWebApplicationStartedTimeout;
 
     public HostingConfiguration ([NotNull] IWebTestSettings webTestSettings, [NotNull] ITestSiteLayoutConfiguration testSiteLayoutConfiguration)
     {
       ArgumentUtility.CheckNotNull("webTestSettings", webTestSettings);
       ArgumentUtility.CheckNotNull("testSiteLayoutConfiguration", testSiteLayoutConfiguration);
 
+      _loggerFactory = webTestSettings.LoggerFactory;
       _hostingSettings = webTestSettings.Hosting;
       _verifyWebApplicationStartedTimeout = webTestSettings.VerifyWebApplicationStartedTimeout;
       _testSiteLayoutConfiguration = testSiteLayoutConfiguration;
@@ -65,9 +68,9 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
 
       var hostingStrategyTypeName = _hostingSettings.Type;
       var hostingStrategyType = GetHostingStrategyType(hostingStrategyTypeName);
-      Assertion.IsNotNull(hostingStrategyType, string.Format("Hosting strategy '{0}' could not be loaded.", hostingStrategyTypeName));
+      Assertion.IsNotNull(hostingStrategyType, $"Hosting strategy '{hostingStrategyTypeName}' could not be loaded.");
 
-      var hostingStrategy = (IHostingStrategy)Activator.CreateInstance(hostingStrategyType, new object[] { _testSiteLayoutConfiguration, _hostingSettings.Parameters })!;
+      var hostingStrategy = (IHostingStrategy)Activator.CreateInstance(hostingStrategyType, [_testSiteLayoutConfiguration, _hostingSettings.Parameters, _loggerFactory])!;
       return hostingStrategy;
     }
 

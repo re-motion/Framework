@@ -43,6 +43,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
       TestOutput.SetCurrentValueDateOnly(DateOfBirthField_DateOnly.Value != null ? DateOfBirthField_DateOnly.Value.Value.ToString() : "invalid");
       TestOutput.SetCurrentValueWithSeconds(
           DateOfBirthField_WithSeconds.Value != null ? DateOfBirthField_WithSeconds.Value.Value.ToString() : "invalid");
+      TestOutput.SetCurrentValueDateOnlyType(
+          DateOfCitizenship_DateOnlyType.Value != null ? DateOfCitizenship_DateOnlyType.Value.Value.ToString() : "invalid");
     }
 
     private BocDateTimeValueUserControlTestOutput TestOutput

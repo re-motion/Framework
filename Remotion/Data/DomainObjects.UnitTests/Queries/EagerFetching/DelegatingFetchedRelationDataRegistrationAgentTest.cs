@@ -20,10 +20,8 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries.EagerFetching;
-using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
 {
@@ -134,21 +132,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
       _realObjectAgentMock.Verify();
       _virtualObjectAgentMock.Verify();
       _collectionAgentMock.Verify();
-    }
-
-    [Test]
-    public void Serialization ()
-    {
-      var agent = new DelegatingFetchedRelationDataRegistrationAgent(
-          new FetchedRealObjectRelationDataRegistrationAgent(),
-          new FetchedVirtualObjectRelationDataRegistrationAgent(new SerializableVirtualEndPointProviderFake()),
-          new FetchedCollectionRelationDataRegistrationAgent(new SerializableVirtualEndPointProviderFake()));
-
-      var deserializedAgent = Serializer.SerializeAndDeserialize(agent);
-
-      Assert.That(deserializedAgent.RealObjectDataRegistrationAgent, Is.Not.Null);
-      Assert.That(deserializedAgent.VirtualObjectDataRegistrationAgent, Is.Not.Null);
-      Assert.That(deserializedAgent.CollectionDataRegistrationAgent, Is.Not.Null);
     }
   }
 }

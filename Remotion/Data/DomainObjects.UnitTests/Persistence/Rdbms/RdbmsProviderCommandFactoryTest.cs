@@ -23,8 +23,10 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories;
 using Remotion.Data.DomainObjects.Queries;
@@ -47,24 +49,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       base.SetUp();
 
       var rdbmsPersistenceModelProvider = new RdbmsPersistenceModelProvider();
-      var storageTypeInformationProvider = new SqlStorageTypeInformationProvider();
+      var storageTypeInformationProvider = new SqlStorageTypeInformationProvider(new DateTime2DefaultStorageTypeProvider());
       var dataContainerValidator = new CompoundDataContainerValidator(Enumerable.Empty<IDataContainerValidator>());
 
       var storageNameProvider = new ReflectionBasedStorageNameProvider();
-      var infrastructureStoragePropertyDefinitionProvider =
-          new InfrastructureStoragePropertyDefinitionProvider(storageTypeInformationProvider, storageNameProvider);
+      var infrastructureStoragePropertyDefinitionProvider = new InfrastructureStoragePropertyDefinitionProvider(storageTypeInformationProvider, storageNameProvider);
       var dataStoragePropertyDefinitionFactory = new DataStoragePropertyDefinitionFactory(
           new ValueStoragePropertyDefinitionFactory(storageTypeInformationProvider, storageNameProvider),
           new RelationStoragePropertyDefinitionFactory(
               TestDomainStorageProviderDefinition, false, storageNameProvider, storageTypeInformationProvider, StorageSettings));
+
+      var dataParameterDefinitionFactoryChain =
+          new ObjectIDDataParameterDefinitionFactory(TestDomainStorageProviderDefinition, storageTypeInformationProvider, StorageSettings,
+              new SimpleDataParameterDefinitionFactory(storageTypeInformationProvider));
+
+      var singleScalarTableTypeDefinitionProvider = new SingleScalarSqlTableTypeDefinitionProvider(storageTypeInformationProvider);
+
       _factory = new RdbmsProviderCommandFactory(
           TestDomainStorageProviderDefinition,
-          new SqlDbCommandBuilderFactory(new SqlDialect()),
+          new SqlDbCommandBuilderFactory(singleScalarTableTypeDefinitionProvider, new SqlDialect()),
           rdbmsPersistenceModelProvider,
           new ObjectReaderFactory(
               rdbmsPersistenceModelProvider, infrastructureStoragePropertyDefinitionProvider, storageTypeInformationProvider, dataContainerValidator),
           new TableDefinitionFinder(rdbmsPersistenceModelProvider),
-          dataStoragePropertyDefinitionFactory);
+          dataStoragePropertyDefinitionFactory,
+          dataParameterDefinitionFactoryChain);
 
       _objectID1 = DomainObjectIDs.Order1;
       _objectID2 = DomainObjectIDs.Order3;

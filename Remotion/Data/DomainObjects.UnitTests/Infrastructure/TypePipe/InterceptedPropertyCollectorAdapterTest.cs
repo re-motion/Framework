@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("expectedInterceptedAccessors", expectedInterceptedAccessors);
 
       var actualInterceptedAccessors = accessorInterceptors.Select(GetInterceptedAccessorMethod);
-      CollectionAssert.IsSubsetOf(expectedInterceptedAccessors, actualInterceptedAccessors);
+      Assert.That(expectedInterceptedAccessors, Is.SubsetOf(actualInterceptedAccessors));
     }
 
     private MethodInfo GetInterceptedAccessorMethod (IAccessorInterceptor accessorInterceptor)

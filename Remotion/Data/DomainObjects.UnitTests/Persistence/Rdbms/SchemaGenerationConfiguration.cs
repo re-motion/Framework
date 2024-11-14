@@ -76,6 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
           DatabaseTest.SchemaGenerationFirstStorageProviderID,
           sqlStorageObjectFactory,
           DatabaseTest.SchemaGenerationConnectionString1,
+          DatabaseTest.SchemaGenerationConnectionString1,
           new[] { typeof(FirstStorageGroupAttribute) });
 
       var storageProviderDefinitionCollection = new List<StorageProviderDefinition>
@@ -85,15 +86,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
                                                       DatabaseTest.SchemaGenerationSecondStorageProviderID,
                                                       sqlStorageObjectFactory,
                                                       DatabaseTest.SchemaGenerationConnectionString2,
+                                                      DatabaseTest.SchemaGenerationConnectionString2,
                                                       new[] { typeof(SecondStorageGroupAttribute) }),
                                                   new RdbmsProviderDefinition(
                                                       DatabaseTest.SchemaGenerationThirdStorageProviderID,
                                                       sqlStorageObjectFactory,
                                                       DatabaseTest.SchemaGenerationConnectionString3,
+                                                      DatabaseTest.SchemaGenerationConnectionString3,
                                                       new[] { typeof(ThirdStorageGroupAttribute) }),
                                                   new RdbmsProviderDefinition(
                                                       DatabaseTest.SchemaGenerationInternalStorageProviderID,
                                                       sqlStorageObjectFactory,
+                                                      DatabaseTest.SchemaGenerationConnectionString1,
                                                       DatabaseTest.SchemaGenerationConnectionString1,
                                                       new[] { typeof(InternalStorageGroupAttribute) })
                                                 };

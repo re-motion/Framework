@@ -146,38 +146,20 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
           .Verifiable();
 
       WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions();
-      try
-      {
-        //Redirect to external subfunction
-        WxeReturnOptions returnOptions = new WxeReturnOptions(callerUrlParameters);
-        _pageStep.Object.ExecuteFunctionExternalByRedirect(new PreProcessingSubFunctionStateParameters(_pageMock.Object, _subFunction.Object, permaUrlOptions), returnOptions);
-        Assert.Fail();
-      }
-      catch (ThreadAbortException)
-      {
-        WxeThreadAbortHelper.ResetAbort();
-      }
 
-      try
-      {
-        //Show external sub function
-        _subFunction.Object.Execute();
-        Assert.Fail();
-      }
-      catch (ThreadAbortException)
-      {
-        WxeThreadAbortHelper.ResetAbort();
-      }
+      //Redirect to external subfunction
+      WxeReturnOptions returnOptions = new WxeReturnOptions(callerUrlParameters);
+      Assert.That(
+          () => _pageStep.Object.ExecuteFunctionExternalByRedirect(
+              new PreProcessingSubFunctionStateParameters(_pageMock.Object, _subFunction.Object, permaUrlOptions),
+              returnOptions),
+          Throws.TypeOf<ThreadAbortException>());
 
-      try
-      {
-        //Return from external sub function
-        _subFunction.Object.Execute();
-        Assert.Fail();
-      }
-      catch (WxeExecuteNextStepException)
-      {
-      }
+      //Show external sub function
+      Assert.That(() => _subFunction.Object.Execute(), Throws.TypeOf<ThreadAbortException>());
+
+      //Return from external sub function
+      Assert.That(() =>  _subFunction.Object.Execute(), Throws.TypeOf<WxeExecuteNextStepException>());
 
       Assert.That(_subFunction.Object.ReturnUrl, Is.EqualTo("/AppDir/root.wxe?CallerKey=CallerValue&WxeFunctionToken=" + _rootFunction.FunctionToken));
 
@@ -219,38 +201,19 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       _subFunction.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Callback((WxeContext _) => executeCallbacks.Dequeue().Invoke()).Verifiable();
 
       WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions();
-      try
-      {
-        //Redirect to external subfunction
-        WxeReturnOptions returnOptions = WxeReturnOptions.Null;
-        _pageStep.Object.ExecuteFunctionExternalByRedirect(new PreProcessingSubFunctionStateParameters(_pageMock.Object, _subFunction.Object, permaUrlOptions), returnOptions);
-        Assert.Fail();
-      }
-      catch (ThreadAbortException)
-      {
-        WxeThreadAbortHelper.ResetAbort();
-      }
 
-      try
-      {
-        //Show external sub function
-        _subFunction.Object.Execute();
-        Assert.Fail();
-      }
-      catch (ThreadAbortException)
-      {
-        WxeThreadAbortHelper.ResetAbort();
-      }
+      //Redirect to external subfunction
+      WxeReturnOptions returnOptions = WxeReturnOptions.Null;
 
-      try
-      {
-        //Return from external sub function
-        _subFunction.Object.Execute();
-        Assert.Fail();
-      }
-      catch (WxeExecuteNextStepException)
-      {
-      }
+      Assert.That(
+          () =>  _pageStep.Object.ExecuteFunctionExternalByRedirect(new PreProcessingSubFunctionStateParameters(_pageMock.Object, _subFunction.Object, permaUrlOptions), returnOptions),
+          Throws.TypeOf<ThreadAbortException>());
+
+      //Show external sub function
+      Assert.That(() => _subFunction.Object.Execute(), Throws.TypeOf<ThreadAbortException>());
+
+      //Return from external sub function
+      Assert.That(() =>  _subFunction.Object.Execute(), Throws.TypeOf<WxeExecuteNextStepException>());
 
       Assert.That(_subFunction.Object.ReturnUrl, Is.EqualTo("DefaultReturn.html"));
 

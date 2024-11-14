@@ -241,12 +241,12 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
         {
           if (actualProperty.Identifier == expectedProperty.Identifier)
           {
-            Assert.That(isFound, Is.False, "Multiple properties '{0}' found", expectedProperty.Identifier, BindableObjectMetadataFactory.Create());
+            Assert.That(isFound, Is.False, $"Multiple properties '{expectedProperty.Identifier}' found");
             CheckPropertyBase(expectedProperty, actualProperty);
             isFound = true;
           }
         }
-        Assert.That(isFound, Is.True, "Property '{0}' was not found", expectedProperty.Identifier);
+        Assert.That(isFound, Is.True, $"Property '{expectedProperty.Identifier}' was not found");
       }
     }
 

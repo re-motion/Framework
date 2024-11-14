@@ -34,9 +34,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       var dataContainer = DataManagementService.GetDataManager(ClientTransaction.Current).DataContainers[domainObject.ID];
       if (dataContainerShouldExist)
-        Assert.That(dataContainer, Is.Not.Null, "Data container '{0}' does not exist.", domainObject.ID);
+        Assert.That(dataContainer, Is.Not.Null, $"Data container '{domainObject.ID}' does not exist.");
       else
-        Assert.That(dataContainer, Is.Null, "Data container '{0}' should not exist.", domainObject.ID);
+        Assert.That(dataContainer, Is.Null, $"Data container '{domainObject.ID}' should not exist.");
     }
 
     protected void CheckEndPointExists (DomainObject owningObject, string shortPropertyName, bool endPointShouldExist)
@@ -54,9 +54,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       var endPoint = DataManagementService.GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(endPointID);
       if (shouldEndPointExist)
-        Assert.That(endPoint, Is.Not.Null, "End point '{0}' does not exist.", endPointID);
+        Assert.That(endPoint, Is.Not.Null, $"End point '{endPointID}' does not exist.");
       else
-        Assert.That(endPoint, Is.Null, "End point '{0}' should not exist.", endPointID);
+        Assert.That(endPoint, Is.Null, $"End point '{endPointID}' should not exist.");
     }
 
     protected void CheckVirtualEndPointExistsAndComplete (DomainObject owningObject, string shortPropertyName, bool shouldEndPointExist, bool shouldDataBeComplete)
@@ -78,9 +78,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       {
         var endPoint = DataManagementService.GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(endPointID);
         if (shouldDataBeComplete)
-          Assert.That(endPoint.IsDataComplete, Is.True, "End point '{0}' should have complete data.", endPoint.ID);
+          Assert.That(endPoint.IsDataComplete, Is.True, $"End point '{endPoint.ID}' should have complete data.");
         else
-          Assert.That(endPoint.IsDataComplete, Is.False, "End point '{0}' should not have complete data.", endPoint.ID);
+          Assert.That(endPoint.IsDataComplete, Is.False, $"End point '{endPoint.ID}' should not have complete data.");
       }
     }
 

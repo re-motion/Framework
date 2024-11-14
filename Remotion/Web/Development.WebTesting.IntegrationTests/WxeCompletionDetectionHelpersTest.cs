@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
@@ -43,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       try
       {
-        completionDetection.WaitForCompletion(home.Context, 2);
+        completionDetection.WaitForCompletion(home.Context, 2, NullLogger.Instance);
       }
       catch (WebTestException)
       {
@@ -64,7 +65,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       try
       {
-        completionDetection.WaitForCompletion(home.Context, "wxeFunctionToken");
+        completionDetection.WaitForCompletion(home.Context, "wxeFunctionToken", NullLogger.Instance);
       }
       catch (WebTestException)
       {

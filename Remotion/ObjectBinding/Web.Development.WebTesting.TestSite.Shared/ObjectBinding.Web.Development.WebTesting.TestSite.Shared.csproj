@@ -9,9 +9,6 @@
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <Nullable>disable</Nullable>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
@@ -30,7 +27,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UrlMapping.xml" />
+    <Content Include="UrlMapping.xml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

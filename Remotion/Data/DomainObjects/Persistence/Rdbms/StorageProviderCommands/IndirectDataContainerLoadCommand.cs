@@ -23,44 +23,51 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
   /// <summary>
-  /// Executes the given <see cref="IStorageProviderCommand{T, TExecutionContext}"/> to retrieve a sequence of <see cref="ObjectID"/> values, then
-  /// looks up those values via the given <see cref="IStorageProviderCommandFactory{TExecutionContext}"/>. This command can be used to indirectly
+  /// Executes the given <see cref="IRdbmsProviderCommandWithReadOnlySupport{T}"/> to retrieve a sequence of <see cref="ObjectID"/> values, then
+  /// looks up those values via the given <see cref="IRdbmsProviderCommandFactory"/>. This command can be used to indirectly
   /// load <see cref="DataContainer"/> instances via two queries, where the first yields only IDs, for example for concrete table inheritance 
   /// relation lookup.
   /// </summary>
-  public class IndirectDataContainerLoadCommand
-      : IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IRdbmsProviderCommandExecutionContext>
+  public class IndirectDataContainerLoadCommand : IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectLookupResult<DataContainer>>>
   {
-    private readonly IStorageProviderCommand<IEnumerable<ObjectID>, IRdbmsProviderCommandExecutionContext> _objectIDLoadCommand;
-    private readonly IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> _storageProviderCommandFactory;
+    private readonly IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectID>> _objectIDLoadCommand;
+    private readonly IRdbmsProviderCommandFactory _rdbmsProviderCommandFactory;
 
     public IndirectDataContainerLoadCommand (
-        IStorageProviderCommand<IEnumerable<ObjectID>, IRdbmsProviderCommandExecutionContext> objectIDLoadCommand,
-        IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> storageProviderCommandFactory)
+        IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectID>> objectIDLoadCommand,
+        IRdbmsProviderCommandFactory rdbmsProviderCommandFactory)
     {
       ArgumentUtility.CheckNotNull("objectIDLoadCommand", objectIDLoadCommand);
-      ArgumentUtility.CheckNotNull("storageProviderCommandFactory", storageProviderCommandFactory);
+      ArgumentUtility.CheckNotNull("rdbmsProviderCommandFactory", rdbmsProviderCommandFactory);
 
       _objectIDLoadCommand = objectIDLoadCommand;
-      _storageProviderCommandFactory = storageProviderCommandFactory;
+      _rdbmsProviderCommandFactory = rdbmsProviderCommandFactory;
     }
 
-    public IStorageProviderCommand<IEnumerable<ObjectID>, IRdbmsProviderCommandExecutionContext> ObjectIDLoadCommand
+    public IRdbmsProviderCommand<IEnumerable<ObjectID>> ObjectIDLoadCommand
     {
       get { return _objectIDLoadCommand; }
     }
 
-    public IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> StorageProviderCommandFactory
+    public IRdbmsProviderCommandFactory RdbmsProviderCommandFactory
     {
-      get { return _storageProviderCommandFactory; }
+      get { return _rdbmsProviderCommandFactory; }
     }
 
-    public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderCommandExecutionContext executionContext)
+    public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
       ArgumentUtility.CheckNotNull("executionContext", executionContext);
 
-      var objectIds = _objectIDLoadCommand.Execute(executionContext);
-      return _storageProviderCommandFactory.CreateForSortedMultiIDLookup(objectIds.ToArray()).Execute(executionContext);
+      var objectIDs = _objectIDLoadCommand.Execute(executionContext);
+      return _rdbmsProviderCommandFactory.CreateForSortedMultiIDLookup(objectIDs.ToArray()).Execute(executionContext);
+    }
+
+    public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
+    {
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+
+      var objectIDs = _objectIDLoadCommand.Execute(executionContext);
+      return _rdbmsProviderCommandFactory.CreateForSortedMultiIDLookup(objectIDs.ToArray()).Execute(executionContext);
     }
   }
 }

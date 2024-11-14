@@ -23,7 +23,6 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {
-  [Serializable]
   public class RelationEndPointDefinitionCollection : CommonCollection, IEnumerable<IRelationEndPointDefinition>
   {
     public static RelationEndPointDefinitionCollection CreateForAllRelationEndPoints (ClassDefinition classDefinition, bool makeCollectionReadOnly)

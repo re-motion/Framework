@@ -1,0 +1,2 @@
+[*.{xml,cs}]
+file_header_template = unset

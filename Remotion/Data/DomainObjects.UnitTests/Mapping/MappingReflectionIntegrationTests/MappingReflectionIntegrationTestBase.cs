@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     {
       var propertyInfo = declaringType.GetProperty(
           propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-      Assert.That(propertyInfo, Is.Not.Null, "Property not found: '{0}.{1}'", declaringType, propertyName);
+      Assert.That(propertyInfo, Is.Not.Null, $"Property not found: '{declaringType}.{propertyName}'");
       return PropertyInfoAdapter.Create(propertyInfo);
     }
 

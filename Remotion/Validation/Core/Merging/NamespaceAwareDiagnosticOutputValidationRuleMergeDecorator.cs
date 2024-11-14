@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Logging;
+using Microsoft.Extensions.Logging;
 using Remotion.Reflection;
 using Remotion.Validation.Implementation;
 
@@ -29,8 +29,8 @@ namespace Remotion.Validation.Merging
     public NamespaceAwareDiagnosticOutputValidationRuleMergeDecorator (
         IValidationRuleCollectorMerger validationRuleCollectorMerger,
         IValidatorFormatter validatorFormatter,
-        ILogManager logManager)
-        : base(validationRuleCollectorMerger, validatorFormatter, logManager)
+        ILoggerFactory loggerFactory)
+        : base(validationRuleCollectorMerger, validatorFormatter, loggerFactory)
     {
     }
 

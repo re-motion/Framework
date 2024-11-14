@@ -329,11 +329,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       //BocLiteral does not have a root element that could be labeled.
     }
 
-    Control ISmartControl.TargetControl
-    {
-      get { return (Control)this; }
-    }
-
     bool ISmartControl.IsRequired
     {
       get { return false; }

@@ -17,6 +17,7 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.WebTestActions
@@ -29,8 +30,8 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     private readonly string _name;
     private readonly Action<ElementScope> _action;
 
-    public CustomAction ([NotNull] ControlObject control, [NotNull] ElementScope scope, [NotNull] string name, [NotNull] Action<ElementScope> action)
-        : base(control, scope)
+    public CustomAction ([NotNull] ControlObject control, [NotNull] ElementScope scope, [NotNull] string name, [NotNull] Action<ElementScope> action, [NotNull] ILogger logger)
+        : base(control, scope, logger)
     {
       ArgumentUtility.CheckNotNullOrEmpty("name", name);
       ArgumentUtility.CheckNotNull("action", action);
