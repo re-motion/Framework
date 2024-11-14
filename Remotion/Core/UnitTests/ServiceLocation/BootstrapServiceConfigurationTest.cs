@@ -15,7 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Extensions.Logging;
+using Moq;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.ServiceLocation
@@ -24,11 +27,20 @@ namespace Remotion.UnitTests.ServiceLocation
   public class BootstrapServiceConfigurationTest
   {
     private BootstrapServiceConfiguration _configuration;
+    private ILoggerFactory _backupLoggerFactory;
 
     [SetUp]
     public void SetUp ()
     {
       _configuration = new BootstrapServiceConfiguration();
+
+      _backupLoggerFactory = GetLoggerFactoryOnBootstrapServiceConfiguration();
+    }
+
+    [TearDown]
+    public void TearDown ()
+    {
+      SetLoggerFactoryOnBootstrapServiceConfiguration(_backupLoggerFactory);
     }
 
     [Test]
@@ -84,6 +96,38 @@ namespace Remotion.UnitTests.ServiceLocation
 
       Assert.That(_configuration.Registrations, Is.Empty);
       Assert.That(() => _configuration.BootstrapServiceLocator.GetInstance<IService>(), Throws.TypeOf<ActivationException>());
+    }
+
+    [Test]
+    public void GetLoggerFactory_AfterSetLoggerFactory_ReturnsLoggerFactory ()
+    {
+      SetLoggerFactoryOnBootstrapServiceConfiguration(null);
+
+      var loggerFactoryStub = Mock.Of<ILoggerFactory>();
+      BootstrapServiceConfiguration.SetLoggerFactory(loggerFactoryStub);
+
+      Assert.That(BootstrapServiceConfiguration.GetLoggerFactory(), Is.SameAs(loggerFactoryStub));
+    }
+
+    [Test]
+    public void GetLoggerFactory_WithoutSetLoggerFactory_ThrowsInvalidOperationException ()
+    {
+      SetLoggerFactoryOnBootstrapServiceConfiguration(null);
+
+      Assert.That(
+          () => BootstrapServiceConfiguration.GetLoggerFactory(),
+          Throws.InvalidOperationException
+              .With.Message.StartsWith("The BootstrapServiceConfiguration.SetLoggerFactory(...) method must be called before accessing the service configuration."));
+    }
+
+    private static ILoggerFactory GetLoggerFactoryOnBootstrapServiceConfiguration ()
+    {
+      return (ILoggerFactory)PrivateInvoke.GetNonPublicStaticField(typeof(BootstrapServiceConfiguration), "s_loggerFactory");
+    }
+
+    private static void SetLoggerFactoryOnBootstrapServiceConfiguration (ILoggerFactory value)
+    {
+      PrivateInvoke.SetNonPublicStaticField(typeof(BootstrapServiceConfiguration), "s_loggerFactory", value);
     }
 
     public interface IService { }
