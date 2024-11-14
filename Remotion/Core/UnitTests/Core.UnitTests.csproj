@@ -14,6 +14,7 @@
     <EmbeddedResource Include="Utilities\TestData\WriteEmbeddedStringResourceToFileTestData.txt" />
     <TestAssembly Include="Reflection\TypeDiscovery\TestAssemblies\**\*.*" />
     <TestAssembly Include="Reflection\TypeDiscovery\AssemblyFinding\TestAssemblies\AssemblyFinderTest\RemotionCoreReferencingAssembly\AssemblyInfo.cs" />
+    <TestAssembly Include="ServiceLocation\BootstrapServiceConfigurationTests\TestAssemblies\**\*.*" />
     <Compile Remove="@(TestAssembly)" />
     <Content Include="@(TestAssembly)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
