@@ -10,6 +10,7 @@
     <Description>Library for unit testing, building, and other development-time activities.</Description>
     <AssemblyName>Remotion.Development</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\..\SharedSource\Development\UnitTesting\**\*"
