@@ -4,6 +4,7 @@
 
   <PropertyGroup>
     <UseWebForms>true</UseWebForms>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
