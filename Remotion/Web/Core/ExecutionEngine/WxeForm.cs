@@ -168,7 +168,7 @@ namespace Remotion.Web.ExecutionEngine
             throw new InvalidOperationException(string.Format("The DefaultButton of '{0}' must be the ID of a control of type IButtonControl.", new object?[] { ID }));
 
           //Page.ClientScript.RegisterDefaultButtonScript (defaultButton, writer, false);
-          RegisterDefaultButtonScript(defaultButton, writer, false);
+          RegisterDefaultButtonScript(defaultButton, writer);
         }
       }
       base.EnsureID();
@@ -206,14 +206,11 @@ namespace Remotion.Web.ExecutionEngine
     //    writer.RenderEndTag();
     //  }
 
-    private void RegisterDefaultButtonScript (Control button, HtmlTextWriter writer, bool useAddAttribute)
+    private void RegisterDefaultButtonScript (Control button, HtmlTextWriter writer)
     {
       string? dummy = Page!.ClientScript.GetPostBackEventReference(new PostBackOptions(button));
-      string script = "javascript:return WebForm_FireDefaultButton(event, '" + button.ClientID + "')";
-      if (useAddAttribute)
-        writer.AddAttribute("onkeypress", script);
-      else
-        writer.WriteAttribute("onkeypress", script);
+      string script = "return WebForm_FireDefaultButton(event, '" + button.ClientID + "')";
+      writer.AddAttribute("onkeypress", script, fEndode: false);
     }
 
     public new IPage? Page
