@@ -4,6 +4,8 @@
 
   <PropertyGroup>
     <UseWebForms>true</UseWebForms>
+    <!-- WFO1000 - Ignore missing DesignerSerializationVisibility attribute used for designer support -->
+    <NoWarn>$(NoWarn);WFO1000</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
