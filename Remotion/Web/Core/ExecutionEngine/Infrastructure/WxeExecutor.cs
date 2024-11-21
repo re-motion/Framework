@@ -190,7 +190,10 @@ if (   window.opener != null
     && window.opener.document.getElementById('{0}') != null
     && window.opener.document.getElementById('{0}').value == '{1}')
 {{
-  window.opener.wxeDoPostBack('{2}', '{3}', '{4}'); 
+  window.opener.postMessage({{
+    type: 'wxeDoPostBack',
+    args: ['{2}', '{3}', '{4}']
+  }});
 }}
 window.close();
 ",
@@ -214,7 +217,10 @@ if (   window.opener != null
     && window.opener.document.getElementById('{0}') != null
     && window.opener.document.getElementById('{0}').value == '{1}')
 {{
-  window.opener.wxeDoSubmit('{2}', '{3}');
+  window.opener.postMessage({{
+    type: 'wxeDoSubmit',
+    args: ['{2}', '{3}']
+  }});
 }}
 window.close();
 ",
