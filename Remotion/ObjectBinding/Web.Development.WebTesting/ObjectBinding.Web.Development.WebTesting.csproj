@@ -10,6 +10,7 @@
     <AssemblyName>Remotion.ObjectBinding.Web.Development.WebTesting</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <SignAssembly>False</SignAssembly>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\..\SharedSource\Core\Utilities\ArgumentUtility.cs" Link="SharedSource\Utilities\ArgumentUtility.cs" />

@@ -10,6 +10,7 @@
     <Description>Library for unit testing, building, and other development-time activities of web applications.</Description>
     <AssemblyName>Remotion.Development.Web</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />

@@ -13,6 +13,7 @@
     <AssemblyName>Remotion.Web.Development.WebTesting</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <SignAssembly>False</SignAssembly>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="ScreenshotCreation\Resolvers\WebElementResolverScript.js" />
