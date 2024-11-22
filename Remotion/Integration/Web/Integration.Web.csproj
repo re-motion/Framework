@@ -9,6 +9,7 @@
     <Description>This assembly can be linked to ensure that all web-related dependencies are integrated in the build output of a web project.</Description>
     <AssemblyName>Remotion.Integration.Web</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ObjectBinding\Web\ObjectBinding.Web.csproj" />
