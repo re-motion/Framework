@@ -10,6 +10,7 @@
     <AssemblyName>Remotion.Web.Development.WebTesting.WebFormsControlObjects</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <SignAssembly>False</SignAssembly>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Development.WebTesting\Web.Development.WebTesting.csproj" />

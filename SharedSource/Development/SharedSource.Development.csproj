@@ -11,6 +11,7 @@
     <AssemblyName>Remotion.SharedSource.Development</AssemblyName>
     <RootNamespace>Remotion.Development</RootNamespace>
     <SignAssembly>False</SignAssembly>
+    <TargetFrameworks>net8.0-windows</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Moq" />
