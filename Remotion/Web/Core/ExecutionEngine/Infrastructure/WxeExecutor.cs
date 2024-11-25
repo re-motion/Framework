@@ -151,7 +151,17 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     private string GetClosingScriptForExternalFunction (string functionToken, Control sender, bool returningPostback)
     {
       if (!returningPostback)
-        return "window.close();";
+      {
+        return """
+               if (window.opener)
+               {
+                 window.opener.postMessage({
+                   type: 'wxeExternalSubFunctionClose'
+                 });
+               }
+               window.close();
+               """;
+      }
 
       ArgumentUtility.CheckNotNull("sender", sender);
 
@@ -195,6 +205,12 @@ if (   window.opener != null
     args: ['{2}', '{3}', '{4}']
   }});
 }}
+else if (window.opener)
+{{
+  window.opener.postMessage({{
+    type: 'wxeExternalSubFunctionClose'
+  }});
+}}
 window.close();
 ",
           WxePageInfo.PageTokenID,
@@ -220,6 +236,12 @@ if (   window.opener != null
   window.opener.postMessage({{
     type: 'wxeDoSubmit',
     args: ['{2}', '{3}']
+  }});
+}}
+else if (window.opener)
+{{
+  window.opener.postMessage({{
+    type: 'wxeExternalSubFunctionClose'
   }});
 }}
 window.close();

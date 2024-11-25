@@ -45,6 +45,9 @@ class WxePage_Context
   private _wxePostBackSequenceNumberFieldID: Nullable<string>;
   private _dmaWxePostBackSequenceNumberFieldID : Nullable<string>;
 
+  private _firefoxWorkaroundEnabled = true;
+  private _firefoxWorkaroundRequestUrl = "firefoxWorkaround";
+
   // isCacheDetectionEnabled: true to detect whether the user is viewing a cached page.
   // refreshInterval: The refresh interfal in milli-seconds. zero to disable refreshing.
   // refreshUrl: The URL used to post the refresh request to. Must not be null if refreshInterval is greater than zero.
@@ -122,14 +125,35 @@ class WxePage_Context
         if (ev.origin !== window.location.origin)
           return;
 
+        const fixPotentiallyBrokenNetworkStateInFirefox = () => {
+          if (this._firefoxWorkaroundEnabled && /firefox/i.test(navigator.userAgent)) {
+            // Depending on the timing, the first request might be ok but the network problem
+            // is still there for future request. As such, we retry once.
+            for (let i = 0; i < 2; i++) {
+              try {
+                const req = new XMLHttpRequest();
+                req.open("GET", `${this._firefoxWorkaroundRequestUrl}?t=${new Date().getTime()}`, false);
+                req.send();
+              } catch {
+                // We expect a NetworkError, which should fix the network problem for future requests.
+                break;
+              }
+            }
+          }
+        }
+        
         const data = ev.data as {
-          type: "wxeDoPostBack" | "wxeDoSubmit";
+          type: "wxeDoPostBack" | "wxeDoSubmit" | "wxeExternalSubFunctionClose";
           args: string[]
         };
         if (data.type === "wxeDoPostBack") {
+          fixPotentiallyBrokenNetworkStateInFirefox();
           (window as any)["wxeDoPostBack"](...data.args);
         } else if (data.type === "wxeDoSubmit") {
+          fixPotentiallyBrokenNetworkStateInFirefox();
           (window as any)["wxeDoSubmit"](...data.args);
+        } else if (data.type === "wxeExternalSubFunctionClose") {
+          fixPotentiallyBrokenNetworkStateInFirefox();
         }
       });
     }
