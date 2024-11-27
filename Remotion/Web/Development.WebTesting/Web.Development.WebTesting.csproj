@@ -2,9 +2,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ProjectType>Library</ProjectType>
-    <UseWebForms>true</UseWebForms>
-    <UseWindowsForms>true</UseWindowsForms>
-    <UseWpf>true</UseWpf>
   </PropertyGroup>
   <Import Project="..\..\..\Build\Shared.build.props" />
   <PropertyGroup>
@@ -24,6 +21,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fork.Coypu" />
+    <PackageReference Include="Microsoft.Maui.Graphics.Skia" />
     <PackageReference Include="Selenium.Support" />
     <PackageReference Include="Selenium.WebDriver" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
