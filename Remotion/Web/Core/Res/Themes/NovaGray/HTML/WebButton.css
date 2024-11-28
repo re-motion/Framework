@@ -14,6 +14,7 @@ button.webButton
   -moz-padding-start: 0;
   -moz-padding-end: 0;
   outline: none;
+  color: black;
 }
 
 button.webButton::-moz-focus-inner

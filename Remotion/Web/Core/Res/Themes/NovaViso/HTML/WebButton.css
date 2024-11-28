@@ -13,6 +13,8 @@ input.webButton
   padding: 0;
   box-sizing: border-box;
   display: inline-block;
+  background-color: white;
+  color: black;
 }
 
 button.webButton span.buttonBody
