@@ -124,6 +124,7 @@ span.treeViewNodeHeadSelected a
   padding-bottom: 3px;
 
   color: Black;
+  /* I don't think we need a bg here, the tree is usually just on some other thing anyways. We might set it for the whole tree as transparent? */
 }
 
 span.treeViewNodeHead a:focus,

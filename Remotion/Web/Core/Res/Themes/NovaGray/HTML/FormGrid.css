@@ -20,11 +20,13 @@ td.formGridTitleCell h1
   width: 100%;
   border-bottom: solid 1px #AAAAAA;
   color: Black;
+  background-color: transparent;
 }
 
 /*  Style applied to the cells containing the labels  */
 td.formGridLabelsCell
 {
+  color: Black;
   background-color: #F0F0F0;
   text-align: right;
   padding: 0.3em 1em 0.3em 1em;
@@ -159,6 +161,7 @@ td.formGridTopDataRow
   top: 1.2em;
   z-index: 1000;
   padding: 0.25em;
+  /*this is blue, as it is an <a> element. I'm not sure that this makes sense here. I'd rather make it black so it's easier to read */
   border: 1px solid Black;
   background-color: Lightyellow;
   box-sizing: border-box;
