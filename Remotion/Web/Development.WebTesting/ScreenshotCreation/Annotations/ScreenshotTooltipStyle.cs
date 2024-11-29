@@ -20,6 +20,7 @@ using Microsoft.Maui.Graphics;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 using Remotion.Web.Development.WebTesting.Utilities;
+using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 {
@@ -31,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     public static readonly ScreenshotTooltipStyle Chrome = new ScreenshotTooltipStyle(
         new Font("Arial", 9, FontStyle.Regular),
         new SolidBrush(Color.FromArgb(0x57, 0x57, 0x57)),
-        Brushes.White,
+        new SolidBrush(SKColors.White),
         new Pen(Color.FromArgb(0x76, 0x76, 0x76), 1),
         TooltipPositioning.BottomRight,
         new WebPadding(2, 0, 2, 0),
@@ -42,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     public static readonly ScreenshotTooltipStyle Edge = new ScreenshotTooltipStyle(
         new Font("Arial", 9, FontStyle.Regular),
         new SolidBrush(Color.FromArgb(0x57, 0x57, 0x57)),
-        Brushes.White,
+        new SolidBrush(SKColors.White),
         new Pen(Color.FromArgb(0x76, 0x76, 0x76), 1),
         TooltipPositioning.BottomRight,
         new WebPadding(2, 0, 2, 0),
@@ -53,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     public static readonly ScreenshotTooltipStyle Firefox = new ScreenshotTooltipStyle(
         new Font("Sans-Serif", 9, FontStyle.Regular),
         new SolidBrush(Color.FromArgb(0x0, 0x0, 0x0)),
-        Brushes.White,
+        new SolidBrush(SKColors.White),
         new Pen(Color.FromArgb(0x76, 0x76, 0x76), 1),
         TooltipPositioning.BottomRight,
         new WebPadding(2, 2, 2, 2),

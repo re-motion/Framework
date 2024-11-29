@@ -24,6 +24,7 @@ using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
 using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 using Remotion.Web.Development.WebTesting.Utilities;
+using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
 {
@@ -193,9 +194,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
           content,
           contentPadding ?? new WebPadding(3, 3, 3, 0),
           font ?? new Font("Arial", 14),
-          contentBrush ?? Brushes.White,
+          contentBrush ?? new SolidBrush(SKColors.White),
           borderPen ?? Pens.White,
-          backgroundBrush ?? Brushes.Red,
+          backgroundBrush ?? new SolidBrush(SKColors.Red),
           translation ?? Size.Empty,
           forceCircle ?? true);
 
@@ -226,7 +227,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
       IScreenshotAnnotation annotation = new ScreenshotTextAnnotation(
           content,
           font ?? SystemFonts.DefaultFont,
-          foregroundBrush ?? Brushes.Red,
+          foregroundBrush ?? new SolidBrush(SKColors.Red),
           backgroundBrush,
           stringFormat ?? StringFormat.GenericDefault,
           contentAlignment ?? ContentAlignment.MiddleCenter,
