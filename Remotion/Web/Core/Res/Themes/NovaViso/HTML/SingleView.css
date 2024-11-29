@@ -34,6 +34,8 @@ div.singleViewView
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  color: var(--color-standard-text);
+  background-color: var(--color-standard-background);
 }
 
 div.singleViewView > div.contentBorder

@@ -24,6 +24,7 @@ table.tabbedMenu tr
 
 td.tabbedMainMenuCell
 {
+  color: var(--color-standard-text);
   background-color: var(--color-contrast);
 }
 
