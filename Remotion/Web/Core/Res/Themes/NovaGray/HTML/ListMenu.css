@@ -30,6 +30,7 @@ span.listMenuItem
 span.listMenuItem a
 {
   color: #09457E;
+  background-color: transparent;
   padding: 2px;
   cursor: hand;
   cursor: pointer;
@@ -81,6 +82,7 @@ span.listMenuItemDisabled a
 {
   padding: 2px;
   color: gray;
+  background-color: transparent;
   cursor: default;
 }
 

@@ -17,6 +17,7 @@ ul.treeViewRoot
   min-height: 100%;
   height: min-content;
   box-sizing: border-box;
+  color: var(--color-standard-text);
   background-color: var(--treeview-background-color);
 }
 

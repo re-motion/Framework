@@ -18,6 +18,8 @@ table.tabbedMenu
 
 table.tabbedMenu tr
 {
+  color: var(--color-standard-text);
+  background-color: var(--remotion-themed-background-color-page);
   border-top: var(--tabbedMenu-separator);
   border-bottom: var(--tabbedMenu-separator);
 }

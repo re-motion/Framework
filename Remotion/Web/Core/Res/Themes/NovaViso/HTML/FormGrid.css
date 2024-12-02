@@ -8,6 +8,7 @@
 {
   border-collapse: collapse;
   width: 100%;
+  background-color: var(--remotion-themed-background-color-page);
 }
 
 .formGridTitleCell,
@@ -23,6 +24,7 @@
 
 .formGridTitleCell
 {
+  color: var(--color-standard-text);
   font: var(--remotion-themed-font-heading);
 }
 
@@ -66,6 +68,8 @@
 
 .formGridLabelsCell
 {
+  color: var(--color-standard-text);
+  background-color: var(--remotion-themed-background-color-control);
   width: 15%;
   padding-top: calc(var(--remotion-themed-line-height) / 2 + var(--remotion-themed-spacing-small) + var(--remotion-themed-border-width));
   font: var(--remotion-themed-font-bold);

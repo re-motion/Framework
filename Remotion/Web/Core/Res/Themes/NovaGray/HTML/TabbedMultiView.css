@@ -7,12 +7,14 @@ div.tabbedMultiView
   position: relative;
   margin: 0;
   padding: 0;
+  color: black;
   background-color: white;
 }
 
 div.tabbedMultiView > div.wrapper
 {
   position: absolute;
+  color: black;
   background-color: white;
   top: 0;
   bottom: 0;
@@ -37,6 +39,7 @@ div.tabbedMultiViewActiveView
 
 div.tabbedMultiViewActiveView > div.contentBorder
 {
+  color: black;
   background-color: white;
   margin: 0;
   padding: 0.5em;
@@ -56,6 +59,7 @@ div.tabbedMultiViewTopControls
 {
   grid-area: topControls;
   overflow: clip;
+  color: black;
   background-color: White;
 }
 
@@ -70,6 +74,7 @@ div.tabbedMultiViewBottomControls
 {
   grid-area: bottomControls;
   overflow: clip;
+  color: black;
   background-color: White;
   padding-left: 0.5em;
   padding-right: 0.5em;
@@ -86,6 +91,7 @@ div.tabbedMultiViewBottomControls.empty
 div.tabbedMultiViewTabStrip
 {
   grid-area: tabStrip;
+  color: black;
   background-color: White;
   margin: 0;
   margin-top: 0.1em;

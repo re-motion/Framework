@@ -150,6 +150,7 @@ select.remotion-themed,
 .remotion-themed textarea,
 .remotion-themed select
 {
+  color: var(--color-standard-text);
   background-color: var(--remotion-themed-background-color-control);
   border: var(--remotion-themed-border);
   border-radius: var(--remotion-themed-border-radius);
@@ -162,6 +163,7 @@ input[type=button].remotion-themed,
 .remotion-themed input[type=submit],
 .remotion-themed input[type=button]
 {
+  color: var(--color-standard-text);
   background-color: var(--remotion-themed-background-color-control);
   border: var(--remotion-themed-border-width) solid var(--color-primary);
   border-radius: var(--remotion-themed-border-radius);
@@ -184,6 +186,7 @@ select:not([size]).remotion-themed,
 select.remotion-themed:not(:disabled) option:not(:checked),
 .remotion-themed select:not(:disabled) option:not(:checked)
 {
+  color: var(--color-standard-text);
   background-color: var(--remotion-themed-background-color-control);
 }
 
