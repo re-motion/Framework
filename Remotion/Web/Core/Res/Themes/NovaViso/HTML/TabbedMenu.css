@@ -19,9 +19,14 @@ table.tabbedMenu
 table.tabbedMenu tr
 {
   color: var(--color-standard-text);
-  background-color: var(--color-contrast);
+  background-color: var(--remotion-themed-background-color-page);
   border-top: var(--tabbedMenu-separator);
   border-bottom: var(--tabbedMenu-separator);
+}
+
+td.tabbedMainMenuCell
+{
+  background-color: var(--color-contrast);
 }
 
 div.tabbedMainMenu div.tabStripTabsPane ul li,
