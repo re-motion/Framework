@@ -18,7 +18,6 @@ span.DropDownMenuSelect
   height: var(--remotion-themed-singleline-min-height);
   line-height: var(--remotion-themed-line-height);
   width: 100%;
-  color: var(--color-standard-text); /*maybe overkill as we set the color on the label below and the other child colors as well */
   background-color: var(--remotion-themed-background-color-control);
   border: var(--remotion-themed-border);
   border-radius: var(--remotion-themed-border-radius);
