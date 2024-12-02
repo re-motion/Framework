@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Drawing;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using Remotion.Utilities;

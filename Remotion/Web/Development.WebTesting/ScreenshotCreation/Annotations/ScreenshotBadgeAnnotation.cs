@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Drawing;
 using JetBrains.Annotations;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Skia;
@@ -35,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     private readonly WebPadding _contentPadding;
     private readonly Font _font;
     private readonly bool _forceCircle;
-    private readonly Size _translation;
+    private readonly System.Drawing.Size _translation;
 
     public ScreenshotBadgeAnnotation (
         [NotNull] string content,
@@ -44,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         [NotNull] Brush contentBrush,
         [NotNull] Pen borderPen,
         [CanBeNull] Brush? backgroundBrush,
-        Size translation,
+        System.Drawing.Size translation,
         bool forceCircle)
     {
       ArgumentUtility.CheckNotNull("content", content);
@@ -127,7 +128,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// <summary>
     /// Translation vector of the center point.
     /// </summary>
-    public Size Translation
+    public System.Drawing.Size Translation
     {
       get { return _translation; }
     }

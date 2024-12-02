@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Drawing;
 using JetBrains.Annotations;
 using Microsoft.Maui.Graphics;
 using Remotion.Utilities;
@@ -69,8 +70,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     private readonly TooltipPositioning _positioning;
     private readonly WebPadding _contentPadding;
     private readonly bool _wrapLines;
-    private readonly Size _minimumSize;
-    private readonly Size _maximumSize;
+    private readonly System.Drawing.Size _minimumSize;
+    private readonly System.Drawing.Size _maximumSize;
 
     public ScreenshotTooltipStyle (
         [NotNull] Font font,
@@ -80,8 +81,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         TooltipPositioning positioning,
         WebPadding contentPadding,
         bool wrapLines,
-        Size minimumSize,
-        Size maximumSize)
+        System.Drawing.Size minimumSize,
+        System.Drawing.Size maximumSize)
     {
       ArgumentUtility.CheckNotNull("font", font);
       ArgumentUtility.CheckNotNull("foregroundBrush", foregroundBrush);
@@ -159,7 +160,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// <summary>
     /// The minimum size of the tooltip can have.
     /// </summary>
-    public Size MinimumSize
+    public System.Drawing.Size MinimumSize
     {
       get { return _minimumSize; }
     }
@@ -167,7 +168,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// <summary>
     /// The maximum size the tooltip can have before wrapping/clipping.
     /// </summary>
-    public Size MaximumSize
+    public System.Drawing.Size MaximumSize
     {
       get { return _maximumSize; }
     }
@@ -183,8 +184,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         TooltipPositioning? positioning = null,
         WebPadding? contentPadding = null,
         bool? wrapLines = null,
-        Size? minimumSize = null,
-        Size? maximumSize = null)
+        System.Drawing.Size? minimumSize = null,
+        System.Drawing.Size? maximumSize = null)
     {
       return new ScreenshotTooltipStyle(
           font ?? _font,

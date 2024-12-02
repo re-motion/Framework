@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Drawing;
 using JetBrains.Annotations;
 using Microsoft.Maui.Graphics;
 using Remotion.Utilities;
@@ -168,44 +169,44 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// Positions the text according to <see cref="ContentAlignment"/> and the specified <paramref name="elementBounds"/>,
     /// <paramref name="contentWidth"/> and <paramref name="contentHeight"/>.
     /// </summary>
-    private PointF PositionAndApplyPadding (Rectangle elementBounds, float contentWidth, float contentHeight)
+    private System.Drawing.PointF PositionAndApplyPadding (Rectangle elementBounds, float contentWidth, float contentHeight)
     {
       switch (_contentAlignment)
       {
         case ContentAlignment.TopLeft:
-          return new PointF(
+          return new System.Drawing.PointF(
               elementBounds.X - contentWidth - _padding.Right,
               elementBounds.Y - contentHeight - _padding.Bottom);
         case ContentAlignment.TopCenter:
-          return new PointF(
+          return new System.Drawing.PointF(
               elementBounds.X + (elementBounds.Width - contentWidth) / 2,
               elementBounds.Y - contentHeight - _padding.Bottom);
         case ContentAlignment.TopRight:
-          return new PointF(
+          return new System.Drawing.PointF(
               elementBounds.Right + _padding.Left,
               elementBounds.Y - contentHeight - _padding.Bottom);
         case ContentAlignment.MiddleLeft:
-          return new PointF(
+          return new System.Drawing.PointF(
               elementBounds.X - contentWidth - _padding.Right,
               elementBounds.Y + (elementBounds.Height - contentHeight) / 2);
         case ContentAlignment.MiddleCenter:
-          return new PointF(
+          return new System.Drawing.PointF(
               elementBounds.X + (elementBounds.Width - contentWidth) / 2,
               elementBounds.Y + (elementBounds.Height - contentHeight) / 2);
         case ContentAlignment.MiddleRight:
-          return new PointF(
+          return new System.Drawing.PointF(
               elementBounds.Right + _padding.Left,
               elementBounds.Y + (elementBounds.Height - contentHeight) / 2);
         case ContentAlignment.BottomLeft:
-          return new PointF(
+          return new System.Drawing.PointF(
               elementBounds.X - contentWidth - _padding.Right,
               elementBounds.Bottom + _padding.Top);
         case ContentAlignment.BottomCenter:
-          return new PointF(
+          return new System.Drawing.PointF(
               elementBounds.X + (elementBounds.Width - contentWidth) / 2,
               elementBounds.Bottom + _padding.Top);
         case ContentAlignment.BottomRight:
-          return new PointF(
+          return new System.Drawing.PointF(
               elementBounds.Right + _padding.Left,
               elementBounds.Bottom + _padding.Top);
         default:

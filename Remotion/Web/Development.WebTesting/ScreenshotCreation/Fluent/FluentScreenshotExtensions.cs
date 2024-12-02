@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Drawing;
 using System.Threading;
 using Coypu;
 using JetBrains.Annotations;
@@ -182,7 +183,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [CanBeNull] Brush? contentBrush = null,
         [CanBeNull] Pen? borderPen = null,
         [CanBeNull] Brush? backgroundBrush = null,
-        [CanBeNull] Size? translation = null,
+        [CanBeNull] System.Drawing.Size? translation = null,
         [CanBeNull] bool? forceCircle = null)
         where T : notnull
     {
@@ -197,7 +198,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
           contentBrush ?? new SolidBrush(SKColors.White),
           borderPen ?? Pens.White,
           backgroundBrush ?? new SolidBrush(SKColors.Red),
-          translation ?? Size.Empty,
+          translation ?? System.Drawing.Size.Empty,
           forceCircle ?? true);
 
       FluentUtility.AnnotateFluent(builder, fluentTarget, annotation);
