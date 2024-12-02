@@ -125,8 +125,12 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public void Hover (Point point)
     {
+#if PLATFORM_WINDOWS
       Cursor.Position = point;
       SendFakeMove();
+#else
+      throw new PlatformNotSupportedException("Mouse is only supported on Windows");
+#endif
     }
 
     /// <summary>
@@ -184,7 +188,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <summary>
     /// Triggers a mouse move, but the mouse does not actually move.
     /// This is done so that a browser recognizes a mouse move when
-    /// the mouse is set via <see cref="Cursor"/>.<see cref="Cursor.Position"/>
+    /// the mouse is set via <c>Cursor</c>.<c>Cursor.Position</c>
     /// </summary>
     private void SendFakeMove ()
     {

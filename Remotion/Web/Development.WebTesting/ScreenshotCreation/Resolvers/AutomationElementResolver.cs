@@ -21,6 +21,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
 {
+#if PLATFORM_WINDOWS
   /// <summary>
   /// Resolves <see cref="AutomationElement"/>s for screenshot annotations.
   /// </summary>
@@ -134,4 +135,5 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
       }
     }
   }
+#endif
 }

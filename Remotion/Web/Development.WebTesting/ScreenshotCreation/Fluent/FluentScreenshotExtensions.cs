@@ -34,6 +34,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
   /// </summary>
   public static class FluentScreenshotExtensions
   {
+#if PLATFORM_WINDOWS
     /// <summary>
     /// Starts the fluent screenshot interface for the specified <paramref name="automationElement"/>.
     /// </summary>
@@ -46,6 +47,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
 
       return FluentUtility.CreateFluentAutomationElement(automationElement);
     }
+#endif
 
     /// <summary>
     /// Starts the fluent screenshot interface for the specified <paramref name="controlObject"/>.

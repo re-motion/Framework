@@ -93,7 +93,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
           resolver,
           minimumElementVisibility ?? fluentTarget.MinimumElementVisibility);
     }
-
+#if PLATFORM_WINDOWS
     /// <summary>
     /// Creates a new <see cref="FluentScreenshotElement{T}"/> for an <see cref="AutomationElement"/>.
     /// </summary>
@@ -105,6 +105,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
 
       return new FluentScreenshotElement<AutomationElement>(automationElement, AutomationElementResolver.Instance, minimumElementVisibility);
     }
+#endif
 
     /// <summary>
     /// Creates a new <see cref="FluentScreenshotElement{T}"/> for a <see cref="ControlObject"/>.

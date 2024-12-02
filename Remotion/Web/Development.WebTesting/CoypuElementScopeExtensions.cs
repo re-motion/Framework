@@ -338,8 +338,11 @@ namespace Remotion.Web.Development.WebTesting
     public static void Unhover ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull("scope", scope);
-
+#if PLATFORM_WINDOWS
       Cursor.Position = new Point(0, 0);
+#else
+      throw new PlatformNotSupportedException("Mouse is only supported on Windows.");
+#endif
     }
 
     /// <summary>

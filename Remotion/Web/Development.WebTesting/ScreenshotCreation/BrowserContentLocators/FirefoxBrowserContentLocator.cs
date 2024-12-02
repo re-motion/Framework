@@ -32,6 +32,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
   {
     public Rectangle GetBrowserContentBounds (IWebDriver driver)
     {
+#if PLATFORM_WINDOWS
       ArgumentUtility.CheckNotNull("driver", driver);
 
       var firefoxWindows = AutomationElement.RootElement.FindAll(
@@ -60,8 +61,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
           (int)Math.Round(firefoxContentBounds.Height));
 
       return result;
+#else
+      throw new PlatformNotSupportedException("FirefoxBrowserContentLocator is only supported on Windows.");
+#endif
     }
-
+#if PLATFORM_WINDOWS
     /// <summary>
     /// Despite the browser being ready, the automation tree used to query Firefox' content location and bounds
     /// sometimes yields outdated/not ready results, which leads to <see cref="AutomationElement.FindFirst"/>
@@ -134,5 +138,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
         return 2;
       return 0;
     }
+#endif
   }
 }

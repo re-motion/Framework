@@ -64,11 +64,15 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
 
     public EdgeBrowserContentLocator ()
     {
+#if !PLATFORM_WINDOWS
+      throw new PlatformNotSupportedException("ChromeBrowserContentLocator is only supported on Windows.");
+#endif
     }
 
     /// <inheritdoc />
     public Rectangle GetBrowserContentBounds (IWebDriver driver)
     {
+#if PLATFORM_WINDOWS
       ArgumentUtility.CheckNotNull("driver", driver);
 
       var windows = AutomationElement.RootElement.FindAll(
@@ -91,8 +95,12 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       var automationElement = ResolveByChangingWindowTitle(driver, windows);
 
       return ResolveBoundsFromWindow(automationElement);
+#else
+      throw new PlatformNotSupportedException("EdgeBrowserContentLocator is only supported on Windows.");
+#endif
     }
 
+#if PLATFORM_WINDOWS
     private AutomationElement ResolveByChangingWindowTitle (IWebDriver driver, IReadOnlyCollection<AutomationElement> windows)
     {
       var id = Guid.NewGuid().ToString();
@@ -171,5 +179,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
 
       return value;
     }
+#endif
   }
 }

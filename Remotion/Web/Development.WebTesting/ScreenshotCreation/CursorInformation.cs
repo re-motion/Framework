@@ -43,17 +43,18 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
     [DllImport("user32.dll", SetLastError = true)]
     private static extern bool GetCursorInfo (ref CursorInfoDto info);
-
+#if PLATFORM_WINDOWS
     /// <summary>
     /// Represents an invisible cursor with default cursor image at position (0,0).
     /// </summary>
     public static readonly CursorInformation Empty = new CursorInformation(Point.Empty, Cursors.Default, false);
-
+#endif
     /// <summary>
     /// Captures the current <see cref="CursorInformation"/>.
     /// </summary>
     public static CursorInformation Capture ()
     {
+#if PLATFORM_WINDOWS
       var cursorInformation = new CursorInfoDto
                               {
                                   Size = (uint)Marshal.SizeOf(typeof(CursorInfoDto))
@@ -66,8 +67,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         return new CursorInformation(cursorInformation.ScreenPosition, new Cursor(cursorInformation.CursorHandle), true);
 
       return new CursorInformation(cursorInformation.ScreenPosition, Cursors.Default, false);
+#else
+      throw new PlatformNotSupportedException("CursorInformation is only supported on Windows.");
+#endif
     }
-
+#if PLATFORM_WINDOWS
     private readonly Cursor _cursor;
     private readonly bool _isVisible;
     private readonly Point _position;
@@ -105,9 +109,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       get { return _position; }
     }
+#endif
 
     /// <summary>
-    /// Draws the <see cref="Cursor"/> onto the specified <see cref="Graphics"/>.
+    /// Draws the <c>Cursor</c> onto the specified <c>Graphics</c>.
     /// </summary>
     public void Draw (Graphics graphics)
     {
