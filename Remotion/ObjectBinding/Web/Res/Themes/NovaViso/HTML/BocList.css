@@ -94,6 +94,7 @@ div.bocList table.bocListTable td.bocListTitleCell
 {
   font-weight: normal;
   text-align: left;
+  color: var(--color-standard-text);
   background-color: var(--boclist-tablehead-background-color);
   white-space: nowrap;
 }
@@ -224,6 +225,7 @@ div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement 
 
 div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell
 {
+  color: var(--color-standard-text);
   background-color: var(--remotion-themed-background-color-page);
 }
 
@@ -298,6 +300,7 @@ div.bocList div.bocListTableBlock div.bocListNavigator
 
 div.bocList div.bocListTableBlock div.bocListNavigator > span
 {
+  color: var(--color-standard-text);
   margin-right: var(--remotion-themed-spacing);
 }
 
@@ -469,6 +472,11 @@ div.bocList div.bocListMenuBlock div.bocListAvailableViewsList
 div.bocList div.bocListMenuBlock div.bocListAvailableViewsList select.bocListAvailableViewsListDropDownList
 {
   flex-grow: 1;
+}
+
+div.bocList div.bocListMenuBlock div.bocListAvailableViewsList label
+{
+  color: var(--color-standard-text);
 }
 
 div.bocList div.bocListMenuBlock .DropDownMenuContainer
