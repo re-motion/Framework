@@ -296,6 +296,7 @@ div.bocList div.bocListTableBlock div.bocListNavigator
   display: flex;
   align-items: center;
   grid-row: 2;
+  background-color: var(--remotion-themed-background-color-control);
 }
 
 div.bocList div.bocListTableBlock div.bocListNavigator > span

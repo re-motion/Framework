@@ -49,6 +49,7 @@ td.tabbedSubMenuCell
   padding-bottom: 0;
   padding-left: var(--tabbedMenu-horizontal-padding);
   padding-right: var(--tabbedMenu-horizontal-padding);
+  background-color: var(--remotion-themed-background-color-control);
 }
 
 td.tabbedMenuStatusCell
@@ -61,6 +62,8 @@ td.tabbedMenuStatusCell
   min-height: var(--tabbedMenu-min-height);
   padding: 0 var(--remotion-themed-spacing-large);
   padding-top: var(--remotion-themed-spacing);
+  color: var(--color-standard-text);
+  background-color: var(--remotion-themed-background-color-control);
   font: var(--remotion-themed-font-bold);
 }
 
