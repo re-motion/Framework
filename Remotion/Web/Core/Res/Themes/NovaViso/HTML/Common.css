@@ -150,7 +150,7 @@ select.remotion-themed,
 .remotion-themed textarea,
 .remotion-themed select
 {
-  color: var(--color-standard-text); /* not sure about this one */
+  color: var(--color-standard-text);
   background-color: var(--remotion-themed-background-color-control);
   border: var(--remotion-themed-border);
   border-radius: var(--remotion-themed-border-radius);
