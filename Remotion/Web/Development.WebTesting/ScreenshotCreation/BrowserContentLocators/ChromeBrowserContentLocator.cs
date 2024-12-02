@@ -36,11 +36,15 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
         "var w = window; while (w.frameElement) w = w.frameElement.ownerDocument.defaultView; var t = w.document.title; w.document.title = arguments[0]; return t;";
     public ChromeBrowserContentLocator ()
     {
+#if !PLATFORM_WINDOWS
+      throw new PlatformNotSupportedException("ChromeBrowserContentLocator is only supported on Windows.");
+#endif
     }
-
     /// <inheritdoc />
     public Rectangle GetBrowserContentBounds (IWebDriver driver)
     {
+#if PLATFORM_WINDOWS
+
       ArgumentUtility.CheckNotNull("driver", driver);
 
       var windows = AutomationElement.RootElement.FindAll(
@@ -61,7 +65,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       var automationElement = ResolveByChangingWindowTitle(driver, windows);
 
       return ResolveBoundsFromWindow(automationElement);
+#else
+      throw new PlatformNotSupportedException("ChromeBrowserContentLocator is only supported on Windows.");
+#endif
     }
+#if PLATFORM_WINDOWS
 
     private AutomationElement ResolveByChangingWindowTitle (IWebDriver driver, IReadOnlyCollection<AutomationElement> windows)
     {
@@ -146,5 +154,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
 
       return value;
     }
+#endif
   }
 }
