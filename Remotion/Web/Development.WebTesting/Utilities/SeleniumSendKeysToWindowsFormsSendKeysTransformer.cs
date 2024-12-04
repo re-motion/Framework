@@ -25,14 +25,14 @@ using Keys = OpenQA.Selenium.Keys;
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
   /// <summary>
-  /// Utilities to convert a Selenium <see cref="IWebElement.SendKeys"/> call to a <see cref="SendKeys"/> call.
+  /// Utilities to convert a Selenium <see cref="IWebElement.SendKeys"/> call to a <c> SendKeys</c> call.
   /// </summary>
   public static class SeleniumSendKeysToWindowsFormsSendKeysTransformer
   {
     // Todo RM-6337: Add excessive unit testing!
 
     /// <summary>
-    /// Converts a Selenium <see cref="IWebElement.SendKeys"/> text parameter to a <see cref="SendKeys.SendWait"/> keys parameter.
+    /// Converts a Selenium <see cref="IWebElement.SendKeys"/> text parameter to a <c>SendKeys.SendWait</c> keys parameter.
     /// </summary>
     /// <remarks>
     /// See http://msdn.microsoft.com/en-us/library/system.windows.forms.sendkeys.aspx for more information.
