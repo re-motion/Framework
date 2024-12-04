@@ -19,6 +19,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Drawing;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
@@ -49,6 +50,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       _logger = loggerFactory.CreateLogger<TestExecutionScreenshotRecorder>();
       _outputDirectory = Path.GetFullPath(outputDirectory);
       Directory.CreateDirectory(_outputDirectory);
+#if !PLATFORM_WINDOWS
+      throw new PlatformNotSupportedException("TestExecutionScreenshotRecorder is only supported on Windows.");
+#endif
     }
 
     /// <summary>
@@ -83,6 +87,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </exception>
     public void TakeDesktopScreenshot ([JetBrains.Annotations.NotNull] string testName)
     {
+#if PLATFORM_WINDOWS
       ArgumentUtility.CheckNotNullOrEmpty("testName", testName);
 
       var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath(_outputDirectory, testName, "Desktop", "png");
@@ -109,6 +114,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       {
         _logger.LogError(string.Format("Could not save desktop screenshot to '{0}'.", filePath), ex);
       }
+#endif
     }
 
     /// <summary>
@@ -152,6 +158,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     private void SaveBrowserSessionScreenshot (string testName, IBrowserContentLocator locator, IBrowserSession browserSession, int sessionID)
     {
+#if PLATFORM_WINDOWS
       var driver = browserSession.Driver;
       if (driver == null)
         return;
@@ -201,10 +208,12 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       }
 
       _logger.LogInformation("Saved screenshots for the browser session '{0}'.", GetWindowText(browserSession));
+#endif
     }
 
     private CursorInformation CaptureCursorInformationWithLog ()
     {
+#if PLATFORM_WINDOWS
       try
       {
         return CursorInformation.Capture();
@@ -214,6 +223,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         _logger.LogError("Could not capture CursorInformation. Exception: \n{0}", ex);
         return CursorInformation.Empty;
       }
+#endif
+      throw new PlatformNotSupportedException("TestExecutionScreenshotRecorder is only supported on Windows.");
     }
 
     private CursorInformation GetCursorInformation ()
