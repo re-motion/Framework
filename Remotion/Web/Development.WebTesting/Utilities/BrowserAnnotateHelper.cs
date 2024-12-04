@@ -67,7 +67,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       var browserContentBounds = BrowserConfiguration.Locator.GetBrowserContentBounds(seleniumDriver).Location;
 
       // Offset the position of the cursor to translate it to the browser coordinate system.
+#if PLATFORM_WINDOWS
       var cursorPosition = Cursor.Position;
+
       cursorPosition.Offset(-browserContentBounds.X, -browserContentBounds.Y);
 
       var tooltipAnnotation = new ScreenshotTooltipAnnotation(
@@ -77,6 +79,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       builder.Annotate(new Rectangle(cursorPosition, new Size(1, 1)), new RectangleResolver(seleniumDriver), tooltipAnnotation);
 
       return new FluentScreenshotElement<Rectangle>(tooltipAnnotation.TooltipBounds, new RectangleResolver(seleniumDriver));
+#else
+      throw new PlatformNotSupportedException("BrowserAnnotateHelper is only supported on Windows.");
+#endif
     }
 
     /// <summary>
