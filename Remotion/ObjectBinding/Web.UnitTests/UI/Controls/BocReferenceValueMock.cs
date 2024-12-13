@@ -31,6 +31,7 @@ public class BocReferenceValueMock: BocReferenceValue
   {
   }
 
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
   public new string InternalValue
   {
     get { return base.InternalValue; }

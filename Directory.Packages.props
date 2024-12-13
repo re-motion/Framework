@@ -73,7 +73,23 @@
       </ItemGroup>
       <ItemGroup>
         <!-- Transitive pinned packages - check if they are still needed on package upgrades -->
-        <PackageVersion Include="System.Formats.Asn1" Version="8.0.1" />
+        <PackageVersion Include="System.Formats.Asn1" Version="8.0.1" Condition="'$(IsPackable)' == 'false'" />
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFramework.StartsWith('net9.0'))">
+      <ItemGroup>
+        <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="9.0.0-preview.9.24507.7" />
+        <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.0-rc.2.24473.5" />
+        <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.0-rc.2.24473.5" />
+        <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0-rc.2.24473.5" />
+        <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="9.0.0-rc.2.24473.5" />
+        <PackageVersion Include="System.CodeDom" Version="9.0.0-rc.2.24473.5" />
+        <PackageVersion Include="System.Configuration.ConfigurationManager" Version="9.0.0-rc.2.24473.5" />
+        <PackageVersion Include="System.Resources.Extensions" Version="9.0.0-rc.2.24473.5" />
+      </ItemGroup>
+      <ItemGroup>
+        <!-- Transitive pinned packages - check if they are still needed on package upgrades -->
+        <PackageVersion Include="System.Formats.Asn1" Version="9.0.0-rc.2.24473.5" Condition="'$(IsPackable)' == 'false'" />
       </ItemGroup>
     </When>
   </Choose>

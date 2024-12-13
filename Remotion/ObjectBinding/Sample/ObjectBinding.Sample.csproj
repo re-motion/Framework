@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectType>Library</ProjectType>
+    <ProjectType>WebLibrary</ProjectType>
     <UseWebForms>true</UseWebForms>
   </PropertyGroup>
   <Import Project="..\..\..\Build\Shared.build.props" />

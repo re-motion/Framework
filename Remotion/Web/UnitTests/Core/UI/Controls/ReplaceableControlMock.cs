@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel;
 using System.Web.UI;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Utilities;
@@ -63,8 +64,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       get { return _lazyInitializationContainer.IsInitialized; }
     }
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public ControlReplacer Replacer { get; set; }
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public Tuple<ControlReplacer, IStateModificationStrategy> OnInitParameters { get; set; }
   }
 }

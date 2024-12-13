@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel;
 using System.Web.UI;
 using Remotion.Utilities;
 
@@ -47,12 +48,14 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
       Page.RegisterRequiresControlState(this);
     }
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public string? ValueInViewState
     {
       get { return _valueInViewState; }
       set { _valueInViewState = value; }
     }
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public string? ValueInControlState
     {
       get { return _valueInControlState; }

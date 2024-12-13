@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
@@ -32,6 +33,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectBoundEd
       return base.SaveValueToDomainModel();
     }
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public new object Value
     {
       get { return _value; }
