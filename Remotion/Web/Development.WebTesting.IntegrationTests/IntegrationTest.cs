@@ -20,6 +20,8 @@ using Coypu;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -92,6 +94,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
           ? _webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot + page
           : SharedProjectWebRoot + page;
       _webTestHelper.MainBrowserSession.Window.Visit(url);
+
+      //Chrome has a hover card which appears even though the cursor does not hover over the tab.
+      //To remove this card (which may destroy screenshots), a click can be used.
+      if (_webTestHelper.BrowserConfiguration.IsChrome())
+      {
+        var helper = new MouseHelper(_webTestHelper.BrowserConfiguration);
+        helper.LeftClick();
+      }
 
       return _webTestHelper.CreateInitialPageObject<TPageObject>(_webTestHelper.MainBrowserSession);
     }
