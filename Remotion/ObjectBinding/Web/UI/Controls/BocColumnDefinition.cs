@@ -38,6 +38,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private BocColumnTitleStyle _columnTitleStyle = BocColumnTitleStyle.Text;
     private Unit _width = Unit.Empty;
     private string _cssClass = string.Empty;
+    private bool _isVisible = true;
 
     protected BocColumnDefinition ()
     {
@@ -98,6 +99,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public virtual IconInfo ColumnTitleIconDisplayValue
     {
       get { return ColumnTitleIcon; }
+    }
+
+    /// <summary> Gets or sets a flag that determines whether to show this column. </summary>
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("A flag determining whether to show this column.")]
+    [DefaultValue(true)]
+    [NotifyParentProperty(true)]
+    public bool IsVisible
+    {
+      get => _isVisible;
+      set => _isVisible = value;
     }
 
     /// <summary> Gets or sets the text displayed in the column title. </summary>

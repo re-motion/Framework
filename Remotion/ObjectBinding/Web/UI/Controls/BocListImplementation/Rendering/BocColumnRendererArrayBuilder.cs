@@ -147,6 +147,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       ArgumentUtility.CheckNotNull("column", column);
 
+      if (!column.IsVisible)
+        return false;
+
       var columnAsRowEditModeColumn = column as BocRowEditModeColumnDefinition;
       if (columnAsRowEditModeColumn != null)
       {
