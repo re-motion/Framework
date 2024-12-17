@@ -1,4 +1,12 @@
 {
   "$schema": "./build.schema.json",
-  "Solution": "Remotion.sln"
+  "Solution": "Remotion.sln",
+  "DependDBProjectName": "re-motion Framework",
+  "DependDBRetentionTime": "30",
+  "DependDBProjectBranch": "branch",
+  "DependDBProjectImportNotificationMailAddress": "nonexistent@nonexistent.nonexistent",
+  "DependDBProjectImportNotificationMailAddressCc": "",
+  "DependDBTrackedReferences": "Remotion;Remotion.*",
+  "DependDBNugetConfig": "~/nuget.config",
+  "DependDBTargetFramework": "net8.0-windows"
 }

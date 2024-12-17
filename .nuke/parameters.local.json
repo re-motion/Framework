@@ -1,6 +1,6 @@
 {
   "$schema": "./build.schema.json",
-  "Solution": "Remotion.sln",
+  "VcsUrlTemplate": "https://raw.githubusercontent.com/re-motion/Framework/develop/{0}",
   "Target": [ "CIBuild" ],
   "TestConfigurations": [ "Debug"],
   "TestExecutionRuntimes": [ "LocalMachine" ],

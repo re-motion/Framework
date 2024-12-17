@@ -1,6 +1,5 @@
 {
   "$schema": "./build.schema.json",
-  "Solution": "Remotion.sln",
   "Target": [ "FullBuild" ],
   "UseReleaseVersioning": true,
   "TestConfigurations": [ "Debug", "Release" ],

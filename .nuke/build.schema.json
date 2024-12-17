@@ -25,6 +25,36 @@
           "type": "boolean",
           "description": "Indicates to continue a previously failed build attempt"
         },
+        "DependDBNugetConfig": {
+          "type": "string"
+        },
+        "DependDBNuGetSources": {
+          "type": "string"
+        },
+        "DependDBProjectBranch": {
+          "type": "string"
+        },
+        "DependDBProjectImportNotificationMailAddress": {
+          "type": "string"
+        },
+        "DependDBProjectImportNotificationMailAddressCc": {
+          "type": "string"
+        },
+        "DependDBProjectName": {
+          "type": "string"
+        },
+        "DependDBProjectVersion": {
+          "type": "string"
+        },
+        "DependDBRetentionTime": {
+          "type": "string"
+        },
+        "DependDBTargetFramework": {
+          "type": "string"
+        },
+        "DependDBTrackedReferences": {
+          "type": "string"
+        },
         "Help": {
           "type": "boolean",
           "description": "Shows the help text for this build assembly"
@@ -96,6 +126,8 @@
               "DetermineBuildMetadata",
               "DetermineProjectMetadata",
               "FullBuild",
+              "GenerateDependDBOutput",
+              "GenerateSbom",
               "NightlyBuild",
               "Pack",
               "Restore",
@@ -122,6 +154,8 @@
               "DetermineBuildMetadata",
               "DetermineProjectMetadata",
               "FullBuild",
+              "GenerateDependDBOutput",
+              "GenerateSbom",
               "NightlyBuild",
               "Pack",
               "Restore",
@@ -207,6 +241,9 @@
         "UseReleaseVersioning": {
           "type": "boolean",
           "description": "Uses release instead of debug versioning when determining the build versions"
+        },
+        "VcsUrlTemplate": {
+          "type": "string"
         },
         "Verbosity": {
           "type": "string",

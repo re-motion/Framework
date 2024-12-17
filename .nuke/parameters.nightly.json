@@ -1,6 +1,5 @@
 {
   "$schema": "./build.schema.json",
-  "Solution": "Remotion.sln",
   "Target": [ "NightlyBuild" ],
   "TestConfigurations": [ "Debug", "Release" ],
   "TestExecutionRuntimes": [ "Docker_Win_NET8_0", "EnforcedLocalMachine" ],
