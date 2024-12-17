@@ -1,6 +1,5 @@
 {
   "$schema": "./build.schema.json",
-  "Solution": "Remotion.sln",
   "Target": [ "CIBuild" ],
   "TestConfigurations": [ "Debug" ],
   "TestExecutionRuntimes": [ "Docker_Win_NET8_0", "EnforcedLocalMachine" ],

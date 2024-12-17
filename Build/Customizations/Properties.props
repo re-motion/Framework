@@ -14,14 +14,5 @@
     <DocumentationFileName>Remotion</DocumentationFileName>
     <DocumentationRootPage>$(SolutionDirectory)Remotion\Core\Core\Doc\include\GettingStartedWithRemotion.aml</DocumentationRootPage>
     <DocumentationNamespaceSummaryFiles>$(SolutionDirectory)Remotion\**\Doc\include\*.NamespaceDoc.xml</DocumentationNamespaceSummaryFiles>
-    <DependDBProjectName>re-motion Framework</DependDBProjectName>
-    <DependDBRetentionTime>30</DependDBRetentionTime>
-    <DependDBProjectBranch>develop</DependDBProjectBranch>
-    <!-- Will be passed to MSBuild by TeamCity and uses fallback in local build script. -->
-    <DependDBProjectImportNotificationMailAddress></DependDBProjectImportNotificationMailAddress>
-    <DependDBTrackedReferences>Remotion;Remotion.*</DependDBTrackedReferences>
-    <!-- '#OutputDirectory#' and '#ConfigurationID#' will be replaced by '$(OutputDirectory)' and '$(ConfigurationID)' during DependDB processing. See Shared.Overrides.targets:BeforeCheckDependDBProperties -->
-    <DependDBNuGetSources>$(SolutionDirectory)packages</DependDBNuGetSources>
-    <DependDBTargetFramework>net48</DependDBTargetFramework>
   </PropertyGroup>
 </Project>

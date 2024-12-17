@@ -36,7 +36,7 @@ using static Remotion.BuildScript.Test.Dimensions.TargetFrameworks;
 
 // ReSharper disable RedundantTypeArgumentsOfMethod
 
-class Build : RemotionBuild
+class Build : RemotionBuild, IDependDB
 {
   [Parameter(ValueProviderMember = nameof(SupportedTestBrowsers), Separator = "+")]
   public string[] TestBrowsers { get; set; } = [];
