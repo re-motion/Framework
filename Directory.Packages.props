@@ -2,7 +2,7 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
-    <CoreFormsVersion>9.0.0</CoreFormsVersion>
+    <CoreFormsVersion>9.0.0-dev.linux.1</CoreFormsVersion>
     <TypePipeVersion>4.0.0</TypePipeVersion>
   </PropertyGroup>
   <ItemGroup>
