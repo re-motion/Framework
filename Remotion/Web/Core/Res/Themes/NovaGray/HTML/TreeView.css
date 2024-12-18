@@ -5,6 +5,8 @@ ul.treeViewRoot
   margin: 0;
   padding: 0;
   list-style: none;
+  color: black;
+  background-color: white;
 }
 
 /* Applied to the top level node's children area if the expandre is hidden for the top level nodes. */

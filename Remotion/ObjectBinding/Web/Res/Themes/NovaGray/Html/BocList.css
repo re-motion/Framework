@@ -2,6 +2,8 @@
 
 div.bocList
 {
+  color: black;
+  background-color: white;
   display: block;
   position: relative;
   zoom: 1;
