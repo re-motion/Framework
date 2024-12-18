@@ -29,7 +29,6 @@ span.listMenuItemDisabled a
   border-radius: var(--remotion-themed-border-radius);
   display: inline-flex;
   text-decoration: none;
-  color: var(--color-primary);
   gap: var(--remotion-themed-spacing);
 }
 
