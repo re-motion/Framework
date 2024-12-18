@@ -23,5 +23,6 @@
     <!-- '#OutputDirectory#' and '#ConfigurationID#' will be replaced by '$(OutputDirectory)' and '$(ConfigurationID)' during DependDB processing. See Shared.Overrides.targets:BeforeCheckDependDBProperties -->
     <DependDBNuGetSources>$(SolutionDirectory)packages</DependDBNuGetSources>
     <DependDBTargetFramework>net48</DependDBTargetFramework>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 </Project>
