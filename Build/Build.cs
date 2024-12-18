@@ -20,10 +20,13 @@ using System.Collections.Immutable;
 using System.Linq;
 using Customizations;
 using JetBrains.Annotations;
+using NuGet.Versioning;
 using Nuke.Common;
 using Nuke.Common.IO;
+using Nuke.Common.ProjectModel;
 using Remotion.BuildScript;
 using Remotion.BuildScript.Components;
+using Remotion.BuildScript.GenerateSbom;
 using Remotion.BuildScript.Test;
 using Remotion.BuildScript.Test.Dimensions;
 using static Customizations.Browsers;
@@ -44,7 +47,6 @@ class Build : RemotionBuild, IDependDB
   [Parameter(ValueProviderMember = nameof(SupportedTestSqlServers), Separator = "+")]
   public string[] TestSqlServers { get; set; } = [];
 
-
   public static int Main () => Execute<Build>();
 
   [UsedImplicitly]
@@ -56,11 +58,38 @@ class Build : RemotionBuild, IDependDB
         var packageJsonPath = ((IBaseBuild)this).Solution.Directory / "Remotion" / "Web" / "Dependencies.JavaScript" / "package.json";
         Assert.FileExists(packageJsonPath);
 
-        var outputFolder = ((IBaseBuild)this).OutputFolder / "Npm" / "remotion.dependencies" / "package.json";
-        var packageJsonContent = packageJsonPath.ReadAllText()
-                .Replace("$version$", ((IBuildMetadata)this).BuildMetadataPerConfiguration.First().Value.Version);
-        outputFolder.WriteAllText(packageJsonContent);
+        var outputPackageJson = ((IBaseBuild)this).OutputFolder / "Npm" / "remotion.dependencies" / "package.json";
+        AddVersionToPackageJson(packageJsonPath, outputPackageJson, ((IBuildMetadata)this).BuildMetadataPerConfiguration.First().Value.Version);
       });
+
+  public override ISbomGeneratorBuilder ConfigureSbomGenerationInfoBuilder (Solution solution)
+  {
+      var version = ((IBuildMetadata)this).GetBaseVersion();
+
+      var semanticVersion = SemanticVersion.Parse(version);
+      var shortenedVersion = $"{semanticVersion.Major}.{semanticVersion.Minor}.{semanticVersion.Patch}";
+
+      var blacklistedProjects = new[]
+                                {
+                                    "Web.Dependencies.Javascript",
+                                    "*.Analyzers*"
+                                    // We disregard test projects when generating the sbom already, so these are not required here.
+                                };
+
+      var packageJsonPath = solution.Directory / "Remotion" / "Web" / "Dependencies.JavaScript" / "package.json";
+      var packageJsonWithVersion = TemporaryDirectory / "sbom" / "package.json";
+
+      AddVersionToPackageJson(packageJsonPath, packageJsonWithVersion, shortenedVersion);
+
+      var outputSbomPath = ((IBaseBuild)this).OutputFolder / "SBOM" / "re-motion.sbom.xml";
+
+      // We do not require github auth because we do not do enough requests for licenses and package infos
+      var builder = new SolutionSbomGeneratorBuilder(solution, semanticVersion.ToString(), TemporaryDirectory / "sbomGeneration", outputSbomPath, "", "")
+              .WithProjectsBlackListed(blacklistedProjects)
+              .WithPackageJsonFile(packageJsonWithVersion);
+
+      return builder;
+  }
 
   public override void ConfigureProjects (ProjectsBuilder projects)
   {
@@ -287,4 +316,11 @@ class Build : RemotionBuild, IDependDB
   protected IEnumerable<string> SupportedTestBrowsers => GetTestDimensionValueList<Browsers>();
 
   protected IEnumerable<string> SupportedTestSqlServers => GetTestDimensionValueList<Databases>();
+
+  private void AddVersionToPackageJson (AbsolutePath packageJsonPath, AbsolutePath duplicatedPackageJsonPath, string version)
+  {
+      var packageJsonContent = packageJsonPath.ReadAllText().Replace("$version$", version);
+
+      duplicatedPackageJsonPath.WriteAllText(packageJsonContent);
+  }
 }
