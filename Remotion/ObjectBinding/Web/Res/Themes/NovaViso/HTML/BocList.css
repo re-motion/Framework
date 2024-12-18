@@ -94,6 +94,7 @@ div.bocList table.bocListTable td.bocListTitleCell
 {
   font-weight: normal;
   text-align: left;
+  color: var(--color-standard-text);
   background-color: var(--boclist-tablehead-background-color);
   white-space: nowrap;
 }
@@ -224,6 +225,7 @@ div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement 
 
 div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell
 {
+  color: var(--color-standard-text);
   background-color: var(--remotion-themed-background-color-page);
 }
 
@@ -294,6 +296,8 @@ div.bocList div.bocListTableBlock div.bocListNavigator
   display: flex;
   align-items: center;
   grid-row: 2;
+  color: var(--color-standard-text);
+  background-color: var(--remotion-themed-background-color-control);
 }
 
 div.bocList div.bocListTableBlock div.bocListNavigator > span
@@ -449,6 +453,7 @@ div.bocList div.bocListMenuBlock
 {
   grid-column: 2;
   grid-row: var(--boclist-grid-row-placement);
+  color: var(--color-standard-text);
   background-color: var(--boclist-listmenu-background-color);
 }
 
