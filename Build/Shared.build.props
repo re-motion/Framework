@@ -31,6 +31,9 @@
     <PackageTags>re-motion</PackageTags>
     <PackageTags Condition="'$(ProductType)' == 'SecurityManager'">$(PackageTags) SecurityManager</PackageTags>
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+    <!-- This is needed for the Sbom generation, as we need to have all required DLLs in the bin folder to analyze
+     which dependencies we actually need. -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <PropertyGroup>
