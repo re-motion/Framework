@@ -109,7 +109,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       get { return _position; }
     }
-#endif
 
     /// <summary>
     /// Draws the <c>Cursor</c> onto the specified <c>Graphics</c>.
@@ -124,5 +123,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       var bounds = new Rectangle(_position - new Size(_cursor.HotSpot), _cursor.Size);
       _cursor.Draw(graphics, bounds);
     }
+#endif
   }
 }
