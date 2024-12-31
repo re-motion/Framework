@@ -24,6 +24,7 @@ using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
+using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {

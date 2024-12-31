@@ -17,7 +17,11 @@
 using System;
 using System.Drawing;
 using JetBrains.Annotations;
+using Microsoft.Maui.Graphics;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
+using PointF = System.Drawing.PointF;
+using SizeF = System.Drawing.SizeF;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 {

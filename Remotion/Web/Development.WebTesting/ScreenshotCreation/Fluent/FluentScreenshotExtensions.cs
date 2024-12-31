@@ -19,10 +19,13 @@ using System.Drawing;
 using System.Threading;
 using Coypu;
 using JetBrains.Annotations;
+using Microsoft.Maui.Graphics;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
+using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Size = System.Drawing.Size;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
 {

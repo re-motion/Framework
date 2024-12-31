@@ -17,7 +17,11 @@
 using System;
 using System.Drawing;
 using JetBrains.Annotations;
+using Microsoft.Maui.Graphics;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
+using Point = System.Drawing.Point;
+using Size = System.Drawing.Size;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 {
@@ -107,7 +111,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <summary>
-    /// The <see cref="System.Drawing.Font"/> that will be used to draw the <see cref="Content"/>.
+    /// The <see cref="Microsoft.Maui.Graphics.Font"/> that will be used to draw the <see cref="Content"/>.
     /// </summary>
     public Font Font
     {

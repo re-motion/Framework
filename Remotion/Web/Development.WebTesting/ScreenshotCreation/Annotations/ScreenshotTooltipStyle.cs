@@ -15,10 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Drawing;
 using JetBrains.Annotations;
+using Microsoft.Maui.Graphics;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Color = System.Drawing.Color;
+using Size = System.Drawing.Size;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 {
@@ -97,7 +100,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <summary>
-    /// The <see cref="System.Drawing.Font"/> that will be used to draw the tooltips content.
+    /// The <see cref="Microsoft.Maui.Graphics.Font"/> that will be used to draw the tooltips content.
     /// </summary>
     public Font Font
     {
