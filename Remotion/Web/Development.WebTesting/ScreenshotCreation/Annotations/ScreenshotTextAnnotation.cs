@@ -149,12 +149,12 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <inheritdoc />
-    public void Draw (SKCanvas graphics, ResolvedScreenshotElement resolvedScreenshotElement)
+    public void Draw (SKCanvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull("graphics", graphics);
+      ArgumentUtility.CheckNotNull("canvas", canvas);
       ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
 
-      var size = graphics.MeasureString(_content, _font, new SizeF(_maxWidth, _maxHeight));
+      var size = canvas.MeasureString(_content, _font, new SizeF(_maxWidth, _maxHeight));
       var position = PositionAndApplyPadding(resolvedScreenshotElement.ElementBounds, size.Width, size.Height);
       var layout = new Rectangle(
           (int)Math.Round(position.X),
@@ -163,9 +163,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
           (int)Math.Round(size.Height) + 1);
 
       if (_backgroundBrush != null)
-        graphics.FillRectangle(_backgroundBrush, layout);
+        canvas.FillRectangle(_backgroundBrush, layout);
 
-      graphics.DrawString(_content, _font, _foregroundBrush, layout, _stringFormat);
+      canvas.DrawString(_content, _font, _foregroundBrush, layout, _stringFormat);
     }
 
     /// <summary>

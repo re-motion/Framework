@@ -37,12 +37,12 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <inheritdoc />
-    public void Draw (SKCanvas graphics, ResolvedScreenshotElement resolvedScreenshotElement)
+    public void Draw (SKCanvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull("graphics", graphics);
+      ArgumentUtility.CheckNotNull("canvas", canvas);
       ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
 
-      _elementDrawAction(graphics, resolvedScreenshotElement);
+      _elementDrawAction(canvas, resolvedScreenshotElement);
     }
   }
 }

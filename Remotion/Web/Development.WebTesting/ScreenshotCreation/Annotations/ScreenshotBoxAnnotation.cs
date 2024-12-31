@@ -69,9 +69,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <inheritdoc />
-    public void Draw (SKCanvas graphics, ResolvedScreenshotElement resolvedScreenshotElement)
+    public void Draw (SKCanvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull("graphics", graphics);
+      ArgumentUtility.CheckNotNull("canvas", canvas);
       ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
 
       // Calculate the bound of the annotation with padding
@@ -79,7 +79,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 
       // Draw the background if there is one
       if (_backgroundBrush != null)
-        graphics.FillRectangle(_backgroundBrush, annotationBounds);
+        canvas.FillRectangle(_backgroundBrush, annotationBounds);
 
       // Apply the padding for the border
       var border = (int)Math.Floor(_pen.Width);
@@ -89,7 +89,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 
       // Draw the border by drawing 5 lines. GDI+ is somehow
       // unable to draw rectangles in certain situations
-      graphics.DrawLines(
+      canvas.DrawLines(
           _pen,
           new[]
           {

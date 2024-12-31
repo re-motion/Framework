@@ -136,9 +136,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <inheritdoc />
-    public void Draw (SKCanvas graphics, ResolvedScreenshotElement resolvedScreenshotElement)
+    public void Draw (SKCanvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull("graphics", graphics);
+      ArgumentUtility.CheckNotNull("canvas", canvas);
       ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
 
       var elementBounds = resolvedScreenshotElement.ElementBounds;
@@ -146,7 +146,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
           elementBounds.X + elementBounds.Width / 2 + _translation.Width,
           elementBounds.Y + elementBounds.Height / 2 + _translation.Height);
 
-      var textSizeF = graphics.MeasureString(Content, Font);
+      var textSizeF = canvas.MeasureString(Content, Font);
       var textSize = new Size((int)Math.Ceiling(textSizeF.Width), (int)Math.Ceiling(textSizeF.Height));
 
       var textBound = new Rectangle(centerPoint.X - textSize.Width / 2, centerPoint.Y - textSize.Height / 2, textSize.Width, textSize.Height);
@@ -168,9 +168,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       }
 
       if (BackgroundBrush != null)
-        graphics.FillEllipse(BackgroundBrush, ellipseBounds);
-      graphics.DrawString(Content, Font, ContentBrush, textBound);
-      graphics.DrawEllipse(BorderPen, ellipseBounds);
+        canvas.FillEllipse(BackgroundBrush, ellipseBounds);
+      canvas.DrawString(Content, Font, ContentBrush, textBound);
+      canvas.DrawEllipse(BorderPen, ellipseBounds);
     }
   }
 }
