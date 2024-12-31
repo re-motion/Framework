@@ -15,12 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Graphics;
 using Remotion.Utilities;
+using SkiaSharp;
+using Point = System.Drawing.Point;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -152,7 +154,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
       using (var annotationImage = AnnotationLayer.CloneImage())
       using (var outputImage = BaseLayer.CloneImage())
-      using (var outputGraphics = Graphics.FromImage(outputImage))
+      using (var outputGraphics = SKCanvas.FromImage(outputImage))
       {
         outputGraphics.DrawImage(annotationImage, Point.Empty);
 

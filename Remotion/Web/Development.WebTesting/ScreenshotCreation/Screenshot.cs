@@ -18,10 +18,12 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
+using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -83,7 +85,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       var browserBounds = locator.GetBrowserContentBounds((IWebDriver)browserSession.Driver.Native);
       var image = new Bitmap(browserBounds.Width, browserBounds.Height);
-      using (var graphics = Graphics.FromImage(image))
+      using (var graphics = SKCanvas.FromImage(image))
       {
         graphics.CopyFromScreen(browserBounds.Location, Point.Empty, browserBounds.Size);
 
@@ -130,7 +132,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       var offset = new Size(-requiredBounds.X, -requiredBounds.Y);
 
       var image = new Bitmap(requiredBounds.Width, requiredBounds.Height);
-      using (var graphics = Graphics.FromImage(image))
+      using (var graphics = SKCanvas.FromImage(image))
       {
         graphics.Clear(Color.Transparent);
 
@@ -152,7 +154,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
     private readonly CursorInformation _cursorInformation;
     private readonly Size _desktopOffset;
-    private readonly Image _image;
+    private readonly MediaTypeNames.Image _image;
     private readonly Rectangle[] _screenshotBounds;
     private readonly CoordinateSystem _coordinateSystem;
 

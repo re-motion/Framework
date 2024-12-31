@@ -20,6 +20,7 @@ using JetBrains.Annotations;
 using Microsoft.Maui.Graphics;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
+using SkiaSharp;
 using PointF = System.Drawing.PointF;
 using SizeF = System.Drawing.SizeF;
 
@@ -148,7 +149,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <inheritdoc />
-    public void Draw (Graphics graphics, ResolvedScreenshotElement resolvedScreenshotElement)
+    public void Draw (SKCanvas graphics, ResolvedScreenshotElement resolvedScreenshotElement)
     {
       ArgumentUtility.CheckNotNull("graphics", graphics);
       ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);

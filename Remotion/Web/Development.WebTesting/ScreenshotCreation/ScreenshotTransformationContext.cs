@@ -19,6 +19,7 @@ using System.Drawing;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
+using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -29,14 +30,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       where T : notnull
   {
     private readonly ScreenshotManipulation _manipulation;
-    private readonly Graphics _graphics;
+    private readonly SKCanvas _graphics;
     private readonly IScreenshotElementResolver<T> _resolver;
     private readonly T _target;
     private readonly ResolvedScreenshotElement _resolvedElement;
 
     public ScreenshotTransformationContext (
         ScreenshotManipulation manipulation,
-        [NotNull] Graphics graphics,
+        [NotNull] SKCanvas graphics,
         [NotNull] IScreenshotElementResolver<T> resolver,
         [NotNull] T target,
         [NotNull] ResolvedScreenshotElement resolvedElement)
@@ -62,9 +63,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     }
 
     /// <summary>
-    /// The <see cref="System.Drawing.Graphics"/> used to draw the <see cref="IScreenshotAnnotation"/>.
+    /// The <see cref="SKCanvas"/> used to draw the <see cref="IScreenshotAnnotation"/>.
     /// </summary>
-    public Graphics Graphics
+    public SKCanvas Graphics
     {
       get { return _graphics; }
     }

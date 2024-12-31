@@ -18,9 +18,12 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Net.Mime;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations;
+using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
+using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -59,7 +62,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     private readonly IBrowserContentLocator _locator;
 
     private Image _layerImage;
-    private Graphics _layerGraphics;
+    private SKCanvas _layerGraphics;
     private Rectangle _imageBounds;
     private Size _normalizationVector;
 
@@ -77,7 +80,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       _locator = locator;
       _layerImage = imageOverride;
-      _layerGraphics = Graphics.FromImage(_layerImage);
+      _layerGraphics = SKCanvas.FromImage(_layerImage);
 
       _screenshotOffset = screenshot.DesktopOffset;
       _screenshotBounds = screenshot.ScreenshotBounds;
@@ -190,7 +193,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       _layerGraphics.Flush(FlushIntention.Sync);
 
       var newImage = new Bitmap(croppingRectangle.Size.Width, croppingRectangle.Size.Height);
-      var newGraphics = Graphics.FromImage(newImage);
+      var newGraphics = SKCanvas.FromImage(newImage);
       var newImageBounds = new Rectangle(Point.Empty, croppingRectangle.Size);
 
       var normalizedCroppingRectangle = new Rectangle(croppingRectangle.Location + _normalizationVector, croppingRectangle.Size);

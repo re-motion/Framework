@@ -17,6 +17,7 @@
 using System;
 using System.Drawing;
 using Remotion.Utilities;
+using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -28,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
     public ScreenshotTransformationHelper (
         ScreenshotManipulation manipulation,
-        Graphics graphics,
+        SKCanvas graphics,
         IScreenshotElementResolver<T> resolver,
         T target,
         CoordinateSystem coordinateSystem,
