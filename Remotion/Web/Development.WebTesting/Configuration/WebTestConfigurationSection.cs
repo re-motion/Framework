@@ -17,6 +17,7 @@
 using System;
 using System.Configuration;
 using System.IO;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using Remotion.Utilities;
