@@ -18,7 +18,6 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using Remotion.Utilities;

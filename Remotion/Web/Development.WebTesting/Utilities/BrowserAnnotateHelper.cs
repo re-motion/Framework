@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
