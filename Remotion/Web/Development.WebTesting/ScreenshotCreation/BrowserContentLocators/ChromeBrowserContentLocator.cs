@@ -20,7 +20,6 @@ using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Windows;
-using System.Windows.Automation;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
