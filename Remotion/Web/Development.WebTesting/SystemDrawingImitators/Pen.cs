@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
 // SPDX-License-Identifier: LGPL-2.1-or-later
 using System;
+using System.Drawing;
 using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.SystemDrawingImitators;
@@ -8,7 +9,7 @@ namespace Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 // imitates System.Drawing.Pen
 public class Pen
 {
-  public SKColor Color { get; set; }
+  public Color Color { get; set; }
 
   private float _width;
 
@@ -25,12 +26,20 @@ public class Pen
   }
 
 
-  public Pen (SKColor color, float width = 1.0f)
+  public Pen (Color color, float width = 1.0f)
   {
     if (width <= 0)
       throw new ArgumentOutOfRangeException(nameof(width), "Width must be greater than zero.");
 
     Color = color;
+    Width = width;
+  }
+  public Pen (SKColor color, float width = 1.0f)
+  {
+    if (width <= 0)
+      throw new ArgumentOutOfRangeException(nameof(width), "Width must be greater than zero.");
+
+    Color = ColorConverter.ToColor(color);
     Width = width;
   }
 }
