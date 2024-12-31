@@ -22,6 +22,7 @@ using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration.Legacy;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
+using ConfigurationSection = System.Configuration.ConfigurationSection;
 
 namespace Remotion.Web.Development.WebTesting.Configuration
 {
