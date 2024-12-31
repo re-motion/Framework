@@ -17,7 +17,6 @@
 using System;
 using System.Drawing;
 using System.Threading;
-using System.Windows.Automation;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
