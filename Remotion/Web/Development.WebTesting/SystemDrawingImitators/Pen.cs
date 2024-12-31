@@ -25,6 +25,7 @@ public class Pen
     }
   }
 
+  public SKPaint Paint => new() { Color = DrawingSkiaSharpConverter.ToSKColor(Color) };
 
   public Pen (Color color, float width = 1.0f)
   {
@@ -34,12 +35,13 @@ public class Pen
     Color = color;
     Width = width;
   }
+
   public Pen (SKColor color, float width = 1.0f)
   {
     if (width <= 0)
       throw new ArgumentOutOfRangeException(nameof(width), "Width must be greater than zero.");
 
-    Color = ColorConverter.ToColor(color);
+    Color = DrawingSkiaSharpConverter.ToColor(color);
     Width = width;
   }
 }

@@ -5,7 +5,7 @@ using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 
-public static class ColorConverter
+public static class DrawingSkiaSharpConverter
 {
   public static Color ToColor (SKColor color)
   {
@@ -25,5 +25,10 @@ public static class ColorConverter
         color.B,
         color.A
     );
+  }
+
+  public static SKPoint ToSKPoint (Point point)
+  {
+    return new SKPoint(point.X, point.Y);
   }
 }
