@@ -6,6 +6,7 @@ namespace Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 
 public class Brushes
 {
+    public static Brush Transparent => new SolidBrush(SKColors.Transparent);
     public static Brush AliceBlue => new SolidBrush(SKColors.AliceBlue);
     public static Brush AntiqueWhite => new SolidBrush(SKColors.AntiqueWhite);
     public static Brush Aqua => new SolidBrush(SKColors.Aqua);
