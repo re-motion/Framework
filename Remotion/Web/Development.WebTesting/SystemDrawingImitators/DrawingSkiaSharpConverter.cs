@@ -36,4 +36,14 @@ public static class DrawingSkiaSharpConverter
   {
     return new SKRect(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Bottom);
   }
+
+  public static SKBitmap ToSkBitmap (this SKImage image)
+  {
+    return SKBitmap.FromImage(image);
+  }
+
+  public static SKImage ToSkImage (this SKBitmap bitmap)
+  {
+    return SKImage.FromBitmap(bitmap);
+  }
 }
