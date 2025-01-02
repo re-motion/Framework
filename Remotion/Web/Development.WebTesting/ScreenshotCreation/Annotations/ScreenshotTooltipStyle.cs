@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Microsoft.Maui.Graphics;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 using Remotion.Web.Development.WebTesting.Utilities;

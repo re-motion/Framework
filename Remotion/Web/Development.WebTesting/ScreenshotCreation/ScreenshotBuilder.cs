@@ -19,7 +19,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Graphics;
 using Remotion.Utilities;
 using SkiaSharp;
 using Point = System.Drawing.Point;
