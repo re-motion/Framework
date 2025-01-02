@@ -19,6 +19,8 @@ using System.Drawing;
 using System.Threading;
 using Coypu;
 using JetBrains.Annotations;
+using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Graphics.Skia;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
@@ -262,9 +264,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     }
 
     /// <summary>
-    /// Free-draws onto the <see cref="SKCanvas"/> object of the screenshot.
+    /// Free-draws onto the <see cref="SkiaCanvas"/> object of the screenshot.
     /// </summary>
-    public static void Freedraw ([NotNull] this ScreenshotBuilder builder, [NotNull] Action<SKCanvas, ResolvedScreenshotElement> drawAction)
+    public static void Freedraw ([NotNull] this ScreenshotBuilder builder, [NotNull] Action<SkiaCanvas, ResolvedScreenshotElement> drawAction)
     {
       ArgumentUtility.CheckNotNull("builder", builder);
       ArgumentUtility.CheckNotNull("drawAction", drawAction);
@@ -273,12 +275,12 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     }
 
     /// <summary>
-    /// Free-draws onto the <see cref="SKCanvas"/> object of the screenshot, targeting <paramref name="fluentTarget"/>.
+    /// Free-draws onto the <see cref="SkiaCanvas"/> object of the screenshot, targeting <paramref name="fluentTarget"/>.
     /// </summary>
     public static void Freedraw<T> (
         [NotNull] this ScreenshotBuilder builder,
         [NotNull] IFluentScreenshotElement<T> fluentTarget,
-        [NotNull] Action<SKCanvas, ResolvedScreenshotElement> drawAction)
+        [NotNull] Action<SkiaCanvas, ResolvedScreenshotElement> drawAction)
         where T : notnull
     {
       ArgumentUtility.CheckNotNull("builder", builder);

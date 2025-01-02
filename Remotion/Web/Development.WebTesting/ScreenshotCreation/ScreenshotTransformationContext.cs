@@ -17,6 +17,7 @@
 using System;
 using System.Drawing;
 using JetBrains.Annotations;
+using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 using SkiaSharp;
@@ -30,14 +31,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       where T : notnull
   {
     private readonly ScreenshotManipulation _manipulation;
-    private readonly SKCanvas _graphics;
+    private readonly SkiaCanvas _graphics;
     private readonly IScreenshotElementResolver<T> _resolver;
     private readonly T _target;
     private readonly ResolvedScreenshotElement _resolvedElement;
 
     public ScreenshotTransformationContext (
         ScreenshotManipulation manipulation,
-        [NotNull] SKCanvas graphics,
+        [NotNull] SkiaCanvas graphics,
         [NotNull] IScreenshotElementResolver<T> resolver,
         [NotNull] T target,
         [NotNull] ResolvedScreenshotElement resolvedElement)
@@ -63,9 +64,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     }
 
     /// <summary>
-    /// The <see cref="SKCanvas"/> used to draw the <see cref="IScreenshotAnnotation"/>.
+    /// The <see cref="SkiaCanvas"/> used to draw the <see cref="IScreenshotAnnotation"/>.
     /// </summary>
-    public SKCanvas Graphics
+    public SkiaCanvas Graphics
     {
       get { return _graphics; }
     }

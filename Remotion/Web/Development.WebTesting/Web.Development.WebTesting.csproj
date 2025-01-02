@@ -21,12 +21,12 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fork.Coypu" />
+    <PackageReference Include="Microsoft.Maui.Graphics.Skia" />
     <PackageReference Include="Selenium.Support" />
     <PackageReference Include="Selenium.WebDriver" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" />
-    <PackageReference Include="SkiaSharp" />
     <PackageReference Include="System.Configuration.ConfigurationManager" />
   </ItemGroup>
   <ItemGroup>

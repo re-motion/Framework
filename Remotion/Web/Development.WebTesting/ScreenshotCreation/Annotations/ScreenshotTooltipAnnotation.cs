@@ -17,7 +17,9 @@
 using System;
 using System.Drawing;
 using JetBrains.Annotations;
+using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
@@ -77,7 +79,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <inheritdoc />
-    public void Draw (SKCanvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
+    public void Draw (SkiaCanvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
       ArgumentUtility.CheckNotNull("canvas", canvas);
       ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);

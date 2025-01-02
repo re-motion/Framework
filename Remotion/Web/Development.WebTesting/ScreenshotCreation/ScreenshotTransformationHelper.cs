@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Drawing;
+using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
 using SkiaSharp;
 
@@ -29,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
     public ScreenshotTransformationHelper (
         ScreenshotManipulation manipulation,
-        SKCanvas graphics,
+        SkiaCanvas graphics,
         IScreenshotElementResolver<T> resolver,
         T target,
         CoordinateSystem coordinateSystem,

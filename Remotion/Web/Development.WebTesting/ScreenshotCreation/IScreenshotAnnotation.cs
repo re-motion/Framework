@@ -17,6 +17,7 @@
 using System;
 using System.Drawing;
 using JetBrains.Annotations;
+using Microsoft.Maui.Graphics.Skia;
 using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
@@ -31,6 +32,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     /// <param name="canvas">Device which will be used for drawing.</param>
     /// <param name="resolvedScreenshotElement">Information about the screenshot element the annotation will be applied to.</param>
-    void Draw ([NotNull] SKCanvas canvas, [NotNull] ResolvedScreenshotElement resolvedScreenshotElement);
+    void Draw ([NotNull] SkiaCanvas canvas, [NotNull] ResolvedScreenshotElement resolvedScreenshotElement);
   }
 }

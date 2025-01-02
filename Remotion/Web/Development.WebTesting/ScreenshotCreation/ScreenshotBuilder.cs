@@ -19,6 +19,8 @@ using System.Drawing.Imaging;
 using System.IO;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
 using SkiaSharp;
 using Point = System.Drawing.Point;
@@ -153,7 +155,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
       using (var annotationImage = AnnotationLayer.CloneImage())
       using (var outputImage = BaseLayer.CloneImage())
-      using (var outputGraphics = SKCanvas.FromImage(outputImage))
+      using (var outputGraphics = SkiaCanvas.FromImage(outputImage))
       {
         outputGraphics.DrawImage(annotationImage, Point.Empty);
 

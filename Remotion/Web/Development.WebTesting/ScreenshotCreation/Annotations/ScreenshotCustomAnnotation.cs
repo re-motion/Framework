@@ -17,19 +17,20 @@
 using System;
 using System.Drawing;
 using JetBrains.Annotations;
+using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
 using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 {
   /// <summary>
-  /// Provides the ability to freedraw using the <see cref="SKCanvas"/> object of the screenshot.
+  /// Provides the ability to freedraw using the <see cref="SkiaCanvas"/> object of the screenshot.
   /// </summary>
   public class ScreenshotCustomAnnotation : IScreenshotAnnotation
   {
-    private readonly Action<SKCanvas, ResolvedScreenshotElement> _elementDrawAction;
+    private readonly Action<SkiaCanvas, ResolvedScreenshotElement> _elementDrawAction;
 
-    public ScreenshotCustomAnnotation ([NotNull] Action<SKCanvas, ResolvedScreenshotElement> elementDrawAction)
+    public ScreenshotCustomAnnotation ([NotNull] Action<SkiaCanvas, ResolvedScreenshotElement> elementDrawAction)
     {
       ArgumentUtility.CheckNotNull("elementDrawAction", elementDrawAction);
 
@@ -37,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <inheritdoc />
-    public void Draw (SKCanvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
+    public void Draw (SkiaCanvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
       ArgumentUtility.CheckNotNull("canvas", canvas);
       ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);

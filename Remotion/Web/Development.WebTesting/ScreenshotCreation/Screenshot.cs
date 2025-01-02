@@ -20,6 +20,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Mime;
 using JetBrains.Annotations;
+using Microsoft.Maui.Graphics.Skia;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
@@ -85,7 +86,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       var browserBounds = locator.GetBrowserContentBounds((IWebDriver)browserSession.Driver.Native);
       var image = new Bitmap(browserBounds.Width, browserBounds.Height);
-      using (var graphics = SKCanvas.FromImage(image))
+      using (var graphics = SkiaCanvas.FromImage(image))
       {
         graphics.CopyFromScreen(browserBounds.Location, Point.Empty, browserBounds.Size);
 
@@ -132,7 +133,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       var offset = new Size(-requiredBounds.X, -requiredBounds.Y);
 
       var image = new Bitmap(requiredBounds.Width, requiredBounds.Height);
-      using (var graphics = SKCanvas.FromImage(image))
+      using (var graphics = SkiaCanvas.FromImage(image))
       {
         graphics.Clear(Color.Transparent);
 
