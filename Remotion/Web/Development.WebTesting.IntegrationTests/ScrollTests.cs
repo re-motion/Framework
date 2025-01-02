@@ -27,6 +27,7 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Screen
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
+using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
 

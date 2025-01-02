@@ -231,7 +231,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
 
       IScreenshotAnnotation annotation = new ScreenshotTextAnnotation(
           content,
-          font ?? SystemFonts.DefaultFont,
+          font ?? new SKFont(),
           foregroundBrush ?? Brushes.Red,
           backgroundBrush,
           stringFormat ?? StringFormat.GenericDefault,
