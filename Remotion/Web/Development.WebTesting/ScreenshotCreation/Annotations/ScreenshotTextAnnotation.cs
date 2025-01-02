@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     private readonly Brush? _backgroundBrush;
     private readonly string _content;
     private readonly ContentAlignment _contentAlignment;
-    private readonly Font _font;
+    private readonly SKFont _font;
     private readonly Brush _foregroundBrush;
     private readonly float _maxHeight;
     private readonly float _maxWidth;
@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 
     public ScreenshotTextAnnotation (
         [NotNull] string content,
-        [NotNull] Font font,
+        [NotNull] SKFont font,
         [NotNull] Brush foregroundBrush,
         [CanBeNull] Brush? backgroundBrush,
         [NotNull] StringFormat stringFormat,
@@ -97,10 +97,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <summary>
-    /// The <see cref="Font"/> that will be used to draw the text.
+    /// The <see cref="SKFont"/> that will be used to draw the text.
     /// </summary>
     [NotNull]
-    public Font Font
+    public SKFont Font
     {
       get { return _font; }
     }

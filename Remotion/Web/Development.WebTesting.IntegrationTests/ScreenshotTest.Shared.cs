@@ -26,8 +26,10 @@ using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
+using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
+using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -51,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private static readonly Color s_colorD = Color.FromArgb(0x99, 0x00, 0x99);
     private static readonly Color s_colorE = Color.FromArgb(0x99, 0xFF, 0x33);
 
-    private static readonly Font s_font = new Font("Consolas", 8.25f);
+    private static readonly SKFont s_font = new SKFont(SKTypeface.FromFamilyName("Consolas"), 8.25f);
     private static readonly Brush s_foregroundBrush = new SolidBrush(Color.FromArgb(0x00, 0x00, 0x00));
     private static readonly Brush s_backgroundBrush = new SolidBrush(Color.FromArgb(0xCC, 0xCC, 0xFF));
 

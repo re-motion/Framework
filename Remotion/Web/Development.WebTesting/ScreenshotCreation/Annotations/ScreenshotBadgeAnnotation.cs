@@ -35,14 +35,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     private readonly string _content;
     private readonly Brush _contentBrush;
     private readonly WebPadding _contentPadding;
-    private readonly Font _font;
+    private readonly SKFont _font;
     private readonly bool _forceCircle;
     private readonly Size _translation;
 
     public ScreenshotBadgeAnnotation (
         [NotNull] string content,
         WebPadding contentPadding,
-        [NotNull] Font font,
+        [NotNull] SKFont font,
         [NotNull] Brush contentBrush,
         [NotNull] Pen borderPen,
         [CanBeNull] Brush? backgroundBrush,
@@ -111,9 +111,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <summary>
-    /// The <see cref="Microsoft.Maui.Graphics.Font"/> that will be used to draw the <see cref="Content"/>.
+    /// The <see cref="SKFont"/> that will be used to draw the <see cref="Content"/>.
     /// </summary>
-    public Font Font
+    public SKFont Font
     {
       get { return _font; }
     }
