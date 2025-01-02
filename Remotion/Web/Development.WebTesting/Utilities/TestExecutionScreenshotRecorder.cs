@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     private readonly string _outputDirectory;
 
     private bool _isCursorCaptured;
-    private CursorInformation? _cursorInformation;
+    private ICursorInformation? _cursorInformation;
 
     public TestExecutionScreenshotRecorder ([NotNull] string outputDirectory, [NotNull] ILoggerFactory loggerFactory)
     {
@@ -210,23 +210,23 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 #endif
     }
 
-    private CursorInformation CaptureCursorInformationWithLog ()
+    private ICursorInformation CaptureCursorInformationWithLog ()
     {
 #if PLATFORM_WINDOWS
       try
       {
-        return CursorInformation.Capture();
+        return WindowsCursorInformation.Capture();
       }
       catch (Exception ex)
       {
         _logger.LogError("Could not capture CursorInformation. Exception: \n{0}", ex);
-        return CursorInformation.Empty;
+        return EmptyCursorInformation;
       }
 #endif
       throw new PlatformNotSupportedException("TestExecutionScreenshotRecorder is only supported on Windows.");
     }
 
-    private CursorInformation GetCursorInformation ()
+    private ICursorInformation GetCursorInformation ()
     {
       if (_isCursorCaptured)
         return _cursorInformation!;

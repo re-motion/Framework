@@ -1,4 +1,5 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿#if PLATFORM_WINDOWS
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -18,7 +19,9 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using JetBrains.Annotations;
+using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
@@ -26,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
   /// <summary>
   /// Provides information about the cursor at a specific point in time.
   /// </summary>
-  public class CursorInformation
+  public class CursorInformation : ICursorInformation
   {
     [StructLayout(LayoutKind.Sequential)]
     private struct CursorInfoDto
@@ -43,18 +46,17 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
     [DllImport("user32.dll", SetLastError = true)]
     private static extern bool GetCursorInfo (ref CursorInfoDto info);
-#if PLATFORM_WINDOWS
+
     /// <summary>
     /// Represents an invisible cursor with default cursor image at position (0,0).
     /// </summary>
     public static readonly CursorInformation Empty = new CursorInformation(Point.Empty, Cursors.Default, false);
-#endif
+
     /// <summary>
     /// Captures the current <see cref="CursorInformation"/>.
     /// </summary>
     public static CursorInformation Capture ()
     {
-#if PLATFORM_WINDOWS
       var cursorInformation = new CursorInfoDto
                               {
                                   Size = (uint)Marshal.SizeOf(typeof(CursorInfoDto))
@@ -67,11 +69,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         return new CursorInformation(cursorInformation.ScreenPosition, new Cursor(cursorInformation.CursorHandle), true);
 
       return new CursorInformation(cursorInformation.ScreenPosition, Cursors.Default, false);
-#else
-      throw new PlatformNotSupportedException("CursorInformation is only supported on Windows.");
-#endif
     }
-#if PLATFORM_WINDOWS
+
     private readonly Cursor _cursor;
     private readonly bool _isVisible;
     private readonly Point _position;
@@ -94,26 +93,20 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       get { return _cursor; }
     }
 
-    /// <summary>
-    /// Returns <see langword="true" /> if the cursor is visible, otherwise <see langword="false" />.
-    /// </summary>
+    /// <inheritdoc/>>
     public bool IsVisible
     {
       get { return _isVisible; }
     }
 
-    /// <summary>
-    /// The position of the cursor in desktop coordinates.
-    /// </summary>
+    /// <inheritdoc/>>
     public Point Position
     {
       get { return _position; }
     }
 
-    /// <summary>
-    /// Draws the <c>Cursor</c> onto the specified <c>Graphics</c>.
-    /// </summary>
-    public void Draw (Graphics graphics)
+    /// <inheritdoc/>>
+    public void Draw (SkiaCanvas graphics)
     {
       ArgumentUtility.CheckNotNull("graphics", graphics);
 
@@ -123,6 +116,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       var bounds = new Rectangle(_position - new Size(_cursor.HotSpot), _cursor.Size);
       _cursor.Draw(graphics, bounds);
     }
-#endif
   }
 }
+#endif

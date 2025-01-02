@@ -24,6 +24,7 @@ using Microsoft.Maui.Graphics.Skia;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
+using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
@@ -54,9 +55,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     [NotNull]
     public static Screenshot TakeDesktopScreenshot ()
     {
+#if PLATFORM_WINDOWS
       return TakeDesktopScreenshot(Screen.AllScreens);
+#else
+      throw new PlatformNotSupportedException("Screens are only supported on Windows");
+#endif
     }
 
+#if PLATFORM_WINDOWS
     /// <summary>
     /// Takes a screenshot of the specified <paramref name="screens"/>.
     /// </summary>
@@ -97,10 +103,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
           image,
           Size.Empty,
           new[] { new Rectangle(Point.Empty, browserBounds.Size) },
-          CursorInformation.Capture(),
+          WindowsCursorInformation.Capture(),
           CoordinateSystem.Browser);
     }
-
+#endif
     [NotNull]
     private static Screenshot CreateBrowserScreenshotBasedOnDriver (IBrowserSession browserSession)
     {
@@ -121,10 +127,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
           image,
           Size.Empty,
           new[] { new Rectangle(Point.Empty, image.Size) },
-          CursorInformation.Empty,
+          EmptyCursorInformation.Instance,
           CoordinateSystem.Browser);
     }
-
+#if PLATFORM_WINDOWS
     [NotNull]
     private static Screenshot CreateDesktopScreenshot (Screen[] screens)
     {
@@ -133,7 +139,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       var offset = new Size(-requiredBounds.X, -requiredBounds.Y);
 
       var image = new Bitmap(requiredBounds.Width, requiredBounds.Height);
-      using (var graphics = SkiaCanvas.FromImage(image))
+      using (var graphics = SkiaCanvasExtensions.FromImage(image))
       {
         graphics.Clear(Color.Transparent);
 
@@ -149,23 +155,24 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
           image,
           new Size(requiredBounds.X, requiredBounds.Y),
           screenBounds,
-          CursorInformation.Capture(),
+          WindowsCursorInformation.Capture(),
           CoordinateSystem.Desktop);
     }
+#endif
 
-    private readonly CursorInformation _cursorInformation;
+    private readonly ICursorInformation _cursorInformation;
     private readonly Size _desktopOffset;
-    private readonly MediaTypeNames.Image _image;
+    private readonly SKImage _image;
     private readonly Rectangle[] _screenshotBounds;
     private readonly CoordinateSystem _coordinateSystem;
 
     private bool _disposed;
 
     public Screenshot (
-        [NotNull] Image image,
+        [NotNull] SKImage image,
         Size desktopOffset,
         Rectangle[] screenshotBounds,
-        [NotNull] CursorInformation cursorInformation,
+        [NotNull] ICursorInformation cursorInformation,
         CoordinateSystem coordinateSystem)
     {
       ArgumentUtility.CheckNotNull("image", image);
@@ -180,10 +187,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     }
 
     /// <summary>
-    /// The <see cref="CursorInformation"/> associated with the screenshot.
+    /// The <see cref="ICursorInformation"/> associated with the screenshot.
     /// </summary>
     [NotNull]
-    public CursorInformation CursorInformation
+    public ICursorInformation CursorInformation
     {
       get
       {
@@ -210,7 +217,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// Returns the screenshot as image.
     /// </summary>
     [NotNull]
-    public Image Image
+    public SKImage Image
     {
       get
       {
