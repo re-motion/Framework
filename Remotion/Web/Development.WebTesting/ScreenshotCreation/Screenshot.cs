@@ -46,7 +46,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       if (browserSession.Headless)
         return CreateBrowserScreenshotBasedOnDriver(browserSession);
       else
+#if PLATFORM_WINDOWS
         return CreateBrowserScreenshotBasedOnScreen(browserSession, locator);
+#else
+      throw new PlatformNotSupportedException("Headed mode is only supported on Windows.");
+#endif
     }
 
     /// <summary>
@@ -114,19 +118,16 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
       var screenshot = ((ITakesScreenshot)browserSession.Driver.Native).GetScreenshot();
 
-      Bitmap image;
+      SKImage image;
       using (var memoryStream = new MemoryStream(screenshot.AsByteArray, false))
       {
-        // For some reasons GDI+ might throw an OutOfMemory exception when the image provided by the driver is used
-        // As such, we copy the image which is quite fast (~5ms) and prevents any issues down the line
-        var corruptedImage = (Bitmap)Image.FromStream(memoryStream);
-        image = new Bitmap(corruptedImage);
+        image = SKImage.FromEncodedData(memoryStream);
       }
 
       return new Screenshot(
           image,
           Size.Empty,
-          new[] { new Rectangle(Point.Empty, image.Size) },
+          new[] { new Rectangle(Point.Empty, new Size(image.Width, image.Height)) },
           EmptyCursorInformation.Instance,
           CoordinateSystem.Browser);
     }
