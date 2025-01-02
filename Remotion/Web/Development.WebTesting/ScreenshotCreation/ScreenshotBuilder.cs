@@ -22,6 +22,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 using SkiaSharp;
 using Point = System.Drawing.Point;
 
@@ -155,14 +156,18 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
       using (var annotationImage = AnnotationLayer.CloneImage())
       using (var outputImage = BaseLayer.CloneImage())
-      using (var outputGraphics = SkiaCanvas.FromImage(outputImage))
+      using (var outputGraphics = SkiaCanvasExtensions.FromImage(outputImage))
       {
-        outputGraphics.DrawImage(annotationImage, Point.Empty);
+        outputGraphics.Canvas.DrawImage(annotationImage, new SKPoint(0, 0));
 
         if (DrawMouseCursor && Screenshot.CursorInformation.IsVisible)
           Screenshot.CursorInformation.Draw(outputGraphics);
 
-        outputImage.Save(path, ImageFormat.Png);
+        var data = outputImage.Encode(SKEncodedImageFormat.Png, 100);
+        using (var stream = new FileStream(path, FileMode.Create))
+        {
+          data.SaveTo(stream);
+        }
       }
     }
 
