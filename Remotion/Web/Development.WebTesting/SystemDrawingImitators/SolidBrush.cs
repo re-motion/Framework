@@ -13,7 +13,7 @@ public class SolidBrush : Brush
   {
     Paint = new SKPaint
             {
-                Color = DrawingSkiaSharpConverter.ToSKColor(color),
+                Color = color.ToSKColor(),
                 Style = SKPaintStyle.Fill,
                 IsAntialias = true
             };
@@ -36,7 +36,7 @@ public class SolidBrush : Brush
       if (Paint == null)
         return Color.Transparent;
 
-      return DrawingSkiaSharpConverter.ToColor(Paint.Color);
+      return Paint.Color.ToColor();
     }
   }
 

@@ -7,7 +7,7 @@ namespace Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 
 public static class DrawingSkiaSharpConverter
 {
-  public static Color ToColor (SKColor color)
+  public static Color ToColor (this SKColor color)
   {
     return Color.FromArgb(
         color.Alpha,
@@ -17,7 +17,7 @@ public static class DrawingSkiaSharpConverter
     );
   }
 
-  public static SKColor ToSKColor (Color color)
+  public static SKColor ToSKColor (this Color color)
   {
     return new SKColor(
         color.R,
@@ -27,7 +27,7 @@ public static class DrawingSkiaSharpConverter
     );
   }
 
-  public static SKPoint ToSKPoint (Point point)
+  public static SKPoint ToSKPoint (this Point point)
   {
     return new SKPoint(point.X, point.Y);
   }
