@@ -31,4 +31,9 @@ public static class DrawingSkiaSharpConverter
   {
     return new SKPoint(point.X, point.Y);
   }
+
+  public static SKRect ToSkRect (this Rectangle rectangle)
+  {
+    return new SKRect(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Bottom);
+  }
 }

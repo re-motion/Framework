@@ -11,7 +11,7 @@ public abstract class Brush : MarshalByRefObject, ICloneable, IDisposable
 {
   private SKPaint? _paint { get; set; }
 
-  protected SKPaint? Paint
+  public SKPaint? Paint
   {
     get { return _paint; }
     set { _paint = value; }

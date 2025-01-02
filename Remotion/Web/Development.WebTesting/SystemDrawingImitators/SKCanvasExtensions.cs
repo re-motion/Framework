@@ -11,10 +11,15 @@ public static class SKCanvasExtensions
   {
     for (int i = 1; i < points.Length; i++)
     {
-      var p0 = DrawingSkiaSharpConverter.ToSKPoint(points[i - 1]);
-      var p1 = DrawingSkiaSharpConverter.ToSKPoint(points[i]);
+      var p0 = points[i - 1].ToSKPoint();
+      var p1 = points[i].ToSKPoint();
 
       canvas.DrawLine(p0, p1, pen.Paint);
     }
+  }
+
+  public static void FillRectangle (this SKCanvas canvas, Brush brush, Rectangle rectangle)
+  {
+    canvas.DrawRect(rectangle.ToSkRect(), brush.Paint);
   }
 }
