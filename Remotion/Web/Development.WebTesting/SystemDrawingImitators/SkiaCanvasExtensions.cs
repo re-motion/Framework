@@ -40,33 +40,38 @@ public static class SkiaCanvasExtensions
     var paint = new SKPaint
                 {
                     TextSize = font.Size,
-                    IsAntialias = true
+                    IsAntialias = true,
+                    Typeface = font.Typeface,
+                    TextEncoding = SKTextEncoding.Utf16 // Match SKFont default
                 };
 
-    var maxLayoutWidth = layoutArea.Width;
+    var widthLimit = layoutArea.Width == 0 ? layoutArea.Width : float.PositiveInfinity;
+    var heightLimit = layoutArea.Height == 0 ? layoutArea.Height : float.PositiveInfinity;
+
     var spaceWidth = paint.MeasureText(" ");
     var maxWidth = 0f;
-    var maxHeigth = paint.TextSize;
-    var totalX = 0f;
+    var height = paint.FontSpacing;
 
-    foreach (string word in text?.Split(' ') ?? [])
+    var currentWidth = 0f;
+    foreach (var word in text?.Split(' ') ?? [])
     {
-      float wordWidth = paint.MeasureText(word);
-      totalX = totalX + wordWidth + spaceWidth;
-      if (totalX > maxLayoutWidth)
+      var wordWidth = paint.MeasureText(word) + spaceWidth;
+
+      if (currentWidth + wordWidth > widthLimit && wrapLines)
       {
-        if (!wrapLines)
-        {
-          return new SizeF(maxLayoutWidth, maxHeigth);
-        }
         // new line
-        if (totalX > maxWidth) maxWidth = totalX;
-        maxHeigth += paint.FontSpacing;
-        totalX = 0f;
+        height += paint.FontSpacing;
+        currentWidth = wordWidth;
       }
+
+      currentWidth += wordWidth;
+      maxWidth = Math.Max(maxWidth, currentWidth);
     }
 
-    return new SizeF(maxWidth, maxHeigth);
+    maxWidth = Math.Min(maxWidth, widthLimit);
+    height = Math.Min(height, heightLimit);
+
+    return new SizeF(maxWidth, height);
   }
 
   public static SkiaCanvas FromImage (SKImage? image)
