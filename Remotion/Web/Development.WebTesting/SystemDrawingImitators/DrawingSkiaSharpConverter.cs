@@ -1,7 +1,11 @@
 // SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
 // SPDX-License-Identifier: LGPL-2.1-or-later
+using System;
 using System.Drawing;
+using Microsoft.Maui.Graphics;
 using SkiaSharp;
+using Color = System.Drawing.Color;
+using Point = System.Drawing.Point;
 
 namespace Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 
@@ -45,5 +49,13 @@ public static class DrawingSkiaSharpConverter
   public static SKImage ToSkImage (this SKBitmap bitmap)
   {
     return SKImage.FromBitmap(bitmap);
+  }
+
+  public static Font ToMauiFont (this SKFont? font)
+  {
+    if (font == null)
+      return Font.Default;
+
+    return new Font(font.Typeface.FamilyName, (int)Math.Round(font.Size));
   }
 }
