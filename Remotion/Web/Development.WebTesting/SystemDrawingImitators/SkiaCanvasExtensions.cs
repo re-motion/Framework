@@ -80,4 +80,13 @@ public static class SkiaCanvasExtensions
     return SKImage.FromEncodedData(image?.EncodedData);
   }
 
+  public static void FillEllipse (this SkiaCanvas canvas, Brush brush, int x, int y, int width, int height)
+  {
+    throw new NotImplementedException();
+  }
+
+  public static void DrawString (this SkiaCanvas canvas, string? text, SKFont? font, Brush brush, Rectangle rectangle, object stringFormat) //TODO: add support for string formatting
+  {
+    throw new NotImplementedException();
+  }
 }
