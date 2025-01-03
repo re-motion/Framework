@@ -75,4 +75,9 @@ public static class SkiaCanvasExtensions
     return new SkiaCanvas { Canvas = new SKCanvas(bitmap) };
   }
 
+  public static SKImage Clone (this SKImage? image)
+  {
+    return SKImage.FromEncodedData(image?.EncodedData);
+  }
+
 }
