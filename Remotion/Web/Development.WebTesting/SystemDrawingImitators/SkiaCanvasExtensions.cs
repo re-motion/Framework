@@ -88,6 +88,8 @@ public static class SkiaCanvasExtensions
 
   public static void DrawString (this SkiaCanvas canvas, string? text, SKFont? font, Brush brush, Rectangle rectangle, object stringFormat) //TODO: add support for string formatting
   {
-    throw new NotImplementedException();
+    canvas.Font = font.ToMauiFont();
+    canvas.FontColor = brush.Paint?.Color.AsColor();
+    canvas.DrawString(text, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, HorizontalAlignment.Center, VerticalAlignment.Center);
   }
 }
