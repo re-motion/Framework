@@ -75,11 +75,6 @@ public static class SkiaCanvasExtensions
     return new SkiaCanvas { Canvas = new SKCanvas(bitmap) };
   }
 
-  public static SKImage Clone (this SKImage? image)
-  {
-    return SKImage.FromEncodedData(image?.EncodedData);
-  }
-
   public static void FillEllipse (this SkiaCanvas canvas, Brush brush, int x, int y, int width, int height)
   {
     var rect = new SKRect(x, y, x + width, y + height);
