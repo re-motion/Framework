@@ -25,7 +25,12 @@ public class Pen
     }
   }
 
-  public SKPaint Paint => new() { Color = Color.ToSKColor() };
+  public SKPaint Paint => new()
+                          {
+                              Style = SKPaintStyle.Stroke,
+                              Color = Color.ToSKColor(),
+                              StrokeWidth = _width
+                          };
 
   public Pen (Color color, float width = 1.0f)
   {
