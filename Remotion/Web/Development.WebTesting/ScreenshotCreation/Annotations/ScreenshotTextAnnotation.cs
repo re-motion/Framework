@@ -166,7 +166,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       if (_backgroundBrush != null)
         canvas.FillRectangle(_backgroundBrush, layout);
 
-      canvas.DrawString(_content, _font, _foregroundBrush, layout, _stringFormat);
+      canvas.DrawString(_content, _font, _foregroundBrush, layout, (object)_stringFormat);
     }
 
     /// <summary>
