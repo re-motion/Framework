@@ -64,4 +64,15 @@ public static class SkiaCanvasExtensions
 
     return new SizeF(maxWidth, maxHeigth);
   }
+
+  public static SkiaCanvas FromImage (SKImage? image)
+  {
+    return FromBitmap(SKBitmap.FromImage(image));
+  }
+
+  public static SkiaCanvas FromBitmap (SKBitmap? bitmap)
+  {
+    return new SkiaCanvas { Canvas = new SKCanvas(bitmap) };
+  }
+
 }
