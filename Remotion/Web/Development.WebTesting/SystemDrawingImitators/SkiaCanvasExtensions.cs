@@ -33,12 +33,10 @@ public static class SkiaCanvasExtensions
     => MeasureString(canvas, text, font, new SizeF(0, 0));
 
   public static SizeF MeasureString (this SkiaCanvas canvas, string? text, SKFont font, Size layoutArea, bool wrapLines)
-    => MeasureString(canvas, text, font, new SizeF(layoutArea.Width, layoutArea.Height));
+    => MeasureString(canvas, text, font, new SizeF(layoutArea.Width, layoutArea.Height), wrapLines);
 
   public static SizeF MeasureString (this SkiaCanvas canvas, string? text, SKFont font, SizeF layoutArea, bool wrapLines = true)
   {
-    //TODO: add support wrap lines
-
     var paint = new SKPaint
                 {
                     TextSize = font.Size,
@@ -57,6 +55,10 @@ public static class SkiaCanvasExtensions
       totalX = totalX + wordWidth + spaceWidth;
       if (totalX > maxLayoutWidth)
       {
+        if (!wrapLines)
+        {
+          return new SizeF(maxLayoutWidth, maxHeigth);
+        }
         // new line
         if (totalX > maxWidth) maxWidth = totalX;
         maxHeigth += paint.FontSpacing;
@@ -93,12 +95,72 @@ public static class SkiaCanvasExtensions
     canvas.Canvas.DrawOval(ellipseBounds.X, ellipseBounds.Y, ellipseBounds.Width, ellipseBounds.Height, pen.Paint);
   }
 
-  public static void DrawString (this SkiaCanvas canvas, string? text, SKFont? font, Brush brush, Rectangle rectangle, ContentAlignment contentAlignment = ContentAlignment.MiddleCenter, bool wrapLines = true)
+  public static void DrawString (
+      this SkiaCanvas canvas,
+      string? text,
+      SKFont? font,
+      Brush brush,
+      Rectangle rectangle,
+      ContentAlignment contentAlignment = ContentAlignment.MiddleCenter,
+      bool wrapLines = true)
   {
-    //TODO: implement content alignment and wraplines
+    HorizontalAlignment horizAlignment;
+    VerticalAlignment vertAlignment;
+
+    switch (contentAlignment)
+    {
+      case ContentAlignment.TopLeft:
+        horizAlignment = HorizontalAlignment.Left;
+        vertAlignment = VerticalAlignment.Top;
+        break;
+      case ContentAlignment.TopCenter:
+        horizAlignment = HorizontalAlignment.Center;
+        vertAlignment = VerticalAlignment.Top;
+        break;
+      case ContentAlignment.TopRight:
+        horizAlignment = HorizontalAlignment.Right;
+        vertAlignment = VerticalAlignment.Top;
+        break;
+      case ContentAlignment.MiddleLeft:
+        horizAlignment = HorizontalAlignment.Left;
+        vertAlignment = VerticalAlignment.Center;
+        break;
+      case ContentAlignment.MiddleCenter:
+        horizAlignment = HorizontalAlignment.Center;
+        vertAlignment = VerticalAlignment.Center;
+        break;
+      case ContentAlignment.MiddleRight:
+        horizAlignment = HorizontalAlignment.Right;
+        vertAlignment = VerticalAlignment.Center;
+        break;
+      case ContentAlignment.BottomLeft:
+        horizAlignment = HorizontalAlignment.Left;
+        vertAlignment = VerticalAlignment.Bottom;
+        break;
+      case ContentAlignment.BottomCenter:
+        horizAlignment = HorizontalAlignment.Center;
+        vertAlignment = VerticalAlignment.Bottom;
+        break;
+      case ContentAlignment.BottomRight:
+        horizAlignment = HorizontalAlignment.Right;
+        vertAlignment = VerticalAlignment.Bottom;
+        break;
+      default:
+        horizAlignment = HorizontalAlignment.Center;
+        vertAlignment = VerticalAlignment.Center;
+        break;
+    }
 
     canvas.Font = font.ToMauiFont();
     canvas.FontColor = brush.Paint?.Color.AsColor();
-    canvas.DrawString(text, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, HorizontalAlignment.Center, VerticalAlignment.Center);
+    canvas.DrawString(
+        text,
+        rectangle.X,
+        rectangle.Y,
+        rectangle.Width,
+        rectangle.Height,
+        horizAlignment,
+        vertAlignment,
+        wrapLines ? TextFlow.ClipBounds : TextFlow.OverflowBounds);
   }
 }
