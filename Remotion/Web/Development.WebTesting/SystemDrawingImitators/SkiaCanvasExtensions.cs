@@ -2,8 +2,12 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 using System;
 using System.Drawing;
+using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Skia;
 using SkiaSharp;
+using Point = System.Drawing.Point;
+using Size = System.Drawing.Size;
+using SizeF = System.Drawing.SizeF;
 
 namespace Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 
@@ -28,12 +32,36 @@ public static class SkiaCanvasExtensions
   public static SizeF MeasureString (this SkiaCanvas canvas, string? text, SKFont font)
     => MeasureString(canvas, text, font, new SizeF(0, 0));
 
-  public static SizeF MeasureString (this SkiaCanvas canvas, string? text, SKFont font, Size layoutArea)
+  public static SizeF MeasureString (this SkiaCanvas canvas, string? text, SKFont font, Size layoutArea, object stringFormat) //TODO: add support for string formatting
     => MeasureString(canvas, text, font, new SizeF(layoutArea.Width, layoutArea.Height));
 
   public static SizeF MeasureString (this SkiaCanvas canvas, string? text, SKFont font, SizeF layoutArea)
   {
-    font.MeasureText();
-    return new SizeF(rect.Width, rect.Height);
+    var paint = new SKPaint
+                {
+                    TextSize = font.Size,
+                    IsAntialias = true
+                };
+
+    var maxLayoutWidth = layoutArea.Width;
+    var spaceWidth = paint.MeasureText(" ");
+    var maxWidth = 0f;
+    var maxHeigth = paint.TextSize;
+    var totalX = 0f;
+
+    foreach (string word in text?.Split(' ') ?? [])
+    {
+      float wordWidth = paint.MeasureText(word);
+      totalX = totalX + wordWidth + spaceWidth;
+      if (totalX > maxLayoutWidth)
+      {
+        // new line
+        if (totalX > maxWidth) maxWidth = totalX;
+        maxHeigth += paint.FontSpacing;
+        totalX = 0f;
+      }
+    }
+
+    return new SizeF(maxWidth, maxHeigth);
   }
 }
