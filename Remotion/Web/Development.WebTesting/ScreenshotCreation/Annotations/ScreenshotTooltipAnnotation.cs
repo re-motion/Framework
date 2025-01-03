@@ -84,19 +84,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       ArgumentUtility.CheckNotNull("canvas", canvas);
       ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
 
-      // Prepare the StringFormat for laying out the text
-      var stringFormat = new StringFormat();
-      if (!_style.WrapLines)
-      {
-        stringFormat.FormatFlags = StringFormatFlags.NoWrap;
-        stringFormat.Trimming = StringTrimming.EllipsisCharacter;
-      }
-      else
-      {
-        stringFormat.FormatFlags = StringFormatFlags.LineLimit;
-        stringFormat.Trimming = StringTrimming.EllipsisWord;
-      }
-
       // Calculate the maximum size of the tooltip
       var border = (int)Math.Round(_style.Border.Width);
       var maximumSize = new Size(
@@ -107,7 +94,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       var layoutArea = maximumSize - new Size(border * 2 + _style.ContentPadding.Horizontal, border * 2 + _style.ContentPadding.Vertical);
 
       // Measure how much space the text needs
-      var contentSizeF = canvas.MeasureString(_content, _style.Font, layoutArea, stringFormat);
+      var contentSizeF = canvas.MeasureString(_content, _style.Font, layoutArea, _style.WrapLines);
       var contentSize = new Size((int)Math.Ceiling(contentSizeF.Width) + 1, (int)Math.Ceiling(contentSizeF.Height));
 
       // Calculate the bounds of the tooltip with border
@@ -138,7 +125,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
           _style.Font,
           _style.ForegroundBrush,
           new Rectangle(tooltipBounds.Location + desktopOffset, contentSize),
-          stringFormat);
+          ContentAlignment.MiddleCenter,
+          _style.WrapLines);
     }
 
     private Point PositionTooltipWithAlignment (TooltipPositioning alignment, Rectangle element, Rectangle tooltip)

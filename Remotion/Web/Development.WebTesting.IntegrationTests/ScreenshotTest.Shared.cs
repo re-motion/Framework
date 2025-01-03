@@ -57,13 +57,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private static readonly Brush s_foregroundBrush = new SolidBrush(Color.FromArgb(0x00, 0x00, 0x00));
     private static readonly Brush s_backgroundBrush = new SolidBrush(Color.FromArgb(0xCC, 0xCC, 0xFF));
 
-    private static readonly StringFormat s_stringFormat = new StringFormat
-                                                          {
-                                                              Alignment = StringAlignment.Center,
-                                                              LineAlignment = StringAlignment.Center,
-                                                              Trimming = StringTrimming.Word
-                                                          };
-
     [Test]
     public void GetTarget ()
     {
@@ -239,7 +232,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
                   s_font,
                   s_foregroundBrush,
                   s_backgroundBrush,
-                  s_stringFormat,
                   (ContentAlignment)value,
                   s_rainbowPaddingSmall,
                   -1f,

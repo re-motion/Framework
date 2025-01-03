@@ -32,11 +32,13 @@ public static class SkiaCanvasExtensions
   public static SizeF MeasureString (this SkiaCanvas canvas, string? text, SKFont font)
     => MeasureString(canvas, text, font, new SizeF(0, 0));
 
-  public static SizeF MeasureString (this SkiaCanvas canvas, string? text, SKFont font, Size layoutArea, object stringFormat) //TODO: add support for string formatting
+  public static SizeF MeasureString (this SkiaCanvas canvas, string? text, SKFont font, Size layoutArea, bool wrapLines)
     => MeasureString(canvas, text, font, new SizeF(layoutArea.Width, layoutArea.Height));
 
-  public static SizeF MeasureString (this SkiaCanvas canvas, string? text, SKFont font, SizeF layoutArea)
+  public static SizeF MeasureString (this SkiaCanvas canvas, string? text, SKFont font, SizeF layoutArea, bool wrapLines = true)
   {
+    //TODO: add support wrap lines
+
     var paint = new SKPaint
                 {
                     TextSize = font.Size,
@@ -82,7 +84,10 @@ public static class SkiaCanvasExtensions
   }
 
   public static void DrawString (this SkiaCanvas canvas, string? text, SKFont? font, Brush brush, Rectangle rectangle, object stringFormat) //TODO: add support for string formatting
+  public static void DrawString (this SkiaCanvas canvas, string? text, SKFont? font, Brush brush, Rectangle rectangle, ContentAlignment contentAlignment = ContentAlignment.MiddleCenter, bool wrapLines = true)
   {
+    //TODO: implement content alignment and wraplines
+
     canvas.Font = font.ToMauiFont();
     canvas.FontColor = brush.Paint?.Color.AsColor();
     canvas.DrawString(text, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, HorizontalAlignment.Center, VerticalAlignment.Center);

@@ -42,14 +42,12 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     private readonly float _maxHeight;
     private readonly float _maxWidth;
     private readonly WebPadding _padding;
-    private readonly StringFormat _stringFormat;
 
     public ScreenshotTextAnnotation (
         [NotNull] string content,
         [NotNull] SKFont font,
         [NotNull] Brush foregroundBrush,
         [CanBeNull] Brush? backgroundBrush,
-        [NotNull] StringFormat stringFormat,
         ContentAlignment contentAlignment,
         WebPadding padding,
         float? maxWidth,
@@ -58,13 +56,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       ArgumentUtility.CheckNotNull("content", content);
       ArgumentUtility.CheckNotNull("font", font);
       ArgumentUtility.CheckNotNull("foregroundBrush", foregroundBrush);
-      ArgumentUtility.CheckNotNull("stringFormat", stringFormat);
 
       _content = content;
       _font = font;
       _foregroundBrush = foregroundBrush;
       _backgroundBrush = backgroundBrush;
-      _stringFormat = stringFormat;
       _contentAlignment = contentAlignment;
       _padding = padding;
       _maxWidth = maxWidth ?? c_maxLayoutMeasure;
@@ -140,15 +136,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       get { return _padding; }
     }
 
-    /// <summary>
-    /// The <see cref="StringFormat"/> that will be used to draw the text.
-    /// </summary>
-    [NotNull]
-    public StringFormat StringFormat
-    {
-      get { return _stringFormat; }
-    }
-
     /// <inheritdoc />
     public void Draw (SkiaCanvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
@@ -166,7 +153,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       if (_backgroundBrush != null)
         canvas.FillRectangle(_backgroundBrush, layout);
 
-      canvas.DrawString(_content, _font, _foregroundBrush, layout, (object)_stringFormat);
+      canvas.DrawString(_content, _font, _foregroundBrush, layout, ContentAlignment);
     }
 
     /// <summary>
