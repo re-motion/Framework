@@ -4,6 +4,8 @@ table.formGridTable
   border-collapse: collapse;
   border-width: 0;
   width: 100%;
+  color: black;
+  background-color: white;
 }
 
 td.formGridTitleCell,
@@ -19,7 +21,6 @@ td.formGridTitleCell h1
 {
   width: 100%;
   border-bottom: solid 1px #AAAAAA;
-  color: Black;
 }
 
 /*  Style applied to the cells containing the labels  */
