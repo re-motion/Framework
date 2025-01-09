@@ -108,6 +108,7 @@ span.DropDownMenuSelect.nestedHover:active a.DropDownMenuButton
 
 span.DropDownMenuSelect
 {
+  color: black;
   background-image: url(../Image/ButtonBackground.gif);
   background-size: 1px 20px;
   background-color: #E6E5E7;
@@ -215,6 +216,7 @@ div.DropDownMenuOptions
   margin: 0;
   padding: 0;
   border: solid 1px #AAAAAA;
+  color: Black;
   background-color: White;
   background-image: url('../Image/DropDownMenuItemIconPane.gif');
   background-size: 22px 1px;
