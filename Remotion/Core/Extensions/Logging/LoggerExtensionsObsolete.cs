@@ -58,6 +58,20 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
+  /// Log an  <paramref name="exceptionObject"/> with the specified <paramref name="logLevel"/>,
+  /// including its stack trace.
+  /// </summary>
+  /// <param name="logger">The <see cref="ILogger"/> instance where the message is to be logged.</param>
+  /// <param name="logLevel">The <see cref="Microsoft.Extensions.Logging.LogLevel"/> of the message to be logged.</param>
+  /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
+  [Obsolete("Use logger.Log(logLevel, exceptionObject message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
+  public static void Log (this ILogger logger, LogLevel logLevel, Exception exceptionObject)
+  {
+    ArgumentUtility.CheckNotNull("logger", logger);
+    logger.Log(logLevel, exceptionObject, exceptionObject.Message);
+  }
+
+  /// <summary>
   /// Log a message object with the specified <paramref name="logLevel"/>.
   /// </summary>
   /// <param name="logger">The <see cref="ILogger"/> instance where the message is to be logged.</param>
@@ -147,6 +161,19 @@ public static class LoggerExtensionsObsolete
   {
     ArgumentUtility.CheckNotNull("logger", logger);
     logger.LogDebug(exceptionObject, message?.ToString());
+  }
+
+  /// <summary>
+  /// Log an <paramref name="exceptionObject"/> with the <see cref="Microsoft.Extensions.Logging.LogLevel.Debug"/> level,
+  /// including its stacktrace.
+  /// </summary>
+  /// <param name="logger">The <see cref="ILogger"/> instance where the message is to be logged.</param>
+  /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
+  [Obsolete("Use logger.LogDebug(exceptionObject, message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
+  public static void Debug (this ILogger logger, Exception exceptionObject)
+  {
+    ArgumentUtility.CheckNotNull("logger", logger);
+    logger.LogDebug(exceptionObject, exceptionObject.Message);
   }
 
   /// <summary>
@@ -270,6 +297,19 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
+  /// Log an <paramref name="exceptionObject"/> with the <see cref="Microsoft.Extensions.Logging.LogLevel.Information"/> level,
+  /// including its stacktrace.
+  /// </summary>
+  /// <param name="logger">The <see cref="ILogger"/> instance where the message is to be logged.</param>
+  /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
+  [Obsolete("Use logger.LogInformation(exceptionObject, message instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
+  public static void Info (this ILogger logger, Exception exceptionObject)
+  {
+    ArgumentUtility.CheckNotNull("logger", logger);
+    logger.LogInformation(exceptionObject, exceptionObject.Message);
+  }
+
+  /// <summary>
   /// Log a message object with the <see cref="Microsoft.Extensions.Logging.LogLevel.Information"/> level.
   /// </summary>
   /// <param name="logger">The <see cref="ILogger"/> instance where the message is to be logged.</param>
@@ -387,6 +427,19 @@ public static class LoggerExtensionsObsolete
   {
     ArgumentUtility.CheckNotNull("logger", logger);
     logger.LogWarning(exceptionObject, message?.ToString());
+  }
+
+  /// <summary>
+  /// Log an <paramref name="exceptionObject"/> with the <see cref="Microsoft.Extensions.Logging.LogLevel.Warning"/> level,
+  /// including its stacktrace.
+  /// </summary>
+  /// <param name="logger">The <see cref="ILogger"/> instance where the message is to be logged.</param>
+  /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
+  [Obsolete("Use logger.LogWarning(exceptionObject, message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
+  public static void Warn (this ILogger logger, Exception exceptionObject)
+  {
+    ArgumentUtility.CheckNotNull("logger", logger);
+    logger.LogWarning(exceptionObject, exceptionObject.Message);
   }
 
   /// <summary>
@@ -510,6 +563,19 @@ public static class LoggerExtensionsObsolete
   }
 
   /// <summary>
+  /// Log an <paramref name="exceptionObject"/> with the <see cref="Microsoft.Extensions.Logging.LogLevel.Error"/> level,
+  /// including its stacktrace.
+  /// </summary>
+  /// <param name="logger">The <see cref="ILogger"/> instance where the message is to be logged.</param>
+  /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
+  [Obsolete("Use logger.LogError(exceptionObject, message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
+  public static void Error (this ILogger logger, Exception exceptionObject)
+  {
+    ArgumentUtility.CheckNotNull("logger", logger);
+    logger.LogError(exceptionObject, exceptionObject.Message);
+  }
+
+  /// <summary>
   /// Log a message object with the <see cref="Microsoft.Extensions.Logging.LogLevel.Error"/> level.
   /// </summary>
   /// <param name="logger">The <see cref="ILogger"/> instance where the message is to be logged.</param>
@@ -622,6 +688,18 @@ public static class LoggerExtensionsObsolete
   /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
   [Obsolete("LogLevel.Fatal is not supported by Microsoft Logging. Use logger.LogCritical(exceptionObject, message) instead. (Version 7.0.0)", true)]
   public static void Fatal (this ILogger logger, object? message, Exception exceptionObject)
+  {
+    throw new NotSupportedException("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)");
+  }
+
+  /// <summary>
+  /// Log an <paramref name="exceptionObject"/> with the <c>LogLevel.Fatal</c> level,
+  /// including its stacktrace.
+  /// </summary>
+  /// <param name="logger">The <see cref="ILogger"/> instance where the message is to be logged.</param>
+  /// <param name="exceptionObject">The <see cref="Exception"/> to log, including its stack trace. Pass <see langword="null"/> to not log an exception.</param>
+  [Obsolete("LogLevel.Fatal is not supported by Microsoft Logging. Use logger.LogCritical(exceptionObject, message) instead. (Version 7.0.0)", true)]
+  public static void Fatal (this ILogger logger, Exception exceptionObject)
   {
     throw new NotSupportedException("LogLevel.Fatal is not supported by Microsoft Logging. Use LogLevel.Critical instead. (Version 7.0.0)");
   }
