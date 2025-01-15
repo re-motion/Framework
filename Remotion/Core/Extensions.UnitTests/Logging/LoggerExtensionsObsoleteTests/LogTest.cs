@@ -82,6 +82,24 @@ namespace Remotion.Extensions.UnitTests.Logging.LoggerExtensionsObsoleteTests
     }
 
     [Test]
+    public void Test_WithException ()
+    {
+      Exception exception = new Exception("exception message");
+      SetLoggingThreshold(Level.Info);
+
+      Log.Log(LogLevel.Information, exception);
+
+      LoggingEvent[] events = GetLoggingEvents();
+      Assert.That(events.Length, Is.EqualTo(1));
+      LoggingEvent loggingEvent = events[0];
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Info));
+      Assert.That(loggingEvent.MessageObject, Is.EqualTo("exception message"));
+      Assert.That(loggingEvent.ExceptionObject, Is.SameAs(exception));
+      Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
+      Assert.That(loggingEvent.LoggerName, Is.EqualTo(Logger.Name));
+    }
+
+    [Test]
     public void Test_WithMessage ()
     {
       SetLoggingThreshold(Level.Info);
