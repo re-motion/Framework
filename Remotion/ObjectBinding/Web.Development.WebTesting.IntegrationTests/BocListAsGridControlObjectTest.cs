@@ -17,6 +17,8 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
@@ -470,6 +472,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
       var row = bocList.GetRow(2);
       var dropDownMenu = row.GetDropDownMenu();
+
+      //TODO: RM-9425
+      dropDownMenu.Open();
+      Thread.Sleep(TimeSpan.FromSeconds(1));
+
       dropDownMenu.SelectItem("RowMenuItemCmd2");
 
       Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderLabel").Text, Is.EqualTo("JobList_Normal"));
