@@ -29,7 +29,7 @@ namespace Remotion.Reflection
   /// ambigous castings if the final call to <see cref="With{A1}"/> is missing, while using structs will usually lead to a compile-time error as 
   /// expected.</p>
   /// </remarks>
-  /// <include file='../doc/include/Reflection/TypesafeInvoker.xml' path='TypesafeInvoker/Class/remarks'/>
+  /// <include file='../Doc/include/Reflection/TypesafeInvoker.xml' path='TypesafeInvoker/Class/remarks'/>
   public partial interface IActionInvoker
   {
     void Invoke (Type[] valueTypes, object[] values);

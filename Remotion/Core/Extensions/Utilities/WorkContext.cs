@@ -27,7 +27,7 @@ namespace Remotion.Utilities
 /// <summary>
 ///   Provides context information for error messages.
 /// </summary>
-/// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Class/*' />
+/// <include file='../Doc/include/Utilities/WorkContext.xml' path='WorkContext/Class/*' />
 public class WorkContext: IDisposable
 {
   public class ContextStack
@@ -128,7 +128,7 @@ public class WorkContext: IDisposable
   /// <summary>
   /// Use this flag to specify (or learn) whether trace output should be generated when contexts are entered, left or done.
   /// </summary>
-  /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/EnableTracing/*' />
+  /// <include file='../Doc/include/Utilities/WorkContext.xml' path='WorkContext/EnableTracing/*' />
   public static bool EnableTracing
   {
     get
@@ -215,8 +215,8 @@ public class WorkContext: IDisposable
   /// <summary>
   /// Enters a context.
   /// </summary>
-  /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Method/*' />
-  /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Text/*' />
+  /// <include file='../Doc/include/Utilities/WorkContext.xml' path='WorkContext/Enter/Method/*' />
+  /// <include file='../Doc/include/Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Text/*' />
   void Enter (string text)
   {
     _text = text;
@@ -232,8 +232,8 @@ public class WorkContext: IDisposable
   /// <summary>
   /// Enters a context.
   /// </summary>
-  /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Method/*' />
-  /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Format_Args/*' />
+  /// <include file='../Doc/include/Utilities/WorkContext.xml' path='WorkContext/Enter/Method/*' />
+  /// <include file='../Doc/include/Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Format_Args/*' />
   void Enter (string format, params object[] args)
   {
     Enter(string.Format(format, args));
@@ -243,8 +243,8 @@ public class WorkContext: IDisposable
   /// Enters a context. Calls to this method are only compiled if the symbol DEBUG is defined.
   /// <see cref="ConditionalAttribute"/>
   /// </summary>
-  /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Method/*' />
-  /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Text/*' />
+  /// <include file='../Doc/include/Utilities/WorkContext.xml' path='WorkContext/Enter/Method/*' />
+  /// <include file='../Doc/include/Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Text/*' />
   void EnterIfDebug (string text)
   {
     Enter(text);
@@ -254,8 +254,8 @@ public class WorkContext: IDisposable
   /// Enters a context. Calls to this method are only compiled if the symbol DEBUG is defined.
   /// <see cref="ConditionalAttribute"/>
   /// </summary>
-  /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Method/*' />
-  /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Format_Args/*' />
+  /// <include file='../Doc/include/Utilities/WorkContext.xml' path='WorkContext/Enter/Method/*' />
+  /// <include file='../Doc/include/Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Format_Args/*' />
   void EnterIfDebug (string format, params object[] args)
   {
     Enter(format, args);
@@ -265,8 +265,8 @@ public class WorkContext: IDisposable
   /// Enters a context. Calls to this method are only compiled if the symbol TRACE is defined.
   /// <see cref="ConditionalAttribute"/>
   /// </summary>
-  /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Method/*' />
-  /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Text/*' />
+  /// <include file='../Doc/include/Utilities/WorkContext.xml' path='WorkContext/Enter/Method/*' />
+  /// <include file='../Doc/include/Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Text/*' />
   void EnterIfTrace (string text)
   {
     Enter(text);
@@ -276,8 +276,8 @@ public class WorkContext: IDisposable
   /// Enters a context. Calls to this method are only compiled if the symbol TRACE is defined.
   /// <see cref="ConditionalAttribute"/>
   /// </summary>
-  /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Method/*' />
-  /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Format_Args/*' />
+  /// <include file='../Doc/include/Utilities/WorkContext.xml' path='WorkContext/Enter/Method/*' />
+  /// <include file='../Doc/include/Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Format_Args/*' />
   void EnterIfTrace (string format, params object[] args)
   {
     Enter(format, args);
@@ -287,8 +287,8 @@ public class WorkContext: IDisposable
   /// Enters a context. Calls to this method are only compiled if the symbol WORKCONTEXT is defined.
   /// <see cref="ConditionalAttribute"/>
   /// </summary>
-  /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Method/*' />
-  /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Text/*' />
+  /// <include file='../Doc/include/Utilities/WorkContext.xml' path='WorkContext/Enter/Method/*' />
+  /// <include file='../Doc/include/Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Text/*' />
   void EnterIfWorkContext (string text)
   {
     Enter(text);
@@ -298,8 +298,8 @@ public class WorkContext: IDisposable
   /// Enters a context. Calls to this method are only compiled if the symbol WORKCONTEXT is defined.
   /// <see cref="ConditionalAttribute"/>
   /// </summary>
-  /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Method/*' />
-  /// <include file='..\doc\include\Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Format_Args/*' />
+  /// <include file='../Doc/include/Utilities/WorkContext.xml' path='WorkContext/Enter/Method/*' />
+  /// <include file='../Doc/include/Utilities/WorkContext.xml' path='WorkContext/Enter/Signature_Format_Args/*' />
   void EnterIfWorkContext (string format, params object[] args)
   {
     Enter(format, args);

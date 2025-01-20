@@ -24,8 +24,8 @@ namespace Remotion.Diagnostics
   /// From a programmer's view the class supplies "variable number of nested for loops"-functionality.
   /// For convenience derive you processor class from <see cref="OuterProductProcessorBase"/> (see examples below).
   /// </summary>
-  /// <include file='..\doc\include\Diagnostics\OuterProduct.xml' path='OuterProductIndexGenerator/ClassExample1/*' />
-  /// <include file='..\doc\include\Diagnostics\OuterProduct.xml' path='OuterProductIndexGenerator/ClassExample2/*' />
+  /// <include file='../Doc/include/Diagnostics/OuterProduct.xml' path='OuterProductIndexGenerator/ClassExample1/*' />
+  /// <include file='../Doc/include/Diagnostics/OuterProduct.xml' path='OuterProductIndexGenerator/ClassExample2/*' />
   public class OuterProductIndexGenerator
   {
     private int _numberElementsProcessed;
