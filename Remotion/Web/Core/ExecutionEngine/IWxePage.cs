@@ -28,7 +28,7 @@ using Remotion.Web.ExecutionEngine.Obsolete;
 namespace Remotion.Web.ExecutionEngine
 {
   /// <summary> This interface represents a page that can be used in a <see cref="WxePageStep"/>. </summary>
-  /// <include file='..\doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/Class/*' />
+  /// <include file='../Doc/include/ExecutionEngine/IWxePage.xml' path='IWxePage/Class/*' />
   public interface IWxePage: ISmartPage, IWxeTemplateControl
   {
     /// <summary> End this page step and continue with the WXE function. </summary>
@@ -91,7 +91,7 @@ namespace Remotion.Web.ExecutionEngine
     string GetPermanentUrl ();
 
     /// <summary> Gets the permanent URL for the current page using the specified <paramref name="queryString"/>. </summary>
-    /// <include file='..\doc\include\ExecutionEngine\IWxePage.xml' 
+    /// <include file='../Doc/include/ExecutionEngine/IWxePage.xml' 
     ///     path='IWxePage/GetPermanentUrl/param[@name="queryString"]' />
     string GetPermanentUrl (NameValueCollection queryString);
 
@@ -99,7 +99,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
     ///   and using the <paramref name="queryString"/>.
     /// </summary>
-    /// <include file='..\doc\include\ExecutionEngine\IWxePage.xml' 
+    /// <include file='../Doc/include/ExecutionEngine/IWxePage.xml' 
     ///     path='IWxePage/GetPermanentUrl/param[@name="functionType" or @name="queryString"]' />
     string GetPermanentUrl (Type functionType, NameValueCollection queryString);
 
