@@ -12,8 +12,8 @@
     <NoWarn>$(NoWarn);0419</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Development.Analyzers\WebDiagnosticIds.cs">
-      <Link>WebDiagnosticIds.cs</Link>
+    <Compile Include="..\Development.Analyzers\WebDiagnosticIDs.cs">
+      <Link>WebDiagnosticIDs.cs</Link>
     </Compile>
     <EmbeddedResource Include="UI\SmartPageImplementation\Generic_Error_Async_Remote.htm" />
     <_clientScriptResources Include="..\ClientScript\bin\$(Configuration)\dist\*"/>
