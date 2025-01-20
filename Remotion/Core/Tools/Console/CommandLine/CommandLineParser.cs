@@ -79,8 +79,8 @@ public class CommandLineParser
   /// <summary>
   /// Splits a command line string into an array of command line arguments, separated by spaces.
   /// </summary>
-  /// <include file='..\..\doc\include\Console\CommandLine\CommandLineParser.xml' path='CommandLineParser/SplitCommandLine/*' />
-  /// <include file='..\..\doc\include\Console\CommandLine\CommandLineParser.xml' path='CommandLineParser/Parameters/param[@name="includeFirstArgument"]' />
+  /// <include file='../../Doc/include/Console/CommandLine/CommandLineParser.xml' path='CommandLineParser/SplitCommandLine/*' />
+  /// <include file='../../Doc/include/Console/CommandLine/CommandLineParser.xml' path='CommandLineParser/Parameters/param[@name="includeFirstArgument"]' />
   public static string[] SplitCommandLine (string commandLine, bool includeFirstArgument)
   {
     StringBuilder current = new StringBuilder();
@@ -165,7 +165,7 @@ public class CommandLineParser
   /// <summary>
   /// This method reads a command line and initializes the arguments contained in <see cref="Arguments"/>.
   /// </summary>
-  /// <include file='..\..\doc\include\Console\CommandLine\CommandLineParser.xml' path='CommandLineParser/Parameters/param[@name="commandLine" or @name="includeFirstArgument"]' />
+  /// <include file='../../Doc/include/Console/CommandLine/CommandLineParser.xml' path='CommandLineParser/Parameters/param[@name="commandLine" or @name="includeFirstArgument"]' />
   /// <exception cref="InvalidCommandLineArgumentValueException">The value of a parameter cannot be interpreted.</exception>
   /// <exception cref="InvalidCommandLineArgumentNameException">The command line contains a named argument that is not defined.</exception>
   /// <exception cref="InvalidNumberOfCommandLineArgumentsException">The command line contains too many unnamed arguments.</exception>
