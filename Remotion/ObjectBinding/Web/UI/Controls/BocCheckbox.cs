@@ -37,7 +37,7 @@ using Remotion.Web.Utilities;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or edit a boolean value (true or false). </summary>
-  /// <include file='..\..\doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/Class/*' />
+  /// <include file='../../Doc/include/UI/Controls/BocCheckBox.xml' path='BocCheckBox/Class/*' />
   [ValidationProperty("ValidationValue")]
   [DefaultEvent("SelectionChanged")]
   [ToolboxItemFilter("System.Web.UI")]
@@ -129,7 +129,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed 
     ///   between postbacks.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/LoadPostData/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocCheckBox.xml' path='BocCheckBox/LoadPostData/*' />
     protected override bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
       if (! _isActive)

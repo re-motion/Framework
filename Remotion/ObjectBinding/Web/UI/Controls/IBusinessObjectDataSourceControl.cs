@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   ///  to controls of type <see cref="IBusinessObjectBoundWebControl"/> inside an <b>ASPX Web Form</b> 
   ///  or <b>ASCX User Control</b>.
   /// </summary>
-  /// <include file='..\..\doc\include\UI\Controls\IBusinessObjectDataSourceControl.xml' path='IBusinessObjectDataSourceControl/Class/*' />
+  /// <include file='../../Doc/include/UI/Controls/IBusinessObjectDataSourceControl.xml' path='IBusinessObjectDataSourceControl/Class/*' />
   public interface IBusinessObjectDataSourceControl : IBusinessObjectDataSource, IControl
   {
     /// <summary> Prepares all bound controls implementing <see cref="IValidatableControl"/> for validation. </summary>
