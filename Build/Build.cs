@@ -84,7 +84,7 @@ class Build : RemotionBuild, IDependDB
       var outputFolderPath = ((IBaseBuild)this).OutputFolder / "SBOM";
       outputFolderPath.CreateDirectory();
 
-      var outputSbomPath = outputFolderPath / "re-motion.sbom.xml";
+      var outputSbomPath = outputFolderPath / "re-motion.sbom.json";
 
       // We do not require github auth because we do not do enough requests for licenses and package infos
       var builder = new SolutionSbomGeneratorBuilder(solution, semanticVersion.ToString(), TemporaryDirectory / "sbomGeneration", outputSbomPath, "", "")
