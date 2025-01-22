@@ -64,8 +64,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
 
       var expectedMessage =
           "The relation property 'Property' has return type 'String', which is not a part of the mapping. "
-          + "Relation properties must not point to classes above the inheritance root.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass\r\n"
+          + "Relation properties must not point to classes above the inheritance root." + Environment.NewLine
+          + Environment.NewLine
+          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass" + Environment.NewLine
           + "Property: Property";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }

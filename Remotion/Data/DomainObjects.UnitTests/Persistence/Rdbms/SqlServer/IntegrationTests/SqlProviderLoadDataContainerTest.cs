@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           {
             DataContainer container = Provider.LoadDataContainer(id).LocatedObject;
           });
-      Assert.That(rdbmsProviderException.Message, Is.EqualTo("Error while executing SQL command: Invalid column name 'ID'.\r\nInvalid column name 'ID'."));
+      Assert.That(rdbmsProviderException.Message, Is.EqualTo($"Error while executing SQL command: Invalid column name 'ID'.{Environment.NewLine}Invalid column name 'ID'."));
       Assert.That(rdbmsProviderException.InnerException.GetType(), Is.EqualTo(typeof(SqlException)));
     }
 

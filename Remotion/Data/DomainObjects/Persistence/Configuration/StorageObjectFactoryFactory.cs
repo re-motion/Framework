@@ -71,11 +71,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
       if (storageObjectFactoryType.GetConstructor(Type.EmptyTypes) == null)
       {
         throw new ConfigurationException(
-            $"The factory type '{storageObjectFactoryType}' does not contain a default constructor required for instantiation via the StorageObjectFactoryFactory.\n"
-            + "Register an instance of the factory type with the service locator instead:\n\n"
-            + "var serviceLocator = DefaultServiceLocator.Create();\n"
-            + "serviceLocator.RegisterSingle<FactoryType>(() => new FactoryType());\n"
-            + "var serviceLocatorScope = new ServiceLocatorScope(serviceLocator);");
+            $"""
+             The factory type '{storageObjectFactoryType}' does not contain a default constructor required for instantiation via the StorageObjectFactoryFactory.
+             Register an instance of the factory type with the service locator instead:
+
+             var serviceLocator = DefaultServiceLocator.Create();
+             serviceLocator.RegisterSingle<FactoryType>(() => new FactoryType());
+             var serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
+             """);
       }
 
       try

@@ -104,8 +104,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_tableDefinition1, _synonymWithCustomSchema);
 
       var expectedResult =
-        "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'SynonymSchemaName' AND SCHEMA_NAME(schema_id) = 'Synonym1')\r\n"
-       +"  DROP SYNONYM [SynonymSchemaName].[Synonym1]";
+          """
+          IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'SynonymSchemaName' AND SCHEMA_NAME(schema_id) = 'Synonym1')
+            DROP SYNONYM [SynonymSchemaName].[Synonym1]
+          """;
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
@@ -116,8 +118,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_tableDefinition2, _synonymWithDefaultSchema);
 
       var expectedResult =
-        "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'dbo' AND SCHEMA_NAME(schema_id) = 'Synonym2')\r\n"
-       + "  DROP SYNONYM [dbo].[Synonym2]";
+          """
+          IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'dbo' AND SCHEMA_NAME(schema_id) = 'Synonym2')
+            DROP SYNONYM [dbo].[Synonym2]
+          """;
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
@@ -148,8 +152,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_unionViewDefinition1, _synonymWithCustomSchema);
 
       var expectedResult =
-        "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'SynonymSchemaName' AND SCHEMA_NAME(schema_id) = 'Synonym1')\r\n"
-       + "  DROP SYNONYM [SynonymSchemaName].[Synonym1]";
+          """
+          IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'SynonymSchemaName' AND SCHEMA_NAME(schema_id) = 'Synonym1')
+            DROP SYNONYM [SynonymSchemaName].[Synonym1]
+          """;
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
@@ -160,8 +166,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_unionViewDefinition2, _synonymWithDefaultSchema);
 
       var expectedResult =
-        "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'dbo' AND SCHEMA_NAME(schema_id) = 'Synonym2')\r\n"
-       + "  DROP SYNONYM [dbo].[Synonym2]";
+          """
+          IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'dbo' AND SCHEMA_NAME(schema_id) = 'Synonym2')
+            DROP SYNONYM [dbo].[Synonym2]
+          """;
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
@@ -192,8 +200,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_filterViewDefinition1, _synonymWithCustomSchema);
 
       var expectedResult =
-        "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'SynonymSchemaName' AND SCHEMA_NAME(schema_id) = 'Synonym1')\r\n"
-       + "  DROP SYNONYM [SynonymSchemaName].[Synonym1]";
+          """
+          IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'SynonymSchemaName' AND SCHEMA_NAME(schema_id) = 'Synonym1')
+            DROP SYNONYM [SynonymSchemaName].[Synonym1]
+          """;
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
@@ -204,8 +214,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_filterViewDefinition2, _synonymWithDefaultSchema);
 
       var expectedResult =
-        "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'dbo' AND SCHEMA_NAME(schema_id) = 'Synonym2')\r\n"
-       + "  DROP SYNONYM [dbo].[Synonym2]";
+          """
+          IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'dbo' AND SCHEMA_NAME(schema_id) = 'Synonym2')
+            DROP SYNONYM [dbo].[Synonym2]
+          """;
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
@@ -236,8 +248,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_emptyViewDefinition1, _synonymWithCustomSchema);
 
       var expectedResult =
-        "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'SynonymSchemaName' AND SCHEMA_NAME(schema_id) = 'Synonym1')\r\n"
-       + "  DROP SYNONYM [SynonymSchemaName].[Synonym1]";
+          """
+          IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'SynonymSchemaName' AND SCHEMA_NAME(schema_id) = 'Synonym1')
+            DROP SYNONYM [SynonymSchemaName].[Synonym1]
+          """;
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
@@ -248,8 +262,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_emptyViewDefinition2, _synonymWithDefaultSchema);
 
       var expectedResult =
-        "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'dbo' AND SCHEMA_NAME(schema_id) = 'Synonym2')\r\n"
-       + "  DROP SYNONYM [dbo].[Synonym2]";
+          """
+          IF EXISTS (SELECT * FROM sys.synonyms WHERE name = 'dbo' AND SCHEMA_NAME(schema_id) = 'Synonym2')
+            DROP SYNONYM [dbo].[Synonym2]
+          """;
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }

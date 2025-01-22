@@ -32,9 +32,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
                   "The property type 'Object' is not supported. If you meant to declare a relation, 'Object' must be derived from 'DomainObject'. "
-                  + "For non-mapped properties, use the 'StorageClassNoneAttribute'.\r\n\r\n"
+                  + "For non-mapped properties, use the 'StorageClassNoneAttribute'." + Environment.NewLine + Environment.NewLine
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPropertyTypes."
-                  + "PropertyTypeOfObjectWithoutStorageClassNone.ClassWithInvalidPropertyType\r\n"
+                  + "PropertyTypeOfObjectWithoutStorageClassNone.ClassWithInvalidPropertyType" + Environment.NewLine
                   + "Property: InvalidProperty"));
     }
 
@@ -47,9 +47,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
                   "The relation property 'InvalidProperty' has return type 'DomainObject', which is not a part of the mapping. Relation properties must not point "
-                  +"to classes above the inheritance root.\r\n\r\n"
+                  +"to classes above the inheritance root." + Environment.NewLine + Environment.NewLine
                   +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPropertyTypes."
-                  +"PropertyTypeOfDomainObjectWithoutStorageClassNone.ClassWithInvalidPropertyType\r\n"
+                  +"PropertyTypeOfDomainObjectWithoutStorageClassNone.ClassWithInvalidPropertyType" + Environment.NewLine
                   + "Property: InvalidProperty"));
     }
 
@@ -62,9 +62,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
                   "The relation property 'InvalidProperty' has return type 'ClassAboveInheritanceRoot', which is not a part of the mapping. Relation properties "
-                  +"must not point to classes above the inheritance root.\r\n\r\n"
+                  +"must not point to classes above the inheritance root." + Environment.NewLine + Environment.NewLine
                   +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPropertyTypes."
-                  +"PropertyTypeToDomainObjectAboveTheInheritanceRoot.InheritanceRootClass\r\n"
+                  +"PropertyTypeToDomainObjectAboveTheInheritanceRoot.InheritanceRootClass" + Environment.NewLine
                   + "Property: InvalidProperty"));
     }
 
@@ -77,15 +77,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
                   "The property type 'ObjectList`1' is not supported. If you meant to declare a relation, 'ObjectList`1' must be derived from 'DomainObject'. "
-                  +"For non-mapped properties, use the 'StorageClassNoneAttribute'.\r\n\r\n"
+                  +"For non-mapped properties, use the 'StorageClassNoneAttribute'." + Environment.NewLine + Environment.NewLine
                   +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPropertyTypes."
-                  +"PropertyTypeOfObjectList_DomainObject.ClassWithInvalidProperty\r\n"
-                  +"Property: InvalidProperty1\r\n"
-                  +"----------\r\n"
+                  +"PropertyTypeOfObjectList_DomainObject.ClassWithInvalidProperty" + Environment.NewLine
+                  +"Property: InvalidProperty1" + Environment.NewLine
+                  +"----------" + Environment.NewLine
                   +"The property type 'ObjectList`1' is not supported. If you meant to declare a relation, 'ObjectList`1' must be derived from 'DomainObject'. "
-                  +"For non-mapped properties, use the 'StorageClassNoneAttribute'.\r\n\r\n"
+                  +"For non-mapped properties, use the 'StorageClassNoneAttribute'." + Environment.NewLine + Environment.NewLine
                   +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPropertyTypes."
-                  +"PropertyTypeOfObjectList_DomainObjectAboveInheritanceRoot.ClassWithInvalidProperty\r\n"
+                  +"PropertyTypeOfObjectList_DomainObjectAboveInheritanceRoot.ClassWithInvalidProperty" + Environment.NewLine
                   +"Property: InvalidProperty"));
     }
 
@@ -98,9 +98,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
                   "The property type 'ObjectList`1' is not supported. If you meant to declare a relation, 'ObjectList`1' must be derived from 'DomainObject'. "
-                  +"For non-mapped properties, use the 'StorageClassNoneAttribute'.\r\n\r\n"
+                  +"For non-mapped properties, use the 'StorageClassNoneAttribute'." + Environment.NewLine + Environment.NewLine
                   +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPropertyTypes."
-                  +"PropertyTypeOfObjectList_DomainObjectAboveInheritanceRoot.ClassWithInvalidProperty\r\n"
+                  +"PropertyTypeOfObjectList_DomainObjectAboveInheritanceRoot.ClassWithInvalidProperty" + Environment.NewLine
                   +"Property: InvalidProperty"));
     }
 
@@ -113,9 +113,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
                   "The property type 'ObjectList`1' is not supported. If you meant to declare a relation, 'ObjectList`1' must be derived from 'DomainObject'. "
-                  +"For non-mapped properties, use the 'StorageClassNoneAttribute'.\r\n\r\n"
+                  +"For non-mapped properties, use the 'StorageClassNoneAttribute'." + Environment.NewLine + Environment.NewLine
                   +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPropertyTypes."
-                  +"PropertyTypeOfObjectList_DerivedDomainObject_Unidirectional.ClassWithInvalidPropertyType\r\n"
+                  +"PropertyTypeOfObjectList_DerivedDomainObject_Unidirectional.ClassWithInvalidPropertyType" + Environment.NewLine
                   +"Property: InvalidProperty"));
     }
 
@@ -128,9 +128,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
                   "Extensible enum type 'ExtensibleEnumNotDefiningAnyValues' cannot be used for property 'InvalidProperty' on type 'ClassWithInvalidPropertyType' "
-                  +"because the property is mandatory but there are not values defined for the enum type.\r\n\r\n"
+                  +"because the property is mandatory but there are not values defined for the enum type." + Environment.NewLine + Environment.NewLine
                   +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPropertyTypes."
-                  +"PropertyTypeOfExtensibleEnum_WithoutValues_Mandatory.ClassWithInvalidPropertyType\r\n"
+                  +"PropertyTypeOfExtensibleEnum_WithoutValues_Mandatory.ClassWithInvalidPropertyType" + Environment.NewLine
                   +"Property: InvalidProperty"));
     }
 
@@ -143,9 +143,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
                   "Enum type 'NetEnumNotDefiningAnyValues' cannot be used for property 'InvalidProperty' on type 'ClassWithInvalidPropertyType' "
-                  +"because the property is mandatory but there are not values defined for the enum type.\r\n\r\n"
+                  +"because the property is mandatory but there are not values defined for the enum type." + Environment.NewLine + Environment.NewLine
                   +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPropertyTypes."
-                  +"PropertyTypeOfNetEnum_WithoutValues_Mandatory.ClassWithInvalidPropertyType\r\n"
+                  +"PropertyTypeOfNetEnum_WithoutValues_Mandatory.ClassWithInvalidPropertyType" + Environment.NewLine
                   +"Property: InvalidProperty"));
     }
   }

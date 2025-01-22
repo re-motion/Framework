@@ -148,9 +148,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
       var validationResult = _validationRule.Validate(_classDefinition);
 
       var expectedMessage =
-          "StorageClass.Persistent is not supported for properties of classes that belong to the 'NonPersistentProviderDefinition'.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass\r\n"
-          + "Property: PropertyWithTypeObjectWithStorageClassPersistent";
+          """
+          StorageClass.Persistent is not supported for properties of classes that belong to the 'NonPersistentProviderDefinition'.
+
+          Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass
+          Property: PropertyWithTypeObjectWithStorageClassPersistent
+          """;
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
 

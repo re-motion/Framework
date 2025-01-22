@@ -64,8 +64,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var validationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage =
-          "The property type of a virtual end point of a one-to-one relation must be assignable to 'DomainObject'.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
+          "The property type of a virtual end point of a one-to-one relation must be assignable to 'DomainObject'." + Environment.NewLine
+          + Environment.NewLine
+          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order" + Environment.NewLine
           + "Property: Left";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
@@ -104,8 +105,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var validationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage =
-          "The property type of a virtual end point of a one-to-many relation must be assignable to 'ObjectList`1'.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
+          "The property type of a virtual end point of a one-to-many relation must be assignable to 'ObjectList`1'." + Environment.NewLine
+          + Environment.NewLine
+          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order" + Environment.NewLine
           + "Property: PropertyName";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
@@ -146,8 +148,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var validationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage =
-          "The property type of a virtual end point of a one-to-many relation must be assignable to 'ObjectList`1'.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
+          "The property type of a virtual end point of a one-to-many relation must be assignable to 'ObjectList`1'." + Environment.NewLine
+          + Environment.NewLine
+          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order" + Environment.NewLine
           + "Property: PropertyName";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
@@ -176,8 +179,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var validationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage =
-          "The property type of a virtual end point of a one-to-many relation must be 'IObjectList`1'.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
+          "The property type of a virtual end point of a one-to-many relation must be 'IObjectList`1'." + Environment.NewLine
+          + Environment.NewLine
+          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order" + Environment.NewLine
           + "Property: PropertyName";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
@@ -194,8 +198,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var validationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage =
-          "The property type of a virtual end point of a one-to-many relation must be 'IObjectList`1'.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
+          "The property type of a virtual end point of a one-to-many relation must be 'IObjectList`1'." + Environment.NewLine
+          + Environment.NewLine
+          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order" + Environment.NewLine
           + "Property: PropertyName";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }

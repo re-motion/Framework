@@ -136,9 +136,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       var validationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage =
-          "Only relation end points with a property type of 'DomainObject' can contain the foreign key.\r\n\r\n"
+          "Only relation end points with a property type of 'DomainObject' can contain the foreign key." + Environment.NewLine
+          + Environment.NewLine
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
-          + "ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule.ForeignKeyIsSupportedClass\r\n"
+          + "ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule.ForeignKeyIsSupportedClass" + Environment.NewLine
           + "Property: DomainObjectCollectionProperty_ContainsForeignKey";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
@@ -156,9 +157,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       var validationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage =
-          "Only relation end points with a property type of 'DomainObject' can contain the foreign key.\r\n\r\n"
+          "Only relation end points with a property type of 'DomainObject' can contain the foreign key." + Environment.NewLine
+          + Environment.NewLine
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
-          + "ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule.ForeignKeyIsSupportedClass\r\n"
+          + "ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule.ForeignKeyIsSupportedClass" + Environment.NewLine
           + "Property: VirtualCollectionProperty_ContainsForeignKey";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
@@ -176,9 +178,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       var validationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage =
-          "Only relation end points with a property type of 'DomainObject' can contain the foreign key.\r\n\r\n"
+          "Only relation end points with a property type of 'DomainObject' can contain the foreign key." + Environment.NewLine
+          + Environment.NewLine
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
-          + "ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule.ForeignKeyIsSupportedClass\r\n"
+          + "ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule.ForeignKeyIsSupportedClass" + Environment.NewLine
           + "Property: DomainObjectCollectionProperty_ContainsForeignKey";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
@@ -196,9 +199,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       var validationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage =
-          "Only relation end points with a property type of 'DomainObject' can contain the foreign key.\r\n\r\n"
+          "Only relation end points with a property type of 'DomainObject' can contain the foreign key." + Environment.NewLine
+          + Environment.NewLine
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
-          + "ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule.ForeignKeyIsSupportedClass\r\n"
+          + "ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule.ForeignKeyIsSupportedClass" + Environment.NewLine
           + "Property: VirtualCollectionProperty_ContainsForeignKey";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }

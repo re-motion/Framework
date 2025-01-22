@@ -133,8 +133,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
           Throws.InstanceOf<ConfigurationException>().With.Message
               .StartsWith(
                   "The factory type 'Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration.StorageObjectFactoryFactoryTest+DefaultConstructorLessStorageObjectFactory' "
-                  + "does not contain a default constructor required for instantiation via the StorageObjectFactoryFactory.\n"
-                  + "Register an instance of the factory type with the service locator instead:\n\n"));
+                  + "does not contain a default constructor required for instantiation via the StorageObjectFactoryFactory." + Environment.NewLine
+                  + "Register an instance of the factory type with the service locator instead:" + Environment.NewLine + Environment.NewLine));
     }
 
     [Test]

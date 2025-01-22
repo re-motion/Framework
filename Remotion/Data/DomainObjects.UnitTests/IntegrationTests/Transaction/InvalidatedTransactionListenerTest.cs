@@ -77,11 +77,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
                     expectedExceptionType,
                     method,
                     arguments,
-                    string.Format("the message was incorrect.\nExpected: {0}\nWas:      {1}", expectedMessage, ex.Message)));
+                    $"""
+                     the message was incorrect.
+                     Expected: {expectedMessage}
+                     Was:      {ex.Message}
+                     """));
           }
         }
         else
-          Assert.Fail(BuildErrorMessage(expectedExceptionType, method, arguments, "the exception type was " + ex.GetType() + ".\n" + ex));
+          Assert.Fail(BuildErrorMessage(expectedExceptionType, method, arguments, $"""
+                                                                                   the exception type was {ex.GetType()}.
+                                                                                   {ex}
+                                                                                   """));
       }
     }
 

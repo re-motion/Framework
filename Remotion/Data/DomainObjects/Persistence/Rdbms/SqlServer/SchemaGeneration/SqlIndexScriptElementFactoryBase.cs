@@ -40,9 +40,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
       return new ScriptStatement(
           string.Format(
-              "IF EXISTS (SELECT * FROM sys.objects so JOIN sysindexes si ON so.[object_id] = si.[id] "
-              + "WHERE so.[name] = '{0}' AND schema_name (so.schema_id)='{1}' AND si.[name] = '{2}')\r\n"
-              + "  DROP INDEX [{2}] ON [{1}].[{0}]",
+              """
+              IF EXISTS (SELECT * FROM sys.objects so JOIN sysindexes si ON so.[object_id] = si.[id] WHERE so.[name] = '{0}' AND schema_name (so.schema_id)='{1}' AND si.[name] = '{2}')
+                DROP INDEX [{2}] ON [{1}].[{0}]
+              """,
               ownerName.EntityName,
               ownerName.SchemaName ?? DefaultSchema,
               indexDefinition.IndexName));
@@ -60,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
       var filteredItems = optionItems.Except(new[] { string.Empty, null }).ToList();
       if (filteredItems.Any())
-        return "\r\n  WITH (" + string.Join(", ", filteredItems) + ")";
+        return $"{Environment.NewLine}  WITH (" + string.Join(", ", filteredItems) + ")";
       else
         return string.Empty;
     }

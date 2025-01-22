@@ -261,7 +261,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(
           () => _orderItemListAsIList.CopyTo(destination, -1),
           Throws.InstanceOf<ArgumentOutOfRangeException>()
-              .With.Message.EqualTo("destinationIndex ('-1') must be greater than or equal to '0'. (Parameter 'destinationIndex')\r\nActual value was -1."));
+              .With.Message.EqualTo("""
+                                    destinationIndex ('-1') must be greater than or equal to '0'. (Parameter 'destinationIndex')
+                                    Actual value was -1.
+                                    """));
     }
 
     [Test]

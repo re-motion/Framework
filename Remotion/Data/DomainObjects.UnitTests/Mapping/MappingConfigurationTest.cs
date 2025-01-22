@@ -357,7 +357,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           () => mappingConfiguration.EnsureInitialized(),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-                  "Generic domain objects are not supported.\r\n\r\n"
+                  "Generic domain objects are not supported." + Environment.NewLine
+                  + Environment.NewLine
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
                   + "DomainObjectTypeIsNotGenericValidationRule.GenericTypeDomainObject`1[System.String]"));
     }
@@ -378,8 +379,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
                   "Only StorageClass.Persistent and StorageClass.Transaction are supported for property 'PropertyWithStorageClassNone' of class "
-                  + "'DerivedValidationDomainObjectClass'.\r\n\r\n"
-                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass\r\n"
+                  + "'DerivedValidationDomainObjectClass'." + Environment.NewLine
+                  + Environment.NewLine
+                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass" + Environment.NewLine
                   + "Property: PropertyWithStorageClassNone"));
     }
 
@@ -401,8 +403,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           () => mappingConfiguration.EnsureInitialized(),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-                  "The property type of an uni-directional relation property must be assignable to 'DomainObject'.\r\n\r\n"
-                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer\r\n"
+                  "The property type of an uni-directional relation property must be assignable to 'DomainObject'." + Environment.NewLine
+                  + Environment.NewLine
+                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer" + Environment.NewLine
                   + "Property: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders"));
     }
 
@@ -430,7 +433,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
                   "Neither class 'DerivedValidationDomainObjectClass' nor its base classes are mapped to a table. "
-                  + "Make class 'DerivedValidationDomainObjectClass' abstract or define a table for it or one of its base classes.\r\n\r\n"
+                  + "Make class 'DerivedValidationDomainObjectClass' abstract or define a table for it or one of its base classes." + Environment.NewLine
+                  + Environment.NewLine
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass"));
     }
 

@@ -74,11 +74,15 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
           Assert.That(
               () => ClientTransaction.Current.Commit(),
               Throws.TypeOf<ExtendedDomainObjectValidationException>().And.Message.Matches(
-                  "One or more DomainObject contain inconsistent data:\r\n\r\n"
-                  + "Object 'Order.*':\r\n"
-                  + " -- Number: The value must have between 3 and 8 characters.\r\n\r\n"
-                  + "Object 'Customer.*':\r\n"
-                  + " -- Title: The value must not be equal to 'Chef1'."));
+                  """
+                  One or more DomainObject contain inconsistent data:
+
+                  Object 'Order.*':
+                   -- Number: The value must have between 3 and 8 characters.
+
+                  Object 'Customer.*':
+                   -- Title: The value must not be equal to 'Chef1'.
+                  """));
         }
       }
     }

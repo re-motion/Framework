@@ -112,15 +112,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         Assert.That(
             sqlCommand.CommandText,
             Is.EqualTo(expectedSql),
-            $"Command text doesn't match.\r\nActual statement: {sqlCommand.CommandText}\r\nExpected statement: {expectedSql})");
+            $"""
+             Command text doesn't match.
+             Actual statement: {sqlCommand.CommandText}
+             Expected statement: {expectedSql})
+             """);
         Assert.That(
             sqlCommand.CommandType,
             Is.EqualTo(CommandType.Text),
-            "Command type doesn't match.\r\nExpected statement: {0})");
+            """
+            Command type doesn't match.
+            Expected statement: {0})
+            """);
         Assert.That(
             sqlCommand.Parameters.Count,
             Is.EqualTo(expectedParametersData.Length),
-            $"Number of parameters doesn't match.\r\nStatement: {expectedSql})");
+            $"""
+             Number of parameters doesn't match.
+             Statement: {expectedSql})
+             """);
         for (int i = 0; i < expectedParametersData.Length; ++i)
         {
           var actualParameter = (IDataParameter)sqlCommand.Parameters[i];
@@ -129,11 +139,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           Assert.That(
               actualParameter.ParameterName,
               Is.EqualTo(expectedParameterData.Item1),
-              $"Name of parameter {i} doesn't match.\r\nStatement: {expectedSql})");
+              $"""
+               Name of parameter {i} doesn't match.
+               Statement: {expectedSql})
+               """);
           Assert.That(
               actualParameter.DbType,
               Is.EqualTo(expectedParameterData.Item2),
-              $"DbType of parameter {i} doesn't match.\r\nSstatement: {expectedSql})");
+              $"""
+               DbType of parameter {i} doesn't match.
+               Sstatement: {expectedSql})
+               """);
 
           if (expectedParameterData.Item3 is SqlTableValuedParameterValue tvpValue)
           {
@@ -144,7 +160,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
             Assert.That(
                 actualParameter.Value,
                 Is.EqualTo(expectedParameterData.Item3),
-                $"Value of parameter {i} doesn't match.\r\nStatement: {expectedSql})");
+                $"""
+                 Value of parameter {i} doesn't match.
+                 Statement: {expectedSql})
+                 """);
           }
         }
       }

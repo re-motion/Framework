@@ -49,7 +49,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
 
       var validationResult = _validationRule.Validate(classDefinition);
 
-      var expectedMessage = "Type 'String' of class 'String' is not assignable to 'DomainObject'.\r\n\r\nDeclaring type: System.String";
+      var expectedMessage = "Type 'String' of class 'String' is not assignable to 'DomainObject'." + Environment.NewLine
+                            + Environment.NewLine
+                            + "Declaring type: System.String";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
   }

@@ -223,7 +223,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
               "There was an error preparing or resolving query "
               + "'from Order o in DomainObjectQueryable<Order> where ([o].OrderNumber == 1) select [o] => Fetch (Order.OrderItems) => Take(1)' for "
               + "SQL generation. The fetch query operator methods must be the last query operators in a LINQ query. All calls to Where, Select, Take, etc. "
-              + "must go before the fetch operators.\r\n\r\n"
+              + "must go before the fetch operators." + Environment.NewLine + Environment.NewLine
               + "E.g., instead of 'QueryFactory.CreateLinqQuery<Order>().FetchMany (o => o.OrderItems).Where (o => o.OrderNumber > 1)', "
               + "write 'QueryFactory.CreateLinqQuery<Order>().Where (o => o.OrderNumber > 1).FetchMany (o => o.OrderItems)'."));
     }
@@ -241,7 +241,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
               "There was an error preparing or resolving query "
               + "'from Order o in {DomainObjectQueryable<Order> => Fetch (Order.OrderItems)} where ([o].OrderNumber == 1) select [o]' for SQL generation. "
               + "The fetch query operator methods must be the last query operators in a LINQ query. All calls to Where, Select, Take, etc. must go before "
-              + "the fetch operators.\r\n\r\n"
+              + "the fetch operators." + Environment.NewLine + Environment.NewLine
               + "E.g., instead of 'QueryFactory.CreateLinqQuery<Order>().FetchMany (o => o.OrderItems).Where (o => o.OrderNumber > 1)', "
               + "write 'QueryFactory.CreateLinqQuery<Order>().Where (o => o.OrderNumber > 1).FetchMany (o => o.OrderItems)'."));
     }

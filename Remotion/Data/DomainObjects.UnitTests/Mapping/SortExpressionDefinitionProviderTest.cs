@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
@@ -53,8 +54,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           () => sortExpressionDefinitionProvider.GetSortExpression(referencePropertyInfo, referencedClassDefinition, "Product asc asc"),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-                  "SortExpression 'Product asc asc' cannot be parsed: Expected 1 or 2 parts (a property name and an optional identifier), found 3 parts instead.\r\n\r\n" +
-                  "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\nProperty: OrderItems"));
+                  "SortExpression 'Product asc asc' cannot be parsed: Expected 1 or 2 parts (a property name and an optional identifier), found 3 parts instead." + Environment.NewLine
+                  + Environment.NewLine
+                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order" + Environment.NewLine
+                  + "Property: OrderItems"));
     }
   }
 }

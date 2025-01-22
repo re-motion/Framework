@@ -83,11 +83,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       Assert.That(elements[2], Is.TypeOf(typeof(BatchDelimiterStatement)));
       Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
       var expectedResult =
-          "CREATE VIEW [SchemaName].[UnionView1] ([ID], [ClassID], [Timestamp], [Column1])\r\n"
-          +"  WITH SCHEMABINDING AS\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [Column1]\r\n"
-          +"    FROM [SchemaName].[TableName1]\r\n"
-          +"  WITH CHECK OPTION";
+          """
+          CREATE VIEW [SchemaName].[UnionView1] ([ID], [ClassID], [Timestamp], [Column1])
+            WITH SCHEMABINDING AS
+            SELECT [ID], [ClassID], [Timestamp], [Column1]
+              FROM [SchemaName].[TableName1]
+            WITH CHECK OPTION
+          """;
       Assert.That(((ScriptStatement)elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -105,11 +107,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       Assert.That(elements[2], Is.TypeOf(typeof(BatchDelimiterStatement)));
       Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
       var expectedResult =
-          "CREATE VIEW [SchemaName].[UnionView1] ([ID], [ClassID], [Timestamp], [Column1])\r\n"
-          + "  AS\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [Column1]\r\n"
-          + "    FROM [SchemaName].[TableName1]\r\n"
-          + "  WITH CHECK OPTION";
+          """
+          CREATE VIEW [SchemaName].[UnionView1] ([ID], [ClassID], [Timestamp], [Column1])
+            AS
+            SELECT [ID], [ClassID], [Timestamp], [Column1]
+              FROM [SchemaName].[TableName1]
+            WITH CHECK OPTION
+          """;
       Assert.That(((ScriptStatement)elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -126,13 +130,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
 
       var expectedResult =
-          "CREATE VIEW [dbo].[UnionView2] ([ID], [ClassID], [Timestamp], [Column1], [Column2])\r\n"
-          +"  WITH SCHEMABINDING AS\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [Column1], NULL\r\n"
-          +"    FROM [SchemaName].[TableName1]\r\n"
-          +"  UNION ALL\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [Column1], [Column2]\r\n"
-          +"    FROM [dbo].[TableName2]";
+          """
+          CREATE VIEW [dbo].[UnionView2] ([ID], [ClassID], [Timestamp], [Column1], [Column2])
+            WITH SCHEMABINDING AS
+            SELECT [ID], [ClassID], [Timestamp], [Column1], NULL
+              FROM [SchemaName].[TableName1]
+            UNION ALL
+            SELECT [ID], [ClassID], [Timestamp], [Column1], [Column2]
+              FROM [dbo].[TableName2]
+          """;
 
       Assert.That(((ScriptStatement)elements[1]).Statement, Is.EqualTo(expectedResult));
     }
@@ -152,13 +158,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
 
       var expectedResult =
-          "CREATE VIEW [dbo].[UnionView2] ([ID], [ClassID], [Timestamp], [Column1], [Column2])\r\n"
-          + "  AS\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [Column1], NULL\r\n"
-          + "    FROM [SchemaName].[TableName1]\r\n"
-          + "  UNION ALL\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [Column1], [Column2]\r\n"
-          + "    FROM [dbo].[TableName2]";
+          """
+          CREATE VIEW [dbo].[UnionView2] ([ID], [ClassID], [Timestamp], [Column1], [Column2])
+            AS
+            SELECT [ID], [ClassID], [Timestamp], [Column1], NULL
+              FROM [SchemaName].[TableName1]
+            UNION ALL
+            SELECT [ID], [ClassID], [Timestamp], [Column1], [Column2]
+              FROM [dbo].[TableName2]
+          """;
 
       Assert.That(((ScriptStatement)elements[1]).Statement, Is.EqualTo(expectedResult));
     }
@@ -169,8 +177,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_unionViewDefinitionWithCustomSchema);
 
       var expectedResult =
-          "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'UnionView1' AND TABLE_SCHEMA = 'SchemaName')\r\n"
-          + "  DROP VIEW [SchemaName].[UnionView1]";
+          """
+          IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'UnionView1' AND TABLE_SCHEMA = 'SchemaName')
+            DROP VIEW [SchemaName].[UnionView1]
+          """;
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
@@ -182,8 +192,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_unionViewDefinitionWithDefaultSchema);
 
       var expectedResult =
-          "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'UnionView2' AND TABLE_SCHEMA = 'dbo')\r\n"
-          + "  DROP VIEW [dbo].[UnionView2]";
+          """
+          IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'UnionView2' AND TABLE_SCHEMA = 'dbo')
+            DROP VIEW [dbo].[UnionView2]
+          """;
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));

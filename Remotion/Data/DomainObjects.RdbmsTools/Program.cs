@@ -49,7 +49,10 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
         {
           System.Console.Error.WriteLine("Execution aborted. Exception stack:");
           for (; e != null; e = e.InnerException)
-            System.Console.Error.WriteLine("{0}: {1}\n{2}", e.GetType().GetFullNameSafe(), e.Message, e.StackTrace);
+          {
+            System.Console.Error.WriteLine("{0}: {1}", e.GetType().GetFullNameSafe(), e.Message);
+            System.Console.Error.WriteLine("{0}", e.StackTrace);
+          }
         }
         else
         {

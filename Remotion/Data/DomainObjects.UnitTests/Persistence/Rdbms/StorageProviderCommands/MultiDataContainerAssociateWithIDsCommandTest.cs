@@ -136,9 +136,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       Assert.That(
           () => command.Execute(_readWriteExecutionContext.Object).ToList(),
           Throws.TypeOf<PersistenceException>().With.Message.EqualTo(
-              "The ObjectID of one or more loaded DataContainers does not match the expected ObjectIDs:\r\n"
+              "The ObjectID of one or more loaded DataContainers does not match the expected ObjectIDs:" + Environment.NewLine
               + "Loaded DataContainer ID: Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid, expected ObjectID(s): "
-              + "OrderItem|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid, OrderTicket|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid\r\n"
+              + "OrderItem|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid, OrderTicket|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid" + Environment.NewLine
               + "Loaded DataContainer ID: Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid, expected ObjectID(s): none"));
     }
 
@@ -218,9 +218,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       Assert.That(
           () => command.Execute(_readOnlyExecutionContext.Object).ToList(),
           Throws.TypeOf<PersistenceException>().With.Message.EqualTo(
-              "The ObjectID of one or more loaded DataContainers does not match the expected ObjectIDs:\r\n"
+              "The ObjectID of one or more loaded DataContainers does not match the expected ObjectIDs:" + Environment.NewLine
               + "Loaded DataContainer ID: Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid, expected ObjectID(s): "
-              + "OrderItem|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid, OrderTicket|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid\r\n"
+              + "OrderItem|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid, OrderTicket|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid" + Environment.NewLine
               + "Loaded DataContainer ID: Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid, expected ObjectID(s): none"));
     }
   }

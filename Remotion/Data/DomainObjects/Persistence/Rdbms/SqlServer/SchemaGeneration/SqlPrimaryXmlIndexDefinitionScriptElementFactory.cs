@@ -35,8 +35,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
       return new ScriptStatement(
       string.Format(
-          "CREATE PRIMARY XML INDEX [{0}]\r\n"
-          + "  ON [{1}].[{2}] ([{3}]){4}",
+          """
+          CREATE PRIMARY XML INDEX [{0}]
+            ON [{1}].[{2}] ([{3}]){4}
+          """,
           indexDefinition.IndexName,
           ownerName.SchemaName ?? DefaultSchema,
           ownerName.EntityName,

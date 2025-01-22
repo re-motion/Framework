@@ -507,7 +507,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
           () => UnloadService.UnloadData(TestableClientTransaction, DomainObjectIDs.OrderItem1),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "The relations of object 'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid' cannot be unloaded.\r\n"
+                  "The relations of object 'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid' cannot be unloaded." + Environment.NewLine
                   + "The opposite relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of relation end-point "
                   + "'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' has "
                   + "changed. Non-virtual end-points that are part of changed relations cannot be unloaded."));

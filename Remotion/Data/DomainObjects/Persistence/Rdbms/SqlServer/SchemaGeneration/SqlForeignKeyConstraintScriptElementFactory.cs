@@ -37,7 +37,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
       return new ScriptStatement(
         string.Format(
-            "ALTER TABLE [{0}].[{1}] ADD\r\n{2}",
+            """
+            ALTER TABLE [{0}].[{1}] ADD
+            {2}
+            """,
             tableName.SchemaName ?? DefaultSchema,
             tableName.EntityName,
             GetConstraintDeclaration(constraintDefinition)));
@@ -50,9 +53,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
       return new ScriptStatement(
           string.Format(
-              "IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND "
-              + "fk.name = '{2}' AND schema_name (t.schema_id) = '{0}' AND t.name = '{1}')\r\n"
-              + "  ALTER TABLE [{0}].[{1}] DROP CONSTRAINT {2}",
+              """
+              IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = '{2}' AND schema_name (t.schema_id) = '{0}' AND t.name = '{1}')
+                ALTER TABLE [{0}].[{1}] DROP CONSTRAINT {2}
+              """,
               tableName.SchemaName ?? DefaultSchema,
               tableName.EntityName,
               constraintDefinition.ConstraintName));

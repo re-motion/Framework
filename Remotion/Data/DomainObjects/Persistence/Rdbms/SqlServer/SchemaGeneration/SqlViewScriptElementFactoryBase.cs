@@ -37,14 +37,17 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
       statements.AddElement(
           new ScriptStatement(
               string.Format(
-                  "CREATE VIEW [{0}].[{1}] ({2})\r\n"
-                  + "  {3}AS\r\n{4}{5}",
+                  """
+                  CREATE VIEW [{0}].[{1}] ({2})
+                    {3}AS
+                  {4}{5}
+                  """,
                   entityDefinition.ViewName.SchemaName ?? DefaultSchema,
                   entityDefinition.ViewName.EntityName,
                   GetColumnList(entityDefinition.GetAllColumns()),
                   UseSchemaBinding(entityDefinition) ? "WITH SCHEMABINDING " : string.Empty,
                   GetSelectStatements(entityDefinition),
-                  UseCheckOption(entityDefinition) ? "\r\n  WITH CHECK OPTION" : string.Empty)));
+                  UseCheckOption(entityDefinition) ? $"{Environment.NewLine}  WITH CHECK OPTION" : string.Empty)));
       statements.AddElement(CreateBatchDelimiterStatement());
       return statements;
     }
@@ -55,8 +58,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
       return new ScriptStatement(
         string.Format(
-          "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = '{1}' AND TABLE_SCHEMA = '{0}')\r\n"
-          + "  DROP VIEW [{0}].[{1}]",
+            """
+            IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = '{1}' AND TABLE_SCHEMA = '{0}')
+              DROP VIEW [{0}].[{1}]
+            """,
           entityDefinition.ViewName.SchemaName ?? DefaultSchema,
           entityDefinition.ViewName.EntityName
           ));

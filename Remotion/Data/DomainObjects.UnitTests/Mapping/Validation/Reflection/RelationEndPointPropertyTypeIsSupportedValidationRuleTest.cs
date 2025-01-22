@@ -67,9 +67,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       var validationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage =
-          "The property type of an uni-directional relation property must be assignable to 'DomainObject'.\r\n\r\n"
+          "The property type of an uni-directional relation property must be assignable to 'DomainObject'." + Environment.NewLine
+          + Environment.NewLine
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
-          + "RelationEndPointPropertyTypeIsSupportedValidationRule.RelationEndPointPropertyClass\r\n"
+          + "RelationEndPointPropertyTypeIsSupportedValidationRule.RelationEndPointPropertyClass" + Environment.NewLine
           + "Property: PropertyWithoutBidirectionalAttribute";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
@@ -87,9 +88,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       var validationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage =
-          "The property type of an uni-directional relation property must be assignable to 'DomainObject'.\r\n\r\n"
+          "The property type of an uni-directional relation property must be assignable to 'DomainObject'." + Environment.NewLine
+          + Environment.NewLine
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
-          + "RelationEndPointPropertyTypeIsSupportedValidationRule.RelationEndPointPropertyClass\r\n"
+          + "RelationEndPointPropertyTypeIsSupportedValidationRule.RelationEndPointPropertyClass" + Environment.NewLine
           + "Property: PropertyWithoutBidirectionalAttribute";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }

@@ -132,7 +132,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(result, Is.TypeOf<ExceptionCommand>());
       Assert.That(
           ((ExceptionCommand)result).Exception.Message,
-          Is.EqualTo("The relations of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded.\r\nOh no!\r\nOh no 2!"));
+          Is.EqualTo("""
+                     The relations of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded.
+                     Oh no!
+                     Oh no 2!
+                     """));
     }
 
     [Test]
@@ -151,7 +155,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(result, Is.TypeOf<ExceptionCommand>());
       Assert.That(
           ((ExceptionCommand)result).Exception.Message,
-          Is.EqualTo("The relations of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded.\r\nOh no!"));
+          Is.EqualTo("""
+                     The relations of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded.
+                     Oh no!
+                     """));
     }
   }
 }

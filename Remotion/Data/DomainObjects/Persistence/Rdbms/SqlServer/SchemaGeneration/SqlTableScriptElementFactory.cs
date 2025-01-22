@@ -32,12 +32,17 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
     {
       ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
 
-      var columnDeclarationList = string.Join(",\r\n", tableDefinition.GetAllColumns().Select(GetColumnDeclaration));
+      var columnDeclarationList = string.Join($",{Environment.NewLine}", tableDefinition.GetAllColumns().Select(GetColumnDeclaration));
       var primaryKeyConstraintString = GetPrimaryKeyDeclaration(tableDefinition);
       return
           new ScriptStatement(
               string.Format(
-                  "CREATE TABLE [{0}].[{1}]\r\n(\r\n{2}{3}\r\n)",
+                  """
+                  CREATE TABLE [{0}].[{1}]
+                  (
+                  {2}{3}
+                  )
+                  """,
                   tableDefinition.TableName.SchemaName ?? DefaultSchema,
                   tableDefinition.TableName.EntityName,
                   columnDeclarationList,
@@ -49,8 +54,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
       ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
 
       return new ScriptStatement(
-        string.Format("IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = '{1}' AND TABLE_SCHEMA = '{0}')\r\n"
-                         + "  DROP TABLE [{0}].[{1}]",
+        string.Format("""
+                      IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = '{1}' AND TABLE_SCHEMA = '{0}')
+                        DROP TABLE [{0}].[{1}]
+                      """,
                   tableDefinition.TableName.SchemaName ?? DefaultSchema,
                   tableDefinition.TableName.EntityName));
     }
@@ -67,7 +74,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
         return string.Empty;
 
       return string.Format(
-          ",\r\n  CONSTRAINT [{0}] PRIMARY KEY {1} ({2})",
+          """
+          ,
+            CONSTRAINT [{0}] PRIMARY KEY {1} ({2})
+          """,
           primaryKeyConstraint.ConstraintName,
           primaryKeyConstraint.IsClustered ? "CLUSTERED" : "NONCLUSTERED",
           GetColumnList(primaryKeyConstraint.Columns));

@@ -42,9 +42,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
       {
         throw new ConfigurationException(
             "Could not locate implementation of IStorageSettingsFactory in the IoC container. Example implementation on how to set up a basic implementation:"
-            + "Example that registers a default instance of the RdbmsStorageSettingsFactory:\n"
-            + "var serviceLocator = DefaultServiceLocator.Create();\n"
-            + "serviceLocator.RegisterSingle(() => StorageSettingsFactory.CreateForSqlServer(\"\"connectionString\"\"));\n"
+            + "Example that registers a default instance of the RdbmsStorageSettingsFactory:" + Environment.NewLine
+            + "var serviceLocator = DefaultServiceLocator.Create();" + Environment.NewLine
+            + "serviceLocator.RegisterSingle(() => StorageSettingsFactory.CreateForSqlServer(\"\"connectionString\"\"));" + Environment.NewLine
             + "var serviceLocatorScope = new ServiceLocatorScope(serviceLocator);", ex);
       }
     }

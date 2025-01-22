@@ -119,7 +119,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
         {
           Assert.Fail(
               string.Format(
-                  "{0}\r\nExpected state: {1} - {2} - {3} \r\nActual state: {4} - {5} - {6}",
+                  """
+                  {0}
+                  Expected state: {1} - {2} - {3} 
+                  Actual state: {4} - {5} - {6}
+                  """,
                   e.Message,
                   expectedStates[i].GetType().Name,
                   expectedStates[i].Message,

@@ -88,7 +88,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var validationResult = _validationRule.Validate(derivedClassDefinition);
 
       var expectedMessage =
-          "Class 'BaseValidationDomainObjectClass' must have the same storage group type as its base class 'BaseOfBaseValidationDomainObjectClass'.\r\n\r\n"
+          "Class 'BaseValidationDomainObjectClass' must have the same storage group type as its base class 'BaseOfBaseValidationDomainObjectClass'." + Environment.NewLine
+          + Environment.NewLine
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.BaseValidationDomainObjectClass";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }

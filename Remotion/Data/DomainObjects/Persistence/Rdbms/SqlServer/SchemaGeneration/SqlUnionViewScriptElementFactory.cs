@@ -36,13 +36,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
       foreach (var tableDefinition in unionViewDefinition.GetAllTables())
       {
         if (createSelectStringBuilder.Length > 0)
-          createSelectStringBuilder.AppendFormat("\r\n  UNION ALL\r\n");
+          createSelectStringBuilder.AppendFormat("""
+                                                 
+                                                   UNION ALL
+
+                                                 """);
 
         var availableTableColumns = tableDefinition.GetAllColumns();
         var unionedColumns = unionViewDefinition.CalculateFullColumnList(availableTableColumns);
         createSelectStringBuilder.AppendFormat(
-            "  SELECT {0}\r\n"
-            + "    FROM [{1}].[{2}]",
+            """
+              SELECT {0}
+                FROM [{1}].[{2}]
+            """,
             GetColumnList(unionedColumns),
             tableDefinition.TableName.SchemaName ?? DefaultSchema,
             tableDefinition.TableName.EntityName);
