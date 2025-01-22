@@ -110,7 +110,7 @@ public class Log4NetLogger : Microsoft.Extensions.Logging.ILogger
               safeEventID,
               new SystemStringFormat(
                   CultureInfo.InvariantCulture,
-                  "Failure during logging of message:\r\n{0}\r\nEvent ID: {1}",
+                  $"Failure during logging of message:{Environment.NewLine}{{0}}{Environment.NewLine}Event ID: {{1}}",
                   new object?[] { message, eventID }),
               exceptionObject));
     }

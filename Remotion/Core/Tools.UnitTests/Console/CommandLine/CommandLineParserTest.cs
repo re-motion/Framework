@@ -207,19 +207,21 @@ public class CommandLineParserTest
     string synopsis = parser.GetAsciiSynopsis("app.exe", 80);
 
     string expectedResult =
-        "app.exe [source-directory [destination-directory]] [/b-] [/rep:{yes|no|almost}]"
-        + "\n[{/m1|/m2}]"
-        + "\n"
-        + "\n  source-directory       Directory to copy from"
-        + "\n  destination-directory  This is the directory to copy to. This is the directory"
-        + "\n                         to copy to. This is the directory to copy to. This is"
-        + "\n                         the directory to copy to. This is the directory to copy"
-        + "\n                         to. This is the directory to copy to. This is the"
-        + "\n                         directory to copy to. This is the directory to copy to."
-        + "\n  /b                     binary copy on (+, default) or off (-)"
-        + "\n  /rep                   replace target"
-        + "\n  /m1                    Primary mode"
-        + "\n  /m2                    Secondary mode";
+        """
+        app.exe [source-directory [destination-directory]] [/b-] [/rep:{yes|no|almost}]
+        [{/m1|/m2}]
+
+          source-directory       Directory to copy from
+          destination-directory  This is the directory to copy to. This is the directory
+                                 to copy to. This is the directory to copy to. This is
+                                 the directory to copy to. This is the directory to copy
+                                 to. This is the directory to copy to. This is the
+                                 directory to copy to. This is the directory to copy to.
+          /b                     binary copy on (+, default) or off (-)
+          /rep                   replace target
+          /m1                    Primary mode
+          /m2                    Secondary mode
+        """;
     Assert.That(synopsis, Is.EqualTo(expectedResult));
   }
 

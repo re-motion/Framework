@@ -51,7 +51,7 @@ namespace Remotion.Tools
         if (!File.Exists(configFile))
         {
           throw new FileNotFoundException(
-              $"The configuration file supplied by the 'config' parameter was not found.\r\nFile: {configFile}",
+              $"The configuration file supplied by the 'config' parameter was not found.{Environment.NewLine}File: {configFile}",
               configFile);
         }
 

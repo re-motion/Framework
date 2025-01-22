@@ -213,7 +213,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
             ex.Message,
             Is.EqualTo(
                 "The assembly 'x' (loaded in the context of 'z') triggered a FileNotFoundException - maybe the assembly does not exist or a referenced "
-                + "assembly is missing?\r\nFileNotFoundException message: xy"));
+                + $"assembly is missing?{Environment.NewLine}FileNotFoundException message: xy"));
         Assert.That(ex.InnerException, Is.SameAs(fileNotFoundException));
       }
     }
@@ -244,7 +244,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
         Assert.That(
             ex.Message,
             Is.EqualTo(
-                "The assembly 'x' (loaded in the context of 'z') triggered an unexpected exception of type System.IndexOutOfRangeException.\r\n"
+                $"The assembly 'x' (loaded in the context of 'z') triggered an unexpected exception of type System.IndexOutOfRangeException.{Environment.NewLine}"
                 + "Unexpected exception message: xy"));
         Assert.That(ex.InnerException, Is.SameAs(unexpected));
       }
@@ -261,7 +261,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       }
       catch (AssemblyLoaderException ex)
       {
-        Assert.That(ex.Message, Is.EqualTo("The assembly 'x' triggered an unexpected exception of type System.IndexOutOfRangeException.\r\n"
+        Assert.That(ex.Message, Is.EqualTo($"The assembly 'x' triggered an unexpected exception of type System.IndexOutOfRangeException.{Environment.NewLine}"
                                              + "Unexpected exception message: xy"));
         Assert.That(ex.InnerException, Is.SameAs(unexpected));
       }

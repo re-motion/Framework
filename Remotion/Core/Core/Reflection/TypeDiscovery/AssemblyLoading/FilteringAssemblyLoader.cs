@@ -125,8 +125,9 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
       }
       catch (FileNotFoundException ex)
       {
-        string message = string.Format("The assembly {0} triggered a FileNotFoundException - maybe the assembly does not exist or a referenced assembly "
-                                        + "is missing?\r\nFileNotFoundException message: {1}", assemblyDescriptionText, ex.Message);
+        var message =
+            $"The assembly {assemblyDescriptionText} triggered a FileNotFoundException - maybe the assembly does not exist or a referenced assembly is missing?{Environment.NewLine}"
+            + $"FileNotFoundException message: {ex.Message}";
 
         // This is a workaround for an issue in Windows 8 with .NET 3.5, where System.ServiceModel references a 
         // non-existing System.IdentityModel.Selectors.dll,
@@ -141,8 +142,9 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
       }
       catch (Exception ex)
       {
-        string message = string.Format("The assembly {0} triggered an unexpected exception of type {1}.\r\nUnexpected exception message: {2}",
-                                        assemblyDescriptionText, ex.GetType().GetFullNameSafe(), ex.Message);
+        string message =
+            $"The assembly {assemblyDescriptionText} triggered an unexpected exception of type {ex.GetType().GetFullNameSafe()}.{Environment.NewLine}"
+            + $"Unexpected exception message: {ex.Message}";
         throw new AssemblyLoaderException(message, ex);
       }
     }

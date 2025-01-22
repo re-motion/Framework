@@ -353,7 +353,7 @@ public class CommandLineParser
     MonospaceTextFormat.AppendWrappedText(sb, maxWidth, synopsis);
 
     // create parameter name/description table
-    sb.Append("\n");
+    sb.AppendLine();
     foreach (CommandLineArgument argument in Arguments)
     {
       if (! (argument is CommandLineGroupArgument))
@@ -362,7 +362,7 @@ public class CommandLineParser
         if (argument.Name != null)
           name = _argumentDeclarationPrefix + argument.Name;
 
-        sb.AppendFormat("\n  {0,-" + maxLength.ToString() + "}  ", name);
+        sb.AppendFormat(Environment.NewLine + "  {0,-" + maxLength.ToString() + "}  ", name);
         MonospaceTextFormat.AppendIndentedText(sb, maxLength + 4, maxWidth, argument.Description);
       }
     }

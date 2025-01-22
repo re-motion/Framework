@@ -1,6 +1,7 @@
 ﻿// SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
 // SPDX-License-Identifier: Apache-2.0
 using System;
+using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using Remotion.Utilities;
 
@@ -30,12 +31,12 @@ namespace Remotion.Development.NUnit.UnitTesting
 
     private static void AssertThatMessageContainsWhitespaces (string message)
     {
-      Assertion.IsTrue(message.Contains(" "), "The exception message must contain at least one whitespace.\r\nmessage: {0}", message);
+      Assert.That(message.Contains(' '), Is.True, $"The exception message must contain at least one whitespace.{Environment.NewLine}message: {message}");
     }
 
     private static void AssertThatParameterDoesNotContainWhitespaces (string paramName)
     {
-      Assertion.IsFalse(paramName.Contains(" "), "The parameter must not contain any whitespaces.\r\nparamName: {0}", paramName);
+      Assert.That(paramName.Contains(' '), Is.False, $"The parameter must not contain any whitespace.{Environment.NewLine}message: {paramName}");
     }
   }
 }

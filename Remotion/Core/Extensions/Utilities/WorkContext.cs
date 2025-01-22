@@ -72,7 +72,7 @@ public class WorkContext: IDisposable
         if (context == _lastLeft)
           pastLast = true;
         if (sb.Length > 0)
-          sb.Append('\n');
+          sb.AppendLine();
         if (pastLast)
           sb.Append("? ");
         sb.Append(context.Text);

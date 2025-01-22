@@ -43,8 +43,8 @@ namespace Remotion.Reflection
       if (accessors.Length == 0)
       {
         throw new ArgumentException(
-            String.Format("The property does not define any accessors.\r\n  Type: {0}, property: {1}", declaringType, propertyInfo.Name),
-            "propertyInfo");
+            $"The property does not define any accessors.{Environment.NewLine}  Type: {declaringType}, property: {propertyInfo.Name}",
+            nameof(propertyInfo));
       }
 
       var originalDeclaringType = GetOriginalDeclaringType(propertyInfo);
@@ -95,8 +95,8 @@ namespace Remotion.Reflection
       if (accessors.Length == 0)
       {
         throw new ArgumentException(
-            String.Format("The property does not define any accessors.\r\n  Type: {0}, property: {1}", propertyInfo.DeclaringType, propertyInfo.Name),
-            "propertyInfo");
+            $"The property does not define any accessors.{Environment.NewLine}  Type: {propertyInfo.DeclaringType}, property: {propertyInfo.Name}",
+            nameof(propertyInfo));
       }
 
       return accessors[0].GetOriginalDeclaringType();

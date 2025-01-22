@@ -53,16 +53,19 @@ public class MonospaceTextFormatTest
     StringBuilder sb = new StringBuilder(label);
     MonospaceTextFormat.AppendIndentedText(sb, label.Length, 30, description);
     string expectedText =
-            "this is the label  the quick"
-        + "\n                   brown fox"
-        + "\n                   jumps over"
-        + "\n                   the lazy"
-        + "\n                   dog. THE"
-        + "\n                   (VERY"
-        + "\n                   QUICK) FOX"
-        + "\n                   JUMPS OVER"
-        + "\n                   THE LAZY"
-        + "\n                   DOG.";
+            """
+            this is the label  the quick
+                               brown fox
+                               jumps over
+                               the lazy
+                               dog. THE
+                               (VERY
+                               QUICK) FOX
+                               JUMPS OVER
+                               THE LAZY
+                               DOG.
+            """;
+
     Assert.That(sb.ToString(), Is.EqualTo(expectedText));
   }
 }

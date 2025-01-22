@@ -41,7 +41,7 @@ public sealed class MonospaceTextFormat
       SplitTextOnSeparator(text, out line, out text, lineWidth, new char[] {' '});
       sb.Append(line);
       if (text != null)
-        sb.Append('\n');
+        sb.AppendLine();
     }
   }
 
@@ -62,7 +62,7 @@ public sealed class MonospaceTextFormat
       sb.Append(line);
       if (text != null)
       {
-        sb.Append('\n');
+        sb.AppendLine();
         for (int i = 0; i < indent; ++i)
           sb.Append(' ');
       }
