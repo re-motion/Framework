@@ -16,4 +16,9 @@
     <PackageReference Include="Remotion.BuildScript.Nuke" VersionOverride="4.*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageDownload Include="DependDB.BuildProcessor" Version="[3.0.0-alpha-005]" />
+    <PackageDownload Include="DependDB.BuildProcessor.NuGetPreProcessor" Version="[3.0.0-alpha-005]" />
+  </ItemGroup>
+
 </Project>
