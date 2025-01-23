@@ -134,7 +134,10 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
           () => _htmlHelper.GetResultDocument(),
           Throws.Exception
               .TypeOf<XmlException>()
-              .With.Message.EqualTo("Data at the root level is invalid. Line 1, position 665.\r\n\r\nContent:\r\n" + c_document + "randomError")
+              .With.Message.EqualTo("Data at the root level is invalid. Line 1, position 665." + Environment.NewLine
+                                    + Environment.NewLine
+                                    + "Content:" + Environment.NewLine
+                                    + c_document + "randomError")
               .And.With.InnerException.Null);
     }
 

@@ -116,7 +116,12 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
       }
       catch (XmlException ex)
       {
-        throw new XmlException($"{ex.Message}\r\n\r\nContent:\r\n{content}");
+        throw new XmlException($"""
+                                {ex.Message}
+
+                                Content:
+                                {content}
+                                """);
       }
     }
 

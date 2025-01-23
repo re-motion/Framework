@@ -37,8 +37,11 @@ namespace Remotion.Development.UnitTesting.Configuration
       var validationErrors = GetValidationErrors(xmlFragment, xsdContent);
       if (validationErrors.Count > 0)
       {
-        var errors = string.Join("\r\n", validationErrors.Select(e => e.Message));
-        var message = string.Format("Validation of the xml fragment did not succeed for schema '{0}'.\r\n{1}", xsdContent, errors);
+        var errors = string.Join(Environment.NewLine, validationErrors.Select(e => e.Message));
+        var message = $"""
+                       Validation of the xml fragment did not succeed for schema '{xsdContent}'.
+                       {errors}
+                       """;
         throw new XmlSchemaValidationException(message);
       }
     }
