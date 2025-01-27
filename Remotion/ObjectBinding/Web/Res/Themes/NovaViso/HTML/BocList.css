@@ -44,7 +44,7 @@ div.bocList.hasDimensions  div.bocListTableBlock div.bocListTableContainer
 div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListTableScrollContainer
 {
   background-color: var(--remotion-themed-background-color-page);
-  scrollbar-width: var(--remotion-themed-scrollbar-style);
+  scrollbar-width: var(--remotion-themed-scrollbar-width);
   scrollbar-color: var(--remotion-themed-scrollbar-color);
   display: block;
   overflow: auto;
@@ -425,7 +425,7 @@ div.bocList div.bocListTableBlock tr.bocListValidationRow div
   position: sticky;
   left: 0;
   overflow-x: auto;
-  scrollbar-width: var(--remotion-themed-scrollbar-style);
+  scrollbar-width: var(--remotion-themed-scrollbar-width);
   scrollbar-color: var(--remotion-themed-scrollbar-color);
 }
 
@@ -499,7 +499,7 @@ div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListFakeTable
 {
   /* Reserve space in case there is a scrollbar for the data-part of the table.
      Note that the actual max-width is not important so long as the scrollbar's max-width is covered. '*/
-  border-right: var(--remotion-themed-scrollbar-width) solid var(--boclist-tablehead-background-color);
+  padding-right: var(--remotion-themed-scrollbar-padding-requirement);
 }
 
 div.bocList div.bocListTableBlock div.bocListTableContainer div.bocListFakeTableHead table,
