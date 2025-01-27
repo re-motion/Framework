@@ -72,15 +72,13 @@
   --remotion-themed-outline-offset-focus: calc((var(--remotion-themed-border-width) + var(--remotion-themed-outline-width)) * -1);
   --remotion-themed-outline-offset-focus-hover: var(--remotion-themed-outline-offset-focus);
   --remotion-themed-outline-offset-readonly-focus: var(--remotion-themed-outline-offset-focus);
-  --remotion-themed-scrollbar-width: 10px;
-  --remotion-themed-scrollbar-border-radius: 10px;
-  --remotion-themed-scrollbar-style: thin;
+  --remotion-themed-scrollbar-padding-requirement: 10px;
+  --remotion-themed-scrollbar-width: thin;
   --remotion-themed-scrollbar-color-thumb: var(--color-primary);
   --remotion-themed-scrollbar-color-track: transparent;
   --remotion-themed-scrollbar-color: var(--remotion-themed-scrollbar-color-thumb) var(--remotion-themed-scrollbar-color-track);
+  --remotion-themed-popup-scrollbar-padding-requirement: var(--remotion-themed-scrollbar-padding-requirement);
   --remotion-themed-popup-scrollbar-width: var(--remotion-themed-scrollbar-width);
-  --remotion-themed-popup-scrollbar-border-radius: var(--remotion-themed-scrollbar-border-radius);
-  --remotion-themed-popup-scrollbar-style: var(--remotion-themed-scrollbar-style);
   --remotion-themed-popup-scrollbar-color-thumb: var(--remotion-themed-scrollbar-color-thumb);
   --remotion-themed-popup-scrollbar-color-track: var(--remotion-themed-scrollbar-color-track);
   --remotion-themed-popup-scrollbar-color: var(--remotion-themed-popup-scrollbar-color-thumb) var(--remotion-themed-popup-scrollbar-color-track);
@@ -476,7 +474,7 @@ textarea.remotion-themed,
 .remotion-themed select,
 .remotion-themed textarea
 {
-  scrollbar-width: var(--remotion-themed-scrollbar-style);
+  scrollbar-width: var(--remotion-themed-scrollbar-width);
   scrollbar-color: var(--remotion-themed-scrollbar-color-thumb) var(--remotion-themed-background-color-control);
 }
 
@@ -504,7 +502,7 @@ img.disabled,
 .remotion-themed.scrollable
 {
   overflow: auto;
-  scrollbar-width: var(--remotion-themed-scrollbar-style);
+  scrollbar-width: var(--remotion-themed-scrollbar-width);
   scrollbar-color: var(--remotion-themed-scrollbar-color);
 }
 
