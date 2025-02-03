@@ -11,6 +11,7 @@
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <SignAssembly>False</SignAssembly>
     <TargetFrameworks>net8.0</TargetFrameworks>
+    <NoWarn>$(NoWarn);CA1416;</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="ScreenshotCreation\Resolvers\WebElementResolverScript.js" />
