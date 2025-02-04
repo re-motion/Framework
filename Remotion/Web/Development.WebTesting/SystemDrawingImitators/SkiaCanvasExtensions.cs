@@ -170,13 +170,10 @@ public static class SkiaCanvasExtensions
         wrapLines ? TextFlow.ClipBounds : TextFlow.OverflowBounds);
   }
 
-  public static void SaveAsPng (this SkiaCanvas canvas, string path, int width, int height)
+  public static void Save (this SKImage image, string path, FileMode mode = FileMode.Create)
   {
-    var surface = SKSurface.Create(new SKImageInfo(width, height));
-    canvas.Canvas.DrawSurface(surface, new SKPoint(0, 0));
-    using var image = surface.Snapshot();
-    using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-    using var stream = new FileStream(path, FileMode.Create);
-    data.SaveTo(stream);
+    var imageData = image.Encode();
+    using var fileStream = new FileStream(path, mode);
+    imageData.SaveTo(fileStream);
   }
 }

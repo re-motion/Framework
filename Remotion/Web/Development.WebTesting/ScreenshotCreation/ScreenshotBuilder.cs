@@ -154,17 +154,16 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       if (directory != null)
         Directory.CreateDirectory(directory);
 
-      using (var annotationImage = AnnotationLayer.CloneImage())
-      using (var outputImage = BaseLayer.CloneImage())
-      using (var outputGraphics = SkiaCanvasExtensions.FromImage(outputImage))
-      {
-        outputGraphics.Canvas.DrawImage(annotationImage, new SKPoint(0, 0));
+      using var annotationBitmap = AnnotationLayer.CloneImage().ToSkBitmap();
+      using var baseBitmap = BaseLayer.CloneImage().ToSkBitmap();
+      using var canvas = new SKCanvas(baseBitmap);
 
-        if (DrawMouseCursor && Screenshot.CursorInformation.IsVisible)
-          Screenshot.CursorInformation.Draw(outputGraphics);
+      canvas.DrawBitmap(annotationBitmap, new SKPoint(0, 0));
 
-        outputGraphics.SaveAsPng(path, outputImage.Width, outputImage.Height);
-      }
+      if (DrawMouseCursor && Screenshot.CursorInformation.IsVisible)
+        Screenshot.CursorInformation.Draw(new SkiaCanvas {Canvas = canvas});
+
+      baseBitmap.ToSkImage().Save(path);
     }
 
     /// <inheritdoc />
