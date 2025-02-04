@@ -299,9 +299,6 @@ namespace Remotion.Web.Development.WebTesting
       {
         Assertion.IsNotNull(_testName, "'{0}' should be set by the test infrastructure calling '{1}'", nameof(_testName), nameof(OnSetUp));
         var screenshotRecorder = new TestExecutionScreenshotRecorder(_testInfrastructureConfiguration.ScreenshotDirectory, _loggerFactory);
-        screenshotRecorder.CaptureCursor();
-        if (_mainBrowserSession is { Headless: false })
-          screenshotRecorder.TakeDesktopScreenshot(_testName);
         screenshotRecorder.TakeBrowserScreenshot(_testName, _browserSessions.ToArray(), BrowserConfiguration.Locator);
       }
 
