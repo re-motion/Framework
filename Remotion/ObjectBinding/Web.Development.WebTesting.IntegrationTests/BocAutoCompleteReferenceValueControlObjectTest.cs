@@ -98,6 +98,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     /// </summary>
     [Category("Screenshot")]
     [Test]
+    [Ignore("Uses Desktop Screenshots, which are no longer supported.")]
     public void ScreenshotTest_AutoComplete ()
     {
       var home = Start();

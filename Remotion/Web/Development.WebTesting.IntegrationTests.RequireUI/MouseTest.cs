@@ -118,6 +118,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
     [Explicit("Testing the tooltip is flaky as long as there is no good implementation of .ShowTooltip")]
     [Test]
+    [Ignore("Uses Desktop Screenshots, which are no longer supported.")]
     public void Tooltip ()
     {
       var home = Start();

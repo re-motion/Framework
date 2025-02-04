@@ -36,6 +36,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   {
     [Category("Screenshot")]
     [Test]
+    [Ignore("Uses Desktop Screenshots, which are no longer supported.")]
     public void DropDownList ()
     {
       WebPadding padding;

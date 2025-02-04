@@ -33,6 +33,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     /// </summary>
     [Category("Screenshot")]
     [Test]
+    [Ignore("Uses Desktop Screenshots, which are no longer supported.")]
     public void DrawCursorTooltip ()
     {
       ScreenshotTestingDelegate<ElementScope> test = (builder, target) =>
