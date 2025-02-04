@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 using System;
 using System.Drawing;
+using System.IO;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Skia;
 using SkiaSharp;
@@ -167,5 +168,15 @@ public static class SkiaCanvasExtensions
         horizAlignment,
         vertAlignment,
         wrapLines ? TextFlow.ClipBounds : TextFlow.OverflowBounds);
+  }
+
+  public static void SaveAsPng (this SkiaCanvas canvas, string path, int width, int height)
+  {
+    var surface = SKSurface.Create(new SKImageInfo(width, height));
+    canvas.Canvas.DrawSurface(surface, new SKPoint(0, 0));
+    using var image = surface.Snapshot();
+    using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+    using var stream = new FileStream(path, FileMode.Create);
+    data.SaveTo(stream);
   }
 }

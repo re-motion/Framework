@@ -163,11 +163,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         if (DrawMouseCursor && Screenshot.CursorInformation.IsVisible)
           Screenshot.CursorInformation.Draw(outputGraphics);
 
-        var data = outputImage.Encode(SKEncodedImageFormat.Png, 100);
-        using (var stream = new FileStream(path, FileMode.Create))
-        {
-          data.SaveTo(stream);
-        }
+        outputGraphics.SaveAsPng(path, outputImage.Width, outputImage.Height);
       }
     }
 
