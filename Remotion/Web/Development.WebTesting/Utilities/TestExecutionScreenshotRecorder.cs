@@ -49,9 +49,6 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       _logger = loggerFactory.CreateLogger<TestExecutionScreenshotRecorder>();
       _outputDirectory = Path.GetFullPath(outputDirectory);
       Directory.CreateDirectory(_outputDirectory);
-#if !PLATFORM_WINDOWS
-      throw new PlatformNotSupportedException("TestExecutionScreenshotRecorder is only supported on Windows.");
-#endif
     }
 
     /// <summary>
@@ -113,6 +110,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       {
         _logger.LogError(string.Format("Could not save desktop screenshot to '{0}'.", filePath), ex);
       }
+#else
+      throw new PlatformNotSupportedException("TestExecutionScreenshotRecorder is only supported on Windows.");
 #endif
     }
 
@@ -207,6 +206,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       }
 
       _logger.LogInformation("Saved screenshots for the browser session '{0}'.", GetWindowText(browserSession));
+#else
+      throw new PlatformNotSupportedException("TestExecutionScreenshotRecorder is only supported on Windows.");
 #endif
     }
 
