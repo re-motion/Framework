@@ -43,13 +43,13 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       ArgumentUtility.CheckNotNull("browserSession", browserSession);
       ArgumentUtility.CheckNotNull("locator", locator);
 
+#if PLATFORM_WINDOWS
       if (browserSession.Headless)
         return CreateBrowserScreenshotBasedOnDriver(browserSession);
       else
-#if PLATFORM_WINDOWS
         return CreateBrowserScreenshotBasedOnScreen(browserSession, locator);
 #else
-      throw new PlatformNotSupportedException("Headed mode is only supported on Windows.");
+      return CreateBrowserScreenshotBasedOnDriver(browserSession);
 #endif
     }
 
@@ -95,7 +95,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     private static Screenshot CreateBrowserScreenshotBasedOnScreen (IBrowserSession browserSession, IBrowserContentLocator locator)
     {
       var browserBounds = locator.GetBrowserContentBounds((IWebDriver)browserSession.Driver.Native);
-      var image = new Bitmap(browserBounds.Width, browserBounds.Height);
+      var image = new SKBitmap(browserBounds.Width, browserBounds.Height);
       using (var graphics = SkiaCanvas.FromImage(image))
       {
         graphics.CopyFromScreen(browserBounds.Location, Point.Empty, browserBounds.Size);
