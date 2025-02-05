@@ -26,6 +26,8 @@ using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Screenshot = Remotion.Web.Development.WebTesting.ScreenshotCreation.Screenshot;
+using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
+using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -111,7 +113,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         _logger.LogError(string.Format("Could not save desktop screenshot to '{0}'.", filePath), ex);
       }
 #else
-      throw new PlatformNotSupportedException("TestExecutionScreenshotRecorder is only supported on Windows.");
+      throw new PlatformNotSupportedException("Desktop Screenshots are only supported on Windows.");
 #endif
     }
 
@@ -156,7 +158,6 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     private void SaveBrowserSessionScreenshot (string testName, IBrowserContentLocator locator, IBrowserSession browserSession, int sessionID)
     {
-#if PLATFORM_WINDOWS
       var driver = browserSession.Driver;
       if (driver == null)
         return;
@@ -182,20 +183,16 @@ namespace Remotion.Web.Development.WebTesting.Utilities
           {
             var browserContentBounds = locator.GetBrowserContentBounds(nativeDriver);
 
-            using (var graphics = Graphics.FromImage(screenshot.Image))
-            {
-              var transformMatrix = new Matrix();
-              transformMatrix.Translate(-browserContentBounds.X, -browserContentBounds.Y);
+            using var canvas = SkiaCanvasExtensions.FromBitmap(screenshot.Image);
+            var transformMatrix = SKMatrix.CreateTranslation(-browserContentBounds.X, -browserContentBounds.Y);
+            canvas.Canvas.SetMatrix(transformMatrix);
 
-              graphics.Transform = transformMatrix;
-
-              GetCursorInformation().Draw(graphics);
-            }
+            GetCursorInformation().Draw(canvas);
           }
 
           var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath(_outputDirectory, testName, windowSuffix, "png");
 
-          screenshot.Image.Save(filePath, ImageFormat.Png);
+          screenshot.Image.Save(filePath);
         }
         catch (Exception ex)
         {
@@ -206,9 +203,6 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       }
 
       _logger.LogInformation("Saved screenshots for the browser session '{0}'.", GetWindowText(browserSession));
-#else
-      throw new PlatformNotSupportedException("TestExecutionScreenshotRecorder is only supported on Windows.");
-#endif
     }
 
     private ICursorInformation CaptureCursorInformationWithLog ()
@@ -224,7 +218,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         return EmptyCursorInformation;
       }
 #endif
-      throw new PlatformNotSupportedException("TestExecutionScreenshotRecorder is only supported on Windows.");
+      throw new PlatformNotSupportedException("Cursors are only supported on Windows.");
     }
 
     private ICursorInformation GetCursorInformation ()
