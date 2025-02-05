@@ -22,7 +22,7 @@ using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
-using SkiaSharp;
+using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {
@@ -72,8 +72,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       Directory.CreateDirectory(directory);
 
       using var annotationImage = AnnotationLayer.CloneImage();
-      using var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write);
-      annotationImage.Encode(SKEncodedImageFormat.Png, 100).SaveTo(fileStream);
+      annotationImage.Save(path);
     }
   }
 }
