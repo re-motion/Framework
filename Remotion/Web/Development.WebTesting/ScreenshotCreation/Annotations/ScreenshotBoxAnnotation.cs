@@ -88,19 +88,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       var whOffset = border / 2;
       var borderBounds = new WebPadding(xyOffset + 1, xyOffset + 1, whOffset, whOffset).Apply(annotationBounds);
 
-      // Draw the border by drawing 5 lines. GDI+ is somehow
-      // unable to draw rectangles in certain situations
-      canvas.DrawLines(
-          _pen,
-          new[]
-          {
-              borderBounds.Location,
-              borderBounds.Location + new Size(borderBounds.Width, 0),
-              borderBounds.Location + borderBounds.Size,
-              borderBounds.Location + new Size(0, borderBounds.Height),
-              borderBounds.Location,
-              borderBounds.Location + new Size(borderBounds.Width, 0)
-          });
+      canvas.Canvas.DrawRect(borderBounds.ToSkRect(), _pen.Paint);
     }
   }
 }
