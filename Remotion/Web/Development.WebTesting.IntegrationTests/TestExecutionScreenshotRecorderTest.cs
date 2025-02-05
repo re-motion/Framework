@@ -62,6 +62,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [Ignore("Uses Desktop Screenshots, which are no longer supported")]
     public void TestExecutionScreenshotRecorderTest_TakeDesktopScreenshot_SavesToCorrectPath ()
     {
       var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath, NullLoggerFactory.Instance);
@@ -77,6 +78,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [Ignore("Uses Desktop Screenshots, which are no longer supported")]
     public void TestExecutionScreenshotRecorderTest_TakeDesktopScreenshot_ReplacesInvalidFileNameChars ()
     {
       var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath, NullLoggerFactory.Instance);
@@ -263,6 +265,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [Ignore("Uses Desktop Screenshots, which are no longer supported")]
     public void TestExecutionScreenshotRecorderTest_TakeDesktopScreenshot_SavesScreenshotWithShortenedName ()
     {
       var fileName = new String('A', 300);
