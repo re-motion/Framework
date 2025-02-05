@@ -82,7 +82,17 @@ public static class SkiaCanvasExtensions
 
   public static void DrawEllipse (this SkiaCanvas canvas, Pen pen, Rectangle ellipseBounds)
   {
-    canvas.Canvas.DrawOval(ellipseBounds.X, ellipseBounds.Y, ellipseBounds.Width, ellipseBounds.Height, pen.Paint);
+    ArgumentNullException.ThrowIfNull(canvas);
+    ArgumentNullException.ThrowIfNull(pen);
+
+    var paint = pen.Paint;
+
+    var cx = ellipseBounds.Left + ellipseBounds.Width / 2f;
+    var cy = ellipseBounds.Top + ellipseBounds.Height / 2f;
+    var rx = ellipseBounds.Width / 2f;
+    var ry = ellipseBounds.Height / 2f;
+
+    canvas.Canvas.DrawOval(cx, cy, rx, ry, paint);
   }
 
   public static void DrawString (
