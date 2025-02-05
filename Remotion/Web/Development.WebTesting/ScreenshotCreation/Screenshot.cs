@@ -118,16 +118,16 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
       var screenshot = ((ITakesScreenshot)browserSession.Driver.Native).GetScreenshot();
 
-      SKImage image;
+      SKBitmap bitmap;
       using (var memoryStream = new MemoryStream(screenshot.AsByteArray, false))
       {
-        image = SKImage.FromEncodedData(memoryStream);
+        bitmap = SKImage.FromEncodedData(memoryStream).ToSkBitmap();
       }
 
       return new Screenshot(
-          image,
+          bitmap,
           Size.Empty,
-          new[] { new Rectangle(Point.Empty, new Size(image.Width, image.Height)) },
+          new[] { new Rectangle(Point.Empty, new Size(bitmap.Width, bitmap.Height)) },
           EmptyCursorInformation.Instance,
           CoordinateSystem.Browser);
     }
@@ -163,14 +163,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
     private readonly ICursorInformation _cursorInformation;
     private readonly Size _desktopOffset;
-    private readonly SKImage _image;
+    private readonly SKBitmap _image;
     private readonly Rectangle[] _screenshotBounds;
     private readonly CoordinateSystem _coordinateSystem;
 
     private bool _disposed;
 
     public Screenshot (
-        [NotNull] SKImage image,
+        [NotNull] SKBitmap image,
         Size desktopOffset,
         Rectangle[] screenshotBounds,
         [NotNull] ICursorInformation cursorInformation,
@@ -218,7 +218,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// Returns the screenshot as image.
     /// </summary>
     [NotNull]
-    public SKImage Image
+    public SKBitmap Image
     {
       get
       {

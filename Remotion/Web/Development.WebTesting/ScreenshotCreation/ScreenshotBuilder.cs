@@ -154,8 +154,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       if (directory != null)
         Directory.CreateDirectory(directory);
 
-      using var annotationBitmap = AnnotationLayer.CloneImage().ToSkBitmap();
-      using var baseBitmap = BaseLayer.CloneImage().ToSkBitmap();
+      using var annotationBitmap = AnnotationLayer.CloneImage();
+      using var baseBitmap = BaseLayer.CloneImage();
       using var canvas = new SKCanvas(baseBitmap);
 
       canvas.DrawBitmap(annotationBitmap, new SKPoint(0, 0));
@@ -163,7 +163,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       if (DrawMouseCursor && Screenshot.CursorInformation.IsVisible)
         Screenshot.CursorInformation.Draw(new SkiaCanvas {Canvas = canvas});
 
-      baseBitmap.ToSkImage().Save(path);
+      baseBitmap.Save(path);
     }
 
     /// <inheritdoc />

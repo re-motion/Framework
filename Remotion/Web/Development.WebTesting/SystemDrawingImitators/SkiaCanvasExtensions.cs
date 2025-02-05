@@ -75,11 +75,6 @@ public static class SkiaCanvasExtensions
     return new SizeF(maxWidth, height);
   }
 
-  public static SkiaCanvas FromImage (SKImage? image)
-  {
-    return FromBitmap(SKBitmap.FromImage(image));
-  }
-
   public static SkiaCanvas FromBitmap (SKBitmap? bitmap)
   {
     return new SkiaCanvas { Canvas = new SKCanvas(bitmap) };
@@ -170,9 +165,9 @@ public static class SkiaCanvasExtensions
         wrapLines ? TextFlow.ClipBounds : TextFlow.OverflowBounds);
   }
 
-  public static void Save (this SKImage image, string path, FileMode mode = FileMode.Create)
+  public static void Save (this SKBitmap bitmap, string path, FileMode mode = FileMode.Create)
   {
-    var imageData = image.Encode();
+    var imageData = bitmap.ToSkImage().Encode();
     using var fileStream = new FileStream(path, mode);
     imageData.SaveTo(fileStream);
   }

@@ -59,8 +59,8 @@ public static class DrawingSkiaSharpConverter
     return new Font(font.Typeface.FamilyName, (int)Math.Round(font.Size));
   }
 
-  public static SKImage Clone (this SKImage image)
+  public static SKBitmap Clone (this SKBitmap bitmap)
   {
-    return SKImage.FromEncodedData(image.Encode());
+    return SKImage.FromEncodedData(bitmap.ToSkImage().Encode(SKEncodedImageFormat.Png, 100)).ToSkBitmap();
   }
 }
