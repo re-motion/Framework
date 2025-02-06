@@ -35,8 +35,8 @@ public static class SkiaCanvasExtensions
                     TextEncoding = SKTextEncoding.Utf16 // Match SKFont default
                 };
 
-    var widthLimit = layoutArea.Width == 0 ? layoutArea.Width : float.PositiveInfinity;
-    var heightLimit = layoutArea.Height == 0 ? layoutArea.Height : float.PositiveInfinity;
+    var widthLimit = layoutArea.Width <= 0 ? float.PositiveInfinity : layoutArea.Width;
+    var heightLimit = layoutArea.Height <= 0 ? float.PositiveInfinity : layoutArea.Height;
 
     var spaceWidth = paint.MeasureText(" ");
     var maxWidth = 0f;
@@ -152,6 +152,7 @@ public static class SkiaCanvasExtensions
     }
 
     canvas.Font = font.ToMauiFont();
+    canvas.FontSize = font.ToMauiFont().Weight;
     canvas.FontColor = brush.Paint?.Color.AsColor();
     canvas.DrawString(
         text,

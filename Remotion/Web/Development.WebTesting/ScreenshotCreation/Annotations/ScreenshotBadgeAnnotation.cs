@@ -145,13 +145,15 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       var elementBounds = resolvedScreenshotElement.ElementBounds;
       var centerPoint = new Point(
           elementBounds.X + elementBounds.Width / 2 + _translation.Width,
-          elementBounds.Y + elementBounds.Height / 2 + _translation.Height);
+          elementBounds.Y + elementBounds.Height / 2 + _translation.Height - 1);
 
       var textSizeF = canvas.MeasureString(Content, Font);
       var textSize = new Size((int)Math.Ceiling(textSizeF.Width), (int)Math.Ceiling(textSizeF.Height));
 
       var textBound = new Rectangle(centerPoint.X - textSize.Width / 2, centerPoint.Y - textSize.Height / 2, textSize.Width, textSize.Height);
       var ellipseBounds = ContentPadding.Apply(textBound);
+
+      ellipseBounds.Width += 1;
 
       if (ForceCircle && ellipseBounds.Width != ellipseBounds.Height)
       {
@@ -167,6 +169,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
           ellipseBounds.X -= -difference / 2;
         }
       }
+
+      ellipseBounds.Y += 1;
 
       if (BackgroundBrush != null)
         canvas.FillEllipse(BackgroundBrush, ellipseBounds);
