@@ -151,7 +151,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
           (int)Math.Round(size.Height) + 1);
 
       if (_backgroundBrush != null)
-        canvas.FillRectangle(_backgroundBrush, layout);
+        canvas.Canvas.DrawRect(layout.ToSkRect(), _backgroundBrush.Paint);
 
       canvas.DrawString(_content, _font, _foregroundBrush, layout);
     }

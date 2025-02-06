@@ -121,7 +121,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
         ValidateResolvedElement(context.ResolvedElement, minimumElementVisibility);
 
-        annotation.Draw(context.Graphics, context.ResolvedElement);
+        annotation.Draw(context.Canvas, context.ResolvedElement);
       }
     }
 
@@ -197,7 +197,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       var newImageBounds = new Rectangle(Point.Empty, croppingRectangle.Size);
 
       var normalizedCroppingRectangle = new Rectangle(croppingRectangle.Location + _normalizationVector, croppingRectangle.Size);
-      newCanvas.FillRectangle(Brushes.Transparent, newImageBounds);
+      newCanvas.Canvas.DrawRect(newImageBounds.ToSkRect(), Brushes.Transparent.Paint);
 
       newCanvas.Canvas.DrawBitmap(_layerBitmap, normalizedCroppingRectangle.ToSkRect(), newImageBounds.ToSkRect());
 

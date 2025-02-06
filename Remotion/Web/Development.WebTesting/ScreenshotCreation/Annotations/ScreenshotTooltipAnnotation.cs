@@ -97,7 +97,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       var layoutArea = maximumSize - new Size(border * 2 + _style.ContentPadding.Horizontal, border * 2 + _style.ContentPadding.Vertical);
 
       // Measure how much space the text needs
-      var contentSizeF = canvas.MeasureString(_content, _style.Font, layoutArea, _style.WrapLines);
+      var contentSizeF = canvas.MeasureString(_content, _style.Font, new System.Drawing.SizeF(layoutArea.Width, layoutArea.Height), _style.WrapLines);
       var contentSize = new Size((int)Math.Ceiling(contentSizeF.Width) + 1, (int)Math.Ceiling(contentSizeF.Height));
 
       // Calculate the bounds of the tooltip with border

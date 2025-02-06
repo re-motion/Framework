@@ -6,25 +6,12 @@ using System.IO;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Skia;
 using SkiaSharp;
-using Point = System.Drawing.Point;
-using Size = System.Drawing.Size;
 using SizeF = System.Drawing.SizeF;
 
 namespace Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 
 public static class SkiaCanvasExtensions
 {
-  public static void FillRectangle (this SkiaCanvas canvas, Brush brush, Rectangle rectangle)
-  {
-    canvas.Canvas.DrawRect(rectangle.ToSkRect(), brush.Paint);
-  }
-
-  public static SizeF MeasureString (this SkiaCanvas canvas, string? text, SKFont font)
-    => MeasureString(canvas, text, font, new SizeF(0, 0));
-
-  public static SizeF MeasureString (this SkiaCanvas canvas, string? text, SKFont font, Size layoutArea, bool wrapLines)
-    => MeasureString(canvas, text, font, new SizeF(layoutArea.Width, layoutArea.Height), wrapLines);
-
   public static SizeF MeasureString (this SkiaCanvas canvas, string? text, SKFont font, SizeF layoutArea, bool wrapLines = true)
   {
     var paint = new SKPaint
@@ -67,32 +54,6 @@ public static class SkiaCanvasExtensions
   public static SkiaCanvas FromBitmap (SKBitmap? bitmap)
   {
     return new SkiaCanvas { Canvas = new SKCanvas(bitmap) };
-  }
-
-  public static void FillEllipse (this SkiaCanvas canvas, Brush brush, Rectangle ellipseBounds)
-  {
-    canvas.Canvas.DrawOval(ellipseBounds.ToSkRect(), brush.Paint);
-  }
-
-  public static void FillEllipse (this SkiaCanvas canvas, Brush brush, int x, int y, int width, int height)
-  {
-    var rect = new SKRect(x, y, x + width, y + height);
-    canvas.Canvas.DrawOval(rect, brush.Paint);
-  }
-
-  public static void DrawEllipse (this SkiaCanvas canvas, Pen pen, Rectangle ellipseBounds)
-  {
-    ArgumentNullException.ThrowIfNull(canvas);
-    ArgumentNullException.ThrowIfNull(pen);
-
-    var paint = pen.Paint;
-
-    var cx = ellipseBounds.Left + ellipseBounds.Width / 2f;
-    var cy = ellipseBounds.Top + ellipseBounds.Height / 2f;
-    var rx = ellipseBounds.Width / 2f;
-    var ry = ellipseBounds.Height / 2f;
-
-    canvas.Canvas.DrawOval(cx, cy, rx, ry, paint);
   }
 
   public static void DrawString (

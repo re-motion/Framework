@@ -80,7 +80,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 
       // Draw the background if there is one
       if (_backgroundBrush != null)
-        canvas.FillRectangle(_backgroundBrush, annotationBounds);
+        canvas.Canvas.DrawRect(annotationBounds.ToSkRect(), _backgroundBrush.Paint);
 
       // Apply the padding for the border
       var border = (int)Math.Floor(_pen.Width);

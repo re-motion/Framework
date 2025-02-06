@@ -468,13 +468,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       public ScreenshotTransformationContext<T> BeginApply (ScreenshotTransformationContext<T> context)
       {
-        context.Graphics.FillEllipse(
-            Brush,
-            context.ResolvedElement.ElementBounds.X + Offset.X,
-            context.ResolvedElement.ElementBounds.Y + Offset.Y,
-            Width,
-            Height);
-
+        var x = context.ResolvedElement.ElementBounds.X + Offset.X;
+        var y = context.ResolvedElement.ElementBounds.Y + Offset.Y;
+        context.Canvas.Canvas.DrawOval(new SKRect(x, y, x + Width, y + Height), Brush.Paint);
         return context;
       }
 

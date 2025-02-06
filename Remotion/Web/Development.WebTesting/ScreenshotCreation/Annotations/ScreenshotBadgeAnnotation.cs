@@ -147,7 +147,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
           elementBounds.X + elementBounds.Width / 2 + _translation.Width,
           elementBounds.Y + elementBounds.Height / 2 + _translation.Height - 1);
 
-      var textSizeF = canvas.MeasureString(Content, Font);
+      var textSizeF = canvas.MeasureString(Content, Font, new System.Drawing.SizeF(0, 0));
       var textSize = new Size((int)Math.Ceiling(textSizeF.Width), (int)Math.Ceiling(textSizeF.Height));
 
       var textBound = new Rectangle(centerPoint.X - textSize.Width / 2, centerPoint.Y - textSize.Height / 2, textSize.Width, textSize.Height);
@@ -173,9 +173,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       ellipseBounds.Y += 1;
 
       if (BackgroundBrush != null)
-        canvas.FillEllipse(BackgroundBrush, ellipseBounds);
+        canvas.Canvas.DrawOval(ellipseBounds.ToSkRect(), BackgroundBrush.Paint);
       canvas.DrawString(Content, Font, ContentBrush, textBound);
-      canvas.DrawEllipse(BorderPen, ellipseBounds);
+      canvas.Canvas.DrawOval(ellipseBounds.ToSkRect(), BorderPen.Paint);
     }
   }
 }
