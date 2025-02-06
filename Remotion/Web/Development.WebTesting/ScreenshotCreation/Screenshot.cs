@@ -95,8 +95,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     private static Screenshot CreateBrowserScreenshotBasedOnScreen (IBrowserSession browserSession, IBrowserContentLocator locator)
     {
       var browserBounds = locator.GetBrowserContentBounds((IWebDriver)browserSession.Driver.Native);
-      var image = new SKBitmap(browserBounds.Width, browserBounds.Height);
-      using (var graphics = SkiaCanvas.FromImage(image))
+      var image = new Bitmap(browserBounds.Width, browserBounds.Height);
+      using (var graphics = Graphics.FromImage(image))
       {
         graphics.CopyFromScreen(browserBounds.Location, Point.Empty, browserBounds.Size);
 
@@ -140,7 +140,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       var offset = new Size(-requiredBounds.X, -requiredBounds.Y);
 
       var image = new Bitmap(requiredBounds.Width, requiredBounds.Height);
-      using (var graphics = SkiaCanvasExtensions.FromImage(image))
+      using (var graphics = Graphics.FromImage(image))
       {
         graphics.Clear(Color.Transparent);
 
