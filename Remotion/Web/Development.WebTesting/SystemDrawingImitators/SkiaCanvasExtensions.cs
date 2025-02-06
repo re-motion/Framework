@@ -97,60 +97,14 @@ public static class SkiaCanvasExtensions
 
   public static void DrawString (
       this SkiaCanvas canvas,
-      string? text,
-      SKFont? font,
+      string text,
+      SKFont font,
       Brush brush,
       Rectangle rectangle,
-      ContentAlignment contentAlignment = ContentAlignment.MiddleCenter,
+      HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center,
+      VerticalAlignment verticalAlignment = VerticalAlignment.Top,
       bool wrapLines = true)
   {
-    HorizontalAlignment horizAlignment;
-    VerticalAlignment vertAlignment;
-
-    switch (contentAlignment)
-    {
-      case ContentAlignment.TopLeft:
-        horizAlignment = HorizontalAlignment.Left;
-        vertAlignment = VerticalAlignment.Top;
-        break;
-      case ContentAlignment.TopCenter:
-        horizAlignment = HorizontalAlignment.Center;
-        vertAlignment = VerticalAlignment.Top;
-        break;
-      case ContentAlignment.TopRight:
-        horizAlignment = HorizontalAlignment.Right;
-        vertAlignment = VerticalAlignment.Top;
-        break;
-      case ContentAlignment.MiddleLeft:
-        horizAlignment = HorizontalAlignment.Left;
-        vertAlignment = VerticalAlignment.Center;
-        break;
-      case ContentAlignment.MiddleCenter:
-        horizAlignment = HorizontalAlignment.Center;
-        vertAlignment = VerticalAlignment.Center;
-        break;
-      case ContentAlignment.MiddleRight:
-        horizAlignment = HorizontalAlignment.Right;
-        vertAlignment = VerticalAlignment.Center;
-        break;
-      case ContentAlignment.BottomLeft:
-        horizAlignment = HorizontalAlignment.Left;
-        vertAlignment = VerticalAlignment.Bottom;
-        break;
-      case ContentAlignment.BottomCenter:
-        horizAlignment = HorizontalAlignment.Center;
-        vertAlignment = VerticalAlignment.Bottom;
-        break;
-      case ContentAlignment.BottomRight:
-        horizAlignment = HorizontalAlignment.Right;
-        vertAlignment = VerticalAlignment.Bottom;
-        break;
-      default:
-        horizAlignment = HorizontalAlignment.Center;
-        vertAlignment = VerticalAlignment.Center;
-        break;
-    }
-
     canvas.Font = font.ToMauiFont();
     canvas.FontSize = font.ToMauiFont().Weight;
     canvas.FontColor = brush.Paint?.Color.AsColor();
@@ -160,8 +114,8 @@ public static class SkiaCanvasExtensions
         rectangle.Y,
         rectangle.Width,
         rectangle.Height,
-        horizAlignment,
-        vertAlignment,
+        horizontalAlignment,
+        verticalAlignment,
         wrapLines ? TextFlow.ClipBounds : TextFlow.OverflowBounds);
   }
 

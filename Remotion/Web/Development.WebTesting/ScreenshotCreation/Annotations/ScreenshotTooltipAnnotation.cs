@@ -17,10 +17,13 @@
 using System;
 using System.Drawing;
 using JetBrains.Annotations;
+using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
-using SkiaSharp;
+using Point = System.Drawing.Point;
+using Size = System.Drawing.Size;
+
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 {
@@ -125,7 +128,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
           _style.Font,
           _style.ForegroundBrush,
           new Rectangle(tooltipBounds.Location + desktopOffset, contentSize),
-          ContentAlignment.MiddleCenter,
+          HorizontalAlignment.Center,
+          VerticalAlignment.Center,
           _style.WrapLines);
     }
 
