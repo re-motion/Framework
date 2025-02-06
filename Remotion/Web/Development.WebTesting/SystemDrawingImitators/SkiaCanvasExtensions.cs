@@ -38,7 +38,7 @@ public static class SkiaCanvasExtensions
       {
         // new line
         height += paint.FontSpacing;
-        currentWidth = wordWidth;
+        currentWidth = 0;
       }
 
       currentWidth += wordWidth;
