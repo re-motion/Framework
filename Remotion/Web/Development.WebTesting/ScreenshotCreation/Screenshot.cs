@@ -215,7 +215,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     }
 
     /// <summary>
-    /// Returns the screenshot as image.
+    /// Returns the screenshot as an <see cref="SKBitmap"/>.
     /// </summary>
     [NotNull]
     public SKBitmap Image
