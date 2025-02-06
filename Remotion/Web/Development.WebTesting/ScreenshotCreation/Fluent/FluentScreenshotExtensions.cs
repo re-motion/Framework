@@ -198,7 +198,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
       IScreenshotAnnotation annotation = new ScreenshotBadgeAnnotation(
           content,
           contentPadding ?? new WebPadding(3, 3, 3, 0),
-          font ?? new SKFont(SKTypeface.FromFamilyName("Arial"), 14),
+          font ?? new SKFont(SKTypeface.FromFamilyName("Arial"), 20),
           contentBrush ?? Brushes.White,
           borderPen ?? Pens.White,
           backgroundBrush ?? Brushes.Red,
