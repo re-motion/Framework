@@ -80,10 +80,10 @@ public static class SkiaCanvasExtensions
         wrapLines ? TextFlow.ClipBounds : TextFlow.OverflowBounds);
   }
 
-  public static void Save (this SKBitmap bitmap, string path, FileMode mode = FileMode.Create)
+  public static void Save (this SKBitmap bitmap, string path, SKEncodedImageFormat format = SKEncodedImageFormat.Png, int quality = 100, FileMode fileMode = FileMode.Create)
   {
-    var imageData = bitmap.ToSkImage().Encode();
-    using var fileStream = new FileStream(path, mode);
+    var imageData = bitmap.ToSkImage().Encode(format, quality);
+    using var fileStream = new FileStream(path, fileMode);
     imageData.SaveTo(fileStream);
   }
 }
