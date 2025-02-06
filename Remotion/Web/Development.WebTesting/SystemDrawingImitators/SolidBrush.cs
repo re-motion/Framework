@@ -6,7 +6,9 @@ using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 
-// imitates System.Drawing.SolidBrush
+/// <summary>
+/// Imitates System.Drawing.SolidBrush
+/// </summary>
 public class SolidBrush : Brush
 {
   public SolidBrush (Color color)
