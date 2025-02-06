@@ -3,7 +3,7 @@
 namespace Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 
 /// <summary>
-/// same as in System.Drawing.ContentAlignment
+/// Specifies alignment of content on the drawing surface.
 /// </summary>
 public enum ContentAlignment
 {
