@@ -3,7 +3,7 @@
 namespace Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 
 /// <summary>
-/// same as in System.Drawing.ContentAlignment as there are no windows dependencies in this enum
+/// same as in System.Drawing.ContentAlignment
 /// </summary>
 public enum ContentAlignment
 {
