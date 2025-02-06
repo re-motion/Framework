@@ -212,6 +212,7 @@ namespace Remotion.Web.UI.Controls
 
 
       _options = base.GetPostBackOptions();
+      _options.ActionUrl = null!;
       _options.ClientSubmit = false;
       _options.PerformValidation = false;
       _options.AutoPostBack = false;
