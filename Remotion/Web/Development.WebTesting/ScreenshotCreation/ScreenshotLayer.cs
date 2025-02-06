@@ -193,13 +193,13 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       _layerCanvas.Canvas.Flush();
 
       var newImage = new SKBitmap(croppingRectangle.Size.Width, croppingRectangle.Size.Height);
-      var newGraphics = SkiaCanvasExtensions.FromBitmap(newImage);
+      var newCanvas = SkiaCanvasExtensions.FromBitmap(newImage);
       var newImageBounds = new Rectangle(Point.Empty, croppingRectangle.Size);
 
       var normalizedCroppingRectangle = new Rectangle(croppingRectangle.Location + _normalizationVector, croppingRectangle.Size);
-      newGraphics.FillRectangle(Brushes.Transparent, newImageBounds);
+      newCanvas.FillRectangle(Brushes.Transparent, newImageBounds);
 
-      newGraphics.Canvas.DrawBitmap(_layerBitmap, normalizedCroppingRectangle.ToSkRect(), newImageBounds.ToSkRect());
+      newCanvas.Canvas.DrawBitmap(_layerBitmap, normalizedCroppingRectangle.ToSkRect(), newImageBounds.ToSkRect());
 
       _screenshotOffset = new Size(croppingRectangle.Location);
       _screenshotBounds = new[] { croppingRectangle };
@@ -208,7 +208,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       _layerBitmap = newImage;
 
       _layerCanvas?.Dispose();
-      _layerCanvas = newGraphics;
+      _layerCanvas = newCanvas;
 
       PrepareScreenshotLayer();
     }
