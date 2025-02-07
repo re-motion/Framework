@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Skia;
+using Remotion.Utilities;
 using SkiaSharp;
 using Color = System.Drawing.Color;
 using SizeF = System.Drawing.SizeF;
@@ -15,8 +16,9 @@ public static class SkiaExtensions
 {
   public static SKBitmap Clone (this SKBitmap bitmap)
   {
-    ArgumentNullException.ThrowIfNull(bitmap);
-    return SKImage.FromEncodedData(bitmap.ToSkImage().Encode(SKEncodedImageFormat.Png, 100)).ToSkBitmap();
+    ArgumentUtility.CheckNotNull(nameof(bitmap), bitmap);
+    var encodedBitmap = SKImage.FromBitmap(bitmap).Encode(SKEncodedImageFormat.Png, 100);
+    return SKBitmap.FromImage(SKImage.FromEncodedData(encodedBitmap));
   }
 
   public static void DrawString (
@@ -29,11 +31,11 @@ public static class SkiaExtensions
       VerticalAlignment verticalAlignment,
       bool wrapLines)
   {
-    ArgumentNullException.ThrowIfNull(canvas);
-    ArgumentNullException.ThrowIfNull(text);
-    ArgumentNullException.ThrowIfNull(font);
-    ArgumentNullException.ThrowIfNull(brush);
-    ArgumentNullException.ThrowIfNull(brush.Paint);
+    ArgumentUtility.CheckNotNull(nameof(canvas), canvas);
+    ArgumentUtility.CheckNotNull(nameof(text), text);
+    ArgumentUtility.CheckNotNull(nameof(font), font);
+    ArgumentUtility.CheckNotNull(nameof(brush), brush);
+    ArgumentUtility.CheckNotNull(nameof(canvas), canvas);
 
     canvas.Font = new Microsoft.Maui.Graphics.Font(font.Typeface.FamilyName);
     canvas.FontSize = (int)Math.Round(font.Size);
@@ -51,8 +53,8 @@ public static class SkiaExtensions
 
   public static SizeF MeasureString (this SkiaCanvas canvas, string? text, Font font, SizeF layoutArea, bool wrapLines = true)
   {
-    ArgumentNullException.ThrowIfNull(canvas);
-    ArgumentNullException.ThrowIfNull(font);
+    ArgumentUtility.CheckNotNull(nameof(canvas), canvas);
+    ArgumentUtility.CheckNotNull(nameof(font), font);
 
     var paint = new SKPaint
                 {
@@ -93,26 +95,14 @@ public static class SkiaExtensions
 
   public static void Save (this SKBitmap bitmap, string path, SKEncodedImageFormat format = SKEncodedImageFormat.Png, int quality = 100, FileMode fileMode = FileMode.Create)
   {
-    ArgumentNullException.ThrowIfNull(bitmap);
-    ArgumentException.ThrowIfNullOrEmpty(path);
+    ArgumentUtility.CheckNotNull(nameof(bitmap), bitmap);
+    ArgumentUtility.CheckNotNullOrEmpty(nameof(path), path);
     ArgumentOutOfRangeException.ThrowIfLessThan(quality, 1);
     ArgumentOutOfRangeException.ThrowIfGreaterThan(quality, 100);
 
-    var imageData = bitmap.ToSkImage().Encode(format, quality);
+    var imageData = SKImage.FromBitmap(bitmap).Encode(format, quality);
     using var fileStream = new FileStream(path, fileMode);
     imageData.SaveTo(fileStream);
-  }
-
-  public static SkiaCanvas ToSkiaCanvas (this SKBitmap bitmap)
-  {
-    ArgumentNullException.ThrowIfNull(bitmap);
-    return new SkiaCanvas { Canvas = new SKCanvas(bitmap) };
-  }
-
-  public static SKBitmap ToSkBitmap (this SKImage image)
-  {
-    ArgumentNullException.ThrowIfNull(image);
-    return SKBitmap.FromImage(image);
   }
 
   public static Color ToColor (this SKColor color)
@@ -123,12 +113,6 @@ public static class SkiaExtensions
         color.Green,
         color.Blue
     );
-  }
-
-  public static SKImage ToSkImage (this SKBitmap bitmap)
-  {
-    ArgumentNullException.ThrowIfNull(bitmap);
-    return SKImage.FromBitmap(bitmap);
   }
 
   public static SKColor ToSkColor (this Color color)
@@ -144,5 +128,10 @@ public static class SkiaExtensions
   public static SKRect ToSkRect (this Rectangle rectangle)
   {
     return new SKRect(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Bottom);
+  }
+
+  public static Rectangle ToRectangle (this SKRect rect)
+  {
+    return new Rectangle((int)rect.Left, (int)rect.Top, (int)(rect.Right - rect.Left), (int)(rect.Bottom - rect.Top));
   }
 }
