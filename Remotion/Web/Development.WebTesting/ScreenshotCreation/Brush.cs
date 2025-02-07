@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
 // SPDX-License-Identifier: LGPL-2.1-or-later
 using System;
+using Remotion.Utilities;
 using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation;
@@ -8,12 +9,16 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation;
 // imitates System.Drawing.Brush
 public abstract class Brush : MarshalByRefObject, ICloneable, IDisposable
 {
-  private SKPaint? _paint { get; set; }
+  private SKPaint _paint { get; set; } = new() { Color = SKColors.Transparent };
 
-  public SKPaint? Paint
+  public SKPaint Paint
   {
-    get { return _paint; }
-    set { _paint = value; }
+    get => _paint;
+    set
+    {
+      ArgumentUtility.CheckNotNull(nameof(value), value);
+      _paint = value;
+    }
   }
 
   public abstract object Clone ();
@@ -29,7 +34,7 @@ public abstract class Brush : MarshalByRefObject, ICloneable, IDisposable
     if (disposing)
     {
       _paint?.Dispose();
-      _paint = null;
+      _paint = null!;
     }
   }
 

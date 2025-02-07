@@ -31,20 +31,8 @@ public class SolidBrush : Brush
                 IsAntialias = true
             };
   }
-
-  public Color Color
-  {
-    get
-    {
-      if (Paint == null)
-        return Color.Transparent;
-
-      return Paint.Color.ToColor();
-    }
-  }
-
   public override object Clone ()
   {
-    return new SolidBrush(Color);
+    return new SolidBrush(Paint.Color.ToColor());
   }
 }
