@@ -121,7 +121,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       SKBitmap bitmap;
       using (var memoryStream = new MemoryStream(screenshot.AsByteArray, false))
       {
-        bitmap = SKImage.FromEncodedData(memoryStream).ToSkBitmap();
+        bitmap = SKBitmap.FromImage(SKImage.FromEncodedData(memoryStream));
       }
 
       return new Screenshot(

@@ -21,6 +21,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Graphics.Skia;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
@@ -183,7 +184,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
           {
             var browserContentBounds = locator.GetBrowserContentBounds(nativeDriver);
 
-            using var canvas = screenshot.Image.ToSkiaCanvas();
+            using var canvas = new SkiaCanvas();
+            canvas.Canvas = new SKCanvas(screenshot.Image);
             var transformMatrix = SKMatrix.CreateTranslation(-browserContentBounds.X, -browserContentBounds.Y);
             canvas.Canvas.SetMatrix(transformMatrix);
 

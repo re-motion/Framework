@@ -80,7 +80,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       _locator = locator;
       _layerBitmap = bitmapOverride;
-      _layerCanvas = _layerBitmap.ToSkiaCanvas();
+      _layerCanvas = new SkiaCanvas { Canvas = new SKCanvas(_layerBitmap) };
 
       _screenshotOffset = screenshot.DesktopOffset;
       _screenshotBounds = screenshot.ScreenshotBounds;
@@ -193,7 +193,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       _layerCanvas.Canvas.Flush();
 
       var newImage = new SKBitmap(croppingRectangle.Size.Width, croppingRectangle.Size.Height);
-      var newCanvas = newImage.ToSkiaCanvas();
+      var newCanvas = new SkiaCanvas { Canvas = new SKCanvas(newImage) };
       var newImageBounds = new Rectangle(Point.Empty, croppingRectangle.Size);
 
       var normalizedCroppingRectangle = new Rectangle(croppingRectangle.Location + _normalizationVector, croppingRectangle.Size);
