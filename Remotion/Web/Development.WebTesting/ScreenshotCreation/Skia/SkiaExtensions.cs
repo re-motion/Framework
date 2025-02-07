@@ -90,6 +90,8 @@ public static class SkiaExtensions
                     Typeface = font.Typeface,
                     TextEncoding = SKTextEncoding.Utf16 // Match SKFont default
                 };
+    if (string.IsNullOrEmpty(text))
+      return new SizeF(0, 0);
 
     var widthLimit = layoutArea.Width <= 0 ? float.PositiveInfinity : layoutArea.Width;
     var heightLimit = layoutArea.Height <= 0 ? float.PositiveInfinity : layoutArea.Height;
