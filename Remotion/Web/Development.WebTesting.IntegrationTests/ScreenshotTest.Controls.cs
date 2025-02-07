@@ -25,7 +25,6 @@ using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
-using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects.FluentScreenshots.Extensions;

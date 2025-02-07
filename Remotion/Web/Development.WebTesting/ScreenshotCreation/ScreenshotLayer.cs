@@ -22,8 +22,8 @@ using System.Net.Mime;
 using JetBrains.Annotations;
 using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Skia;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations;
-using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
@@ -80,7 +80,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       _locator = locator;
       _layerBitmap = bitmapOverride;
-      _layerCanvas = SkiaCanvasExtensions.FromBitmap(_layerBitmap);
+      _layerCanvas = _layerBitmap.ToSkiaCanvas();
 
       _screenshotOffset = screenshot.DesktopOffset;
       _screenshotBounds = screenshot.ScreenshotBounds;
@@ -193,7 +193,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       _layerCanvas.Canvas.Flush();
 
       var newImage = new SKBitmap(croppingRectangle.Size.Width, croppingRectangle.Size.Height);
-      var newCanvas = SkiaCanvasExtensions.FromBitmap(newImage);
+      var newCanvas = newImage.ToSkiaCanvas();
       var newImageBounds = new Rectangle(Point.Empty, croppingRectangle.Size);
 
       var normalizedCroppingRectangle = new Rectangle(croppingRectangle.Location + _normalizationVector, croppingRectangle.Size);

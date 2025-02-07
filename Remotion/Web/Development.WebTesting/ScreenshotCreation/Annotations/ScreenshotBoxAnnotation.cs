@@ -19,7 +19,7 @@ using System.Drawing;
 using JetBrains.Annotations;
 using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Skia;
 using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations

@@ -19,12 +19,10 @@ using System.Drawing;
 using System.Threading;
 using Coypu;
 using JetBrains.Annotations;
-using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Skia;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
-using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 using Remotion.Web.Development.WebTesting.Utilities;
 using SkiaSharp;
 using Size = System.Drawing.Size;
@@ -183,7 +181,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [NotNull] IFluentScreenshotElement<T> fluentTarget,
         [NotNull] string content,
         [CanBeNull] WebPadding? contentPadding = null,
-        [CanBeNull] SKFont? font = null,
+        [CanBeNull] Font? font = null,
         [CanBeNull] Brush? contentBrush = null,
         [CanBeNull] Pen? borderPen = null,
         [CanBeNull] Brush? backgroundBrush = null,
@@ -198,7 +196,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
       IScreenshotAnnotation annotation = new ScreenshotBadgeAnnotation(
           content,
           contentPadding ?? new WebPadding(3, 3, 3, 0),
-          font ?? new SKFont(SKTypeface.FromFamilyName("Arial"), 20),
+          font ?? new Font(SKTypeface.FromFamilyName("Arial"), 20),
           contentBrush ?? Brushes.White,
           borderPen ?? Pens.White,
           backgroundBrush ?? Brushes.Red,
@@ -215,9 +213,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [NotNull] this ScreenshotBuilder builder,
         [NotNull] IFluentScreenshotElement<T> fluentTarget,
         [NotNull] string content,
-        [CanBeNull] SKFont? font = null,
+        [CanBeNull] Font? font = null,
         [CanBeNull] Brush? foregroundBrush = null,
         [CanBeNull] Brush? backgroundBrush = null,
+        [CanBeNull] StringFormat? stringFormat = null,
         [CanBeNull] ContentAlignment? contentAlignment = null,
         [CanBeNull] WebPadding? padding = null,
         [CanBeNull] float? maxWidth = null,
@@ -230,9 +229,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
 
       IScreenshotAnnotation annotation = new ScreenshotTextAnnotation(
           content,
-          font ?? new SKFont(),
+          font ?? new Font(),
           foregroundBrush ?? Brushes.Red,
           backgroundBrush,
+          stringFormat ?? StringFormat.GenericDefault,
           contentAlignment ?? ContentAlignment.MiddleCenter,
           padding ?? WebPadding.None,
           maxWidth,

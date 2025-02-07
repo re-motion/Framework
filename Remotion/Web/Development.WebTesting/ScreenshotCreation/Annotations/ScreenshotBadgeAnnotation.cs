@@ -20,7 +20,7 @@ using JetBrains.Annotations;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Skia;
 using SkiaSharp;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
@@ -37,14 +37,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     private readonly string _content;
     private readonly Brush _contentBrush;
     private readonly WebPadding _contentPadding;
-    private readonly SKFont _font;
+    private readonly Font _font;
     private readonly bool _forceCircle;
     private readonly Size _translation;
 
     public ScreenshotBadgeAnnotation (
         [NotNull] string content,
         WebPadding contentPadding,
-        [NotNull] SKFont font,
+        [NotNull] Font font,
         [NotNull] Brush contentBrush,
         [NotNull] Pen borderPen,
         [CanBeNull] Brush? backgroundBrush,
@@ -113,9 +113,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <summary>
-    /// The <see cref="SKFont"/> that will be used to draw the <see cref="Content"/>.
+    /// The <see cref="Font"/> that will be used to draw the <see cref="Content"/>.
     /// </summary>
-    public SKFont Font
+    public Font Font
     {
       get { return _font; }
     }
@@ -174,7 +174,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 
       if (BackgroundBrush != null)
         canvas.Canvas.DrawOval(ellipseBounds.ToSkRect(), BackgroundBrush.Paint);
-      canvas.DrawString(Content, Font, ContentBrush, textBound);
+      canvas.DrawString(Content, Font, ContentBrush, textBound, HorizontalAlignment.Center, VerticalAlignment.Center, wrapLines: true);
       canvas.Canvas.DrawOval(ellipseBounds.ToSkRect(), BorderPen.Paint);
     }
   }

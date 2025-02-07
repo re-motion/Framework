@@ -22,7 +22,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Skia;
 using SkiaSharp;
 using Point = System.Drawing.Point;
 

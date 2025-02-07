@@ -20,7 +20,7 @@ using JetBrains.Annotations;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Skia;
 using SkiaSharp;
 using PointF = System.Drawing.PointF;
 using SizeF = System.Drawing.SizeF;
@@ -37,17 +37,19 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     private readonly Brush? _backgroundBrush;
     private readonly string _content;
     private readonly ContentAlignment _contentAlignment;
-    private readonly SKFont _font;
+    private readonly Font _font;
     private readonly Brush _foregroundBrush;
     private readonly float _maxHeight;
     private readonly float _maxWidth;
     private readonly WebPadding _padding;
+    private readonly StringFormat _stringFormat;
 
     public ScreenshotTextAnnotation (
         [NotNull] string content,
-        [NotNull] SKFont font,
+        [NotNull] Font font,
         [NotNull] Brush foregroundBrush,
         [CanBeNull] Brush? backgroundBrush,
+        [NotNull] StringFormat stringFormat,
         ContentAlignment contentAlignment,
         WebPadding padding,
         float? maxWidth,
@@ -56,11 +58,13 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       ArgumentUtility.CheckNotNull("content", content);
       ArgumentUtility.CheckNotNull("font", font);
       ArgumentUtility.CheckNotNull("foregroundBrush", foregroundBrush);
+      ArgumentUtility.CheckNotNull(nameof(stringFormat), stringFormat);
 
       _content = content;
       _font = font;
       _foregroundBrush = foregroundBrush;
       _backgroundBrush = backgroundBrush;
+      _stringFormat = stringFormat;
       _contentAlignment = contentAlignment;
       _padding = padding;
       _maxWidth = maxWidth ?? c_maxLayoutMeasure;
@@ -95,10 +99,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <summary>
-    /// The <see cref="SKFont"/> that will be used to draw the text.
+    /// The <see cref="Font"/> that will be used to draw the text.
     /// </summary>
     [NotNull]
-    public SKFont Font
+    public Font Font
     {
       get { return _font; }
     }
@@ -136,6 +140,15 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       get { return _padding; }
     }
 
+    /// <summary>
+    /// The <see cref="StringFormat"/> that will be used to draw the text.
+    /// </summary>
+    [NotNull]
+    public StringFormat StringFormat
+    {
+      get { return _stringFormat; }
+    }
+
     /// <inheritdoc />
     public void Draw (SkiaCanvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
@@ -153,7 +166,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       if (_backgroundBrush != null)
         canvas.Canvas.DrawRect(layout.ToSkRect(), _backgroundBrush.Paint);
 
-      canvas.DrawString(_content, _font, _foregroundBrush, layout);
+      canvas.DrawString(
+          _content,
+          _font,
+          _foregroundBrush,
+          layout,
+          _stringFormat.HorizontalAlignment,
+          _stringFormat.VerticalAlignment,
+          _stringFormat.TextFlow == TextFlow.ClipBounds);
     }
 
     /// <summary>

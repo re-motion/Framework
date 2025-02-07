@@ -25,8 +25,8 @@ using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Skia;
 using Screenshot = Remotion.Web.Development.WebTesting.ScreenshotCreation.Screenshot;
-using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
@@ -183,7 +183,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
           {
             var browserContentBounds = locator.GetBrowserContentBounds(nativeDriver);
 
-            using var canvas = SkiaCanvasExtensions.FromBitmap(screenshot.Image);
+            using var canvas = screenshot.Image.ToSkiaCanvas();
             var transformMatrix = SKMatrix.CreateTranslation(-browserContentBounds.X, -browserContentBounds.Y);
             canvas.Canvas.SetMatrix(transformMatrix);
 

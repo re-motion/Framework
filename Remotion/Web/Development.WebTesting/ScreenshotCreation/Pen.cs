@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 using System;
 using System.Drawing;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Skia;
 using SkiaSharp;
 
-namespace Remotion.Web.Development.WebTesting.SystemDrawingImitators;
+namespace Remotion.Web.Development.WebTesting.ScreenshotCreation;
 
 // imitates System.Drawing.Pen
 public class Pen
@@ -28,7 +29,7 @@ public class Pen
   public SKPaint Paint => new()
                           {
                               Style = SKPaintStyle.Stroke,
-                              Color = Color.ToSKColor(),
+                              Color = Color.ToSkColor(),
                               StrokeWidth = _width
                           };
 

@@ -18,7 +18,6 @@ using System;
 using JetBrains.Annotations;
 using Microsoft.Maui.Graphics;
 using Remotion.Utilities;
-using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 using Remotion.Web.Development.WebTesting.Utilities;
 using SkiaSharp;
 using Color = System.Drawing.Color;
@@ -32,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
   public class ScreenshotTooltipStyle
   {
     public static readonly ScreenshotTooltipStyle Chrome = new ScreenshotTooltipStyle(
-        new SKFont(SKTypeface.FromFamilyName("Arial", SKFontStyle.Normal), 13),
+        new Font(SKTypeface.FromFamilyName("Arial", SKFontStyle.Normal), 13),
         new SolidBrush(Color.FromArgb(0x57, 0x57, 0x57)),
         Brushes.White,
         new Pen(Color.FromArgb(0x76, 0x76, 0x76), 1),
@@ -43,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         new Size(970, 110));
 
     public static readonly ScreenshotTooltipStyle Edge = new ScreenshotTooltipStyle(
-        new SKFont(SKTypeface.FromFamilyName("Arial", SKFontStyle.Normal), 13),
+        new Font(SKTypeface.FromFamilyName("Arial", SKFontStyle.Normal), 13),
         new SolidBrush(Color.FromArgb(0x57, 0x57, 0x57)),
         Brushes.White,
         new Pen(Color.FromArgb(0x76, 0x76, 0x76), 1),
@@ -54,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         new Size(970, 110));
 
     public static readonly ScreenshotTooltipStyle Firefox = new ScreenshotTooltipStyle(
-        new SKFont(SKTypeface.FromFamilyName("Sans-Serif", SKFontStyle.Normal), 13),
+        new Font(SKTypeface.FromFamilyName("Sans-Serif", SKFontStyle.Normal), 13),
         new SolidBrush(Color.FromArgb(0x0, 0x0, 0x0)),
         Brushes.White,
         new Pen(Color.FromArgb(0x76, 0x76, 0x76), 1),
@@ -64,7 +63,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         new Size(12, 18),
         new Size(970, 110));
 
-    private readonly SKFont _font;
+    private readonly Font _font;
     private readonly Brush _foregroundBrush;
     private readonly Brush? _backgroundBrush;
     private readonly Pen _border;
@@ -75,7 +74,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     private readonly Size _maximumSize;
 
     public ScreenshotTooltipStyle (
-        [NotNull] SKFont font,
+        [NotNull] Font font,
         [NotNull] Brush foregroundBrush,
         [CanBeNull] Brush? backgroundBrush,
         [NotNull] Pen border,
@@ -101,9 +100,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <summary>
-    /// The <see cref="SKFont"/> that will be used to draw the tooltips content.
+    /// The <see cref="Font"/> that will be used to draw the tooltips content.
     /// </summary>
-    public SKFont Font
+    public Font Font
     {
       get { return _font; }
     }
@@ -178,7 +177,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// Clones the <see cref="ScreenshotTooltipStyle"/> overriding the specified members.
     /// </summary>
     public ScreenshotTooltipStyle Clone (
-        SKFont? font = null,
+        Font? font = null,
         Brush? foregroundBrush = null,
         OptionalParameter<Brush> backgroundBrush = default(OptionalParameter<Brush>),
         Pen? border = null,

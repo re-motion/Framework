@@ -22,7 +22,7 @@ using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
-using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Skia;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {

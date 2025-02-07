@@ -24,7 +24,7 @@ using Microsoft.Maui.Graphics.Skia;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
-using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Skia;
 using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation

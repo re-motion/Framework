@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 using System;
 using System.Drawing;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Skia;
 using SkiaSharp;
 
-namespace Remotion.Web.Development.WebTesting.SystemDrawingImitators;
+namespace Remotion.Web.Development.WebTesting.ScreenshotCreation;
 
 /// <summary>
 /// Imitates System.Drawing.SolidBrush
@@ -15,7 +16,7 @@ public class SolidBrush : Brush
   {
     Paint = new SKPaint
             {
-                Color = color.ToSKColor(),
+                Color = color.ToSkColor(),
                 Style = SKPaintStyle.Fill,
                 IsAntialias = true
             };

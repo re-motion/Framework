@@ -24,7 +24,7 @@ using System.Text;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
-using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Skia;
 using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation
