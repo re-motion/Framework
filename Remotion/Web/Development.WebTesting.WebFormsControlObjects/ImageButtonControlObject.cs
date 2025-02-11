@@ -76,7 +76,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     {
       const string doPostBackWithOptionsScript = "DoPostBackWithOptions";
 
-      return scope["onclick"] != null && scope["onclick"].Contains(doPostBackWithOptionsScript);
+      return scope["data-event-content-onclick"] != null && scope["data-event-content-onclick"].Contains(doPostBackWithOptionsScript);
     }
   }
 }

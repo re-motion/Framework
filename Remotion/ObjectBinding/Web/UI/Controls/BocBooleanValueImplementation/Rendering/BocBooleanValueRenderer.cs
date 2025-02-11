@@ -141,7 +141,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
         var script = GetClickScript(renderingContext, resourceSet);
         checkboxControl.Attributes.Add("onkeydown", "BocBooleanValue.OnKeyDown (this);");
-        renderingContext.Writer.AddAttribute("onclick", script);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, script);
       }
       AddAttributesToRender(renderingContext);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);

@@ -620,8 +620,31 @@ class BocList
     fakeTable.setAttribute('cellSpacing', '0');
     fakeTable.style.width = '100%';
 
-    const realTableHead = table.querySelector(':scope > thead')!;
+    const realTableHead = table.querySelector<HTMLElement>(':scope > thead')!;
     const fakeTableHead = realTableHead.cloneNode(true) as HTMLElement;
+
+    // The event handlers on the th elements won't get copied so we need to manually copy them
+    // The order between the two should be identical because we cloned the parent node
+    const realElementsWithEvents = [...realTableHead.querySelectorAll<HTMLAnchorElement>("*[data-inline-event-target]")];
+    const fakeElementsWithEvents = [...fakeTableHead.querySelectorAll<HTMLAnchorElement>("*[data-inline-event-target]")];
+    for (let i = 0; i < realElementsWithEvents.length; i++)
+    {
+      const realElementWithEvents = realElementsWithEvents[i];
+      const fakeElementWithEvents = fakeElementsWithEvents[i];
+      for (const key in realElementWithEvents)
+      {
+        if (key.startsWith("on"))
+        {
+          const value = realElementWithEvents[key as keyof HTMLAnchorElement];
+          if (typeof value === "function")
+          {
+            (fakeElementWithEvents as any)[key] = value;
+          }
+        }
+      }
+      fakeElementsWithEvents[i].onclick = realElementsWithEvents[i].onclick;
+    }
+
     realTableHead.setAttribute('aria-hidden', 'true')
     realTableHead.setAttribute('role', 'none')
     realTableHead.querySelectorAll('*[role]').forEach(element =>
