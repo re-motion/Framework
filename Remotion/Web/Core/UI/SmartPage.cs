@@ -18,13 +18,16 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Compilation;
+using Remotion.Web.ContentSecurityPolicy;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.SmartPageImplementation;
 using Remotion.Web.Utilities;
 
@@ -240,6 +243,10 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   private bool? _enableSmartScrolling;
   private bool? _enableSmartFocusing;
   private readonly SmartPageClientScriptManager _clientScriptManager;
+  private bool? _enableCsp;
+  private bool? _enableCspReportOnly;
+  private readonly INonceGenerator _nonceGenerator;
+  private string? _cspNonceValue;
 
   public SmartPage ()
   {
@@ -247,6 +254,30 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     _validatableControlInitializer = new ValidatableControlInitializer(this);
     _postLoadInvoker = new PostLoadInvoker(this);
     _clientScriptManager = new SmartPageClientScriptManager(base.ClientScript);
+    _nonceGenerator = new NonceGenerator();
+  }
+
+  protected override void Render (HtmlTextWriter writer)
+  {
+    if (IsCspEnabled)
+      Response.Headers.Add("Content-Security-Policy", GetCspHeader().ToString());
+    if (IsCspReportOnlyEnabled)
+      Response.Headers.Add("Content-Security-Policy-Report-Only", GetCspReportOnlyHeader().ToString());
+
+    base.Render(writer);
+  }
+
+  protected override HtmlTextWriter CreateHtmlTextWriter (TextWriter writer)
+  {
+    if (_cspNonceValue == null)
+     _cspNonceValue = _nonceGenerator.GenerateAlphaNumericNonce();
+
+    return new CspEnabledHtmlTextWriter(
+        this,
+        writer,
+        _nonceGenerator,
+        _cspNonceValue,
+        SafeServiceLocator.Current.GetInstance<IRenderingFeatures>());
   }
 
   protected override NameValueCollection? DeterminePostBackMode ()
@@ -319,6 +350,30 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   public virtual IEnumerable<string> GetDirtyStates (IReadOnlyCollection<string>? requestedStates)
   {
     return _smartPageInfo.GetDirtyStates(requestedStates);
+  }
+
+  /// <summary>
+  /// Returns the Content-Security-Policy header value that should be used if <see cref="EnableCsp"/> is set.
+  /// </summary>
+  protected virtual CspHeader GetCspHeader ()
+  {
+    var header = SafeServiceLocator.Current.GetInstance<ICspDefaultsProvider>().GetDefaultCspHeaderForPage(this);
+    if (_cspNonceValue != null)
+      header = header.AddDirectiveValue(CspDirectives.ScriptSrc, $"'nonce-{_cspNonceValue}'");
+
+    return header;
+  }
+
+  /// <summary>
+  /// Returns the Content-Security-Policy-Report-Only header value that should be used if <see cref="EnableCspReportOnly"/> is set.
+  /// </summary>
+  protected virtual CspHeader GetCspReportOnlyHeader ()
+  {
+    var header = SafeServiceLocator.Current.GetInstance<ICspDefaultsProvider>().GetDefaultCspReportOnlyHeaderForPage(this);
+    if (_cspNonceValue != null)
+      header = header.AddDirectiveValue(CspDirectives.ScriptSrc, $"'nonce-{_cspNonceValue}'");
+
+    return header;
   }
 
   /// <summary> Gets or sets a flag describing whether the page is dirty. </summary>
@@ -542,7 +597,6 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     get { return _enableSmartFocusing; }
     set { _enableSmartFocusing = value; }
   }
-
   /// <summary> Gets the evaluated value for the <see cref="EnableSmartFocusing"/> property. </summary>
   /// <value> 
   ///   <see langword="false"/> if <see cref="EnableSmartFocusing"/> is <see langword="false"/>.
@@ -559,6 +613,58 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   bool ISmartNavigablePage.IsSmartFocusingEnabled
   {
     get { return IsSmartFocusingEnabled; }
+  }
+
+  /// <summary>
+  /// Gets or sets the flag that determines whether a Content-Security-Policy header is set.
+  /// The value of the header is determined by <see cref="GetCspHeader"/>.
+  /// </summary>
+  [Description("The flag that determines whether a Content-Security-Policy header is set.")]
+  [Category("Behavior")]
+  [DefaultValue(null)]
+  public bool? EnableCsp
+  {
+    get { return _enableCsp; }
+    set { _enableCsp = value; }
+  }
+
+  /// <summary> Gets the evaluated value for the <see cref="EnableCsp"/> property. </summary>
+  /// <value>
+  ///   If <see cref="EnableCsp"/> has a value, it is used.
+  ///   Otherwise, the default is computed using <see cref="ICspDefaultsProvider"/>.<see cref="ICspDefaultsProvider.GetDefaultIsCspEnabledForPage"/>.
+  /// </value>
+  protected virtual bool IsCspEnabled
+  {
+    get
+    {
+      return _enableCsp ?? CspDefaultsProvider.GetDefaultIsCspEnabledForPage(this);
+    }
+  }
+
+  /// <summary>
+  /// Gets or sets the flag that determines whether a Content-Security-Policy-Report-Only header is set.
+  /// The value of the header is determined by <see cref="GetCspReportOnlyHeader"/>.
+  /// </summary>
+  [Description("The flag that determines whether a Content-Security-Policy-Report-Only header is set.")]
+  [Category("Behavior")]
+  [DefaultValue(null)]
+  public bool? EnableCspReportOnly
+  {
+    get { return _enableCspReportOnly; }
+    set { _enableCspReportOnly = value; }
+  }
+
+  /// <summary> Gets the evaluated value for the <see cref="EnableCspReportOnly"/> property. </summary>
+  /// <value>
+  ///   If <see cref="EnableCspReportOnly"/> has a value, it is used.
+  ///   Otherwise, the default is computed using <see cref="ICspDefaultsProvider"/>.<see cref="ICspDefaultsProvider.GetDefaultIsCspReportOnlyEnabledForPage"/>.
+  /// </value>
+  protected virtual bool IsCspReportOnlyEnabled
+  {
+    get
+    {
+      return _enableCspReportOnly ?? CspDefaultsProvider.GetDefaultIsCspReportOnlyEnabledForPage(this);
+    }
   }
 
   protected override void OnInit (EventArgs e)
@@ -587,6 +693,32 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     MemberCaller.SaveAllState(this);
   }
 
+  protected override void OnPreRenderComplete (EventArgs e)
+  {
+    var scriptManager = (ScriptManager?)ScriptManager.GetCurrent(this);
+    if (scriptManager != null && !scriptManager.IsInAsyncPostBack && _cspNonceValue != null)
+    {
+      var createScriptElementOverrideScript =
+          $$"""
+            (function() {
+              const oldCreateScriptElement = Sys._ScriptLoader.prototype._createScriptElement;
+              Sys._ScriptLoader.prototype._createScriptElement = function() {
+                const scriptElement = oldCreateScriptElement(...arguments);
+                scriptElement.nonce = '{{_cspNonceValue}}';
+                return scriptElement;
+              }
+            })();
+            """;
+      ClientScript.RegisterStartupScriptBlock(
+          this,
+          typeof(SmartPage),
+          "smartPageCreateScriptElementOverride",
+          createScriptElementOverrideScript);
+    }
+
+    base.OnPreRenderComplete(e);
+  }
+
   /// <summary>
   /// Use <see cref="ProcessRequestImplementation"/> instead.
   /// </summary>
@@ -607,6 +739,11 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   protected virtual IServiceLocator ServiceLocator
   {
     get { return SafeServiceLocator.Current; }
+  }
+
+  private ICspDefaultsProvider CspDefaultsProvider
+  {
+    get { return ServiceLocator.GetInstance<ICspDefaultsProvider>(); }
   }
 
   private IInternalControlMemberCaller MemberCaller

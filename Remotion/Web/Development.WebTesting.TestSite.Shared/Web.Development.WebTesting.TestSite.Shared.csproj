@@ -21,6 +21,10 @@
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>ScreenshotBorderTest.aspx</DependentUpon>
     </Compile>
+    <Compile Update="ContentSecurityPolicy\CspRenderTest.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>AnchorTest.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
