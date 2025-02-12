@@ -75,6 +75,16 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     }
 
     /// <summary>
+    /// Gets a flag indicating if the browser logs for the browser represented by <paramref name="browserConfiguration"/> should be accessed using the bidirectional API. 
+    /// </summary>
+    public static bool UseBidiLog ([NotNull] this IBrowserConfiguration browserConfiguration)
+    {
+      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
+
+      return IsFirefox(browserConfiguration);
+    }
+
+    /// <summary>
     /// Gets a flag indicating if <paramref name="browser"/> represents <b>Chrome</b> by testing if the passed instance 
     /// is <see cref="Browser.Chrome"/>.
     /// </summary>
@@ -116,6 +126,14 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
       ArgumentUtility.CheckNotNull("browser", browser);
 
       return browser == Browser.Firefox;
+    }
+
+    /// <summary>
+    /// Gets a flag indicating if the <paramref name="browser"/>'s logs should be accessed using the bidirectional API. 
+    /// </summary>
+    public static bool UseBidiLog ([NotNull] this Browser browser)
+    {
+      return IsFirefox(browser);
     }
   }
 }

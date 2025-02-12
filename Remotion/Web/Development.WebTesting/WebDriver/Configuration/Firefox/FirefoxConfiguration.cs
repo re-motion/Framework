@@ -113,6 +113,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
              {
                  Profile = profile,
                  BinaryLocation = BrowserBinaryPath,
+                 UseWebSocketUrl = true
              };
 
       // Mirrors Chrome's startup behavior to fulfill some initial test expectations
