@@ -206,7 +206,10 @@ namespace Remotion.Web.Development.WebTesting
       _logger.LogInformation("Executing test: {0}.", _testName);
 
       if (_mainBrowserSession != null)
+      {
+        _mainBrowserSession.ResetBrowserLogs();
         _logger.LogInformation("Current window title: {0}.", _mainBrowserSession.Window.Title);
+      }
     }
 
     /// <summary>

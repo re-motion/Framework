@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Edge
         [CanBeNull] [ItemNotNull] IReadOnlyCollection<IBrowserSessionCleanUpStrategy>? cleanUpStrategies = null)
         : base(value, configuration, driverProcessID, headless)
     {
-      _cleanUpStrategies = cleanUpStrategies ?? new IBrowserSessionCleanUpStrategy[0];
+      _cleanUpStrategies = cleanUpStrategies ?? Array.Empty<IBrowserSessionCleanUpStrategy>();
     }
 
     /// <inheritdoc />
@@ -48,6 +48,12 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Edge
       return ((IWebDriver)Driver.Native).Manage().Logs.GetLog(LogType.Browser)
           .Select(logEntry => new BrowserLogEntry(logEntry))
           .ToArray();
+    }
+
+    /// <inheritdoc />
+    public override void ResetBrowserLogs ()
+    {
+      ((IWebDriver)Driver.Native).Manage().Logs.GetLog(LogType.Browser); // GetLog() also resets the logs
     }
 
     /// <inheritdoc />
