@@ -63,13 +63,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
                                                                  "View"
                                                                };
 
-    public EdgeBrowserContentLocator ()
-    {
-#if !PLATFORM_WINDOWS
-      throw new PlatformNotSupportedException("ChromeBrowserContentLocator is only supported on Windows.");
-#endif
-    }
-
     /// <inheritdoc />
     public Rectangle GetBrowserContentBounds (IWebDriver driver)
     {

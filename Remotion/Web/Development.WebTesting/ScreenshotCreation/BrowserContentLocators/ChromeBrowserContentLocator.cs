@@ -33,12 +33,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
   {
     private const string c_setWindowTitle =
         "var w = window; while (w.frameElement) w = w.frameElement.ownerDocument.defaultView; var t = w.document.title; w.document.title = arguments[0]; return t;";
-    public ChromeBrowserContentLocator ()
-    {
-#if !PLATFORM_WINDOWS
-      throw new PlatformNotSupportedException("ChromeBrowserContentLocator is only supported on Windows.");
-#endif
-    }
+
     /// <inheritdoc />
     public Rectangle GetBrowserContentBounds (IWebDriver driver)
     {
