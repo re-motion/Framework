@@ -45,7 +45,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       if (browserSession.Headless)
         return CreateBrowserScreenshotBasedOnDriver(browserSession);
       else
+#if PLATFORM_WINDOWS
         return CreateBrowserScreenshotBasedOnScreen(browserSession, locator);
+#else
+      throw new PlatformNotSupportedException("Headed mode is only supported on Windows.");
+#endif
     }
 
     /// <summary>
