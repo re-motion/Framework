@@ -13,6 +13,7 @@ using Color = System.Drawing.Color;
 using Font = Remotion.Web.Development.WebTesting.ScreenshotCreation.Font;
 using Size = System.Drawing.Size;
 using SizeF = System.Drawing.SizeF;
+using SolidBrush = Remotion.Web.Development.WebTesting.ScreenshotCreation.SolidBrush;
 
 namespace Remotion.Web.Development.WebTesting.UnitTests.ScreenshotCreation.Skia;
 

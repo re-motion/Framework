@@ -28,6 +28,7 @@ using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects.FluentScreenshots.Extensions;
+using Pens = Remotion.Web.Development.WebTesting.ScreenshotCreation.Pens;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {

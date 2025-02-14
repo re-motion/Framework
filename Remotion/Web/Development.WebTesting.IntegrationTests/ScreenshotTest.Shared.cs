@@ -30,9 +30,16 @@ using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
 using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 using SkiaSharp;
+using Brush = Remotion.Web.Development.WebTesting.ScreenshotCreation.Brush;
+using Brushes = Remotion.Web.Development.WebTesting.ScreenshotCreation.Brushes;
 using Color = System.Drawing.Color;
+using ContentAlignment = Remotion.Web.Development.WebTesting.ScreenshotCreation.ContentAlignment;
 using Font = Remotion.Web.Development.WebTesting.ScreenshotCreation.Font;
+using Pen = Remotion.Web.Development.WebTesting.ScreenshotCreation.Pen;
+using Pens = Remotion.Web.Development.WebTesting.ScreenshotCreation.Pens;
 using Point = System.Drawing.Point;
+using SolidBrush = Remotion.Web.Development.WebTesting.ScreenshotCreation.SolidBrush;
+using StringFormat = Remotion.Web.Development.WebTesting.ScreenshotCreation.StringFormat;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {

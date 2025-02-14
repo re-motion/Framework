@@ -29,6 +29,7 @@ using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
+using ContentAlignment = Remotion.Web.Development.WebTesting.ScreenshotCreation.ContentAlignment;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {

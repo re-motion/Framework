@@ -22,6 +22,7 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Screen
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
+using Pens = Remotion.Web.Development.WebTesting.ScreenshotCreation.Pens;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {

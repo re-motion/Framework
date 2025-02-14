@@ -30,6 +30,7 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Pens = Remotion.Web.Development.WebTesting.ScreenshotCreation.Pens;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
