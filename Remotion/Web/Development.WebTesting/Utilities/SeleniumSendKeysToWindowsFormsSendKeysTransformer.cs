@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using Remotion.Utilities;

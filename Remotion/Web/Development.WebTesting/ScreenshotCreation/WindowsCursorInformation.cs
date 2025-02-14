@@ -21,7 +21,6 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using JetBrains.Annotations;
-using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
@@ -106,7 +105,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     }
 
     /// <inheritdoc/>>
-    public void Draw (SkiaCanvas graphics)
+    public void Draw (Graphics graphics)
     {
       ArgumentUtility.CheckNotNull("graphics", graphics);
 

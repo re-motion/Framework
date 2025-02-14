@@ -18,13 +18,10 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net.Mime;
 using JetBrains.Annotations;
-using Microsoft.Maui.Graphics.Skia;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
-using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -94,7 +91,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     private static Screenshot CreateBrowserScreenshotBasedOnScreen (IBrowserSession browserSession, IBrowserContentLocator locator)
     {
       var browserBounds = locator.GetBrowserContentBounds((IWebDriver)browserSession.Driver.Native);
-      var image = new SKBitmap(browserBounds.Width, browserBounds.Height);
+      var image = new Bitmap(browserBounds.Width, browserBounds.Height);
       using (var graphics = Graphics.FromImage(image))
       {
         graphics.CopyFromScreen(browserBounds.Location, Point.Empty, browserBounds.Size);
@@ -142,7 +139,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       var offset = new Size(-requiredBounds.X, -requiredBounds.Y);
 
       var image = new Bitmap(requiredBounds.Width, requiredBounds.Height);
-      using (var graphics = SkiaCanvas.FromImage(image))
+      using (var graphics = Graphics.FromImage(image))
       {
         graphics.Clear(Color.Transparent);
 
@@ -165,14 +162,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
     private readonly ICursorInformation _cursorInformation;
     private readonly Size _desktopOffset;
-    private readonly SKImage _image;
+    private readonly Image _image;
     private readonly Rectangle[] _screenshotBounds;
     private readonly CoordinateSystem _coordinateSystem;
 
     private bool _disposed;
 
     public Screenshot (
-        [NotNull] SKImage image,
+        [NotNull] Image image,
         Size desktopOffset,
         Rectangle[] screenshotBounds,
         [NotNull] ICursorInformation cursorInformation,
@@ -220,7 +217,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// Returns the screenshot as image.
     /// </summary>
     [NotNull]
-    public SKImage Image
+    public Image Image
     {
       get
       {

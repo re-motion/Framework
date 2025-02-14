@@ -19,7 +19,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Drawing;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
@@ -27,8 +26,6 @@ using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Screenshot = Remotion.Web.Development.WebTesting.ScreenshotCreation.Screenshot;
-using Remotion.Web.Development.WebTesting.SystemDrawingImitators;
-using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -184,11 +181,15 @@ namespace Remotion.Web.Development.WebTesting.Utilities
           {
             var browserContentBounds = locator.GetBrowserContentBounds(nativeDriver);
 
-            using var canvas = SkiaCanvasExtensions.FromBitmap(screenshot.Image);
-            var transformMatrix = SKMatrix.CreateTranslation(-browserContentBounds.X, -browserContentBounds.Y);
-            canvas.Canvas.SetMatrix(transformMatrix);
+            using (var graphics = Graphics.FromImage(screenshot.Image))
+            {
+              var transformMatrix = new Matrix();
+              transformMatrix.Translate(-browserContentBounds.X, -browserContentBounds.Y);
 
-            GetCursorInformation().Draw(canvas);
+              graphics.Transform = transformMatrix;
+
+              GetCursorInformation().Draw(graphics);
+            }
           }
 
           var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath(_outputDirectory, testName, windowSuffix, "png");
