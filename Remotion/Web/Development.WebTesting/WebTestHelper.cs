@@ -32,6 +32,9 @@ using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Screenshot = Remotion.Web.Development.WebTesting.ScreenshotCreation.Screenshot;
+#if PLATFORM_WINDOWS
+using System.Windows.Forms;
+#endif
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -364,7 +367,9 @@ namespace Remotion.Web.Development.WebTesting
 
     private void EnsureCursorIsOutsideBrowserWindow ()
     {
+#if PLATFORM_WINDOWS
       Cursor.Position = new Point(0, 0);
+#endif
     }
 
     private DriverConfiguration MergeDriverConfiguration (DriverConfiguration configuration, DriverConfigurationOverride? configurationOverride)
