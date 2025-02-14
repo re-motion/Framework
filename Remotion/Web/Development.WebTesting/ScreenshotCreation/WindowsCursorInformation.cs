@@ -105,7 +105,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     }
 
     /// <inheritdoc/>>
-    public void Draw (Graphics graphics)
+    public void Draw (SkiaCanvas graphics)
     {
       ArgumentUtility.CheckNotNull("graphics", graphics);
 

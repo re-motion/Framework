@@ -24,6 +24,8 @@ using System.Text;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Skia;
+using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation
 {
@@ -228,60 +230,59 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
     {
       var stringBuilder = new StringBuilder();
 
-      using (var source = (Bitmap)Image.FromFile(sourcePath))
+      var source = SKBitmap.Decode(sourcePath);
+
+      foreach (var resourceName in resourceNames)
       {
-        foreach (var resourceName in resourceNames)
+        stringBuilder.Append("resource: ");
+        stringBuilder.AppendLine(resourceName);
+
+        using (var resourceStream = testAssembly.GetManifestResourceStream(resourceName))
         {
-          stringBuilder.Append("resource: ");
-          stringBuilder.AppendLine(resourceName);
+          if (resourceStream == null)
+            Assert.Fail($"Could not open saved resource image: '{resourceName}'");
 
-          using (var resourceStream = testAssembly.GetManifestResourceStream(resourceName))
+          var resource = SKBitmap.Decode(SKData.Create(resourceStream));
+
+          if (resource.Width != source.Width || resource.Height != source.Height)
           {
-            if (resourceStream == null)
-              Assert.Fail($"Could not open saved resource image: '{resourceName}'");
-
-            var resource = (Bitmap)Image.FromStream(resourceStream);
-
-            if (resource.Size != source.Size)
-            {
-              stringBuilder.AppendLine("Image sizes do not match.");
-              stringBuilder.AppendLine(string.Format("source size: {0}x{1}", source.Width, source.Height));
-              stringBuilder.AppendLine(string.Format("resource size: {0}x{1}", resource.Width, resource.Height));
-              stringBuilder.AppendLine();
-              continue;
-            }
-
-            var totalPixel = source.Width * source.Height;
-            var pixelOverLimit = 0;
-            for (var i = 0; i < source.Width; i++)
-              for (var j = 0; j < source.Height; j++)
-              {
-                var sourceColor = source.GetPixel(i, j);
-                var resourceColor = resource.GetPixel(i, j);
-
-                int variance;
-                if (!AreSameColor(sourceColor, resourceColor, out variance, maxVariance) || variance != 0)
-                {
-                  pixelOverLimit++;
-                }
-              }
-
-            var unequalPixelRatio = pixelOverLimit / (double)totalPixel;
-            if (unequalPixelRatio > maxRatio)
-            {
-              stringBuilder.AppendLine("Images are not considered identical.");
-              stringBuilder.AppendLine(string.Format("unequal ratio: {0}", unequalPixelRatio));
-              stringBuilder.AppendLine(string.Format("max unequal ratio: {0}", maxRatio));
-              stringBuilder.AppendLine();
-              continue;
-            }
-
-            return new SubTestResult(true, null, null, resourceName, testName);
+            stringBuilder.AppendLine("Image sizes do not match.");
+            stringBuilder.AppendLine(string.Format("source size: {0}x{1}", source.Width, source.Height));
+            stringBuilder.AppendLine(string.Format("resource size: {0}x{1}", resource.Width, resource.Height));
+            stringBuilder.AppendLine();
+            continue;
           }
-        }
 
-        return new SubTestResult(false, stringBuilder.ToString(), sourcePath, string.Join(", ", resourceNames), testName);
+          var totalPixel = source.Width * source.Height;
+          var pixelOverLimit = 0;
+          for (var i = 0; i < source.Width; i++)
+          for (var j = 0; j < source.Height; j++)
+          {
+            var sourceColor = source.GetPixel(i, j);
+            var resourceColor = resource.GetPixel(i, j);
+
+            int variance;
+            if (!AreSameColor(sourceColor.ToColor(), resourceColor.ToColor(), out variance, maxVariance) || variance != 0)
+            {
+              pixelOverLimit++;
+            }
+          }
+
+          var unequalPixelRatio = pixelOverLimit / (double)totalPixel;
+          if (unequalPixelRatio > maxRatio)
+          {
+            stringBuilder.AppendLine("Images are not considered identical.");
+            stringBuilder.AppendLine(string.Format("unequal ratio: {0}", unequalPixelRatio));
+            stringBuilder.AppendLine(string.Format("max unequal ratio: {0}", maxRatio));
+            stringBuilder.AppendLine();
+            continue;
+          }
+
+          return new SubTestResult(true, null, null, resourceName, testName);
+        }
       }
+
+      return new SubTestResult(false, stringBuilder.ToString(), sourcePath, string.Join(", ", resourceNames), testName);
     }
 
     /// <summary>

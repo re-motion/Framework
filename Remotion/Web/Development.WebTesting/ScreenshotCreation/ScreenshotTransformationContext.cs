@@ -17,8 +17,10 @@
 using System;
 using System.Drawing;
 using JetBrains.Annotations;
+using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
+using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -29,25 +31,25 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       where T : notnull
   {
     private readonly ScreenshotManipulation _manipulation;
-    private readonly Graphics _graphics;
+    private readonly SkiaCanvas _canvas;
     private readonly IScreenshotElementResolver<T> _resolver;
     private readonly T _target;
     private readonly ResolvedScreenshotElement _resolvedElement;
 
     public ScreenshotTransformationContext (
         ScreenshotManipulation manipulation,
-        [NotNull] Graphics graphics,
+        [NotNull] SkiaCanvas canvas,
         [NotNull] IScreenshotElementResolver<T> resolver,
         [NotNull] T target,
         [NotNull] ResolvedScreenshotElement resolvedElement)
     {
-      ArgumentUtility.CheckNotNull("graphics", graphics);
+      ArgumentUtility.CheckNotNull("canvas", canvas);
       ArgumentUtility.CheckNotNull("resolver", resolver);
       ArgumentUtility.CheckNotNull("target", target);
       ArgumentUtility.CheckNotNull("resolvedElement", resolvedElement);
 
       _manipulation = manipulation;
-      _graphics = graphics;
+      _canvas = canvas;
       _resolver = resolver;
       _target = target;
       _resolvedElement = resolvedElement;
@@ -62,11 +64,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     }
 
     /// <summary>
-    /// The <see cref="System.Drawing.Graphics"/> used to draw the <see cref="IScreenshotAnnotation"/>.
+    /// The <see cref="SkiaCanvas"/> used to draw the <see cref="IScreenshotAnnotation"/>.
     /// </summary>
-    public Graphics Graphics
+    public SkiaCanvas Canvas
     {
-      get { return _graphics; }
+      get { return _canvas; }
     }
 
     /// <summary>
@@ -106,7 +108,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
       return new ScreenshotTransformationContext<T>(
           _manipulation,
-          _graphics,
+          _canvas,
           resolver ?? _resolver,
           Assertion.IsNotNull(target.GetValueOrDefault(_target)),
           resolvedElement ?? _resolvedElement);

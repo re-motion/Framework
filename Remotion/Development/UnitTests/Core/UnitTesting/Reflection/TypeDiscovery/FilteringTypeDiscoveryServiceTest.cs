@@ -34,7 +34,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
       var types = new[]
                   {
                       typeof(Color),
-                      typeof(Brush),
+                      typeof(Rectangle),
                       typeof(DateTime)
                   };
 
@@ -52,7 +52,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
               new[]
               {
                 typeof(Color),
-                typeof(Brush)
+                typeof(Rectangle)
               }));
     }
 
@@ -62,9 +62,9 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
       var types = new[]
                   {
                       typeof(Color),
-                      typeof(Brush),
+                      typeof(Rectangle),
                       typeof(DateTime),
-                      typeof(ImageFlags)
+                      typeof(Point)
                   };
 
       var decoratedTypeDiscoveryServiceMock = new Mock<ITypeDiscoveryService>();
@@ -81,8 +81,8 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
               new[]
               {
                 typeof(Color),
-                typeof(Brush),
-                typeof(ImageFlags)
+                typeof(Rectangle),
+                typeof(Point)
               }));
     }
 
@@ -124,7 +124,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
       var types = new[]
                   {
                       typeof(Color),
-                      typeof(Brush),
+                      typeof(Rectangle),
                       typeof(DateTime)
                   };
 
@@ -151,9 +151,9 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
       var types = new[]
                   {
                       typeof(Color),
-                      typeof(Brush),
+                      typeof(Rectangle),
                       typeof(DateTime),
-                      typeof(ImageFlags)
+                      typeof(Point)
                   };
 
       var decoratedTypeDiscoveryServiceMock = new Mock<ITypeDiscoveryService>();

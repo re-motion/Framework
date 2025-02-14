@@ -61,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations
     {
       return new ScreenshotTransformationContext<T>(
           context.Manipulation,
-          context.Graphics,
+          context.Canvas,
           context.Target.Resolver,
           context.Target.Target,
           context.ResolvedElement);
@@ -73,7 +73,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations
     {
       return new ScreenshotTransformationContext<IFluentScreenshotElement<T>>(
           context.Manipulation,
-          context.Graphics,
+          context.Canvas,
           FluentResolver<T>.Instance,
           FluentUtility.CloneWith(source, context.Target),
           context.ResolvedElement);

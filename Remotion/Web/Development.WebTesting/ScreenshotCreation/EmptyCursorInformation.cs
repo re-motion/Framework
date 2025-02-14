@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Drawing;
+using Microsoft.Maui.Graphics.Skia;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation;
 
@@ -30,7 +31,7 @@ public class EmptyCursorInformation : ICursorInformation
 
   public Point Position => new(0, 0);
 
-  public void Draw (Graphics graphics)
+  public void Draw (SkiaCanvas graphics)
   {
   }
 }

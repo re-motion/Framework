@@ -17,7 +17,13 @@
 using System;
 using System.Drawing;
 using JetBrains.Annotations;
+using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Skia;
+using Point = System.Drawing.Point;
+using Size = System.Drawing.Size;
+
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 {
@@ -76,23 +82,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <inheritdoc />
-    public void Draw (Graphics graphics, ResolvedScreenshotElement resolvedScreenshotElement)
+    public void Draw (SkiaCanvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull("graphics", graphics);
+      ArgumentUtility.CheckNotNull("canvas", canvas);
       ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
-
-      // Prepare the StringFormat for laying out the text
-      var stringFormat = new StringFormat();
-      if (!_style.WrapLines)
-      {
-        stringFormat.FormatFlags = StringFormatFlags.NoWrap;
-        stringFormat.Trimming = StringTrimming.EllipsisCharacter;
-      }
-      else
-      {
-        stringFormat.FormatFlags = StringFormatFlags.LineLimit;
-        stringFormat.Trimming = StringTrimming.EllipsisWord;
-      }
 
       // Calculate the maximum size of the tooltip
       var border = (int)Math.Round(_style.Border.Width);
@@ -104,7 +97,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       var layoutArea = maximumSize - new Size(border * 2 + _style.ContentPadding.Horizontal, border * 2 + _style.ContentPadding.Vertical);
 
       // Measure how much space the text needs
-      var contentSizeF = graphics.MeasureString(_content, _style.Font, layoutArea, stringFormat);
+      var contentSizeF = canvas.MeasureString(_content, _style.Font, new System.Drawing.SizeF(layoutArea.Width, layoutArea.Height), _style.WrapLines);
       var contentSize = new Size((int)Math.Ceiling(contentSizeF.Width) + 1, (int)Math.Ceiling(contentSizeF.Height));
 
       // Calculate the bounds of the tooltip with border
@@ -127,15 +120,17 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 
       // Draw the box of the tooltip
       var boxAnnotation = new ScreenshotBoxAnnotation(_style.Border, WebPadding.None, _style.BackgroundBrush);
-      boxAnnotation.Draw(graphics, new ResolvedScreenshotElement(CoordinateSystem.Browser, tooltipBounds, ElementVisibility.FullyVisible, null, _tooltipBounds.Value));
+      boxAnnotation.Draw(canvas, new ResolvedScreenshotElement(CoordinateSystem.Browser, tooltipBounds, ElementVisibility.FullyVisible, null, _tooltipBounds.Value));
 
       // Draw the text content
-      graphics.DrawString(
+      canvas.DrawString(
           _content,
           _style.Font,
           _style.ForegroundBrush,
           new Rectangle(tooltipBounds.Location + desktopOffset, contentSize),
-          stringFormat);
+          HorizontalAlignment.Left,
+          VerticalAlignment.Top,
+          _style.WrapLines);
     }
 
     private Point PositionTooltipWithAlignment (TooltipPositioning alignment, Rectangle element, Rectangle tooltip)

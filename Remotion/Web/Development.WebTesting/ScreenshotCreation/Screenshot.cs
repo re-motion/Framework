@@ -18,10 +18,14 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using JetBrains.Annotations;
+using Microsoft.Maui.Graphics.Skia;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Skia;
+using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -92,7 +96,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       var browserBounds = locator.GetBrowserContentBounds((IWebDriver)browserSession.Driver.Native);
       var image = new Bitmap(browserBounds.Width, browserBounds.Height);
-      using (var graphics = Graphics.FromImage(image))
+      using (var graphics = SkiaCanvas.FromImage(image))
       {
         graphics.CopyFromScreen(browserBounds.Location, Point.Empty, browserBounds.Size);
 
@@ -114,19 +118,16 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
       var screenshot = ((ITakesScreenshot)browserSession.Driver.Native).GetScreenshot();
 
-      Bitmap image;
+      SKBitmap bitmap;
       using (var memoryStream = new MemoryStream(screenshot.AsByteArray, false))
       {
-        // For some reasons GDI+ might throw an OutOfMemory exception when the image provided by the driver is used
-        // As such, we copy the image which is quite fast (~5ms) and prevents any issues down the line
-        var corruptedImage = (Bitmap)Image.FromStream(memoryStream);
-        image = new Bitmap(corruptedImage);
+        bitmap = SKBitmap.FromImage(SKImage.FromEncodedData(memoryStream));
       }
 
       return new Screenshot(
-          image,
+          bitmap,
           Size.Empty,
-          new[] { new Rectangle(Point.Empty, image.Size) },
+          new[] { new Rectangle(Point.Empty, new Size(bitmap.Width, bitmap.Height)) },
           EmptyCursorInformation.Instance,
           CoordinateSystem.Browser);
     }
@@ -139,7 +140,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       var offset = new Size(-requiredBounds.X, -requiredBounds.Y);
 
       var image = new Bitmap(requiredBounds.Width, requiredBounds.Height);
-      using (var graphics = Graphics.FromImage(image))
+      using (var graphics = SkiaCanvas.FromImage(image))
       {
         graphics.Clear(Color.Transparent);
 
@@ -162,14 +163,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
     private readonly ICursorInformation _cursorInformation;
     private readonly Size _desktopOffset;
-    private readonly Image _image;
+    private readonly SKBitmap _image;
     private readonly Rectangle[] _screenshotBounds;
     private readonly CoordinateSystem _coordinateSystem;
 
     private bool _disposed;
 
     public Screenshot (
-        [NotNull] Image image,
+        [NotNull] SKBitmap image,
         Size desktopOffset,
         Rectangle[] screenshotBounds,
         [NotNull] ICursorInformation cursorInformation,
@@ -214,10 +215,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     }
 
     /// <summary>
-    /// Returns the screenshot as image.
+    /// Returns the screenshot as an <see cref="SKBitmap"/>.
     /// </summary>
     [NotNull]
-    public Image Image
+    public SKBitmap Image
     {
       get
       {

@@ -18,9 +18,13 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Net.Mime;
 using JetBrains.Annotations;
+using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Skia;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations;
+using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -50,16 +54,15 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       ArgumentUtility.CheckNotNull("screenshot", screenshot);
       ArgumentUtility.CheckNotNull("locator", locator);
 
-      var bitmapOfScreenshotSize = new Bitmap(screenshot.Image.Width, screenshot.Image.Height);
-      bitmapOfScreenshotSize.MakeTransparent();
+      var bitmapOfScreenshotSize = new SKBitmap(screenshot.Image.Width, screenshot.Image.Height, isOpaque: false);
 
       return new ScreenshotLayer(screenshot, locator, bitmapOfScreenshotSize);
     }
 
     private readonly IBrowserContentLocator _locator;
 
-    private Image _layerImage;
-    private Graphics _layerGraphics;
+    private SKBitmap _layerBitmap;
+    private SkiaCanvas _layerCanvas;
     private Rectangle _imageBounds;
     private Size _normalizationVector;
 
@@ -69,15 +72,15 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     private readonly CoordinateSystem _coordinateSystem;
 
     private ScreenshotLayer (Screenshot screenshot, IBrowserContentLocator locator)
-        : this(screenshot, locator, (Image)screenshot.Image.Clone())
+        : this(screenshot, locator, screenshot.Image.Clone())
     {
     }
 
-    private ScreenshotLayer (Screenshot screenshot, IBrowserContentLocator locator, Image imageOverride)
+    private ScreenshotLayer (Screenshot screenshot, IBrowserContentLocator locator, SKBitmap bitmapOverride)
     {
       _locator = locator;
-      _layerImage = imageOverride;
-      _layerGraphics = Graphics.FromImage(_layerImage);
+      _layerBitmap = bitmapOverride;
+      _layerCanvas = new SkiaCanvas { Canvas = new SKCanvas(_layerBitmap) };
 
       _screenshotOffset = screenshot.DesktopOffset;
       _screenshotBounds = screenshot.ScreenshotBounds;
@@ -94,7 +97,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       ArgumentUtility.CheckNotNull("annotation", annotation);
 
       var resolvedElement = new ResolvedScreenshotElement(_coordinateSystem, _imageBounds, ElementVisibility.FullyVisible, _imageBounds, _imageBounds);
-      annotation.Draw(_layerGraphics, resolvedElement);
+      annotation.Draw(_layerCanvas, resolvedElement);
     }
 
     /// <summary>
@@ -118,7 +121,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
         ValidateResolvedElement(context.ResolvedElement, minimumElementVisibility);
 
-        annotation.Draw(context.Graphics, context.ResolvedElement);
+        annotation.Draw(context.Canvas, context.ResolvedElement);
       }
     }
 
@@ -157,54 +160,55 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// Gets a copy of the image content of the layer.
     /// </summary>
     [NotNull]
-    public Image CloneImage ()
+    public SKBitmap CloneImage ()
     {
-      _layerGraphics.Flush();
-      return (Image)_layerImage.Clone();
+      _layerCanvas.Canvas.Flush();
+      return _layerBitmap.Clone();
     }
 
     /// <inheritdoc />
     public void Dispose ()
     {
-      _layerImage.Dispose();
-      _layerGraphics.Dispose();
+      _layerBitmap.Dispose();
+      _layerCanvas.Dispose();
     }
 
     private void PrepareScreenshotLayer ()
     {
       _normalizationVector = new Size(-_screenshotOffset.Width, -_screenshotOffset.Height);
 
-      var transformationMatrix = new Matrix();
-      transformationMatrix.Translate(_normalizationVector.Width, _normalizationVector.Height);
-      _layerGraphics.Transform = transformationMatrix;
+      var transformationMatrix = SKMatrix.CreateTranslation(_normalizationVector.Width, _normalizationVector.Height);
+
+      _layerCanvas.Canvas.SetMatrix(transformationMatrix);
 
       _imageBounds = new Rectangle(
           _screenshotOffset.Width,
           _screenshotOffset.Height,
-          _layerImage.Width,
-          _layerImage.Height);
+          _layerBitmap.Width,
+          _layerBitmap.Height);
     }
 
     private void CropRectangle (Rectangle croppingRectangle)
     {
-      _layerGraphics.Flush(FlushIntention.Sync);
+      _layerCanvas.Canvas.Flush();
 
-      var newImage = new Bitmap(croppingRectangle.Size.Width, croppingRectangle.Size.Height);
-      var newGraphics = Graphics.FromImage(newImage);
+      var newImage = new SKBitmap(croppingRectangle.Size.Width, croppingRectangle.Size.Height);
+      var newCanvas = new SkiaCanvas { Canvas = new SKCanvas(newImage) };
       var newImageBounds = new Rectangle(Point.Empty, croppingRectangle.Size);
 
       var normalizedCroppingRectangle = new Rectangle(croppingRectangle.Location + _normalizationVector, croppingRectangle.Size);
-      newGraphics.FillRectangle(Brushes.Transparent, newImageBounds);
-      newGraphics.DrawImage(_layerImage, newImageBounds, normalizedCroppingRectangle, GraphicsUnit.Pixel);
+      newCanvas.Canvas.DrawRect(newImageBounds.ToSkRect(), Brushes.Transparent.Paint);
+
+      newCanvas.Canvas.DrawBitmap(_layerBitmap, normalizedCroppingRectangle.ToSkRect(), newImageBounds.ToSkRect());
 
       _screenshotOffset = new Size(croppingRectangle.Location);
       _screenshotBounds = new[] { croppingRectangle };
 
-      _layerImage?.Dispose();
-      _layerImage = newImage;
+      _layerBitmap?.Dispose();
+      _layerBitmap = newImage;
 
-      _layerGraphics?.Dispose();
-      _layerGraphics = newGraphics;
+      _layerCanvas?.Dispose();
+      _layerCanvas = newCanvas;
 
       PrepareScreenshotLayer();
     }
@@ -263,7 +267,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       return new ScreenshotTransformationHelper<T>(
           manipulation,
-          _layerGraphics,
+          _layerCanvas,
           resolver,
           target,
           _coordinateSystem,

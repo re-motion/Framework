@@ -15,12 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Skia;
+using SkiaSharp;
+using Point = System.Drawing.Point;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -150,17 +154,16 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       if (directory != null)
         Directory.CreateDirectory(directory);
 
-      using (var annotationImage = AnnotationLayer.CloneImage())
-      using (var outputImage = BaseLayer.CloneImage())
-      using (var outputGraphics = Graphics.FromImage(outputImage))
-      {
-        outputGraphics.DrawImage(annotationImage, Point.Empty);
+      using var annotationBitmap = AnnotationLayer.CloneImage();
+      using var baseBitmap = BaseLayer.CloneImage();
+      using var canvas = new SKCanvas(baseBitmap);
 
-        if (DrawMouseCursor && Screenshot.CursorInformation.IsVisible)
-          Screenshot.CursorInformation.Draw(outputGraphics);
+      canvas.DrawBitmap(annotationBitmap, new SKPoint(0, 0));
 
-        outputImage.Save(path, ImageFormat.Png);
-      }
+      if (DrawMouseCursor && Screenshot.CursorInformation.IsVisible)
+        Screenshot.CursorInformation.Draw(new SkiaCanvas {Canvas = canvas});
+
+      baseBitmap.Save(path);
     }
 
     /// <inheritdoc />

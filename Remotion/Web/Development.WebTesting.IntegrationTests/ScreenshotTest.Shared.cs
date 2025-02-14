@@ -18,6 +18,7 @@ using System;
 using System.Drawing;
 using System.Threading;
 using Coypu;
+using Microsoft.Maui.Graphics;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
@@ -28,6 +29,10 @@ using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
 using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
+using SkiaSharp;
+using Color = System.Drawing.Color;
+using Font = Remotion.Web.Development.WebTesting.ScreenshotCreation.Font;
+using Point = System.Drawing.Point;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -51,16 +56,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private static readonly Color s_colorD = Color.FromArgb(0x99, 0x00, 0x99);
     private static readonly Color s_colorE = Color.FromArgb(0x99, 0xFF, 0x33);
 
-    private static readonly Font s_font = new Font("Consolas", 8.25f);
+    private static readonly Font s_font = new Font(SKTypeface.FromFamilyName("Consolas"));
     private static readonly Brush s_foregroundBrush = new SolidBrush(Color.FromArgb(0x00, 0x00, 0x00));
     private static readonly Brush s_backgroundBrush = new SolidBrush(Color.FromArgb(0xCC, 0xCC, 0xFF));
 
-    private static readonly StringFormat s_stringFormat = new StringFormat
-                                                          {
-                                                              Alignment = StringAlignment.Center,
-                                                              LineAlignment = StringAlignment.Center,
-                                                              Trimming = StringTrimming.Word
-                                                          };
+    private static readonly StringFormat s_stringFormat = new StringFormat(HorizontalAlignment.Center, VerticalAlignment.Center, TextFlow.ClipBounds);
 
     [Test]
     public void GetTarget ()
@@ -474,13 +474,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       public ScreenshotTransformationContext<T> BeginApply (ScreenshotTransformationContext<T> context)
       {
-        context.Graphics.FillEllipse(
-            Brush,
-            context.ResolvedElement.ElementBounds.X + Offset.X,
-            context.ResolvedElement.ElementBounds.Y + Offset.Y,
-            Width,
-            Height);
-
+        var x = context.ResolvedElement.ElementBounds.X + Offset.X;
+        var y = context.ResolvedElement.ElementBounds.Y + Offset.Y;
+        context.Canvas.Canvas.DrawOval(new SKRect(x, y, x + Width, y + Height), Brush.Paint);
         return context;
       }
 

@@ -21,11 +21,14 @@ using System.Drawing.Imaging;
 using System.IO;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Graphics.Skia;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Skia;
 using Screenshot = Remotion.Web.Development.WebTesting.ScreenshotCreation.Screenshot;
+using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -181,15 +184,12 @@ namespace Remotion.Web.Development.WebTesting.Utilities
           {
             var browserContentBounds = locator.GetBrowserContentBounds(nativeDriver);
 
-            using (var graphics = Graphics.FromImage(screenshot.Image))
-            {
-              var transformMatrix = new Matrix();
-              transformMatrix.Translate(-browserContentBounds.X, -browserContentBounds.Y);
+            using var canvas = new SkiaCanvas();
+            canvas.Canvas = new SKCanvas(screenshot.Image);
+            var transformMatrix = SKMatrix.CreateTranslation(-browserContentBounds.X, -browserContentBounds.Y);
+            canvas.Canvas.SetMatrix(transformMatrix);
 
-              graphics.Transform = transformMatrix;
-
-              GetCursorInformation().Draw(graphics);
-            }
+            GetCursorInformation().Draw(canvas);
           }
 
           var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath(_outputDirectory, testName, windowSuffix, "png");

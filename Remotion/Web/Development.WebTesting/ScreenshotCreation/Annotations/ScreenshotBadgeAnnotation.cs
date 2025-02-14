@@ -17,7 +17,13 @@
 using System;
 using System.Drawing;
 using JetBrains.Annotations;
+using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Graphics.Skia;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Skia;
+using SkiaSharp;
+using Point = System.Drawing.Point;
+using Size = System.Drawing.Size;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 {
@@ -107,7 +113,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <summary>
-    /// The <see cref="System.Drawing.Font"/> that will be used to draw the <see cref="Content"/>.
+    /// The <see cref="Font"/> that will be used to draw the <see cref="Content"/>.
     /// </summary>
     public Font Font
     {
@@ -131,21 +137,23 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <inheritdoc />
-    public void Draw (Graphics graphics, ResolvedScreenshotElement resolvedScreenshotElement)
+    public void Draw (SkiaCanvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull("graphics", graphics);
+      ArgumentUtility.CheckNotNull("canvas", canvas);
       ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
 
       var elementBounds = resolvedScreenshotElement.ElementBounds;
       var centerPoint = new Point(
           elementBounds.X + elementBounds.Width / 2 + _translation.Width,
-          elementBounds.Y + elementBounds.Height / 2 + _translation.Height);
+          elementBounds.Y + elementBounds.Height / 2 + _translation.Height - 1);
 
-      var textSizeF = graphics.MeasureString(Content, Font);
+      var textSizeF = canvas.MeasureString(Content, Font, new System.Drawing.SizeF(0, 0));
       var textSize = new Size((int)Math.Ceiling(textSizeF.Width), (int)Math.Ceiling(textSizeF.Height));
 
       var textBound = new Rectangle(centerPoint.X - textSize.Width / 2, centerPoint.Y - textSize.Height / 2, textSize.Width, textSize.Height);
       var ellipseBounds = ContentPadding.Apply(textBound);
+
+      ellipseBounds.Width += 1;
 
       if (ForceCircle && ellipseBounds.Width != ellipseBounds.Height)
       {
@@ -162,10 +170,12 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         }
       }
 
+      ellipseBounds.Y += 1;
+
       if (BackgroundBrush != null)
-        graphics.FillEllipse(BackgroundBrush, ellipseBounds);
-      graphics.DrawString(Content, Font, ContentBrush, textBound);
-      graphics.DrawEllipse(BorderPen, ellipseBounds);
+        canvas.Canvas.DrawOval(ellipseBounds.ToSkRect(), BackgroundBrush.Paint);
+      canvas.DrawString(Content, Font, ContentBrush, textBound, HorizontalAlignment.Center, VerticalAlignment.Center, wrapLines: true);
+      canvas.Canvas.DrawOval(ellipseBounds.ToSkRect(), BorderPen.Paint);
     }
   }
 }

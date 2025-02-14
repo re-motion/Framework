@@ -15,10 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Drawing;
 using JetBrains.Annotations;
+using Microsoft.Maui.Graphics;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
+using SkiaSharp;
+using Color = System.Drawing.Color;
+using Size = System.Drawing.Size;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 {
@@ -28,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
   public class ScreenshotTooltipStyle
   {
     public static readonly ScreenshotTooltipStyle Chrome = new ScreenshotTooltipStyle(
-        new Font("Arial", 9, FontStyle.Regular),
+        new Font(SKTypeface.FromFamilyName("Arial", SKFontStyle.Normal), 13),
         new SolidBrush(Color.FromArgb(0x57, 0x57, 0x57)),
         Brushes.White,
         new Pen(Color.FromArgb(0x76, 0x76, 0x76), 1),
@@ -39,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         new Size(970, 110));
 
     public static readonly ScreenshotTooltipStyle Edge = new ScreenshotTooltipStyle(
-        new Font("Arial", 9, FontStyle.Regular),
+        new Font(SKTypeface.FromFamilyName("Arial", SKFontStyle.Normal), 13),
         new SolidBrush(Color.FromArgb(0x57, 0x57, 0x57)),
         Brushes.White,
         new Pen(Color.FromArgb(0x76, 0x76, 0x76), 1),
@@ -50,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         new Size(970, 110));
 
     public static readonly ScreenshotTooltipStyle Firefox = new ScreenshotTooltipStyle(
-        new Font("Sans-Serif", 9, FontStyle.Regular),
+        new Font(SKTypeface.FromFamilyName("Sans-Serif", SKFontStyle.Normal), 13),
         new SolidBrush(Color.FromArgb(0x0, 0x0, 0x0)),
         Brushes.White,
         new Pen(Color.FromArgb(0x76, 0x76, 0x76), 1),
@@ -97,7 +100,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <summary>
-    /// The <see cref="System.Drawing.Font"/> that will be used to draw the tooltips content.
+    /// The <see cref="Font"/> that will be used to draw the tooltips content.
     /// </summary>
     public Font Font
     {
