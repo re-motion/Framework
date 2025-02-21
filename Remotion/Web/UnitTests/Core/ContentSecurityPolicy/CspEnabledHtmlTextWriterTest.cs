@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using System.Collections.Generic;
 using System.Web.UI;
 using Moq;
 using NUnit.Framework;
@@ -98,6 +99,75 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _htmlHelper.AssertNoAttribute(element3, "nonce");
     }
 
+    private static readonly IReadOnlyCollection<Action<CspEnabledHtmlTextWriter>> s_addAttributeEveryOverloadWithSupportedEventTypeScriptIsRegisteredTestCases =
+    [
+        writer => { writer.AddAttribute("onclick", "console.info('test');"); },
+        writer => { writer.AddAttribute("onclick", "console.info('test');", true); },
+        writer => { writer.AddAttribute("onclick", "console.info(&#39;test&#39;);", false); },
+        writer => { writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "console.info('test');"); },
+        writer => { writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "console.info('test');", true); },
+        writer => { writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "console.info(&#39;test&#39;);", false); }
+    ];
+
+    [Test]
+    [TestCaseSource(nameof(s_addAttributeEveryOverloadWithSupportedEventTypeScriptIsRegisteredTestCases))]
+    public void AddAttribute_EveryOverload_WithSupportedEventType_ScriptIsRegistered (Action<CspEnabledHtmlTextWriter> addAttribute)
+    {
+      _randomNumberGeneratorStub
+          .Setup(m => m.GenerateAlphaNumericNonce())
+          .Returns("eventTargetID")
+          .Verifiable();
+
+      addAttribute(_writer);
+      _writer.RenderBeginTag(HtmlTextWriterTag.Button);
+      _writer.RenderEndTag();
+
+      var document = _htmlHelper.GetResultDocument();
+      var element = _htmlHelper.GetAssertedChildElement(document, "button", 0);
+      _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
+
+      _clientScriptStub.Verify(
+          m => m.RegisterStartupScriptBlock(
+              _pageStub.Object,
+              typeof(CspEnabledHtmlTextWriter),
+              $"eventTargetID-onclick",
+              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{console.info('test');}};"),
+          Times.Once);
+
+      _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
+    }
+
+    private static readonly IReadOnlyCollection<Action<CspEnabledHtmlTextWriter>> s_addAttributeEveryOverloadWithAttributeOtherThanEventTypeScriptIsRegisteredTestCases =
+    [
+        writer => { writer.AddAttribute("style", "color:white;"); },
+        writer => { writer.AddAttribute("style", "color:white;", true); },
+        writer => { writer.AddAttribute("style", "color:white;", false); },
+        writer => { writer.AddAttribute(HtmlTextWriterAttribute.Style, "color:white;"); },
+        writer => { writer.AddAttribute(HtmlTextWriterAttribute.Style, "color:white;", true); },
+        writer => { writer.AddAttribute(HtmlTextWriterAttribute.Style, "color:white;", false); }
+    ];
+
+    [Test]
+    [TestCaseSource(nameof(s_addAttributeEveryOverloadWithAttributeOtherThanEventTypeScriptIsRegisteredTestCases))]
+    public void AddAttribute_EveryOverload_WithAttributeOtherThanEventType_ScriptIsNotRegistered (Action<CspEnabledHtmlTextWriter> addAttribute)
+    {
+      addAttribute(_writer);
+      _writer.RenderBeginTag(HtmlTextWriterTag.Button);
+      _writer.RenderEndTag();
+
+      var document = _htmlHelper.GetResultDocument();
+      var element = _htmlHelper.GetAssertedChildElement(document, "button", 0);
+      _htmlHelper.AssertNoAttribute(element, "data-inline-event-target");
+
+      _clientScriptStub.Verify(
+          m => m.RegisterStartupScriptBlock(
+              _pageStub.Object,
+              typeof(CspEnabledHtmlTextWriter),
+              It.IsAny<string>(),
+              It.IsAny<string>()),
+          Times.Never);
+    }
+
     [TestCase("onclick", "onclick")]
     [TestCase("ONCLICK", "onclick")]
     [TestCase("onchange", "onchange")]
@@ -126,30 +196,10 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
                       _pageStub.Object,
                       typeof(CspEnabledHtmlTextWriter),
                       $"eventTargetID-{value}",
-                      $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').{value} = function (event){{console.info(&#39;test&#39;);}};"),
+                      $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').{value} = function (event){{console.info('test');}};"),
               Times.Once);
 
       _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
-    }
-
-    [Test]
-    public void AddAttribute_WithAttributeOtherThanEventType_ScriptIsNotRegistered ()
-    {
-      _writer.AddAttribute("style", "color:white;");
-      _writer.RenderBeginTag(HtmlTextWriterTag.Button);
-      _writer.RenderEndTag();
-
-      var document = _htmlHelper.GetResultDocument();
-      var element = _htmlHelper.GetAssertedChildElement(document, "button", 0);
-      _htmlHelper.AssertNoAttribute(element, "data-inline-event-target");
-
-      _clientScriptStub.Verify(
-              m => m.RegisterStartupScriptBlock(
-                      _pageStub.Object,
-                      typeof(CspEnabledHtmlTextWriter),
-                      It.IsAny<string>(),
-                      It.IsAny<string>()),
-              Times.Never);
     }
 
     [Test]
@@ -213,7 +263,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID-onclick",
-              "document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){console.info(&#39;test1&#39;);};"),
+              "document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){console.info('test1');};"),
           Times.Once);
 
       _clientScriptStub.Verify(
@@ -221,7 +271,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID-onchange",
-              "document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onchange = function (event){console.info(&#39;test2&#39;);};"),
+              "document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onchange = function (event){console.info('test2');};"),
           Times.Once);
 
       _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
@@ -269,7 +319,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID1-onclick",
-              "document.querySelector('[data-inline-event-target=\"eventTargetID1\"]').onclick = function (event){console.info(&#39;test1&#39;);};"),
+              "document.querySelector('[data-inline-event-target=\"eventTargetID1\"]').onclick = function (event){console.info('test1');};"),
           Times.Once);
 
       _clientScriptStub.Verify(
@@ -284,7 +334,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID2-onchange",
-              "document.querySelector('[data-inline-event-target=\"eventTargetID2\"]').onchange = function (event){console.info(&#39;test2&#39;);};"),
+              "document.querySelector('[data-inline-event-target=\"eventTargetID2\"]').onchange = function (event){console.info('test2');};"),
           Times.Once);
     }
 
@@ -393,10 +443,10 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
     }
 
-    [TestCase("javascript: console.info('test');", "console.info(&#39;test&#39;);")]
-    [TestCase("javascript:console.info('test');", "console.info(&#39;test&#39;);")]
-    [TestCase("  javascript:  console.info('test');", "console.info(&#39;test&#39;);")]
-    [TestCase("JavaScript: console.info('test');", "console.info(&#39;test&#39;);")]
+    [TestCase("javascript: console.info('test');", "console.info('test');")]
+    [TestCase("javascript:console.info('test');", "console.info('test');")]
+    [TestCase("  javascript:  console.info('test');", "console.info('test');")]
+    [TestCase("JavaScript: console.info('test');", "console.info('test');")]
     public void AddAttribute_WithJavascriptPrefix_RemovesPrefix (string actual, string expected)
     {
       _randomNumberGeneratorStub
