@@ -6,12 +6,9 @@ using System.Linq;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.BiDi;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.IntegrationTests;
 using Remotion.Web.Development.WebTesting.Utilities;
-using Remotion.Web.Development.WebTesting.WebDriver;
-using LogLevel = OpenQA.Selenium.LogLevel;
 
 namespace Remotion.Web.IntegrationTests.ContentSecurityPolicy;
 
@@ -66,12 +63,6 @@ public class CspRenderTest : IntegrationTest
     {
         Context.Scope.FindId("myTestLink").Click();
     }
-  }
-
-  [SetUp]
-  public void SetUp ()
-  {
-      ((IWebDriver)Helper.MainBrowserSession.Driver.Native).Manage().Logs.GetLog(LogType.Browser);
   }
 
   /// <summary>
@@ -227,8 +218,8 @@ public class CspRenderTest : IntegrationTest
 
   private string[] GetErrors (PageObject pageObject)
   {
-    var driverNative = (IWebDriver)pageObject.Driver.Native;
-    return driverNative.Manage().Logs.GetLog(LogType.Browser)
+    var browserLogs = pageObject.Context.Browser.GetBrowserLogs();
+    return browserLogs
         .Where(e => e.Level == LogLevel.Severe)
         .Where(e => e.Message.Contains("Content Security Policy") || e.Message.Contains("Content-Security-Policy"))
         .Select(e => e.Message)
@@ -244,10 +235,6 @@ public class CspRenderTest : IntegrationTest
 
   private CspRenderPageObject Start (CspMode cspMode)
   {
-    // TODO: RM-9411 BiDi logging to support logging in Firefox
-    if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore("RM-9411: Firefox does not support retrieving logs without implementing BiDi.");
-
     return Start<CspRenderPageObject>($"ContentSecurityPolicy/CspRenderTest.aspx?cspMode={cspMode}");
   }
 }

@@ -17,6 +17,7 @@
 using System;
 using System.Globalization;
 using JetBrains.Annotations;
+using OpenQA.Selenium.BiDi.Modules.Log;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 
@@ -42,6 +43,24 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     /// Gets the timestamp value of the log entry.
     /// </summary>
     public DateTime Timestamp { get; }
+
+    private static LogLevel GetLogLevel ([NotNull] Level bidiLogLevel)
+    {
+      return bidiLogLevel switch
+      {
+          OpenQA.Selenium.BiDi.Modules.Log.Level.Debug => LogLevel.Debug,
+          OpenQA.Selenium.BiDi.Modules.Log.Level.Info => LogLevel.Info,
+          OpenQA.Selenium.BiDi.Modules.Log.Level.Warn => LogLevel.Warning,
+          OpenQA.Selenium.BiDi.Modules.Log.Level.Error => LogLevel.Severe,
+          _ => LogLevel.Off
+      };
+    }
+
+    public BrowserLogEntry ([NotNull] Entry logEntry)
+        : this(GetLogLevel(logEntry.Level), logEntry.Text, logEntry.Timestamp.DateTime)
+    {
+      ArgumentUtility.CheckNotNull("logEntry", logEntry);
+    }
 
     public BrowserLogEntry ([NotNull] LogEntry logEntry)
         : this(logEntry.Level, logEntry.Message, logEntry.Timestamp)

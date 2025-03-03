@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -30,8 +31,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void BrowserLogEntry_ShouldWrapSeleniumLogEntry ()
     {
-      if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore("Getting the browser log entries is not supported by Firefox.");
+      var useBiDiLogEntry = Helper.BrowserConfiguration.UseBidiLog();
 
       var home = Start();
 
@@ -41,19 +41,30 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var js = JavaScriptExecutor.GetJavaScriptExecutor(home.Context.Browser);
       js.ExecuteScript($"console.error('{errorMessage}')");
 
-      var browserLogEntries = ((IWebDriver)home.Context.Browser.Driver.Native)
-          .Manage().Logs.GetLog(LogType.Browser);
+      IReadOnlyCollection<BrowserLogEntry> browserLogEntries = null;
+      var logger = Helper.LoggerFactory.CreateLogger("BrowserLogEntryTest");
+      RetryUntilTimeout.Run(
+          logger,
+          () =>
+          {
+            browserLogEntries = home.Context.Browser.GetBrowserLogs();
+            if (browserLogEntries.Count == 0)
+              throw new AssertionException("No browser logs found");
+          });
 
-      var errorLogEntry = browserLogEntries.Single(log => log.Message.Contains(errorMessage));
-      var wrappedErrorLogEntry = new BrowserLogEntry(errorLogEntry);
+      var wrappedErrorLogEntry = browserLogEntries.Single(log => log.Message.Contains(errorMessage));
 
       Assert.That(wrappedErrorLogEntry.Level, Is.EqualTo(LogLevel.Severe));
       Assert.That(
           wrappedErrorLogEntry.Timestamp,
           Is.InRange(DateTime.UtcNow.Subtract(maxExpectedTestRunTime), DateTime.UtcNow.Add(maxExpectedTestRunTime)));
-      Assert.That(wrappedErrorLogEntry.Message, Does.Match($@"^console-api \d+:\d+ ""{errorMessage}""$"));
+      Assert.That(
+          wrappedErrorLogEntry.Message,
+          useBiDiLogEntry ? Is.EqualTo(errorMessage) : Does.Match($@"^console-api \d+:\d+ ""{errorMessage}""$"));
 
-      var logAsStringPattern = $@"^\[\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ\] \[Severe\] console-api \d+:\d+ ""{errorMessage}""$";
+      var logAsStringPattern = useBiDiLogEntry
+          ? $@"^\[\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ\] \[Severe\] {errorMessage}$"
+          : $@"^\[\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ\] \[Severe\] console-api \d+:\d+ ""{errorMessage}""$";
 
       Assert.That(
           wrappedErrorLogEntry.ToString(),

@@ -20,6 +20,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
@@ -65,6 +66,37 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var afterTestsProcessSnapshot = ProcessSnapshot.CreateWithFilter(RelevantProcessFilter);
       var processesStillOpenSnapshot = _beforeTestProcessSnapshot.Difference(afterTestsProcessSnapshot);
       ProcessUtils.GracefulProcessShutdown(processesStillOpenSnapshot.Processes, TimeSpan.FromSeconds(10));
+    }
+
+    [Test]
+    public void WebTestHelper_OnTestSetUp_ResetsBrowserLog ()
+    {
+      var webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
+      SetupWebTestHelper(webTestHelper);
+      if (webTestHelper.BrowserConfiguration.UseBidiLog())
+        webTestHelper.MainBrowserSession.Window.Visit(webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot + "Empty.wxe");
+
+      webTestHelper.MainBrowserSession.ResetBrowserLogs();
+      var js = JavaScriptExecutor.GetJavaScriptExecutor(webTestHelper.MainBrowserSession);
+      js.ExecuteScript("console.error('any error message')");
+
+      IReadOnlyCollection<BrowserLogEntry> browserLogEntries = null;
+      var logger = webTestHelper.LoggerFactory.CreateLogger("BrowserLogEntryTest");
+      RetryUntilTimeout.Run(
+          logger,
+          () =>
+          {
+            browserLogEntries = webTestHelper.MainBrowserSession.GetBrowserLogs();
+            if (browserLogEntries.Count == 0)
+              throw new AssertionException("No browser logs found");
+          });
+
+      Assert.That(browserLogEntries.Count, Is.EqualTo(1));
+      Assert.That(browserLogEntries.Single().Message, Does.Contain("any error message"));
+
+      webTestHelper.OnSetUp("Second Test");
+      browserLogEntries = webTestHelper.MainBrowserSession.GetBrowserLogs();
+      Assert.That(browserLogEntries, Is.Empty);
     }
 
     [Test]

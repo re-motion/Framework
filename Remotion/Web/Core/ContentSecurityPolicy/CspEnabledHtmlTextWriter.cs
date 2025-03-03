@@ -16,9 +16,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Web;
 using System.Web.UI;
 using Remotion.Utilities;
-using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;
 
@@ -91,37 +91,75 @@ namespace Remotion.Web.ContentSecurityPolicy
       base.RenderBeginTag(tagKey);
     }
 
-    protected override void AddAttribute (string name, string? value, HtmlTextWriterAttribute key, bool encode, bool isUrl)
+    public sealed override void AddAttribute (string name, string? value)
     {
       ArgumentUtility.CheckNotNull("name", name);
+      if (!TryAddAttributeWithoutEncoding(name, value, false))
+        base.AddAttribute(name, value);
+    }
 
-      if (name.StartsWith("on", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(value))
+    public sealed override void AddAttribute (string name, string? value, bool encode)
+    {
+      ArgumentUtility.CheckNotNull("name", name);
+      if (!TryAddAttributeWithoutEncoding(name, value, !encode))
+        base.AddAttribute(name, value, encode);
+    }
+
+    protected sealed override void AddAttribute (string name, string? value, HtmlTextWriterAttribute key)
+    {
+      base.AddAttribute(name, value, key);
+    }
+
+    protected sealed override void AddAttribute (string name, string? value, HtmlTextWriterAttribute key, bool encode, bool isUrl)
+    {
+      ArgumentUtility.CheckNotNull("name", name);
+      if (!TryAddAttributeWithoutEncoding(name, value, !encode))
+        base.AddAttribute(name, value!, key, encode, isUrl);
+    }
+
+    public sealed override void AddAttribute (HtmlTextWriterAttribute key, string? value)
+    {
+      base.AddAttribute(key, value);
+    }
+
+    public sealed override void AddAttribute (HtmlTextWriterAttribute key, string? value, bool fEncode)
+    {
+      base.AddAttribute(key, value, fEncode);
+    }
+
+    private bool TryAddAttributeWithoutEncoding (string name, string? value, bool isAlreadyEncoded)
+    {
+      if (!name.StartsWith("on", StringComparison.OrdinalIgnoreCase))
+        return false;
+
+      if (string.IsNullOrEmpty(value))
+        return false;
+
+      if (s_supportedEvents.TryGetValue(name, out var eventType))
       {
-        if (s_supportedEvents.TryGetValue(name, out var eventType))
+        if (_registeredEvents.Exists(e => eventType.Equals(e.Type)))
         {
-          if (_registeredEvents.Exists(e => eventType.Equals(e.Type)))
-          {
-            throw new ArgumentException($"Event handler '{name}' cannot be registered more than once.");
-          }
-
-          var trimmedValue = value.TrimStart();
-          const string javascriptPrefix = "javascript:";
-          if (trimmedValue.StartsWith(javascriptPrefix, StringComparison.OrdinalIgnoreCase))
-            value = trimmedValue.Substring(javascriptPrefix.Length).TrimStart();
-
-          _registeredEvents.Add((Type: eventType, Value: value));
+          throw new ArgumentException($"Event handler '{name}' cannot be registered more than once.");
         }
-        else
-        {
-          throw new ArgumentException(
-              $"The name of attribute '{name}' indicates a script event but the event type is not supported.",
-              nameof(name));
-        }
+
+        var trimmedValue = value.TrimStart();
+        const string javascriptPrefix = "javascript:";
+        if (trimmedValue.StartsWith(javascriptPrefix, StringComparison.OrdinalIgnoreCase))
+          value = trimmedValue.Substring(javascriptPrefix.Length).TrimStart();
+
+        if (isAlreadyEncoded)
+          value = HttpUtility.HtmlDecode(value);
+
+        _registeredEvents.Add((Type: eventType, Value: value));
       }
       else
       {
-        base.AddAttribute(name, value!, key, encode, isUrl);
+        throw new ArgumentException(
+            $"The name of attribute '{name}' indicates a script event but the event type is not supported.",
+            nameof(name));
       }
+
+      return true;
     }
   }
 }
