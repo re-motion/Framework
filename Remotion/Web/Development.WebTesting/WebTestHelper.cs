@@ -309,8 +309,6 @@ namespace Remotion.Web.Development.WebTesting
       {
         var screenshotRecorder = new TestExecutionScreenshotRecorder(_testInfrastructureConfiguration.ScreenshotDirectory, _loggerFactory);
         screenshotRecorder.CaptureCursor();
-        if (_mainBrowserSession is { Headless: false })
-          screenshotRecorder.TakeDesktopScreenshot(_testContext.TestName);
         screenshotRecorder.TakeBrowserScreenshot(_testContext.TestName, _browserSessions.ToArray(), BrowserConfiguration.Locator);
       }
 
@@ -319,9 +317,10 @@ namespace Remotion.Web.Development.WebTesting
       _browserConfiguration.DownloadHelper.DeleteFiles();
     }
 
+    [Obsolete("Taking desktop screenshots is no longer supported. See RM-9455. (Version 8.0.0)", error: true)]
     public ScreenshotBuilder CreateDesktopScreenshot ()
     {
-      return new ScreenshotBuilder(Screenshot.TakeDesktopScreenshot(), BrowserConfiguration.Locator, _loggerFactory);
+      throw new NotSupportedException("Taking desktop screenshots is no longer supported. See RM-9455.");
     }
 
     public ScreenshotBuilder CreateBrowserScreenshot (IBrowserSession? browserSession = null)

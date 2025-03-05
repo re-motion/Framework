@@ -68,8 +68,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     }
 
     /// <summary>
-    /// Captures the current state of the mouse cursor. All subsequent calls to either <see cref="TakeDesktopScreenshot"/>
-    /// or <see cref="TakeBrowserScreenshot"/> will use the captured cursor information instead of the current cursor information.
+    /// Captures the current state of the mouse cursor. All subsequent calls to <see cref="TakeBrowserScreenshot"/>
+    /// will use the captured cursor information instead of the current cursor information.
     /// </summary>
     public void CaptureCursor ()
     {
@@ -89,34 +89,12 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <exception cref="PathTooLongException">
     /// If the resulting file path would be longer than 260 characters (despite shortening of the <paramref name="testName"/>).
     /// </exception>
+    [Obsolete("Taking desktop screenshots is no longer supported. See RM-9455. (Version 8.0.0)", error: true)]
     public void TakeDesktopScreenshot ([JetBrains.Annotations.NotNull] string testName)
     {
       ArgumentUtility.CheckNotNullOrEmpty("testName", testName);
 
-      var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath(_outputDirectory, testName, "Desktop", "png");
-
-      try
-      {
-        var screenshot = Screenshot.TakeDesktopScreenshot();
-
-        using (var graphics = Graphics.FromImage(screenshot.Image))
-        {
-          var transformMatrix = new Matrix();
-          transformMatrix.Translate(-screenshot.DesktopOffset.Width, -screenshot.DesktopOffset.Height);
-
-          graphics.Transform = transformMatrix;
-
-          GetCursorInformation().Draw(graphics);
-        }
-
-        screenshot.Image.Save(filePath, ImageFormat.Png);
-
-        _logger.LogInformation("Saved screenshot of desktop to '{0}'.", filePath);
-      }
-      catch (Exception ex)
-      {
-        _logger.LogError(string.Format("Could not save desktop screenshot to '{0}'.", filePath), ex);
-      }
+      throw new NotSupportedException("Taking desktop screenshots is no longer supported. See RM-9455.");
     }
 
     /// <summary>
