@@ -314,19 +314,12 @@ namespace Remotion.Web.Development.WebTesting
       {
         var screenshotRecorder = new TestExecutionScreenshotRecorder(_testInfrastructureConfiguration.ScreenshotDirectory, _loggerFactory);
         screenshotRecorder.CaptureCursor();
-        if (_mainBrowserSession is { Headless: false })
-          screenshotRecorder.TakeDesktopScreenshot(_testContext.TestName);
         screenshotRecorder.TakeBrowserScreenshot(_testContext.TestName, _browserSessions.ToArray(), BrowserConfiguration.Locator);
       }
 
       _logger.LogInformation("Finished test: {0} [has succeeded: {1}].", _testContext.TestName, _testContext.IsSuccessful);
 
       _browserConfiguration.DownloadHelper.DeleteFiles();
-    }
-
-    public ScreenshotBuilder CreateDesktopScreenshot ()
-    {
-      return new ScreenshotBuilder(Screenshot.TakeDesktopScreenshot(), BrowserConfiguration.Locator, _loggerFactory);
     }
 
     public ScreenshotBuilder CreateBrowserScreenshot (IBrowserSession? browserSession = null)

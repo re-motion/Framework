@@ -68,55 +68,13 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     }
 
     /// <summary>
-    /// Captures the current state of the mouse cursor. All subsequent calls to either <see cref="TakeDesktopScreenshot"/>
-    /// or <see cref="TakeBrowserScreenshot"/> will use the captured cursor information instead of the current cursor information.
+    /// Captures the current state of the mouse cursor. All subsequent calls to <see cref="TakeBrowserScreenshot"/>
+    /// will use the captured cursor information instead of the current cursor information.
     /// </summary>
     public void CaptureCursor ()
     {
       _cursorInformation = CaptureCursorInformationWithLog();
       _isCursorCaptured = true;
-    }
-
-    /// <summary>
-    /// Takes a screenshot of the desktop and saves it under the specified <paramref name="testName"/>.
-    /// </summary>
-    /// <remarks>
-    /// Screenshot will be saved under: <c>&lt;testName&gt;.Desktop.png</c>
-    /// Any <see cref="Path"/>.<see cref="Path.GetInvalidFileNameChars"/> in the <paramref name="testName"/> will be replaced by "_"
-    /// If the full file path would be longer than 260 characters, the <paramref name="testName"/> is
-    /// shortened accordingly.
-    /// </remarks>
-    /// <exception cref="PathTooLongException">
-    /// If the resulting file path would be longer than 260 characters (despite shortening of the <paramref name="testName"/>).
-    /// </exception>
-    public void TakeDesktopScreenshot ([JetBrains.Annotations.NotNull] string testName)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty("testName", testName);
-
-      var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath(_outputDirectory, testName, "Desktop", "png");
-
-      try
-      {
-        var screenshot = Screenshot.TakeDesktopScreenshot();
-
-        using (var graphics = Graphics.FromImage(screenshot.Image))
-        {
-          var transformMatrix = new Matrix();
-          transformMatrix.Translate(-screenshot.DesktopOffset.Width, -screenshot.DesktopOffset.Height);
-
-          graphics.Transform = transformMatrix;
-
-          GetCursorInformation().Draw(graphics);
-        }
-
-        screenshot.Image.Save(filePath, ImageFormat.Png);
-
-        _logger.LogInformation("Saved screenshot of desktop to '{0}'.", filePath);
-      }
-      catch (Exception ex)
-      {
-        _logger.LogError(string.Format("Could not save desktop screenshot to '{0}'.", filePath), ex);
-      }
     }
 
     /// <summary>

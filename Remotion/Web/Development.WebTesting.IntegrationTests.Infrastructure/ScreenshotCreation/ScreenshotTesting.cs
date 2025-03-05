@@ -87,13 +87,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
 
       var results = new List<SubTestResult>();
 
-      if (type.HasFlag(ScreenshotTestingType.Desktop) && !helper.MainBrowserSession.Headless)
-      {
-        using (var diagnosticScreenshotBuilder = DiagnosticScreenshotBuilder.CreateDesktopScreenshot(helper.BrowserConfiguration.Locator, helper.LoggerFactory))
-        {
-          results.Add(RunSubTest<TValue, TTarget>(helper, diagnosticScreenshotBuilder, test, value, "Desktop", testName, savePath, maxVariance, maxRatio));
-        }
-      }
+      if (type == ScreenshotTestingType.Desktop)
+        throw new NotSupportedException("Desktop screenshots are no longer supported and the test should be rewritten or removed.");
 
       if (type.HasFlag(ScreenshotTestingType.Browser))
       {

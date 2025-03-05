@@ -31,15 +31,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
   public class DiagnosticScreenshotBuilder : ScreenshotBuilder
   {
     [NotNull]
-    public static DiagnosticScreenshotBuilder CreateDesktopScreenshot ([NotNull] IBrowserContentLocator contentLocator, [NotNull] ILoggerFactory loggerFactory)
-    {
-      ArgumentUtility.CheckNotNull("contentLocator", contentLocator);
-      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
-
-      return new DiagnosticScreenshotBuilder(Screenshot.TakeDesktopScreenshot(), contentLocator, loggerFactory);
-    }
-
-    [NotNull]
     public static DiagnosticScreenshotBuilder CreateBrowserScreenshot (
         [NotNull] IBrowserContentLocator contentLocator,
         [NotNull] IBrowserSession browserSession,
