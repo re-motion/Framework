@@ -32,7 +32,7 @@ using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
-  public partial class ScreenshotTest
+  public partial class ScreenshotTest : IntegrationTest
   {
     private const string c_nonBreakingSpace = " ";
 
