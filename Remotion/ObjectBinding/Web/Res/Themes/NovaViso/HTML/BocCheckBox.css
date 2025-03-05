@@ -2,6 +2,7 @@
 
 .bocCheckBox
 {
+  position: relative;
   display: inline-flex;
   align-items: center;
   border: var(--remotion-themed-border-placeholder);
