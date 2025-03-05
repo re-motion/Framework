@@ -27,7 +27,6 @@ using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
-using Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge;
@@ -56,7 +55,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
     public override string BrowserExecutableName { get; } = "msedge";
     public override string WebDriverExecutableName { get; } = "msedgedriver";
     public override IDownloadHelper DownloadHelper { get; }
-    public override IBrowserContentLocator Locator { get; } = new EdgeBrowserContentLocator();
+    public override IBrowserContentLocator Locator { get; } = DefaultBrowserContentLocator.Instance;
     public override ScreenshotTooltipStyle TooltipStyle { get; } = ScreenshotTooltipStyle.Edge;
 
     public string BrowserBinaryPath { get; }

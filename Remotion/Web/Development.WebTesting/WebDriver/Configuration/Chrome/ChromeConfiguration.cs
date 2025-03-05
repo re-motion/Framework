@@ -27,7 +27,6 @@ using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
-using Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome;
@@ -56,7 +55,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
     public override string BrowserExecutableName { get; } = "chrome";
     public override string WebDriverExecutableName { get; } = "chromedriver";
-    public override IBrowserContentLocator Locator { get; } = new ChromeBrowserContentLocator();
+    public override IBrowserContentLocator Locator { get; } = DefaultBrowserContentLocator.Instance;
     public override ScreenshotTooltipStyle TooltipStyle { get; } = ScreenshotTooltipStyle.Chrome;
     public override IDownloadHelper DownloadHelper { get; }
 
