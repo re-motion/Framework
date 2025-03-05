@@ -25,7 +25,6 @@ using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
-using Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories.Firefox;
 
@@ -91,7 +90,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
     public override IBrowserFactory BrowserFactory => new FirefoxBrowserFactory(this);
 
     /// <inheritdoc />
-    public override IBrowserContentLocator Locator => new FirefoxBrowserContentLocator();
+    public override IBrowserContentLocator Locator => ErrorBrowserContentLocator.Instance;
 
     /// <inheritdoc />
     public override ScreenshotTooltipStyle TooltipStyle => ScreenshotTooltipStyle.Firefox;
