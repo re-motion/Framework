@@ -3,8 +3,6 @@
   <PropertyGroup>
     <ProjectType>Library</ProjectType>
     <UseWebForms>true</UseWebForms>
-    <UseWindowsForms>true</UseWindowsForms>
-    <UseWpf>true</UseWpf>
   </PropertyGroup>
   <Import Project="..\..\..\Build\Shared.build.props" />
   <PropertyGroup>
