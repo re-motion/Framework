@@ -18,7 +18,8 @@ using System;
 using System.Diagnostics;
 using Coypu;
 using NUnit.Framework;
-using NUnit.Framework.Interfaces;
+using NUnit.Framework.Internal;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
@@ -62,7 +63,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [SetUp]
     public void IntegrationTestSetUp ()
     {
-      _webTestHelper.OnSetUp(GetType().Name + "_" + TestContext.CurrentContext.Test.Name);
+      _webTestHelper.OnSetUp(new NUnitTestContext(TestContext.CurrentContext, TestExecutionContext.CurrentContext));
 
       var requestErrorDetection =
           (DiagnosticInformationCollectingRequestErrorDetectionStrategy)Helper.TestInfrastructureConfiguration.RequestErrorDetectionStrategy;
@@ -73,8 +74,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [TearDown]
     public void IntegrationTestTearDown ()
     {
-      var hasSucceeded = TestContext.CurrentContext.Result.Outcome.Status != TestStatus.Failed;
-      _webTestHelper.OnTearDown(hasSucceeded);
+      _webTestHelper.OnTearDown();
       _aspNetRequestErrorDetectionScope.Dispose();
     }
 
