@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.BiDi;
 using OpenQA.Selenium.BiDi.Modules.BrowsingContext;
@@ -48,9 +47,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Firefox
 
     public override IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ()
     {
-      var logs = _logEntries.ToList();
-      _logEntries.Clear();
-      return logs;
+      return _logEntries;
     }
 
     public override void ResetBrowserLogs ()
