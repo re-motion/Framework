@@ -19,7 +19,6 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using System.Windows.Forms;
 using Coypu;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
@@ -326,21 +325,6 @@ namespace Remotion.Web.Development.WebTesting
             var webElement = (IWebElement)scope.Native;
             return webElement.Displayed;
           });
-    }
-
-    /// <summary>
-    /// Ensures unhovering of the given <paramref name="scope"/> by placing the cursor back at 0/0 in the top-left corner.
-    /// </summary>
-    /// <param name="scope">The <see cref="ElementScope"/> of the element against which the unhover operation is performed.</param>
-    /// <param name="logger">
-    /// The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output. The <paramref name="logger"/> can be retrieved from
-    /// <see cref="WebTestObject{TWebTestObjectContext}"/>.<see cref="WebTestObject{TWebTestObjectContext}.Logger"/>.
-    /// </param>
-    public static void Unhover ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
-    {
-      ArgumentUtility.CheckNotNull("scope", scope);
-
-      Cursor.Position = new Point(0, 0);
     }
 
     /// <summary>
