@@ -35,18 +35,26 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   public class TestExecutionScreenshotRecorder
   {
     private readonly ILogger _logger;
+    private readonly ICursorInformationProvider _cursorInformationProvider;
 
     private readonly string _outputDirectory;
 
     private bool _isCursorCaptured;
-    private CursorInformation? _cursorInformation;
+    private ICursorInformation? _cursorInformation;
 
     public TestExecutionScreenshotRecorder ([NotNull] string outputDirectory, [NotNull] ILoggerFactory loggerFactory)
+        : this(outputDirectory, loggerFactory, EmptyCursorInformationProvider.Instance)
+    {
+    }
+
+    public TestExecutionScreenshotRecorder ([NotNull] string outputDirectory, [NotNull] ILoggerFactory loggerFactory, ICursorInformationProvider cursorInformationProvider)
     {
       ArgumentUtility.CheckNotNullOrEmpty("outputDirectory", outputDirectory);
       ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+      ArgumentUtility.CheckNotNull("cursorInformationProvider", cursorInformationProvider);
 
       _logger = loggerFactory.CreateLogger<TestExecutionScreenshotRecorder>();
+      _cursorInformationProvider = cursorInformationProvider;
       _outputDirectory = Path.GetFullPath(outputDirectory);
       Directory.CreateDirectory(_outputDirectory);
     }
@@ -203,20 +211,20 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       _logger.LogInformation("Saved screenshots for the browser session '{0}'.", GetWindowText(browserSession));
     }
 
-    private CursorInformation CaptureCursorInformationWithLog ()
+    private ICursorInformation CaptureCursorInformationWithLog ()
     {
       try
       {
-        return CursorInformation.Capture();
+        return _cursorInformationProvider.GetCursorInformation();
       }
       catch (Exception ex)
       {
         _logger.LogError("Could not capture CursorInformation. Exception: \n{0}", ex);
-        return CursorInformation.Empty;
+        return EmptyCursorInformation.Instance;
       }
     }
 
-    private CursorInformation GetCursorInformation ()
+    private ICursorInformation GetCursorInformation ()
     {
       if (_isCursorCaptured)
         return _cursorInformation!;

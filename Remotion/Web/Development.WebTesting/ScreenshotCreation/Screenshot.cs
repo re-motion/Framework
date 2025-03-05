@@ -95,7 +95,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
           image,
           Size.Empty,
           new[] { new Rectangle(Point.Empty, browserBounds.Size) },
-          CursorInformation.Capture(),
+          EmptyCursorInformation.Instance,
           CoordinateSystem.Browser);
     }
 
@@ -119,7 +119,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
           image,
           Size.Empty,
           new[] { new Rectangle(Point.Empty, image.Size) },
-          CursorInformation.Empty,
+          EmptyCursorInformation.Instance,
           CoordinateSystem.Browser);
     }
 
@@ -147,11 +147,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
           image,
           new Size(requiredBounds.X, requiredBounds.Y),
           screenBounds,
-          CursorInformation.Capture(),
+          EmptyCursorInformation.Instance,
           CoordinateSystem.Desktop);
     }
 
-    private readonly CursorInformation _cursorInformation;
+    private readonly ICursorInformation _cursorInformation;
     private readonly Size _desktopOffset;
     private readonly Image _image;
     private readonly Rectangle[] _screenshotBounds;
@@ -163,7 +163,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] Image image,
         Size desktopOffset,
         Rectangle[] screenshotBounds,
-        [NotNull] CursorInformation cursorInformation,
+        [NotNull] ICursorInformation cursorInformation,
         CoordinateSystem coordinateSystem)
     {
       ArgumentUtility.CheckNotNull("image", image);
@@ -181,7 +181,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// The <see cref="CursorInformation"/> associated with the screenshot.
     /// </summary>
     [NotNull]
-    public CursorInformation CursorInformation
+    public ICursorInformation CursorInformation
     {
       get
       {
