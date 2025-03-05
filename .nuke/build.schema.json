@@ -234,7 +234,7 @@
           "items": {
             "type": "string",
             "enum": [
-              "NET8_0_WINDOWS"
+              "NET8_0"
             ]
           }
         },

@@ -6,7 +6,7 @@
   "TestConfigurations": [ "Debug"],
   "TestExecutionRuntimes": [ "LocalMachine" ],
   "TestPlatforms": [ "x86" ],
-  "TestTargetRuntimes": [ "NET8_0_WINDOWS" ],
+  "TestTargetRuntimes": [ "NET8_0" ],
   "TestBrowsers": [ "NoBrowser" ],
   "TestSqlServers": [ "SqlServerDefault" ]
 }
