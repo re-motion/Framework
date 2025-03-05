@@ -17,7 +17,6 @@
 using System;
 using System.Drawing;
 using System.Threading;
-using System.Windows.Automation;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
@@ -32,19 +31,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
   /// </summary>
   public static class FluentScreenshotExtensions
   {
-    /// <summary>
-    /// Starts the fluent screenshot interface for the specified <paramref name="automationElement"/>.
-    /// </summary>
-    public static FluentScreenshotElement<AutomationElement> ForAutomationElementScreenshot (
-        [NotNull] this AutomationElement automationElement,
-        [CanBeNull] IFluentScreenshotElement? parent = null,
-        [CanBeNull] Rectangle? parentContainer = null)
-    {
-      ArgumentUtility.CheckNotNull("automationElement", automationElement);
-
-      return FluentUtility.CreateFluentAutomationElement(automationElement);
-    }
-
     /// <summary>
     /// Starts the fluent screenshot interface for the specified <paramref name="controlObject"/>.
     /// </summary>
