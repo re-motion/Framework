@@ -26,6 +26,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" />
+    <PackageReference Include="Microsoft.Maui.Graphics.Skia" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\SharedSource\Core\Utilities\ArgumentUtility.cs" Link="SharedSource\Utilities\ArgumentUtility.cs" />

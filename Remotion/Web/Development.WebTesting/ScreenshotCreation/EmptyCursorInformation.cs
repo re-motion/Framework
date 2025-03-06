@@ -1,6 +1,7 @@
 ﻿// SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
 // SPDX-License-Identifier: LGPL-2.1-or-later
 using System.Drawing;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation;
 
@@ -20,7 +21,7 @@ public class EmptyCursorInformation : ICursorInformation
 
   public Point Position { get; } = Point.Empty;
 
-  public void Draw (Graphics canvas)
+  public void Draw (Canvas canvas)
   {
   }
 }

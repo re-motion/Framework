@@ -24,6 +24,7 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Screen
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
 using Remotion.Web.Development.WebTesting.WebDriver;
@@ -55,12 +56,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private static readonly Brush s_foregroundBrush = new SolidBrush(Color.FromArgb(0x00, 0x00, 0x00));
     private static readonly Brush s_backgroundBrush = new SolidBrush(Color.FromArgb(0xCC, 0xCC, 0xFF));
 
-    private static readonly StringFormat s_stringFormat = new StringFormat
-                                                          {
-                                                              Alignment = StringAlignment.Center,
-                                                              LineAlignment = StringAlignment.Center,
-                                                              Trimming = StringTrimming.Word
-                                                          };
+    private static readonly StringFormat s_stringFormat = new StringFormat(HorizontalAlignment.Center, VerticalAlignment.Center, TextFlow.OverflowBounds);
 
     [Test]
     public void GetTarget ()
@@ -474,12 +470,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       public ScreenshotTransformationContext<T> BeginApply (ScreenshotTransformationContext<T> context)
       {
-        context.Graphics.FillEllipse(
-            Brush,
+        var bounds = new Rectangle(
             context.ResolvedElement.ElementBounds.X + Offset.X,
             context.ResolvedElement.ElementBounds.Y + Offset.Y,
             Width,
             Height);
+        context.Canvas.FillEllipse(Brush, bounds);
 
         return context;
       }

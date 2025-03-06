@@ -63,7 +63,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
       using (var annotationImage = AnnotationLayer.CloneImage())
       {
-        annotationImage.Save(path, ImageFormat.Png);
+        annotationImage.Save(path);
       }
     }
   }

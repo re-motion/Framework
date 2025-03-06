@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
@@ -50,16 +50,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       ArgumentUtility.CheckNotNull("screenshot", screenshot);
       ArgumentUtility.CheckNotNull("locator", locator);
 
-      var bitmapOfScreenshotSize = new Bitmap(screenshot.Image.Width, screenshot.Image.Height);
-      bitmapOfScreenshotSize.MakeTransparent();
-
+      var bitmapOfScreenshotSize = new Image(screenshot.Image.Width, screenshot.Image.Height);
       return new ScreenshotLayer(screenshot, locator, bitmapOfScreenshotSize);
     }
 
     private readonly IBrowserContentLocator _locator;
 
     private Image _layerImage;
-    private Graphics _layerGraphics;
+    private Canvas _layerCanvas;
     private Rectangle _imageBounds;
     private Size _normalizationVector;
 
@@ -77,7 +75,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       _locator = locator;
       _layerImage = imageOverride;
-      _layerGraphics = Graphics.FromImage(_layerImage);
+      _layerCanvas = Canvas.FromImage(_layerImage);
 
       _screenshotOffset = screenshot.DesktopOffset;
       _screenshotBounds = screenshot.ScreenshotBounds;
@@ -94,7 +92,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       ArgumentUtility.CheckNotNull("annotation", annotation);
 
       var resolvedElement = new ResolvedScreenshotElement(_coordinateSystem, _imageBounds, ElementVisibility.FullyVisible, _imageBounds, _imageBounds);
-      annotation.Draw(_layerGraphics, resolvedElement);
+      annotation.Draw(_layerCanvas, resolvedElement);
     }
 
     /// <summary>
@@ -118,7 +116,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
         ValidateResolvedElement(context.ResolvedElement, minimumElementVisibility);
 
-        annotation.Draw(context.Graphics, context.ResolvedElement);
+        annotation.Draw(context.Canvas, context.ResolvedElement);
       }
     }
 
@@ -159,24 +157,22 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     [NotNull]
     public Image CloneImage ()
     {
-      _layerGraphics.Flush();
-      return (Image)_layerImage.Clone();
+      _layerCanvas.Flush();
+      return _layerImage.Clone();
     }
 
     /// <inheritdoc />
     public void Dispose ()
     {
       _layerImage.Dispose();
-      _layerGraphics.Dispose();
+      _layerCanvas.Dispose();
     }
 
     private void PrepareScreenshotLayer ()
     {
       _normalizationVector = new Size(-_screenshotOffset.Width, -_screenshotOffset.Height);
 
-      var transformationMatrix = new Matrix();
-      transformationMatrix.Translate(_normalizationVector.Width, _normalizationVector.Height);
-      _layerGraphics.Transform = transformationMatrix;
+      _layerCanvas.SetTransform(_normalizationVector.Width, _normalizationVector.Height);
 
       _imageBounds = new Rectangle(
           _screenshotOffset.Width,
@@ -187,15 +183,15 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
     private void CropRectangle (Rectangle croppingRectangle)
     {
-      _layerGraphics.Flush(FlushIntention.Sync);
+      _layerCanvas.Flush();
 
-      var newImage = new Bitmap(croppingRectangle.Size.Width, croppingRectangle.Size.Height);
-      var newGraphics = Graphics.FromImage(newImage);
+      var newImage = new Image(croppingRectangle.Size.Width, croppingRectangle.Size.Height);
+      var newCanvas = Canvas.FromImage(newImage);
       var newImageBounds = new Rectangle(Point.Empty, croppingRectangle.Size);
 
       var normalizedCroppingRectangle = new Rectangle(croppingRectangle.Location + _normalizationVector, croppingRectangle.Size);
-      newGraphics.FillRectangle(Brushes.Transparent, newImageBounds);
-      newGraphics.DrawImage(_layerImage, newImageBounds, normalizedCroppingRectangle, GraphicsUnit.Pixel);
+      newCanvas.FillRectangle(Brushes.Transparent, newImageBounds);
+      newCanvas.DrawImage(_layerImage, newImageBounds, normalizedCroppingRectangle);
 
       _screenshotOffset = new Size(croppingRectangle.Location);
       _screenshotBounds = new[] { croppingRectangle };
@@ -203,8 +199,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       _layerImage?.Dispose();
       _layerImage = newImage;
 
-      _layerGraphics?.Dispose();
-      _layerGraphics = newGraphics;
+      _layerCanvas?.Dispose();
+      _layerCanvas = newCanvas;
 
       PrepareScreenshotLayer();
     }
@@ -263,7 +259,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       return new ScreenshotTransformationHelper<T>(
           manipulation,
-          _layerGraphics,
+          _layerCanvas,
           resolver,
           target,
           _coordinateSystem,
