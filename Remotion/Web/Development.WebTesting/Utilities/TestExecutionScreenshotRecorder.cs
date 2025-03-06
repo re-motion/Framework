@@ -25,6 +25,7 @@ using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 using Screenshot = Remotion.Web.Development.WebTesting.ScreenshotCreation.Screenshot;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
@@ -163,20 +164,17 @@ namespace Remotion.Web.Development.WebTesting.Utilities
           {
             var browserContentBounds = locator.GetBrowserContentBounds(nativeDriver);
 
-            using (var graphics = Graphics.FromImage(screenshot.Image))
+            using (var canvas = Canvas.FromImage(screenshot.Image))
             {
-              var transformMatrix = new Matrix();
-              transformMatrix.Translate(-browserContentBounds.X, -browserContentBounds.Y);
+              canvas.SetTransform(-browserContentBounds.X, -browserContentBounds.Y);
 
-              graphics.Transform = transformMatrix;
-
-              GetCursorInformation().Draw(graphics);
+              GetCursorInformation().Draw(canvas);
             }
           }
 
           var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath(_outputDirectory, testName, windowSuffix, "png");
 
-          screenshot.Image.Save(filePath, ImageFormat.Png);
+          screenshot.Image.Save(filePath);
         }
         catch (Exception ex)
         {

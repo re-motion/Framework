@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Drawing;
 using JetBrains.Annotations;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -26,10 +26,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
   public interface IScreenshotAnnotation
   {
     /// <summary>
-    /// Draws the annotation onto the specified <paramref name="graphics"/>.
+    /// Draws the annotation onto the specified <paramref name="canvas"/>.
     /// </summary>
-    /// <param name="graphics">Device which will be used for drawing.</param>
+    /// <param name="canvas">The canvas onto which the screenshot annotation will be drawn.</param>
     /// <param name="resolvedScreenshotElement">Information about the screenshot element the annotation will be applied to.</param>
-    void Draw ([NotNull] Graphics graphics, [NotNull] ResolvedScreenshotElement resolvedScreenshotElement);
+    void Draw ([NotNull] Canvas canvas, [NotNull] ResolvedScreenshotElement resolvedScreenshotElement);
   }
 }

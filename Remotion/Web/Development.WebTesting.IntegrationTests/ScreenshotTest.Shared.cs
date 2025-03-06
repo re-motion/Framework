@@ -22,8 +22,10 @@ using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.PageObjects;
+using Remotion.Web.Development.WebTesting.Resources;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
 using Remotion.Web.Development.WebTesting.WebDriver;
@@ -51,16 +53,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private static readonly Color s_colorD = Color.FromArgb(0x99, 0x00, 0x99);
     private static readonly Color s_colorE = Color.FromArgb(0x99, 0xFF, 0x33);
 
-    private static readonly Font s_font = new Font("Consolas", 8.25f);
+    private static readonly Font s_font = LiberationsSans.Regular(8.25f);
     private static readonly Brush s_foregroundBrush = new SolidBrush(Color.FromArgb(0x00, 0x00, 0x00));
     private static readonly Brush s_backgroundBrush = new SolidBrush(Color.FromArgb(0xCC, 0xCC, 0xFF));
 
-    private static readonly StringFormat s_stringFormat = new StringFormat
-                                                          {
-                                                              Alignment = StringAlignment.Center,
-                                                              LineAlignment = StringAlignment.Center,
-                                                              Trimming = StringTrimming.Word
-                                                          };
+    private static readonly StringFormat s_stringFormat = new StringFormat(HorizontalAlignment.Center, VerticalAlignment.Center, TextFlow.OverflowBounds);
 
     [Test]
     public void GetTarget ()
@@ -469,12 +466,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       public ScreenshotTransformationContext<T> BeginApply (ScreenshotTransformationContext<T> context)
       {
-        context.Graphics.FillEllipse(
-            Brush,
+        var bounds = new Rectangle(
             context.ResolvedElement.ElementBounds.X + Offset.X,
             context.ResolvedElement.ElementBounds.Y + Offset.Y,
             Width,
             Height);
+        context.Canvas.FillEllipse(Brush, bounds);
 
         return context;
       }

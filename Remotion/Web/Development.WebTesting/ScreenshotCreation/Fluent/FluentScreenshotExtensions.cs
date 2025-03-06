@@ -21,7 +21,9 @@ using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.Resources;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
@@ -177,8 +179,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
 
       IScreenshotAnnotation annotation = new ScreenshotBadgeAnnotation(
           content,
-          contentPadding ?? new WebPadding(3, 3, 3, 0),
-          font ?? new Font("Arial", 14),
+          contentPadding ?? new WebPadding(3, 0, 3, 0),
+          font ?? LiberationsSans.Regular(19f),
           contentBrush ?? Brushes.White,
           borderPen ?? Pens.White,
           backgroundBrush ?? Brushes.Red,
@@ -211,7 +213,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
 
       IScreenshotAnnotation annotation = new ScreenshotTextAnnotation(
           content,
-          font ?? SystemFonts.DefaultFont,
+          font ?? LiberationsSans.Regular(),
           foregroundBrush ?? Brushes.Red,
           backgroundBrush,
           stringFormat ?? StringFormat.GenericDefault,
@@ -244,9 +246,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     }
 
     /// <summary>
-    /// Free-draws onto the <see cref="Graphics"/> object of the screenshot.
+    /// Free-draws onto the <see cref="Canvas"/> object of the screenshot.
     /// </summary>
-    public static void Freedraw ([NotNull] this ScreenshotBuilder builder, [NotNull] Action<Graphics, ResolvedScreenshotElement> drawAction)
+    public static void Freedraw ([NotNull] this ScreenshotBuilder builder, [NotNull] Action<Canvas, ResolvedScreenshotElement> drawAction)
     {
       ArgumentUtility.CheckNotNull("builder", builder);
       ArgumentUtility.CheckNotNull("drawAction", drawAction);
@@ -255,12 +257,12 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     }
 
     /// <summary>
-    /// Free-draws onto the <see cref="Graphics"/> object of the screenshot, targeting <paramref name="fluentTarget"/>.
+    /// Free-draws onto the <see cref="Canvas"/> object of the screenshot, targeting <paramref name="fluentTarget"/>.
     /// </summary>
     public static void Freedraw<T> (
         [NotNull] this ScreenshotBuilder builder,
         [NotNull] IFluentScreenshotElement<T> fluentTarget,
-        [NotNull] Action<Graphics, ResolvedScreenshotElement> drawAction)
+        [NotNull] Action<Canvas, ResolvedScreenshotElement> drawAction)
         where T : notnull
     {
       ArgumentUtility.CheckNotNull("builder", builder);

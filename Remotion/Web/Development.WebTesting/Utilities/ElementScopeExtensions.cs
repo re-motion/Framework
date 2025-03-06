@@ -23,6 +23,7 @@ using JetBrains.Annotations;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
 
 namespace Remotion.Web.Development.WebTesting.Utilities

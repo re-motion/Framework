@@ -22,6 +22,7 @@ using JetBrains.Annotations;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -43,13 +44,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
       var screenshot = ((ITakesScreenshot)browserSession.Driver.Native).GetScreenshot();
 
-      Bitmap image;
+      Image image;
       using (var memoryStream = new MemoryStream(screenshot.AsByteArray, false))
       {
-        // For some reasons GDI+ might throw an OutOfMemory exception when the image provided by the driver is used
-        // As such, we copy the image which is quite fast (~5ms) and prevents any issues down the line
-        var corruptedImage = (Bitmap)Image.FromStream(memoryStream);
-        image = new Bitmap(corruptedImage);
+        image = Image.FromStream(memoryStream);
       }
 
       return new Screenshot(

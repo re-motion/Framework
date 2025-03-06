@@ -15,20 +15,20 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Drawing;
 using JetBrains.Annotations;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 {
   /// <summary>
-  /// Provides the ability to freedraw using the <see cref="Graphics"/> object of the screenshot.
+  /// Provides the ability to freedraw using the <see cref="Canvas"/> object of the screenshot.
   /// </summary>
   public class ScreenshotCustomAnnotation : IScreenshotAnnotation
   {
-    private readonly Action<Graphics, ResolvedScreenshotElement> _elementDrawAction;
+    private readonly Action<Canvas, ResolvedScreenshotElement> _elementDrawAction;
 
-    public ScreenshotCustomAnnotation ([NotNull] Action<Graphics, ResolvedScreenshotElement> elementDrawAction)
+    public ScreenshotCustomAnnotation ([NotNull] Action<Canvas, ResolvedScreenshotElement> elementDrawAction)
     {
       ArgumentUtility.CheckNotNull("elementDrawAction", elementDrawAction);
 
@@ -36,12 +36,12 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <inheritdoc />
-    public void Draw (Graphics graphics, ResolvedScreenshotElement resolvedScreenshotElement)
+    public void Draw (Canvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull("graphics", graphics);
+      ArgumentUtility.CheckNotNull("canvas", canvas);
       ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
 
-      _elementDrawAction(graphics, resolvedScreenshotElement);
+      _elementDrawAction(canvas, resolvedScreenshotElement);
     }
   }
 }

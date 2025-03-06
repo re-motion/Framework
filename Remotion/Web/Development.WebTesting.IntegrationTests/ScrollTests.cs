@@ -26,6 +26,7 @@ using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
