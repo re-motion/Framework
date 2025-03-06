@@ -101,6 +101,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       Assert.That(browserLogEntries.Count(l => l.Message.Contains(errorMessage)), Is.EqualTo(1));
       Assert.That(browserLogEntries.Count(l => l.Message.Contains(warningMessage)), Is.EqualTo(1));
+
+      // Getting the browser logs is idempotent - getting them again without any action in between should yield the same result
+      Assert.That(browserLogEntries, Is.EquivalentTo(home.Context.Browser.GetBrowserLogs()));
     }
 
     private WxePageObject Start ()

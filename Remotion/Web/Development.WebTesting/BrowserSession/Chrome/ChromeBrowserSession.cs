@@ -30,6 +30,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Chrome
   public class ChromeBrowserSession : BrowserSessionBase<IChromeConfiguration>
   {
     private readonly IReadOnlyCollection<IBrowserSessionCleanUpStrategy> _cleanUpStrategies;
+    private readonly List<BrowserLogEntry> _browserLogEntries = new();
 
     public ChromeBrowserSession (
         [NotNull] Coypu.BrowserSession value,
@@ -45,15 +46,17 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Chrome
     /// <inheritdoc />
     public override IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ()
     {
-      return ((IWebDriver)Driver.Native).Manage().Logs.GetLog(LogType.Browser)
-          .Select(logEntry => new BrowserLogEntry(logEntry))
-          .ToArray();
+      var newEntries = ((IWebDriver)Driver.Native).Manage().Logs.GetLog(LogType.Browser)
+          .Select(logEntry => new BrowserLogEntry(logEntry));
+      _browserLogEntries.AddRange(newEntries);
+      return _browserLogEntries;
     }
 
     /// <inheritdoc />
     public override void ResetBrowserLogs ()
     {
-      ((IWebDriver)Driver.Native).Manage().Logs.GetLog(LogType.Browser); // GetLog() also resets the logs
+      GetBrowserLogs(); // fetch the pending entries so that they are cleared as well
+      _browserLogEntries.Clear();
     }
 
     /// <inheritdoc />
