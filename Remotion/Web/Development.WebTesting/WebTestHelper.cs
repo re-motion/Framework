@@ -26,6 +26,7 @@ using OpenQA.Selenium.Support.UI;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Accessibility;
 using Remotion.Web.Development.WebTesting.Accessibility.Implementation;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies;
@@ -115,14 +116,14 @@ namespace Remotion.Web.Development.WebTesting
     private readonly IBrowserConfiguration _browserConfiguration;
     private readonly DriverConfiguration _driverConfiguration;
     private readonly ITestInfrastructureConfiguration _testInfrastructureConfiguration;
-    private readonly List<IBrowserSession> _browserSessions = new List<IBrowserSession>();
+    private readonly List<IBrowserSession> _browserSessions = new();
     private readonly IAccessibilityConfiguration _accessibilityConfiguration;
     private IBrowserSession? _mainBrowserSession;
 
     /// <summary>
     /// Name of the current web test.
     /// </summary>
-    private string? _testName;
+    private ITestContext? _testContext;
 
     [PublicAPI]
     protected WebTestHelper ([NotNull] WebTestConfigurationFactory webTestConfigurationFactory)
@@ -194,16 +195,22 @@ namespace Remotion.Web.Development.WebTesting
         EnsureCursorIsOutsideBrowserWindow();
     }
 
+    [Obsolete("Use OnSetUp(ITestContext) instead, using the implementation example given in the ITestContext documentation, or your own implementation. (Version: 8.0.0)", true)]
+    public void OnSetUp ([NotNull] string testName)
+    {
+      throw new NotSupportedException("Obsolete OnSetUp method.");
+    }
+
     /// <summary>
     /// SetUp method for each web test.
     /// </summary>
-    /// <param name="testName">Name of the test being performed.</param>
-    public void OnSetUp ([NotNull] string testName)
+    /// <param name="testContext">An <see cref="ITestContext"/> object for the test being performed.</param>
+    public void OnSetUp ([NotNull] ITestContext testContext)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("testName", testName);
+      ArgumentUtility.CheckNotNull("testContext", testContext);
 
-      _testName = testName;
-      _logger.LogInformation("Executing test: {0}.", _testName);
+      _testContext = testContext;
+      _logger.LogInformation("Executing test: {0}.", _testContext.TestName);
 
       if (_mainBrowserSession != null)
       {
@@ -293,20 +300,26 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// TearDown method for each web test.
     /// </summary>
-    /// <param name="hasSucceeded">Specifies whether the test has been successful.</param>
-    public void OnTearDown (bool hasSucceeded)
+    public void OnTearDown ()
     {
-      if (!hasSucceeded && ShouldTakeScreenshots())
+      Assertion.IsNotNull(_testContext, "'{0}' should be set by the test infrastructure calling '{1}'", nameof(_testContext), nameof(OnSetUp));
+
+      if (_testContext.IsSuccessful)
       {
-        Assertion.IsNotNull(_testName, "'{0}' should be set by the test infrastructure calling '{1}'", nameof(_testName), nameof(OnSetUp));
+        foreach (var browserSession in _browserSessions)
+          BrowserLogUtility.IsBrowserLogOkay(browserSession, _testContext);
+      }
+
+      if (!_testContext.IsSuccessful && ShouldTakeScreenshots())
+      {
         var screenshotRecorder = new TestExecutionScreenshotRecorder(_testInfrastructureConfiguration.ScreenshotDirectory, _loggerFactory);
         screenshotRecorder.CaptureCursor();
         if (_mainBrowserSession is { Headless: false })
-          screenshotRecorder.TakeDesktopScreenshot(_testName);
-        screenshotRecorder.TakeBrowserScreenshot(_testName, _browserSessions.ToArray(), BrowserConfiguration.Locator);
+          screenshotRecorder.TakeDesktopScreenshot(_testContext.TestName);
+        screenshotRecorder.TakeBrowserScreenshot(_testContext.TestName, _browserSessions.ToArray(), BrowserConfiguration.Locator);
       }
 
-      _logger.LogInformation("Finished test: {0} [has succeeded: {1}].", _testName, hasSucceeded);
+      _logger.LogInformation("Finished test: {0} [has succeeded: {1}].", _testContext.TestName, _testContext.IsSuccessful);
 
       _browserConfiguration.DownloadHelper.DeleteFiles();
     }

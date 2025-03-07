@@ -18,8 +18,9 @@ using System;
 using System.Diagnostics;
 using Coypu;
 using NUnit.Framework;
-using NUnit.Framework.Interfaces;
+using NUnit.Framework.Internal;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 
@@ -62,14 +63,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [SetUp]
     public void IntegrationTestSetUp ()
     {
-      _webTestHelper.OnSetUp(GetType().Name + "_" + TestContext.CurrentContext.Test.Name);
+      _webTestHelper.OnSetUp(new NUnitTestContext(TestContext.CurrentContext, TestExecutionContext.CurrentContext));
     }
 
     [TearDown]
     public void IntegrationTestTearDown ()
     {
-      var hasSucceeded = TestContext.CurrentContext.Result.Outcome.Status != TestStatus.Failed;
-      _webTestHelper.OnTearDown(hasSucceeded);
+      _webTestHelper.OnTearDown();
     }
 
     [OneTimeTearDown]
