@@ -17,6 +17,7 @@
 using System;
 using System.Drawing;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
@@ -243,6 +244,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [IgnoreBrowserLogMessage(ExpectedBrowserLogMessages.LoadResourceCausedInternalServerErrorTemplate, [@"DropDownMenuWebService\.asmx/GetMenuItemStatusWithError"])]
     public void TestDropDownMenuControlObject_OpenDropDownMenuWithError_FailsWithException ()
     {
       var home = Start();

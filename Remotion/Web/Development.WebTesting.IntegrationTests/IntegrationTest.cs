@@ -19,7 +19,6 @@ using System.Diagnostics;
 using Coypu;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
-using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests

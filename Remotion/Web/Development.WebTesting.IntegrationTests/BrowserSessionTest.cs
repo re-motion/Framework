@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -51,6 +52,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [PerformBrowserLogCheck(false)]
     public void ChromeDriver_SupportsBrowserLogs ()
     {
       if (!Helper.BrowserConfiguration.IsChrome())
@@ -60,6 +62,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [PerformBrowserLogCheck(false)]
     public void MSEdgeDriver_SupportsBrowserLogs ()
     {
       if (!Helper.BrowserConfiguration.IsEdge())
@@ -69,6 +72,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [PerformBrowserLogCheck(false)]
     public void GeckoDriver_SupportsBrowserLogs ()
     {
       if (!Helper.BrowserConfiguration.IsFirefox())
