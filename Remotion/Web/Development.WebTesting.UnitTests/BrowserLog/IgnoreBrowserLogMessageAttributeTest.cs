@@ -64,4 +64,17 @@ public class IgnoreBrowserLogMessageAttributeTest
     var lastRegex = regexCollection.Last();
     Assert.That(lastRegex.IsMatch("My number is 42"), Is.True);
   }
+
+  [Test]
+  [TestCase("A {0} test case with {1} arguments", new object[] { "simple", 2 }, "A simple test case with 2 arguments")]
+  [TestCase(@"A {0} test case with (\d)+ arguments", new object[] { "Regex" }, @"A Regex test case with (\d)+ arguments")]
+  [TestCase(
+      @"A {0} test case ?\p{{Pd}} containing a character category using {{}} \(braces\)",
+      new object[] { "problematic" },
+      @"A problematic test case ?\p{Pd} containing a character category using {} \(braces\)")]
+  public void ConstructorWithTemplateArguments_ReplacesPlaceholdersInPattern (string patternTemplate, object[] templateArguments, string patternResult)
+  {
+    var attribute = new IgnoreBrowserLogMessageAttribute(patternTemplate, templateArguments);
+    Assert.That(attribute.Pattern, Is.EqualTo(patternResult));
+  }
 }
