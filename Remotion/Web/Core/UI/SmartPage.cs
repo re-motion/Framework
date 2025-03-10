@@ -669,6 +669,13 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
   protected override void OnInit (EventArgs e)
   {
+    if (AsyncMode)
+    {
+      throw new InvalidOperationException(
+          "SmartPage does not support Async=\"true\" or manually setting AsyncMode=true."
+          + " Please remove the property assignment in the ASPX markup or the code-behind.");
+    }
+
     base.OnInit(e);
     RegisterRequiresControlState(this);
   }
