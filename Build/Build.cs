@@ -217,7 +217,6 @@ class Build : RemotionBuild, IDependDB
     projects.AddUnitTestProject("Web.Development.WebTesting.UnitTests", normalTestConfiguration);
     projects.AddUnitTestProject("Web.UnitTests", normalTestConfiguration);
     projects.AddUnitTestProject("Web.Development.WebTesting.IntegrationTests", webTestingTestConfiguration);
-    projects.AddUnitTestProject("Web.Development.WebTesting.IntegrationTests.RequireUI", webTestingTestConfiguration);
     projects.AddUnitTestProject("Web.IntegrationTests", webTestingTestConfiguration);
     projects.AddReleaseProject("Integration.Domain");
     projects.AddReleaseProject("Integration.Web");
