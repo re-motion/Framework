@@ -174,12 +174,13 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
                       {
                           WindowStyle = ProcessWindowStyle.Hidden,
                           ErrorDialog = false,
-                          LoadUserProfile = true,
                           CreateNoWindow = false,
                           UseShellExecute = false,
                           RedirectStandardOutput = true,
                           RedirectStandardError = true
                       };
+      if (OperatingSystem.IsWindows())
+        startInfo.LoadUserProfile = true;
 
       if (!string.IsNullOrEmpty(workingDirectory))
         startInfo.WorkingDirectory = workingDirectory;
