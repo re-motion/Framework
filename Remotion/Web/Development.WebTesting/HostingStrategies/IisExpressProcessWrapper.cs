@@ -42,10 +42,11 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
                       {
                           WindowStyle = ProcessWindowStyle.Minimized,
                           ErrorDialog = true,
-                          LoadUserProfile = true,
                           CreateNoWindow = false,
                           UseShellExecute = false
                       };
+      if (OperatingSystem.IsWindows())
+        startInfo.LoadUserProfile = true;
 
       var programFilesPath = GetProgramFilesPath(startInfo);
       var iisExpressExecutablePath = Path.Combine(programFilesPath, "IIS Express", "iisexpress.exe");

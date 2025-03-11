@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Runtime.Versioning;
 using JetBrains.Annotations;
 using Microsoft.Win32;
 
@@ -34,6 +35,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
         _policiesPath = policiesPath;
       }
 
+      [SupportedOSPlatform("Windows")]
       public void CleanUp ()
       {
         EnsureWriteAccessToPolicyKey(_policiesPath);
@@ -69,7 +71,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
     [NotNull]
     public static IBrowserSessionCleanUpStrategy CreateForChrome (ChromiumDisableSecurityWarningsBehavior disableSecurityWarningsBehavior)
     {
-      return CreateCleanUpStrategy(disableSecurityWarningsBehavior, c_chromePoliciesPath);
+      return OperatingSystem.IsWindows()
+          ? CreateCleanUpStrategy(disableSecurityWarningsBehavior, c_chromePoliciesPath)
+          : NullBrowserSessionCleanUpStrategy.Instance;
     }
 
     /// <summary>
@@ -85,9 +89,12 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
     [NotNull]
     public static IBrowserSessionCleanUpStrategy CreateForEdge (ChromiumDisableSecurityWarningsBehavior disableSecurityWarningsBehavior)
     {
-      return CreateCleanUpStrategy(disableSecurityWarningsBehavior, c_edgePoliciesPath);
+      return OperatingSystem.IsWindows()
+          ? CreateCleanUpStrategy(disableSecurityWarningsBehavior, c_edgePoliciesPath)
+          : NullBrowserSessionCleanUpStrategy.Instance;
     }
 
+    [SupportedOSPlatform("Windows")]
     private static IBrowserSessionCleanUpStrategy CreateCleanUpStrategy (ChromiumDisableSecurityWarningsBehavior disableSecurityWarningsBehavior, string policiesPath)
     {
       if (!SecurityWarningsEnabled(policiesPath))
@@ -111,6 +118,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
       }
     }
 
+    [SupportedOSPlatform("Windows")]
     private static void DisableSecurityWarningsViaRegistry (string policiesPath)
     {
       EnsureWriteAccessToPolicyKey(policiesPath);
@@ -121,6 +129,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
       }
     }
 
+    [SupportedOSPlatform("Windows")]
     private static bool SecurityWarningsEnabled (string policiesPath)
     {
       using (var currentUserKey = Registry.CurrentUser.OpenSubKey(policiesPath))
@@ -133,6 +142,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
       }
     }
 
+    [SupportedOSPlatform("Windows")]
     private static void EnsureWriteAccessToPolicyKey (string policiesPath)
     {
       try
@@ -145,6 +155,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
       }
     }
 
+    [SupportedOSPlatform("Windows")]
     private static RegistryKey GetOrCreatePoliciesKey (string policiesPath)
     {
       return Registry.CurrentUser.CreateSubKey(policiesPath);

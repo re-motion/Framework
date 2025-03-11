@@ -52,10 +52,11 @@ public class AspNetCoreHostingProcessWrapper
                     {
                       WindowStyle = ProcessWindowStyle.Minimized,
                       ErrorDialog = true,
-                      LoadUserProfile = true,
                       CreateNoWindow = false,
                       UseShellExecute = false
                     };
+    if (OperatingSystem.IsWindows())
+      startInfo.LoadUserProfile = true;
 
     startInfo.FileName = _exePath;
     startInfo.WorkingDirectory = _workingDirectory;
