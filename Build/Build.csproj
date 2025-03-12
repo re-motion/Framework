@@ -22,4 +22,8 @@
     <PackageDownload Include="DependDB.BuildProcessor.NuGetPreProcessor" Version="[3.0.0-alpha-005]" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="..\.nuke\*" Link=".nuke\%(Filename)%(Extension)" />
+  </ItemGroup>
+
 </Project>
