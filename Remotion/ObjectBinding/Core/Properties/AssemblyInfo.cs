@@ -24,5 +24,5 @@ using Remotion.Globalization.Mixins;
 [assembly: AvailableResourcesLanguages("", "de", "fr", "it")]
 
 [assembly: AssemblyCulture("")]
-[assembly: CLSCompliant(true)]
+[assembly: CLSCompliant(false)]
 [assembly: EnsureGlobalizationSupportForMixins]

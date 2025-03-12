@@ -28,4 +28,4 @@ using Remotion.Globalization;
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("")]
 [assembly: AvailableResourcesLanguages("")]
-[assembly: CLSCompliant(true)]
+[assembly: CLSCompliant(false)]

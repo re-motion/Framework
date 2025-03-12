@@ -23,6 +23,6 @@ using System.Reflection;
 // associated with an assembly.
 //
 [assembly: AssemblyCulture("")]
-[assembly: CLSCompliant(true)]
+[assembly: CLSCompliant(false)]
 
 //[assembly: Remotion.Development.Data.UnitTesting.DomainObjects.Linq.ApplyQueryExecutorMixin]

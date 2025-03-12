@@ -145,7 +145,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
           .Verifiable();
     }
 
-    [CLSCompliant(false)]
     public void ExpectObjectSecurityStrategyHasAccess (VerifiableSequence sequence, SecurableObject securableObject, Enum accessTypeEnum, bool returnValue)
     {
       IObjectSecurityStrategy objectSecurityStrategy = securableObject.GetSecurityStrategy();
@@ -161,7 +160,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
           .Verifiable();
     }
 
-    [CLSCompliant(false)]
     public void ExpectFunctionalSecurityStrategyHasAccess (VerifiableSequence sequence, Type securableObjectType, Enum accessTypeEnum, HasStatelessAccessDelegate doDelegate)
     {
       _mockFunctionalSecurityStrategy
@@ -177,7 +175,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
           .Verifiable();
     }
 
-    [CLSCompliant(false)]
     public void ExpectFunctionalSecurityStrategyHasAccess (VerifiableSequence sequence, Type securableObjectType, Enum accessTypeEnum, bool returnValue)
     {
       _mockFunctionalSecurityStrategy
@@ -193,7 +190,6 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
           .Verifiable();
     }
 
-    [CLSCompliant(false)]
     public void ExpectPermissionReflectorGetRequiredMethodPermissions (VerifiableSequence sequence, IMethodInformation methodInformation, params Enum[] returnedAccessTypes)
     {
       _mockPermissionReflector

@@ -123,7 +123,6 @@ public class SimpleDataParameterDefinitionTest
             "value"));
   }
 
-  [CLSCompliant(false)]
   [Test]
   [TestCase(typeof(int), DbType.Int32, false, 42)]
   [TestCase(typeof(double), DbType.Double, false, 17.04d)]

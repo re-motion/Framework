@@ -36,7 +36,6 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe
 
     private readonly IModuleBuilderFactory _moduleBuilderFactory;
 
-    [CLSCompliant(false)]
     public RemotionModuleBuilderFactoryDecorator (IModuleBuilderFactory moduleBuilderFactory)
     {
       ArgumentUtility.CheckNotNull("moduleBuilderFactory", moduleBuilderFactory);
@@ -44,7 +43,6 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe
       _moduleBuilderFactory = moduleBuilderFactory;
     }
 
-    [CLSCompliant(false)]
     public IModuleBuilder CreateModuleBuilder (string assemblyName, string assemblyDirectoryOrNull, bool strongNamed, string keyFilePathOrNull)
     {
       ArgumentUtility.CheckNotNullOrEmpty("assemblyName", assemblyName);
