@@ -7,6 +7,7 @@ using JetBrains.Annotations;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.IntegrationTests;
 using Remotion.Web.Development.WebTesting.Utilities;
 
@@ -21,6 +22,7 @@ namespace Remotion.Web.IntegrationTests.ContentSecurityPolicy;
 ///  - Depending on the CSP settings some elements get blocked and a console error is asserted in the test
 /// </summary>
 [TestFixture]
+[PerformBrowserLogCheck(false)]
 public class CspRenderTest : IntegrationTest
 {
   private enum CspMode

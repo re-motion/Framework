@@ -26,6 +26,7 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCas
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocAutoCompleteReferenceValue;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
@@ -41,6 +42,7 @@ using Remotion.Web.Development.WebTesting.Utilities;
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
+  [IgnoreBrowserLogMessage(DuplicateControlIdTemplate, ["body_AmbiguousControl_KeyValue"])]
   public class BocAutoCompleteReferenceValueControlObjectTest : IntegrationTest
   {
     [Test]
@@ -514,6 +516,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [IgnoreBrowserLogMessage(ExpectedBrowserLogMessages.LoadResourceCausedInternalServerErrorTemplate, ["network 38"])]
     public void TestGetSearchServiceResultsException ()
     {
       var home = Start();

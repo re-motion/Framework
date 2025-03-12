@@ -21,7 +21,14 @@ using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Remotion.Logging.Log4Net;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.Configuration;
+
+[assembly: PerformBrowserLogCheck(true)]
+[assembly: BrowserLogMinimumLevel(OpenQA.Selenium.LogLevel.Warning)]
+[assembly: IgnoreBrowserLogMessage(ExpectedBrowserLogMessages.FavIconNotFound)]
+[assembly: IgnoreBrowserLogMessage(ExpectedBrowserLogMessages.FontNotUsed)]
+[assembly: IgnoreBrowserLogMessage(ExpectedBrowserLogMessages.BeforeUnloadAlertBlocked)]
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {

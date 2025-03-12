@@ -23,6 +23,7 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -36,6 +37,7 @@ using Remotion.Web.Development.WebTesting.Utilities;
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
+  [IgnoreBrowserLogMessage(DuplicateControlIdTemplate, ["body_AmbiguousControl_Value"])]
   public class BocTreeViewControlObjectTest : IntegrationTest
   {
     [Test]
@@ -767,6 +769,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [IgnoreBrowserLogMessage(ExpectedBrowserLogMessages.LoadResourceCausedInternalServerErrorTemplate, [@"BocTreeViewWebService\.asmx/GetMenuItemStatusForTreeNode"])]
     public void TestContextMenuControlObject_OpenDropDownMenuWithError_FailsWithException ()
     {
       var home = Start();

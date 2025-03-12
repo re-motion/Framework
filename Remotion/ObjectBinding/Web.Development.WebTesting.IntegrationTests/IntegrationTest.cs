@@ -20,7 +20,6 @@ using Coypu;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using Remotion.Web.Development.WebTesting;
-using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 
@@ -31,6 +30,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   /// </summary>
   public abstract class IntegrationTest
   {
+    protected const string DuplicateControlIdTemplate = @"2 elements were found for the given id '{0}'\. The first found element was returned to ensure graceful execution.";
+
     private WebTestHelper _webTestHelper;
 
     protected virtual WindowSize WindowSize

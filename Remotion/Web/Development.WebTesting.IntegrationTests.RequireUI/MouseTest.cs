@@ -23,6 +23,7 @@ using Coypu;
 using Coypu.Drivers;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
@@ -31,6 +32,7 @@ using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
+  [PerformBrowserLogCheck(false)]
   public class MouseTest : IntegrationTest
   {
     private const string c_clickDivID = "clickDiv";

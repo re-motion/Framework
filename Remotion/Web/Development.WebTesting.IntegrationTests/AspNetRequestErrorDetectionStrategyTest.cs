@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -28,6 +29,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class AspNetRequestErrorDetectionStrategyTest : IntegrationTest
   {
     [Test]
+    [PerformBrowserLogCheck(false)]
     public void Parse_PostbackError ()
     {
       var aspNetRequestErrorDetectionParser = new AspNetRequestErrorDetectionStrategy();

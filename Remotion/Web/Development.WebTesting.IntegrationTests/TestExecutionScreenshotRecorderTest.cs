@@ -20,6 +20,7 @@ using System.Threading;
 using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
@@ -27,6 +28,7 @@ using Remotion.Web.Development.WebTesting.WebDriver;
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
+  [PerformBrowserLogCheck(false)]
   public class TestExecutionScreenshotRecorderTest : IntegrationTest
   {
     private string _tempSavePath = "";

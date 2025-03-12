@@ -22,6 +22,7 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
@@ -36,6 +37,7 @@ using Remotion.Web.Development.WebTesting.Utilities;
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
+  [IgnoreBrowserLogMessage(DuplicateControlIdTemplate, ["body_AmbiguousControl_(Date|Time)Value"])]
   public class BocDateTimeValueControlObjectTest : IntegrationTest
   {
     [Test]
