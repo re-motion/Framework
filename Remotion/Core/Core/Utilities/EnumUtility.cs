@@ -59,19 +59,16 @@ namespace Remotion.Utilities
         get { return _enumValues; }
       }
 
-      [CLSCompliant(false)]
       public IEnumerable<ulong> NumericValues
       {
         get { return _enumValuesByNumericValue.Keys; }
       }
 
-      [CLSCompliant(false)]
       public object GetValueByNumericValue (ulong numericValue)
       {
         return _enumValuesByNumericValue[numericValue];
       }
 
-      [CLSCompliant(false)]
       public bool ContainsNumericValue (ulong numericValue)
       {
         return _enumValuesByNumericValue.ContainsKey(numericValue);

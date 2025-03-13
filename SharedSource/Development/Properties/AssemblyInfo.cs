@@ -11,7 +11,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 
 [assembly: AssemblyCulture("")]
-[assembly: CLSCompliant(true)]
+[assembly: CLSCompliant(false)]
 
 [assembly: InternalsVisibleTo("Remotion.SharedSource.UnitTests")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

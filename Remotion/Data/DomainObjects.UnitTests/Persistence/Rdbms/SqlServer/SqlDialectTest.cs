@@ -57,7 +57,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
     }
 
     [Test]
-    [CLSCompliant(false)]
     [TestCase(null, TestName = "CreateDataParameter_WithoutSize_DoesNotSetSizeOnParameter.")]
     [TestCase(-1, TestName = "CreateDataParameter_WithNegativeSize_SetsSizeOnParameter.")]
     [TestCase(0, TestName = "CreateDataParameter_WithSizeZero_SetsSizeOnParameter.")]

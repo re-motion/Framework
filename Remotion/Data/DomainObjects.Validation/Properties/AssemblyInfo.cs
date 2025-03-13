@@ -19,5 +19,5 @@ using System.Reflection;
 using Remotion.Validation.Mixins;
 
 [assembly: AssemblyCulture("")]
-[assembly: CLSCompliant(true)]
+[assembly: CLSCompliant(false)]
 [assembly: EnsureValidationSupportForMixins]
