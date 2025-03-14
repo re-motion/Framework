@@ -1,6 +1,5 @@
 ﻿// SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
 // SPDX-License-Identifier: LGPL-2.1-or-later
-using System.Web.UI;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
@@ -12,9 +11,23 @@ namespace Remotion.Web.ContentSecurityPolicy;
 /// Register a custom instance to enable CSP and set a custom CSP header.
 /// </summary>
 /// <threadsafety static="true" instance="true" />
-[ImplementationFor(typeof(ICspDefaultsProvider), Lifetime = LifetimeKind.Singleton)]
+[ImplementationFor(typeof(ICspDefaultsProvider), Lifetime = LifetimeKind.Singleton, Position = Position)]
 public class CspDefaultsProvider : ICspDefaultsProvider
 {
+  public const int Position = 0;
+
+  public static CspDefaultsProvider Create (
+      bool isCspEnabledDefault,
+      CspHeader cspHeaderDefault,
+      bool isCspReportOnlyEnabledDefault,
+      CspHeader cspReportOnlyHeaderDefault)
+  {
+    ArgumentUtility.CheckNotNull(nameof(cspHeaderDefault), cspHeaderDefault);
+    ArgumentUtility.CheckNotNull(nameof(cspReportOnlyHeaderDefault), cspReportOnlyHeaderDefault);
+
+    return new CspDefaultsProvider(isCspEnabledDefault, cspHeaderDefault, isCspReportOnlyEnabledDefault, cspReportOnlyHeaderDefault);
+  }
+
   public static readonly CspHeader DefaultCspHeader = CspHeader.Empty
       .SetDirective(CspDirectives.DefaultSrc, "'self'")
       .SetDirective(CspDirectives.ScriptSrc, "'self'") // Explicit script-src is necessary to ensure that we can add nonces without restricting the CSP
