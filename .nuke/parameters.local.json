@@ -1,5 +1,6 @@
 {
   "$schema": "./build.schema.json",
+  "DependDBProjectImportNotificationMailAddress": "nonexistent@nonexistent.nonexistent",
   "VcsUrlTemplate": "https://raw.githubusercontent.com/re-motion/Framework/develop/{0}",
   "Target": [ "CIBuild" ],
   "TestConfigurations": [ "Debug"],
