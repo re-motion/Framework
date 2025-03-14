@@ -37,7 +37,7 @@ namespace Remotion.Web.UI
 ///   <b>SmartPage</b> is the default implementation of the <see cref="ISmartPage"/> interface. Use this type
 ///   a base class for pages that should supress multiple postbacks, require smart navigation, or have a dirty-state.
 /// </summary>
-/// <include file='..\doc\include\UI\SmartPage.xml' path='SmartPage/Class/*' />
+/// <include file='../Doc/include/UI/SmartPage.xml' path='SmartPage/Class/*' />
 [FileLevelControlBuilder(typeof(CodeProcessingPageControlBuilder))]
 public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 {
@@ -99,7 +99,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <summary> 
   ///   Registers Java Script functions to be executed when the respective <paramref name="pageEvent"/> is raised.
   /// </summary>
-  /// <include file='..\doc\include\UI\SmartPage.xml' path='SmartPage/RegisterClientSidePageEventHandler/*' />
+  /// <include file='../Doc/include/UI/SmartPage.xml' path='SmartPage/RegisterClientSidePageEventHandler/*' />
   public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
   {
     _smartPageInfo.RegisterClientSidePageEventHandler(pageEvent, key, function);

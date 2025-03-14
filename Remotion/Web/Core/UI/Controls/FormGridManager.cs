@@ -42,7 +42,7 @@ namespace Remotion.Web.UI.Controls
 {
 
   /// <summary> Transforms one or more tables into form grids. </summary>
-  /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/Class/*' />
+  /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/Class/*' />
   [NonVisualControl]
   [ToolboxItemFilter("System.Web.UI")]
   public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupportsPostLoadControl
@@ -109,7 +109,7 @@ namespace Remotion.Web.UI.Controls
       ///   <see cref="HtmlTable"/> used as a form grid, the <see cref="FormGridRow"/> array 
       ///   and the indeces of the columns normally containing the labels and the controls.
       /// </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/Constructor/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGrid/Constructor/*' />
       public FormGrid (
           HtmlTable table,
           FormGridRow[] rows,
@@ -129,7 +129,7 @@ namespace Remotion.Web.UI.Controls
       ///   Returns all <see cref="ValidationError"/> objects defined in the 
       ///   <see cref="FormGridRow"/> objects collection.
       /// </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/GetValidationErrors/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGrid/GetValidationErrors/*' />
       public virtual ValidationError[] GetValidationErrors ()
       {
         ArrayList validationErrorList = new ArrayList();
@@ -147,7 +147,7 @@ namespace Remotion.Web.UI.Controls
       /// <summary>
       ///   Searches through the <see cref="FormGridRow"/> objects collection for a validation error.
       /// </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/HasValidationErrors/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGrid/HasValidationErrors/*' />
       public virtual bool HasValidationErrors ()
       {
         for (int i = 0; i < _rows.Count; i++)
@@ -166,7 +166,7 @@ namespace Remotion.Web.UI.Controls
       /// <summary>
       ///   Searches through the <see cref="FormGridRow"/> objects collection for a validation markers.
       /// </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/HasValidationMarkers/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGrid/HasValidationMarkers/*' />
       public virtual bool HasValidationMarkers ()
       {
         for (int i = 0; i < _rows.Count; i++)
@@ -185,7 +185,7 @@ namespace Remotion.Web.UI.Controls
       /// <summary>
       ///   Searches through the <see cref="FormGridRow"/> objects collection for a required markers.
       /// </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/HasRequiredMarkers/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGrid/HasRequiredMarkers/*' />
       public virtual bool HasRequiredMarkers ()
       {
         for (int i = 0; i < _rows.Count; i++)
@@ -202,7 +202,7 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary> Searches through the <see cref="FormGridRow"/> objects collection for a help providers. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/HasHelpProviders/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGrid/HasHelpProviders/*' />
       public virtual bool HasHelpProviders ()
       {
         for (int i = 0; i < _rows.Count; i++)
@@ -231,7 +231,7 @@ namespace Remotion.Web.UI.Controls
       /// <summary>
       ///   Searches for a <see cref="FormGridRow"/> containing the specified <paramref name="id"/>.
       /// </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/FormGridRow/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGrid/FormGridRow/*' />
       public FormGridRow? GetRowForID (string? id)
       {
         if (id == null || id == string.Empty)
@@ -251,7 +251,7 @@ namespace Remotion.Web.UI.Controls
       ///   Inserts a <see cref="FormGridRow"/> at the position specified by 
       ///   <paramref name="positionInFormGrid"/> and <paramref name="relatedRowID"/>.
       /// </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGrid/InsertNewFormGridRow/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGrid/InsertNewFormGridRow/*' />
       public void InsertNewFormGridRow (
           FormGridRow newFormGridRow,
           string relatedRowID,
@@ -384,7 +384,7 @@ namespace Remotion.Web.UI.Controls
       private FormGrid _ownerFormGrid;
 
       /// <summary> Simple constructor. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRowCollection/Constructor/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRowCollection/Constructor/*' />
       public FormGridRowCollection (FormGrid ownerFormGrid, FormGridRow[] formGridRows)
       {
         ArgumentUtility.CheckNotNull("formGridRows", formGridRows);
@@ -403,7 +403,7 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary> A read only indexer for the <see cref="FormGridRow"/> objects. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRowCollection/Indexer/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRowCollection/Indexer/*' />
       public FormGridRow this [int index]
       {
         get
@@ -415,7 +415,7 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary> Allows only the insertion of objects of type of <see cref="FormGridRow"/>. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRowCollection/OnInsert/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRowCollection/OnInsert/*' />
       protected override void OnInsert (int index, object? value)
       {
         ArgumentUtility.CheckNotNull("value", value!);
@@ -524,7 +524,7 @@ namespace Remotion.Web.UI.Controls
       private Hashtable _controls;
 
       /// <summary> Simple contructor. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/Constructor/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/Constructor/*' />
       public FormGridRow (
         HtmlTableRow[] htmlTableRows,
         FormGridRowType type,
@@ -551,7 +551,7 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary> Set the labels cell for this <see cref="FormGridRow"/>. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/SetLabelsCell/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/SetLabelsCell/*' />
       public virtual HtmlTableCell SetLabelsCell (int rowIndex, int cellIndex)
       {
         CheckCellRange(rowIndex, cellIndex);
@@ -561,7 +561,7 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary> Set the controls cell for this <see cref="FormGridRow"/>. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/SetControlsCell/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/SetControlsCell/*' />
       public virtual HtmlTableCell SetControlsCell (int rowIndex, int cellIndex)
       {
         CheckCellRange(rowIndex, cellIndex);
@@ -571,7 +571,7 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary> Set the controls cell dummy for this <see cref="FormGridRow"/>. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/SetControlsCellDummy/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/SetControlsCellDummy/*' />
       public virtual HtmlTableCell SetControlsCellDummy (int rowIndex, int cellIndex)
       {
         CheckCellRange(rowIndex, cellIndex);
@@ -580,7 +580,7 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary> Set the markers cell for this <see cref="FormGridRow"/>. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/SetMarkersCell/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/SetMarkersCell/*' />
       public virtual HtmlTableCell SetMarkersCell (int rowIndex, int cellIndex)
       {
         CheckCellRange(rowIndex, cellIndex);
@@ -589,7 +589,7 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary> Set the validation messages cell for this <see cref="FormGridRow"/>. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/SetValidationMessagesCell/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/SetValidationMessagesCell/*' />
       public virtual HtmlTableCell SetValidationMessagesCell (int rowIndex, int cellIndex)
       {
         CheckCellRange(rowIndex, cellIndex);
@@ -598,7 +598,7 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary>Set the labels validation messages cell dummy for this <see cref="FormGridRow"/>.</summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/SetValidationMessagesCellDummy/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/SetValidationMessagesCellDummy/*' />
       public virtual HtmlTableCell SetValidationMessagesCellDummy (int rowIndex, int cellIndex)
       {
         CheckCellRange(rowIndex, cellIndex);
@@ -607,7 +607,7 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary> Checks if the indices are inside the bounds. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/CheckCellRange/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/CheckCellRange/*' />
       private void CheckCellRange (int rowIndex, int cellIndex)
       {
         if (   rowIndex >= _htmlTableRows.Count
@@ -662,7 +662,7 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary> Returns the control with the specified ID or <see langword="null"/>. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/GetControlForID/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/GetControlForID/*' />
       public virtual Control? GetControlForID (string id)
       {
         string.IsNullOrEmpty(id);
@@ -673,7 +673,7 @@ namespace Remotion.Web.UI.Controls
       ///   Returns <see langword="true"/> if the control with the specified ID is contained 
       ///   in the <see cref="FormGridRow"/>.
       /// </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/ContainsControlWithID/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/ContainsControlWithID/*' />
       public virtual bool ContainsControlWithID (string id)
       {
         return GetControlForID(id) != null;
@@ -682,7 +682,7 @@ namespace Remotion.Web.UI.Controls
       /// <summary>
       ///   Checks whether the row should be rendered.
       /// </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/CheckVisibility/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/CheckVisibility/*' />
       public virtual bool CheckVisibility ()
       {
         if (!_visible)
@@ -770,7 +770,7 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary> The <c>ValidationError</c> objects for this <c>FormGridRow</c>. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/ValidationErrors/remarks' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/ValidationErrors/remarks' />
       public ValidationError[] ValidationErrors
       {
         get
@@ -785,7 +785,7 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary> The validation marker for this <c>FormGridRow</c>. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/whether/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/whether/*' />
       public Control? ValidationMarker
       {
         get { return _validationMarker; }
@@ -793,7 +793,7 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary> The required marker for this <c>FormGridRow</c>. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/RequiredMarker/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/RequiredMarker/*' />
       public Control? RequiredMarker
       {
         get { return _requiredMarker; }
@@ -801,7 +801,7 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary> The help provider for this <c>FormGridRow</c>. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/HelpProvider/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/HelpProvider/*' />
       public Control? HelpProvider
       {
         get { return _helpProvider; }
@@ -809,21 +809,21 @@ namespace Remotion.Web.UI.Controls
      }
 
       /// <summary> The index of the row containing the labels cell. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/LabelsRowIndex/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/LabelsRowIndex/*' />
       public int LabelsRowIndex
       {
         get { return _labelsRowIndex; }
       }
 
       /// <summary> The index of the row containing the controls cell. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsRowIndex/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsRowIndex/*' />
       public int ControlsRowIndex
       {
         get { return _controlsRowIndex; }
       }
 
       /// <summary> The index of the column normally containing the labels cell. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/LabelsColumn/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/LabelsColumn/*' />
       public int LabelsColumn
       {
         get { return _labelsColumn; }
@@ -831,7 +831,7 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary> The index of the column normally containing the controls cell. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsColumn/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsColumn/*' />
       public int ControlsColumn
       {
         get { return _controlsColumn; }
@@ -839,28 +839,28 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary> The <see cref="HtmlTableRow"/> containing the labels cell. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/LabelsRow/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/LabelsRow/*' />
       public HtmlTableRow LabelsRow
       {
         get { return _htmlTableRows[_labelsRowIndex]; }
       }
 
       /// <summary> The <see cref="HtmlTableRow"/> containing the controls cell. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsRow/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsRow/*' />
       public HtmlTableRow ControlsRow
       {
         get { return _htmlTableRows[_controlsRowIndex]; }
       }
 
       /// <summary> The cell containing the labels. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/LabelsCell/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/LabelsCell/*' />
       public HtmlTableCell? LabelsCell
       {
         get { return _labelsCell; }
       }
 
       /// <summary> The cell containing the controls. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsCell/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsCell/*' />
       public HtmlTableCell? ControlsCell
       {
         get { return _controlsCell; }
@@ -869,21 +869,21 @@ namespace Remotion.Web.UI.Controls
       /// <summary>
       ///   The cell used as a place holder if the controls cell is not at the standard position.
       /// </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsCellDummy/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/ControlsCellDummy/*' />
       public HtmlTableCell? ControlsCellDummy
       {
         get { return _controlsCellDummy; }
       }
 
       /// <summary> The cell containing the markers. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/MarkersCell/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/MarkersCell/*' />
       public HtmlTableCell? MarkersCell
       {
         get { return _markersCell; }
       }
 
       /// <summary> The cell containing the validation messages. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/ValidationMessagesCell/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/ValidationMessagesCell/*' />
       public HtmlTableCell? ValidationMessagesCell
       {
         get { return _validationMessagesCell; }
@@ -893,7 +893,7 @@ namespace Remotion.Web.UI.Controls
       ///   The cell used as a place holder if the validation message cell is not at the standard
       ///   position.
       /// </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridRow/ValidationMessagesCellDummy/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRow/ValidationMessagesCellDummy/*' />
       public HtmlTableCell? ValidationMessagesCellDummy
       {
         get { return _validationMessagesCellDummy; }
@@ -904,7 +904,7 @@ namespace Remotion.Web.UI.Controls
     protected sealed class ReadOnlyHtmlTableRowCollection : ReadOnlyCollectionBase
     {
       /// <summary> Simple constructor. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ReadOnlyHtmlTableRowCollection/Constructor/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ReadOnlyHtmlTableRowCollection/Constructor/*' />
       public ReadOnlyHtmlTableRowCollection (HtmlTableRow[] htmlTableRows)
       {
         ArgumentUtility.CheckNotNull("htmlTableRows", htmlTableRows);
@@ -919,7 +919,7 @@ namespace Remotion.Web.UI.Controls
       }
 
       /// <summary> A read only indexer for the <see cref="HtmlTableRow"/> onbjects. </summary>
-      /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ReadOnlyHtmlTableRowCollection/Indexer/*' />
+      /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ReadOnlyHtmlTableRowCollection/Indexer/*' />
       public HtmlTableRow this [int index]
       {
         get
@@ -947,7 +947,7 @@ namespace Remotion.Web.UI.Controls
     // constants
 
     /// <summary> Sufffix for identifying all tables to be used as form grids. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridSuffix/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridSuffix/*' />
     private const string c_formGridSuffix = "FormGrid";
 
     private const string c_generatedLabelSuffix = "_Label";
@@ -1074,7 +1074,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Validates all <c>FormGrid</c> objects managed by this <c>FormGridManager</c>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/Validate/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/Validate/*' />
     public bool Validate ()
     {
       EnsureTransformationStep(TransformationStep.PostLoadTransformationCompleted);
@@ -1088,7 +1088,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary>
     ///   Assembles all <see cref="ValidationError"/> objects in the managed <c>FormGrids</c>.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/GetValidationErrors/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/GetValidationErrors/*' />
     public ValidationError[] GetValidationErrors ()
     {
       ArrayList validationErrorList = new ArrayList();
@@ -1107,7 +1107,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Implementation of <see cref="IResourceDispatchTarget"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/Dispatch/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/Dispatch/*' />
     protected virtual void Dispatch (IDictionary<string, WebString> values)
     {
       EnsureTransformationStep(TransformationStep.PreLoadViewStateTransformationCompleted);
@@ -1417,7 +1417,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Restore the view state to the form grids. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/LoadFormGridViewState/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/LoadFormGridViewState/*' />
     private void LoadFormGridViewState (FormGrid formGrid, object? savedState)
     {
       ArgumentUtility.CheckNotNull("formGrid", formGrid);
@@ -1432,7 +1432,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Saves the view state of the form grids. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/SaveFormGridViewState/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/SaveFormGridViewState/*' />
     private object SaveFormGridViewState (FormGrid formGrid)
     {
       ArgumentUtility.CheckNotNull("formGrid", formGrid);
@@ -1621,7 +1621,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Validates all <see cref="BaseValidator"/> objects in the <see cref="FormGrid"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ValidateFormGrid/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ValidateFormGrid/*' />
     private bool ValidateFormGrid (FormGrid formGrid)
     {
       bool isValid = true;
@@ -1637,7 +1637,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Validates the <see cref="BaseValidator"/> objects. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ValidateDataRow/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ValidateDataRow/*' />
     protected bool ValidateDataRow (FormGridRow dataRow)
     {
       ArgumentUtility.CheckNotNull("dataRow", dataRow);
@@ -1897,7 +1897,7 @@ namespace Remotion.Web.UI.Controls
     ///   Queries the parent hierarchy for an <see cref="IFormGridRowProvider"/> and inserts 
     ///   the provided new rows into the form grid.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/LoadNewFormGridRows/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/LoadNewFormGridRows/*' />
     private void LoadNewFormGridRows (FormGrid formGrid)
     {
       IFormGridRowProvider? rowProvider = GetFormGridRowProvider(this);
@@ -1959,7 +1959,7 @@ namespace Remotion.Web.UI.Controls
     ///   Queries the parent hierarchy for an <see cref="IFormGridRowProvider"/> and hides  
     ///   the rows identified as invisible rows.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ApplyExternalHiddenSettings/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ApplyExternalHiddenSettings/*' />
     private void ApplyExternalHiddenSettings (FormGrid formGrid)
     {
       IFormGridRowProvider? rowProvider = GetFormGridRowProvider(this);
@@ -1985,7 +1985,7 @@ namespace Remotion.Web.UI.Controls
     ///   Find the closest parent <see cref="Control"/> impementing
     ///   <see cref="IFormGridRowProvider"/>.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/GetFormGridRowProvider/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/GetFormGridRowProvider/*' />
     private IFormGridRowProvider? GetFormGridRowProvider (Control? control)
     {
       //  Control hierarchy doesn't implent this interface
@@ -2035,7 +2035,7 @@ namespace Remotion.Web.UI.Controls
     ///   Composes all information required to transform the <see cref="HtmlTable"/> 
     ///   into a form grid.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ComposeFormGridContents/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ComposeFormGridContents/*' />
     private void ComposeFormGridContents (FormGrid formGrid)
     {
       if (formGrid == null) throw new ArgumentNullException("formGrid");
@@ -2063,7 +2063,7 @@ namespace Remotion.Web.UI.Controls
     ///   Uses the information stored in <paramref name="formGrid"/> to configure the 
     ///   <see cref="HtmlTable"/> as a form grid.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ConfigureFormGrid/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ConfigureFormGrid/*' />
     private void ConfigureFormGrid (FormGrid formGrid)
     {
       ArgumentUtility.CheckNotNull("formGrid", formGrid);
@@ -2104,7 +2104,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Configures the title row. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ConfigureTitleRow/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ConfigureTitleRow/*' />
     private void ConfigureTitleRow (FormGridRow titleRow)
     {
       ArgumentUtility.CheckNotNull("titleRow", titleRow);
@@ -2144,7 +2144,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Configures a data row. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ConfigureDataRow/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ConfigureDataRow/*' />
     private void ConfigureDataRow (FormGridRow dataRow)
     {
       ArgumentUtility.CheckNotNull("dataRow", dataRow);
@@ -2168,7 +2168,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Formats the title row. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormatTitleRow/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormatTitleRow/*' />
     protected virtual void FormatTitleRow (FormGridRow titleRow)
     {
       ArgumentUtility.CheckNotNull("titleRow", titleRow);
@@ -2244,7 +2244,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Formats a data row. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormatDataRow/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormatDataRow/*' />
     protected virtual void FormatDataRow (FormGridRow dataRow, bool isTopDataRow)
     {
       ArgumentUtility.CheckNotNull("dataRow", dataRow);
@@ -2318,7 +2318,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Creates the cell to be used for the markers. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CreateMarkersCell/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CreateMarkersCell/*' />
     protected void CreateMarkersCell (FormGridRow dataRow)
     {
       ArgumentUtility.CheckNotNull("dataRow", dataRow);
@@ -2349,7 +2349,7 @@ namespace Remotion.Web.UI.Controls
     ///   Loads the markers or place holders into the <see cref="FormGridRow.MarkersCell"/> 
     ///   of the <paramref name="dataRow"/>.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/LoadMarkersIntoCell/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/LoadMarkersIntoCell/*' />
     protected virtual void LoadMarkersIntoCell (FormGridRow dataRow)
     {
       ArgumentUtility.CheckNotNull("dataRow", dataRow);
@@ -2452,7 +2452,7 @@ namespace Remotion.Web.UI.Controls
     ///   Creates the labels from the controls inside <paramref name="dataRow"/>'s <see cref="FormGridRow.ControlsCell"/>
     ///   if they do not already exist.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CreateLabels/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CreateLabels/*' />
     protected virtual void CreateLabels (FormGridRow dataRow)
     {
       ArgumentUtility.CheckNotNull("dataRow", dataRow);
@@ -2548,7 +2548,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary>
     ///   Creates the validators from the controls inside <paramref name="dataRow"/> if they do not already exist.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CreateValidators/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CreateValidators/*' />
     protected virtual void CreateValidators (FormGridRow dataRow)
     {
       ArgumentUtility.CheckNotNull("dataRow", dataRow);
@@ -2601,7 +2601,7 @@ namespace Remotion.Web.UI.Controls
     ///   Queries the controls in <paramref name="dataRow"/> for their mandatory setting 
     ///   and creates the required marker if necessary.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CreateRequiredMarker/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CreateRequiredMarker/*' />
     protected virtual void CreateRequiredMarker (FormGridRow dataRow)
     {
       ArgumentUtility.CheckNotNull("dataRow", dataRow);
@@ -2653,7 +2653,7 @@ namespace Remotion.Web.UI.Controls
     ///   Queries the controls in <paramref name="dataRow"/> if they provide help
     ///   and creates a help provider.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CreateHelpProvider/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CreateHelpProvider/*' />
     protected void CreateHelpProvider (FormGridRow dataRow)
     {
       ArgumentUtility.CheckNotNull("dataRow", dataRow);
@@ -2725,7 +2725,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Queries the control for its read-only setting and transforms it if necessary. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/HandleReadOnlyControls/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/HandleReadOnlyControls/*' />
     protected virtual void HandleReadOnlyControls (FormGridRow dataRow)
     {
       ArgumentUtility.CheckNotNull("dataRow", dataRow);
@@ -2767,7 +2767,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> 
     ///   Sets the cell to be used for the validation messages, creating a new cell if necessary.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/SetOrCreateValidationMessagesCell/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/SetOrCreateValidationMessagesCell/*' />
     protected void SetOrCreateValidationMessagesCell (FormGridRow dataRow)
     {
       ArgumentUtility.CheckNotNull("dataRow", dataRow);
@@ -2802,7 +2802,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Outputs the validation messages into a <see cref="HtmlTableCell"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/LoadValidationMessagesIntoCell/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/LoadValidationMessagesIntoCell/*' />
     protected virtual void LoadValidationMessagesIntoCell (FormGridRow dataRow)
     {
       ArgumentUtility.CheckNotNull("dataRow", dataRow);
@@ -2828,7 +2828,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Assign CSS classes for cells where none exist. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/AssignCssClassesToCells/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/AssignCssClassesToCells/*' />
     protected virtual void AssignCssClassesToCells (FormGridRow dataRow, bool isTopDataRow)
     {
       ArgumentUtility.CheckNotNull("dataRow", dataRow);
@@ -2907,7 +2907,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Assign CSS classes to input controls where none exist. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/AssignCssClassesToInputControls/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/AssignCssClassesToInputControls/*' />
     protected virtual void AssignCssClassesToInputControls (FormGridRow dataRow)
     {
       ArgumentUtility.CheckNotNull("dataRow", dataRow);
@@ -2944,7 +2944,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Assign CSS classes to validators where none exist. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/AssignCssClassesToInputControls/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/AssignCssClassesToInputControls/*' />
     protected virtual void AssignCssClassesToValidators (FormGridRow dataRow)
     {
       ArgumentUtility.CheckNotNull("dataRow", dataRow);
@@ -2991,7 +2991,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Returns the image URL for the images defined in the <c>FormGridManager</c>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/GetImageUrl/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/GetImageUrl/*' />
     protected string GetImageUrl (FormGridImage image)
     {
       string relativeUrl = "sprite.svg#" + image;
@@ -3000,7 +3000,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Builds the input required marker. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CreateRequiredMarker1/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CreateRequiredMarker1/*' />
     protected virtual Control CreateRequiredMarker ()
     {
       Image requiredIcon = new Image();
@@ -3016,7 +3016,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Builds the help provider. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CreateHelpProvider1/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CreateHelpProvider1/*' />
     protected virtual Control CreateHelpProvider (HelpInfo helpInfo)
     {
       ArgumentUtility.CheckNotNull("helpInfo", helpInfo);
@@ -3046,7 +3046,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Builds a new marker for validation errors. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CreateValidationMarker/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CreateValidationMarker/*' />
     protected virtual Control CreateValidationMarker (PlainTextString toolTip)
     {
       Image validationErrorIcon = new Image();
@@ -3072,7 +3072,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Returns a spacer to be used instead of a marker. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CreateBlankMarker/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CreateBlankMarker/*' />
     protected virtual Control CreateBlankMarker ()
     {
       Image spacer = new Image();
@@ -3085,7 +3085,7 @@ namespace Remotion.Web.UI.Controls
     ///   Compares the <paramref name="formGridRow"/>'s <see cref="FormGridRowType"/> against the 
     ///   type passed in <paramref name="expectedFormGridRowType"/>.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CheckFormGridRowType/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CheckFormGridRowType/*' />
     protected void CheckFormGridRowType (
       string argumentName,
       FormGridRow formGridRow,
@@ -3098,7 +3098,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary>
     ///   Tests the labels matches the controls row.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/HasSeperateControlsRow/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/HasSeperateControlsRow/*' />
     protected bool HasSeperateControlsRow (FormGridRow dataRow)
     {
       return dataRow.LabelsRowIndex != dataRow.ControlsRowIndex;
@@ -3114,7 +3114,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Registers all suffixed tables for this <c>FormGridManager</c>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/PopulateFormGridList/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/PopulateFormGridList/*' />
     private void PopulateFormGridList (Control control)
     {
       //  Add all table having the suffix
@@ -3241,7 +3241,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> The suffix identifying all tables managed by this <c>FormGridManager</c>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/FormGridSuffix/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridSuffix/*' />
     [Category("Behaviour")]
     [DefaultValue(c_formGridSuffix)]
     [Description("The suffix that must be appended to all tables to be used as a form grid.")]
@@ -3255,7 +3255,7 @@ namespace Remotion.Web.UI.Controls
     ///   Specifies which column in the table or tables contains the labels.
     ///   Must be less than the value of <see cref="ControlsColumn"/>.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/LabelsColumn/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/LabelsColumn/*' />
     [Category("Appearance")]
     [DefaultValue(0)]
     [Description("The index of the label column in the form grid tables. Must be less than the ControlsColumn's index")]
@@ -3278,7 +3278,7 @@ namespace Remotion.Web.UI.Controls
     ///   Specifies which column in the table or tables contains the controls for single-line rows.
     ///   Must be higher than the value of <see cref="LabelsColumn"/>.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ControlsColumn/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ControlsColumn/*' />
     [Category("Appearance")]
     [DefaultValue(1)]
     [Description("The index of the control column in the form grid tables. Must be higher than the LabelsColumn's index")]
@@ -3298,7 +3298,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Defines how the validation messages are displayed. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ValidatorVisibility/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ValidatorVisibility/*' />
     [Category("Behavior")]
     [DefaultValue(ValidatorVisibility.ValidationMessageInControlsColumn)]
     [Description("The position of the validation messages in the form grids.")]
@@ -3311,7 +3311,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Enables/Disables the validation markers. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ShowValidationMarkers/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ShowValidationMarkers/*' />
     [Category("Behavior")]
     [DefaultValue(true)]
     [Description("Enables/Disables the validation markers.")]
@@ -3322,7 +3322,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Enables/Disables the required markers. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ShowRequiredMarkers/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ShowRequiredMarkers/*' />
     [Category("Behavior")]
     [DefaultValue(true)]
     [Description("Enables/Disables the required markers.")]
@@ -3333,7 +3333,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Enables/Disables the help providers. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ShowHelpProviders/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ShowHelpProviders/*' />
     [Category("Behavior")]
     [DefaultValue(true)]
     [Description("Enables/Disables the help providers.")]
@@ -3364,7 +3364,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Extension of the images. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/ImageExtension/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ImageExtension/*' />
     protected virtual string ImageExtension
     { get { return ".gif"; } }
 
@@ -3381,22 +3381,22 @@ namespace Remotion.Web.UI.Controls
     #region protected virtual string CssClass...
 
     /// <summary> CSS-Class applied to the form grid tables' <c>table</c> tag. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassTable/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CssClassTable/*' />
     protected virtual string CssClassTable
     { get { return "formGridTable"; } }
 
     /// <summary> CSS-Class applied to the cell containing the header. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassTitleCell/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CssClassTitleCell/*' />
     protected virtual string CssClassTitleCell
     { get { return "formGridTitleCell"; } }
 
     /// <summary> CSS-Class applied to the cell containing a sub title. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassSubTitleCell/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CssClassSubTitleCell/*' />
     protected virtual string CssClassSubTitleCell
     { get { return "formGridSubTitleCell"; } }
 
     /// <summary> CSS-Class applied to the cells containing the labels. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassLabelsCell/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CssClassLabelsCell/*' />
     protected virtual string CssClassLabelsCell
     { get { return "formGridLabelsCell"; } }
 
@@ -3404,37 +3404,37 @@ namespace Remotion.Web.UI.Controls
     ///   CSS-Class applied to the cells containing the marker controls
     ///   (required, validation error, help).
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassMarkersCell/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CssClassMarkersCell/*' />
     protected virtual string CssClassMarkersCell
     { get { return "formGridMarkersCell"; } }
 
     /// <summary> CSS-Class applied to the cells containing the input controls. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassInputControlsCell/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CssClassInputControlsCell/*' />
     protected virtual string CssClassInputControlsCell
     { get { return "formGridControlsCell"; } }
 
     /// <summary> CSS-Class applied to the cells containing the validation messages. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassValidationMessagesCell/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CssClassValidationMessagesCell/*' />
     protected virtual string CssClassValidationMessagesCell
     { get { return "formGridValidationMessagesCell"; } }
 
     /// <summary> CSS-Class additionally applied to the first row after the header row. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassTopDataRow/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CssClassTopDataRow/*' />
     protected virtual string CssClassTopDataRow
     { get { return "formGridTopDataRow"; } }
 
     /// <summary> CSS-Class applied to the input controls. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassInputControl/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CssClassInputControl/*' />
     protected virtual string CssClassInputControl
     { get { return "formGridInputControl"; } }
 
     /// <summary> CSS-Class applied to the individual validation messages. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassValidationMessage/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CssClassValidationMessage/*' />
     protected virtual string CssClassValidationMessage
     { get { return "formGridValidationMessage"; } }
 
     /// <summary> CSS-Class applied to the validators vreated by the <see cref="FormGridManager"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CssClassValidator/*' />
+    /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CssClassValidator/*' />
     protected virtual string CssClassValidator
     { get { return "formGridValidator"; } }
 

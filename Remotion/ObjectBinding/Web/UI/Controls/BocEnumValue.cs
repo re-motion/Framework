@@ -40,7 +40,7 @@ using Remotion.Web.Utilities;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or edit enumeration values. </summary>
-  /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/Class/*' />
+  /// <include file='../../Doc/include/UI/Controls/BocEnumValue.xml' path='BocEnumValue/Class/*' />
   [ValidationProperty("Value")]
   [DefaultEvent("SelectionChanged")]
   [ToolboxItemFilter("System.Web.UI")]
@@ -135,7 +135,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/LoadValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocEnumValue.xml' path='BocEnumValue/LoadValue/*' />
     public override void LoadValue (bool interim)
     {
       if (interim)
@@ -158,7 +158,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <param name="value"> The enumeration value or <see langword="null"/>. </param>
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
-    /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/LoadUnboundValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocEnumValue.xml' path='BocEnumValue/LoadUnboundValue/*' />
     public void LoadUnboundValue<TEnum> (TEnum? value, bool interim)
         where TEnum: struct
     {
@@ -169,7 +169,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <param name="value"> The enumeration value. </param>
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
-    /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/LoadUnboundValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocEnumValue.xml' path='BocEnumValue/LoadUnboundValue/*' />
     public void LoadUnboundValue<TEnum> (TEnum value, bool interim)
         where TEnum: struct
     {
@@ -178,7 +178,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/SaveValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocEnumValue.xml' path='BocEnumValue/SaveValue/*' />
     public override bool SaveValue (bool interim)
     {
       if (interim)
@@ -296,7 +296,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the current value. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/Value/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocEnumValue.xml' path='BocEnumValue/Value/*' />
     [Browsable(false)]
     public new object? Value
     {
@@ -571,7 +571,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed
     ///   between postbacks.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/LoadPostData/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocEnumValue.xml' path='BocEnumValue/LoadPostData/*' />
     protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
       string? newValue = StringUtility.EmptyToNull(PageUtility.GetPostBackCollectionItem(Page!, GetValueName()));
