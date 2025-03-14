@@ -60,15 +60,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)..\SharedSource\Core\RuntimeTypes\*.cs" Link="SharedSource\RuntimeTypes\%(Filename)%(Extension)" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Remotion.Infrastructure.Styles.Analyzer" PrivateAssets="All" />
-    <ProjectReference Include="$(SolutionDir)Remotion\Core\Development.Analyzers\Core.Development.Analyzers.csproj"
-                      PrivateAssets="all"
-                      ReferenceOutputAssembly="false"
-                      SetTargetFramework="TargetFramework=netstandard2.0"
-                      OutputItemType="Analyzer" />
-  </ItemGroup>
-
   <PropertyGroup>
     <_version>$(Version.Split('-')[0])</_version>
     <AssemblyVersion>$(_version).0</AssemblyVersion>
