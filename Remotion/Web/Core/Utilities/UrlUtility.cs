@@ -232,7 +232,7 @@ namespace Remotion.Web.Utilities
 
 
     /// <summary> Adds a <paramref name="name"/>/<paramref name="value"/> pair to the <paramref name="url"/>. </summary>
-    /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/AddParameter/*' />
+    /// <include file='../Doc/include/Utilities/UrlUtility.xml' path='UrlUtility/AddParameter/*' />
     public static string AddParameter (string url, string? name, string value, Encoding encoding)
     {
       ArgumentUtility.CheckNotNull("url", url);
@@ -260,8 +260,8 @@ namespace Remotion.Web.Utilities
     }
 
     /// <summary> Adds a <paramref name="name"/>/<paramref name="value"/> pair to the <paramref name="url"/>. </summary>
-    /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/AddParameter/param[@name="url" or @name="name" or @name="value"]' />
-    /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/AddParameter/returns' />
+    /// <include file='../Doc/include/Utilities/UrlUtility.xml' path='UrlUtility/AddParameter/param[@name="url" or @name="name" or @name="value"]' />
+    /// <include file='../Doc/include/Utilities/UrlUtility.xml' path='UrlUtility/AddParameter/returns' />
     public static string AddParameter (string url, string name, string value)
     {
       return AddParameter(url, name, value, GetResponseEncoding());
@@ -271,7 +271,7 @@ namespace Remotion.Web.Utilities
     /// <summary> 
     ///   Adds the name/value pairs from the  <paramref name="queryStringCollection"/> to the <paramref name="url"/>. 
     /// </summary>
-    /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/AddParameters/*' />
+    /// <include file='../Doc/include/Utilities/UrlUtility.xml' path='UrlUtility/AddParameters/*' />
     public static string AddParameters (string url, NameValueCollection queryStringCollection, Encoding encoding)
     {
       ArgumentUtility.CheckNotNull("queryStringCollection", queryStringCollection);
@@ -297,23 +297,23 @@ namespace Remotion.Web.Utilities
     /// <summary> 
     ///   Adds the name/value pairs from the  <paramref name="queryStringCollection"/> to the <paramref name="url"/>. 
     /// </summary>
-    /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/AddParameters/param[@name="url" or @name="queryStringCollection"]' />
-    /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/AddParameters/returns' />
+    /// <include file='../Doc/include/Utilities/UrlUtility.xml' path='UrlUtility/AddParameters/param[@name="url" or @name="queryStringCollection"]' />
+    /// <include file='../Doc/include/Utilities/UrlUtility.xml' path='UrlUtility/AddParameters/returns' />
     public static string AddParameters (string url, NameValueCollection queryStringCollection)
     {
       return AddParameters(url, queryStringCollection, GetResponseEncoding());
     }
 
     /// <summary> Builds a query string from the <paramref name="queryStringCollection"/>. </summary>
-    /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/FormatQueryString/*' />
+    /// <include file='../Doc/include/Utilities/UrlUtility.xml' path='UrlUtility/FormatQueryString/*' />
     public static string FormatQueryString (NameValueCollection queryStringCollection, Encoding encoding)
     {
       return AddParameters(string.Empty, queryStringCollection, encoding);
     }
 
     /// <summary> Builds a query string from the <paramref name="queryStringCollection"/>. </summary>
-    /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/FormatQueryString/param[@name="queryStringCollection"]' />
-    /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/FormatQueryString/returns' />
+    /// <include file='../Doc/include/Utilities/UrlUtility.xml' path='UrlUtility/FormatQueryString/param[@name="queryStringCollection"]' />
+    /// <include file='../Doc/include/Utilities/UrlUtility.xml' path='UrlUtility/FormatQueryString/returns' />
     public static string FormatQueryString (NameValueCollection queryStringCollection)
     {
       return FormatQueryString(queryStringCollection, GetResponseEncoding());
@@ -326,7 +326,7 @@ namespace Remotion.Web.Utilities
     }
 
     /// <summary> Removes a <paramref name="name"/>/value pair from the <paramref name="url"/>. </summary>
-    /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/DeleteParameter/*' />
+    /// <include file='../Doc/include/Utilities/UrlUtility.xml' path='UrlUtility/DeleteParameter/*' />
     public static string DeleteParameter (string url, string name, Encoding encoding)
     {
       ArgumentUtility.CheckNotNull("url", url);
@@ -351,7 +351,7 @@ namespace Remotion.Web.Utilities
     }
 
     /// <summary> Gets the decoded value of the parameter identified by <paramref name="name"/>. </summary>
-    /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/GetParameter/*' />
+    /// <include file='../Doc/include/Utilities/UrlUtility.xml' path='UrlUtility/GetParameter/*' />
     public static string? GetParameter (string url, string name, Encoding encoding)
     {
       ArgumentUtility.CheckNotNull("url", url);
@@ -366,8 +366,8 @@ namespace Remotion.Web.Utilities
     }
 
     /// <summary> Gets the decoded value of the parameter identified by <paramref name="name"/>. </summary>
-    /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/GetParameter/param[@name="url" or @name="name"]' />
-    /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/GetParameter/returns' />
+    /// <include file='../Doc/include/Utilities/UrlUtility.xml' path='UrlUtility/GetParameter/param[@name="url" or @name="name"]' />
+    /// <include file='../Doc/include/Utilities/UrlUtility.xml' path='UrlUtility/GetParameter/returns' />
     public static string? GetParameter (string url, string name)
     {
       return GetParameter(url, name, GetRequestEncoding());

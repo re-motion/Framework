@@ -24,7 +24,7 @@ using System.Web.UI.WebControls;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> Validates a <see cref="BocDateTimeValue"/> control. </summary>
-  /// <include file='..\..\doc\include\UI\Controls\BocDateTimeValueValidatorBase.xml' path='BocDateTimeValueValidatorBase/Class/*' />
+  /// <include file='../../Doc/include/UI/Controls/BocDateTimeValueValidatorBase.xml' path='BocDateTimeValueValidatorBase/Class/*' />
   [ToolboxItem(false)]
   public abstract class BocDateTimeValueValidatorBase : BaseValidator
   {

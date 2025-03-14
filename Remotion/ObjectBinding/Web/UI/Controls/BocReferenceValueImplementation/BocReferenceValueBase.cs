@@ -252,7 +252,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     }
 
     /// <summary> Gets or sets the current value. </summary>
-    /// <include file='..\..\..\doc\include\UI\Controls\BocReferenceValueBase.xml' path='BocReferenceValueBase/Value/*' />
+    /// <include file='../../../Doc/include/UI/Controls/BocReferenceValueBase.xml' path='BocReferenceValueBase/Value/*' />
     [Browsable(false)]
     public new IBusinessObjectWithIdentity? Value
     {
@@ -439,12 +439,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       InitializeMenusItems();
     }
 
-    /// <include file='..\..\..\doc\include\UI\Controls\BocReferenceValueBase.xml' path='BocReferenceValue/InitializeMenusItems/*' />
+    /// <include file='../../../Doc/include/UI/Controls/BocReferenceValueBase.xml' path='BocReferenceValue/InitializeMenusItems/*' />
     protected virtual void InitializeMenusItems ()
     {
     }
 
-    /// <include file='..\..\..\doc\include\UI\Controls\BocReferenceValueBase.xml' path='BocReferenceValue/PreRenderMenuItems/*' />
+    /// <include file='../../../Doc/include/UI/Controls/BocReferenceValueBase.xml' path='BocReferenceValue/PreRenderMenuItems/*' />
     protected virtual void PreRenderMenuItems ()
     {
       if (_hiddenMenuItems == null)
@@ -574,7 +574,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed
     ///   between postbacks.
     /// </summary>
-    /// <include file='..\..\..\doc\include\UI\Controls\BocReferenceValueBase.xml' path='BocReferenceValueBase/LoadPostData/*' />
+    /// <include file='../../../Doc/include/UI/Controls/BocReferenceValueBase.xml' path='BocReferenceValueBase/LoadPostData/*' />
     protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
       string? newValue = PageUtility.GetPostBackCollectionItem(Page!, ValueContainingControlID);
