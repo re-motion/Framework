@@ -307,7 +307,7 @@ namespace Remotion.Web.Development.WebTesting
       if (_testContext.IsSuccessful)
       {
         foreach (var browserSession in _browserSessions)
-          BrowserLogUtility.IsBrowserLogOkay(browserSession, _testContext);
+          BrowserLogUtility.IsBrowserLogOkay(browserSession, _browserConfiguration, _testContext);
       }
 
       if (!_testContext.IsSuccessful && ShouldTakeScreenshots())
