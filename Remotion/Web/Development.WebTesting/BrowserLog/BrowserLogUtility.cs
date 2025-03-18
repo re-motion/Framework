@@ -16,14 +16,18 @@
 //
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.Extensions;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
+using Remotion.Web.Development.WebTesting.WebDriver;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 
 namespace Remotion.Web.Development.WebTesting.BrowserLog;
 
@@ -68,27 +72,58 @@ public static class BrowserLogUtility
   /// </summary>
   public static IReadOnlyCollection<BrowserLogEntry> GetUnexpectedBrowserLogEntries (
       [NotNull] IBrowserSession session,
+      [NotNull] IBrowserConfiguration configuration,
       LogLevel minLogLevel,
       [NotNull] IReadOnlyCollection<Regex> messageFilter)
   {
     ArgumentUtility.CheckNotNull(nameof(session), session);
+    ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
     ArgumentUtility.CheckNotNull(nameof(messageFilter), messageFilter);
 
-    var remainingRetries = 50;
-    IReadOnlyCollection<BrowserLogEntry> logEntries;
-    do
+    IReadOnlyCollection<BrowserLogEntry> browserLogs;
+    if (configuration.UseBidiLog() && session.Window.Location.Scheme != "chrome")
     {
-      Thread.Sleep(50);
-      logEntries = session.GetBrowserLogs();
-      remainingRetries--;
-    } while (remainingRetries > 0 && logEntries.Count == 0);
+      // For BiDi-Logging (bidirectional logging), log messages take some time to get to us in async ways.
+      // To reduce the chance of missing log messages, we send a marker log message and wait until we
+      // receive it again. This ensures that any in-flight log messages should have arrived and thus provides
+      // a good-enough(tm) way to ensure we don't miss any log messages.
+      // BiDi-Logging does not work on internal pages (like the blank page) so we don't do this logic for chrome:// URLs
+      const string browserLogMarker = "REMOTION_FINAL_BROWSER_LOG_MARKER";
+      const int maxRetries = 25;
 
-    logEntries = logEntries
+      ((IWebDriver)session.Driver.Native).ExecuteJavaScript($"console.error('{browserLogMarker}');");
+
+      var i = 0;
+      while (true)
+      {
+        if (i > maxRetries)
+        {
+          throw new InvalidOperationException(
+              "Waiting for unexpected browser messages failed because"
+              + " the marker log message was not returned within the timeout.");
+        }
+
+        browserLogs = session.GetBrowserLogs();
+        if (browserLogs.Any(e => e.Message.Contains(browserLogMarker)))
+          break;
+
+        i += 1;
+        Thread.Sleep(1);
+      }
+
+      browserLogs = browserLogs
+          .Where(e => !e.Message.Contains(browserLogMarker))
+          .ToList();
+    }
+    else
+    {
+      browserLogs = session.GetBrowserLogs();
+    }
+
+    return browserLogs
         .Where(e => e.Level >= minLogLevel)
         .Where(entry => !messageFilter.Any(filter => filter.IsMatch(entry.Message)))
         .ToList();
-
-    return logEntries;
   }
 
   /// <summary>
@@ -99,9 +134,10 @@ public static class BrowserLogUtility
   /// <remarks>
   /// Call this in the tear-down method.
   /// </remarks>
-  public static bool IsBrowserLogOkay ([NotNull] IBrowserSession session, [NotNull] ITestContext context)
+  public static bool IsBrowserLogOkay ([NotNull] IBrowserSession session, [NotNull] IBrowserConfiguration configuration, [NotNull] ITestContext context)
   {
     ArgumentUtility.CheckNotNull(nameof(session), session);
+    ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
     ArgumentUtility.CheckNotNull(nameof(context), context);
 
     var isActive = IsBrowserLogCheckActive(context);
@@ -111,7 +147,7 @@ public static class BrowserLogUtility
     var minLogLevel = GetMinimumLogLevel(context);
     var messageFilters = GetBrowserLogIgnoredEntryRegexes(context);
 
-    var entries = GetUnexpectedBrowserLogEntries(session, minLogLevel, messageFilters);
+    var entries = GetUnexpectedBrowserLogEntries(session, configuration, minLogLevel, messageFilters);
     if (entries.Any())
     {
       var messageBuilder = new StringBuilder();
