@@ -24,6 +24,7 @@ using System.Text;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation
 {
@@ -87,13 +88,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
 
       var results = new List<SubTestResult>();
 
-      if (type.HasFlag(ScreenshotTestingType.Desktop) && !helper.MainBrowserSession.Headless)
-      {
-        using (var diagnosticScreenshotBuilder = DiagnosticScreenshotBuilder.CreateDesktopScreenshot(helper.BrowserConfiguration.Locator, helper.LoggerFactory))
-        {
-          results.Add(RunSubTest<TValue, TTarget>(helper, diagnosticScreenshotBuilder, test, value, "Desktop", testName, savePath, maxVariance, maxRatio));
-        }
-      }
+      if (type == ScreenshotTestingType.Desktop)
+        throw new NotSupportedException("Desktop screenshots are no longer supported and the test should be rewritten or removed.");
 
       if (type.HasFlag(ScreenshotTestingType.Browser))
       {
@@ -236,7 +232,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
     {
       var stringBuilder = new StringBuilder();
 
-      using (var source = (Bitmap)Image.FromFile(sourcePath))
+      using (var source = Image.FromFile(sourcePath))
       {
         foreach (var resourceName in resourceNames)
         {
@@ -248,7 +244,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
             if (resourceStream == null)
               Assert.Fail($"Could not open saved resource image: '{resourceName}'");
 
-            var resource = (Bitmap)Image.FromStream(resourceStream);
+            var resource = Image.FromStream(resourceStream);
 
             if (resource.Size != source.Size)
             {

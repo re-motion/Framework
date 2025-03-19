@@ -1,0 +1,28 @@
+﻿// SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
+// SPDX-License-Identifier: LGPL-2.1-or-later
+using System.Drawing;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
+
+namespace Remotion.Web.Development.WebTesting.ScreenshotCreation;
+
+/// <summary>
+/// Represents information about a mouse cursor and provides methods for drawing the cursor.
+/// </summary>
+/// <seealso cref="EmptyCursorInformation"/>
+public interface ICursorInformation
+{
+  /// <summary>
+  /// Returns <see langword="true" /> if the cursor is visible, otherwise <see langword="false" />.
+  /// </summary>
+  public bool IsVisible { get; }
+
+  /// <summary>
+  /// Draws the Cursor onto the specified <see cref="Canvas"/>.
+  /// </summary>
+  public void Draw (Canvas canvas);
+
+  /// <summary>
+  /// The position of the cursor in desktop coordinates.
+  /// </summary>
+  public Point Position { get; }
+}

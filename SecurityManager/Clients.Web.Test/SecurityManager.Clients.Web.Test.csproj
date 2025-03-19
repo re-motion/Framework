@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <ProjectType>WebApplication</ProjectType>
-    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <Import Project="..\..\Build\Shared.build.props" />

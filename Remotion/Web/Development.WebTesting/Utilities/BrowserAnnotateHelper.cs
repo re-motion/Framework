@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
@@ -47,6 +46,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <summary>
     /// Draws a tooltip with the specified <paramref name="content"/> at the mouse cursor position.
     /// </summary>
+    [Obsolete("Cursor Funktionalität im WebTesting wird nicht mehr unterstützt. See RM-9457. (Version 8.0.0)", error: true)]
     public IFluentScreenshotElement<Rectangle> DrawCursorTooltip (
         [NotNull] ScreenshotBuilder builder,
         [NotNull] IBrowserSession browserSession,
@@ -61,22 +61,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       ArgumentUtility.CheckNotNull("browserSession", browserSession);
       ArgumentUtility.CheckNotNull("content", content);
 
-      var seleniumDriver = (IWebDriver)browserSession.Driver.Native;
-
-      var clonedStyle = (style ?? BrowserConfiguration.TooltipStyle).Clone(positioning: positioning, wrapLines: wrapLines, maximumSize: maximumSize);
-      var browserContentBounds = BrowserConfiguration.Locator.GetBrowserContentBounds(seleniumDriver).Location;
-
-      // Offset the position of the cursor to translate it to the browser coordinate system.
-      var cursorPosition = Cursor.Position;
-      cursorPosition.Offset(-browserContentBounds.X, -browserContentBounds.Y);
-
-      var tooltipAnnotation = new ScreenshotTooltipAnnotation(
-          content,
-          clonedStyle,
-          padding ?? new WebPadding(0, 20, 0, 25));
-      builder.Annotate(new Rectangle(cursorPosition, new Size(1, 1)), new RectangleResolver(seleniumDriver), tooltipAnnotation);
-
-      return new FluentScreenshotElement<Rectangle>(tooltipAnnotation.TooltipBounds, new RectangleResolver(seleniumDriver));
+      throw new NotSupportedException("Cursor Funktionalität im WebTesting wird nicht mehr unterstützt. See RM-9457.");
     }
 
     /// <summary>

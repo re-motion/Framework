@@ -21,6 +21,7 @@ using System.IO;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -152,14 +153,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
       using (var annotationImage = AnnotationLayer.CloneImage())
       using (var outputImage = BaseLayer.CloneImage())
-      using (var outputGraphics = Graphics.FromImage(outputImage))
+      using (var outputCanvas = Canvas.FromImage(outputImage))
       {
-        outputGraphics.DrawImage(annotationImage, Point.Empty);
+        outputCanvas.DrawImage(annotationImage, Point.Empty);
 
         if (DrawMouseCursor && Screenshot.CursorInformation.IsVisible)
-          Screenshot.CursorInformation.Draw(outputGraphics);
+          Screenshot.CursorInformation.Draw(outputCanvas);
 
-        outputImage.Save(path, ImageFormat.Png);
+        outputImage.Save(path);
       }
     }
 

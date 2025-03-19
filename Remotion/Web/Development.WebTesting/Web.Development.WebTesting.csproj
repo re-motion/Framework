@@ -3,8 +3,6 @@
   <PropertyGroup>
     <ProjectType>Library</ProjectType>
     <UseWebForms>true</UseWebForms>
-    <UseWindowsForms>true</UseWindowsForms>
-    <UseWpf>true</UseWpf>
   </PropertyGroup>
   <Import Project="..\..\..\Build\Shared.build.props" />
   <PropertyGroup>
@@ -17,22 +15,31 @@
   <ItemGroup>
     <EmbeddedResource Include="ScreenshotCreation\Resolvers\WebElementResolverScript.js" />
     <EmbeddedResource Include="Accessibility\axe.min.js" />
+    <EmbeddedResource Include="Resources\LiberationSans-Bold.ttf" />
+    <EmbeddedResource Include="Resources\LiberationSans-BoldItalic.ttf" />
+    <EmbeddedResource Include="Resources\LiberationSans-Italic.ttf" />
+    <EmbeddedResource Include="Resources\LiberationSans-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fork.Coypu" />
+    <PackageReference Include="Remotion.ThirdPartyDependency.LiberationSans" />
     <PackageReference Include="Selenium.Support" />
     <PackageReference Include="Selenium.WebDriver" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" />
+    <PackageReference Include="Microsoft.Maui.Graphics.Skia" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\SharedSource\Core\Utilities\ArgumentUtility.cs" Link="SharedSource\Utilities\ArgumentUtility.cs" />
     <Compile Include="..\..\..\SharedSource\Core\Utilities\Assertion.cs" Link="SharedSource\Utilities\Assertion.cs" />
     <Compile Include="..\..\..\SharedSource\Core\Utilities\NullableTypeUtility.cs" Link="SharedSource\Utilities\NullableTypeUtility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="THIRD-PARTY-NOTICES.txt" Pack="true" PackagePath=""/>
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

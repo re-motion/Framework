@@ -18,6 +18,7 @@ using System;
 using System.Drawing;
 using JetBrains.Annotations;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 {
@@ -107,7 +108,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <summary>
-    /// The <see cref="System.Drawing.Font"/> that will be used to draw the <see cref="Content"/>.
+    /// The <see cref="Drawing.Font"/> that will be used to draw the <see cref="Content"/>.
     /// </summary>
     public Font Font
     {
@@ -131,17 +132,17 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <inheritdoc />
-    public void Draw (Graphics graphics, ResolvedScreenshotElement resolvedScreenshotElement)
+    public void Draw (Canvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull("graphics", graphics);
+      ArgumentUtility.CheckNotNull("canvas", canvas);
       ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
 
       var elementBounds = resolvedScreenshotElement.ElementBounds;
       var centerPoint = new Point(
           elementBounds.X + elementBounds.Width / 2 + _translation.Width,
-          elementBounds.Y + elementBounds.Height / 2 + _translation.Height);
+          elementBounds.Y + elementBounds.Height / 2 + _translation.Height - 1);
 
-      var textSizeF = graphics.MeasureString(Content, Font);
+      var textSizeF = Font.MeasureString(Content);
       var textSize = new Size((int)Math.Ceiling(textSizeF.Width), (int)Math.Ceiling(textSizeF.Height));
 
       var textBound = new Rectangle(centerPoint.X - textSize.Width / 2, centerPoint.Y - textSize.Height / 2, textSize.Width, textSize.Height);
@@ -163,9 +164,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
       }
 
       if (BackgroundBrush != null)
-        graphics.FillEllipse(BackgroundBrush, ellipseBounds);
-      graphics.DrawString(Content, Font, ContentBrush, textBound);
-      graphics.DrawEllipse(BorderPen, ellipseBounds);
+        canvas.FillEllipse(BackgroundBrush, ellipseBounds);
+      canvas.DrawString(Content, Font, ContentBrush, textBound, HorizontalAlignment.Center, VerticalAlignment.Center, wrapLines: true);
+      canvas.DrawEllipse(BorderPen, ellipseBounds);
     }
   }
 }

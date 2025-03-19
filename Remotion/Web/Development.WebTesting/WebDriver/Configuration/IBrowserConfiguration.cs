@@ -76,11 +76,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     LocatorHelper LocatorHelper { [NotNull] get; }
 
     /// <summary>
-    /// Gets a <see cref="MouseHelper"/>, which provides an API to handle mouse interactions.
-    /// </summary>
-    MouseHelper MouseHelper { [NotNull] get; }
-
-    /// <summary>
     /// Returns the <see cref="IBrowserContentLocator"/> that will be used to located browser content (e.g. the browser content bounds).
     /// </summary>
     IBrowserContentLocator Locator { [NotNull] get; }

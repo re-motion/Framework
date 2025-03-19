@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Drawing;
-using System.Windows.Automation;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
@@ -93,18 +92,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
           target,
           resolver,
           minimumElementVisibility ?? fluentTarget.MinimumElementVisibility);
-    }
-
-    /// <summary>
-    /// Creates a new <see cref="FluentScreenshotElement{T}"/> for an <see cref="AutomationElement"/>.
-    /// </summary>
-    public static FluentScreenshotElement<AutomationElement> CreateFluentAutomationElement (
-        [NotNull] AutomationElement automationElement,
-        [CanBeNull] ElementVisibility? minimumElementVisibility = null)
-    {
-      ArgumentUtility.CheckNotNull("automationElement", automationElement);
-
-      return new FluentScreenshotElement<AutomationElement>(automationElement, AutomationElementResolver.Instance, minimumElementVisibility);
     }
 
     /// <summary>

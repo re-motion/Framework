@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Drawing;
 using System.Threading;
 using Coypu;
 using NUnit.Framework;
@@ -24,8 +23,8 @@ using Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
-using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects.FluentScreenshots.Extensions;
 
@@ -34,44 +33,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   [TestFixture]
   public partial class ScreenshotTest : IntegrationTest
   {
-    [Category("Screenshot")]
-    [Test]
-    public void DropDownList ()
-    {
-      WebPadding padding;
-      if (Helper.BrowserConfiguration.IsChromium())
-      {
-        padding = new WebPadding(2, 3, 2, 53);
-      }
-      else if (Helper.BrowserConfiguration.IsFirefox())
-      {
-        padding = new WebPadding(6, 1, 2, 68);
-      }
-      else
-      {
-        Assert.Fail("The current browser is not supported by this test.");
-        // ReSharper disable once HeuristicUnreachableCode
-        return;
-      }
-
-      ScreenshotTestingDelegate<FluentScreenshotElement<DropDownListControlObject>> test = (builder, target) =>
-      {
-        builder.AnnotateBox(target, Pens.Red, WebPadding.Inner);
-
-        builder.Crop(target, padding);
-      };
-
-      var home = Start();
-      var fluentDropDownList = home.DropDownLists().GetByLocalID("MyDropDownList").ForControlObjectScreenshot();
-      fluentDropDownList.Open();
-      Thread.Sleep(250);
-
-      Helper.RunScreenshotTest<FluentScreenshotElement<DropDownListControlObject>, DropDownListControlObjectTest>(
-          fluentDropDownList,
-          ScreenshotTestingType.Desktop,
-          test);
-    }
-
     [Test]
     public void DropDownList_WithDerivedControlObject ()
     {

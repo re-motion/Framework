@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
 using Coypu;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
@@ -189,10 +188,6 @@ namespace Remotion.Web.Development.WebTesting
       _mainBrowserSession = CreateNewBrowserSession(windowSize, configurationOverride);
       _logger.LogInformation("Browser: {0}, version {1}", _mainBrowserSession.Driver.GetBrowserName(), _mainBrowserSession.Driver.GetBrowserVersion());
       _logger.LogInformation("WebDriver version: {0}", _mainBrowserSession.Driver.GetWebDriverVersion());
-
-      // Note: otherwise cursor could interfere with element hovering.
-      if (!_mainBrowserSession.Headless)
-        EnsureCursorIsOutsideBrowserWindow();
     }
 
     [Obsolete("Use OnSetUp(ITestContext) instead, using the implementation example given in the ITestContext documentation, or your own implementation. (Version: 8.0.0)", true)]
@@ -314,8 +309,6 @@ namespace Remotion.Web.Development.WebTesting
       {
         var screenshotRecorder = new TestExecutionScreenshotRecorder(_testInfrastructureConfiguration.ScreenshotDirectory, _loggerFactory);
         screenshotRecorder.CaptureCursor();
-        if (_mainBrowserSession is { Headless: false })
-          screenshotRecorder.TakeDesktopScreenshot(_testContext.TestName);
         screenshotRecorder.TakeBrowserScreenshot(_testContext.TestName, _browserSessions.ToArray(), BrowserConfiguration.Locator);
       }
 
@@ -324,9 +317,10 @@ namespace Remotion.Web.Development.WebTesting
       _browserConfiguration.DownloadHelper.DeleteFiles();
     }
 
+    [Obsolete("Taking desktop screenshots is no longer supported. See RM-9455. (Version 8.0.0)", error: true)]
     public ScreenshotBuilder CreateDesktopScreenshot ()
     {
-      return new ScreenshotBuilder(Screenshot.TakeDesktopScreenshot(), BrowserConfiguration.Locator, _loggerFactory);
+      throw new NotSupportedException("Taking desktop screenshots is no longer supported. See RM-9455.");
     }
 
     public ScreenshotBuilder CreateBrowserScreenshot (IBrowserSession? browserSession = null)
@@ -377,11 +371,6 @@ namespace Remotion.Web.Development.WebTesting
         return;
 
       ProcessUtils.KillAllProcessesWithName(browserProcessName, _logger);
-    }
-
-    private void EnsureCursorIsOutsideBrowserWindow ()
-    {
-      Cursor.Position = new Point(0, 0);
     }
 
     private DriverConfiguration MergeDriverConfiguration (DriverConfiguration configuration, DriverConfigurationOverride? configurationOverride)

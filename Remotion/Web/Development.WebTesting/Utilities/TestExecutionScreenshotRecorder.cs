@@ -25,6 +25,7 @@ using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 using Screenshot = Remotion.Web.Development.WebTesting.ScreenshotCreation.Screenshot;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
@@ -35,18 +36,26 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   public class TestExecutionScreenshotRecorder
   {
     private readonly ILogger _logger;
+    private readonly ICursorInformationProvider _cursorInformationProvider;
 
     private readonly string _outputDirectory;
 
     private bool _isCursorCaptured;
-    private CursorInformation? _cursorInformation;
+    private ICursorInformation? _cursorInformation;
 
     public TestExecutionScreenshotRecorder ([NotNull] string outputDirectory, [NotNull] ILoggerFactory loggerFactory)
+        : this(outputDirectory, loggerFactory, EmptyCursorInformationProvider.Instance)
+    {
+    }
+
+    public TestExecutionScreenshotRecorder ([NotNull] string outputDirectory, [NotNull] ILoggerFactory loggerFactory, ICursorInformationProvider cursorInformationProvider)
     {
       ArgumentUtility.CheckNotNullOrEmpty("outputDirectory", outputDirectory);
       ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+      ArgumentUtility.CheckNotNull("cursorInformationProvider", cursorInformationProvider);
 
       _logger = loggerFactory.CreateLogger<TestExecutionScreenshotRecorder>();
+      _cursorInformationProvider = cursorInformationProvider;
       _outputDirectory = Path.GetFullPath(outputDirectory);
       Directory.CreateDirectory(_outputDirectory);
     }
@@ -60,8 +69,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     }
 
     /// <summary>
-    /// Captures the current state of the mouse cursor. All subsequent calls to either <see cref="TakeDesktopScreenshot"/>
-    /// or <see cref="TakeBrowserScreenshot"/> will use the captured cursor information instead of the current cursor information.
+    /// Captures the current state of the mouse cursor. All subsequent calls to <see cref="TakeBrowserScreenshot"/>
+    /// will use the captured cursor information instead of the current cursor information.
     /// </summary>
     public void CaptureCursor ()
     {
@@ -81,34 +90,12 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <exception cref="PathTooLongException">
     /// If the resulting file path would be longer than 260 characters (despite shortening of the <paramref name="testName"/>).
     /// </exception>
+    [Obsolete("Taking desktop screenshots is no longer supported. See RM-9455. (Version 8.0.0)", error: true)]
     public void TakeDesktopScreenshot ([JetBrains.Annotations.NotNull] string testName)
     {
       ArgumentUtility.CheckNotNullOrEmpty("testName", testName);
 
-      var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath(_outputDirectory, testName, "Desktop", "png");
-
-      try
-      {
-        var screenshot = Screenshot.TakeDesktopScreenshot();
-
-        using (var graphics = Graphics.FromImage(screenshot.Image))
-        {
-          var transformMatrix = new Matrix();
-          transformMatrix.Translate(-screenshot.DesktopOffset.Width, -screenshot.DesktopOffset.Height);
-
-          graphics.Transform = transformMatrix;
-
-          GetCursorInformation().Draw(graphics);
-        }
-
-        screenshot.Image.Save(filePath, ImageFormat.Png);
-
-        _logger.LogInformation("Saved screenshot of desktop to '{0}'.", filePath);
-      }
-      catch (Exception ex)
-      {
-        _logger.LogError(string.Format("Could not save desktop screenshot to '{0}'.", filePath), ex);
-      }
+      throw new NotSupportedException("Taking desktop screenshots is no longer supported. See RM-9455.");
     }
 
     /// <summary>
@@ -177,20 +164,17 @@ namespace Remotion.Web.Development.WebTesting.Utilities
           {
             var browserContentBounds = locator.GetBrowserContentBounds(nativeDriver);
 
-            using (var graphics = Graphics.FromImage(screenshot.Image))
+            using (var canvas = Canvas.FromImage(screenshot.Image))
             {
-              var transformMatrix = new Matrix();
-              transformMatrix.Translate(-browserContentBounds.X, -browserContentBounds.Y);
+              canvas.SetTransform(-browserContentBounds.X, -browserContentBounds.Y);
 
-              graphics.Transform = transformMatrix;
-
-              GetCursorInformation().Draw(graphics);
+              GetCursorInformation().Draw(canvas);
             }
           }
 
           var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath(_outputDirectory, testName, windowSuffix, "png");
 
-          screenshot.Image.Save(filePath, ImageFormat.Png);
+          screenshot.Image.Save(filePath);
         }
         catch (Exception ex)
         {
@@ -203,20 +187,20 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       _logger.LogInformation("Saved screenshots for the browser session '{0}'.", GetWindowText(browserSession));
     }
 
-    private CursorInformation CaptureCursorInformationWithLog ()
+    private ICursorInformation CaptureCursorInformationWithLog ()
     {
       try
       {
-        return CursorInformation.Capture();
+        return _cursorInformationProvider.GetCursorInformation();
       }
       catch (Exception ex)
       {
         _logger.LogError("Could not capture CursorInformation. Exception: \n{0}", ex);
-        return CursorInformation.Empty;
+        return EmptyCursorInformation.Instance;
       }
     }
 
-    private CursorInformation GetCursorInformation ()
+    private ICursorInformation GetCursorInformation ()
     {
       if (_isCursorCaptured)
         return _cursorInformation!;

@@ -31,12 +31,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
   public class DiagnosticScreenshotBuilder : ScreenshotBuilder
   {
     [NotNull]
+    [Obsolete("Taking desktop screenshots is no longer supported. See RM-9455. (Version 8.0.0)", error: true)]
     public static DiagnosticScreenshotBuilder CreateDesktopScreenshot ([NotNull] IBrowserContentLocator contentLocator, [NotNull] ILoggerFactory loggerFactory)
     {
       ArgumentUtility.CheckNotNull("contentLocator", contentLocator);
       ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
 
-      return new DiagnosticScreenshotBuilder(Screenshot.TakeDesktopScreenshot(), contentLocator, loggerFactory);
+      throw new NotSupportedException("Taking desktop screenshots is no longer supported. See RM-9455.");
     }
 
     [NotNull]
@@ -72,7 +73,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
       using (var annotationImage = AnnotationLayer.CloneImage())
       {
-        annotationImage.Save(path, ImageFormat.Png);
+        annotationImage.Save(path);
       }
     }
   }

@@ -40,7 +40,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     private readonly BrowserAnnotateHelper _browserAnnotateHelper;
     private readonly BrowserHelper _browserHelper;
     private readonly LocatorHelper _locatorHelper;
-    private readonly MouseHelper _mouseHelper;
 
     protected BrowserConfigurationBase ([NotNull] IWebTestSettings webTestSettings)
     {
@@ -54,7 +53,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
       _browserAnnotateHelper = new BrowserAnnotateHelper(this);
       _browserHelper = new BrowserHelper(this);
       _locatorHelper = new LocatorHelper(this);
-      _mouseHelper = new MouseHelper(this);
     }
 
     public abstract string BrowserExecutableName { get; }
@@ -83,11 +81,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     public LocatorHelper LocatorHelper
     {
       get { return _locatorHelper; }
-    }
-
-    public MouseHelper MouseHelper
-    {
-      get { return _mouseHelper; }
     }
 
     public abstract IBrowserContentLocator Locator { get; }
