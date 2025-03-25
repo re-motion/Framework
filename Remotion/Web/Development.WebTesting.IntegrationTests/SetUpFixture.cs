@@ -29,6 +29,9 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 [assembly: IgnoreBrowserLogMessage(ExpectedBrowserLogMessages.FavIconNotFound)]
 [assembly: IgnoreBrowserLogMessage(ExpectedBrowserLogMessages.FontNotUsed)]
 [assembly: IgnoreBrowserLogMessage(ExpectedBrowserLogMessages.BeforeUnloadAlertBlocked)]
+[assembly: IgnoreBrowserLogMessage("https://assets.msn.com/.*")]
+[assembly: IgnoreBrowserLogMessage("https://ntp.msn.com/.*")]
+[assembly: IgnoreBrowserLogMessage("https://blogs.windows.com/.*")]
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
