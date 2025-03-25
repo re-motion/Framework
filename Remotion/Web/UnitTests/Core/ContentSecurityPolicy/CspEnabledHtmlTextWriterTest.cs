@@ -59,6 +59,46 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
     }
 
     [Test]
+    public void RegisterSupportedEvent_WithEventNameWithoutOnPrefix_Throws ()
+    {
+      Assert.That(
+          () => CspEnabledHtmlTextWriter.RegisterSupportedEvent("bla"),
+    Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo("The specified event name must start with 'on'.", "eventName"));
+    }
+
+    [Test]
+    public void RegisterSupportedEvent_NewEventRegistration ()
+    {
+      _writer.RenderBeginTag("root");
+
+      _writer.AddAttribute("onNewAttribute", "value");
+      _writer.RenderBeginTag("div");
+      _writer.RenderEndTag();
+
+      CspEnabledHtmlTextWriter.RegisterSupportedEvent("onNewAttribute");
+
+      _writer.AddAttribute("onNewAttribute", "value");
+      _writer.RenderBeginTag("div");
+      _writer.RenderEndTag();
+
+      _writer.RenderEndTag();
+
+      Assert.That(
+          _htmlHelper.GetDocumentText().Replace("\t", "  "),
+          Is.EqualTo(
+              """
+              <root>
+                <div onNewAttribute="value">
+
+                </div><div data-inline-event-target>
+
+                </div>
+              </root>
+              """));
+    }
+
+    [Test]
     public void RenderBeginTag_WithScriptTag_NonceValueIsRendered ()
     {
       _writer.RenderBeginTag(HtmlTextWriterTag.Script);
@@ -339,14 +379,18 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
     }
 
     [Test]
-    public void AddAttribute_WithNotSupportedEventType_ThrowsArgumentException ()
+    public void AddAttribute_WithNotSupportedEventType_RendersNonTransformedAttribute ()
     {
-      Assert.That(
-          () => _writer.AddAttribute("onload", "console.info('test');"),
-          Throws.InstanceOf<ArgumentException>()
-              .With.ArgumentExceptionMessageEqualTo(
-                  "The name of attribute 'onload' indicates a script event but the event type is not supported.",
-                  "name"));
+      _writer.AddAttribute("onbla", "console.info('test');");
+      _writer.RenderBeginTag("root");
+      _writer.RenderEndTag();
+
+      var document = _htmlHelper.GetResultDocument();
+      _htmlHelper.AssertChildElementCount(document, 1);
+
+      var root = _htmlHelper.GetAssertedChildElement(document, "root", 0);
+      _htmlHelper.AssertChildElementCount(root, 0);
+      _htmlHelper.AssertAttribute(root, "onbla", "console.info('test');");
     }
 
     [Test]

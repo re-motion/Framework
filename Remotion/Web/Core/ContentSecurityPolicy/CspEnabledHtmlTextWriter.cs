@@ -14,7 +14,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Web;
 using System.Web.UI;
@@ -29,19 +31,95 @@ namespace Remotion.Web.ContentSecurityPolicy
   /// </summary>
   public class CspEnabledHtmlTextWriter : HtmlTextWriter
   {
-    private static readonly IReadOnlyDictionary<string, string> s_supportedEvents =
-        new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+    /// <summary>
+    /// Registers the specified <paramref name="eventName"/> as a supported event.
+    /// The default list of events should be complete, but this method can be used in case it is not.
+    /// </summary>
+    /// <param name="eventName">The name of the attribute event (e.g. onclick).</param>
+    public static void RegisterSupportedEvent (string eventName)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventName), eventName);
+      if (!eventName.StartsWith("on", StringComparison.OrdinalIgnoreCase))
+        throw new ArgumentException("The specified event name must start with 'on'.", nameof(eventName));
+
+      s_supportedEvents.TryAdd(eventName, eventName);
+    }
+
+    private static readonly ConcurrentDictionary<string, string> s_supportedEvents = new(
+        new Dictionary<string, string>
         {
-          { "onclick", "onclick" },
-          { "onchange", "onchange" },
-          // can be removed once WebTreeView learns to use modern html script registration.
-          { "oncontextmenu", "oncontextmenu" },
-          { "onmouseover", "onmouseover" },
-          { "onmouseout", "onmouseout" },
-          { "onkeyup", "onkeyup" },
-          { "onkeydown", "onkeydown" },
-          { "onkeypress", "onkeypress" }
-        };
+            { "onabort", "onabort" },
+            { "onafterprint", "onafterprint" },
+            { "onbeforeprint", "onbeforeprint" },
+            { "onbeforeunload", "onbeforeunload" },
+            { "onblur", "onblur" },
+            { "oncanplay", "oncanplay" },
+            { "oncanplaythrough", "oncanplaythrough" },
+            { "onchange", "onchange" },
+            { "onclick", "onclick" },
+            { "oncontextmenu", "oncontextmenu" },
+            { "oncopy", "oncopy" },
+            { "oncuechange", "oncuechange" },
+            { "oncut", "oncut" },
+            { "ondblclick", "ondblclick" },
+            { "ondrag", "ondrag" },
+            { "ondragend", "ondragend" },
+            { "ondragenter", "ondragenter" },
+            { "ondragleave", "ondragleave" },
+            { "ondragover", "ondragover" },
+            { "ondragstart", "ondragstart" },
+            { "ondrop", "ondrop" },
+            { "ondurationchange", "ondurationchange" },
+            { "onemptied", "onemptied" },
+            { "onended", "onended" },
+            { "onerror", "onerror" },
+            { "onfocus", "onfocus" },
+            { "onhashchange", "onhashchange" },
+            { "oninput", "oninput" },
+            { "oninvalid", "oninvalid" },
+            { "onkeydown", "onkeydown" },
+            { "onkeypress", "onkeypress" },
+            { "onkeyup", "onkeyup" },
+            { "onload", "onload" },
+            { "onloadeddata", "onloadeddata" },
+            { "onloadedmetadata", "onloadedmetadata" },
+            { "onloadstart", "onloadstart" },
+            { "onmessage", "onmessage" },
+            { "onmousedown", "onmousedown" },
+            { "onmousemove", "onmousemove" },
+            { "onmouseout", "onmouseout" },
+            { "onmouseover", "onmouseover" },
+            { "onmouseup", "onmouseup" },
+            { "onmousewheel", "onmousewheel" },
+            { "onoffline", "onoffline" },
+            { "ononline", "ononline" },
+            { "onpagehide", "onpagehide" },
+            { "onpageshow", "onpageshow" },
+            { "onpaste", "onpaste" },
+            { "onpause", "onpause" },
+            { "onplay", "onplay" },
+            { "onplaying", "onplaying" },
+            { "onpopstate", "onpopstate" },
+            { "onprogress", "onprogress" },
+            { "onratechange", "onratechange" },
+            { "onreset", "onreset" },
+            { "onresize", "onresize" },
+            { "onscroll", "onscroll" },
+            { "onsearch", "onsearch" },
+            { "onseeked", "onseeked" },
+            { "onseeking", "onseeking" },
+            { "onselect", "onselect" },
+            { "onstalled", "onstalled" },
+            { "onstorage", "onstorage" },
+            { "onsubmit", "onsubmit" },
+            { "onsuspend", "onsuspend" },
+            { "ontimeupdate", "ontimeupdate" },
+            { "ontoggle", "ontoggle" },
+            { "onunload", "onunload" },
+            { "onvolumechange", "onvolumechange" },
+            { "onwaiting", "onwaiting" },
+            { "onwheel", "onwheel" },
+        }, StringComparer.OrdinalIgnoreCase);
 
     private readonly List<(string Type, string Value)> _registeredEvents = new();
     private readonly INonceGenerator _nonceGenerator;
@@ -138,9 +216,7 @@ namespace Remotion.Web.ContentSecurityPolicy
       if (s_supportedEvents.TryGetValue(name, out var eventType))
       {
         if (_registeredEvents.Exists(e => eventType.Equals(e.Type)))
-        {
           throw new ArgumentException($"Event handler '{name}' cannot be registered more than once.");
-        }
 
         var trimmedValue = value.TrimStart();
         const string javascriptPrefix = "javascript:";
@@ -151,15 +227,13 @@ namespace Remotion.Web.ContentSecurityPolicy
           value = HttpUtility.HtmlDecode(value);
 
         _registeredEvents.Add((Type: eventType, Value: value));
+
+        return true;
       }
       else
       {
-        throw new ArgumentException(
-            $"The name of attribute '{name}' indicates a script event but the event type is not supported.",
-            nameof(name));
+        return false;
       }
-
-      return true;
     }
   }
 }
