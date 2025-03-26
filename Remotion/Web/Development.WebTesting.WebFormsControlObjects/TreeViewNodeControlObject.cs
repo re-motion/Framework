@@ -236,7 +236,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     private void ClickNode (IWebTestActionOptions? actionOptions)
     {
       var actualCompletionDetector = MergeWithDefaultActionOptions(Scope, actionOptions);
-      const string nodeClickScopeXpath = "./tbody/tr/td[a[contains(@data-event-content-onclick, 'TreeView_SelectNode')]][last()]/a[last()]";
+      const string nodeClickScopeXpath = "./tbody/tr/td[a[contains(@data-event-content-onclick, 'TreeView_SelectNode')]][last()]/a[last()] | ./tbody/tr/td[a[contains(@onclick, 'TreeView_SelectNode')]][last()]/a[last()]";
       try
       {
         ExecuteAction(new ClickAction(this, Scope.FindXPath(nodeClickScopeXpath), Logger), actualCompletionDetector);
@@ -249,7 +249,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
 
     private ElementScope GetCheckboxScope ()
     {
-      const string xpath = "./tbody/tr/td[a[contains(@data-event-content-onclick, 'TreeView_SelectNode')]]/input[@type='checkbox']";
+      const string xpath = "./tbody/tr/td[a[contains(@data-event-content-onclick, 'TreeView_SelectNode')]]/input[@type='checkbox'] | ./tbody/tr/td[a[contains(@onclick, 'TreeView_SelectNode')]]/input[@type='checkbox']";
       return Scope.FindXPath(xpath);
     }
 
