@@ -247,6 +247,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   private bool? _enableCspReportOnly;
   private readonly INonceGenerator _nonceGenerator;
   private string? _cspNonceValue;
+  private bool _isHtmlWriterCreated;
 
   public SmartPage ()
   {
@@ -269,8 +270,12 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
   protected override HtmlTextWriter CreateHtmlTextWriter (TextWriter writer)
   {
-    if (_cspNonceValue == null)
-     _cspNonceValue = _nonceGenerator.GenerateAlphaNumericNonce();
+    _isHtmlWriterCreated = true;
+
+    if (!IsCspEnabled && !IsCspReportOnlyEnabled)
+      return base.CreateHtmlTextWriter(writer);
+
+    _cspNonceValue ??= _nonceGenerator.GenerateAlphaNumericNonce();
 
     return new CspEnabledHtmlTextWriter(
         this,
@@ -619,13 +624,23 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// Gets or sets the flag that determines whether a Content-Security-Policy header is set.
   /// The value of the header is determined by <see cref="GetCspHeader"/>.
   /// </summary>
+  /// <remarks>
+  /// This property cannot be set after <see cref="CreateHtmlTextWriter"/> was called at least once.
+  /// The last chance to set this property is usually in OnPreRender.
+  /// </remarks>
   [Description("The flag that determines whether a Content-Security-Policy header is set.")]
   [Category("Behavior")]
   [DefaultValue(null)]
   public bool? EnableCsp
   {
     get { return _enableCsp; }
-    set { _enableCsp = value; }
+    set
+    {
+      if (_isHtmlWriterCreated)
+        throw new InvalidOperationException($"{nameof(EnableCsp)} cannot be set after an HtmlTextWriter was already created.");
+
+      _enableCsp = value;
+    }
   }
 
   /// <summary> Gets the evaluated value for the <see cref="EnableCsp"/> property. </summary>
@@ -645,13 +660,23 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// Gets or sets the flag that determines whether a Content-Security-Policy-Report-Only header is set.
   /// The value of the header is determined by <see cref="GetCspReportOnlyHeader"/>.
   /// </summary>
+  /// <remarks>
+  /// This property cannot be set after <see cref="CreateHtmlTextWriter"/> was called at least once.
+  /// The last chance to set this property is usually in OnPreRender.
+  /// </remarks>
   [Description("The flag that determines whether a Content-Security-Policy-Report-Only header is set.")]
   [Category("Behavior")]
   [DefaultValue(null)]
   public bool? EnableCspReportOnly
   {
     get { return _enableCspReportOnly; }
-    set { _enableCspReportOnly = value; }
+    set
+    {
+      if (_isHtmlWriterCreated)
+        throw new InvalidOperationException($"{nameof(EnableCspReportOnly)} cannot be set after an HtmlTextWriter was already created.");
+
+      _enableCspReportOnly = value;
+    }
   }
 
   /// <summary> Gets the evaluated value for the <see cref="EnableCspReportOnly"/> property. </summary>
