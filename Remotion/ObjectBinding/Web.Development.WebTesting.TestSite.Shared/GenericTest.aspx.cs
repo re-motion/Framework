@@ -111,6 +111,25 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
       DataSource.LoadValues(IsReturningPostBack);
     }
 
+    protected override void OnPreRender (EventArgs e)
+    {
+      base.OnPreRender(e);
+
+      ClientScript.RegisterStartupScriptBlock(
+          this,
+          typeof(GenericTest),
+          "InsertNewTarget",
+          $$"""
+            var target = document.getElementById("{{PanelAmbiguousControl.ClientID}}");
+                if (target)
+                {
+                  var newTarget = target.cloneNode(true);
+                  newTarget.ID += "2";
+                  target.parentNode.insertBefore (newTarget, target.nextSibling);
+                }
+            """);
+    }
+
     protected override void SetTestInformation (string information)
     {
       var master = Master as Layout;

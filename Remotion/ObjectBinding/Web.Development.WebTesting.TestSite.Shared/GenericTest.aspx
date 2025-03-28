@@ -121,13 +121,4 @@
       </iframe>
     </ContentTemplate>
   </asp:UpdatePanel>
-  <script>
-    var target = document.getElementById("<%= PanelAmbiguousControl.ClientID %>");
-    if (target)
-    {
-      var newTarget = target.cloneNode(true);
-      newTarget.ID += "2";
-      target.parentNode.insertBefore (newTarget, target.nextSibling);
-    }
-  </script>
 </asp:Content>

@@ -32,17 +32,4 @@
       <asp:TextBox runat="server" ID="TextField" />
     </ContentTemplate>
   </asp:UpdatePanel>
-
-  <script type="text/javascript">
-  function SmartPage_IsDirty(conditions)
-  {
-    return SmartPage_Context.Instance.IsDirty(conditions);
-  }
-
-  function SetPageDirtyOnClientSide()
-  {
-    var textField = document.getElementById("<%=TextField.ClientID%>");
-    textField.dispatchEvent(new Event("change"));
-  }
-  </script>
 </asp:Content>

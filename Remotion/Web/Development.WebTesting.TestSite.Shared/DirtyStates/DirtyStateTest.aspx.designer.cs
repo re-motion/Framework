@@ -101,11 +101,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Shared.DirtyStates
         /// <remarks>
         /// Auto-generated property.
         /// </remarks>
-        public new Layout Master
+        public new Remotion.Web.Development.WebTesting.TestSite.Shared.Layout Master
         {
             get
             {
-                return ((Layout)(base.Master));
+                return ((Remotion.Web.Development.WebTesting.TestSite.Shared.Layout)(base.Master));
             }
         }
     }

@@ -33,6 +33,23 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Shared.DirtyStates
       RegisterControlForClientSideDirtyStateTracking(TextField.ClientID);
 
       base.OnPreRender(e);
+
+      ClientScript.RegisterClientScriptBlock(
+          this,
+          typeof(DirtyStateTest),
+          "DirtyFunctions",
+          $$"""
+          function SmartPage_IsDirty(conditions)
+          {
+            return SmartPage_Context.Instance.IsDirty(conditions);
+          }
+
+          function SetPageDirtyOnClientSide()
+          {
+            var textField = document.getElementById("{{TextField.ClientID}}");
+            textField.dispatchEvent(new Event("change"));
+          }
+          """);
     }
 
     protected override bool IsAbortConfirmationEnabled => false;
