@@ -516,5 +516,191 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
 
       _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
     }
+
+    [Test]
+    public void WriteBeginTag_ScriptTag ()
+    {
+      _writer.WriteBeginTag("script");
+
+      Assert.That(
+          _htmlHelper.GetDocumentText(),
+          Is.EqualTo("<script nonce=\"TEST-NONCE\""));
+    }
+
+    [Test]
+    public void WriteBeginTag_NonScriptTag ()
+    {
+      _writer.WriteBeginTag("div");
+
+      Assert.That(
+          _htmlHelper.GetDocumentText(),
+          Is.EqualTo("<div"));
+    }
+
+    [Test]
+    public void WriteFullBeginTag_ScriptTag ()
+    {
+      _writer.WriteFullBeginTag("script");
+
+      Assert.That(
+          _htmlHelper.GetDocumentText(),
+          Is.EqualTo("<script nonce=\"TEST-NONCE\">"));
+    }
+
+    [Test]
+    public void WriteFullBeginTag_NonScriptTag ()
+    {
+      _writer.WriteFullBeginTag("div");
+
+      Assert.That(
+          _htmlHelper.GetDocumentText(),
+          Is.EqualTo("<div>"));
+    }
+
+    [Test]
+    public void WriteAttribute_NonEventAttribute ()
+    {
+      _writer.WriteBeginTag("div");
+      _writer.WriteAttribute("id", "test");
+
+      Assert.That(
+          _htmlHelper.GetDocumentText(),
+          Is.EqualTo("<div id=\"test\""));
+    }
+
+    [Test]
+    public void WriteAttribute_EventAttribute ()
+    {
+      _randomNumberGeneratorStub.Setup(_ => _.GenerateAlphaNumericNonce()).Returns("eventTargetID");
+
+      _writer.WriteBeginTag("div");
+      _writer.WriteAttribute("onclick", "test");
+
+      _clientScriptStub.Verify(
+          m => m.RegisterStartupScriptBlock(
+              _pageStub.Object,
+              typeof(CspEnabledHtmlTextWriter),
+              "eventTargetID-onclick",
+              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{test}};"),
+          Times.Once);
+
+      Assert.That(
+          _htmlHelper.GetDocumentText(),
+          Is.EqualTo("<div data-inline-event-target=\"eventTargetID\""));
+    }
+
+    [Test]
+    public void WriteAttribute_EventAttributeWithDiagnosticMetadata ()
+    {
+      _randomNumberGeneratorStub.Setup(_ => _.GenerateAlphaNumericNonce()).Returns("eventTargetID");
+      _renderingFeaturesStub.Setup(_ => _.EnableDiagnosticMetadata).Returns(true);
+
+      _writer.WriteBeginTag("div");
+      _writer.WriteAttribute("onclick", "test");
+
+      _clientScriptStub.Verify(
+          m => m.RegisterStartupScriptBlock(
+              _pageStub.Object,
+              typeof(CspEnabledHtmlTextWriter),
+              "eventTargetID-onclick",
+              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{test}};"),
+          Times.Once);
+
+      Assert.That(
+          _htmlHelper.GetDocumentText(),
+          Is.EqualTo("<div data-inline-event-target=\"eventTargetID\" data-event-content-onclick=\"test\""));
+    }
+
+    [Test]
+    public void WriteAttribute_MultipleEventAttributes ()
+    {
+      _randomNumberGeneratorStub.Setup(_ => _.GenerateAlphaNumericNonce()).Returns("eventTargetID");
+
+      _writer.WriteBeginTag("div");
+      _writer.WriteAttribute("onclick", "test");
+      _writer.WriteAttribute("onload", "test2");
+
+      _clientScriptStub.Verify(
+          m => m.RegisterStartupScriptBlock(
+              _pageStub.Object,
+              typeof(CspEnabledHtmlTextWriter),
+              "eventTargetID-onclick",
+              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{test}};"),
+          Times.Once);
+
+      _clientScriptStub.Verify(
+          m => m.RegisterStartupScriptBlock(
+              _pageStub.Object,
+              typeof(CspEnabledHtmlTextWriter),
+              "eventTargetID-onload",
+              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onload = function (event){{test2}};"),
+          Times.Once);
+
+      Assert.That(
+          _htmlHelper.GetDocumentText(),
+          Is.EqualTo("<div data-inline-event-target=\"eventTargetID\""));
+    }
+
+    [Test]
+    public void WriteAttribute_MultipleEventAttributesWithDiagnosticMetadata ()
+    {
+      _randomNumberGeneratorStub.Setup(_ => _.GenerateAlphaNumericNonce()).Returns("eventTargetID");
+      _renderingFeaturesStub.Setup(_ => _.EnableDiagnosticMetadata).Returns(true);
+
+      _writer.WriteBeginTag("div");
+      _writer.WriteAttribute("onclick", "test");
+      _writer.WriteAttribute("onload", "test2");
+
+      _clientScriptStub.Verify(
+          m => m.RegisterStartupScriptBlock(
+              _pageStub.Object,
+              typeof(CspEnabledHtmlTextWriter),
+              "eventTargetID-onclick",
+              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{test}};"),
+          Times.Once);
+
+      _clientScriptStub.Verify(
+          m => m.RegisterStartupScriptBlock(
+              _pageStub.Object,
+              typeof(CspEnabledHtmlTextWriter),
+              "eventTargetID-onload",
+              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onload = function (event){{test2}};"),
+          Times.Once);
+
+      Assert.That(
+          _htmlHelper.GetDocumentText(),
+          Is.EqualTo("<div data-inline-event-target=\"eventTargetID\" data-event-content-onclick=\"test\" data-event-content-onload=\"test2\""));
+    }
+
+    [Test]
+    public void WriteAttribute_EventTargetIdResetsWithWriteBeginTag ()
+    {
+      _writer.WriteBeginTag("div");
+      _writer.WriteAttribute("onclick", "test");
+      _writer.Write("/>");
+
+      _writer.WriteBeginTag("div");
+      _writer.WriteAttribute("onclick", "test");
+      _writer.Write("/>");
+
+      Assert.That(
+          _htmlHelper.GetDocumentText(),
+          Is.EqualTo("<div data-inline-event-target/><div data-inline-event-target/>"));
+    }
+
+    [Test]
+    public void WriteAttribute_EventTargetIdResetsWithWriteFullBeginTag ()
+    {
+      _writer.WriteBeginTag("div");
+      _writer.WriteAttribute("onclick", "test");
+      _writer.Write("/>");
+
+      _writer.WriteFullBeginTag("div");
+      _writer.WriteAttribute("onclick", "test");
+
+      Assert.That(
+          _htmlHelper.GetDocumentText(),
+          Is.EqualTo("<div data-inline-event-target/><div> data-inline-event-target"));
+    }
   }
 }

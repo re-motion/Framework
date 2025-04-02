@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Web;
 using System.Web.UI;
@@ -127,6 +127,8 @@ namespace Remotion.Web.ContentSecurityPolicy
     private readonly string _requestNonce;
     private readonly IRenderingFeatures _renderingFeatures;
 
+    private string? _lastInlineEventTargetId = null;
+
     public CspEnabledHtmlTextWriter (ISmartPage page, TextWriter writer, INonceGenerator nonceGenerator, string requestNonce, IRenderingFeatures renderingFeatures)
         : base(writer)
     {
@@ -205,8 +207,75 @@ namespace Remotion.Web.ContentSecurityPolicy
       base.AddAttribute(key, value, fEncode);
     }
 
+    public override void WriteBeginTag (string tagName)
+    {
+      _lastInlineEventTargetId = null;
+
+      base.WriteBeginTag(tagName);
+      if (tagName.Equals("script", StringComparison.OrdinalIgnoreCase))
+        base.WriteAttribute("nonce", _requestNonce);
+    }
+
+    public override void WriteFullBeginTag (string tagName)
+    {
+      _lastInlineEventTargetId = null;
+
+      WriteBeginTag(tagName);
+      base.Write('>');
+    }
+
+    public override void WriteAttribute (string name, string value)
+    {
+      WriteAttribute(name, value, false);
+    }
+
+    public override void WriteAttribute (string name, string value, bool fEncode)
+    {
+      if (TryCreateEventRegistration(name, value, fEncode, out var registration))
+      {
+        var (type, actualValue) = registration.Value;
+
+        var eventTargetID = _lastInlineEventTargetId;
+        if (eventTargetID == null)
+        {
+          eventTargetID = _nonceGenerator.GenerateAlphaNumericNonce();
+          base.WriteAttribute("data-inline-event-target", eventTargetID);
+          _lastInlineEventTargetId = eventTargetID;
+        }
+
+        var script = $"document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]').{type} = function (event){{{value}}};";
+        _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(CspEnabledHtmlTextWriter), $"{eventTargetID}-{type}", script);
+        if (_renderingFeatures.EnableDiagnosticMetadata)
+          base.WriteAttribute("data-event-content-" + type, actualValue);
+      }
+      else
+      {
+        base.WriteAttribute(name, value, fEncode);
+      }
+    }
+
     private bool TryAddAttributeWithoutEncoding (string name, string? value, bool isAlreadyEncoded)
     {
+      if (TryCreateEventRegistration(name, value, isAlreadyEncoded, out var registration))
+      {
+        if (_registeredEvents.Exists(e => registration.Value.Type.Equals(e.Type)))
+          throw new ArgumentException($"Event handler '{name}' cannot be registered more than once.");
+
+        _registeredEvents.Add(registration.Value);
+        return true;
+      }
+
+      return false;
+    }
+
+    private static bool TryCreateEventRegistration (
+        string name,
+        string? value,
+        bool isAlreadyEncoded,
+        [NotNullWhen(true)] out (string Type, string Value)? registration)
+    {
+      registration = null;
+
       if (!name.StartsWith("on", StringComparison.OrdinalIgnoreCase))
         return false;
 
@@ -215,9 +284,6 @@ namespace Remotion.Web.ContentSecurityPolicy
 
       if (s_supportedEvents.TryGetValue(name, out var eventType))
       {
-        if (_registeredEvents.Exists(e => eventType.Equals(e.Type)))
-          throw new ArgumentException($"Event handler '{name}' cannot be registered more than once.");
-
         var trimmedValue = value.TrimStart();
         const string javascriptPrefix = "javascript:";
         if (trimmedValue.StartsWith(javascriptPrefix, StringComparison.OrdinalIgnoreCase))
@@ -226,8 +292,7 @@ namespace Remotion.Web.ContentSecurityPolicy
         if (isAlreadyEncoded)
           value = HttpUtility.HtmlDecode(value);
 
-        _registeredEvents.Add((Type: eventType, Value: value));
-
+        registration = (eventType, value);
         return true;
       }
       else
