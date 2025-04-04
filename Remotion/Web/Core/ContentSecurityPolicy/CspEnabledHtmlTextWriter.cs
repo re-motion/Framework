@@ -144,6 +144,16 @@ namespace Remotion.Web.ContentSecurityPolicy
       _renderingFeatures = renderingFeatures;
     }
 
+    protected override HtmlTextWriter CreateUpdatePanelHtmlTextWriter (TextWriter textWriter)
+    {
+      return new CspEnabledHtmlTextWriter(
+          _page,
+          textWriter,
+          _nonceGenerator,
+          _requestNonce,
+          _renderingFeatures);
+    }
+
     public override void RenderBeginTag (HtmlTextWriterTag tagKey)
     {
       if (tagKey == HtmlTextWriterTag.Script)
