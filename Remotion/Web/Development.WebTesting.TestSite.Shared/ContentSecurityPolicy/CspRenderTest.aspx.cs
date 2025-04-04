@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web.UI;
 using Remotion.Web.UI;
 
 namespace Remotion.Web.Development.WebTesting.TestSite.Shared.ContentSecurityPolicy
@@ -30,15 +29,10 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Shared.ContentSecurityPol
 
     protected override void OnPreRender (EventArgs e)
     {
+      // Explicitly set the CSP settings to override any default values
       var cspMode = Context.Request.Params["cspMode"];
-      if (cspMode == "Enabled")
-      {
-        EnableCsp = true;
-      }
-      else if (cspMode == "ReportOnly")
-      {
-        EnableCspReportOnly = true;
-      }
+      EnableCsp = cspMode == "Enabled";
+      EnableCspReportOnly = cspMode == "ReportOnly";
 
       base.OnPreRender(e);
     }

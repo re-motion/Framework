@@ -10,6 +10,7 @@ using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.IntegrationTests;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.IntegrationTests.ContentSecurityPolicy;
 
@@ -192,10 +193,11 @@ public class CspRenderTest : IntegrationTest
                 {
                         "REGISTERED STARTUP SCRIPT",
                         "REGISTERED STARTUP SCRIPT",
+                        "CONTROL INLINE ATTRIBUTE",
                         "CONTROL INLINE SCRIPT"
                 }));
 
-    AssertErrors(home, errorCount: 3, reportOnlyErrors: 0);
+    AssertErrors(home, errorCount: 2, reportOnlyErrors: 0);
   }
 
   private void AssertErrors (PageObject page, int errorCount, int reportOnlyErrors)
