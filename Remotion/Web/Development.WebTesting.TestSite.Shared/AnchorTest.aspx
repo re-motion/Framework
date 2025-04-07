@@ -19,7 +19,7 @@
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <asp:UpdatePanel ID="UpdatePanel" runat="server">
     <ContentTemplate>
-      <script type="text/javascript">
+      <script type="text/javascript" nonce="testsite">
         function myClickHandler(text) { document.getElementById('TestOutputLabel').innerText = text; }
       </script>
       <h3>HtmlAnchor1 - re-motion WebLinkButton</h3>

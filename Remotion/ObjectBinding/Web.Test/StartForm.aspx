@@ -21,7 +21,7 @@
   <head>
     <title>Start Form</title>
     <remotion:htmlheadcontents id="HtmlHeadContents" runat="server" />
-<script type="text/javascript">
+<script type="text/javascript" nonce="testsite">
   function OpenClientWindow(url)
   {
     var clientWindow = window.open(url, 'ClientWindow', 'menubar=yes,toolbar=yes,location=yes,status=yes');

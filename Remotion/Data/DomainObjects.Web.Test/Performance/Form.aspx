@@ -20,7 +20,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-  <script type="text/javascript">
+  <script type="text/javascript" nonce="testsite">
     var renderStartTime = new Date().getTime();
     var pageRequestManagerRenderStartTime = 0;
     var asyncBeginRequestTime = 0;
@@ -134,7 +134,7 @@
     </form>
   </div>
   
-  <script type="text/javascript">
+  <script type="text/javascript" nonce="testsite">
     var prm = Sys.WebForms.PageRequestManager.getInstance();
     prm.add_beginRequest(Page_OnBeginAsyncRequest);
     prm.add_pageLoading(Page_OnBeginAsyncLoading);

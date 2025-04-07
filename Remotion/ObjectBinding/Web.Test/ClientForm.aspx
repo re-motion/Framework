@@ -26,7 +26,7 @@
 <meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema>
 <remotion:htmlheadcontents id=HtmlHeadContents runat="server"></remotion:htmlheadcontents>
 
-<script language="javascript">
+<script language="javascript" nonce="testsite">
   var _keepAliveLocation = 'WxeHandler.ashx?WxeFunctionType=OBWTest.ClientFormKeepAliveWxeFunction,OBWTest';
   var active = window.setInterval('KeepAlive()', 6000);
   
@@ -43,7 +43,7 @@
   }
 </script>
   
-<script language="javascript">
+<script language="javascript" nonce="testsite">
   var _wxe_expiredLocation = 'WxeHandler.ashx?WxeFunctionType=OBWTest.ClientFormClosingWxeFunction,OBWTest';
   var _wxe_isSubmit = false;
   var _wxe_aspnetDoPostBack = null;
