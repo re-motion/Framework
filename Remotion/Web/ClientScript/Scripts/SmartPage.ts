@@ -302,9 +302,12 @@ class SmartPage_Context
       errorBody += ', ' + response.get_statusText();
       errorBody += '\n';
 
-      errorBody += '<iframe sandbox="" src="data:text/html;base64,';
-      errorBody += btoa(response.get_responseData());
-      errorBody += '" ></iframe>';
+      // Use a temp element to ensure the srcdoc attribute cannot escape
+      const iFrame = document.createElement("iframe");
+      iFrame.setAttribute("sandbox", "");
+      iFrame.srcdoc = response.get_responseData();
+
+      errorBody += iFrame.outerHTML;
     }
 
     errorBody += '</div></div>';
