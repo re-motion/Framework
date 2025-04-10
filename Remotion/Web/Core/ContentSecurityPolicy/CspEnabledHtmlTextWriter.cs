@@ -22,6 +22,7 @@ using System.Web;
 using System.Web.UI;
 using Remotion.Utilities;
 using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.Web.ContentSecurityPolicy
@@ -33,7 +34,8 @@ namespace Remotion.Web.ContentSecurityPolicy
   {
     private enum RegisteredEventType
     {
-      InlineEventAttribute
+      InlineEventAttribute,
+      EventListener
     }
 
     private record RegisteredEvent (string Key, RegisteredEventType Type, string EventType, string EventValue, string OriginalValue)
@@ -43,10 +45,29 @@ namespace Remotion.Web.ContentSecurityPolicy
         return Type switch
         {
             RegisteredEventType.InlineEventAttribute => $"document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]').{EventType} = function (event){{{EventValue}}};",
+            RegisteredEventType.EventListener => $"document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]').addEventListener('{EventType}', function (event){{{EventValue}}});",
             _ => throw new InvalidOperationException($"Unsupported registered event type '{Type}'.")
         };
       }
     }
+
+    private delegate string HrefFormatterAction (ReadOnlySpan<char> value);
+
+    private static readonly HrefFormatterAction s_hrefActionFormatter = static value =>
+        $$"""
+        let __defaultPrevented = event.defaultPrevented;
+
+        event.preventDefault();
+        event.preventDefault = () => {
+          __defaultPrevented = true;
+        };
+
+        setTimeout(() => {
+          if (!__defaultPrevented) {
+            {{value}}
+          }
+        }, 0);
+        """;
 
     /// <summary>
     /// Registers the specified <paramref name="eventName"/> as a supported event.
@@ -143,10 +164,17 @@ namespace Remotion.Web.ContentSecurityPolicy
     private readonly ISmartPage _page;
     private readonly string _requestNonce;
     private readonly IRenderingFeatures _renderingFeatures;
+    private readonly IFallbackNavigationUrlProvider _fallbackNavigationUrlProvider;
 
     private string? _lastInlineEventTargetId = null;
 
-    public CspEnabledHtmlTextWriter (ISmartPage page, TextWriter writer, INonceGenerator nonceGenerator, string requestNonce, IRenderingFeatures renderingFeatures)
+    public CspEnabledHtmlTextWriter (
+        ISmartPage page,
+        TextWriter writer,
+        INonceGenerator nonceGenerator,
+        string requestNonce,
+        IRenderingFeatures renderingFeatures,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(writer)
     {
       ArgumentUtility.CheckNotNull("page", page);
@@ -159,6 +187,7 @@ namespace Remotion.Web.ContentSecurityPolicy
       _nonceGenerator = nonceGenerator;
       _requestNonce = requestNonce;
       _renderingFeatures = renderingFeatures;
+      _fallbackNavigationUrlProvider = fallbackNavigationUrlProvider;
     }
 
     protected override HtmlTextWriter CreateUpdatePanelHtmlTextWriter (TextWriter textWriter)
@@ -168,7 +197,8 @@ namespace Remotion.Web.ContentSecurityPolicy
           textWriter,
           _nonceGenerator,
           _requestNonce,
-          _renderingFeatures);
+          _renderingFeatures,
+          _fallbackNavigationUrlProvider);
     }
 
     public override void RenderBeginTag (HtmlTextWriterTag tagKey)
@@ -259,6 +289,9 @@ namespace Remotion.Web.ContentSecurityPolicy
     {
       if (TryCreateRegisteredEvent(name, value, fEncode, out var registeredEvent))
       {
+        if (registeredEvent.Key == "href")
+          base.WriteAttribute("href", _fallbackNavigationUrlProvider.GetURL());
+
         var eventTargetID = _lastInlineEventTargetId;
         if (eventTargetID == null)
         {
@@ -282,6 +315,9 @@ namespace Remotion.Web.ContentSecurityPolicy
     {
       if (TryCreateRegisteredEvent(name, value, isAlreadyEncoded, out var registeredEvent))
       {
+        if (registeredEvent.Key == "href")
+          base.AddAttribute("href", _fallbackNavigationUrlProvider.GetURL());
+
         if (_registeredEvents.Exists(e => registeredEvent.Key.Equals(e.Key)))
           throw new ArgumentException($"Event handler '{registeredEvent.Key}' cannot be registered more than once.");
 
@@ -300,28 +336,43 @@ namespace Remotion.Web.ContentSecurityPolicy
     {
       registeredEvent = null;
 
-      if (!name.StartsWith("on", StringComparison.OrdinalIgnoreCase))
-        return false;
-
       if (string.IsNullOrEmpty(value))
         return false;
 
-      if (s_supportedEvents.TryGetValue(name, out var eventType))
+      const string javaScriptUrlPrefix = "javascript:";
+
+      var originalValue = value;
+      var trimmedValue = value.AsSpan().TrimStart();
+      if (name.StartsWith("on", StringComparison.OrdinalIgnoreCase) && s_supportedEvents.TryGetValue(name, out var eventType))
       {
-        var originalValue = value;
-        var trimmedValue = value.TrimStart();
-        const string javascriptPrefix = "javascript:";
-        if (trimmedValue.StartsWith(javascriptPrefix, StringComparison.OrdinalIgnoreCase))
-          value = trimmedValue.Substring(javascriptPrefix.Length).TrimStart();
+        var actualValue = trimmedValue;
+        if (actualValue.StartsWith(javaScriptUrlPrefix, StringComparison.OrdinalIgnoreCase))
+          actualValue = actualValue[javaScriptUrlPrefix.Length..].TrimStart();
 
         if (isAlreadyEncoded)
-          value = HttpUtility.HtmlDecode(value);
+          actualValue = HttpUtility.HtmlDecode(actualValue.ToString());
 
         registeredEvent = new RegisteredEvent(
             eventType,
             RegisteredEventType.InlineEventAttribute,
             eventType,
-            value,
+            actualValue.ToString(),
+            originalValue);
+
+        return true;
+      }
+      else if (name.Equals("href", StringComparison.OrdinalIgnoreCase) && trimmedValue.StartsWith(javaScriptUrlPrefix, StringComparison.OrdinalIgnoreCase))
+      {
+        var actualValue = trimmedValue[javaScriptUrlPrefix.Length..].TrimStart();
+
+        if (isAlreadyEncoded)
+          actualValue = HttpUtility.HtmlDecode(actualValue.ToString());
+
+        registeredEvent = new RegisteredEvent(
+            "href",
+            RegisteredEventType.EventListener,
+            "click",
+            s_hrefActionFormatter(actualValue),
             originalValue);
 
         return true;
