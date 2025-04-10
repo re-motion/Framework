@@ -71,12 +71,16 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
 
       return scope["href"].Contains(doPostBackScript) ||
              scope["href"].Contains(doPostBackWithOptionsScript) ||
-             (TargetsCurrentPage(scope["href"]) && scope["onclick"] != null && scope["onclick"].Contains(doPostBackScript));
+             (TargetsCurrentPage(scope["href"]) && scope["onclick"] != null && scope["onclick"].Contains(doPostBackScript))
+             || (scope["data-event-content-href"]?.Contains(doPostBackScript) ?? false)
+             || (scope["data-event-content-href"]?.Contains(doPostBackWithOptionsScript) ?? false)
+             || (TargetsCurrentPage(scope["href"]) && (scope["data-event-content-onclick"]?.Contains(doPostBackScript) ?? false));
     }
 
     private bool IsSimpleJavaScriptLink (ElementScope scope)
     {
-      return TargetsCurrentPage(scope["href"]) && scope["onclick"] != null && scope["onclick"].Contains("javascript:");
+      return (TargetsCurrentPage(scope["href"]) && scope["onclick"] != null && scope["onclick"].Contains("javascript:"))
+             || (TargetsCurrentPage(scope["href"]) && scope["data-event-content-onclick"] != null && scope["data-event-content-onclick"].Contains("javascript:"));
     }
 
     private bool TargetsCurrentPage (string href)

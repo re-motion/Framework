@@ -181,7 +181,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     {
       var actualCompletionDetector = MergeWithDefaultActionOptions(Scope, actionOptions);
 
-      const string xpath = "./tbody/tr/td/a[contains(@href,\"','t\")]";
+      const string xpath = "./tbody/tr/td/a[contains(@href,\"','t\")] | ./tbody/tr/td/a[contains(@data-event-content-href,\"','t\")]";
       var expandLinkScope = Scope.FindXPath(xpath);
       ExecuteAction(new SimpleClickAction(this, expandLinkScope, Logger), actualCompletionDetector);
       return this;
