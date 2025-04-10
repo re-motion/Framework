@@ -40,10 +40,11 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
     [SetUp]
     public void SetUp ()
     {
-       _pageStub = new Mock<ISmartPage>();
+       _pageStub = new Mock<ISmartPage>(MockBehavior.Strict);
       _clientScriptStub = new Mock<ISmartPageClientScriptManager>();
-      _randomNumberGeneratorStub = new Mock<INonceGenerator>();
-      _renderingFeaturesStub = new Mock<IRenderingFeatures>();
+      _randomNumberGeneratorStub = new Mock<INonceGenerator>(MockBehavior.Strict);
+      _renderingFeaturesStub = new Mock<IRenderingFeatures>(MockBehavior.Strict);
+      _renderingFeaturesStub.Setup(_ => _.EnableDiagnosticMetadata).Returns(false);
 
       _pageStub
           .Setup(s => s.ClientScript)
@@ -70,6 +71,8 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
     [Test]
     public void RegisterSupportedEvent_NewEventRegistration ()
     {
+      _randomNumberGeneratorStub.Setup(_ => _.GenerateAlphaNumericNonce()).Returns("eventTargetID");
+
       _writer.RenderBeginTag("root");
 
       _writer.AddAttribute("onNewAttribute", "value");
@@ -91,7 +94,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               <root>
                 <div onNewAttribute="value">
 
-                </div><div data-inline-event-target>
+                </div><div data-inline-event-target="eventTargetID">
 
                 </div>
               </root>
@@ -173,6 +176,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               $"eventTargetID-onclick",
               $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{console.info('test');}};"),
           Times.Once);
+      _clientScriptStub.VerifyNoOtherCalls();
 
       _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
     }
@@ -206,6 +210,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               It.IsAny<string>(),
               It.IsAny<string>()),
           Times.Never);
+      _clientScriptStub.VerifyNoOtherCalls();
     }
 
     [TestCase("onclick", "onclick")]
@@ -238,6 +243,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
                       $"eventTargetID-{value}",
                       $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').{value} = function (event){{console.info('test');}};"),
               Times.Once);
+      _clientScriptStub.VerifyNoOtherCalls();
 
       _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
     }
@@ -259,6 +265,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               It.IsAny<string>(),
               It.IsAny<string>()),
           Times.Never);
+      _clientScriptStub.VerifyNoOtherCalls();
     }
 
     [Test]
@@ -279,6 +286,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
                       It.IsAny<string>(),
                       It.IsAny<string>()),
               Times.Never);
+      _clientScriptStub.VerifyNoOtherCalls();
     }
 
     [Test]
@@ -313,6 +321,8 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               "eventTargetID-onchange",
               "document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onchange = function (event){console.info('test2');};"),
           Times.Once);
+
+      _clientScriptStub.VerifyNoOtherCalls();
 
       _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
     }
@@ -376,6 +386,8 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               "eventTargetID2-onchange",
               "document.querySelector('[data-inline-event-target=\"eventTargetID2\"]').onchange = function (event){console.info('test2');};"),
           Times.Once);
+
+      _clientScriptStub.VerifyNoOtherCalls();
     }
 
     [Test]
@@ -430,6 +442,8 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{console.info('test');}};"),
           Times.Once);
 
+      _clientScriptStub.VerifyNoOtherCalls();
+
       _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
     }
 
@@ -457,6 +471,8 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{console.info('test');}};"),
           Times.Once);
 
+      _clientScriptStub.VerifyNoOtherCalls();
+
       _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
     }
 
@@ -483,6 +499,8 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               "eventTargetID-onclick",
               $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{console.info('test');}};"),
           Times.Once);
+
+      _clientScriptStub.VerifyNoOtherCalls();
 
       _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
     }
@@ -513,6 +531,8 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               "eventTargetID-onclick",
               $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{{expected}}};"),
           Times.Once);
+
+      _clientScriptStub.VerifyNoOtherCalls();
 
       _randomNumberGeneratorStub.Verify(m => m.GenerateAlphaNumericNonce(), Times.Once());
     }
@@ -584,6 +604,8 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{test}};"),
           Times.Once);
 
+      _clientScriptStub.VerifyNoOtherCalls();
+
       Assert.That(
           _htmlHelper.GetDocumentText(),
           Is.EqualTo("<div data-inline-event-target=\"eventTargetID\""));
@@ -596,7 +618,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _renderingFeaturesStub.Setup(_ => _.EnableDiagnosticMetadata).Returns(true);
 
       _writer.WriteBeginTag("div");
-      _writer.WriteAttribute("onclick", "test");
+      _writer.WriteAttribute("onclick", " javascript:test");
 
       _clientScriptStub.Verify(
           m => m.RegisterStartupScriptBlock(
@@ -606,9 +628,11 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{test}};"),
           Times.Once);
 
+      _clientScriptStub.VerifyNoOtherCalls();
+
       Assert.That(
           _htmlHelper.GetDocumentText(),
-          Is.EqualTo("<div data-inline-event-target=\"eventTargetID\" data-event-content-onclick=\"test\""));
+          Is.EqualTo("<div data-inline-event-target=\"eventTargetID\" data-event-content-onclick=\" javascript:test\""));
     }
 
     [Test]
@@ -635,6 +659,8 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               "eventTargetID-onload",
               $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onload = function (event){{test2}};"),
           Times.Once);
+
+      _clientScriptStub.VerifyNoOtherCalls();
 
       Assert.That(
           _htmlHelper.GetDocumentText(),
@@ -667,6 +693,8 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onload = function (event){{test2}};"),
           Times.Once);
 
+      _clientScriptStub.VerifyNoOtherCalls();
+
       Assert.That(
           _htmlHelper.GetDocumentText(),
           Is.EqualTo("<div data-inline-event-target=\"eventTargetID\" data-event-content-onclick=\"test\" data-event-content-onload=\"test2\""));
@@ -675,6 +703,10 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
     [Test]
     public void WriteAttribute_EventTargetIdResetsWithWriteBeginTag ()
     {
+      _randomNumberGeneratorStub.SetupSequence(_ => _.GenerateAlphaNumericNonce())
+          .Returns("eventTargetID1")
+          .Returns("eventTargetID2");
+
       _writer.WriteBeginTag("div");
       _writer.WriteAttribute("onclick", "test");
       _writer.Write("/>");
@@ -685,12 +717,16 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
 
       Assert.That(
           _htmlHelper.GetDocumentText(),
-          Is.EqualTo("<div data-inline-event-target/><div data-inline-event-target/>"));
+          Is.EqualTo("<div data-inline-event-target=\"eventTargetID1\"/><div data-inline-event-target=\"eventTargetID2\"/>"));
     }
 
     [Test]
     public void WriteAttribute_EventTargetIdResetsWithWriteFullBeginTag ()
     {
+      _randomNumberGeneratorStub.SetupSequence(_ => _.GenerateAlphaNumericNonce())
+          .Returns("eventTargetID1")
+          .Returns("eventTargetID2");
+
       _writer.WriteBeginTag("div");
       _writer.WriteAttribute("onclick", "test");
       _writer.Write("/>");
@@ -700,7 +736,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
 
       Assert.That(
           _htmlHelper.GetDocumentText(),
-          Is.EqualTo("<div data-inline-event-target/><div> data-inline-event-target"));
+          Is.EqualTo("<div data-inline-event-target=\"eventTargetID1\"/><div> data-inline-event-target=\"eventTargetID2\""));
     }
   }
 }
