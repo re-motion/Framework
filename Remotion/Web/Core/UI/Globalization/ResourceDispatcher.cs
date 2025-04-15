@@ -17,7 +17,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using Microsoft.Extensions.Logging;
@@ -143,7 +146,7 @@ public sealed class ResourceDispatcher
       var propertyName = entry.Key;
       var propertyValue = entry.Value;
 
-      PropertyInfo? property = obj.GetType().GetProperty(propertyName);
+      PropertyInfo? property = GetDispatchProperty(obj.GetType(), propertyName);
       if (property?.PropertyType == typeof(WebString))
       {
         property.SetValue(obj, propertyValue, Array.Empty<object>());
@@ -166,6 +169,64 @@ public sealed class ResourceDispatcher
         else //  Non-HtmlControls require valid property
           s_logger.LogWarning("Control '" + control.ID + "' of type '" + control.GetType().GetFullNameSafe() + "' does not contain a public property '" + propertyName + "'.");
       }
+    }
+  }
+
+  private static PropertyInfo? GetDispatchProperty (Type type, string propertyName)
+  {
+    try
+    {
+      // Most of the time this should be enough and since it is faster than the alternative
+      // we do it first and catch the exception that leads to the slow path
+      return type.GetProperty(propertyName);
+    }
+    catch (AmbiguousMatchException)
+    {
+      var properties = type.GetProperties()
+          .Where(e => e.Name == propertyName)
+          .ToList();
+
+      // In theory this should not happen so if it does, we throw instead of returning
+      if (properties.Count <= 1)
+        throw;
+
+      // If we have multiple properties to choose from we choose `WebString`, `PlainTextString`
+      // and then `string` as fallback chain. But we also need to ensure that we don't have two
+      // properties of the same type or unsupported property types.
+      PropertyInfo? webStringProperty = null;
+      PropertyInfo? plainTextStringProperty = null;
+      PropertyInfo? stringProperty = null;
+      foreach (var propertyInfo in properties)
+      {
+        var propertyType = propertyInfo.PropertyType;
+        if (propertyType == typeof(WebString))
+        {
+          if (webStringProperty != null)
+            throw;
+
+          webStringProperty = propertyInfo;
+        }
+        else if (propertyType == typeof(PlainTextString))
+        {
+          if (plainTextStringProperty != null)
+            throw;
+
+          plainTextStringProperty = propertyInfo;
+        }
+        else if (propertyType == typeof(string))
+        {
+          if (stringProperty != null)
+            throw;
+
+          stringProperty = propertyInfo;
+        }
+        else
+        {
+          throw;
+        }
+      }
+
+      return webStringProperty ?? plainTextStringProperty ?? stringProperty;
     }
   }
 
