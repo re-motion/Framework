@@ -22,6 +22,7 @@ using System.Web;
 using System.Web.UI;
 using Remotion.Utilities;
 using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.Web.ContentSecurityPolicy
@@ -31,6 +32,43 @@ namespace Remotion.Web.ContentSecurityPolicy
   /// </summary>
   public class CspEnabledHtmlTextWriter : HtmlTextWriter
   {
+    private enum RegisteredEventType
+    {
+      InlineEventAttribute,
+      EventListener
+    }
+
+    private record RegisteredEvent (string Key, RegisteredEventType Type, string EventType, string EventValue, string OriginalValue)
+    {
+      public string GetScript (string eventTargetID)
+      {
+        return Type switch
+        {
+            RegisteredEventType.InlineEventAttribute => $"document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]').{EventType} = function (event){{{EventValue}}};",
+            RegisteredEventType.EventListener => $"document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]').addEventListener('{EventType}', function (event){{{EventValue}}});",
+            _ => throw new InvalidOperationException($"Unsupported registered event type '{Type}'.")
+        };
+      }
+    }
+
+    private delegate string HrefFormatterAction (ReadOnlySpan<char> value);
+
+    private static readonly HrefFormatterAction s_hrefActionFormatter = static value =>
+        $$"""
+        let __defaultPrevented = event.defaultPrevented;
+
+        event.preventDefault();
+        event.preventDefault = () => {
+          __defaultPrevented = true;
+        };
+
+        setTimeout(() => {
+          if (!__defaultPrevented) {
+            {{value}}
+          }
+        }, 0);
+        """;
+
     /// <summary>
     /// Registers the specified <paramref name="eventName"/> as a supported event.
     /// The default list of events should be complete, but this method can be used in case it is not.
@@ -121,15 +159,22 @@ namespace Remotion.Web.ContentSecurityPolicy
             { "onwheel", "onwheel" },
         }, StringComparer.OrdinalIgnoreCase);
 
-    private readonly List<(string Type, string Value)> _registeredEvents = new();
+    private readonly List<RegisteredEvent> _registeredEvents = new();
     private readonly INonceGenerator _nonceGenerator;
     private readonly ISmartPage _page;
     private readonly string _requestNonce;
     private readonly IRenderingFeatures _renderingFeatures;
+    private readonly IFallbackNavigationUrlProvider _fallbackNavigationUrlProvider;
 
     private string? _lastInlineEventTargetId = null;
 
-    public CspEnabledHtmlTextWriter (ISmartPage page, TextWriter writer, INonceGenerator nonceGenerator, string requestNonce, IRenderingFeatures renderingFeatures)
+    public CspEnabledHtmlTextWriter (
+        ISmartPage page,
+        TextWriter writer,
+        INonceGenerator nonceGenerator,
+        string requestNonce,
+        IRenderingFeatures renderingFeatures,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(writer)
     {
       ArgumentUtility.CheckNotNull("page", page);
@@ -142,6 +187,7 @@ namespace Remotion.Web.ContentSecurityPolicy
       _nonceGenerator = nonceGenerator;
       _requestNonce = requestNonce;
       _renderingFeatures = renderingFeatures;
+      _fallbackNavigationUrlProvider = fallbackNavigationUrlProvider;
     }
 
     protected override HtmlTextWriter CreateUpdatePanelHtmlTextWriter (TextWriter textWriter)
@@ -151,28 +197,28 @@ namespace Remotion.Web.ContentSecurityPolicy
           textWriter,
           _nonceGenerator,
           _requestNonce,
-          _renderingFeatures);
+          _renderingFeatures,
+          _fallbackNavigationUrlProvider);
     }
 
     public override void RenderBeginTag (HtmlTextWriterTag tagKey)
     {
       if (tagKey == HtmlTextWriterTag.Script)
       {
-        AddAttribute("nonce", _requestNonce);
+        base.AddAttribute("nonce", _requestNonce);
       }
 
       if (_registeredEvents.Count > 0)
       {
         var eventTargetID = _nonceGenerator.GenerateAlphaNumericNonce();
-        AddAttribute("data-inline-event-target", eventTargetID);
+        base.AddAttribute("data-inline-event-target", eventTargetID);
 
         foreach (var registeredEvent in _registeredEvents)
         {
-          var script =
-              $"document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]').{registeredEvent.Type} = function (event){{{registeredEvent.Value}}};";
-          _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(CspEnabledHtmlTextWriter), $"{eventTargetID}-{registeredEvent.Type}", script);
+          var script = registeredEvent.GetScript(eventTargetID);
+          _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(CspEnabledHtmlTextWriter), $"{eventTargetID}-{registeredEvent.Key}", script);
           if (_renderingFeatures.EnableDiagnosticMetadata)
-            AddAttribute("data-event-content-" + registeredEvent.Type, script);
+            base.AddAttribute("data-event-content-" + registeredEvent.Key, registeredEvent.OriginalValue);
         }
 
         _registeredEvents.Clear();
@@ -241,9 +287,10 @@ namespace Remotion.Web.ContentSecurityPolicy
 
     public override void WriteAttribute (string name, string value, bool fEncode)
     {
-      if (TryCreateEventRegistration(name, value, fEncode, out var registration))
+      if (TryCreateRegisteredEvent(name, value, fEncode, out var registeredEvent))
       {
-        var (type, actualValue) = registration.Value;
+        if (registeredEvent.Key == "href")
+          base.WriteAttribute("href", _fallbackNavigationUrlProvider.GetURL());
 
         var eventTargetID = _lastInlineEventTargetId;
         if (eventTargetID == null)
@@ -253,10 +300,10 @@ namespace Remotion.Web.ContentSecurityPolicy
           _lastInlineEventTargetId = eventTargetID;
         }
 
-        var script = $"document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]').{type} = function (event){{{value}}};";
-        _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(CspEnabledHtmlTextWriter), $"{eventTargetID}-{type}", script);
+        var script = registeredEvent.GetScript(eventTargetID);
+        _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(CspEnabledHtmlTextWriter), $"{eventTargetID}-{registeredEvent.Key}", script);
         if (_renderingFeatures.EnableDiagnosticMetadata)
-          base.WriteAttribute("data-event-content-" + type, actualValue);
+          base.WriteAttribute("data-event-content-" + registeredEvent.Key, registeredEvent.OriginalValue);
       }
       else
       {
@@ -266,43 +313,68 @@ namespace Remotion.Web.ContentSecurityPolicy
 
     private bool TryAddAttributeWithoutEncoding (string name, string? value, bool isAlreadyEncoded)
     {
-      if (TryCreateEventRegistration(name, value, isAlreadyEncoded, out var registration))
+      if (TryCreateRegisteredEvent(name, value, isAlreadyEncoded, out var registeredEvent))
       {
-        if (_registeredEvents.Exists(e => registration.Value.Type.Equals(e.Type)))
-          throw new ArgumentException($"Event handler '{name}' cannot be registered more than once.");
+        if (registeredEvent.Key == "href")
+          base.AddAttribute("href", _fallbackNavigationUrlProvider.GetURL());
 
-        _registeredEvents.Add(registration.Value);
+        if (_registeredEvents.Exists(e => registeredEvent.Key.Equals(e.Key)))
+          throw new ArgumentException($"Event handler '{registeredEvent.Key}' cannot be registered more than once.");
+
+        _registeredEvents.Add(registeredEvent);
         return true;
       }
 
       return false;
     }
 
-    private static bool TryCreateEventRegistration (
+    private static bool TryCreateRegisteredEvent (
         string name,
         string? value,
         bool isAlreadyEncoded,
-        [NotNullWhen(true)] out (string Type, string Value)? registration)
+        [NotNullWhen(true)] out RegisteredEvent? registeredEvent)
     {
-      registration = null;
-
-      if (!name.StartsWith("on", StringComparison.OrdinalIgnoreCase))
-        return false;
+      registeredEvent = null;
 
       if (string.IsNullOrEmpty(value))
         return false;
 
-      if (s_supportedEvents.TryGetValue(name, out var eventType))
+      const string javaScriptUrlPrefix = "javascript:";
+
+      var originalValue = value;
+      var trimmedValue = value.AsSpan().TrimStart();
+      if (name.StartsWith("on", StringComparison.OrdinalIgnoreCase) && s_supportedEvents.TryGetValue(name, out var eventType))
       {
-        var trimmedValue = value.TrimStart();
-        const string javascriptPrefix = "javascript:";
-        if (trimmedValue.StartsWith(javascriptPrefix, StringComparison.OrdinalIgnoreCase))
-          value = trimmedValue.Substring(javascriptPrefix.Length).TrimStart();
+        var actualValue = trimmedValue;
+        if (actualValue.StartsWith(javaScriptUrlPrefix, StringComparison.OrdinalIgnoreCase))
+          actualValue = actualValue[javaScriptUrlPrefix.Length..].TrimStart();
 
         if (isAlreadyEncoded)
-          value = HttpUtility.HtmlDecode(value);
+          actualValue = HttpUtility.HtmlDecode(actualValue.ToString());
 
-        registration = (eventType, value);
+        registeredEvent = new RegisteredEvent(
+            eventType,
+            RegisteredEventType.InlineEventAttribute,
+            eventType,
+            actualValue.ToString(),
+            originalValue);
+
+        return true;
+      }
+      else if (name.Equals("href", StringComparison.OrdinalIgnoreCase) && trimmedValue.StartsWith(javaScriptUrlPrefix, StringComparison.OrdinalIgnoreCase))
+      {
+        var actualValue = trimmedValue[javaScriptUrlPrefix.Length..].TrimStart();
+
+        if (isAlreadyEncoded)
+          actualValue = HttpUtility.HtmlDecode(actualValue.ToString());
+
+        registeredEvent = new RegisteredEvent(
+            "href",
+            RegisteredEventType.EventListener,
+            "click",
+            s_hrefActionFormatter(actualValue),
+            originalValue);
+
         return true;
       }
       else

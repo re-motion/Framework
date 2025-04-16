@@ -282,7 +282,8 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
         writer,
         _nonceGenerator,
         _cspNonceValue,
-        SafeServiceLocator.Current.GetInstance<IRenderingFeatures>());
+        SafeServiceLocator.Current.GetInstance<IRenderingFeatures>(),
+        SafeServiceLocator.Current.GetInstance<IFallbackNavigationUrlProvider>());
   }
 
   protected override NameValueCollection? DeterminePostBackMode ()
