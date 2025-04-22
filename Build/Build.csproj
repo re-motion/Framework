@@ -13,7 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Remotion.BuildScript.Nuke" VersionOverride="4.*" />
     <PackageReference Include="CycloneDX" ExcludeAssets="all" />
   </ItemGroup>
 
@@ -24,6 +23,12 @@
 
   <ItemGroup>
     <Content Include="..\.nuke\*" Link=".nuke\%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Remotion.BuildScript.Nuke">
+      <HintPath>..\lib\Remotion.BuildScript.Nuke.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
