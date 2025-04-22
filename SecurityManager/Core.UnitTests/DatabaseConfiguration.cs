@@ -25,50 +25,21 @@ namespace Remotion.SecurityManager.UnitTests
 {
   public static class DatabaseConfiguration
   {
-    public const string DefaultDatabaseDirectory = @"C:\Databases\";
+    public const string DefaultDatabaseNamePrefix = "DBPrefix_";
 
-    public const string DefaultDatabaseNamePrefix = "Remotion";
-
-    public static string DataSource
+    public static string ConnectionString
     {
-      get { return ConfigurationManager.AppSettings["DataSource"]; }
+      get { return ConfigurationManager.AppSettings["ConnectionString"]; }
     }
-
-    public static string DatabaseDirectory
-    {
-      get { return ConfigurationManager.AppSettings["DatabaseDirectory"].TrimEnd('\\') + "\\"; }
-    }
-
     public static string DatabaseNamePrefix
     {
-      get { return ConfigurationManager.AppSettings["DatabaseNamePrefix"] + "Remotion"; }
+      get { return ConfigurationManager.AppSettings["DatabaseNamePrefix"]; }
     }
 
-    public static bool IntegratedSecurity
+    public static string GetConnectionStringForInitialCatalog (string initialCatalog)
     {
-      get { return Boolean.Parse(ConfigurationManager.AppSettings["IntegratedSecurity"]); }
-    }
-
-
-    public static string Username
-    {
-      get { return ConfigurationManager.AppSettings["Username"]; }
-    }
-
-
-    public static string Password
-    {
-      get { return ConfigurationManager.AppSettings["Password"]; }
-    }
-
-    public static string UpdateConnectionString (string connectionString)
-    {
-      var sqlConnectionStringBuilder = new SqlConnectionStringBuilder(connectionString);
-      sqlConnectionStringBuilder.DataSource = DataSource;
-      sqlConnectionStringBuilder.InitialCatalog = sqlConnectionStringBuilder.InitialCatalog.Replace(DefaultDatabaseNamePrefix, DatabaseNamePrefix);
-      sqlConnectionStringBuilder.IntegratedSecurity = IntegratedSecurity;
-      sqlConnectionStringBuilder.UserID = Username;
-      sqlConnectionStringBuilder.Password = Password;
+      var sqlConnectionStringBuilder = new SqlConnectionStringBuilder(ConnectionString);
+      sqlConnectionStringBuilder.InitialCatalog = initialCatalog.Replace(DefaultDatabaseNamePrefix, DatabaseNamePrefix);
       return sqlConnectionStringBuilder.ConnectionString;
     }
 
@@ -77,7 +48,6 @@ namespace Remotion.SecurityManager.UnitTests
       return new ReadOnlyDictionary<string, string>(
           new Dictionary<string, string>
           {
-              { DefaultDatabaseDirectory, DatabaseDirectory },
               { DefaultDatabaseNamePrefix, DatabaseNamePrefix }
           });
     }

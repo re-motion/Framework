@@ -42,13 +42,13 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
     {
       get
       {
-        return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_RemotionDataDomainObjectsWebIntegrationTestDomain");
+        return DatabaseConfiguration.GetConnectionStringForInitialCatalog("DBPrefix_RemotionDataDomainObjectsWebIntegrationTestDomain");
       }
     }
 
     public static string MasterConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=master"); }
+      get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("master"); }
     }
 
     [OneTimeSetUp]
