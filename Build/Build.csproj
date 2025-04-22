@@ -13,7 +13,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CycloneDX.Utils" VersionOverride="8.0.3" />
+    <PackageReference Include="Nuke.Build" VersionOverride="8.0.0" />
+    <PackageReference Include="Nuke.Common" VersionOverride="8.0.0" />
+    <PackageReference Include="Remotion.Infrastructure.SbomCleaner.Library" VersionOverride="2.0.1" />
     <PackageReference Include="CycloneDX" ExcludeAssets="all" />
+    <PackageReference Include="Testcontainers" />
+    <PackageReference Include="Testcontainers.MsSql" />
   </ItemGroup>
 
   <ItemGroup>

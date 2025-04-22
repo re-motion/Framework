@@ -29,17 +29,19 @@ using Remotion.BuildScript.Components;
 using Remotion.BuildScript.GenerateSbom;
 using Remotion.BuildScript.Test;
 using Remotion.BuildScript.Test.Dimensions;
+using Remotion.BuildScript.TestPlan;
 using static Customizations.Browsers;
 using static Customizations.Databases;
 using static Remotion.BuildScript.Test.Dimensions.Configurations;
 using static Remotion.BuildScript.Test.Dimensions.ExecutionRuntimes;
 using static Customizations.EnforcedLocalMachineExecutionRuntimes;
+using static Remotion.BuildScript.Test.Dimensions.OperatingSystems;
 using static Remotion.BuildScript.Test.Dimensions.Platforms;
 using static Remotion.BuildScript.Test.Dimensions.TargetFrameworks;
 
 // ReSharper disable RedundantTypeArgumentsOfMethod
 
-class Build : RemotionBuild, IDependDB
+class Build : RemotionBuild, IDependDB, ITest
 {
   [Parameter(ValueProviderMember = nameof(SupportedTestBrowsers), Separator = "+")]
   public string[] TestBrowsers { get; set; } = [];
@@ -96,18 +98,20 @@ class Build : RemotionBuild, IDependDB
 
   public override void ConfigureProjects (ProjectsBuilder projects)
   {
+    var testExecutionRuntimeFactory = new DefaultTestExecutionRuntimeFactory(new DockerNetworkDockerRunSettingsCustomizer());
+
     var normalTestConfiguration = new TestConfiguration(
-        DefaultTestExecutionRuntimeFactory.Instance,
+        testExecutionRuntimeFactory,
         TestMatrices.Single(e => e.Name == "NormalTestMatrix"),
         ImmutableArray<ITestExecutionWrapper>.Empty);
 
     var webTestingTestConfiguration = new TestConfiguration(
-        DefaultTestExecutionRuntimeFactory.Instance,
+        testExecutionRuntimeFactory,
         TestMatrices.Single(e => e.Name == "WebTestingTestMatrix"),
         [new WebTestingTestSetup()]);
 
     var databaseTestConfiguration = new TestConfiguration(
-        DefaultTestExecutionRuntimeFactory.Instance,
+        testExecutionRuntimeFactory,
         TestMatrices.Single(e => e.Name == "DatabaseTestMatrix"),
         [new DatabaseTestSetup()]);
 
@@ -230,6 +234,8 @@ class Build : RemotionBuild, IDependDB
 
   public override void ConfigureSupportedTestDimensions (SupportedTestDimensionsBuilder supportedTestDimensions)
   {
+    supportedTestDimensions.AddOperatingSystemsDimension();
+
     supportedTestDimensions.AddSupportedDimension<ExecutionRuntimes>(
         LocalMachine, EnforcedLocalMachine(Docker_Win_NET8_0), Docker_Win_NET8_0);
     supportedTestDimensions.AddSupportedDimension<TargetFrameworks>(NET8_0);
@@ -247,6 +253,8 @@ class Build : RemotionBuild, IDependDB
   public override void ConfigureEnabledTestDimensions (EnabledTestDimensionsBuilder enabledTestDimensions)
   {
     base.ConfigureEnabledTestDimensions(enabledTestDimensions);
+
+    enabledTestDimensions.AddEnabledOperatingSystems();
 
     if (SupportedTestDimensions.IsSupported<Browsers>())
     {
@@ -279,9 +287,9 @@ class Build : RemotionBuild, IDependDB
         "WebTestingTestMatrix",
         new TestDimension[,] // todo docker images need to be wired to the config file
         {
-            { Chrome, NET8_0, Debug, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
-            { Firefox, NET8_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
-            { Edge, NET8_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
+            { AnyOs, Chrome, NET8_0, Debug, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
+            { AnyOs, Firefox, NET8_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
+            { AnyOs, Edge, NET8_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
         },
         allowEmpty: true);
 
@@ -289,16 +297,17 @@ class Build : RemotionBuild, IDependDB
         "DatabaseTestMatrix",
         new TestDimension[,]
         {
-            { Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2016, Debug, x64 },
-            { Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2016, Release, x64 },
+            { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2016, Debug, x64 },
+            { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2016, Release, x64 },
 
             // Local-->
-            { LocalMachine, NET8_0, NoBrowser, SqlServerDefault, Debug, x86 },
+            { Windows, LocalMachine, NET8_0, NoBrowser, SqlServerDefault, Debug, x86 },
+            { Linux, LocalMachine, NET8_0, NoBrowser, SqlServerDefault, Debug, x64 },
 
             // Exercise compatibility between installed .NET version, target framework and SQL Server
-            { Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2022, Release, x64 },
-            { Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2019, Release, x64 },
-            { Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2017, Release, x64 },
+            { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2022, Release, x64 },
+            { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2019, Release, x64 },
+            { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2017, Release, x64 },
         },
         allowEmpty: true);
 
@@ -306,11 +315,12 @@ class Build : RemotionBuild, IDependDB
         "NormalTestMatrix",
         new TestDimension[,]
         {
-            { Docker_Win_NET8_0, NET8_0, NoBrowser, NoDB, Debug, x64 },
-            { Docker_Win_NET8_0, NET8_0, NoBrowser, NoDB, Release, x64 },
+            { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, NoDB, Debug, x64 },
+            { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, NoDB, Release, x64 },
 
             //  Local-->
-            { LocalMachine, NET8_0, NoBrowser, SqlServerDefault, Debug, x86 },
+            { Windows, LocalMachine, NET8_0, NoBrowser, SqlServerDefault, Debug, x86 },
+            { Linux, LocalMachine, NET8_0, NoBrowser, SqlServerDefault, Debug, x64 },
         },
         allowEmpty: true);
   }
@@ -318,6 +328,23 @@ class Build : RemotionBuild, IDependDB
   protected IEnumerable<string> SupportedTestBrowsers => GetTestDimensionValueList<Browsers>();
 
   protected IEnumerable<string> SupportedTestSqlServers => GetTestDimensionValueList<Databases>();
+
+  public void ConfigureTestResources (ImmutableArray<ITestResourceFactory>.Builder testResources)
+  {
+      if (OperatingSystem.IsLinux())
+        testResources.Add(new DockerNetworkResourceFactory());
+
+      var testCases = InlineTestItemVisitor.CollectAll(TestItems).OfType<ITestCase>().ToArray();
+
+      var requiredDatabases = testCases
+          .Select(e => e.TestMatrixRow.GetDimension<Databases>())
+          .Distinct()
+          .Where(e => e != NoDB && e != SqlServerDefault)
+          .ToArray();
+
+      foreach (var requiredDatabase in requiredDatabases)
+          testResources.Add(new DatabaseTestResourceFactory(requiredDatabase));
+  }
 
   private void AddVersionToPackageJson (AbsolutePath packageJsonPath, AbsolutePath duplicatedPackageJsonPath, string version)
   {
