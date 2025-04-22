@@ -24,11 +24,11 @@ namespace Remotion.Web.ExecutionEngine
 {
 
 /// <summary> Performs a single operation in a web application as part of a <see cref="WxeFunction"/>. </summary>
-/// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/Class/*' />
+/// <include file='../Doc/include/ExecutionEngine/WxeStep.xml' path='WxeStep/Class/*' />
 public abstract class WxeStep
 {
   /// <summary> Gets the <see cref="WxeFunction"/> for the passed <see cref="WxeStep"/>. </summary>
-  /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/GetFunction/*' />
+  /// <include file='../Doc/include/ExecutionEngine/WxeStep.xml' path='WxeStep/GetFunction/*' />
   public static WxeFunction? GetFunction (WxeStep? step)
   {
     return WxeStep.GetStepByType<WxeFunction>(step);
@@ -58,7 +58,7 @@ public abstract class WxeStep
   }
 
   /// <summary> Used to pass a variable by reference to a <see cref="WxeFunction"/>. </summary>
-  /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/varref/*' />
+  /// <include file='../Doc/include/ExecutionEngine/WxeStep.xml' path='WxeStep/varref/*' />
   protected static WxeVariableReference varref (string localVariable)
   {
     return new WxeVariableReference(localVariable);
@@ -101,7 +101,7 @@ public abstract class WxeStep
   public abstract void Execute (WxeContext context);
 
   /// <summary> Gets the scope's variables collection. </summary>
-  /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/Variables/*' />
+  /// <include file='../Doc/include/ExecutionEngine/WxeStep.xml' path='WxeStep/Variables/*' />
   public virtual NameObjectCollection? Variables
   {
     get { return (_parentStep == null) ? null : _parentStep.Variables; }
@@ -115,7 +115,7 @@ public abstract class WxeStep
   }
 
   /// <summary> Sets the parent step of this <see cref="WxeStep"/>. </summary>
-  /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/SetParentStep/*' />
+  /// <include file='../Doc/include/ExecutionEngine/WxeStep.xml' path='WxeStep/SetParentStep/*' />
   [EditorBrowsable(EditorBrowsableState.Never)]
   public void SetParentStep (WxeStep parentStep)
   {
@@ -124,14 +124,14 @@ public abstract class WxeStep
   }
 
   /// <summary> Gets the step currently being executed. </summary>
-  /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/ExecutingStep/*' />
+  /// <include file='../Doc/include/ExecutionEngine/WxeStep.xml' path='WxeStep/ExecutingStep/*' />
   public virtual WxeStep ExecutingStep
   {
     get { return this; }
   }
 
   /// <summary> Gets the root <see cref="WxeFunction"/> of the execution hierarchy. </summary>
-  /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/RootFunction/*' />
+  /// <include file='../Doc/include/ExecutionEngine/WxeStep.xml' path='WxeStep/RootFunction/*' />
   public WxeFunction? RootFunction
   {
     get
@@ -144,7 +144,7 @@ public abstract class WxeStep
   }
 
   /// <summary> Gets the parent <see cref="WxeFunction"/> for this <see cref="WxeStep"/>. </summary>
-  /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/ParentFunction/*' />
+  /// <include file='../Doc/include/ExecutionEngine/WxeStep.xml' path='WxeStep/ParentFunction/*' />
   public WxeFunction? ParentFunction
   {
     get { return WxeStep.GetFunction(ParentStep); }
@@ -154,7 +154,7 @@ public abstract class WxeStep
   ///   Gets the <see cref="Exception"/> caught by the <see cref="WxeTryCatch"/> block encapsulating this 
   ///   <see cref="WxeStep"/>.
   /// </summary>
-  /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/CurrentException/*' />
+  /// <include file='../Doc/include/ExecutionEngine/WxeStep.xml' path='WxeStep/CurrentException/*' />
   protected Exception? CurrentException
   {
     get
@@ -179,7 +179,7 @@ public abstract class WxeStep
   }
 
   /// <summary> Aborts the <b>WxeStep</b> by calling <see cref="AbortRecursive"/>. </summary>
-  /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/Abort/*' />
+  /// <include file='../Doc/include/ExecutionEngine/WxeStep.xml' path='WxeStep/Abort/*' />
   [EditorBrowsable(EditorBrowsableState.Never)]
   public void Abort ()
   {
@@ -193,7 +193,7 @@ public abstract class WxeStep
   }
 
   /// <summary> Contains the aborting logic for the <see cref="WxeStep"/>. </summary>
-  /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/AbortRecursive/*' />
+  /// <include file='../Doc/include/ExecutionEngine/WxeStep.xml' path='WxeStep/AbortRecursive/*' />
   protected virtual void AbortRecursive ()
   {
   }

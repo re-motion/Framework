@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   ///   This control can be used to display and edit a list of <see cref="IBusinessObject"/> instances.
   ///   The properties of the business objects are displayed in individual columns. 
   /// </summary>
-  /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/Class/*' />
+  /// <include file='../../Doc/include/UI/Controls/BocList.xml' path='BocList/Class/*' />
   // TODO: see "Doc\Bugs and ToDos.txt"
   [DefaultEvent("CommandClick")]
   [ToolboxItemFilter("System.Web.UI")]
@@ -777,7 +777,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Fires the <see cref="ListItemCommandClick"/> event. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/OnListItemCommandClick/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocList.xml' path='BocList/OnListItemCommandClick/*' />
     protected virtual void OnListItemCommandClick (
         BocCommandEnabledColumnDefinition column,
         int listIndex,
@@ -1423,7 +1423,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/LoadValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocList.xml' path='BocList/LoadValue/*' />
     public override void LoadValue (bool interim)
     {
       if (Property == null)
@@ -1459,7 +1459,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The <see cref="IReadOnlyList{IBusinessObject}"/> of objects to load, or <see langword="null"/>.
     /// </param>
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
-    /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/LoadUnboundValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocList.xml' path='BocList/LoadUnboundValue/*' />
     public void LoadUnboundValue (IReadOnlyList<IBusinessObject>? value, bool interim)
     {
       LoadValueInternal(value, interim);
@@ -1470,7 +1470,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The <see cref="IList"/> of objects to load, or <see langword="null"/>.
     /// </param>
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
-    /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/LoadUnboundValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocList.xml' path='BocList/LoadUnboundValue/*' />
     public void LoadUnboundValueAsList (IList value, bool interim)
     {
       IReadOnlyList<IBusinessObject>? valueAsList;
@@ -1509,7 +1509,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/LoadValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocList.xml' path='BocList/LoadValue/*' />
     public override bool SaveValue (bool interim)
     {
       if (Property == null)
@@ -3103,7 +3103,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Fires the <see cref="MenuItemClick"/> event. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/OnMenuItemEventCommandClick/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocList.xml' path='BocList/OnMenuItemEventCommandClick/*' />
     protected virtual void OnMenuItemEventCommandClick (WebMenuItem menuItem)
     {
       ArgumentUtility.CheckNotNull("menuItem", menuItem);
@@ -3130,7 +3130,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Handles the click to a WXE function command. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/OnMenuItemWxeFunctionCommandClick/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocList.xml' path='BocList/OnMenuItemWxeFunctionCommandClick/*' />
     protected virtual void OnMenuItemWxeFunctionCommandClick (WebMenuItem menuItem)
     {
       ArgumentUtility.CheckNotNull("menuItem", menuItem);

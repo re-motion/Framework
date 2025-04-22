@@ -38,7 +38,7 @@ using Remotion.Web.Utilities;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> Object bound tree view. </summary>
-  /// <include file='..\..\doc\include\UI\Controls\BocTreeView.xml' path='BocTreeView/Class/*' />
+  /// <include file='../../Doc/include/UI/Controls/BocTreeView.xml' path='BocTreeView/Class/*' />
   [DefaultEvent("Click")]
   public class BocTreeView : BusinessObjectBoundWebControl, IBocRenderableControl, IBocTreeView
   {
@@ -557,7 +557,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocTreeView.xml' path='BocTreeView/LoadValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocTreeView.xml' path='BocTreeView/LoadValue/*' />
     public override void LoadValue (bool interim)
     {
       if (DataSource == null)
@@ -577,7 +577,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   or <see langword="null"/>.
     /// </param>
     /// <param name="interim"> Not used. </param>
-    /// <include file='..\..\doc\include\UI\Controls\BocTreeView.xml' path='BocTreeView/LoadUnboundValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocTreeView.xml' path='BocTreeView/LoadUnboundValue/*' />
     public void LoadUnboundValue (IReadOnlyList<IBusinessObjectWithIdentity> value, bool interim)
     {
       LoadValueInternal(value, interim);
@@ -589,7 +589,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   or <see langword="null"/>. 
     /// </param>
     /// <param name="interim"> Not used. </param>
-    /// <include file='..\..\doc\include\UI\Controls\BocTreeView.xml' path='BocTreeView/LoadUnboundValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocTreeView.xml' path='BocTreeView/LoadUnboundValue/*' />
     public void LoadUnboundValueAsList (IList value, bool interim)
     {
       LoadValueInternal(value, interim);

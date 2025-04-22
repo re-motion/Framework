@@ -239,7 +239,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   }
 
   /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='..\..\doc\include\UI\Controls\BocDropDownMenu.xml' path='BocDropDownMenu/LoadValue/*' />
+  /// <include file='../../Doc/include/UI/Controls/BocDropDownMenu.xml' path='BocDropDownMenu/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
     if (DataSource == null)
