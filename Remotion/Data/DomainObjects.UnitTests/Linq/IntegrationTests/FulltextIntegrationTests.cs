@@ -35,14 +35,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       base.OneTimeSetUp();
 
-      DatabaseAgent.ExecuteBatchFile("Database\\DataDomainObjects_DropFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
-      DatabaseAgent.ExecuteBatchFile("Database\\DataDomainObjects_CreateFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
+      DatabaseAgent.ExecuteBatchFile("Database/DataDomainObjects_DropFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
+      DatabaseAgent.ExecuteBatchFile("Database/DataDomainObjects_CreateFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
       WaitForIndices();
     }
 
     public override void TestFixtureTearDown ()
     {
-      DatabaseAgent.ExecuteBatchFile("Database\\DataDomainObjects_DropFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
+      DatabaseAgent.ExecuteBatchFile("Database/DataDomainObjects_DropFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
       base.TestFixtureTearDown();
     }
 
