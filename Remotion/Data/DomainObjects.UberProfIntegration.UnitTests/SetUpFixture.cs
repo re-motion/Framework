@@ -39,13 +39,13 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
     {
       get
       {
-        return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_RemotionDataDomainObjectsUberProfIntegrationTestDomain");
+        return DatabaseConfiguration.GetConnectionStringForInitialCatalog("DBPrefix_RemotionDataDomainObjectsUberProfIntegrationTestDomain");
       }
     }
 
     public static string MasterConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=master"); }
+      get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("master"); }
     }
 
     [OneTimeSetUp]

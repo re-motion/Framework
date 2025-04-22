@@ -89,27 +89,27 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static string TestDomainConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_TestDomain; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("DBPrefix_TestDomain"); }
     }
 
     public static string MasterConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=master; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("master"); }
     }
 
     public static string SchemaGenerationConnectionString1
     {
-      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_SchemaGenerationTestDomain1; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("DBPrefix_SchemaGenerationTestDomain1"); }
     }
 
     public static string SchemaGenerationConnectionString2
     {
-      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_SchemaGenerationTestDomain2; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("DBPrefix_SchemaGenerationTestDomain2"); }
     }
 
     public static string SchemaGenerationConnectionString3
     {
-      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_SchemaGenerationTestDomain3; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("DBPrefix_SchemaGenerationTestDomain3"); }
     }
 
     protected IDbCommand CreateCommand (string table, Guid id, IDbConnection connection)

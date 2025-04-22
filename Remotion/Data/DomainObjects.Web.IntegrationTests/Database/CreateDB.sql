@@ -8,16 +8,6 @@ END
 GO
 
 CREATE DATABASE DBPrefix_RemotionDataDomainObjectsWebIntegrationTestDomain
-ON PRIMARY (
-	Name = 'DBPrefix_RemotionDataDomainObjectsWebIntegrationTestDomain_Data',
-	Filename = 'C:\Databases\DBPrefix_RemotionDataDomainObjectsWebIntegrationTestDomain.mdf',
-	Size = 10MB
-)
-LOG ON (
-	Name = 'DBPrefix_RemotionDataDomainObjectsWebIntegrationTestDomain_Log',
-	Filename = 'C:\Databases\DBPrefix_RemotionDataDomainObjectsWebIntegrationTestDomain.ldf',
-	Size = 10MB
-)
 GO
 
 ALTER DATABASE DBPrefix_RemotionDataDomainObjectsWebIntegrationTestDomain SET RECOVERY SIMPLE
