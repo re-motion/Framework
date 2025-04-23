@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
 
       var expectedMessage =
         "The domain object type has a legacy infrastructure constructor for loading (a nonpublic constructor taking a single DataContainer argument). "
-        +"The reflection-based mapping does not use this constructor any longer and requires it to be removed.\r\n\r\n"
+        +$"The reflection-based mapping does not use this constructor any longer and requires it to be removed.{Environment.NewLine}{Environment.NewLine}"
         +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
         +"DomainObjectTypeDoesNotHaveLegacyInfrastructureConcstructorValidationRule.NonAbstractClassWithLegacyConstructor";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
 
       var expectedMessage =
         "The domain object type has a legacy infrastructure constructor for loading (a nonpublic constructor taking a single DataContainer argument). "
-        +"The reflection-based mapping does not use this constructor any longer and requires it to be removed.\r\n\r\n"
+        +$"The reflection-based mapping does not use this constructor any longer and requires it to be removed.{Environment.NewLine}{Environment.NewLine}"
         +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
         +"DomainObjectTypeDoesNotHaveLegacyInfrastructureConcstructorValidationRule.AbstractClassWithAttributeAndWithLegacyCtor";
       AssertMappingValidationResult(validationResult, false, expectedMessage);

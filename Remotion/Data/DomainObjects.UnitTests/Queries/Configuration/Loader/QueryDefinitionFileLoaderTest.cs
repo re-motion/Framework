@@ -35,9 +35,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
     {
       base.OneTimeSetUp();
 
-      var queriesFile = Path.Combine(TestContext.CurrentContext.TestDirectory, "queries.xml");
+      var queriesFile = Path.Combine(TestContext.CurrentContext.TestDirectory, "Queries.xml");
       _tempQueriesDirectory = Path.GetTempPath();
-      _tempQueriesFilePath = Path.Combine(_tempQueriesDirectory, "queries.xml");
+      _tempQueriesFilePath = Path.Combine(_tempQueriesDirectory, "Queries.xml");
       File.Copy(queriesFile, _tempQueriesFilePath, true);
     }
 

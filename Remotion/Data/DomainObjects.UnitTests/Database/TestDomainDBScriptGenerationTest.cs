@@ -96,7 +96,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Database
 
     private string PatchGeneratedScript (string script)
     {
-      return c_scriptPrefix + script.Replace($"USE {DatabaseConfiguration.DatabaseNamePrefix}TestDomain", "USE DBPrefix_TestDomain");
+      return c_scriptPrefix.ReplaceLineEndings()
+             + script.Replace($"USE {DatabaseConfiguration.DatabaseNamePrefix}TestDomain", "USE DBPrefix_TestDomain");
     }
 
     private string GetStoredScript (string name)
@@ -104,7 +105,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Database
       var filePath = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, $"Database/{name}"));
       Assert.That(filePath, Does.Exist, "Could not find stored SQL script '{0}'.");
 
-      return File.ReadAllText(filePath);
+      return File.ReadAllText(filePath).ReplaceLineEndings();
     }
   }
 }

@@ -61,10 +61,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var validationResult = _validationRule.Validate(classDefinition);
 
       var expectedMessage =
-          string.Format(
-              "The Class-ID '{0}' is not valid. Valid Class-IDs must start with a letter or underscore and containing only letters, digits, and underscores.\r\n\r\n"
-              + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order",
-              classID);
+          $"The Class-ID '{classID}' is not valid. Valid Class-IDs must start with a letter or underscore and containing only letters, digits, and underscores.{Environment.NewLine}{Environment.NewLine}"
+          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
 
@@ -77,10 +75,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var validationResult = _validationRule.Validate(classDefinition);
 
       var expectedMessage =
-          string.Format(
-              "The Class-ID '{0}' is not valid. Valid Class-IDs must start with a letter or underscore and containing only letters, digits, and underscores.\r\n\r\n"
-              + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order",
-              classID);
+          $"The Class-ID '{classID}' is not valid. Valid Class-IDs must start with a letter or underscore and containing only letters, digits, and underscores.{Environment.NewLine}{Environment.NewLine}"
+          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
   }

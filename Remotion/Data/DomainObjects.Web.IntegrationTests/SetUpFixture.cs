@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
         var scripts = scriptGenerator.GetScripts(MappingConfiguration.Current.GetTypeDefinitions()).Single();
 
         var masterAgent = new DatabaseAgent(MasterConnectionString);
-        masterAgent.ExecuteBatchFile("Database\\CreateDB.sql", false, DatabaseConfiguration.GetReplacementDictionary());
+        masterAgent.ExecuteBatchFile("Database/CreateDB.sql", false, DatabaseConfiguration.GetReplacementDictionary());
 
         var databaseAgent = new DatabaseAgent(TestDomainConnectionString);
         databaseAgent.ExecuteBatchString(scripts.SetUpScript, true);

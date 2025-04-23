@@ -37,10 +37,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
       return new ScriptStatement(
         string.Format(
-            "ALTER TABLE [{0}].[{1}] ADD\r\n{2}",
+            "ALTER TABLE [{0}].[{1}] ADD{3}{2}",
             tableName.SchemaName ?? DefaultSchema,
             tableName.EntityName,
-            GetConstraintDeclaration(constraintDefinition)));
+            GetConstraintDeclaration(constraintDefinition),
+            Environment.NewLine));
     }
 
     public IScriptElement GetDropElement (ForeignKeyConstraintDefinition constraintDefinition, EntityNameDefinition tableName)
@@ -51,11 +52,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
       return new ScriptStatement(
           string.Format(
               "IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND "
-              + "fk.name = '{2}' AND schema_name (t.schema_id) = '{0}' AND t.name = '{1}')\r\n"
+              + "fk.name = '{2}' AND schema_name (t.schema_id) = '{0}' AND t.name = '{1}'){3}"
               + "  ALTER TABLE [{0}].[{1}] DROP CONSTRAINT {2}",
               tableName.SchemaName ?? DefaultSchema,
               tableName.EntityName,
-              constraintDefinition.ConstraintName));
+              constraintDefinition.ConstraintName,
+              Environment.NewLine));
     }
 
     private string GetConstraintDeclaration (ForeignKeyConstraintDefinition foreignKeyConstraintDefinition)

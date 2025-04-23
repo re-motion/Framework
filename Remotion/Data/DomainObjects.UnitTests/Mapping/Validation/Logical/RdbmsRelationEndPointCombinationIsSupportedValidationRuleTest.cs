@@ -148,9 +148,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var expectedMessage =
           "The relation between property 'OrderNumber', declared on type 'Order', and property 'OrderNumber' declared on type "
           + "'Order', contains two virtual end points. One of the two properties must set 'ContainsForeignKey' to 'true' on the "
-          + "'DBBidirectionalRelationAttribute'.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
-          + "Property: OrderNumber\r\n"
+          + $"'DBBidirectionalRelationAttribute'.{Environment.NewLine}{Environment.NewLine}"
+          + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order{Environment.NewLine}"
+          + $"Property: OrderNumber{Environment.NewLine}"
           + "Relation ID: Test";
       AssertMappingValidationResult(mappingValidationResult, false, expectedMessage);
     }
@@ -167,9 +167,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
 
       var expectedMessage =
           "Relation 'Test' contains one virtual and one anonymous end point. "
-          + "One of the two properties must set 'ContainsForeignKey' to 'true' on the 'DBBidirectionalRelationAttribute'.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
-          + "Property: OrderNumber\r\n"
+          + $"One of the two properties must set 'ContainsForeignKey' to 'true' on the 'DBBidirectionalRelationAttribute'.{Environment.NewLine}{Environment.NewLine}"
+          + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order{Environment.NewLine}"
+          + $"Property: OrderNumber{Environment.NewLine}"
           + "Relation ID: Test";
       AssertMappingValidationResult(mappingValidationResult, false, expectedMessage);
     }
@@ -186,9 +186,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
 
       var expectedMessage =
           "Relation 'Test' contains one virtual and one anonymous end point. "
-          + "One of the two properties must set 'ContainsForeignKey' to 'true' on the 'DBBidirectionalRelationAttribute'.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
-          + "Property: OrderNumber\r\n"
+          + $"One of the two properties must set 'ContainsForeignKey' to 'true' on the 'DBBidirectionalRelationAttribute'.{Environment.NewLine}{Environment.NewLine}"
+          + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order{Environment.NewLine}"
+          + $"Property: OrderNumber{Environment.NewLine}"
           + "Relation ID: Test";
       AssertMappingValidationResult(mappingValidationResult, false, expectedMessage);
     }
@@ -207,9 +207,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
 
       var expectedMessage =
         "The relation between property 'Customer', declared on type 'Order', and property 'Customer' declared on type 'Order', "
-        +"contains two non-virtual end points. One of the two properties must set 'ContainsForeignKey' to 'false' on the 'DBBidirectionalRelationAttribute'.\r\n\r\n"
-        +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
-        +"Property: Customer\r\n"
+        +$"contains two non-virtual end points. One of the two properties must set 'ContainsForeignKey' to 'false' on the 'DBBidirectionalRelationAttribute'.{Environment.NewLine}{Environment.NewLine}"
+        +$"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order{Environment.NewLine}"
+        +$"Property: Customer{Environment.NewLine}"
         +"Relation ID: Test";
       AssertMappingValidationResult(mappingValidationResult, false, expectedMessage);
     }

@@ -294,11 +294,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
           () => _dataManager.Discard(dataContainer),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "Cannot discard data for object 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid': The relations of object "
-                  + "'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid' cannot be unloaded.\r\n"
-                  + "Relation end-point "
-                  + "'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' would "
-                  + "leave a dangling reference."));
+                  """
+                  Cannot discard data for object 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid': The relations of object 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid' cannot be unloaded.
+                  Relation end-point 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' would leave a dangling reference.
+                  """.ReplaceLineEndings()));
     }
 
     [Test]

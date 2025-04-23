@@ -142,7 +142,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
           () => _queryResultRow.GetConvertedValue(1, typeof(ObjectID)),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
-                  "Type 'ObjectID' ist not supported by this storage provider.\r\n"
+                  $"Type 'ObjectID' ist not supported by this storage provider.{Environment.NewLine}"
                   + "Please select the ID and ClassID values separately, then create an ObjectID with it in memory "
                   + "(e.g., 'select new ObjectID (o.ID.ClassID, o.ID.Value)')."));
     }

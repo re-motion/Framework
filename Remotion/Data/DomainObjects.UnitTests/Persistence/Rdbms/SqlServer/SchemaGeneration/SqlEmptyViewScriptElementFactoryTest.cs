@@ -66,10 +66,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       Assert.That(elements[2], Is.TypeOf(typeof(BatchDelimiterStatement)));
       Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
       var expectedResult =
-          "CREATE VIEW [SchemaName].[EmptyView1] ([ID], [ClassID], [Timestamp], [Column1])\r\n"
-          + "  AS\r\n"
-          + "  SELECT CONVERT(uniqueidentifier,NULL) AS [ID], CONVERT(varchar(100),NULL) AS [ClassID], CONVERT(datetime2,NULL) AS [Timestamp], CONVERT(varchar(100),NULL) AS [Column1]\r\n"
-          + "    WHERE 1 = 0";
+          """
+          CREATE VIEW [SchemaName].[EmptyView1] ([ID], [ClassID], [Timestamp], [Column1])
+            AS
+            SELECT CONVERT(uniqueidentifier,NULL) AS [ID], CONVERT(varchar(100),NULL) AS [ClassID], CONVERT(datetime2,NULL) AS [Timestamp], CONVERT(varchar(100),NULL) AS [Column1]
+              WHERE 1 = 0
+          """.ReplaceLineEndings();
       Assert.That(((ScriptStatement)elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -85,10 +87,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       Assert.That(elements[2], Is.TypeOf(typeof(BatchDelimiterStatement)));
       Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
       var expectedResult =
-          "CREATE VIEW [dbo].[EmptyView2] ([ID], [ClassID], [Timestamp], [Column1], [Column2])\r\n"
-          + "  AS\r\n"
-          + "  SELECT CONVERT(uniqueidentifier,NULL) AS [ID], CONVERT(varchar(100),NULL) AS [ClassID], CONVERT(datetime2,NULL) AS [Timestamp], CONVERT(varchar(100),NULL) AS [Column1], CONVERT(varchar(100),NULL) AS [Column2]\r\n"
-          + "    WHERE 1 = 0";
+          """
+          CREATE VIEW [dbo].[EmptyView2] ([ID], [ClassID], [Timestamp], [Column1], [Column2])
+            AS
+            SELECT CONVERT(uniqueidentifier,NULL) AS [ID], CONVERT(varchar(100),NULL) AS [ClassID], CONVERT(datetime2,NULL) AS [Timestamp], CONVERT(varchar(100),NULL) AS [Column1], CONVERT(varchar(100),NULL) AS [Column2]
+              WHERE 1 = 0
+          """.ReplaceLineEndings();
       Assert.That(((ScriptStatement)elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -98,8 +102,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_emptyViewDefinitionWithCustomSchema);
 
       var expectedResult =
-          "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'EmptyView1' AND TABLE_SCHEMA = 'SchemaName')\r\n"
-          + "  DROP VIEW [SchemaName].[EmptyView1]";
+          """
+          IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'EmptyView1' AND TABLE_SCHEMA = 'SchemaName')
+            DROP VIEW [SchemaName].[EmptyView1]
+          """.ReplaceLineEndings();
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
@@ -111,8 +117,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_emptyViewDefinitionWithDefaultSchema);
 
       var expectedResult =
-          "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'EmptyView2' AND TABLE_SCHEMA = 'dbo')\r\n"
-          + "  DROP VIEW [dbo].[EmptyView2]";
+          """
+          IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'EmptyView2' AND TABLE_SCHEMA = 'dbo')
+            DROP VIEW [dbo].[EmptyView2]
+          """.ReplaceLineEndings();
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));

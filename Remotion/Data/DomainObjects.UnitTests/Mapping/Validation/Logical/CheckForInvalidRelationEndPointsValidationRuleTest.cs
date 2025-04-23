@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
 
       var validationResult = _validationRule.Validate(relationDefinition);
 
-      var expectedMessage = "Property 'TestProperty' on class 'DerivedValidationDomainObjectClass' could not be found.\r\n\r\n"
+      var expectedMessage = $"Property 'TestProperty' on class 'DerivedValidationDomainObjectClass' could not be found.{Environment.NewLine}{Environment.NewLine}"
         +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var validationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage = "Relation property 'TestProperty' on class 'DerivedValidationDomainObjectClass' is of type 'String', but non-virtual "
-        +"relation properties must be of type 'ObjectID'.\r\n\r\n"
+        +$"relation properties must be of type 'ObjectID'.{Environment.NewLine}{Environment.NewLine}"
         +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var validationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage = "Relation property 'TestProperty' on class 'DerivedValidationDomainObjectClass' is of type 'String', but virtual "
-                            +"relation properties must be of type 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
+                            +$"relation properties must be of type 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.{Environment.NewLine}{Environment.NewLine}"
                             +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }

@@ -85,8 +85,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var validationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage =
-        "Property 'PropertyName' of class 'Order' must not specify a SortExpression, because cardinality is equal to 'one'.\r\n\r\n"
-        + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\nProperty: PropertyName";
+        $"Property 'PropertyName' of class 'Order' must not specify a SortExpression, because cardinality is equal to 'one'.{Environment.NewLine}{Environment.NewLine}"
+        + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order{Environment.NewLine}Property: PropertyName";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
 

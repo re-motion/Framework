@@ -112,10 +112,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
     {
       return new ScriptStatement(
           string.Format(
-              "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = '{0}' AND SCHEMA_NAME(schema_id) = '{1}')\r\n"
+              "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = '{0}' AND SCHEMA_NAME(schema_id) = '{1}'){2}"
               + "  DROP SYNONYM [{0}].[{1}]",
               synonymName.SchemaName ?? DefaultSchema,
-              synonymName.EntityName));
+              synonymName.EntityName,
+              Environment.NewLine));
     }
   }
 }

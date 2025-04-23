@@ -1167,17 +1167,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
             () => classDefinition.ValidateCurrentMixinConfiguration(),
             Throws.InstanceOf<MappingException>()
                 .With.Message.EqualTo(
-                    "The mixin configuration for domain object type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order' "
-                    + "was changed after the mapping information was built.\r\n"
-                    + "Original configuration: ClassContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order'\r\n"
-                    + "  Mixins: \r\n"
-                    + "    MixinContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain.MixinA' (Extending,Private,Dependencies=())\r\n"
-                    + "  ComposedInterfaces: ().\r\n"
-                    + "Active configuration: ClassContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order'\r\n"
-                    + "  Mixins: \r\n"
-                    + "    MixinContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain.NonDomainObjectMixin' (Extending,Private,Dependencies=())\r\n"
-                    + "    MixinContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain.MixinA' (Extending,Private,Dependencies=())\r\n"
-                    + "  ComposedInterfaces: ()"));
+                    """
+                    The mixin configuration for domain object type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order' was changed after the mapping information was built.
+                    Original configuration: ClassContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order'
+                      Mixins: 
+                        MixinContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain.MixinA' (Extending,Private,Dependencies=())
+                      ComposedInterfaces: ().
+                    Active configuration: ClassContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order'
+                      Mixins: 
+                        MixinContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain.NonDomainObjectMixin' (Extending,Private,Dependencies=())
+                        MixinContext: 'Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain.MixinA' (Extending,Private,Dependencies=())
+                      ComposedInterfaces: ()
+                    """.ReplaceLineEndings()));
       }
     }
 

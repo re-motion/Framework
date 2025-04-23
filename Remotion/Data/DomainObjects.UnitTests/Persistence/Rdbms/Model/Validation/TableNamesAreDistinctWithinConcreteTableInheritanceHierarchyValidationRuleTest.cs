@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
 
       var expectedMessage =
           "At least two classes in different inheritance branches derived from abstract class 'BaseOfBaseValidationDomainObjectClass' "
-          + "specify the same entity name 'TableName1', which is not allowed.\r\n\r\n"
+          + $"specify the same entity name 'TableName1', which is not allowed.{Environment.NewLine}{Environment.NewLine}"
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.BaseOfBaseValidationDomainObjectClass";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
 
       var expectedMessage =
           "At least two classes in different inheritance branches derived from abstract class 'BaseOfBaseValidationDomainObjectClass' "
-          + "specify the same entity name 'TableName1', which is not allowed.\r\n\r\n"
+          + $"specify the same entity name 'TableName1', which is not allowed.{Environment.NewLine}{Environment.NewLine}"
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.BaseOfBaseValidationDomainObjectClass";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
