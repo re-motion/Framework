@@ -87,8 +87,8 @@ namespace Remotion.Validation.IntegrationTests
           Throws.TypeOf<ValidationConfigurationException>()
               .And.Message.EqualTo(
                   "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' "
-                  + "on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property3'.\r\n"
-                  + "----------\r\n"
+                  + $"on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property3'.{Environment.NewLine}"
+                  + $"----------{Environment.NewLine}"
                   + "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' "
                   + "on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property4'."));
     }
@@ -101,8 +101,8 @@ namespace Remotion.Validation.IntegrationTests
           Throws.TypeOf<ValidationConfigurationException>()
               .And.Message.EqualTo(
                   "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' "
-                  + "on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property4'.\r\n"
-                  + "----------\r\n"
+                  + $"on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property4'.{Environment.NewLine}"
+                  + $"----------{Environment.NewLine}"
                   + "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' "
                   + "on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property5'."));
     }
@@ -115,8 +115,8 @@ namespace Remotion.Validation.IntegrationTests
           Throws.TypeOf<ValidationConfigurationException>()
               .And.Message.EqualTo(
                   "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' "
-                  + "on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property3'.\r\n"
-                  + "----------\r\n"
+                  + $"on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property3'.{Environment.NewLine}"
+                  + $"----------{Environment.NewLine}"
                   + "Meta validation rule 'rules => rules.Any()' failed for validator 'Remotion.Validation.Validators.IPropertyValidator' "
                   + "on property 'Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.BaseMetaValidationTestClass1.Property4'."));
     }
