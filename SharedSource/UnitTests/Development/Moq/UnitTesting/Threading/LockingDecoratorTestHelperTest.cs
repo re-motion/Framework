@@ -63,7 +63,7 @@ namespace Remotion.UnitTests.Development.Moq.UnitTesting.Threading
           Throws.TypeOf<MockException>()
               .And.Message.Matches(
                   "^Mock<LockingDecoratorTestHelperTest\\.IMyInterface:\\d+>:\n"
-                  + "This mock failed verification due to the following:\r\n\r\n"
+                  + $"This mock failed verification due to the following:{Environment.NewLine}{Environment.NewLine}"
                   + "   LockingDecoratorTestHelperTest\\.IMyInterface d => d\\.Get\\(\\):\n"
                   + "   This setup was not matched\\.$"));
       Assert.That(
@@ -101,7 +101,7 @@ namespace Remotion.UnitTests.Development.Moq.UnitTesting.Threading
           Throws.TypeOf<MockException>()
               .And.Message.Matches(
                   "^Mock<LockingDecoratorTestHelperTest\\.IMyInterface:\\d+>:\n"
-                  + "This mock failed verification due to the following:\r\n\r\n"
+                  + $"This mock failed verification due to the following:{Environment.NewLine}{Environment.NewLine}"
                   + "   LockingDecoratorTestHelperTest\\.IMyInterface d => d\\.Do\\(\"Abc\"\\):\n"
                   + "   This setup was not matched\\.$"));
       Assert.That(
@@ -109,7 +109,7 @@ namespace Remotion.UnitTests.Development.Moq.UnitTesting.Threading
           Throws.TypeOf<MockException>()
               .And.Message.Matches(
                   "^Mock<LockingDecoratorTestHelperTest\\.IMyInterface:\\d+>:\n"
-                  + "This mock failed verification due to the following:\r\n\r\n"
+                  + $"This mock failed verification due to the following:{Environment.NewLine}{Environment.NewLine}"
                   + "   LockingDecoratorTestHelperTest\\.IMyInterface d => d\\.Do\\(\"Abc\"\\):\n"
                   + "   This setup was not matched\\.$"));
     }
