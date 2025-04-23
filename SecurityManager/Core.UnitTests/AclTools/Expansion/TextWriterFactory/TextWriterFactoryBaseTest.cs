@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.IO;
 using Moq;
 using NUnit.Framework;
 using Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory;
@@ -42,7 +43,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.TextWriterFactor
       textWriterFactoryBaseMock.Setup(x => x.TextWriterExists("yang")).Returns(true).Verifiable();
       textWriterFactoryBaseMock.Object.Extension = "dat";
       var result = textWriterFactoryBaseMock.Object.GetRelativePath("yin", "yang");
-      Assert.That(result, Is.EqualTo(@".\yang.dat"));
+      Assert.That(result, Is.EqualTo(@$".{Path.DirectorySeparatorChar}yang.dat"));
       textWriterFactoryBaseMock.Verify();
     }
 
