@@ -61,7 +61,7 @@ namespace Remotion.Security.UnitTests.Metadata
     Beamter
   </localizedName>
           </localizedNames>
-          ";
+          ".ReplaceLineEndings();
 
       XmlAssert.AreDocumentsEqual(expectedXml, document);
     }
@@ -89,7 +89,7 @@ namespace Remotion.Security.UnitTests.Metadata
     Vertraulichkeit
   </localizedName>
           </localizedNames>
-          ";
+          ".ReplaceLineEndings();
 
       XmlAssert.AreDocumentsEqual(expectedXml, document);
     }
@@ -113,7 +113,7 @@ namespace Remotion.Security.UnitTests.Metadata
     Beamter
   </localizedName>
           </localizedNames>
-          ";
+          ".ReplaceLineEndings();
 
       XmlAssert.AreDocumentsEqual(expectedXml, document);
     }
