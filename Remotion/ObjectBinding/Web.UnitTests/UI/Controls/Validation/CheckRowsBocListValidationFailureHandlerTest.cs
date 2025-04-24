@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // using NUnit.Framework;
 //
+using System;
 using System.Text;
 using Moq;
 using NUnit.Framework;
@@ -82,7 +83,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
 
       var stringBuilder = new StringBuilder();
       context.AppendErrorMessages(stringBuilder);
-      Assert.That(stringBuilder.ToString(), Is.EqualTo("Error message from resource manager.\r\n"));
+      Assert.That(stringBuilder.ToString(), Is.EqualTo($"Error message from resource manager.{Environment.NewLine}"));
     }
   }
 }

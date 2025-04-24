@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
 
       context.AppendErrorMessages(stringBuilder);
 
-      Assert.That(stringBuilder.ToString(), Is.EqualTo("First error message.\r\nSecond error message.\r\n"));
+      Assert.That(stringBuilder.ToString(), Is.EqualTo($"First error message.{Environment.NewLine}Second error message.{Environment.NewLine}"));
     }
 
     [Test]
@@ -61,7 +61,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
 
       context.AppendErrorMessages(stringBuilder);
 
-      Assert.That(stringBuilder.ToString(), Is.EqualTo("Existing message without newline.\r\nFirst error message.\r\nSecond error message.\r\n"));
+      Assert.That(
+          stringBuilder.ToString(),
+          Is.EqualTo($"Existing message without newline.{Environment.NewLine}First error message.{Environment.NewLine}Second error message.{Environment.NewLine}"));
     }
 
     [Test]
@@ -77,7 +79,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
 
       context.AppendErrorMessages(stringBuilder);
 
-      Assert.That(stringBuilder.ToString(), Is.EqualTo("Existing message with newline.\r\nFirst error message.\r\nSecond error message.\r\n"));
+      Assert.That(
+          stringBuilder.ToString(),
+          Is.EqualTo($"Existing message with newline.{Environment.NewLine}First error message.{Environment.NewLine}Second error message.{Environment.NewLine}"));
     }
 
     [Test]
@@ -91,14 +95,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       var stringBuilder = new StringBuilder();
 
       context.AppendErrorMessages(stringBuilder);
-      Assert.That(stringBuilder.ToString(), Is.EqualTo("First error message.\r\nSecond error message.\r\n"));
+      Assert.That(
+          stringBuilder.ToString(),
+          Is.EqualTo($"First error message.{Environment.NewLine}Second error message.{Environment.NewLine}"));
 
       context.ReportErrorMessage("Third error message");
 
       stringBuilder = new StringBuilder();
 
       context.AppendErrorMessages(stringBuilder);
-      Assert.That(stringBuilder.ToString(), Is.EqualTo("First error message.\r\nSecond error message.\r\nThird error message\r\n"));
+      Assert.That(stringBuilder.ToString(), Is.EqualTo($"First error message.{Environment.NewLine}Second error message.{Environment.NewLine}Third error message{Environment.NewLine}"));
     }
 
     [Test]
