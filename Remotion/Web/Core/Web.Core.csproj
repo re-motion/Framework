@@ -12,7 +12,7 @@
     <NoWarn>$(NoWarn);0419</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Development.Analyzers\WebDiagnosticIds.cs">
+    <Compile Include="..\Development.Analyzers\WebDiagnosticIDs.cs">
       <Link>WebDiagnosticIds.cs</Link>
     </Compile>
     <EmbeddedResource Include="UI\SmartPageImplementation\Generic_Error_Async_Remote.htm" />

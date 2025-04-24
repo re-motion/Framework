@@ -42,7 +42,7 @@ using Remotion.Web.Utilities;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or select references as the value of a property using an auto-completing text box. </summary>
-  /// <include file='..\..\doc\include\UI\Controls\BocAutoCompleteReferenceValue.xml' path='BocAutoCompleteReferenceValue/Class/*' />
+  /// <include file='../../Doc/include/UI/Controls/BocAutoCompleteReferenceValue.xml' path='BocAutoCompleteReferenceValue/Class/*' />
   [ValidationProperty("ValidationValue")]
   [DefaultEvent("SelectionChanged")]
   [ToolboxItemFilter("System.Web.UI")]
@@ -342,7 +342,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
 
     /// <summary> Loads the <see cref="BocReferenceValueBase.Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocReferenceValue.xml' path='BocReferenceValue/LoadValue/*' />
     public override void LoadValue (bool interim)
     {
       if (interim)
@@ -363,7 +363,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Populates the <see cref="BocReferenceValueBase.Value"/> with the unbound <paramref name="value"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadUnboundValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocReferenceValue.xml' path='BocReferenceValue/LoadUnboundValue/*' />
     public void LoadUnboundValue (IBusinessObjectWithIdentity? value, bool interim)
     {
       LoadValueInternal(value, interim);
@@ -380,7 +380,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Saves the <see cref="BocReferenceValueBase.Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/SaveValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocReferenceValue.xml' path='BocReferenceValue/SaveValue/*' />
     public override bool SaveValue (bool interim)
     {
       if (interim)

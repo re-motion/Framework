@@ -41,7 +41,7 @@ using Remotion.Web.Utilities;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or edit date/time values. </summary>
-  /// <include file='..\..\doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/Class/*' />
+  /// <include file='../../Doc/include/UI/Controls/BocDateTimeValue.xml' path='BocDateTimeValue/Class/*' />
   [ValidationProperty("ValidationValue")]
   [DefaultEvent("TextChanged")]
   [ToolboxItemFilter("System.Web.UI")]
@@ -179,7 +179,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed
     ///   between postbacks.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadPostData/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocDateTimeValue.xml' path='BocDateTimeValue/LoadPostData/*' />
     protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
       //  Date input field
@@ -308,7 +308,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
 
     /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocDateTimeValue.xml' path='BocDateTimeValue/LoadValue/*' />
     public override void LoadValue (bool interim)
     {
       if (interim)
@@ -329,14 +329,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
     public void LoadUnboundValue (DateTime? value, bool interim)
     {
       LoadValueInternal(value, interim);
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
     public void LoadUnboundValue (DateOnly? value, bool interim)
     {
       LoadValueInternal(value?.ToDateTime(TimeOnly.MinValue), interim);
@@ -353,7 +353,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/SaveValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocDateTimeValue.xml' path='BocDateTimeValue/SaveValue/*' />
     public override bool SaveValue (bool interim)
     {
       if (interim)
@@ -728,7 +728,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets the style that you want to apply to the date and time text boxes 
     ///   (edit mode) as well as the label (read-only mode).
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/CommonStyle/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocDateTimeValue.xml' path='BocDateTimeValue/CommonStyle/*' />
     [Category("Style")]
     [Description("The style that you want to apply to the date and the time TextBoxes (edit mode) and the Label (read-only mode).")]
     [NotifyParentProperty(true)]
@@ -743,7 +743,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets the style that you want to apply to both the date and the time text box
     ///   (edit mode) only.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/DateTimeTextBoxStyle/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocDateTimeValue.xml' path='BocDateTimeValue/DateTimeTextBoxStyle/*' />
     [Category("Style")]
     [Description("The style that you want to apply to both the date and the time TextBoxes (edit mode) only.")]
     [NotifyParentProperty(true)]

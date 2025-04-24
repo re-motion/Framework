@@ -28,7 +28,7 @@ namespace Remotion.Web.UI
   /// <summary>
   ///   This interface represents a page that has a dirty-state and can prevent multiple postbacks.
   /// </summary>
-  /// <include file='..\doc\include\UI\ISmartPage.xml' path='ISmartPage/Class/*' />
+  /// <include file='../Doc/include/UI/ISmartPage.xml' path='ISmartPage/Class/*' />
   public interface ISmartPage: IPage
   {
     /// <summary>
@@ -126,7 +126,7 @@ namespace Remotion.Web.UI
     /// <summary> 
     ///   Registers Java Script functions to be executed when the respective <paramref name="pageEvent"/> is raised.
     /// </summary>
-    /// <include file='..\doc\include\UI\ISmartPage.xml' path='ISmartPage/RegisterClientSidePageEventHandler/*' />
+    /// <include file='../Doc/include/UI/ISmartPage.xml' path='ISmartPage/RegisterClientSidePageEventHandler/*' />
     void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function);
 
     /// <summary>

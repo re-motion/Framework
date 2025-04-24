@@ -32,7 +32,7 @@ namespace Remotion.Web.ExecutionEngine
   ///   <b>WxePage</b> is the default implementation of the <see cref="IWxePage"/> interface. Use this type
   ///   a base class for pages that can be called by <see cref="WxePageStep"/>.
   /// </summary>
-  /// <include file='..\doc\include\ExecutionEngine\WxePage.xml' path='WxePage/Class/*' />
+  /// <include file='../Doc/include/ExecutionEngine/WxePage.xml' path='WxePage/Class/*' />
   public class WxePage : SmartPage, IWxePage, IWindowStateManager
   {
     #region IWxePage Impleplementation
@@ -82,7 +82,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Gets the permanent URL for the current page using the specified <paramref name="queryString"/>. </summary>
-    /// <include file='..\doc\include\ExecutionEngine\WxePage.xml' path='WxePage/GetPermanentUrl/param[@name="queryString"]' />
+    /// <include file='../Doc/include/ExecutionEngine/WxePage.xml' path='WxePage/GetPermanentUrl/param[@name="queryString"]' />
     public string GetPermanentUrl (NameValueCollection queryString)
     {
       return _wxePageInfo.GetPermanentUrl(queryString);
@@ -92,7 +92,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
     ///   and using the <paramref name="queryString"/>.
     /// </summary>
-    /// <include file='..\doc\include\ExecutionEngine\WxePage.xml' path='WxePage/GetPermanentUrl/param[@name="functionType" or @name="queryString"]' />
+    /// <include file='../Doc/include/ExecutionEngine/WxePage.xml' path='WxePage/GetPermanentUrl/param[@name="functionType" or @name="queryString"]' />
     public string GetPermanentUrl (Type functionType, NameValueCollection queryString)
     {
       return _wxePageInfo.GetPermanentUrl(functionType, queryString);

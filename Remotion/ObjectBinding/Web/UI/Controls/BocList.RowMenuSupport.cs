@@ -181,7 +181,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Handles the click on an Event command of a row menu. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/OnRowMenuItemEventCommandClick/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocList.xml' path='BocList/OnRowMenuItemEventCommandClick/*' />
     protected virtual void OnRowMenuItemEventCommandClick (WebMenuItem menuItem, IBusinessObject businessObject, int listIndex)
     {
       if (menuItem != null && menuItem.Command != null)
@@ -194,7 +194,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Handles the click to a WXE function command or a row menu. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/OnRowMenuItemWxeFunctionCommandClick/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocList.xml' path='BocList/OnRowMenuItemWxeFunctionCommandClick/*' />
     protected virtual void OnRowMenuItemWxeFunctionCommandClick (WebMenuItem menuItem, IBusinessObject businessObject, int listIndex)
     {
       if (menuItem != null && menuItem.Command != null)
