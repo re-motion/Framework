@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using System.Text;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Remotion.Logging;
@@ -54,22 +55,18 @@ namespace Remotion.ServiceLocation
         }
         else
         {
-          throw new InvalidOperationException(
-              """
-              The BootstrapServiceConfiguration.SetLoggerFactory(...) method must not be called after the configured value has been read via BootstrapServiceConfiguration.GetLoggerFactory().
+          var message = new StringBuilder()
+              .AppendLine( "The BootstrapServiceConfiguration.SetLoggerFactory(...) method must not be called after the configured value has been read via BootstrapServiceConfiguration.GetLoggerFactory().")
+              .AppendLine()
+              .AppendLine("The first call to BootstrapServiceConfiguration.GetLoggerFactory() generated the following stack trace:")
+              .AppendLine()
+              .AppendLine("--- Begin of diagnostic stack trace ---")
+              .AppendLine()
+              .AppendLine(s_stackTraceForFirstCallToGetLoggerFactory)
+              .Append("--- End of diagnostic stack trace ---")
+              .ToString();
 
-              The first call to BootstrapServiceConfiguration.GetLoggerFactory() generated the following stack trace:
-
-              --- Begin of diagnostic stack trace ---
-
-
-              """
-              + s_stackTraceForFirstCallToGetLoggerFactory
-              +
-              """
-  
-              --- End of diagnostic stack trace ---
-              """);
+          throw new InvalidOperationException(message);
         }
       }
     }
@@ -107,34 +104,25 @@ namespace Remotion.ServiceLocation
         }
 
         throw new InvalidOperationException(
-            """
-            The BootstrapServiceConfiguration.SetLoggerFactory(...) method must be called before accessing the service configuration.
-
-            Example based on log4net:
-            1. Add reference to Remotion.Logging.Log4Net Nuget package.
-            2. Add the following code in your startup code (the application's Main() method or a SetupFixture in the tests) before performing other operations.
-                var loggerFactory = new LoggerFactory(new[] { new Log4NetLoggerProvider() });
-                BootstrapServiceConfiguration.SetLoggerFactory(loggerFactory);
-
-            You can supply a different logging framework or chose to have no logging at all by passing the NullLoggerFactory.Instance.
-
-            """
-            + "For testing purposes or if no logging is required in your application, you may instead apply the "
-            + typeof(EnableNullLoggerFactoryAsFallbackInBootstrapServiceConfigurationAttribute).FullName + " "
-            + "on your testing assembly or your application's main assembly. "
-            + "This change will configure the infrastructure to use the NullLoggerFactory as the default for logging."
-            + """
-
-
-              --- Begin of diagnostic stack trace for this exception's first occurance ---
-
-
-              """
-            + s_stackTraceForFirstCallToGetLoggerFactory
-            + """
-
-              --- End of diagnostic stack trace ---
-              """);
+            new StringBuilder().AppendLine("The BootstrapServiceConfiguration.SetLoggerFactory(...) method must be called before accessing the service configuration.")
+                .AppendLine()
+                .AppendLine("Example based on log4net:")
+                .AppendLine("1. Add reference to Remotion.Logging.Log4Net Nuget package.")
+                .AppendLine("2. Add the following code in your startup code (the application's Main() method or a SetupFixture in the tests) before performing other operations.")
+                .AppendLine("    var loggerFactory = new LoggerFactory(new[] { new Log4NetLoggerProvider() });")
+                .AppendLine("    BootstrapServiceConfiguration.SetLoggerFactory(loggerFactory);")
+                .AppendLine()
+                .AppendLine("You can supply a different logging framework or chose to have no logging at all by passing the NullLoggerFactory.Instance.")
+                .Append("For testing purposes or if no logging is required in your application, you may instead apply the ")
+                .Append(typeof(EnableNullLoggerFactoryAsFallbackInBootstrapServiceConfigurationAttribute).FullName)
+                .Append(" on your testing assembly or your application's main assembly. ")
+                .AppendLine("This change will configure the infrastructure to use the NullLoggerFactory as the default for logging.")
+                .AppendLine()
+                .AppendLine("--- Begin of diagnostic stack trace for this exception's first occurance ---")
+                .AppendLine()
+                .AppendLine(s_stackTraceForFirstCallToGetLoggerFactory)
+                .Append("--- End of diagnostic stack trace ---")
+                .ToString());
       }
     }
 

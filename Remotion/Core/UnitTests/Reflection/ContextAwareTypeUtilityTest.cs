@@ -125,7 +125,7 @@ namespace Remotion.UnitTests.Reflection
     [Test]
     public void GetTypeDiscoveryService_WithCustomImplementationFromConfigFile_DoesNotThrowOnInitialization ()
     {
-      var relativePath = @"Reflection\TestDomain\ContextAwareTypeUtilityTest\app.config";
+      var relativePath = @"Reflection/TestDomain/ContextAwareTypeUtilityTest/app.config";
       var fullPath = Path.Combine(TestContext.CurrentContext.TestDirectory, relativePath);
       Assert.That(File.Exists(fullPath));
 

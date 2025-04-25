@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
@@ -33,7 +34,7 @@ namespace Remotion.UnitTests.ServiceLocation.BootstrapServiceConfigurationTests
   [TestFixture]
   public class GetLoggerFactoryTest
   {
-    private const string c_testAssemblySourceDirectoryRoot = @"ServiceLocation\BootstrapServiceConfigurationTests\TestAssemblies";
+    private const string c_testAssemblySourceDirectoryRoot = @"ServiceLocation/BootstrapServiceConfigurationTests/TestAssemblies";
 
     private ILoggerFactory _backupLoggerFactory;
     private string _backupStacktraceForFirstCallToGetLoggerFactory;
@@ -90,13 +91,13 @@ namespace Remotion.UnitTests.ServiceLocation.BootstrapServiceConfigurationTests
 
                      at Remotion.ServiceLocation.BootstrapServiceConfiguration.GetLoggerFactory()
                      at Remotion.UnitTests.ServiceLocation.BootstrapServiceConfigurationTests.GetLoggerFactoryTest.
-                  """)
+                  """.ReplaceLineEndings())
               .And.Message.EndsWith(
                   """
                   )
 
                   --- End of diagnostic stack trace ---
-                  """)
+                  """.ReplaceLineEndings())
           );
     }
 
@@ -120,13 +121,13 @@ namespace Remotion.UnitTests.ServiceLocation.BootstrapServiceConfigurationTests
                      at Remotion.ServiceLocation.BootstrapServiceConfiguration.GetLoggerFactory()
                      at Remotion.UnitTests.ServiceLocation.BootstrapServiceConfigurationTests.GetLoggerFactoryTest.SetLoggerFactory_AfterGetLoggerFactory_ThrowsInvalidOperationException()
                      at
-                  """)
+                  """.ReplaceLineEndings())
               .And.Message.EndsWith(
                   """
                   )
 
                   --- End of diagnostic stack trace ---
-                  """
+                  """.ReplaceLineEndings()
                   )
           );
     }
@@ -179,7 +180,7 @@ namespace Remotion.UnitTests.ServiceLocation.BootstrapServiceConfigurationTests
 
     private static Assembly CompileTestAssemblyInMemory (string assemblyName, params string[] referencedAssemblies)
     {
-      AssemblyCompiler assemblyCompiler = AssemblyCompiler.CreateInMemoryAssemblyCompiler(c_testAssemblySourceDirectoryRoot + "\\" + assemblyName, referencedAssemblies);
+      AssemblyCompiler assemblyCompiler = AssemblyCompiler.CreateInMemoryAssemblyCompiler(c_testAssemblySourceDirectoryRoot + "/" + assemblyName, referencedAssemblies);
       assemblyCompiler.Compile();
       return assemblyCompiler.CompiledAssembly;
     }
