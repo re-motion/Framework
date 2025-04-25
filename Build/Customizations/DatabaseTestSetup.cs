@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Nuke.Common;
 using Remotion.BuildScript;
 using Remotion.BuildScript.Test;
@@ -32,6 +34,8 @@ public class DatabaseTestSetup : ITestExecutionWrapper, IRequiresTestParameters
   private const string c_usernameParameterNameTemplate = "UsernameMsSql{0}";
   private const string c_passwordParameterNameTemplate = "PasswordMsSql{0}";
   private const string c_databaseNamePrefixParameterNameTemplate = "DatabaseNamePrefixMsSql{0}";
+
+  private const string c_defaultConnectionString = "Data Source=localhost;Integrated Security=True";
 
   public void ConfigureTestParameters (TestParameterBuilder builder)
   {
@@ -52,26 +56,31 @@ public class DatabaseTestSetup : ITestExecutionWrapper, IRequiresTestParameters
   public void ExecuteTests (TestExecutionContext context, Action<TestExecutionContext> next)
   {
     var sqlServer = context.TestMatrixRow.GetDimension<Databases>();
-    string dataSource, databaseDirectory, databaseNamePrefix, integratedSecurity, username, password;
+    string databaseNamePrefix, connectionString;
     if (sqlServer == Databases.SqlServerDefault)
     {
-      dataSource = "localhost";
-      databaseDirectory = @"C:\Databases\";
       databaseNamePrefix = "";
-      integratedSecurity = "true";
-      username = "";
-      password = "";
+
+      connectionString = c_defaultConnectionString;
     }
     else
     {
       Assert.True(sqlServer.HasSpecificVersion);
 
-      dataSource = context.GetTestParameter(string.Format(c_dataSourceParameterNameTemplate, sqlServer.Version));
-      databaseDirectory = context.GetTestParameter(string.Format(c_databaseDirectoryParameterNameTemplate, sqlServer.Version));
       databaseNamePrefix = context.GetTestParameter(string.Format(c_databaseNamePrefixParameterNameTemplate, sqlServer.Version));
-      integratedSecurity = context.GetTestParameter(string.Format(c_integratedSecurityParameterNameTemplate, sqlServer.Version));
-      username = context.GetTestParameter(string.Format(c_usernameParameterNameTemplate, sqlServer.Version));
-      password = context.GetTestParameter(string.Format(c_passwordParameterNameTemplate, sqlServer.Version));
+
+      var dataSource = context.GetTestParameter(string.Format(c_dataSourceParameterNameTemplate, sqlServer.Version));
+      var integratedSecurity = context.GetTestParameter(string.Format(c_integratedSecurityParameterNameTemplate, sqlServer.Version));
+      var username = context.GetTestParameter(string.Format(c_usernameParameterNameTemplate, sqlServer.Version));
+      var password = context.GetTestParameter(string.Format(c_passwordParameterNameTemplate, sqlServer.Version));
+
+      var connectionStringParts = new Dictionary<string, string>();
+      connectionStringParts.Add("Data Source", dataSource);
+      connectionStringParts.Add("Integrated Security", integratedSecurity);
+      connectionStringParts.Add("User ID", username);
+      connectionStringParts.Add("Password", password);
+
+      connectionString = string.Join(";", connectionStringParts.Select(e => $"{e.Key}={e.Value}"));
     }
 
     var configuration = context.TestMatrixRow.GetDimension<Configurations>().Value;
@@ -86,19 +95,11 @@ public class DatabaseTestSetup : ITestExecutionWrapper, IRequiresTestParameters
 
     Log.Information("Updating Database Test configuration file:");
     Log.Information($" - Database system: '{sqlServer}'");
-    Log.Information($" - Data source: '{dataSource}'");
-    Log.Information($" - Database directory: '{databaseDirectory}'");
+    Log.Information($" - Connection String: '{connectionString}'");
     Log.Information($" - Database name prefix: '{databaseNamePrefix}'");
-    Log.Information($" - Integrated security: '{integratedSecurity}'");
-    Log.Information($" - Username: '{username}'");
-    Log.Information($" - Password: '{password}'");
 
-    appConfig.SetAppSetting("DataSource", dataSource);
-    appConfig.SetAppSetting("DatabaseDirectory", databaseDirectory);
+    appConfig.SetAppSetting("ConnectionString", connectionString);
     appConfig.SetAppSetting("DatabaseNamePrefix", databaseNamePrefix);
-    appConfig.SetAppSetting("IntegratedSecurity", integratedSecurity);
-    appConfig.SetAppSetting("Username", username);
-    appConfig.SetAppSetting("Password", password);
 
     appConfig.WriteToFile(configFile);
     File.Copy(configFile, configFile.Parent / "testhost.dll.config", true);

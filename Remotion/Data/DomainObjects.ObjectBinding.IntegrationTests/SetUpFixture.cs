@@ -39,13 +39,13 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     {
       get
       {
-        return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_RemotionDataDomainObjectsObjectBindingIntegrationTestDomain");
+        return DatabaseConfiguration.GetConnectionStringForInitialCatalog("DBPrefix_RemotionDataDomainObjectsObjectBindingIntegrationTestDomain");
       }
     }
 
     public static string MasterConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=master"); }
+      get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("master"); }
     }
 
     [OneTimeSetUp]

@@ -45,12 +45,12 @@ namespace Remotion.SecurityManager.UnitTests
   {
     public static string TestDomainConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=RemotionSecurityManager"); }
+      get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("RemotionSecurityManager"); }
     }
 
     public static string MasterConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=master"); }
+      get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("master"); }
     }
 
     [OneTimeSetUp]
