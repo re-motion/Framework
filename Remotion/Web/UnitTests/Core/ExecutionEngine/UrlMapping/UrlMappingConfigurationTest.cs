@@ -44,7 +44,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     [Test]
     public void LoadMappingFromFile ()
     {
-      UrlMappingConfiguration mapping = UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml");
+      UrlMappingConfiguration mapping = UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(Path.Combine("Res", "UrlMapping.xml"));
 
       Assert.That(mapping, Is.Not.Null, "Mapping is null.");
 
@@ -72,7 +72,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     public void LoadMappingFromFileWithInvalidFilename ()
     {
       Assert.That(
-          () => UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\InvalidFilename.xml"),
+          () => UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(Path.Combine("Res", "InvalidFilename.xml")),
           Throws.InstanceOf<FileNotFoundException>());
     }
 
@@ -81,7 +81,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     {
       UrlMappingConfiguration.SetCurrent(null!);
 
-      var fileFinder = BaseDirectoryBasedUrlMappingFileFinder.Create(@"Res\UrlMapping.xml");
+      var fileFinder = BaseDirectoryBasedUrlMappingFileFinder.Create(Path.Combine("Res", "UrlMapping.xml"));
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle<IUrlMappingFileFinder>(() => fileFinder);
       using var _ = new ServiceLocatorScope(serviceLocator);
@@ -93,7 +93,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     [Test]
     public void GetCurrentMappingFromConfiguration ()
     {
-      UrlMappingConfiguration mapping = UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml");
+      UrlMappingConfiguration mapping = UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(Path.Combine("Res", "UrlMapping.xml"));
 
       Assert.That(mapping, Is.Not.Null, "Mapping is null.");
 
@@ -120,7 +120,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     [Test]
     public void FindByFunctionType ()
     {
-      UrlMappingCollection mappings = UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml").Mappings;
+      UrlMappingCollection mappings = UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(Path.Combine("Res", "UrlMapping.xml")).Mappings;
 
       UrlMappingEntry entry = mappings[0];
       Assert.That(mappings.Find(entry.FunctionType), Is.SameAs(mappings[0]), $"Could not find {entry.FunctionType.FullName}.");
@@ -137,7 +137,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     [Test]
     public void FindByResource ()
     {
-      UrlMappingCollection mappings = UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml").Mappings;
+      UrlMappingCollection mappings = UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(Path.Combine("Res", "UrlMapping.xml")).Mappings;
 
       UrlMappingEntry entry = mappings[0];
       Assert.That(mappings.Find(entry.Resource), Is.SameAs(mappings[0]), $"Could not find {entry.Resource}.");
@@ -154,7 +154,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     [Test]
     public void FindByID ()
     {
-      UrlMappingCollection mappings = UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml").Mappings;
+      UrlMappingCollection mappings = UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(Path.Combine("Res", "UrlMapping.xml")).Mappings;
 
       UrlMappingEntry entry = mappings[0];
       Assert.That(mappings.FindByID(entry.ID), Is.SameAs(mappings[0]), $"Could not find {entry.ID}.");

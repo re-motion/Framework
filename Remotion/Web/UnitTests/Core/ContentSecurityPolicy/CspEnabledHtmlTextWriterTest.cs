@@ -103,7 +103,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
 
                 </div>
               </root>
-              """));
+              """.ReplaceLineEndings()));
     }
 
     [Test]
@@ -518,7 +518,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
 
       Assert.That(
           _htmlHelper.GetDocumentText(),
-          Is.EqualTo("<div href=\"/my/url\">\r\n"));
+          Is.EqualTo($"<div href=\"/my/url\">{Environment.NewLine}"));
     }
 
     [Test]
@@ -556,7 +556,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
 
       Assert.That(
           _htmlHelper.GetDocumentText(),
-          Is.EqualTo("<div href=\"/defaultUrl\" data-inline-event-target=\"eventTargetID\" data-event-content-href=\" javascript: test\">\r\n"));
+          Is.EqualTo($"<div href=\"/defaultUrl\" data-inline-event-target=\"eventTargetID\" data-event-content-href=\" javascript: test\">{Environment.NewLine}"));
     }
 
     [TestCase("javascript: console.info('test');", "console.info('test');")]

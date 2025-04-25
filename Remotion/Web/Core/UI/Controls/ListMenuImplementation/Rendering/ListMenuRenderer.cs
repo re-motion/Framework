@@ -268,7 +268,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       if (!renderingContext.Control.Page!.ClientScript.IsStartupScriptRegistered(typeof(ListMenuRenderer), key))
       {
         StringBuilder script = new StringBuilder();
-        script.AppendFormat("ListMenu.Initialize ('#{0}');", renderingContext.Control.ClientID).AppendLine();
+        script.AppendFormat("ListMenu.Initialize ('#{0}');\r\n", renderingContext.Control.ClientID);
         script.AppendFormat("ListMenu.AddMenuInfo ('#{0}', \r\n\t", renderingContext.Control.ClientID);
         script.AppendFormat("new ListMenu_MenuInfo ('{0}', new Array (\r\n", renderingContext.Control.ClientID);
         bool isFirstItemInGroup = true;

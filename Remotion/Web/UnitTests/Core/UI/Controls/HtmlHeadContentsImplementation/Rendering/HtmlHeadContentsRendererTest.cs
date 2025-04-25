@@ -64,7 +64,7 @@ stylesheet-1
 stylesheet-2
 head-1
 head-2
-"));
+".ReplaceLineEndings()));
     }
 
     [Test]
@@ -91,7 +91,7 @@ head-2
       Assert.That(content, Is.EqualTo(@"<title>
 	title-1
 </title>
-"));
+".ReplaceLineEndings()));
     }
   }
 }
