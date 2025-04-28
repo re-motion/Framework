@@ -15,7 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
+using Remotion.Logging.Log4Net;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.PerformanceTests
 {
@@ -25,6 +28,8 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     [OneTimeSetUp]
     public void OneTimeSetUp ()
     {
+      BootstrapServiceConfiguration.SetLoggerFactory(new LoggerFactory([new Log4NetLoggerProvider()]));
+
       try
       {
         StandardConfiguration.Initialize();
