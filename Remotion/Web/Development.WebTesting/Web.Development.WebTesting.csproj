@@ -24,7 +24,6 @@
     <ProjectReference Include="..\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Fork.Coypu" />
     <PackageReference Include="Remotion.ThirdPartyDependency.LiberationSans" />
     <PackageReference Include="Selenium.Support" />
     <PackageReference Include="Selenium.WebDriver" />
