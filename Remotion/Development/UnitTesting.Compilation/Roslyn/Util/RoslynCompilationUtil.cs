@@ -54,9 +54,9 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn.Util {
                 compilerFullPath = CompilerFullPath(@"roslyn");
 
             if (fileExt.Equals(".cs", StringComparison.InvariantCultureIgnoreCase))
-                compilerFullPath = Path.Combine(compilerFullPath, "csc.exe");
+                compilerFullPath = Path.Combine(compilerFullPath, "csc.dll");
             else if (fileExt.Equals(".vb", StringComparison.InvariantCultureIgnoreCase))
-                compilerFullPath = Path.Combine(compilerFullPath, "vbc.exe");
+                compilerFullPath = Path.Combine(compilerFullPath, "vbc.dll");
 
 
             //
