@@ -90,8 +90,9 @@ namespace Remotion.Development.UnitTesting.IsolatedCodeRunner
     {
       ArgumentUtility.CheckNotNull(nameof(args), args);
 
-      var isolatedCodeRunnerExePath = Path.ChangeExtension(typeof(IsolatedCodeRunner).Assembly.Location, "exe");
-      if (!File.Exists(isolatedCodeRunnerExePath))
+      var isolatedCodeRunnerExtension = OperatingSystem.IsWindows() ? "exe" : "dll";
+      var isolatedCodeRunnerPath = Path.ChangeExtension(typeof(IsolatedCodeRunner).Assembly.Location, isolatedCodeRunnerExtension);
+      if (!File.Exists(isolatedCodeRunnerPath))
         throw new InvalidOperationException("Cannot find the isolated code runner exe.");
 
       var startInfo = new ProcessStartInfo
@@ -101,8 +102,16 @@ namespace Remotion.Development.UnitTesting.IsolatedCodeRunner
                           RedirectStandardOutput = true
                       };
 
-      startInfo.FileName = isolatedCodeRunnerExePath;
-      startInfo.Arguments = string.Join(" ", args.Select(e => $@"""{e.Replace("\"", "\"\"")}"""));
+      if (OperatingSystem.IsWindows())
+      {
+        startInfo.FileName = isolatedCodeRunnerPath;
+        startInfo.Arguments = string.Join(" ", args.Select(e => $@"""{e.Replace("\"", "\"\"")}"""));
+      }
+      else
+      {
+        startInfo.FileName = "dotnet";
+        startInfo.Arguments = string.Join(" ", ((string[])["exec", isolatedCodeRunnerPath]).Concat(args).Select(e => $@"""{e.Replace("\"", "\"\"")}"""));
+      }
       startInfo.WorkingDirectory = Path.GetDirectoryName(_targetMethod.DeclaringType!.Assembly.Location);
 
       startInfo.Environment[TargetAssemblyPath] = _assemblyLocation;

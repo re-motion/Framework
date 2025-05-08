@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 namespace Remotion.Development.UnitTesting.Compilation.Roslyn.Util {
     internal static class RoslynCompilationUtil {
@@ -156,8 +157,16 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn.Util {
 
         internal static bool IsDebuggerAttached
         {
-            get {
-                return IsDebuggerPresent() || Debugger.IsAttached;
+            get
+            {
+                if (OperatingSystem.IsWindows())
+                {
+                    return IsDebuggerPresent() || Debugger.IsAttached;
+                }
+                else
+                {
+                    return Debugger.IsAttached;
+                }
             }
         }
 
