@@ -65,11 +65,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       Assert.That(elements[2], Is.TypeOf(typeof(BatchDelimiterStatement)));
       Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
       var expectedResult =
-          "CREATE VIEW [SchemaName].[View1] ([ID], [ClassID], [Timestamp], [Column1])\r\n"
-         + "  WITH SCHEMABINDING AS\r\n"
-         + "  SELECT [ID], [ClassID], [Timestamp], [Column1]\r\n"
-         + "    FROM [SchemaName].[Table1]\r\n"
-         + "  WITH CHECK OPTION";
+          """
+          CREATE VIEW [SchemaName].[View1] ([ID], [ClassID], [Timestamp], [Column1])
+            WITH SCHEMABINDING AS
+            SELECT [ID], [ClassID], [Timestamp], [Column1]
+              FROM [SchemaName].[Table1]
+            WITH CHECK OPTION
+          """.ReplaceLineEndings();
       Assert.That(((ScriptStatement)elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -87,11 +89,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       Assert.That(elements[2], Is.TypeOf(typeof(BatchDelimiterStatement)));
       Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
       var expectedResult =
-          "CREATE VIEW [dbo].[View2] ([ID], [ClassID], [Timestamp], [Column1])\r\n"
-          + "  AS\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [Column1]\r\n"
-          + "    FROM [dbo].[Table2]\r\n"
-          + "  WITH CHECK OPTION";
+          """
+          CREATE VIEW [dbo].[View2] ([ID], [ClassID], [Timestamp], [Column1])
+            AS
+            SELECT [ID], [ClassID], [Timestamp], [Column1]
+              FROM [dbo].[Table2]
+            WITH CHECK OPTION
+          """.ReplaceLineEndings();
       Assert.That(((ScriptStatement)elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -101,8 +105,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_tableDefinitionWithCustomSchema);
 
       var expectedResult =
-          "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'View1' AND TABLE_SCHEMA = 'SchemaName')\r\n"
-          + "  DROP VIEW [SchemaName].[View1]";
+          """
+          IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'View1' AND TABLE_SCHEMA = 'SchemaName')
+            DROP VIEW [SchemaName].[View1]
+          """.ReplaceLineEndings();
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
@@ -114,8 +120,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_tableDefinitionWithDefaultSchema);
 
       var expectedResult =
-          "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'View2' AND TABLE_SCHEMA = 'dbo')\r\n"
-          + "  DROP VIEW [dbo].[View2]";
+          """
+          IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'View2' AND TABLE_SCHEMA = 'dbo')
+            DROP VIEW [dbo].[View2]
+          """.ReplaceLineEndings();
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));

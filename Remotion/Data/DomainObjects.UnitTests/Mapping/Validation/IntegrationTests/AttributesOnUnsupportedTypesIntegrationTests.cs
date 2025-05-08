@@ -31,25 +31,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           () => ValidateMapping("AttributesOnUnsupportedTypes"),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-                  "The 'StringPropertyAttribute' may be only applied to properties of type 'String'.\r\n\r\n"
-                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.AttributesOnUnsupportedTypes.ClassWithAttributesOnUnsupportedTypes\r\n"
-                  + "Property: IntPropertyWithStringPropertyAttribute\r\n"
-                  + "----------\r\n"
-                  + "The 'BinaryPropertyAttribute' may be only applied to properties of type 'Byte[]'.\r\n\r\n"
-                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.AttributesOnUnsupportedTypes.ClassWithAttributesOnUnsupportedTypes\r\n"
-                  + "Property: BoolPropertyWithBinaryPropertyAttribute\r\n"
-                  + "----------\r\n"
-                  + "The 'ExtensibleEnumPropertyAttribute' may be only applied to properties of type 'IExtensibleEnum'.\r\n\r\n"
-                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.AttributesOnUnsupportedTypes.ClassWithAttributesOnUnsupportedTypes\r\n"
-                  + "Property: StringPropertyWithExtensibleEnumPropertyAttribute\r\n"
-                  + "----------\r\n"
-                  + "The 'MandatoryAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
-                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.AttributesOnUnsupportedTypes.ClassWithAttributesOnUnsupportedTypes\r\n"
-                  + "Property: StringPropertyWithMandatoryPropertyAttribute\r\n"
-                  + "----------\r\n"
-                  + "The 'DBBidirectionalRelationAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
-                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.AttributesOnUnsupportedTypes.ClassWithAttributesOnUnsupportedTypes\r\n"
-                  + "Property: StringPropertyWithBidirectionalRelationAttribute"));
+                  """
+                  The 'StringPropertyAttribute' may be only applied to properties of type 'String'.
+
+                  Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.AttributesOnUnsupportedTypes.ClassWithAttributesOnUnsupportedTypes
+                  Property: IntPropertyWithStringPropertyAttribute
+                  ----------
+                  The 'BinaryPropertyAttribute' may be only applied to properties of type 'Byte[]'.
+
+                  Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.AttributesOnUnsupportedTypes.ClassWithAttributesOnUnsupportedTypes
+                  Property: BoolPropertyWithBinaryPropertyAttribute
+                  ----------
+                  The 'ExtensibleEnumPropertyAttribute' may be only applied to properties of type 'IExtensibleEnum'.
+
+                  Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.AttributesOnUnsupportedTypes.ClassWithAttributesOnUnsupportedTypes
+                  Property: StringPropertyWithExtensibleEnumPropertyAttribute
+                  ----------
+                  The 'MandatoryAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.
+
+                  Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.AttributesOnUnsupportedTypes.ClassWithAttributesOnUnsupportedTypes
+                  Property: StringPropertyWithMandatoryPropertyAttribute
+                  ----------
+                  The 'DBBidirectionalRelationAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.
+
+                  Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.AttributesOnUnsupportedTypes.ClassWithAttributesOnUnsupportedTypes
+                  Property: StringPropertyWithBidirectionalRelationAttribute
+                  """.ReplaceLineEndings()));
     }
   }
 }

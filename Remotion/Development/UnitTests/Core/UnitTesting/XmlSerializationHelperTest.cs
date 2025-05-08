@@ -33,7 +33,9 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
       byte[] serializedArray = XmlSerializationHelper.XmlSerialize(array);
       var serializedArrayString = ReplaceKnownXmlNamespaceDeclarations(Encoding.UTF8.GetString(serializedArray));
 
-      Assert.That(serializedArrayString, Is.EqualTo(ReplaceKnownXmlNamespaceDeclarations(GetExpectedXmlString())));
+      Assert.That(
+          serializedArrayString,
+          Is.EqualTo(ReplaceKnownXmlNamespaceDeclarations(GetExpectedXmlString()).ReplaceLineEndings()));
     }
 
     [Test]

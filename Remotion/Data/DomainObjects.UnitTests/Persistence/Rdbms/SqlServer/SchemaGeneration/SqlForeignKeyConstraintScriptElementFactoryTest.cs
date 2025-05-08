@@ -56,8 +56,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetCreateElement(_constraint1, _table1);
 
       var expectedResult =
-        "ALTER TABLE [dbo].[TableName1] ADD\r\n"
-       +"  CONSTRAINT [FK1] FOREIGN KEY ([Column1]) REFERENCES [dbo].[TableName1] ([Column2])";
+          """
+          ALTER TABLE [dbo].[TableName1] ADD
+            CONSTRAINT [FK1] FOREIGN KEY ([Column1]) REFERENCES [dbo].[TableName1] ([Column2])
+          """.ReplaceLineEndings();
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
@@ -68,8 +70,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetCreateElement(_constraint2, _table2);
 
       var expectedResult =
-        "ALTER TABLE [SchemaName].[TableName2] ADD\r\n"
-       + "  CONSTRAINT [FK2] FOREIGN KEY ([Column1], [Column2]) REFERENCES [SchemaName].[TableName2] ([Column2], [Column1])";
+          """
+          ALTER TABLE [SchemaName].[TableName2] ADD
+            CONSTRAINT [FK2] FOREIGN KEY ([Column1], [Column2]) REFERENCES [SchemaName].[TableName2] ([Column2], [Column1])
+          """.ReplaceLineEndings();
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
@@ -80,9 +84,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_constraint1, _table1);
 
       var expectedResult =
-        "IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' "
-        +"AND fk.name = 'FK1' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'TableName1')\r\n"
-        +"  ALTER TABLE [dbo].[TableName1] DROP CONSTRAINT FK1";
+          """
+          IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK1' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'TableName1')
+            ALTER TABLE [dbo].[TableName1] DROP CONSTRAINT FK1
+          """.ReplaceLineEndings();
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
@@ -93,9 +98,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_constraint2, _table2);
 
       var expectedResult =
-        "IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' "
-        +"AND fk.name = 'FK2' AND schema_name (t.schema_id) = 'SchemaName' AND t.name = 'TableName2')\r\n"
-        +"  ALTER TABLE [SchemaName].[TableName2] DROP CONSTRAINT FK2";
+          """
+          IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK2' AND schema_name (t.schema_id) = 'SchemaName' AND t.name = 'TableName2')
+            ALTER TABLE [SchemaName].[TableName2] DROP CONSTRAINT FK2
+          """.ReplaceLineEndings();
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }

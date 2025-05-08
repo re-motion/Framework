@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
+using System;
 using System.IO;
 using JetBrains.Annotations;
 using Moq;
@@ -59,15 +60,17 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     [Test]
     public void GetUrlMappingFilePath_WithRelativeFilePathAndFileDoesNotExist_ReturnsEmptySequence ()
     {
+      var baseDirectoryAbsolutePath = OperatingSystem.IsWindows() ? @"C:\nonexistent" : "/etc/nonexistent";
+
       var appContextProviderMock = new Mock<IAppContextProvider>();
       var urlMappingFileFinder = new TestableBaseDirectoryBasedUrlMappingFileFinder(appContextProviderMock.Object, "urlMapping.xml");
 
-      appContextProviderMock.SetupGet(e => e.BaseDirectory).Returns(@"C:\nonexistent");
+      appContextProviderMock.SetupGet(e => e.BaseDirectory).Returns(baseDirectoryAbsolutePath);
 
       Assert.That(
           () => urlMappingFileFinder.GetUrlMappingFilePaths(),
           Throws.TypeOf<FileNotFoundException>()
-              .With.Message.EqualTo(@"The URL mapping file 'C:\nonexistent\urlMapping.xml' does not exist."));
+              .With.Message.EqualTo($"The URL mapping file '{Path.Combine(baseDirectoryAbsolutePath, "urlMapping.xml")}' does not exist."));
     }
 
     [Test]
@@ -87,15 +90,18 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.UrlMapping
     [Test]
     public void GetUrlMappingFilePath_WithAbsoluteFilePathAndFileDoesNotExists_ReturnsEmptySequence ()
     {
-      var appContextProviderMock = new Mock<IAppContextProvider>();
-      var urlMappingFileFinder = new TestableBaseDirectoryBasedUrlMappingFileFinder(appContextProviderMock.Object, @"C:\mappings\urlMapping.xml");
+      var urlMappingAbsolutePath = OperatingSystem.IsWindows() ? @"C:\mappings\urlMapping.xml" : "/etc/mappings/urlMapping.xml";
+      var baseDirectoryAbsolutePath = OperatingSystem.IsWindows() ? @"C:\nonexistent" : "/etc/nonexistent";
 
-      appContextProviderMock.SetupGet(e => e.BaseDirectory).Returns(@"C:\nonexistent");
+      var appContextProviderMock = new Mock<IAppContextProvider>();
+      var urlMappingFileFinder = new TestableBaseDirectoryBasedUrlMappingFileFinder(appContextProviderMock.Object, urlMappingAbsolutePath);
+
+      appContextProviderMock.SetupGet(e => e.BaseDirectory).Returns(baseDirectoryAbsolutePath);
 
       Assert.That(
           () => urlMappingFileFinder.GetUrlMappingFilePaths(),
           Throws.TypeOf<FileNotFoundException>()
-              .With.Message.EqualTo(@"The URL mapping file 'C:\mappings\urlMapping.xml' does not exist."));
+              .With.Message.EqualTo($"The URL mapping file '{urlMappingAbsolutePath}' does not exist."));
     }
   }
 }

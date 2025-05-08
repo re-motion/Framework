@@ -144,8 +144,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var expectedMessage =
           "SortExpression 'Test' cannot be parsed: 'Test' is not a valid mapped property name. Expected the .NET property name of a property "
           + "declared by the 'Order' class or its base classes. Alternatively, to resolve ambiguities or to use a property declared by a mixin "
-          + "or a derived class of 'Order', the full unique re-store property identifier can be specified.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer\r\nProperty: Orders";
+          + $"or a derived class of 'Order', the full unique re-store property identifier can be specified.{Environment.NewLine}{Environment.NewLine}"
+          + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer{Environment.NewLine}Property: Orders";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
 
@@ -172,8 +172,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var expectedMessage =
           "SortExpression 'Test' cannot be parsed: 'Test' is not a valid mapped property name. Expected the .NET property name of a property "
           + "declared by the 'ProductReview' class or its base classes. Alternatively, to resolve ambiguities or to use a property declared by a mixin "
-          + "or a derived class of 'ProductReview', the full unique re-store property identifier can be specified.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Product\r\nProperty: Reviews";
+          + $"or a derived class of 'ProductReview', the full unique re-store property identifier can be specified.{Environment.NewLine}{Environment.NewLine}"
+          + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Product{Environment.NewLine}Property: Reviews";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
   }

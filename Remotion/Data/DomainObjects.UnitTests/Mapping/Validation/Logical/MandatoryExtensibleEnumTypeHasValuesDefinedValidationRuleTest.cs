@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation.Logical;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation;
@@ -103,8 +104,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
 
       var expectedMessage =
           "Extensible enum type 'ExtensibleEnumTypeWithoutValues' cannot be used for property 'PropertyWithMandatoryExtensibleEnumTypeWithoutValues' "
-          + "on type 'EnumTypeValidationDomainObjectClass' because the property is mandatory but there are not values defined for the enum type.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.EnumTypeValidationDomainObjectClass\r\n"
+          + $"on type 'EnumTypeValidationDomainObjectClass' because the property is mandatory but there are not values defined for the enum type.{Environment.NewLine}{Environment.NewLine}"
+          + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.EnumTypeValidationDomainObjectClass{Environment.NewLine}"
           + "Property: PropertyWithMandatoryExtensibleEnumTypeWithoutValues";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }

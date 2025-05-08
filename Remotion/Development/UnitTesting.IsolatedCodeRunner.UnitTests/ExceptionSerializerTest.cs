@@ -55,7 +55,7 @@ namespace Remotion.Development.UnitTesting.IsolatedCodeRunner.UnitTests
       Assert.That(
           ExceptionSerializer.SerializeException(exception),
           Is.EqualTo(
-              $"{EncodeBase64(typeof(Exception).AssemblyQualifiedName)};{EncodeBase64("message😂")};{EncodeBase64("stackTrace\r\n--- End of stack trace from previous location ---\r\n")}"));
+              $"{EncodeBase64(typeof(Exception).AssemblyQualifiedName)};{EncodeBase64("message😂")};{EncodeBase64($"stackTrace{Environment.NewLine}--- End of stack trace from previous location ---{Environment.NewLine}")}"));
     }
 
     [Test]
@@ -75,7 +75,7 @@ namespace Remotion.Development.UnitTesting.IsolatedCodeRunner.UnitTests
 
       Assert.That(exception, Is.TypeOf<WithMessageConstructorException>());
       Assert.That(exception.Message, Is.EqualTo("message"));
-      Assert.That(exception.StackTrace, Is.EqualTo("stackTrace\r\n--- End of stack trace from previous location ---\r\n"));
+      Assert.That(exception.StackTrace, Is.EqualTo($"stackTrace{Environment.NewLine}--- End of stack trace from previous location ---{Environment.NewLine}"));
     }
 
     [Test]
@@ -86,7 +86,7 @@ namespace Remotion.Development.UnitTesting.IsolatedCodeRunner.UnitTests
 
       Assert.That(exception, Is.TypeOf<WithMessageAndInnerExceptionException>());
       Assert.That(exception.Message, Is.EqualTo("message"));
-      Assert.That(exception.StackTrace, Is.EqualTo("stackTrace\r\n--- End of stack trace from previous location ---\r\n"));
+      Assert.That(exception.StackTrace, Is.EqualTo($"stackTrace{Environment.NewLine}--- End of stack trace from previous location ---{Environment.NewLine}"));
     }
 
     [Test]

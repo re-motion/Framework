@@ -39,14 +39,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
           "The SQL provider's model is built with a single ClassID column by InfrastructureStoragePropertyDefinitionProvider.");
 
       return string.Format(
-            "  SELECT {0}\r\n"
-          + "    FROM [{1}].[{2}]\r\n"
+            "  SELECT {0}{5}"
+          + "    FROM [{1}].[{2}]{5}"
           + "    WHERE [{3}] IN ({4})",
             GetColumnList(filterViewDefinition.GetAllColumns()),
             tableDefinition.TableName.SchemaName ?? DefaultSchema,
             tableDefinition.TableName.EntityName,
             classIDColumns.Single().Name,
-            GetClassIDList(filterViewDefinition.ClassIDs));
+            GetClassIDList(filterViewDefinition.ClassIDs),
+            Environment.NewLine);
     }
 
     protected override bool UseCheckOption (FilterViewDefinition filterViewDefinition)

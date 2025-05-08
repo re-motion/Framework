@@ -105,7 +105,7 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
       provider.SetCombineVirtualPathOverride((a, b) => "~/res/test/");
 
       Directory.CreateDirectory(Path.Combine(_testDirectory, "testResourceFolder"));
-      File.WriteAllText(Path.Combine(_testDirectory, "testResourceFolder\\testfile.txt"), "hello");
+      File.WriteAllText(Path.Combine(_testDirectory, "testResourceFolder", "testfile.txt"), "hello");
 
       Assert.That(provider.FileExists("~/res/test/testfile.txt"));
     }
@@ -141,7 +141,7 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
       provider.SetMakeRelativeVirtualPathOverride((a, b) => "testfile.txt");
       provider.SetCombineVirtualPathOverride((a, b) => "~/res/test/");
 
-      var expectedFilePath = Path.Combine(_testDirectory, "testResourceFolder\\testfile.txt");
+      var expectedFilePath = Path.Combine(_testDirectory, "testResourceFolder", "testfile.txt");
       Directory.CreateDirectory(Path.Combine(_testDirectory, "testResourceFolder"));
       File.WriteAllText(expectedFilePath, "hello");
 
@@ -158,7 +158,7 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
       provider.SetMakeRelativeVirtualPathOverride((a, b) => "testfile.txt");
       provider.SetCombineVirtualPathOverride((a, b) => "~/res/test/subdirectory");
 
-      var expectedFilePath = Path.Combine(_testDirectory, "testResourceFolder\\testfile.txt");
+      var expectedFilePath = Path.Combine(_testDirectory, "testResourceFolder", "testfile.txt");
       Directory.CreateDirectory(Path.Combine(_testDirectory, "testResourceFolder"));
       File.WriteAllText(expectedFilePath, "hello");
 
@@ -200,7 +200,7 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
       provider.SetMakeRelativeVirtualPathOverride((a, b) => "subfolder");
       provider.SetCombineVirtualPathOverride((a, b) => "~/res/test/");
 
-      Directory.CreateDirectory(Path.Combine(_testDirectory, "testResourceFolder\\subfolder"));
+      Directory.CreateDirectory(Path.Combine(_testDirectory, "testResourceFolder", "subfolder"));
 
       Assert.That(provider.DirectoryExists("~/res/test/subfolder"));
     }
@@ -213,7 +213,7 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
       provider.SetCombineVirtualPathOverride((a, b) => "~/res/test/");
       provider.SetMapPathOverride((a) => "c:\\temp");
 
-      Directory.CreateDirectory(Path.Combine(_testDirectory, "testResourceFolder\\subfolder"));
+      Directory.CreateDirectory(Path.Combine(_testDirectory, Path.Combine("testResourceFolder", "subfolder")));
 
       Assert.That(provider.DirectoryExists("~/res/"));
     }
@@ -247,7 +247,7 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
       provider.SetMakeRelativeVirtualPathOverride((a, b) => "testDirectory");
       provider.SetCombineVirtualPathOverride((a, b) => "~/res/test/");
 
-      var expectedDirectoryPath = Path.Combine(_testDirectory, "testResourceFolder\\testDirectory");
+      var expectedDirectoryPath = Path.Combine(_testDirectory, "testResourceFolder", "testDirectory");
       Directory.CreateDirectory(expectedDirectoryPath);
 
       var actual = (ResourceVirtualDirectory)provider.GetDirectory("~/res/test/testDirectory");
@@ -259,7 +259,7 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     [Test]
     public void GetDirectory_ResourceRootDirectory ()
     {
-      var expectedDirectoryPath = "c:\\temp";
+      var expectedDirectoryPath = Path.GetTempPath();
 
       var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
       provider.SetMakeRelativeVirtualPathOverride((a, b) => "testDirectory");

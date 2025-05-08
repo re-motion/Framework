@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
       var validationResult = _validationRule.Validate(_concreteClassDefinition);
 
       var expectedMessage = "Neither class 'DerivedValidationDomainObjectClass' nor its base classes are mapped to a table. "
-                            + "Make class 'DerivedValidationDomainObjectClass' abstract or define a table for it or one of its base classes.\r\n\r\n"
+                            + $"Make class 'DerivedValidationDomainObjectClass' abstract or define a table for it or one of its base classes.{Environment.NewLine}{Environment.NewLine}"
                             +
                             "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
@@ -139,7 +139,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
       var validationResult = _validationRule.Validate(_concreteClassDefinition);
 
       var expectedMessage = "Neither class 'DerivedValidationDomainObjectClass' nor its base classes are mapped to a table. "
-                            + "Make class 'DerivedValidationDomainObjectClass' abstract or define a table for it or one of its base classes.\r\n\r\n"
+                            + $"Make class 'DerivedValidationDomainObjectClass' abstract or define a table for it or one of its base classes.{Environment.NewLine}{Environment.NewLine}"
                             +
                             "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass";
       AssertMappingValidationResult(validationResult, false, expectedMessage);

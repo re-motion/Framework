@@ -67,7 +67,7 @@ namespace Remotion.Security.Metadata
         refAttribute.Value = localizedName.ReferencedObjectID;
         XmlAttribute commentAttribute = document.CreateAttribute("comment");
         commentAttribute.Value = localizedName.Comment;
-        XmlText text = document.CreateTextNode("\r\n    " + localizedName.Text + "\r\n  ");
+        XmlText text = document.CreateTextNode($"{Environment.NewLine}    " + localizedName.Text + $"{Environment.NewLine}  ");
 
         localizedNameElement.Attributes.Append(refAttribute);
         localizedNameElement.Attributes.Append(commentAttribute);

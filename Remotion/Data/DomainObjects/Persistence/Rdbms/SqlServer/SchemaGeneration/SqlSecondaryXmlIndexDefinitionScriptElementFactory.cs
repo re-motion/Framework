@@ -34,9 +34,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
       return new ScriptStatement(
         string.Format(
-          "CREATE XML INDEX [{0}]\r\n"
-          + "  ON [{1}].[{2}] ([{3}])\r\n"
-          + "  USING XML INDEX [{4}]\r\n"
+          "CREATE XML INDEX [{0}]{7}"
+          + "  ON [{1}].[{2}] ([{3}]){7}"
+          + "  USING XML INDEX [{4}]{7}"
           + "  FOR {5}{6}",
           indexDefinition.IndexName,
           ownerName.SchemaName ?? DefaultSchema,
@@ -44,7 +44,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
           indexDefinition.XmlColumn.Name,
           indexDefinition.PrimaryIndexName,
           indexDefinition.Kind,
-          GetCreateIndexOptions(GetCreateIndexOptionItems(indexDefinition))));
+          GetCreateIndexOptions(GetCreateIndexOptionItems(indexDefinition)),
+          Environment.NewLine));
     }
   }
 }

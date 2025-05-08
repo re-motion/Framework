@@ -285,7 +285,16 @@ namespace Remotion.Validation.UnitTests.Implementation
       Assert.That(
           () => _validatorBuilder.BuildValidator<SpecialCustomer1>(),
           Throws.TypeOf<ValidationConfigurationException>()
-              .And.Message.EqualTo("Error1\r\n----------\r\nError2\r\n----------\r\nError3\r\n----------\r\nError4"));
+                  .And.Message.EqualTo(
+                          """
+                          Error1
+                          ----------
+                          Error2
+                          ----------
+                          Error3
+                          ----------
+                          Error4
+                          """.ReplaceLineEndings()));
     }
 
     private void ExpectMocks ()

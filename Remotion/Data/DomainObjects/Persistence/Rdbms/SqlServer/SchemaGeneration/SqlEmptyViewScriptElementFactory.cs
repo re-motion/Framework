@@ -32,9 +32,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
       ArgumentUtility.CheckNotNull("emptyViewDefinition", emptyViewDefinition);
 
       return string.Format(
-            "  SELECT {0}\r\n"
+            "  SELECT {0}{1}"
           + "    WHERE 1 = 0",
-            GetNullColumnList(emptyViewDefinition.GetAllColumns()));
+            GetNullColumnList(emptyViewDefinition.GetAllColumns()),
+            Environment.NewLine);
     }
 
     protected override bool UseCheckOption (EmptyViewDefinition emptyViewDefinition)

@@ -62,15 +62,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
     [Test]
     public void GetQueryFilePath_WithRelativeFilePathAndFileDoesNotExist_ReturnsEmptySequence ()
     {
-      var appContextProviderMock = new Mock<IAppContextProvider>();
-      var queryFileFinder = new TestableBaseDirectoryBasedQueryFileFinder(appContextProviderMock.Object, "query.xml");
+      var nonExistentPath = OperatingSystem.IsWindows() ? @"C:\nonexistent" : "/var/nonexistent";
+      var nonExistentQueryPath = nonExistentPath + Path.DirectorySeparatorChar + "Query.xml";
 
-      appContextProviderMock.SetupGet(e => e.BaseDirectory).Returns(@"C:\nonexistent");
+      var appContextProviderMock = new Mock<IAppContextProvider>();
+      var queryFileFinder = new TestableBaseDirectoryBasedQueryFileFinder(appContextProviderMock.Object, "Query.xml");
+
+      appContextProviderMock.SetupGet(e => e.BaseDirectory).Returns(nonExistentPath);
 
       Assert.That(
           () => queryFileFinder.GetQueryFilePaths(),
           Throws.TypeOf<QueryConfigurationException>()
-              .With.Message.EqualTo(@"The query file 'C:\nonexistent\query.xml' does not exist."));
+              .With.Message.EqualTo($"The query file '{nonExistentQueryPath}' does not exist."));
     }
 
     [Test]
@@ -90,15 +93,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
     [Test]
     public void GetQueryFilePath_WithAbsoluteFilePathAndFileDoesNotExists_ReturnsEmptySequence ()
     {
-      var appContextProviderMock = new Mock<IAppContextProvider>();
-      var queryFileFinder = new TestableBaseDirectoryBasedQueryFileFinder(appContextProviderMock.Object, @"C:\queries\query.xml");
+      var queryFilePath = OperatingSystem.IsWindows() ? @"C:\queries\query.xml" : "/var/queries/query.xml";
+      var nonExistentPath = OperatingSystem.IsWindows() ? @"C:\nonexistent" : "/var/nonexistent";
 
-      appContextProviderMock.SetupGet(e => e.BaseDirectory).Returns(@"C:\nonexistent");
+      var appContextProviderMock = new Mock<IAppContextProvider>();
+      var queryFileFinder = new TestableBaseDirectoryBasedQueryFileFinder(appContextProviderMock.Object, queryFilePath);
+
+      appContextProviderMock.SetupGet(e => e.BaseDirectory).Returns(nonExistentPath);
 
       Assert.That(
           () => queryFileFinder.GetQueryFilePaths(),
           Throws.TypeOf<QueryConfigurationException>()
-              .With.Message.EqualTo(@"The query file 'C:\queries\query.xml' does not exist."));
+              .With.Message.EqualTo($"The query file '{queryFilePath}' does not exist."));
     }
   }
 }

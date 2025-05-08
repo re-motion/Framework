@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       Assert.That(
           ReflectionUtility.GetAssemblyDirectory(typeof(ReflectionUtilityTest).Assembly),
-          Is.EqualTo(AppContext.BaseDirectory.TrimEnd('\\')));
+          Is.EqualTo(AppContext.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar)));
     }
 
     [Test]
@@ -98,6 +98,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void GetAssemblyPath_FromUncPath ()
     {
+      if (!OperatingSystem.IsWindows())
+        Assert.Ignore("This test only works on Windows.");
+
       var assemblyMock = new Mock<FakeAssembly>(MockBehavior.Strict);
       assemblyMock.Setup(_ => _.Location).Returns(@"\\server\share\directory\assembly.dll");
       Assert.That(() => ReflectionUtility.GetAssemblyDirectory(assemblyMock.Object), Is.EqualTo(@"\\server\share\directory"));

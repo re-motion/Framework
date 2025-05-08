@@ -25,7 +25,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
 {
   public static class TestAssemblies
   {
-    private const string c_testAssemblySourceDirectoryRoot = @"TestDomain\TestAssemblies";
+    private const string c_testAssemblySourceDirectoryRoot = @"TestDomain/TestAssemblies";
 
     public static readonly Lazy<Assembly> Without = new Lazy<Assembly>(() => CompileTestAssemblyInMemory("Without"));
     public static readonly Lazy<Assembly> En = new Lazy<Assembly>(() => CompileTestAssemblyInMemory("En"));

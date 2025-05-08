@@ -128,8 +128,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var validationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage =
-          "Virtual property 'Left' of class 'Order' is of type 'String', but must be assignable to 'DomainObject' or 'ObjectList`1' or be of type 'IObjectList`1'.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
+          $"Virtual property 'Left' of class 'Order' is of type 'String', but must be assignable to 'DomainObject' or 'ObjectList`1' or be of type 'IObjectList`1'.{Environment.NewLine}{Environment.NewLine}"
+          + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order{Environment.NewLine}"
           + "Property: Left";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
@@ -146,8 +146,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var validationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage =
-          "Virtual property 'Right' of class 'Order' is of type 'String', but must be assignable to 'DomainObject' or 'ObjectList`1' or be of type 'IObjectList`1'.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
+          $"Virtual property 'Right' of class 'Order' is of type 'String', but must be assignable to 'DomainObject' or 'ObjectList`1' or be of type 'IObjectList`1'.{Environment.NewLine}{Environment.NewLine}"
+          + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order{Environment.NewLine}"
           + "Property: Right";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }

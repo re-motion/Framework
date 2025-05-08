@@ -243,10 +243,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(command, Is.TypeOf<ExceptionCommand>());
       Assert.That(((ExceptionCommand)command).Exception, Is.TypeOf<InvalidOperationException>());
       Assert.That(((ExceptionCommand)command).Exception.Message, Is.EqualTo(
-          "The relations of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded.\r\n"
-          + "Relation end-point "
-          + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' has changed. "
-          + "Only unchanged relation end-points can be unregistered."));
+          """
+          The relations of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded.
+          Relation end-point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' has changed. Only unchanged relation end-points can be unregistered.
+          """.ReplaceLineEndings()));
     }
 
     [Test]
@@ -271,10 +271,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(command, Is.TypeOf<ExceptionCommand>());
       Assert.That(((ExceptionCommand)command).Exception, Is.TypeOf<InvalidOperationException>());
       Assert.That(((ExceptionCommand)command).Exception.Message, Is.EqualTo(
-          "The relations of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded.\r\n"
-          + "The opposite relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of relation end-point "
-          + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' has changed. "
-          + "Non-virtual end-points that are part of changed relations cannot be unloaded."));
+          """
+          The relations of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded.
+          The opposite relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' of relation end-point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' has changed. Non-virtual end-points that are part of changed relations cannot be unloaded.
+          """.ReplaceLineEndings()));
     }
 
     [Test]
@@ -299,13 +299,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(
           ((ExceptionCommand)command).Exception.Message,
           Is.EqualTo(
-              "The relations of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded.\r\n"
-              + "Relation end-point "
-              + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' "
-              + "would leave a dangling reference.\r\n"
-              + "Relation end-point "
-              + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' "
-              + "would leave a dangling reference."));
+              """
+              The relations of object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be unloaded.
+              Relation end-point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket' would leave a dangling reference.
+              Relation end-point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' would leave a dangling reference.
+              """.ReplaceLineEndings()));
     }
 
     [Test]

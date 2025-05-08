@@ -441,7 +441,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var iconSpan = Html.GetAssertedChildElement(cellStructureDiv, "span", 0);
       Html.AssertAttribute(iconSpan, "class", _bocListCssClassDefinition.ValidationErrorMarker);
-      Html.AssertAttribute(iconSpan, "title", "error message\r\n");
+      Html.AssertAttribute(iconSpan, "title", $"error message{Environment.NewLine}");
       Html.AssertAttribute(iconSpan, "aria-hidden", "true");
       Html.AssertChildElementCount(iconSpan, 2);
 

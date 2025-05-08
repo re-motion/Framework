@@ -82,11 +82,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       var result = _factory.GetCreateElement(_tableTypeDefinitionPlain);
 
       var expectedResult =
-          "CREATE TYPE [SchemaName].[TypeName] AS TABLE\r\n"
-          + "(\r\n"
-          + "  [Column1] varchar(100) NOT NULL,\r\n"
-          + "  [Column2] bit NULL\r\n"
-          + ")";
+          """
+          CREATE TYPE [SchemaName].[TypeName] AS TABLE
+          (
+            [Column1] varchar(100) NOT NULL,
+            [Column2] bit NULL
+          )
+          """.ReplaceLineEndings();
 
       Assert.That(result, Is.InstanceOf<ScriptElementCollection>());
       var scriptElements = result.As<ScriptElementCollection>().Elements;
@@ -101,12 +103,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       var result = _factory.GetCreateElement(_tableTypeDefinitionWithClusteredPrimaryKeyConstraint);
 
       var expectedResult =
-          "CREATE TYPE [dbo].[TypeName] AS TABLE\r\n"
-          + "(\r\n"
-          + "  [Column1] varchar(100) NOT NULL,\r\n"
-          + "  [Column2] bit NULL\r\n"
-          + "  PRIMARY KEY CLUSTERED ([Column1])\r\n"
-          + ")";
+          """
+          CREATE TYPE [dbo].[TypeName] AS TABLE
+          (
+            [Column1] varchar(100) NOT NULL,
+            [Column2] bit NULL
+            PRIMARY KEY CLUSTERED ([Column1])
+          )
+          """.ReplaceLineEndings();
 
       Assert.That(result, Is.InstanceOf<ScriptElementCollection>());
       var scriptElements = result.As<ScriptElementCollection>().Elements;
@@ -121,12 +125,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       var result = _factory.GetCreateElement(_tableTypeDefinitionWithNonClusteredPrimaryKeyConstraint);
 
       var expectedResult =
-          "CREATE TYPE [dbo].[TypeName] AS TABLE\r\n"
-          + "(\r\n"
-          + "  [Column1] varchar(100) NOT NULL,\r\n"
-          + "  [Column2] bit NULL\r\n"
-          + "  PRIMARY KEY NONCLUSTERED ([Column1], [Column2])\r\n"
-          + ")";
+          """
+          CREATE TYPE [dbo].[TypeName] AS TABLE
+          (
+            [Column1] varchar(100) NOT NULL,
+            [Column2] bit NULL
+            PRIMARY KEY NONCLUSTERED ([Column1], [Column2])
+          )
+          """.ReplaceLineEndings();
 
       Assert.That(result, Is.InstanceOf<ScriptElementCollection>());
       var scriptElements = result.As<ScriptElementCollection>().Elements;
@@ -141,12 +147,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       var result = _factory.GetCreateElement(_tableTypeDefinitionWithClusteredUniqueConstraint);
 
       var expectedResult =
-          "CREATE TYPE [dbo].[TypeName] AS TABLE\r\n"
-          + "(\r\n"
-          + "  [Column1] varchar(100) NOT NULL,\r\n"
-          + "  [Column2] bit NULL\r\n"
-          + "  UNIQUE CLUSTERED ([Column1])\r\n"
-          + ")";
+          """
+          CREATE TYPE [dbo].[TypeName] AS TABLE
+          (
+            [Column1] varchar(100) NOT NULL,
+            [Column2] bit NULL
+            UNIQUE CLUSTERED ([Column1])
+          )
+          """.ReplaceLineEndings();
 
       Assert.That(result, Is.InstanceOf<ScriptElementCollection>());
       var scriptElements = result.As<ScriptElementCollection>().Elements;
@@ -161,12 +169,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       var result = _factory.GetCreateElement(_tableTypeDefinitionWithNonClusteredUniqueConstraint);
 
       var expectedResult =
-          "CREATE TYPE [dbo].[TypeName] AS TABLE\r\n"
-          + "(\r\n"
-          + "  [Column1] varchar(100) NOT NULL,\r\n"
-          + "  [Column2] bit NULL\r\n"
-          + "  UNIQUE NONCLUSTERED ([Column1], [Column2])\r\n"
-          + ")";
+          """
+          CREATE TYPE [dbo].[TypeName] AS TABLE
+          (
+            [Column1] varchar(100) NOT NULL,
+            [Column2] bit NULL
+            UNIQUE NONCLUSTERED ([Column1], [Column2])
+          )
+          """.ReplaceLineEndings();
 
       Assert.That(result, Is.InstanceOf<ScriptElementCollection>());
       var scriptElements = result.As<ScriptElementCollection>().Elements;

@@ -402,7 +402,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
           () => ClientTransactionScope.CurrentTransaction.Commit(),
           Throws.InstanceOf<ConstraintViolationException>()
               .With.Message.EqualTo(
-                  "The access control entry is in an invalid state:\r\n"
+                  $"The access control entry is in an invalid state:{Environment.NewLine}"
                   + "  The TenantCondition property is set to SpecificTenant, but no SpecificTenant is assigned."));
     }
   }

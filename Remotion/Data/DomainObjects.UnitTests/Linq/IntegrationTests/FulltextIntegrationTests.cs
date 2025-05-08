@@ -33,16 +33,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
   {
     public override void OneTimeSetUp ()
     {
+      // TODO RM-9510: Re-enable this test once we have a docker image that supports full text search
+      if (!OperatingSystem.IsWindows())
+        Assert.Ignore("RM-9510: FullTextSearch tests is disabled on Linux until we have an SQL Server docker image with full text search support.");
+
       base.OneTimeSetUp();
 
-      DatabaseAgent.ExecuteBatchFile("Database\\DataDomainObjects_DropFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
-      DatabaseAgent.ExecuteBatchFile("Database\\DataDomainObjects_CreateFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
+      DatabaseAgent.ExecuteBatchFile("Database/DataDomainObjects_DropFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
+      DatabaseAgent.ExecuteBatchFile("Database/DataDomainObjects_CreateFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
       WaitForIndices();
     }
 
     public override void TestFixtureTearDown ()
     {
-      DatabaseAgent.ExecuteBatchFile("Database\\DataDomainObjects_DropFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
+      DatabaseAgent.ExecuteBatchFile("Database/DataDomainObjects_DropFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
       base.TestFixtureTearDown();
     }
 

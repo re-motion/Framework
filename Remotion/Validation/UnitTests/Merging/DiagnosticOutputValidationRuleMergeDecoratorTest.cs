@@ -65,8 +65,8 @@ namespace Remotion.Validation.UnitTests.Merging
           .Setup(stub => stub.Merge(collectors))
           .Returns(new ValidationCollectorMergeResult(new IAddingPropertyValidationRuleCollector[0], new IAddingObjectValidationRuleCollector[0], _logContextStub.Object));
 
-      CheckLoggingMethod(() => _diagnosticOutputValidationRuleMergeDecorator.Merge(collectors), "\r\nAFTER MERGE:", 0);
-      CheckLoggingMethod(() => _diagnosticOutputValidationRuleMergeDecorator.Merge(collectors), "\r\nBEFORE MERGE:", 1);
+      CheckLoggingMethod(() => _diagnosticOutputValidationRuleMergeDecorator.Merge(collectors), $"{Environment.NewLine}AFTER MERGE:", 0);
+      CheckLoggingMethod(() => _diagnosticOutputValidationRuleMergeDecorator.Merge(collectors), $"{Environment.NewLine}BEFORE MERGE:", 1);
     }
 
     [Test]
@@ -151,50 +151,56 @@ namespace Remotion.Validation.UnitTests.Merging
           .Returns(new ValidationCollectorMergeResult(addingPropertyValidationRuleCollectors, addingObjectValidationRuleCollectors, _logContextStub.Object));
 
       var expectedAfterMerge =
-          "\r\nAFTER MERGE:"
-          + "\r\n"
-          + "\r\n    -> Remotion.Validation.UnitTests.TestDomain.Customer#UserName"
-          + "\r\n        VALIDATORS:"
-          + "\r\n        -> NotNullValidator (x2)"
-          + "\r\n        -> NotEmptyOrWhitespaceValidator (x1)"
-          + "\r\n        MERGE LOG:"
-          + "\r\n        -> 'NotEmptyOrWhitespaceValidator' was removed from collectors 'CustomerValidationRuleCollector1, CustomerValidationRuleCollector2'"
-          + "\r\n        -> 'NotNullValidator' was removed from collector 'CustomerValidationRuleCollector2'"
-          + "\r\n"
-          + "\r\n    -> Remotion.Validation.UnitTests.TestDomain.Person#LastName"
-          + "\r\n        VALIDATORS:"
-          + "\r\n        -> NotEqualValidator (x1)"
-          + "\r\n        MERGE LOG:"
-          + "\r\n        -> 'NotEqualValidator' was removed from collector 'CustomerValidationRuleCollector1'"
-          + "\r\n"
-          + "\r\n    -> Remotion.Validation.UnitTests.Implementation.AddingPropertyValidationRuleCollectorStub+DomainType#DomainProperty"
-          + "\r\n        VALIDATORS:"
-          + "\r\n        -> StubPropertyValidator (x1)";
+          """
+
+          AFTER MERGE:
+
+              -> Remotion.Validation.UnitTests.TestDomain.Customer#UserName
+                  VALIDATORS:
+                  -> NotNullValidator (x2)
+                  -> NotEmptyOrWhitespaceValidator (x1)
+                  MERGE LOG:
+                  -> 'NotEmptyOrWhitespaceValidator' was removed from collectors 'CustomerValidationRuleCollector1, CustomerValidationRuleCollector2'
+                  -> 'NotNullValidator' was removed from collector 'CustomerValidationRuleCollector2'
+
+              -> Remotion.Validation.UnitTests.TestDomain.Person#LastName
+                  VALIDATORS:
+                  -> NotEqualValidator (x1)
+                  MERGE LOG:
+                  -> 'NotEqualValidator' was removed from collector 'CustomerValidationRuleCollector1'
+
+              -> Remotion.Validation.UnitTests.Implementation.AddingPropertyValidationRuleCollectorStub+DomainType#DomainProperty
+                  VALIDATORS:
+                  -> StubPropertyValidator (x1)
+          """.ReplaceLineEndings();
       //TODO RM-5906: test IObjectValidator
       CheckLoggingMethod(() => _diagnosticOutputValidationRuleMergeDecorator.Merge(validationCollectorInfos), expectedAfterMerge, 0);
 
       var expectedBeforeMerge =
-          "\r\nBEFORE MERGE:"
-          + "\r\n"
-          + "\r\n-> ValidationAttributesBasedValidationRuleCollectorProvider#TypeWithoutBaseTypeCollector1"
-          + "\r\n"
-          + "\r\n    -> Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseType#Property1"
-          + "\r\n        ADDED NON-REMOVABLE VALIDATORS:"
-          + "\r\n        -> NotNullValidator (x1)"
-          + "\r\n        -> NotEqualValidator (x1)"
-          + "\r\n"
-          + "\r\n    -> Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseType#Property2"
-          + "\r\n        ADDED REMOVABLE VALIDATORS:"
-          + "\r\n        -> MaximumLengthValidator (x1)"
-          + "\r\n        ADDED META VALIDATION RULES:"
-          + "\r\n        -> MaxLengthPropertyMetaValidationRule"
-          + "\r\n"
-          + "\r\n-> ApiBasedValidationRuleCollectorProvider#TypeWithoutBaseTypeCollector2"
-          + "\r\n"
-          + "\r\n    -> Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseType#Property2"
-          + "\r\n        REMOVED VALIDATORS:"
-          + "\r\n        -> NotEmptyOrWhitespaceValidator#Conditional (x1)"
-          + "\r\n        -> MaximumLengthValidator#TypeWithoutBaseTypeCollector1 (x1)";
+          """
+
+          BEFORE MERGE:
+
+          -> ValidationAttributesBasedValidationRuleCollectorProvider#TypeWithoutBaseTypeCollector1
+
+              -> Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseType#Property1
+                  ADDED NON-REMOVABLE VALIDATORS:
+                  -> NotNullValidator (x1)
+                  -> NotEqualValidator (x1)
+
+              -> Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseType#Property2
+                  ADDED REMOVABLE VALIDATORS:
+                  -> MaximumLengthValidator (x1)
+                  ADDED META VALIDATION RULES:
+                  -> MaxLengthPropertyMetaValidationRule
+
+          -> ApiBasedValidationRuleCollectorProvider#TypeWithoutBaseTypeCollector2
+
+              -> Remotion.Validation.UnitTests.Implementation.TestDomain.TypeWithoutBaseType#Property2
+                  REMOVED VALIDATORS:
+                  -> NotEmptyOrWhitespaceValidator#Conditional (x1)
+                  -> MaximumLengthValidator#TypeWithoutBaseTypeCollector1 (x1)
+          """.ReplaceLineEndings();
       //TODO RM-5906: test IObjectValidator
       CheckLoggingMethod(() => _diagnosticOutputValidationRuleMergeDecorator.Merge(validationCollectorInfos), expectedBeforeMerge, 1);
     }

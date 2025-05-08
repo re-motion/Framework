@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Specialized;
+using System.IO;
 using System.Text;
 using System.Web;
 using NUnit.Framework;
@@ -54,7 +55,7 @@ public class WxeContextTest
     _functionTypeName = TypeUtility.GetPartialAssemblyQualifiedName(_functionType);
     _resource = "~/Test.wxe";
 
-    UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
+    UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(Path.Combine("Res", "UrlMapping.xml")));
     UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(_functionType, _resource));
   }
 

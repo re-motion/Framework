@@ -56,10 +56,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetCreateElement(_indexDefinitionWithCustomSchema, _customSchemaNameDefinition);
 
       var expectedResult =
-          "CREATE XML INDEX [Index1]\r\n"
-         +"  ON [SchemaName].[TableName1] ([XmlColumn])\r\n"
-         +"  USING XML INDEX [PrimaryIndexName]\r\n"
-         +"  FOR Property";
+          """
+          CREATE XML INDEX [Index1]
+            ON [SchemaName].[TableName1] ([XmlColumn])
+            USING XML INDEX [PrimaryIndexName]
+            FOR Property
+          """.ReplaceLineEndings();
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
@@ -70,10 +72,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetCreateElement(_indexDefinitionWithDefaultSchema, _defaultSchemaNameDefinition);
 
       var expectedResult =
-          "CREATE XML INDEX [Index2]\r\n"
-         +"  ON [dbo].[TableName2] ([XmlColumn])\r\n"
-         +"  USING XML INDEX [PrimaryIndexName]\r\n"
-         +"  FOR Value";
+          """
+          CREATE XML INDEX [Index2]
+            ON [dbo].[TableName2] ([XmlColumn])
+            USING XML INDEX [PrimaryIndexName]
+            FOR Value
+          """.ReplaceLineEndings();
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
@@ -99,12 +103,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetCreateElement(indexDefinition, entityNameDefinition);
 
       var expectedResult =
-          "CREATE XML INDEX [Index1]\r\n"
-          +"  ON [dbo].[TableName] ([XmlColumn])\r\n"
-          +"  USING XML INDEX [PrimaryIndexName]\r\n"
-          +"  FOR Path\r\n"
-          +"  WITH (PAD_INDEX = ON, FILLFACTOR = 12, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON, DROP_EXISTING = ON, ALLOW_ROW_LOCKS = ON, "
-          +"ALLOW_PAGE_LOCKS = ON, MAXDOP = 2)";
+          """
+          CREATE XML INDEX [Index1]
+            ON [dbo].[TableName] ([XmlColumn])
+            USING XML INDEX [PrimaryIndexName]
+            FOR Path
+            WITH (PAD_INDEX = ON, FILLFACTOR = 12, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON, DROP_EXISTING = ON, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, MAXDOP = 2)
+          """.ReplaceLineEndings();
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
@@ -130,12 +135,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetCreateElement(indexDefinition, entityNameDefinition);
 
       var expectedResult =
-          "CREATE XML INDEX [Index1]\r\n"
-         +"  ON [dbo].[TableName] ([XmlColumn])\r\n"
-         +"  USING XML INDEX [PrimaryIndexName]\r\n"
-         +"  FOR Property\r\n"
-         +"  WITH (PAD_INDEX = OFF, FILLFACTOR = 0, SORT_IN_TEMPDB = OFF, STATISTICS_NORECOMPUTE = OFF, DROP_EXISTING = OFF, ALLOW_ROW_LOCKS = OFF, "
-         +"ALLOW_PAGE_LOCKS = OFF, MAXDOP = 0)";
+          """
+          CREATE XML INDEX [Index1]
+            ON [dbo].[TableName] ([XmlColumn])
+            USING XML INDEX [PrimaryIndexName]
+            FOR Property
+            WITH (PAD_INDEX = OFF, FILLFACTOR = 0, SORT_IN_TEMPDB = OFF, STATISTICS_NORECOMPUTE = OFF, DROP_EXISTING = OFF, ALLOW_ROW_LOCKS = OFF, ALLOW_PAGE_LOCKS = OFF, MAXDOP = 0)
+          """.ReplaceLineEndings();
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
@@ -146,9 +152,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_indexDefinitionWithCustomSchema, _customSchemaNameDefinition);
 
       var expectedResult =
-          "IF EXISTS (SELECT * FROM sys.objects so JOIN sysindexes si ON so.[object_id] = si.[id] WHERE so.[name] = 'TableName1' AND "
-          + "schema_name (so.schema_id)='SchemaName' AND si.[name] = 'Index1')\r\n"
-          + "  DROP INDEX [Index1] ON [SchemaName].[TableName1]";
+          """
+          IF EXISTS (SELECT * FROM sys.objects so JOIN sysindexes si ON so.[object_id] = si.[id] WHERE so.[name] = 'TableName1' AND schema_name (so.schema_id)='SchemaName' AND si.[name] = 'Index1')
+            DROP INDEX [Index1] ON [SchemaName].[TableName1]
+          """.ReplaceLineEndings();
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
@@ -160,9 +167,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_indexDefinitionWithDefaultSchema, _defaultSchemaNameDefinition);
 
       var expectedResult =
-          "IF EXISTS (SELECT * FROM sys.objects so JOIN sysindexes si ON so.[object_id] = si.[id] WHERE so.[name] = 'TableName2' AND "
-          + "schema_name (so.schema_id)='dbo' AND si.[name] = 'Index2')\r\n"
-          + "  DROP INDEX [Index2] ON [dbo].[TableName2]";
+          """
+          IF EXISTS (SELECT * FROM sys.objects so JOIN sysindexes si ON so.[object_id] = si.[id] WHERE so.[name] = 'TableName2' AND schema_name (so.schema_id)='dbo' AND si.[name] = 'Index2')
+            DROP INDEX [Index2] ON [dbo].[TableName2]
+          """.ReplaceLineEndings();
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));

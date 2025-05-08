@@ -356,7 +356,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
       var processor = new OuterProductProcessorPrettyPrinter(rectangularArray);
       outerProduct.ProcessOuterProduct(processor);
       string s = processor.GetResult();
-      const string resultExpected =
+      var resultExpected =
           @"
 {
  {
@@ -385,7 +385,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
   (1,2,0)
   (1,2,1)
  }
-}";
+}".ReplaceLineEndings();
       Assert.That(s, Is.EqualTo(resultExpected));
     }
 
@@ -398,7 +398,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
       var processor = new OuterProductProcessorArrayPrettyPrinter(rectangularArray);
       outerProduct.ProcessOuterProduct(processor);
       string s = processor.GetResult();
-      const string resultExpected =
+      var resultExpected =
           @"
 {
  {
@@ -427,7 +427,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
   F0
   F1
  }
-}";
+}".ReplaceLineEndings();
       Assert.That(s, Is.EqualTo(resultExpected));
     }
 

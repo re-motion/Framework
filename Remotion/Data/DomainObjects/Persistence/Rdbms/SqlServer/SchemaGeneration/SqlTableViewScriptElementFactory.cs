@@ -30,10 +30,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
       ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
 
       return string.Format(
-          "  SELECT {0}\r\n    FROM [{1}].[{2}]",
+          "  SELECT {0}{3}    FROM [{1}].[{2}]",
           GetColumnList(tableDefinition.GetAllColumns()),
           tableDefinition.TableName.SchemaName ?? DefaultSchema,
-          tableDefinition.TableName.EntityName);
+          tableDefinition.TableName.EntityName,
+          Environment.NewLine);
     }
 
     protected override bool UseCheckOption (TableDefinition tableDefinition)

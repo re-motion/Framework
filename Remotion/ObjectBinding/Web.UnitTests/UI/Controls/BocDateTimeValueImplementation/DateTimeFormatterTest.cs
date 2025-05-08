@@ -42,7 +42,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
 
       using (new CultureScope("en-US"))
       {
-        Assert.That(formatter.FormatTimeValue(new DateTime(2013, 06, 20, 14, 30, 40), true), Is.EqualTo("2:30:40 PM"));
+        // On Linux the date formatting contains a non-breaking space (\u00A0), which we need to test for as well
+        Assert.That(
+            formatter.FormatTimeValue(new DateTime(2013, 06, 20, 14, 30, 40), true),
+            Does.Match(@"^2:30:40[\s\u00a0]PM$"));
       }
     }
 
@@ -53,7 +56,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
 
       using (new CultureScope("en-US"))
       {
-        Assert.That(formatter.FormatTimeValue(new DateTime(2013, 06, 20, 5, 30, 40), false), Is.EqualTo("5:30 AM"));
+        // On Linux the date formatting contains a non-breaking space (\u00A0), which we need to test for as well
+        Assert.That(
+            formatter.FormatTimeValue(new DateTime(2013, 06, 20, 5, 30, 40), false),
+            Does.Match(@"^5:30[\s\u00a0]AM$"));
       }
     }
 

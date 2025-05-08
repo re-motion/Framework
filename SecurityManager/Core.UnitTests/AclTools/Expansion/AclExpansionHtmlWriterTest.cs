@@ -177,7 +177,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 
           //Clipboard.SetText (CreateLiteralResultExpectedString(result));
 
-          const string resultExpected =
+          var resultExpected =
           #region
  @"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"" """">
 <html>
@@ -426,7 +426,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       </tr>
     </table>
   </body>
-</html>";
+</html>".ReplaceLineEndings();
           #endregion
 
           Assert.That(result, Is.EqualTo(resultExpected));
@@ -504,7 +504,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       new AclExpansionHtmlWriter(textWriter, true, new AclExpansionHtmlWriterSettings()).WriteAclExpansion(new List<AclExpansionEntry>());
       string result = textWriter.ToString();
 
-      const string resultExpected =
+      var resultExpected =
       #region
  @"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN"" """">
 <html>
@@ -528,7 +528,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       </tr>
     </table>
   </body>
-</html>";
+</html>".ReplaceLineEndings();
       #endregion
       Assert.That(result, Is.EqualTo(resultExpected));
     }
@@ -536,6 +536,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 
 
     [Test]
+    [Culture("en-US")]
     public void DeniedRightsTest ()
     {
       var aclExpansionEntry = new AclExpansionEntry(

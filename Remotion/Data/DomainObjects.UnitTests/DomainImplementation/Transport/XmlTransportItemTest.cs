@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       byte[] serializedArray = XmlSerializationHelper.XmlSerialize(new XmlTransportItem(item));
       string serializedString = Encoding.UTF8.GetString(serializedArray);
 
-      Assert.That(serializedString, Is.EqualTo(XmlSerializationStrings.XmlForComputer1));
+      Assert.That(serializedString, Is.EqualTo(XmlSerializationStrings.XmlForComputer1.ReplaceLineEndings()));
     }
 
     [Test]
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       byte[] serializedArray = XmlSerializationHelper.XmlSerialize(new XmlTransportItem(item));
       string serializedString = Encoding.UTF8.GetString(serializedArray);
 
-      Assert.That(serializedString, Is.EqualTo(XmlSerializationStrings.XmlForComputer4));
+      Assert.That(serializedString, Is.EqualTo(XmlSerializationStrings.XmlForComputer4.ReplaceLineEndings()));
     }
 
     [Test]
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       byte[] serializedArray = XmlSerializationHelper.XmlSerialize(new XmlTransportItem(item));
       string serializedString = Encoding.UTF8.GetString(serializedArray);
 
-      Assert.That(serializedString, Is.EqualTo(XmlSerializationStrings.XmlForCustomProperty));
+      Assert.That(serializedString, Is.EqualTo(XmlSerializationStrings.XmlForCustomProperty.ReplaceLineEndings()));
     }
 
     [Test]
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       byte[] serializedArray = XmlSerializationHelper.XmlSerialize(new XmlTransportItem(item));
       string serializedString = Encoding.UTF8.GetString(serializedArray);
 
-      Assert.That(serializedString, Is.EqualTo(XmlSerializationStrings.XmlForCustomObjectIDProperty));
+      Assert.That(serializedString, Is.EqualTo(XmlSerializationStrings.XmlForCustomObjectIDProperty.ReplaceLineEndings()));
     }
 
     [Test]
@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       byte[] serializedArray = XmlSerializationHelper.XmlSerialize(new XmlTransportItem(item));
       string serializedString = Encoding.UTF8.GetString(serializedArray);
 
-      Assert.That(serializedString, Is.EqualTo(XmlSerializationStrings.XmlForCustomNullProperty));
+      Assert.That(serializedString, Is.EqualTo(XmlSerializationStrings.XmlForCustomNullProperty.ReplaceLineEndings()));
     }
 
     [Test]
@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       byte[] serializedArray = XmlSerializationHelper.XmlSerialize(new XmlTransportItem(item));
       string serializedString = Encoding.UTF8.GetString(serializedArray);
 
-      Assert.That(serializedString, Is.EqualTo(XmlSerializationStrings.XmlForCustomExtensibleEnumProperty));
+      Assert.That(serializedString, Is.EqualTo(XmlSerializationStrings.XmlForCustomExtensibleEnumProperty.ReplaceLineEndings()));
     }
 
     [Test]

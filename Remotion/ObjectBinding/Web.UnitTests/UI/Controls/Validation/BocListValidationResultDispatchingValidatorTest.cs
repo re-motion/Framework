@@ -381,7 +381,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
 
       validator.BuildErrorMessage();
 
-      Assert.That(validator.ErrorMessage, Is.EqualTo("Errors on BocList\r\n"));
+      Assert.That(validator.ErrorMessage, Is.EqualTo($"Errors on BocList{Environment.NewLine}"));
     }
 
     [Test]
@@ -412,7 +412,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
 
       validator.BuildErrorMessage();
 
-      Assert.That(validator.ErrorMessage, Is.EqualTo("Errors on rows in BocList\r\n"));
+      Assert.That(validator.ErrorMessage, Is.EqualTo($"Errors on rows in BocList{Environment.NewLine}"));
     }
 
     [Test]
@@ -474,7 +474,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
 
       validator.BuildErrorMessage();
 
-      Assert.That(validator.ErrorMessage, Is.EqualTo("Errors on rows in BocList\r\nA list error\r\n"));
+      Assert.That(validator.ErrorMessage, Is.EqualTo($"Errors on rows in BocList{Environment.NewLine}A list error{Environment.NewLine}"));
     }
 
     [Test]
@@ -513,7 +513,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
 
       validator.BuildErrorMessage();
 
-      Assert.That(validator.ErrorMessage, Is.EqualTo("Error details in rows\r\nErrors on other page\r\nA list error\r\n"));
+      Assert.That(
+          validator.ErrorMessage,
+          Is.EqualTo($"Error details in rows{Environment.NewLine}Errors on other page{Environment.NewLine}A list error{Environment.NewLine}"));
     }
 
     [Test]
