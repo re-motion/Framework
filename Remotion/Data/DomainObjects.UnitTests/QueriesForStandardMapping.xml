@@ -40,7 +40,7 @@
     <statement>
       select sum([OrderNo])
       from [Order] inner join [Company] on [CustomerID] = [Company].[ID]
-      where [Company].[Name] in ({companyNames});
+      where [Company].[Name] in (@companyNames);
     </statement>
   </query>
 

@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     public void ParameterWithTextReplacement ()
     {
       var query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderNoSumForMultipleCustomers"));
-      query.Parameters.Add("{companyNames}", "'Kunde 1', 'Kunde 3'", QueryParameterType.Text);
+      query.Parameters.Add("@companyNames", "'Kunde 1', 'Kunde 3'", QueryParameterType.Text);
 
       Assert.That(Provider.ExecuteScalarQuery(query), Is.EqualTo(6));
     }

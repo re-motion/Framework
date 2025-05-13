@@ -116,12 +116,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
           _sqlDialect);
     }
 
-    public IDbCommandBuilder CreateForQuery (string statement, IEnumerable<QueryParameterWithDataParameterDefinition> parametersWithType)
+    public IDbCommandBuilder CreateForQuery (string statement, IReadOnlyCollection<QueryParameterWithDataParameterDefinition> parametersWithType)
     {
       ArgumentUtility.CheckNotNull("statement", statement);
       ArgumentUtility.CheckNotNull("parametersWithType", parametersWithType);
 
-      return new QueryDbCommandBuilder(statement, parametersWithType, _sqlDialect);
+      return new SqlQueryDbCommandBuilder(statement, parametersWithType, _sqlDialect);
     }
 
     public IDbCommandBuilder CreateForInsert (TableDefinition tableDefinition, IEnumerable<ColumnValue> insertedColumns)
