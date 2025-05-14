@@ -49,6 +49,8 @@
     <PackageVersion Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.8" />
     <PackageVersion Include="System.Data.SqlClient" Version="4.8.6" />
     <PackageVersion Include="CycloneDX" Version="4.2.0" />
+    <PackageVersion Include="Testcontainers" Version="4.3.0" />
+    <PackageVersion Include="Testcontainers.MsSql" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
     <!-- Roslyn Analzyers depend on the installed version of MSBuild and .NET SDK.

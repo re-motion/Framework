@@ -29,6 +29,7 @@ using Remotion.BuildScript.Components;
 using Remotion.BuildScript.GenerateSbom;
 using Remotion.BuildScript.Test;
 using Remotion.BuildScript.Test.Dimensions;
+using Remotion.BuildScript.TestPlan;
 using static Customizations.Browsers;
 using static Customizations.Databases;
 using static Remotion.BuildScript.Test.Dimensions.Configurations;
@@ -40,7 +41,7 @@ using static Remotion.BuildScript.Test.Dimensions.TargetFrameworks;
 
 // ReSharper disable RedundantTypeArgumentsOfMethod
 
-class Build : RemotionBuild, IDependDB
+class Build : RemotionBuild, IDependDB, ITest
 {
   [Parameter(ValueProviderMember = nameof(SupportedTestBrowsers), Separator = "+")]
   public string[] TestBrowsers { get; set; } = [];
@@ -97,18 +98,20 @@ class Build : RemotionBuild, IDependDB
 
   public override void ConfigureProjects (ProjectsBuilder projects)
   {
+    var testExecutionRuntimeFactory = new DefaultTestExecutionRuntimeFactory(new DockerNetworkDockerRunSettingsCustomizer());
+
     var normalTestConfiguration = new TestConfiguration(
-        DefaultTestExecutionRuntimeFactory.Instance,
+        testExecutionRuntimeFactory,
         TestMatrices.Single(e => e.Name == "NormalTestMatrix"),
         ImmutableArray<ITestExecutionWrapper>.Empty);
 
     var webTestingTestConfiguration = new TestConfiguration(
-        DefaultTestExecutionRuntimeFactory.Instance,
+        testExecutionRuntimeFactory,
         TestMatrices.Single(e => e.Name == "WebTestingTestMatrix"),
         [new WebTestingTestSetup()]);
 
     var databaseTestConfiguration = new TestConfiguration(
-        DefaultTestExecutionRuntimeFactory.Instance,
+        testExecutionRuntimeFactory,
         TestMatrices.Single(e => e.Name == "DatabaseTestMatrix"),
         [new DatabaseTestSetup()]);
 
@@ -325,6 +328,23 @@ class Build : RemotionBuild, IDependDB
   protected IEnumerable<string> SupportedTestBrowsers => GetTestDimensionValueList<Browsers>();
 
   protected IEnumerable<string> SupportedTestSqlServers => GetTestDimensionValueList<Databases>();
+
+  public void ConfigureTestResources (ImmutableArray<ITestResourceFactory>.Builder testResources)
+  {
+      if (OperatingSystem.IsLinux())
+        testResources.Add(new DockerNetworkResourceFactory());
+
+      var testCases = InlineTestItemVisitor.CollectAll(TestItems).OfType<ITestCase>().ToArray();
+
+      var requiredDatabases = testCases
+          .Select(e => e.TestMatrixRow.GetDimension<Databases>())
+          .Distinct()
+          .Where(e => e != NoDB && e != SqlServerDefault)
+          .ToArray();
+
+      foreach (var requiredDatabase in requiredDatabases)
+          testResources.Add(new DatabaseTestResourceFactory(requiredDatabase));
+  }
 
   private void AddVersionToPackageJson (AbsolutePath packageJsonPath, AbsolutePath duplicatedPackageJsonPath, string version)
   {
