@@ -44,7 +44,7 @@
       </iframe>
     </ContentTemplate>
   </asp:UpdatePanel>
-  <script>
+  <script nonce="testsite">
     var target = document.getElementById("<%= PanelAmbiguousControl.ClientID %>");
     if (target)
     {

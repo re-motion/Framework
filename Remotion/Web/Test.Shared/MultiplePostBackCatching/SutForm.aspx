@@ -21,7 +21,7 @@
   <head id="Head" runat="server">
     <title>MultiplePostbackCatcherForm</title>
     <remotion:HtmlHeadContents ID="HtmlHeadContents" runat="server" />
-<script type="text/javascript">
+<script type="text/javascript" nonce="testsite">
   function ChangeAutoPostbackListSelection()
   {
     document.MyForm.AutoPostbackList.fireEvent ('onChange','');

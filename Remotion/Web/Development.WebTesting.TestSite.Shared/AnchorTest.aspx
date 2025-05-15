@@ -19,9 +19,6 @@
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <asp:UpdatePanel ID="UpdatePanel" runat="server">
     <ContentTemplate>
-      <script type="text/javascript">
-        function myClickHandler(text) { document.getElementById('TestOutputLabel').innerText = text; }
-      </script>
       <h3>HtmlAnchor1 - re-motion WebLinkButton</h3>
       <%-- ReSharper disable once Html.PathError --%>
       <remotion:WebLinkButton ID="MyWebLinkButton" Text="MyWebLinkButton" CommandName="MyWebLinkButtonCommand" PostBackUrl="AnchorTest.wxe" runat="server"/>
@@ -38,7 +35,7 @@
         <a id="MyHtmlAnchor" href="AnchorTest.wxe" runat="server">MyHtmlAnchor</a>
       </div>
       <h3>HtmlAnchor6 - HTML a with JavaScript action</h3>
-      <a id="body_MyHtmlAnchorWithJavaScriptLink" href="#" onclick="javascript:myClickHandler('MyHtmlAnchorWithJavaScriptLink');">MyHtmlAnchorWithJavaScriptLink</a>
+      <a id="body_MyHtmlAnchorWithJavaScriptLink" href="#">MyHtmlAnchorWithJavaScriptLink</a>
       <h3>HtmlAnchor7 - With SingleQuote</h3>
       <a id="MyHtmlAnchorWithSingleQuote" href="~/AnchorTest.wxe" runat="server">With'SingleQuote</a>
       <h3>HtmlAnchor8 - With SingleQuote and DoubleQuote</h3>

@@ -78,7 +78,7 @@
     }
 
   </style>
-  <script>
+  <script nonce="testsite">
     /* wire hover div */
     var hoverDiv = document.getElementById("hoverDiv");
     hoverDiv.onmouseenter = function ()

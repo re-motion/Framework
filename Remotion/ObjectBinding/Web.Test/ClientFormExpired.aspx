@@ -21,7 +21,7 @@
 <html>
   <head>
     <title>ClientFormExpired</title>
-<script language="javascript">
+<script language="javascript" nonce="testsite">
   var _expiredLocation = 'WxeHandler.ashx?WxeFunctionType=OBWTest.ClientFormClosingWxeFunction,OBWTest';
   
   function OnUnload()

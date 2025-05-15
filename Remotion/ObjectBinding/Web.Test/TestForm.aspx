@@ -21,7 +21,7 @@
 <head>
   <title>Test Form</title>
   <remotion:HtmlHeadContents ID="HtmlHeadContents" runat="server" />
-  <script type="text/javascript">
+  <script type="text/javascript" nonce="testsite">
     function DoAspNetAjaxCall()
     {
       document.getElementById("Result").textContent = "";
@@ -84,7 +84,7 @@
   <div id="Result">
   </div>
   </form>
-  <script type="text/javascript">
+  <script type="text/javascript" nonce="testsite">
     document.getElementById("StringField").addEventListener("keydown", function (event)
     {
       // re-motion: block event bubbling
