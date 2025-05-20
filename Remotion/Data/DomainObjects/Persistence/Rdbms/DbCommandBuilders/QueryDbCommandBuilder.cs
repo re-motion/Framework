@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
     private readonly IReadOnlyDictionary<string, QueryParameterWithDataParameterDefinition> _parameters;
 
 
-    public QueryDbCommandBuilder (string statement, IReadOnlyCollection<QueryParameterWithDataParameterDefinition> parameters, ISqlDialect sqlDialect)
+    public QueryDbCommandBuilder (string statement, IEnumerable<QueryParameterWithDataParameterDefinition> parameters, ISqlDialect sqlDialect)
         : base(sqlDialect)
     {
       ArgumentUtility.CheckNotNull("statement", statement);
