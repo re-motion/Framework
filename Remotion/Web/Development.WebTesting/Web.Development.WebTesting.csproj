@@ -11,6 +11,8 @@
     <AssemblyName>Remotion.Web.Development.WebTesting</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <SignAssembly>False</SignAssembly>
+    <NoWarn>$(NoWarn);RMSYN1001;RMSYN1005;RMSYN1004;RMSYN1003;RMSYN1007;CA2200;CS0108;CS0114;SYSLIB0051;CS0618;SYSLIB0014</NoWarn>
+    <Nullable>annotations</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="ScreenshotCreation\Resolvers\WebElementResolverScript.js" />
