@@ -49,6 +49,10 @@ class Build : RemotionBuild, IDependDB, ITest
   [Parameter(ValueProviderMember = nameof(SupportedTestSqlServers), Separator = "+")]
   public string[] TestSqlServers { get; set; } = [];
 
+  [CanBeNull] private TestMatrix _databaseTestMatrix;
+  [CanBeNull] private TestMatrix _normalTestMatrix;
+  [CanBeNull] private TestMatrix _webTestMatrix;
+
   public static int Main () => Execute<Build>();
 
   [UsedImplicitly]
@@ -98,21 +102,32 @@ class Build : RemotionBuild, IDependDB, ITest
 
   public override void ConfigureProjects (ProjectsBuilder projects)
   {
+    [CanBeNull]
+    static TestConfiguration CreateTestConfiguration (
+        [CanBeNull] TestMatrix testMatrix,
+        ITestExecutionRuntimeFactory testExecutionRuntimeFactory,
+        ImmutableArray<ITestExecutionWrapper> testExecutionWrappers)
+    {
+      return testMatrix != null
+          ? new TestConfiguration(testExecutionRuntimeFactory, testMatrix, testExecutionWrappers)
+          : null;
+    }
+
     var testExecutionRuntimeFactory = new DefaultTestExecutionRuntimeFactory(new DockerNetworkDockerRunSettingsCustomizer());
 
-    var normalTestConfiguration = new TestConfiguration(
+    var normalTestConfiguration = CreateTestConfiguration(
+        _normalTestMatrix,
         testExecutionRuntimeFactory,
-        TestMatrices.Single(e => e.Name == "NormalTestMatrix"),
         ImmutableArray<ITestExecutionWrapper>.Empty);
 
-    var webTestingTestConfiguration = new TestConfiguration(
+    var webTestingTestConfiguration = CreateTestConfiguration(
+        _webTestMatrix,
         testExecutionRuntimeFactory,
-        TestMatrices.Single(e => e.Name == "WebTestingTestMatrix"),
         [new WebTestingTestSetup()]);
 
-    var databaseTestConfiguration = new TestConfiguration(
+    var databaseTestConfiguration = CreateTestConfiguration(
+        _databaseTestMatrix,
         testExecutionRuntimeFactory,
-        TestMatrices.Single(e => e.Name == "DatabaseTestMatrix"),
         [new DatabaseTestSetup()]);
 
     projects.AddUnitTestProject("SharedSource.UnitTests", normalTestConfiguration);
@@ -283,7 +298,7 @@ class Build : RemotionBuild, IDependDB, ITest
 
   public override void ConfigureTestMatrix (TestMatricesBuilder builder)
   {
-    builder.AddTestMatrix(
+    _webTestMatrix = builder.AddTestMatrix(
         "WebTestingTestMatrix",
         new TestDimension[,] // todo docker images need to be wired to the config file
         {
@@ -293,7 +308,7 @@ class Build : RemotionBuild, IDependDB, ITest
         },
         allowEmpty: true);
 
-    builder.AddTestMatrix(
+    _databaseTestMatrix = builder.AddTestMatrix(
         "DatabaseTestMatrix",
         new TestDimension[,]
         {
@@ -311,7 +326,7 @@ class Build : RemotionBuild, IDependDB, ITest
         },
         allowEmpty: true);
 
-    builder.AddTestMatrix(
+    _normalTestMatrix = builder.AddTestMatrix(
         "NormalTestMatrix",
         new TestDimension[,]
         {
