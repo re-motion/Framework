@@ -27,12 +27,14 @@ namespace Remotion.Web.Development.WebTesting.Configuration.Legacy
   public class TestSiteLayoutConfigurationElement : ConfigurationElement, IWebTestTestSiteLayoutSettings
   {
     private readonly ConfigurationProperty _rootPathProperty;
+    private readonly ConfigurationProperty _argumentsProperty;
     private readonly ConfigurationProperty _resourcesProperty;
     private readonly ConfigurationProperty _processPathProperty;
 
     public TestSiteLayoutConfigurationElement ()
     {
       _rootPathProperty = new ConfigurationProperty("rootPath", typeof(string), "", ConfigurationPropertyOptions.IsRequired);
+      _argumentsProperty = new ConfigurationProperty("arguments", typeof(string), "");
       _resourcesProperty = new ConfigurationProperty("resources", typeof(TestSiteResourceConfigurationElementCollection));
       _processPathProperty = new ConfigurationProperty("processPath", typeof(string), null);
     }
@@ -41,6 +43,11 @@ namespace Remotion.Web.Development.WebTesting.Configuration.Legacy
     /// Gets the path to the test site used in the integration test project.
     /// </summary>
     public string RootPath => (string)this[_rootPathProperty];
+
+    /// <summary>
+    /// Gets the arguments passed for the test site used in the integration test project.
+    /// </summary>
+    public string Arguments => (string)this[_argumentsProperty];
 
     /// <summary>
     /// Gets the resources needed by the test site.
@@ -54,6 +61,6 @@ namespace Remotion.Web.Development.WebTesting.Configuration.Legacy
     IReadOnlyList<string> IWebTestTestSiteLayoutSettings.Resources => Resources.Select(e => e.Path).ToArray();
 
     /// <inheritdoc />
-    protected override ConfigurationPropertyCollection Properties => new ConfigurationPropertyCollection { _rootPathProperty, _resourcesProperty, _processPathProperty };
+    protected override ConfigurationPropertyCollection Properties => new ConfigurationPropertyCollection { _rootPathProperty, _argumentsProperty, _resourcesProperty, _processPathProperty };
   }
 }

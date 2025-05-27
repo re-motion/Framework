@@ -13,6 +13,8 @@ public class AspNetDockerContainerConfigurationParameters : DockerContainerConfi
 {
   public string? ProcessPath { get; set; }
 
+  public string? Arguments { get; set; }
+
   public AspNetDockerContainerConfigurationParameters (
       string absoluteWebApplicationPath,
       int webApplicationPort,
@@ -21,11 +23,13 @@ public class AspNetDockerContainerConfigurationParameters : DockerContainerConfi
       string? hostname,
       bool is32BitProcess,
       IReadOnlyCollection<string> mounts,
-      string? processPath)
+      string? processPath,
+      string? arguments)
       : base(absoluteWebApplicationPath, webApplicationPort, dockerImageName, dockerIsolationMode, hostname, is32BitProcess, mounts)
   {
     ArgumentUtility.CheckNotEmpty("processPath", processPath);
 
     ProcessPath = processPath;
+    Arguments = arguments;
   }
 }

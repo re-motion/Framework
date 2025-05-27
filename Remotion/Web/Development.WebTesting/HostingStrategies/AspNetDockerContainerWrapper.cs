@@ -14,6 +14,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies;
 public class AspNetDockerContainerWrapper : DockerContainerWrapperBase
 {
   private readonly string _processPath;
+  private readonly string? _arguments;
 
   public AspNetDockerContainerWrapper (IDockerClient docker, AspNetDockerContainerConfigurationParameters configurationParameters, ILoggerFactory loggerFactory)
       : base(docker, configurationParameters, loggerFactory)
@@ -25,16 +26,17 @@ public class AspNetDockerContainerWrapper : DockerContainerWrapperBase
     }
 
     _processPath = configurationParameters.ProcessPath;
+    _arguments = configurationParameters.Arguments;
   }
 
   protected override string GetEntryPoint ()
   {
-    return Path.GetFullPath(Path.Combine(ConfigurationParameters.AbsoluteWebApplicationPath, _processPath));
+    return _processPath;
   }
 
   protected override string? GetArguments ()
   {
-    return null;
+    return _arguments;
   }
 
   protected override string? GetWorkingDirectory ()

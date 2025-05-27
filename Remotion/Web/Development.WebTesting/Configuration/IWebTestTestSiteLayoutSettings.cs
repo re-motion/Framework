@@ -29,6 +29,11 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     string RootPath { get; }
 
     /// <summary>
+    /// Gets the arguments passed for the test site used in the integration test project.
+    /// </summary>
+    string Arguments { get; }
+
+    /// <summary>
     /// Gets the resources needed by the test site.
     /// </summary>
     IReadOnlyList<string> Resources { get; }

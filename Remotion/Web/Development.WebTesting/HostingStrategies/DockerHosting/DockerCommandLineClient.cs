@@ -41,7 +41,9 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
 
       _logger = loggerFactory.CreateLogger<DockerCommandLineClient>();
       _pullTimeout = pullTimeout;
-      _dockerExeFullPath = GetDockerExeFullPath();
+      _dockerExeFullPath = OperatingSystem.IsWindows()
+          ? GetDockerExeFullPath()
+          : "docker";
     }
 
     /// <inheritdoc />

@@ -31,6 +31,9 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
     public string RootPath { get; }
 
     /// <inheritdoc />
+    public string Arguments { get; }
+
+    /// <inheritdoc />
     public IReadOnlyList<ITestSiteResource> Resources { get; }
 
     public string? ProcessPath { get; }
@@ -40,19 +43,23 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
       ArgumentUtility.CheckNotNull("webTestSettings", webTestSettings);
 
       RootPath = GetRootedRootPath(webTestSettings.TestSiteLayout.RootPath);
+      Arguments = webTestSettings.TestSiteLayout.Arguments;
       Resources = webTestSettings.TestSiteLayout.Resources
           .Select(resourceElement => EnsureRootedPath(RootPath, resourceElement))
           .Select(rootedPath => new TestSiteResource(rootedPath)).ToArray();
 
-      ProcessPath = GetRootedProcessPathOrNull(RootPath, webTestSettings.TestSiteLayout.ProcessPath);
+      ProcessPath = GetProcessPathOrNull(RootPath, webTestSettings.TestSiteLayout.ProcessPath);
     }
 
-    private string? GetRootedProcessPathOrNull (string rootPath, string? processPath)
+    private string? GetProcessPathOrNull (string rootPath, string? processPath)
     {
       if (processPath == null)
         return null;
-      if (!processPath.EndsWith(".exe"))
-        throw new ArgumentException("The 'processPath' defined in the 'testSiteLayout' did not end with '.exe'. The path must lead to an executable.");
+
+      // Do not translate direct process names like "docker" to a full path.
+      // If the process path does not start with a letter or digit we assume it is meant to be a path
+      if (processPath.Length > 0 && char.IsLetterOrDigit(processPath[0]))
+        return processPath;
 
       return EnsureRootedPath(rootPath, processPath);
     }

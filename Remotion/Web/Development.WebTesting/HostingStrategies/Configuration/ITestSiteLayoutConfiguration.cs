@@ -32,6 +32,12 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
     string RootPath { get; }
 
     /// <summary>
+    /// Gets the arguments passed to the test site hosted when running web tests.
+    /// </summary>
+    [NotNull]
+    string Arguments { get; }
+
+    /// <summary>
     /// Gets the runtime dependencies of the test site.
     /// </summary>
     [NotNull]

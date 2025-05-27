@@ -30,6 +30,9 @@ namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
     public required string RootPath { get; init; }
 
     /// <inheritdoc />
+    public string Arguments { get; init; } = "";
+
+    /// <inheritdoc />
     public IReadOnlyList<string> Resources { get; init; } = ReadOnlyCollection<string>.Empty;
 
     /// <inheritdoc />
