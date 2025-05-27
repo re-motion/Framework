@@ -58,11 +58,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       _resourceVirtualPathProvider = new ResourceVirtualPathProvider(
           new[]
           {
-              new ResourcePathMapping("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
-              new ResourcePathMapping("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
-              new ResourcePathMapping("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
-              new ResourcePathMapping("Remotion.Web/UI", @"..\..\Web\Core\res\UI"),
-              new ResourcePathMapping("Remotion.Web.Development.WebTesting.TestSite.Shared", @"..\..\Web\Development.WebTesting.TestSite.Shared")
+              new ResourcePathMapping("Remotion.Web/Html", @$"../../Web/ClientScript/bin/{configuration}/dist"),
+              new ResourcePathMapping("Remotion.Web/Image", @"../../Web/Core/res/Image"),
+              new ResourcePathMapping("Remotion.Web/Themes", @"../../Web/Core/res/Themes"),
+              new ResourcePathMapping("Remotion.Web/UI", @"../../Web/Core/res/UI"),
+              new ResourcePathMapping("Remotion.Web.Development.WebTesting.TestSite.Shared", @"../../Web/Development.WebTesting.TestSite.Shared")
           },
           fileExtensionHandlerMapping.ToArray());
       _resourceVirtualPathProvider.Register();

@@ -33,6 +33,7 @@
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" />
     <PackageReference Include="Microsoft.Maui.Graphics.Skia" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\SharedSource\Core\Utilities\ArgumentUtility.cs" Link="SharedSource\Utilities\ArgumentUtility.cs" />
