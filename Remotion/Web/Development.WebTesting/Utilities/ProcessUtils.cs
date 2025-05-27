@@ -72,6 +72,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public static int GetParentProcessID ([NotNull] Process target)
     {
       ArgumentNullException.ThrowIfNull(target);
+      if (!OperatingSystem.IsWindows())
+        return -1;
 
       // Query the process information
       var info = new ParentInfo();

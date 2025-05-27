@@ -1,0 +1,1 @@
+﻿<%@ Application Codebehind="global.asax.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Global" Language="C#" %>
