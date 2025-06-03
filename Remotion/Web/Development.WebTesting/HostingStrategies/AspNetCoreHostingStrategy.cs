@@ -76,6 +76,7 @@ public class AspNetCoreHostingStrategy : IHostingStrategy
     var processWrapper = new AspNetCoreHostingProcessWrapper(
         _testSiteLayoutConfiguration.ProcessPath,
         _testSiteLayoutConfiguration.RootPath,
+        _testSiteLayoutConfiguration.Arguments,
         $"{protocol}://{_hostname}:{_port}");
 
     _webServerTask = processWrapper.RunWebServerAsync(_cancellationTokenSource.Token);
