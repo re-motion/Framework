@@ -21,6 +21,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using JetBrains.Annotations;
+using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome.Dto;
@@ -54,8 +55,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     /// </summary>
     public ChromeExecutable GetInstalledExecutable ()
     {
-      var browserPath = GetInstalledChromePath();
-      var driverPath = GetDriverPathAndDownloadIfMissing(browserPath);
+      var binaryPaths = SeleniumManager.BinaryPaths($"--browser chrome --browser-version {s_minimumSupportedChromeVersion.Major}");
+      var browserPath = binaryPaths["browser_path"];
+      var driverPath = binaryPaths["driver_path"];
       var userDirectory = GetUserDirectoryTempPath();
 
       return new ChromeExecutable(browserPath, driverPath, userDirectory);
