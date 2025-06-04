@@ -101,7 +101,8 @@ namespace Remotion.Development.Web.ResourceHosting
       if (!checkPath.StartsWith(_resourceRoot, StringComparison.OrdinalIgnoreCase))
         return false;
 
-      return GetResourcePathMapping(checkPath) != null;
+      var result = GetResourcePathMapping(checkPath) != null;
+      return result;
     }
 
     public override bool FileExists (string virtualPath)
@@ -201,7 +202,7 @@ namespace Remotion.Development.Web.ResourceHosting
       if (mapping != null)
       {
         var resourceRootPath = CombineVirtualPath(_resourceRoot, mapping.VirtualPath);
-        var directoryRelativePath = MakeRelativeVirtualPath(resourceRootPath, appRelativeVirtualPath).Replace('/', '\\');
+        var directoryRelativePath = MakeRelativeVirtualPath(resourceRootPath, appRelativeVirtualPath).Replace('/', Path.DirectorySeparatorChar);
         var directory = Path.GetFullPath(Path.Combine(GetProjectRoot(), mapping.RelativeFileSystemPath));
         var filePath = Path.Combine(directory, directoryRelativePath);
 
@@ -232,7 +233,7 @@ namespace Remotion.Development.Web.ResourceHosting
       {
         displayName = mapping.VirtualPath.TrimEnd('/');
         var resourceRootPath = CombineVirtualPath(_resourceRoot, mapping.VirtualPath);
-        var directoryRelativePath = MakeRelativeVirtualPath(resourceRootPath, appRelativeVirtualPath).Replace('/', '\\');
+        var directoryRelativePath = MakeRelativeVirtualPath(resourceRootPath, appRelativeVirtualPath).Replace('/', Path.DirectorySeparatorChar);
         var mappedRootDirectory = Path.GetFullPath(Path.Combine(GetProjectRoot(), mapping.RelativeFileSystemPath));
         var absolutePath = Path.Combine(mappedRootDirectory, directoryRelativePath);
 
