@@ -32,7 +32,7 @@ public class AspNetCoreHostingProcessWrapper
   {
     ArgumentUtility.CheckNotNullOrEmpty(nameof(exePath), exePath);
     ArgumentUtility.CheckNotNullOrEmpty(nameof(workingDirectory), workingDirectory);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(arguments), arguments);
+    ArgumentUtility.CheckNotNull(nameof(arguments), arguments);
     ArgumentUtility.CheckNotNullOrEmpty(nameof(url), url);
 
     _exePath = exePath;
