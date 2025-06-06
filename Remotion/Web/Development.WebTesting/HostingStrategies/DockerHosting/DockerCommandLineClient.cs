@@ -74,7 +74,6 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
       ArgumentUtility.CheckNotEmpty("hostname", hostname);
       ArgumentUtility.CheckNotEmpty("entryPoint", entryPoint);
       ArgumentUtility.CheckNotEmpty("workingDirectory", workingDirectory);
-      ArgumentUtility.CheckNotEmpty("args", args);
 
       var commandBuilder = new StringBuilder()
           .Append("run").Append(' ')
