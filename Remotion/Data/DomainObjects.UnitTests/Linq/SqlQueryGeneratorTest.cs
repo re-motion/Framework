@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       _resolutionStageMock = new Mock<IMappingResolutionStage>(MockBehavior.Strict);
       _generationStageMock = new Mock<ISqlGenerationStage>(MockBehavior.Strict);
 
-      _sqlQueryGenerator = new SqlQueryGenerator(_preparationStageMock.Object, _resolutionStageMock.Object, _generationStageMock.Object);
+      _sqlQueryGenerator = new SqlQueryGenerator(_preparationStageMock.Object, _resolutionStageMock.Object, _generationStageMock.Object, 1);
 
       _queryModel = QueryModelObjectMother.Create();
     }
@@ -176,6 +176,42 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           () => _sqlQueryGenerator.CreateSqlQuery(_queryModel),
           Throws.TypeOf<UnmappedItemException>().With.Message.EqualTo(
               "Query 'from Order o in null select null' contains an unmapped item. Bla."));
+    }
+
+    [Test]
+    [TestCase(1)]
+    [TestCase(42)]
+    [TestCase(int.MaxValue)]
+    public void SqlQueryGenerator_CreateSqlCommandBuilder_IsCreatedWithCorrectThreshold (int threshold)
+    {
+      ISqlCommandBuilder sqlCommandBuilder = null;
+
+      var fakePreparationResult = CreateSqlStatement();
+      _preparationStageMock
+          .Setup(mock => mock.PrepareSqlStatement(_queryModel, null))
+          .Returns(fakePreparationResult);
+
+      var fakeResolutionResult = CreateSqlStatement();
+      _resolutionStageMock
+          .Setup(mock => mock.ResolveSqlStatement(fakePreparationResult, It.IsNotNull<MappingResolutionContext>()))
+          .Returns(fakeResolutionResult);
+
+      _generationStageMock
+          .Setup(mock => mock.GenerateTextForOuterSqlStatement(It.IsNotNull<TableValuedParameterSqlCommandBuilder>(), fakeResolutionResult))
+          .Callback<ISqlCommandBuilder, SqlStatement>(
+              (builder, statement) =>
+              {
+                builder.Append(statement.ToString());
+                builder.SetInMemoryProjectionBody(Expression.Constant(null));
+                sqlCommandBuilder = builder;
+              });
+
+      var sqlQueryGenerator = new SqlQueryGenerator(_preparationStageMock.Object, _resolutionStageMock.Object, _generationStageMock.Object, threshold);
+      sqlQueryGenerator.CreateSqlQuery(_queryModel);
+
+      Assert.That(sqlCommandBuilder, Is.Not.Null);
+      Assert.That(sqlCommandBuilder, Is.InstanceOf<TableValuedParameterSqlCommandBuilder>());
+      Assert.That(((TableValuedParameterSqlCommandBuilder)sqlCommandBuilder).TableValuedParameterThreshold, Is.EqualTo(threshold));
     }
 
     private void CheckCreateSqlQuery_SelectedEntityType (Type expectedSelectedEntityType, Expression selectProjection)

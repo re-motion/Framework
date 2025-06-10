@@ -572,8 +572,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
           ParamList.Create(methodCallTransformerProvider, resultOperatorHandlerRegistry, generator));
       var mappingResolutionStage = ObjectFactory.Create<DefaultMappingResolutionStage>(ParamList.Create(resolver, generator));
       var sqlGenerationStage = ObjectFactory.Create<ExtendedSqlGenerationStage>(ParamList.Empty);
+      var tableValuedParameterThreshold = GetTableValuedParameterThreshold();
 
-      return new SqlQueryGenerator(sqlPreparationStage, mappingResolutionStage, sqlGenerationStage);
+      return new SqlQueryGenerator(sqlPreparationStage, mappingResolutionStage, sqlGenerationStage, tableValuedParameterThreshold);
+    }
+
+    /// <summary>
+    /// Gets the number of elements in a collection that triggers the use of a table-valued parameter instead of single-element parameters in
+    /// <see cref="TableValuedParameterSqlCommandBuilder"/>.
+    /// </summary>
+    /// <remarks>This relates to the TVP feature RMTEAM-831</remarks>
+    protected virtual int GetTableValuedParameterThreshold ()
+    {
+      return 25;
     }
 
     protected virtual IMappingResolver CreateMappingResolver (
