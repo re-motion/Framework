@@ -123,6 +123,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
+      home.Driver.ExecuteScript("console.error('bla');", home.Scope);
+
       var webLinkButton = home.Anchors().GetByLocalID("MyWebLinkButton");
       var completionDetection = new CompletionDetectionStrategyTestHelper(webLinkButton);
       home = webLinkButton.Click().Expect<WxePageObject>();
