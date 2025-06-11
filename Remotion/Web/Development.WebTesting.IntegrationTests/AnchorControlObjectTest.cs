@@ -16,6 +16,8 @@
 // 
 using System;
 using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.BiDi;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
@@ -46,6 +48,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void TestSelection_ByHtmlID ()
     {
       var home = Start();
+
+      home.Driver.ExecuteScript("console.error('bla')", home.Scope);
 
       var webLinkButton = home.Anchors().GetByID("body_MyWebLinkButton");
       Assert.That(webLinkButton.Scope.Id, Is.EqualTo("body_MyWebLinkButton"));

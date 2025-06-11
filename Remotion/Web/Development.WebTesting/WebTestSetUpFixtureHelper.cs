@@ -139,6 +139,7 @@ namespace Remotion.Web.Development.WebTesting
     private void VerifyWebApplicationStarted (Uri webApplicationRoot, TimeSpan applicationPingTimeout)
     {
       _logger.LogInformation($"Verifying that '{webApplicationRoot}' is accessible within {applicationPingTimeout}.");
+      webApplicationRoot = new Uri("http://localhost:60401");
 
       var stopwatch = Stopwatch.StartNew();
 

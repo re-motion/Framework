@@ -132,6 +132,11 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     IWebTestHostingSettings Hosting { get; }
 
     /// <summary>
+    /// Contains Remoting settings.
+    /// </summary>
+    IWebTestRemotingSettings Remoting { get; }
+
+    /// <summary>
     /// Gets the test site layout configuration.
     /// </summary>
     IWebTestTestSiteLayoutSettings TestSiteLayout { get; }

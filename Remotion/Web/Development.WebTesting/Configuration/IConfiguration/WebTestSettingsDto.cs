@@ -98,6 +98,12 @@ namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
     IWebTestHostingSettings IWebTestSettings.Hosting => Hosting;
 
     [Required]
+    public required RemotingSettingsDto Remoting { get; init; }
+
+    /// <inheritdoc />
+    IWebTestRemotingSettings IWebTestSettings.Remoting => Remoting;
+
+    [Required]
     public required WebTestTestSiteLayoutDto TestSiteLayout { get; init; }
 
     /// <inheritdoc />
