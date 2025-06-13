@@ -63,7 +63,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
 
     public IHostingStrategy GetHostingStrategy ()
     {
-      if (string.IsNullOrEmpty(_hostingSettings.Type))
+      if (string.IsNullOrEmpty(_hostingSettings.Type) || _hostingSettings.Type == "None")
         return new NullHostingStrategy();
 
       var hostingStrategyTypeName = _hostingSettings.Type;
