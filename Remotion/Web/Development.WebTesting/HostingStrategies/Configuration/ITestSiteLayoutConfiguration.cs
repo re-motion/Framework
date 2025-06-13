@@ -41,5 +41,10 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
     /// Gets the path to the test site's executable. The path may be relative to the <see cref="RootPath"/>. Used with Kestrel-based hosting.
     /// </summary>
     string? ProcessPath { get; }
+
+    /// <summary>
+    /// Gets the arguments passed to the test site's executable.
+    /// </summary>
+    string? ProcessArguments { get; }
   }
 }

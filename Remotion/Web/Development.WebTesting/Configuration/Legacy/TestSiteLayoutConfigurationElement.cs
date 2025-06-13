@@ -29,12 +29,14 @@ namespace Remotion.Web.Development.WebTesting.Configuration.Legacy
     private readonly ConfigurationProperty _rootPathProperty;
     private readonly ConfigurationProperty _resourcesProperty;
     private readonly ConfigurationProperty _processPathProperty;
+    private readonly ConfigurationProperty _processArgumentsProperty;
 
     public TestSiteLayoutConfigurationElement ()
     {
       _rootPathProperty = new ConfigurationProperty("rootPath", typeof(string), "", ConfigurationPropertyOptions.IsRequired);
       _resourcesProperty = new ConfigurationProperty("resources", typeof(TestSiteResourceConfigurationElementCollection));
       _processPathProperty = new ConfigurationProperty("processPath", typeof(string), null);
+      _processArgumentsProperty = new ConfigurationProperty("processArguments", typeof(string), null);
     }
 
     /// <summary>
@@ -51,9 +53,11 @@ namespace Remotion.Web.Development.WebTesting.Configuration.Legacy
 
     public string? ProcessPath => (string?)this[_processPathProperty];
 
+    public string? ProcessArguments => (string?)this[_processArgumentsProperty];
+
     IReadOnlyList<string> IWebTestTestSiteLayoutSettings.Resources => Resources.Select(e => e.Path).ToArray();
 
     /// <inheritdoc />
-    protected override ConfigurationPropertyCollection Properties => new ConfigurationPropertyCollection { _rootPathProperty, _resourcesProperty, _processPathProperty };
+    protected override ConfigurationPropertyCollection Properties => new() { _rootPathProperty, _resourcesProperty, _processPathProperty, _processArgumentsProperty };
   }
 }

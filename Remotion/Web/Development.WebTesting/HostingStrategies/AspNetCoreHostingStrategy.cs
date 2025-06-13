@@ -75,6 +75,7 @@ public class AspNetCoreHostingStrategy : IHostingStrategy
 
     var processWrapper = new AspNetCoreHostingProcessWrapper(
         _testSiteLayoutConfiguration.ProcessPath,
+        _testSiteLayoutConfiguration.ProcessArguments,
         _testSiteLayoutConfiguration.RootPath,
         $"{protocol}://{_hostname}:{_port}");
 

@@ -34,5 +34,8 @@ namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
 
     /// <inheritdoc />
     public string? ProcessPath { get; init; }
+
+    /// <inheritdoc />
+    public string? ProcessArguments { get; init; }
   }
 }

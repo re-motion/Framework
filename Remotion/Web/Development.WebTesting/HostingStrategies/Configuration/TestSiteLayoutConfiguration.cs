@@ -35,6 +35,8 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
 
     public string? ProcessPath { get; }
 
+    public string? ProcessArguments { get; }
+
     public TestSiteLayoutConfiguration ([NotNull] IWebTestSettings webTestSettings)
     {
       ArgumentUtility.CheckNotNull("webTestSettings", webTestSettings);
@@ -45,14 +47,19 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
           .Select(rootedPath => new TestSiteResource(rootedPath)).ToArray();
 
       ProcessPath = GetRootedProcessPathOrNull(RootPath, webTestSettings.TestSiteLayout.ProcessPath);
+      ProcessArguments = webTestSettings.TestSiteLayout.ProcessArguments;
     }
 
     private string? GetRootedProcessPathOrNull (string rootPath, string? processPath)
     {
       if (processPath == null)
         return null;
-      if (!processPath.EndsWith(".exe"))
-        throw new ArgumentException("The 'processPath' defined in the 'testSiteLayout' did not end with '.exe'. The path must lead to an executable.");
+
+      // For process paths that do not look like paths we use the process path directly
+      // as it might be a tool that is located via the PATH (e.g. dotnet).
+      // To force a full path, the process path can be prepended with "./".
+      if (!processPath.Contains(Path.DirectorySeparatorChar) && !processPath.Contains(Path.AltDirectorySeparatorChar))
+        return processPath;
 
       return EnsureRootedPath(rootPath, processPath);
     }

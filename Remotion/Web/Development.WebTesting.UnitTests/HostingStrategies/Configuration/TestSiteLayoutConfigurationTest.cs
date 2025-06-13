@@ -28,13 +28,14 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
   public class TestSiteLayoutConfigurationTest
   {
     [Test]
-    public void CreateFromWebTestConfigurationSection_WithRelativePaths ()
+    public void CreateFromWebTestConfigurationSection_WithToolPaths ()
     {
       var currentBasePath = AppContext.BaseDirectory;
 
       var relativeRootPath = OperatingSystem.IsWindows() ? @".\Some\Path" : "./Some/Path";
       var relativeResourcePath = OperatingSystem.IsWindows() ? @".\Some\Resource" : "./Some/Resource";
-      var binaryPath = OperatingSystem.IsWindows() ? @".\BinFolder\Executable.exe" : "./BinFolder/Executable.exe";
+      var binaryPath = "dotnet";
+      var processArguments = "my arguments";
 
       var webTestSettingsStub = new Mock<IWebTestSettings>();
       webTestSettingsStub
@@ -46,6 +47,42 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
       webTestSettingsStub
           .Setup(m => m.TestSiteLayout.ProcessPath)
           .Returns(binaryPath);
+      webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.ProcessArguments)
+          .Returns(processArguments);
+
+      var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration(webTestSettingsStub.Object);
+
+      Assert.That(testSiteLayoutConfiguration.RootPath, Is.EqualTo(Path.Combine(currentBasePath, "Some", "Path")));
+      Assert.That(testSiteLayoutConfiguration.Resources.Count, Is.EqualTo(1));
+      Assert.That(testSiteLayoutConfiguration.Resources[0].Path, Is.EqualTo(Path.Combine(currentBasePath, "Some", "Path", "Some", "Resource")));
+      Assert.That(testSiteLayoutConfiguration.ProcessPath, Is.EqualTo("dotnet"));
+      Assert.That(testSiteLayoutConfiguration.ProcessArguments, Is.EqualTo(processArguments));
+    }
+
+    [Test]
+    public void CreateFromWebTestConfigurationSection_WithRelativePaths ()
+    {
+      var currentBasePath = AppContext.BaseDirectory;
+
+      var relativeRootPath = OperatingSystem.IsWindows() ? @".\Some\Path" : "./Some/Path";
+      var relativeResourcePath = OperatingSystem.IsWindows() ? @".\Some\Resource" : "./Some/Resource";
+      var binaryPath = OperatingSystem.IsWindows() ? @".\BinFolder\Executable.exe" : "./BinFolder/Executable.exe";
+      var processArguments = "my arguments";
+
+      var webTestSettingsStub = new Mock<IWebTestSettings>();
+      webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.RootPath)
+          .Returns(relativeRootPath);
+      webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.Resources)
+          .Returns(new List<string>() { relativeResourcePath });
+      webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.ProcessPath)
+          .Returns(binaryPath);
+      webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.ProcessArguments)
+          .Returns(processArguments);
 
       var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration(webTestSettingsStub.Object);
 
@@ -53,6 +90,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
       Assert.That(testSiteLayoutConfiguration.Resources.Count, Is.EqualTo(1));
       Assert.That(testSiteLayoutConfiguration.Resources[0].Path, Is.EqualTo(Path.Combine(currentBasePath, "Some", "Path", "Some", "Resource")));
       Assert.That(testSiteLayoutConfiguration.ProcessPath, Is.EqualTo(Path.Combine(currentBasePath, "Some", "Path", "BinFolder", "Executable.exe")));
+      Assert.That(testSiteLayoutConfiguration.ProcessArguments, Is.EqualTo(processArguments));
     }
 
     [Test]
@@ -66,6 +104,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
       var resourcePathAbsolute = Path.Combine(somePath, "Resource");
       var resourcePathRelative = Path.Combine(someRelativePath, "Resource");
       var processPath = Path.Combine(binPath, "Executable.exe");
+      var processArguments = "my arguments";
 
       var webTestSettingsStub = new Mock<IWebTestSettings>();
       webTestSettingsStub
@@ -77,6 +116,9 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
       webTestSettingsStub
           .Setup(m => m.TestSiteLayout.ProcessPath)
           .Returns(processPath);
+      webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.ProcessArguments)
+          .Returns(processArguments);
       var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration(webTestSettingsStub.Object);
 
       Assert.That(testSiteLayoutConfiguration.RootPath, Is.EqualTo(rootPath));
@@ -84,6 +126,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
       Assert.That(testSiteLayoutConfiguration.Resources[0].Path, Is.EqualTo(resourcePathAbsolute));
       Assert.That(testSiteLayoutConfiguration.Resources[1].Path, Is.EqualTo(Path.Combine(rootPath, resourcePathRelative)));
       Assert.That(testSiteLayoutConfiguration.ProcessPath, Is.EqualTo(processPath));
+      Assert.That(testSiteLayoutConfiguration.ProcessArguments, Is.EqualTo(processArguments));
     }
   }
 }
