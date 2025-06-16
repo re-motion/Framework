@@ -26,6 +26,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
   [TestFixture]
   public class ObjectIDIntegrationTest : IntegrationTestBase
   {
+    public override void SetUp ()
+    {
+      base.SetUp();
+      TestSqlStorageObjectFactory.Threshold = 1;
+    }
+
+    public override void TearDown ()
+    {
+      base.TearDown();
+      TestSqlStorageObjectFactory.Threshold = null;
+    }
+
     [Test]
     public void CoalesceExpression_UsesIDValue ()
     {
