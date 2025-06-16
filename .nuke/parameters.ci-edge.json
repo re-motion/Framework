@@ -1,6 +1,5 @@
 {
   "$schema": "./build.schema.json",
-  "Solution": "Remotion.sln",
   "Target": [ "CIBuild" ],
   "TestConfigurations": [ "Debug", "Release" ],
   "TestExecutionRuntimes": [ "EnforcedLocalMachine" ],

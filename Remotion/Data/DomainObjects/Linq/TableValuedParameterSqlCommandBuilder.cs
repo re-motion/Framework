@@ -14,8 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Remotion.Linq.SqlBackend.SqlGeneration;
 using Remotion.Linq.SqlBackend.SqlStatementModel;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Linq;
@@ -25,11 +30,49 @@ namespace Remotion.Data.DomainObjects.Linq;
 /// </summary>
 public class TableValuedParameterSqlCommandBuilder : SqlCommandBuilder
 {
+  /// <summary>
+  /// Creates a new <see cref="SqlCommandBuilder"/> instance that uses a table-valued parameter (instead of single-element parameters) for a collection that has at least
+  /// <paramref name="tableValuedParameterThreshold"/> elements.
+  /// </summary>
+  /// <exception cref="ArgumentOutOfRangeException">If <paramref name="tableValuedParameterThreshold"/> is 0 or negative.</exception>
+  public TableValuedParameterSqlCommandBuilder (int tableValuedParameterThreshold)
+  {
+    if (tableValuedParameterThreshold <= 0)
+    {
+      throw new ArgumentOutOfRangeException(nameof(tableValuedParameterThreshold), "Threshold must be greater than 0.");
+    }
+
+    TableValuedParameterThreshold = tableValuedParameterThreshold;
+  }
+
+  public int TableValuedParameterThreshold { get; }
+
   protected override void AppendNonEmptyCollection (ConstantCollectionExpression collectionExpression)
   {
     ArgumentUtility.CheckNotNull(nameof(collectionExpression), collectionExpression);
 
-    Append("SELECT [Value] FROM ");
-    AppendParameter(collectionExpression.Collection);
+    static int GetCount (object enumerable, int threshold)
+    {
+      if (enumerable is ICollection collection)
+        return collection.Count;
+
+      if (enumerable is IReadOnlyCollection<object> readOnlyCollection)
+        return readOnlyCollection.Count;
+
+      if (enumerable.GetType().CanAscribeTo(typeof(ICollection<>)) || enumerable.GetType().CanAscribeTo(typeof(IReadOnlyCollection<>)))
+        return ((IEnumerable)enumerable).Cast<object>().Take(threshold).Count();
+
+      throw new NotSupportedException($"ConstantCollectionExpression for a collection of type {enumerable.GetType().FullName} is not supported.");
+    }
+
+    if (GetCount(collectionExpression.Collection, TableValuedParameterThreshold) < TableValuedParameterThreshold)
+    {
+      base.AppendNonEmptyCollection(collectionExpression);
+    }
+    else
+    {
+      Append("SELECT [Value] FROM ");
+      AppendParameter(collectionExpression.Collection);
+    }
   }
 }

@@ -29,6 +29,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests;
 [TestFixture]
 public class TableValuedParameterIntegrationTest : IntegrationTestBase
 {
+  public override void SetUp ()
+  {
+    base.SetUp();
+    TestSqlStorageObjectFactory.Threshold = 1;
+  }
+
+  public override void TearDown ()
+  {
+    base.TearDown();
+    TestSqlStorageObjectFactory.Threshold = null;
+  }
+
   [Test]
   public void Contains_WithEmptyCollection ()
   {

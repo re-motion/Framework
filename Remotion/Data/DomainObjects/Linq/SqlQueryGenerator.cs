@@ -34,8 +34,13 @@ namespace Remotion.Data.DomainObjects.Linq
     private readonly ISqlPreparationStage _preparationStage;
     private readonly IMappingResolutionStage _resolutionStage;
     private readonly ISqlGenerationStage _generationStage;
+    private readonly int _tableValuedParameterThreshold;
 
-    public SqlQueryGenerator (ISqlPreparationStage preparationStage, IMappingResolutionStage resolutionStage, ISqlGenerationStage generationStage)
+    public SqlQueryGenerator (
+        ISqlPreparationStage preparationStage,
+        IMappingResolutionStage resolutionStage,
+        ISqlGenerationStage generationStage,
+        int tableValuedParameterThreshold)
     {
       ArgumentUtility.CheckNotNull("preparationStage", preparationStage);
       ArgumentUtility.CheckNotNull("resolutionStage", resolutionStage);
@@ -44,6 +49,7 @@ namespace Remotion.Data.DomainObjects.Linq
       _preparationStage = preparationStage;
       _resolutionStage = resolutionStage;
       _generationStage = generationStage;
+      _tableValuedParameterThreshold = tableValuedParameterThreshold;
     }
 
     public ISqlPreparationStage PreparationStage
@@ -122,7 +128,7 @@ namespace Remotion.Data.DomainObjects.Linq
     /// <returns><see cref="SqlCommandData"/> which represents the sql query.</returns>
     protected virtual SqlCommandData CreateSqlCommand (SqlStatement sqlStatement)
     {
-      var commandBuilder = new TableValuedParameterSqlCommandBuilder();
+      var commandBuilder = new TableValuedParameterSqlCommandBuilder(_tableValuedParameterThreshold);
       _generationStage.GenerateTextForOuterSqlStatement(commandBuilder, sqlStatement);
       return commandBuilder.GetCommand();
     }
