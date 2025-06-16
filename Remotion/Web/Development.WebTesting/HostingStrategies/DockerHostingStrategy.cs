@@ -61,6 +61,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
       var dockerImageName = properties["dockerImageName"];
       var dockerIsolationMode = properties["dockerIsolationMode"];
       var dockerPullTimeout = TimeSpan.Parse(properties["dockerPullTimeout"]);
+      var dockerCustomArguments = properties.GetValueOrDefault("dockerCustomArguments");
       var hostname = properties["hostname"];
       var innerType = properties.GetValueOrDefault("innerType");
 
@@ -92,7 +93,8 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
             dockerIsolationMode,
             hostname,
             is32BitProcess,
-            mounts);
+            mounts,
+            dockerCustomArguments);
 
         return new IisDockerContainerWrapper(docker, configurationParameters, loggerFactory);
       }
@@ -107,6 +109,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
             hostname,
             is32BitProcess,
             mounts,
+            dockerCustomArguments,
             testSiteLayoutConfiguration.ProcessPath);
 
         return new AspNetDockerContainerWrapper(docker, configurationParameters, loggerFactory);

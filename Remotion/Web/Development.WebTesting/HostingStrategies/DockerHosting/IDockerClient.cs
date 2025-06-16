@@ -43,6 +43,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     /// <param name="imageName">The name and tag of the image to use.</param>
     /// <param name="isolationMode">The isolation mode that should be used when running the docker image. Can be <see langword="null" />.</param>
     /// <param name="hostname">The hostname to associate with the container. Can be <see langword="null" />.</param>
+    /// <param name="customArguments">The custom arguments passed directly to the docker executable. Can be <see langword="null" />.</param>
     /// <param name="remove">Indicates whether the container should be removed upon stopping.</param>
     /// <param name="entryPoint">Overrides the default entry point of the image. Can be <see langword="null" />.</param>
     /// <param name="workingDirectory">Overrides the default working directory. Can be <see langword="null" />.</param>
@@ -59,6 +60,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
         [NotNull] string imageName,
         [CanBeNull] string? isolationMode,
         [CanBeNull] string? hostname,
+        [CanBeNull] string? customArguments,
         bool remove,
         [CanBeNull] string? entryPoint,
         [CanBeNull] string? workingDirectory,
