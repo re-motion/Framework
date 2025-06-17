@@ -50,6 +50,11 @@ public class DockerContainerConfigurationParameters
   [NotNull]
   public IReadOnlyCollection<string> Mounts { get; }
 
+  /// <summary>
+  /// Custom docker arguments that are passed directly to the docker executable.
+  /// </summary>
+  public string? DockerCustomArguments { get; }
+
   public DockerContainerConfigurationParameters (
       string absoluteWebApplicationPath,
       int webApplicationPort,
@@ -57,7 +62,8 @@ public class DockerContainerConfigurationParameters
       string? dockerIsolationMode,
       string? hostname,
       bool is32BitProcess,
-      IReadOnlyCollection<string> mounts)
+      IReadOnlyCollection<string> mounts,
+      string? dockerCustomArguments)
   {
     ArgumentUtility.CheckNotNullOrEmpty("absoluteWebApplicationPath", absoluteWebApplicationPath);
     ArgumentUtility.CheckNotNullOrEmpty("dockerImageName", dockerImageName);
@@ -71,5 +77,6 @@ public class DockerContainerConfigurationParameters
     Hostname = hostname;
     Is32BitProcess = is32BitProcess;
     Mounts = mounts;
+    DockerCustomArguments = dockerCustomArguments;
   }
 }

@@ -74,6 +74,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
           ConfigurationParameters.DockerImageName,
           ConfigurationParameters.DockerIsolationMode,
           ConfigurationParameters.Hostname,
+          ConfigurationParameters.DockerCustomArguments,
           true,
           GetEntryPoint(),
           GetWorkingDirectory(),

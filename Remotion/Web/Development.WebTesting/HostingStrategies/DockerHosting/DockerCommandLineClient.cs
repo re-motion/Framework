@@ -60,6 +60,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
         string imageName,
         string? isolationMode,
         string? hostname,
+        string? customArguments,
         bool remove,
         string? entryPoint,
         string? workingDirectory,
@@ -110,6 +111,13 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
 
       if (hostname != null)
         commandBuilder.Append($@"--hostname ""{hostname}""").Append(' ');
+
+      if (customArguments != null)
+      {
+        commandBuilder.Append(customArguments);
+        if (customArguments.Length > 0 && customArguments[^1] != ' ')
+          commandBuilder.Append(' ');
+      }
 
       commandBuilder.Append(imageName).Append(' ');
 
