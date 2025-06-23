@@ -15,9 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Nuke.Common;
 using Remotion.BuildScript;
 using Remotion.BuildScript.Test;
@@ -28,11 +26,7 @@ namespace Customizations;
 
 public class DatabaseTestSetup : ITestExecutionWrapper, IRequiresTestParameters
 {
-  private const string c_dataSourceParameterNameTemplate = "DataSourceMsSql{0}";
-  private const string c_databaseDirectoryParameterNameTemplate = "DatabaseDirectoryMsSql{0}";
-  private const string c_integratedSecurityParameterNameTemplate = "IntegratedSecurityMsSql{0}";
-  private const string c_usernameParameterNameTemplate = "UsernameMsSql{0}";
-  private const string c_passwordParameterNameTemplate = "PasswordMsSql{0}";
+  private const string c_databaseConnectionStringParameterNameTemplate = "DatabaseConnectionString{0}";
   private const string c_databaseNamePrefixParameterNameTemplate = "DatabaseNamePrefixMsSql{0}";
 
   private const string c_defaultConnectionString = "Data Source=localhost;Integrated Security=True";
@@ -44,43 +38,29 @@ public class DatabaseTestSetup : ITestExecutionWrapper, IRequiresTestParameters
       if (!sqlServer.HasSpecificVersion)
         continue;
 
-      builder.AddRequiredParameter(string.Format(c_dataSourceParameterNameTemplate, sqlServer.Version));
-      builder.AddRequiredParameter(string.Format(c_databaseDirectoryParameterNameTemplate, sqlServer.Version));
+      builder.AddOptionalParameter(string.Format(c_databaseConnectionStringParameterNameTemplate, sqlServer.Version), "");
       builder.AddOptionalParameter(string.Format(c_databaseNamePrefixParameterNameTemplate, sqlServer.Version), "");
-      builder.AddRequiredParameter(string.Format(c_integratedSecurityParameterNameTemplate, sqlServer.Version));
-      builder.AddRequiredParameter(string.Format(c_usernameParameterNameTemplate, sqlServer.Version));
-      builder.AddRequiredParameter(string.Format(c_passwordParameterNameTemplate, sqlServer.Version));
     }
   }
 
   public void ExecuteTests (TestExecutionContext context, Action<TestExecutionContext> next)
   {
     var sqlServer = context.TestMatrixRow.GetDimension<Databases>();
-    string databaseNamePrefix, connectionString;
-    if (sqlServer == Databases.SqlServerDefault)
+    var connectionString = context.GetTestParameter(string.Format(c_databaseConnectionStringParameterNameTemplate, sqlServer.Version));
+    var databaseNamePrefix = context.GetTestParameter(string.Format(c_databaseNamePrefixParameterNameTemplate, sqlServer.Version));
+    if (string.IsNullOrEmpty(connectionString))
     {
-      databaseNamePrefix = "";
+      if (sqlServer == Databases.SqlServerDefault)
+      {
+        connectionString = c_defaultConnectionString;
+      }
+      else
+      {
+        Assert.True(sqlServer.HasSpecificVersion);
 
-      connectionString = c_defaultConnectionString;
-    }
-    else
-    {
-      Assert.True(sqlServer.HasSpecificVersion);
-
-      databaseNamePrefix = context.GetTestParameter(string.Format(c_databaseNamePrefixParameterNameTemplate, sqlServer.Version));
-
-      var dataSource = context.GetTestParameter(string.Format(c_dataSourceParameterNameTemplate, sqlServer.Version));
-      var integratedSecurity = context.GetTestParameter(string.Format(c_integratedSecurityParameterNameTemplate, sqlServer.Version));
-      var username = context.GetTestParameter(string.Format(c_usernameParameterNameTemplate, sqlServer.Version));
-      var password = context.GetTestParameter(string.Format(c_passwordParameterNameTemplate, sqlServer.Version));
-
-      var connectionStringParts = new Dictionary<string, string>();
-      connectionStringParts.Add("Data Source", dataSource);
-      connectionStringParts.Add("Integrated Security", integratedSecurity);
-      connectionStringParts.Add("User ID", username);
-      connectionStringParts.Add("Password", password);
-
-      connectionString = string.Join(";", connectionStringParts.Select(e => $"{e.Key}={e.Value}"));
+        var testResource = context.TestResources.GetRequiredTestResource<DatabaseTestResource>(e => e.Database == sqlServer);
+        connectionString = testResource.GetConnectionString();
+      }
     }
 
     var configuration = context.TestMatrixRow.GetDimension<Configurations>().Value;
@@ -94,8 +74,7 @@ public class DatabaseTestSetup : ITestExecutionWrapper, IRequiresTestParameters
     var appConfig = AppConfig.Read(configFile);
 
     Log.Information("Updating Database Test configuration file:");
-    Log.Information($" - Database system: '{sqlServer}'");
-    Log.Information($" - Connection String: '{connectionString}'");
+    Log.Information($" - Connection string: '{connectionString}'");
     Log.Information($" - Database name prefix: '{databaseNamePrefix}'");
 
     appConfig.SetAppSetting("ConnectionString", connectionString);

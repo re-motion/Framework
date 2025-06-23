@@ -29,6 +29,7 @@ using Remotion.BuildScript.Components;
 using Remotion.BuildScript.GenerateSbom;
 using Remotion.BuildScript.Test;
 using Remotion.BuildScript.Test.Dimensions;
+using Remotion.BuildScript.TestPlan;
 using static Customizations.Browsers;
 using static Customizations.Databases;
 using static Remotion.BuildScript.Test.Dimensions.Configurations;
@@ -40,13 +41,17 @@ using static Remotion.BuildScript.Test.Dimensions.TargetFrameworks;
 
 // ReSharper disable RedundantTypeArgumentsOfMethod
 
-class Build : RemotionBuild, IDependDB
+class Build : RemotionBuild, IDependDB, ITest
 {
   [Parameter(ValueProviderMember = nameof(SupportedTestBrowsers), Separator = "+")]
   public string[] TestBrowsers { get; set; } = [];
 
   [Parameter(ValueProviderMember = nameof(SupportedTestSqlServers), Separator = "+")]
   public string[] TestSqlServers { get; set; } = [];
+
+  [CanBeNull] private TestMatrix _databaseTestMatrix;
+  [CanBeNull] private TestMatrix _normalTestMatrix;
+  [CanBeNull] private TestMatrix _webTestingTestMatrix;
 
   public static int Main () => Execute<Build>();
 
@@ -97,19 +102,36 @@ class Build : RemotionBuild, IDependDB
 
   public override void ConfigureProjects (ProjectsBuilder projects)
   {
-    var normalTestConfiguration = new TestConfiguration(
-        DefaultTestExecutionRuntimeFactory.Instance,
-        TestMatrices.Single(e => e.Name == "NormalTestMatrix"),
+    [CanBeNull]
+    static TestConfiguration CreateTestConfiguration (
+        [CanBeNull] TestMatrix testMatrix,
+        ITestExecutionRuntimeFactory testExecutionRuntimeFactory,
+        ImmutableArray<ITestExecutionWrapper> testExecutionWrappers)
+    {
+      return testMatrix != null
+          ? new TestConfiguration(testExecutionRuntimeFactory, testMatrix, testExecutionWrappers)
+          : null;
+    }
+
+    var testExecutionRuntimeFactory = new DefaultTestExecutionRuntimeFactory(new DockerNetworkDockerRunSettingsCustomizer());
+
+    // NOTE: Test matrices might be null if the CreateTestMatrix step was not called.
+    // This is intended behavior as we want to support partial builds.
+    // If there is no test matrix, the test configuration will be null as well.
+
+    var normalTestConfiguration = CreateTestConfiguration(
+        _normalTestMatrix,
+        testExecutionRuntimeFactory,
         ImmutableArray<ITestExecutionWrapper>.Empty);
 
-    var webTestingTestConfiguration = new TestConfiguration(
-        DefaultTestExecutionRuntimeFactory.Instance,
-        TestMatrices.Single(e => e.Name == "WebTestingTestMatrix"),
+    var webTestingTestConfiguration = CreateTestConfiguration(
+        _webTestingTestMatrix,
+        testExecutionRuntimeFactory,
         [new WebTestingTestSetup()]);
 
-    var databaseTestConfiguration = new TestConfiguration(
-        DefaultTestExecutionRuntimeFactory.Instance,
-        TestMatrices.Single(e => e.Name == "DatabaseTestMatrix"),
+    var databaseTestConfiguration = CreateTestConfiguration(
+        _databaseTestMatrix,
+        testExecutionRuntimeFactory,
         [new DatabaseTestSetup()]);
 
     projects.AddUnitTestProject("SharedSource.UnitTests", normalTestConfiguration);
@@ -280,7 +302,7 @@ class Build : RemotionBuild, IDependDB
 
   public override void ConfigureTestMatrix (TestMatricesBuilder builder)
   {
-    builder.AddTestMatrix(
+    _webTestingTestMatrix = builder.AddTestMatrix(
         "WebTestingTestMatrix",
         new TestDimension[,] // todo docker images need to be wired to the config file
         {
@@ -290,7 +312,7 @@ class Build : RemotionBuild, IDependDB
         },
         allowEmpty: true);
 
-    builder.AddTestMatrix(
+    _databaseTestMatrix = builder.AddTestMatrix(
         "DatabaseTestMatrix",
         new TestDimension[,]
         {
@@ -308,7 +330,7 @@ class Build : RemotionBuild, IDependDB
         },
         allowEmpty: true);
 
-    builder.AddTestMatrix(
+    _normalTestMatrix = builder.AddTestMatrix(
         "NormalTestMatrix",
         new TestDimension[,]
         {
@@ -325,6 +347,23 @@ class Build : RemotionBuild, IDependDB
   protected IEnumerable<string> SupportedTestBrowsers => GetTestDimensionValueList<Browsers>();
 
   protected IEnumerable<string> SupportedTestSqlServers => GetTestDimensionValueList<Databases>();
+
+  public void ConfigureTestResources (ImmutableArray<ITestResourceFactory>.Builder testResources)
+  {
+    if (OperatingSystem.IsLinux())
+      testResources.Add(new DockerNetworkResourceFactory());
+
+    var testCases = InlineTestItemVisitor.CollectAll(TestItems).OfType<ITestCase>().ToArray();
+
+    var requiredDatabases = testCases
+        .Select(e => e.TestMatrixRow.GetDimension<Databases>())
+        .Distinct()
+        .Where(e => e != NoDB && e != SqlServerDefault)
+        .ToArray();
+
+    foreach (var requiredDatabase in requiredDatabases)
+      testResources.Add(new DatabaseTestResourceFactory(requiredDatabase));
+  }
 
   private void AddVersionToPackageJson (AbsolutePath packageJsonPath, AbsolutePath duplicatedPackageJsonPath, string version)
   {
