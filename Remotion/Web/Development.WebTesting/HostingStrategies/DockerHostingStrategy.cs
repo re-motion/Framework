@@ -110,7 +110,8 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
             is32BitProcess,
             mounts,
             dockerCustomArguments,
-            testSiteLayoutConfiguration.ProcessPath);
+            testSiteLayoutConfiguration.ProcessPath,
+            testSiteLayoutConfiguration.ProcessArguments);
 
         return new AspNetDockerContainerWrapper(docker, configurationParameters, loggerFactory);
       }
