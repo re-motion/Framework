@@ -63,7 +63,8 @@ namespace Remotion.Web.Development.WebTesting
     private readonly TimeSpan _verifyWebApplicationStartedTimeout;
     private readonly string _screenshotDirectory;
     private readonly string _logDirectory;
-    private readonly Uri _webApplicationRoot;
+    private readonly bool _testSiteStartupCheckEnabled;
+    private readonly Uri _testSiteStartupCheckUrl;
 
     [PublicAPI]
     protected WebTestSetUpFixtureHelper ([NotNull] WebTestConfigurationFactory webTestConfigurationFactory)
@@ -80,7 +81,8 @@ namespace Remotion.Web.Development.WebTesting
       var testInfrastructureConfiguration = webTestConfigurationFactory.CreateTestInfrastructureConfiguration();
       _screenshotDirectory = testInfrastructureConfiguration.ScreenshotDirectory;
       _logDirectory = testInfrastructureConfiguration.ScreenshotDirectory;
-      _webApplicationRoot = new Uri(testInfrastructureConfiguration.WebApplicationRoot);
+      _testSiteStartupCheckEnabled = testInfrastructureConfiguration.TestSiteStartupCheckEnabled;
+      _testSiteStartupCheckUrl = new Uri(testInfrastructureConfiguration.TestSiteStartupCheckUrl);
     }
 
     public ILoggerFactory LoggerFactory
@@ -104,22 +106,24 @@ namespace Remotion.Web.Development.WebTesting
     public void OnSetUp ()
     {
       HostWebApplication();
-
-      try
-      {
-        VerifyWebApplicationStarted(_webApplicationRoot, _verifyWebApplicationStartedTimeout);
-      }
-      catch
+      if (_testSiteStartupCheckEnabled)
       {
         try
         {
-          UnhostWebApplication();
+          VerifyWebApplicationStarted(_testSiteStartupCheckUrl, _verifyWebApplicationStartedTimeout);
         }
         catch
         {
-        }
+          try
+          {
+            UnhostWebApplication();
+          }
+          catch
+          {
+          }
 
-        throw;
+          throw;
+        }
       }
     }
 

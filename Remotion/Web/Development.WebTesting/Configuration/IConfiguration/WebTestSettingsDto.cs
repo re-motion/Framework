@@ -65,6 +65,12 @@ namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
     public required string WebApplicationRoot { get; init; }
 
     /// <inheritdoc />
+    public bool TestSiteStartupCheckEnabled { get; init; } = true;
+
+    /// <inheritdoc />
+    public string TestSiteStartupCheckUrl { get; init; } = "";
+
+    /// <inheritdoc />
     public string ScreenshotDirectory { get; init; } = "";
 
     /// <inheritdoc />
