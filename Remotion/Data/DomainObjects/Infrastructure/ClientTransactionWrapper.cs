@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public TTransaction To<TTransaction> ()
     {
 // ReSharper disable NotResolvedInText - We use the generic parameter on purpose.
-      ArgumentUtility.CheckTypeIsAssignableFrom("TTransaction", typeof(TTransaction), typeof(ClientTransaction));
+      ArgumentUtility.CheckTypeIsAssignableFrom(nameof(TTransaction), typeof(TTransaction), typeof(ClientTransaction));
 // ReSharper restore NotResolvedInText
       return (TTransaction)(object)_wrappedInstance;
     }

@@ -62,7 +62,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
 
     public TTransaction To<TTransaction> ()
     {
-      ArgumentUtility.CheckTypeIsAssignableFrom("TTransaction", typeof(TTransaction), typeof(TestTransaction));
+      ArgumentUtility.CheckTypeIsAssignableFrom(nameof(TTransaction), typeof(TTransaction), typeof(TestTransaction));
       return (TTransaction)(object)this;
     }
 

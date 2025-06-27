@@ -39,7 +39,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
       ArgumentUtility.CheckNotNull(nameof(attributeOwner), attributeOwner);
       ArgumentUtility.CheckNotNull(nameof(attributeType), attributeType);
 
-      ArgumentUtility.CheckTypeIsAssignableFrom("attributeOwner", attributeOwner.Type, typeof(ICustomAttributeProvider));
+      ArgumentUtility.CheckTypeIsAssignableFrom("attributeOwner.Type", attributeOwner.Type, typeof(ICustomAttributeProvider));
 
       _attributeOwner = attributeOwner;
       _attributeType = attributeType;
