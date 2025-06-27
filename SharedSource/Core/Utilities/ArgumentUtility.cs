@@ -83,7 +83,7 @@ namespace Remotion.Utilities
         throw new ArgumentNullException(argumentName);
 
       if (actualValue.Length == 0)
-        throw CreateArgumentEmptyException(argumentName);
+        throw CreateArgumentEmptyExceptionForString(argumentName);
 
       return actualValue;
     }
@@ -233,7 +233,7 @@ namespace Remotion.Utilities
     public static string? CheckNotEmpty ([InvokerParameterName] string argumentName, string? actualValue)
     {
       if (actualValue != null && actualValue.Length == 0)
-        throw CreateArgumentEmptyException(argumentName);
+        throw CreateArgumentEmptyExceptionForString(argumentName);
 
       return actualValue;
     }
@@ -244,7 +244,7 @@ namespace Remotion.Utilities
         where T: ICollection?
     {
       if (collection != null && collection.Count == 0)
-        throw CreateArgumentEmptyException(argumentName);
+        throw CreateArgumentEmptyExceptionForCollection(argumentName);
 
       return collection;
     }
@@ -254,7 +254,7 @@ namespace Remotion.Utilities
     public static void CheckNotEmpty<T> ([InvokerParameterName] string argumentName, ICollection<T>? collection)
     {
       if (collection != null && collection.Count == 0)
-        throw CreateArgumentEmptyException(argumentName);
+        throw CreateArgumentEmptyExceptionForCollection(argumentName);
     }
 
     [AssertionMethod]
@@ -262,14 +262,14 @@ namespace Remotion.Utilities
     public static void CheckNotEmpty<T> ([InvokerParameterName] string argumentName, IReadOnlyCollection<T>? collection)
     {
       if (collection != null && collection.Count == 0)
-        throw CreateArgumentEmptyException(argumentName);
+        throw CreateArgumentEmptyExceptionForCollection(argumentName);
     }
 
     [AssertionMethod]
     public static Guid CheckNotEmpty ([InvokerParameterName] string argumentName, Guid actualValue)
     {
       if (actualValue == Guid.Empty)
-        throw CreateArgumentEmptyException(argumentName);
+        throw CreateArgumentEmptyExceptionForGuid(argumentName);
 
       return actualValue;
     }
@@ -487,9 +487,27 @@ namespace Remotion.Utilities
     }
 
     [MustUseReturnValue]
+    public static ArgumentException CreateArgumentEmptyExceptionForString ([InvokerParameterName] string argumentName)
+    {
+      return new ArgumentException("The value cannot be an empty string.", argumentName);
+    }
+
+    [MustUseReturnValue]
+    public static ArgumentException CreateArgumentEmptyExceptionForCollection ([InvokerParameterName] string argumentName)
+    {
+      return new ArgumentException("The value cannot be an empty collection.", argumentName);
+    }
+
+    [MustUseReturnValue]
+    public static ArgumentException CreateArgumentEmptyExceptionForGuid ([InvokerParameterName] string argumentName)
+    {
+      return new ArgumentException("The value cannot be an empty GUID.", argumentName);
+    }
+
+    [MustUseReturnValue]
     public static ArgumentException CreateArgumentEmptyException ([InvokerParameterName] string argumentName)
     {
-      return new ArgumentException(string.Format("Parameter '{0}' cannot be empty.", argumentName), argumentName);
+      return new ArgumentException("The value cannot be empty.", argumentName);
     }
 
     [MustUseReturnValue]

@@ -36,7 +36,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
           () => ArgumentUtility.CheckNotEmpty("arg", ""),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'arg' cannot be empty.", "arg"));
+                  "The value cannot be an empty string.", "arg"));
     }
 
     [Test]
@@ -127,7 +127,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
           () => ArgumentUtility.CheckNotEmpty("arg", Type.EmptyTypes),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'arg' cannot be empty.", "arg"));
+                  "The value cannot be an empty collection.", "arg"));
     }
 
     [Test]
@@ -139,7 +139,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
           () => ArgumentUtility.CheckNotEmpty("arg", value),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'arg' cannot be empty.", "arg"));
+                  "The value cannot be an empty collection.", "arg"));
     }
 
     [Test]
@@ -151,7 +151,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
           () => ArgumentUtility.CheckNotEmpty("arg", value),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'arg' cannot be empty.", "arg"));
+                  "The value cannot be an empty collection.", "arg"));
     }
 
     [Test]
@@ -163,7 +163,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
           () => ArgumentUtility.CheckNotEmpty("arg", value),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'arg' cannot be empty.", "arg"));
+                  "The value cannot be an empty collection.", "arg"));
     }
 
     [Test]
@@ -175,7 +175,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
           () => ArgumentUtility.CheckNotEmpty("arg", value),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'arg' cannot be empty.", "arg"));
+                  "The value cannot be an empty collection.", "arg"));
     }
 
     [Test]
@@ -193,7 +193,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
           () => ArgumentUtility.CheckNotEmpty("arg", Guid.Empty),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'arg' cannot be empty.", "arg"));
+                  "The value cannot be an empty GUID.", "arg"));
     }
   }
 }

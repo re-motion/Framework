@@ -68,7 +68,7 @@ namespace Remotion.Security.UnitTests
           () => new SecurityPrincipalRole("TheGroup", string.Empty),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'position' cannot be empty.", "position"));
+                  "The value cannot be an empty string.", "position"));
     }
 
     [Test]

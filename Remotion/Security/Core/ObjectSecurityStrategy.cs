@@ -78,7 +78,7 @@ namespace Remotion.Security
       ArgumentNullException.ThrowIfNull(requiredAccessTypes);
       // Performance critical argument check. Can be refactored to ArgumentUtility.CheckNotNullOrEmpty once typed collection checks are supported.
       if (requiredAccessTypes.Count == 0)
-        throw ArgumentUtility.CreateArgumentEmptyException(nameof(requiredAccessTypes));
+        throw ArgumentUtility.CreateArgumentEmptyExceptionForCollection(nameof(requiredAccessTypes));
 
       var actualAccessTypes = GetAccessTypesFromCache(securityProvider, principal);
       return requiredAccessTypes.IsSubsetOf(actualAccessTypes);
