@@ -33,7 +33,7 @@ namespace Remotion.Utilities
     public static AttributeUsageAttribute GetAttributeUsage (Type attributeType)
     {
       if (attributeType == null)
-        throw new ArgumentNullException("attributeType");
+        throw new ArgumentNullException(nameof(attributeType));
 
       var cachedInstance = s_attributeUsageCache.GetOrAdd(attributeType, s_getLazyAttributeUsageFunc).Value;
 

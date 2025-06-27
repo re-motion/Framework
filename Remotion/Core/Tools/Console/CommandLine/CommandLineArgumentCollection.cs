@@ -72,7 +72,7 @@ public class CommandLineArgumentCollection: CollectionBase
   #region event handlers for type-checking
   protected override void OnInsert (int index, object? value)
   {
-    if (value == null) throw new ArgumentNullException("value");
+    if (value == null) throw new ArgumentNullException(nameof(value));
     CommandLineArgument? argument = value as CommandLineArgument;
     if (argument == null) throw new ArgumentException(c_msgInvalidArgumentType, "value") ;
 
@@ -82,7 +82,7 @@ public class CommandLineArgumentCollection: CollectionBase
 
   protected override void OnRemove (int index, object? value)
   {
-    if (value == null) throw new ArgumentNullException("value");
+    if (value == null) throw new ArgumentNullException(nameof(value));
     CommandLineArgument? argument = value as CommandLineArgument;
     if (argument == null) throw new ArgumentException(c_msgInvalidArgumentType, "value") ;
 
@@ -92,7 +92,7 @@ public class CommandLineArgumentCollection: CollectionBase
 
   protected override void OnSet (int index, object? oldValue, object? newValue)
   {
-    if (newValue == null) throw new ArgumentNullException("value");
+    if (newValue == null) throw new ArgumentNullException(nameof(value));
     CommandLineArgument? newArgument = newValue as CommandLineArgument;
     if (newArgument == null) throw new ArgumentException(c_msgInvalidArgumentType, "newValue") ;
     CommandLineArgument? oldArgument = (CommandLineArgument?)oldValue;

@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       if (list == null)
       {
         if (! createIfNull)
-          throw new ArgumentNullException("list");
+          throw new ArgumentNullException(nameof(list));
 
         list = CreateList(createListMethod, null, objects.Count);
         CopyTo(objects, list);

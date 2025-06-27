@@ -285,7 +285,7 @@ namespace Remotion.Utilities
     public static string ConcatWithSeparator (IList list, string separator, string? format, IFormatProvider? formatProvider)
     {
       if (list == null)
-        throw new ArgumentNullException("list");
+        throw new ArgumentNullException(nameof(list));
 
       if (list.Count == 0)
         return string.Empty;
@@ -304,7 +304,7 @@ namespace Remotion.Utilities
     public static string ConcatWithSeparator (string[] strings, string separator)
     {
       if (strings == null)
-        throw new ArgumentNullException("strings");
+        throw new ArgumentNullException(nameof(strings));
       if (strings.Length == 0)
         return string.Empty;
 

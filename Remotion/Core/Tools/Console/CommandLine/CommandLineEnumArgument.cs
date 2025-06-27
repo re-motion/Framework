@@ -58,7 +58,7 @@ public class CommandLineEnumArgument: CommandLineValueArgument
 
   protected internal override void SetStringValue (string value)
   {
-    if (value == null) throw new ArgumentNullException("value");
+    if (value == null) throw new ArgumentNullException(nameof(value));
     if (value.Length != 0)
     {
       bool foundExact = false;

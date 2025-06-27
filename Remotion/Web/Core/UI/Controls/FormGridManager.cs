@@ -2038,7 +2038,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ComposeFormGridContents/*' />
     private void ComposeFormGridContents (FormGrid formGrid)
     {
-      if (formGrid == null) throw new ArgumentNullException("formGrid");
+      if (formGrid == null) throw new ArgumentNullException(nameof(formGrid));
 
       for (int i = 0; i < formGrid.Rows.Count; i++)
       {
