@@ -49,7 +49,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject? businessObject, IBusinessObjectEnumerationProperty property)
     {
       ArgumentUtility.CheckNotNull(nameof(value), value);
-      ArgumentUtility.CheckType<AccessControlEntry>("businessObject", businessObject);
+      ArgumentUtility.CheckType<AccessControlEntry>(nameof(businessObject), businessObject);
       ArgumentUtility.CheckNotNull(nameof(property), property);
 
       AccessControlEntry? ace = (AccessControlEntry?)businessObject;

@@ -2135,7 +2135,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public new IBusinessObjectReferenceProperty? Property
     {
       get { return (IBusinessObjectReferenceProperty?)base.Property; }
-      set { base.Property = ArgumentUtility.CheckType<IBusinessObjectReferenceProperty>("value", value); }
+      set { base.Property = ArgumentUtility.CheckType<IBusinessObjectReferenceProperty>(nameof(value), value); }
     }
 
     /// <summary> Gets or sets the current value. </summary>

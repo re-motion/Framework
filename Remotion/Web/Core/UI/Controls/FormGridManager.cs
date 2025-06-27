@@ -419,7 +419,7 @@ namespace Remotion.Web.UI.Controls
       protected override void OnInsert (int index, object? value)
       {
         ArgumentUtility.CheckNotNull(nameof(value), value!);
-        FormGridRow formGridRow = ArgumentUtility.CheckType<FormGridRow>("value", value);
+        FormGridRow formGridRow = ArgumentUtility.CheckType<FormGridRow>(nameof(value), value);
 
         if (formGridRow.HtmlTableRows[0].Parent != _ownerFormGrid.Table)
         {

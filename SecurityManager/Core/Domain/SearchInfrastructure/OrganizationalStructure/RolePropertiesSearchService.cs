@@ -53,7 +53,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStr
         ISearchAvailableObjectsArguments? searchArguments)
     {
       ArgumentUtility.CheckNotNull(nameof(property), property);
-      var rolePropertiesSearchArguments = ArgumentUtility.CheckType<RolePropertiesSearchArguments>("searchArguments", searchArguments);
+      var rolePropertiesSearchArguments = ArgumentUtility.CheckType<RolePropertiesSearchArguments>(nameof(searchArguments), searchArguments);
 
       if (!SupportsProperty(property))
       {

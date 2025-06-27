@@ -162,7 +162,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public void LoadUnboundValue<TEnum> (TEnum? value, bool interim)
         where TEnum: struct
     {
-      ArgumentUtility.CheckType<Enum>("value", value);
+      ArgumentUtility.CheckType<Enum>(nameof(value), value);
       LoadValueInternal(value, interim);
     }
 
@@ -173,7 +173,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public void LoadUnboundValue<TEnum> (TEnum value, bool interim)
         where TEnum: struct
     {
-      ArgumentUtility.CheckType<Enum>("value", value);
+      ArgumentUtility.CheckType<Enum>(nameof(value), value);
       LoadValueInternal(value, interim);
     }
 
@@ -292,7 +292,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public new IBusinessObjectEnumerationProperty? Property
     {
       get { return (IBusinessObjectEnumerationProperty?)base.Property; }
-      set { base.Property = ArgumentUtility.CheckType<IBusinessObjectEnumerationProperty>("value", value); }
+      set { base.Property = ArgumentUtility.CheckType<IBusinessObjectEnumerationProperty>(nameof(value), value); }
     }
 
     /// <summary> Gets or sets the current value. </summary>

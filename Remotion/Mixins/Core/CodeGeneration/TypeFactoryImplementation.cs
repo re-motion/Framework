@@ -55,7 +55,7 @@ namespace Remotion.Mixins.CodeGeneration
     public void InitializeUnconstructedInstance (object mixinTarget, InitializationSemantics initializationSemantics)
     {
       ArgumentUtility.CheckNotNull(nameof(mixinTarget), mixinTarget);
-      ArgumentUtility.CheckType<IMixinTarget>("mixinTarget", mixinTarget);
+      ArgumentUtility.CheckType<IMixinTarget>(nameof(mixinTarget), mixinTarget);
 
       _pipelineRegistry.DefaultPipeline.ReflectionService.PrepareExternalUninitializedObject(mixinTarget, initializationSemantics);
     }

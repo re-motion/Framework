@@ -108,7 +108,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
     protected static State CreateState<TEnum> (IDomainObjectHandle<StatePropertyDefinition> propertyHandle, string propertyName, TEnum value)
     {
-      var enumValue = ArgumentUtility.CheckType<Enum>("value", value);
+      var enumValue = ArgumentUtility.CheckType<Enum>(nameof(value), value);
 
       return new State(propertyHandle, propertyName, EnumWrapper.Get(enumValue).Name);
     }

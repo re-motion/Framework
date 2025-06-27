@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IEnumerable<ColumnValue> SplitValue (object? value)
     {
-      var objectID = ArgumentUtility.CheckType<ObjectID>("value", value);
+      var objectID = ArgumentUtility.CheckType<ObjectID>(nameof(value), value);
       CheckClassDefinition(objectID, "value");
 
       var innerValue = GetValueOrNull(objectID);
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IEnumerable<ColumnValue> SplitValueForComparison (object? value)
     {
-      var objectID = ArgumentUtility.CheckType<ObjectID>("value", value);
+      var objectID = ArgumentUtility.CheckType<ObjectID>(nameof(value), value);
       CheckClassDefinition(objectID, "value");
 
       var innerValue = GetValueOrNull(objectID);

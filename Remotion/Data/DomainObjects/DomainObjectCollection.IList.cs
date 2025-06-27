@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects
     object? IList.this[int index]
     {
       get { return this[index]; }
-      set { this[index] = ArgumentUtility.CheckType<DomainObject>("value", value); }
+      set { this[index] = ArgumentUtility.CheckType<DomainObject>(nameof(value), value); }
     }
 
     int IList.Add (object? value)

@@ -154,7 +154,7 @@ namespace Remotion.ObjectBinding
     object? IBusinessObjectBoundControl.Value
     {
       get { return BusinessObject; }
-      set { BusinessObject = ArgumentUtility.CheckType<IBusinessObject>("value", value); }
+      set { BusinessObject = ArgumentUtility.CheckType<IBusinessObject>(nameof(value), value); }
     }
 
     bool IBusinessObjectBoundControl.HasValue

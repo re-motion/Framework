@@ -735,7 +735,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return (IBusinessObjectReferenceProperty?)base.Property; }
       set
       {
-        IBusinessObjectReferenceProperty property = ArgumentUtility.CheckType<IBusinessObjectReferenceProperty>("value", value);
+        IBusinessObjectReferenceProperty property = ArgumentUtility.CheckType<IBusinessObjectReferenceProperty>(nameof(value), value);
         if (value?.IsList == false)
           throw new ArgumentException("Only properties supporting IList can be assigned to the BocTreeView.", "value");
         base.Property = property;

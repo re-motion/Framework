@@ -273,7 +273,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     protected override sealed object? ValueImplementation
     {
       get { return Value; }
-      set { Value = ArgumentUtility.CheckType<IBusinessObjectWithIdentity>("value", value); }
+      set { Value = ArgumentUtility.CheckType<IBusinessObjectWithIdentity>(nameof(value), value); }
     }
 
     /// <summary> Gets a flag describing whether the <see cref="OptionsMenu"/> is visible. </summary>
