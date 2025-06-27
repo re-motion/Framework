@@ -93,7 +93,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
           () => ArgumentUtility.CheckNotNullOrItemsNull("arg", list),
           Throws.InstanceOf<ArgumentNullException>()
               .With.ArgumentExceptionMessageEqualTo(
-                  "Item 0 of parameter 'arg' is null.", "arg"));
+                  "Item 0 of the collection is null.", "arg"));
     }
 
     [Test]
@@ -105,7 +105,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
           () => ArgumentUtility.CheckNotNullOrItemsNull("arg", list),
           Throws.InstanceOf<ArgumentNullException>()
               .With.ArgumentExceptionMessageEqualTo(
-                  "Item 0 of parameter 'arg' is null.", "arg"));
+                  "Item 0 of the collection is null.", "arg"));
     }
 
     [Test]
@@ -117,7 +117,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
           () => ArgumentUtility.CheckNotNullOrItemsNull("arg", list),
           Throws.InstanceOf<ArgumentNullException>()
               .With.ArgumentExceptionMessageEqualTo(
-                  "Item 0 of parameter 'arg' is null.", "arg"));
+                  "Item 0 of the collection is null.", "arg"));
     }
 
     [Test]
@@ -129,7 +129,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
           () => ArgumentUtility.CheckNotNullOrItemsNull("arg", list),
           Throws.InstanceOf<ArgumentNullException>()
               .With.ArgumentExceptionMessageEqualTo(
-                  "Item 0 of parameter 'arg' is null.", "arg"));
+                  "Item 0 of the collection is null.", "arg"));
     }
   }
 }

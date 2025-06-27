@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           () => _transaction.To<DomainObject>(),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'TTransaction' is a 'Remotion.Data.DomainObjects.DomainObject', "
+                  "The value is a 'Remotion.Data.DomainObjects.DomainObject', "
                   + "which cannot be assigned to type 'Remotion.Data.DomainObjects.ClientTransaction'.", "TTransaction"));
     }
 

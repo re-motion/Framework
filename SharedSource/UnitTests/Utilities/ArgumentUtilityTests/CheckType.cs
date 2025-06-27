@@ -18,7 +18,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That(
           () => ArgumentUtility.CheckType<string>("arg", 13),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo("Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.", "arg"));
+              .With.ArgumentExceptionMessageEqualTo("The value has type 'System.Int32' when type 'System.String' was expected.", "arg"));
     }
 
     [Test]

@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
         if (data.ContainsObjectID(domainObject.ID))
         {
           throw new ArgumentException(
-              string.Format("Item {1} of parameter '{0}' is a duplicate ('{2}').", "domainObjects", index, domainObject.ID),
+              string.Format("Item {0} of the collection is a duplicate ('{1}').", index, domainObject.ID),
               nameof(domainObjects));
         }
 

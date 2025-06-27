@@ -119,7 +119,7 @@ public class SimpleDataParameterDefinitionTest
     Assert.That(
         () => simpleDataParameterDefinition.GetParameterValue("dummyValue"),
         Throws.InstanceOf<ArgumentException>().With.ArgumentExceptionMessageEqualTo(
-            $"Parameter 'value' has type '{typeof(string)}' when type '{typeof(int)}' was expected.",
+            $"The value has type '{typeof(string)}' when type '{typeof(int)}' was expected.",
             "value"));
   }
 

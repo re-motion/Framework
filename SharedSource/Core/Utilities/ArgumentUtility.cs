@@ -410,8 +410,7 @@ namespace Remotion.Utilities
         if (!expectedType.GetTypeInfo().IsAssignableFrom(actualType.GetTypeInfo()))
         {
           string message = string.Format(
-              "Parameter '{0}' is a '{2}', which cannot be assigned to type '{1}'.",
-              argumentName,
+              "The value is a '{1}', which cannot be assigned to type '{0}'.",
               expectedType,
               actualType);
           throw new ArgumentException(message, argumentName);
@@ -516,12 +515,12 @@ namespace Remotion.Utilities
       string actualTypeName = actualType != null ? actualType.ToString() : "<null>";
       if (expectedType == null)
       {
-        return new ArgumentException(string.Format("Parameter '{0}' has unexpected type '{1}'.", argumentName, actualTypeName), argumentName);
+        return new ArgumentException(string.Format("The value has unexpected type '{0}'.", actualTypeName), argumentName);
       }
       else
       {
         return new ArgumentException(
-            string.Format("Parameter '{0}' has type '{2}' when type '{1}' was expected.", argumentName, expectedType, actualTypeName),
+            string.Format("The value has type '{1}' when type '{0}' was expected.", expectedType, actualTypeName),
             argumentName);
       }
     }
@@ -535,9 +534,8 @@ namespace Remotion.Utilities
     {
       return new ArgumentException(
           string.Format(
-              "Item {0} of parameter '{1}' has the type '{2}' instead of '{3}'.",
+              "Item {0} of the collection has type '{1}' instead of '{2}'.",
               index,
-              argumentName,
               actualType,
               expectedType),
           argumentName);
@@ -546,7 +544,7 @@ namespace Remotion.Utilities
     [MustUseReturnValue]
     public static ArgumentNullException CreateArgumentItemNullException ([InvokerParameterName] string argumentName, int index)
     {
-      return new ArgumentNullException(argumentName, string.Format("Item {0} of parameter '{1}' is null.", index, argumentName));
+      return new ArgumentNullException(argumentName, string.Format("Item {0} of the collection is null.", index));
     }
   }
 }

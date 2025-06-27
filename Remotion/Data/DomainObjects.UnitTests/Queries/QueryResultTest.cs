@@ -163,7 +163,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
           () => _resultWithNulls.ToObjectList(),
           Throws.InstanceOf<UnexpectedQueryResultException>()
               .With.ArgumentExceptionMessageEqualTo(
-                  "Cannot create an ObjectList for the query result: Item 3 of parameter 'domainObjects' is null.",
+                  "Cannot create an ObjectList for the query result: Item 3 of the collection is null.",
                   "domainObjects"));
     }
 
@@ -174,7 +174,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
           () => _resultWithDuplicates.ToObjectList(),
           Throws.InstanceOf<UnexpectedQueryResultException>()
               .With.ArgumentExceptionMessageEqualTo(
-                  "Cannot create an ObjectList for the query result: Item 3 of parameter 'domainObjects' "
+                  "Cannot create an ObjectList for the query result: Item 3 of the collection "
                   + "is a duplicate ('Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid').",
                   "domainObjects"));
     }
@@ -210,7 +210,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
           () => _resultWithNulls.ToCustomCollection(),
           Throws.InstanceOf<UnexpectedQueryResultException>()
               .With.ArgumentExceptionMessageEqualTo(
-                  "Cannot create a custom collection of type 'DomainObjectCollection' for the query result: Item 3 of parameter 'domainObjects' is null.",
+                  "Cannot create a custom collection of type 'DomainObjectCollection' for the query result: Item 3 of the collection is null.",
                   "domainObjects"));
     }
 
@@ -222,7 +222,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
           Throws.InstanceOf<UnexpectedQueryResultException>()
               .With.ArgumentExceptionMessageEqualTo(
                   "Cannot create a custom collection of type 'DomainObjectCollection' for the query result: "
-                  + "Item 3 of parameter 'domainObjects' is a duplicate ('Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid').",
+                  + "Item 3 of the collection is a duplicate ('Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid').",
                   "domainObjects"));
     }
 

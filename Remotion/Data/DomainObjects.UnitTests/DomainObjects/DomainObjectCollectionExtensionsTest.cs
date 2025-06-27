@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
           () => _collection.UnionWith(secondCollection),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Item 0 of parameter 'domainObjects' has the type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' "
+                  "Item 0 of the collection has type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' "
                   + "instead of 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer'.",
                   "domainObjects"));
     }

@@ -140,7 +140,7 @@ namespace Remotion.Security.UnitTests.Metadata
           () => new ClassReflector().GetMetadata(typeof(Role), _cache),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'type' is a 'Remotion.Security.UnitTests.TestDomain.Role', which cannot be assigned to type 'Remotion.Security.ISecurableObject'.",
+                  "The value is a 'Remotion.Security.UnitTests.TestDomain.Role', which cannot be assigned to type 'Remotion.Security.ISecurableObject'.",
                   "type"));
     }
 

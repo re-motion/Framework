@@ -140,7 +140,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
           () => helper.GetSecurableObject(new TestFunctionWithoutPermissions()),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'function' has type 'Remotion.Web.UnitTests.Core.Security.ExecutionEngine.TestFunctionWithoutPermissions' "
+                  "The value has type 'Remotion.Web.UnitTests.Core.Security.ExecutionEngine.TestFunctionWithoutPermissions' "
                   + "when type 'Remotion.Web.UnitTests.Core.Security.ExecutionEngine.TestFunctionWithThisObject' was expected.", "function"));
     }
 

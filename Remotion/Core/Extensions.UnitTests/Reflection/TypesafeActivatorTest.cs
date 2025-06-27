@@ -101,7 +101,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
           () => TypesafeActivator.CreateInstance<Derived>(typeof(Base)).With(),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'type' is a 'Remotion.Extensions.UnitTests.Reflection.TestDomain.Base', "
+                  "The value is a 'Remotion.Extensions.UnitTests.Reflection.TestDomain.Base', "
                   + "which cannot be assigned to type 'Remotion.Extensions.UnitTests.Reflection.TestDomain.Derived'.", "type"));
     }
 

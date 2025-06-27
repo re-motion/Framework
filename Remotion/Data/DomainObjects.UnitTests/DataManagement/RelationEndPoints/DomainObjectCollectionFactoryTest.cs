@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(
           () => _factory.CreateCollection(typeof(ObjectList<Order>), new Order[] { null }, typeof(Order)),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.ArgumentExceptionMessageEqualTo("Item 0 of parameter 'domainObjects' is null.", "domainObjects"));
+              .With.ArgumentExceptionMessageEqualTo("Item 0 of the collection is null.", "domainObjects"));
     }
 
     [Test]

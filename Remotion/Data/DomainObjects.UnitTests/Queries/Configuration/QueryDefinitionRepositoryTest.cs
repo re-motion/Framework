@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
 
       Assert.That(
           () => new QueryDefinitionRepository(new[] { queryDefinition, null }),
-          Throws.ArgumentNullException.With.ArgumentExceptionMessageEqualTo("Item 1 of parameter 'queryDefinitions' is null.", "queryDefinitions"));
+          Throws.ArgumentNullException.With.ArgumentExceptionMessageEqualTo("Item 1 of the collection is null.", "queryDefinitions"));
     }
 
     [Test]

@@ -62,7 +62,7 @@ public class ObjectIDDataParameterDefinitionTest : StandardMappingTest
     Assert.That(
         () => objectIDDataParameterDefinition.GetParameterValue(dummyValue),
         Throws.InstanceOf<ArgumentException>().With.ArgumentExceptionMessageEqualTo(
-            $"Parameter 'objectID.Value' has type '{typeof(Guid)}' when type '{typeof(int)}' was expected.",
+            $"The value has type '{typeof(Guid)}' when type '{typeof(int)}' was expected.",
             "objectID.Value"));
   }
 

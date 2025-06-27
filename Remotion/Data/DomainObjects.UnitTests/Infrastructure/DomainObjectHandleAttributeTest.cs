@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       Assert.That(
           () => _attribute.GetReferencedInstance(new object()),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
-              "Parameter 'handleInstance' has type 'System.Object' "
+              "The value has type 'System.Object' "
               + "when type 'Remotion.Data.DomainObjects.IDomainObjectHandle`1[Remotion.Data.DomainObjects.DomainObject]' was expected.",
               "handleInstance"));
     }

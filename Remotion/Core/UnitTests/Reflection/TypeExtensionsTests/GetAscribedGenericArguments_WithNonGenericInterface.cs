@@ -55,7 +55,7 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
           () => TypeExtensions.GetAscribedGenericArguments(typeof(BaseType), typeof(IDerivedInterface)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.BaseType' "
+                  "The value has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.BaseType' "
                   + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.IDerivedInterface' was expected.",
                   "type"));
     }
@@ -67,7 +67,7 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
           () => TypeExtensions.GetAscribedGenericArguments(typeof(IBaseInterface), typeof(IDerivedInterface)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.IBaseInterface' "
+                  "The value has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.IBaseInterface' "
                   + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.IDerivedInterface' was expected.",
                   "type"));
     }

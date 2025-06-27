@@ -19,7 +19,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
           () => ArgumentUtility.CheckTypeIsAssignableFrom("arg", typeof(object), typeof(string)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'arg' is a 'System.Object', which cannot be assigned to type 'System.String'.", "arg"));
+                  "The value is a 'System.Object', which cannot be assigned to type 'System.String'.", "arg"));
     }
 
     [Test]

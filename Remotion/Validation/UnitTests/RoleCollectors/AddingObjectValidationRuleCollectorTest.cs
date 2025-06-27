@@ -33,7 +33,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
           () => AddingObjectValidationRuleCollector.Create<Customer>(typeof(Customer)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'collectorType' is a 'Remotion.Validation.UnitTests.TestDomain.Customer', "
+                  "The value is a 'Remotion.Validation.UnitTests.TestDomain.Customer', "
                   + "which cannot be assigned to type 'Remotion.Validation.IValidationRuleCollector'.",
                   "collectorType"));
     }

@@ -105,7 +105,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That(
           () => ArgumentUtility.CheckNotNullAndType<string>("arg", 1),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo("Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.", "arg"));
+              .With.ArgumentExceptionMessageEqualTo("The value has type 'System.Int32' when type 'System.String' was expected.", "arg"));
     }
 
     [Test]
@@ -114,7 +114,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That(
           () => ArgumentUtility.CheckNotNullAndType<long>("arg", 1),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo("Parameter 'arg' has type 'System.Int32' when type 'System.Int64' was expected.", "arg"));
+              .With.ArgumentExceptionMessageEqualTo("The value has type 'System.Int32' when type 'System.Int64' was expected.", "arg"));
     }
 
     [Test]
@@ -123,7 +123,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That(
           () => ArgumentUtility.CheckNotNullAndType<int>("arg", "test"),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo("Parameter 'arg' has type 'System.String' when type 'System.Int32' was expected.", "arg"));
+              .With.ArgumentExceptionMessageEqualTo("The value has type 'System.String' when type 'System.Int32' was expected.", "arg"));
     }
 
     [Test]
@@ -140,7 +140,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That(
           () => ArgumentUtility.CheckNotNullAndType("arg", 13, typeof(string)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo("Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.", "arg"));
+              .With.ArgumentExceptionMessageEqualTo("The value has type 'System.Int32' when type 'System.String' was expected.", "arg"));
     }
 
 
@@ -158,7 +158,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That(
           () => ArgumentUtility.CheckNotNullAndType("arg", 13.0, typeof(int)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo("Parameter 'arg' has type 'System.Double' when type 'System.Int32' was expected.", "arg"));
+              .With.ArgumentExceptionMessageEqualTo("The value has type 'System.Double' when type 'System.Int32' was expected.", "arg"));
     }
 
     [Test]
