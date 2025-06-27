@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
         [NotNull] string textContent)
     {
       ArgumentNullException.ThrowIfNull(textContent);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(textContent), textContent);
+      ArgumentException.ThrowIfNullOrEmpty(textContent);
 
       _controlSelector = controlSelector;
       _textContent = textContent;

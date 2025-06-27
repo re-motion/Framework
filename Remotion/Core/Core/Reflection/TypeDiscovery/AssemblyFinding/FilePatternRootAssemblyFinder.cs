@@ -71,7 +71,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
         IFileSearchService fileSearchService,
         IAssemblyLoader assemblyLoader)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(searchPath), searchPath);
+      ArgumentException.ThrowIfNullOrEmpty(searchPath);
       ArgumentNullException.ThrowIfNull(specifications);
       ArgumentNullException.ThrowIfNull(fileSearchService);
       ArgumentNullException.ThrowIfNull(assemblyLoader);

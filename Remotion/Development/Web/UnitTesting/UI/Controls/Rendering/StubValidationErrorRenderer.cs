@@ -37,7 +37,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
       ArgumentNullException.ThrowIfNull(attributeAccessor);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(validationErrorID), validationErrorID);
+      ArgumentException.ThrowIfNullOrEmpty(validationErrorID);
       ArgumentNullException.ThrowIfNull(validationErrors);
 
       attributeAccessor.SetAttribute(ValidationErrorsIDAttribute, validationErrorID);
@@ -50,7 +50,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
       ArgumentNullException.ThrowIfNull(attributeCollection);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(validationErrorID), validationErrorID);
+      ArgumentException.ThrowIfNullOrEmpty(validationErrorID);
       ArgumentNullException.ThrowIfNull(validationErrors);
 
       attributeCollection[ValidationErrorsIDAttribute] = validationErrorID;
@@ -63,7 +63,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
       ArgumentNullException.ThrowIfNull(htmlTextWriter);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(validationErrorID), validationErrorID);
+      ArgumentException.ThrowIfNullOrEmpty(validationErrorID);
       ArgumentNullException.ThrowIfNull(validationErrors);
 
       htmlTextWriter.AddAttribute(ValidationErrorsIDAttribute, validationErrorID);

@@ -143,8 +143,8 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] ILogger logger)
     {
       ArgumentNullException.ThrowIfNull(scope);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(diagnosticMetadataAttributeName), diagnosticMetadataAttributeName);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(diagnosticMetadataAttributeValue), diagnosticMetadataAttributeValue);
+      ArgumentException.ThrowIfNullOrEmpty(diagnosticMetadataAttributeName);
+      ArgumentException.ThrowIfNullOrEmpty(diagnosticMetadataAttributeValue);
       ArgumentNullException.ThrowIfNull(logger);
 
       var targetOption =

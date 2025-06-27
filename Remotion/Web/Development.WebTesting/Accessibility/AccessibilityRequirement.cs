@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
 
     public AccessibilityRequirement (AccessibilityRequirementID id, string message, AccessibilityTestImpact impact)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(message), message);
+      ArgumentException.ThrowIfNullOrEmpty(message);
 
       ID = id;
       Message = message;

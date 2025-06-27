@@ -147,7 +147,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
     /// </summary>
     public static AccessibilityRuleID ConvertToEnum ([NotNull] string ruleIDAsString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(ruleIDAsString), ruleIDAsString);
+      ArgumentException.ThrowIfNullOrEmpty(ruleIDAsString);
 
       if (!s_stringToEnum.TryGetValue(ruleIDAsString, out var ruleID))
         return AccessibilityRuleID.Unknown;

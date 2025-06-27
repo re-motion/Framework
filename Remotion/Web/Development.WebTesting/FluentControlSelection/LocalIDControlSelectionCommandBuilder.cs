@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
 
     public LocalIDControlSelectionCommandBuilder ([NotNull] string localID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(localID), localID);
+      ArgumentException.ThrowIfNullOrEmpty(localID);
 
       _localID = localID;
     }

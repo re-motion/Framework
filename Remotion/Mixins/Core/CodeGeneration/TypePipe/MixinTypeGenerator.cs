@@ -47,7 +47,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentNullException.ThrowIfNull(identifier);
       ArgumentNullException.ThrowIfNull(type);
       ArgumentNullException.ThrowIfNull(attributeGenerator);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(pipelineIdentifier), pipelineIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(pipelineIdentifier);
 
       _identifier = identifier;
       _type = type;

@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting
 
     private static string CreateGetComputedCssValueScript ([NotNull] string cssProperty)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(cssProperty), cssProperty);
+      ArgumentException.ThrowIfNullOrEmpty(cssProperty);
 
       return string.Format("return window.getComputedStyle (arguments[0])['{0}'];", cssProperty);
     }

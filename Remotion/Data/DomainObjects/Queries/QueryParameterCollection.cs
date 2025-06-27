@@ -72,7 +72,7 @@ public class QueryParameterCollection : CommonCollection
   /// <exception cref="System.ArgumentException"><paramref name="parameterName"/> is an empty string.</exception>
   public void Add (string parameterName, object parameterValue)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(parameterName), parameterName);
+    ArgumentException.ThrowIfNullOrEmpty(parameterName);
 
     Add(new QueryParameter(parameterName, parameterValue));
   }
@@ -88,7 +88,7 @@ public class QueryParameterCollection : CommonCollection
   /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="parameterType"/> is not a valid enum value.</exception>
   public void Add (string parameterName, object parameterValue, QueryParameterType parameterType)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(parameterName), parameterName);
+    ArgumentException.ThrowIfNullOrEmpty(parameterName);
     ArgumentUtility.CheckValidEnumValue(nameof(parameterType), parameterType);
 
     Add(new QueryParameter(parameterName, parameterValue, parameterType));

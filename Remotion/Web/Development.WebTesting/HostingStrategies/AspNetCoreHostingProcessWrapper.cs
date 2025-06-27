@@ -33,9 +33,9 @@ public class AspNetCoreHostingProcessWrapper
       string workingDirectory,
       string url)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(processPath), processPath);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(workingDirectory), workingDirectory);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(url), url);
+    ArgumentException.ThrowIfNullOrEmpty(processPath);
+    ArgumentException.ThrowIfNullOrEmpty(workingDirectory);
+    ArgumentException.ThrowIfNullOrEmpty(url);
 
     _processPath = processPath;
     _processArguments = processArguments;

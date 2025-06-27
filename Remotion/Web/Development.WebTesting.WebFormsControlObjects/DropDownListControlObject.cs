@@ -79,7 +79,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject SelectOption (string value, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption(value)");

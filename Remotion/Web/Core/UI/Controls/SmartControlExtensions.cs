@@ -32,7 +32,7 @@ namespace Remotion.Web.UI.Controls
     public static void AssignLabel (this ISmartControl control, string labelID)
     {
       ArgumentNullException.ThrowIfNull(control);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(labelID), labelID);
+      ArgumentException.ThrowIfNullOrEmpty(labelID);
 
       control.AssignLabels(EnumerableUtility.Singleton(labelID));
     }

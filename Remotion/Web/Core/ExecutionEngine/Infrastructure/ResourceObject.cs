@@ -29,14 +29,14 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public ResourceObject (string path)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(path), path);
+      ArgumentException.ThrowIfNullOrEmpty(path);
       _path = path;
     }
 
     public ResourceObject (IResourcePathBuilder resourcePathBuilder, Assembly assembly, string path)
         : base(resourcePathBuilder, assembly)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(path), path);
+      ArgumentException.ThrowIfNullOrEmpty(path);
       _path = path;
     }
 

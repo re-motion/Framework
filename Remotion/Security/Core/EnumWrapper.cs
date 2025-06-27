@@ -42,8 +42,8 @@ namespace Remotion.Security
     /// <param name="typeName">The type name to be integrated into the name.</param>
     public static EnumWrapper Get (string valueName, string typeName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(valueName), valueName);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(typeName), typeName);
+      ArgumentException.ThrowIfNullOrEmpty(valueName);
+      ArgumentException.ThrowIfNullOrEmpty(typeName);
 
       return new EnumWrapper(BuildEnumName(valueName, typeName));
     }
@@ -54,7 +54,7 @@ namespace Remotion.Security
     /// <param name="name">The name to be set.</param>
     public static EnumWrapper Get (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       return new EnumWrapper(name);
     }

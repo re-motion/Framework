@@ -26,7 +26,7 @@ namespace Remotion.Validation.Implementation
 
     public InvariantValidationMessage (string validationMessage)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(validationMessage), validationMessage);
+      ArgumentException.ThrowIfNullOrEmpty(validationMessage);
 
       _validationMessage = validationMessage;
     }

@@ -119,13 +119,13 @@ namespace Remotion.Configuration
 
     protected ConfigurationProperty CreateDefaultProviderNameProperty (string name, string? defaultValue)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
       return new ConfigurationProperty(name, typeof(string), defaultValue, null, new StringValidator(1), ConfigurationPropertyOptions.None);
     }
 
     protected ConfigurationProperty CreateProviderSettingsProperty (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
       return new ConfigurationProperty(name, typeof(ProviderSettingsCollection), null, ConfigurationPropertyOptions.None);
     }
 
@@ -135,7 +135,7 @@ namespace Remotion.Configuration
 
     protected void CheckForDuplicateWellKownProviderName (string wellKnownName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(wellKnownName), wellKnownName);
+      ArgumentException.ThrowIfNullOrEmpty(wellKnownName);
 
       if (ProviderSettings[wellKnownName] != null)
       {
@@ -149,8 +149,8 @@ namespace Remotion.Configuration
 
     protected Type GetTypeWithMatchingVersionNumber (ConfigurationProperty property, string assemblyName, string typeName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(assemblyName), assemblyName);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(typeName), typeName);
+      ArgumentException.ThrowIfNullOrEmpty(assemblyName);
+      ArgumentException.ThrowIfNullOrEmpty(typeName);
       ArgumentNullException.ThrowIfNull(property);
 
       AssemblyName frameworkAssemblyName = GetType().Assembly.GetName();
@@ -164,7 +164,7 @@ namespace Remotion.Configuration
     {
       ArgumentNullException.ThrowIfNull(property);
       ArgumentNullException.ThrowIfNull(assemblyName);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(typeName), typeName);
+      ArgumentException.ThrowIfNullOrEmpty(typeName);
 
       try
       {

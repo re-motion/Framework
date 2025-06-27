@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
         int? maxDop = null)
         : base(padIndex, fillFactor, sortInTempDb, statisticsNoReCompute, dropExisting, allowRowLocks, allowPageLocks, maxDop)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(indexName), indexName);
+      ArgumentException.ThrowIfNullOrEmpty(indexName);
       ArgumentNullException.ThrowIfNull(xmlColumn);
 
       _indexName = indexName;

@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public PrimaryKeyConstraintDefinition (string constraintName, bool isClustered, IEnumerable<ColumnDefinition> columns)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(constraintName), constraintName);
+      ArgumentException.ThrowIfNullOrEmpty(constraintName);
       ArgumentNullException.ThrowIfNull(columns);
 
       var columnsList = columns.ToList().AsReadOnly();

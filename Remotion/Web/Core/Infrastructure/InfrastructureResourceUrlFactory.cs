@@ -39,7 +39,7 @@ namespace Remotion.Web.Infrastructure
     public IResourceUrl CreateThemedResourceUrl (ResourceType resourceType, string relativeUrl)
     {
       ArgumentNullException.ThrowIfNull(resourceType);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(relativeUrl), relativeUrl);
+      ArgumentException.ThrowIfNullOrEmpty(relativeUrl);
 
       return _resourceUrlFactory.CreateThemedResourceUrl(typeof(InfrastructureResourceUrlFactory), resourceType, relativeUrl);
     }

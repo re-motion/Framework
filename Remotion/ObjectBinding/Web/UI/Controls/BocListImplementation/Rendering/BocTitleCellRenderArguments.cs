@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public BocTitleCellRenderArguments (SortingDirection sortingDirection, int orderIndex, string cellID, bool isRowHeader)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(cellID), cellID);
+      ArgumentException.ThrowIfNullOrEmpty(cellID);
 
       SortingDirection = sortingDirection;
       OrderIndex = orderIndex;

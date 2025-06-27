@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptE
 
     public BatchDelimiterStatement (string delimiter)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(delimiter), delimiter);
+      ArgumentException.ThrowIfNullOrEmpty(delimiter);
 
       _delimiter = delimiter;
     }

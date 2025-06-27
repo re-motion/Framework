@@ -39,7 +39,7 @@ namespace Remotion.Development.UnitTesting.Configuration
 
     public void SetUpSection (string configKey, object section)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(configKey), configKey);
+      ArgumentException.ThrowIfNullOrEmpty(configKey);
       ArgumentNullException.ThrowIfNull(section);
 
       _sections.Add(configKey, section);
@@ -47,15 +47,15 @@ namespace Remotion.Development.UnitTesting.Configuration
 
     public void SetUpConnectionString (string name, string connectionString, string providerName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(connectionString), connectionString);
+      ArgumentException.ThrowIfNullOrEmpty(name);
+      ArgumentException.ThrowIfNullOrEmpty(connectionString);
 
       _connectionStringsSection.ConnectionStrings.Add(new ConnectionStringSettings(name, connectionString, providerName));
     }
 
     public void SetUpAppSetting (string name, string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
       ArgumentNullException.ThrowIfNull(value);
 
       _appSettings.Add(name, value);
@@ -63,7 +63,7 @@ namespace Remotion.Development.UnitTesting.Configuration
 
     public override object? GetSection (string sectionName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(sectionName), sectionName);
+      ArgumentException.ThrowIfNullOrEmpty(sectionName);
 
       if (_sections.TryGetValue(sectionName, out var value))
         return value;
@@ -72,14 +72,14 @@ namespace Remotion.Development.UnitTesting.Configuration
 
     public override ConnectionStringSettings GetConnectionString (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       return _connectionStringsSection.ConnectionStrings[name];
     }
 
     public override string? GetAppSetting (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       return _appSettings[name];
     }

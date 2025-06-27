@@ -27,7 +27,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     public FilePatternSpecification (string filePattern, FilePatternSpecificationKind kind)
         : this()
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(filePattern), filePattern);
+      ArgumentException.ThrowIfNullOrEmpty(filePattern);
 
       FilePattern = filePattern;
       Kind = kind;

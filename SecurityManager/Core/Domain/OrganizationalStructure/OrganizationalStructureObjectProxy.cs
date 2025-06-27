@@ -34,8 +34,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     protected OrganizationalStructureObjectProxy (IDomainObjectHandle<T> handle, string uniqueIdentifier, string displayName)
     {
       ArgumentNullException.ThrowIfNull(handle);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(uniqueIdentifier), uniqueIdentifier);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(displayName), displayName);
+      ArgumentException.ThrowIfNullOrEmpty(uniqueIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(displayName);
 
       _handle = handle;
       _uniqueIdentifier = uniqueIdentifier;

@@ -48,7 +48,7 @@ namespace Remotion.Web.Resources
     {
       ArgumentNullException.ThrowIfNull(definingType);
       ArgumentNullException.ThrowIfNull(resourceType);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(relativeUrl), relativeUrl);
+      ArgumentException.ThrowIfNullOrEmpty(relativeUrl);
 
       return new ResourceUrl(
           GetResourcePathBuilderForResourceType(resourceType),
@@ -61,7 +61,7 @@ namespace Remotion.Web.Resources
     {
       ArgumentNullException.ThrowIfNull(definingType);
       ArgumentNullException.ThrowIfNull(resourceType);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(relativeUrl), relativeUrl);
+      ArgumentException.ThrowIfNullOrEmpty(relativeUrl);
 
       return new ThemedResourceUrl(
           GetResourcePathBuilderForResourceType(resourceType),

@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding
     public static object? GetProperty (this IBusinessObject businessObject, string propertyIdentifier)
     {
       ArgumentNullException.ThrowIfNull(businessObject);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyIdentifier), propertyIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(propertyIdentifier);
 
       var propertyDefinition = GetPropertyDefinition(businessObject, propertyIdentifier);
 
@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding
     public static void SetProperty (this IBusinessObject businessObject, string propertyIdentifier, object? value)
     {
       ArgumentNullException.ThrowIfNull(businessObject);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyIdentifier), propertyIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(propertyIdentifier);
 
       var propertyDefinition = GetPropertyDefinition(businessObject, propertyIdentifier);
 
@@ -101,7 +101,7 @@ namespace Remotion.ObjectBinding
     public static string GetPropertyString (this IBusinessObject businessObject, string propertyIdentifier)
     {
       ArgumentNullException.ThrowIfNull(businessObject);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyIdentifier), propertyIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(propertyIdentifier);
 
       var propertyDefinition = GetPropertyDefinition(businessObject, propertyIdentifier);
 

@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         IRelationEndPointDefinition endPointDefinition1,
         IRelationEndPointDefinition endPointDefinition2)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
+      ArgumentException.ThrowIfNullOrEmpty(id);
       ArgumentNullException.ThrowIfNull(endPointDefinition1);
       ArgumentNullException.ThrowIfNull(endPointDefinition2);
 
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public IRelationEndPointDefinition? GetEndPointDefinition (string classID, string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(classID), classID);
+      ArgumentException.ThrowIfNullOrEmpty(classID);
 
       if (_endPointDefinition1.ClassDefinition.ID == classID && _endPointDefinition1.PropertyName == propertyName)
         return _endPointDefinition1;
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public IRelationEndPointDefinition? GetOppositeEndPointDefinition (string classID, string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(classID), classID);
+      ArgumentException.ThrowIfNullOrEmpty(classID);
 
       var matchingEndPointDefinition = GetEndPointDefinition(classID, propertyName);
       if (matchingEndPointDefinition == null)
@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public bool IsEndPoint (string classID, string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(classID), classID);
+      ArgumentException.ThrowIfNullOrEmpty(classID);
 
       return GetEndPointDefinition(classID, propertyName) != null;
     }

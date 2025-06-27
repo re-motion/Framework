@@ -30,7 +30,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
     public RedirectingToSubFunctionStateParameters (WxeFunction subFunction, NameValueCollection postBackCollection, string destinationUrl)
         : base(subFunction, postBackCollection)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(destinationUrl), destinationUrl);
+      ArgumentException.ThrowIfNullOrEmpty(destinationUrl);
 
       _destinationUrl = destinationUrl;
     }

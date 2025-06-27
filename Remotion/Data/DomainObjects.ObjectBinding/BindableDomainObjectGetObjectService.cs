@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     public IBusinessObjectWithIdentity? GetObject (BindableObjectClassWithIdentity classWithIdentity, string uniqueIdentifier)
     {
       ArgumentNullException.ThrowIfNull(classWithIdentity);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(uniqueIdentifier), uniqueIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(uniqueIdentifier);
 
       var clientTransaction = ClientTransaction.Current;
       if (clientTransaction == null)

@@ -36,7 +36,7 @@ namespace Remotion.Security.Metadata
     public void ConvertAndSave (MetadataCache cache, string filename)
     {
       ArgumentNullException.ThrowIfNull(cache);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(filename), filename);
+      ArgumentException.ThrowIfNullOrEmpty(filename);
 
       XmlDocument xmlDocument = Convert(cache);
       xmlDocument.Save(filename);

@@ -41,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <param name="controlType">The <see cref="DiagnosticMetadataAttributes.ControlType"/> identifying the <typeparamref name="TControlObject"/>.</param>
     protected TypedControlSelectorBase ([NotNull] string controlType)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(controlType), controlType);
+      ArgumentException.ThrowIfNullOrEmpty(controlType);
 
       _controlType = controlType;
     }

@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
     public StorageProviderDefinition GetStorageProviderDefinition (string storageProviderName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(storageProviderName), storageProviderName);
+      ArgumentException.ThrowIfNullOrEmpty(storageProviderName);
 
       return _storageSettings.Value.GetStorageProviderDefinition(storageProviderName);
     }

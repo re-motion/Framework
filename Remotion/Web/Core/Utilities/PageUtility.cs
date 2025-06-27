@@ -61,7 +61,7 @@ namespace Remotion.Web.Utilities
     public static string? GetPostBackCollectionItem (IPage page, string name)
     {
       ArgumentNullException.ThrowIfNull(page);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       NameValueCollection? collection = GetPostBackCollection(page);
       if (collection == null)

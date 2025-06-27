@@ -88,7 +88,7 @@ namespace Remotion.ExtensibleEnums
     /// and hash code calculations.</param>
     protected ExtensibleEnum (string? declarationSpace, string valueName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(valueName), valueName);
+      ArgumentException.ThrowIfNullOrEmpty(valueName);
 
       DeclarationSpace = declarationSpace;
       ValueName = valueName;

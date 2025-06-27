@@ -64,7 +64,7 @@ namespace Remotion.Configuration
 
     public object? GetSection (string sectionName, bool throwIfNotFound)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(sectionName), sectionName);
+      ArgumentException.ThrowIfNullOrEmpty(sectionName);
 
       object? section = GetSection(sectionName);
       if (throwIfNotFound && section == null)
@@ -75,7 +75,7 @@ namespace Remotion.Configuration
 
     public ConnectionStringSettings GetConnectionString (string name, bool throwIfNotFound)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       ConnectionStringSettings connectionStringSettings = GetConnectionString(name);
       if (throwIfNotFound && connectionStringSettings == null)
@@ -86,7 +86,7 @@ namespace Remotion.Configuration
 
     public string? GetAppSetting (string name, bool throwIfNotFound)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       string? appSetting = GetAppSetting(name);
       if (throwIfNotFound && appSetting == null)

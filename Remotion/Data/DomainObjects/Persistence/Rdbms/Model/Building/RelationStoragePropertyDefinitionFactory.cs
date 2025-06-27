@@ -92,8 +92,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         string relationClassIDColumnName)
     {
       ArgumentNullException.ThrowIfNull(relatedClassDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(relationColumnName), relationColumnName);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(relationClassIDColumnName), relationClassIDColumnName);
+      ArgumentException.ThrowIfNullOrEmpty(relationColumnName);
+      ArgumentException.ThrowIfNullOrEmpty(relationClassIDColumnName);
 
       var relatedStorageProviderDefinition = _storageSettings.GetStorageProviderDefinition(relatedClassDefinition);
 

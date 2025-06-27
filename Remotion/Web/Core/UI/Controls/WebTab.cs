@@ -155,7 +155,7 @@ public class WebTab: IWebTab, IControlStateManager
     get { return _itemID; }
     set
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
       if (! string.IsNullOrEmpty(value))
       {
         WebTabCollection? tabs = null;

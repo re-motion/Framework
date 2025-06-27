@@ -29,8 +29,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     public RdbmsProviderDefinition (string name, IRdbmsStorageObjectFactory factory, string connectionString, string readOnlyConnectionString, IReadOnlyCollection<Type>? assignedStorageGroups = null)
         : base(name, factory, assignedStorageGroups)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(connectionString), connectionString);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(readOnlyConnectionString), readOnlyConnectionString);
+      ArgumentException.ThrowIfNullOrEmpty(connectionString);
+      ArgumentException.ThrowIfNullOrEmpty(readOnlyConnectionString);
 
       _connectionString = connectionString;
       _readOnlyConnectionString = readOnlyConnectionString;

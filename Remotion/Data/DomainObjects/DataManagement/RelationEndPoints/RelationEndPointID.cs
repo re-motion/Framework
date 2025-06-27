@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     public static RelationEndPointID Create (ObjectID objectID, string propertyIdentifier)
     {
       ArgumentNullException.ThrowIfNull(objectID);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyIdentifier), propertyIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(propertyIdentifier);
 
       IRelationEndPointDefinition endPointDefinition;
       try
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       ArgumentNullException.ThrowIfNull(objectID);
       ArgumentNullException.ThrowIfNull(declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
+      ArgumentException.ThrowIfNullOrEmpty(shortPropertyName);
 
       return CreateViaPropertyAccessorData(
           objectID,

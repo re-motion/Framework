@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     public WrappingAccessorInterceptor (MethodInfo interceptedAccessorMethod, string propertyName)
     {
       ArgumentNullException.ThrowIfNull(interceptedAccessorMethod);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
       _interceptedAccessorMethod = interceptedAccessorMethod;
       _propertyName = propertyName;

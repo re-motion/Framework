@@ -262,7 +262,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     public TreeViewNodeControlObject GetNode (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       return GetNode().WithItemID(itemID);
     }
@@ -282,7 +282,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     public TreeViewNodeControlObject GetNodeInHierarchy (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       return GetNodeInHierarchy().WithItemID(itemID);
     }

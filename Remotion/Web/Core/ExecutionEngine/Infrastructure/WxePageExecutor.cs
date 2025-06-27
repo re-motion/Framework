@@ -31,7 +31,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     public void ExecutePage (WxeContext context, string page, bool isPostBack)
     {
       ArgumentNullException.ThrowIfNull(context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(page), page);
+      ArgumentException.ThrowIfNullOrEmpty(page);
 
       string url = page;
       string queryString = context.HttpContext.Request.Url.Query;

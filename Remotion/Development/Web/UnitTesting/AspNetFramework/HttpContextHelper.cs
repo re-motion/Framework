@@ -43,8 +43,8 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     public static HttpContext CreateHttpContext (string httpMethod, string page, string? query)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(httpMethod), httpMethod);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(page), page);
+      ArgumentException.ThrowIfNullOrEmpty(httpMethod);
+      ArgumentException.ThrowIfNullOrEmpty(page);
 
       SimpleWorkerRequest workerRequest =
           new SimpleWorkerRequest(s_appVirtualDir, s_appPhysicalDir, page, query!, new System.IO.StringWriter());

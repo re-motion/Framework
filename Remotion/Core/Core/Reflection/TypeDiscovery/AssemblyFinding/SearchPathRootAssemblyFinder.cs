@@ -70,7 +70,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
         string? dynamicDirectory,
         IAssemblyLoader assemblyLoader)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(baseDirectory), baseDirectory);
+      ArgumentException.ThrowIfNullOrEmpty(baseDirectory);
       ArgumentNullException.ThrowIfNull(assemblyLoader);
 
       _baseDirectory = baseDirectory;

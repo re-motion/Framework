@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <inheritdoc/>
     public bool HasCssClass (string cssClass)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(cssClass), cssClass);
+      ArgumentException.ThrowIfNullOrEmpty(cssClass);
 
       return _styledScope["class"].Split(' ').Contains(cssClass);
     }

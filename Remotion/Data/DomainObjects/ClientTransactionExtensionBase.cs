@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects
 
     protected ClientTransactionExtensionBase (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
+      ArgumentException.ThrowIfNullOrEmpty(key);
       _key = key;
     }
 

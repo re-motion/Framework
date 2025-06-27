@@ -37,8 +37,8 @@ namespace Remotion.Web.Development.WebTesting
 
     public AccessibilityTestTarget ([NotNull] string xPath, [NotNull] string cssSelector)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(xPath), xPath);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(cssSelector), cssSelector);
+      ArgumentException.ThrowIfNullOrEmpty(xPath);
+      ArgumentException.ThrowIfNullOrEmpty(cssSelector);
 
       XPath = xPath;
       CssSelector = cssSelector;

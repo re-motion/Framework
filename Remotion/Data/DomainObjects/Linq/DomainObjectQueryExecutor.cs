@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Linq
     {
       ArgumentNullException.ThrowIfNull(storageProviderDefinition);
       ArgumentNullException.ThrowIfNull(queryGenerator);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
+      ArgumentException.ThrowIfNullOrEmpty(id);
       ArgumentNullException.ThrowIfNull(metadata);
 
       _storageProviderDefinition = storageProviderDefinition;

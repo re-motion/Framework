@@ -49,7 +49,7 @@ namespace Remotion.Web.ExecutionEngine
     public WxeCallOptionsExternal (string target, string? features, bool returningPostback, WxePermaUrlOptions permaUrlOptions)
         : base(permaUrlOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(target), target);
+      ArgumentException.ThrowIfNullOrEmpty(target);
 
       _target = target;
       _features = features;

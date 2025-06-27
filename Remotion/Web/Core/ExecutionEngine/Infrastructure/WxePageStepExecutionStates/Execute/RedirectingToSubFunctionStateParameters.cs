@@ -32,8 +32,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
         WxeFunction subFunction, NameValueCollection postBackCollection, string destinationUrl, string resumeUrl)
         : base(subFunction, postBackCollection)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(destinationUrl), destinationUrl);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(resumeUrl), resumeUrl);
+      ArgumentException.ThrowIfNullOrEmpty(destinationUrl);
+      ArgumentException.ThrowIfNullOrEmpty(resumeUrl);
 
       _destinationUrl = destinationUrl;
       _resumeUrl = resumeUrl;

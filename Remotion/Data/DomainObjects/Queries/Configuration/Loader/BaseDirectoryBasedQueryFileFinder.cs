@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
     protected BaseDirectoryBasedQueryFileFinder (IAppContextProvider appContextProvider, string queryFile)
     {
       ArgumentNullException.ThrowIfNull(appContextProvider);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(queryFile), queryFile);
+      ArgumentException.ThrowIfNullOrEmpty(queryFile);
 
       _appContextProvider = appContextProvider;
       _queryFile = queryFile;

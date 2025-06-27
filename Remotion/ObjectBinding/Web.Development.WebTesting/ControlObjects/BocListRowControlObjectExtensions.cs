@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         where TCellControlObject : ControlObject
     {
       ArgumentNullException.ThrowIfNull(row);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(domainPropertyPath), domainPropertyPath);
+      ArgumentException.ThrowIfNullOrEmpty(domainPropertyPath);
 
       return row.WithDomainPropertyPaths(domainPropertyPath);
     }

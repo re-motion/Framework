@@ -95,7 +95,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
 
     public BrowserWindow FindWindow (string locator, Options? options = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(locator), locator);
+      ArgumentException.ThrowIfNullOrEmpty(locator);
 
       return _value.FindWindow(locator, options);
     }

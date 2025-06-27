@@ -75,7 +75,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject SwitchTo (string itemID, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       var itemScope = Scope.FindTagWithAttribute("span.tabStripTab", DiagnosticMetadataAttributes.ItemID, itemID);
       var itemCommand = FindItemCommand(itemScope);
@@ -89,7 +89,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithTabs.WithItemID (string itemID, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       var itemScope = Scope.FindTagWithAttribute("span.tabStripTab", DiagnosticMetadataAttributes.ItemID, itemID);
       var itemCommand = FindItemCommand(itemScope);
@@ -119,7 +119,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithTabs.WithHtmlID (string htmlID, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(htmlID), htmlID);
+      ArgumentException.ThrowIfNullOrEmpty(htmlID);
 
       var itemScope = Scope.FindId(htmlID);
       var itemCommand = FindItemCommand(itemScope);
@@ -133,7 +133,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithTabs.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(displayText), displayText);
+      ArgumentException.ThrowIfNullOrEmpty(displayText);
 
       var itemScope = Scope.FindTagWithAttribute("span.tabStripTab", DiagnosticMetadataAttributes.Content, displayText);
       var itemCommand = FindItemCommand(itemScope);
@@ -147,7 +147,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithTabs.WithDisplayTextContains (string containsDisplayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(containsDisplayText), containsDisplayText);
+      ArgumentException.ThrowIfNullOrEmpty(containsDisplayText);
 
       var itemScope = Scope.FindTagWithAttributeUsingOperator(
           "span.tabStripTab",

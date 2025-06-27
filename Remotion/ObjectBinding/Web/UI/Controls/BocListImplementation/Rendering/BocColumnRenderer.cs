@@ -102,7 +102,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public void RenderTitleCell (BocListRenderingContext renderingContext, string cellID)
     {
       ArgumentNullException.ThrowIfNull(renderingContext);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(cellID), cellID);
+      ArgumentException.ThrowIfNullOrEmpty(cellID);
 
       var columnRenderingContext = CreateBocColumnRenderingContext(renderingContext);
 

@@ -38,14 +38,14 @@ public class IgnoreBrowserLogMessageAttribute : WebTestAttribute
 
   public IgnoreBrowserLogMessageAttribute ([NotNull] [RegexPattern] string pattern)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(pattern), pattern);
+    ArgumentException.ThrowIfNullOrEmpty(pattern);
 
     Pattern = pattern;
   }
 
   public IgnoreBrowserLogMessageAttribute ([NotNull] [RegexPattern] string pattern, [NotNull] [ItemCanBeNull] object?[] templateArgs)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(pattern), pattern);
+    ArgumentException.ThrowIfNullOrEmpty(pattern);
     ArgumentUtility.CheckNotNullOrEmpty(nameof(templateArgs), templateArgs);
 
     pattern = string.Format(pattern, templateArgs);

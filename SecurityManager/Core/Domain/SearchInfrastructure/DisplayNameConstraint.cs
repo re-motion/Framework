@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     public DisplayNameConstraint (string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
       _value = value;
     }
 

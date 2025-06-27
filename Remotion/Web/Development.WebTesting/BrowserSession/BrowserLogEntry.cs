@@ -70,7 +70,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
 
     public BrowserLogEntry (LogLevel level, [NotNull] string message, DateTime timestamp)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(message), message);
+      ArgumentException.ThrowIfNullOrEmpty(message);
 
       Level = level;
       Message = message;

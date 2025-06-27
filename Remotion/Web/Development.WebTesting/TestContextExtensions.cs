@@ -25,7 +25,7 @@ public static class TestContextExtensions
   public static IReadOnlyCollection<T> GetCollection<T> (this ITestContext testContext, string propertyKey)
   {
     ArgumentNullException.ThrowIfNull(testContext);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyKey), propertyKey);
+    ArgumentException.ThrowIfNullOrEmpty(propertyKey);
 
     if (!testContext.Properties.TryGetValue(propertyKey, out var value))
       return Array.Empty<T>();
@@ -43,7 +43,7 @@ public static class TestContextExtensions
       where T : notnull
   {
     ArgumentNullException.ThrowIfNull(testContext);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyKey), propertyKey);
+    ArgumentException.ThrowIfNullOrEmpty(propertyKey);
     ArgumentNullException.ThrowIfNull(defaultValue);
 
     if (!testContext.Properties.TryGetValue(propertyKey, out var value))

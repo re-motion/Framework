@@ -30,8 +30,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     public State (IDomainObjectHandle<StatePropertyDefinition> propertyHandle, string propertyName, string value)
     {
       ArgumentNullException.ThrowIfNull(propertyHandle);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(value);
 
       _propertyHandle = propertyHandle;
       _propertyName = propertyName;

@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     public LocalIDControlSelectionCommand ([NotNull] ILocalIDControlSelector<TControlObject> controlSelector, [NotNull] string localID)
     {
       ArgumentNullException.ThrowIfNull(controlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(localID), localID);
+      ArgumentException.ThrowIfNullOrEmpty(localID);
 
       _controlSelector = controlSelector;
       _localID = localID;

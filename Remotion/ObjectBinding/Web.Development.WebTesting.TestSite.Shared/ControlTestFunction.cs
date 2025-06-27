@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
       get { return (string)Variables["UserControl"]; }
       set
       {
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+        ArgumentException.ThrowIfNullOrEmpty(value);
         Variables["UserControl"] = value;
       }
     }

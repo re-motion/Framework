@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.Linq
         QueryModel queryModel,
         IReadOnlyDictionary<string, object> metadata)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
+      ArgumentException.ThrowIfNullOrEmpty(id);
       ArgumentNullException.ThrowIfNull(storageProviderDefinition);
       ArgumentNullException.ThrowIfNull(queryModel);
       ArgumentNullException.ThrowIfNull(metadata);
@@ -157,7 +157,7 @@ namespace Remotion.Data.DomainObjects.Linq
         IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders,
         IReadOnlyDictionary<string, object> metadata)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
+      ArgumentException.ThrowIfNullOrEmpty(id);
       ArgumentNullException.ThrowIfNull(storageProviderDefinition);
       ArgumentNullException.ThrowIfNull(queryModel);
       ArgumentNullException.ThrowIfNull(fetchQueryModelBuilders);
@@ -200,7 +200,7 @@ namespace Remotion.Data.DomainObjects.Linq
         Type? selectedEntityType,
         IReadOnlyDictionary<string, object> metadata)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
+      ArgumentException.ThrowIfNullOrEmpty(id);
       ArgumentNullException.ThrowIfNull(storageProviderDefinition);
       ArgumentNullException.ThrowIfNull(statement);
       ArgumentNullException.ThrowIfNull(commandParameters);

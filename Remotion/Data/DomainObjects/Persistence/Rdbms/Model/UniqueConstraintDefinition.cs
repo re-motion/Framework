@@ -37,7 +37,7 @@ public class UniqueConstraintDefinition : ITableConstraintDefinition
 
   public UniqueConstraintDefinition (string constraintName, bool isClustered, IEnumerable<ColumnDefinition> columns)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(constraintName), constraintName);
+    ArgumentException.ThrowIfNullOrEmpty(constraintName);
     ArgumentNullException.ThrowIfNull(columns);
 
     var columnsList = columns.ToList().AsReadOnly();

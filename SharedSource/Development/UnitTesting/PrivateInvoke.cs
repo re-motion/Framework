@@ -100,7 +100,7 @@ namespace Remotion.Development.UnitTesting
     public static object? InvokeNonPublicStaticMethod (Type type, string methodName, params object?[]? arguments)
     {
       ArgumentNullException.ThrowIfNull(type);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
+      ArgumentException.ThrowIfNullOrEmpty(methodName);
 
       return InvokeMethodInternal(null, type, BindingFlags.Static | BindingFlags.NonPublic, methodName, arguments);
     }
@@ -108,7 +108,7 @@ namespace Remotion.Development.UnitTesting
     public static object? InvokePublicStaticMethod (Type type, string methodName, params object?[]? arguments)
     {
       ArgumentNullException.ThrowIfNull(type);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
+      ArgumentException.ThrowIfNullOrEmpty(methodName);
 
       return InvokeMethodInternal(null, type, BindingFlags.Static | BindingFlags.Public, methodName, arguments);
     }
@@ -125,7 +125,7 @@ namespace Remotion.Development.UnitTesting
       ArgumentNullException.ThrowIfNull(target);
       ArgumentNullException.ThrowIfNull(definingType);
       ArgumentUtility.CheckType(nameof(target), target, definingType);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
+      ArgumentException.ThrowIfNullOrEmpty(methodName);
 
       return InvokeMethodInternal(target, definingType, BindingFlags.Instance | BindingFlags.NonPublic, methodName, arguments);
     }
@@ -133,7 +133,7 @@ namespace Remotion.Development.UnitTesting
     public static object? InvokePublicMethod (object target, string methodName, params object?[]? arguments)
     {
       ArgumentNullException.ThrowIfNull(target);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
+      ArgumentException.ThrowIfNullOrEmpty(methodName);
 
       return InvokeMethodInternal(target, target.GetType(), BindingFlags.Instance | BindingFlags.Public, methodName, arguments);
     }

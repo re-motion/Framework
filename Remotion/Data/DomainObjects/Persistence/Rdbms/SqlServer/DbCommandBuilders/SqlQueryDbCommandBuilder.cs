@@ -57,7 +57,7 @@ public class SqlQueryDbCommandBuilder : QueryDbCommandBuilder
   public SqlQueryDbCommandBuilder (string statement, IReadOnlyCollection<QueryParameterWithDataParameterDefinition> parameters, ISqlDialect sqlDialect)
       : base(statement, parameters, sqlDialect)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(statement), statement);
+    ArgumentException.ThrowIfNullOrEmpty(statement);
     ArgumentNullException.ThrowIfNull(parameters);
     ArgumentNullException.ThrowIfNull(sqlDialect);
 

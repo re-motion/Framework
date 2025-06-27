@@ -77,8 +77,8 @@ namespace Remotion.Validation.Results
     {
       ArgumentNullException.ThrowIfNull(validatedObject);
       ArgumentNullException.ThrowIfNull(validatedProperties);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(errorMessage), errorMessage);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(localizedValidationMessage), localizedValidationMessage);
+      ArgumentException.ThrowIfNullOrEmpty(errorMessage);
+      ArgumentException.ThrowIfNullOrEmpty(localizedValidationMessage);
 
       ValidatedObject = validatedObject;
       ValidatedProperties = validatedProperties;

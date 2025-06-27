@@ -262,7 +262,7 @@ namespace Remotion.Web.Development.WebTesting
 
     private static bool IsTransparent ([NotNull] string color)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(color), color);
+      ArgumentException.ThrowIfNullOrEmpty(color);
 
       if (color == "rgba(0, 0, 0, 0)")
         return true;
@@ -345,7 +345,7 @@ namespace Remotion.Web.Development.WebTesting
     public static string GetAttribute ([NotNull] this ElementScope scope, [NotNull] string attributeName, [NotNull] ILogger logger)
     {
       ArgumentNullException.ThrowIfNull(scope);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(attributeName), attributeName);
+      ArgumentException.ThrowIfNullOrEmpty(attributeName);
       ArgumentNullException.ThrowIfNull(logger);
 
       var result = scope[attributeName];

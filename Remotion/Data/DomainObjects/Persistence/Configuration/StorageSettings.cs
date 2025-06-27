@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     /// <inheritdoc />
     public StorageProviderDefinition GetStorageProviderDefinition (string storageProviderName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(storageProviderName), storageProviderName);
+      ArgumentException.ThrowIfNullOrEmpty(storageProviderName);
 
       return _storageProviderDefinitions.FirstOrDefault(p => p.Name == storageProviderName)
              ?? throw new ConfigurationException($"The requested storage provider '{storageProviderName}' could not be found.");

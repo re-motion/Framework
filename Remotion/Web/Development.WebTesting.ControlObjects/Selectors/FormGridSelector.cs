@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     public FormGridControlObject SelectPerTitle (ControlSelectionContext context, string title)
     {
       ArgumentNullException.ThrowIfNull(context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(title), title);
+      ArgumentException.ThrowIfNullOrEmpty(title);
 
       var scope = FindScopePerTitle(context, title);
 
@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     public FormGridControlObject? SelectOptionalPerTitle (ControlSelectionContext context, string title)
     {
       ArgumentNullException.ThrowIfNull(context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(title), title);
+      ArgumentException.ThrowIfNullOrEmpty(title);
 
       var scope = FindScopePerTitle(context, title);
 
@@ -62,7 +62,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     public bool ExistsPerTitle (ControlSelectionContext context, string title)
     {
       ArgumentNullException.ThrowIfNull(context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(title), title);
+      ArgumentException.ThrowIfNullOrEmpty(title);
 
       var scope = FindScopePerTitle(context, title);
 

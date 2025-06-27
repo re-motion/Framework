@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
 
     protected BusinessObjectPropertyPathPropertyEnumeratorBase (string propertyPathIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyPathIdentifier), propertyPathIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(propertyPathIdentifier);
 
       _remainingPropertyPathIdentifier = propertyPathIdentifier;
     }

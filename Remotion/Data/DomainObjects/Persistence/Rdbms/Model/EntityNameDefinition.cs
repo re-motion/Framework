@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     public EntityNameDefinition (string? schemaName, string entityName)
     {
       ArgumentUtility.CheckNotEmpty(nameof(schemaName), schemaName);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(entityName), entityName);
+      ArgumentException.ThrowIfNullOrEmpty(entityName);
 
       _schemaName = schemaName;
       _entityName = entityName;

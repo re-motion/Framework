@@ -27,8 +27,8 @@ namespace Remotion.Security.Metadata
 
     public LocalizedName (string referencedObjectID, string comment, string text)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(referencedObjectID), referencedObjectID);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(comment), comment);
+      ArgumentException.ThrowIfNullOrEmpty(referencedObjectID);
+      ArgumentException.ThrowIfNullOrEmpty(comment);
       ArgumentNullException.ThrowIfNull(text);
 
       _referencedObjectID = referencedObjectID;

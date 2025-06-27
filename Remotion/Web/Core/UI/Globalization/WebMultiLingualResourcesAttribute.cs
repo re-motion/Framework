@@ -131,7 +131,7 @@ namespace Remotion.Web.UI.Globalization
     public WebMultiLingualResourcesAttribute (string baseName)
         : base(baseName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(baseName), baseName);
+      ArgumentException.ThrowIfNullOrEmpty(baseName);
       Type? type = BuildManager.GetType(baseName, throwOnError: false, ignoreCase: false);
       if (type != null)
         SetResourceAssembly(type.Assembly);

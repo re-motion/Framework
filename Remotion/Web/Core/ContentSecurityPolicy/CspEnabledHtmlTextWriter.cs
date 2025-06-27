@@ -76,7 +76,7 @@ namespace Remotion.Web.ContentSecurityPolicy
     /// <param name="eventName">The name of the attribute event (e.g. onclick).</param>
     public static void RegisterSupportedEvent (string eventName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventName), eventName);
+      ArgumentException.ThrowIfNullOrEmpty(eventName);
       if (!eventName.StartsWith("on", StringComparison.OrdinalIgnoreCase))
         throw new ArgumentException("The specified event name must start with 'on'.", nameof(eventName));
 
@@ -180,7 +180,7 @@ namespace Remotion.Web.ContentSecurityPolicy
       ArgumentNullException.ThrowIfNull(page);
       ArgumentNullException.ThrowIfNull(writer);
       ArgumentNullException.ThrowIfNull(nonceGenerator);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(requestNonce), requestNonce);
+      ArgumentException.ThrowIfNullOrEmpty(requestNonce);
       ArgumentNullException.ThrowIfNull(renderingFeatures);
 
       _page = page;

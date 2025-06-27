@@ -16,7 +16,7 @@ public class Font : IDisposable
 
   public Font (string fontFamilyName, float size = 12f)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(fontFamilyName), fontFamilyName);
+    ArgumentException.ThrowIfNullOrEmpty(fontFamilyName);
 
     var fontFamily = SKTypeface.FromFamilyName(fontFamilyName);
     if (fontFamily == null || !fontFamily.FamilyName.Equals(fontFamilyName, StringComparison.OrdinalIgnoreCase))

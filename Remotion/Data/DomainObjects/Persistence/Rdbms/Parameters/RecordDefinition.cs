@@ -46,7 +46,7 @@ public class RecordDefinition
 
   public RecordDefinition (string name, IRdbmsStructuredTypeDefinition structuredTypeDefinition, IReadOnlyCollection<RecordPropertyDefinition> propertyDefinitions)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+    ArgumentException.ThrowIfNullOrEmpty(name);
     ArgumentNullException.ThrowIfNull(structuredTypeDefinition);
     ArgumentNullException.ThrowIfNull(propertyDefinitions);
 

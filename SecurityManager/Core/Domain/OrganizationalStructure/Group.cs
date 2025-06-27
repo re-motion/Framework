@@ -65,7 +65,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     public static Group? FindByUnqiueIdentifier (string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(uniqueIdentifier), uniqueIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(uniqueIdentifier);
 
       var result = from g in QueryFactory.CreateLinqQuery<Group>()
                    where g.UniqueIdentifier == uniqueIdentifier

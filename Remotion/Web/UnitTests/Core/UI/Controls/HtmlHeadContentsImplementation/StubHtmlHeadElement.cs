@@ -28,7 +28,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.HtmlHeadContentsImplementation
 
     public StubHtmlHeadElement (string content)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(content), content);
+      ArgumentException.ThrowIfNullOrEmpty(content);
 
       _content = content;
     }

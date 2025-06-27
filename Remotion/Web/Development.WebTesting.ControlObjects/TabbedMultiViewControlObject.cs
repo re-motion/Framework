@@ -95,7 +95,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject SwitchTo (string itemID, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       return SwitchTo().WithItemID(itemID, actionOptions);
     }
@@ -103,7 +103,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithTabs.WithItemID (string itemID, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       return GetTabStrip().SwitchTo(itemID + "_Tab", actionOptions);
     }
@@ -117,7 +117,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithTabs.WithHtmlID (string htmlID, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(htmlID), htmlID);
+      ArgumentException.ThrowIfNullOrEmpty(htmlID);
 
       return GetTabStrip().SwitchTo().WithHtmlID(htmlID, actionOptions);
     }
@@ -125,7 +125,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithTabs.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(displayText), displayText);
+      ArgumentException.ThrowIfNullOrEmpty(displayText);
 
       return GetTabStrip().SwitchTo().WithDisplayText(displayText, actionOptions);
     }
@@ -133,7 +133,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithTabs.WithDisplayTextContains (string containsDisplayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(containsDisplayText), containsDisplayText);
+      ArgumentException.ThrowIfNullOrEmpty(containsDisplayText);
 
       return GetTabStrip().SwitchTo().WithDisplayTextContains(containsDisplayText, actionOptions);
     }

@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 
     public DefaultUnknownFileNameFinderStrategy ([NotNull] string partialFileEnding)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(partialFileEnding), partialFileEnding);
+      ArgumentException.ThrowIfNullOrEmpty(partialFileEnding);
 
       _partialFileEnding = partialFileEnding;
     }

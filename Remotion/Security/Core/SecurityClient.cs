@@ -225,7 +225,7 @@ namespace Remotion.Security
     public bool HasMethodAccess (ISecurableObject securableObject, string methodName, ISecurityPrincipal principal)
     {
       ArgumentNullException.ThrowIfNull(securableObject);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
+      ArgumentException.ThrowIfNullOrEmpty(methodName);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableObject.GetSecurableType(), methodName, MemberAffiliation.Instance);
@@ -337,7 +337,7 @@ namespace Remotion.Security
     public bool HasPropertyReadAccess (ISecurableObject securableObject, string propertyName, ISecurityPrincipal principal)
     {
       ArgumentNullException.ThrowIfNull(securableObject);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableObject.GetSecurableType(), "get_" + propertyName, MemberAffiliation.Instance);
@@ -393,7 +393,7 @@ namespace Remotion.Security
       if (!HasPropertyReadAccess(securableObject, propertyName, principal))
       {
         ArgumentNullException.ThrowIfNull(securableObject);
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+        ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
         throw CreatePermissionDeniedException(
             "Access to method '{0}' on type '{1}' has been denied.",
@@ -457,7 +457,7 @@ namespace Remotion.Security
     public bool HasPropertyWriteAccess (ISecurableObject securableObject, string propertyName, ISecurityPrincipal principal)
     {
       ArgumentNullException.ThrowIfNull(securableObject);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableObject.GetSecurableType(), "set_" + propertyName, MemberAffiliation.Instance);
@@ -513,7 +513,7 @@ namespace Remotion.Security
       if (!HasPropertyWriteAccess(securableObject, propertyName, principal))
       {
         ArgumentNullException.ThrowIfNull(securableObject);
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+        ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
         throw CreatePermissionDeniedException(
             "Access to set-accessor of property '{0}' on type '{1}' has been denied.",
@@ -609,7 +609,7 @@ namespace Remotion.Security
     public bool HasStaticMethodAccess (Type securableClass, string methodName, ISecurityPrincipal principal)
     {
       ArgumentNullException.ThrowIfNull(securableClass);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
+      ArgumentException.ThrowIfNullOrEmpty(methodName);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableClass, methodName, MemberAffiliation.Static);
@@ -662,7 +662,7 @@ namespace Remotion.Security
       if (!HasStaticMethodAccess(securableClass, methodName, principal))
       {
         ArgumentNullException.ThrowIfNull(securableClass);
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
+        ArgumentException.ThrowIfNullOrEmpty(methodName);
 
         throw CreatePermissionDeniedException("Access to static method '{0}' on type '{1}' has been denied.", methodName, securableClass.GetFullNameSafe());
       }
@@ -725,7 +725,7 @@ namespace Remotion.Security
     public bool HasStatelessMethodAccess (Type securableClass, string methodName, ISecurityPrincipal principal)
     {
       ArgumentNullException.ThrowIfNull(securableClass);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
+      ArgumentException.ThrowIfNullOrEmpty(methodName);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableClass, methodName, MemberAffiliation.Instance);

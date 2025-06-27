@@ -52,7 +52,7 @@ public class RecordPropertyDefinition
 
   protected RecordPropertyDefinition (string propertyName, IRdbmsStoragePropertyDefinition storagePropertyDefinition, Func<object, object?> getValue)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+    ArgumentException.ThrowIfNullOrEmpty(propertyName);
     ArgumentNullException.ThrowIfNull(storagePropertyDefinition);
     ArgumentNullException.ThrowIfNull(getValue);
 

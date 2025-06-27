@@ -47,7 +47,7 @@ namespace Remotion.SecurityManager.SecurityProvider.Implementation
     public AccessTypeCache (IRevisionProvider<UserRevisionKey, GuidRevisionValue> revisionProvider, string userName)
         : base(revisionProvider)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(userName), userName);
+      ArgumentException.ThrowIfNullOrEmpty(userName);
 
       _revisionKey = new UserRevisionKey(userName);
     }

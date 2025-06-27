@@ -471,7 +471,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="eventArgument"> &lt;prefix&gt;=&lt;value&gt; </param>
     protected virtual void RaisePostBackEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventArgument), eventArgument);
+      ArgumentException.ThrowIfNullOrEmpty(eventArgument);
 
       eventArgument = eventArgument.Trim();
       if (eventArgument.StartsWith(c_eventListItemCommandPrefix))
@@ -569,7 +569,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="eventArgument"> &lt;column-index&gt;,&lt;row-ID&gt; </param>
     private void HandleListItemCommandEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventArgument), eventArgument);
+      ArgumentException.ThrowIfNullOrEmpty(eventArgument);
 
       if (Value == null)
       {
@@ -649,7 +649,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="eventArgument"> &lt;column-index&gt;,&lt;row-ID&gt;[,&lt;customArgument&gt;] </param>
     private void HandleCustomCellEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventArgument), eventArgument);
+      ArgumentException.ThrowIfNullOrEmpty(eventArgument);
 
       if (Value == null)
       {
@@ -712,7 +712,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="eventArgument"> &lt;row-ID&gt;,&lt;command&gt; </param>
     private void HandleRowEditModeEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventArgument), eventArgument);
+      ArgumentException.ThrowIfNullOrEmpty(eventArgument);
 
       if (Value == null)
       {
@@ -817,7 +817,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="eventArgument"> &lt;column-index&gt; </param>
     private void HandleResorting (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventArgument), eventArgument);
+      ArgumentException.ThrowIfNullOrEmpty(eventArgument);
 
       int columnIndex;
       try

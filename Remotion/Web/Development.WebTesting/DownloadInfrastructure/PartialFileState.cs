@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
 
     public PartialFileState ([NotNull] string partialFile, DateTime partialFileLastWriteAccessUtc, long length)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(partialFile), partialFile);
+      ArgumentException.ThrowIfNullOrEmpty(partialFile);
 
       _partialFile = partialFile;
       _partialFileLastWriteAccessUtc = partialFileLastWriteAccessUtc;

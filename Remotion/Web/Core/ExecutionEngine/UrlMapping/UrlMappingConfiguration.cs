@@ -153,7 +153,7 @@ public class UrlMappingEntry
     }
     set
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
       FunctionType = WebTypeUtility.GetType(value, true)!;
     }
   }
@@ -195,7 +195,7 @@ public class UrlMappingEntry
     {
       ArgumentNullException.ThrowIfNull(value);
       value = value!.Trim();
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
       if (value.StartsWith("/") || value.IndexOf(":") != -1)
         throw new ArgumentException(string.Format("No absolute paths are allowed. Resource: '{0}'", value), "Resource");
       if (! value.StartsWith("~/"))

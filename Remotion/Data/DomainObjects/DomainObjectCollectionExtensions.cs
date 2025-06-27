@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects
     public static void CheckNotReadOnly (this DomainObjectCollection collection, string message)
     {
       ArgumentNullException.ThrowIfNull(collection);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(message), message);
+      ArgumentException.ThrowIfNullOrEmpty(message);
 
       if (collection.IsReadOnly)
         throw new NotSupportedException(message);

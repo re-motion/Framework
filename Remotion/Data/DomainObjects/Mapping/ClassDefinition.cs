@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         IPersistentMixinFinder persistentMixinFinder,
         IDomainObjectCreator instanceCreator)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
+      ArgumentException.ThrowIfNullOrEmpty(id);
       ArgumentNullException.ThrowIfNull(classType);
       ArgumentNullException.ThrowIfNull(persistentMixinFinder);
 
@@ -155,14 +155,14 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public IRelationEndPointDefinition? GetRelationEndPointDefinition (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
       return _cachedRelationEndPointDefinitions.Value[propertyName];
     }
 
     public IRelationEndPointDefinition GetMandatoryRelationEndPointDefinition (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
       IRelationEndPointDefinition? relationEndPointDefinition = GetRelationEndPointDefinition(propertyName);
 
@@ -194,7 +194,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public PropertyDefinition? GetPropertyDefinition (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
       var propertyDefinition = MyPropertyDefinitions[propertyName];
 
@@ -276,7 +276,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       get
       {
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+        ArgumentException.ThrowIfNullOrEmpty(propertyName);
         return MyPropertyDefinitions[propertyName];
       }
     }

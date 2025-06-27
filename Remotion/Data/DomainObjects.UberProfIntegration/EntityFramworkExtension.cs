@@ -226,7 +226,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     public void QueryExecuting (Guid connectionID, Guid queryID, string commandText, IDictionary<string, object?> parameters)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(commandText), commandText);
+      ArgumentException.ThrowIfNullOrEmpty(commandText);
       ArgumentNullException.ThrowIfNull(parameters);
 
       _appenderProxy.StatementExecuted(_clientTransactionID, queryID, AppendParametersToCommandText(commandText, parameters));

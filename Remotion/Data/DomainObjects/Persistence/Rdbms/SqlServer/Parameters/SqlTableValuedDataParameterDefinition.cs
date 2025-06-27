@@ -76,7 +76,7 @@ public class SqlTableValuedDataParameterDefinition : IDataParameterDefinition
   public IDbDataParameter CreateDataParameter (IDbCommand command, string parameterName, object parameterValue)
   {
     ArgumentNullException.ThrowIfNull(command);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(parameterName), parameterName);
+    ArgumentException.ThrowIfNullOrEmpty(parameterName);
     var tvpValue = ArgumentUtility.CheckNotNullAndType<SqlTableValuedParameterValue>(nameof(parameterValue), parameterValue);
 
     var sqlParameter = (SqlParameter)command.CreateParameter();

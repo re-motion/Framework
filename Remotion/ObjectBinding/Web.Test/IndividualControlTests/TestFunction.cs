@@ -43,7 +43,7 @@ public class TestFunction: WxeFunction
     }
     set
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
       Variables["UserControl"] = value;
     }
   }

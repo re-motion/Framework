@@ -213,14 +213,14 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public ClassDefinition GetClassDefinition (string classID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(classID), classID);
+      ArgumentException.ThrowIfNullOrEmpty(classID);
 
       return GetClassDefinition(classID, id => CreateMappingException("Mapping does not contain class '{0}'.", id));
     }
 
     public ClassDefinition GetClassDefinition (string classID, Func<string, Exception> missingClassDefinitionExceptionFactory)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(classID), classID);
+      ArgumentException.ThrowIfNullOrEmpty(classID);
       ArgumentNullException.ThrowIfNull(missingClassDefinitionExceptionFactory);
 
       var classDefinition = _mapping.Value.ClassDefinitions.GetValueOrDefault(classID);

@@ -63,7 +63,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject SelectItem (string itemID, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       var menuItemScope = GetMainMenuScope().FindTagWithAttribute("span", DiagnosticMetadataAttributes.ItemID, itemID);
       var menuItemCommand = FindMenuItemCommand(menuItemScope);
@@ -85,7 +85,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithItemID (string itemID, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       var menuItemScope = GetMainMenuScope().FindTagWithAttribute("span", DiagnosticMetadataAttributes.ItemID, itemID);
       var menuItemCommand = FindMenuItemCommand(menuItemScope);
@@ -111,7 +111,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithHtmlID (string htmlID, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(htmlID), htmlID);
+      ArgumentException.ThrowIfNullOrEmpty(htmlID);
 
       var menuItemScope = Scope.FindId(htmlID);
       var menuItemCommand = FindMenuItemCommand(menuItemScope);
@@ -125,7 +125,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(displayText), displayText);
+      ArgumentException.ThrowIfNullOrEmpty(displayText);
 
       var menuItemScope = GetMainMenuScope().FindTagWithAttribute("span", DiagnosticMetadataAttributes.Content, displayText);
       var menuItemCommand = FindMenuItemCommand(menuItemScope);
@@ -141,7 +141,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         string containsDisplayText,
         IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(containsDisplayText), containsDisplayText);
+      ArgumentException.ThrowIfNullOrEmpty(containsDisplayText);
 
       var menuItemScope = GetMainMenuScope()
           .FindTagWithAttributeUsingOperator("span", CssComparisonOperator.SubstringMatch, DiagnosticMetadataAttributes.Content, containsDisplayText);
@@ -217,7 +217,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
       public UnspecifiedPageObject SelectItem (string itemID, IWebTestActionOptions? actionOptions = null)
       {
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+        ArgumentException.ThrowIfNullOrEmpty(itemID);
 
         var menuItemScope = GetSubMenuScope().FindTagWithAttribute("span", DiagnosticMetadataAttributes.ItemID, itemID);
         var itemCommand = FindItemCommand(menuItemScope);
@@ -230,7 +230,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
       UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithItemID (string itemID, IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+        ArgumentException.ThrowIfNullOrEmpty(itemID);
 
         var menuItemScope = GetSubMenuScope().FindTagWithAttribute("span", DiagnosticMetadataAttributes.ItemID, itemID);
         var itemCommand = FindItemCommand(menuItemScope);
@@ -254,7 +254,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
       UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithHtmlID (string htmlID, IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(htmlID), htmlID);
+        ArgumentException.ThrowIfNullOrEmpty(htmlID);
 
         var menuItemScope = Scope.FindId(htmlID);
         var itemCommand = FindItemCommand(menuItemScope);
@@ -267,7 +267,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
       UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(displayText), displayText);
+        ArgumentException.ThrowIfNullOrEmpty(displayText);
 
         var menuItemScope = GetSubMenuScope().FindTagWithAttribute("span", DiagnosticMetadataAttributes.Content, displayText);
         var itemCommand = FindItemCommand(menuItemScope);
@@ -282,7 +282,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
           string containsDisplayText,
           IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(containsDisplayText), containsDisplayText);
+        ArgumentException.ThrowIfNullOrEmpty(containsDisplayText);
 
         var menuItemScope = GetSubMenuScope()
             .FindTagWithAttributeUsingOperator(

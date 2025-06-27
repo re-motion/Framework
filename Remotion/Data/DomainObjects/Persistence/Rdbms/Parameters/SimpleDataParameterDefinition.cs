@@ -45,7 +45,7 @@ public class SimpleDataParameterDefinition : IDataParameterDefinition
   public IDbDataParameter CreateDataParameter (IDbCommand command, string parameterName, object parameterValue)
   {
     ArgumentNullException.ThrowIfNull(command);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(parameterName), parameterName);
+    ArgumentException.ThrowIfNullOrEmpty(parameterName);
     ArgumentNullException.ThrowIfNull(parameterValue);
 
     var parameter = command.CreateParameter();

@@ -52,7 +52,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 
     protected void AddSavedAssembly (string assemblyPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(assemblyPath), assemblyPath);
+      ArgumentException.ThrowIfNullOrEmpty(assemblyPath);
       SetUpFixture.AddSavedAssembly(assemblyPath);
     }
 

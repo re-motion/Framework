@@ -26,7 +26,7 @@ namespace Remotion.Development.UnitTesting.Resources
     public static Stream GetResourceStream (Assembly assembly, string resourceID)
     {
       ArgumentNullException.ThrowIfNull(assembly);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(resourceID), resourceID);
+      ArgumentException.ThrowIfNullOrEmpty(resourceID);
 
       var resourceStream = assembly.GetManifestResourceStream(resourceID);
       if (resourceStream == null)
@@ -49,7 +49,7 @@ namespace Remotion.Development.UnitTesting.Resources
     public static byte[] GetResource (Assembly assembly, string resourceID)
     {
       ArgumentNullException.ThrowIfNull(assembly);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(resourceID), resourceID);
+      ArgumentException.ThrowIfNullOrEmpty(resourceID);
 
       using (var resourceStream = GetResourceStream(assembly, resourceID))
       {
@@ -60,7 +60,7 @@ namespace Remotion.Development.UnitTesting.Resources
     public static byte[] GetResource (Type namespaceProvider, string shortResourceName)
     {
       ArgumentNullException.ThrowIfNull(namespaceProvider);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(shortResourceName), shortResourceName);
+      ArgumentException.ThrowIfNullOrEmpty(shortResourceName);
 
 
       using (var resourceStream = GetResourceStream(namespaceProvider, shortResourceName))
@@ -72,7 +72,7 @@ namespace Remotion.Development.UnitTesting.Resources
     public static string GetResourceString (Assembly assembly, string resourceID)
     {
       ArgumentNullException.ThrowIfNull(assembly);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(resourceID), resourceID);
+      ArgumentException.ThrowIfNullOrEmpty(resourceID);
 
       using (var resourceStream = GetResourceStream(assembly, resourceID))
       {
@@ -86,7 +86,7 @@ namespace Remotion.Development.UnitTesting.Resources
     public static string GetResourceString (Type namespaceProvider, string shortResourceName)
     {
       ArgumentNullException.ThrowIfNull(namespaceProvider);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(shortResourceName), shortResourceName);
+      ArgumentException.ThrowIfNullOrEmpty(shortResourceName);
 
       using (var resourceStream = GetResourceStream(namespaceProvider, shortResourceName))
       {

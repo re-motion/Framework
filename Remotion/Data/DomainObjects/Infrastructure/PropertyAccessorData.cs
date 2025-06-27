@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public PropertyAccessorData (ClassDefinition classDefinition, string propertyIdentifier)
     {
       ArgumentNullException.ThrowIfNull(classDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyIdentifier), propertyIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(propertyIdentifier);
 
       _propertyIdentifier = propertyIdentifier;
       _classDefinition = classDefinition;

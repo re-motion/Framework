@@ -32,7 +32,7 @@ namespace Remotion.Mixins.Context.Serialization
 
     public void AddKind (string kind)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(kind), kind);
+      ArgumentException.ThrowIfNullOrEmpty(kind);
       SetValue(0, kind);
     }
 
@@ -44,7 +44,7 @@ namespace Remotion.Mixins.Context.Serialization
 
     public void AddLocation (string location)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(location), location);
+      ArgumentException.ThrowIfNullOrEmpty(location);
       SetValue(2, location);
     }
   }

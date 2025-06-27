@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
         IDomainModelConstraintProvider domainModelConstraintProvider,
         IPropertyDefaultValueProvider propertyDefaultValueProvider)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(property), property);
+      ArgumentException.ThrowIfNullOrEmpty(property);
 
       Type type = typeof(T);
       ClassDefinition classDefinition;
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
         IDomainModelConstraintProvider domainModelConstraintProvider,
         IPropertyDefaultValueProvider propertyDefaultValueProvider)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(property), property);
+      ArgumentException.ThrowIfNullOrEmpty(property);
       ArgumentNullException.ThrowIfNull(classDefinition);
 
       Type type = typeof(T);

@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Validation
     public PropertyValueTooLongException (DomainObject? domainObject, string propertyName, int maxLength, string message, Exception? inner)
         : base(message, inner)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
       _domainObject = domainObject;
       _propertyName = propertyName;

@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     public TControlObject SelectPerHtmlID (ControlSelectionContext context, string htmlID)
     {
       ArgumentNullException.ThrowIfNull(context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(htmlID), htmlID);
+      ArgumentException.ThrowIfNullOrEmpty(htmlID);
 
       var scope = FindPerHtmlID(context, htmlID);
       return CreateControlObject(context, scope);
@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     public TControlObject? SelectOptionalPerHtmlID (ControlSelectionContext context, string htmlID)
     {
       ArgumentNullException.ThrowIfNull(context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(htmlID), htmlID);
+      ArgumentException.ThrowIfNullOrEmpty(htmlID);
 
       var scope = FindPerHtmlID(context, htmlID);
 
@@ -57,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     public bool ExistsPerHtmlID (ControlSelectionContext context, string htmlID)
     {
       ArgumentNullException.ThrowIfNull(context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(htmlID), htmlID);
+      ArgumentException.ThrowIfNullOrEmpty(htmlID);
 
       var scope = FindPerHtmlID(context, htmlID);
 
@@ -68,7 +68,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     public TControlObject SelectPerLocalID (ControlSelectionContext context, string localID)
     {
       ArgumentNullException.ThrowIfNull(context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(localID), localID);
+      ArgumentException.ThrowIfNullOrEmpty(localID);
 
       var scope = FindPerLocalID(context, localID);
       if (!scope.ExistsWorkaround())
@@ -81,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     public TControlObject? SelectOptionalPerLocalID (ControlSelectionContext context, string localID)
     {
       ArgumentNullException.ThrowIfNull(context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(localID), localID);
+      ArgumentException.ThrowIfNullOrEmpty(localID);
 
       var scope = FindPerLocalID(context, localID);
       if (scope.ExistsWorkaround())
@@ -98,7 +98,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     public bool ExistsPerLocalID (ControlSelectionContext context, string localID)
     {
       ArgumentNullException.ThrowIfNull(context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(localID), localID);
+      ArgumentException.ThrowIfNullOrEmpty(localID);
 
       var scope = FindPerLocalID(context, localID);
       if (scope.ExistsWorkaround())

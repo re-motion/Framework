@@ -37,7 +37,7 @@ namespace Remotion.Validation.Attributes.Validation
     /// <param name="value">The value the string property must not be equal to. Must not be <see langword="null" /> or empty.</param>
     public NotEqualValidationAttribute (string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
 
       _value = value;
     }

@@ -169,7 +169,7 @@ namespace Remotion.Web.UI
     /// </exception>
     public void RegisterStylesheetLink (string key, IResourceUrl url, Priority priority)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
+      ArgumentException.ThrowIfNullOrEmpty(key);
       ArgumentNullException.ThrowIfNull(url);
 
       RegisterHeadElement(key, new StyleSheetImportRule(url), priority);
@@ -194,8 +194,8 @@ namespace Remotion.Web.UI
     [Obsolete("Use RegisterStylesheetLink (string, IResourceUrl, Priority) instead. (Version 1.17.9)")]
     public void RegisterStylesheetLink (string key, string href, Priority priority)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(href), href);
+      ArgumentException.ThrowIfNullOrEmpty(key);
+      ArgumentException.ThrowIfNullOrEmpty(href);
 
       RegisterStylesheetLink(key, new StaticResourceUrl(href), priority);
     }
@@ -223,7 +223,7 @@ namespace Remotion.Web.UI
     /// </exception>
     public void RegisterStylesheetLink (string key, IResourceUrl url)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
+      ArgumentException.ThrowIfNullOrEmpty(key);
       ArgumentNullException.ThrowIfNull(url);
 
       RegisterStylesheetLink(key, url, Priority.Page);
@@ -276,7 +276,7 @@ namespace Remotion.Web.UI
     /// </exception>
     public void RegisterJavaScriptInclude (string key, IResourceUrl url)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
+      ArgumentException.ThrowIfNullOrEmpty(key);
       ArgumentNullException.ThrowIfNull(url);
 
       RegisterHeadElement(key, new JavaScriptInclude(url), Priority.Script);
@@ -303,8 +303,8 @@ namespace Remotion.Web.UI
     [Obsolete("Use RegisterJavaScriptInclude (string, IResourceUrl) instead. (Version 1.17.9)")]
     public void RegisterJavaScriptInclude (string key, string src)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(src), src);
+      ArgumentException.ThrowIfNullOrEmpty(key);
+      ArgumentException.ThrowIfNullOrEmpty(src);
 
       RegisterJavaScriptInclude(key, new StaticResourceUrl(src));
     }
@@ -329,7 +329,7 @@ namespace Remotion.Web.UI
     /// </exception>
     public void RegisterHeadElement (string key, HtmlHeadElement headElement, Priority priority)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
+      ArgumentException.ThrowIfNullOrEmpty(key);
       ArgumentNullException.ThrowIfNull(headElement);
 
       EnsureStateIsClearedAfterServerTransfer();
@@ -354,7 +354,7 @@ namespace Remotion.Web.UI
     /// </returns>
     public bool IsRegistered (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
+      ArgumentException.ThrowIfNullOrEmpty(key);
 
       EnsureStateIsClearedAfterServerTransfer();
 

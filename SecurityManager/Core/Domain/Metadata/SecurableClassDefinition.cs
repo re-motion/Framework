@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public static SecurableClassDefinition? FindByName (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       var result = from c in QueryFactory.CreateLinqQuery<SecurableClassDefinition>()
                    where c.Name == name
@@ -326,7 +326,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// <exception cref="ArgumentException">Thrown if the specified property does not exist on this <see cref="SecurableClassDefinition"/>.</exception>
     public StatePropertyDefinition GetStateProperty (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
       return StateProperties.Single(
           p => p.Name == propertyName,

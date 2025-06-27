@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting
     public static ElementScope FindChild ([NotNull] this ElementScope scope, [NotNull] string idSuffix, [CanBeNull] Options? options = null)
     {
       ArgumentNullException.ThrowIfNull(scope);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(idSuffix), idSuffix);
+      ArgumentException.ThrowIfNullOrEmpty(idSuffix);
 
       var fullId = string.Format("{0}_{1}", scope.Id, idSuffix);
       return scope.FindId(fullId, options);
@@ -56,9 +56,9 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] string attributeValue)
     {
       ArgumentNullException.ThrowIfNull(scope);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(tagSelector), tagSelector);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(attributeName), attributeName);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(attributeValue), attributeValue);
+      ArgumentException.ThrowIfNullOrEmpty(tagSelector);
+      ArgumentException.ThrowIfNullOrEmpty(attributeName);
+      ArgumentException.ThrowIfNullOrEmpty(attributeValue);
 
       var cssSelector = string.Format("{0}[{1}={2}]", tagSelector, attributeName, DomSelectorUtility.CreateMatchValueForCssSelector(attributeValue));
       return scope.FindCss(cssSelector);
@@ -79,9 +79,9 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] string attributeValue)
     {
       ArgumentNullException.ThrowIfNull(scope);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(tagSelector), tagSelector);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(attributeName), attributeName);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(attributeValue), attributeValue);
+      ArgumentException.ThrowIfNullOrEmpty(tagSelector);
+      ArgumentException.ThrowIfNullOrEmpty(attributeName);
+      ArgumentException.ThrowIfNullOrEmpty(attributeValue);
 
       var cssSelector = string.Format("{0}[{1}={2}]", tagSelector, attributeName, DomSelectorUtility.CreateMatchValueForCssSelector(attributeValue));
       return scope.FindAllCss(cssSelector);
@@ -105,9 +105,9 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] string attributeValue)
     {
       ArgumentNullException.ThrowIfNull(scope);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(tagSelector), tagSelector);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(attributeName), attributeName);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(attributeValue), attributeValue);
+      ArgumentException.ThrowIfNullOrEmpty(tagSelector);
+      ArgumentException.ThrowIfNullOrEmpty(attributeName);
+      ArgumentException.ThrowIfNullOrEmpty(attributeValue);
 
       var cssSelector = string.Format("{0}[{1}{2}{3}]", tagSelector, attributeName, op.ToCssString(), DomSelectorUtility.CreateMatchValueForCssSelector(attributeValue));
       return scope.FindCss(cssSelector);

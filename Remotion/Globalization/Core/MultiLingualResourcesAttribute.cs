@@ -98,7 +98,7 @@ namespace Remotion.Globalization
     [MemberNotNull(nameof(_baseName))]
     protected void SetBaseName (string baseName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(baseName), baseName);
+      ArgumentException.ThrowIfNullOrEmpty(baseName);
       _baseName = baseName;
     }
 

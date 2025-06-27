@@ -76,7 +76,7 @@ namespace Remotion.Web.Security.UI
 
     protected DemandTargetPermissionAttribute (string methodName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
+      ArgumentException.ThrowIfNullOrEmpty(methodName);
 
       _permissionSource = PermissionSource.SecurableObject;
       _methodName = methodName;
@@ -84,7 +84,7 @@ namespace Remotion.Web.Security.UI
 
     protected DemandTargetPermissionAttribute (string methodName, Type securableClass)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
+      ArgumentException.ThrowIfNullOrEmpty(methodName);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(securableClass), securableClass, typeof(ISecurableObject));
 
       _permissionSource = PermissionSource.SecurableObject;

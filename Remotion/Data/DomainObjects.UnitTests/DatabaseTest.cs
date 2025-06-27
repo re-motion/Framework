@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     protected DatabaseTest (DatabaseAgent databaseAgent, string createTestDataFileName)
     {
       ArgumentNullException.ThrowIfNull(databaseAgent);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(createTestDataFileName), createTestDataFileName);
+      ArgumentException.ThrowIfNullOrEmpty(createTestDataFileName);
 
       _databaseAgent = databaseAgent;
       _createTestDataFileName = createTestDataFileName;

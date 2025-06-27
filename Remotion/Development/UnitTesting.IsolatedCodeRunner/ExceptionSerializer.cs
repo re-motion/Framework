@@ -44,7 +44,7 @@ namespace Remotion.Development.UnitTesting.IsolatedCodeRunner
 
     public static Exception DeserializeException (string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
 
       var parts = value.Split(';');
       if (parts.Length != 3)

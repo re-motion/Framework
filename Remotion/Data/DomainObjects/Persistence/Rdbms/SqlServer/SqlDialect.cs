@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer
 
     public virtual string GetParameterName (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       if (name.StartsWith("@"))
         return name;
@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer
 
     public virtual string DelimitIdentifier (string identifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(identifier), identifier);
+      ArgumentException.ThrowIfNullOrEmpty(identifier);
 
       return "[" + identifier + "]";
     }
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer
     {
       ArgumentNullException.ThrowIfNull(command);
       ArgumentNullException.ThrowIfNull(storageTypeInformation);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(parameterName), parameterName);
+      ArgumentException.ThrowIfNullOrEmpty(parameterName);
 
       var convertedValue = storageTypeInformation.ConvertToStorageType(value);
 

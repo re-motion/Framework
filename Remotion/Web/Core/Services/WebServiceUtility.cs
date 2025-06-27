@@ -48,7 +48,7 @@ namespace Remotion.Web.Services
     public static void CheckWebService (Type type, string method)
     {
       ArgumentNullException.ThrowIfNull(type);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(method), method);
+      ArgumentException.ThrowIfNullOrEmpty(method);
 
       CheckType(type);
       GetCheckedAttribute<WebServiceAttribute>(type);
@@ -67,7 +67,7 @@ namespace Remotion.Web.Services
     public static void CheckScriptService (Type type, string method)
     {
       ArgumentNullException.ThrowIfNull(type);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(method), method);
+      ArgumentException.ThrowIfNullOrEmpty(method);
 
       CheckWebService(type, method);
 
@@ -88,7 +88,7 @@ namespace Remotion.Web.Services
     public static void CheckJsonService (Type type, string method, IReadOnlyCollection<string> parameters)
     {
       ArgumentNullException.ThrowIfNull(type);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(method), method);
+      ArgumentException.ThrowIfNullOrEmpty(method);
       ArgumentNullException.ThrowIfNull(parameters);
 
       CheckScriptService(type, method);

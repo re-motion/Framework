@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects
     public LinqPropertyRedirectionAttribute (Type declaringType, string mappedPropertyName)
     {
       ArgumentNullException.ThrowIfNull(declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(mappedPropertyName), mappedPropertyName);
+      ArgumentException.ThrowIfNullOrEmpty(mappedPropertyName);
 
       _declaringType = declaringType;
       _mappedPropertyName = mappedPropertyName;

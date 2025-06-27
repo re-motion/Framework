@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public bool Contains (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
       return BaseContainsKey(propertyName);
     }
 
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       get
       {
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+        ArgumentException.ThrowIfNullOrEmpty(propertyName);
         return (IRelationEndPointDefinition?)BaseGetObject(propertyName);
       }
     }

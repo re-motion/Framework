@@ -70,8 +70,8 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
         ILoggerFactory loggerFactory)
         : base(downloadStartedTimeout, downloadUpdatedTimeout)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(downloadDirectory), downloadDirectory);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(partialFileExtension), partialFileExtension);
+      ArgumentException.ThrowIfNullOrEmpty(downloadDirectory);
+      ArgumentException.ThrowIfNullOrEmpty(partialFileExtension);
 
       _logger = loggerFactory.CreateLogger<DefaultDownloadHelper>();
       DownloadDirectory = downloadDirectory;
@@ -119,7 +119,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 
     protected override DownloadedFileFinder CreateDownloadedFileFinderForExpectedFileName (string fileName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(fileName), fileName);
+      ArgumentException.ThrowIfNullOrEmpty(fileName);
 
       return new DownloadedFileFinder(
           DownloadDirectory,

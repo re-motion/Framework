@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
 
     public TitleControlSelectionCommandBuilder ([NotNull] string title)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(title), title);
+      ArgumentException.ThrowIfNullOrEmpty(title);
 
       _title = title;
     }

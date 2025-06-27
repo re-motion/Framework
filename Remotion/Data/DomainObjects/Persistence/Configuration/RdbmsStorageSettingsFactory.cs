@@ -34,10 +34,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
     public RdbmsStorageSettingsFactory (string providerName, Type storageObjectFactoryType, string connectionString, string readOnlyConnectionString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(providerName), providerName);
+      ArgumentException.ThrowIfNullOrEmpty(providerName);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(storageObjectFactoryType), storageObjectFactoryType, typeof(IRdbmsStorageObjectFactory));
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(connectionString), connectionString);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(readOnlyConnectionString), readOnlyConnectionString);
+      ArgumentException.ThrowIfNullOrEmpty(connectionString);
+      ArgumentException.ThrowIfNullOrEmpty(readOnlyConnectionString);
 
       ProviderName = providerName;
       ConnectionString = connectionString;

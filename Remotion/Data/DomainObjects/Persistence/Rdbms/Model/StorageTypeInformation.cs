@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         Type dotNetType,
         TypeConverter dotNetTypeConverter)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(storageTypeName), storageTypeName);
+      ArgumentException.ThrowIfNullOrEmpty(storageTypeName);
       ArgumentNullException.ThrowIfNull(storageType);
       ArgumentNullException.ThrowIfNull(dotNetType);
       ArgumentNullException.ThrowIfNull(dotNetTypeConverter);

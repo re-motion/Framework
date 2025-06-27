@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     public CustomAction ([NotNull] ControlObject control, [NotNull] ElementScope scope, [NotNull] string name, [NotNull] Action<ElementScope> action, [NotNull] ILogger logger)
         : base(control, scope, logger)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
       ArgumentNullException.ThrowIfNull(action);
 
       _name = name;

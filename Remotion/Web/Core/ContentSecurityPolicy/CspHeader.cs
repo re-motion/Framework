@@ -49,8 +49,8 @@ public class CspHeader
   [Pure]
   public CspHeader AddDirectiveValue (string directive, string value)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(directive), directive);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+    ArgumentException.ThrowIfNullOrEmpty(directive);
+    ArgumentException.ThrowIfNullOrEmpty(value);
     if (value.Contains(' '))
       throw new ArgumentException("Value must not contain spaces.", nameof(value));
 
@@ -76,7 +76,7 @@ public class CspHeader
   [Pure]
   public CspHeader SetDirective (string directive, string value)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(directive), directive);
+    ArgumentException.ThrowIfNullOrEmpty(directive);
     ArgumentNullException.ThrowIfNull(value);
 
     var values = ParseDirectiveValues(value);
@@ -99,7 +99,7 @@ public class CspHeader
   [Pure]
   public CspHeader RemoveDirective (string directive)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(directive), directive);
+    ArgumentException.ThrowIfNullOrEmpty(directive);
 
     return _directives.ContainsKey(directive)
         ? new CspHeader(_directives.Remove(directive))
@@ -122,7 +122,7 @@ public class CspHeader
   [Pure]
   public bool TryGetDirectiveValues (string directive, out StringValues values)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(directive), directive);
+    ArgumentException.ThrowIfNullOrEmpty(directive);
 
     return _directives.TryGetValue(directive, out values);
   }

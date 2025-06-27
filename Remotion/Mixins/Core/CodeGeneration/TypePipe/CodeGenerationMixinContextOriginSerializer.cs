@@ -43,7 +43,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddKind (string kind)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(kind), kind);
+      ArgumentException.ThrowIfNullOrEmpty(kind);
 
       _constructorArguments[0] = Expression.Constant(kind);
     }

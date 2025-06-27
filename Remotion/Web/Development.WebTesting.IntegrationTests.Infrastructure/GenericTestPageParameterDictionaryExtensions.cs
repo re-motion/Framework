@@ -50,7 +50,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
         [NotNull] params string[] arguments)
     {
       ArgumentNullException.ThrowIfNull(dictionary);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
       ArgumentUtility.CheckNotNullOrItemsNull(nameof(arguments), arguments);
 
       var parameter = new GenericTestPageParameter(name, arguments);

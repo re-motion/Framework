@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// </exception>
     public static void PreparePropertyAccess (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
       CurrentPropertyNames.Push(propertyName);
     }

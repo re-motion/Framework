@@ -561,8 +561,8 @@ namespace Remotion.Web.Infrastructure
     {
       ArgumentUtility.CheckNotNullAndType<Control>(nameof(control), control);
       ArgumentNullException.ThrowIfNull(type);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(script), script);
+      ArgumentException.ThrowIfNullOrEmpty(key);
+      ArgumentException.ThrowIfNullOrEmpty(script);
 
       script += "\r\n";
 
@@ -685,8 +685,8 @@ namespace Remotion.Web.Infrastructure
     {
       ArgumentUtility.CheckNotNullAndType<Control>(nameof(control), control);
       ArgumentNullException.ThrowIfNull(type);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(script), script);
+      ArgumentException.ThrowIfNullOrEmpty(key);
+      ArgumentException.ThrowIfNullOrEmpty(script);
 
       script += "\r\n";
 

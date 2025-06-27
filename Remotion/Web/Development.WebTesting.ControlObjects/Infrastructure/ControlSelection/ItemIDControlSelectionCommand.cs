@@ -40,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
         [NotNull] string itemID)
     {
       ArgumentNullException.ThrowIfNull(controlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       _controlSelector = controlSelector;
       _itemID = itemID;

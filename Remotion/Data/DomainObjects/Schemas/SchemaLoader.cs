@@ -40,8 +40,8 @@ namespace Remotion.Data.DomainObjects.Schemas
 
     protected SchemaLoader (string schemaFile, string schemaUri)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(schemaFile), schemaFile);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(schemaUri), schemaUri);
+      ArgumentException.ThrowIfNullOrEmpty(schemaFile);
+      ArgumentException.ThrowIfNullOrEmpty(schemaUri);
 
       _schemaFile = schemaFile;
       _schemaUri = schemaUri;

@@ -59,7 +59,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public BocTreeViewNodeControlObject GetNode (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       return GetNode().WithItemID(itemID);
     }
@@ -79,7 +79,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public BocTreeViewNodeControlObject GetNodeInHierarchy (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       return GetNodeInHierarchy().WithItemID(itemID);
     }

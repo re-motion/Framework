@@ -612,7 +612,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </summary>
     public object? GetData (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
+      ArgumentException.ThrowIfNullOrEmpty(key);
       return WindowState[key];
     }
 
@@ -621,7 +621,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </summary>
     public void SetData (string key, object? value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
+      ArgumentException.ThrowIfNullOrEmpty(key);
       WindowState[key] = value;
     }
 

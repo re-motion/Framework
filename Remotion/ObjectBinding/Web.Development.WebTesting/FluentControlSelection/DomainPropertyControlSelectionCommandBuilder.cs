@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
 
     public DomainPropertyControlSelectionCommandBuilder ([NotNull] string domainProperty, [CanBeNull] string? domainClass = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(domainProperty), domainProperty);
+      ArgumentException.ThrowIfNullOrEmpty(domainProperty);
       ArgumentUtility.CheckNotEmpty(nameof(domainClass), domainClass);
 
       _domainProperty = domainProperty;

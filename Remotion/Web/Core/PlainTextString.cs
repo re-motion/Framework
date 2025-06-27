@@ -148,7 +148,7 @@ namespace Remotion.Web
     public void AddAttributeTo ([NotNull] HtmlTextWriter writer, [NotNull] string attribute)
     {
       ArgumentNullException.ThrowIfNull(writer);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(attribute), attribute);
+      ArgumentException.ThrowIfNullOrEmpty(attribute);
 
       writer.AddAttribute(attribute, GetValue(), fEndode: true);
     }

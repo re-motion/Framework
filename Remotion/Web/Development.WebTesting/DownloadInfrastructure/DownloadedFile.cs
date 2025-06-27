@@ -34,8 +34,8 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
 
     public DownloadedFile ([NotNull] string fullFilePath, [NotNull] string fileName, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(fullFilePath), fullFilePath);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(fileName), fileName);
+      ArgumentException.ThrowIfNullOrEmpty(fullFilePath);
+      ArgumentException.ThrowIfNullOrEmpty(fileName);
 
       _fullFilePath = fullFilePath;
       _fileName = fileName;

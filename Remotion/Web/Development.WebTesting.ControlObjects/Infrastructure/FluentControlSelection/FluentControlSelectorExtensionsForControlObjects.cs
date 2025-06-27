@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlObject : ControlObject
     {
       ArgumentNullException.ThrowIfNull(fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       return fluentControlSelector.GetControl(new ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(itemID));
     }
@@ -64,7 +64,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlObject : ControlObject
     {
       ArgumentNullException.ThrowIfNull(fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       return fluentControlSelector.GetControlOrNull(new ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(itemID));
     }
@@ -83,7 +83,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlObject : ControlObject
     {
       ArgumentNullException.ThrowIfNull(fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       return fluentControlSelector.HasControl(new ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(itemID));
     }

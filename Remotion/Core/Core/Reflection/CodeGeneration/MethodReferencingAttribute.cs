@@ -33,8 +33,8 @@ namespace Remotion.Reflection.CodeGeneration
     protected MethodReferencingAttribute (Type declaringType, string methodName, string methodSignature)
     {
       ArgumentNullException.ThrowIfNull(declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodSignature), methodSignature);
+      ArgumentException.ThrowIfNullOrEmpty(methodName);
+      ArgumentException.ThrowIfNullOrEmpty(methodSignature);
 
       _declaringType = declaringType;
       _methodName = methodName;

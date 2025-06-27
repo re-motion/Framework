@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TCell : ControlObject
     {
       ArgumentNullException.ThrowIfNull(fluentHeaderRow);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       return fluentHeaderRow.Target.GetCellSelector().WithItemID(itemID);
     }

@@ -64,7 +64,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     /// </summary>
     public static void AddSavedAssembly (string assemblyPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(assemblyPath), assemblyPath);
+      ArgumentException.ThrowIfNullOrEmpty(assemblyPath);
 #if FEATURE_ASSEMBLYBUILDER_SAVE
       s_assemblyTrackingCodeManager.AddSavedAssembly(assemblyPath);
 #endif

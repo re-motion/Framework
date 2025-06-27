@@ -200,7 +200,7 @@ namespace Remotion.Web.UI.Controls
 
     private void ValidateItemId (string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
       if (! string.IsNullOrEmpty(value))
       {
         WebTreeNodeCollection? nodes = null;

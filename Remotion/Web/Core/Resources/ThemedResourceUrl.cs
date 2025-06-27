@@ -38,7 +38,7 @@ namespace Remotion.Web.Resources
       ArgumentNullException.ThrowIfNull(definingType);
       ArgumentNullException.ThrowIfNull(resourceType);
       ArgumentNullException.ThrowIfNull(resourceTheme);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(relativeUrl), relativeUrl);
+      ArgumentException.ThrowIfNullOrEmpty(relativeUrl);
 
       _resourcePathBuilder = resourcePathBuilder;
       _definingType = definingType;

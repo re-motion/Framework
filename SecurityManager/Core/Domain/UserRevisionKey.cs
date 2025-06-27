@@ -30,7 +30,7 @@ namespace Remotion.SecurityManager.Domain
 
     public UserRevisionKey (string userName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(userName), userName);
+      ArgumentException.ThrowIfNullOrEmpty(userName);
 
       _localKey = userName;
     }

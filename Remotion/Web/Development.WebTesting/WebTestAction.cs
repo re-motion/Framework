@@ -116,7 +116,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     protected void OutputDebugMessage ([NotNull] string message)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(message), message);
+      ArgumentException.ThrowIfNullOrEmpty(message);
 
       _logger.LogDebug("Action {0}: {1}", _actionID, message);
     }

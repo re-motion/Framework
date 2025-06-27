@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects
     /// <param name="name">The name. Must not be <see langword="null" /> or empty.</param>
     public DBColumnAttribute (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
       _name = name;
     }
 

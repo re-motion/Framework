@@ -39,7 +39,7 @@ namespace Remotion.Web.Utilities
     public static string GetVirtualPath (IControl control, string path)
     {
       ArgumentNullException.ThrowIfNull(control);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(path), path);
+      ArgumentException.ThrowIfNullOrEmpty(path);
 
       string appRelativeTemplateSourceDirectory = control.AppRelativeTemplateSourceDirectory;
       if (string.IsNullOrEmpty(appRelativeTemplateSourceDirectory))

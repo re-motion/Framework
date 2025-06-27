@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public User GetUser (string userName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(userName), userName);
+      ArgumentException.ThrowIfNullOrEmpty(userName);
 
       // Optimized for memory allocations
       if (_userCacheValueFactory == null)

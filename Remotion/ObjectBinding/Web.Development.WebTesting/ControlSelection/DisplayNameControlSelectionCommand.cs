@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
         [NotNull] string displayName)
     {
       ArgumentNullException.ThrowIfNull(controlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(displayName), displayName);
+      ArgumentException.ThrowIfNullOrEmpty(displayName);
 
       _controlSelector = controlSelector;
       _displayName = displayName;

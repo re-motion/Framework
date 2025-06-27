@@ -43,7 +43,7 @@ public class SqlTableValuedParameterValue : IReadOnlyCollection<SqlDataRecord>
 
   public SqlTableValuedParameterValue (string tableTypeName, IReadOnlyCollection<SqlMetaData> columnMetaData)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(tableTypeName), tableTypeName);
+    ArgumentException.ThrowIfNullOrEmpty(tableTypeName);
     ArgumentUtility.CheckNotNullOrEmpty(nameof(columnMetaData), columnMetaData);
 
     TableTypeName = tableTypeName;

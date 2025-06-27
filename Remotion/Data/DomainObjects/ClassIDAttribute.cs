@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects
 
     public ClassIDAttribute (string classID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(classID), classID);
+      ArgumentException.ThrowIfNullOrEmpty(classID);
       _classID = classID;
     }
 

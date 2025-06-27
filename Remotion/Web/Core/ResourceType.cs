@@ -34,7 +34,7 @@ namespace Remotion.Web
 
     public ResourceType (string name, bool isCacheable)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       _name = name;
       _isCacheable = isCacheable;

@@ -58,7 +58,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public IQueryable<MetadataObject> CreateQuery (string metadataReference)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(metadataReference), metadataReference);
+      ArgumentException.ThrowIfNullOrEmpty(metadataReference);
 
       MetadataID metadataID = MetadataID.Parse(metadataReference);
 

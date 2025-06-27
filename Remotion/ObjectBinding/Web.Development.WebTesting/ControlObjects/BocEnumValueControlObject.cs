@@ -86,7 +86,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject SelectOption (string itemID, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption(itemID)");
@@ -97,7 +97,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithItemID (string itemID, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithItemID");
@@ -125,7 +125,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(displayText), displayText);
+      ArgumentException.ThrowIfNullOrEmpty(displayText);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithDisplayText");
@@ -187,7 +187,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <returns>The corresponding <see cref="IBocEnumValueControlObjectVariant"/> implementation.</returns>
     private IBocEnumValueControlObjectVariant CreateVariant ([NotNull] string style)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(style), style);
+      ArgumentException.ThrowIfNullOrEmpty(style);
 
       switch (style)
       {

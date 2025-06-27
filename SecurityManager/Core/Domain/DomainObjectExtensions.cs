@@ -28,7 +28,7 @@ namespace Remotion.SecurityManager.Domain
     {
       ArgumentNullException.ThrowIfNull(args);
       ArgumentNullException.ThrowIfNull(domainObject);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
+      ArgumentException.ThrowIfNullOrEmpty(shortPropertyName);
 
       var properties = new PropertyIndexer(domainObject);
       var propertyAccessor = properties[typeof(TDoaminObject), shortPropertyName];

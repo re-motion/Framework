@@ -130,7 +130,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     {
       ArgumentNullException.ThrowIfNull(logger);
       ArgumentNullException.ThrowIfNull(context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(oldWxeFunctionToken), oldWxeFunctionToken);
+      ArgumentException.ThrowIfNullOrEmpty(oldWxeFunctionToken);
 
       logger.LogDebug("State: previous WXE-FT: {0}.", oldWxeFunctionToken);
       var options = timeout.HasValue ? new Options { Timeout = timeout.Value } : null;

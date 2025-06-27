@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public static MetadataObject? Find (string metadataID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(metadataID), metadataID);
+      ArgumentException.ThrowIfNullOrEmpty(metadataID);
 
       FindMetadataObjectQueryBuilder queryBuilder = new FindMetadataObjectQueryBuilder();
 

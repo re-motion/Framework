@@ -33,7 +33,7 @@ namespace Remotion.Web.UI.Controls
     public FontPreloadLink (IResourceUrl resourceUrl, string type)
     {
       ArgumentNullException.ThrowIfNull(resourceUrl);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(type), type);
+      ArgumentException.ThrowIfNullOrEmpty(type);
 
       _resourceUrl = resourceUrl;
       _type = type;

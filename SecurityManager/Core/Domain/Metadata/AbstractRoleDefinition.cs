@@ -68,7 +68,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     protected AbstractRoleDefinition (Guid metadataItemID, string name, int value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       MetadataItemID = metadataItemID;
       Name = name;

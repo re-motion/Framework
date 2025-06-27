@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         bool isStorageTypeNullable,
         int? storageTypeLength)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(storageTypeName), storageTypeName);
+      ArgumentException.ThrowIfNullOrEmpty(storageTypeName);
 
       _storageTypeName = storageTypeName;
       _storageDbType = storageDbType;

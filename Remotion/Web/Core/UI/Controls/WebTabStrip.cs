@@ -153,7 +153,7 @@ namespace Remotion.Web.UI.Controls
 
     private void HandleClickEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventArgument), eventArgument);
+      ArgumentException.ThrowIfNullOrEmpty(eventArgument);
       WebTab? tab = Tabs.Find(eventArgument);
       if (tab != null)
         OnClick(tab);
@@ -399,7 +399,7 @@ namespace Remotion.Web.UI.Controls
 
     private void SetSelectedTab (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
       if (_selectedTab == null || _selectedTab.ItemID != itemID)
       {
         WebTab? tab = Tabs.Find(itemID);

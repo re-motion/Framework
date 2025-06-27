@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
 
     public IDownloadedFile HandleDownloadWithExpectedFileName (string fileName, TimeSpan? downloadStartedTimeout = null, TimeSpan? downloadUpdatedTimeout = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(fileName), fileName);
+      ArgumentException.ThrowIfNullOrEmpty(fileName);
 
       var localDownloadStartedTimeout = downloadStartedTimeout ?? _downloadStartedTimeout;
       var localDownloadUpdatedTimeout = downloadUpdatedTimeout ?? _downloadUpdatedTimeout;

@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         IEnumerable<ColumnDefinition> referencingColumns,
         IEnumerable<ColumnDefinition> referencedColumns)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(constraintName), constraintName);
+      ArgumentException.ThrowIfNullOrEmpty(constraintName);
       ArgumentNullException.ThrowIfNull(referencedTableName);
       ArgumentNullException.ThrowIfNull(referencingColumns);
       ArgumentNullException.ThrowIfNull(referencedColumns);
