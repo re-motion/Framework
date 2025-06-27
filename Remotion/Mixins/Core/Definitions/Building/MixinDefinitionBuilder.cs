@@ -46,7 +46,6 @@ namespace Remotion.Mixins.Definitions.Building
     public void Apply (MixinContext mixinContext, int index)
     {
       ArgumentUtility.CheckNotNull(nameof(mixinContext), mixinContext);
-      ArgumentUtility.CheckNotNull(nameof(index), index);
 
       MixinDefinition mixin = CreateMixinDefinition(mixinContext);
 

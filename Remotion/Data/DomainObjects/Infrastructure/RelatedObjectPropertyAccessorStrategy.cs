@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public RelationEndPointID CreateRelationEndPointID (PropertyAccessor propertyAccessor)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyAccessor), propertyAccessor);
+      // PropertyAccessor is value type
       Assertion.IsNotNull(propertyAccessor.PropertyData.RelationEndPointDefinition, "A value property accessor cannot be used with a relation property definition.");
 
       return RelationEndPointID.Create(propertyAccessor.DomainObject.ID, propertyAccessor.PropertyData.RelationEndPointDefinition);
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public IRelationEndPoint? GetRelationEndPoint (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyAccessor), propertyAccessor);
+      // PropertyAccessor is value type
       ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
 
       return transaction.DataManager.GetRelationEndPointWithoutLoading(CreateRelationEndPointID(propertyAccessor));
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public bool HasChanged (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyAccessor), propertyAccessor);
+      // PropertyAccessor is value type
       ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
 
       var endPoint = GetRelationEndPoint(propertyAccessor, transaction);
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public bool HasBeenTouched (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyAccessor), propertyAccessor);
+      // PropertyAccessor is value type
       ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
 
       var endPoint = GetRelationEndPoint(propertyAccessor, transaction);
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public bool IsNull (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyAccessor), propertyAccessor);
+      // PropertyAccessor is value type
       ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
       Assertion.IsNotNull(propertyAccessor.PropertyData.RelationEndPointDefinition, "A value property accessor cannot be used with a relation property definition.");
 
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public object? GetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyAccessor), propertyAccessor);
+      // PropertyAccessor is value type
       ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
 
       return transaction.GetRelatedObject(CreateRelationEndPointID(propertyAccessor));
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction, object? value)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyAccessor), propertyAccessor);
+      // PropertyAccessor is value type
       ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
       var newRelatedObject = ArgumentUtility.CheckType<DomainObject>(nameof(value), value);
 
@@ -129,7 +129,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public object? GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyAccessor), propertyAccessor);
+      // PropertyAccessor is value type
       ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
 
       return transaction.GetOriginalRelatedObject(CreateRelationEndPointID(propertyAccessor));

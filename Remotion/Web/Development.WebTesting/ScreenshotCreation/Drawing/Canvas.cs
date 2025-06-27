@@ -51,7 +51,6 @@ public class Canvas : IDisposable
   public void DrawEllipse (Pen borderPen, Rectangle ellipseBounds)
   {
     ArgumentUtility.CheckNotNull(nameof(borderPen), borderPen);
-    ArgumentUtility.CheckNotNull(nameof(ellipseBounds), ellipseBounds);
 
     SkiaCanvas.Canvas.DrawOval(ellipseBounds.ToSkRect(), borderPen.SkiaPaint);
   }
@@ -59,7 +58,6 @@ public class Canvas : IDisposable
   public void FillEllipse (Brush backgroundBrush, Rectangle ellipseBounds)
   {
     ArgumentUtility.CheckNotNull(nameof(backgroundBrush), backgroundBrush);
-    ArgumentUtility.CheckNotNull(nameof(ellipseBounds), ellipseBounds);
 
     SkiaCanvas.Canvas.DrawOval(ellipseBounds.ToSkRect(), backgroundBrush.SkiaPaint);
   }

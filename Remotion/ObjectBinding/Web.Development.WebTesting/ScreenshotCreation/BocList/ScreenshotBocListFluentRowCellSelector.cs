@@ -63,8 +63,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public FluentScreenshotElement<ScreenshotBocListCell<TList, TRow, TCell>> WithIndex (int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull(nameof(oneBasedIndex), oneBasedIndex);
-
       return
           SelfResolvableFluentScreenshot.Create(
               new ScreenshotBocListCell<TList, TRow, TCell>(_fluentList, _fluentRow.Target.GetCell(oneBasedIndex).ForControlObjectScreenshot()),

@@ -33,7 +33,6 @@ public class AspNetCoreHostingStrategy : IHostingStrategy
   public AspNetCoreHostingStrategy (ITestSiteLayoutConfiguration testSiteLayoutConfiguration, int port, string hostname, bool useHttps)
   {
     ArgumentUtility.CheckNotNull(nameof(testSiteLayoutConfiguration), testSiteLayoutConfiguration);
-    ArgumentUtility.CheckNotNull(nameof(port), port);
     ArgumentUtility.CheckNotEmpty(nameof(hostname), hostname);
 
     _testSiteLayoutConfiguration = testSiteLayoutConfiguration;

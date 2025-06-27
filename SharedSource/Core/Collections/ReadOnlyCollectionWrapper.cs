@@ -52,8 +52,6 @@ namespace Remotion.Collections
 
     void ICollection<T>.CopyTo (T[] array, int arrayIndex)
     {
-      ArgumentUtility.CheckNotNull(nameof(arrayIndex), arrayIndex);
-
       _collection.ToArray().CopyTo(array, arrayIndex);
     }
 

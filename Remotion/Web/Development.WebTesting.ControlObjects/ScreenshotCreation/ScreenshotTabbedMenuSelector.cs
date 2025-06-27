@@ -66,8 +66,6 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithIndex (int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull(nameof(oneBasedIndex), oneBasedIndex);
-
       var item = _scope.FindXPath(string.Format("(.//li/span/span[2])[{0}]", oneBasedIndex));
 
       return item.ForElementScopeScreenshot();

@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Linq
     [return: MaybeNull]
     public T GetValue<T> (ColumnID columnID)
     {
-      ArgumentUtility.CheckNotNull(nameof(columnID), columnID);
+      // ColumnID is value type
 
       if (columnID.Position != 0)
       {

@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public T? GetValue<T> (ColumnID columnID)
     {
-      ArgumentUtility.CheckNotNull(nameof(columnID), columnID);
+      // ColumnID is value type
 
       return _queryResultRow.GetConvertedValue<T>(columnID.Position);
     }

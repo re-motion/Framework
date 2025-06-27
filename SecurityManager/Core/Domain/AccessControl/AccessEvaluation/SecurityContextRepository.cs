@@ -113,7 +113,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public IDomainObjectHandle<AbstractRoleDefinition> GetAbstractRole (EnumWrapper name)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
+      // EnumWrapper is value type
 
       var cachedData = _cache.GetData();
       var abstractRole = cachedData.AbstractRoles.GetValueOrDefault(name);

@@ -141,7 +141,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </remarks>
     protected virtual void AddAttributesToRenderForTitleCell (BocCellAttributeRenderingContext<TBocColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      // BocCellAttributeRenderingContext<T> is value type
 
       if (arguments.CellID == null)
         throw new ArgumentException("arguments.CellID is null", nameof(arguments));
@@ -462,7 +462,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </remarks>
     protected virtual void AddAttributesToRenderForDataCell (BocCellAttributeRenderingContext<TBocColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      // BocCellAttributeRenderingContext<T> is value type
 
       string cssClassTableCell = CssClasses.DataCell;
 
