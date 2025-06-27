@@ -90,7 +90,7 @@ namespace Remotion.Security.UnitTests
       Assert.That(
           () => new SecurityPrincipal(string.Empty, null, null, null),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo("Parameter 'user' cannot be empty.", "user"));
+              .With.ArgumentExceptionMessageEqualTo("The value cannot be an empty string.", "user"));
     }
 
     [Test]
