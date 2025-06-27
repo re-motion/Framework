@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
         [NotNull] ITextContentControlSelector<TControlObject> controlSelector,
         [NotNull] string textContent)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlSelector), textContent);
+      ArgumentUtility.CheckNotNull(nameof(textContent), textContent);
       ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
 
       _controlSelector = controlSelector;

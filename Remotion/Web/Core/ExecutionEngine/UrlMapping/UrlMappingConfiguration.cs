@@ -172,7 +172,7 @@ public class UrlMappingEntry
     }
     set
     {
-      ArgumentUtility.CheckNotNull(nameof(FunctionType), value);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
       if (! typeof(WxeFunction).IsAssignableFrom(value))
         throw new ArgumentException(string.Format("The FunctionType '{0}' must be derived from WxeFunction.", value), "FunctionType");
       _functionType = value;
@@ -193,7 +193,7 @@ public class UrlMappingEntry
     }
     set
     {
-      ArgumentUtility.CheckNotNull(nameof(Resource), value);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
       value = value!.Trim();
       ArgumentUtility.CheckNotNullOrEmpty("Resource", value);
       if (value.StartsWith("/") || value.IndexOf(":") != -1)

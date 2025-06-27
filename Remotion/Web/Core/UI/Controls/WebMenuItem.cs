@@ -208,7 +208,7 @@ namespace Remotion.Web.UI.Controls
       [MemberNotNull(nameof(_icon))]
       set
       {
-        ArgumentUtility.CheckNotNull(nameof(Icon), value);
+        ArgumentUtility.CheckNotNull(nameof(value), value);
         _icon = value;
       }
     }
@@ -238,7 +238,7 @@ namespace Remotion.Web.UI.Controls
       [MemberNotNull(nameof(_disabledIcon))]
       set
       {
-        ArgumentUtility.CheckNotNull(nameof(DisabledIcon), value);
+        ArgumentUtility.CheckNotNull(nameof(value), value);
         _disabledIcon = value;
       }
     }

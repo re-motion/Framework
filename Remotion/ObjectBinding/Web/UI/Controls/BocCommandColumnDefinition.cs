@@ -87,7 +87,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _icon; }
       set
       {
-        ArgumentUtility.CheckNotNull(nameof(Icon), value);
+        ArgumentUtility.CheckNotNull(nameof(value), value);
         _icon = value;
       }
     }

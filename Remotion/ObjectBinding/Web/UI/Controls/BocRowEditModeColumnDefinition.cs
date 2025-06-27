@@ -88,7 +88,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _editIcon; }
       set
       {
-        ArgumentUtility.CheckNotNull(nameof(EditIcon), value);
+        ArgumentUtility.CheckNotNull(nameof(value), value);
         _editIcon = value;
       }
     }
@@ -134,7 +134,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _saveIcon; }
       set
       {
-        ArgumentUtility.CheckNotNull(nameof(SaveIcon), value);
+        ArgumentUtility.CheckNotNull(nameof(value), value);
         _saveIcon = value;
       }
     }
@@ -179,7 +179,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _cancelIcon; }
       set
       {
-        ArgumentUtility.CheckNotNull(nameof(CancelIcon), value);
+        ArgumentUtility.CheckNotNull(nameof(value), value);
         _cancelIcon = value;
       }
     }
