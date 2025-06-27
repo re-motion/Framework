@@ -67,7 +67,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     public void AddDebuggerDisplayAttribute (IMutableMember member, string debuggerDisplayString, string? debuggerDisplayNameStringOrNull)
     {
       ArgumentUtility.CheckNotNull(nameof(member), member);
-      ArgumentUtility.CheckNotNullOrEmpty("debuggerDisplayString", debuggerDisplayString);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(debuggerDisplayString), debuggerDisplayString);
       // Debugger display name may be null.
 
       var attribute = new CustomAttributeDeclaration(

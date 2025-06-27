@@ -58,7 +58,7 @@ namespace Remotion.Reflection.CodeGeneration
         : this(
             new ClassEmitterSupportingOpenGenericBaseType(
                 ArgumentUtility.CheckNotNull(nameof(scope), scope),
-                ArgumentUtility.CheckNotNullOrEmpty("name", name),
+                ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name),
                 CheckBaseType(baseType),
                 CheckInterfaces(interfaces),
                 flags,

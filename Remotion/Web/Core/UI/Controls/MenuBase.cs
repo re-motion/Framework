@@ -65,7 +65,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="eventArgument"> &lt;index&gt; </param>
     void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("eventArgument", eventArgument);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventArgument), eventArgument);
 
       //  First part: index
       int index;

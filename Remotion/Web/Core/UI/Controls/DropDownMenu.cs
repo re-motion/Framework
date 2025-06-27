@@ -124,8 +124,8 @@ namespace Remotion.Web.UI.Controls
 
     public string GetBindOpenEventScript (string elementReference, string menuIDReference, bool moveToMousePosition)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("elementReference", elementReference);
-      ArgumentUtility.CheckNotNullOrEmpty("menuIDReference", menuIDReference);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(elementReference), elementReference);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(menuIDReference), menuIDReference);
 
       return string.Format(
           "DropDownMenu.BindOpenEvent({0}, {1}, '{2}', {3}, {4});",

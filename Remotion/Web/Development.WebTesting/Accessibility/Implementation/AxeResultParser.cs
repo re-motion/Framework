@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
     /// <inheritdoc />
     public AxeResult Parse (string rawJson)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("rawJson", rawJson);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(rawJson), rawJson);
 
       var serializer = new DataContractJsonSerializer(typeof(AxeResult));
       using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(rawJson)))

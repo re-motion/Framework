@@ -550,7 +550,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     private string FormatEvent (Control sender, string eventName)
     {
       ArgumentUtility.CheckNotNull(nameof(sender), sender);
-      ArgumentUtility.CheckNotNullOrEmpty("eventName", eventName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventName), eventName);
 
       return sender.ID + " " + eventName;
     }

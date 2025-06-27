@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <param name="ids">The ids to disable.</param>
     public DisableExtensibleEnumValuesAttribute (params string[] ids)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("ids", ids);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(ids), ids);
 
       _filter = new DisabledIdentifiersEnumerationFilter(ids);
     }

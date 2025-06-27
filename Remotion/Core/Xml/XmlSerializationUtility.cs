@@ -93,7 +93,7 @@ namespace Remotion.Xml
 
     public static object DeserializeUsingSchema (XmlReader reader, Type type, string schemaUri, XmlReader schemaReader)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("schemaUri", schemaUri);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(schemaUri), schemaUri);
       ArgumentUtility.CheckNotNull(nameof(schemaReader), schemaReader);
 
       XmlSchemaSet schemas = new XmlSchemaSet();

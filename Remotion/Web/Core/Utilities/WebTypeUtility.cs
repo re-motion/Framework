@@ -35,7 +35,7 @@ namespace Remotion.Web.Utilities
     [CanBeNull]
     public static Type? GetType (string abbreviatedTypeName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("abbreviatedTypeName", abbreviatedTypeName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(abbreviatedTypeName), abbreviatedTypeName);
       return GetType(abbreviatedTypeName, false, false);
     }
 
@@ -46,7 +46,7 @@ namespace Remotion.Web.Utilities
     [CanBeNull]
     public static Type? GetType (string abbreviatedTypeName, bool throwOnError)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("abbreviatedTypeName", abbreviatedTypeName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(abbreviatedTypeName), abbreviatedTypeName);
       return GetType(abbreviatedTypeName, throwOnError, false);
     }
 
@@ -57,7 +57,7 @@ namespace Remotion.Web.Utilities
     [CanBeNull]
     public static Type? GetType (string abbreviatedTypeName, bool throwOnError, bool ignoreCase)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("abbreviatedTypeName", abbreviatedTypeName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(abbreviatedTypeName), abbreviatedTypeName);
       string typeName = TypeUtility.ParseAbbreviatedTypeName(abbreviatedTypeName);
       return BuildManager.GetType(typeName, throwOnError, ignoreCase);
     }

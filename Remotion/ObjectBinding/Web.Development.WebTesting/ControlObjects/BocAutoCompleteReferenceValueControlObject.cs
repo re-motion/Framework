@@ -162,7 +162,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <returns>The completion set as list of <see cref="SearchServiceResultItem"/> or an empty list if the completion set has been empty.</returns>
     public IReadOnlyList<SearchServiceResultItem> GetSearchServiceResults ([NotNull] string searchText, int completionSetOffset, int completionSetCount, string? context = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("searchText", searchText);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(searchText), searchText);
 
       var inputScopeID = GetInputScopeID();
 
@@ -188,7 +188,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <returns>The exact search result as <see cref="SearchServiceResultItem"/> or null if no result has been found.</returns>
     public SearchServiceResultItem? GetExactSearchServiceResult ([NotNull] string searchText)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("searchText", searchText);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(searchText), searchText);
 
       var inputScopeId = GetInputScopeID();
 
@@ -278,7 +278,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     private SearchServiceResultItem GetFirstAutoCompleteResult ([NotNull] string filter)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("filter", filter);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(filter), filter);
 
       var results = GetSearchServiceResults(filter, 0, 2);
 
@@ -297,8 +297,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         [NotNull] string autoCompleteTextValueInputFieldId,
         [NotNull] string searchText)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("autoCompleteTextValueInputFieldId", autoCompleteTextValueInputFieldId);
-      ArgumentUtility.CheckNotNullOrEmpty("searchText", searchText);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(autoCompleteTextValueInputFieldId), autoCompleteTextValueInputFieldId);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(searchText), searchText);
 
       return CreateAutoCompleteSearchServiceRequestScript(autoCompleteTextValueInputFieldId, searchText, "serviceMethodSearchExact", null, null, null);
     }
@@ -318,8 +318,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         int completionSetCount,
         string? context)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("autoCompleteTextValueInputFieldId", autoCompleteTextValueInputFieldId);
-      ArgumentUtility.CheckNotNullOrEmpty("searchText", searchText);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(autoCompleteTextValueInputFieldId), autoCompleteTextValueInputFieldId);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(searchText), searchText);
 
       return CreateAutoCompleteSearchServiceRequestScript(
           autoCompleteTextValueInputFieldId,
@@ -338,9 +338,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         int? completionSetCount,
         string? context)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("autoCompleteTextValueInputFieldId", autoCompleteTextValueInputFieldId);
-      ArgumentUtility.CheckNotNullOrEmpty("searchText", searchText);
-      ArgumentUtility.CheckNotNullOrEmpty("searchMethod", searchMethod);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(autoCompleteTextValueInputFieldId), autoCompleteTextValueInputFieldId);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(searchText), searchText);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(searchMethod), searchMethod);
 
       var setCompletionSetOffsetScriptPart = completionSetOffset.HasValue
           ? string.Format("data['completionSetOffset'] = {0};", completionSetOffset.Value)

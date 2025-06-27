@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
 
     public DisplayNameControlSelectionCommandBuilder ([NotNull] string displayName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("displayName", displayName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(displayName), displayName);
 
       _displayName = displayName;
     }

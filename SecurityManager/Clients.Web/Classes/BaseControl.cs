@@ -137,8 +137,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
     protected TControl GetControl<TControl> (string controlID, string propertyIdentifier)
         where TControl : Control, IBusinessObjectBoundWebControl, IFocusableControl
     {
-      ArgumentUtility.CheckNotNullOrEmpty("controlID", controlID);
-      ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(controlID), controlID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyIdentifier), propertyIdentifier);
 
       var control = FindControl(controlID);
 

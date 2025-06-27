@@ -122,7 +122,7 @@ namespace Remotion.Web.UI.Controls
     /// <returns>A Javascript statement, terminiated with a <c>;</c> (semicolon).</returns>
     public string GetUpdateScriptReference (string getSelectionCount)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("getSelectionCount", getSelectionCount);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(getSelectionCount), getSelectionCount);
 
       return string.Format("ListMenu.Update ('#{0}', {1});", ClientID, getSelectionCount);
     }

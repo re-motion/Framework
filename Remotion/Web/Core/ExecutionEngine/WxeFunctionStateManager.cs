@@ -174,7 +174,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </returns>
     public bool TryGetLiveValue (string functionToken,  [MaybeNullWhen(false)] out WxeFunctionState functionState)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("functionToken", functionToken);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(functionToken), functionToken);
 
       lock (_lockObject)
       {
@@ -200,7 +200,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </returns>
     public WxeFunctionState? GetItem (string functionToken)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("functionToken", functionToken);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(functionToken), functionToken);
 
       Stopwatch? stopwatch = null;
       bool hasOutOfProcessSession = _session.Mode != SessionStateMode.Off && _session.Mode != SessionStateMode.InProc;
@@ -231,7 +231,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </param>
     protected void Remove (string functionToken)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("functionToken", functionToken);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(functionToken), functionToken);
 
       lock (_lockObject)
       {
@@ -258,7 +258,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public bool IsExpired (string functionToken)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("functionToken", functionToken);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(functionToken), functionToken);
 
       lock (_lockObject)
       {
@@ -271,7 +271,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public DateTime GetLastAccessUtc (string functionToken)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("functionToken", functionToken);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(functionToken), functionToken);
       lock (_lockObject)
       {
         CheckFunctionTokenExists(functionToken);
@@ -282,7 +282,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public void Touch (string functionToken)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("functionToken", functionToken);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(functionToken), functionToken);
       lock (_lockObject)
       {
         CheckFunctionTokenExists(functionToken);

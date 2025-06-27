@@ -117,7 +117,7 @@ namespace Remotion.Collections
 
     public void CopyTo (TDest[] array, int arrayIndex)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("array", array);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(array), array);
 
       if (arrayIndex < 0)
         throw new ArgumentOutOfRangeException("arrayIndex", "Index must not be negative.");

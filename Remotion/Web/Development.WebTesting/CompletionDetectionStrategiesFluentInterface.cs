@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting
 
     public static CompoundCompletionDetectionStrategy WhenAll ([NotNull] params ICompletionDetectionStrategy[] strategies)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("strategies", strategies);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(strategies), strategies);
 
       return new CompoundCompletionDetectionStrategy(strategies);
     }

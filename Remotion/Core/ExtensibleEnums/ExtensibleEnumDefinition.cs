@@ -94,7 +94,7 @@ namespace Remotion.ExtensibleEnums
     /// <inheritdoc />
     public bool IsDefined (string id)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
       return _cache.Value.Dictionary.ContainsKey(id);
     }
 
@@ -124,7 +124,7 @@ namespace Remotion.ExtensibleEnums
     /// <exception cref="KeyNotFoundException">No enum value with the given <paramref name="id"/> exists.</exception>
     public ExtensibleEnumInfo<T> GetValueInfoByID (string id)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
 
       ExtensibleEnumInfo<T>? value;
       if (TryGetValueInfoByID(id, out value))
@@ -150,7 +150,7 @@ namespace Remotion.ExtensibleEnums
     /// </returns>
     public bool TryGetValueInfoByID (string id, [MaybeNullWhen(false)] out ExtensibleEnumInfo<T> value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
 
       return _cache.Value.Dictionary.TryGetValue(id, out value);
     }

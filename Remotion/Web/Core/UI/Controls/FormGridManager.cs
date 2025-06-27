@@ -532,7 +532,7 @@ namespace Remotion.Web.UI.Controls
         int controlsColumn,
         bool isGenerated)
       {
-        ArgumentUtility.CheckNotNullOrEmpty("htmlTableRows", htmlTableRows);
+        ArgumentUtility.CheckNotNullOrEmpty(nameof(htmlTableRows), htmlTableRows);
 
         _htmlTableRows = new ReadOnlyHtmlTableRowCollection(htmlTableRows);
         _type = type;

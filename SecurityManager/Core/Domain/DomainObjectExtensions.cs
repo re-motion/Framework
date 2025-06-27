@@ -28,7 +28,7 @@ namespace Remotion.SecurityManager.Domain
     {
       ArgumentUtility.CheckNotNull(nameof(args), args);
       ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
-      ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
 
       var properties = new PropertyIndexer(domainObject);
       var propertyAccessor = properties[typeof(TDoaminObject), shortPropertyName];

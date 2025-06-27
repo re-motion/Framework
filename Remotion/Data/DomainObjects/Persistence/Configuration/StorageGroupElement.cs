@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
         : this()
     {
       ArgumentUtility.CheckNotNull(nameof(storageGroup), storageGroup);
-      ArgumentUtility.CheckNotNullOrEmpty("storageProviderName", storageProviderName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(storageProviderName), storageProviderName);
 
       StorageGroup = storageGroup;
       StorageGroupType = storageGroup.GetType();

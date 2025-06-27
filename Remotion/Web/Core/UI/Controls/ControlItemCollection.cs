@@ -238,7 +238,7 @@ namespace Remotion.Web.UI.Controls
     /// </exception>
     public IControlItem FindMandatory (string id)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
 
       var item = Find(id);
       if (item == null)

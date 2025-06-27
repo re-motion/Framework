@@ -80,7 +80,7 @@ namespace Remotion.Utilities
     [CanBeNull]
     public static Type? GetType ([JetBrains.Annotations.NotNull]string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
 
       return TypeResolutionService.GetType(ParseAbbreviatedTypeName(name), false);
     }
@@ -103,7 +103,7 @@ namespace Remotion.Utilities
     [ContractAnnotation("throwOnError:true => notnull")]
     public static Type? GetType ([JetBrains.Annotations.NotNull]string name, bool throwOnError)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
 
       return TypeResolutionService.GetType(ParseAbbreviatedTypeName(name), throwOnError);
     }

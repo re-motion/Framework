@@ -53,7 +53,7 @@ namespace Remotion.Web.UI.Controls.Rendering
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
       ArgumentUtility.CheckNotNull(nameof(attributeAccessor), attributeAccessor);
-      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(validationErrorID), validationErrorID);
       ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
 
       if (!validationErrors.Any())
@@ -77,7 +77,7 @@ namespace Remotion.Web.UI.Controls.Rendering
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
       ArgumentUtility.CheckNotNull(nameof(attributeCollection), attributeCollection);
-      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(validationErrorID), validationErrorID);
       ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
 
       if (!validationErrors.Any())
@@ -100,7 +100,7 @@ namespace Remotion.Web.UI.Controls.Rendering
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
       ArgumentUtility.CheckNotNull(nameof(htmlTextWriter), htmlTextWriter);
-      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(validationErrorID), validationErrorID);
       ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
 
       if (!validationErrors.Any())

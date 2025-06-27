@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
         [CanBeNull] string? domainClass = null)
     {
       ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty("domainProperty", domainProperty);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(domainProperty), domainProperty);
       ArgumentUtility.CheckNotEmpty("domainClass", domainClass);
 
       _controlSelector = controlSelector;

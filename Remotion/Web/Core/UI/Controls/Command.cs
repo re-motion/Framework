@@ -995,8 +995,8 @@ namespace Remotion.Web.UI.Controls
         [JetBrains.Annotations.NotNull] string commandID)
     {
       ArgumentUtility.CheckNotNull(nameof(control), control);
-      ArgumentUtility.CheckNotNullOrEmpty("argument", argument);
-      ArgumentUtility.CheckNotNullOrEmpty("commandID", commandID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(argument), argument);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(commandID), commandID);
 
       bool isSynchronousEventCommand = Type == CommandType.Event && EventCommand.RequiresSynchronousPostBack;
       bool isSynchronousWxeFunctionCommand = Type == CommandType.WxeFunction && string.IsNullOrEmpty(WxeFunctionCommand.Target);

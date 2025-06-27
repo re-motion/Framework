@@ -53,7 +53,7 @@ namespace Remotion.Web.Resources
 
     protected override string BuildPath (string[] completePath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("completePath", completePath);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(completePath), completePath);
 
       return completePath.Aggregate(CombineVirtualPaths);
     }

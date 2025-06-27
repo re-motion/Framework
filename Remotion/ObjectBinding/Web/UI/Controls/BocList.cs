@@ -471,7 +471,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="eventArgument"> &lt;prefix&gt;=&lt;value&gt; </param>
     protected virtual void RaisePostBackEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("eventArgument", eventArgument);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventArgument), eventArgument);
 
       eventArgument = eventArgument.Trim();
       if (eventArgument.StartsWith(c_eventListItemCommandPrefix))
@@ -569,7 +569,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="eventArgument"> &lt;column-index&gt;,&lt;row-ID&gt; </param>
     private void HandleListItemCommandEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("eventArgument", eventArgument);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventArgument), eventArgument);
 
       if (Value == null)
       {
@@ -649,7 +649,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="eventArgument"> &lt;column-index&gt;,&lt;row-ID&gt;[,&lt;customArgument&gt;] </param>
     private void HandleCustomCellEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("eventArgument", eventArgument);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventArgument), eventArgument);
 
       if (Value == null)
       {
@@ -712,7 +712,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="eventArgument"> &lt;row-ID&gt;,&lt;command&gt; </param>
     private void HandleRowEditModeEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("eventArgument", eventArgument);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventArgument), eventArgument);
 
       if (Value == null)
       {
@@ -817,7 +817,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="eventArgument"> &lt;column-index&gt; </param>
     private void HandleResorting (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("eventArgument", eventArgument);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventArgument), eventArgument);
 
       int columnIndex;
       try
@@ -2374,7 +2374,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         bool hasChanged = _selectedView != value;
         _selectedView = value;
-        ArgumentUtility.CheckNotNullOrEmpty("AvailableViews", _availableViews);
+        ArgumentUtility.CheckNotNullOrEmpty(nameof(AvailableViews), _availableViews);
         _selectedViewIndex = null;
 
         if (_selectedView != null)

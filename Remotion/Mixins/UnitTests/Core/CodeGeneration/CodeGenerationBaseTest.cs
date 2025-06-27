@@ -52,13 +52,13 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 
     protected void AddSavedAssembly (string assemblyPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("assemblyPath", assemblyPath);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(assemblyPath), assemblyPath);
       SetUpFixture.AddSavedAssembly(assemblyPath);
     }
 
     protected Type CreateMixedType (Type targetType, params Type[] mixinTypes)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("mixinTypes", mixinTypes);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(mixinTypes), mixinTypes);
 
       using (MixinConfiguration.BuildNew().ForClass(targetType).AddMixins(mixinTypes).EnterScope())
       {
@@ -68,7 +68,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 
     protected T CreateMixedObject<T> (params Type[] mixinTypes)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("mixinTypes", mixinTypes);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(mixinTypes), mixinTypes);
 
       using (MixinConfiguration.BuildNew().ForClass<T>().AddMixins(mixinTypes).EnterScope())
       {

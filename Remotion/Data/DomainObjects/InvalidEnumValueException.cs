@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects
     public InvalidEnumValueException (string message, string propertyName, Type propertyType, object invalidValue)
         : base(message)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("message", message);
-      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(message), message);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
       ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
 
       _propertyName = propertyName;

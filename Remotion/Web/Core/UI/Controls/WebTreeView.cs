@@ -211,7 +211,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="eventArgument"> &lt;command prefix&gt;&lt;node path&gt;</param>
     void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("eventArgument", eventArgument);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventArgument), eventArgument);
       EnsureTreeNodesCreated();
 
       eventArgument = eventArgument.Trim();
@@ -1348,7 +1348,7 @@ namespace Remotion.Web.UI.Controls
 
     public void AssignLabel (string labelID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("labelID", labelID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(labelID), labelID);
 
       _assignedLabelID = labelID;
     }

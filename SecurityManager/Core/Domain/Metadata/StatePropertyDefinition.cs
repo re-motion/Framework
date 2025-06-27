@@ -66,7 +66,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public StateDefinition GetState (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
 
       return DefinedStatesInternal.Single(
           s => s.Name == name,
@@ -75,7 +75,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public bool ContainsState (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
 
       return DefinedStatesInternal.Any(s => s.Name == name);
     }

@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Linq
     {
       ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
       ArgumentUtility.CheckNotNull(nameof(queryGenerator), queryGenerator);
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
       ArgumentUtility.CheckNotNull(nameof(metadata), metadata);
 
       _storageProviderDefinition = storageProviderDefinition;

@@ -137,7 +137,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     public void Save ([NotNull] string path, bool @override = false)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("path", path);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(path), path);
 
       var isFileExisting = File.Exists(path);
 

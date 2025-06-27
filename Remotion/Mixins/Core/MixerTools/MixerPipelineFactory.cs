@@ -36,7 +36,7 @@ namespace Remotion.Mixins.MixerTools
 
     public MixerPipelineFactory (string assemblyName, int degreeOfParallelism)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("assemblyName", assemblyName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(assemblyName), assemblyName);
 
       _assemblyName = assemblyName;
       _degreeOfParallelism = degreeOfParallelism;

@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         IPropertyInformation propertyInfo)
     {
       ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
       ArgumentUtility.CheckNotNull(nameof(sortExpression), sortExpression);
       ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
 

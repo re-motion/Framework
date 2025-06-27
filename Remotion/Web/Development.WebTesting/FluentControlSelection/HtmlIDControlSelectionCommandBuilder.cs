@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
 
     public HtmlIDControlSelectionCommandBuilder ([NotNull] string htmlID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("htmlID", htmlID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(htmlID), htmlID);
 
       _htmlID = htmlID;
     }

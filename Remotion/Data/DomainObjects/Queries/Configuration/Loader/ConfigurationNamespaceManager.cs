@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
     {
       get
       {
-        ArgumentUtility.CheckNotNullOrEmpty("uri", uri);
+        ArgumentUtility.CheckNotNullOrEmpty(nameof(uri), uri);
 
         foreach (PrefixNamespace configurationNamespace in _configurationNamespaces)
         {
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
 
     public string FormatXPath (string xPath, params string[] uris)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("xPath", xPath);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(xPath), xPath);
 
       string formattedXPath = xPath;
       for (int i = 0; i < uris.Length; i++)

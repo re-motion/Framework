@@ -143,8 +143,8 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNull(nameof(scope), scope);
-      ArgumentUtility.CheckNotNullOrEmpty("diagnosticMetadataAttributeName", diagnosticMetadataAttributeName);
-      ArgumentUtility.CheckNotNullOrEmpty("diagnosticMetadataAttributeValue", diagnosticMetadataAttributeValue);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(diagnosticMetadataAttributeName), diagnosticMetadataAttributeName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(diagnosticMetadataAttributeValue), diagnosticMetadataAttributeValue);
       ArgumentUtility.CheckNotNull(nameof(logger), logger);
 
       var targetOption =

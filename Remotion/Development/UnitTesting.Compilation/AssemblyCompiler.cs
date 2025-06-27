@@ -37,8 +37,8 @@ namespace Remotion.Development.UnitTesting.Compilation
 
     public AssemblyCompiler (string sourceDirectory, string outputAssembly, params string[] referencedAssemblies)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("sourceDirectory", sourceDirectory);
-      ArgumentUtility.CheckNotNullOrEmpty("outputAssembly", outputAssembly);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(sourceDirectory), sourceDirectory);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(outputAssembly), outputAssembly);
       ArgumentUtility.CheckNotNullOrItemsNull("referencedAssemblies", referencedAssemblies);
 
       _sourceDirectory = sourceDirectory;
@@ -53,7 +53,7 @@ namespace Remotion.Development.UnitTesting.Compilation
 
     private AssemblyCompiler (string sourceDirectory, params string[] referencedAssemblies)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("sourceDirectory", sourceDirectory);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(sourceDirectory), sourceDirectory);
       ArgumentUtility.CheckNotNullOrItemsNull("referencedAssemblies", referencedAssemblies);
 
       _sourceDirectory = sourceDirectory;

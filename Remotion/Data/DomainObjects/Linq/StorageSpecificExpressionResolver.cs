@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Linq
     public SqlEntityDefinitionExpression ResolveEntity (ClassDefinition classDefinition, string tableAlias)
     {
       ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty("tableAlias", tableAlias);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(tableAlias), tableAlias);
 
       var entityDefinition = _rdbmsPersistenceModelProvider.GetEntityDefinition(classDefinition);
       var idColumnDefinition = GetSingleColumnForLookup(entityDefinition.ObjectIDProperty);
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.Linq
     public IResolvedTableInfo ResolveTable (ClassDefinition classDefinition, string tableAlias)
     {
       ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty("tableAlias", tableAlias);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(tableAlias), tableAlias);
 
       var viewName = InlineRdbmsStorageEntityDefinitionVisitor.Visit<string>(
           _rdbmsPersistenceModelProvider.GetEntityDefinition(classDefinition),
@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.Linq
     {
       ArgumentUtility.CheckNotNull(nameof(originatingEntity), originatingEntity);
       ArgumentUtility.CheckNotNull(nameof(leftEndPoint), leftEndPoint);
-      ArgumentUtility.CheckNotNullOrEmpty("tableAlias", tableAlias);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(tableAlias), tableAlias);
 
       var leftKey = GetJoinColumn(leftEndPoint, originatingEntity);
 

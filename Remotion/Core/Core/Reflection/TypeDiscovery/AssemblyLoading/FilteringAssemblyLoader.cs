@@ -91,7 +91,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     [return: MaybeNull]
     public T PerformGuardedLoadOperation<T> (string assemblyDescription, string? loadContext, Func<T> loadOperation)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("assemblyDescription", assemblyDescription);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(assemblyDescription), assemblyDescription);
       ArgumentUtility.CheckNotNull(nameof(loadOperation), loadOperation);
 
       var assemblyDescriptionText = "'" + assemblyDescription + "'";

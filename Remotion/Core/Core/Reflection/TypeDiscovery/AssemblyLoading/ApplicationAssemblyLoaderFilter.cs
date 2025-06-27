@@ -107,7 +107,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// <param name="simpleNameRegularExpression">A regular expression matching the simple names of assemblies to be excluded.</param>
     public void AddIgnoredAssembly (string simpleNameRegularExpression)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("simpleNameRegularExpression", simpleNameRegularExpression);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(simpleNameRegularExpression), simpleNameRegularExpression);
       lock (_assemblyNameFilterLock)
       {
         _nonApplicationAssemblyNames.Add(simpleNameRegularExpression);

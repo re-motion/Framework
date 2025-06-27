@@ -86,7 +86,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// </returns>
     public IBusinessObjectProperty? GetPropertyDefinition (string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyIdentifier), propertyIdentifier);
 
       if (!Properties.Contains(propertyIdentifier))
         return null;

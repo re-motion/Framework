@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     public UnsupportedStoragePropertyDefinition (Type propertyType, string message, Exception innerException)
     {
       ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
-      ArgumentUtility.CheckNotNullOrEmpty("message", message);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(message), message);
 
       _propertyType = propertyType;
       _message = message;

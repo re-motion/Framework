@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected string GetIndexOption (string optionName , bool? optionValue)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("optionName", optionName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(optionName), optionName);
 
       if (optionValue.HasValue)
         return string.Format("{0} = {1}", optionName, optionValue.Value ? "ON" : "OFF");
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected string GetIndexOption (string optionName , int? optionValue)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("optionName", optionName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(optionName), optionName);
 
       if (optionValue.HasValue)
         return string.Format("{0} = {1}", optionName, optionValue.Value);

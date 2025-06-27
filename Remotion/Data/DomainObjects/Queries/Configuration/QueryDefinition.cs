@@ -94,9 +94,9 @@ public class QueryDefinition
       Type? collectionType = null,
       IReadOnlyDictionary<string, object>? metaData = null)
   {
-    ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
+    ArgumentUtility.CheckNotNullOrEmpty(nameof(queryID), queryID);
     ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
-    ArgumentUtility.CheckNotNullOrEmpty("statement", statement);
+    ArgumentUtility.CheckNotNullOrEmpty(nameof(statement), statement);
     ArgumentUtility.CheckValidEnumValue("queryType", queryType);
 
     if ((queryType is QueryType.ScalarReadOnly or QueryType.ScalarReadWrite) && collectionType != null)

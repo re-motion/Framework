@@ -195,7 +195,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         IReadOnlyList<ColumnDefinition> primaryKeyColumns)
     {
       ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty("primaryKeyColumns", primaryKeyColumns);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(primaryKeyColumns), primaryKeyColumns);
 
       return new PrimaryKeyConstraintDefinition(
           _storageNameProvider.GetPrimaryKeyConstraintName(classDefinition),

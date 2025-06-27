@@ -399,7 +399,7 @@ namespace Remotion.Web.UI.Controls
     /// <returns> The <paramref name="url"/> extended with the parameters required by this <see cref="TabbedMenu"/>. </returns>
     public string FormatUrl (string url)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("url", url);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(url), url);
 
       if (_subMenuTabStrip.SelectedTab != null)
         return FormatUrl(url, SelectedSubMenuTab!);
@@ -420,7 +420,7 @@ namespace Remotion.Web.UI.Controls
     /// <returns> The <paramref name="url"/> extended with the parameters required by this <see cref="TabbedMenu"/>. </returns>
     public string FormatUrl (string url, MenuTab menuTab)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("url", url);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(url), url);
 
       NameValueCollection urlParameters = GetUrlParameters(menuTab);
       url = UrlUtility.AddParameters(url, urlParameters);

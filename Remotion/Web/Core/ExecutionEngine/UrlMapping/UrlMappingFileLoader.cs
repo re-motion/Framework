@@ -39,7 +39,7 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
     /// <inheritdoc />
     public IReadOnlyList<UrlMappingEntry> LoadUrlMappingEntries (string urlMappingFile)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("urlMappingFile", urlMappingFile);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(urlMappingFile), urlMappingFile);
 
       using var reader = new XmlTextReader(urlMappingFile);
 

@@ -34,7 +34,7 @@ namespace Remotion.Web.ExecutionEngine
     private WxeHandler? _wxeHandler;
 
     public WxeUserControlStep (string userControl)
-      : this(new ResourceObject(ArgumentUtility.CheckNotNullOrEmpty("userControl", userControl)))
+      : this(new ResourceObject(ArgumentUtility.CheckNotNullOrEmpty(nameof(userControl), userControl)))
     {
     }
 

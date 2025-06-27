@@ -33,7 +33,7 @@ namespace Remotion.Web.Services
     /// <returns>An <see cref="WebMenuItemProxy"/> representing a <see cref="WebMenuItem"/> in a web service interface. </returns>
     public static WebMenuItemProxy Create (string id, bool isDisabled)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
 
       return new WebMenuItemProxy(id, isDisabled);
     }

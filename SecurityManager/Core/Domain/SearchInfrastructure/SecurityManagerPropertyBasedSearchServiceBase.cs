@@ -39,7 +39,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     protected void RegisterQueryFactory (string propertyName, QueryFactory queryFactory)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
       ArgumentUtility.CheckNotNull(nameof(queryFactory), queryFactory);
 
       _queryFactories.Add(propertyName, queryFactory);

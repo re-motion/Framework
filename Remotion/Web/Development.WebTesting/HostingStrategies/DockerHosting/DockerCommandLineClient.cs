@@ -47,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     /// <inheritdoc />
     public void Pull (string imageName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("imageName", imageName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(imageName), imageName);
 
       RunDockerCommand($"pull {imageName}", timeout: _pullTimeout);
     }
@@ -69,7 +69,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
       ArgumentUtility.CheckNotNull(nameof(ports), ports);
       ArgumentUtility.CheckNotNull(nameof(mounts), mounts);
       ArgumentUtility.CheckNotNull(nameof(environmentVariables), environmentVariables);
-      ArgumentUtility.CheckNotNullOrEmpty("imageName", imageName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(imageName), imageName);
       ArgumentUtility.CheckNotEmpty("hostname", hostname);
       ArgumentUtility.CheckNotEmpty("entryPoint", entryPoint);
       ArgumentUtility.CheckNotEmpty("workingDirectory", workingDirectory);
@@ -132,7 +132,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     /// <inheritdoc />
     public bool ContainerExists (string containerName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("containerName", containerName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(containerName), containerName);
 
       using (var p = Process.Start(_dockerExeFullPath, $"inspect {containerName}"))
       {
@@ -145,7 +145,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     /// <inheritdoc />
     public void Remove (string containerName, bool force = false)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("containerName", containerName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(containerName), containerName);
 
       var commandBuilder = new StringBuilder()
           .Append("rm").Append(' ');
@@ -163,7 +163,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     /// <inheritdoc />
     public void Stop (string containerName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("containerName", containerName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(containerName), containerName);
 
       var commandBuilder = new StringBuilder()
           .Append("stop").Append(' ')

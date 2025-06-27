@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (object? value, string columnName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("columnName", columnName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(columnName), columnName);
 
       var propertyType = value != null ? value.GetType() : typeof(object);
       IStorageTypeInformation storageType;

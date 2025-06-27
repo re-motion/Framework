@@ -96,10 +96,10 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         AccessibilityConformanceLevel conformanceLevel,
         [NotNull] IReadOnlyCollection<AccessibilityRuleResult> violations)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("url", url);
-      ArgumentUtility.CheckNotNullOrEmpty("axeVersion", axeVersion);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(url), url);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(axeVersion), axeVersion);
       ArgumentUtility.CheckNotEmpty("orientationType", orientationType); // Is null in IE
-      ArgumentUtility.CheckNotNullOrEmpty("userAgent", userAgent);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(userAgent), userAgent);
       ArgumentUtility.CheckNotNullOrItemsNull("violations", violations);
 
 

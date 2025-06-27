@@ -49,7 +49,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public IDomainObjectHandle<Tenant> GetTenant (string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(uniqueIdentifier), uniqueIdentifier);
 
       var cachedData = _cache.GetData();
       var tenant = cachedData.Tenants.GetValueOrDefault(uniqueIdentifier);
@@ -65,7 +65,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public IDomainObjectHandle<Group> GetGroup (string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(uniqueIdentifier), uniqueIdentifier);
 
       var cachedData = _cache.GetData();
       var group = cachedData.Groups.GetValueOrDefault(uniqueIdentifier);
@@ -81,7 +81,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public IDomainObjectHandle<User> GetUser (string userName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("userName", userName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(userName), userName);
 
       var cachedData = _userNamesCache.GetData();
       var user = cachedData.Users.GetValueOrDefault(userName);
@@ -97,7 +97,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public IDomainObjectHandle<Position> GetPosition (string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(uniqueIdentifier), uniqueIdentifier);
 
       var cachedData = _cache.GetData();
       var position = cachedData.Positions.GetValueOrDefault(uniqueIdentifier);
@@ -129,7 +129,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public SecurableClassDefinitionData GetClass (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
 
       var cachedData = _cache.GetData();
       var @class = cachedData.Classes.GetValueOrDefault(name);

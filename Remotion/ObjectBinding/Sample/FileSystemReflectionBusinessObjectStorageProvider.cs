@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public FileSystemReflectionBusinessObjectStorageProvider (string rootPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("rootPath", rootPath);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(rootPath), rootPath);
 
       _rootPath = rootPath;
     }

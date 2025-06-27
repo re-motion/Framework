@@ -50,7 +50,7 @@ namespace Remotion.Reflection.CodeGeneration
         PropertyAttributes attributes)
     {
       ArgumentUtility.CheckNotNull(nameof(declaringType), declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
       ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
       ArgumentUtility.CheckNotNull(nameof(indexParameters), indexParameters);
 
@@ -139,7 +139,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     private static string MakeBackingFieldName (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
 
       return "_fieldFor" + propertyName;
     }

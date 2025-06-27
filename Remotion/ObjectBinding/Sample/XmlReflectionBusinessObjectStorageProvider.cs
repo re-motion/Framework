@@ -209,7 +209,7 @@ namespace Remotion.ObjectBinding.Sample
     IBusinessObjectWithIdentity IGetObjectService.GetObject (BindableObjectClassWithIdentity classWithIdentity, string uniqueIdentifier)
     {
       ArgumentUtility.CheckNotNull(nameof(classWithIdentity), classWithIdentity);
-      ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(uniqueIdentifier), uniqueIdentifier);
 
       return (IBusinessObjectWithIdentity)GetObject(classWithIdentity.TargetType, new Guid(uniqueIdentifier));
     }

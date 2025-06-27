@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 
     public DefaultNamedExpectedFileNameFinderStrategy ([NotNull] string fileName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("fileName", fileName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(fileName), fileName);
 
       _fileName = fileName;
     }

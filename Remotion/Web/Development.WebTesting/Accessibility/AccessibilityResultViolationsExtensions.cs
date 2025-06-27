@@ -84,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] params AccessibilityRequirementID[] checkIDs)
     {
       ArgumentUtility.CheckNotNullOrItemsNull("violations", violations);
-      ArgumentUtility.CheckNotNullOrEmpty("checkIDs", checkIDs);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(checkIDs), checkIDs);
 
       return violations.Where(
           x => checkIDs.Except(x.Any.Select(a => a.ID)).Any()
@@ -119,7 +119,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         params string[] xPath)
     {
       ArgumentUtility.CheckNotNullOrItemsNull("violations", violations);
-      ArgumentUtility.CheckNotNullOrEmpty("xPath", xPath);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(xPath), xPath);
 
       return violations.Where(v => v.Rule.ID != ruleID || !ArrayEquals(v.TargetPath.Select(p => p.XPath).ToArray(), xPath)).ToArray();
     }

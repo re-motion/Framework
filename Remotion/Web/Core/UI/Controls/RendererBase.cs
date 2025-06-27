@@ -132,7 +132,7 @@ namespace Remotion.Web.UI.Controls
     protected void CheckScriptManager (IControl control, string errorMessageFormat, params object?[] args)
     {
       ArgumentUtility.CheckNotNull(nameof(control), control);
-      ArgumentUtility.CheckNotNullOrEmpty("errorMessageFormat", errorMessageFormat);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(errorMessageFormat), errorMessageFormat);
       ArgumentUtility.CheckNotNull(nameof(args), args);
 
       var page = control.Page?.WrappedInstance;

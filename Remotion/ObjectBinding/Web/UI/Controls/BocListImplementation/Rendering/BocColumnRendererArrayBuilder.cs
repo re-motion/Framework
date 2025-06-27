@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public BocColumnRendererArrayBuilder (IReadOnlyList<BocColumnDefinition> columnDefinitions, IServiceLocator serviceLocator)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("columnDefinitions", columnDefinitions);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(columnDefinitions), columnDefinitions);
       ArgumentUtility.CheckNotNull(nameof(serviceLocator), serviceLocator);
 
       _columnDefinitions = columnDefinitions;

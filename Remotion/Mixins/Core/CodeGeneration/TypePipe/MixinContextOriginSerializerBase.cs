@@ -49,7 +49,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_kind))]
     public void AddKind (string kind)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("kind", kind);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(kind), kind);
 
       _kind = kind;
     }
@@ -65,7 +65,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_locaction))]
     public void AddLocation (string location)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("location", location);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(location), location);
 
       _locaction = location;
     }

@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     public DropDownMenuControlObject SelectPerTextContent (ControlSelectionContext context, string textContent)
     {
       ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(textContent), textContent);
 
       var scope = FindScopePerTextContent(context, textContent);
 
@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     public DropDownMenuControlObject? SelectOptionalPerTextContent (ControlSelectionContext context, string textContent)
     {
       ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(textContent), textContent);
 
       var scope = FindScopePerTextContent(context, textContent);
 
@@ -62,7 +62,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     public bool ExistsPerTextContent (ControlSelectionContext context, string textContent)
     {
       ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(textContent), textContent);
 
       var scope = FindScopePerTextContent(context, textContent);
 

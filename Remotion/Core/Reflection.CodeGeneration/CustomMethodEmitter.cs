@@ -36,7 +36,7 @@ namespace Remotion.Reflection.CodeGeneration
     public CustomMethodEmitter (CustomClassEmitter declaringType, string name, MethodAttributes attributes, Type returnType, Type[] parameterTypes)
     {
       ArgumentUtility.CheckNotNull(nameof(declaringType), declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
       ArgumentUtility.CheckNotNull(nameof(attributes), attributes);
       ArgumentUtility.CheckNotNull(nameof(returnType), returnType);
       ArgumentUtility.CheckNotNull(nameof(parameterTypes), parameterTypes);
@@ -52,7 +52,7 @@ namespace Remotion.Reflection.CodeGeneration
     public CustomMethodEmitter (CustomClassEmitter declaringType, string name, MethodAttributes attributes, MethodInfo methodToUseAsATemplate)
     {
       ArgumentUtility.CheckNotNull(nameof(declaringType), declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
       ArgumentUtility.CheckNotNull(nameof(attributes), attributes);
       ArgumentUtility.CheckNotNull(nameof(methodToUseAsATemplate), methodToUseAsATemplate);
 

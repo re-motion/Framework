@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     public TStorageProvider GetMandatory (string storageProviderID)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(storageProviderID), storageProviderID);
 
       if (_storageProviders.TryGetValue(storageProviderID, out var storageProvider))
         return storageProvider;

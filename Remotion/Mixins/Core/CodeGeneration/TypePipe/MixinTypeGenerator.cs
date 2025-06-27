@@ -47,7 +47,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       ArgumentUtility.CheckNotNull(nameof(identifier), identifier);
       ArgumentUtility.CheckNotNull(nameof(type), type);
       ArgumentUtility.CheckNotNull(nameof(attributeGenerator), attributeGenerator);
-      ArgumentUtility.CheckNotNullOrEmpty("pipelineIdentifier", pipelineIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(pipelineIdentifier), pipelineIdentifier);
 
       _identifier = identifier;
       _type = type;

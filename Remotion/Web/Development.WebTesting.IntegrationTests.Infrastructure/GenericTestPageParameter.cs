@@ -34,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     public GenericTestPageParameter ([NotNull] string name, [NotNull] params string[] arguments)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arguments", arguments);
 
       Name = name;

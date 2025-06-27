@@ -84,7 +84,7 @@ namespace Remotion.Security.Metadata
     public IMethodInformation GetMethodInformation (Type type, string methodName, MemberAffiliation memberAffiliation)
     {
       ArgumentUtility.CheckNotNull(nameof(type), type);
-      ArgumentUtility.CheckNotNullOrEmpty("methodName", methodName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
 
       switch (memberAffiliation)
       {

@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.Queries
     public static IQueryable<T> CreateLinqQuery<T> (string id, IReadOnlyDictionary<string, object>? metadata = null)
         where T: DomainObject
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
       metadata ??= s_emptyMetadata;
 
       var startingClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(T));
@@ -174,7 +174,7 @@ namespace Remotion.Data.DomainObjects.Queries
     public static IQuery CreateQuery<T> (string id, IQueryable queryable)
     {
       ArgumentUtility.CheckNotNull(nameof(queryable), queryable);
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
 
       var provider = queryable.Provider as QueryProviderBase;
       var queryExecutor = provider != null ? provider.Executor as DomainObjectQueryExecutor : null;
@@ -211,7 +211,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// held by the current <see cref="QueryConfiguration"/>.</returns>
     public static IQuery CreateQueryFromConfiguration (string id)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
       return CreateQueryFromConfiguration(id, new QueryParameterCollection());
     }
 
@@ -224,7 +224,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// held by the current <see cref="QueryConfiguration"/>.</returns>
     public static IQuery CreateQueryFromConfiguration (string id, QueryParameterCollection queryParameterCollection)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
       var queryDefinition = SafeServiceLocator.Current.GetInstance<IQueryDefinitionRepository>().GetMandatory(id);
       return new Query(queryDefinition, queryParameterCollection);
     }

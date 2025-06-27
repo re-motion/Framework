@@ -54,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     {
       ArgumentUtility.CheckNotNull(nameof(attribute), attribute);
       ArgumentUtility.CheckNotNull(nameof(helper), helper);
-      ArgumentUtility.CheckNotNullOrEmpty("control", control);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(control), control);
 
       var url = string.Concat(
           helper.TestInfrastructureConfiguration.WebApplicationRoot,

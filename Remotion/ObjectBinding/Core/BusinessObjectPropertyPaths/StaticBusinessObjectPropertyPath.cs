@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
 
     public static StaticBusinessObjectPropertyPath Parse (string propertyPathIdentifier, IBusinessObjectClass root)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyPathIdentifier", propertyPathIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyPathIdentifier), propertyPathIdentifier);
       ArgumentUtility.CheckNotNull(nameof(root), root);
 
       var properties = new List<IBusinessObjectProperty>();
@@ -60,7 +60,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
 
     public static StaticBusinessObjectPropertyPath Create (IBusinessObjectProperty[] properties)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("properties", properties);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(properties), properties);
 
       var identifierBuilder = new StringBuilder();
       var currentClass = properties[0].ReflectedClass;

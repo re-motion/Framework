@@ -222,7 +222,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks>The <paramref name="script"/> will supersede any <see cref="ReturnUrl"/> set on the same <see cref="WxeFunction"/>.</remarks>
     public void SetExecutionCompletedScript ([NotNull] string script)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("script", script);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(script), script);
 
       _returnUrl = null;
       _executionCompletedScript = script;
@@ -320,7 +320,7 @@ namespace Remotion.Web.ExecutionEngine
 
     internal void SetFunctionToken (string functionToken)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("functionToken", functionToken);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(functionToken), functionToken);
       _functionToken = functionToken;
     }
 

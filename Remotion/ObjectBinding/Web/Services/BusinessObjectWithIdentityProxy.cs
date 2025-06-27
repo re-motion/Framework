@@ -51,14 +51,14 @@ namespace Remotion.ObjectBinding.Web.Services
     public string? UniqueIdentifier
     {
       get { return _uniqueIdentifier; }
-      set { _uniqueIdentifier = ArgumentUtility.CheckNotNullOrEmpty("value", value); }
+      set { _uniqueIdentifier = ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value); }
     }
 
     [DisallowNull]
     public string? DisplayName
     {
       get { return _displayName; }
-      set { _displayName = ArgumentUtility.CheckNotNullOrEmpty("value", value); }
+      set { _displayName = ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value); }
     }
 
     public string IconUrl

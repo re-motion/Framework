@@ -37,7 +37,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
       ArgumentUtility.CheckNotNull(nameof(attributeAccessor), attributeAccessor);
-      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(validationErrorID), validationErrorID);
       ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
 
       attributeAccessor.SetAttribute(ValidationErrorsIDAttribute, validationErrorID);
@@ -50,7 +50,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
       ArgumentUtility.CheckNotNull(nameof(attributeCollection), attributeCollection);
-      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(validationErrorID), validationErrorID);
       ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
 
       attributeCollection[ValidationErrorsIDAttribute] = validationErrorID;
@@ -63,7 +63,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
       ArgumentUtility.CheckNotNull(nameof(htmlTextWriter), htmlTextWriter);
-      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(validationErrorID), validationErrorID);
       ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
 
       htmlTextWriter.AddAttribute(ValidationErrorsIDAttribute, validationErrorID);

@@ -175,7 +175,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void ImplementIMixinTarget (string targetClassName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("targetClassName", targetClassName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(targetClassName), targetClassName);
       Assertion.IsNotNull(_initializationMethod, "AddInitializations must be called first.");
       Assertion.IsNotNull(_classContextField, "AddFields must be called first.");
       Assertion.IsNotNull(_extensionsField, "AddExtensionsField must be called first.");

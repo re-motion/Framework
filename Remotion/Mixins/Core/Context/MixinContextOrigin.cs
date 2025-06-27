@@ -71,9 +71,9 @@ namespace Remotion.Mixins.Context
 
     public MixinContextOrigin (string kind, Assembly assembly, string location)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("kind", kind);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(kind), kind);
       ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
-      ArgumentUtility.CheckNotNullOrEmpty("location", location);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(location), location);
 
       _kind = kind;
       _assembly = assembly;

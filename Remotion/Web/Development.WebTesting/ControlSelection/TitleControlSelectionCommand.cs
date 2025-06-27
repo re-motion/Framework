@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     public TitleControlSelectionCommand ([NotNull] ITitleControlSelector<TControlObject> controlSelector, [NotNull] string title)
     {
       ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty("title", title);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(title), title);
 
       _controlSelector = controlSelector;
       _title = title;

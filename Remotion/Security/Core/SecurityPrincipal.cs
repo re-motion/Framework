@@ -37,7 +37,7 @@ namespace Remotion.Security
         [CanBeNull] string? substitutedUser,
         [CanBeNull] IReadOnlyList<ISecurityPrincipalRole>? substitutedRoles)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("user", user);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(user), user);
       ArgumentUtility.CheckNotEmpty("substitutedUser", substitutedUser);
 
       _user = user;

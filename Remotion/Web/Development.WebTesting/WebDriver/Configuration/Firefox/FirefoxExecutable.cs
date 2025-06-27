@@ -39,8 +39,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
 
     public FirefoxExecutable ([NotNull] string browserBinaryPath, [NotNull] string driverBinaryPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("browserBinaryPath", browserBinaryPath);
-      ArgumentUtility.CheckNotNullOrEmpty("driverBinaryPath", driverBinaryPath);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(browserBinaryPath), browserBinaryPath);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(driverBinaryPath), driverBinaryPath);
 
       BrowserBinaryPath = browserBinaryPath;
       DriverBinaryPath = driverBinaryPath;

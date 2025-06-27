@@ -201,7 +201,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='../Doc/include/ExecutionEngine/WxeHandler.xml' path='WxeHandler/GetTypeByPath/*' />
     protected virtual Type GetTypeByPath (string absolutePath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("absolutePath", absolutePath);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(absolutePath), absolutePath);
 
       string relativePath = VirtualPathUtility.ToAppRelative(absolutePath);
 
@@ -216,7 +216,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='../Doc/include/ExecutionEngine/WxeHandler.xml' path='WxeHandler/GetTypeByTypeName/*' />
     protected Type GetTypeByTypeName (string typeName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(typeName), typeName);
       try
       {
         var type = WebTypeUtility.GetType(typeName, true, ignoreCase : true);
@@ -275,7 +275,7 @@ namespace Remotion.Web.ExecutionEngine
     protected WxeFunctionState? ResumeExistingFunctionState (HttpContext context, string functionToken)
     {
       ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty("functionToken", functionToken);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(functionToken), functionToken);
 
       string? action = context.Request.Params[Parameters.WxeAction];
       bool isRefresh = StringUtility.AreEqual(action, Actions.Refresh, true);
@@ -441,7 +441,7 @@ namespace Remotion.Web.ExecutionEngine
     protected void ProcessReturnUrl (HttpContext context, string returnUrl)
     {
       ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty("returnUrl", returnUrl);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(returnUrl), returnUrl);
 
       context.Response.Redirect(returnUrl, true);
     }

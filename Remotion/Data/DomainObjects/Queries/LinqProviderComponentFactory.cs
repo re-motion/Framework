@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.Queries
     public virtual IQueryExecutor CreateQueryExecutor (StorageProviderDefinition providerDefinition, string id, IReadOnlyDictionary<string, object> metadata)
     {
       ArgumentUtility.CheckNotNull(nameof(providerDefinition), providerDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
       ArgumentUtility.CheckNotNull(nameof(metadata), metadata);
 
       var queryGenerator = providerDefinition.Factory.CreateDomainObjectQueryGenerator(

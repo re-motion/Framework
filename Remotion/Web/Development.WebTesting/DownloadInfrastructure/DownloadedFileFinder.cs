@@ -83,8 +83,8 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
       [JetBrains.Annotations.NotNull] IDownloadFileFinderStrategy downloadFileFinderStrategy,
       [JetBrains.Annotations.NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("downloadDirectory", downloadDirectory);
-      ArgumentUtility.CheckNotNullOrEmpty("partialFileExtension", partialFileExtension);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(downloadDirectory), downloadDirectory);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(partialFileExtension), partialFileExtension);
       ArgumentUtility.CheckNotNull(nameof(downloadFileFinderStrategy), downloadFileFinderStrategy);
       ArgumentUtility.CheckNotNull(nameof(logger), logger);
 

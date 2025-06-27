@@ -230,7 +230,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
         string commandText,
         IDictionary<string, object?> parameters)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("commandText", commandText);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(commandText), commandText);
       ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
 
       _appenderProxy.StatementExecuted(_clientTransactionID, queryID, AppendParametersToCommandText(commandText, parameters));

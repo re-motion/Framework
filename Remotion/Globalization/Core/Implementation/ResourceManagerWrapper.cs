@@ -167,7 +167,7 @@ namespace Remotion.Globalization.Implementation
     /// </summary>
     public bool TryGetString (string id, [MaybeNullWhen(false)] out string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
 
       // We need to load the cultures before any access to the resource manager happens because
       // if a culture has no resources the resource manager creates a fallback resource set for this culture.

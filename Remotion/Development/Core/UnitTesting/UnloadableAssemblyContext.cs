@@ -51,14 +51,14 @@ namespace Remotion.Development.UnitTesting
 
     public Assembly LoadFromAssemblyPath (string assemblyPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("assemblyPath", assemblyPath);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(assemblyPath), assemblyPath);
 
       return Context.LoadFromAssemblyPath(assemblyPath);
     }
 
     public Assembly LoadFromNativeImagePath (string nativeImagePath, string? assemblyPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("nativeImagePath", nativeImagePath);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(nativeImagePath), nativeImagePath);
 
       return Context.LoadFromNativeImagePath(nativeImagePath, assemblyPath);
     }

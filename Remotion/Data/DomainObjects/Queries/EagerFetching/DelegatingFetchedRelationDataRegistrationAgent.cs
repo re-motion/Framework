@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
         ICollection<LoadedObjectDataWithDataSourceData> relatedObjects)
     {
       ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty("originatingObjects", originatingObjects);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(originatingObjects), originatingObjects);
 
       var specificAgent = GetSpecificAgent(relationEndPointDefinition);
       specificAgent.GroupAndRegisterRelatedObjects(relationEndPointDefinition, originatingObjects, relatedObjects);

@@ -115,7 +115,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
     protected static State CreateState (string propertyName, string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
 
       return new State(
           new ObjectID(typeof(StatePropertyDefinition), Guid.NewGuid()).GetHandle<StatePropertyDefinition>(),

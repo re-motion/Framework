@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
 
     public CompoundCompletionDetectionStrategy ([NotNull] params ICompletionDetectionStrategy[] strategies)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("strategies", strategies);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(strategies), strategies);
 
       _strategies = strategies;
     }

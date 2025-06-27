@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <inheritdoc cref="HtmlTextWriter.AddAttribute(string,string)" />
     public void AddAttributeToRender (string name, string? value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
 
       _renderingContext.Writer.AddAttribute(name, value);
     }
@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <inheritdoc cref="HtmlTextWriter.AddAttribute(string,string,bool)" />
     public void AddAttributeToRender (string name, string? value, bool fEncode)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
 
       _renderingContext.Writer.AddAttribute(name, value, fEncode);
     }
@@ -71,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <inheritdoc cref="HtmlTextWriter.AddAttribute(string,string)" />
     public void AddAttributeToRender (string name, PlainTextString value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
 
       value.AddAttributeTo(_renderingContext.Writer, name);
     }
@@ -97,7 +97,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <inheritdoc cref="HtmlTextWriter.AddStyleAttribute(string,string)" />
     public void AddStyleAttributeToRender (string name, string? value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
 
       _renderingContext.Writer.AddStyleAttribute(name, value);
     }

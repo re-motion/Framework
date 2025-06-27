@@ -252,7 +252,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <param name="logger">The <see cref="ILogger"/> used when generating diagnostic outout. Use <see cref="NullLogger"/> if no logs are required.</param>
     public static void KillAllProcessesWithName ([NotNull] string processName, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("processName", processName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(processName), processName);
       ArgumentUtility.CheckNotNull(nameof(logger), logger);
 
       logger.LogDebug("Process killing has been called for '{0}'...", processName);

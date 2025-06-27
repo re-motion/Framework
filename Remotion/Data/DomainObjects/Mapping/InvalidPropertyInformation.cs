@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     public InvalidPropertyInformation (ITypeInformation declaringType, string name, Type propertyType)
     {
       ArgumentUtility.CheckNotNull(nameof(declaringType), declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
       ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
 
       _declaringType = declaringType;

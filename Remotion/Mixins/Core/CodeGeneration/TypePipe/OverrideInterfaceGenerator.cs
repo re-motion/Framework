@@ -27,7 +27,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     public static OverrideInterfaceGenerator CreateNestedGenerator (MutableType outerType, string typeName)
     {
       ArgumentUtility.CheckNotNull(nameof(outerType), outerType);
-      ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(typeName), typeName);
 
       var interfaceType = outerType.AddNestedType(typeName, TypeAttributes.Interface | TypeAttributes.NestedPublic | TypeAttributes.Abstract, null);
       return new OverrideInterfaceGenerator(interfaceType);

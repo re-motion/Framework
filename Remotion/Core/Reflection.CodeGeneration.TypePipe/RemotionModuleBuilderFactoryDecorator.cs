@@ -45,7 +45,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe
 
     public IModuleBuilder CreateModuleBuilder (string assemblyName, string assemblyDirectoryOrNull, bool strongNamed, string keyFilePathOrNull)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("assemblyName", assemblyName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(assemblyName), assemblyName);
 
       var moduleBuilder = _moduleBuilderFactory.CreateModuleBuilder(assemblyName, assemblyDirectoryOrNull, strongNamed, keyFilePathOrNull);
 

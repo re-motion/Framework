@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         object? defaultValue)
     {
       ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
       ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
 
       _classDefinition = classDefinition;

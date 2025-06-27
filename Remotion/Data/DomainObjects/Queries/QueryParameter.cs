@@ -56,7 +56,7 @@ public class QueryParameter
   /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="parameterType"/> is not a valid enum value.</exception>
   public QueryParameter (string name, object? value, QueryParameterType parameterType)
   {
-    ArgumentUtility.CheckNotNullOrEmpty("name", name);
+    ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
     ArgumentUtility.CheckValidEnumValue("parameterType", parameterType);
     if (parameterType == QueryParameterType.Text && !(value is string))
       throw new ArgumentException("The parameter value must of type 'System.String' when the parameter type is 'QueryParameterType.Text'.", "value");

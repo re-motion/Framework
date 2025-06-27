@@ -33,7 +33,7 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
 
     public StateReplacingStrategy (string serializedState)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("serializedState", serializedState);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(serializedState), serializedState);
 
 #pragma warning disable CFW0001
       var formatter = new LosFormatter();

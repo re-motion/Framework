@@ -144,7 +144,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     public XmlNode GetAssertedChildElement (XmlNode parent, string tag, int index)
     {
       ArgumentUtility.CheckNotNull(nameof(parent), parent);
-      ArgumentUtility.CheckNotNullOrEmpty("tag", tag);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(tag), tag);
 
       AssertGreaterThan(
           parent.ChildNodes.Count,
@@ -213,7 +213,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     public void AssertAttribute (XmlNode node, string attributeName, string? attributeValue)
     {
       ArgumentUtility.CheckNotNull(nameof(node), node);
-      ArgumentUtility.CheckNotNullOrEmpty("attributeName", attributeName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(attributeName), attributeName);
 
       AssertAttribute(node, attributeName, attributeValue, AttributeValueCompareMode.Equal);
     }
@@ -236,7 +236,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     public void AssertAttribute (XmlNode node, string attributeName, string? attributeValue, AttributeValueCompareMode mode)
     {
       ArgumentUtility.CheckNotNull(nameof(node), node);
-      ArgumentUtility.CheckNotNullOrEmpty("attributeName", attributeName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(attributeName), attributeName);
 
       AssertNotNull(node.Attributes, "Node {0} has 'null' as Attributes value.", node.Name);
       XmlAttribute? attribute = node.Attributes[attributeName];
@@ -269,8 +269,8 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     public void AssertStyleAttribute (XmlNode node, string cssProperty, string cssValue)
     {
       ArgumentUtility.CheckNotNull(nameof(node), node);
-      ArgumentUtility.CheckNotNullOrEmpty("cssProperty", cssProperty);
-      ArgumentUtility.CheckNotNullOrEmpty("cssProperty", cssProperty);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(cssProperty), cssProperty);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(cssProperty), cssProperty);
 
       AssertNotNull(node.Attributes, "Node {0} has 'null' as Attributes value.", node.Name);
 
@@ -295,7 +295,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     public void AssertNoAttribute (XmlNode node, string attributeName)
     {
       ArgumentUtility.CheckNotNull(nameof(node), node);
-      ArgumentUtility.CheckNotNullOrEmpty("attributeName", attributeName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(attributeName), attributeName);
 
       AssertNotNull(node.Attributes, "Node {0} has 'null' as Attributes value.", node.Name);
 
@@ -308,7 +308,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     public XmlNode GetAssertedElementByID (XmlNode element, string id)
     {
       ArgumentUtility.CheckNotNull(nameof(element), element);
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
 
       var nodes = element.SelectNodes($"//*[@id=\"{id}\"]")!;
 
@@ -324,7 +324,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     public XmlNode GetAssertedElementByClass (XmlNode element, string className, int index)
     {
       ArgumentUtility.CheckNotNull(nameof(element), element);
-      ArgumentUtility.CheckNotNullOrEmpty("className", className);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(className), className);
 
       var nodes = element.SelectNodes($"//*[contains(concat(' ',normalize-space(@class),' '),' {className} ')]")!;
 

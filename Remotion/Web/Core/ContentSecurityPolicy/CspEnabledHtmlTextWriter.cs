@@ -180,7 +180,7 @@ namespace Remotion.Web.ContentSecurityPolicy
       ArgumentUtility.CheckNotNull(nameof(page), page);
       ArgumentUtility.CheckNotNull(nameof(writer), writer);
       ArgumentUtility.CheckNotNull(nameof(nonceGenerator), nonceGenerator);
-      ArgumentUtility.CheckNotNullOrEmpty("requestNonce", requestNonce);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(requestNonce), requestNonce);
       ArgumentUtility.CheckNotNull(nameof(renderingFeatures), renderingFeatures);
 
       _page = page;

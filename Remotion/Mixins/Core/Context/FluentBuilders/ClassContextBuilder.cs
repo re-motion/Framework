@@ -449,7 +449,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder EnsureMixins (MixinContextOrigin origin, params Type[] mixinTypes)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("mixinTypes", mixinTypes);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(mixinTypes), mixinTypes);
       ArgumentUtility.CheckNotNull(nameof(origin), origin);
 
       foreach (Type mixinType in mixinTypes)
@@ -468,7 +468,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder EnsureMixins (params Type[] mixinTypes)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("mixinTypes", mixinTypes);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(mixinTypes), mixinTypes);
 
       var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
       return EnsureMixins(origin, mixinTypes);
@@ -576,7 +576,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder AddComposedInterfaces (params Type[] interfaceTypes)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("interfaceTypes", interfaceTypes);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(interfaceTypes), interfaceTypes);
       foreach (Type interfaceType in interfaceTypes)
         AddComposedInterface(interfaceType);
       return this;

@@ -57,7 +57,7 @@ namespace Remotion.Web.Security.ExecutionEngine
     public WxeDemandTargetMethodPermissionAttribute (string methodName)
       : base(MethodType.Instance)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("methodName", methodName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
 
       MethodName = methodName;
     }
@@ -65,7 +65,7 @@ namespace Remotion.Web.Security.ExecutionEngine
     public WxeDemandTargetMethodPermissionAttribute (string methodName, Type securableClass)
       : base(MethodType.Instance)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("methodName", methodName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("securableClass", securableClass, typeof(ISecurableObject));
 
       MethodName = methodName;

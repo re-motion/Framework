@@ -149,7 +149,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <param name="cssSelector">CSS selector of the <see cref="ControlObject"/>.</param>
     public void IgnoreCssSelector ([NotNull] string cssSelector)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("cssSelector", cssSelector);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(cssSelector), cssSelector);
 
       ExcludedElements.Add(cssSelector);
     }
@@ -190,7 +190,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     [NotNull]
     public AccessibilityResult Analyze ([NotNull] string cssSelector, [CanBeNull] TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("cssSelector", cssSelector);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(cssSelector), cssSelector);
 
       return GetAccessibilityResult(cssSelector, timeout ?? s_defaultMaximumTimeToWaitForFrame);
     }

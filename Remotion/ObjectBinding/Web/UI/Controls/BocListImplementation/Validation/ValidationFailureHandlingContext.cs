@@ -93,7 +93,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validatio
     /// <param name="errorMessage">Must not be <see langword="null"/> or empty.</param>
     public void ReportErrorMessage (string errorMessage)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("errorMessage", errorMessage);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(errorMessage), errorMessage);
 
       _errorMessages.Add(errorMessage);
     }

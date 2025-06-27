@@ -48,7 +48,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     protected AccessTypeDefinition (Guid metadataItemID, string name, int value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
 
       MetadataItemID = metadataItemID;
       Name = name;

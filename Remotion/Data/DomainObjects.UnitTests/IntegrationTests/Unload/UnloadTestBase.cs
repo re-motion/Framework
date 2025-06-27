@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     protected void CheckEndPointExists (DomainObject owningObject, string shortPropertyName, bool endPointShouldExist)
     {
       ArgumentUtility.CheckNotNull(nameof(owningObject), owningObject);
-      ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
 
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(owningObject.ID, shortPropertyName);
       CheckEndPointExists(endPointID, endPointShouldExist);
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     protected void CheckVirtualEndPointExistsAndComplete (DomainObject owningObject, string shortPropertyName, bool shouldEndPointExist, bool shouldDataBeComplete)
     {
       ArgumentUtility.CheckNotNull(nameof(owningObject), owningObject);
-      ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
 
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(owningObject.ID, shortPropertyName);
 

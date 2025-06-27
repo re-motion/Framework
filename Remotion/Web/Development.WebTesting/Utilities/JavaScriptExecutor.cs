@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public static void ExecuteVoidStatement ([NotNull] IJavaScriptExecutor executor, [NotNull] string statement, [NotNull] params object[] args)
     {
       ArgumentUtility.CheckNotNull(nameof(executor), executor);
-      ArgumentUtility.CheckNotNullOrEmpty("statement", statement);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(statement), statement);
       ArgumentUtility.CheckNotNull(nameof(args), args);
 
       var result = executor.ExecuteScript(statement, args);
@@ -53,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       // TODO RM-8107: Improve null safety.
 
       ArgumentUtility.CheckNotNull(nameof(executor), executor);
-      ArgumentUtility.CheckNotNullOrEmpty("statement", statement);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(statement), statement);
       ArgumentUtility.CheckNotNull(nameof(args), args);
 
       var result = executor.ExecuteScript(statement, args);

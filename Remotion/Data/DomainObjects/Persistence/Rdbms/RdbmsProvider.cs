@@ -49,7 +49,7 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
       Func<IDbConnection> connectionFactory)
   {
     ArgumentUtility.CheckNotNull(nameof(definition), definition);
-    ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
+    ArgumentUtility.CheckNotNullOrEmpty(nameof(connectionString), connectionString);
     ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
     ArgumentUtility.CheckNotNull(nameof(rdbmsProviderCommandFactory), rdbmsProviderCommandFactory);
     ArgumentUtility.CheckNotNull(nameof(connectionFactory), connectionFactory);

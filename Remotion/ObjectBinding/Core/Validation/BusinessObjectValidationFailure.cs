@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Validation
         [NotNull] string errorMessage)
     {
       ArgumentUtility.CheckNotNull(nameof(validatedObject), validatedObject);
-      ArgumentUtility.CheckNotNullOrEmpty("errorMessage", errorMessage);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(errorMessage), errorMessage);
 
       return new BusinessObjectValidationFailure(errorMessage, validatedObject, null);
     }
@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.Validation
     {
       ArgumentUtility.CheckNotNull(nameof(validatedObject), validatedObject);
       ArgumentUtility.CheckNotNull(nameof(validatedProperty), validatedProperty);
-      ArgumentUtility.CheckNotNullOrEmpty("errorMessage", errorMessage);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(errorMessage), errorMessage);
 
       return new BusinessObjectValidationFailure(errorMessage, validatedObject, validatedProperty);
     }

@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classID"/> could not be found in the mapping configuration.
     public ObjectID (string classID, object value)
-      : this(MappingConfiguration.Current.GetClassDefinition(ArgumentUtility.CheckNotNullOrEmpty("classID", classID)), value)
+      : this(MappingConfiguration.Current.GetClassDefinition(ArgumentUtility.CheckNotNullOrEmpty(nameof(classID), classID)), value)
     {
     }
 

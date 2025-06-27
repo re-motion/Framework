@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public static WebTestException CreateControlDisabledException ([NotNull] IDriver driver, [CallerMemberName] string operationName = "")
     {
       ArgumentUtility.CheckNotNull(nameof(driver), driver);
-      ArgumentUtility.CheckNotNullOrEmpty("operationName", operationName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(operationName), operationName);
 
       return CreateException(driver, string.Format("The control is currently in a disabled state. Therefore, the '{0}' operation is not possible.", operationName));
     }
@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public static WebTestException CreateCommandDisabledException ([NotNull] IDriver driver, [CallerMemberName] string operationName = "")
     {
       ArgumentUtility.CheckNotNull(nameof(driver), driver);
-      ArgumentUtility.CheckNotNullOrEmpty("operationName", operationName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(operationName), operationName);
 
       return CreateException(driver, string.Format("The command is currently in a disabled state. Therefore, the '{0}' operation is not possible.", operationName));
     }
@@ -70,7 +70,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public static WebTestException CreateControlMissingException ([NotNull] IDriver driver, [NotNull] string exceptionDetails)
     {
       ArgumentUtility.CheckNotNull(nameof(driver), driver);
-      ArgumentUtility.CheckNotNullOrEmpty("exceptionDetails", exceptionDetails);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(exceptionDetails), exceptionDetails);
 
       return CreateException(driver, $"The element cannot be found: {exceptionDetails}");
     }
@@ -80,7 +80,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public static WebTestException CreateControlAmbiguousException ([NotNull] IDriver driver, [NotNull] string exceptionDetails)
     {
       ArgumentUtility.CheckNotNull(nameof(driver), driver);
-      ArgumentUtility.CheckNotNullOrEmpty("exceptionDetails", exceptionDetails);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(exceptionDetails), exceptionDetails);
 
       return CreateException(driver, $"Multiple elements were found: {exceptionDetails}");
     }
@@ -91,7 +91,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public static WebTestException CreateExpectationException ([NotNull] IDriver driver, [NotNull] string message, params object[] args)
     {
       ArgumentUtility.CheckNotNull(nameof(driver), driver);
-      ArgumentUtility.CheckNotNullOrEmpty("message", message);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(message), message);
 
       return CreateException(driver, string.Format(message, args));
     }

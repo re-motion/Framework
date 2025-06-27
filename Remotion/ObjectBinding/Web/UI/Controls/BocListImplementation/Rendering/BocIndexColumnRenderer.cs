@@ -93,7 +93,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public void RenderTitleCell (BocListRenderingContext renderingContext, string cellID)
     {
       ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
-      ArgumentUtility.CheckNotNullOrEmpty("cellID", cellID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(cellID), cellID);
 
       if (!renderingContext.Control.IsIndexEnabled)
         return;

@@ -99,8 +99,8 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// <summary> Implements <see cref="ISmartPage.RegisterClientSidePageEventHandler">ISmartPage.RegisterClientSidePageEventHandler</see>. </summary>
     public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("key", key);
-      ArgumentUtility.CheckNotNullOrEmpty("function", function);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(function), function);
       if (! Regex.IsMatch(function, @"^([a-zA-Z_][a-zA-Z0-9_]*)$"))
         throw new ArgumentException("Invalid function name: '" + function + "'.", "function");
 
@@ -157,7 +157,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// <summary> Implements <see cref="ISmartPage.RegisterControlForDirtyStateTracking">ISmartPage.RegisterControlForDirtyStateTracking</see>. </summary>
     public void RegisterControlForDirtyStateTracking (string clientID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("clientID", clientID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(clientID), clientID);
 
       if (_isPreRenderComplete)
       {
@@ -196,7 +196,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     public void RegisterCommandForSynchronousPostBack ([NotNull]Control control, [NotNull]string eventArguments)
     {
       ArgumentUtility.CheckNotNull(nameof(control), control);
-      ArgumentUtility.CheckNotNullOrEmpty("eventArguments", eventArguments);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventArguments), eventArguments);
 
       if (_isPreRenderComplete)
       {
@@ -602,7 +602,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// </summary>
     public void SetFocus ([NotNull] string id)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
       _smartFocusID = id;
     }
 

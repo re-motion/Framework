@@ -31,8 +31,8 @@ namespace Remotion.Development.UnitTesting.Configuration
   {
     public static void Validate (string xmlFragment, string xsdContent)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("xmlFragment", xmlFragment);
-      ArgumentUtility.CheckNotNullOrEmpty("xsdContent", xsdContent);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(xmlFragment), xmlFragment);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(xsdContent), xsdContent);
 
       var validationErrors = GetValidationErrors(xmlFragment, xsdContent);
       if (validationErrors.Count > 0)
@@ -45,8 +45,8 @@ namespace Remotion.Development.UnitTesting.Configuration
 
     public static bool IsValid (string xmlFragment, string xsdPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("xmlFragment", xmlFragment);
-      ArgumentUtility.CheckNotNullOrEmpty("xsdPath", xsdPath);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(xmlFragment), xmlFragment);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(xsdPath), xsdPath);
 
       return GetValidationErrors(xmlFragment, xsdPath).Count == 0;
     }

@@ -28,8 +28,8 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
   {
     public IEnumerable<string> GetFiles (string searchPath, string searchPattern, SearchOption searchOption)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("searchPath", searchPath);
-      ArgumentUtility.CheckNotNullOrEmpty("searchPattern", searchPattern);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(searchPath), searchPath);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(searchPattern), searchPattern);
 
       return Directory.GetFiles(searchPath, searchPattern, searchOption);
     }

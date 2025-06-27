@@ -51,7 +51,7 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
     public static BaseRequirements BuildBaseRequirements (IEnumerable<MethodInfo> methodsToOverride, string typeName, ModuleScope scope)
     {
       ArgumentUtility.CheckNotNull(nameof(methodsToOverride), methodsToOverride);
-      ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(typeName), typeName);
       ArgumentUtility.CheckNotNull(nameof(scope), scope);
 
       CustomClassEmitter requirementsInterface = new CustomClassEmitter(new InterfaceEmitter(scope, typeName));

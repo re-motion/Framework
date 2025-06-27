@@ -133,7 +133,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     public PageObjectContext CloneForNewWindow ([NotNull] string windowLocator)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("windowLocator", windowLocator);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(windowLocator), windowLocator);
 
       // No error page detection. See remarks documentation on this method.
 
@@ -154,7 +154,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     public PageObjectContext CloneForNewPopupWindow ([NotNull] string windowLocator)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("windowLocator", windowLocator);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(windowLocator), windowLocator);
 
       // No error page detection. See remarks documentation on this method.
 

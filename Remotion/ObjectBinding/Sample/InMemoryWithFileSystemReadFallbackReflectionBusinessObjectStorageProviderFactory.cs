@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public InMemoryWithFileSystemReadFallbackReflectionBusinessObjectStorageProviderFactory (string objectPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("objectPath", objectPath);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(objectPath), objectPath);
 
       _objectPath = objectPath;
     }

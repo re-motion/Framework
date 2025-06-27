@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptE
 
     public ScriptStatement (string statement)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("statement", statement);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(statement), statement);
 
       _statement = statement;
     }

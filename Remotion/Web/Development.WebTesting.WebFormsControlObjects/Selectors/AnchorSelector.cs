@@ -115,7 +115,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     public AnchorControlObject SelectPerTextContent (ControlSelectionContext context, string textContent)
     {
       ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(textContent), textContent);
 
       var scope = context.Scope.FindXPath(
           string.Format("(.//{0})[.={1}]", c_htmlAnchorTag, DomSelectorUtility.CreateMatchValueForXPath(textContent)));
@@ -126,7 +126,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     public AnchorControlObject? SelectOptionalPerTextContent (ControlSelectionContext context, string textContent)
     {
       ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(textContent), textContent);
 
       var scope = context.Scope.FindXPath(
           string.Format("(.//{0})[.={1}]", c_htmlAnchorTag, DomSelectorUtility.CreateMatchValueForXPath(textContent)));
@@ -141,7 +141,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     public bool ExistsPerTextContent (ControlSelectionContext context, string textContent)
     {
       ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(textContent), textContent);
 
       var scope = context.Scope.FindXPath(string.Format("(.//{0})[.={1}]", c_htmlAnchorTag, DomSelectorUtility.CreateMatchValueForXPath(textContent)));
 

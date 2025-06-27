@@ -63,7 +63,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     public void SaveAnnotation ([NotNull] string path, bool overwriteFileIfExists = false)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("path", path);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(path), path);
 
       if (!overwriteFileIfExists && File.Exists(path))
         throw new InvalidOperationException(string.Format("A screenshot with the file name '{0}' does already exist.", path));

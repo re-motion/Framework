@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
       public AttributeConstraint (string message, params Type[] propertyTypes)
       {
-        ArgumentUtility.CheckNotNullOrEmpty("message", message);
+        ArgumentUtility.CheckNotNullOrEmpty(nameof(message), message);
         ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("propertyTypes", propertyTypes);
 
         _propertyTypes = propertyTypes;

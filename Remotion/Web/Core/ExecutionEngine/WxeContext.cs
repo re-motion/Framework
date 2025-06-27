@@ -177,7 +177,7 @@ namespace Remotion.Web.ExecutionEngine
     {
       ArgumentUtility.CheckNotNull(nameof(page), page);
       ArgumentUtility.CheckNotNull(nameof(function), function);
-      ArgumentUtility.CheckNotNullOrEmpty("target", target);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(target), target);
 
       string href = GetExternalFunctionUrl(function, createPermaUrl, urlParameters);
 
@@ -334,8 +334,8 @@ namespace Remotion.Web.ExecutionEngine
     /// <param name="queryString"> An optional list of URL parameters to be appended to the <paramref name="path"/>. </param>
     private string GetResumePath (string path, string functionToken, NameValueCollection? queryString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("path", path);
-      ArgumentUtility.CheckNotNullOrEmpty("functionToken", functionToken);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(path), path);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(functionToken), functionToken);
 
       if (!path.StartsWith("/"))
         throw new ArgumentException("The path must be absolute", "path");

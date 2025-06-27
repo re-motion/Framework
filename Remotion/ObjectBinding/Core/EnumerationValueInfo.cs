@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding
     public EnumerationValueInfo (object value, string identifier, string displayName, bool isEnabled)
     {
       ArgumentUtility.CheckNotNull(nameof(value), value);
-      ArgumentUtility.CheckNotNullOrEmpty("identifier", identifier);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(identifier), identifier);
       ArgumentUtility.CheckNotNull(nameof(displayName), displayName);
 
       _value = value;

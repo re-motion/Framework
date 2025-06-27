@@ -122,7 +122,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <inheritdoc/>
     public WebTestActionOptionsFluentInterface ContinueWhenAll (params ICompletionDetectionStrategy[] completionDetectionStrategies)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("completionDetectionStrategies", completionDetectionStrategies);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(completionDetectionStrategies), completionDetectionStrategies);
       Assertion.IsNull(_actionOptions.CompletionDetectionStrategy, "You cannot completion detection strategies multiple times.");
 
       _actionOptions.CompletionDetectionStrategy = new CompoundCompletionDetectionStrategy(completionDetectionStrategies);

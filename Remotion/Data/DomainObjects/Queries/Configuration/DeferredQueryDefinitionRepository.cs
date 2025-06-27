@@ -47,14 +47,14 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     /// <inheritdoc />
     public bool Contains (string queryID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(queryID), queryID);
       return _lazyRepository.Value.Contains(queryID);
     }
 
     /// <inheritdoc />
     public QueryDefinition GetMandatory (string queryID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(queryID), queryID);
       return _lazyRepository.Value.GetMandatory(queryID);
     }
 

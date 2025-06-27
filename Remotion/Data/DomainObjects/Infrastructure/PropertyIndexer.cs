@@ -203,7 +203,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// </returns>
     public bool Contains ([NotNull] string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyIdentifier), propertyIdentifier);
 
       return PropertyAccessorDataCache.GetPropertyAccessorData(propertyIdentifier) != null;
     }
@@ -221,7 +221,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public bool Contains ([NotNull] Type domainObjectType, [NotNull] string shortPropertyName)
     {
       ArgumentUtility.CheckNotNull(nameof(domainObjectType), domainObjectType);
-      ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
 
       return PropertyAccessorDataCache.GetPropertyAccessorData(domainObjectType, shortPropertyName) != null;
     }
@@ -238,7 +238,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public PropertyAccessor Find ([NotNull] Type typeToStartSearch, [NotNull] string shortPropertyName)
     {
       ArgumentUtility.CheckNotNull(nameof(typeToStartSearch), typeToStartSearch);
-      ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
 
       var propertyAccessorData = PropertyAccessorDataCache.FindPropertyAccessorData(typeToStartSearch, shortPropertyName);
 
@@ -272,7 +272,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public PropertyAccessor Find<TDomainObject> ([CanBeNull] TDomainObject thisDomainObject, [NotNull] string shortPropertyName)
         where TDomainObject : DomainObject
     {
-      ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
       return Find(typeof(TDomainObject), shortPropertyName);
     }
 
@@ -292,7 +292,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     [NotNull]
     public PropertyAccessor Find ([NotNull] string shortPropertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
       return Find(ClassDefinition.ClassType, shortPropertyName);
     }
 

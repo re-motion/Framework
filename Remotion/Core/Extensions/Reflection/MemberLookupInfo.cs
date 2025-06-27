@@ -43,7 +43,7 @@ namespace Remotion.Reflection
     public MemberLookupInfo (
         string memberName, BindingFlags bindingFlags, Binder? binder, CallingConventions callingConvention, ParameterModifier[]? parameterModifiers)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("memberName", memberName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(memberName), memberName);
 
       _memberName = memberName;
       _bindingFlags = bindingFlags;

@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects
 
     public ClientTransactionExtensionCollection (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
 
       _key = key;
     }
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects
     {
       get
       {
-        ArgumentUtility.CheckNotNullOrEmpty("key", key);
+        ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
 
         return (IClientTransactionExtension?)BaseGetObject(key);
       }
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects
     /// <param name="key">The name of the extension. Must not be <see langword="null"/> or <see cref="System.String.Empty"/>.</param>
     public void Remove (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
 
       BaseRemove(key);
     }
@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns>The index of the extension, or -1 if <paramref name="key"/> is not found.</returns>
     public int IndexOf (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
 
       return BaseIndexOfKey(key);
     }
