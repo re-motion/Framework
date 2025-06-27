@@ -92,7 +92,7 @@ public class CommandLineArgumentCollection: CollectionBase
 
   protected override void OnSet (int index, object? oldValue, object? newValue)
   {
-    if (newValue == null) throw new ArgumentNullException(nameof(value));
+    if (newValue == null) throw new ArgumentNullException(nameof(newValue));
     CommandLineArgument? newArgument = newValue as CommandLineArgument;
     if (newArgument == null) throw new ArgumentException(c_msgInvalidArgumentType, "newValue") ;
     CommandLineArgument? oldArgument = (CommandLineArgument?)oldValue;
