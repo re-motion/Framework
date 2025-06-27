@@ -31,7 +31,8 @@ namespace Remotion.Mixins
 
     public NonIntroducedAttribute (Type nonIntroducedType)
     {
-      _nonIntroducedType = ArgumentNullException.ThrowIfNull(nonIntroducedType);
+      ArgumentNullException.ThrowIfNull(nonIntroducedType);
+      _nonIntroducedType = nonIntroducedType;
     }
 
     public Type NonIntroducedType

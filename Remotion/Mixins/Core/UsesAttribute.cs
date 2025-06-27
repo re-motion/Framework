@@ -50,7 +50,8 @@ namespace Remotion.Mixins
     /// <param name="mixinType">The mixin type the class depends on.</param>
     public UsesAttribute (Type mixinType)
     {
-      _mixinType = ArgumentNullException.ThrowIfNull(mixinType);
+      ArgumentNullException.ThrowIfNull(mixinType);
+      _mixinType = mixinType;
     }
 
     /// <summary>

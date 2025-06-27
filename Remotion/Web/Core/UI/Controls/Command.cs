@@ -888,7 +888,11 @@ namespace Remotion.Web.UI.Controls
     public virtual NoneCommandInfo NoneCommand
     {
       get { return _noneCommand; }
-      set { _noneCommand = ArgumentNullException.ThrowIfNull(value); }
+      set
+      {
+        ArgumentNullException.ThrowIfNull(value);
+        _noneCommand = value;
+      }
     }
 
     /// <summary>
@@ -907,7 +911,11 @@ namespace Remotion.Web.UI.Controls
     public virtual EventCommandInfo EventCommand
     {
       get { return _eventCommand; }
-      set { _eventCommand = ArgumentNullException.ThrowIfNull(value); }
+      set
+      {
+        ArgumentNullException.ThrowIfNull(value);
+        _eventCommand = value;
+      }
     }
 
     /// <summary>
@@ -926,7 +934,11 @@ namespace Remotion.Web.UI.Controls
     public virtual HrefCommandInfo HrefCommand
     {
       get { return _hrefCommand; }
-      set { _hrefCommand = ArgumentNullException.ThrowIfNull(value); }
+      set
+      {
+        ArgumentNullException.ThrowIfNull(value);
+        _hrefCommand = value;
+      }
     }
 
     /// <summary>
@@ -945,7 +957,11 @@ namespace Remotion.Web.UI.Controls
     public virtual WxeFunctionCommandInfo WxeFunctionCommand
     {
       get { return _wxeFunctionCommand; }
-      set { _wxeFunctionCommand = ArgumentNullException.ThrowIfNull(value); }
+      set
+      {
+        ArgumentNullException.ThrowIfNull(value);
+        _wxeFunctionCommand = value;
+      }
     }
 
     /// <summary> Gets or sets the control to which this object belongs. </summary>

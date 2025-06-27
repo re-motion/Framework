@@ -43,7 +43,8 @@ namespace Remotion.Mixins
       get { return _additionalDependencies; }
       set
       {
-        _additionalDependencies = ArgumentNullException.ThrowIfNull(value);
+        ArgumentNullException.ThrowIfNull(value);
+        _additionalDependencies = value;
       }
     }
 
@@ -59,7 +60,8 @@ namespace Remotion.Mixins
       get { return _suppressedMixins; }
       set
       {
-        _suppressedMixins = ArgumentNullException.ThrowIfNull(value);
+        ArgumentNullException.ThrowIfNull(value);
+        _suppressedMixins = value;
       }
     }
 

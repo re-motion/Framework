@@ -79,7 +79,8 @@ namespace Remotion.Mixins
     /// <param name="targetType">Target type for which this interface constitutes a composed interface.</param>
     public ComposedInterfaceAttribute (Type targetType)
     {
-      _targetType = ArgumentNullException.ThrowIfNull(targetType);
+      ArgumentNullException.ThrowIfNull(targetType);
+      _targetType = targetType;
     }
 
     /// <summary>

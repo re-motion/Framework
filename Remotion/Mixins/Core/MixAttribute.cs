@@ -48,8 +48,11 @@ namespace Remotion.Mixins
     /// <param name="mixinType">The mixin type to be mixed with the target type.</param>
     public MixAttribute (Type targetType, Type mixinType)
     {
-      _targetType = ArgumentNullException.ThrowIfNull(targetType);
-      _mixinType = ArgumentNullException.ThrowIfNull(mixinType);
+      ArgumentNullException.ThrowIfNull(targetType);
+      ArgumentNullException.ThrowIfNull(mixinType);
+
+      _targetType = targetType;
+      _mixinType = mixinType;
     }
 
     /// <summary>

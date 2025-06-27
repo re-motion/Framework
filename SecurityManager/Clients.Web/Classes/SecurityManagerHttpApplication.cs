@@ -45,7 +45,11 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
         Assertion.IsNotNull(_securityManagerPrincipalFactory, "_securityManagerPrincipalFactory != null after HttpApplication.Init()");
         return _securityManagerPrincipalFactory;
       }
-      set { _securityManagerPrincipalFactory = ArgumentNullException.ThrowIfNull(value); }
+      set
+      {
+        ArgumentNullException.ThrowIfNull(value);
+        _securityManagerPrincipalFactory = value;
+      }
     }
 
     public void SetCurrentPrincipal (ISecurityManagerPrincipal securityManagerPrincipal)

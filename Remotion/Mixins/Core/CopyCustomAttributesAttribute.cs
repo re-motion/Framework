@@ -48,16 +48,23 @@ namespace Remotion.Mixins
 
     public CopyCustomAttributesAttribute (Type attributeSourceType, params Type[] copiedAttributeTypes)
     {
-      _attributeSourceType = ArgumentNullException.ThrowIfNull(attributeSourceType);
+      ArgumentNullException.ThrowIfNull(attributeSourceType);
+      ArgumentNullException.ThrowIfNull(copiedAttributeTypes);
+
+      _attributeSourceType = attributeSourceType;
       _attributeSourceMemberName = null;
-      _copiedAttributeTypes = ArgumentNullException.ThrowIfNull(copiedAttributeTypes);
+      _copiedAttributeTypes = copiedAttributeTypes;
     }
 
     public CopyCustomAttributesAttribute (Type attributeSourceType, string attributeSourceMemberName, params Type[] copiedAttributeTypes)
     {
-      _attributeSourceType = ArgumentNullException.ThrowIfNull(attributeSourceType);
-      _attributeSourceMemberName = ArgumentNullException.ThrowIfNull(attributeSourceMemberName);
-      _copiedAttributeTypes = ArgumentNullException.ThrowIfNull(copiedAttributeTypes);
+      ArgumentNullException.ThrowIfNull(attributeSourceType);
+      ArgumentNullException.ThrowIfNull(attributeSourceMemberName);
+      ArgumentNullException.ThrowIfNull(copiedAttributeTypes);
+
+      _attributeSourceType = attributeSourceType;
+      _attributeSourceMemberName = attributeSourceMemberName;
+      _copiedAttributeTypes = copiedAttributeTypes;
     }
 
     public Type AttributeSourceType

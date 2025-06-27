@@ -64,7 +64,11 @@ namespace Remotion.ObjectBinding.Web.Services
     public string IconUrl
     {
       get { return _iconUrl; }
-      set { _iconUrl = ArgumentNullException.ThrowIfNull(value); }
+      set
+      {
+        ArgumentNullException.ThrowIfNull(value);
+        _iconUrl = value;
+      }
     }
   }
 }

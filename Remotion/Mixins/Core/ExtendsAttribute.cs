@@ -55,7 +55,8 @@ namespace Remotion.Mixins
     /// <param name="targetType">The target type extended by this mixin.</param>
     public ExtendsAttribute (Type targetType)
     {
-      _targetType = ArgumentNullException.ThrowIfNull(targetType);
+      ArgumentNullException.ThrowIfNull(targetType);
+      _targetType = targetType;
     }
 
     /// <summary>
@@ -80,7 +81,8 @@ namespace Remotion.Mixins
       get { return _mixinTypeArguments; }
       set
       {
-        _mixinTypeArguments = ArgumentNullException.ThrowIfNull(value);
+        ArgumentNullException.ThrowIfNull(value);
+        _mixinTypeArguments = value;
       }
     }
 

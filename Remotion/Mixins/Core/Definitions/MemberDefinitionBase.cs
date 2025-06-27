@@ -94,7 +94,11 @@ namespace Remotion.Mixins.Definitions
     public IVisitableDefinition Parent
     {
       get { return _parent; }
-      internal set { _parent = ArgumentNullException.ThrowIfNull(value); }
+      internal set
+      {
+        ArgumentNullException.ThrowIfNull(value);
+        _parent = value;
+      }
     }
 
     public ICustomAttributeProvider CustomAttributeProvider

@@ -56,7 +56,8 @@ namespace Remotion.Mixins
     /// open type (with unbound generic parameters) even if the configuration contains a closed type (with bound parameters).</param>
     public OverrideMixinAttribute (Type mixinType)
     {
-      _mixinType = ArgumentNullException.ThrowIfNull(mixinType);
+      ArgumentNullException.ThrowIfNull(mixinType);
+      _mixinType = mixinType;
     }
 
     public Type? MixinType
