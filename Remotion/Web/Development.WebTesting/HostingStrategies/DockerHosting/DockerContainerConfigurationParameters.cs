@@ -67,7 +67,7 @@ public class DockerContainerConfigurationParameters
   {
     ArgumentUtility.CheckNotNullOrEmpty(nameof(absoluteWebApplicationPath), absoluteWebApplicationPath);
     ArgumentUtility.CheckNotNullOrEmpty(nameof(dockerImageName), dockerImageName);
-    ArgumentUtility.CheckNotEmpty("hostname", hostname);
+    ArgumentUtility.CheckNotEmpty(nameof(hostname), hostname);
     ArgumentUtility.CheckNotNull(nameof(mounts), mounts);
 
     AbsoluteWebApplicationPath = absoluteWebApplicationPath;

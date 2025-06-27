@@ -225,7 +225,7 @@ namespace Remotion.Web.UI.Controls
 
     public void SetLoadMenuItemStatus (string value)
     {
-      ArgumentUtility.CheckNotEmpty("value", value);
+      ArgumentUtility.CheckNotEmpty(nameof(value), value);
 
       _loadMenuItemStatus = value;
     }

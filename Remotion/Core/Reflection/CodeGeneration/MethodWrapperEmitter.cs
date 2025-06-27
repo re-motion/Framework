@@ -35,7 +35,7 @@ namespace Remotion.Reflection.CodeGeneration
     {
       ArgumentUtility.CheckNotNull(nameof(ilGenerator), ilGenerator);
       ArgumentUtility.CheckNotNull(nameof(wrappedMethod), wrappedMethod);
-      ArgumentUtility.CheckNotNullOrItemsNull("wrapperParameterTypes", wrapperParameterTypes);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(wrapperParameterTypes), wrapperParameterTypes);
       ArgumentUtility.CheckNotNull(nameof(wrapperReturnType), wrapperReturnType);
       if (wrappedMethod.ContainsGenericParameters)
         throw new ArgumentException("Open generic method definitions are not supported by the MethodWrapperGenerator.", "wrappedMethod");

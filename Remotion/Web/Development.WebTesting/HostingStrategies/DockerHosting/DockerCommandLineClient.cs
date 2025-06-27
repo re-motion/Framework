@@ -70,10 +70,10 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
       ArgumentUtility.CheckNotNull(nameof(mounts), mounts);
       ArgumentUtility.CheckNotNull(nameof(environmentVariables), environmentVariables);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(imageName), imageName);
-      ArgumentUtility.CheckNotEmpty("hostname", hostname);
-      ArgumentUtility.CheckNotEmpty("entryPoint", entryPoint);
-      ArgumentUtility.CheckNotEmpty("workingDirectory", workingDirectory);
-      ArgumentUtility.CheckNotEmpty("args", args);
+      ArgumentUtility.CheckNotEmpty(nameof(hostname), hostname);
+      ArgumentUtility.CheckNotEmpty(nameof(entryPoint), entryPoint);
+      ArgumentUtility.CheckNotEmpty(nameof(workingDirectory), workingDirectory);
+      ArgumentUtility.CheckNotEmpty(nameof(args), args);
 
       var commandBuilder = new StringBuilder()
           .Append("run").Append(' ')

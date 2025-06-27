@@ -28,7 +28,7 @@ public class AspNetDockerContainerConfigurationParameters : DockerContainerConfi
       string? processArguments)
       : base(absoluteWebApplicationPath, webApplicationPort, dockerImageName, dockerIsolationMode, hostname, is32BitProcess, mounts, dockerCustomArguments)
   {
-    ArgumentUtility.CheckNotEmpty("processPath", processPath);
+    ArgumentUtility.CheckNotEmpty(nameof(processPath), processPath);
 
     ProcessPath = processPath;
     ProcessArguments = processArguments;

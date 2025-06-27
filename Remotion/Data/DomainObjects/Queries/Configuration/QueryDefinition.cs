@@ -97,7 +97,7 @@ public class QueryDefinition
     ArgumentUtility.CheckNotNullOrEmpty(nameof(queryID), queryID);
     ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
     ArgumentUtility.CheckNotNullOrEmpty(nameof(statement), statement);
-    ArgumentUtility.CheckValidEnumValue("queryType", queryType);
+    ArgumentUtility.CheckValidEnumValue(nameof(queryType), queryType);
 
     if ((queryType is QueryType.ScalarReadOnly or QueryType.ScalarReadWrite) && collectionType != null)
       throw new ArgumentException(string.Format("The scalar query '{0}' must not specify a collectionType.", queryID), "collectionType");

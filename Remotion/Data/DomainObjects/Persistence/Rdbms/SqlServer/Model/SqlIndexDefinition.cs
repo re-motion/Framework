@@ -63,8 +63,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
       if (includedColumns != null)
         includedColumnsReadOnlyCollection = includedColumns.ToList().AsReadOnly();
 
-      ArgumentUtility.CheckNotEmpty("columns", columnsReadOnlyCollection);
-      ArgumentUtility.CheckNotEmpty("includedColumns", includedColumnsReadOnlyCollection);
+      ArgumentUtility.CheckNotEmpty(nameof(columns), columnsReadOnlyCollection);
+      ArgumentUtility.CheckNotEmpty(nameof(includedColumns), includedColumnsReadOnlyCollection);
 
       _indexName = indexName;
       _columns = columnsReadOnlyCollection;

@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       ArgumentUtility.CheckNotNull(nameof(unionedEntities), unionedEntities);
 
       var unionedEntitiesList = unionedEntities.ToList().AsReadOnly();
-      ArgumentUtility.CheckNotEmpty("unionedEntities", unionedEntitiesList);
+      ArgumentUtility.CheckNotEmpty(nameof(unionedEntities), unionedEntitiesList);
 
       for (int i = 0; i < unionedEntitiesList.Count; ++i)
       {

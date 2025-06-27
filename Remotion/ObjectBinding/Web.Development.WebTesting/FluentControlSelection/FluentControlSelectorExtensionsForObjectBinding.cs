@@ -107,7 +107,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
     {
       ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(domainProperty), domainProperty);
-      ArgumentUtility.CheckNotEmpty("domainClass", domainClass);
+      ArgumentUtility.CheckNotEmpty(nameof(domainClass), domainClass);
 
       return fluentControlSelector.GetControl(
           new DomainPropertyControlSelectionCommandBuilder<TControlSelector, TControlObject>(domainProperty, domainClass));
@@ -130,7 +130,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
     {
       ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(domainProperty), domainProperty);
-      ArgumentUtility.CheckNotEmpty("domainClass", domainClass);
+      ArgumentUtility.CheckNotEmpty(nameof(domainClass), domainClass);
 
       return fluentControlSelector.GetControlOrNull(
           new DomainPropertyControlSelectionCommandBuilder<TControlSelector, TControlObject>(domainProperty, domainClass));
@@ -152,7 +152,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
     {
       ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(domainProperty), domainProperty);
-      ArgumentUtility.CheckNotEmpty("domainClass", domainClass);
+      ArgumentUtility.CheckNotEmpty(nameof(domainClass), domainClass);
 
       return fluentControlSelector.HasControl(
           new DomainPropertyControlSelectionCommandBuilder<TControlSelector, TControlObject>(domainProperty, domainClass));

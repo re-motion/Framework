@@ -103,7 +103,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     public void SwitchRowIntoEditMode (int index, IReadOnlyList<BocColumnDefinition> columns)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(columns), columns);
 
       SwitchRowIntoEditMode(index, columns, _editModeHost.IsAutoFocusOnSwitchToEditModeEnabled);
     }
@@ -137,7 +137,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     public void SwitchListIntoEditMode (IReadOnlyList<BocColumnDefinition> columns)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(columns), columns);
 
       if (_editModeHost.Value == null)
       {
@@ -162,7 +162,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     public bool AddAndEditRow (IBusinessObject businessObject, IReadOnlyList<BocColumnDefinition> columns)
     {
       ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
-      ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(columns), columns);
 
       RestoreAndEndEditMode(columns);
 
@@ -449,7 +449,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     public void EnsureEditModeRestored (IReadOnlyList<BocColumnDefinition> columns)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(columns), columns);
 
       if (_isEditModeRestored)
         return;
@@ -475,8 +475,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     public BocListRow[] AddRows (IBusinessObject[] businessObjects, IReadOnlyList<BocColumnDefinition> columns)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("businessObjects", businessObjects);
-      ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(businessObjects), businessObjects);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(columns), columns);
 
       var bocListRows = _editModeHost.AddRows(businessObjects);
 
@@ -506,7 +506,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     public int AddRow (IBusinessObject businessObject, IReadOnlyList<BocColumnDefinition> columns)
     {
       ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
-      ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(columns), columns);
 
       var bocListRows = AddRows(new[] { businessObject }, columns);
 
@@ -526,7 +526,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     public void RemoveRows (IBusinessObject[] businessObjects)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("businessObjects", businessObjects);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(businessObjects), businessObjects);
 
       var bocListRows = _editModeHost.RemoveRows(businessObjects);
 

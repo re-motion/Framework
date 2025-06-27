@@ -98,9 +98,9 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(url), url);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(axeVersion), axeVersion);
-      ArgumentUtility.CheckNotEmpty("orientationType", orientationType); // Is null in IE
+      ArgumentUtility.CheckNotEmpty(nameof(orientationType), orientationType); // Is null in IE
       ArgumentUtility.CheckNotNullOrEmpty(nameof(userAgent), userAgent);
-      ArgumentUtility.CheckNotNullOrItemsNull("violations", violations);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(violations), violations);
 
 
       Timestamp = timestamp;

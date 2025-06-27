@@ -224,7 +224,7 @@ namespace Remotion.Configuration
     {
       ArgumentUtility.CheckNotNull(nameof(providerSettings), providerSettings);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("providerType", providerType, typeof(ExtendedProviderBase));
-      ArgumentUtility.CheckNotNullOrItemsNull("providerInterfaces", providerInterfaces);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(providerInterfaces), providerInterfaces);
 
       try
       {

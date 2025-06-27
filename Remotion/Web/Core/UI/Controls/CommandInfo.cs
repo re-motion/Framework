@@ -47,10 +47,10 @@ namespace Remotion.Web.UI.Controls
     /// <param name="onClick">An optional javascript hooked up to the click event. The script is only allowed to do housekeeping. Must not be empty.</param>
     public static CommandInfo CreateForLink (string? title, string? accessKey, string href, string? target, string? onClick)
     {
-      ArgumentUtility.CheckNotEmpty("title", title);
+      ArgumentUtility.CheckNotEmpty(nameof(title), title);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(href), href);
-      ArgumentUtility.CheckNotEmpty("target", target);
-      ArgumentUtility.CheckNotEmpty("onClick", onClick);
+      ArgumentUtility.CheckNotEmpty(nameof(target), target);
+      ArgumentUtility.CheckNotEmpty(nameof(onClick), onClick);
 
       return new CommandInfo(title, accessKey, href, target, onClick, null);
     }
@@ -63,7 +63,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="onClick">The javascript hooked up to the click event. Must not be <see langword="null" /> or empty.</param>
     public static CommandInfo CreateForPostBack (string? title, string? accessKey, string onClick)
     {
-      ArgumentUtility.CheckNotEmpty("title", title);
+      ArgumentUtility.CheckNotEmpty(nameof(title), title);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(onClick), onClick);
 
       return new CommandInfo(title, accessKey, SafeServiceLocator.Current.GetInstance<IFallbackNavigationUrlProvider>().GetURL(), null, onClick, null);

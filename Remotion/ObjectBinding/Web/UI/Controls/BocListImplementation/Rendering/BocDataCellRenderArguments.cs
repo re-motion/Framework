@@ -60,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IReadOnlyList<bool> columnsWithValidationFailures)
     {
       ArgumentUtility.CheckNotNull(nameof(dataRowRenderEventArgs), dataRowRenderEventArgs);
-      ArgumentUtility.CheckNotEmpty("cellID", cellID);
+      ArgumentUtility.CheckNotEmpty(nameof(cellID), cellID);
       ArgumentUtility.CheckNotNull(nameof(headerIDs), headerIDs);
       ArgumentUtility.CheckNotNull(nameof(columnsWithValidationFailures), columnsWithValidationFailures);
 

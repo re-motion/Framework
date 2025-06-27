@@ -95,7 +95,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     public virtual void CreateControls (IBusinessObject value, IReadOnlyList<BocColumnDefinition> columns)
     {
       ArgumentUtility.CheckNotNull(nameof(value), value);
-      ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(columns), columns);
 
       if (_dataSourceFactory == null)
       {

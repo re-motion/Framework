@@ -386,7 +386,7 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
   {
     CheckDisposed();
     ArgumentUtility.CheckNotNull(nameof(command), command);
-    ArgumentUtility.CheckValidEnumValue("behavior", behavior);
+    ArgumentUtility.CheckValidEnumValue(nameof(behavior), behavior);
 
     try
     {

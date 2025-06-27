@@ -82,7 +82,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       public int GetColumnIndexForDomainPropertyPaths (string[] domainPropertyPaths)
       {
-        ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("domainPropertyPaths", domainPropertyPaths);
+        ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(domainPropertyPaths), domainPropertyPaths);
 
         return _bocList.GetColumnByDomainPropertyPaths(domainPropertyPaths).Index;
       }
@@ -431,7 +431,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     protected BocListColumnDefinition<TRowControlObject, TCellControlObject> GetColumnByDomainPropertyPaths ([NotNull] string[] domainPropertyPaths)
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("domainPropertyPaths", domainPropertyPaths);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(domainPropertyPaths), domainPropertyPaths);
 
       return GetColumnDefinitions()
           .Where(column => column.HasDomainPropertyPaths)

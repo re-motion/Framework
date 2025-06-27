@@ -35,7 +35,7 @@ namespace Remotion.Security
     public SecurityPrincipalRole (string group, string position)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(group), group);
-      ArgumentUtility.CheckNotEmpty("position", position);
+      ArgumentUtility.CheckNotEmpty(nameof(position), position);
 
       _group = group;
       _position = position;

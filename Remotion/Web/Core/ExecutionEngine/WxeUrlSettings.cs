@@ -41,7 +41,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <returns>A new <see cref="WxeUrlSettings"/> object.</returns>
     public static WxeUrlSettings Create (int? maximumUrlLength = null, string? defaultWxeHandler = null)
     {
-      ArgumentUtility.CheckNotEmpty("defaultWxeHandler", defaultWxeHandler);
+      ArgumentUtility.CheckNotEmpty(nameof(defaultWxeHandler), defaultWxeHandler);
 
       var constructedMaximumUrlLength = maximumUrlLength ?? c_defaultMaximumUrlLength;
       var constructedDefaultWxeHandler = defaultWxeHandler;

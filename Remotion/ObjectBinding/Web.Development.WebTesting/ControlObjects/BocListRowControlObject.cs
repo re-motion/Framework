@@ -141,7 +141,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc />
     BocListCellControlObject IFluentBocListRowControlObject<BocListCellControlObject>.WithDomainPropertyPaths (string[] domainPropertyPaths)
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("domainPropertyPaths", domainPropertyPaths);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(domainPropertyPaths), domainPropertyPaths);
 
       return _impl.GetCellWithColumnDomainPropertyPaths<BocListCellControlObject>(domainPropertyPaths);
     }

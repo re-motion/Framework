@@ -1824,7 +1824,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <exception cref="InvalidOperationException">EnableMultipleSorting == False &amp;&amp; sortingOrder.Length > 1</exception>
     public void SetSortingOrder (params BocListSortingOrderEntry[] newSortingOrder)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("newSortingOrder", newSortingOrder);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(newSortingOrder), newSortingOrder);
 
       if (! IsMultipleSortingEnabled && newSortingOrder.Length > 1)
         throw new InvalidOperationException(string.Format("Attempted to set multiple sorting keys on BocList '{0}' but EnableMultipleSorting is False.", ID));
@@ -2507,7 +2507,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </exception>
     public void SetSelectedBusinessObjects (IReadOnlyList<IBusinessObject> selectedObjects)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("selectedObjects", selectedObjects);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(selectedObjects), selectedObjects);
 
       if (Value == null)
         throw new InvalidOperationException(string.Format("The BocList '{0}' does not have a Value.", ID));

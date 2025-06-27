@@ -28,7 +28,7 @@ namespace Remotion.SecurityManager.Domain
 
     public DomainObjectDeleteHandler (params IEnumerable[] lists)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("lists", lists);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(lists), lists);
 
       _objectsToBeDeleted = lists.SelectMany(objects => objects.Cast<BaseSecurityManagerObject>()).ToArray();
     }

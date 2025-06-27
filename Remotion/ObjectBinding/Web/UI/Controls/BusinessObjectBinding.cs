@@ -309,7 +309,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ArgumentUtility.CheckNotNull(nameof(property), property);
       if (supportedPropertyInterfaces == null)
         return true;
-      ArgumentUtility.CheckNotNullOrItemsNull("supportedPropertyInterfaces", supportedPropertyInterfaces);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(supportedPropertyInterfaces), supportedPropertyInterfaces);
 
       bool isSupportedPropertyInterface = false;
       for (int i = 0; i < supportedPropertyInterfaces.Length; i++)

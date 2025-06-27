@@ -30,7 +30,7 @@ namespace Remotion.Web.UI.Controls
     /// <returns> The <paramref name="menuItems"/>, sorted by their categories. </returns>
     public static WebMenuItem[] GroupMenuItems (WebMenuItem[] menuItems, bool generateSeparators)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("menuItems", menuItems);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(menuItems), menuItems);
 
       //  <string category, ArrayList menuItems>
       NameObjectCollection groupedMenuItems = new NameObjectCollection();

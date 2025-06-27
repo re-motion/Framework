@@ -41,7 +41,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     public RegexAssemblyLoaderFilter (Regex matchExpression, MatchTargetKind matchTarget)
     {
       ArgumentUtility.CheckNotNull(nameof(matchExpression), matchExpression);
-      ArgumentUtility.CheckValidEnumValue("matchTarget", matchTarget);
+      ArgumentUtility.CheckValidEnumValue(nameof(matchTarget), matchTarget);
 
       _matchExpression = matchExpression;
       _matchTarget = matchTarget;

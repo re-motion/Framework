@@ -754,7 +754,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         if (value != null)
-          ArgumentUtility.CheckNotNullOrItemsNull("value", value);
+          ArgumentUtility.CheckNotNullOrItemsNull(nameof(value), value);
 
         _value = value;
       }

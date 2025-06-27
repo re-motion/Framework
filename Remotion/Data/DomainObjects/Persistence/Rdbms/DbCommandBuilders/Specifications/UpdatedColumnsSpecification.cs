@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
       ArgumentUtility.CheckNotNull(nameof(columnValues), columnValues);
 
       var columnValuesArray = columnValues.ToArray();
-      ArgumentUtility.CheckNotEmpty("columnValues", columnValuesArray);
+      ArgumentUtility.CheckNotEmpty(nameof(columnValues), columnValuesArray);
 
       _columnValues = columnValuesArray;
     }

@@ -116,7 +116,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         [JetBrains.Annotations.NotNull] IBrowserContentLocator locator)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(testName), testName);
-      ArgumentUtility.CheckNotNullOrItemsNull("browserSessions", browserSessions);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(browserSessions), browserSessions);
       ArgumentUtility.CheckNotNull(nameof(locator), locator);
       if (browserSessions.Length == 0)
         throw new ArgumentException("At least one browser session must be specified.", "browserSessions");

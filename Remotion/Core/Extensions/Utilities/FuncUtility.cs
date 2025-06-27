@@ -63,7 +63,7 @@ namespace Remotion.Utilities
 
     public static Type MakeClosedType (Type returnType, params Type[] argumentTypes)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("argumentTypes", argumentTypes);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(argumentTypes), argumentTypes);
       if (argumentTypes.Length > MaxArguments)
         throw new ArgumentOutOfRangeException("argumentTypes");
 

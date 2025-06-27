@@ -51,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     {
       ArgumentUtility.CheckNotNull(nameof(dictionary), dictionary);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
-      ArgumentUtility.CheckNotNullOrItemsNull("arguments", arguments);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(arguments), arguments);
 
       var parameter = new GenericTestPageParameter(name, arguments);
       dictionary.Add(parameter);

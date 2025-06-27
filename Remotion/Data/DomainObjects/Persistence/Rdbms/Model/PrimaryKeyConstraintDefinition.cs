@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       ArgumentUtility.CheckNotNull(nameof(columns), columns);
 
       var columnsList = columns.ToList().AsReadOnly();
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("columns", columnsList);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(columns), columnsList);
 
       _constraintName = constraintName;
       _isClustered = isClustered;

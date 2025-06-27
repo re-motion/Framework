@@ -89,7 +89,7 @@ public class QueryParameterCollection : CommonCollection
   public void Add (string parameterName, object parameterValue, QueryParameterType parameterType)
   {
     ArgumentUtility.CheckNotNullOrEmpty(nameof(parameterName), parameterName);
-    ArgumentUtility.CheckValidEnumValue("parameterType", parameterType);
+    ArgumentUtility.CheckValidEnumValue(nameof(parameterType), parameterType);
 
     Add(new QueryParameter(parameterName, parameterValue, parameterType));
   }

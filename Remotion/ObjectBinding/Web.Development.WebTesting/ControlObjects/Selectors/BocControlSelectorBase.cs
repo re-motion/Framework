@@ -83,7 +83,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
     {
       ArgumentUtility.CheckNotNull(nameof(context), context);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(domainProperty), domainProperty);
-      ArgumentUtility.CheckNotEmpty("domainClass", domainClass);
+      ArgumentUtility.CheckNotEmpty(nameof(domainClass), domainClass);
 
       var scope = FindScopePerDomainProperty(context, domainProperty, domainClass);
 
@@ -95,7 +95,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
     {
       ArgumentUtility.CheckNotNull(nameof(context), context);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(domainProperty), domainProperty);
-      ArgumentUtility.CheckNotEmpty("domainClass", domainClass);
+      ArgumentUtility.CheckNotEmpty(nameof(domainClass), domainClass);
 
       var scope = FindScopePerDomainProperty(context, domainProperty, domainClass);
 
@@ -110,7 +110,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
     {
       ArgumentUtility.CheckNotNull(nameof(context), context);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(domainProperty), domainProperty);
-      ArgumentUtility.CheckNotEmpty("domainClass", domainClass);
+      ArgumentUtility.CheckNotEmpty(nameof(domainClass), domainClass);
 
       var scope = FindScopePerDomainProperty(context, domainProperty, domainClass);
 

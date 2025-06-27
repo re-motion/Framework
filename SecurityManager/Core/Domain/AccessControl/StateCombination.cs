@@ -56,7 +56,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public bool MatchesStates (IList<StateDefinition> states)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("states", states);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(states), states);
 
       if (StateUsages.Count == 0 && states.Count > 0)
         return false;

@@ -134,7 +134,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     private void CheckContains (IEnumerable<IAccessorInterceptor> accessorInterceptors, params MethodInfo[] expectedInterceptedAccessors)
     {
       ArgumentUtility.CheckNotNull(nameof(accessorInterceptors), accessorInterceptors);
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("expectedInterceptedAccessors", expectedInterceptedAccessors);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(expectedInterceptedAccessors), expectedInterceptedAccessors);
 
       var actualInterceptedAccessors = accessorInterceptors.Select(GetInterceptedAccessorMethod);
       Assert.That(expectedInterceptedAccessors, Is.SubsetOf(actualInterceptedAccessors));

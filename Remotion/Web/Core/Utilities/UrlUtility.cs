@@ -236,7 +236,7 @@ namespace Remotion.Web.Utilities
     public static string AddParameter (string url, string? name, string value, Encoding encoding)
     {
       ArgumentUtility.CheckNotNull(nameof(url), url);
-      ArgumentUtility.CheckNotEmpty("name", name);
+      ArgumentUtility.CheckNotEmpty(nameof(name), name);
       ArgumentUtility.CheckNotNull(nameof(value), value);
       ArgumentUtility.CheckNotNull(nameof(encoding), encoding);
 
@@ -330,7 +330,7 @@ namespace Remotion.Web.Utilities
     public static string DeleteParameter (string url, string name, Encoding encoding)
     {
       ArgumentUtility.CheckNotNull(nameof(url), url);
-      ArgumentUtility.CheckNotEmpty("name", name);
+      ArgumentUtility.CheckNotEmpty(nameof(name), name);
       ArgumentUtility.CheckNotNull(nameof(encoding), encoding);
 
       var urlParts = url.Split(new []{'?'}, 2, StringSplitOptions.None);
@@ -355,7 +355,7 @@ namespace Remotion.Web.Utilities
     public static string? GetParameter (string url, string name, Encoding encoding)
     {
       ArgumentUtility.CheckNotNull(nameof(url), url);
-      ArgumentUtility.CheckNotEmpty("name", name);
+      ArgumentUtility.CheckNotEmpty(nameof(name), name);
       ArgumentUtility.CheckNotNull(nameof(encoding), encoding);
 
       var urlParts = url.Split(new []{'?'}, 2, StringSplitOptions.None);

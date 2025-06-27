@@ -57,7 +57,7 @@ namespace Remotion.Web.UI.Controls
     /// </param>
     public ControlItemCollection (IControl? ownerControl, Type[] supportedTypes)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("supportedTypes", supportedTypes);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(supportedTypes), supportedTypes);
       for (int i = 0; i < supportedTypes.Length; i++)
       {
         Type type = supportedTypes[i];

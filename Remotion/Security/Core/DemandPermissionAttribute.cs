@@ -55,7 +55,7 @@ namespace Remotion.Security
 
     private DemandPermissionAttribute (object[] accessTypes)
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("accessTypes", accessTypes);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(accessTypes), accessTypes);
       ArgumentUtility.CheckItemsType("accessTypes", accessTypes, typeof(Enum));
 
       Enum[] accessTypeEnums = new Enum[accessTypes.Length];

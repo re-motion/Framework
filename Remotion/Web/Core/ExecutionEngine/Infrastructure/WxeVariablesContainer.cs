@@ -125,7 +125,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     /// </example>
     public static object[] ParseActualParameters (WxeParameterDeclaration[] parameterDeclarations, string actualParameters, CultureInfo culture)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("parameterDeclarations", parameterDeclarations);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(parameterDeclarations), parameterDeclarations);
       ArgumentUtility.CheckNotNull(nameof(actualParameters), actualParameters);
 
       StringUtility.ParsedItem[] parsedItems = StringUtility.ParseSeparatedList(actualParameters, ',');
@@ -189,7 +189,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     /// </returns>
     public static NameValueCollection SerializeParametersForQueryString (WxeParameterDeclaration[] parameterDeclarations, object[] parameterValues)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("parameterDeclarations", parameterDeclarations);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(parameterDeclarations), parameterDeclarations);
       ArgumentUtility.CheckNotNull(nameof(parameterValues), parameterValues);
 
       NameValueCollection serializedParameters = new NameValueCollection();
@@ -223,7 +223,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     {
       ArgumentUtility.CheckNotNull(nameof(function), function);
       ArgumentUtility.CheckNotNull(nameof(actualParameters), actualParameters);
-      ArgumentUtility.CheckNotNullOrItemsNull("parameterDeclarations", parameterDeclarations);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(parameterDeclarations), parameterDeclarations);
 
       _function = function;
       _variables = new NameObjectCollection();

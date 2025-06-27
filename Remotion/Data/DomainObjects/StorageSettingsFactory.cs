@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects
     public static IStorageSettingsFactory CreateForSqlServer (string connectionString, string? readOnlyConnectionString = null)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(connectionString), connectionString);
-      ArgumentUtility.CheckNotEmpty("readOnlyConnectionString", readOnlyConnectionString);
+      ArgumentUtility.CheckNotEmpty(nameof(readOnlyConnectionString), readOnlyConnectionString);
 
       return new RdbmsStorageSettingsFactory("Default", typeof(SqlStorageObjectFactory), connectionString, readOnlyConnectionString ?? connectionString);
     }
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects
         where TStorageObjectFactory : IRdbmsStorageObjectFactory
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(connectionString), connectionString);
-      ArgumentUtility.CheckNotEmpty("readOnlyConnectionString", readOnlyConnectionString);
+      ArgumentUtility.CheckNotEmpty(nameof(readOnlyConnectionString), readOnlyConnectionString);
 
       return new RdbmsStorageSettingsFactory("Default", typeof(TStorageObjectFactory), connectionString, readOnlyConnectionString ?? connectionString);
     }
