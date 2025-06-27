@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding
         object disabledEnumValue2)
       : this(new[] {
           ArgumentUtility.CheckNotNull(nameof(disabledEnumValue1), disabledEnumValue1),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue1), disabledEnumValue2),
+          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue2), disabledEnumValue2),
       })
     {
     }
@@ -92,8 +92,8 @@ namespace Remotion.ObjectBinding
         object disabledEnumValue3)
       : this(new[] {
           ArgumentUtility.CheckNotNull(nameof(disabledEnumValue1), disabledEnumValue1),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue1), disabledEnumValue2),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue1), disabledEnumValue3),
+          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue2), disabledEnumValue2),
+          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue3), disabledEnumValue3),
       })
     {
     }
@@ -112,9 +112,9 @@ namespace Remotion.ObjectBinding
         object disabledEnumValue4)
       : this(new[] {
           ArgumentUtility.CheckNotNull(nameof(disabledEnumValue1), disabledEnumValue1),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue1), disabledEnumValue2),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue1), disabledEnumValue3),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue1), disabledEnumValue4),
+          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue2), disabledEnumValue2),
+          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue3), disabledEnumValue3),
+          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue4), disabledEnumValue4),
       })
     {
     }
@@ -135,10 +135,10 @@ namespace Remotion.ObjectBinding
         object disabledEnumValue5)
       : this(new[] {
           ArgumentUtility.CheckNotNull(nameof(disabledEnumValue1), disabledEnumValue1),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue1), disabledEnumValue2),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue1), disabledEnumValue3),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue1), disabledEnumValue4),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue1), disabledEnumValue5),
+          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue2), disabledEnumValue2),
+          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue3), disabledEnumValue3),
+          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue4), disabledEnumValue4),
+          ArgumentUtility.CheckNotNull(nameof(disabledEnumValue5), disabledEnumValue5),
       })
     {
     }

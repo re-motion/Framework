@@ -69,7 +69,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       }
       protected set
       {
-        ArgumentUtility.CheckTypeIsAssignableFrom(nameof(SecurableClass), value, typeof(ISecurableObject));
+        ArgumentUtility.CheckTypeIsAssignableFrom(nameof(value), value, typeof(ISecurableObject));
         _securableClass = value;
       }
     }
