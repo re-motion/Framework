@@ -40,8 +40,8 @@ public class IdentityTypeNotSupportedException : StorageProviderConfigurationExc
 
   public IdentityTypeNotSupportedException (string message, Type storageProviderDefinitionType, Type invalidIdentityType) : base(message)
   {
-    ArgumentUtility.CheckNotNull(nameof(storageProviderDefinitionType), storageProviderDefinitionType);
-    ArgumentUtility.CheckNotNull(nameof(invalidIdentityType), invalidIdentityType);
+    ArgumentNullException.ThrowIfNull(storageProviderDefinitionType);
+    ArgumentNullException.ThrowIfNull(invalidIdentityType);
 
     _storageProviderDefinitionType = storageProviderDefinitionType;
     _invalidIdentityType = invalidIdentityType;

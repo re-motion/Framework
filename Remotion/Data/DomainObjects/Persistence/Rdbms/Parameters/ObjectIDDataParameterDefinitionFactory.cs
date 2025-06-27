@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
+using System;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Queries;
@@ -36,9 +37,9 @@ public class ObjectIDDataParameterDefinitionFactory : IDataParameterDefinitionFa
       IStorageSettings storageSettings,
       IDataParameterDefinitionFactory nextDataParameterDefinitionFactory)
   {
-    ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
-    ArgumentUtility.CheckNotNull(nameof(storageTypeInformationProvider), storageTypeInformationProvider);
-    ArgumentUtility.CheckNotNull(nameof(storageSettings), storageSettings);
+    ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+    ArgumentNullException.ThrowIfNull(storageTypeInformationProvider);
+    ArgumentNullException.ThrowIfNull(storageSettings);
     NextDataParameterDefinitionFactory = nextDataParameterDefinitionFactory;
 
     StorageSettings = storageSettings;
@@ -48,8 +49,8 @@ public class ObjectIDDataParameterDefinitionFactory : IDataParameterDefinitionFa
 
   public IDataParameterDefinition CreateDataParameterDefinition (QueryParameter queryParameter, IQuery query)
   {
-    ArgumentUtility.CheckNotNull(nameof(queryParameter), queryParameter);
-    ArgumentUtility.CheckNotNull(nameof(query), query);
+    ArgumentNullException.ThrowIfNull(queryParameter);
+    ArgumentNullException.ThrowIfNull(query);
 
     var objectID = queryParameter.Value as ObjectID;
     if (objectID != null)

@@ -32,8 +32,8 @@ namespace Remotion.Globalization
     [NotNull]
     public static IResourceManager GetResourceManager ([NotNull] this IGlobalizationService globalizationService, [NotNull] Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(globalizationService);
+      ArgumentNullException.ThrowIfNull(type);
 
       return globalizationService.GetResourceManager(TypeAdapter.Create(type));
     }

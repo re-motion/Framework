@@ -152,7 +152,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public void AddAccessType (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull(nameof(accessType), accessType);
+      ArgumentNullException.ThrowIfNull(accessType);
 
       if (FindPermission(accessType) != null)
       {
@@ -168,7 +168,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public void RemoveAccessType (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull(nameof(accessType), accessType);
+      ArgumentNullException.ThrowIfNull(accessType);
 
       var permission = FindPermission(accessType);
       if (permission == null)
@@ -182,7 +182,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public void AllowAccess (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull(nameof(accessType), accessType);
+      ArgumentNullException.ThrowIfNull(accessType);
 
       var permission = GetPermission(accessType);
       permission.Allowed = true;
@@ -190,7 +190,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public void DenyAccess (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull(nameof(accessType), accessType);
+      ArgumentNullException.ThrowIfNull(accessType);
 
       var permission = GetPermission(accessType);
       permission.Allowed = false;
@@ -198,7 +198,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public void RemoveAccess (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull(nameof(accessType), accessType);
+      ArgumentNullException.ThrowIfNull(accessType);
 
       var permission = GetPermission(accessType);
       permission.Allowed = null;
@@ -206,7 +206,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public bool MatchesToken (SecurityToken token)
     {
-      ArgumentUtility.CheckNotNull(nameof(token), token);
+      ArgumentNullException.ThrowIfNull(token);
 
       return _matcher.MatchesToken(token);
     }

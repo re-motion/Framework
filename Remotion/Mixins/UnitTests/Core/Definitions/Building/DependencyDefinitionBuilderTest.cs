@@ -589,8 +589,8 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
 
     private void CheckAllRequiringEntities (RequirementDefinitionBase requirement, params MixinDefinition[] expectedRequiringMixins)
     {
-      ArgumentUtility.CheckNotNull(nameof(requirement), requirement);
-      ArgumentUtility.CheckNotNull(nameof(expectedRequiringMixins), expectedRequiringMixins);
+      ArgumentNullException.ThrowIfNull(requirement);
+      ArgumentNullException.ThrowIfNull(expectedRequiringMixins);
 
       var requiringEntityDescription = requirement.GetRequiringEntityDescription();
       var requiringEntityDescriptionItems = requiringEntityDescription.Split(new[] { ", "}, StringSplitOptions.None);
@@ -603,8 +603,8 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
 
     private void CheckSomeRequiringMixin (RequirementDefinitionBase requirement, MixinDefinition expectedRequiringMixin)
     {
-      ArgumentUtility.CheckNotNull(nameof(requirement), requirement);
-      ArgumentUtility.CheckNotNull(nameof(expectedRequiringMixin), expectedRequiringMixin);
+      ArgumentNullException.ThrowIfNull(requirement);
+      ArgumentNullException.ThrowIfNull(expectedRequiringMixin);
 
       var requirers = requirement.GetRequiringEntityDescription().Split(new[] { ", " }, StringSplitOptions.None);
 
@@ -613,8 +613,8 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
 
     private void CheckSomeRequiringComposedInterface (RequirementDefinitionBase requirement, Type expectedRequiringComposedInterface)
     {
-      ArgumentUtility.CheckNotNull(nameof(requirement), requirement);
-      ArgumentUtility.CheckNotNull(nameof(expectedRequiringComposedInterface), expectedRequiringComposedInterface);
+      ArgumentNullException.ThrowIfNull(requirement);
+      ArgumentNullException.ThrowIfNull(expectedRequiringComposedInterface);
 
       var requirers = requirement.GetRequiringEntityDescription().Split(new[] { ", " }, StringSplitOptions.None);
 

@@ -57,7 +57,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_assembly))]
     public void AddAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
+      ArgumentNullException.ThrowIfNull(assembly);
 
       _assembly = assembly;
     }

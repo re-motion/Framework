@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(resourceUrlFactory, renderingFeatures, cssClasses, fallbackNavigationUrlProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingFeatures), renderingFeatures);
+      ArgumentNullException.ThrowIfNull(renderingFeatures);
 
       _renderingFeatures = renderingFeatures;
     }
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     protected override void RenderCellDataForEditMode (
         BocColumnRenderingContext<BocCompoundColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments, IEditableRow? editableRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       RenderValueColumnCellText(renderingContext, PlainTextString.CreateFromText(renderingContext.ColumnDefinition.GetStringValue(arguments.BusinessObject)));
     }

@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public ObjectIDWithoutClassIDStoragePropertyDefinition (IRdbmsStoragePropertyDefinition valueProperty, ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(valueProperty), valueProperty);
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(valueProperty);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       if (classDefinition.IsAbstract)
         throw new ArgumentException("ObjectIDs without ClassIDs cannot have abstract ClassDefinitions.", nameof(classDefinition));
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public ColumnValueTable SplitValuesForComparison (IEnumerable<object?> values)
     {
-      ArgumentUtility.CheckNotNull(nameof(values), values);
+      ArgumentNullException.ThrowIfNull(values);
 
       var innerValues = values.Select(
           v =>
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public object? CombineValue (IColumnValueProvider columnValueProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(columnValueProvider), columnValueProvider);
+      ArgumentNullException.ThrowIfNull(columnValueProvider);
 
       var value = _valueProperty.CombineValue(columnValueProvider);
       if (value == null)
@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IRdbmsStoragePropertyDefinition UnifyWithEquivalentProperties (IEnumerable<IRdbmsStoragePropertyDefinition> equivalentProperties)
     {
-      ArgumentUtility.CheckNotNull(nameof(equivalentProperties), equivalentProperties);
+      ArgumentNullException.ThrowIfNull(equivalentProperties);
       var checkedProperties = equivalentProperties.Select(property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
           this,
           property,
@@ -137,9 +137,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         EntityNameDefinition referencedTableName,
         ObjectIDStoragePropertyDefinition referencedObjectIDProperty)
     {
-      ArgumentUtility.CheckNotNull(nameof(nameProvider), nameProvider);
-      ArgumentUtility.CheckNotNull(nameof(referencedTableName), referencedTableName);
-      ArgumentUtility.CheckNotNull(nameof(referencedObjectIDProperty), referencedObjectIDProperty);
+      ArgumentNullException.ThrowIfNull(nameProvider);
+      ArgumentNullException.ThrowIfNull(referencedTableName);
+      ArgumentNullException.ThrowIfNull(referencedObjectIDProperty);
 
       var referencingColumns = ValueProperty.GetColumnsForComparison();
       var referencedColumns = referencedObjectIDProperty.ValueProperty.GetColumnsForComparison();

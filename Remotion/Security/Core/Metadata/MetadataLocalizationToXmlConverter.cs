@@ -44,7 +44,7 @@ namespace Remotion.Security.Metadata
     public XmlDocument Convert (LocalizedName[] localizedNames, string culture)
     {
       ArgumentUtility.CheckNotNullOrItemsNull(nameof(localizedNames), localizedNames);
-      ArgumentUtility.CheckNotNull(nameof(culture), culture);
+      ArgumentNullException.ThrowIfNull(culture);
 
       XmlDocument document = new XmlDocument();
 

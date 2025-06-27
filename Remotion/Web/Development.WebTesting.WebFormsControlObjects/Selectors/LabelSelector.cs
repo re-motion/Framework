@@ -31,8 +31,8 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlSelectionContext), controlSelectionContext);
-      ArgumentUtility.CheckNotNull(nameof(newControlObjectContext), newControlObjectContext);
+      ArgumentNullException.ThrowIfNull(controlSelectionContext);
+      ArgumentNullException.ThrowIfNull(newControlObjectContext);
 
       return new LabelControlObject(newControlObjectContext);
     }

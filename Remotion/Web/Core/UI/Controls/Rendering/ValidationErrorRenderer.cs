@@ -42,7 +42,7 @@ namespace Remotion.Web.UI.Controls.Rendering
 
     public ValidationErrorRenderer ([NotNull] IRenderingFeatures renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingFeatures), renderingFeatures);
+      ArgumentNullException.ThrowIfNull(renderingFeatures);
 
       _renderingFeatures = renderingFeatures;
     }
@@ -52,9 +52,9 @@ namespace Remotion.Web.UI.Controls.Rendering
         string validationErrorID,
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
-      ArgumentUtility.CheckNotNull(nameof(attributeAccessor), attributeAccessor);
+      ArgumentNullException.ThrowIfNull(attributeAccessor);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(validationErrorID), validationErrorID);
-      ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
+      ArgumentNullException.ThrowIfNull(validationErrors);
 
       if (!validationErrors.Any())
         return;
@@ -76,9 +76,9 @@ namespace Remotion.Web.UI.Controls.Rendering
         string validationErrorID,
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
-      ArgumentUtility.CheckNotNull(nameof(attributeCollection), attributeCollection);
+      ArgumentNullException.ThrowIfNull(attributeCollection);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(validationErrorID), validationErrorID);
-      ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
+      ArgumentNullException.ThrowIfNull(validationErrors);
 
       if (!validationErrors.Any())
         return;
@@ -99,9 +99,9 @@ namespace Remotion.Web.UI.Controls.Rendering
         string validationErrorID,
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlTextWriter), htmlTextWriter);
+      ArgumentNullException.ThrowIfNull(htmlTextWriter);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(validationErrorID), validationErrorID);
-      ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
+      ArgumentNullException.ThrowIfNull(validationErrors);
 
       if (!validationErrors.Any())
         return;

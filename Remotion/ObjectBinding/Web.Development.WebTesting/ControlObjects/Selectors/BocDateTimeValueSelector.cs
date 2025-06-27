@@ -36,8 +36,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(newControlObjectContext), newControlObjectContext);
-      ArgumentUtility.CheckNotNull(nameof(controlSelectionContext), controlSelectionContext);
+      ArgumentNullException.ThrowIfNull(newControlObjectContext);
+      ArgumentNullException.ThrowIfNull(controlSelectionContext);
 
       return new BocDateTimeValueControlObject(newControlObjectContext);
     }

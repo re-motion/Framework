@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public SelectedColumnsSpecification (IEnumerable<ColumnDefinition?> selectedColumns)
     {
-      ArgumentUtility.CheckNotNull(nameof(selectedColumns), selectedColumns);
+      ArgumentNullException.ThrowIfNull(selectedColumns);
 
       _selectedColumns = selectedColumns.ToArray();
     }
@@ -45,22 +45,22 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public void AppendProjection (StringBuilder stringBuilder, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull(nameof(stringBuilder), stringBuilder);
-      ArgumentUtility.CheckNotNull(nameof(sqlDialect), sqlDialect);
+      ArgumentNullException.ThrowIfNull(stringBuilder);
+      ArgumentNullException.ThrowIfNull(sqlDialect);
 
       stringBuilder.Append(string.Join(", ", _selectedColumns.Select(c => c == null ? "NULL" : sqlDialect.DelimitIdentifier(c.Name))));
     }
 
     public ISelectedColumnsSpecification Union (IEnumerable<ColumnDefinition?> additionalColumns)
     {
-      ArgumentUtility.CheckNotNull(nameof(additionalColumns), additionalColumns);
+      ArgumentNullException.ThrowIfNull(additionalColumns);
 
       return new SelectedColumnsSpecification(_selectedColumns.Union(additionalColumns));
     }
 
     public ISelectedColumnsSpecification AdjustForTable (TableDefinition table)
     {
-      ArgumentUtility.CheckNotNull(nameof(table), table);
+      ArgumentNullException.ThrowIfNull(table);
 
       return new SelectedColumnsSpecification(table.CalculateAdjustedColumnList(_selectedColumns));
     }

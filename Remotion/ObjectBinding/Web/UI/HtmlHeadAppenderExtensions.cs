@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI
     /// </summary>
     public static void RegisterObjectBindingWebClientScriptInclude (this HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       htmlHeadAppender.RegisterWebClientScriptInclude();
 

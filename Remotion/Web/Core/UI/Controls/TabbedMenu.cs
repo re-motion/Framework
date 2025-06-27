@@ -96,7 +96,7 @@ namespace Remotion.Web.UI.Controls
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       var renderer = CreateRenderer();
       renderer.RegisterHtmlHeadContents(htmlHeadAppender);
@@ -109,7 +109,7 @@ namespace Remotion.Web.UI.Controls
 
     protected virtual TabbedMenuRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       return new TabbedMenuRenderingContext(Page!.Context!, writer, this); //TODO RM-8118: not null assertion
     }
@@ -203,7 +203,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
     protected override void AddAttributesToRender (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       base.AddAttributesToRender(writer);
       if (string.IsNullOrEmpty(CssClass) && string.IsNullOrEmpty(Attributes["class"]))
@@ -212,7 +212,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentNullException.ThrowIfNull(writer);
       EnsureChildControls();
 
       var renderer = CreateRenderer();
@@ -371,7 +371,7 @@ namespace Remotion.Web.UI.Controls
     /// </returns>
     public virtual NameValueCollection GetUrlParameters (IMenuTab menuTab)
     {
-      ArgumentUtility.CheckNotNull(nameof(menuTab), menuTab);
+      ArgumentNullException.ThrowIfNull(menuTab);
 
       MainMenuTab? mainMenuTab = menuTab as MainMenuTab;
       SubMenuTab? subMenuTab = menuTab as SubMenuTab;
@@ -511,7 +511,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Loads the resources into the control's properties. </summary>
     protected virtual void LoadResources (IResourceManager resourceManager)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentNullException.ThrowIfNull(resourceManager);
 
       string? key = ResourceManagerUtility.GetGlobalResourceKey(StatusText.GetValue());
       if (!string.IsNullOrEmpty(key))

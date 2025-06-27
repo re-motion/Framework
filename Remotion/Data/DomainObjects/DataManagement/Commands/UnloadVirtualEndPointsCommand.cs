@@ -36,9 +36,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
         IRelationEndPointRegistrationAgent registrationAgent,
         RelationEndPointMap relationEndPointMap)
     {
-      ArgumentUtility.CheckNotNull(nameof(virtualEndPoints), virtualEndPoints);
-      ArgumentUtility.CheckNotNull(nameof(registrationAgent), registrationAgent);
-      ArgumentUtility.CheckNotNull(nameof(relationEndPointMap), relationEndPointMap);
+      ArgumentNullException.ThrowIfNull(virtualEndPoints);
+      ArgumentNullException.ThrowIfNull(registrationAgent);
+      ArgumentNullException.ThrowIfNull(relationEndPointMap);
 
       _virtualEndPoints = virtualEndPoints.ToArray();
       _registrationAgent = registrationAgent;

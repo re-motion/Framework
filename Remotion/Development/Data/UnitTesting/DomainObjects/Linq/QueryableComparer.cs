@@ -35,7 +35,7 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Linq
 
     public QueryableComparer (AssertThatActualIsEqualToExpected thatActualIsEqualToExpected)
     {
-      ArgumentUtility.CheckNotNull(nameof(thatActualIsEqualToExpected), thatActualIsEqualToExpected);
+      ArgumentNullException.ThrowIfNull(thatActualIsEqualToExpected);
 
       _assertThatActualIsEqualToExpected = thatActualIsEqualToExpected;
     }
@@ -43,8 +43,8 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Linq
     public void Compare<T> (IQueryable<T> expected, IQueryable<T> actual)
         where T: DomainObject
     {
-      ArgumentUtility.CheckNotNull(nameof(expected), expected);
-      ArgumentUtility.CheckNotNull(nameof(actual), actual);
+      ArgumentNullException.ThrowIfNull(expected);
+      ArgumentNullException.ThrowIfNull(actual);
 
       IQuery expectedQuery = GetQuery(expected);
       IQuery actualQuery = GetQuery(actual);

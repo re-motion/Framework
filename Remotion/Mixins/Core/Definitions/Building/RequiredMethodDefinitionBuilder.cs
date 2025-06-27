@@ -28,7 +28,7 @@ namespace Remotion.Mixins.Definitions.Building
 
     public RequiredMethodDefinitionBuilder (TargetClassDefinition targetClassDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(targetClassDefinition), targetClassDefinition);
+      ArgumentNullException.ThrowIfNull(targetClassDefinition);
 
       _implementedInterfaceMethodCollector = new ImplementedInterfaceRequiredMethodDefinitionCollector(targetClassDefinition);
       _introducedInterfaceMethodCollector = new IntroducedInterfaceRequiredMethodDefinitionCollector();

@@ -27,7 +27,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     public TenantConstraint (IDomainObjectHandle<Tenant> value)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
       _value = value;
     }
 

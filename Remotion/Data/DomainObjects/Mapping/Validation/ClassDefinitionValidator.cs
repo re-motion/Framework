@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
 
     public ClassDefinitionValidator (params IClassDefinitionValidationRule[] validationRules)
     {
-      ArgumentUtility.CheckNotNull(nameof(validationRules), validationRules);
+      ArgumentNullException.ThrowIfNull(validationRules);
 
       _validationRules = Array.AsReadOnly(validationRules);
     }
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
 
     public IEnumerable<MappingValidationResult> Validate (IEnumerable<ClassDefinition> classDefinitions)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinitions), classDefinitions);
+      ArgumentNullException.ThrowIfNull(classDefinitions);
 
       return from r in _validationRules
              from c in classDefinitions

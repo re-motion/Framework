@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyConstraints
 
     public CompoundBusinessObjectPropertyConstraintProvider (IEnumerable<IBusinessObjectPropertyConstraintProvider>businessObjectConstraintProviders)
     {
-      ArgumentUtility.CheckNotNull(nameof(businessObjectConstraintProviders), businessObjectConstraintProviders);
+      ArgumentNullException.ThrowIfNull(businessObjectConstraintProviders);
 
       BusinessObjectConstraintProviders = businessObjectConstraintProviders.ToList().AsReadOnly();
     }
@@ -39,8 +39,8 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyConstraints
         IBusinessObjectProperty businessObjectProperty,
         IBusinessObject? businessObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(businessObjectClass), businessObjectClass);
-      ArgumentUtility.CheckNotNull(nameof(businessObjectProperty), businessObjectProperty);
+      ArgumentNullException.ThrowIfNull(businessObjectClass);
+      ArgumentNullException.ThrowIfNull(businessObjectProperty);
 
       return BusinessObjectConstraintProviders.SelectMany(
           p => p.GetPropertyConstraints(businessObjectClass, businessObjectProperty, businessObject));

@@ -53,8 +53,8 @@ namespace Remotion.Data.DomainObjects.Queries
 
     public virtual IQueryable<T> CreateQueryable<T> (IQueryParser queryParser, IQueryExecutor executor)
     {
-      ArgumentUtility.CheckNotNull(nameof(queryParser), queryParser);
-      ArgumentUtility.CheckNotNull(nameof(executor), executor);
+      ArgumentNullException.ThrowIfNull(queryParser);
+      ArgumentNullException.ThrowIfNull(executor);
 
       return new DomainObjectQueryable<T>(queryParser, executor);
     }
@@ -68,9 +68,9 @@ namespace Remotion.Data.DomainObjects.Queries
 
     public virtual IQueryExecutor CreateQueryExecutor (StorageProviderDefinition providerDefinition, string id, IReadOnlyDictionary<string, object> metadata)
     {
-      ArgumentUtility.CheckNotNull(nameof(providerDefinition), providerDefinition);
+      ArgumentNullException.ThrowIfNull(providerDefinition);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
-      ArgumentUtility.CheckNotNull(nameof(metadata), metadata);
+      ArgumentNullException.ThrowIfNull(metadata);
 
       var queryGenerator = providerDefinition.Factory.CreateDomainObjectQueryGenerator(
           providerDefinition,
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.Queries
 
     protected virtual ExpressionTreeParser CreateExpressionTreeParser (INodeTypeProvider customNodeTypeProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(customNodeTypeProvider), customNodeTypeProvider);
+      ArgumentNullException.ThrowIfNull(customNodeTypeProvider);
 
       var nodeTypeProvider = ExpressionTreeParser.CreateDefaultNodeTypeProvider();
       nodeTypeProvider.InnerProviders.Insert(0, customNodeTypeProvider);
@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.Queries
 
     protected virtual IQueryParser CreateQueryParser (ExpressionTreeParser expressionTreeParser)
     {
-      ArgumentUtility.CheckNotNull(nameof(expressionTreeParser), expressionTreeParser);
+      ArgumentNullException.ThrowIfNull(expressionTreeParser);
       return new QueryParser(expressionTreeParser);
     }
   }

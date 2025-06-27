@@ -37,7 +37,7 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
     public TestSuiteGenerator (Page testSuitePage, string testPage)
     {
-      ArgumentUtility.CheckNotNull(nameof(testSuitePage), testSuitePage);
+      ArgumentNullException.ThrowIfNull(testSuitePage);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(testPage), testPage);
 
       _testSuitePage = testSuitePage;

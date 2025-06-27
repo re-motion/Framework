@@ -102,7 +102,7 @@ namespace Remotion.Collections.Caching
 
     public Cache ([JetBrains.Annotations.NotNull] IEqualityComparer<TKey> comparer)
     {
-      ArgumentUtility.CheckNotNull(nameof(comparer), comparer);
+      ArgumentNullException.ThrowIfNull(comparer);
 
       _innerDictionary = new Dictionary<TKey, Data>(comparer);
     }
@@ -126,7 +126,7 @@ namespace Remotion.Collections.Caching
 
       if (!TryGetValueInternal(key, out var value))
       {
-        ArgumentUtility.CheckNotNull(nameof(valueFactory), valueFactory);
+        ArgumentNullException.ThrowIfNull(valueFactory);
 
         _innerDictionary.Add(key, new Data());
         try

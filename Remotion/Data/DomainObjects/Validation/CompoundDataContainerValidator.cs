@@ -35,13 +35,13 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public CompoundDataContainerValidator (IEnumerable<IDataContainerValidator> validators)
     {
-      ArgumentUtility.CheckNotNull(nameof(validators), validators);
+      ArgumentNullException.ThrowIfNull(validators);
       _validators = validators.ToList().AsReadOnly();
     }
 
     public void Validate (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataContainer), dataContainer);
+      ArgumentNullException.ThrowIfNull(dataContainer);
 
       foreach (var validator in _validators)
         validator.Validate(dataContainer);

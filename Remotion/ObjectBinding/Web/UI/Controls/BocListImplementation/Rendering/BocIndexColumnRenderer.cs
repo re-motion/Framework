@@ -40,8 +40,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public BocIndexColumnRenderer (IRenderingFeatures renderingFeatures, BocListCssClassDefinition cssClasses)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingFeatures), renderingFeatures);
-      ArgumentUtility.CheckNotNull(nameof(cssClasses), cssClasses);
+      ArgumentNullException.ThrowIfNull(renderingFeatures);
+      ArgumentNullException.ThrowIfNull(cssClasses);
 
       _renderingFeatures = renderingFeatures;
       _cssClasses = cssClasses;
@@ -54,8 +54,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public void RenderDataCell (BocListRenderingContext renderingContext, int originalRowIndex, int absoluteRowIndex, IReadOnlyCollection<string> headerIDs)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
-      ArgumentUtility.CheckNotNull(nameof(headerIDs), headerIDs);
+      ArgumentNullException.ThrowIfNull(renderingContext);
+      ArgumentNullException.ThrowIfNull(headerIDs);
 
       if (!renderingContext.Control.IsIndexEnabled)
         return;
@@ -92,7 +92,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public void RenderTitleCell (BocListRenderingContext renderingContext, string cellID)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(cellID), cellID);
 
       if (!renderingContext.Control.IsIndexEnabled)

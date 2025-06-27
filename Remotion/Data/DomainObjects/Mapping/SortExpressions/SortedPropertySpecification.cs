@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
 
     public SortedPropertySpecification (PropertyDefinition propertyDefinition, SortOrder order)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
 
       var underlyingType = Nullable.GetUnderlyingType(propertyDefinition.PropertyType) ?? propertyDefinition.PropertyType;
 

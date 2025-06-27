@@ -29,8 +29,8 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public InitObjectExpression (Reference objectToBeInitialized, Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectToBeInitialized), objectToBeInitialized);
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(objectToBeInitialized);
+      ArgumentNullException.ThrowIfNull(type);
 
       _objectToBeInitialized = objectToBeInitialized;
       _type = type;

@@ -28,8 +28,8 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
 
     public UrlMappingLoader (IUrlMappingFileFinder urlMappingFileFinder, IUrlMappingFileLoader urlMappingFileLoader)
     {
-      ArgumentUtility.CheckNotNull(nameof(urlMappingFileFinder), urlMappingFileFinder);
-      ArgumentUtility.CheckNotNull(nameof(urlMappingFileLoader), urlMappingFileLoader);
+      ArgumentNullException.ThrowIfNull(urlMappingFileFinder);
+      ArgumentNullException.ThrowIfNull(urlMappingFileLoader);
 
       _urlMappingFileFinder = urlMappingFileFinder;
       _urlMappingFileLoader = urlMappingFileLoader;

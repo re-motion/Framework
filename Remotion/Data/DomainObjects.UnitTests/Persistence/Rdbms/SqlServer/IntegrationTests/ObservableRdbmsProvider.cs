@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         ICommandExecutionListener listener)
         : base(definition, connectionString, persistenceExtension, rdbmsProviderCommandFactory, connectionFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(listener), listener);
+      ArgumentNullException.ThrowIfNull(listener);
       _listener = listener;
     }
 

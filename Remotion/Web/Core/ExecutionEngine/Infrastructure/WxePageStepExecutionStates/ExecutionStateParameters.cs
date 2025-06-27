@@ -31,8 +31,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
 
     public ExecutionStateParameters (WxeFunction subFunction, NameValueCollection postBackCollection)
     {
-      ArgumentUtility.CheckNotNull(nameof(subFunction), subFunction);
-      ArgumentUtility.CheckNotNull(nameof(postBackCollection), postBackCollection);
+      ArgumentNullException.ThrowIfNull(subFunction);
+      ArgumentNullException.ThrowIfNull(postBackCollection);
 
       _subFunction = subFunction;
       _postBackCollection = postBackCollection;

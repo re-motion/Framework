@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public StateCombinationBuilder (SecurableClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       _classDefinition = classDefinition;
     }

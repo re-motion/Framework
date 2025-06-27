@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     public EagerFetcher (IFetchedRelationDataRegistrationAgent registrationAgent)
     {
-      ArgumentUtility.CheckNotNull(nameof(registrationAgent), registrationAgent);
+      ArgumentNullException.ThrowIfNull(registrationAgent);
       _registrationAgent = registrationAgent;
     }
 
@@ -52,10 +52,10 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
         IFetchEnabledObjectLoader fetchResultLoader,
         LoadedObjectDataPendingRegistrationCollector pendingRegistrationCollector)
     {
-      ArgumentUtility.CheckNotNull(nameof(originatingObjects), originatingObjects);
-      ArgumentUtility.CheckNotNull(nameof(fetchQueries), fetchQueries);
-      ArgumentUtility.CheckNotNull(nameof(fetchResultLoader), fetchResultLoader);
-      ArgumentUtility.CheckNotNull(nameof(pendingRegistrationCollector), pendingRegistrationCollector);
+      ArgumentNullException.ThrowIfNull(originatingObjects);
+      ArgumentNullException.ThrowIfNull(fetchQueries);
+      ArgumentNullException.ThrowIfNull(fetchResultLoader);
+      ArgumentNullException.ThrowIfNull(pendingRegistrationCollector);
 
       if (originatingObjects.Count <= 0)
         return;

@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     public SqlDatabaseSelectionScriptElementBuilder (IScriptBuilder innerScriptBuilder, string connectionString)
     {
-      ArgumentUtility.CheckNotNull(nameof(innerScriptBuilder), innerScriptBuilder);
-      ArgumentUtility.CheckNotNull(nameof(connectionString), connectionString);
+      ArgumentNullException.ThrowIfNull(innerScriptBuilder);
+      ArgumentNullException.ThrowIfNull(connectionString);
 
       _innerScriptBuilder = innerScriptBuilder;
       _connectionString = connectionString;
@@ -48,14 +48,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     public void AddEntityDefinition (IRdbmsStorageEntityDefinition entityDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(entityDefinition), entityDefinition);
+      ArgumentNullException.ThrowIfNull(entityDefinition);
 
       _innerScriptBuilder.AddEntityDefinition(entityDefinition);
     }
 
     public void AddStructuredTypeDefinition (IRdbmsStructuredTypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(typeDefinition), typeDefinition);
+      ArgumentNullException.ThrowIfNull(typeDefinition);
 
       _innerScriptBuilder.AddStructuredTypeDefinition(typeDefinition);
     }

@@ -86,7 +86,7 @@ public class FormGridRowInfo
       string relatedRowID,
       RowPosition positionInFormGrid)
   {
-    ArgumentUtility.CheckNotNull(nameof(control), control);
+    ArgumentNullException.ThrowIfNull(control);
 
     _control = control;
     _newRowType = newRowType;

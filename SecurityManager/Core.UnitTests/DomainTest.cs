@@ -51,7 +51,7 @@ namespace Remotion.SecurityManager.UnitTests
 
     protected DataContainer GetDataContainer (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
 
       return DataManagementService.GetDataManager(ClientTransaction.Current)
                                   .GetDataContainerWithLazyLoad(domainObject.ID, true);

@@ -41,7 +41,7 @@ namespace Remotion.Web.Security.ExecutionEngine
 
     public void CheckAccess (WxeFunction function)
     {
-      ArgumentUtility.CheckNotNull(nameof(function), function);
+      ArgumentNullException.ThrowIfNull(function);
 
       if (SecurityFreeSection.IsActive)
         return;
@@ -77,7 +77,7 @@ namespace Remotion.Web.Security.ExecutionEngine
 
     public bool HasAccess (WxeFunction function)
     {
-      ArgumentUtility.CheckNotNull(nameof(function), function);
+      ArgumentNullException.ThrowIfNull(function);
 
       if (SecurityFreeSection.IsActive)
         return true;

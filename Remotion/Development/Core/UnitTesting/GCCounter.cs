@@ -56,7 +56,7 @@ namespace Remotion.Development.UnitTesting
 
     public void PrintCount (TextWriter outputWriter)
     {
-      ArgumentUtility.CheckNotNull(nameof(outputWriter), outputWriter);
+      ArgumentNullException.ThrowIfNull(outputWriter);
 
       var output = new string[s_generationCount];
       for (int i = 0; i < s_generationCount; i++)

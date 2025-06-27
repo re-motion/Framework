@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
         Type entityFrameworkConfigurationType,
         Type entityFrameworkAppenderType)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
+      ArgumentNullException.ThrowIfNull(name);
 
       var configuration = Activator.CreateInstance(entityFrameworkConfigurationType);
       var initializeMethod = entityFrameworkProfilerType.GetMethod("Initialize", BindingFlags.Public | BindingFlags.Static)!;

@@ -48,7 +48,7 @@ namespace Remotion.Mixins.Definitions
 
     public override void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       visitor.Visit(this);
     }
   }

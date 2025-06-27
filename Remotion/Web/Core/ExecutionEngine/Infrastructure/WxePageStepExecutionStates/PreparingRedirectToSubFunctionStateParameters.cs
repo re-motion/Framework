@@ -31,7 +31,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
         WxeFunction subFunction, NameValueCollection postBackCollection, WxePermaUrlOptions permaUrlOptions)
         : base(subFunction, postBackCollection)
     {
-      ArgumentUtility.CheckNotNull(nameof(permaUrlOptions), permaUrlOptions);
+      ArgumentNullException.ThrowIfNull(permaUrlOptions);
       _permaUrlOptions = permaUrlOptions;
     }
 

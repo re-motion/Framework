@@ -28,8 +28,8 @@ namespace Remotion.Mixins.Definitions.Building
     public MemberOverridePair (TMember baseMember, TMember overrider)
         : this()
     {
-      ArgumentUtility.CheckNotNull(nameof(baseMember), baseMember);
-      ArgumentUtility.CheckNotNull(nameof(overrider), overrider);
+      ArgumentNullException.ThrowIfNull(baseMember);
+      ArgumentNullException.ThrowIfNull(overrider);
 
       BaseMember = baseMember;
       Overrider = overrider;

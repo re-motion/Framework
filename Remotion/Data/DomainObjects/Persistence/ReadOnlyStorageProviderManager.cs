@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     protected override IReadOnlyStorageProvider CreateStorageProvider (StorageProviderDefinition providerDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(providerDefinition), providerDefinition);
+      ArgumentNullException.ThrowIfNull(providerDefinition);
 
       return providerDefinition.Factory.CreateReadOnlyStorageProvider(providerDefinition, PersistenceExtension);
     }

@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
     public ScalarQueryAdapter (IQuery query, Func<object?, T> resultConversion)
       : base(ArgumentUtility.CheckNotNull(nameof(query), query))
     {
-      ArgumentUtility.CheckNotNull(nameof(resultConversion), resultConversion);
+      ArgumentNullException.ThrowIfNull(resultConversion);
 
       if (query.QueryType != QueryType.ScalarReadOnly)
         throw new ArgumentException("Only readonly scalar queries can be used to load scalar results.", nameof(query));
@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
 
     public override T Execute (IQueryManager queryManager)
     {
-      ArgumentUtility.CheckNotNull(nameof(queryManager), queryManager);
+      ArgumentNullException.ThrowIfNull(queryManager);
 
       var scalarValue = queryManager.GetScalar(this);
       return _resultConversion(scalarValue);

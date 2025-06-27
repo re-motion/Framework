@@ -31,14 +31,14 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public ValidationClientTransactionExtensionFactory (IValidatorProvider validatorProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(validatorProvider), validatorProvider);
+      ArgumentNullException.ThrowIfNull(validatorProvider);
 
       _validationProvider = validatorProvider;
     }
 
     public IEnumerable<IClientTransactionExtension> CreateClientTransactionExtensions (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
 
       if (clientTransaction.RootTransaction == clientTransaction)
         yield return new ValidationClientTransactionExtension(_validationProvider);

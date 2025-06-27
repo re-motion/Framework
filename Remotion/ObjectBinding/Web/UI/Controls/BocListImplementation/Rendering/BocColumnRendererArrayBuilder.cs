@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public BocColumnRendererArrayBuilder (IReadOnlyList<BocColumnDefinition> columnDefinitions, IServiceLocator serviceLocator)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(columnDefinitions), columnDefinitions);
-      ArgumentUtility.CheckNotNull(nameof(serviceLocator), serviceLocator);
+      ArgumentNullException.ThrowIfNull(serviceLocator);
 
       _columnDefinitions = columnDefinitions;
       _serviceLocator = serviceLocator;
@@ -145,7 +145,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     private bool IsColumnVisible (BocColumnDefinition column)
     {
-      ArgumentUtility.CheckNotNull(nameof(column), column);
+      ArgumentNullException.ThrowIfNull(column);
 
       if (!column.IsVisible)
         return false;

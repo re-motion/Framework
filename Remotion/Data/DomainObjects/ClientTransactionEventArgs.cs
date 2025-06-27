@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="System.ArgumentNullException"><paramref name="domainObjects"/> is <see langword="null"/>.</exception>
     public ClientTransactionEventArgs (IReadOnlyList<DomainObject> domainObjects)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObjects), domainObjects);
+      ArgumentNullException.ThrowIfNull(domainObjects);
       _domainObjects = domainObjects;
     }
 

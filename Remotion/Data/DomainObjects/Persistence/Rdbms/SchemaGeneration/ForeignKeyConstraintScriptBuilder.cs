@@ -36,8 +36,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
     public ForeignKeyConstraintScriptBuilder (
         IForeignKeyConstraintScriptElementFactory foreignKeyConstraintElementFactory, ICommentScriptElementFactory commentFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(foreignKeyConstraintElementFactory), foreignKeyConstraintElementFactory);
-      ArgumentUtility.CheckNotNull(nameof(commentFactory), commentFactory);
+      ArgumentNullException.ThrowIfNull(foreignKeyConstraintElementFactory);
+      ArgumentNullException.ThrowIfNull(commentFactory);
 
       _foreignKeyConstraintElementFactory = foreignKeyConstraintElementFactory;
       _commentFactory = commentFactory;
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public void AddEntityDefinition (IRdbmsStorageEntityDefinition entityDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(entityDefinition), entityDefinition);
+      ArgumentNullException.ThrowIfNull(entityDefinition);
 
       InlineRdbmsStorageEntityDefinitionVisitor.Visit(
           entityDefinition,

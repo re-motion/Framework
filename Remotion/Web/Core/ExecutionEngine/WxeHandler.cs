@@ -138,7 +138,7 @@ namespace Remotion.Web.ExecutionEngine
     [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual void ProcessRequest (HttpContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
       CheckTimeoutConfiguration(context);
 
       string? functionToken = context.Request.Params[Parameters.WxeFunctionToken];
@@ -167,7 +167,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='../Doc/include/ExecutionEngine/WxeHandler.xml' path='WxeHandler/CheckTimeoutConfiguration/*' />
     protected void CheckTimeoutConfiguration (HttpContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (!IsSessionManagementEnabled)
         return;
@@ -187,7 +187,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='../Doc/include/ExecutionEngine/WxeHandler.xml' path='WxeHandler/GetType/*' />
     protected Type GetType (HttpContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       string? typeName = context.Request.Params[Parameters.WxeFunctionType];
 
@@ -242,7 +242,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='../Doc/include/ExecutionEngine/WxeHandler.xml' path='WxeHandler/CreateNewFunctionState/*' />
     protected WxeFunctionState CreateNewFunctionState (HttpContext context, Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(WxeFunction));
 
       WxeFunctionStateManager functionStates = WxeFunctionStateManager.Current;
@@ -274,7 +274,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='../Doc/include/ExecutionEngine/WxeHandler.xml' path='WxeHandler/ResumeExistingFunctionState/*' />
     protected WxeFunctionState? ResumeExistingFunctionState (HttpContext context, string functionToken)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(functionToken), functionToken);
 
       string? action = context.Request.Params[Parameters.WxeAction];
@@ -369,8 +369,8 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='../Doc/include/ExecutionEngine/WxeHandler.xml' path='WxeHandler/ProcessFunctionState/*' />
     protected void ProcessFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNull(nameof(functionState), functionState);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(functionState);
 
       ExecuteFunctionState(context, functionState, isNewFunction);
 
@@ -394,8 +394,8 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='../Doc/include/ExecutionEngine/WxeHandler.xml' path='WxeHandler/ExecuteFunctionState/*' />
     protected void ExecuteFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNull(nameof(functionState), functionState);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(functionState);
       if (functionState.IsAborted)
         throw new ArgumentException("The function state " + functionState.FunctionToken + " is aborted.");
 
@@ -416,8 +416,8 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='../Doc/include/ExecutionEngine/WxeHandler.xml' path='WxeHandler/ExecuteFunction/*' />
     protected virtual void ExecuteFunction (WxeFunction function, WxeContext context, bool isNew)
     {
-      ArgumentUtility.CheckNotNull(nameof(function), function);
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(function);
+      ArgumentNullException.ThrowIfNull(context);
       if (function.IsAborted)
         throw new ArgumentException("The function " + function.GetType().GetFullNameSafe() + " is aborted.");
 
@@ -429,7 +429,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='../Doc/include/ExecutionEngine/WxeHandler.xml' path='WxeHandler/CleanUpFunctionState/*' />
     protected void CleanUpFunctionState (WxeFunctionState functionState)
     {
-      ArgumentUtility.CheckNotNull(nameof(functionState), functionState);
+      ArgumentNullException.ThrowIfNull(functionState);
 
       bool isRootFunction = functionState.Function == functionState.Function.RootFunction;
       if (functionState.IsCleanUpEnabled && isRootFunction)
@@ -440,7 +440,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='../Doc/include/ExecutionEngine/WxeHandler.xml' path='WxeHandler/ProcessReturnUrl/*' />
     protected void ProcessReturnUrl (HttpContext context, string returnUrl)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(returnUrl), returnUrl);
 
       context.Response.Redirect(returnUrl, true);

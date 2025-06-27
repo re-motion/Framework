@@ -52,8 +52,8 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <param name="queryResult">The elements making up the query result. The <see cref="IEnumerable{T}"/> is enumerated exactly once by this class.</param>
     public QueryResult (IQuery query, T?[] queryResult)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
-      ArgumentUtility.CheckNotNull(nameof(queryResult), queryResult);
+      ArgumentNullException.ThrowIfNull(query);
+      ArgumentNullException.ThrowIfNull(queryResult);
 
       _query = query;
       _queryResult = queryResult;

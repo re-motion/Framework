@@ -33,7 +33,7 @@ namespace Remotion.Validation.MetaValidation
 
     IEnumerable<MetaValidationRuleValidationResult> IObjectMetaValidationRule.Validate (IEnumerable<IObjectValidator> validationRules)
     {
-      ArgumentUtility.CheckNotNull(nameof(validationRules), validationRules);
+      ArgumentNullException.ThrowIfNull(validationRules);
 
       return Validate(validationRules.OfType<TValidator>());
     }

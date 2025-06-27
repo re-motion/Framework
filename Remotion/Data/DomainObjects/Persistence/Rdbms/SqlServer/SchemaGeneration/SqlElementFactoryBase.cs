@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected string GetColumnList (IEnumerable<ColumnDefinition?> columns)
     {
-      ArgumentUtility.CheckNotNull(nameof(columns), columns);
+      ArgumentNullException.ThrowIfNull(columns);
       return String.Join((string)", ", (IEnumerable<string>)columns.Select(cd => cd != null ? ("["+ cd.Name + "]") : "NULL"));
     }
   }

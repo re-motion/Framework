@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   {
     internal static string GetCellIDForValidationMarker (IBocList bocList, int rowIndex, int visibleColumnIndex)
     {
-      ArgumentUtility.CheckNotNull(nameof(bocList), bocList);
+      ArgumentNullException.ThrowIfNull(bocList);
 
       return $"{bocList.ClientID}_C{visibleColumnIndex}_R{rowIndex}_ValidationMarker";
     }
@@ -58,8 +58,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IRenderingFeatures renderingFeatures,
         IBocListValidationSummaryRenderer validationSummaryRenderer)
     {
-      ArgumentUtility.CheckNotNull(nameof(cssClasses), cssClasses);
-      ArgumentUtility.CheckNotNull(nameof(validationSummaryRenderer), validationSummaryRenderer);
+      ArgumentNullException.ThrowIfNull(cssClasses);
+      ArgumentNullException.ThrowIfNull(validationSummaryRenderer);
 
       _cssClasses = cssClasses;
       _indexColumnRenderer = indexColumnRenderer;
@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public void RenderTitlesRow (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Row);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Tr);
@@ -94,7 +94,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public void RenderEmptyListDataRow (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       BocColumnRenderer[] columnRenderers = renderingContext.ColumnRenderers;
       int columnCount = 0;
@@ -131,8 +131,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public void RenderDataRow (BocListRenderingContext renderingContext, BocListRowRenderingContext rowRenderingContext, in BocRowRenderArguments arguments)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
-      ArgumentUtility.CheckNotNull(nameof(rowRenderingContext), rowRenderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
+      ArgumentNullException.ThrowIfNull(rowRenderingContext);
 
       var absoluteRowIndex = rowRenderingContext.SortedIndex;
       var originalRowIndex = rowRenderingContext.Row.Index;

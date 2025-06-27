@@ -33,7 +33,7 @@ public class ObjectIDDataParameterDefinition : IDataParameterDefinition
   /// <param name="storageTypeInformation">The <see cref="IStorageTypeInformation"/> associated with the <see cref="Type"/> of the <see cref="ObjectID"/>'s <see cref="ObjectID.Value"/>.</param>
   public ObjectIDDataParameterDefinition (IStorageTypeInformation storageTypeInformation)
   {
-    ArgumentUtility.CheckNotNull(nameof(storageTypeInformation), storageTypeInformation);
+    ArgumentNullException.ThrowIfNull(storageTypeInformation);
 
     ValueStorageTypeInformation = storageTypeInformation;
   }
@@ -54,9 +54,9 @@ public class ObjectIDDataParameterDefinition : IDataParameterDefinition
   /// <inheritdoc />
   public IDbDataParameter CreateDataParameter (IDbCommand command, string parameterName, object parameterValue)
   {
-    ArgumentUtility.CheckNotNull(nameof(command), command);
+    ArgumentNullException.ThrowIfNull(command);
     ArgumentUtility.CheckNotNullOrEmpty(nameof(parameterName), parameterName);
-    ArgumentUtility.CheckNotNull(nameof(parameterValue), parameterValue);
+    ArgumentNullException.ThrowIfNull(parameterValue);
 
     var parameter = command.CreateParameter();
     parameter.ParameterName = parameterName;

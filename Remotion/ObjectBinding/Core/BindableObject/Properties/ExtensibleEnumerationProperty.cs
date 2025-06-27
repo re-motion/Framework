@@ -80,7 +80,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     public EnumerationValueInfo CreateEnumerationValueInfo (IExtensibleEnumInfo extensibleEnumInfo, IBusinessObject? businessObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(extensibleEnumInfo), extensibleEnumInfo);
+      ArgumentNullException.ThrowIfNull(extensibleEnumInfo);
 
       return new EnumerationValueInfo(
           extensibleEnumInfo.Value,

@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
         : base(padIndex, fillFactor, sortInTempDb, statisticsNoReCompute, dropExisting, allowRowLocks, allowPageLocks, maxDop)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(indexName), indexName);
-      ArgumentUtility.CheckNotNull(nameof(xmlColumn), xmlColumn);
+      ArgumentNullException.ThrowIfNull(xmlColumn);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(primaryIndexName), primaryIndexName);
 
       _indexName = indexName;
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
 
     protected override void Accept (ISqlIndexDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
 
       visitor.VisitSecondaryXmlIndexDefinition(this);
     }

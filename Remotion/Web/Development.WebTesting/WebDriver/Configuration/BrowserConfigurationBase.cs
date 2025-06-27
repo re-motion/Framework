@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
 
     protected BrowserConfigurationBase ([NotNull] IWebTestSettings webTestSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(webTestSettings), webTestSettings);
+      ArgumentNullException.ThrowIfNull(webTestSettings);
 
       _loggerFactory = webTestSettings.LoggerFactory;
       _browserName = webTestSettings.BrowserName;

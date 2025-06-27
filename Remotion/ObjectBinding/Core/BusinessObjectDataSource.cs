@@ -130,7 +130,7 @@ namespace Remotion.ObjectBinding
     /// </param>
     public void Register (IBusinessObjectBoundControl control)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentNullException.ThrowIfNull(control);
       if (!_boundControls.Contains(control))
         _boundControls.Add(control);
     }
@@ -143,7 +143,7 @@ namespace Remotion.ObjectBinding
     /// </param>
     public void Unregister (IBusinessObjectBoundControl control)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentNullException.ThrowIfNull(control);
       _boundControls.Remove(control);
     }
   }

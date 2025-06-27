@@ -37,9 +37,9 @@ namespace Remotion.Data.DomainObjects.Mapping
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(mappingObjectFactory), mappingObjectFactory);
-      ArgumentUtility.CheckNotNull(nameof(nameResolver), nameResolver);
-      ArgumentUtility.CheckNotNull(nameof(propertyMetadataProvider), propertyMetadataProvider);
+      ArgumentNullException.ThrowIfNull(mappingObjectFactory);
+      ArgumentNullException.ThrowIfNull(nameResolver);
+      ArgumentNullException.ThrowIfNull(propertyMetadataProvider);
 
       _mappingObjectFactory = mappingObjectFactory;
       _nameResolver = nameResolver;
@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public RelationEndPointDefinitionCollection CreateRelationEndPointDefinitionCollection (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       var endPoints = new RelationEndPointDefinitionCollection();
       foreach (var propertyInfo in GetRelationPropertyInfos(classDefinition))

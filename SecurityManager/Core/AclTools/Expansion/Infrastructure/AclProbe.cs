@@ -47,9 +47,9 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
     /// <returns></returns>
     public static AclProbe CreateAclProbe (User user, Role role, AccessControlEntry ace)
     {
-      ArgumentUtility.CheckNotNull(nameof(user), user);
-      ArgumentUtility.CheckNotNull(nameof(role), role);
-      ArgumentUtility.CheckNotNull(nameof(ace), ace);
+      ArgumentNullException.ThrowIfNull(user);
+      ArgumentNullException.ThrowIfNull(role);
+      ArgumentNullException.ThrowIfNull(ace);
       if (user.Tenant == null)
         throw new ArgumentException("User must have a Tenant set.", nameof(user));
       if (role.Position == null)

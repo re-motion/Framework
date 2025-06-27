@@ -44,15 +44,15 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
         ILabelReferenceRenderer labelReferenceRenderer)
         : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull(nameof(labelReferenceRenderer), labelReferenceRenderer);
+      ArgumentNullException.ThrowIfNull(labelReferenceRenderer);
 
       _labelReferenceRenderer = labelReferenceRenderer;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, IControl control)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
-      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(control);
 
       htmlHeadAppender.RegisterWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();
@@ -66,7 +66,7 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
 
     public void Render (TabbedMultiViewRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       AddAttributesToRender(renderingContext);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
@@ -86,7 +86,7 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
 
     protected void AddAttributesToRender (TabbedMultiViewRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       AddStandardAttributesToRender(renderingContext);
       if (string.IsNullOrEmpty(renderingContext.Control.CssClass) && string.IsNullOrEmpty(renderingContext.Control.Attributes["class"]))
@@ -95,7 +95,7 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
 
     protected virtual void RenderTabStrip (TabbedMultiViewRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       renderingContext.Control.TabStrip.CssClass = CssClassTabStrip;
       renderingContext.Control.TabStrip.RenderControl(renderingContext.Writer);
@@ -103,7 +103,7 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
 
     protected virtual void RenderActiveView (TabbedMultiViewRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, renderingContext.Control.ActiveViewClientID);
       renderingContext.Control.ActiveViewStyle.AddAttributesToRender(renderingContext.Writer);
@@ -144,7 +144,7 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
 
     protected virtual void RenderTopControls (TabbedMultiViewRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       Style style = renderingContext.Control.TopControlsStyle;
       PlaceHolder placeHolder = renderingContext.Control.TopControl;
@@ -154,7 +154,7 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
 
     protected virtual void RenderBottomControls (TabbedMultiViewRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       Style style = renderingContext.Control.BottomControlsStyle;
       PlaceHolder placeHolder = renderingContext.Control.BottomControl;

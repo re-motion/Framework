@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public StorageSpecificExpressionResolver (IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(rdbmsPersistenceModelProvider), rdbmsPersistenceModelProvider);
+      ArgumentNullException.ThrowIfNull(rdbmsPersistenceModelProvider);
 
       _rdbmsPersistenceModelProvider = rdbmsPersistenceModelProvider;
     }
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public SqlEntityDefinitionExpression ResolveEntity (ClassDefinition classDefinition, string tableAlias)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(tableAlias), tableAlias);
 
       var entityDefinition = _rdbmsPersistenceModelProvider.GetEntityDefinition(classDefinition);
@@ -77,8 +77,8 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public Expression ResolveProperty (SqlEntityExpression originatingEntity, PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(originatingEntity), originatingEntity);
-      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
+      ArgumentNullException.ThrowIfNull(originatingEntity);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
 
       var storagePropertyDefinition = _rdbmsPersistenceModelProvider.GetStoragePropertyDefinition(propertyDefinition);
       return ResolveStorageProperty(originatingEntity, storagePropertyDefinition);
@@ -86,8 +86,8 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public Expression ResolveIDProperty (SqlEntityExpression originatingEntity, ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(originatingEntity), originatingEntity);
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(originatingEntity);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       var entityDefinition = _rdbmsPersistenceModelProvider.GetEntityDefinition(classDefinition);
       var valueExpression = ResolveStorageProperty(originatingEntity, entityDefinition.ObjectIDProperty.ValueProperty);
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public IResolvedTableInfo ResolveTable (ClassDefinition classDefinition, string tableAlias)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(tableAlias), tableAlias);
 
       var viewName = InlineRdbmsStorageEntityDefinitionVisitor.Visit<string>(
@@ -114,8 +114,8 @@ namespace Remotion.Data.DomainObjects.Linq
     public ResolvedJoinInfo ResolveJoin (
         SqlEntityExpression originatingEntity, IRelationEndPointDefinition leftEndPoint, IRelationEndPointDefinition rightEndPoint, string tableAlias)
     {
-      ArgumentUtility.CheckNotNull(nameof(originatingEntity), originatingEntity);
-      ArgumentUtility.CheckNotNull(nameof(leftEndPoint), leftEndPoint);
+      ArgumentNullException.ThrowIfNull(originatingEntity);
+      ArgumentNullException.ThrowIfNull(leftEndPoint);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(tableAlias), tableAlias);
 
       var leftKey = GetJoinColumn(leftEndPoint, originatingEntity);
@@ -130,16 +130,16 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public Expression ResolveEntityIdentityViaForeignKey (SqlEntityExpression originatingEntity, RelationEndPointDefinition foreignKeyEndPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(originatingEntity), originatingEntity);
-      ArgumentUtility.CheckNotNull(nameof(foreignKeyEndPoint), foreignKeyEndPoint);
+      ArgumentNullException.ThrowIfNull(originatingEntity);
+      ArgumentNullException.ThrowIfNull(foreignKeyEndPoint);
 
       return GetJoinColumn(foreignKeyEndPoint, originatingEntity);
     }
 
     public Expression? ResolveIDPropertyViaForeignKey (SqlEntityExpression originatingEntity, RelationEndPointDefinition foreignKeyEndPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(originatingEntity), originatingEntity);
-      ArgumentUtility.CheckNotNull(nameof(foreignKeyEndPoint), foreignKeyEndPoint);
+      ArgumentNullException.ThrowIfNull(originatingEntity);
+      ArgumentNullException.ThrowIfNull(foreignKeyEndPoint);
 
       var foreignKeyStorageProperty = _rdbmsPersistenceModelProvider.GetStoragePropertyDefinition(foreignKeyEndPoint.PropertyDefinition);
 
@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
     private string GetFullyQualifiedEntityName (EntityNameDefinition entityNameDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(entityNameDefinition), entityNameDefinition);
+      ArgumentNullException.ThrowIfNull(entityNameDefinition);
 
       return entityNameDefinition.SchemaName != null
                  ? entityNameDefinition.SchemaName + "." + entityNameDefinition.EntityName

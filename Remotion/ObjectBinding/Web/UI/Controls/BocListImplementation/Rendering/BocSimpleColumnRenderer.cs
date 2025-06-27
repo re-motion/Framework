@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(resourceUrlFactory, renderingFeatures, cssClasses, fallbackNavigationUrlProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingFeatures), renderingFeatures);
+      ArgumentNullException.ThrowIfNull(renderingFeatures);
 
       _renderingFeatures = renderingFeatures;
     }
@@ -63,8 +63,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     protected override void RenderCellDataForEditMode (
         BocColumnRenderingContext<BocSimpleColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments, IEditableRow editableRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
-      ArgumentUtility.CheckNotNull(nameof(editableRow), editableRow);
+      ArgumentNullException.ThrowIfNull(renderingContext);
+      ArgumentNullException.ThrowIfNull(editableRow);
 
       RenderEditModeControl(renderingContext, arguments, editableRow);
     }
@@ -76,8 +76,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <param name="businessObject">The <see cref="IBusinessObject"/> that acts as a starting point for the property path.</param>
     protected override void RenderOtherIcons (BocColumnRenderingContext<BocSimpleColumnDefinition> renderingContext, IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
-      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
+      ArgumentNullException.ThrowIfNull(renderingContext);
+      ArgumentNullException.ThrowIfNull(businessObject);
 
       if (renderingContext.ColumnDefinition.EnableIcon)
       {

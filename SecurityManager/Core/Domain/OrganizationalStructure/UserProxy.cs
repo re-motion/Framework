@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   {
     public static UserProxy Create (User user)
     {
-      ArgumentUtility.CheckNotNull(nameof(user), user);
+      ArgumentNullException.ThrowIfNull(user);
 
       return new UserProxy(
           user.GetHandle(),

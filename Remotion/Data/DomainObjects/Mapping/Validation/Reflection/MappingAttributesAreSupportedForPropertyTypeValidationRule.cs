@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       return from PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions
              select Validate(propertyDefinition.PropertyInfo);
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     private MappingValidationResult Validate (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
 
       foreach (var attribute in propertyInfo.GetCustomAttributes<Attribute>(true))
       {
@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     private void AddAttributeConstraints (Dictionary<Type, AttributeConstraint> attributeConstraints)
     {
-      ArgumentUtility.CheckNotNull(nameof(attributeConstraints), attributeConstraints);
+      ArgumentNullException.ThrowIfNull(attributeConstraints);
 
       attributeConstraints.Add(typeof(StringPropertyAttribute), CreateAttributeConstraintForPropertyType<StringPropertyAttribute, string>());
       attributeConstraints.Add(typeof(BinaryPropertyAttribute), CreateAttributeConstraintForPropertyType<BinaryPropertyAttribute, byte[]>());

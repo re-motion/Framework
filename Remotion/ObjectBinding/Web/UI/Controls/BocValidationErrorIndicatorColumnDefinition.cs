@@ -67,7 +67,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <inheritdoc />
     protected override IBocColumnRenderer GetRendererInternal (IServiceLocator serviceLocator)
     {
-      ArgumentUtility.CheckNotNull(nameof(serviceLocator), serviceLocator);
+      ArgumentNullException.ThrowIfNull(serviceLocator);
 
       return serviceLocator.GetInstance<IBocValidationErrorIndicatorColumnRenderer>();
     }

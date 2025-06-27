@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
 
     public RelationDefinitionValidator (params IRelationDefinitionValidatorRule[] validationRules)
     {
-      ArgumentUtility.CheckNotNull(nameof(validationRules), validationRules);
+      ArgumentNullException.ThrowIfNull(validationRules);
 
       _validationRules = Array.AsReadOnly(validationRules);
     }
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
 
     public IEnumerable<MappingValidationResult> Validate (IEnumerable<RelationDefinition> relationDefinitions)
     {
-      ArgumentUtility.CheckNotNull(nameof(relationDefinitions), relationDefinitions);
+      ArgumentNullException.ThrowIfNull(relationDefinitions);
 
       return from rule in _validationRules
              from relationDefinition in relationDefinitions

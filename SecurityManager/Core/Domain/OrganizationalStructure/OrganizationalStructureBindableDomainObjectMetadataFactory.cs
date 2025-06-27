@@ -42,8 +42,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
       public RedirectingDefaultValueStrategy (IPropertyInformation delegatedPropertyInfo, PropertyBase targetProperty)
       {
-        ArgumentUtility.CheckNotNull(nameof(delegatedPropertyInfo), delegatedPropertyInfo);
-        ArgumentUtility.CheckNotNull(nameof(targetProperty), targetProperty);
+        ArgumentNullException.ThrowIfNull(delegatedPropertyInfo);
+        ArgumentNullException.ThrowIfNull(targetProperty);
 
         _delegatedPropertyInfo = delegatedPropertyInfo;
         _targetProperty = targetProperty;
@@ -52,8 +52,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
       public bool IsDefaultValue (IBusinessObject obj, PropertyBase property)
       {
-        ArgumentUtility.CheckNotNull(nameof(obj), obj);
-        ArgumentUtility.CheckNotNull(nameof(property), property);
+        ArgumentNullException.ThrowIfNull(obj);
+        ArgumentNullException.ThrowIfNull(property);
 
         if (_delegatedPropertyInfo.Equals(property.PropertyInfo.GetOriginalDeclaration()))
           return _bindableDomainObjectDefaultValueStrategy.IsDefaultValue(obj, _targetProperty);
@@ -68,9 +68,9 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
         IPropertyInformation propertyInfo,
         BindableObjectProvider businessObjectProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(concreteType), concreteType);
-      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
-      ArgumentUtility.CheckNotNull(nameof(businessObjectProvider), businessObjectProvider);
+      ArgumentNullException.ThrowIfNull(concreteType);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
+      ArgumentNullException.ThrowIfNull(businessObjectProvider);
 
       if (concreteType == typeof(Position)
           && propertyInfo.Name == "Delegable"

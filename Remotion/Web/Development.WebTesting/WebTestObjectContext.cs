@@ -41,8 +41,8 @@ namespace Remotion.Web.Development.WebTesting
     /// </exception>
     protected WebTestObjectContext ([NotNull] ElementScope scope, ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
-      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       _scope = scope;
       _loggerFactory = loggerFactory;

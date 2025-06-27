@@ -80,15 +80,15 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
           [NotNull] BindableObjectGlobalizationService bindableObjectGlobalizationService,
           [NotNull]IBusinessObjectPropertyConstraintProvider businessObjectPropertyConstraintProvider)
       {
-        ArgumentUtility.CheckNotNull(nameof(businessObjectProvider), businessObjectProvider);
-        ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
-        ArgumentUtility.CheckNotNull(nameof(underlyingType), underlyingType);
-        ArgumentUtility.CheckNotNull(nameof(concreteType), concreteType);
-        ArgumentUtility.CheckNotNull(nameof(defaultValueStrategy), defaultValueStrategy);
-        ArgumentUtility.CheckNotNull(nameof(bindablePropertyReadAccessStrategy), bindablePropertyReadAccessStrategy);
-        ArgumentUtility.CheckNotNull(nameof(bindablePropertyWriteAccessStrategy), bindablePropertyWriteAccessStrategy);
-        ArgumentUtility.CheckNotNull(nameof(bindableObjectGlobalizationService), bindableObjectGlobalizationService);
-        ArgumentUtility.CheckNotNull(nameof(businessObjectPropertyConstraintProvider), businessObjectPropertyConstraintProvider);
+        ArgumentNullException.ThrowIfNull(businessObjectProvider);
+        ArgumentNullException.ThrowIfNull(propertyInfo);
+        ArgumentNullException.ThrowIfNull(underlyingType);
+        ArgumentNullException.ThrowIfNull(concreteType);
+        ArgumentNullException.ThrowIfNull(defaultValueStrategy);
+        ArgumentNullException.ThrowIfNull(bindablePropertyReadAccessStrategy);
+        ArgumentNullException.ThrowIfNull(bindablePropertyWriteAccessStrategy);
+        ArgumentNullException.ThrowIfNull(bindableObjectGlobalizationService);
+        ArgumentNullException.ThrowIfNull(businessObjectPropertyConstraintProvider);
 
         BusinessObjectProvider = businessObjectProvider;
         PropertyInfo = propertyInfo;
@@ -139,7 +139,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     protected PropertyBase (Parameters parameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
+      ArgumentNullException.ThrowIfNull(parameters);
 
       if (parameters.PropertyInfo.GetIndexParameters().Length > 0)
         throw new InvalidOperationException("Indexed properties are not supported.");
@@ -256,7 +256,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     public object GetValue (IBusinessObject obj)
     {
-      ArgumentUtility.CheckNotNull(nameof(obj), obj);
+      ArgumentNullException.ThrowIfNull(obj);
 
       if (_valueGetter == null)
         throw new InvalidOperationException("Property has no getter.");
@@ -275,7 +275,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     public void SetValue (IBusinessObject obj, object? value)
     {
-      ArgumentUtility.CheckNotNull(nameof(obj), obj);
+      ArgumentNullException.ThrowIfNull(obj);
 
       if (_valueSetter == null)
         throw new InvalidOperationException("Property has no setter.");
@@ -294,7 +294,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     public bool IsDefaultValue (IBusinessObject obj)
     {
-      ArgumentUtility.CheckNotNull(nameof(obj), obj);
+      ArgumentNullException.ThrowIfNull(obj);
 
       return _defaultValueStrategy.IsDefaultValue(obj, this);
     }
@@ -376,7 +376,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     public void SetReflectedClass (BindableObjectClass reflectedClass)
     {
-      ArgumentUtility.CheckNotNull(nameof(reflectedClass), reflectedClass);
+      ArgumentNullException.ThrowIfNull(reflectedClass);
       if (BusinessObjectProvider != reflectedClass.BusinessObjectProvider)
       {
         throw new ArgumentException(

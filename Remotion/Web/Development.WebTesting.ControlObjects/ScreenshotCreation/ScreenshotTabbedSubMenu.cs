@@ -35,8 +35,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
         [NotNull] IFluentScreenshotElementWithCovariance<TabbedMenuControlObject> fluentTabbedMenu,
         [NotNull] IFluentScreenshotElement<ElementScope> fluentElement)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentTabbedMenu), fluentTabbedMenu);
-      ArgumentUtility.CheckNotNull(nameof(fluentElement), fluentElement);
+      ArgumentNullException.ThrowIfNull(fluentTabbedMenu);
+      ArgumentNullException.ThrowIfNull(fluentElement);
 
 
       _fluentTabbedMenu = fluentTabbedMenu;
@@ -72,7 +72,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull(nameof(locator), locator);
+      ArgumentNullException.ThrowIfNull(locator);
 
       return _fluentElement.ResolveDesktopCoordinates(locator);
     }

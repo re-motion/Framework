@@ -81,14 +81,14 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public LocalizedName? GetLocalizedName (Culture culture)
     {
-      ArgumentUtility.CheckNotNull(nameof(culture), culture);
+      ArgumentNullException.ThrowIfNull(culture);
 
       return GetLocalizedName(culture.CultureName);
     }
 
     public LocalizedName? GetLocalizedName (string cultureName)
     {
-      ArgumentUtility.CheckNotNull(nameof(cultureName), cultureName);
+      ArgumentNullException.ThrowIfNull(cultureName);
 
       foreach (LocalizedName localizedName in LocalizedNames)
       {

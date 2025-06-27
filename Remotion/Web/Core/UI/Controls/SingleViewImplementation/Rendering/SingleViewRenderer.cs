@@ -43,8 +43,8 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, IControl control)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
-      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(control);
 
       htmlHeadAppender.RegisterWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();
@@ -59,7 +59,7 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
 
     public void Render (SingleViewRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       AddStandardAttributesToRender(renderingContext);
       if (string.IsNullOrEmpty(renderingContext.Control.CssClass) && string.IsNullOrEmpty(renderingContext.Control.Attributes["class"]))
@@ -85,7 +85,7 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
 
     protected virtual void RenderTopControls (SingleViewRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       Style style = renderingContext.Control.TopControlsStyle;
       PlaceHolder placeHolder = renderingContext.Control.TopControl;
@@ -95,7 +95,7 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
 
     protected virtual void RenderBottomControls (SingleViewRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       Style style = renderingContext.Control.BottomControlsStyle;
       PlaceHolder placeHolder = renderingContext.Control.BottomControl;

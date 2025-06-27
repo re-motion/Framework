@@ -29,8 +29,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public static DataContainerCollection Join (DataContainerCollection firstCollection, DataContainerCollection secondCollection)
     {
-      ArgumentUtility.CheckNotNull(nameof(firstCollection), firstCollection);
-      ArgumentUtility.CheckNotNull(nameof(secondCollection), secondCollection);
+      ArgumentNullException.ThrowIfNull(firstCollection);
+      ArgumentNullException.ThrowIfNull(secondCollection);
 
       DataContainerCollection joinedCollection = new DataContainerCollection(firstCollection, false);
       foreach (DataContainer dataContainer in secondCollection)
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     // standard constructor for collections
     public DataContainerCollection (IEnumerable collection, bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull(nameof(collection), collection);
+      ArgumentNullException.ThrowIfNull(collection);
 
       foreach (DataContainer dataContainer in collection)
         Add(dataContainer);
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public DataContainerCollection GetDifference (DataContainerCollection dataContainers)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataContainers), dataContainers);
+      ArgumentNullException.ThrowIfNull(dataContainers);
 
       DataContainerCollection difference = new DataContainerCollection();
 
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public DataContainerCollection Merge (DataContainerCollection dataContainers)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataContainers), dataContainers);
+      ArgumentNullException.ThrowIfNull(dataContainers);
 
       DataContainerCollection mergedCollection = new DataContainerCollection();
 
@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public bool Contains (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataContainer), dataContainer);
+      ArgumentNullException.ThrowIfNull(dataContainer);
 
       return BaseContains(dataContainer.ID, dataContainer);
     }
@@ -126,13 +126,13 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public int IndexOf (DataContainer item)
     {
-      ArgumentUtility.CheckNotNull(nameof(item), item);
+      ArgumentNullException.ThrowIfNull(item);
       return BaseIndexOfKey(item.ID);
     }
 
     public void Insert (int index, DataContainer item)
     {
-      ArgumentUtility.CheckNotNull(nameof(item), item);
+      ArgumentNullException.ThrowIfNull(item);
       BaseInsert(index, item.ID, item);
     }
 
@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public int Add (DataContainer value)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
 
       return BaseAdd(value.ID, value);
     }
@@ -175,7 +175,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public bool Remove (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataContainer), dataContainer);
+      ArgumentNullException.ThrowIfNull(dataContainer);
 
       var countBefore = Count;
       BaseRemove(dataContainer.ID);

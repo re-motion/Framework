@@ -45,7 +45,7 @@ namespace Remotion.ServiceLocation
     /// <exception cref="InvalidOperationException">Thrown if <see cref="SetLoggerFactory"/> is called after <see cref="GetLoggerFactory"/>.</exception>
     public static void SetLoggerFactory (ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       lock (s_loggerFactoryLock)
       {
@@ -175,7 +175,7 @@ namespace Remotion.ServiceLocation
 
     public void Register (ServiceConfigurationEntry entry)
     {
-      ArgumentUtility.CheckNotNull(nameof(entry), entry);
+      ArgumentNullException.ThrowIfNull(entry);
 
       lock (_lock)
       {
@@ -186,8 +186,8 @@ namespace Remotion.ServiceLocation
 
     public void Register (Type serviceType, Type implementationType, LifetimeKind lifetime)
     {
-      ArgumentUtility.CheckNotNull(nameof(serviceType), serviceType);
-      ArgumentUtility.CheckNotNull(nameof(implementationType), implementationType);
+      ArgumentNullException.ThrowIfNull(serviceType);
+      ArgumentNullException.ThrowIfNull(implementationType);
 
       var entry = new ServiceConfigurationEntry(serviceType, new ServiceImplementationInfo(implementationType, lifetime));
       Register(entry);

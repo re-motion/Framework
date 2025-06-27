@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.FluentScree
     /// </summary>
     public static void Open ([NotNull] this IFluentScreenshotElementWithCovariance<DropDownListControlObject> fluentDropDownList)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentDropDownList), fluentDropDownList);
+      ArgumentNullException.ThrowIfNull(fluentDropDownList);
 
       fluentDropDownList.Target.Scope.Click(Options.NoWait);
     }

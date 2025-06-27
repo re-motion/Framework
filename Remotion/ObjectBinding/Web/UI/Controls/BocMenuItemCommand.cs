@@ -158,7 +158,7 @@ public class BocMenuItemCommand: BocCommand
   /// </param>
   public void ExecuteWxeFunction (IWxePage wxePage, int[] listIndices, IBusinessObject[] businessObjects)
   {
-    ArgumentUtility.CheckNotNull(nameof(wxePage), wxePage);
+    ArgumentNullException.ThrowIfNull(wxePage);
     if (!wxePage.IsReturningPostBack)
     {
       NameObjectCollection parameters = PrepareWxeFunctionParameters(listIndices, businessObjects);

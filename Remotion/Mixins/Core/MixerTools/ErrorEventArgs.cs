@@ -23,7 +23,7 @@ namespace Remotion.Mixins.MixerTools
   {
     public ErrorEventArgs (Exception exception)
     {
-      ArgumentUtility.CheckNotNull(nameof(exception), exception);
+      ArgumentNullException.ThrowIfNull(exception);
       Exception = exception;
     }
 

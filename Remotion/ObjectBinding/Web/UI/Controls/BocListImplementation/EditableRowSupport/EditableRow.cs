@@ -57,7 +57,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     public EditableRow (IEditModeHost editModeHost)
     {
-      ArgumentUtility.CheckNotNull(nameof(editModeHost), editModeHost);
+      ArgumentNullException.ThrowIfNull(editModeHost);
 
       _editModeHost = editModeHost;
     }
@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       }
       set
       {
-        ArgumentUtility.CheckNotNull(nameof(value), value);
+        ArgumentNullException.ThrowIfNull(value);
         _dataSourceFactory = value;
       }
     }
@@ -87,14 +87,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       }
       set
       {
-        ArgumentUtility.CheckNotNull(nameof(value), value);
+        ArgumentNullException.ThrowIfNull(value);
         _controlFactory = value;
       }
     }
 
     public virtual void CreateControls (IBusinessObject value, IReadOnlyList<BocColumnDefinition> columns)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
       ArgumentUtility.CheckNotNullOrItemsNull(nameof(columns), columns);
 
       if (_dataSourceFactory == null)
@@ -237,7 +237,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     protected void AddToValidators (int columnIndex, IEnumerable<BaseValidator> validators)
     {
-      ArgumentUtility.CheckNotNull(nameof(validators), validators);
+      ArgumentNullException.ThrowIfNull(validators);
 
       ControlCollection? cellValidators = GetValidators(columnIndex);
       Assertion.IsNotNull(cellValidators, "GetValidators(columnIndex) != null");
@@ -419,10 +419,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         int columnIndex,
         IReadOnlyCollection<string> headerIDs)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
-      ArgumentUtility.CheckNotNull(nameof(column), column);
-      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
-      ArgumentUtility.CheckNotNull(nameof(headerIDs), headerIDs);
+      ArgumentNullException.ThrowIfNull(writer);
+      ArgumentNullException.ThrowIfNull(column);
+      ArgumentNullException.ThrowIfNull(businessObject);
+      ArgumentNullException.ThrowIfNull(headerIDs);
 
       if (! HasEditControl(columnIndex))
         return;

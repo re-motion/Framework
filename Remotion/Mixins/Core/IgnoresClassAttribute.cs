@@ -66,8 +66,8 @@ namespace Remotion.Mixins
 
     public void Apply (MixinConfigurationBuilder mixinConfigurationBuilder, Type mixinType)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinConfigurationBuilder), mixinConfigurationBuilder);
-      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
+      ArgumentNullException.ThrowIfNull(mixinConfigurationBuilder);
+      ArgumentNullException.ThrowIfNull(mixinType);
 
       mixinConfigurationBuilder.ForClass(ClassToIgnore).SuppressMixin(mixinType);
     }

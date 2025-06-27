@@ -31,14 +31,14 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     public MappingValidationResult Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       return Validate(classDefinition.ClassType);
     }
 
     private MappingValidationResult Validate (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       if (type.IsGenericType)// && !ReflectionUtility.IsDomainObjectBase(type))
       {

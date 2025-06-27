@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     protected DatabaseTest (DatabaseAgent databaseAgent, string createTestDataFileName)
     {
-      ArgumentUtility.CheckNotNull(nameof(databaseAgent), databaseAgent);
+      ArgumentNullException.ThrowIfNull(databaseAgent);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(createTestDataFileName), createTestDataFileName);
 
       _databaseAgent = databaseAgent;

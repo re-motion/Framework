@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public ScreenshotBocDateTimeValuePicker (
         [NotNull] IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentDateTimeValue), fluentDateTimeValue);
+      ArgumentNullException.ThrowIfNull(fluentDateTimeValue);
 
       _fluentDateTimeValue = fluentDateTimeValue;
     }
@@ -59,7 +59,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull(nameof(locator), locator);
+      ArgumentNullException.ThrowIfNull(locator);
 
       return ((IFluentScreenshotElement<ElementScope>)_fluentDateTimeValue.GetDatePicker().GetElement()).ResolveDesktopCoordinates(locator);
     }

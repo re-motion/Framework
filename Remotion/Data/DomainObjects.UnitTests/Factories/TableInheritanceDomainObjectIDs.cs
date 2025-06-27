@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
     public TableInheritanceDomainObjectIDs (IMappingConfiguration mappingConfiguration)
     {
-      ArgumentUtility.CheckNotNull(nameof(mappingConfiguration), mappingConfiguration);
+      ArgumentNullException.ThrowIfNull(mappingConfiguration);
 
       _mappingConfiguration = mappingConfiguration;
     }

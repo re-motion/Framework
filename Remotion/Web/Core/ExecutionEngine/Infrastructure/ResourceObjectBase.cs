@@ -33,8 +33,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     protected ResourceObjectBase (IResourcePathBuilder resourcePathBuilder, Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourcePathBuilder), resourcePathBuilder);
-      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
+      ArgumentNullException.ThrowIfNull(resourcePathBuilder);
+      ArgumentNullException.ThrowIfNull(assembly);
 
       _resourceRoot = resourcePathBuilder.BuildAbsolutePath(assembly);
     }

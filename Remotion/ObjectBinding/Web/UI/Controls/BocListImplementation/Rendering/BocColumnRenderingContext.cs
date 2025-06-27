@@ -43,12 +43,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         int columnIndex,
         int visibleColumnIndex)
     {
-      ArgumentUtility.CheckNotNull(nameof(httpContext), httpContext);
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
-      ArgumentUtility.CheckNotNull(nameof(control), control);
-      ArgumentUtility.CheckNotNull(nameof(businessObjectWebServiceContext), businessObjectWebServiceContext);
-      ArgumentUtility.CheckNotNull(nameof(columnDefinition), columnDefinition);
-      ArgumentUtility.CheckNotNull(nameof(columnIndexProvider), columnIndexProvider);
+      ArgumentNullException.ThrowIfNull(httpContext);
+      ArgumentNullException.ThrowIfNull(writer);
+      ArgumentNullException.ThrowIfNull(control);
+      ArgumentNullException.ThrowIfNull(businessObjectWebServiceContext);
+      ArgumentNullException.ThrowIfNull(columnDefinition);
+      ArgumentNullException.ThrowIfNull(columnIndexProvider);
 
       _httpContext = httpContext;
       _writer = writer;

@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
   {
     public override void DataContainerMapRegistering (ClientTransaction clientTransaction, DataContainer container)
     {
-      ArgumentUtility.CheckNotNull(nameof(container), container);
+      ArgumentNullException.ThrowIfNull(container);
 
       if (container.State.IsNew)
       {
@@ -56,8 +56,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public override void DataContainerMapUnregistering (ClientTransaction clientTransaction, DataContainer container)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(container), container);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(container);
 
       if (container.State.IsNew)
       {

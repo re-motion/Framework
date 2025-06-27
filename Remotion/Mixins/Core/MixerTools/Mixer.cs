@@ -68,9 +68,9 @@ namespace Remotion.Mixins.MixerTools
 
     public Mixer (IMixedTypeFinder mixedTypeFinder, IMixerPipelineFactory mixerPipelineFactory, string assemblyOutputDirectory)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixedTypeFinder), mixedTypeFinder);
-      ArgumentUtility.CheckNotNull(nameof(mixerPipelineFactory), mixerPipelineFactory);
-      ArgumentUtility.CheckNotNull(nameof(assemblyOutputDirectory), assemblyOutputDirectory);
+      ArgumentNullException.ThrowIfNull(mixedTypeFinder);
+      ArgumentNullException.ThrowIfNull(mixerPipelineFactory);
+      ArgumentNullException.ThrowIfNull(assemblyOutputDirectory);
 
       MixedTypeFinder = mixedTypeFinder;
       MixerPipelineFactory = mixerPipelineFactory;
@@ -117,7 +117,7 @@ namespace Remotion.Mixins.MixerTools
     // locking old generated files).
     public void Execute (MixinConfiguration configuration)
     {
-      ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
+      ArgumentNullException.ThrowIfNull(configuration);
 
       using (StopwatchScope.CreateScope(s_logger, LogLevel.Information, "Time needed to mix and save all types: {elapsed}."))
       {

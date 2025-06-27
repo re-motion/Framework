@@ -164,7 +164,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       base.RegisterHtmlHeadContents(htmlHeadAppender);
 
@@ -249,7 +249,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));
@@ -307,7 +307,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected virtual BocAutoCompleteReferenceValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       Assertion.IsNotNull(Context, "Context must not be null.");
 

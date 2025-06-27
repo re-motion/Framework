@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     /// <remarks>If overridden in a derived class, <see cref="GetStorageType (Type)"/> must also be overridden based on the same semantics.</remarks>
     protected virtual StorageTypeInformation GetStorageType (PropertyDefinition propertyDefinition, bool forceNullable)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
 
       var dotNetType = propertyDefinition.PropertyType;
       var isNullableInDatabase = propertyDefinition.IsNullable || forceNullable;
@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     /// </remarks>
     protected virtual StorageTypeInformation GetStorageType (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       var storageType = GetStorageType(type, null, IsNullSupported(type));
       if(storageType == null)

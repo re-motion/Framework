@@ -26,7 +26,7 @@ namespace Remotion.Web.UnitTests
 
     public WxeDelegateStep (Action action)
     {
-      ArgumentUtility.CheckNotNull(nameof(action), action);
+      ArgumentNullException.ThrowIfNull(action);
       _action = action;
     }
 

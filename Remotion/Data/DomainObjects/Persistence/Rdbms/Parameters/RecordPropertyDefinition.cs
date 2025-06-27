@@ -34,7 +34,7 @@ public class RecordPropertyDefinition
   /// <param name="storagePropertyDefinition">Defines the type of the source object and how it is stored in the "Value" column.</param>
   public static RecordPropertyDefinition ScalarAsValue (IRdbmsStoragePropertyDefinition storagePropertyDefinition)
   {
-    ArgumentUtility.CheckNotNull(nameof(storagePropertyDefinition), storagePropertyDefinition);
+    ArgumentNullException.ThrowIfNull(storagePropertyDefinition);
     return new RecordPropertyDefinition("Self", storagePropertyDefinition, o => o);
   }
 
@@ -53,8 +53,8 @@ public class RecordPropertyDefinition
   protected RecordPropertyDefinition (string propertyName, IRdbmsStoragePropertyDefinition storagePropertyDefinition, Func<object, object?> getValue)
   {
     ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
-    ArgumentUtility.CheckNotNull(nameof(storagePropertyDefinition), storagePropertyDefinition);
-    ArgumentUtility.CheckNotNull(nameof(getValue), getValue);
+    ArgumentNullException.ThrowIfNull(storagePropertyDefinition);
+    ArgumentNullException.ThrowIfNull(getValue);
 
     PropertyName = propertyName;
     StoragePropertyDefinition = storagePropertyDefinition;

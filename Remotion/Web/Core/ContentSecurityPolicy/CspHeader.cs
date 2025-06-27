@@ -25,7 +25,7 @@ public class CspHeader
 
   private CspHeader (ImmutableDictionary<string, StringValues> directives)
   {
-    ArgumentUtility.CheckNotNull(nameof(directives), directives);
+    ArgumentNullException.ThrowIfNull(directives);
 
     _directives = directives;
   }
@@ -77,7 +77,7 @@ public class CspHeader
   public CspHeader SetDirective (string directive, string value)
   {
     ArgumentUtility.CheckNotNullOrEmpty(nameof(directive), directive);
-    ArgumentUtility.CheckNotNull(nameof(value), value);
+    ArgumentNullException.ThrowIfNull(value);
 
     var values = ParseDirectiveValues(value);
     return new CspHeader(_directives.SetItem(directive, values));
@@ -138,7 +138,7 @@ public class CspHeader
 
   public void ToString (StringBuilder stringBuilder)
   {
-    ArgumentUtility.CheckNotNull(nameof(stringBuilder), stringBuilder);
+    ArgumentNullException.ThrowIfNull(stringBuilder);
 
     var firstDirective = true;
     foreach (var (directiveName, values) in _directives.OrderBy(e => e.Key))

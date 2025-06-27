@@ -51,8 +51,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         IValidationErrorRenderer validationErrorRenderer)
         : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull(nameof(labelReferenceRenderer), labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull(nameof(validationErrorRenderer), validationErrorRenderer);
+      ArgumentNullException.ThrowIfNull(labelReferenceRenderer);
+      ArgumentNullException.ThrowIfNull(validationErrorRenderer);
 
       _labelReferenceRenderer = labelReferenceRenderer;
       _validationErrorRenderer = validationErrorRenderer;
@@ -76,7 +76,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     protected void RegisterJavaScriptFiles (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       htmlHeadAppender.RegisterObjectBindingWebClientScriptInclude();
     }
@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     protected void Render (BocReferenceValueBaseRenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       const string widthCssProperty = "--width";
       var width = Unit.Empty;
@@ -142,7 +142,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     protected string? GetControlServicePath (RenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       var controlControlServicePath = renderingContext.Control.ControlServicePath;
 
@@ -177,7 +177,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     protected virtual void RenderContents (BocReferenceValueBaseRenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassContent);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
@@ -301,14 +301,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     protected IEnumerable<PlainTextString> GetValidationErrorsToRender (BocRenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       return renderingContext.Control.GetValidationErrors();
     }
 
     protected string GetValidationErrorsID (BocRenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       return renderingContext.Control.ClientID + "_ValidationErrors";
     }
@@ -320,7 +320,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     protected override string GetAdditionalCssClass (TControl control)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentNullException.ThrowIfNull(control);
 
       var additionalCssClass = base.GetAdditionalCssClass(control);
       if (control.HasOptionsMenu && control.ReserveOptionsMenuWidth)

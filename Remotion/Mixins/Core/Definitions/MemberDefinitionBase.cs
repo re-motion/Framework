@@ -31,8 +31,8 @@ namespace Remotion.Mixins.Definitions
 
     protected MemberDefinitionBase (MemberInfo memberInfo, ClassDefinitionBase declaringClass)
     {
-      ArgumentUtility.CheckNotNull(nameof(memberInfo), memberInfo);
-      ArgumentUtility.CheckNotNull(nameof(declaringClass), declaringClass);
+      ArgumentNullException.ThrowIfNull(memberInfo);
+      ArgumentNullException.ThrowIfNull(declaringClass);
 
       SuppressedReceivedAttributes = new MultiDefinitionCollection<Type, SuppressedAttributeIntroductionDefinition>(a => a.AttributeType);
       ReceivedAttributes = new MultiDefinitionCollection<Type, AttributeIntroductionDefinition>(a => a.AttributeType);
@@ -94,7 +94,7 @@ namespace Remotion.Mixins.Definitions
     public IVisitableDefinition Parent
     {
       get { return _parent; }
-      internal set { _parent = ArgumentUtility.CheckNotNull(nameof(value), value); }
+      internal set { _parent = ArgumentNullException.ThrowIfNull(value); }
     }
 
     public ICustomAttributeProvider CustomAttributeProvider
@@ -120,7 +120,7 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       ChildSpecificAccept(visitor);
 
       CustomAttributes.Accept(visitor);

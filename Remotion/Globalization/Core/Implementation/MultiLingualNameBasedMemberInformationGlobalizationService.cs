@@ -40,21 +40,21 @@ namespace Remotion.Globalization.Implementation
     {
       protected override IEnumerable<MultiLingualNameAttribute> GetCustomAttributes (ITypeInformation typeInformation)
       {
-        ArgumentUtility.CheckNotNull(nameof(typeInformation), typeInformation);
+        ArgumentNullException.ThrowIfNull(typeInformation);
 
         return typeInformation.GetCustomAttributes<MultiLingualNameAttribute>(false);
       }
 
       protected override Assembly? GetAssembly (ITypeInformation typeInformation)
       {
-        ArgumentUtility.CheckNotNull(nameof(typeInformation), typeInformation);
+        ArgumentNullException.ThrowIfNull(typeInformation);
 
         return typeInformation.Assembly;
       }
 
       protected override string GetContextForExceptionMessage (ITypeInformation typeInformation)
       {
-        ArgumentUtility.CheckNotNull(nameof(typeInformation), typeInformation);
+        ArgumentNullException.ThrowIfNull(typeInformation);
 
         return string.Format("The type '{0}'", typeInformation.GetFullNameSafe());
       }
@@ -64,7 +64,7 @@ namespace Remotion.Globalization.Implementation
     {
       protected override IEnumerable<MultiLingualNameAttribute> GetCustomAttributes (IPropertyInformation propertyInformation)
       {
-        ArgumentUtility.CheckNotNull(nameof(propertyInformation), propertyInformation);
+        ArgumentNullException.ThrowIfNull(propertyInformation);
 
         var originalDeclaration = propertyInformation.GetOriginalDeclaration();
         var isOriginalDeclaration = propertyInformation.Equals(originalDeclaration);
@@ -86,14 +86,14 @@ namespace Remotion.Globalization.Implementation
 
       protected override Assembly? GetAssembly (IPropertyInformation propertyInformation)
       {
-        ArgumentUtility.CheckNotNull(nameof(propertyInformation), propertyInformation);
+        ArgumentNullException.ThrowIfNull(propertyInformation);
 
         return propertyInformation.GetOriginalDeclaringType()?.Assembly;
       }
 
       protected override string GetContextForExceptionMessage (IPropertyInformation propertyInformation)
       {
-        ArgumentUtility.CheckNotNull(nameof(propertyInformation), propertyInformation);
+        ArgumentNullException.ThrowIfNull(propertyInformation);
 
         return string.Format(
             "The property '{0}' declared on type '{1}'",
@@ -123,8 +123,8 @@ namespace Remotion.Globalization.Implementation
         ITypeInformation typeInformationForResourceResolution,
         [MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull(nameof(typeInformation), typeInformation);
-      ArgumentUtility.CheckNotNull(nameof(typeInformationForResourceResolution), typeInformationForResourceResolution);
+      ArgumentNullException.ThrowIfNull(typeInformation);
+      ArgumentNullException.ThrowIfNull(typeInformationForResourceResolution);
 
       return _localizedNameForTypeInformationProvider.TryGetLocalizedNameForCurrentUICulture(typeInformation, out result);
     }
@@ -134,8 +134,8 @@ namespace Remotion.Globalization.Implementation
         ITypeInformation typeInformationForResourceResolution,
         [MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyInformation), propertyInformation);
-      ArgumentUtility.CheckNotNull(nameof(typeInformationForResourceResolution), typeInformationForResourceResolution);
+      ArgumentNullException.ThrowIfNull(propertyInformation);
+      ArgumentNullException.ThrowIfNull(typeInformationForResourceResolution);
 
       return _localizedNameForPropertyInformationProvider.TryGetLocalizedNameForCurrentUICulture(propertyInformation, out result);
     }
@@ -144,16 +144,16 @@ namespace Remotion.Globalization.Implementation
         IPropertyInformation propertyInformation,
         ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyInformation), propertyInformation);
-      ArgumentUtility.CheckNotNull(nameof(typeInformationForResourceResolution), typeInformationForResourceResolution);
+      ArgumentNullException.ThrowIfNull(propertyInformation);
+      ArgumentNullException.ThrowIfNull(typeInformationForResourceResolution);
 
       return _localizedNameForPropertyInformationProvider.GetLocalizedNames(propertyInformation);
     }
 
     public IReadOnlyDictionary<CultureInfo, string> GetAvailableTypeDisplayNames (ITypeInformation typeInformation, ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull(nameof(typeInformation), typeInformation);
-      ArgumentUtility.CheckNotNull(nameof(typeInformationForResourceResolution), typeInformationForResourceResolution);
+      ArgumentNullException.ThrowIfNull(typeInformation);
+      ArgumentNullException.ThrowIfNull(typeInformationForResourceResolution);
 
       return _localizedNameForTypeInformationProvider.GetLocalizedNames(typeInformation);
     }

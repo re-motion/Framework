@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public PropertyPathBinding (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyPath), propertyPath);
+      ArgumentNullException.ThrowIfNull(propertyPath);
 
       SetPropertyPath(propertyPath);
     }

@@ -29,7 +29,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     public AssemblyNameSpecification (AssemblyName assemblyName, bool followReferences)
         : this()
     {
-      ArgumentUtility.CheckNotNull(nameof(assemblyName), assemblyName);
+      ArgumentNullException.ThrowIfNull(assemblyName);
 
       AssemblyName = assemblyName;
       FollowReferences = followReferences;

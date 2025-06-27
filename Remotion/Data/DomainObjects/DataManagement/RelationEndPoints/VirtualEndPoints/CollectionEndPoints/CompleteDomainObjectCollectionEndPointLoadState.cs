@@ -42,13 +42,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public override ReadOnlyDomainObjectCollectionDataDecorator GetData (IDomainObjectCollectionEndPoint collectionEndPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(collectionEndPoint), collectionEndPoint);
+      ArgumentNullException.ThrowIfNull(collectionEndPoint);
       return new ReadOnlyDomainObjectCollectionDataDecorator(DataManager.CollectionData);
     }
 
     public override ReadOnlyDomainObjectCollectionDataDecorator GetOriginalData (IDomainObjectCollectionEndPoint collectionEndPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(collectionEndPoint), collectionEndPoint);
+      ArgumentNullException.ThrowIfNull(collectionEndPoint);
       return DataManager.OriginalCollectionData;
     }
 
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         IDomainObjectCollectionEndPoint collectionEndPoint,
         IVirtualEndPointLoadState<IDomainObjectCollectionEndPoint, ReadOnlyDomainObjectCollectionDataDecorator, IDomainObjectCollectionEndPointDataManager> sourceLoadState)
     {
-      ArgumentUtility.CheckNotNull(nameof(collectionEndPoint), collectionEndPoint);
+      ArgumentNullException.ThrowIfNull(collectionEndPoint);
       var sourceCompleteLoadState = ArgumentUtility.CheckNotNullAndType<CompleteDomainObjectCollectionEndPointLoadState>(nameof(sourceLoadState), sourceLoadState);
 
       DataManager.SetDataFromSubTransaction(sourceCompleteLoadState.DataManager, EndPointProvider);
@@ -74,17 +74,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         IEnumerable<DomainObject> items,
         Action<IDomainObjectCollectionEndPointDataManager> stateSetter)
     {
-      ArgumentUtility.CheckNotNull(nameof(collectionEndPoint), collectionEndPoint);
-      ArgumentUtility.CheckNotNull(nameof(items), items);
-      ArgumentUtility.CheckNotNull(nameof(stateSetter), stateSetter);
+      ArgumentNullException.ThrowIfNull(collectionEndPoint);
+      ArgumentNullException.ThrowIfNull(items);
+      ArgumentNullException.ThrowIfNull(stateSetter);
 
       base.MarkDataComplete(collectionEndPoint, items, stateSetter);
     }
 
     public void SortCurrentData (IDomainObjectCollectionEndPoint collectionEndPoint, Comparison<DomainObject> comparison)
     {
-      ArgumentUtility.CheckNotNull(nameof(collectionEndPoint), collectionEndPoint);
-      ArgumentUtility.CheckNotNull(nameof(comparison), comparison);
+      ArgumentNullException.ThrowIfNull(collectionEndPoint);
+      ArgumentNullException.ThrowIfNull(comparison);
 
       DataManager.SortCurrentData(comparison);
 
@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public override void Rollback (IDomainObjectCollectionEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
+      ArgumentNullException.ThrowIfNull(endPoint);
 
       base.Rollback(endPoint);
 
@@ -119,9 +119,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         DomainObjectCollection newCollection,
         IDomainObjectCollectionEndPointCollectionManager collectionEndPointCollectionManager)
     {
-      ArgumentUtility.CheckNotNull(nameof(collectionEndPoint), collectionEndPoint);
-      ArgumentUtility.CheckNotNull(nameof(newCollection), newCollection);
-      ArgumentUtility.CheckNotNull(nameof(collectionEndPointCollectionManager), collectionEndPointCollectionManager);
+      ArgumentNullException.ThrowIfNull(collectionEndPoint);
+      ArgumentNullException.ThrowIfNull(newCollection);
+      ArgumentNullException.ThrowIfNull(collectionEndPointCollectionManager);
 
       if (UnsynchronizedOppositeEndPoints.Count != 0)
       {
@@ -155,8 +155,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public IDataManagementCommand CreateRemoveCommand (IDomainObjectCollectionEndPoint collectionEndPoint, DomainObject removedRelatedObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(collectionEndPoint), collectionEndPoint);
-      ArgumentUtility.CheckNotNull(nameof(removedRelatedObject), removedRelatedObject);
+      ArgumentNullException.ThrowIfNull(collectionEndPoint);
+      ArgumentNullException.ThrowIfNull(removedRelatedObject);
 
       CheckRemovedObject(removedRelatedObject);
       return new DomainObjectCollectionEndPointRemoveCommand(
@@ -165,7 +165,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public IDataManagementCommand CreateDeleteCommand (IDomainObjectCollectionEndPoint collectionEndPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(collectionEndPoint), collectionEndPoint);
+      ArgumentNullException.ThrowIfNull(collectionEndPoint);
 
       if (UnsynchronizedOppositeEndPoints.Count != 0)
       {
@@ -198,8 +198,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public IDataManagementCommand CreateInsertCommand (IDomainObjectCollectionEndPoint collectionEndPoint, DomainObject insertedRelatedObject, int index)
     {
-      ArgumentUtility.CheckNotNull(nameof(collectionEndPoint), collectionEndPoint);
-      ArgumentUtility.CheckNotNull(nameof(insertedRelatedObject), insertedRelatedObject);
+      ArgumentNullException.ThrowIfNull(collectionEndPoint);
+      ArgumentNullException.ThrowIfNull(insertedRelatedObject);
 
       CheckAddedObject(insertedRelatedObject);
       return new DomainObjectCollectionEndPointInsertCommand(
@@ -213,15 +213,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public IDataManagementCommand CreateAddCommand (IDomainObjectCollectionEndPoint collectionEndPoint, DomainObject addedRelatedObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(collectionEndPoint), collectionEndPoint);
+      ArgumentNullException.ThrowIfNull(collectionEndPoint);
 
       return CreateInsertCommand(collectionEndPoint, addedRelatedObject, DataManager.CollectionData.Count);
     }
 
     public IDataManagementCommand CreateReplaceCommand (IDomainObjectCollectionEndPoint collectionEndPoint, int index, DomainObject replacementObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(collectionEndPoint), collectionEndPoint);
-      ArgumentUtility.CheckNotNull(nameof(replacementObject), replacementObject);
+      ArgumentNullException.ThrowIfNull(collectionEndPoint);
+      ArgumentNullException.ThrowIfNull(replacementObject);
 
       CheckAddedObject(replacementObject);
       CheckRemovedObject(DataManager.CollectionData.GetObject(index));

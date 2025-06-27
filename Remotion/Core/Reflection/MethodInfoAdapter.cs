@@ -42,7 +42,7 @@ namespace Remotion.Reflection
 
     public static MethodInfoAdapter Create (MethodInfo methodInfo)
     {
-      ArgumentUtility.CheckNotNull(nameof(methodInfo), methodInfo);
+      ArgumentNullException.ThrowIfNull(methodInfo);
       return s_dataStore.GetOrAdd(methodInfo, s_ctorFunc);
     }
 
@@ -123,14 +123,14 @@ namespace Remotion.Reflection
     public object? Invoke (object? instance, object?[]? parameters)
     {
       //TODO RM-7432: Remove null check, parameter should be nullable
-      ArgumentUtility.CheckNotNull(nameof(instance), instance!);
+      ArgumentNullException.ThrowIfNull(instance!);
 
       return _methodInfo.Invoke(instance, parameters);
     }
 
     public IMethodInformation? FindInterfaceImplementation (Type implementationType)
     {
-      ArgumentUtility.CheckNotNull(nameof(implementationType), implementationType);
+      ArgumentNullException.ThrowIfNull(implementationType);
 
       // TODO RM-7801: _methodInfo.DeclaringType being null should be handled.
       if (!_methodInfo.DeclaringType!.IsInterface)

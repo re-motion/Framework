@@ -46,8 +46,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
         IDataContainerMapReadOnlyView dataContainerMap,
         ValueAccess valueAccess)
     {
-      ArgumentUtility.CheckNotNull(nameof(associatedEndPointID), associatedEndPointID);
-      ArgumentUtility.CheckNotNull(nameof(dataContainerMap), dataContainerMap);
+      ArgumentNullException.ThrowIfNull(associatedEndPointID);
+      ArgumentNullException.ThrowIfNull(dataContainerMap);
 
       _associatedEndPointID = associatedEndPointID;
       _dataContainerMap = dataContainerMap;
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public bool ContainsObjectID (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       return GetCachedDomainObjects().ContainsKey(objectID);
     }
@@ -124,14 +124,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public DomainObject? GetObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       return GetCachedDomainObjects().GetValueOrDefault(objectID);
     }
 
     public int IndexOf (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       var cachedDomainObjects = GetCachedDomainObjectsSorted();
       int itemIndex = 0;

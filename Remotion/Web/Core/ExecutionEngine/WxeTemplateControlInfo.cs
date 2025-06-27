@@ -51,7 +51,7 @@ namespace Remotion.Web.ExecutionEngine
     [MemberNotNull(nameof(_currentPageFunction))]
     public virtual void Initialize (HttpContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (_control is Page)
       {
@@ -148,7 +148,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </param>
     protected IResourceManager GetResourceManager (Type localResourcesType)
     {
-      ArgumentUtility.CheckNotNull(nameof(localResourcesType), localResourcesType);
+      ArgumentNullException.ThrowIfNull(localResourcesType);
 
       //  Provider has already been identified.
       if (_cachedResourceManager != null)

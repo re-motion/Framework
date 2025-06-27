@@ -42,10 +42,10 @@ namespace Remotion.Mixins.CrossReferencer
         ErrorAggregator<ValidationException> validationErrors
     )
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinConfiguration), mixinConfiguration);
-      ArgumentUtility.CheckNotNull(nameof(assemblies), assemblies);
-      ArgumentUtility.CheckNotNull(nameof(configurationErrors), configurationErrors);
-      ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
+      ArgumentNullException.ThrowIfNull(mixinConfiguration);
+      ArgumentNullException.ThrowIfNull(assemblies);
+      ArgumentNullException.ThrowIfNull(configurationErrors);
+      ArgumentNullException.ThrowIfNull(validationErrors);
 
       _mixinConfiguration = mixinConfiguration;
       _assemblies = assemblies;

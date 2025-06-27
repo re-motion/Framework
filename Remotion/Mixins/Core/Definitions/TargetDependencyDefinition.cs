@@ -29,7 +29,7 @@ namespace Remotion.Mixins.Definitions
     public TargetCallDependencyDefinition (RequiredTargetCallTypeDefinition requiredType, MixinDefinition dependingMixin, TargetCallDependencyDefinition? aggregator)
       : base(requiredType, aggregator)
     {
-      ArgumentUtility.CheckNotNull(nameof(dependingMixin), dependingMixin);
+      ArgumentNullException.ThrowIfNull(dependingMixin);
       _dependingMixin = dependingMixin;
     }
 
@@ -45,7 +45,7 @@ namespace Remotion.Mixins.Definitions
 
     public override void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       visitor.Visit(this);
     }
 

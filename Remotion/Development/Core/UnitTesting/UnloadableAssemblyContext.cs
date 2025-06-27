@@ -43,7 +43,7 @@ namespace Remotion.Development.UnitTesting
 
     public void RunWithAssemblyLoadContext (Action<AssemblyLoadContext> action)
     {
-      ArgumentUtility.CheckNotNull(nameof(action), action);
+      ArgumentNullException.ThrowIfNull(action);
 
       var context = Context;
       action(context);
@@ -65,14 +65,14 @@ namespace Remotion.Development.UnitTesting
 
     public Assembly LoadFromStream (Stream assembly)
     {
-      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
+      ArgumentNullException.ThrowIfNull(assembly);
 
       return Context.LoadFromStream(assembly);
     }
 
     public Assembly LoadFromStream (Stream assembly, Stream? assemblySymbols)
     {
-      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
+      ArgumentNullException.ThrowIfNull(assembly);
 
       return Context.LoadFromStream(assembly, assemblySymbols);
     }

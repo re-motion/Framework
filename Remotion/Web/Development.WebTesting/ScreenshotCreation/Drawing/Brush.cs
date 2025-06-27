@@ -15,7 +15,7 @@ public abstract class Brush : IDisposable
 
   protected Brush (SKPaint skiaPaint)
   {
-    ArgumentUtility.CheckNotNull(nameof(skiaPaint), skiaPaint);
+    ArgumentNullException.ThrowIfNull(skiaPaint);
 
     SkiaPaint = skiaPaint;
   }

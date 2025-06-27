@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.Mapping
         IRelationEndPointDefinition endPointDefinition2)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
-      ArgumentUtility.CheckNotNull(nameof(endPointDefinition1), endPointDefinition1);
-      ArgumentUtility.CheckNotNull(nameof(endPointDefinition2), endPointDefinition2);
+      ArgumentNullException.ThrowIfNull(endPointDefinition1);
+      ArgumentNullException.ThrowIfNull(endPointDefinition2);
 
       _id = id;
 
@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public IRelationEndPointDefinition GetMandatoryOppositeRelationEndPointDefinition (IRelationEndPointDefinition endPointDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointDefinition), endPointDefinition);
+      ArgumentNullException.ThrowIfNull(endPointDefinition);
 
       IRelationEndPointDefinition? oppositeEndPointDefinition = GetOppositeEndPointDefinition(endPointDefinition);
       if (oppositeEndPointDefinition == null)
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public IRelationEndPointDefinition? GetOppositeEndPointDefinition (IRelationEndPointDefinition endPointDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointDefinition), endPointDefinition);
+      ArgumentNullException.ThrowIfNull(endPointDefinition);
 
       if (endPointDefinition == _endPointDefinition1)
         return _endPointDefinition2;
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public bool Contains (IRelationEndPointDefinition endPointDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointDefinition), endPointDefinition);
+      ArgumentNullException.ThrowIfNull(endPointDefinition);
 
       return endPointDefinition == _endPointDefinition1 || endPointDefinition == _endPointDefinition2;
     }

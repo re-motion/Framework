@@ -28,7 +28,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public ValidationErrorReportGenerator (ErrorAggregator<ValidationException> errorAggregator)
     {
-      ArgumentUtility.CheckNotNull(nameof(errorAggregator), errorAggregator);
+      ArgumentNullException.ThrowIfNull(errorAggregator);
 
       _errorAggregator = errorAggregator;
     }

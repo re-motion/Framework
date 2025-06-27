@@ -32,14 +32,14 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public RelationDefinitionCollectionFactory (IMappingObjectFactory mappingObjectFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(mappingObjectFactory), mappingObjectFactory);
+      ArgumentNullException.ThrowIfNull(mappingObjectFactory);
 
       _mappingObjectFactory = mappingObjectFactory;
     }
 
     public RelationDefinition[] CreateRelationDefinitionCollection (IDictionary<Type, ClassDefinition> classDefinitions)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinitions), classDefinitions);
+      ArgumentNullException.ThrowIfNull(classDefinitions);
 
       var relationDefinitions = new Dictionary<string, RelationDefinition>();
       foreach (var classDefinition in classDefinitions.Values)

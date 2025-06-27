@@ -39,7 +39,7 @@ namespace Remotion.Utilities
     /// <param name="second"> Must not be <see langword="null"/>. </param>
     public static void Append (NameValueCollection first, NameValueCollection? second)
     {
-      ArgumentUtility.CheckNotNull(nameof(first), first);
+      ArgumentNullException.ThrowIfNull(first);
 
       if (second != null)
       {

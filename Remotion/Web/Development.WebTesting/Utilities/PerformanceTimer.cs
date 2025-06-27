@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     public PerformanceTimer ([NotNull] ILogger logger, string message)
     {
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
 
       _logger = logger;
       _message = message;

@@ -14,6 +14,7 @@
 // // You should have received a copy of the GNU Lesser General Public License
 // // along with re-motion; if not, see http://www.gnu.org/licenses.
 // //
+using System;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent.Model;
 using Remotion.Utilities;
 
@@ -30,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     /// <returns><see langword="true" /> if the <see cref="ClassDefinition.StorageEntityDefinition"/> is a <see cref="NonPersistentStorageEntity"/>.</returns>
     internal static bool IsNonPersistent (this ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       return classDefinition.StorageEntityDefinition is NonPersistentStorageEntity;
     }

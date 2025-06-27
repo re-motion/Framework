@@ -52,8 +52,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     protected void PrepareTest ([NotNull] GenericPageTestMethodAttribute attribute, [NotNull] WebTestHelper helper, [NotNull] string control)
     {
-      ArgumentUtility.CheckNotNull(nameof(attribute), attribute);
-      ArgumentUtility.CheckNotNull(nameof(helper), helper);
+      ArgumentNullException.ThrowIfNull(attribute);
+      ArgumentNullException.ThrowIfNull(helper);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(control), control);
 
       var url = string.Concat(
@@ -111,8 +111,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     private TestCaseData CreateTestCaseData ([NotNull] GenericPageTestMethodAttribute attribute, [NotNull] MethodInfo method)
     {
-      ArgumentUtility.CheckNotNull(nameof(attribute), attribute);
-      ArgumentUtility.CheckNotNull(nameof(method), method);
+      ArgumentNullException.ThrowIfNull(attribute);
+      ArgumentNullException.ThrowIfNull(method);
 
       return new TestCaseData(
           (GenericTestSetupAction)((helper, control) =>

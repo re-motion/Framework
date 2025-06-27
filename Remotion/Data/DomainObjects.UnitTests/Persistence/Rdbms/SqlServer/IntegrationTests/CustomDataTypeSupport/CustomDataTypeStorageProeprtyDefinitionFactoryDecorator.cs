@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         IDataStoragePropertyDefinitionFactory innerDataStoragePropertyDefinitionFactory,
         IStorageNameProvider storageNameProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(innerDataStoragePropertyDefinitionFactory), innerDataStoragePropertyDefinitionFactory);
-      ArgumentUtility.CheckNotNull(nameof(storageNameProvider), storageNameProvider);
+      ArgumentNullException.ThrowIfNull(innerDataStoragePropertyDefinitionFactory);
+      ArgumentNullException.ThrowIfNull(storageNameProvider);
 
       _innerDataStoragePropertyDefinitionFactory = innerDataStoragePropertyDefinitionFactory;
       _storageNameProvider = storageNameProvider;
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
 
       if (propertyDefinition.PropertyType == typeof(CompoundDataType))
         return CreateStoragePropertyDefinitionForCompoundDataType(_storageNameProvider.GetColumnName(propertyDefinition));

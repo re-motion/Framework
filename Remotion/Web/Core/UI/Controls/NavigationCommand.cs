@@ -49,7 +49,7 @@ namespace Remotion.Web.UI.Controls
         IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(defaultType, webSecurityAdapter, wxeSecurityAdapter)
     {
-      ArgumentUtility.CheckNotNull(nameof(fallbackNavigationUrlProvider), fallbackNavigationUrlProvider);
+      ArgumentNullException.ThrowIfNull(fallbackNavigationUrlProvider);
 
       _fallbackNavigationUrlProvider = fallbackNavigationUrlProvider;
     }
@@ -93,8 +93,8 @@ namespace Remotion.Web.UI.Controls
         NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(postBackEvent), postBackEvent);
-      ArgumentUtility.CheckNotNull(nameof(additionalUrlParameters), additionalUrlParameters);
+      ArgumentNullException.ThrowIfNull(postBackEvent);
+      ArgumentNullException.ThrowIfNull(additionalUrlParameters);
       if (Type != CommandType.WxeFunction)
         throw new InvalidOperationException(
             "Call to GetCommandInfoForWxeFunctionCommand not allowed unless Type is set to CommandType.WxeFunction.");
@@ -132,7 +132,7 @@ namespace Remotion.Web.UI.Controls
     /// </exception> 
     public virtual string GetWxeFunctionPermanentUrl (NameValueCollection additionalUrlParameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(additionalUrlParameters), additionalUrlParameters);
+      ArgumentNullException.ThrowIfNull(additionalUrlParameters);
 
       if (Type != CommandType.WxeFunction)
         throw new InvalidOperationException("Call to ExecuteWxeFunction not allowed unless Type is set to CommandType.WxeFunction.");

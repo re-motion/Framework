@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects
     public static T GetObject<T> (this ObjectID id, ClientTransaction? clientTransaction = null, bool includeDeleted = false)
         where T : DomainObject, ISupportsGetObject
     {
-      ArgumentUtility.CheckNotNull(nameof(id), id);
+      ArgumentNullException.ThrowIfNull(id);
 
       return GetHandleChecked<T>(id).GetObject(clientTransaction, includeDeleted);
     }
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects
     public static T? TryGetObject<T> (this ObjectID id, ClientTransaction? clientTransaction = null)
         where T : DomainObject, ISupportsGetObject
     {
-      ArgumentUtility.CheckNotNull(nameof(id), id);
+      ArgumentNullException.ThrowIfNull(id);
       return GetHandleChecked<T>(id).TryGetObject(clientTransaction);
     }
 
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects
     public static T GetObjectReference<T> (this ObjectID id, ClientTransaction? clientTransaction = null)
         where T : DomainObject, ISupportsGetObject
     {
-      ArgumentUtility.CheckNotNull(nameof(id), id);
+      ArgumentNullException.ThrowIfNull(id);
       return GetHandleChecked<T>(id).GetObjectReference(clientTransaction);
     }
 
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects
     public static T[] GetObjects<T> (this IEnumerable<ObjectID> ids, ClientTransaction? clientTransaction = null)
         where T : DomainObject, ISupportsGetObject
     {
-      ArgumentUtility.CheckNotNull(nameof(ids), ids);
+      ArgumentNullException.ThrowIfNull(ids);
       return ids.Select(GetHandleChecked<T>).GetObjects(clientTransaction);
     }
 
@@ -161,7 +161,7 @@ namespace Remotion.Data.DomainObjects
     public static T?[] TryGetObjects<T> (this IEnumerable<ObjectID> ids, ClientTransaction? clientTransaction = null)
         where T : DomainObject, ISupportsGetObject
     {
-      ArgumentUtility.CheckNotNull(nameof(ids), ids);
+      ArgumentNullException.ThrowIfNull(ids);
       return ids.Select(GetHandleChecked<T>).TryGetObjects(clientTransaction);
     }
 

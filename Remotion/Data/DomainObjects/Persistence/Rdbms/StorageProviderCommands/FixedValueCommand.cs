@@ -39,14 +39,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public T Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
+      ArgumentNullException.ThrowIfNull(executionContext);
 
       return _value;
     }
 
     public T Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
+      ArgumentNullException.ThrowIfNull(executionContext);
 
       return _value;
     }

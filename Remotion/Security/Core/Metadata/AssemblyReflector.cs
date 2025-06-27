@@ -42,9 +42,9 @@ namespace Remotion.Security.Metadata
 
     public AssemblyReflector (IAccessTypeReflector accessTypeReflector, IClassReflector classReflector, IAbstractRoleReflector abstractRoleReflector)
     {
-      ArgumentUtility.CheckNotNull(nameof(accessTypeReflector), accessTypeReflector);
-      ArgumentUtility.CheckNotNull(nameof(classReflector), classReflector);
-      ArgumentUtility.CheckNotNull(nameof(abstractRoleReflector), abstractRoleReflector);
+      ArgumentNullException.ThrowIfNull(accessTypeReflector);
+      ArgumentNullException.ThrowIfNull(classReflector);
+      ArgumentNullException.ThrowIfNull(abstractRoleReflector);
 
       _accessTypeReflector = accessTypeReflector;
       _classReflector = classReflector;
@@ -70,8 +70,8 @@ namespace Remotion.Security.Metadata
 
     public void GetMetadata (Assembly assembly, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
-      ArgumentUtility.CheckNotNull(nameof(cache), cache);
+      ArgumentNullException.ThrowIfNull(assembly);
+      ArgumentNullException.ThrowIfNull(cache);
 
       Assembly securityAssembly = GetType().Assembly;
       _accessTypeReflector.GetAccessTypesFromAssembly(securityAssembly, cache);

@@ -49,8 +49,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// </remarks>
     public static TransportedDomainObjects LoadTransportData (Stream stream, IImportStrategy strategy)
     {
-      ArgumentUtility.CheckNotNull(nameof(stream), stream);
-      ArgumentUtility.CheckNotNull(nameof(strategy), strategy);
+      ArgumentNullException.ThrowIfNull(stream);
+      ArgumentNullException.ThrowIfNull(strategy);
 
       return DomainObjectImporter.CreateImporterFromStream(stream, strategy).GetImportedObjects();
     }
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// </remarks>
     public DomainObject Load (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       DomainObject domainObject = _transportTransaction.GetObject(objectID, false);
       _transportedObjects.Add(objectID);
       return domainObject;
@@ -139,7 +139,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <seealso cref="PropertyIndexer.GetAllRelatedObjects"/>
     public IEnumerable<DomainObject> LoadWithRelatedObjects (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       return LazyLoadWithRelatedObjects(objectID).ToArray();
     }
 
@@ -165,7 +165,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <seealso cref="DomainObjectGraphTraverser.GetFlattenedRelatedObjectGraph"/>
     public IEnumerable<DomainObject> LoadRecursive (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       return LoadRecursive(objectID, FullGraphTraversalStrategy.Instance);
     }
 
@@ -180,8 +180,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <seealso cref="DomainObjectGraphTraverser.GetFlattenedRelatedObjectGraph"/>
     public IEnumerable<DomainObject> LoadRecursive (ObjectID objectID, IGraphTraversalStrategy strategy)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
-      ArgumentUtility.CheckNotNull(nameof(strategy), strategy);
+      ArgumentNullException.ThrowIfNull(objectID);
+      ArgumentNullException.ThrowIfNull(strategy);
 
       DomainObject sourceObject = _transportTransaction.GetObject(objectID, false);
       using (_transportTransaction.EnterNonDiscardingScope())
@@ -200,7 +200,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <returns>A <see cref="DomainObject"/> representing an object to be transported. Properties of this object can be manipulated.</returns>
     public DomainObject GetTransportedObject (ObjectID loadedObjectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(loadedObjectID), loadedObjectID);
+      ArgumentNullException.ThrowIfNull(loadedObjectID);
       if (!IsLoaded(loadedObjectID))
       {
         string message = string.Format("Object '{0}' cannot be retrieved, it hasn't been loaded yet. Load it first, then retrieve it for editing.",

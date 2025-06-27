@@ -43,9 +43,9 @@ namespace Remotion.SecurityManager.Persistence
         RdbmsProviderDefinition storageProviderDefinition,
         IRdbmsProviderCommandFactory commandFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
-      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
-      ArgumentUtility.CheckNotNull(nameof(commandFactory), commandFactory);
+      ArgumentNullException.ThrowIfNull(persistenceExtension);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(commandFactory);
 
       return ObjectFactory.Create<SecurityManagerRdbmsProvider>(
           ParamList.Create(
@@ -61,9 +61,9 @@ namespace Remotion.SecurityManager.Persistence
         RdbmsProviderDefinition storageProviderDefinition,
         IRdbmsProviderCommandFactory commandFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
-      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
-      ArgumentUtility.CheckNotNull(nameof(commandFactory), commandFactory);
+      ArgumentNullException.ThrowIfNull(persistenceExtension);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(commandFactory);
 
       return ObjectFactory.Create<SecurityManagerRdbmsProvider>(
           ParamList.Create(

@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
         [CanBeNull] IDomainObjectHandle<StatelessAccessControlList>? statelessAccessControlList,
         IEnumerable<StatefulAccessControlListData> statefulAccessControlLists)
     {
-      ArgumentUtility.CheckNotNull(nameof(statefulAccessControlLists), statefulAccessControlLists);
+      ArgumentNullException.ThrowIfNull(statefulAccessControlLists);
 
       _baseClass = baseClass;
       _statelessAccessControlList = statelessAccessControlList;

@@ -26,7 +26,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
 
     public BocCheckBoxConstraintVisitor (BocCheckBox control)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentNullException.ThrowIfNull(control);
 
       Control = control;
     }

@@ -28,16 +28,16 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
   {
     public void LoadControlState (ControlReplacer replacer, IInternalControlMemberCaller memberCaller)
     {
-      ArgumentUtility.CheckNotNull(nameof(replacer), replacer);
-      ArgumentUtility.CheckNotNull(nameof(memberCaller), memberCaller);
+      ArgumentNullException.ThrowIfNull(replacer);
+      ArgumentNullException.ThrowIfNull(memberCaller);
 
       //NOP
     }
 
     public void LoadViewState (ControlReplacer replacer, IInternalControlMemberCaller memberCaller)
     {
-      ArgumentUtility.CheckNotNull(nameof(replacer), replacer);
-      ArgumentUtility.CheckNotNull(nameof(memberCaller), memberCaller);
+      ArgumentNullException.ThrowIfNull(replacer);
+      ArgumentNullException.ThrowIfNull(memberCaller);
 
       //NOP
     }

@@ -36,9 +36,9 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         string validationErrorID,
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
-      ArgumentUtility.CheckNotNull(nameof(attributeAccessor), attributeAccessor);
+      ArgumentNullException.ThrowIfNull(attributeAccessor);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(validationErrorID), validationErrorID);
-      ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
+      ArgumentNullException.ThrowIfNull(validationErrors);
 
       attributeAccessor.SetAttribute(ValidationErrorsIDAttribute, validationErrorID);
       attributeAccessor.SetAttribute(ValidationErrorsAttribute, string.Join(" ", validationErrors));
@@ -49,9 +49,9 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         string validationErrorID,
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
-      ArgumentUtility.CheckNotNull(nameof(attributeCollection), attributeCollection);
+      ArgumentNullException.ThrowIfNull(attributeCollection);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(validationErrorID), validationErrorID);
-      ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
+      ArgumentNullException.ThrowIfNull(validationErrors);
 
       attributeCollection[ValidationErrorsIDAttribute] = validationErrorID;
       attributeCollection[ValidationErrorsAttribute] = string.Join(" ", validationErrors);
@@ -62,9 +62,9 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         string validationErrorID,
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlTextWriter), htmlTextWriter);
+      ArgumentNullException.ThrowIfNull(htmlTextWriter);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(validationErrorID), validationErrorID);
-      ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
+      ArgumentNullException.ThrowIfNull(validationErrors);
 
       htmlTextWriter.AddAttribute(ValidationErrorsIDAttribute, validationErrorID);
       htmlTextWriter.AddAttribute(ValidationErrorsAttribute, string.Join(" ", validationErrors));

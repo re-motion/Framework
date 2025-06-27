@@ -36,11 +36,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         IScreenshotTransformation<T> transformation,
         IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull(nameof(canvas), canvas);
-      ArgumentUtility.CheckNotNull(nameof(resolver), resolver);
-      ArgumentUtility.CheckNotNull(nameof(target), target);
-      ArgumentUtility.CheckNotNull(nameof(transformation), transformation);
-      ArgumentUtility.CheckNotNull(nameof(locator), locator);
+      ArgumentNullException.ThrowIfNull(canvas);
+      ArgumentNullException.ThrowIfNull(resolver);
+      ArgumentNullException.ThrowIfNull(target);
+      ArgumentNullException.ThrowIfNull(transformation);
+      ArgumentNullException.ThrowIfNull(locator);
 
       var resolvedElement = Resolve(resolver, target, locator, coordinateSystem);
       var context = new ScreenshotTransformationContext<T>(manipulation, canvas, resolver, target, resolvedElement);

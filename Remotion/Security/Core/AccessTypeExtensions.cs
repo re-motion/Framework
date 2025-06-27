@@ -35,8 +35,8 @@ namespace Remotion.Security
     /// </returns>
     public static bool IsSubsetOf ([NotNull] this IReadOnlyList<AccessType> subSet, [NotNull] IReadOnlyList<AccessType> otherSet)
     {
-      ArgumentUtility.CheckNotNull(nameof(subSet), subSet);
-      ArgumentUtility.CheckNotNull(nameof(otherSet), otherSet);
+      ArgumentNullException.ThrowIfNull(subSet);
+      ArgumentNullException.ThrowIfNull(otherSet);
 
       // This section is performance critical. No closure should be created, therefor converting this code to Linq is not possible.
       // return subSet.All (accessType => otherSet.Contains (accessType));
@@ -60,7 +60,7 @@ namespace Remotion.Security
     /// </returns>
     public static bool Contains (this IReadOnlyList<AccessType> set, AccessType item)
     {
-      ArgumentUtility.CheckNotNull(nameof(set), set);
+      ArgumentNullException.ThrowIfNull(set);
 
       // This section is performance critical. No closure should be created, therefor converting this code to Linq is not possible.
       // return set.Any (t => accessType.Equals (t));

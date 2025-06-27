@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     public ReferenceProperty (Parameters parameters)
         : base(parameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
+      ArgumentNullException.ThrowIfNull(parameters);
 
       _concreteType = GetConcreteTypeWithCheck(parameters.ConcreteType);
       _referenceClass = GetReferenceClass();
@@ -293,8 +293,8 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     [Obsolete("The default value feature is not supported. (Version 1.13.142)")]
     public bool IsDefaultValue (IBusinessObject? referencingObject, IBusinessObject value, IBusinessObjectProperty[] emptyProperties)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
-      ArgumentUtility.CheckNotNull(nameof(emptyProperties), emptyProperties);
+      ArgumentNullException.ThrowIfNull(value);
+      ArgumentNullException.ThrowIfNull(emptyProperties);
 
       if (!SupportsDefaultValue)
       {
@@ -395,7 +395,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     [Obsolete("The delete-object feature is not supported. (Version 1.13.142)")]
     public void Delete (IBusinessObject? referencingObject, IBusinessObject value)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
 
       if (!SupportsDelete)
       {

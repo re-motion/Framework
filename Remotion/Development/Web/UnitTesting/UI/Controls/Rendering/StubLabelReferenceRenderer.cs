@@ -35,9 +35,9 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         IReadOnlyCollection<string> labelIDs,
         IReadOnlyCollection<string> accessibilityAnnotationIDs)
     {
-      ArgumentUtility.CheckNotNull(nameof(attributeAccessor), attributeAccessor);
-      ArgumentUtility.CheckNotNull(nameof(labelIDs), labelIDs);
-      ArgumentUtility.CheckNotNull(nameof(accessibilityAnnotationIDs), accessibilityAnnotationIDs);
+      ArgumentNullException.ThrowIfNull(attributeAccessor);
+      ArgumentNullException.ThrowIfNull(labelIDs);
+      ArgumentNullException.ThrowIfNull(accessibilityAnnotationIDs);
 
       var labelIDsJoined = string.Join(" ", labelIDs);
       attributeAccessor.SetAttribute(LabelReferenceAttribute, labelIDsJoined);
@@ -51,8 +51,8 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         IReadOnlyCollection<string> labelIDs,
         IReadOnlyCollection<string> accessibilityAnnotationIDs)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlTextWriter), htmlTextWriter);
-      ArgumentUtility.CheckNotNull(nameof(labelIDs), labelIDs);
+      ArgumentNullException.ThrowIfNull(htmlTextWriter);
+      ArgumentNullException.ThrowIfNull(labelIDs);
 
       var labelIDsJoined = string.Join(" ", labelIDs);
       htmlTextWriter.AddAttribute(LabelReferenceAttribute, labelIDsJoined);

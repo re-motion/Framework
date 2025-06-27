@@ -29,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(logsDirectory), logsDirectory);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(browserName), browserName);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
 
       var finalLogsDirectory = Path.Combine(logsDirectory, SubDirectoryName);
 

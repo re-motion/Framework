@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding
     /// <param name="disabledEnumValues">The disabled enum values.</param>
     public DisableEnumValuesAttribute (params object[] disabledEnumValues)
     {
-      ArgumentUtility.CheckNotNull(nameof(disabledEnumValues), disabledEnumValues);
+      ArgumentNullException.ThrowIfNull(disabledEnumValues);
       ArgumentUtility.CheckItemsType(nameof(disabledEnumValues), disabledEnumValues, typeof(Enum));
 
       _filter = new ConstantEnumerationValueFilter(disabledEnumValues.Cast<Enum>().ToArray());

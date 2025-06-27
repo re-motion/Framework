@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
 
     public DockerCommandLineClient (TimeSpan pullTimeout, ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       _logger = loggerFactory.CreateLogger<DockerCommandLineClient>();
       _pullTimeout = pullTimeout;
@@ -66,9 +66,9 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
         string? workingDirectory,
         string? args)
     {
-      ArgumentUtility.CheckNotNull(nameof(ports), ports);
-      ArgumentUtility.CheckNotNull(nameof(mounts), mounts);
-      ArgumentUtility.CheckNotNull(nameof(environmentVariables), environmentVariables);
+      ArgumentNullException.ThrowIfNull(ports);
+      ArgumentNullException.ThrowIfNull(mounts);
+      ArgumentNullException.ThrowIfNull(environmentVariables);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(imageName), imageName);
       ArgumentUtility.CheckNotEmpty(nameof(hostname), hostname);
       ArgumentUtility.CheckNotEmpty(nameof(entryPoint), entryPoint);

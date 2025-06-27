@@ -40,7 +40,7 @@ namespace Remotion.Development.UnitTesting.Configuration
     public void SetUpSection (string configKey, object section)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(configKey), configKey);
-      ArgumentUtility.CheckNotNull(nameof(section), section);
+      ArgumentNullException.ThrowIfNull(section);
 
       _sections.Add(configKey, section);
     }
@@ -56,7 +56,7 @@ namespace Remotion.Development.UnitTesting.Configuration
     public void SetUpAppSetting (string name, string value)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
 
       _appSettings.Add(name, value);
     }

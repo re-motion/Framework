@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <exception cref="MissingHtmlException">Thrown if the validation errors cannot be found due to faulty markup or missing validator.</exception>
     protected IReadOnlyList<string> GetValidationErrors ([NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       if (IsReadOnly())
         throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <exception cref="MissingHtmlException">Thrown if the validation errors cannot be found due to faulty markup or missing validator.</exception>
     protected IReadOnlyList<string> GetValidationErrorsForReadOnly ([NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       if (!IsReadOnly())
         throw AssertionExceptionUtility.CreateControlNotReadOnlyException(Driver);

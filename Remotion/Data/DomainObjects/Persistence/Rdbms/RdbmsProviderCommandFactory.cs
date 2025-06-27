@@ -56,13 +56,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
         IDataStoragePropertyDefinitionFactory dataStoragePropertyDefinitionFactory,
         IDataParameterDefinitionFactory dataParameterDefinitionFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
-      ArgumentUtility.CheckNotNull(nameof(dbCommandBuilderFactory), dbCommandBuilderFactory);
-      ArgumentUtility.CheckNotNull(nameof(rdbmsPersistenceModelProvider), rdbmsPersistenceModelProvider);
-      ArgumentUtility.CheckNotNull(nameof(objectReaderFactory), objectReaderFactory);
-      ArgumentUtility.CheckNotNull(nameof(tableDefinitionFinder), tableDefinitionFinder);
-      ArgumentUtility.CheckNotNull(nameof(dataStoragePropertyDefinitionFactory), dataStoragePropertyDefinitionFactory);
-      ArgumentUtility.CheckNotNull(nameof(dataParameterDefinitionFactory), dataParameterDefinitionFactory);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(dbCommandBuilderFactory);
+      ArgumentNullException.ThrowIfNull(rdbmsPersistenceModelProvider);
+      ArgumentNullException.ThrowIfNull(objectReaderFactory);
+      ArgumentNullException.ThrowIfNull(tableDefinitionFinder);
+      ArgumentNullException.ThrowIfNull(dataStoragePropertyDefinitionFactory);
+      ArgumentNullException.ThrowIfNull(dataParameterDefinitionFactory);
 
       _storageProviderDefinition = storageProviderDefinition;
       _dbCommandBuilderFactory = dbCommandBuilderFactory;
@@ -132,14 +132,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
     public IRdbmsProviderCommandWithReadOnlySupport<ObjectLookupResult<DataContainer>> CreateForSingleIDLookup (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       return _lookupCommandFactory.CreateForSingleIDLookup(objectID);
     }
 
     public IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectLookupResult<DataContainer>>> CreateForSortedMultiIDLookup (IEnumerable<ObjectID> objectIDs)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
+      ArgumentNullException.ThrowIfNull(objectIDs);
 
       return _lookupCommandFactory.CreateForSortedMultiIDLookup(objectIDs);
     }
@@ -149,40 +149,40 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
         ObjectID foreignKeyValue,
         SortExpressionDefinition? sortExpressionDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(foreignKeyEndPoint), foreignKeyEndPoint);
-      ArgumentUtility.CheckNotNull(nameof(foreignKeyValue), foreignKeyValue);
+      ArgumentNullException.ThrowIfNull(foreignKeyEndPoint);
+      ArgumentNullException.ThrowIfNull(foreignKeyValue);
 
       return _relationLookupCommandFactory.CreateForRelationLookup(foreignKeyEndPoint, foreignKeyValue, sortExpressionDefinition);
     }
 
     public IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer?>> CreateForDataContainerQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
       return _queryCommandFactory.CreateForDataContainerQuery(query);
     }
 
     public IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<IQueryResultRow>> CreateForCustomQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
       return _queryCommandFactory.CreateForCustomQuery(query);
     }
 
     public IRdbmsProviderCommandWithReadOnlySupport<object?> CreateForScalarQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
       return _queryCommandFactory.CreateForScalarQuery(query);
     }
 
     public IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectLookupResult<object>>> CreateForMultiTimestampLookup (IEnumerable<ObjectID> objectIDs)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
+      ArgumentNullException.ThrowIfNull(objectIDs);
 
       return _lookupCommandFactory.CreateForMultiTimestampLookup(objectIDs);
     }
 
     public IRdbmsProviderCommand CreateForSave (IEnumerable<DataContainer> dataContainers)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataContainers), dataContainers);
+      ArgumentNullException.ThrowIfNull(dataContainers);
 
       return _saveCommandFactory.CreateForSave(dataContainers);
     }

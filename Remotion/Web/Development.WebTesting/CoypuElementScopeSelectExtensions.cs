@@ -48,8 +48,8 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>The text of the currently selected option.</returns>
     public static OptionDefinition GetSelectedOption ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(logger);
 
       var selectedOptions = scope.FindAllCss("option[selected]").ToList();
 
@@ -80,8 +80,8 @@ namespace Remotion.Web.Development.WebTesting
     /// </param>
     public static void SelectOptionByIndex ([NotNull] this ElementScope scope, int oneBasedIndex, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(logger);
 
       var targetOption = scope.FindXPath(string.Format("({0})[{1}]", s_html.Child("option"), oneBasedIndex));
       targetOption.Click();
@@ -98,9 +98,9 @@ namespace Remotion.Web.Development.WebTesting
     /// </param>
     public static void SelectOptionByDisplayText ([NotNull] this ElementScope scope, [NotNull] string displayText, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
-      ArgumentUtility.CheckNotNull(nameof(displayText), displayText);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(displayText);
+      ArgumentNullException.ThrowIfNull(logger);
 
       var targetOption = scope.FindXPath(s_html.Child("option") + XPath.Where(s_xpath.IsText(displayText, Options.Exact)));
       targetOption.Click();
@@ -117,9 +117,9 @@ namespace Remotion.Web.Development.WebTesting
     /// </param>
     public static void SelectOptionByValue ([NotNull] this ElementScope scope, [NotNull] string value, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(value);
+      ArgumentNullException.ThrowIfNull(logger);
 
       var targetOption = scope.FindXPath(s_html.Child("option") + XPath.Where(s_xpath.Is("@value", value, Options.Exact)));
       targetOption.Click();
@@ -142,10 +142,10 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] string diagnosticMetadataAttributeValue,
         [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentNullException.ThrowIfNull(scope);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(diagnosticMetadataAttributeName), diagnosticMetadataAttributeName);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(diagnosticMetadataAttributeValue), diagnosticMetadataAttributeValue);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
 
       var targetOption =
           scope.FindXPath(

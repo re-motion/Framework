@@ -38,10 +38,10 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public DomainObjectQueryExecutor (StorageProviderDefinition storageProviderDefinition, IDomainObjectQueryGenerator queryGenerator, string id, IReadOnlyDictionary<string, object> metadata)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
-      ArgumentUtility.CheckNotNull(nameof(queryGenerator), queryGenerator);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(queryGenerator);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
-      ArgumentUtility.CheckNotNull(nameof(metadata), metadata);
+      ArgumentNullException.ThrowIfNull(metadata);
 
       _storageProviderDefinition = storageProviderDefinition;
       _queryGenerator = queryGenerator;
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Linq
     [return: MaybeNull]
     public T ExecuteScalar<T> (QueryModel queryModel)
     {
-      ArgumentUtility.CheckNotNull(nameof(queryModel), queryModel);
+      ArgumentNullException.ThrowIfNull(queryModel);
 
       if (ClientTransaction.Current == null)
         throw new InvalidOperationException("No ClientTransaction has been associated with the current thread.");
@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects.Linq
     [return: MaybeNull]
     public T ExecuteSingle<T> (QueryModel queryModel, bool returnDefaultWhenEmpty)
     {
-      ArgumentUtility.CheckNotNull(nameof(queryModel), queryModel);
+      ArgumentNullException.ThrowIfNull(queryModel);
 
       if (ClientTransaction.Current == null)
         throw new InvalidOperationException("No ClientTransaction has been associated with the current thread.");
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.Linq
     /// </returns>
     public IEnumerable<T> ExecuteCollection<T> (QueryModel queryModel)
     {
-      ArgumentUtility.CheckNotNull(nameof(queryModel), queryModel);
+      ArgumentNullException.ThrowIfNull(queryModel);
 
       if (ClientTransaction.Current == null)
         throw new InvalidOperationException("No ClientTransaction has been associated with the current thread.");

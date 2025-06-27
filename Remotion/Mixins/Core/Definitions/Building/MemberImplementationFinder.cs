@@ -30,8 +30,8 @@ namespace Remotion.Mixins.Definitions.Building
 
     public MemberImplementationFinder (Type declaringType, MixinDefinition implementingMixin)
     {
-      ArgumentUtility.CheckNotNull(nameof(implementingMixin), implementingMixin);
-      ArgumentUtility.CheckNotNull(nameof(declaringType), declaringType);
+      ArgumentNullException.ThrowIfNull(implementingMixin);
+      ArgumentNullException.ThrowIfNull(declaringType);
 
       _declaringType = declaringType;
       _mixin = implementingMixin;

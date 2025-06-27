@@ -31,7 +31,7 @@ namespace Remotion.Validation.Implementation
 
     public ValidatorBuilderSerializationDecorator (IValidatorBuilder validatorBuilder)
     {
-      ArgumentUtility.CheckNotNull(nameof(validatorBuilder), validatorBuilder);
+      ArgumentNullException.ThrowIfNull(validatorBuilder);
 
       _validatorBuilder = validatorBuilder;
     }
@@ -43,7 +43,7 @@ namespace Remotion.Validation.Implementation
 
     public IValidator BuildValidator (Type validatedType)
     {
-      ArgumentUtility.CheckNotNull(nameof(validatedType), validatedType);
+      ArgumentNullException.ThrowIfNull(validatedType);
 
       return _validatorBuilder.BuildValidator(validatedType);
     }

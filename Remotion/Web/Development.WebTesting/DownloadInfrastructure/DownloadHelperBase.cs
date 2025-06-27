@@ -87,7 +87,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     [NotNull]
     protected IDownloadedFile MoveDownloadedFile ([NotNull] DownloadedFile downloadedFile)
     {
-      ArgumentUtility.CheckNotNull(nameof(downloadedFile), downloadedFile);
+      ArgumentNullException.ThrowIfNull(downloadedFile);
 
       var tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
       Directory.CreateDirectory(tempDirectory);

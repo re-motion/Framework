@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public IEnumerable<XElement> Serialize (PropertyDefinition propertyDefinition, IRdbmsPersistenceModelProvider persistenceModelProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
-      ArgumentUtility.CheckNotNull(nameof(persistenceModelProvider), persistenceModelProvider);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
+      ArgumentNullException.ThrowIfNull(persistenceModelProvider);
 
       var storagePropertyDefinition = persistenceModelProvider.GetStoragePropertyDefinition(propertyDefinition);
       return storagePropertyDefinition.GetColumns().Select(

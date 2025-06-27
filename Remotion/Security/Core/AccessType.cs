@@ -40,7 +40,7 @@ namespace Remotion.Security
 
     public static AccessType Get (Enum accessType)
     {
-      ArgumentUtility.CheckNotNull(nameof(accessType), accessType);
+      ArgumentNullException.ThrowIfNull(accessType);
 
       return s_accessTypeByEnumCache.GetOrAdd(accessType, s_getInternalFunc);
     }

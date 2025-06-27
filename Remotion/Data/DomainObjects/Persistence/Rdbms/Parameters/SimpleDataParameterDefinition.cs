@@ -30,7 +30,7 @@ public class SimpleDataParameterDefinition : IDataParameterDefinition
 
   public SimpleDataParameterDefinition (IStorageTypeInformation storageTypeInformation)
   {
-    ArgumentUtility.CheckNotNull(nameof(storageTypeInformation), storageTypeInformation);
+    ArgumentNullException.ThrowIfNull(storageTypeInformation);
 
     StorageTypeInformation = storageTypeInformation;
   }
@@ -44,9 +44,9 @@ public class SimpleDataParameterDefinition : IDataParameterDefinition
 
   public IDbDataParameter CreateDataParameter (IDbCommand command, string parameterName, object parameterValue)
   {
-    ArgumentUtility.CheckNotNull(nameof(command), command);
+    ArgumentNullException.ThrowIfNull(command);
     ArgumentUtility.CheckNotNullOrEmpty(nameof(parameterName), parameterName);
-    ArgumentUtility.CheckNotNull(nameof(parameterValue), parameterValue);
+    ArgumentNullException.ThrowIfNull(parameterValue);
 
     var parameter = command.CreateParameter();
     parameter.ParameterName = parameterName;

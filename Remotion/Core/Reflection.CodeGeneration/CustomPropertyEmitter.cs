@@ -49,10 +49,10 @@ namespace Remotion.Reflection.CodeGeneration
         Type[] indexParameters,
         PropertyAttributes attributes)
     {
-      ArgumentUtility.CheckNotNull(nameof(declaringType), declaringType);
+      ArgumentNullException.ThrowIfNull(declaringType);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
-      ArgumentUtility.CheckNotNull(nameof(indexParameters), indexParameters);
+      ArgumentNullException.ThrowIfNull(propertyType);
+      ArgumentNullException.ThrowIfNull(indexParameters);
 
       _declaringType = declaringType;
       _name = name;
@@ -146,7 +146,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     public CustomPropertyEmitter ImplementWithBackingField (FieldReference backingField)
     {
-      ArgumentUtility.CheckNotNull(nameof(backingField), backingField);
+      ArgumentNullException.ThrowIfNull(backingField);
       if (GetMethod != null)
         GetMethod.AddStatement(new ReturnStatement(backingField));
       if (SetMethod != null)
@@ -215,7 +215,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     public void AddCustomAttribute (CustomAttributeBuilder customAttribute)
     {
-      ArgumentUtility.CheckNotNull(nameof(customAttribute), customAttribute);
+      ArgumentNullException.ThrowIfNull(customAttribute);
       _propertyBuilder.SetCustomAttribute(customAttribute);
     }
 

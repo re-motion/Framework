@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
 // SPDX-License-Identifier: LGPL-2.1-or-later
+using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Remotion.Utilities;
@@ -68,7 +69,7 @@ public class DockerContainerConfigurationParameters
     ArgumentUtility.CheckNotNullOrEmpty(nameof(absoluteWebApplicationPath), absoluteWebApplicationPath);
     ArgumentUtility.CheckNotNullOrEmpty(nameof(dockerImageName), dockerImageName);
     ArgumentUtility.CheckNotEmpty(nameof(hostname), hostname);
-    ArgumentUtility.CheckNotNull(nameof(mounts), mounts);
+    ArgumentNullException.ThrowIfNull(mounts);
 
     AbsoluteWebApplicationPath = absoluteWebApplicationPath;
     WebApplicationPort = webApplicationPort;

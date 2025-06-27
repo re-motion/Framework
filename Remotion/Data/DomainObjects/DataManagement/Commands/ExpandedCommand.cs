@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     private ExpandedCommand (CompositeCommand compositeCommand)
     {
-      ArgumentUtility.CheckNotNull(nameof(compositeCommand), compositeCommand);
+      ArgumentNullException.ThrowIfNull(compositeCommand);
 
       _compositeCommand = compositeCommand;
     }

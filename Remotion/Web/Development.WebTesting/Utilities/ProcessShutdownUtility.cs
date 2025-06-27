@@ -15,7 +15,7 @@ internal static class ProcessShutdownUtility
       CancellationToken cancellationToken,
       int timeoutInMilliseconds)
   {
-    ArgumentUtility.CheckNotNull(nameof(process), process);
+    ArgumentNullException.ThrowIfNull(process);
 
     var tcs = new TaskCompletionSource<int>();
     cancellationToken.Register(

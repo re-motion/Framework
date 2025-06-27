@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public void Validate (ClientTransaction clientTransaction, PersistableData data)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(data), data);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(data);
 
       if (data.DomainObjectState.IsDeleted)
         return;
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public void Validate (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataContainer), dataContainer);
+      ArgumentNullException.ThrowIfNull(dataContainer);
 
       foreach (var propertyDefinition in dataContainer.ID.ClassDefinition.GetPropertyDefinitions())
       {

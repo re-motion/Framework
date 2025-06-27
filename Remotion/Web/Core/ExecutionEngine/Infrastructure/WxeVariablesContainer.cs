@@ -41,7 +41,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public static WxeParameterDeclaration[] GetParameterDeclarations (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
       if (!typeof(WxeFunction).IsAssignableFrom(type))
         throw new ArgumentException("Type " + type.GetFullNameSafe() + " is not derived from WxeFunction.", nameof(type));
 
@@ -126,7 +126,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     public static object[] ParseActualParameters (WxeParameterDeclaration[] parameterDeclarations, string actualParameters, CultureInfo culture)
     {
       ArgumentUtility.CheckNotNullOrItemsNull(nameof(parameterDeclarations), parameterDeclarations);
-      ArgumentUtility.CheckNotNull(nameof(actualParameters), actualParameters);
+      ArgumentNullException.ThrowIfNull(actualParameters);
 
       StringUtility.ParsedItem[] parsedItems = StringUtility.ParseSeparatedList(actualParameters, ',');
 
@@ -190,7 +190,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     public static NameValueCollection SerializeParametersForQueryString (WxeParameterDeclaration[] parameterDeclarations, object[] parameterValues)
     {
       ArgumentUtility.CheckNotNullOrItemsNull(nameof(parameterDeclarations), parameterDeclarations);
-      ArgumentUtility.CheckNotNull(nameof(parameterValues), parameterValues);
+      ArgumentNullException.ThrowIfNull(parameterValues);
 
       NameValueCollection serializedParameters = new NameValueCollection();
 
@@ -221,8 +221,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public WxeVariablesContainer (WxeFunction function, object?[] actualParameters, WxeParameterDeclaration[] parameterDeclarations)
     {
-      ArgumentUtility.CheckNotNull(nameof(function), function);
-      ArgumentUtility.CheckNotNull(nameof(actualParameters), actualParameters);
+      ArgumentNullException.ThrowIfNull(function);
+      ArgumentNullException.ThrowIfNull(actualParameters);
       ArgumentUtility.CheckNotNullOrItemsNull(nameof(parameterDeclarations), parameterDeclarations);
 
       _function = function;
@@ -252,7 +252,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     /// </param>
     public void InitializeParameters (NameValueCollection parameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
+      ArgumentNullException.ThrowIfNull(parameters);
       CheckParametersNotInitialized();
 
       for (int i = 0; i < _parameterDeclarations.Length; ++i)

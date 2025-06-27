@@ -36,7 +36,7 @@ namespace Remotion.Validation.MetaValidation
     public IObjectMetaValidationRuleValidator CreateObjectMetaValidationRuleValidator (
         IEnumerable<IObjectMetaValidationRuleCollector> objectMetaValidationRuleCollectors)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectMetaValidationRuleCollectors), objectMetaValidationRuleCollectors);
+      ArgumentNullException.ThrowIfNull(objectMetaValidationRuleCollectors);
 
       return new ObjectMetaValidationRuleValidator(objectMetaValidationRuleCollectors.ToArray());
     }

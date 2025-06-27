@@ -41,16 +41,16 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public AccessControlEntryPropertiesEnumerationValueFilter (IAccessControlSettings accessControlSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(accessControlSettings), accessControlSettings);
+      ArgumentNullException.ThrowIfNull(accessControlSettings);
 
       _accessControlSettings = accessControlSettings;
     }
 
     public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject? businessObject, IBusinessObjectEnumerationProperty property)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
       ArgumentUtility.CheckType<AccessControlEntry>(nameof(businessObject), businessObject);
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(property);
 
       AccessControlEntry? ace = (AccessControlEntry?)businessObject;
       bool isStateful = ace?.AccessControlList is StatefulAccessControlList;

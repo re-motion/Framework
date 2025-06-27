@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Validation
     protected CommitValidationClientTransactionExtension (IPersistableDataValidator validator, string key)
         : base(key)
     {
-      ArgumentUtility.CheckNotNull(nameof(validator), validator);
+      ArgumentNullException.ThrowIfNull(validator);
 
       _validator = validator;
     }
@@ -57,8 +57,8 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public override void CommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(committedData), committedData);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(committedData);
 
       foreach (var item in committedData)
         _validator.Validate(clientTransaction, item);

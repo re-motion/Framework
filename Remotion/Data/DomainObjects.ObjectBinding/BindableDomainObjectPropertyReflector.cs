@@ -81,8 +81,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
             bindableObjectGlobalizationService,
             businessObjectPropertyConstraintProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(businessObjectProvider), businessObjectProvider);
-      ArgumentUtility.CheckNotNull(nameof(domainModelConstraintProvider), domainModelConstraintProvider);
+      ArgumentNullException.ThrowIfNull(businessObjectProvider);
+      ArgumentNullException.ThrowIfNull(domainModelConstraintProvider);
 
       _domainModelConstraintProvider = domainModelConstraintProvider;
     }

@@ -26,8 +26,8 @@ namespace Remotion.SecurityManager.Domain
     public static bool IsRelation<TDoaminObject> (this RelationChangedEventArgs args, TDoaminObject domainObject, string shortPropertyName)
         where TDoaminObject : IDomainObject
     {
-      ArgumentUtility.CheckNotNull(nameof(args), args);
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(args);
+      ArgumentNullException.ThrowIfNull(domainObject);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
 
       var properties = new PropertyIndexer(domainObject);

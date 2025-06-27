@@ -38,8 +38,8 @@ namespace Remotion.Web.Development.WebTesting
     [Obsolete("Use scope.SendKeys (string) instead to send OpenQA.Selenium.Keys or individual characters. (Version 1.21.3)", false)]
     public static void SendKeysFixed ([NotNull] this ElementScope scope, [NotNull] string value)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(value);
 
       scope.SendKeys(value);
     }
@@ -57,10 +57,10 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] FinishInputWithAction finishInputWithAction,
         [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
-      ArgumentUtility.CheckNotNull(nameof(finishInputWithAction), finishInputWithAction);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(value);
+      ArgumentNullException.ThrowIfNull(finishInputWithAction);
+      ArgumentNullException.ThrowIfNull(logger);
 
       if (ContainsKeysAndChars(value))
         throw new ArgumentException("Value may not contain both text and keys at the same time.", nameof(value));
@@ -75,8 +75,8 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     private static void SetValueUsingJavaScriptAndSendKeys ([NotNull] this ElementScope scope, [NotNull] string value, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(value);
 
       if (scope.Value == value)
         return;

@@ -57,7 +57,7 @@ public class IgnoreBrowserLogMessageAttribute : WebTestAttribute
 
   public override void ApplyValue (IDictionary<string, object> dictionary)
   {
-    ArgumentUtility.CheckNotNull(nameof(dictionary), dictionary);
+    ArgumentNullException.ThrowIfNull(dictionary);
 
     if (!dictionary.TryGetValue(PropertyKey, out var value) || value is not IList<Regex> patterns)
     {

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // using NUnit.Framework;
 //
+using System;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using Remotion.Utilities;
@@ -34,15 +35,15 @@ namespace Remotion.Web.UI.Controls
     public LazyEvaluatedValidationMessageControl (string tag, IValidator validator)
         : base(tag)
     {
-      ArgumentUtility.CheckNotNull(nameof(tag), tag);
-      ArgumentUtility.CheckNotNull(nameof(validator), validator);
+      ArgumentNullException.ThrowIfNull(tag);
+      ArgumentNullException.ThrowIfNull(validator);
 
       _validator = validator;
     }
 
     protected override void RenderChildren (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       PlainTextString.CreateFromText(_validator.ErrorMessage).WriteTo(writer);
     }

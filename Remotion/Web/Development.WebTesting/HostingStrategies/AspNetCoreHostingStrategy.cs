@@ -32,7 +32,7 @@ public class AspNetCoreHostingStrategy : IHostingStrategy
   /// <param name="useHttps">Determines whether the site is hosted using https.</param>
   public AspNetCoreHostingStrategy (ITestSiteLayoutConfiguration testSiteLayoutConfiguration, int port, string hostname, bool useHttps)
   {
-    ArgumentUtility.CheckNotNull(nameof(testSiteLayoutConfiguration), testSiteLayoutConfiguration);
+    ArgumentNullException.ThrowIfNull(testSiteLayoutConfiguration);
     ArgumentUtility.CheckNotEmpty(nameof(hostname), hostname);
 
     _testSiteLayoutConfiguration = testSiteLayoutConfiguration;

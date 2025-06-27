@@ -324,7 +324,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     void ISmartControl.AssignLabels (IEnumerable<string> labelIDs)
     {
-      ArgumentUtility.CheckNotNull(nameof(labelIDs), labelIDs);
+      ArgumentNullException.ThrowIfNull(labelIDs);
 
       //BocLiteral does not have a root element that could be labeled.
     }

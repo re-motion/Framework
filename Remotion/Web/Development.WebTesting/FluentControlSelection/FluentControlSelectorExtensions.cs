@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlSelection;
@@ -41,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IHtmlIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
 
       return fluentControlSelector.GetControl(new HtmlIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(id));
@@ -61,7 +62,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IHtmlIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
 
       return fluentControlSelector.GetControlOrNull(new HtmlIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(id));
@@ -81,7 +82,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IHtmlIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
 
       return fluentControlSelector.HasControl(new HtmlIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(id));
@@ -102,7 +103,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IIndexControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
 
       return fluentControlSelector.GetControl(new IndexControlSelectionCommandBuilder<TControlSelector, TControlObject>(oneBasedIndex));
     }
@@ -121,7 +122,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IIndexControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
 
       return fluentControlSelector.GetControlOrNull(new IndexControlSelectionCommandBuilder<TControlSelector, TControlObject>(oneBasedIndex));
     }
@@ -140,7 +141,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IIndexControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
 
       return fluentControlSelector.HasControl(new IndexControlSelectionCommandBuilder<TControlSelector, TControlObject>(oneBasedIndex));
     }
@@ -162,7 +163,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : ILocalIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(localID), localID);
 
       return fluentControlSelector.GetControl(new LocalIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(localID));
@@ -184,7 +185,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : ILocalIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(localID), localID);
 
       return fluentControlSelector.GetControlOrNull(new LocalIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(localID));
@@ -206,7 +207,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : ILocalIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(localID), localID);
 
       return fluentControlSelector.HasControl(new LocalIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(localID));
@@ -227,7 +228,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : ITitleControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(title), title);
 
       return fluentControlSelector.GetControl(new TitleControlSelectionCommandBuilder<TControlSelector, TControlObject>(title));
@@ -247,7 +248,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : ITitleControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(title), title);
 
       return fluentControlSelector.GetControlOrNull(new TitleControlSelectionCommandBuilder<TControlSelector, TControlObject>(title));
@@ -267,7 +268,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : ITitleControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(title), title);
 
       return fluentControlSelector.HasControl(new TitleControlSelectionCommandBuilder<TControlSelector, TControlObject>(title));
@@ -287,7 +288,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IFirstControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
 
       return fluentControlSelector.GetControl(new FirstControlSelectionCommandBuilder<TControlSelector, TControlObject>());
     }
@@ -305,7 +306,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IFirstControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
 
       return fluentControlSelector.GetControlOrNull(new FirstControlSelectionCommandBuilder<TControlSelector, TControlObject>());
     }
@@ -325,7 +326,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : ISingleControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
 
       return fluentControlSelector.GetControl(new SingleControlSelectionCommandBuilder<TControlSelector, TControlObject>());
     }
@@ -344,7 +345,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : ISingleControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
 
       return fluentControlSelector.GetControlOrNull(new SingleControlSelectionCommandBuilder<TControlSelector, TControlObject>());
     }
@@ -364,7 +365,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : ITextContentControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(text), text);
 
       return fluentControlSelector.GetControl(new TextContentControlSelectionCommandBuilder<TControlSelector, TControlObject>(text));
@@ -384,7 +385,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : ITextContentControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(text), text);
 
       return fluentControlSelector.GetControlOrNull(new TextContentControlSelectionCommandBuilder<TControlSelector, TControlObject>(text));
@@ -404,7 +405,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : ITextContentControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(text), text);
 
       return fluentControlSelector.HasControl(new TextContentControlSelectionCommandBuilder<TControlSelector, TControlObject>(text));

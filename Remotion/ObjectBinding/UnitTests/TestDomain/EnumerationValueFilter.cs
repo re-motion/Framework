@@ -24,9 +24,9 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
   {
     public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject businessObject, IBusinessObjectEnumerationProperty property)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
-      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(value);
+      ArgumentNullException.ThrowIfNull(businessObject);
+      ArgumentNullException.ThrowIfNull(property);
 
       return (int)value.Value % 2 == 1;
     }

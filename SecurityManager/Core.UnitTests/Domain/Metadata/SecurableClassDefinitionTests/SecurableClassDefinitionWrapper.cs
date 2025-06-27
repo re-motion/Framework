@@ -37,7 +37,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
 
     public SecurableClassDefinitionWrapper (SecurableClassDefinition securableClassDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(securableClassDefinition), securableClassDefinition);
+      ArgumentNullException.ThrowIfNull(securableClassDefinition);
 
       _securableClassDefinition = securableClassDefinition;
       _accessTypeReferencesPropertyInfo = _securableClassDefinition.GetPublicDomainObjectType().GetProperty(

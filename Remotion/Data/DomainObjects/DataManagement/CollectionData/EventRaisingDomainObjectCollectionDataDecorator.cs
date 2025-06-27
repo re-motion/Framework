@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     public EventRaisingDomainObjectCollectionDataDecorator (IDomainObjectCollectionEventRaiser eventRaiser, IDomainObjectCollectionData wrappedData)
       : base(wrappedData)
     {
-      ArgumentUtility.CheckNotNull(nameof(eventRaiser), eventRaiser);
+      ArgumentNullException.ThrowIfNull(eventRaiser);
       _eventRaiser = eventRaiser;
     }
 
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     protected override void OnDataChanging (OperationKind operation, DomainObject? affectedObject, int index)
     {
       if (operation != OperationKind.Sort)
-        ArgumentUtility.CheckNotNull(nameof(affectedObject), affectedObject!);
+        ArgumentNullException.ThrowIfNull(affectedObject!);
 
       switch (operation)
       {
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     protected override void OnDataChanged (OperationKind operation, DomainObject? affectedObject, int index)
     {
       if (operation != OperationKind.Sort)
-        ArgumentUtility.CheckNotNull(nameof(affectedObject), affectedObject!);
+        ArgumentNullException.ThrowIfNull(affectedObject!);
 
       switch (operation)
       {

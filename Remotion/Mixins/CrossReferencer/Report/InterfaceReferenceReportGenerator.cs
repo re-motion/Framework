@@ -32,8 +32,8 @@ namespace Remotion.Mixins.CrossReferencer.Report
         InvolvedType involvedType,
         IIdentifierGenerator<Type> interfaceIdentifierGenerator)
     {
-      ArgumentUtility.CheckNotNull(nameof(involvedType), involvedType);
-      ArgumentUtility.CheckNotNull(nameof(interfaceIdentifierGenerator), interfaceIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(involvedType);
+      ArgumentNullException.ThrowIfNull(interfaceIdentifierGenerator);
 
       _involvedType = involvedType;
       _interfaceIdentifierGenerator = interfaceIdentifierGenerator;

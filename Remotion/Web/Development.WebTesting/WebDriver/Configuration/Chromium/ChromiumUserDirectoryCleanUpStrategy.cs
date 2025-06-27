@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
       // TODO RM-8117: userDirectory should be nullable.
       ArgumentUtility.CheckNotNullOrEmpty(nameof(userDirectoryRoot), userDirectoryRoot);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(userDirectory), userDirectory);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
 
       _logger = logger;
       _userDirectoryRoot = userDirectoryRoot;

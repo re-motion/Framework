@@ -82,7 +82,7 @@ namespace Remotion.Mixins.Definitions
 
     internal override void AddOverride (MemberDefinitionBase member)
     {
-      ArgumentUtility.CheckNotNull(nameof(member), member);
+      ArgumentNullException.ThrowIfNull(member);
 
       var overrider = member as PropertyDefinition;
       if (overrider == null)
@@ -101,7 +101,7 @@ namespace Remotion.Mixins.Definitions
 
     protected override void ChildSpecificAccept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       visitor.Visit(this);
 
       if (GetMethod != null)

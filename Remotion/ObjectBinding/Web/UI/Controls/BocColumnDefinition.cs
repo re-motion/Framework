@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public IBocColumnRenderer GetRenderer (IServiceLocator serviceLocator)
     {
-      ArgumentUtility.CheckNotNull(nameof(serviceLocator), serviceLocator);
+      ArgumentNullException.ThrowIfNull(serviceLocator);
 
       return GetRendererInternal(serviceLocator);
     }
@@ -143,7 +143,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _columnTitleIcon; }
       set
       {
-        ArgumentUtility.CheckNotNull(nameof(value), value);
+        ArgumentNullException.ThrowIfNull(value);
         _columnTitleIcon = value;
       }
     }
@@ -197,8 +197,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
-      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       base.LoadResources(resourceManager, globalizationService);
 

@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentList), fluentList);
+      ArgumentNullException.ThrowIfNull(fluentList);
 
       var result = fluentList.Target.List.Scope.FindCss(".bocListMenuBlock", Options.NoWait);
       if (!result.Exists(Options.NoWait))
@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentList), fluentList);
+      ArgumentNullException.ThrowIfNull(fluentList);
 
       var result = fluentList.Target.List.Scope.FindCss(".bocListNavigator", Options.NoWait);
       if (!result.Exists(Options.NoWait))
@@ -80,7 +80,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentList), fluentList);
+      ArgumentNullException.ThrowIfNull(fluentList);
 
       var result = fluentList.Target.List.Scope.FindCss(".bocListTableContainer", Options.NoWait);
       result.EnsureExistence();

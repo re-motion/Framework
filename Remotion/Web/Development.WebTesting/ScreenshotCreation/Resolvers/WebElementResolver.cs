@@ -115,7 +115,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveBrowserCoordinates (IWebElement target)
     {
-      ArgumentUtility.CheckNotNull(nameof(target), target);
+      ArgumentNullException.ThrowIfNull(target);
 
       var executor = JavaScriptExecutor.GetJavaScriptExecutor(target);
       var rawResult = JavaScriptExecutor.ExecuteStatement<string>(executor, ScriptLoader.Script, target);
@@ -141,8 +141,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IWebElement target, IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull(nameof(target), target);
-      ArgumentUtility.CheckNotNull(nameof(locator), locator);
+      ArgumentNullException.ThrowIfNull(target);
+      ArgumentNullException.ThrowIfNull(locator);
 
       var executor = JavaScriptExecutor.GetJavaScriptExecutor(target);
       var rawResult = JavaScriptExecutor.ExecuteStatement<string>(executor, ScriptLoader.Script, target);

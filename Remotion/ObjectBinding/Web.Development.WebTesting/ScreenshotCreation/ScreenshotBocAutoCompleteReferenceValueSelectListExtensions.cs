@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     internal static IFluentScreenshotElement<IWebElement> GetElement (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentSelectList), fluentSelectList);
+      ArgumentNullException.ThrowIfNull(fluentSelectList);
 
       if (!fluentSelectList.IsVisible())
         throw new InvalidOperationException("The auto-complete is not visible.");
@@ -69,7 +69,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<IWebElement> GetSelectedItem (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentSelectList), fluentSelectList);
+      ArgumentNullException.ThrowIfNull(fluentSelectList);
 
       if (!fluentSelectList.IsVisible())
         throw new InvalidOperationException("The auto-complete is not visible.");
@@ -90,7 +90,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static void Hide (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentSelectList), fluentSelectList);
+      ArgumentNullException.ThrowIfNull(fluentSelectList);
 
       JavaScriptExecutor.ExecuteVoidStatement(fluentSelectList.GetExecutor(), c_hideScript, fluentSelectList.GetInputField());
     }
@@ -101,7 +101,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static bool IsVisible (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentSelectList), fluentSelectList);
+      ArgumentNullException.ThrowIfNull(fluentSelectList);
 
       return JavaScriptExecutor.ExecuteStatement<bool>(
           fluentSelectList.GetExecutor(),
@@ -115,7 +115,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static void NextItem (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentSelectList), fluentSelectList);
+      ArgumentNullException.ThrowIfNull(fluentSelectList);
 
       JavaScriptExecutor.ExecuteVoidStatement(fluentSelectList.GetExecutor(), c_nextScript, fluentSelectList.GetInputField());
     }
@@ -126,7 +126,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static void NextPage (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentSelectList), fluentSelectList);
+      ArgumentNullException.ThrowIfNull(fluentSelectList);
 
       JavaScriptExecutor.ExecuteVoidStatement(fluentSelectList.GetExecutor(), c_pageDownScript, fluentSelectList.GetInputField());
     }
@@ -137,7 +137,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static void PreviousItem (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentSelectList), fluentSelectList);
+      ArgumentNullException.ThrowIfNull(fluentSelectList);
 
       JavaScriptExecutor.ExecuteVoidStatement(fluentSelectList.GetExecutor(), c_previousScript, fluentSelectList.GetInputField());
     }
@@ -148,7 +148,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static void PreviousPage (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentSelectList), fluentSelectList);
+      ArgumentNullException.ThrowIfNull(fluentSelectList);
 
       JavaScriptExecutor.ExecuteVoidStatement(fluentSelectList.GetExecutor(), c_pageUpScript, fluentSelectList.GetInputField());
     }
@@ -159,7 +159,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static ScreenshotBocAutoCompleteReferenceValueSelectListSelector Select (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentSelectList), fluentSelectList);
+      ArgumentNullException.ThrowIfNull(fluentSelectList);
 
       return new ScreenshotBocAutoCompleteReferenceValueSelectListSelector(fluentSelectList);
     }
@@ -171,7 +171,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList,
         int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentSelectList), fluentSelectList);
+      ArgumentNullException.ThrowIfNull(fluentSelectList);
 
       fluentSelectList.Select().WithIndex(oneBasedIndex);
     }
@@ -185,7 +185,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static void Show (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentSelectList), fluentSelectList);
+      ArgumentNullException.ThrowIfNull(fluentSelectList);
 
       JavaScriptExecutor.ExecuteVoidStatement(fluentSelectList.GetExecutor(), c_showScript, fluentSelectList.GetInputField());
     }
@@ -198,7 +198,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentSelectList,
         int timeout = 3000)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentSelectList), fluentSelectList);
+      ArgumentNullException.ThrowIfNull(fluentSelectList);
 
       var watch = new Stopwatch();
       watch.Start();

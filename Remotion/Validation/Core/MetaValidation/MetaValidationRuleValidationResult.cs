@@ -33,7 +33,7 @@ namespace Remotion.Validation.MetaValidation
     public static MetaValidationRuleValidationResult CreateInvalidResult (string messageFormat, params object?[] args)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(messageFormat), messageFormat);
-      ArgumentUtility.CheckNotNull(nameof(args), args);
+      ArgumentNullException.ThrowIfNull(args);
 
       return new MetaValidationRuleValidationResult(false, string.Format(messageFormat, args));
     }

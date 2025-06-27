@@ -20,7 +20,7 @@ namespace Remotion.Collections
 
     public ReadOnlyCollectionWrapper (IReadOnlyCollection<T> collection)
     {
-      ArgumentUtility.CheckNotNull(nameof(collection), collection);
+      ArgumentNullException.ThrowIfNull(collection);
 
       _collection = collection;
     }

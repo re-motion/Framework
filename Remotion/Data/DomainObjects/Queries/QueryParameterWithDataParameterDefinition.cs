@@ -31,8 +31,8 @@ namespace Remotion.Data.DomainObjects.Queries
 
     public QueryParameterWithDataParameterDefinition (QueryParameter queryParameter, IDataParameterDefinition dataParameterDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(queryParameter), queryParameter);
-      ArgumentUtility.CheckNotNull(nameof(dataParameterDefinition), dataParameterDefinition);
+      ArgumentNullException.ThrowIfNull(queryParameter);
+      ArgumentNullException.ThrowIfNull(dataParameterDefinition);
 
       QueryParameter = queryParameter;
       DataParameterDefinition = dataParameterDefinition;

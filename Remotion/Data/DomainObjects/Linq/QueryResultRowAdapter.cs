@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public QueryResultRowAdapter (IQueryResultRow queryResultRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(queryResultRow), queryResultRow);
+      ArgumentNullException.ThrowIfNull(queryResultRow);
 
       _queryResultRow = queryResultRow;
     }

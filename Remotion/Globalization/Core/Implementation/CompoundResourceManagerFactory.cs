@@ -37,7 +37,7 @@ namespace Remotion.Globalization.Implementation
     /// <param name="resourceManagerFactories"> The <see cref="IGlobalizationService"/>s, starting with the least specific.</param>
     public CompoundResourceManagerFactory (IEnumerable<IResourceManagerFactory> resourceManagerFactories)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceManagerFactories), resourceManagerFactories);
+      ArgumentNullException.ThrowIfNull(resourceManagerFactories);
 
       _resourceManagerFactories = resourceManagerFactories.ToList().AsReadOnly();
     }
@@ -49,7 +49,7 @@ namespace Remotion.Globalization.Implementation
 
     public IResourceManager CreateResourceManager (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return new ResourceManagerSet(_resourceManagerFactories.Select(f => f.CreateResourceManager(type)));
     }

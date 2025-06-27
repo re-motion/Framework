@@ -32,7 +32,7 @@ namespace Remotion.Mixins.Definitions.Building
 
     public MixinDefinitionBuilder (TargetClassDefinition targetClass)
     {
-      ArgumentUtility.CheckNotNull(nameof(targetClass), targetClass);
+      ArgumentNullException.ThrowIfNull(targetClass);
       _targetClass = targetClass;
       _targetRequirementsAnalyzer = new RequirementsAnalyzer(MixinGenericArgumentFinder.TargetArgumentFinder);
       _nextRequirementsAnalyzer = new RequirementsAnalyzer(MixinGenericArgumentFinder.NextArgumentFinder);
@@ -45,7 +45,7 @@ namespace Remotion.Mixins.Definitions.Building
 
     public void Apply (MixinContext mixinContext, int index)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinContext), mixinContext);
+      ArgumentNullException.ThrowIfNull(mixinContext);
 
       MixinDefinition mixin = CreateMixinDefinition(mixinContext);
 

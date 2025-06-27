@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
 
     public QueryDefinitionLoader (IQueryFileFinder queryFileFinder, IStorageSettings storageSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(queryFileFinder), queryFileFinder);
-      ArgumentUtility.CheckNotNull(nameof(queryFileFinder), queryFileFinder);
+      ArgumentNullException.ThrowIfNull(queryFileFinder);
+      ArgumentNullException.ThrowIfNull(queryFileFinder);
 
       _queryFileFinder = queryFileFinder;
       _storageSettings = storageSettings;

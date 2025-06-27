@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
 
     public SortExpressionDefinition (IEnumerable<SortedPropertySpecification> sortedProperties)
     {
-      ArgumentUtility.CheckNotNull(nameof(sortedProperties), sortedProperties);
+      ArgumentNullException.ThrowIfNull(sortedProperties);
       _sortedProperties = sortedProperties.ToList().AsReadOnly();
 
       if (_sortedProperties.Count == 0)

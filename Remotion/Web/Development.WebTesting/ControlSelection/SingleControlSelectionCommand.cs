@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
 
     public SingleControlSelectionCommand ([NotNull] ISingleControlSelector<TControlObject> controlSelector)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
 
       _controlSelector = controlSelector;
     }
@@ -41,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject Select (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return _controlSelector.SelectSingle(context);
     }
@@ -49,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject? SelectOptional (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return _controlSelector.SelectSingleOrNull(context);
     }

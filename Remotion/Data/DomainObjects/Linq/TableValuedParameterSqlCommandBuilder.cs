@@ -49,7 +49,7 @@ public class TableValuedParameterSqlCommandBuilder : SqlCommandBuilder
 
   protected override void AppendNonEmptyCollection (ConstantCollectionExpression collectionExpression)
   {
-    ArgumentUtility.CheckNotNull(nameof(collectionExpression), collectionExpression);
+    ArgumentNullException.ThrowIfNull(collectionExpression);
 
     if (GetCount(collectionExpression.Collection, TableValuedParameterThreshold) < TableValuedParameterThreshold)
     {

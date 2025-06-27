@@ -35,9 +35,9 @@ namespace Remotion.Mixins.CrossReferencer.Report
         IIdentifierGenerator<Type> involvedTypeIdentifierGenerator,
         IOutputFormatter outputFormatter)
     {
-      ArgumentUtility.CheckNotNull(nameof(explicitDependencies), explicitDependencies);
-      ArgumentUtility.CheckNotNull(nameof(involvedTypeIdentifierGenerator), involvedTypeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull(nameof(outputFormatter), outputFormatter);
+      ArgumentNullException.ThrowIfNull(explicitDependencies);
+      ArgumentNullException.ThrowIfNull(involvedTypeIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(outputFormatter);
 
       _explicitDependencies = explicitDependencies;
       _involvedTypeIdentifierGenerator = involvedTypeIdentifierGenerator;

@@ -24,7 +24,7 @@ namespace Remotion.Mixins.MixerTools
   {
     public ValidationErrorEventArgs (ValidationException validationException)
     {
-      ArgumentUtility.CheckNotNull(nameof(validationException), validationException);
+      ArgumentNullException.ThrowIfNull(validationException);
       ValidationException = validationException;
     }
 

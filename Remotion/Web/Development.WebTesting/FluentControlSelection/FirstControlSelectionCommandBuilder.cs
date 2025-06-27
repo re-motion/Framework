@@ -34,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlSelectionCommand<TControlObject> IControlSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
 
       return new FirstControlSelectionCommand<TControlObject>(controlSelector);
     }
@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlOptionalSelectionCommand<TControlObject> IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
 
       return new FirstControlSelectionCommand<TControlObject>(controlSelector);
     }

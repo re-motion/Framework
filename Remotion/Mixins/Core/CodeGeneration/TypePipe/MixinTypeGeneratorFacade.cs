@@ -36,8 +36,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public IMixinInfo GetMixinInfo (IProxyTypeAssemblyContext context, MixinDefinition mixin)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNull(nameof(mixin), mixin);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(mixin);
 
       if (!mixin.NeedsDerivedMixinType())
         return new RegularMixinInfo(mixin.Type);
@@ -48,8 +48,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public ConcreteMixinType GetOrGenerateConcreteMixinType (ITypeAssemblyContext context, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNull(nameof(concreteMixinTypeIdentifier), concreteMixinTypeIdentifier);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(concreteMixinTypeIdentifier);
 
       var concreteMixinTypeCache = GetOrCreateConcreteMixinTypeCache(context.ParticipantState);
 

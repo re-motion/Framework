@@ -37,8 +37,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
     public DomainObjectTransactionContext (DomainObjectTransactionContextImplementation transactionContextImplementation, ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(transactionContextImplementation), transactionContextImplementation);
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentNullException.ThrowIfNull(transactionContextImplementation);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
       DomainObjectCheckUtility.CheckIfRightTransaction(transactionContextImplementation.DomainObject, clientTransaction);
 
       _transactionContextImplementation = transactionContextImplementation;

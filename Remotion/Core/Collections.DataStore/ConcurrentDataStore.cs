@@ -147,7 +147,7 @@ namespace Remotion.Collections.DataStore
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
     public bool ContainsKey (TKey key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
       return TryGetValueInternal(key, out _);
     }
 
@@ -160,7 +160,7 @@ namespace Remotion.Collections.DataStore
     /// <exception cref="ArgumentException">An item with an equal key already exists in the store.</exception>
     public void Add (TKey key, TValue value)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
       // value can be null
 
       if (!_innerDictionary.TryAdd(key, new SynchronizedValue { Boxed = new Boxed(value) }))
@@ -181,7 +181,7 @@ namespace Remotion.Collections.DataStore
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
     public bool Remove (TKey key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
       if (TryGetValueInternal(key, out _))
         return _innerDictionary.TryRemove(key, out _);
 
@@ -195,7 +195,7 @@ namespace Remotion.Collections.DataStore
     {
       get
       {
-        ArgumentUtility.CheckNotNull(nameof(key), key);
+        ArgumentNullException.ThrowIfNull(key);
         if (TryGetValueInternal(key, out var value))
           return value;
 
@@ -204,7 +204,7 @@ namespace Remotion.Collections.DataStore
       }
       set
       {
-        ArgumentUtility.CheckNotNull(nameof(key), key);
+        ArgumentNullException.ThrowIfNull(key);
         _innerDictionary[key] = new SynchronizedValue { Boxed = new Boxed(value) };
       }
     }

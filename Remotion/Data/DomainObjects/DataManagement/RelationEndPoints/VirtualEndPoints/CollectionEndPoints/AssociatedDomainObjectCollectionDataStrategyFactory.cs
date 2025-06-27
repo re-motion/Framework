@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public AssociatedDomainObjectCollectionDataStrategyFactory (IVirtualEndPointProvider virtualEndPointProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(virtualEndPointProvider), virtualEndPointProvider);
+      ArgumentNullException.ThrowIfNull(virtualEndPointProvider);
       _virtualEndPointProvider = virtualEndPointProvider;
     }
 
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public IDomainObjectCollectionData CreateDataStrategyForEndPoint (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
+      ArgumentNullException.ThrowIfNull(endPointID);
 
       var requiredItemType = endPointID.Definition.GetOppositeEndPointDefinition().ClassDefinition.ClassType;
       return new ModificationCheckingDomainObjectCollectionDataDecorator(

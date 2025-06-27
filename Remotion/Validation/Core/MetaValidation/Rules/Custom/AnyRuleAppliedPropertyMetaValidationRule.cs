@@ -35,7 +35,7 @@ namespace Remotion.Validation.MetaValidation.Rules.Custom
 
     public AnyRuleAppliedPropertyMetaValidationRule (PropertyInfo property)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(property);
 
       // TODO RM-5906: Replace PropertyInfo with IPropertyInformation
       _property = property;

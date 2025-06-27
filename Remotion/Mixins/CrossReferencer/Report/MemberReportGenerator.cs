@@ -42,12 +42,12 @@ namespace Remotion.Mixins.CrossReferencer.Report
         IIdentifierGenerator<MemberInfo> memberIdentifierGeneratorOrNull,
         IOutputFormatter outputFormatter)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
       // may be null
       // ArgumentUtility.CheckNotNull ("involvedTypeOrNull", involvedTypeOrNull);
       // ArgumentUtility.CheckNotNull ("involvedTypeIdentifierGeneratorOrNull", involvedTypeIdentifierGeneratorOrNull);
       // ArgumentUtility.CheckNotNull ("memberIdentifierGeneratorOrNull", memberIdentifierGeneratorOrNull);
-      ArgumentUtility.CheckNotNull(nameof(outputFormatter), outputFormatter);
+      ArgumentNullException.ThrowIfNull(outputFormatter);
 
       _type = type;
       _involvedType = involvedTypeOrNull;

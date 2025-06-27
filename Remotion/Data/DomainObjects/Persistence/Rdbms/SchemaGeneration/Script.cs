@@ -30,9 +30,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public Script (RdbmsProviderDefinition storageProviderDefinition, string setUpScript, string tearDownScript)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
-      ArgumentUtility.CheckNotNull(nameof(setUpScript), setUpScript);
-      ArgumentUtility.CheckNotNull(nameof(tearDownScript), tearDownScript);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(setUpScript);
+      ArgumentNullException.ThrowIfNull(tearDownScript);
 
       _storageProviderDefinition = storageProviderDefinition;
       _setUpScript = setUpScript;

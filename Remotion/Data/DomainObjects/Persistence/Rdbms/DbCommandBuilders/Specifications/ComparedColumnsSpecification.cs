@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public ComparedColumnsSpecification (IEnumerable<ColumnValue> comparedColumnValues)
     {
-      ArgumentUtility.CheckNotNull(nameof(comparedColumnValues), comparedColumnValues);
+      ArgumentNullException.ThrowIfNull(comparedColumnValues);
       _comparedColumnValues = comparedColumnValues.ToArray();
 
       if (_comparedColumnValues.Length == 0)
@@ -45,8 +45,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public void AddParameters (IDbCommand command, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull(nameof(command), command);
-      ArgumentUtility.CheckNotNull(nameof(sqlDialect), sqlDialect);
+      ArgumentNullException.ThrowIfNull(command);
+      ArgumentNullException.ThrowIfNull(sqlDialect);
 
       foreach (var comparedColumnValue in _comparedColumnValues)
       {
@@ -60,9 +60,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
     public void AppendComparisons (
         StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull(nameof(statement), statement);
-      ArgumentUtility.CheckNotNull(nameof(command), command);
-      ArgumentUtility.CheckNotNull(nameof(sqlDialect), sqlDialect);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(command);
+      ArgumentNullException.ThrowIfNull(sqlDialect);
 
       bool first = true;
 

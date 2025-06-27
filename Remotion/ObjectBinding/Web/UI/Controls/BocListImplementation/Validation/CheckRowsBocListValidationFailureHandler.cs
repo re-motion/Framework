@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
+using System;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -35,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validatio
     /// <inheritdoc />
     public void HandleValidationFailures (ValidationFailureHandlingContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var bocList = context.BocList;
 

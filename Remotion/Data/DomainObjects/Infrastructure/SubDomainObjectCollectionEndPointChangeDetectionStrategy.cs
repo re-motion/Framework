@@ -31,8 +31,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   {
     public bool HasDataChanged (IDomainObjectCollectionData currentData, IDomainObjectCollectionData originalData)
     {
-      ArgumentUtility.CheckNotNull(nameof(currentData), currentData);
-      ArgumentUtility.CheckNotNull(nameof(originalData), originalData);
+      ArgumentNullException.ThrowIfNull(currentData);
+      ArgumentNullException.ThrowIfNull(originalData);
 
       return !originalData.SequenceEqual(currentData);
     }

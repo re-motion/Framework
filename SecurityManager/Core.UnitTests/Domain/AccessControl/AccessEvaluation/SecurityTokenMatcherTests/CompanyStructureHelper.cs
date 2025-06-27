@@ -28,7 +28,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
     public CompanyStructureHelper (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
       _testHelper = new OrganizationalStructureTestHelper(clientTransaction);
 
       Build();

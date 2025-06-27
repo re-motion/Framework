@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   {
     public static TenantProxy Create (Tenant tenant)
     {
-      ArgumentUtility.CheckNotNull(nameof(tenant), tenant);
+      ArgumentNullException.ThrowIfNull(tenant);
 
       return new TenantProxy(
           tenant.GetHandle(),

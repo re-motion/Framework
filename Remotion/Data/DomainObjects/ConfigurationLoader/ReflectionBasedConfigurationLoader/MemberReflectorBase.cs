@@ -35,10 +35,10 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
-      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
-      ArgumentUtility.CheckNotNull(nameof(nameResolver), nameResolver);
-      ArgumentUtility.CheckNotNull(nameof(propertyMetadataProvider), propertyMetadataProvider);
+      ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
+      ArgumentNullException.ThrowIfNull(nameResolver);
+      ArgumentNullException.ThrowIfNull(propertyMetadataProvider);
 
       _classDefinition = classDefinition;
       _propertyInfo = propertyInfo;

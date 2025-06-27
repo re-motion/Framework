@@ -37,8 +37,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     private static string FormatMessage ([NotNull] string message, [NotNull] IReadOnlyCollection<string> unmatchedFiles)
     {
-      ArgumentUtility.CheckNotNull(nameof(message), message);
-      ArgumentUtility.CheckNotNull(nameof(unmatchedFiles), unmatchedFiles);
+      ArgumentNullException.ThrowIfNull(message);
+      ArgumentNullException.ThrowIfNull(unmatchedFiles);
 
       if (!unmatchedFiles.Any())
         return message;

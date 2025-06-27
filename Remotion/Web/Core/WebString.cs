@@ -119,7 +119,7 @@ namespace Remotion.Web
     /// <param name="writer">The <see cref="HtmlTextWriter"/> where the value will be appended to. Must not be <see langword="null" />.</param>
     public void WriteTo ([NotNull] HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       switch (_type)
       {

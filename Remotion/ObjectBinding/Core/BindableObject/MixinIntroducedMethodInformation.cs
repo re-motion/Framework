@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public MixinIntroducedMethodInformation (InterfaceImplementationMethodInformation mixinMethodInfo)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinMethodInfo), mixinMethodInfo);
+      ArgumentNullException.ThrowIfNull(mixinMethodInfo);
 
       _mixinMethodInfo = mixinMethodInfo;
       _methodInterfaceDeclarationCache =
@@ -80,7 +80,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public IMethodInformation? FindInterfaceImplementation (Type implementationType)
     {
-      ArgumentUtility.CheckNotNull(nameof(implementationType), implementationType);
+      ArgumentNullException.ThrowIfNull(implementationType);
 
       return _mixinMethodInfo.FindInterfaceImplementation(implementationType);
     }
@@ -124,7 +124,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public object? Invoke (object? instance, object?[]? parameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(instance), instance!);
+      ArgumentNullException.ThrowIfNull(instance!);
 
       return _mixinMethodInfo.Invoke(instance, parameters);
     }

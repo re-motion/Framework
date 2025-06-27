@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     public StorageGroupElement (StorageGroupAttribute storageGroup, string storageProviderName)
         : this()
     {
-      ArgumentUtility.CheckNotNull(nameof(storageGroup), storageGroup);
+      ArgumentNullException.ThrowIfNull(storageGroup);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(storageProviderName), storageProviderName);
 
       StorageGroup = storageGroup;

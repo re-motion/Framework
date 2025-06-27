@@ -45,9 +45,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
           ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction),
           ArgumentUtility.CheckNotNull(nameof(id), id))
     {
-      ArgumentUtility.CheckNotNull(nameof(foreignKeyDataContainer), foreignKeyDataContainer);
-      ArgumentUtility.CheckNotNull(nameof(endPointProvider), endPointProvider);
-      ArgumentUtility.CheckNotNull(nameof(transactionEventSink), transactionEventSink);
+      ArgumentNullException.ThrowIfNull(foreignKeyDataContainer);
+      ArgumentNullException.ThrowIfNull(endPointProvider);
+      ArgumentNullException.ThrowIfNull(transactionEventSink);
 
       if (id.ObjectID == null)
         throw new ArgumentException("End point ID must have a non-null ObjectID.", nameof(id));

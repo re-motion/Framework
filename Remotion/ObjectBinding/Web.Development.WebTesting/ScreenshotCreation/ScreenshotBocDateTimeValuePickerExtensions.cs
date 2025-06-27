@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetElement (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentDatePicker), fluentDatePicker);
+      ArgumentNullException.ThrowIfNull(fluentDatePicker);
 
       if (!IsVisible(fluentDatePicker))
         throw new InvalidOperationException("The date-picker is not visible.");
@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetNavigationBar (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentDatePicker), fluentDatePicker);
+      ArgumentNullException.ThrowIfNull(fluentDatePicker);
 
       var root = fluentDatePicker.GetElement();
 
@@ -71,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetNextMonthButton (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentDatePicker), fluentDatePicker);
+      ArgumentNullException.ThrowIfNull(fluentDatePicker);
 
       var headerBar = fluentDatePicker.GetNavigationBar();
 
@@ -87,7 +87,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetPreviousMonthButton (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentDatePicker), fluentDatePicker);
+      ArgumentNullException.ThrowIfNull(fluentDatePicker);
 
       var headerBar = fluentDatePicker.GetNavigationBar();
 
@@ -103,7 +103,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetTitle (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentDatePicker), fluentDatePicker);
+      ArgumentNullException.ThrowIfNull(fluentDatePicker);
 
       var headerBar = fluentDatePicker.GetNavigationBar();
 
@@ -119,7 +119,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetSelectedDay (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentDatePicker), fluentDatePicker);
+      ArgumentNullException.ThrowIfNull(fluentDatePicker);
 
       var root = fluentDatePicker.GetElement();
 
@@ -139,7 +139,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetWeekdayRow (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentDatePicker), fluentDatePicker);
+      ArgumentNullException.ThrowIfNull(fluentDatePicker);
 
       var root = fluentDatePicker.GetElement();
 
@@ -158,7 +158,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocDateTimeValuePicker> fluentDatePicker,
         int timeout = 3000)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentDatePicker), fluentDatePicker);
+      ArgumentNullException.ThrowIfNull(fluentDatePicker);
 
       var element = fluentDatePicker.Target.FluentDateTimeValue.GetDatePickerIcon().GetTarget();
       element.Click();

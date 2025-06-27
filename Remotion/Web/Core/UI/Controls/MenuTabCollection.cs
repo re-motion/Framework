@@ -98,7 +98,7 @@ namespace Remotion.Web.UI.Controls
 
     protected internal void SetParent (MainMenuTab parent)
     {
-      ArgumentUtility.CheckNotNull(nameof(parent), parent);
+      ArgumentNullException.ThrowIfNull(parent);
       _parent = parent;
       for (int i = 0; i < InnerList.Count; i++)
         ((SubMenuTab)InnerList[i]!).SetParent(_parent);

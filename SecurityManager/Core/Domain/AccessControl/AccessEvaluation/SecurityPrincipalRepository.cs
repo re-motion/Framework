@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public SecurityPrincipalRepository (IUserRevisionProvider revisionProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(revisionProvider), revisionProvider);
+      ArgumentNullException.ThrowIfNull(revisionProvider);
 
       _revisionProvider = revisionProvider;
     }

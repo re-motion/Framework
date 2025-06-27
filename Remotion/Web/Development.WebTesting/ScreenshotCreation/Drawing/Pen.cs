@@ -26,7 +26,7 @@ public class Pen
 
   public Pen (SKPaint skiaPaint)
   {
-    ArgumentUtility.CheckNotNull(nameof(skiaPaint), skiaPaint);
+    ArgumentNullException.ThrowIfNull(skiaPaint);
 
     SkiaPaint = skiaPaint;
   }

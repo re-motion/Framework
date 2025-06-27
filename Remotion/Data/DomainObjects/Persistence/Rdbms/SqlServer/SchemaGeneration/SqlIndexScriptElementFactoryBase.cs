@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     public virtual IScriptElement GetDropElement (T indexDefinition, EntityNameDefinition ownerName)
     {
-      ArgumentUtility.CheckNotNull(nameof(indexDefinition), indexDefinition);
-      ArgumentUtility.CheckNotNull(nameof(ownerName), ownerName);
+      ArgumentNullException.ThrowIfNull(indexDefinition);
+      ArgumentNullException.ThrowIfNull(ownerName);
 
       return new ScriptStatement(
           string.Format(
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected virtual string GetCreateIndexOptions (IEnumerable<string> optionItems)
     {
-      ArgumentUtility.CheckNotNull(nameof(optionItems), optionItems);
+      ArgumentNullException.ThrowIfNull(optionItems);
 
       var filteredItems = optionItems.Except(new[] { string.Empty, null }).ToList();
       if (filteredItems.Any())
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected virtual IEnumerable<string> GetCreateIndexOptionItems (T indexDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(indexDefinition), indexDefinition);
+      ArgumentNullException.ThrowIfNull(indexDefinition);
 
       yield return GetIndexOption("PAD_INDEX", indexDefinition.PadIndex);
       yield return GetIndexOption("FILLFACTOR", indexDefinition.FillFactor);

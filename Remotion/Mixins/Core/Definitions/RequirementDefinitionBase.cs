@@ -36,8 +36,8 @@ namespace Remotion.Mixins.Definitions
 
     protected RequirementDefinitionBase (TargetClassDefinition targetClass, Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(targetClass), targetClass);
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(targetClass);
+      ArgumentNullException.ThrowIfNull(type);
 
       _targetClass = targetClass;
       _type = type;
@@ -85,7 +85,7 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       ConcreteAccept(visitor);
       _methods.Accept(visitor);
     }

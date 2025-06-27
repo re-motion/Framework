@@ -85,7 +85,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
         TimeSpan downloadStartedTimeout,
         TimeSpan downloadUpdatedTimeout)
     {
-      ArgumentUtility.CheckNotNull(nameof(downloadedFileFinder), downloadedFileFinder);
+      ArgumentNullException.ThrowIfNull(downloadedFileFinder);
 
       EnsureDownloadDirectoryExists(DownloadDirectory);
 
@@ -166,7 +166,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 
     private void CleanUpUnmatchedDownloadedFiles ([NotNull] IEnumerable<string> unmatchedFiles)
     {
-      ArgumentUtility.CheckNotNull(nameof(unmatchedFiles), unmatchedFiles);
+      ArgumentNullException.ThrowIfNull(unmatchedFiles);
 
       foreach (var file in unmatchedFiles)
       {

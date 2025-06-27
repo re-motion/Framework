@@ -29,8 +29,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
   {
     public static Principal Create (Tenant tenant, User user, IEnumerable<Role> roles)
     {
-      ArgumentUtility.CheckNotNull(nameof(tenant), tenant);
-      ArgumentUtility.CheckNotNull(nameof(roles), roles);
+      ArgumentNullException.ThrowIfNull(tenant);
+      ArgumentNullException.ThrowIfNull(roles);
 
       return new Principal(
           tenant.GetHandle(),

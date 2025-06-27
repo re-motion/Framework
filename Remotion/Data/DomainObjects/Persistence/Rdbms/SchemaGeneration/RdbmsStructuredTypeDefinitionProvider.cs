@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
     /// </remarks>
     public IReadOnlyCollection<IRdbmsStructuredTypeDefinition> GetTypeDefinitions (RdbmsProviderDefinition storageProviderDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
 
       var factory = storageProviderDefinition.Factory;
       var simpleStructuredTypeDefinitionRepository = factory.CreateSingleScalarStructuredTypeDefinitionProvider(storageProviderDefinition);

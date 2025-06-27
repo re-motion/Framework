@@ -54,7 +54,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
 
     public void AppendCommandBatchLine (string commandBatchLine)
     {
-      ArgumentUtility.CheckNotNull(nameof(commandBatchLine), commandBatchLine);
+      ArgumentNullException.ThrowIfNull(commandBatchLine);
 
       _content.AppendLine(commandBatchLine);
       _lineCount++;

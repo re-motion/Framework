@@ -44,7 +44,7 @@ namespace Remotion.Collections.Caching
 
     public TValue GetOrCreateValue (TKey key, Func<TKey,TValue> valueFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(valueFactory), valueFactory);
+      ArgumentNullException.ThrowIfNull(valueFactory);
       return valueFactory(key);
     }
 

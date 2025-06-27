@@ -40,8 +40,8 @@ public class UnitTestStorageObjectFactoryStub : IRdbmsStorageObjectFactory
 {
   public IStorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
   {
-    ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
-    ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
+    ArgumentNullException.ThrowIfNull(persistenceExtension);
+    ArgumentNullException.ThrowIfNull(storageProviderDefinition);
 
     var providerDefiniton = ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition>(
         nameof(storageProviderDefinition),
@@ -51,8 +51,8 @@ public class UnitTestStorageObjectFactoryStub : IRdbmsStorageObjectFactory
 
   public IReadOnlyStorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
   {
-    ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
-    ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
+    ArgumentNullException.ThrowIfNull(persistenceExtension);
+    ArgumentNullException.ThrowIfNull(storageProviderDefinition);
 
     var providerDefiniton = ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition>(
         nameof(storageProviderDefinition),
@@ -63,7 +63,7 @@ public class UnitTestStorageObjectFactoryStub : IRdbmsStorageObjectFactory
   public IPersistenceModelLoader CreatePersistenceModelLoader (
       StorageProviderDefinition storageProviderDefinition)
   {
-    ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
+    ArgumentNullException.ThrowIfNull(storageProviderDefinition);
 
     var typeConversionProvider = SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>();
     var dataContainerValidator = SafeServiceLocator.Current.GetInstance<IDataContainerValidator>();

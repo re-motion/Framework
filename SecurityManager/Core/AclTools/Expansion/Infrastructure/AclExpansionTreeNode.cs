@@ -25,7 +25,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
     public AclExpansionTreeNode (TParent parent, int numberLeafNodes, IList<TChildren> children)
     {
       // Note: null for parent is OK
-      ArgumentUtility.CheckNotNull(nameof(children), children);
+      ArgumentNullException.ThrowIfNull(children);
       Key = parent;
       Children = children;
       NumberLeafNodes = numberLeafNodes;

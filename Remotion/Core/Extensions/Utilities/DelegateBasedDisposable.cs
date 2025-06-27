@@ -27,7 +27,7 @@ namespace Remotion.Utilities
 
     public DelegateBasedDisposable (Action disposeAction)
     {
-      ArgumentUtility.CheckNotNull(nameof(disposeAction), disposeAction);
+      ArgumentNullException.ThrowIfNull(disposeAction);
       _disposeAction = disposeAction;
     }
 

@@ -62,7 +62,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static MixinConfigurationBuilder BuildFrom (MixinConfiguration parentConfiguration)
     {
-      ArgumentUtility.CheckNotNull(nameof(parentConfiguration), parentConfiguration);
+      ArgumentNullException.ThrowIfNull(parentConfiguration);
       return new MixinConfigurationBuilder(parentConfiguration);
     }
 

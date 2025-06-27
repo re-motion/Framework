@@ -47,8 +47,8 @@ public class RecordDefinition
   public RecordDefinition (string name, IRdbmsStructuredTypeDefinition structuredTypeDefinition, IReadOnlyCollection<RecordPropertyDefinition> propertyDefinitions)
   {
     ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
-    ArgumentUtility.CheckNotNull(nameof(structuredTypeDefinition), structuredTypeDefinition);
-    ArgumentUtility.CheckNotNull(nameof(propertyDefinitions), propertyDefinitions);
+    ArgumentNullException.ThrowIfNull(structuredTypeDefinition);
+    ArgumentNullException.ThrowIfNull(propertyDefinitions);
 
     if (!structuredTypeDefinition.Properties.SequenceEqual(propertyDefinitions.Select(p => p.StoragePropertyDefinition)))
     {
@@ -68,7 +68,7 @@ public class RecordDefinition
   /// <param name="item">The <see cref="object"/> from which to read the values.</param>
   public object[] GetColumnValues (object item)
   {
-    ArgumentUtility.CheckNotNull(nameof(item), item);
+    ArgumentNullException.ThrowIfNull(item);
 
     var columnValues = PropertyDefinitions.SelectMany(pd => pd.StoragePropertyDefinition.SplitValue(pd.GetValue(item)));
     var convertedValues = columnValues.Select(cv => cv.Column.StorageTypeInfo.ConvertToStorageType(cv.Value)).ToArray();

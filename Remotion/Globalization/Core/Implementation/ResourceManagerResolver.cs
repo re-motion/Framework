@@ -37,7 +37,7 @@ namespace Remotion.Globalization.Implementation
 
     public ResourceManagerResolver (IResourceManagerFactory resourceManagerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceManagerFactory), resourceManagerFactory);
+      ArgumentNullException.ThrowIfNull(resourceManagerFactory);
 
       _resourceManagerFactory = resourceManagerFactory;
 
@@ -47,7 +47,7 @@ namespace Remotion.Globalization.Implementation
 
     public ResolvedResourceManagerResult Resolve (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return GetResolvedResourceManagerFromCache(type);
     }

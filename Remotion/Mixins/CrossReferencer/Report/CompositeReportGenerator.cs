@@ -26,7 +26,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public CompositeReportGenerator (params IReportGenerator[] reportGenerators)
     {
-      ArgumentUtility.CheckNotNull(nameof(reportGenerators), reportGenerators);
+      ArgumentNullException.ThrowIfNull(reportGenerators);
       _reportGenerators = reportGenerators;
     }
 

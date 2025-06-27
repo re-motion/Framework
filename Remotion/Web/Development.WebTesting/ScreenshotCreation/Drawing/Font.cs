@@ -32,7 +32,7 @@ public class Font : IDisposable
 
   public Font (SKFont skiaFont)
   {
-    ArgumentUtility.CheckNotNull(nameof(skiaFont), skiaFont);
+    ArgumentNullException.ThrowIfNull(skiaFont);
 
     SkiaFont = skiaFont;
   }

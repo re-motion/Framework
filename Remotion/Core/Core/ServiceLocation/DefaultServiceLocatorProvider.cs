@@ -31,7 +31,7 @@ namespace Remotion.ServiceLocation
 
     public IServiceLocator GetServiceLocator (ReadOnlyCollection<ServiceConfigurationEntry> serviceConfigurationEntries)
     {
-      ArgumentUtility.CheckNotNull(nameof(serviceConfigurationEntries), serviceConfigurationEntries);
+      ArgumentNullException.ThrowIfNull(serviceConfigurationEntries);
 
       var defaultServiceLocator = DefaultServiceLocator.Create();
       foreach (var serviceConfigurationEntry in serviceConfigurationEntries)

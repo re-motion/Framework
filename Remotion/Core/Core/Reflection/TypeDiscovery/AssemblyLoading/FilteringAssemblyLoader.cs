@@ -43,7 +43,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
 
     public FilteringAssemblyLoader (IAssemblyLoaderFilter filter)
     {
-      ArgumentUtility.CheckNotNull(nameof(filter), filter);
+      ArgumentNullException.ThrowIfNull(filter);
       _filter = filter;
     }
 
@@ -54,7 +54,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
 
     public virtual Assembly? TryLoadAssembly (string filePath)
     {
-      ArgumentUtility.CheckNotNull(nameof(filePath), filePath);
+      ArgumentNullException.ThrowIfNull(filePath);
 
       s_logger.LogInformation("Attempting to get assembly name for path '{0}'.", filePath);
       AssemblyName? assemblyName = PerformGuardedLoadOperation(filePath, null, () => AssemblyNameCache.GetAssemblyName(filePath));
@@ -68,8 +68,8 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
 
     public virtual Assembly? TryLoadAssembly (AssemblyName assemblyName, string context)
     {
-      ArgumentUtility.CheckNotNull(nameof(assemblyName), assemblyName);
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(assemblyName);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (PerformGuardedLoadOperation(assemblyName.FullName, context, () => _filter.ShouldConsiderAssembly(assemblyName)))
       {
@@ -92,7 +92,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     public T PerformGuardedLoadOperation<T> (string assemblyDescription, string? loadContext, Func<T> loadOperation)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(assemblyDescription), assemblyDescription);
-      ArgumentUtility.CheckNotNull(nameof(loadOperation), loadOperation);
+      ArgumentNullException.ThrowIfNull(loadOperation);
 
       var assemblyDescriptionText = "'" + assemblyDescription + "'";
       if (loadContext != null)

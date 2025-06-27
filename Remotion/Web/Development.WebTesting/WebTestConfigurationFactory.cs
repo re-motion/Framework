@@ -144,7 +144,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="configSettings">Receives app.config settings when called in <see cref="CreateBrowserConfiguration"/></param>
     protected virtual IBrowserConfiguration CreateCustomBrowserConfiguration ([NotNull] IWebTestSettings configSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(configSettings), configSettings);
+      ArgumentNullException.ThrowIfNull(configSettings);
 
       throw new NotSupportedException(string.Format("Browser '{0}' is not supported by the '{1}'.", configSettings.BrowserName, GetType().Name));
     }
@@ -159,7 +159,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     protected virtual IChromeConfiguration CreateChromeConfiguration ([NotNull] IWebTestSettings configSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(configSettings), configSettings);
+      ArgumentNullException.ThrowIfNull(configSettings);
 
       return new ChromeConfiguration(configSettings);
     }
@@ -174,14 +174,14 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     protected virtual IEdgeConfiguration CreateEdgeConfiguration ([NotNull] IWebTestSettings configSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(configSettings), configSettings);
+      ArgumentNullException.ThrowIfNull(configSettings);
 
       return new EdgeConfiguration(configSettings);
     }
 
     protected virtual IFirefoxConfiguration CreateFirefoxConfiguration (IWebTestSettings configSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(configSettings), configSettings);
+      ArgumentNullException.ThrowIfNull(configSettings);
 
       return new FirefoxConfiguration(configSettings);
     }
@@ -195,7 +195,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     protected virtual IHostingConfiguration CreateHostingConfiguration ([NotNull] IWebTestSettings configSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(configSettings), configSettings);
+      ArgumentNullException.ThrowIfNull(configSettings);
 
       var testSiteLayoutConfiguration = CreateTestSiteLayoutConfiguration();
 

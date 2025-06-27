@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     public CollectionChangeState (object sender, DomainObject domainObject, string message)
       : base(sender, message)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
 
       _domainObject = domainObject;
     }

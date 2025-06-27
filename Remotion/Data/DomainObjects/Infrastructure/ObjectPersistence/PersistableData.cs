@@ -38,9 +38,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         DataContainer dataContainer,
         IEnumerable<IRelationEndPoint> associatedEndPointSequence)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
-      ArgumentUtility.CheckNotNull(nameof(dataContainer), dataContainer);
-      ArgumentUtility.CheckNotNull(nameof(associatedEndPointSequence), associatedEndPointSequence);
+      ArgumentNullException.ThrowIfNull(domainObject);
+      ArgumentNullException.ThrowIfNull(dataContainer);
+      ArgumentNullException.ThrowIfNull(associatedEndPointSequence);
 
       _domainObject = domainObject;
       _domainObjectState = domainObjectState;

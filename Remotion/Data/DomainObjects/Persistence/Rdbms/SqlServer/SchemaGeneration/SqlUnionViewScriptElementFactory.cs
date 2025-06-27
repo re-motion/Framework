@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     protected override string GetSelectStatements (UnionViewDefinition unionViewDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(unionViewDefinition), unionViewDefinition);
+      ArgumentNullException.ThrowIfNull(unionViewDefinition);
 
       var createSelectStringBuilder = new StringBuilder();
 
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected override bool UseCheckOption (UnionViewDefinition unionViewDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(unionViewDefinition), unionViewDefinition);
+      ArgumentNullException.ThrowIfNull(unionViewDefinition);
 
       return unionViewDefinition.GetAllTables().Count() == 1;
     }

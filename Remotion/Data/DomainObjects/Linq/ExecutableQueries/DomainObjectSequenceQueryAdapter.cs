@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
 
     public override IEnumerable<TItem> Execute (IQueryManager queryManager)
     {
-      ArgumentUtility.CheckNotNull(nameof(queryManager), queryManager);
+      ArgumentNullException.ThrowIfNull(queryManager);
 
       return queryManager.GetCollection(this).AsEnumerable().Cast<TItem>();
     }

@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
 
     public override bool IsIdentityTypeSupported (Type identityType)
     {
-      ArgumentUtility.CheckNotNull(nameof(identityType), identityType);
+      ArgumentNullException.ThrowIfNull(identityType);
 
       return (identityType == typeof(Guid));
     }

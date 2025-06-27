@@ -51,8 +51,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
             indexes,
             synonyms)
     {
-      ArgumentUtility.CheckNotNull(nameof(tableName), tableName);
-      ArgumentUtility.CheckNotNull(nameof(constraints), constraints);
+      ArgumentNullException.ThrowIfNull(tableName);
+      ArgumentNullException.ThrowIfNull(constraints);
 
       _tableName = tableName;
       _constraints = constraints.ToList().AsReadOnly();
@@ -70,14 +70,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public override void Accept (IRdbmsStorageEntityDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
 
       visitor.VisitTableDefinition(this);
     }
 
     public ColumnDefinition?[] CalculateAdjustedColumnList (IEnumerable<ColumnDefinition?> fullColumnList)
     {
-      ArgumentUtility.CheckNotNull(nameof(fullColumnList), fullColumnList);
+      ArgumentNullException.ThrowIfNull(fullColumnList);
 
       var availableColumnsAsDictionary = GetAllColumns().ToDictionary(c => c);
 

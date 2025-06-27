@@ -48,7 +48,7 @@ namespace Remotion.Web.ExecutionEngine
     public WxeFunctionState (
         WxeFunction function, int lifetime, bool enableCleanUp)
     {
-      ArgumentUtility.CheckNotNull(nameof(function), function);
+      ArgumentNullException.ThrowIfNull(function);
       _lifetime = lifetime;
       _functionToken = Guid.NewGuid().ToString();
       _function = function;

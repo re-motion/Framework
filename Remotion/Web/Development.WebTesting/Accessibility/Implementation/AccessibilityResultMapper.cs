@@ -65,7 +65,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
     /// <inheritdoc />
     public AccessibilityResult Map (AxeResult axeResult)
     {
-      ArgumentUtility.CheckNotNull(nameof(axeResult), axeResult);
+      ArgumentNullException.ThrowIfNull(axeResult);
 
       return new AccessibilityResult(
           axeVersion: axeResult.TestEngine.Version,

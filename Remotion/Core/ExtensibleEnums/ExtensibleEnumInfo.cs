@@ -39,8 +39,8 @@ namespace Remotion.ExtensibleEnums
     /// <param name="positionalKey">The positional key of the value.</param>
     public ExtensibleEnumInfo (T value, MethodInfo declaringMethod, double positionalKey)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
-      ArgumentUtility.CheckNotNull(nameof(declaringMethod), declaringMethod);
+      ArgumentNullException.ThrowIfNull(value);
+      ArgumentNullException.ThrowIfNull(declaringMethod);
 
       Value = value;
       DefiningMethod = declaringMethod;

@@ -44,14 +44,14 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     public override sealed bool SupportsProperty (IBusinessObjectReferenceProperty property)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(property);
 
       return typeof(TReferencedObject).IsAssignableFrom(property.PropertyType);
     }
 
     protected override sealed QueryFactory GetQueryFactory (IBusinessObjectReferenceProperty property)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(property);
 
       if (!SupportsProperty(property))
       {

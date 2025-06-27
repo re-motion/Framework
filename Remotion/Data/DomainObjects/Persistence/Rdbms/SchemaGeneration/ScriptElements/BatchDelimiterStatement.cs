@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptE
 
     public void AppendToScript (List<ScriptStatement> script)
     {
-      ArgumentUtility.CheckNotNull(nameof(script), script);
+      ArgumentNullException.ThrowIfNull(script);
 
       var lastStatement = script.LastOrDefault();
       if (lastStatement != null && lastStatement.Statement != _delimiter)

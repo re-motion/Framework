@@ -34,7 +34,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
     public CachingAssemblyFinderDecorator (IAssemblyFinder innerFinder)
     {
-      ArgumentUtility.CheckNotNull(nameof(innerFinder), innerFinder);
+      ArgumentNullException.ThrowIfNull(innerFinder);
 
       _innerFinder = innerFinder;
       _resultCache = new Lazy<IReadOnlyCollection<Assembly>>(

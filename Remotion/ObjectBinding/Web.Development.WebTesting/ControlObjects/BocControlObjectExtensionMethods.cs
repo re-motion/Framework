@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   {
     public static string GetLabelsText ([NotNull] this BocControlObject bocControlObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(bocControlObject), bocControlObject);
+      ArgumentNullException.ThrowIfNull(bocControlObject);
 
       return string.Join(" ", bocControlObject.GetLabels().Select(x => x.GetText()));
     }

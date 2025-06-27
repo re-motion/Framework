@@ -75,8 +75,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
         [NotNull] EdgeExecutable edgeExecutable)
         : base(webTestSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(webTestSettings), webTestSettings);
-      ArgumentUtility.CheckNotNull(nameof(edgeExecutable), edgeExecutable);
+      ArgumentNullException.ThrowIfNull(webTestSettings);
+      ArgumentNullException.ThrowIfNull(edgeExecutable);
 
       BrowserBinaryPath = edgeExecutable.BrowserBinaryPath;
       DriverBinaryPath = edgeExecutable.DriverBinaryPath;

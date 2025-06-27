@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects
   {
     public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
-      ArgumentUtility.CheckNotNull(nameof(sourceType), sourceType);
+      ArgumentNullException.ThrowIfNull(sourceType);
       return sourceType == typeof(string);
     }
 

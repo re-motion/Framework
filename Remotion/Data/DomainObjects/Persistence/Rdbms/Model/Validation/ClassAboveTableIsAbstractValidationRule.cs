@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
 
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       if (!classDefinition.IsClassTypeResolved)
       {

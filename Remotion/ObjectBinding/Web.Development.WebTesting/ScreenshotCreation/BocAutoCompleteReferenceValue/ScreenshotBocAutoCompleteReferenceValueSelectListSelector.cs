@@ -51,7 +51,7 @@ return true;";
     public ScreenshotBocAutoCompleteReferenceValueSelectListSelector (
         [NotNull] IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentAutoComplete)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentAutoComplete), fluentAutoComplete);
+      ArgumentNullException.ThrowIfNull(fluentAutoComplete);
 
       _fluentAutoComplete = fluentAutoComplete;
     }
@@ -59,7 +59,7 @@ return true;";
     /// <inheritdoc />
     public void WithDisplayText (string displayText)
     {
-      ArgumentUtility.CheckNotNull(nameof(displayText), displayText);
+      ArgumentNullException.ThrowIfNull(displayText);
 
       var executor = JavaScriptExecutor.GetJavaScriptExecutor(_fluentAutoComplete.Target.AutoComplete);
       var ok = JavaScriptExecutor.ExecuteStatement<bool>(executor, c_selectWithDisplayText, GetInputField(_fluentAutoComplete), displayText);

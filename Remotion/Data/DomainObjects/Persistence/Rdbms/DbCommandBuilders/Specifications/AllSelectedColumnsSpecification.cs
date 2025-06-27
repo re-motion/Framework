@@ -36,15 +36,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public void AppendProjection (StringBuilder stringBuilder, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull(nameof(stringBuilder), stringBuilder);
-      ArgumentUtility.CheckNotNull(nameof(sqlDialect), sqlDialect);
+      ArgumentNullException.ThrowIfNull(stringBuilder);
+      ArgumentNullException.ThrowIfNull(sqlDialect);
 
       stringBuilder.Append("*");
     }
 
     public ISelectedColumnsSpecification Union (IEnumerable<ColumnDefinition> additionalColumns)
     {
-      ArgumentUtility.CheckNotNull(nameof(additionalColumns), additionalColumns);
+      ArgumentNullException.ThrowIfNull(additionalColumns);
 
       return this;
     }

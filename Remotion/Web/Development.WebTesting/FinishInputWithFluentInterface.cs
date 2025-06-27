@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Finish promptly after entering the text.
     /// </summary>
-    public static readonly FinishInputWithAction Promptly = scope => { ArgumentUtility.CheckNotNull(nameof(scope), scope); };
+    public static readonly FinishInputWithAction Promptly = scope => { ArgumentNullException.ThrowIfNull(scope); };
 
     /// <summary>
     /// Finish entering the text by switching focus using the Tab key. Triggers the ASP.NET postback.

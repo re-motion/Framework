@@ -49,7 +49,7 @@ public class ObjectDeletedException : DomainObjectException
 
   public ObjectDeletedException (string message, ObjectID id) : base(message)
   {
-    ArgumentUtility.CheckNotNull(nameof(id), id);
+    ArgumentNullException.ThrowIfNull(id);
 
     _id = id;
   }

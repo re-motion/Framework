@@ -40,7 +40,7 @@ namespace Remotion.Reflection
     /// </remarks>
     public static MethodInfo ResolveMethod (Type declaringType, string name, string signature)
     {
-      ArgumentUtility.CheckNotNull(nameof(declaringType), declaringType);
+      ArgumentNullException.ThrowIfNull(declaringType);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(signature), signature);
 

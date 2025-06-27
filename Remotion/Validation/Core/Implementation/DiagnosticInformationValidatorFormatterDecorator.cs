@@ -34,7 +34,7 @@ namespace Remotion.Validation.Implementation
 
     public DiagnosticInformationValidatorFormatterDecorator (IValidatorFormatter fallBackValidatorFormatter)
     {
-      ArgumentUtility.CheckNotNull(nameof(fallBackValidatorFormatter), fallBackValidatorFormatter);
+      ArgumentNullException.ThrowIfNull(fallBackValidatorFormatter);
 
       _fallBackValidatorFormatter = fallBackValidatorFormatter;
     }
@@ -46,8 +46,8 @@ namespace Remotion.Validation.Implementation
 
     public string Format (IPropertyValidator validator, Func<Type, string> typeNameFormatter)
     {
-      ArgumentUtility.CheckNotNull(nameof(validator), validator);
-      ArgumentUtility.CheckNotNull(nameof(typeNameFormatter), typeNameFormatter);
+      ArgumentNullException.ThrowIfNull(validator);
+      ArgumentNullException.ThrowIfNull(typeNameFormatter);
 
       var validatorType = validator.GetType();
       var typeName = typeNameFormatter(validatorType);

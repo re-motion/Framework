@@ -36,9 +36,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
         ClientTransaction rootTransaction,
         IEnlistedDomainObjectManager enlistedDomainObjectManager)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
-      ArgumentUtility.CheckNotNull(nameof(rootTransaction), rootTransaction);
-      ArgumentUtility.CheckNotNull(nameof(enlistedDomainObjectManager), enlistedDomainObjectManager);
+      ArgumentNullException.ThrowIfNull(objectID);
+      ArgumentNullException.ThrowIfNull(rootTransaction);
+      ArgumentNullException.ThrowIfNull(enlistedDomainObjectManager);
 
       if (rootTransaction != rootTransaction.RootTransaction)
         throw new ArgumentException("The rootTransaction parameter must be passed a root transaction.", nameof(rootTransaction));
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
 
     public virtual void RegisterObject (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
 
       if (domainObject.ID != _objectID)
         throw new ArgumentException(string.Format("The given DomainObject must have ID '{0}'.", _objectID), nameof(domainObject));

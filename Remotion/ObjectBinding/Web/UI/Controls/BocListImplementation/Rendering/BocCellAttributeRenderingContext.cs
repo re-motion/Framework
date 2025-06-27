@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 
+using System;
 using System.Web;
 using System.Web.UI;
 using Remotion.ObjectBinding.Web.Services;
@@ -35,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public BocCellAttributeRenderingContext (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       _renderingContext = renderingContext;
     }

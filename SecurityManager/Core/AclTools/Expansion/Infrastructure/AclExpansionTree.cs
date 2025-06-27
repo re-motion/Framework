@@ -75,7 +75,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>>>
       CreateAclExpansionTree (List<AclExpansionEntry> aclExpansion)
     {
-      ArgumentUtility.CheckNotNull(nameof(aclExpansion), aclExpansion);
+      ArgumentNullException.ThrowIfNull(aclExpansion);
 
       var aclExpansionTree = (aclExpansion.OrderBy(entry => entry.User.DisplayName).GroupBy(entry => entry.User).Select(
           grouping => AclExpansionTreeNode.New(grouping.Key, CountRowsBelow(grouping), RoleGrouping(grouping).ToList()))).ToList();

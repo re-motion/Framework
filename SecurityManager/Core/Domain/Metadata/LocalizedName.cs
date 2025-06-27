@@ -34,8 +34,8 @@ namespace Remotion.SecurityManager.Domain.Metadata
     protected LocalizedName (string text, Culture culture, MetadataObject metadataObject)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(text), text);
-      ArgumentUtility.CheckNotNull(nameof(culture), culture);
-      ArgumentUtility.CheckNotNull(nameof(metadataObject), metadataObject);
+      ArgumentNullException.ThrowIfNull(culture);
+      ArgumentNullException.ThrowIfNull(metadataObject);
 
       Text = text;
       Culture = culture;

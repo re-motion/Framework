@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
   {
     public static void Visit (IRdbmsStructuredTypeDefinition typeDefinition, Action<TableTypeDefinition, Action<IRdbmsStructuredTypeDefinition>> tableTypeDefinitionHandler)
     {
-      ArgumentUtility.CheckNotNull(nameof(typeDefinition), typeDefinition);
+      ArgumentNullException.ThrowIfNull(typeDefinition);
 
       var visitor = new RdbmsStructuredTypeDefinitionVisitor(tableTypeDefinitionHandler);
 
@@ -41,14 +41,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
       public RdbmsStructuredTypeDefinitionVisitor (Action<TableTypeDefinition, Action<IRdbmsStructuredTypeDefinition>> tableTypeDefinitionHandler)
       {
-        ArgumentUtility.CheckNotNull(nameof(tableTypeDefinitionHandler), tableTypeDefinitionHandler);
+        ArgumentNullException.ThrowIfNull(tableTypeDefinitionHandler);
 
         _tableTypeDefinitionHandler = tableTypeDefinitionHandler;
       }
 
       public void VisitTableTypeDefinition (TableTypeDefinition tableTypeDefinition)
       {
-        ArgumentUtility.CheckNotNull(nameof(tableTypeDefinition), tableTypeDefinition);
+        ArgumentNullException.ThrowIfNull(tableTypeDefinition);
 
         _tableTypeDefinitionHandler(tableTypeDefinition, ContinueWithNextType);
       }

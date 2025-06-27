@@ -39,7 +39,7 @@ namespace Remotion.Reflection
     /// </returns>
     public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
-      ArgumentUtility.CheckNotNull(nameof(sourceType), sourceType);
+      ArgumentNullException.ThrowIfNull(sourceType);
       return sourceType == typeof(Type);
     }
 
@@ -109,7 +109,7 @@ namespace Remotion.Reflection
     [return: NotNullIfNotNull("value")]
     public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull(nameof(destinationType), destinationType);
+      ArgumentNullException.ThrowIfNull(destinationType);
 
       if (destinationType != typeof(Type))
       {

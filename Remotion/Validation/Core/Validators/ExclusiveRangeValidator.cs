@@ -42,9 +42,9 @@ namespace Remotion.Validation.Validators
         [NotNull] ValidationMessage validationMessage,
         [CanBeNull] IComparer? comparer = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(from), from);
-      ArgumentUtility.CheckNotNull(nameof(to), to);
-      ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
+      ArgumentNullException.ThrowIfNull(from);
+      ArgumentNullException.ThrowIfNull(to);
+      ArgumentNullException.ThrowIfNull(validationMessage);
 
       if (from.GetType() != to.GetType())
         throw new ArgumentException("'from' must have the same type as 'to'.", nameof(to));
@@ -61,7 +61,7 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (IsValid(context))
         return Enumerable.Empty<ValidationFailure>();

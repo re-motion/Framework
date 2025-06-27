@@ -36,8 +36,8 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public CustomAttributeExpression (TypeReference attributeOwner, Type attributeType, int index, bool inherited)
     {
-      ArgumentUtility.CheckNotNull(nameof(attributeOwner), attributeOwner);
-      ArgumentUtility.CheckNotNull(nameof(attributeType), attributeType);
+      ArgumentNullException.ThrowIfNull(attributeOwner);
+      ArgumentNullException.ThrowIfNull(attributeType);
 
       ArgumentUtility.CheckTypeIsAssignableFrom("attributeOwner.Type", attributeOwner.Type, typeof(ICustomAttributeProvider));
 

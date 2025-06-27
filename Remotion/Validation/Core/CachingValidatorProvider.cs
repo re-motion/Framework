@@ -37,7 +37,7 @@ namespace Remotion.Validation
 
     public IValidator GetValidator (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       var cachedResult = _cache.GetOrAdd(
           type,

@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     protected OrganizationalStructureObjectProxy (IDomainObjectHandle<T> handle, string uniqueIdentifier, string displayName)
     {
-      ArgumentUtility.CheckNotNull(nameof(handle), handle);
+      ArgumentNullException.ThrowIfNull(handle);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(uniqueIdentifier), uniqueIdentifier);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(displayName), displayName);
 

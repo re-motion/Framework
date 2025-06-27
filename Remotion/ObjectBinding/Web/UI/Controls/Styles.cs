@@ -497,8 +497,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public void RegisterJavaScriptInclude (IResourceUrlFactory resourceUrlFactory, HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceUrlFactory), resourceUrlFactory);
-      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(resourceUrlFactory);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       htmlHeadAppender.RegisterObjectBindingWebClientScriptInclude();
     }

@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <param name="transportedObjects">The transported objects.</param>
     public TransportedDomainObjects (ClientTransaction dataTransaction, List<DomainObject> transportedObjects)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataTransaction), dataTransaction);
+      ArgumentNullException.ThrowIfNull(dataTransaction);
 
       _dataTransaction = dataTransaction;
       _transportedObjects = transportedObjects.AsReadOnly();
@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// cannot be used any longer after calling this method.</remarks>
     public void FinishTransport (Func<DomainObject, bool> filter)
     {
-      ArgumentUtility.CheckNotNull(nameof(filter), filter);
+      ArgumentNullException.ThrowIfNull(filter);
 
       if (DataTransaction == null)
         throw new InvalidOperationException("FinishTransport can only be called once.");

@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public IndexScriptBuilder (IIndexScriptElementFactory indexScriptElementFactory, ICommentScriptElementFactory commentFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(indexScriptElementFactory), indexScriptElementFactory);
-      ArgumentUtility.CheckNotNull(nameof(commentFactory), commentFactory);
+      ArgumentNullException.ThrowIfNull(indexScriptElementFactory);
+      ArgumentNullException.ThrowIfNull(commentFactory);
 
       _indexScriptElementFactory = indexScriptElementFactory;
       _createScriptElements = new ScriptElementCollection();
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public void AddEntityDefinition (IRdbmsStorageEntityDefinition entityDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(entityDefinition), entityDefinition);
+      ArgumentNullException.ThrowIfNull(entityDefinition);
 
       InlineRdbmsStorageEntityDefinitionVisitor.Visit(
           entityDefinition,

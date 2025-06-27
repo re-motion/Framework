@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validatio
     /// </remarks>
     public void HandleValidationFailures (ValidationFailureHandlingContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var hasRowsWithUnhandledValidationFailures = context.ValidationFailureRepository.GetUnhandledValidationFailuresForDataRowsAndContainingDataCells(true).Any();
       if (!hasRowsWithUnhandledValidationFailures)

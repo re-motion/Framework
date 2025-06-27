@@ -41,10 +41,10 @@ namespace Remotion.Validation.Implementation
         IEnumerable<IPropertyMetaValidationRuleCollector> addedPropertyMetaValidationRules,
         IEnumerable<IRemovingPropertyValidationRuleCollector> removedPropertyRules)
     {
-      ArgumentUtility.CheckNotNull(nameof(validatedType), validatedType);
-      ArgumentUtility.CheckNotNull(nameof(addedPropertyRules), addedPropertyRules);
-      ArgumentUtility.CheckNotNull(nameof(addedPropertyMetaValidationRules), addedPropertyMetaValidationRules);
-      ArgumentUtility.CheckNotNull(nameof(removedPropertyRules), removedPropertyRules);
+      ArgumentNullException.ThrowIfNull(validatedType);
+      ArgumentNullException.ThrowIfNull(addedPropertyRules);
+      ArgumentNullException.ThrowIfNull(addedPropertyMetaValidationRules);
+      ArgumentNullException.ThrowIfNull(removedPropertyRules);
 
       _validatedType = validatedType;
       _addedPropertyRules = addedPropertyRules.ToList().AsReadOnly();

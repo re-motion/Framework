@@ -72,8 +72,8 @@ public class WxeMethodStep: WxeStep
   /// <include file='../Doc/include/ExecutionEngine/WxeMethodStep.xml' path='WxeMethodStep/Ctor/*' />
   public WxeMethodStep (WxeStepList target, MethodInfo method)
   {
-    ArgumentUtility.CheckNotNull(nameof(target), target);
-    ArgumentUtility.CheckNotNull(nameof(method), method);
+    ArgumentNullException.ThrowIfNull(target);
+    ArgumentNullException.ThrowIfNull(method);
 
     Type targetType = target.GetType();
     Type declaringType = method.DeclaringType!; // TODO RM-8118: not null assertion

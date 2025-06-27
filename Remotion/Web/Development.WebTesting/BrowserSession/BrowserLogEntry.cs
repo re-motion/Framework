@@ -59,13 +59,13 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     public BrowserLogEntry ([NotNull] Entry logEntry)
         : this(GetLogLevel(logEntry.Level), logEntry.Text, logEntry.Timestamp.DateTime)
     {
-      ArgumentUtility.CheckNotNull(nameof(logEntry), logEntry);
+      ArgumentNullException.ThrowIfNull(logEntry);
     }
 
     public BrowserLogEntry ([NotNull] LogEntry logEntry)
         : this(logEntry.Level, logEntry.Message, logEntry.Timestamp)
     {
-      ArgumentUtility.CheckNotNull(nameof(logEntry), logEntry);
+      ArgumentNullException.ThrowIfNull(logEntry);
     }
 
     public BrowserLogEntry (LogLevel level, [NotNull] string message, DateTime timestamp)

@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
         [NotNull] ITextContentControlSelector<TControlObject> controlSelector,
         [NotNull] string textContent)
     {
-      ArgumentUtility.CheckNotNull(nameof(textContent), textContent);
+      ArgumentNullException.ThrowIfNull(textContent);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(textContent), textContent);
 
       _controlSelector = controlSelector;
@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject Select (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return _controlSelector.SelectPerTextContent(context, _textContent);
     }
@@ -56,7 +56,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject? SelectOptional (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return _controlSelector.SelectOptionalPerTextContent(context, _textContent);
     }
@@ -64,7 +64,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public bool Exists (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return _controlSelector.ExistsPerTextContent(context, _textContent);
     }

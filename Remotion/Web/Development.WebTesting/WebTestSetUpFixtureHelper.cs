@@ -69,7 +69,7 @@ namespace Remotion.Web.Development.WebTesting
     [PublicAPI]
     protected WebTestSetUpFixtureHelper ([NotNull] WebTestConfigurationFactory webTestConfigurationFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(webTestConfigurationFactory), webTestConfigurationFactory);
+      ArgumentNullException.ThrowIfNull(webTestConfigurationFactory);
 
       _loggerFactory = webTestConfigurationFactory.LoggerFactory;
       _logger = _loggerFactory.CreateLogger<WebTestSetUpFixtureHelper>();

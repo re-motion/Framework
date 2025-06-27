@@ -62,7 +62,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_mixinType))]
     public void AddMixinType (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
+      ArgumentNullException.ThrowIfNull(mixinType);
 
       _mixinType = mixinType;
     }
@@ -82,7 +82,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_explicitDependencies))]
     public void AddExplicitDependencies (IEnumerable<Type> explicitDependencies)
     {
-      ArgumentUtility.CheckNotNull(nameof(explicitDependencies), explicitDependencies);
+      ArgumentNullException.ThrowIfNull(explicitDependencies);
 
       _explicitDependencies = explicitDependencies;
     }
@@ -90,7 +90,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_origin))]
     public void AddOrigin (MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull(nameof(origin), origin);
+      ArgumentNullException.ThrowIfNull(origin);
 
       _origin = origin;
     }

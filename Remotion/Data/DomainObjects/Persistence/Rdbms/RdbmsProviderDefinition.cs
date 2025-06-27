@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
     public override bool IsIdentityTypeSupported (Type identityType)
     {
-      ArgumentUtility.CheckNotNull(nameof(identityType), identityType);
+      ArgumentNullException.ThrowIfNull(identityType);
 
       return (identityType == typeof(Guid));
     }

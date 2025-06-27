@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Queries
     public IQuery GetQuery<T> (string id, Func<IQueryable<T>, IQueryable> queryGenerator) where T : DomainObject
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
-      ArgumentUtility.CheckNotNull(nameof(queryGenerator), queryGenerator);
+      ArgumentNullException.ThrowIfNull(queryGenerator);
 
       // C# compiler 7.2 does not provide caching for delegate but during query execution there is already a significant amount of GC pressure so the delegate creation does not matter
       return _cache.GetOrAdd(id, delegate
@@ -90,9 +90,9 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </remarks>
     public QueryResult<T> ExecuteCollectionQuery<T> (ClientTransaction transaction, string id, Func<IQueryable<T>, IQueryable> queryGenerator) where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
+      ArgumentNullException.ThrowIfNull(transaction);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
-      ArgumentUtility.CheckNotNull(nameof(queryGenerator), queryGenerator);
+      ArgumentNullException.ThrowIfNull(queryGenerator);
 
       IQuery query = GetQuery(id, queryGenerator);
       return transaction.QueryManager.GetCollection<T>(query);

@@ -32,7 +32,7 @@ namespace Remotion.Validation.MetaValidation
 
     protected SystemPropertyMetaValidationRuleBase (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
 
       _propertyInfo = propertyInfo;
     }

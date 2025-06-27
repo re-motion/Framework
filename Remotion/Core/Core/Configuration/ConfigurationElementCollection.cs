@@ -56,14 +56,14 @@ namespace Remotion.Configuration
 
     public void Add (TElement element)
     {
-      ArgumentUtility.CheckNotNull(nameof(element), element);
+      ArgumentNullException.ThrowIfNull(element);
 
       BaseAdd(element);
     }
 
     public void Remove (TElement element)
     {
-      ArgumentUtility.CheckNotNull(nameof(element), element);
+      ArgumentNullException.ThrowIfNull(element);
 
       if (BaseIndexOf(element) >= 0)
         BaseRemove(element.Name);

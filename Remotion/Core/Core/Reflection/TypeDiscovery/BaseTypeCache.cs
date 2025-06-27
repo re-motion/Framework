@@ -34,7 +34,7 @@ namespace Remotion.Reflection.TypeDiscovery
 
     public static BaseTypeCache Create (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull(nameof(types), types);
+      ArgumentNullException.ThrowIfNull(types);
 
       s_logger.LogDebug("Beginning to build BaseTypeCache...");
       using (StopwatchScope.CreateScope(s_logger, LogLevel.Debug, string.Format("Built BaseTypeCache. Time taken: {{elapsed}}")))
@@ -128,7 +128,7 @@ namespace Remotion.Reflection.TypeDiscovery
 
     public ICollection GetTypes (Type baseType)
     {
-      ArgumentUtility.CheckNotNull(nameof(baseType), baseType);
+      ArgumentNullException.ThrowIfNull(baseType);
 
       if (baseType == typeof(object))
         return _classCache.Concat(_interfaceCache).Select(g => g.Key).ToArray();

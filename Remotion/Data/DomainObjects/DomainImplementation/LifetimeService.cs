@@ -56,9 +56,9 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </exception>
     public static DomainObject NewObject (ClientTransaction clientTransaction, Type domainObjectType, ParamList constructorParameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(domainObjectType), domainObjectType);
-      ArgumentUtility.CheckNotNull(nameof(constructorParameters), constructorParameters);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(domainObjectType);
+      ArgumentNullException.ThrowIfNull(constructorParameters);
 
       return clientTransaction.NewObject(domainObjectType, constructorParameters);
     }
@@ -90,8 +90,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// <see langword="false" />.</exception>
     public static DomainObject GetObject (ClientTransaction clientTransaction, ObjectID objectID, bool includeDeleted)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       return clientTransaction.GetObject(objectID, includeDeleted);
     }
@@ -114,8 +114,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </exception>
     public static DomainObject? TryGetObject (ClientTransaction clientTransaction, ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       return clientTransaction.TryGetObject(objectID);
     }
@@ -143,8 +143,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// <paramref name="clientTransaction"/>.</exception>
     public static DomainObject GetObjectReference (ClientTransaction clientTransaction, ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       return clientTransaction.GetObjectReference(objectID);
     }
@@ -170,8 +170,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     public static T[] GetObjects<T> (ClientTransaction clientTransaction, params ObjectID[] objectIDs)
         where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(objectIDs);
 
       return GetObjects<T>(clientTransaction, (IEnumerable<ObjectID>)objectIDs);
     }
@@ -197,8 +197,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     public static T[] GetObjects<T> (ClientTransaction clientTransaction, IEnumerable<ObjectID> objectIDs)
         where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(objectIDs);
 
       return clientTransaction.GetObjects<T>(objectIDs);
     }
@@ -219,8 +219,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     public static T?[] TryGetObjects<T> (ClientTransaction clientTransaction, params ObjectID[] objectIDs)
         where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(objectIDs);
 
       return clientTransaction.TryGetObjects<T>(objectIDs);
     }
@@ -241,8 +241,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     public static T?[] TryGetObjects<T> (ClientTransaction clientTransaction, IEnumerable<ObjectID> objectIDs)
         where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(objectIDs);
 
       return clientTransaction.TryGetObjects<T>(objectIDs);
     }
@@ -257,8 +257,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// <remarks>See also <see cref="DomainObject.Delete"/>.</remarks>
     public static void DeleteObject (ClientTransaction clientTransaction, DomainObject objectToBeDeleted)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(objectToBeDeleted), objectToBeDeleted);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(objectToBeDeleted);
 
       clientTransaction.Delete(objectToBeDeleted);
     }

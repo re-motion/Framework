@@ -31,7 +31,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     [LinqPropertyRedirection(typeof(StatePropertyDefinition), "DefinedStatesInternal")]
     public static ObjectList<StateDefinition> GetDefinedStatesForQuery (this StatePropertyDefinition statePropertyDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(statePropertyDefinition), statePropertyDefinition);
+      ArgumentNullException.ThrowIfNull(statePropertyDefinition);
 
       return new ObjectList<StateDefinition>(statePropertyDefinition.DefinedStates);
     }
@@ -56,7 +56,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public static IQueryable<SecurableClassDefinition> FetchDetails (this IQueryable<SecurableClassDefinition> query)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
 
       return query.FetchAccessTypes()
                   .FetchStateProperties()
@@ -66,14 +66,14 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     private static IQueryable<SecurableClassDefinition> FetchAccessTypes (this IQueryable<SecurableClassDefinition> query)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
 
       return query.FetchMany(@class => @class.GetAccessTypeReferencesForQuery()).ThenFetchOne(r => r.AccessType);
     }
 
     private static IQueryable<SecurableClassDefinition> FetchStateProperties (this IQueryable<SecurableClassDefinition> query)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
 
       return query.FetchMany(@class => @class.GetStatePropertyReferencesForQuery())
                   .ThenFetchOne(r => r.StateProperty)
@@ -82,7 +82,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     private static IQueryable<SecurableClassDefinition> FetchStatelessAccessControlList (this IQueryable<SecurableClassDefinition> query)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
 
       return query.FetchOne(cd => cd.StatelessAccessControlList)
                   .ThenFetchMany(acl => acl!.AccessControlEntries)
@@ -91,7 +91,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     private static IQueryable<SecurableClassDefinition> FetchStatefulAcessControlLists (this IQueryable<SecurableClassDefinition> query)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
 
       return query.FetchMany(cd => cd.StatefulAccessControlLists)
                   .ThenFetchMany(acl => acl.AccessControlEntries)

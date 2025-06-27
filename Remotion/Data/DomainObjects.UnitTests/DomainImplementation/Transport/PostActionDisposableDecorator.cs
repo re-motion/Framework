@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 
     public PostActionDisposableDecorator (IDisposable inner, Action postDisposeAction)
     {
-      ArgumentUtility.CheckNotNull(nameof(inner), inner);
+      ArgumentNullException.ThrowIfNull(inner);
 
       _inner = inner;
       _postDisposeAction = postDisposeAction;

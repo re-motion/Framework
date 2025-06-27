@@ -34,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
         : base(control, scope, logger)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(action), action);
+      ArgumentNullException.ThrowIfNull(action);
 
       _name = name;
       _action = action;
@@ -49,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     /// <inheritdoc/>
     protected override void ExecuteInteraction (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       _action(scope);
     }

@@ -50,16 +50,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         IVirtualCollectionEndPointCollectionProvider virtualCollectionEndPointCollectionProvider,
         IVirtualCollectionEndPointDataManagerFactory virtualCollectionEndPointDataManagerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(endPointProvider), endPointProvider);
-      ArgumentUtility.CheckNotNull(nameof(lazyLoader), lazyLoader);
-      ArgumentUtility.CheckNotNull(nameof(transactionEventSink), transactionEventSink);
-      ArgumentUtility.CheckNotNull(nameof(virtualObjectEndPointDataManagerFactory), virtualObjectEndPointDataManagerFactory);
-      ArgumentUtility.CheckNotNull(nameof(domainObjectCollectionEndPointDataManagerFactory), domainObjectCollectionEndPointDataManagerFactory);
-      ArgumentUtility.CheckNotNull(nameof(domainObjectCollectionEndPointCollectionProvider), domainObjectCollectionEndPointCollectionProvider);
-      ArgumentUtility.CheckNotNull(nameof(associatedDomainObjectCollectionDataStrategyFactory), associatedDomainObjectCollectionDataStrategyFactory);
-      ArgumentUtility.CheckNotNull(nameof(virtualCollectionEndPointCollectionProvider), virtualCollectionEndPointCollectionProvider);
-      ArgumentUtility.CheckNotNull(nameof(virtualObjectEndPointDataManagerFactory), virtualObjectEndPointDataManagerFactory);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(endPointProvider);
+      ArgumentNullException.ThrowIfNull(lazyLoader);
+      ArgumentNullException.ThrowIfNull(transactionEventSink);
+      ArgumentNullException.ThrowIfNull(virtualObjectEndPointDataManagerFactory);
+      ArgumentNullException.ThrowIfNull(domainObjectCollectionEndPointDataManagerFactory);
+      ArgumentNullException.ThrowIfNull(domainObjectCollectionEndPointCollectionProvider);
+      ArgumentNullException.ThrowIfNull(associatedDomainObjectCollectionDataStrategyFactory);
+      ArgumentNullException.ThrowIfNull(virtualCollectionEndPointCollectionProvider);
+      ArgumentNullException.ThrowIfNull(virtualObjectEndPointDataManagerFactory);
 
       _clientTransaction = clientTransaction;
       _endPointProvider = endPointProvider;
@@ -125,8 +125,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IRealObjectEndPoint CreateRealObjectEndPoint (RelationEndPointID endPointID, DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
-      ArgumentUtility.CheckNotNull(nameof(dataContainer), dataContainer);
+      ArgumentNullException.ThrowIfNull(endPointID);
+      ArgumentNullException.ThrowIfNull(dataContainer);
       if (endPointID.ObjectID == null)
         throw new ArgumentException("End point ID must have a non-null ObjectID.", nameof(endPointID));
 
@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IVirtualObjectEndPoint CreateVirtualObjectEndPoint (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
+      ArgumentNullException.ThrowIfNull(endPointID);
 
       var virtualObjectEndPoint = new VirtualObjectEndPoint(
           _clientTransaction,
@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IVirtualCollectionEndPoint CreateVirtualCollectionEndPoint (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
+      ArgumentNullException.ThrowIfNull(endPointID);
 
       var collectionEndPoint = new VirtualCollectionEndPoint(
           _clientTransaction,
@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IDomainObjectCollectionEndPoint CreateDomainObjectCollectionEndPoint (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
+      ArgumentNullException.ThrowIfNull(endPointID);
 
       var collectionEndPoint = new DomainObjectCollectionEndPoint(
           _clientTransaction,

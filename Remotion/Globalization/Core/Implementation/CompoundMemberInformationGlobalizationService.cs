@@ -41,7 +41,7 @@ namespace Remotion.Globalization.Implementation
     /// <param name="memberInformationGlobalizationServices"> The <see cref="IMemberInformationGlobalizationService"/>s, starting with the least specific.</param>
     public CompoundMemberInformationGlobalizationService (IEnumerable<IMemberInformationGlobalizationService> memberInformationGlobalizationServices)
     {
-      ArgumentUtility.CheckNotNull(nameof(memberInformationGlobalizationServices), memberInformationGlobalizationServices);
+      ArgumentNullException.ThrowIfNull(memberInformationGlobalizationServices);
 
       _memberInformationGlobalizationServices = memberInformationGlobalizationServices.ToArray();
     }
@@ -56,8 +56,8 @@ namespace Remotion.Globalization.Implementation
         ITypeInformation typeInformationForResourceResolution,
         [MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull(nameof(typeInformation), typeInformation);
-      ArgumentUtility.CheckNotNull(nameof(typeInformationForResourceResolution), typeInformationForResourceResolution);
+      ArgumentNullException.ThrowIfNull(typeInformation);
+      ArgumentNullException.ThrowIfNull(typeInformationForResourceResolution);
 
       foreach (var service in _memberInformationGlobalizationServices)
       {
@@ -74,8 +74,8 @@ namespace Remotion.Globalization.Implementation
         ITypeInformation typeInformationForResourceResolution,
         [MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyInformation), propertyInformation);
-      ArgumentUtility.CheckNotNull(nameof(typeInformationForResourceResolution), typeInformationForResourceResolution);
+      ArgumentNullException.ThrowIfNull(propertyInformation);
+      ArgumentNullException.ThrowIfNull(typeInformationForResourceResolution);
 
       foreach (var service in _memberInformationGlobalizationServices)
       {
@@ -91,8 +91,8 @@ namespace Remotion.Globalization.Implementation
         IPropertyInformation propertyInformation,
         ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyInformation), propertyInformation);
-      ArgumentUtility.CheckNotNull(nameof(typeInformationForResourceResolution), typeInformationForResourceResolution);
+      ArgumentNullException.ThrowIfNull(propertyInformation);
+      ArgumentNullException.ThrowIfNull(typeInformationForResourceResolution);
 
       var result = new Dictionary<CultureInfo, string>();
       foreach (var service in _memberInformationGlobalizationServices)
@@ -111,8 +111,8 @@ namespace Remotion.Globalization.Implementation
         ITypeInformation typeInformation,
         ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull(nameof(typeInformation), typeInformation);
-      ArgumentUtility.CheckNotNull(nameof(typeInformationForResourceResolution), typeInformationForResourceResolution);
+      ArgumentNullException.ThrowIfNull(typeInformation);
+      ArgumentNullException.ThrowIfNull(typeInformationForResourceResolution);
 
       var result = new Dictionary<CultureInfo, string>();
       foreach (var service in _memberInformationGlobalizationServices)

@@ -51,9 +51,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         IReadOnlyCollection<ITableConstraintDefinition> constraints
     )
     {
-      ArgumentUtility.CheckNotNull(nameof(typeName), typeName);
+      ArgumentNullException.ThrowIfNull(typeName);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(properties), properties);
-      ArgumentUtility.CheckNotNull(nameof(constraints), constraints);
+      ArgumentNullException.ThrowIfNull(constraints);
 
       TypeName = typeName;
       Properties = properties.AsReadOnly();
@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     /// </summary>
     void IRdbmsStructuredTypeDefinition.Accept (IRdbmsStructuredTypeDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
 
       visitor.VisitTableTypeDefinition(this);
     }

@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public MultiDataContainerSaveCommand (IEnumerable<Tuple<ObjectID, IDbCommandBuilder>> tuples)
     {
-      ArgumentUtility.CheckNotNull(nameof(tuples), tuples);
+      ArgumentNullException.ThrowIfNull(tuples);
 
       _tuples = tuples.ToArray();
     }
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public void Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
+      ArgumentNullException.ThrowIfNull(executionContext);
 
       foreach (var tuple in _tuples)
       {

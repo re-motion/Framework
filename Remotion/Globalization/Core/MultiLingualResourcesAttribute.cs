@@ -109,7 +109,7 @@ namespace Remotion.Globalization
 
     protected void SetResourceAssembly (Assembly resourceAssembly)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceAssembly), resourceAssembly);
+      ArgumentNullException.ThrowIfNull(resourceAssembly);
       _resourceAssembly = resourceAssembly;
     }
 

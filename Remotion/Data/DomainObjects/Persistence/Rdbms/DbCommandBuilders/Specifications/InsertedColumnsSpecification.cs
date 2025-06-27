@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public InsertedColumnsSpecification (IEnumerable<ColumnValue> columnValues)
     {
-      ArgumentUtility.CheckNotNull(nameof(columnValues), columnValues);
+      ArgumentNullException.ThrowIfNull(columnValues);
 
       _columnValues = columnValues.ToArray();
     }
@@ -47,9 +47,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public void AppendColumnNames (StringBuilder statement, IDbCommand dbCommand, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull(nameof(statement), statement);
-      ArgumentUtility.CheckNotNull(nameof(dbCommand), dbCommand);
-      ArgumentUtility.CheckNotNull(nameof(sqlDialect), sqlDialect);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(dbCommand);
+      ArgumentNullException.ThrowIfNull(sqlDialect);
 
       var columNames = string.Join(", ", _columnValues.Select(cv => sqlDialect.DelimitIdentifier(cv.Column.Name)));
       statement.Append(columNames);
@@ -57,9 +57,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public void AppendColumnValues (StringBuilder statement, IDbCommand dbCommand, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull(nameof(statement), statement);
-      ArgumentUtility.CheckNotNull(nameof(dbCommand), dbCommand);
-      ArgumentUtility.CheckNotNull(nameof(sqlDialect), sqlDialect);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(dbCommand);
+      ArgumentNullException.ThrowIfNull(sqlDialect);
 
       var parameters = _columnValues.Select(
           cv =>

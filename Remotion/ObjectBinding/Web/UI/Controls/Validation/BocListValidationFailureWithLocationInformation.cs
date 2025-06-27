@@ -27,24 +27,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
   {
     public static BocListValidationFailureWithLocationInformation CreateFailure (BusinessObjectValidationFailure failure)
     {
-      ArgumentUtility.CheckNotNull(nameof(failure), failure);
+      ArgumentNullException.ThrowIfNull(failure);
 
       return new BocListValidationFailureWithLocationInformation(failure);
     }
 
     public static BocListValidationFailureWithLocationInformation CreateFailureForRow (BusinessObjectValidationFailure failure, IBusinessObject rowObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(failure), failure);
-      ArgumentUtility.CheckNotNull(nameof(rowObject), rowObject);
+      ArgumentNullException.ThrowIfNull(failure);
+      ArgumentNullException.ThrowIfNull(rowObject);
 
       return new BocListValidationFailureWithLocationInformation(failure, rowObject);
     }
 
     public static BocListValidationFailureWithLocationInformation CreateFailureForCell (BusinessObjectValidationFailure failure, IBusinessObject rowObject, BocColumnDefinition columnDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(failure), failure);
-      ArgumentUtility.CheckNotNull(nameof(rowObject), rowObject);
-      ArgumentUtility.CheckNotNull(nameof(columnDefinition), columnDefinition);
+      ArgumentNullException.ThrowIfNull(failure);
+      ArgumentNullException.ThrowIfNull(rowObject);
+      ArgumentNullException.ThrowIfNull(columnDefinition);
 
       return new BocListValidationFailureWithLocationInformation(failure, rowObject, columnDefinition);
     }

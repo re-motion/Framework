@@ -51,8 +51,8 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public ObjectID CreateNewObjectID (IStorageProviderManager storageProviderManager, ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(storageProviderManager);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       var provider = storageProviderManager.GetMandatory(classDefinition.StorageEntityDefinition.StorageProviderDefinition);
       return provider.CreateNewObjectID(classDefinition);
@@ -60,8 +60,8 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public void Save (IStorageProviderManager storageProviderManager, DataContainerCollection dataContainers)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
-      ArgumentUtility.CheckNotNull(nameof(dataContainers), dataContainers);
+      ArgumentNullException.ThrowIfNull(storageProviderManager);
+      ArgumentNullException.ThrowIfNull(dataContainers);
 
       if (dataContainers.Count == 0)
         return;
@@ -105,8 +105,8 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public ObjectLookupResult<DataContainer> LoadDataContainer (IReadOnlyStorageProviderManager storageProviderManager, ObjectID id)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
-      ArgumentUtility.CheckNotNull(nameof(id), id);
+      ArgumentNullException.ThrowIfNull(storageProviderManager);
+      ArgumentNullException.ThrowIfNull(id);
 
       var provider = storageProviderManager.GetMandatory(id.StorageProviderDefinition);
       var result = provider.LoadDataContainer(id);
@@ -116,8 +116,8 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyStorageProviderManager storageProviderManager, IEnumerable<ObjectID> ids)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
-      ArgumentUtility.CheckNotNull(nameof(ids), ids);
+      ArgumentNullException.ThrowIfNull(storageProviderManager);
+      ArgumentNullException.ThrowIfNull(ids);
 
       var idCollection = ids.ConvertToCollection();
       var idsByProvider = GroupIDsByProvider(idCollection);
@@ -130,8 +130,8 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public DataContainerCollection LoadRelatedDataContainers (IReadOnlyStorageProviderManager storageProviderManager, RelationEndPointID relationEndPointID)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
-      ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
+      ArgumentNullException.ThrowIfNull(storageProviderManager);
+      ArgumentNullException.ThrowIfNull(relationEndPointID);
 
       if (!relationEndPointID.Definition.IsVirtual)
       {
@@ -165,8 +165,8 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public DataContainer? LoadRelatedDataContainer (IReadOnlyStorageProviderManager storageProviderManager, RelationEndPointID relationEndPointID)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageProviderManager), storageProviderManager);
-      ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
+      ArgumentNullException.ThrowIfNull(storageProviderManager);
+      ArgumentNullException.ThrowIfNull(relationEndPointID);
 
       if (!relationEndPointID.Definition.IsVirtual)
         throw new ArgumentException("LoadRelatedDataContainer can only be used with virtual end points.", nameof(relationEndPointID));
@@ -184,7 +184,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     /// </remarks>
     protected virtual void CheckProvidersCompatibleForSave (IEnumerable<IStorageProvider> providers)
     {
-      ArgumentUtility.CheckNotNull(nameof(providers), providers);
+      ArgumentNullException.ThrowIfNull(providers);
 
       var persistentStorageProviders = providers.Where(p => !(p is NonPersistentProvider));
 
@@ -202,7 +202,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     /// </returns>
     protected virtual IDisposable BeginTransaction (IEnumerable<IReadOnlyStorageProvider> providers)
     {
-      ArgumentUtility.CheckNotNull(nameof(providers), providers);
+      ArgumentNullException.ThrowIfNull(providers);
 
       foreach (var provider in providers)
         provider.BeginTransaction();
@@ -219,7 +219,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     /// </param>
     protected virtual void CommitTransaction (IEnumerable<IReadOnlyStorageProvider> providers, IDisposable context)
     {
-      ArgumentUtility.CheckNotNull(nameof(providers), providers);
+      ArgumentNullException.ThrowIfNull(providers);
 
       foreach (var provider in providers)
         provider.Commit();
@@ -234,7 +234,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     /// </param>
     protected virtual void RollbackTransaction (IEnumerable<IReadOnlyStorageProvider> providers, IDisposable context)
     {
-      ArgumentUtility.CheckNotNull(nameof(providers), providers);
+      ArgumentNullException.ThrowIfNull(providers);
 
       foreach (var provider in providers)
       {

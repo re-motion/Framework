@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public SingleObjectLoadCommand (IDbCommandBuilder dbCommandBuilder, IObjectReader<T> objectReader)
     {
-      ArgumentUtility.CheckNotNull(nameof(dbCommandBuilder), dbCommandBuilder);
-      ArgumentUtility.CheckNotNull(nameof(objectReader), objectReader);
+      ArgumentNullException.ThrowIfNull(dbCommandBuilder);
+      ArgumentNullException.ThrowIfNull(objectReader);
 
       _dbCommandBuilder = dbCommandBuilder;
       _objectReader = objectReader;
@@ -52,13 +52,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public T? Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
+      ArgumentNullException.ThrowIfNull(executionContext);
       return Execute<IRdbmsProviderReadWriteCommandExecutionContext>(executionContext);
     }
 
     public T? Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
+      ArgumentNullException.ThrowIfNull(executionContext);
       return Execute<IRdbmsProviderReadOnlyCommandExecutionContext>(executionContext);
     }
 

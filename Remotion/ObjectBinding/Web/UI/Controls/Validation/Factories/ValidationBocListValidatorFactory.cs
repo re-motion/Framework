@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
 
     public IEnumerable<BaseValidator> CreateValidators (IBocList control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentNullException.ThrowIfNull(control);
 
       if (isReadOnly)
         yield break;

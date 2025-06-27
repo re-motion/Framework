@@ -40,14 +40,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void AddListener (IClientTransactionListener listener)
     {
-      ArgumentUtility.CheckNotNull(nameof(listener), listener);
+      ArgumentNullException.ThrowIfNull(listener);
 
       _listeners.Add(listener);
     }
 
     public void RemoveListener (IClientTransactionListener listener)
     {
-      ArgumentUtility.CheckNotNull(nameof(listener), listener);
+      ArgumentNullException.ThrowIfNull(listener);
 
       _listeners.Remove(listener);
     }

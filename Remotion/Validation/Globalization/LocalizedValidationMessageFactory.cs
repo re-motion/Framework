@@ -72,7 +72,7 @@ namespace Remotion.Validation.Globalization
     public LocalizedValidationMessageFactory (
         IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       _resourceManager = new Lazy<IResourceManager>(
           () => globalizationService.GetResourceManager(TypeAdapter.Create(typeof(ResourceIdentifier))),
@@ -81,8 +81,8 @@ namespace Remotion.Validation.Globalization
 
     public ValidationMessage? CreateValidationMessageForPropertyValidator (IPropertyValidator validator, IPropertyInformation validatedProperty)
     {
-      ArgumentUtility.CheckNotNull(nameof(validator), validator);
-      ArgumentUtility.CheckNotNull(nameof(validatedProperty), validatedProperty);
+      ArgumentNullException.ThrowIfNull(validator);
+      ArgumentNullException.ThrowIfNull(validatedProperty);
 
       var resourceIdentifier = GetResourceIdentifierOrNull(validator, validatedProperty);
       if (!resourceIdentifier.HasValue)
@@ -93,8 +93,8 @@ namespace Remotion.Validation.Globalization
 
     public ValidationMessage? CreateValidationMessageForObjectValidator (IObjectValidator validator, ITypeInformation validatedType)
     {
-      ArgumentUtility.CheckNotNull(nameof(validator), validator);
-      ArgumentUtility.CheckNotNull(nameof(validatedType), validatedType);
+      ArgumentNullException.ThrowIfNull(validator);
+      ArgumentNullException.ThrowIfNull(validatedType);
 
       return null;
     }

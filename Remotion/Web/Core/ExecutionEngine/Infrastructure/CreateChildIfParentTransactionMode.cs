@@ -30,8 +30,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public override TransactionStrategyBase CreateTransactionStrategy (WxeFunction function, WxeContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(function), function);
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(function);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (function.ParentFunction != null)
       {

@@ -42,13 +42,13 @@ namespace Remotion.Mixins.Definitions.Building
     /// requirements to be analyzed.</param>
     public RequirementsAnalyzer (MixinGenericArgumentFinder genericArgumentFinder)
     {
-      ArgumentUtility.CheckNotNull(nameof(genericArgumentFinder), genericArgumentFinder);
+      ArgumentNullException.ThrowIfNull(genericArgumentFinder);
       _genericArgumentFinder = genericArgumentFinder;
     }
 
     public Type[] GetRequirements (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
+      ArgumentNullException.ThrowIfNull(mixinType);
 
       var genericArgument = _genericArgumentFinder.FindGenericArgument(mixinType);
       if (genericArgument != null)
@@ -61,7 +61,7 @@ namespace Remotion.Mixins.Definitions.Building
     // The real types are directly taken as required interfaces; the type parameters have constraints which are taken as required interfaces
     private IEnumerable<Type> GetRequirementsForType (Type mixinBaseGenericArgument)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinBaseGenericArgument), mixinBaseGenericArgument);
+      ArgumentNullException.ThrowIfNull(mixinBaseGenericArgument);
 
       if (mixinBaseGenericArgument.IsGenericParameter)
       {

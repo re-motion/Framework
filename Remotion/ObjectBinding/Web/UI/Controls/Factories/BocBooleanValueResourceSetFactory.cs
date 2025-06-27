@@ -43,14 +43,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
 
     public BocBooleanValueResourceSetFactory (IResourceUrlFactory resourceUrlFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceUrlFactory), resourceUrlFactory);
+      ArgumentNullException.ThrowIfNull(resourceUrlFactory);
 
       _resourceUrlFactory = resourceUrlFactory;
     }
 
     public BocBooleanValueResourceSet CreateResourceSet (IBocBooleanValue control)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentNullException.ThrowIfNull(control);
 
       return control.CreateResourceSet() ?? CreateDefaultResourceSet(control);
     }

@@ -29,7 +29,7 @@ namespace Remotion.Development.UnitTesting.IsolatedCodeRunner
   {
     public static string SerializeException (Exception exception)
     {
-      ArgumentUtility.CheckNotNull(nameof(exception), exception);
+      ArgumentNullException.ThrowIfNull(exception);
 
       var exceptionTypeName = exception.GetType().AssemblyQualifiedName!;
       var exceptionMessage = exception.Message;

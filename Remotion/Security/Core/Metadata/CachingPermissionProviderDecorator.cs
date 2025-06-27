@@ -64,7 +64,7 @@ namespace Remotion.Security.Metadata
 
     public CachingPermissionProviderDecorator (IPermissionProvider innerPermissionProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(innerPermissionProvider), innerPermissionProvider);
+      ArgumentNullException.ThrowIfNull(innerPermissionProvider);
 
       _innerPermissionProvider = innerPermissionProvider;
 
@@ -79,8 +79,8 @@ namespace Remotion.Security.Metadata
 
     public IReadOnlyList<Enum> GetRequiredMethodPermissions (Type type, IMethodInformation methodInformation)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
-      ArgumentUtility.CheckNotNull(nameof(methodInformation), methodInformation);
+      ArgumentNullException.ThrowIfNull(type);
+      ArgumentNullException.ThrowIfNull(methodInformation);
 
       // Optimization to prevent cache polution
       if (methodInformation.IsNull)

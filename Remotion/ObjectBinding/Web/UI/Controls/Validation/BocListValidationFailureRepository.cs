@@ -121,7 +121,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     public void AddValidationFailuresForBocList (IEnumerable<BusinessObjectValidationFailure> validationFailures)
     {
-      ArgumentUtility.CheckNotNull(nameof(validationFailures), validationFailures);
+      ArgumentNullException.ThrowIfNull(validationFailures);
 
       _listValidationFailures.AddRange(
           validationFailures.Select(e => new HandleableFailure(BocListValidationFailureWithLocationInformation.CreateFailure(e))));
@@ -131,8 +131,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     public void AddValidationFailuresForDataRow (IBusinessObject rowObject, IEnumerable<BusinessObjectValidationFailure> validationFailures)
     {
-      ArgumentUtility.CheckNotNull(nameof(rowObject), rowObject);
-      ArgumentUtility.CheckNotNull(nameof(validationFailures), validationFailures);
+      ArgumentNullException.ThrowIfNull(rowObject);
+      ArgumentNullException.ThrowIfNull(validationFailures);
 
       var failureContainer = GetOrCreateRowFailureContainer(rowObject);
       failureContainer.AddRowFailures(validationFailures.Select(f => BocListValidationFailureWithLocationInformation.CreateFailureForRow(f, rowObject)));
@@ -145,9 +145,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
         BocColumnDefinition columnDefinition,
         IEnumerable<BusinessObjectValidationFailure> validationFailures)
     {
-      ArgumentUtility.CheckNotNull(nameof(rowObject), rowObject);
-      ArgumentUtility.CheckNotNull(nameof(columnDefinition), columnDefinition);
-      ArgumentUtility.CheckNotNull(nameof(validationFailures), validationFailures);
+      ArgumentNullException.ThrowIfNull(rowObject);
+      ArgumentNullException.ThrowIfNull(columnDefinition);
+      ArgumentNullException.ThrowIfNull(validationFailures);
 
       var failureContainer = GetOrCreateRowFailureContainer(rowObject);
       failureContainer.AddCellFailures(
@@ -193,7 +193,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     public IReadOnlyCollection<BocListValidationFailureWithLocationInformation> GetUnhandledValidationFailuresForDataRow (IBusinessObject rowObject, bool markAsHandled)
     {
-      ArgumentUtility.CheckNotNull(nameof(rowObject), rowObject);
+      ArgumentNullException.ThrowIfNull(rowObject);
 
       var failureContainer = _rowValidationFailures.GetValueOrDefault(rowObject);
       if (failureContainer == null)
@@ -226,7 +226,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
         IBusinessObject rowObject,
         bool markAsHandled)
     {
-      ArgumentUtility.CheckNotNull(nameof(rowObject), rowObject);
+      ArgumentNullException.ThrowIfNull(rowObject);
 
       var failureContainer = _rowValidationFailures.GetValueOrDefault(rowObject);
       if (failureContainer == null)
@@ -248,8 +248,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
         BocColumnDefinition columnDefinition,
         bool markAsHandled)
     {
-      ArgumentUtility.CheckNotNull(nameof(rowObject), rowObject);
-      ArgumentUtility.CheckNotNull(nameof(columnDefinition), columnDefinition);
+      ArgumentNullException.ThrowIfNull(rowObject);
+      ArgumentNullException.ThrowIfNull(columnDefinition);
 
       var failureContainer = _rowValidationFailures.GetValueOrDefault(rowObject);
       if (failureContainer == null)
@@ -265,7 +265,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     public bool HasValidationFailuresForDataRow (IBusinessObject rowObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(rowObject), rowObject);
+      ArgumentNullException.ThrowIfNull(rowObject);
 
       return _rowValidationFailures.GetValueOrDefault(rowObject)?.HasValidationFailures() ?? false;
     }

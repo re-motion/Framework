@@ -68,7 +68,7 @@ public class RemotionStaticFilesCacheKeyRemovalRewriteRule : IRule
   /// <inheritdoc />
   public void ApplyRule (RewriteContext context)
   {
-    ArgumentUtility.CheckNotNull(nameof(context), context);
+    ArgumentNullException.ThrowIfNull(context);
 
     var httpContext = context.HttpContext;
     if (TryMatchPath(httpContext, out var newRequestPath, out var cacheKey))

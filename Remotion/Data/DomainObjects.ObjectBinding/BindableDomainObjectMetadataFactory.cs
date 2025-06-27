@@ -48,8 +48,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
     public BindableDomainObjectMetadataFactory (BindableObjectGlobalizationService bindableObjectGlobalizationService, IDomainModelConstraintProvider domainModelConstraintProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(bindableObjectGlobalizationService), bindableObjectGlobalizationService);
-      ArgumentUtility.CheckNotNull(nameof(domainModelConstraintProvider), domainModelConstraintProvider);
+      ArgumentNullException.ThrowIfNull(bindableObjectGlobalizationService);
+      ArgumentNullException.ThrowIfNull(domainModelConstraintProvider);
 
       _bindableObjectGlobalizationService = bindableObjectGlobalizationService;
       _domainModelConstraintProvider = domainModelConstraintProvider;
@@ -57,24 +57,24 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
     public virtual IClassReflector CreateClassReflector (Type targetType, BindableObjectProvider businessObjectProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(targetType), targetType);
-      ArgumentUtility.CheckNotNull(nameof(businessObjectProvider), businessObjectProvider);
+      ArgumentNullException.ThrowIfNull(targetType);
+      ArgumentNullException.ThrowIfNull(businessObjectProvider);
 
       return new ClassReflector(targetType, businessObjectProvider, this, _bindableObjectGlobalizationService);
     }
 
     public virtual IPropertyFinder CreatePropertyFinder (Type concreteType)
     {
-      ArgumentUtility.CheckNotNull(nameof(concreteType), concreteType);
+      ArgumentNullException.ThrowIfNull(concreteType);
       return new BindableDomainObjectPropertyFinder(concreteType);
     }
 
     public virtual PropertyReflector CreatePropertyReflector (
         Type concreteType, IPropertyInformation propertyInfo, BindableObjectProvider businessObjectProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(concreteType), concreteType);
-      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
-      ArgumentUtility.CheckNotNull(nameof(businessObjectProvider), businessObjectProvider);
+      ArgumentNullException.ThrowIfNull(concreteType);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
+      ArgumentNullException.ThrowIfNull(businessObjectProvider);
 
       return BindableDomainObjectPropertyReflector.Create(
           propertyInfo,

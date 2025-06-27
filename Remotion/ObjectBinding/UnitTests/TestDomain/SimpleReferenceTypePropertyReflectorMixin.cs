@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
     [OverrideTarget]
     public PropertyBase GetMetadata (PropertyBase.Parameters parameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
+      ArgumentNullException.ThrowIfNull(parameters);
 
       if (parameters.UnderlyingType == typeof(SimpleReferenceType))
         return new SimpleReferenceTypeProperty(parameters);

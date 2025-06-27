@@ -118,8 +118,8 @@ namespace Remotion.Web.UI.Controls
 
     public void AddAttributesToRender ([NotNull] HtmlTextWriter writer, [NotNull] IRenderingFeatures renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
-      ArgumentUtility.CheckNotNull(nameof(renderingFeatures), renderingFeatures);
+      ArgumentNullException.ThrowIfNull(writer);
+      ArgumentNullException.ThrowIfNull(renderingFeatures);
 
       if (!string.IsNullOrEmpty(_href))
         writer.AddAttribute(HtmlTextWriterAttribute.Href, _href);

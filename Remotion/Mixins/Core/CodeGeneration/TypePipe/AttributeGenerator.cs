@@ -58,7 +58,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddDebuggerBrowsableAttribute (IMutableMember member, DebuggerBrowsableState debuggerBrowsableState)
     {
-      ArgumentUtility.CheckNotNull(nameof(member), member);
+      ArgumentNullException.ThrowIfNull(member);
 
       var attribute = new CustomAttributeDeclaration(s_debuggerBrowsableAttributeConstructor, new object[] { debuggerBrowsableState });
       member.AddCustomAttribute(attribute);
@@ -66,7 +66,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddDebuggerDisplayAttribute (IMutableMember member, string debuggerDisplayString, string? debuggerDisplayNameStringOrNull)
     {
-      ArgumentUtility.CheckNotNull(nameof(member), member);
+      ArgumentNullException.ThrowIfNull(member);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(debuggerDisplayString), debuggerDisplayString);
       // Debugger display name may be null.
 
@@ -79,9 +79,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddIntroducedMemberAttribute (IMutableMember member, MemberInfo interfaceMember, MemberDefinitionBase implementingMember)
     {
-      ArgumentUtility.CheckNotNull(nameof(member), member);
-      ArgumentUtility.CheckNotNull(nameof(interfaceMember), interfaceMember);
-      ArgumentUtility.CheckNotNull(nameof(implementingMember), implementingMember);
+      ArgumentNullException.ThrowIfNull(member);
+      ArgumentNullException.ThrowIfNull(interfaceMember);
+      ArgumentNullException.ThrowIfNull(implementingMember);
 
       var attribute = new CustomAttributeDeclaration(
           s_introducedMemberAttributeConstructor,
@@ -91,9 +91,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddConcreteMixedTypeAttribute (IMutableMember member, ClassContext classContext, IEnumerable<Type> orderedMixinTypes)
     {
-      ArgumentUtility.CheckNotNull(nameof(member), member);
-      ArgumentUtility.CheckNotNull(nameof(classContext), classContext);
-      ArgumentUtility.CheckNotNull(nameof(orderedMixinTypes), orderedMixinTypes);
+      ArgumentNullException.ThrowIfNull(member);
+      ArgumentNullException.ThrowIfNull(classContext);
+      ArgumentNullException.ThrowIfNull(orderedMixinTypes);
 
       var attributeData = ConcreteMixedTypeAttribute.FromClassContext(classContext, orderedMixinTypes.ToArray());
       var attribute = new CustomAttributeDeclaration(
@@ -103,8 +103,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddConcreteMixinTypeAttribute (IMutableMember member, ConcreteMixinTypeIdentifier concreteMixinTypeIdentifier)
     {
-      ArgumentUtility.CheckNotNull(nameof(member), member);
-      ArgumentUtility.CheckNotNull(nameof(concreteMixinTypeIdentifier), concreteMixinTypeIdentifier);
+      ArgumentNullException.ThrowIfNull(member);
+      ArgumentNullException.ThrowIfNull(concreteMixinTypeIdentifier);
 
       var attributeData = ConcreteMixinTypeAttribute.Create(concreteMixinTypeIdentifier).ConcreteMixinTypeIdentifierData;
       var attribute = new CustomAttributeDeclaration(s_concreteMixinTypeAttributeConstructor, new object[] { attributeData });
@@ -113,8 +113,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddOverrideInterfaceMappingAttribute (IMutableMember member, MethodInfo overriddenMethod)
     {
-      ArgumentUtility.CheckNotNull(nameof(member), member);
-      ArgumentUtility.CheckNotNull(nameof(overriddenMethod), overriddenMethod);
+      ArgumentNullException.ThrowIfNull(member);
+      ArgumentNullException.ThrowIfNull(overriddenMethod);
 
       var attribute = new CustomAttributeDeclaration(
           s_overrideInterfaceMappingAttributeConstructor,
@@ -124,8 +124,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddGeneratedMethodWrapperAttribute (IMutableMember member, MethodInfo methodToBeWrapped)
     {
-      ArgumentUtility.CheckNotNull(nameof(member), member);
-      ArgumentUtility.CheckNotNull(nameof(methodToBeWrapped), methodToBeWrapped);
+      ArgumentNullException.ThrowIfNull(member);
+      ArgumentNullException.ThrowIfNull(methodToBeWrapped);
 
       var attribute = new CustomAttributeDeclaration(
           s_generatedMethodWrapperAttributeConstructor,
@@ -135,8 +135,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddAttribute (IMutableMember member, ICustomAttributeData attributeData)
     {
-      ArgumentUtility.CheckNotNull(nameof(member), member);
-      ArgumentUtility.CheckNotNull(nameof(attributeData), attributeData);
+      ArgumentNullException.ThrowIfNull(member);
+      ArgumentNullException.ThrowIfNull(attributeData);
 
       var attribute = new CustomAttributeDeclaration(
           attributeData.Constructor,
@@ -147,8 +147,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void ReplicateAttributes (IAttributableDefinition source, IMutableMember destination)
     {
-      ArgumentUtility.CheckNotNull(nameof(source), source);
-      ArgumentUtility.CheckNotNull(nameof(destination), destination);
+      ArgumentNullException.ThrowIfNull(source);
+      ArgumentNullException.ThrowIfNull(destination);
 
       foreach (var attribute in source.CustomAttributes)
         AddAttribute(destination, attribute.Data);
@@ -156,9 +156,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public bool ShouldBeReplicated (AttributeDefinition attribute, IAttributeIntroductionTarget targetConfiguration, TargetClassDefinition targetClassDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(attribute), attribute);
-      ArgumentUtility.CheckNotNull(nameof(targetConfiguration), targetConfiguration);
-      ArgumentUtility.CheckNotNull(nameof(targetClassDefinition), targetClassDefinition);
+      ArgumentNullException.ThrowIfNull(attribute);
+      ArgumentNullException.ThrowIfNull(targetConfiguration);
+      ArgumentNullException.ThrowIfNull(targetClassDefinition);
 
       return !attribute.IsCopyTemplate
              && (!CanInheritAttributesFromBase(targetConfiguration)

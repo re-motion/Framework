@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public DomainObjectCollectionEndPointCollectionProvider (IAssociatedDomainObjectCollectionDataStrategyFactory dataStrategyFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataStrategyFactory), dataStrategyFactory);
+      ArgumentNullException.ThrowIfNull(dataStrategyFactory);
       _dataStrategyFactory = dataStrategyFactory;
 
       // Optimized for memory allocations
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public DomainObjectCollection GetCollection (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
+      ArgumentNullException.ThrowIfNull(endPointID);
       if (endPointID.Definition.IsAnonymous)
         throw new ArgumentException("End point ID must not refer to an anonymous end point.", nameof(endPointID));
 
@@ -65,8 +65,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void RegisterCollection (RelationEndPointID endPointID, DomainObjectCollection collection)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
-      ArgumentUtility.CheckNotNull(nameof(collection), collection);
+      ArgumentNullException.ThrowIfNull(endPointID);
+      ArgumentNullException.ThrowIfNull(collection);
 
       if (collection.AssociatedEndPointID != endPointID)
         throw new ArgumentException("The collection must be associated with the given endPointID.", nameof(collection));

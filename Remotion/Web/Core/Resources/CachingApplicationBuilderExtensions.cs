@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Options;
@@ -35,9 +36,9 @@ public static class CachingApplicationBuilderExtensions
   /// </remarks>
   public static IApplicationBuilder UseRemotionStaticFiles (this IApplicationBuilder builder, StaticFileOptions options, StaticFileCachingOptions cachingOptions)
   {
-    ArgumentUtility.CheckNotNull(nameof(builder), builder);
-    ArgumentUtility.CheckNotNull(nameof(options), options);
-    ArgumentUtility.CheckNotNull(nameof(cachingOptions), cachingOptions);
+    ArgumentNullException.ThrowIfNull(builder);
+    ArgumentNullException.ThrowIfNull(options);
+    ArgumentNullException.ThrowIfNull(cachingOptions);
 
     var rewriteOptions = new RewriteOptions()
         .Add(new RemotionStaticFilesCacheKeyRemovalRewriteRule(options.RequestPath, stopProcessing: true));

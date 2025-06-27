@@ -30,7 +30,7 @@ public class WxeParameterConverter
 
   public WxeParameterConverter (WxeParameterDeclaration parameter)
   {
-    ArgumentUtility.CheckNotNull(nameof(parameter), parameter);
+    ArgumentNullException.ThrowIfNull(parameter);
     _parameter = parameter;
   }
 
@@ -75,7 +75,7 @@ public class WxeParameterConverter
   /// <exception cref="WxeException"> Thrown if the value referenced by the <paramref name="varRef"/> could not be converted. </exception>
   protected string? ConvertVarRefToString (WxeVariableReference varRef, NameObjectCollection? callerVariables)
   {
-    ArgumentUtility.CheckNotNull(nameof(varRef), varRef);
+    ArgumentNullException.ThrowIfNull(varRef);
 
     if (callerVariables == null)
     {

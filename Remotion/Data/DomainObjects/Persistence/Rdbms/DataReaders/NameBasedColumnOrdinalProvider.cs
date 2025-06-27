@@ -29,8 +29,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
   {
     public int GetOrdinal (ColumnDefinition columnDefinition, IDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull(nameof(columnDefinition), columnDefinition);
-      ArgumentUtility.CheckNotNull(nameof(dataReader), dataReader);
+      ArgumentNullException.ThrowIfNull(columnDefinition);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
       try
       {

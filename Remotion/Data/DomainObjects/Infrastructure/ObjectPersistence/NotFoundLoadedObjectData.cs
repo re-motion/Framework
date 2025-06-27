@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public NotFoundLoadedObjectData (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       _objectID = objectID;
     }
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void Accept (ILoadedObjectVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       visitor.VisitNotFoundLoadedObject(this);
     }
 

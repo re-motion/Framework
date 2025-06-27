@@ -177,11 +177,11 @@ namespace Remotion.Web.ContentSecurityPolicy
         IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(writer)
     {
-      ArgumentUtility.CheckNotNull(nameof(page), page);
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
-      ArgumentUtility.CheckNotNull(nameof(nonceGenerator), nonceGenerator);
+      ArgumentNullException.ThrowIfNull(page);
+      ArgumentNullException.ThrowIfNull(writer);
+      ArgumentNullException.ThrowIfNull(nonceGenerator);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(requestNonce), requestNonce);
-      ArgumentUtility.CheckNotNull(nameof(renderingFeatures), renderingFeatures);
+      ArgumentNullException.ThrowIfNull(renderingFeatures);
 
       _page = page;
       _nonceGenerator = nonceGenerator;
@@ -229,14 +229,14 @@ namespace Remotion.Web.ContentSecurityPolicy
 
     public sealed override void AddAttribute (string name, string? value)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
+      ArgumentNullException.ThrowIfNull(name);
       if (!TryAddAttributeWithoutEncoding(name, value, false))
         base.AddAttribute(name, value);
     }
 
     public sealed override void AddAttribute (string name, string? value, bool encode)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
+      ArgumentNullException.ThrowIfNull(name);
       if (!TryAddAttributeWithoutEncoding(name, value, !encode))
         base.AddAttribute(name, value, encode);
     }
@@ -248,7 +248,7 @@ namespace Remotion.Web.ContentSecurityPolicy
 
     protected sealed override void AddAttribute (string name, string? value, HtmlTextWriterAttribute key, bool encode, bool isUrl)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
+      ArgumentNullException.ThrowIfNull(name);
       if (!TryAddAttributeWithoutEncoding(name, value, !encode))
         base.AddAttribute(name, value!, key, encode, isUrl);
     }

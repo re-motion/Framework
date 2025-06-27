@@ -80,13 +80,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         Func<DropDownList> dropDownListFactoryMethod)
         : base(resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer)
     {
-      ArgumentUtility.CheckNotNull(nameof(dropDownListFactoryMethod), dropDownListFactoryMethod);
+      ArgumentNullException.ThrowIfNull(dropDownListFactoryMethod);
       _dropDownListFactoryMethod = dropDownListFactoryMethod;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       RegisterJavaScriptFiles(htmlHeadAppender);
       RegisterStylesheets(htmlHeadAppender);
@@ -94,7 +94,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     public void Render (BocReferenceValueRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       base.Render(renderingContext);
 

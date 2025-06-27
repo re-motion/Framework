@@ -33,9 +33,9 @@ namespace Remotion.Mixins.Definitions
     protected MemberIntroductionDefinitionBase (
         InterfaceIntroductionDefinition declaringInterface, TMemberInfo interfaceMember, TMemberDefinition implementingMember, MemberVisibility visibility)
     {
-      ArgumentUtility.CheckNotNull(nameof(interfaceMember), interfaceMember);
-      ArgumentUtility.CheckNotNull(nameof(declaringInterface), declaringInterface);
-      ArgumentUtility.CheckNotNull(nameof(implementingMember), implementingMember);
+      ArgumentNullException.ThrowIfNull(interfaceMember);
+      ArgumentNullException.ThrowIfNull(declaringInterface);
+      ArgumentNullException.ThrowIfNull(implementingMember);
 
       _declaringInterface = declaringInterface;
       _implementingMember = implementingMember;

@@ -71,8 +71,8 @@ namespace Remotion.ObjectBinding.Security.BindableObject
 
       if (exception is PermissionDeniedException)
       {
-        ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
-        ArgumentUtility.CheckNotNull(nameof(bindableProperty), bindableProperty);
+        ArgumentNullException.ThrowIfNull(businessObject);
+        ArgumentNullException.ThrowIfNull(bindableProperty);
 
         var classOrInstance = businessObject is IBusinessObjectWithIdentity
             ? string.Format("for business object with ID '{0}'", ((IBusinessObjectWithIdentity)businessObject).UniqueIdentifier)

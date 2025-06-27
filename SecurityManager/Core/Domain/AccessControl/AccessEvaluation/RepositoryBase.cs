@@ -54,7 +54,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     protected RepositoryBase (IRevisionProvider<TRevisionKey, TRevisionValue> revisionProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(revisionProvider), revisionProvider);
+      ArgumentNullException.ThrowIfNull(revisionProvider);
 
       _revisionProvider = revisionProvider;
     }
@@ -63,7 +63,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     protected TData GetCachedData (TRevisionKey revisionKey, Revision revision = Revision.Stale)
     {
-      ArgumentUtility.CheckNotNull(nameof(revisionKey), revisionKey);
+      ArgumentNullException.ThrowIfNull(revisionKey);
 
       if (revision == Revision.Invalidate)
         _revisionProvider.InvalidateRevision(revisionKey);

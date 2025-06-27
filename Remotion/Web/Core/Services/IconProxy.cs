@@ -42,8 +42,8 @@ namespace Remotion.Web.Services
     /// <exception cref="ArgumentException">Thrown if the <see cref="IconInfo.Url"/> of the <paramref name="iconInfo"/> is not set.</exception>
     public static IconProxy Create (HttpContextBase httpContext, IconInfo iconInfo)
     {
-      ArgumentUtility.CheckNotNull(nameof(httpContext), httpContext);
-      ArgumentUtility.CheckNotNull(nameof(iconInfo), iconInfo);
+      ArgumentNullException.ThrowIfNull(httpContext);
+      ArgumentNullException.ThrowIfNull(iconInfo);
 
       if (string.IsNullOrEmpty(iconInfo.Url))
         throw new ArgumentException("IconProxy does not support IconInfo objects without an empty Url.", nameof(iconInfo));

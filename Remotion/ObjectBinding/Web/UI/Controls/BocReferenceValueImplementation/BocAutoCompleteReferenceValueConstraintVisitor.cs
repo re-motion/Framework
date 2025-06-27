@@ -11,14 +11,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     public BocAutoCompleteReferenceValueConstraintVisitor (BocAutoCompleteReferenceValue control)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentNullException.ThrowIfNull(control);
 
       Control = control;
     }
 
     public void Visit (BusinessObjectPropertyValueRequiredConstraint constraint)
     {
-      ArgumentUtility.CheckNotNull(nameof(constraint), constraint);
+      ArgumentNullException.ThrowIfNull(constraint);
 
       ((IBusinessObjectBoundEditableWebControl)Control).RequiredByPropertyConstraint = constraint.IsRequired;
     }

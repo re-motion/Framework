@@ -32,8 +32,8 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     [NotNull]
     public static AccessibilityResult Analyze ([NotNull] this PageObject pageObject, [NotNull] AccessibilityAnalyzer analyzer)
     {
-      ArgumentUtility.CheckNotNull(nameof(pageObject), pageObject);
-      ArgumentUtility.CheckNotNull(nameof(analyzer), analyzer);
+      ArgumentNullException.ThrowIfNull(pageObject);
+      ArgumentNullException.ThrowIfNull(analyzer);
 
       return analyzer.Analyze();
     }

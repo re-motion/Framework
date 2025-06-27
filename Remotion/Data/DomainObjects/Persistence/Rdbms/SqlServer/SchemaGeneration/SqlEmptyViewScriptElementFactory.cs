@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     protected override string GetSelectStatements (EmptyViewDefinition emptyViewDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(emptyViewDefinition), emptyViewDefinition);
+      ArgumentNullException.ThrowIfNull(emptyViewDefinition);
 
       return string.Format(
             "  SELECT {0}{1}"
@@ -40,19 +40,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected override bool UseCheckOption (EmptyViewDefinition emptyViewDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(emptyViewDefinition), emptyViewDefinition);
+      ArgumentNullException.ThrowIfNull(emptyViewDefinition);
       return false;
     }
 
     protected override bool UseSchemaBinding (EmptyViewDefinition entityDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(entityDefinition), entityDefinition);
+      ArgumentNullException.ThrowIfNull(entityDefinition);
       return false;
     }
 
     private string GetNullColumnList (IEnumerable<ColumnDefinition> columns)
     {
-      ArgumentUtility.CheckNotNull(nameof(columns), columns);
+      ArgumentNullException.ThrowIfNull(columns);
       return String.Join((string)", ", (IEnumerable<string>)columns.Select(cd => "CONVERT(" + cd.StorageTypeInfo.StorageTypeName + ",NULL) AS ["+ cd.Name + "]"));
     }
   }

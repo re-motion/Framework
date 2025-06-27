@@ -1,5 +1,6 @@
 ﻿// SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
 // SPDX-License-Identifier: LGPL-2.1-or-later
+using System;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
@@ -22,8 +23,8 @@ public class CspDefaultsProvider : ICspDefaultsProvider
       bool isCspReportOnlyEnabledDefault,
       CspHeader cspReportOnlyHeaderDefault)
   {
-    ArgumentUtility.CheckNotNull(nameof(cspHeaderDefault), cspHeaderDefault);
-    ArgumentUtility.CheckNotNull(nameof(cspReportOnlyHeaderDefault), cspReportOnlyHeaderDefault);
+    ArgumentNullException.ThrowIfNull(cspHeaderDefault);
+    ArgumentNullException.ThrowIfNull(cspReportOnlyHeaderDefault);
 
     return new CspDefaultsProvider(isCspEnabledDefault, cspHeaderDefault, isCspReportOnlyEnabledDefault, cspReportOnlyHeaderDefault);
   }

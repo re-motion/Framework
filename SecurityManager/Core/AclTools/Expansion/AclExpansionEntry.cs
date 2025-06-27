@@ -38,11 +38,11 @@ namespace Remotion.SecurityManager.AclTools.Expansion
         AccessTypeDefinition[] allowedAccessTypes,
         AccessTypeDefinition[] deniedAccessTypes)
     {
-      ArgumentUtility.CheckNotNull(nameof(user), user);
-      ArgumentUtility.CheckNotNull(nameof(role), role);
-      ArgumentUtility.CheckNotNull(nameof(accessControlList), accessControlList);
-      ArgumentUtility.CheckNotNull(nameof(accessConditions), accessConditions);
-      ArgumentUtility.CheckNotNull(nameof(allowedAccessTypes), allowedAccessTypes);
+      ArgumentNullException.ThrowIfNull(user);
+      ArgumentNullException.ThrowIfNull(role);
+      ArgumentNullException.ThrowIfNull(accessControlList);
+      ArgumentNullException.ThrowIfNull(accessConditions);
+      ArgumentNullException.ThrowIfNull(allowedAccessTypes);
       if (accessControlList.Class == null)
         throw new ArgumentException("AccessControlList must have a Class set.", nameof(accessControlList));
 

@@ -42,9 +42,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public BocSelectorColumnRenderer (IRenderingFeatures renderingFeatures, BocListCssClassDefinition cssClasses, ILabelReferenceRenderer labelReferenceRenderer)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingFeatures), renderingFeatures);
-      ArgumentUtility.CheckNotNull(nameof(cssClasses), cssClasses);
-      ArgumentUtility.CheckNotNull(nameof(labelReferenceRenderer), labelReferenceRenderer);
+      ArgumentNullException.ThrowIfNull(renderingFeatures);
+      ArgumentNullException.ThrowIfNull(cssClasses);
+      ArgumentNullException.ThrowIfNull(labelReferenceRenderer);
 
       _renderingFeatures = renderingFeatures;
       _cssClasses = cssClasses;
@@ -58,8 +58,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public void RenderDataCell (BocListRenderingContext renderingContext, BocListRowRenderingContext rowRenderingContext, string[] headerIDs)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
-      ArgumentUtility.CheckNotNull(nameof(rowRenderingContext), rowRenderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
+      ArgumentNullException.ThrowIfNull(rowRenderingContext);
 
       if (!renderingContext.Control.IsSelectionEnabled)
         return;
@@ -95,7 +95,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public void RenderTitleCell (BocListRenderingContext renderingContext, string cellID)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(cellID), cellID);
 
       if (!renderingContext.Control.IsSelectionEnabled)

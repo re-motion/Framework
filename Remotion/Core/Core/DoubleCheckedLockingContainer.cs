@@ -21,7 +21,7 @@ namespace Remotion
     /// <param name="defaultFactory">The delegate used to create the default value in case the value is <see langword="null" />.</param>
     public DoubleCheckedLockingContainer (Func<T> defaultFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(defaultFactory), defaultFactory);
+      ArgumentNullException.ThrowIfNull(defaultFactory);
       _defaultFactory = defaultFactory;
     }
 

@@ -33,7 +33,7 @@ namespace Remotion.Context
     /// <inheritdoc />
     public object? GetData (string key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
 
       return _context.Value?[key];
     }
@@ -41,7 +41,7 @@ namespace Remotion.Context
     /// <inheritdoc />
     public void SetData (string key, object? value)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
 
       var hashtable = _context.Value;
       if (hashtable == null)
@@ -56,7 +56,7 @@ namespace Remotion.Context
     /// <inheritdoc />
     public void FreeData (string key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
 
       _context.Value?.Remove(key);
     }

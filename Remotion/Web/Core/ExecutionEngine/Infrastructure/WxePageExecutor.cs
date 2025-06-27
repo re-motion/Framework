@@ -30,7 +30,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public void ExecutePage (WxeContext context, string page, bool isPostBack)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(page), page);
 
       string url = page;

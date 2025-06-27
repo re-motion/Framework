@@ -29,41 +29,41 @@ namespace Remotion.Mixins.Definitions.Building
 
     public TargetCallDependencyDefinitionBuilder (MixinDefinition mixin)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixin), mixin);
+      ArgumentNullException.ThrowIfNull(mixin);
       _mixin = mixin;
     }
 
     protected override RequirementDefinitionBase GetRequirement (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return _mixin.TargetClass.RequiredTargetCallTypes[type];
     }
 
     protected override RequirementDefinitionBase CreateRequirement (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return new RequiredTargetCallTypeDefinition(_mixin.TargetClass, type);
     }
 
     protected override void AddRequirement (RequirementDefinitionBase requirement)
     {
-      ArgumentUtility.CheckNotNull(nameof(requirement), requirement);
+      ArgumentNullException.ThrowIfNull(requirement);
 
       _mixin.TargetClass.RequiredTargetCallTypes.Add((RequiredTargetCallTypeDefinition)requirement);
     }
 
     protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase? aggregator)
     {
-      ArgumentUtility.CheckNotNull(nameof(requirement), requirement);
+      ArgumentNullException.ThrowIfNull(requirement);
 
       return new TargetCallDependencyDefinition((RequiredTargetCallTypeDefinition)requirement, _mixin, (TargetCallDependencyDefinition?)aggregator);
     }
 
     protected override void AddDependency (DependencyDefinitionBase dependency)
     {
-      ArgumentUtility.CheckNotNull(nameof(dependency), dependency);
+      ArgumentNullException.ThrowIfNull(dependency);
 
       if (!_mixin.TargetCallDependencies.ContainsKey(dependency.RequiredType.Type))
         _mixin.TargetCallDependencies.Add((TargetCallDependencyDefinition)dependency);

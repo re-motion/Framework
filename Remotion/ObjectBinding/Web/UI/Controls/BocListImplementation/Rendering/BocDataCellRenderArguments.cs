@@ -14,6 +14,7 @@
 // // You should have received a copy of the GNU Lesser General Public License
 // // along with re-motion; if not, see http://www.gnu.org/licenses.
 // //
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
@@ -59,10 +60,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IReadOnlyCollection<string> headerIDs,
         IReadOnlyList<bool> columnsWithValidationFailures)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRowRenderEventArgs), dataRowRenderEventArgs);
+      ArgumentNullException.ThrowIfNull(dataRowRenderEventArgs);
       ArgumentUtility.CheckNotEmpty(nameof(cellID), cellID);
-      ArgumentUtility.CheckNotNull(nameof(headerIDs), headerIDs);
-      ArgumentUtility.CheckNotNull(nameof(columnsWithValidationFailures), columnsWithValidationFailures);
+      ArgumentNullException.ThrowIfNull(headerIDs);
+      ArgumentNullException.ThrowIfNull(columnsWithValidationFailures);
 
       _dataRowRenderEventArgs = dataRowRenderEventArgs;
       RowIndex = rowIndex;

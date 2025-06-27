@@ -36,7 +36,7 @@ public class SqlTableTypeScriptElementFactory : SqlElementFactoryBase, IStructur
 
   public IScriptElement GetCreateElement (TableTypeDefinition tableTypeDefinition)
   {
-    ArgumentUtility.CheckNotNull(nameof(tableTypeDefinition), tableTypeDefinition);
+    ArgumentNullException.ThrowIfNull(tableTypeDefinition);
 
     var columnDeclarations = tableTypeDefinition.GetAllColumns().Select(GetColumnDeclaration);
     var tableConstraints = GetTableConstraintDeclarations(tableTypeDefinition);

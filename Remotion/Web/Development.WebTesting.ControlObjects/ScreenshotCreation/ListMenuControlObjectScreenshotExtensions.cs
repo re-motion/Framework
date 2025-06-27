@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// </summary>
     public static ScreenshotListMenuSelector SelectItem ([NotNull] this IFluentScreenshotElementWithCovariance<ListMenuControlObject> fluentListMenu)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentListMenu), fluentListMenu);
+      ArgumentNullException.ThrowIfNull(fluentListMenu);
 
       return new ScreenshotListMenuSelector(fluentListMenu.Target);
     }

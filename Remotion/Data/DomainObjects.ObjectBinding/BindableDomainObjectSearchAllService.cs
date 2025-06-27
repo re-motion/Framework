@@ -37,14 +37,14 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
     public bool SupportsProperty (IBusinessObjectReferenceProperty property)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(property);
       var domainObjectType = GetDomainObjectType(property);
       return domainObjectType != null;
     }
 
     public IBusinessObject[] Search (IBusinessObject? referencingObject, IBusinessObjectReferenceProperty property, ISearchAvailableObjectsArguments? searchArguments)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(property);
       if (!SupportsProperty(property))
       {
         var message = string.Format("The property '{0}' on type '{1}' is not supported by the BindableDomainObjectSearchAllService: The service "
@@ -77,8 +77,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
     public IBusinessObject[] GetAllObjects (ClientTransaction clientTransaction, Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(type);
 
       var query = GetQuery(type);
       return clientTransaction.QueryManager.GetCollection(query).AsEnumerable().Cast<IBusinessObject>().ToArray();

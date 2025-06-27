@@ -57,8 +57,8 @@ namespace Remotion.Web.ExecutionEngine
 
     protected WxeFunction (ITransactionMode transactionMode, params object?[] actualParameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(transactionMode), transactionMode);
-      ArgumentUtility.CheckNotNull(nameof(actualParameters), actualParameters);
+      ArgumentNullException.ThrowIfNull(transactionMode);
+      ArgumentNullException.ThrowIfNull(actualParameters);
 
       _transactionMode = transactionMode;
       _variablesContainer = new WxeVariablesContainer(this, actualParameters);
@@ -66,9 +66,9 @@ namespace Remotion.Web.ExecutionEngine
 
     protected WxeFunction (ITransactionMode transactionMode, WxeParameterDeclaration[] parameterDeclarations, object?[] actualParameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(transactionMode), transactionMode);
-      ArgumentUtility.CheckNotNull(nameof(parameterDeclarations), parameterDeclarations);
-      ArgumentUtility.CheckNotNull(nameof(actualParameters), actualParameters);
+      ArgumentNullException.ThrowIfNull(transactionMode);
+      ArgumentNullException.ThrowIfNull(parameterDeclarations);
+      ArgumentNullException.ThrowIfNull(actualParameters);
 
       _transactionMode = transactionMode;
       _variablesContainer = new WxeVariablesContainer(this, actualParameters, parameterDeclarations);
@@ -76,7 +76,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public override void Execute (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
       Assertion.IsNotNull(_executionListener);
 
       if (!IsExecutionStarted)
@@ -149,7 +149,7 @@ namespace Remotion.Web.ExecutionEngine
 
     protected void SetTransactionMode (ITransactionMode transactionMode)
     {
-      ArgumentUtility.CheckNotNull(nameof(transactionMode), transactionMode);
+      ArgumentNullException.ThrowIfNull(transactionMode);
 
       if (_transactionStrategy != null)
         throw new InvalidOperationException("The TransactionMode cannot be set after the TransactionStrategy has been initialized.");
@@ -164,7 +164,7 @@ namespace Remotion.Web.ExecutionEngine
 
     protected void SetExecutionListener (IWxeFunctionExecutionListener executionListener)
     {
-      ArgumentUtility.CheckNotNull(nameof(executionListener), executionListener);
+      ArgumentNullException.ThrowIfNull(executionListener);
 
       if (_transactionStrategy != null)
         throw new InvalidOperationException("The ExecutionListener cannot be set after the TransactionStrategy has been initialized.");

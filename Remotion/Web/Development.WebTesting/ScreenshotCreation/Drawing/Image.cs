@@ -26,7 +26,7 @@ public class Image : IDisposable
 
   public static Image FromStream (Stream stream)
   {
-    ArgumentUtility.CheckNotNull(nameof(stream), stream);
+    ArgumentNullException.ThrowIfNull(stream);
 
     var skBitmap = SKBitmap.Decode(stream);
     return new Image(skBitmap);
@@ -47,7 +47,7 @@ public class Image : IDisposable
 
   public Image (SKBitmap skiaBitmap)
   {
-    ArgumentUtility.CheckNotNull(nameof(skiaBitmap), skiaBitmap);
+    ArgumentNullException.ThrowIfNull(skiaBitmap);
 
     SkiaBitmap = skiaBitmap;
   }

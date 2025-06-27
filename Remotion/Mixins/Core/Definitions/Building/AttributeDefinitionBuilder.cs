@@ -29,13 +29,13 @@ namespace Remotion.Mixins.Definitions.Building
 
     public AttributeDefinitionBuilder (IAttributableDefinition attributableDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(attributableDefinition), attributableDefinition);
+      ArgumentNullException.ThrowIfNull(attributableDefinition);
       _attributableDefinition = attributableDefinition;
     }
 
     public void Apply (MemberInfo attributeSource)
     {
-      ArgumentUtility.CheckNotNull(nameof(attributeSource), attributeSource);
+      ArgumentNullException.ThrowIfNull(attributeSource);
 
       var attributes = TypePipeCustomAttributeData.GetCustomAttributes(attributeSource, inherit: true);
       Apply(attributeSource, attributes, isCopyTemplate: false);
@@ -43,8 +43,8 @@ namespace Remotion.Mixins.Definitions.Building
 
     public void Apply (MemberInfo attributeSource, IEnumerable<ICustomAttributeData> attributes, bool isCopyTemplate)
     {
-      ArgumentUtility.CheckNotNull(nameof(attributeSource), attributeSource);
-      ArgumentUtility.CheckNotNull(nameof(attributes), attributes);
+      ArgumentNullException.ThrowIfNull(attributeSource);
+      ArgumentNullException.ThrowIfNull(attributes);
 
       foreach (var attributeData in attributes)
       {

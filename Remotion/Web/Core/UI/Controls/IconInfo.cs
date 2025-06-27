@@ -34,7 +34,7 @@ namespace Remotion.Web.UI.Controls
   {
     public static IconInfo CreateSpacer (IResourceUrlFactory resourceUrlFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceUrlFactory), resourceUrlFactory);
+      ArgumentNullException.ThrowIfNull(resourceUrlFactory);
 
       var infrastructureType = SafeServiceLocator.Current.GetInstance<IInfrastructureResourceUrlFactory>().GetType();
 
@@ -152,8 +152,8 @@ namespace Remotion.Web.UI.Controls
 
     public void Render (HtmlTextWriter writer, IControl container)
     {
-      ArgumentUtility.CheckNotNull(nameof(container), container);
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentNullException.ThrowIfNull(container);
+      ArgumentNullException.ThrowIfNull(writer);
 
       string url = container.ResolveClientUrl(_url);
       if (string.IsNullOrEmpty(url))
@@ -238,7 +238,7 @@ namespace Remotion.Web.UI.Controls
   {
     public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
-      ArgumentUtility.CheckNotNull(nameof(sourceType), sourceType);
+      ArgumentNullException.ThrowIfNull(sourceType);
 
       if (context == null // Requried to circumvent the Designer
           && sourceType == typeof(string))

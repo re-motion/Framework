@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
 
     public TestInfrastructureConfiguration ([NotNull] IWebTestSettings webTestSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(webTestSettings), webTestSettings);
+      ArgumentNullException.ThrowIfNull(webTestSettings);
 
       _webApplicationRoot = webTestSettings.WebApplicationRoot;
       _testSiteStartupCheckEnabled = webTestSettings.TestSiteStartupCheckEnabled;

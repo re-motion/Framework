@@ -41,7 +41,7 @@ namespace Remotion.Security.Metadata
 
     public StatePropertyReflector (IEnumerationReflector enumerationReflector)
     {
-      ArgumentUtility.CheckNotNull(nameof(enumerationReflector), enumerationReflector);
+      ArgumentNullException.ThrowIfNull(enumerationReflector);
       _enumerationReflector = enumerationReflector;
     }
 
@@ -54,7 +54,7 @@ namespace Remotion.Security.Metadata
 
     public StatePropertyInfo GetMetadata (PropertyInfo property, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(property);
       if (!property.PropertyType.IsEnum)
       {
         throw new ArgumentException(
@@ -69,7 +69,7 @@ namespace Remotion.Security.Metadata
             nameof(property));
       }
 
-      ArgumentUtility.CheckNotNull(nameof(cache), cache);
+      ArgumentNullException.ThrowIfNull(cache);
 
       StatePropertyInfo? info = cache.GetStatePropertyInfo(property);
       if (info == null)

@@ -111,7 +111,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <inheritdoc/>
     public WebTestActionOptionsFluentInterface ContinueWhen ([NotNull] ICompletionDetectionStrategy completionDetectionStrategy)
     {
-      ArgumentUtility.CheckNotNull(nameof(completionDetectionStrategy), completionDetectionStrategy);
+      ArgumentNullException.ThrowIfNull(completionDetectionStrategy);
       Assertion.IsNull(_actionOptions.CompletionDetectionStrategy, "You cannot specify multiple completion detector strategies.");
 
       _actionOptions.CompletionDetectionStrategy = completionDetectionStrategy;

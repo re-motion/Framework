@@ -79,7 +79,7 @@ namespace Remotion.Validation.Validators
 
     public DecimalValidator (int maxIntegerPlaces, int maxDecimalPlaces, bool ignoreTrailingZeros, [NotNull] ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
+      ArgumentNullException.ThrowIfNull(validationMessage);
 
       if (maxIntegerPlaces < 1)
         throw new ArgumentOutOfRangeException(nameof(maxIntegerPlaces), maxIntegerPlaces, "Value must not be zero or negative.");
@@ -105,7 +105,7 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (IsValid(context))
         return Enumerable.Empty<ValidationFailure>();

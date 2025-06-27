@@ -23,9 +23,9 @@ namespace Remotion.Development.Moq.UnitTesting.Threading
 
     public LockingDecoratorTestHelper (T lockingDecorator, object lockObject, Mock<T> innerMock)
     {
-      ArgumentUtility.CheckNotNull(nameof(lockingDecorator), lockingDecorator);
-      ArgumentUtility.CheckNotNull(nameof(lockObject), lockObject);
-      ArgumentUtility.CheckNotNull(nameof(innerMock), innerMock);
+      ArgumentNullException.ThrowIfNull(lockingDecorator);
+      ArgumentNullException.ThrowIfNull(lockObject);
+      ArgumentNullException.ThrowIfNull(innerMock);
 
       _lockingDecorator = lockingDecorator;
       _lockObject = lockObject;
@@ -35,8 +35,8 @@ namespace Remotion.Development.Moq.UnitTesting.Threading
     public void ExpectSynchronizedDelegation<TResult> (Expression<Func<T, TResult>> action, TResult fakeResult)
         where TResult : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(action), action);
-      ArgumentUtility.CheckNotNull(nameof(fakeResult), fakeResult);
+      ArgumentNullException.ThrowIfNull(action);
+      ArgumentNullException.ThrowIfNull(fakeResult);
 
       ExpectSynchronizedDelegation(action, fakeResult, r => Assert.That(r, Is.EqualTo(fakeResult)));
     }
@@ -68,7 +68,7 @@ namespace Remotion.Development.Moq.UnitTesting.Threading
 
     public void ExpectSynchronizedDelegation (Expression<Action<T>> expectAction, Action<T> action)
     {
-      ArgumentUtility.CheckNotNull(nameof(action), action);
+      ArgumentNullException.ThrowIfNull(action);
 
       _innerMock
           .Setup(expectAction)

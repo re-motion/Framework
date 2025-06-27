@@ -31,7 +31,7 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
   {
     public CompoundUrlMappingFileFinder (IEnumerable<IUrlMappingFileFinder> urlMappingFileFinders)
     {
-      ArgumentUtility.CheckNotNull(nameof(urlMappingFileFinders), urlMappingFileFinders);
+      ArgumentNullException.ThrowIfNull(urlMappingFileFinders);
 
       UrlMappingFileFinders = urlMappingFileFinders.ToList().AsReadOnly();
     }

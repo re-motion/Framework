@@ -26,7 +26,7 @@ namespace Remotion.Mixins
   {
     public static Type GetUnderlyingMixedType (this Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return MixinTypeUtility.GetUnderlyingTargetType(type);
     }

@@ -33,7 +33,7 @@ namespace Remotion.Mixins.Definitions
 
     public DefinitionCollectionBase (KeyMaker keyMaker, Predicate<TValue>? guardian)
     {
-      ArgumentUtility.CheckNotNull(nameof(keyMaker), keyMaker);
+      ArgumentNullException.ThrowIfNull(keyMaker);
       _keyMaker = keyMaker;
       _guardian = guardian;
     }
@@ -62,7 +62,7 @@ namespace Remotion.Mixins.Definitions
 
     protected internal void Add (TValue newItem)
     {
-      ArgumentUtility.CheckNotNull(nameof(newItem), newItem);
+      ArgumentNullException.ThrowIfNull(newItem);
       if (_guardian != null && !_guardian(newItem))
         throw new ArgumentException(string.Format("The item does not match the criteria to be added to the collection: {0}.", _guardian.Method),
             nameof(newItem));
@@ -91,7 +91,7 @@ namespace Remotion.Mixins.Definitions
 
     internal void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       foreach (TValue value in this)
       {
         value.Accept(visitor);

@@ -54,7 +54,7 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public ResourceVirtualPathProvider (ResourcePathMapping[] mappings, FileExtensionHandlerMapping[]? fileExtensionHandlerMappings = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(mappings), mappings);
+      ArgumentNullException.ThrowIfNull(mappings);
 
       var resourceRoot = SafeServiceLocator.Current.GetInstance<ResourceRoot>();
       _resourceRoot = VirtualPathUtility.AppendTrailingSlash(CombineVirtualPath("~/", resourceRoot.Value));

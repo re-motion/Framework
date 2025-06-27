@@ -72,9 +72,9 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
         IAssemblyLoader assemblyLoader)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(searchPath), searchPath);
-      ArgumentUtility.CheckNotNull(nameof(specifications), specifications);
-      ArgumentUtility.CheckNotNull(nameof(fileSearchService), fileSearchService);
-      ArgumentUtility.CheckNotNull(nameof(assemblyLoader), assemblyLoader);
+      ArgumentNullException.ThrowIfNull(specifications);
+      ArgumentNullException.ThrowIfNull(fileSearchService);
+      ArgumentNullException.ThrowIfNull(assemblyLoader);
 
       _searchPath = searchPath;
       _specifications = specifications.ToList().AsReadOnly();

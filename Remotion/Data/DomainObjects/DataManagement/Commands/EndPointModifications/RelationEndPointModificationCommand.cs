@@ -45,8 +45,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         DomainObject? newRelatedObject,
         IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull(nameof(modifiedEndPoint), modifiedEndPoint);
-      ArgumentUtility.CheckNotNull(nameof(transactionEventSink), transactionEventSink);
+      ArgumentNullException.ThrowIfNull(modifiedEndPoint);
+      ArgumentNullException.ThrowIfNull(transactionEventSink);
       if (modifiedEndPoint.IsNull)
         throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", nameof(modifiedEndPoint));
 

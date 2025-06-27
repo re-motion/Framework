@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// </summary>
     public static ScreenshotWebTabStripSelector SelectItem ([NotNull] this IFluentScreenshotElementWithCovariance<WebTabStripControlObject> fluentWebTabStrip)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentWebTabStrip), fluentWebTabStrip);
+      ArgumentNullException.ThrowIfNull(fluentWebTabStrip);
 
       return new ScreenshotWebTabStripSelector(fluentWebTabStrip.Target);
     }

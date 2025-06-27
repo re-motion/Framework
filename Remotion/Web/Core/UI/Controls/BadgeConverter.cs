@@ -16,7 +16,7 @@ namespace Remotion.Web.UI.Controls
 
     public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
-      ArgumentUtility.CheckNotNull(nameof(sourceType), sourceType);
+      ArgumentNullException.ThrowIfNull(sourceType);
 
       if (context == null && sourceType == typeof(string))
         return true;

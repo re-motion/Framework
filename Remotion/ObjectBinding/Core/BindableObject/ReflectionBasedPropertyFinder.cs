@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public ReflectionBasedPropertyFinder (Type concreteType)
     {
-      ArgumentUtility.CheckNotNull(nameof(concreteType), concreteType);
+      ArgumentNullException.ThrowIfNull(concreteType);
       _concreteType = concreteType;
 
       _interfaceMethodImplementations = GetInterfaceMethodImplementationCache();

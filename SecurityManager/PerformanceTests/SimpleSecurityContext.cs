@@ -41,8 +41,8 @@ namespace Remotion.SecurityManager.PerformanceTests
         EnumWrapper[] abstractRoles)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(@class), @class);
-      ArgumentUtility.CheckNotNull(nameof(states), states);
-      ArgumentUtility.CheckNotNull(nameof(abstractRoles), abstractRoles);
+      ArgumentNullException.ThrowIfNull(states);
+      ArgumentNullException.ThrowIfNull(abstractRoles);
 
       _class = @class;
       _owner = StringUtility.EmptyToNull(owner);

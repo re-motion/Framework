@@ -43,8 +43,8 @@ namespace Remotion.Mixins.Definitions
 
     protected override void CustomizedAdd (TKey key, TValue value)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(key);
+      ArgumentNullException.ThrowIfNull(value);
 
       if (ContainsKey(key))
       {

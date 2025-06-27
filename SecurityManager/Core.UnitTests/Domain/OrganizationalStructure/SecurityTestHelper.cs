@@ -31,7 +31,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public SecurityClient CreatedStubbedSecurityClient<T> (params Enum[] accessTypes)
         where T: ISecurableObject
     {
-      ArgumentUtility.CheckNotNull(nameof(accessTypes), accessTypes);
+      ArgumentNullException.ThrowIfNull(accessTypes);
 
       var principalStub = CreatePrincipalStub();
 

@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
 
     public TestSiteLayoutConfiguration ([NotNull] IWebTestSettings webTestSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(webTestSettings), webTestSettings);
+      ArgumentNullException.ThrowIfNull(webTestSettings);
 
       RootPath = GetRootedRootPath(webTestSettings.TestSiteLayout.RootPath);
       Resources = webTestSettings.TestSiteLayout.Resources

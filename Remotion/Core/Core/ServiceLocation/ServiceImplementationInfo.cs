@@ -37,7 +37,7 @@ namespace Remotion.ServiceLocation
     public static ServiceImplementationInfo CreateSingle<T> (Func<T> factory, LifetimeKind lifetime = LifetimeKind.InstancePerDependency)
         where T : class
     {
-      ArgumentUtility.CheckNotNull(nameof(factory), factory);
+      ArgumentNullException.ThrowIfNull(factory);
       return new ServiceImplementationInfo(typeof(T), lifetime, RegistrationType.Single, factory);
     }
 
@@ -54,7 +54,7 @@ namespace Remotion.ServiceLocation
     public static ServiceImplementationInfo CreateMultiple<T> (Func<T> factory, LifetimeKind lifetime = LifetimeKind.InstancePerDependency)
         where T : class
     {
-      ArgumentUtility.CheckNotNull(nameof(factory), factory);
+      ArgumentNullException.ThrowIfNull(factory);
       return new ServiceImplementationInfo(typeof(T), lifetime, RegistrationType.Multiple, factory);
     }
 

@@ -92,7 +92,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <exception cref="WebTestException">The element is currently disabled.</exception>
     public UnspecifiedPageObject SetDate ([NotNull] string newDateString, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(newDateString), newDateString);
+      ArgumentNullException.ThrowIfNull(newDateString);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
@@ -138,7 +138,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <exception cref="WebTestException">The element is currently disabled.</exception>
     public UnspecifiedPageObject SetTime ([NotNull] string newTimeString, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(newTimeString), newTimeString);
+      ArgumentNullException.ThrowIfNull(newTimeString);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);

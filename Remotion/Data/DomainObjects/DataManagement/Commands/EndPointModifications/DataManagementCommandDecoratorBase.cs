@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     protected DataManagementCommandDecoratorBase (IDataManagementCommand decoratedCommand)
     {
-      ArgumentUtility.CheckNotNull(nameof(decoratedCommand), decoratedCommand);
+      ArgumentNullException.ThrowIfNull(decoratedCommand);
       _decoratedCommand = decoratedCommand;
     }
 

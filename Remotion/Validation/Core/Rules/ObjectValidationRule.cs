@@ -37,7 +37,7 @@ namespace Remotion.Validation.Rules
         [CanBeNull] Func<TValidatedType, bool>? condition,
         [NotNull] IReadOnlyCollection<IObjectValidator> validators)
     {
-      ArgumentUtility.CheckNotNull(nameof(validators), validators);
+      ArgumentNullException.ThrowIfNull(validators);
 
       Condition = condition;
       Validators = validators;
@@ -45,7 +45,7 @@ namespace Remotion.Validation.Rules
 
     public IEnumerable<ValidationFailure> Validate (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var instanceToValidate = (TValidatedType?)context.InstanceToValidate;
       if (instanceToValidate == null)
@@ -61,7 +61,7 @@ namespace Remotion.Validation.Rules
 
     public bool IsActive (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (Condition == null)
         return true;

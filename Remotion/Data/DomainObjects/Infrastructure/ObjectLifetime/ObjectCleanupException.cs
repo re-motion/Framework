@@ -42,8 +42,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     public ObjectCleanupException (string message, ObjectID objectID, Exception innerException, Exception cleanupException)
         : base(message, ArgumentUtility.CheckNotNull(nameof(innerException), innerException))
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
-      ArgumentUtility.CheckNotNull(nameof(cleanupException), cleanupException);
+      ArgumentNullException.ThrowIfNull(objectID);
+      ArgumentNullException.ThrowIfNull(cleanupException);
 
       _objectID = objectID;
       _cleanupException = cleanupException;

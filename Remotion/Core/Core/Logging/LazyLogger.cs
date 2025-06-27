@@ -29,7 +29,7 @@ public class LazyLogger : ILogger
 
   public LazyLogger (Lazy<ILogger> lazyLogger)
   {
-    ArgumentUtility.CheckNotNull(nameof(lazyLogger), lazyLogger);
+    ArgumentNullException.ThrowIfNull(lazyLogger);
 
     _lazyLogger = lazyLogger;
   }

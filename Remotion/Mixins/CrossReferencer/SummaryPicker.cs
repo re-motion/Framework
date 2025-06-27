@@ -30,7 +30,7 @@ namespace Remotion.Mixins.CrossReferencer
 
     public XElement GetSummary (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       // get path and filename of xml summary
       var documentationFileName = Path.ChangeExtension(type.Assembly.Location, ".xml");
@@ -58,7 +58,7 @@ namespace Remotion.Mixins.CrossReferencer
 
     public XElement NormalizeAndTrim (XElement element)
     {
-      ArgumentUtility.CheckNotNull(nameof(element), element);
+      ArgumentNullException.ThrowIfNull(element);
 
       var normalizedElement = s_normalizeTrim.Replace(element.ToString(), " ").Replace(" <", "<").Replace("> ", ">");
 

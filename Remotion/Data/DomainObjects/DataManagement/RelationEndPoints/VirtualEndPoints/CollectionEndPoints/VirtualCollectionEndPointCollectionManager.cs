@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         RelationEndPointID endPointID,
         IVirtualCollectionEndPointCollectionProvider collectionProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
-      ArgumentUtility.CheckNotNull(nameof(collectionProvider), collectionProvider);
+      ArgumentNullException.ThrowIfNull(endPointID);
+      ArgumentNullException.ThrowIfNull(collectionProvider);
 
       _endPointID = endPointID;
       _collectionProvider = collectionProvider;

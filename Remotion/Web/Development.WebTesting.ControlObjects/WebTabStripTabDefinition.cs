@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(title), title);
-      ArgumentUtility.CheckNotNull(nameof(accessKey), accessKey);
+      ArgumentNullException.ThrowIfNull(accessKey);
 
       _itemID = itemID;
       _index = index;

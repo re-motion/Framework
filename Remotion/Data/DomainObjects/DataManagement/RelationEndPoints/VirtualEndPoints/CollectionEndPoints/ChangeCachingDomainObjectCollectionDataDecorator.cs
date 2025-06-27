@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// <param name="domainObject">The <see cref="DomainObject"/> to be registered.</param>
     public void RegisterOriginalItem (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
 
       // Original collection must not contain this item
       if (_originalData.ContainsObjectID(domainObject.ID))
@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// <param name="objectID">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to be unregistered.</param>
     public void UnregisterOriginalItem (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       // Original collection must contain this item
       if (!_originalData.ContainsObjectID(objectID))
@@ -209,7 +209,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// <param name="comparison"></param>
     public void SortOriginalAndCurrent (Comparison<DomainObject> comparison)
     {
-      ArgumentUtility.CheckNotNull(nameof(comparison), comparison);
+      ArgumentNullException.ThrowIfNull(comparison);
 
       // Sort the unobserved inner collection to avoid copy on write: if the contents hasn't been copied, we want to sort both 
       // collections at the same time!

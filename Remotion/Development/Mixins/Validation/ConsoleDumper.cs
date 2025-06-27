@@ -26,7 +26,7 @@ namespace Remotion.Development.Mixins.Validation
   {
     public static void DumpValidationResults (IEnumerable<ValidationResult> results)
     {
-      ArgumentUtility.CheckNotNull(nameof(results), results);
+      ArgumentNullException.ThrowIfNull(results);
 
       foreach (ValidationResult result in results)
       {

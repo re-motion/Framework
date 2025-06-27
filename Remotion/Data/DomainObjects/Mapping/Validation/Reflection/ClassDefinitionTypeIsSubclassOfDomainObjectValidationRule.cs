@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
   {
     public MappingValidationResult Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       if (!ReflectionUtility.IsDomainObject(classDefinition.ClassType))
       {

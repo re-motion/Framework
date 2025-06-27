@@ -47,8 +47,8 @@ namespace Remotion.Globalization
         [NotNull] this IEnumerationGlobalizationService enumerationGlobalizationService,
         [NotNull] Enum value)
     {
-      ArgumentUtility.CheckNotNull(nameof(enumerationGlobalizationService), enumerationGlobalizationService);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(enumerationGlobalizationService);
+      ArgumentNullException.ThrowIfNull(value);
 
       if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName(value, out var result))
         return result;
@@ -79,8 +79,8 @@ namespace Remotion.Globalization
         [NotNull] this IEnumerationGlobalizationService enumerationGlobalizationService,
         [NotNull] Enum value)
     {
-      ArgumentUtility.CheckNotNull(nameof(enumerationGlobalizationService), enumerationGlobalizationService);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(enumerationGlobalizationService);
+      ArgumentNullException.ThrowIfNull(value);
 
       if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName(value, out var result))
         return result;
@@ -102,8 +102,8 @@ namespace Remotion.Globalization
         [NotNull] this IEnumerationGlobalizationService enumerationGlobalizationService,
         [NotNull] Enum value)
     {
-      ArgumentUtility.CheckNotNull(nameof(enumerationGlobalizationService), enumerationGlobalizationService);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(enumerationGlobalizationService);
+      ArgumentNullException.ThrowIfNull(value);
 
       return enumerationGlobalizationService.TryGetEnumerationValueDisplayName(value, out var result);
     }

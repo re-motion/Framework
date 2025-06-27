@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   {
     public static SubstitutionProxy Create (Substitution substitution)
     {
-      ArgumentUtility.CheckNotNull(nameof(substitution), substitution);
+      ArgumentNullException.ThrowIfNull(substitution);
 
       return new SubstitutionProxy(
           substitution.GetHandle(),

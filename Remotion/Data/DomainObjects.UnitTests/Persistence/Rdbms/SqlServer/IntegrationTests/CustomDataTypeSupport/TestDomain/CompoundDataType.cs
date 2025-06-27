@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
 using System.Collections;
 using Remotion.Utilities;
 
@@ -27,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public CompoundDataType (string stringValue, int int32Value)
     {
-      ArgumentUtility.CheckNotNull(nameof(stringValue), stringValue);
+      ArgumentNullException.ThrowIfNull(stringValue);
 
       _stringValue = stringValue;
       _int32Value = int32Value;

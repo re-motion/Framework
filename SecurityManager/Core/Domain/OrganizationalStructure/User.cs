@@ -55,7 +55,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     public static User? FindByUserName (string userName)
     {
-      ArgumentUtility.CheckNotNull(nameof(userName), userName);
+      ArgumentNullException.ThrowIfNull(userName);
 
       var result = from u in QueryFactory.CreateLinqQuery<User>()
                    where u.UserName == userName
@@ -66,7 +66,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     public static IQueryable<User> FindByTenant (IDomainObjectHandle<Tenant> tenantHandle)
     {
-      ArgumentUtility.CheckNotNull(nameof(tenantHandle), tenantHandle);
+      ArgumentNullException.ThrowIfNull(tenantHandle);
 
       return from u in QueryFactory.CreateLinqQuery<User>()
              where u.Tenant!.ID == tenantHandle.ObjectID

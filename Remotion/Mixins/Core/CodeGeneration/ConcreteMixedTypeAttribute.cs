@@ -38,7 +38,7 @@ namespace Remotion.Mixins.CodeGeneration
     /// <paramre name="context"/>.</returns>
     public static ConcreteMixedTypeAttribute FromClassContext (ClassContext context, Type[] orderedMixinTypes)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var serializer = new AttributeClassContextSerializer();
       context.Serialize(serializer);
@@ -57,8 +57,8 @@ namespace Remotion.Mixins.CodeGeneration
     /// code generation. The mixin types directly match the mixin types defined by <see cref="TargetClassDefinition.Mixins"/>.</param>
     public ConcreteMixedTypeAttribute (object[] classContextData, Type[] orderedMixinTypes)
     {
-      ArgumentUtility.CheckNotNull(nameof(classContextData), classContextData);
-      ArgumentUtility.CheckNotNull(nameof(orderedMixinTypes), orderedMixinTypes);
+      ArgumentNullException.ThrowIfNull(classContextData);
+      ArgumentNullException.ThrowIfNull(orderedMixinTypes);
 
       _classContextData = classContextData;
       _orderedMixinTypes = orderedMixinTypes;

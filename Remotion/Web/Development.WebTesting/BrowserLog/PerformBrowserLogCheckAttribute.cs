@@ -40,7 +40,7 @@ public class PerformBrowserLogCheckAttribute : WebTestAttribute
 
   public override void ApplyValue (IDictionary<string, object> dictionary)
   {
-    ArgumentUtility.CheckNotNull(nameof(dictionary), dictionary);
+    ArgumentNullException.ThrowIfNull(dictionary);
 
     dictionary[PropertyKey] = IsActive;
   }

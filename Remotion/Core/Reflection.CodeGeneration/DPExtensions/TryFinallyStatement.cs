@@ -30,8 +30,8 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public TryFinallyStatement (IEnumerable<Statement> tryStatements, IEnumerable<Statement> finallyStatements)
     {
-      ArgumentUtility.CheckNotNull(nameof(tryStatements), tryStatements);
-      ArgumentUtility.CheckNotNull(nameof(finallyStatements), finallyStatements);
+      ArgumentNullException.ThrowIfNull(tryStatements);
+      ArgumentNullException.ThrowIfNull(finallyStatements);
 
       _tryStatements = tryStatements;
       _finallyStatements = finallyStatements;
@@ -39,8 +39,8 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public override void Emit (IMemberEmitter member, ILGenerator gen)
     {
-      ArgumentUtility.CheckNotNull(nameof(member), member);
-      ArgumentUtility.CheckNotNull(nameof(gen), gen);
+      ArgumentNullException.ThrowIfNull(member);
+      ArgumentNullException.ThrowIfNull(gen);
 
       gen.BeginExceptionBlock();
 

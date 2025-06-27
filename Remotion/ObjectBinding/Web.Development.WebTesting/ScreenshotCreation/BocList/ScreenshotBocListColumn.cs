@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         int columnIndex,
         bool includeHeader)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentList), fluentList);
+      ArgumentNullException.ThrowIfNull(fluentList);
 
       _fluentList = fluentList;
       _columnIndex = columnIndex;
@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull(nameof(locator), locator);
+      ArgumentNullException.ThrowIfNull(locator);
 
       var window = locator.GetBrowserContentBounds(((IWrapsDriver)_fluentList.Target.List.Scope.Native).WrappedDriver);
       return ResolveInformation(CoordinateSystem.Desktop, window.Location);

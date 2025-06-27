@@ -63,7 +63,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     /// <param name="userRoleAclAceCombinationFinder"></param>
     public AclExpander (IUserRoleAclAceCombinationFinder userRoleAclAceCombinationFinder)
     {
-      ArgumentUtility.CheckNotNull(nameof(userRoleAclAceCombinationFinder), userRoleAclAceCombinationFinder);
+      ArgumentNullException.ThrowIfNull(userRoleAclAceCombinationFinder);
       _userRoleAclAceCombinationFinder = userRoleAclAceCombinationFinder;
     }
 

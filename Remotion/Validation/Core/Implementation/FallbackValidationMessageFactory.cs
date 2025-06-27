@@ -33,16 +33,16 @@ namespace Remotion.Validation.Implementation
 
     public ValidationMessage CreateValidationMessageForPropertyValidator (IPropertyValidator validator, IPropertyInformation validatedProperty)
     {
-      ArgumentUtility.CheckNotNull(nameof(validator), validator);
-      ArgumentUtility.CheckNotNull(nameof(validatedProperty), validatedProperty);
+      ArgumentNullException.ThrowIfNull(validator);
+      ArgumentNullException.ThrowIfNull(validatedProperty);
 
       return new InvariantValidationMessage($"{validator.GetType().Name}: Validation error.");
     }
 
     public ValidationMessage CreateValidationMessageForObjectValidator (IObjectValidator validator, ITypeInformation validatedType)
     {
-      ArgumentUtility.CheckNotNull(nameof(validator), validator);
-      ArgumentUtility.CheckNotNull(nameof(validatedType), validatedType);
+      ArgumentNullException.ThrowIfNull(validator);
+      ArgumentNullException.ThrowIfNull(validatedType);
 
       return new InvariantValidationMessage($"{validator.GetType().Name}: Validation error.");
     }

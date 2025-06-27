@@ -64,7 +64,7 @@ namespace Remotion.Web.Utilities
 
     public static string GetQualifiedName (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
       if (IsCompiledType(type))
         return type.GetFullNameChecked();
       return TypeUtility.GetPartialAssemblyQualifiedName(type);
@@ -72,7 +72,7 @@ namespace Remotion.Web.Utilities
 
     public static bool IsCompiledType (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
       IList? codeAssemblies = BuildManager.CodeAssemblies;
       if (codeAssemblies == null)
         return false;

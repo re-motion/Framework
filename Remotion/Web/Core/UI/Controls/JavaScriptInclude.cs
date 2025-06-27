@@ -33,7 +33,7 @@ namespace Remotion.Web.UI.Controls
 
     public JavaScriptInclude (IResourceUrl resourceUrl)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceUrl), resourceUrl);
+      ArgumentNullException.ThrowIfNull(resourceUrl);
 
       _resourceUrl = resourceUrl;
     }
@@ -45,7 +45,7 @@ namespace Remotion.Web.UI.Controls
 
     public override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       writer.WriteBeginTag(s_tagName);
       writer.WriteAttribute(s_srcAttribute, _resourceUrl.GetUrl());

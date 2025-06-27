@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public StateUpdateRaisingRelationEndPointFactoryDecorator (IRelationEndPointFactory innerFactory, IVirtualEndPointStateUpdateListener listener)
     {
-      ArgumentUtility.CheckNotNull(nameof(innerFactory), innerFactory);
-      ArgumentUtility.CheckNotNull(nameof(listener), listener);
+      ArgumentNullException.ThrowIfNull(innerFactory);
+      ArgumentNullException.ThrowIfNull(listener);
 
       _innerFactory = innerFactory;
       _listener = listener;

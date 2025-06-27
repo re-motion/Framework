@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
         [NotNull] string domainProperty,
         [CanBeNull] string? domainClass = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(domainProperty), domainProperty);
       ArgumentUtility.CheckNotEmpty(nameof(domainClass), domainClass);
 
@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject Select (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return _controlSelector.SelectPerDomainProperty(context, _domainProperty, _domainClass);
     }
@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject? SelectOptional (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return _controlSelector.SelectOptionalPerDomainProperty(context, _domainProperty, _domainClass);
     }
@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public bool Exists (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return _controlSelector.ExistsPerDomainProperty(context, _domainProperty, _domainClass);
     }

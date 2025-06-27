@@ -40,8 +40,8 @@ namespace Remotion.Validation.Implementation
 
     public ValidationAttributesBasedPropertyRuleReflector (PropertyInfo property, IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
-      ArgumentUtility.CheckNotNull(nameof(validationMessageFactory), validationMessageFactory);
+      ArgumentNullException.ThrowIfNull(property);
+      ArgumentNullException.ThrowIfNull(validationMessageFactory);
 
       // TODO RM-5906: Replace with IPropertyInformation and propagate to call and callee-site
       _propertyInfo = property;
@@ -56,7 +56,7 @@ namespace Remotion.Validation.Implementation
 
     public Func<object, object> GetValidatedPropertyFunc (Type validatedType)
     {
-      ArgumentUtility.CheckNotNull(nameof(validatedType), validatedType);
+      ArgumentNullException.ThrowIfNull(validatedType);
 
       // TODO RM-5906: Replace with IPropertyInformation.GetGetMethod().GetFastInvoker.
       // TODO RM-5906: Add cache, try to unify with AddingComponentPropertyRule and DomainObjectAttributesBasedValidationPropertyRuleReflector

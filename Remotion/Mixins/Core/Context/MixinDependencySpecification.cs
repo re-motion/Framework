@@ -30,8 +30,8 @@ namespace Remotion.Mixins.Context
 
     public MixinDependencySpecification (Type mixinType, IEnumerable<Type> dependencies)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
-      ArgumentUtility.CheckNotNull(nameof(dependencies), dependencies);
+      ArgumentNullException.ThrowIfNull(mixinType);
+      ArgumentNullException.ThrowIfNull(dependencies);
 
       _mixinType = mixinType;
       _dependencies = dependencies;

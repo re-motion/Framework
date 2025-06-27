@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Model
 
     public NonPersistentStorageEntity (StorageProviderDefinition storageProviderDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
 
       StorageProviderDefinition = storageProviderDefinition;
     }

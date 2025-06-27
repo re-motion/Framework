@@ -33,14 +33,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public TableSerializer (IPropertySerializer propertySerializer)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertySerializer), propertySerializer);
+      ArgumentNullException.ThrowIfNull(propertySerializer);
 
       _propertySerializer = propertySerializer;
     }
 
     public IEnumerable<XElement> Serialize (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       var tableDefinition = GetTableDefinition(classDefinition);
       if (tableDefinition == null)

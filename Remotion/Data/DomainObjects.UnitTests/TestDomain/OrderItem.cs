@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 
     protected OrderItem (Order order)
     {
-      ArgumentUtility.CheckNotNull(nameof(order), order);
+      ArgumentNullException.ThrowIfNull(order);
       Order = order;
     }
 

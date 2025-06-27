@@ -30,7 +30,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public RegularMixinInfo (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
+      ArgumentNullException.ThrowIfNull(mixinType);
 
       _mixinType = mixinType;
     }

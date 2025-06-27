@@ -30,15 +30,15 @@ public class SimpleDataParameterDefinitionFactory : IDataParameterDefinitionFact
 
   public SimpleDataParameterDefinitionFactory (IStorageTypeInformationProvider storageTypeInformationProvider)
   {
-    ArgumentUtility.CheckNotNull(nameof(storageTypeInformationProvider), storageTypeInformationProvider);
+    ArgumentNullException.ThrowIfNull(storageTypeInformationProvider);
 
     StorageTypeInformationProvider = storageTypeInformationProvider;
   }
 
   public IDataParameterDefinition CreateDataParameterDefinition (QueryParameter queryParameter, IQuery query)
   {
-    ArgumentUtility.CheckNotNull(nameof(queryParameter), queryParameter);
-    ArgumentUtility.CheckNotNull(nameof(query), query);
+    ArgumentNullException.ThrowIfNull(queryParameter);
+    ArgumentNullException.ThrowIfNull(query);
 
     try
     {

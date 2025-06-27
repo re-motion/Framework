@@ -37,7 +37,7 @@ namespace Remotion.Validation.Implementation
 
     public bool IsValidatableType (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return !_filterTypes.Contains(type);
     }

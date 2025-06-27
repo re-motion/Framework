@@ -47,9 +47,9 @@ public class SqlTableValuedParameterComparedColumnSpecification : IComparedColum
       IEnumerable<object?> objectValues,
       SqlTableValuedDataParameterDefinition dataParameterDefinition)
   {
-    ArgumentUtility.CheckNotNull(nameof(comparedColumn), comparedColumn);
-    ArgumentUtility.CheckNotNull(nameof(objectValues), objectValues);
-    ArgumentUtility.CheckNotNull(nameof(dataParameterDefinition), dataParameterDefinition);
+    ArgumentNullException.ThrowIfNull(comparedColumn);
+    ArgumentNullException.ThrowIfNull(objectValues);
+    ArgumentNullException.ThrowIfNull(dataParameterDefinition);
 
     ComparedColumnDefinition = comparedColumn;
     ObjectValues = objectValues;
@@ -59,8 +59,8 @@ public class SqlTableValuedParameterComparedColumnSpecification : IComparedColum
   /// <inheritdoc />
   public void AddParameters (IDbCommand command, ISqlDialect sqlDialect)
   {
-    ArgumentUtility.CheckNotNull(nameof(command), command);
-    ArgumentUtility.CheckNotNull(nameof(sqlDialect), sqlDialect);
+    ArgumentNullException.ThrowIfNull(command);
+    ArgumentNullException.ThrowIfNull(sqlDialect);
 
     var parameterName = GetParameterName(sqlDialect);
     var parameterValue = DataParameterDefinition.GetParameterValue(ObjectValues);
@@ -71,9 +71,9 @@ public class SqlTableValuedParameterComparedColumnSpecification : IComparedColum
   /// <inheritdoc />
   public void AppendComparisons (StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect)
   {
-    ArgumentUtility.CheckNotNull(nameof(statement), statement);
-    ArgumentUtility.CheckNotNull(nameof(command), command);
-    ArgumentUtility.CheckNotNull(nameof(sqlDialect), sqlDialect);
+    ArgumentNullException.ThrowIfNull(statement);
+    ArgumentNullException.ThrowIfNull(command);
+    ArgumentNullException.ThrowIfNull(sqlDialect);
 
     var delimitedColumnName = sqlDialect.DelimitIdentifier(ComparedColumnDefinition.Name);
     var delimitedValue = sqlDialect.DelimitIdentifier("Value");

@@ -42,10 +42,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
         IObjectReaderFactory objectReaderFactory,
         ITableDefinitionFinder tableDefinitionFinder)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
-      ArgumentUtility.CheckNotNull(nameof(dbCommandBuilderFactory), dbCommandBuilderFactory);
-      ArgumentUtility.CheckNotNull(nameof(objectReaderFactory), objectReaderFactory);
-      ArgumentUtility.CheckNotNull(nameof(tableDefinitionFinder), tableDefinitionFinder);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(dbCommandBuilderFactory);
+      ArgumentNullException.ThrowIfNull(objectReaderFactory);
+      ArgumentNullException.ThrowIfNull(tableDefinitionFinder);
 
       _storageProviderDefinition = storageProviderDefinition;
       _dbCommandBuilderFactory = dbCommandBuilderFactory;
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
 
     public virtual IRdbmsProviderCommandWithReadOnlySupport<ObjectLookupResult<DataContainer>> CreateForSingleIDLookup (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       var tableDefinition = _tableDefinitionFinder.GetTableDefinition(objectID);
       var selectedColumns = tableDefinition.GetAllColumns().ToArray();
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     public virtual IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectLookupResult<DataContainer>>> CreateForSortedMultiIDLookup (
         IEnumerable<ObjectID> objectIDs)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
+      ArgumentNullException.ThrowIfNull(objectIDs);
 
       var objectIDList = objectIDs as IReadOnlyCollection<ObjectID> ?? objectIDs.ToList();
       var dbCommandBuildersAndReaders =
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     public virtual IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectLookupResult<object>>> CreateForMultiTimestampLookup (
         IEnumerable<ObjectID> objectIDs)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
+      ArgumentNullException.ThrowIfNull(objectIDs);
 
       var dbCommandBuildersAndReaders =
           from id in objectIDs

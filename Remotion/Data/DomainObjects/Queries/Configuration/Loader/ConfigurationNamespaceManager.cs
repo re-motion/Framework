@@ -29,8 +29,8 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
         PrefixNamespace[] configurationNamespaces)
         : base(document.NameTable)
     {
-      ArgumentUtility.CheckNotNull(nameof(document), document);
-      ArgumentUtility.CheckNotNull(nameof(configurationNamespaces), configurationNamespaces);
+      ArgumentNullException.ThrowIfNull(document);
+      ArgumentNullException.ThrowIfNull(configurationNamespaces);
 
       foreach (PrefixNamespace configurationNamespace in configurationNamespaces)
       {

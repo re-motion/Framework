@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     /// <param name="port">Port to be used.</param>
     public IisExpressHostingStrategy ([NotNull] ITestSiteLayoutConfiguration testSiteLayoutConfiguration, int port)
     {
-      ArgumentUtility.CheckNotNull(nameof(testSiteLayoutConfiguration), testSiteLayoutConfiguration);
+      ArgumentNullException.ThrowIfNull(testSiteLayoutConfiguration);
 
       _iisExpressInstance = new IisExpressProcessWrapper(testSiteLayoutConfiguration.RootPath, port);
     }

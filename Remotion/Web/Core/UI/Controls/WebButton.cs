@@ -123,7 +123,7 @@ namespace Remotion.Web.UI.Controls
     /// </remarks>
     bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      ArgumentUtility.CheckNotNull(nameof(postCollection), postCollection);
+      ArgumentNullException.ThrowIfNull(postCollection);
 
       string? eventTarget = postCollection[ControlHelper.PostEventSourceID];
       bool isScriptedPostBack = !string.IsNullOrEmpty(eventTarget);
@@ -343,7 +343,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Loads the resources into the control's properties. </summary>
     protected virtual void LoadResources (IResourceManager resourceManager)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentNullException.ThrowIfNull(resourceManager);
 
       //  Dispatch simple properties
       string? key = ResourceManagerUtility.GetGlobalResourceKey(Text.GetValue());

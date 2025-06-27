@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ArgumentNullException">The <paramref name="domainObject"/> parameter is <see langword="null"/>.</exception>
     public PropertyIndexer (IDomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
       _domainObject = domainObject;
     }
 
@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     [NotNull]
     public IEnumerable<PropertyAccessor> AsEnumerable ([NotNull] ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
+      ArgumentNullException.ThrowIfNull(transaction);
       DomainObjectCheckUtility.CheckIfRightTransaction(_domainObject, transaction);
 
       foreach (PropertyDefinition propertyDefinition in ClassDefinition.GetPropertyDefinitions())
@@ -220,7 +220,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// </returns>
     public bool Contains ([NotNull] Type domainObjectType, [NotNull] string shortPropertyName)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObjectType), domainObjectType);
+      ArgumentNullException.ThrowIfNull(domainObjectType);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
 
       return PropertyAccessorDataCache.GetPropertyAccessorData(domainObjectType, shortPropertyName) != null;
@@ -237,7 +237,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ArgumentException">No matching property could be found.</exception>
     public PropertyAccessor Find ([NotNull] Type typeToStartSearch, [NotNull] string shortPropertyName)
     {
-      ArgumentUtility.CheckNotNull(nameof(typeToStartSearch), typeToStartSearch);
+      ArgumentNullException.ThrowIfNull(typeToStartSearch);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
 
       var propertyAccessorData = PropertyAccessorDataCache.FindPropertyAccessorData(typeToStartSearch, shortPropertyName);

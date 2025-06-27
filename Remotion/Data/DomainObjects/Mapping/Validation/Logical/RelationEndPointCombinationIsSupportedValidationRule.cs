@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     protected bool IsInvalidEndPointDefinition (IRelationEndPointDefinition endPointDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointDefinition), endPointDefinition);
+      ArgumentNullException.ThrowIfNull(endPointDefinition);
       return endPointDefinition is InvalidRelationEndPointDefinitionBase;
     }
   }

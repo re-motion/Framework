@@ -51,9 +51,9 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] ILoggerFactory loggerFactory)
         : base(scope, loggerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(browser), browser);
-      ArgumentUtility.CheckNotNull(nameof(window), window);
-      ArgumentUtility.CheckNotNull(nameof(requestErrorDetectionStrategy), requestErrorDetectionStrategy);
+      ArgumentNullException.ThrowIfNull(browser);
+      ArgumentNullException.ThrowIfNull(window);
+      ArgumentNullException.ThrowIfNull(requestErrorDetectionStrategy);
 
       _browser = browser;
       _window = window;
@@ -79,9 +79,9 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] IRequestErrorDetectionStrategy requestErrorDetectionStrategy,
         [NotNull] ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(browser), browser);
-      ArgumentUtility.CheckNotNull(nameof(requestErrorDetectionStrategy), requestErrorDetectionStrategy);
-      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
+      ArgumentNullException.ThrowIfNull(browser);
+      ArgumentNullException.ThrowIfNull(requestErrorDetectionStrategy);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       var scope = browser.Window.GetRootScope();
 
@@ -131,7 +131,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     public PageObjectContext CloneForSession ([NotNull] IBrowserSession browserSession)
     {
-      ArgumentUtility.CheckNotNull(nameof(browserSession), browserSession);
+      ArgumentNullException.ThrowIfNull(browserSession);
 
       var rootScope = browserSession.Window.GetRootScope();
 
@@ -153,7 +153,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </exception>
     public PageObjectContext CloneForFrame ([NotNull] ElementScope frameScope)
     {
-      ArgumentUtility.CheckNotNull(nameof(frameScope), frameScope);
+      ArgumentNullException.ThrowIfNull(frameScope);
 
       var frameRootElement = frameScope.FindCss("html");
 
@@ -204,8 +204,8 @@ namespace Remotion.Web.Development.WebTesting
     /// </exception>
     public ControlObjectContext CloneForControl ([NotNull] PageObject pageObject, [NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull(nameof(pageObject), pageObject);
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentNullException.ThrowIfNull(pageObject);
+      ArgumentNullException.ThrowIfNull(scope);
 
       try
       {
@@ -230,7 +230,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     public ControlSelectionContext CloneForControlSelection (PageObject pageObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(pageObject), pageObject);
+      ArgumentNullException.ThrowIfNull(pageObject);
 
       // No error page detection. See remarks documentation on this method.
 

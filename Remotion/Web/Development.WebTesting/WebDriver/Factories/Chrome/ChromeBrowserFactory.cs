@@ -43,8 +43,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
 
     public ChromeBrowserFactory ([NotNull] IChromeConfiguration chromeConfiguration, [NotNull] ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(chromeConfiguration), chromeConfiguration);
-      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
+      ArgumentNullException.ThrowIfNull(chromeConfiguration);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       _loggerFactory = loggerFactory;
       _logger = _loggerFactory.CreateLogger(typeof(ChromeBrowserFactory));
@@ -54,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
 
     public IBrowserSession CreateBrowser (DriverConfiguration configuration)
     {
-      ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
+      ArgumentNullException.ThrowIfNull(configuration);
 
       var sessionConfiguration = CreateSessionConfiguration(configuration);
       var commandTimeout = configuration.CommandTimeout;

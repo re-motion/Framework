@@ -50,13 +50,13 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IDomainObjectCreator instanceCreator)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(DomainObject));
-      ArgumentUtility.CheckNotNull(nameof(mappingObjectFactory), mappingObjectFactory);
-      ArgumentUtility.CheckNotNull(nameof(nameResolver), nameResolver);
-      ArgumentUtility.CheckNotNull(nameof(classIDProvider), classIDProvider);
-      ArgumentUtility.CheckNotNull(nameof(propertyMetadataProvider), propertyMetadataProvider);
-      ArgumentUtility.CheckNotNull(nameof(domainModelConstraintProvider), domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull(nameof(sortExpressionDefinitionProvider), sortExpressionDefinitionProvider);
-      ArgumentUtility.CheckNotNull(nameof(instanceCreator), instanceCreator);
+      ArgumentNullException.ThrowIfNull(mappingObjectFactory);
+      ArgumentNullException.ThrowIfNull(nameResolver);
+      ArgumentNullException.ThrowIfNull(classIDProvider);
+      ArgumentNullException.ThrowIfNull(propertyMetadataProvider);
+      ArgumentNullException.ThrowIfNull(domainModelConstraintProvider);
+      ArgumentNullException.ThrowIfNull(sortExpressionDefinitionProvider);
+      ArgumentNullException.ThrowIfNull(instanceCreator);
 
       _type = type;
       _mappingObjectFactory = mappingObjectFactory;

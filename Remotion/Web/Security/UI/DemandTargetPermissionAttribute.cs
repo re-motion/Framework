@@ -116,7 +116,7 @@ namespace Remotion.Web.Security.UI
 
     protected void CheckDeclaringTypeOfMethodNameEnum (Enum methodNameEnum)
     {
-      ArgumentUtility.CheckNotNull(nameof(methodNameEnum), methodNameEnum);
+      ArgumentNullException.ThrowIfNull(methodNameEnum);
 
       Type enumType = methodNameEnum.GetType();
 

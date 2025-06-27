@@ -30,9 +30,9 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public LoadCalculatedArrayElementExpression (Expression arrayExpression, Expression elementIndexExpression, Type elementType)
     {
-      ArgumentUtility.CheckNotNull(nameof(arrayExpression), arrayExpression);
-      ArgumentUtility.CheckNotNull(nameof(elementIndexExpression), elementIndexExpression);
-      ArgumentUtility.CheckNotNull(nameof(elementType), elementType);
+      ArgumentNullException.ThrowIfNull(arrayExpression);
+      ArgumentNullException.ThrowIfNull(elementIndexExpression);
+      ArgumentNullException.ThrowIfNull(elementType);
 
       _arrayExpression = arrayExpression;
       _elementIndexExpression = elementIndexExpression;

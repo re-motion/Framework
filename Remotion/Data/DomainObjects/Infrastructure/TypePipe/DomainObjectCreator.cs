@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public DomainObjectCreator (IPipelineRegistry pipelineRegistry)
     {
-      ArgumentUtility.CheckNotNull(nameof(pipelineRegistry), pipelineRegistry);
+      ArgumentNullException.ThrowIfNull(pipelineRegistry);
 
       _pipelineRegistry = pipelineRegistry;
     }
@@ -53,8 +53,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public DomainObject CreateObjectReference (IObjectInitializationContext objectInitializationContext, ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectInitializationContext), objectInitializationContext);
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentNullException.ThrowIfNull(objectInitializationContext);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
 
       var objectID = objectInitializationContext.ObjectID;
       CheckDomainTypeAndClassDefinition(objectID.ClassDefinition.ClassType);
@@ -79,9 +79,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public DomainObject CreateNewObject (IObjectInitializationContext objectInitializationContext, ParamList constructorParameters, ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectInitializationContext), objectInitializationContext);
-      ArgumentUtility.CheckNotNull(nameof(constructorParameters), constructorParameters);
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentNullException.ThrowIfNull(objectInitializationContext);
+      ArgumentNullException.ThrowIfNull(constructorParameters);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
 
       var domainObjectType = objectInitializationContext.ObjectID.ClassDefinition.ClassType;
       CheckDomainTypeAndClassDefinition(domainObjectType);

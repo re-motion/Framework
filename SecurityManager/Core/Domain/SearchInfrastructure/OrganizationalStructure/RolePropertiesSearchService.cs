@@ -42,7 +42,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStr
   {
     public bool SupportsProperty (IBusinessObjectReferenceProperty property)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(property);
 
       return property.Identifier == "Position";
     }
@@ -52,7 +52,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStr
         IBusinessObjectReferenceProperty property,
         ISearchAvailableObjectsArguments? searchArguments)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(property);
       var rolePropertiesSearchArguments = ArgumentUtility.CheckType<RolePropertiesSearchArguments>(nameof(searchArguments), searchArguments);
 
       if (!SupportsProperty(property))

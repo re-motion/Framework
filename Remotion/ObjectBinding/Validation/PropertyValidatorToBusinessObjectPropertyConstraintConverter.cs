@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Validation
 
     public IEnumerable<IBusinessObjectPropertyConstraint> Convert (IReadOnlyCollection<IPropertyValidator> propertyValidators)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyValidators), propertyValidators);
+      ArgumentNullException.ThrowIfNull(propertyValidators);
 
       if (propertyValidators.OfType<IRequiredValidator>().Any())
         yield return new BusinessObjectPropertyValueRequiredConstraint();

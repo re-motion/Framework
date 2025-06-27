@@ -34,7 +34,7 @@ public class SerializedObjectIDDataParameterDefinition : IDataParameterDefinitio
 
   public SerializedObjectIDDataParameterDefinition (IStorageTypeInformation storageTypeInformation)
   {
-    ArgumentUtility.CheckNotNull(nameof(storageTypeInformation), storageTypeInformation);
+    ArgumentNullException.ThrowIfNull(storageTypeInformation);
     ArgumentUtility.CheckTypeIsAssignableFrom("storageTypeInformation.DotNetType", storageTypeInformation.DotNetType, typeof(string));
 
     StorageTypeInformation = storageTypeInformation;
@@ -52,9 +52,9 @@ public class SerializedObjectIDDataParameterDefinition : IDataParameterDefinitio
 
   public IDbDataParameter CreateDataParameter (IDbCommand command, string parameterName, object parameterValue)
   {
-    ArgumentUtility.CheckNotNull(nameof(command), command);
+    ArgumentNullException.ThrowIfNull(command);
     ArgumentUtility.CheckNotNullOrEmpty(nameof(parameterName), parameterName);
-    ArgumentUtility.CheckNotNull(nameof(parameterValue), parameterValue);
+    ArgumentNullException.ThrowIfNull(parameterValue);
 
     var parameter = command.CreateParameter();
     parameter.ParameterName = parameterName;

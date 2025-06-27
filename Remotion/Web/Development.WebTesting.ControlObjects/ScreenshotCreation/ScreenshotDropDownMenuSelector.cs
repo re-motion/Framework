@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
 
     public ScreenshotDropDownMenuSelector ([NotNull] DropDownMenuControlObject dropDownMenu)
     {
-      ArgumentUtility.CheckNotNull(nameof(dropDownMenu), dropDownMenu);
+      ArgumentNullException.ThrowIfNull(dropDownMenu);
 
       _dropDownMenu = dropDownMenu;
     }
@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithHtmlID (string htmlID)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlID), htmlID);
+      ArgumentNullException.ThrowIfNull(htmlID);
 
       var scope = GetDropDownScope();
       var item = scope.FindId(htmlID);
@@ -57,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithItemID (string itemID)
     {
-      ArgumentUtility.CheckNotNull(nameof(itemID), itemID);
+      ArgumentNullException.ThrowIfNull(itemID);
 
       var scope = GetDropDownScope();
       var item = scope.FindTagWithAttribute("li.DropDownMenuItem", DiagnosticMetadataAttributes.ItemID, itemID);
@@ -77,7 +77,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayText (string displayText)
     {
-      ArgumentUtility.CheckNotNull(nameof(displayText), displayText);
+      ArgumentNullException.ThrowIfNull(displayText);
 
       var scope = GetDropDownScope();
       var item = scope.FindTagWithAttribute("li.DropDownMenuItem", DiagnosticMetadataAttributes.Content, displayText);
@@ -88,7 +88,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayTextContains (string displayText)
     {
-      ArgumentUtility.CheckNotNull(nameof(displayText), displayText);
+      ArgumentNullException.ThrowIfNull(displayText);
 
       var scope = GetDropDownScope();
       var item = scope.FindTagWithAttributeUsingOperator(

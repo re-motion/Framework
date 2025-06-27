@@ -32,8 +32,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public TargetTypeForNextCall (MutableType concreteTarget, FieldInfo extensionsField)
     {
-      ArgumentUtility.CheckNotNull(nameof(concreteTarget), concreteTarget);
-      ArgumentUtility.CheckNotNull(nameof(extensionsField), extensionsField);
+      ArgumentNullException.ThrowIfNull(concreteTarget);
+      ArgumentNullException.ThrowIfNull(extensionsField);
 
       _concreteTarget = concreteTarget;
       _extensionsField = extensionsField;
@@ -46,7 +46,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public MethodInfo GetBaseCallMethod (MethodInfo overriddenMethod)
     {
-      ArgumentUtility.CheckNotNull(nameof(overriddenMethod), overriddenMethod);
+      ArgumentNullException.ThrowIfNull(overriddenMethod);
       Assertion.IsNotNull(overriddenMethod.DeclaringType);
 
       if (!overriddenMethod.DeclaringType.IsAssignableFrom(_concreteTarget.BaseType))

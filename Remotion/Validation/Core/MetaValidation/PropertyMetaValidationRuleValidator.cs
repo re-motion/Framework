@@ -35,8 +35,8 @@ namespace Remotion.Validation.MetaValidation
         IPropertyMetaValidationRuleCollector[] propertyMetaValidationRuleCollectors,
         ISystemPropertyMetaValidationRuleProviderFactory systemPropertyMetaValidationRuleProviderFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyMetaValidationRuleCollectors), propertyMetaValidationRuleCollectors);
-      ArgumentUtility.CheckNotNull(nameof(systemPropertyMetaValidationRuleProviderFactory), systemPropertyMetaValidationRuleProviderFactory);
+      ArgumentNullException.ThrowIfNull(propertyMetaValidationRuleCollectors);
+      ArgumentNullException.ThrowIfNull(systemPropertyMetaValidationRuleProviderFactory);
 
       _addedPropertyMetaValidationRuleCollectors = propertyMetaValidationRuleCollectors;
       _systemPropertyMetaValidationRuleProviderFactory = systemPropertyMetaValidationRuleProviderFactory;
@@ -44,7 +44,7 @@ namespace Remotion.Validation.MetaValidation
 
     public IEnumerable<MetaValidationRuleValidationResult> Validate (IAddingPropertyValidationRuleCollector[] addingPropertyValidationRulesCollectors)
     {
-      ArgumentUtility.CheckNotNull(nameof(addingPropertyValidationRulesCollectors), addingPropertyValidationRulesCollectors);
+      ArgumentNullException.ThrowIfNull(addingPropertyValidationRulesCollectors);
 
       var propertyRulesByValidatedProperty = addingPropertyValidationRulesCollectors.ToLookup(c => c.Property, c => c.Validators);
 

@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     public CompletionDetectionStrategyTestHelper ([NotNull] IControlObjectNotifier controlObjectNotifier)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlObjectNotifier), controlObjectNotifier);
+      ArgumentNullException.ThrowIfNull(controlObjectNotifier);
 
       Register(controlObjectNotifier);
     }

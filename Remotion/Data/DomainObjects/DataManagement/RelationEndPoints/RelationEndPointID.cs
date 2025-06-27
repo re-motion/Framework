@@ -31,14 +31,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   {
     public static RelationEndPointID Create (ObjectID? objectID, IRelationEndPointDefinition definition)
     {
-      ArgumentUtility.CheckNotNull(nameof(definition), definition);
+      ArgumentNullException.ThrowIfNull(definition);
 
       return new RelationEndPointID(objectID, definition);
     }
 
     public static RelationEndPointID Create (ObjectID objectID, string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyIdentifier), propertyIdentifier);
 
       IRelationEndPointDefinition endPointDefinition;
@@ -56,8 +56,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public static RelationEndPointID Create (ObjectID objectID, Type declaringType, string shortPropertyName)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
-      ArgumentUtility.CheckNotNull(nameof(declaringType), declaringType);
+      ArgumentNullException.ThrowIfNull(objectID);
+      ArgumentNullException.ThrowIfNull(declaringType);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
 
       return CreateViaPropertyAccessorData(
@@ -71,8 +71,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         Expression<Func<TDomainObject, TRelation>> propertyAccessExpression)
         where TDomainObject : DomainObject
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
-      ArgumentUtility.CheckNotNull(nameof(propertyAccessExpression), propertyAccessExpression);
+      ArgumentNullException.ThrowIfNull(domainObject);
+      ArgumentNullException.ThrowIfNull(propertyAccessExpression);
 
       return CreateViaPropertyAccessorData(
           domainObject.ID,
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public static RelationEndPointID CreateOpposite (IRelationEndPointDefinition sourceEndPointDefinition, ObjectID? oppositeObjectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(sourceEndPointDefinition), sourceEndPointDefinition);
+      ArgumentNullException.ThrowIfNull(sourceEndPointDefinition);
 
       var oppositeEndPointDefinition = sourceEndPointDefinition.GetOppositeEndPointDefinition();
       return Create(oppositeObjectID, oppositeEndPointDefinition);
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public static IEnumerable<RelationEndPointID> GetAllRelationEndPointIDs (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       var endPointDefinitions = objectID.ClassDefinition.GetRelationEndPointDefinitions();
       return endPointDefinitions.Select(endPointDefinition => Create(objectID, endPointDefinition));

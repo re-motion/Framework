@@ -31,7 +31,7 @@ namespace Remotion.Collections
     public static TValue GetValueOrDefault<TKey, TValue> (this IDictionary<TKey, TValue> dictionary, TKey key)
         where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(dictionary), dictionary);
+      ArgumentNullException.ThrowIfNull(dictionary);
       // Implementations of IDictionary<TKey, TValue> are free to allow null keys.
 
       return GetValueOrDefault(dictionary, key, default(TValue)!);
@@ -55,7 +55,7 @@ namespace Remotion.Collections
     public static TValue GetValueOrDefault<TKey, TValue> (this IReadOnlyDictionary<TKey, TValue> dictionary, TKey key, [AllowNull] TValue defaultValue)
         where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(dictionary), dictionary);
+      ArgumentNullException.ThrowIfNull(dictionary);
       // Implementations of IDictionary<TKey, TValue> are free to allow null keys.
       // Default value may be null.
 
@@ -70,7 +70,7 @@ namespace Remotion.Collections
     public static TValue GetValueOrDefault<TKey, TValue> (this IDictionary<TKey, TValue> dictionary, TKey key, [AllowNull] TValue defaultValue)
         where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(dictionary), dictionary);
+      ArgumentNullException.ThrowIfNull(dictionary);
       // Implementations of IDictionary<TKey, TValue> are free to allow null keys.
       // Default value may be null.
 
@@ -98,9 +98,9 @@ namespace Remotion.Collections
     public static TValue GetOrCreateValue<TKey, TValue> (this Dictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue> valueFactory)
         where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(dictionary), dictionary);
-      ArgumentUtility.CheckNotNull(nameof(key), key);
-      ArgumentUtility.CheckNotNull(nameof(valueFactory), valueFactory);
+      ArgumentNullException.ThrowIfNull(dictionary);
+      ArgumentNullException.ThrowIfNull(key);
+      ArgumentNullException.ThrowIfNull(valueFactory);
 
       if (dictionary.TryGetValue(key, out var value))
         return value;

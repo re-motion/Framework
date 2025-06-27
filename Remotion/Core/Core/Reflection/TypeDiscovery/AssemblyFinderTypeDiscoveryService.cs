@@ -55,7 +55,7 @@ namespace Remotion.Reflection.TypeDiscovery
     /// <param name="assemblyFinder">The assembly finder used by this service instance to retrieve types.</param>
     public AssemblyFinderTypeDiscoveryService (IAssemblyFinder assemblyFinder)
     {
-      ArgumentUtility.CheckNotNull(nameof(assemblyFinder), assemblyFinder);
+      ArgumentNullException.ThrowIfNull(assemblyFinder);
       _assemblyFinder = assemblyFinder;
       _baseTypeCache = new Lazy<BaseTypeCache>(CreateBaseTypeCache);
     }

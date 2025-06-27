@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
             null,
             transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull(nameof(oppositeObjectNullSetter), oppositeObjectNullSetter);
+      ArgumentNullException.ThrowIfNull(oppositeObjectNullSetter);
 
       _oppositeObjectNullSetter = oppositeObjectNullSetter;
     }

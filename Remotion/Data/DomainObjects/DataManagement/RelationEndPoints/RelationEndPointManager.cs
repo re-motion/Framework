@@ -36,8 +36,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     /// </remarks>
     private static IRelationEndPoint CreateNullEndPoint (ClientTransaction clientTransaction, IRelationEndPointDefinition endPointDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(endPointDefinition), endPointDefinition);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(endPointDefinition);
 
       if (endPointDefinition.Cardinality == CardinalityType.Many && endPointDefinition is DomainObjectCollectionRelationEndPointDefinition)
         return new NullDomainObjectCollectionEndPoint(clientTransaction, endPointDefinition);
@@ -71,11 +71,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         IRelationEndPointFactory endPointFactory,
         IRelationEndPointRegistrationAgent registrationAgent)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(lazyLoader), lazyLoader);
-      ArgumentUtility.CheckNotNull(nameof(transactionEventSink), transactionEventSink);
-      ArgumentUtility.CheckNotNull(nameof(endPointFactory), endPointFactory);
-      ArgumentUtility.CheckNotNull(nameof(registrationAgent), registrationAgent);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(lazyLoader);
+      ArgumentNullException.ThrowIfNull(transactionEventSink);
+      ArgumentNullException.ThrowIfNull(endPointFactory);
+      ArgumentNullException.ThrowIfNull(registrationAgent);
 
       _clientTransaction = clientTransaction;
       _lazyLoader = lazyLoader;
@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void RegisterEndPointsForDataContainer (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataContainer), dataContainer);
+      ArgumentNullException.ThrowIfNull(dataContainer);
 
       _dataContainerEndPointsRegistrationAgent.RegisterEndPoints(dataContainer, _map);
     }
@@ -127,14 +127,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     // If the DataContainer is New, the virtual end-points are unregistered as well.
     public IDataManagementCommand CreateUnregisterCommandForDataContainer (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataContainer), dataContainer);
+      ArgumentNullException.ThrowIfNull(dataContainer);
 
       return _dataContainerEndPointsRegistrationAgent.CreateUnregisterEndPointsCommand(dataContainer, _map);
     }
 
     public IDataManagementCommand CreateUnloadVirtualEndPointsCommand (IEnumerable<RelationEndPointID> endPointIDs)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointIDs), endPointIDs);
+      ArgumentNullException.ThrowIfNull(endPointIDs);
 
       var virtualEndPoints = new List<IVirtualEndPoint>();
       var exceptionCommands = new List<ExceptionCommand>();
@@ -172,7 +172,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IRelationEndPoint? GetRelationEndPointWithoutLoading (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
+      ArgumentNullException.ThrowIfNull(endPointID);
 
       if (endPointID.ObjectID == null)
       {
@@ -193,7 +193,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IRelationEndPoint GetRelationEndPointWithLazyLoad (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
+      ArgumentNullException.ThrowIfNull(endPointID);
       CheckNotAnonymous(endPointID, "GetRelationEndPointWithLazyLoad", "endPointID");
 
       var existingEndPoint = GetRelationEndPointWithoutLoading(endPointID);
@@ -219,7 +219,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IVirtualEndPoint GetOrCreateVirtualEndPoint (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
+      ArgumentNullException.ThrowIfNull(endPointID);
       CheckNotAnonymous(endPointID, "GetOrCreateVirtualEndPoint", "endPointID");
 
       if (!endPointID.Definition.IsVirtual)

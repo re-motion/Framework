@@ -47,8 +47,8 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     public void Add (IRelationEndPointDefinition relationEndPointDefinition, IQuery fetchQuery)
     {
-      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull(nameof(fetchQuery), fetchQuery);
+      ArgumentNullException.ThrowIfNull(relationEndPointDefinition);
+      ArgumentNullException.ThrowIfNull(fetchQuery);
 
       if (_fetchQueries.ContainsKey(relationEndPointDefinition))
       {

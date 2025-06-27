@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
 
     public ScreenshotTabbedMenuSelector ([NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       _scope = scope;
     }
@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithHtmlID (string htmlID)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlID), htmlID);
+      ArgumentNullException.ThrowIfNull(htmlID);
 
       var item = _scope.FindId(htmlID);
 
@@ -56,7 +56,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithItemID (string itemID)
     {
-      ArgumentUtility.CheckNotNull(nameof(itemID), itemID);
+      ArgumentNullException.ThrowIfNull(itemID);
 
       var item = _scope.FindTagWithAttribute("span", DiagnosticMetadataAttributes.ItemID, itemID);
 
@@ -74,7 +74,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayText (string displayText)
     {
-      ArgumentUtility.CheckNotNull(nameof(displayText), displayText);
+      ArgumentNullException.ThrowIfNull(displayText);
 
       var item = _scope.FindTagWithAttribute("span", DiagnosticMetadataAttributes.Content, displayText);
 
@@ -84,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayTextContains (string displayText)
     {
-      ArgumentUtility.CheckNotNull(nameof(displayText), displayText);
+      ArgumentNullException.ThrowIfNull(displayText);
 
       var item = _scope.FindTagWithAttributeUsingOperator(
           "span",

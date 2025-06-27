@@ -31,8 +31,8 @@ namespace Remotion.Validation.Implementation
 
     public PropertyValidatorLogContextInfo (IPropertyValidator removedValidator, RemovingPropertyValidatorRegistration[] removingPropertyValidatorRegistrations)
     {
-      ArgumentUtility.CheckNotNull(nameof(removedValidator), removedValidator);
-      ArgumentUtility.CheckNotNull(nameof(removingPropertyValidatorRegistrations), removingPropertyValidatorRegistrations);
+      ArgumentNullException.ThrowIfNull(removedValidator);
+      ArgumentNullException.ThrowIfNull(removingPropertyValidatorRegistrations);
 
       _removedValidator = removedValidator;
       _removingPropertyValidatorRegistrations = removingPropertyValidatorRegistrations;

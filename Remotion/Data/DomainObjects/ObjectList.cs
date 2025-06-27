@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects
   {
     private static IDomainObjectCollectionData CheckStrategy (IDomainObjectCollectionData dataStrategy)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataStrategy), dataStrategy);
+      ArgumentNullException.ThrowIfNull(dataStrategy);
 
       if (!typeof(T).IsAssignableFrom(dataStrategy.RequiredItemType) && !dataStrategy.IsReadOnly)
       {

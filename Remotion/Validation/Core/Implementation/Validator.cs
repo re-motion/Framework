@@ -33,8 +33,8 @@ namespace Remotion.Validation.Implementation
 
     public Validator (IEnumerable<IValidationRule> validationRules, Type validatedType)
     {
-      ArgumentUtility.CheckNotNull(nameof(validationRules), validationRules);
-      ArgumentUtility.CheckNotNull(nameof(validatedType), validatedType);
+      ArgumentNullException.ThrowIfNull(validationRules);
+      ArgumentNullException.ThrowIfNull(validatedType);
 
       _validatedType = validatedType;
       _validationRules = validationRules.ToList().AsReadOnly();
@@ -53,14 +53,14 @@ namespace Remotion.Validation.Implementation
 
     public ValidationResult Validate (object instance)
     {
-      ArgumentUtility.CheckNotNull(nameof(instance), instance);
+      ArgumentNullException.ThrowIfNull(instance);
 
       return Validate(new ValidationContext(instance));
     }
 
     public ValidationResult Validate (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var failures = _validationRules.SelectMany(r => r.Validate(context)).ToArray();
 
@@ -74,14 +74,14 @@ namespace Remotion.Validation.Implementation
 
     public bool CanValidateInstancesOfType (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return _validatedType.IsAssignableFrom(type);
     }
 
     ValidationResult IValidator.Validate (object instance)
     {
-      ArgumentUtility.CheckNotNull(nameof(instance), instance);
+      ArgumentNullException.ThrowIfNull(instance);
 
       if (!CanValidateInstancesOfType(instance.GetType()))
       {
@@ -97,7 +97,7 @@ namespace Remotion.Validation.Implementation
 
     ValidationResult IValidator.Validate (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return Validate(context);
     }

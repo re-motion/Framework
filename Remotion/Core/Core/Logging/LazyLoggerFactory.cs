@@ -53,7 +53,7 @@ public static class LazyLoggerFactory
   /// </remarks>
   public static ILogger CreateLogger (Type type)
   {
-    ArgumentUtility.CheckNotNull(nameof(type), type);
+    ArgumentNullException.ThrowIfNull(type);
 
     return new LazyLogger(new Lazy<ILogger>(() => SafeServiceLocator.Current.GetInstance<ILoggerFactory>().CreateLogger(type)));
   }
@@ -68,7 +68,7 @@ public static class LazyLoggerFactory
   /// </remarks>
   public static ILogger CreateLogger (string categoryName)
   {
-    ArgumentUtility.CheckNotNull(nameof(categoryName), categoryName);
+    ArgumentNullException.ThrowIfNull(categoryName);
 
     return new LazyLogger(new Lazy<ILogger>(() => SafeServiceLocator.Current.GetInstance<ILoggerFactory>().CreateLogger(categoryName)));
   }

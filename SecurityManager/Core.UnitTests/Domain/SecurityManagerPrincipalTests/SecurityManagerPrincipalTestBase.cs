@@ -34,8 +34,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
         User substitutedUser = null,
         Role[] substitutedRoles = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(tenant), tenant);
-      ArgumentUtility.CheckNotNull(nameof(user), user);
+      ArgumentNullException.ThrowIfNull(tenant);
+      ArgumentNullException.ThrowIfNull(user);
 
       return new SecurityManagerPrincipal(
           tenant.GetHandle(),

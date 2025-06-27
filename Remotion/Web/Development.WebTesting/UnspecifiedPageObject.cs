@@ -52,7 +52,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>A page object of the expected type.</returns>
     public TPageObject Expect<TPageObject> ([NotNull] Action<PageObjectContext> actualMatchesExpectedPageAssertion) where TPageObject : PageObject
     {
-      ArgumentUtility.CheckNotNull(nameof(actualMatchesExpectedPageAssertion), actualMatchesExpectedPageAssertion);
+      ArgumentNullException.ThrowIfNull(actualMatchesExpectedPageAssertion);
 
       var newContext = Context.CloneForNewPage();
       return AssertActualMatchesExpectedPageAndReturnNewPageObject<TPageObject>(newContext, actualMatchesExpectedPageAssertion);
@@ -88,7 +88,7 @@ namespace Remotion.Web.Development.WebTesting
         where TPageObject : PageObject
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(windowLocator), windowLocator);
-      ArgumentUtility.CheckNotNull(nameof(actualMatchesExpectedPageAssertion), actualMatchesExpectedPageAssertion);
+      ArgumentNullException.ThrowIfNull(actualMatchesExpectedPageAssertion);
 
       var newContext = Context.CloneForNewWindow(windowLocator);
       return AssertActualMatchesExpectedPageAndReturnNewPageObject<TPageObject>(newContext, actualMatchesExpectedPageAssertion);
@@ -123,7 +123,7 @@ namespace Remotion.Web.Development.WebTesting
         where TPageObject : PageObject
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(windowLocator), windowLocator);
-      ArgumentUtility.CheckNotNull(nameof(actualMatchesExpectedPageAssertion), actualMatchesExpectedPageAssertion);
+      ArgumentNullException.ThrowIfNull(actualMatchesExpectedPageAssertion);
 
       var newContext = Context.CloneForNewPopupWindow(windowLocator);
       return AssertActualMatchesExpectedPageAndReturnNewPageObject<TPageObject>(newContext, actualMatchesExpectedPageAssertion);

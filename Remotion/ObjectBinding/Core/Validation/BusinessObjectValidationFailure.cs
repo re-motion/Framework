@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Validation
         [NotNull] IBusinessObject validatedObject,
         [NotNull] string errorMessage)
     {
-      ArgumentUtility.CheckNotNull(nameof(validatedObject), validatedObject);
+      ArgumentNullException.ThrowIfNull(validatedObject);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(errorMessage), errorMessage);
 
       return new BusinessObjectValidationFailure(errorMessage, validatedObject, null);
@@ -40,8 +40,8 @@ namespace Remotion.ObjectBinding.Validation
         [NotNull] IBusinessObject validatedObject,
         [NotNull] IBusinessObjectProperty validatedProperty)
     {
-      ArgumentUtility.CheckNotNull(nameof(validatedObject), validatedObject);
-      ArgumentUtility.CheckNotNull(nameof(validatedProperty), validatedProperty);
+      ArgumentNullException.ThrowIfNull(validatedObject);
+      ArgumentNullException.ThrowIfNull(validatedProperty);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(errorMessage), errorMessage);
 
       return new BusinessObjectValidationFailure(errorMessage, validatedObject, validatedProperty);

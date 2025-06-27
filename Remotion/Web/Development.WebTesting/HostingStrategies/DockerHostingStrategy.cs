@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
 
     public DockerHostingStrategy (DockerContainerWrapperBase dockerContainerWrapper)
     {
-      ArgumentUtility.CheckNotNull(nameof(dockerContainerWrapper), dockerContainerWrapper);
+      ArgumentNullException.ThrowIfNull(dockerContainerWrapper);
       _dockerContainerWrapper = dockerContainerWrapper;
     }
 
@@ -53,9 +53,9 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
         [NotNull] IReadOnlyDictionary<string, string> properties,
         [NotNull] ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(testSiteLayoutConfiguration), testSiteLayoutConfiguration);
-      ArgumentUtility.CheckNotNull(nameof(properties), properties);
-      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
+      ArgumentNullException.ThrowIfNull(testSiteLayoutConfiguration);
+      ArgumentNullException.ThrowIfNull(properties);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       var port = int.Parse(properties["port"]);
       var dockerImageName = properties["dockerImageName"];

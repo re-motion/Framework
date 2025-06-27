@@ -48,8 +48,8 @@ namespace Remotion.Globalization.ExtensibleEnums
         [NotNull] this IExtensibleEnumGlobalizationService extensibleEnumGlobalizationService,
         [NotNull] IExtensibleEnum value)
     {
-      ArgumentUtility.CheckNotNull(nameof(extensibleEnumGlobalizationService), extensibleEnumGlobalizationService);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(extensibleEnumGlobalizationService);
+      ArgumentNullException.ThrowIfNull(value);
 
       if (extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName(value, out var result))
         return result;
@@ -85,8 +85,8 @@ namespace Remotion.Globalization.ExtensibleEnums
         [NotNull] this IExtensibleEnumGlobalizationService extensibleEnumGlobalizationService,
         [NotNull] IExtensibleEnum value)
     {
-      ArgumentUtility.CheckNotNull(nameof(extensibleEnumGlobalizationService), extensibleEnumGlobalizationService);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(extensibleEnumGlobalizationService);
+      ArgumentNullException.ThrowIfNull(value);
 
       string? result;
       if (extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName(value, out result))
@@ -109,8 +109,8 @@ namespace Remotion.Globalization.ExtensibleEnums
         [NotNull] this IExtensibleEnumGlobalizationService extensibleEnumGlobalizationService,
         [NotNull] IExtensibleEnum value)
     {
-      ArgumentUtility.CheckNotNull(nameof(extensibleEnumGlobalizationService), extensibleEnumGlobalizationService);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(extensibleEnumGlobalizationService);
+      ArgumentNullException.ThrowIfNull(value);
 
       string? result;
       return extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName(value, out result);

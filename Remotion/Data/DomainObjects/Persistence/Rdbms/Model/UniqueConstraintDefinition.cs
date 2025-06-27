@@ -38,7 +38,7 @@ public class UniqueConstraintDefinition : ITableConstraintDefinition
   public UniqueConstraintDefinition (string constraintName, bool isClustered, IEnumerable<ColumnDefinition> columns)
   {
     ArgumentUtility.CheckNotNullOrEmpty(nameof(constraintName), constraintName);
-    ArgumentUtility.CheckNotNull(nameof(columns), columns);
+    ArgumentNullException.ThrowIfNull(columns);
 
     var columnsList = columns.ToList().AsReadOnly();
     ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(columns), columnsList);
@@ -50,7 +50,7 @@ public class UniqueConstraintDefinition : ITableConstraintDefinition
 
   public void Accept (ITableConstraintDefinitionVisitor visitor)
   {
-    ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+    ArgumentNullException.ThrowIfNull(visitor);
 
     visitor.VisitUniqueConstraintDefinition(this);
   }

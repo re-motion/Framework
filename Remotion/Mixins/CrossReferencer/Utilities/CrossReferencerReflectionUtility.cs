@@ -23,7 +23,7 @@ internal static class CrossReferencerReflectionUtility
 {
   public static bool IsInfrastructureType (Type type)
   {
-    ArgumentUtility.CheckNotNull(nameof(type), type);
+    ArgumentNullException.ThrowIfNull(type);
 
     return type.Assembly == typeof(Mixin).Assembly;
   }

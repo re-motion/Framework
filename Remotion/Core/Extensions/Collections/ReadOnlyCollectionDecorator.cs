@@ -36,7 +36,7 @@ namespace Remotion.Collections
 
     public ReadOnlyCollectionDecorator (ICollection<T> collection)
     {
-      ArgumentUtility.CheckNotNull(nameof(collection), collection);
+      ArgumentNullException.ThrowIfNull(collection);
 
       _collection = collection;
     }

@@ -27,7 +27,7 @@ namespace Remotion.Mixins.Validation
     public ValidationExceptionResultItem (string ruleName, Exception exception)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(ruleName), ruleName);
-      ArgumentUtility.CheckNotNull(nameof(exception), exception);
+      ArgumentNullException.ThrowIfNull(exception);
 
       _ruleName = ruleName;
       _exception = exception;

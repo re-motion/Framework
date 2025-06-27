@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Vali
 
     public IEnumerable<BaseValidator> CreateValidators (IBocEnumValue control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentNullException.ThrowIfNull(control);
 
       if (isReadOnly)
         yield break;

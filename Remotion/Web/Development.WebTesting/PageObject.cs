@@ -58,7 +58,7 @@ namespace Remotion.Web.Development.WebTesting
     public TControlObject GetControl<TControlObject> (IControlSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(controlSelectionCommand), controlSelectionCommand);
+      ArgumentNullException.ThrowIfNull(controlSelectionCommand);
 
       return controlSelectionCommand.Select(Context.CloneForControlSelection(this));
     }
@@ -67,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting
     public TControlObject? GetControlOrNull<TControlObject> (IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(controlSelectionCommand), controlSelectionCommand);
+      ArgumentNullException.ThrowIfNull(controlSelectionCommand);
 
       return controlSelectionCommand.SelectOptional(Context.CloneForControlSelection(this));
     }
@@ -75,7 +75,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <inheritdoc/>
     public bool HasControl (IControlExistsCommand controlSelectionCommand)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlSelectionCommand), controlSelectionCommand);
+      ArgumentNullException.ThrowIfNull(controlSelectionCommand);
 
       return controlSelectionCommand.Exists(Context.CloneForControlSelection(this));
     }

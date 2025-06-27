@@ -55,7 +55,7 @@ namespace Remotion.Mixins
     /// <param name="targetType">The target type extended by this mixin.</param>
     public ExtendsAttribute (Type targetType)
     {
-      _targetType = ArgumentUtility.CheckNotNull(nameof(targetType), targetType);
+      _targetType = ArgumentNullException.ThrowIfNull(targetType);
     }
 
     /// <summary>
@@ -80,7 +80,7 @@ namespace Remotion.Mixins
       get { return _mixinTypeArguments; }
       set
       {
-        _mixinTypeArguments = ArgumentUtility.CheckNotNull(nameof(value), value);
+        _mixinTypeArguments = ArgumentNullException.ThrowIfNull(value);
       }
     }
 
@@ -91,8 +91,8 @@ namespace Remotion.Mixins
 
     public void Apply (MixinConfigurationBuilder configurationBuilder, Type attributeTarget)
     {
-      ArgumentUtility.CheckNotNull(nameof(configurationBuilder), configurationBuilder);
-      ArgumentUtility.CheckNotNull(nameof(attributeTarget), attributeTarget);
+      ArgumentNullException.ThrowIfNull(configurationBuilder);
+      ArgumentNullException.ThrowIfNull(attributeTarget);
 
       Type mixinType = CloseOverMixinTypeArguments(attributeTarget);
       var origin = MixinContextOrigin.CreateForCustomAttribute(this, attributeTarget);

@@ -32,7 +32,7 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Configuration
 
     public FakeStorageSettingsFactoryResolver (IStorageSettingsFactory storageSettingsFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageSettingsFactory), storageSettingsFactory);
+      ArgumentNullException.ThrowIfNull(storageSettingsFactory);
 
       StorageSettingsFactory = storageSettingsFactory;
     }

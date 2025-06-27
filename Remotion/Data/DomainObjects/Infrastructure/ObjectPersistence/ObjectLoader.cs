@@ -46,9 +46,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         ILoadedObjectDataRegistrationAgent loadedObjectDataRegistrationAgent,
         ILoadedObjectDataProvider loadedObjectDataProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(persistenceStrategy), persistenceStrategy);
-      ArgumentUtility.CheckNotNull(nameof(loadedObjectDataRegistrationAgent), loadedObjectDataRegistrationAgent);
-      ArgumentUtility.CheckNotNull(nameof(loadedObjectDataProvider), loadedObjectDataProvider);
+      ArgumentNullException.ThrowIfNull(persistenceStrategy);
+      ArgumentNullException.ThrowIfNull(loadedObjectDataRegistrationAgent);
+      ArgumentNullException.ThrowIfNull(loadedObjectDataProvider);
 
       _persistenceStrategy = persistenceStrategy;
       _loadedObjectDataRegistrationAgent = loadedObjectDataRegistrationAgent;
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public virtual ILoadedObjectData LoadObject (ObjectID id, bool throwOnNotFound)
     {
-      ArgumentUtility.CheckNotNull(nameof(id), id);
+      ArgumentNullException.ThrowIfNull(id);
 
       var loadedObjectData = _persistenceStrategy.LoadObjectData(id);
       _loadedObjectDataRegistrationAgent.RegisterIfRequired(new[] { loadedObjectData }, throwOnNotFound);
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public virtual ICollection<ILoadedObjectData> LoadObjects (IEnumerable<ObjectID> idsToBeLoaded, bool throwOnNotFound)
     {
-      ArgumentUtility.CheckNotNull(nameof(idsToBeLoaded), idsToBeLoaded);
+      ArgumentNullException.ThrowIfNull(idsToBeLoaded);
 
       var idsToBeLoadedAsCollection = idsToBeLoaded.ConvertToCollection();
       var loadedObjectData = _persistenceStrategy.LoadObjectData(idsToBeLoadedAsCollection).ConvertToCollection();
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public virtual ILoadedObjectData GetOrLoadRelatedObject (RelationEndPointID relationEndPointID)
     {
-      ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
+      ArgumentNullException.ThrowIfNull(relationEndPointID);
 
       if (!relationEndPointID.Definition.IsVirtual)
         throw new ArgumentException("GetOrLoadRelatedObject can only be used with virtual end points.", nameof(relationEndPointID));
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public virtual ICollection<ILoadedObjectData> GetOrLoadRelatedObjects (RelationEndPointID relationEndPointID)
     {
-      ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
+      ArgumentNullException.ThrowIfNull(relationEndPointID);
 
       if (relationEndPointID.Definition.Cardinality != CardinalityType.Many)
         throw new ArgumentException("GetOrLoadRelatedObjects can only be used with many-valued end points.", nameof(relationEndPointID));
@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public virtual ICollection<ILoadedObjectData> GetOrLoadCollectionQueryResult (IQuery query)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
 
       var loadedObjectData = _persistenceStrategy.ExecuteCollectionQuery(query, _loadedObjectDataProvider).ConvertToCollection();
       _loadedObjectDataRegistrationAgent.RegisterIfRequired(loadedObjectData, true);

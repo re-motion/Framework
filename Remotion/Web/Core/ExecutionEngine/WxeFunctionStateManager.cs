@@ -100,7 +100,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public WxeFunctionStateManager (HttpSessionStateBase session)
     {
-      ArgumentUtility.CheckNotNull(nameof(session), session);
+      ArgumentNullException.ThrowIfNull(session);
       _session = session;
 
       var functionStates = (Dictionary<string, WxeFunctionStateMetaData>?)_session[s_sessionKeyForFunctionStates];
@@ -147,7 +147,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </param>
     public void Add (WxeFunctionState functionState)
     {
-      ArgumentUtility.CheckNotNull(nameof(functionState), functionState);
+      ArgumentNullException.ThrowIfNull(functionState);
       if (functionState.IsAborted)
         throw new ArgumentException("An aborted WxeFunctionState cannot be added to the collection.", nameof(functionState));
 
@@ -246,7 +246,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </param>
     public void Abort (WxeFunctionState functionState)
     {
-      ArgumentUtility.CheckNotNull(nameof(functionState), functionState);
+      ArgumentNullException.ThrowIfNull(functionState);
 
       lock (_lockObject)
       {

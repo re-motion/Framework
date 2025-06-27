@@ -35,7 +35,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public static Culture? Find (string cultureName)
     {
-      ArgumentUtility.CheckNotNull(nameof(cultureName), cultureName);
+      ArgumentNullException.ThrowIfNull(cultureName);
 
       var result = from c in QueryFactory.CreateLinqQuery<Culture>()
                    where c.CultureName == cultureName
@@ -46,7 +46,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     protected Culture (string cultureName)
     {
-      ArgumentUtility.CheckNotNull(nameof(cultureName), cultureName);
+      ArgumentNullException.ThrowIfNull(cultureName);
 
       CultureName = cultureName;
     }

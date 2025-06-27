@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public ReflectionBusinessObjectWebUIService (IResourceUrlFactory resourceUrlFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceUrlFactory), resourceUrlFactory);
+      ArgumentNullException.ThrowIfNull(resourceUrlFactory);
 
       _resourceUrlFactory = resourceUrlFactory;
     }
@@ -75,8 +75,8 @@ namespace Remotion.ObjectBinding.Sample
         IBusinessObjectProperty businessObjectProperty,
         IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
-      ArgumentUtility.CheckNotNull(nameof(businessObjectClass), businessObjectClass);
+      ArgumentNullException.ThrowIfNull(control);
+      ArgumentNullException.ThrowIfNull(businessObjectClass);
 
       return new ToolTipBasedHelpInfo("Help for " + (businessObjectProperty != null ? businessObjectProperty.Identifier : "prop"));
       //return new ToolTipBasedHelpInfo (string.Format (

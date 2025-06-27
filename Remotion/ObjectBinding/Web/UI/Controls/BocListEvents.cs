@@ -60,7 +60,7 @@ public class BocListItemEventArgs: EventArgs
       int listIndex,
       IBusinessObject businessObject)
   {
-    ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
+    ArgumentNullException.ThrowIfNull(businessObject);
 
     _listIndex = listIndex;
     _businessObject = businessObject;

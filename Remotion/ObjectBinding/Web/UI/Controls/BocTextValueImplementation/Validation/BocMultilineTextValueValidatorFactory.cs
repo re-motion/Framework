@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
 
     public IEnumerable<BaseValidator> CreateValidators (IBocMultilineTextValue control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentNullException.ThrowIfNull(control);
 
       if (isReadOnly)
         yield break;

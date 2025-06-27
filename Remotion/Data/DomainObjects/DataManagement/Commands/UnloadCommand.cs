@@ -38,8 +38,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
         IClientTransactionEventSink transactionEventSink)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(domainObjects), domainObjects);
-      ArgumentUtility.CheckNotNull(nameof(unloadDataCommand), unloadDataCommand);
-      ArgumentUtility.CheckNotNull(nameof(transactionEventSink), transactionEventSink);
+      ArgumentNullException.ThrowIfNull(unloadDataCommand);
+      ArgumentNullException.ThrowIfNull(transactionEventSink);
 
       _domainObjects = domainObjects.ToArray();
       _unloadDataCommand = unloadDataCommand;

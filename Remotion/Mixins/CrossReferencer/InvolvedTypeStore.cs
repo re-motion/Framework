@@ -28,7 +28,7 @@ namespace Remotion.Mixins.CrossReferencer
 
     public InvolvedType GetOrCreateValue (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       if (!_involvedTypes.ContainsKey(type))
         _involvedTypes.Add(type, new InvolvedType(type));

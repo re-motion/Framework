@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure
 
     public TestableSecurityManagerSearchServiceBase (IQueryable<User> queryable)
     {
-      ArgumentUtility.CheckNotNull(nameof(queryable), queryable);
+      ArgumentNullException.ThrowIfNull(queryable);
       _queryable = queryable;
     }
 

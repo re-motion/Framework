@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     public virtual IBusinessObjectBoundEditableWebControl? Create (BocSimpleColumnDefinition column, int columnIndex)
     {
-      ArgumentUtility.CheckNotNull(nameof(column), column);
+      ArgumentNullException.ThrowIfNull(column);
       if (columnIndex < 0)
         throw new ArgumentOutOfRangeException(nameof(columnIndex));
 
@@ -50,14 +50,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     protected virtual IBusinessObjectBoundEditableWebControl? CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyPath), propertyPath);
+      ArgumentNullException.ThrowIfNull(propertyPath);
 
       return (IBusinessObjectBoundEditableWebControl?)ControlFactory.CreateControl(propertyPath.Properties.Last(), ControlFactory.EditMode.InlineEdit);
     }
 
     public virtual void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       var bocBooleanValue = new Controls.BocBooleanValue();
       bocBooleanValue.RegisterHtmlHeadContents(htmlHeadAppender);

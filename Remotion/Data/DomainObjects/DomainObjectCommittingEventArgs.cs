@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects
 
     public DomainObjectCommittingEventArgs (ICommittingEventRegistrar eventRegistrar)
     {
-      ArgumentUtility.CheckNotNull(nameof(eventRegistrar), eventRegistrar);
+      ArgumentNullException.ThrowIfNull(eventRegistrar);
       _eventRegistrar = eventRegistrar;
     }
 

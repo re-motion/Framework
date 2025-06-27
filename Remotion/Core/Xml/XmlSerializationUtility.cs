@@ -30,9 +30,9 @@ namespace Remotion.Xml
   {
     public static object DeserializeUsingSchema (XmlReader reader, Type type, string defaultNamespace, XmlReaderSettings settings)
     {
-      ArgumentUtility.CheckNotNull(nameof(reader), reader);
-      ArgumentUtility.CheckNotNull(nameof(type), type);
-      ArgumentUtility.CheckNotNull(nameof(settings), settings);
+      ArgumentNullException.ThrowIfNull(reader);
+      ArgumentNullException.ThrowIfNull(type);
+      ArgumentNullException.ThrowIfNull(settings);
 
       XmlSchemaValidationHandler validationHandler = new XmlSchemaValidationHandler(true);
       settings.ValidationEventHandler += validationHandler.Handler;
@@ -77,7 +77,7 @@ namespace Remotion.Xml
 
     public static object DeserializeUsingSchema (XmlReader reader, Type type, string defaultNamespace, XmlSchemaSet schemas)
     {
-      ArgumentUtility.CheckNotNull(nameof(reader), reader);
+      ArgumentNullException.ThrowIfNull(reader);
 
       XmlReaderSettings settings = new XmlReaderSettings();
       settings.Schemas = schemas;
@@ -94,7 +94,7 @@ namespace Remotion.Xml
     public static object DeserializeUsingSchema (XmlReader reader, Type type, string schemaUri, XmlReader schemaReader)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(schemaUri), schemaUri);
-      ArgumentUtility.CheckNotNull(nameof(schemaReader), schemaReader);
+      ArgumentNullException.ThrowIfNull(schemaReader);
 
       XmlSchemaSet schemas = new XmlSchemaSet();
       schemas.Add(schemaUri, schemaReader);
@@ -108,7 +108,7 @@ namespace Remotion.Xml
     /// <exception cref="ArgumentException"> Thrown if no namespace is specified through at least one of the possible attributes. </exception>
     public static string GetNamespace (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       XmlTypeAttribute? xmlType = (XmlTypeAttribute?)Attribute.GetCustomAttribute(type, typeof(XmlTypeAttribute), true);
       XmlRootAttribute? xmlRoot = (XmlRootAttribute?)Attribute.GetCustomAttribute(type, typeof(XmlRootAttribute), true);

@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     public MappingValidationResult Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       if (!s_validClassID.IsMatch(classDefinition.ID))
       {

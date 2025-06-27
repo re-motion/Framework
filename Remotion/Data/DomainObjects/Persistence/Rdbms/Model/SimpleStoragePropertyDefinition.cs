@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public SimpleStoragePropertyDefinition (Type propertyType, ColumnDefinition columnDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
-      ArgumentUtility.CheckNotNull(nameof(columnDefinition), columnDefinition);
+      ArgumentNullException.ThrowIfNull(propertyType);
+      ArgumentNullException.ThrowIfNull(columnDefinition);
 
       _columnDefinition = columnDefinition;
       _propertyType = propertyType;
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public ColumnValueTable SplitValuesForComparison (IEnumerable<object?> values)
     {
-      ArgumentUtility.CheckNotNull(nameof(values), values);
+      ArgumentNullException.ThrowIfNull(values);
 
       return new ColumnValueTable(
           EnumerableUtility.Singleton(_columnDefinition),
@@ -80,13 +80,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public object? CombineValue (IColumnValueProvider columnValueProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(columnValueProvider), columnValueProvider);
+      ArgumentNullException.ThrowIfNull(columnValueProvider);
       return columnValueProvider.GetValueForColumn(_columnDefinition);
     }
 
     public IRdbmsStoragePropertyDefinition UnifyWithEquivalentProperties (IEnumerable<IRdbmsStoragePropertyDefinition> equivalentProperties)
     {
-      ArgumentUtility.CheckNotNull(nameof(equivalentProperties), equivalentProperties);
+      ArgumentNullException.ThrowIfNull(equivalentProperties);
       var checkedProperties = equivalentProperties.Select(property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
           this,
           property,

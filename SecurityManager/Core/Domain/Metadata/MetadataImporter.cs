@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public MetadataImporter (ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
+      ArgumentNullException.ThrowIfNull(transaction);
 
       _transaction = transaction;
       _classes = new Dictionary<Guid, SecurableClassDefinition>();

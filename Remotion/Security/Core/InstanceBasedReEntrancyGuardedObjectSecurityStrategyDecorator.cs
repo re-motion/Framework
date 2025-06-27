@@ -36,7 +36,7 @@ namespace Remotion.Security
 
     public InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator (IObjectSecurityStrategy objectSecurityStrategy)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectSecurityStrategy), objectSecurityStrategy);
+      ArgumentNullException.ThrowIfNull(objectSecurityStrategy);
 
       _objectSecurityStrategy = objectSecurityStrategy;
     }

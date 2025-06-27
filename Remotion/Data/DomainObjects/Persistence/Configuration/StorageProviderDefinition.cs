@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     protected StorageProviderDefinition (string name, IStorageObjectFactory factory, IReadOnlyCollection<Type>? assignedStorageGroups = null)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(factory), factory);
+      ArgumentNullException.ThrowIfNull(factory);
 
       Name = name;
       _factory = factory;

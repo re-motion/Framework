@@ -198,7 +198,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void ExecuteWxeFunction (IWxePage wxePage, int listIndex, IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(wxePage), wxePage);
+      ArgumentNullException.ThrowIfNull(wxePage);
       if (!wxePage.IsReturningPostBack)
       {
         NameObjectCollection parameters = PrepareWxeFunctionParameters(listIndex, businessObject);
@@ -302,7 +302,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         IBusinessObject businessObject)
         : base(command, ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject))
     {
-      ArgumentUtility.CheckNotNull(nameof(column), column);
+      ArgumentNullException.ThrowIfNull(column);
 
       _column = column;
       _listIndex = listIndex;

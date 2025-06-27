@@ -28,7 +28,7 @@ namespace Remotion.Mixins.Definitions
 
     protected override void ConcreteAccept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       visitor.Visit(this);
     }
   }

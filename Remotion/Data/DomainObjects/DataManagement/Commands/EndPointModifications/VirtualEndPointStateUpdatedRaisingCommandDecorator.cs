@@ -40,9 +40,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         Func<bool?> changeStateProvider)
       : base(decoratedCommand)
     {
-      ArgumentUtility.CheckNotNull(nameof(modifiedEndPointID), modifiedEndPointID);
-      ArgumentUtility.CheckNotNull(nameof(listener), listener);
-      ArgumentUtility.CheckNotNull(nameof(changeStateProvider), changeStateProvider);
+      ArgumentNullException.ThrowIfNull(modifiedEndPointID);
+      ArgumentNullException.ThrowIfNull(listener);
+      ArgumentNullException.ThrowIfNull(changeStateProvider);
 
       _modifiedEndPointID = modifiedEndPointID;
       _listener = listener;
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     protected override IDataManagementCommand Decorate (IDataManagementCommand decoratedCommand)
     {
-      ArgumentUtility.CheckNotNull(nameof(decoratedCommand), decoratedCommand);
+      ArgumentNullException.ThrowIfNull(decoratedCommand);
       return new VirtualEndPointStateUpdatedRaisingCommandDecorator(decoratedCommand, _modifiedEndPointID, _listener, _changeStateProvider);
     }
   }

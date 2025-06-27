@@ -29,8 +29,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         MappingConfiguration mappingConfiguration,
         Expression<Func<TSource, TRelated>> propertyAccessExpression)
     {
-      ArgumentUtility.CheckNotNull(nameof(mappingConfiguration), mappingConfiguration);
-      ArgumentUtility.CheckNotNull(nameof(propertyAccessExpression), propertyAccessExpression);
+      ArgumentNullException.ThrowIfNull(mappingConfiguration);
+      ArgumentNullException.ThrowIfNull(propertyAccessExpression);
 
       var typeDefinition = mappingConfiguration.GetTypeDefinition(typeof(TSource));
       var propertyInfoAdapter = PropertyInfoAdapter.Create(NormalizingMemberInfoFromExpressionUtility.GetProperty(propertyAccessExpression));

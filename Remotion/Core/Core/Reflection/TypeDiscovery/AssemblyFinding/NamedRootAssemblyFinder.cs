@@ -32,8 +32,8 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
     public NamedRootAssemblyFinder (IEnumerable<AssemblyNameSpecification> specifications, IAssemblyLoader assemblyLoader)
     {
-      ArgumentUtility.CheckNotNull(nameof(specifications), specifications);
-      ArgumentUtility.CheckNotNull(nameof(assemblyLoader), assemblyLoader);
+      ArgumentNullException.ThrowIfNull(specifications);
+      ArgumentNullException.ThrowIfNull(assemblyLoader);
 
       _specifications = specifications.ToList().AsReadOnly();
       _assemblyLoader = assemblyLoader;

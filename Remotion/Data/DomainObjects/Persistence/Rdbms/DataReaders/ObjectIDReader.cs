@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public ObjectIDReader (IRdbmsStoragePropertyDefinition idProperty, IColumnOrdinalProvider columnOrdinalProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(idProperty), idProperty);
-      ArgumentUtility.CheckNotNull(nameof(columnOrdinalProvider), columnOrdinalProvider);
+      ArgumentNullException.ThrowIfNull(idProperty);
+      ArgumentNullException.ThrowIfNull(columnOrdinalProvider);
 
       _idProperty = idProperty;
       _columnOrdinalProvider = columnOrdinalProvider;
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public ObjectID? Read (IDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataReader), dataReader);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
       if (dataReader.Read())
         return (ObjectID?)_idProperty.CombineValue(new ColumnValueReader(dataReader, _columnOrdinalProvider));
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public IEnumerable<ObjectID?> ReadSequence (IDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataReader), dataReader);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
       var columnValueReader = new ColumnValueReader(dataReader, _columnOrdinalProvider);
 

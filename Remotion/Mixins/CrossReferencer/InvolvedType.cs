@@ -37,7 +37,7 @@ namespace Remotion.Mixins.CrossReferencer
 
     public InvolvedType (Type realType)
     {
-      ArgumentUtility.CheckNotNull(nameof(realType), realType);
+      ArgumentNullException.ThrowIfNull(realType);
 
       _realType = realType;
     }

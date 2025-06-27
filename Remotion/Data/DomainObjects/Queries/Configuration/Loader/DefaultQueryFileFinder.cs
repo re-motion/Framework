@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
 
     public DefaultQueryFileFinder (IAppContextProvider appContextProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(appContextProvider), appContextProvider);
+      ArgumentNullException.ThrowIfNull(appContextProvider);
 
       _queryFile = Path.Combine(appContextProvider.BaseDirectory, c_defaultConfigurationFile);
     }

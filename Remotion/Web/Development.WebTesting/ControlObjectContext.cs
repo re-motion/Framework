@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting
     internal ControlObjectContext ([NotNull] PageObject pageObject, [NotNull] ElementScope scope, [NotNull] ILoggerFactory loggerFactory)
         : base(scope, loggerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(pageObject), pageObject);
+      ArgumentNullException.ThrowIfNull(pageObject);
 
       _pageObject = pageObject;
     }
@@ -87,7 +87,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </exception>
     public ControlObjectContext CloneForControl ([NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       try
       {

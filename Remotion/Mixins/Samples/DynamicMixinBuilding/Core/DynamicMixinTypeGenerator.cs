@@ -39,10 +39,10 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
 
     public DynamicMixinTypeGenerator (ModuleScope scope, Type targetType, IReadOnlyCollection<MethodInfo> methodsToOverride, MethodInvocationHandler invocationHandler)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
-      ArgumentUtility.CheckNotNull(nameof(targetType), targetType);
-      ArgumentUtility.CheckNotNull(nameof(methodsToOverride), methodsToOverride);
-      ArgumentUtility.CheckNotNull(nameof(invocationHandler), invocationHandler);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(targetType);
+      ArgumentNullException.ThrowIfNull(methodsToOverride);
+      ArgumentNullException.ThrowIfNull(invocationHandler);
 
       if (targetType.ContainsGenericParameters)
         throw new NotSupportedException("Open generic target types are not supported by this type generator.");

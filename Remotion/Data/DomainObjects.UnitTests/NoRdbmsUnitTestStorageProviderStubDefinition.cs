@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public override bool IsIdentityTypeSupported (Type identityType)
     {
-      ArgumentUtility.CheckNotNull(nameof(identityType), identityType);
+      ArgumentNullException.ThrowIfNull(identityType);
 
       // UnitTestStorageProviderStubDefinition supports all identity types for testing purposes.
       return true;

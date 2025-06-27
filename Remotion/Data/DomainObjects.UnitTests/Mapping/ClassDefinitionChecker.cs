@@ -30,8 +30,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   {
     public void Check (ClassDefinition expectedDefinition, ClassDefinition actualDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(expectedDefinition), expectedDefinition);
-      ArgumentUtility.CheckNotNull(nameof(actualDefinition), actualDefinition);
+      ArgumentNullException.ThrowIfNull(expectedDefinition);
+      ArgumentNullException.ThrowIfNull(actualDefinition);
 
       Assert.That(actualDefinition.ID, Is.EqualTo(expectedDefinition.ID), "IDs of class definitions do not match.");
 
@@ -78,8 +78,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         bool checkRelations,
         bool ignoreUnknown)
     {
-      ArgumentUtility.CheckNotNull(nameof(expectedDefinitions), expectedDefinitions);
-      ArgumentUtility.CheckNotNull(nameof(actualDefinitions), actualDefinitions);
+      ArgumentNullException.ThrowIfNull(expectedDefinitions);
+      ArgumentNullException.ThrowIfNull(actualDefinitions);
 
       if (!ignoreUnknown)
         Assert.That(actualDefinitions.Count, Is.EqualTo(expectedDefinitions.Count()), "Number of class definitions does not match.");
@@ -97,8 +97,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public void CheckRelationEndPoints (IEnumerable<ClassDefinition> expectedDefinitions, IDictionary<Type, ClassDefinition> actualDefinitions)
     {
-      ArgumentUtility.CheckNotNull(nameof(expectedDefinitions), expectedDefinitions);
-      ArgumentUtility.CheckNotNull(nameof(actualDefinitions), actualDefinitions);
+      ArgumentNullException.ThrowIfNull(expectedDefinitions);
+      ArgumentNullException.ThrowIfNull(actualDefinitions);
 
       foreach (var expectedDefinition in expectedDefinitions)
       {
@@ -110,8 +110,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public void CheckPersistenceModel (IEnumerable<ClassDefinition> expectedDefinitions, IDictionary<Type, ClassDefinition> actualDefinitions)
     {
-      ArgumentUtility.CheckNotNull(nameof(expectedDefinitions), expectedDefinitions);
-      ArgumentUtility.CheckNotNull(nameof(actualDefinitions), actualDefinitions);
+      ArgumentNullException.ThrowIfNull(expectedDefinitions);
+      ArgumentNullException.ThrowIfNull(actualDefinitions);
 
       foreach (var expectedDefinition in expectedDefinitions)
       {
@@ -122,8 +122,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public void CheckPersistenceModel (ClassDefinition expectedDefinition, ClassDefinition actualDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(expectedDefinition), expectedDefinition);
-      ArgumentUtility.CheckNotNull(nameof(actualDefinition), actualDefinition);
+      ArgumentNullException.ThrowIfNull(expectedDefinition);
+      ArgumentNullException.ThrowIfNull(actualDefinition);
 
       Assert.That(
           actualDefinition.StorageEntityDefinition.StorageProviderDefinition,
@@ -163,8 +163,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public void CheckDerivedClasses (ClassDefinition expectedDefinition, ClassDefinition actualDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(expectedDefinition), expectedDefinition);
-      ArgumentUtility.CheckNotNull(nameof(actualDefinition), actualDefinition);
+      ArgumentNullException.ThrowIfNull(expectedDefinition);
+      ArgumentNullException.ThrowIfNull(actualDefinition);
 
       CheckDerivedClasses(expectedDefinition.DerivedClasses, actualDefinition.DerivedClasses, expectedDefinition);
     }

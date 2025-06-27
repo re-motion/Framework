@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
 
     public bool TryParse (string stringValue, [MaybeNullWhen(false)] out object resultValue)
     {
-      ArgumentUtility.CheckNotNull(nameof(stringValue), stringValue);
+      ArgumentNullException.ThrowIfNull(stringValue);
 
       Guid guidValue;
       if (Guid.TryParse(stringValue, out guidValue))

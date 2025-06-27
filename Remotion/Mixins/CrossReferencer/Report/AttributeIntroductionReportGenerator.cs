@@ -33,8 +33,8 @@ namespace Remotion.Mixins.CrossReferencer.Report
         MultiDefinitionCollection<Type, AttributeIntroductionDefinition> attributeIntroductionDefinitions,
         IIdentifierGenerator<Type> attributeIdentifierGenerator)
     {
-      ArgumentUtility.CheckNotNull(nameof(attributeIntroductionDefinitions), attributeIntroductionDefinitions);
-      ArgumentUtility.CheckNotNull(nameof(attributeIdentifierGenerator), attributeIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(attributeIntroductionDefinitions);
+      ArgumentNullException.ThrowIfNull(attributeIdentifierGenerator);
 
       _attributeIntroductionDefinitions = attributeIntroductionDefinitions;
       _attributeIdentifierGenerator = attributeIdentifierGenerator;

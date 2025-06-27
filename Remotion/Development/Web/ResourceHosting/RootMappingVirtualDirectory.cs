@@ -40,9 +40,9 @@ namespace Remotion.Development.Web.ResourceHosting
         : base(virtualPath, directoryInfo)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(virtualPath), virtualPath);
-      ArgumentUtility.CheckNotNull(nameof(mappings), mappings);
-      ArgumentUtility.CheckNotNull(nameof(directoryInfo), directoryInfo);
-      ArgumentUtility.CheckNotNull(nameof(virtualDirectoryFactory), virtualDirectoryFactory);
+      ArgumentNullException.ThrowIfNull(mappings);
+      ArgumentNullException.ThrowIfNull(directoryInfo);
+      ArgumentNullException.ThrowIfNull(virtualDirectoryFactory);
 
       _mappings = mappings;
       _virtualDirectoryFactory = virtualDirectoryFactory;

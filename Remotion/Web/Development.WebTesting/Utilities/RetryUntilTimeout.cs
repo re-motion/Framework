@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     public RetryUntilTimeout ([NotNull] ILogger logger, [NotNull] Action action, TimeSpan timeout, TimeSpan retryInterval)
     {
-      ArgumentUtility.CheckNotNull(nameof(action), action);
+      ArgumentNullException.ThrowIfNull(action);
 
       _retryUntilTimeout = new RetryUntilTimeout<object?>(
           logger,
@@ -74,7 +74,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </param>
     public static void Run ([NotNull] ILogger logger, [NotNull] Action action, TimeSpan? timeout = null, TimeSpan? retryInterval = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(action), action);
+      ArgumentNullException.ThrowIfNull(action);
       var configuration = new WebTestConfigurationFactory().CreateDriverConfiguration();
 
       var retryUntilTimeout = new RetryUntilTimeout(
@@ -105,7 +105,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <returns>Returns the <typeparamref name="TReturnType"/> object returned by <paramref name="func"/>.</returns>
     public static TReturnType Run<TReturnType> ([NotNull] ILogger logger, [NotNull] Func<TReturnType> func, TimeSpan? timeout = null, TimeSpan? retryInterval = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(func), func);
+      ArgumentNullException.ThrowIfNull(func);
       var configuration = new WebTestConfigurationFactory().CreateDriverConfiguration();
 
       var retryUntilTimeout = new RetryUntilTimeout<TReturnType>(
@@ -135,8 +135,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     public RetryUntilTimeout ([NotNull] ILogger logger, [NotNull] Func<TReturnType> func, TimeSpan timeout, TimeSpan retryInterval)
     {
-      ArgumentUtility.CheckNotNull(nameof(func), func);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(func);
+      ArgumentNullException.ThrowIfNull(logger);
 
       _logger = logger;
       _func = func;

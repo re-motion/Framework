@@ -37,8 +37,8 @@ namespace Remotion.SecurityManager.Domain
         IDomainObjectHandle<User> userHandle,
         IDomainObjectHandle<Substitution>? substitutionHandle)
     {
-      ArgumentUtility.CheckNotNull(nameof(tenantHandle), tenantHandle);
-      ArgumentUtility.CheckNotNull(nameof(userHandle), userHandle);
+      ArgumentNullException.ThrowIfNull(tenantHandle);
+      ArgumentNullException.ThrowIfNull(userHandle);
 
       return new SecurityManagerPrincipal(tenantHandle, userHandle, null, substitutionHandle, null, null);
     }

@@ -35,7 +35,7 @@ namespace Remotion.Validation.Implementation
 
     public CompoundValidationRuleCollectorValidator (IEnumerable<IValidationRuleCollectorValidator> collectorValidators)
     {
-      ArgumentUtility.CheckNotNull(nameof(collectorValidators), collectorValidators);
+      ArgumentNullException.ThrowIfNull(collectorValidators);
 
       _collectorValidators = collectorValidators.ToList().AsReadOnly();
     }
@@ -47,7 +47,7 @@ namespace Remotion.Validation.Implementation
 
     public void CheckValid (IValidationRuleCollector collector)
     {
-      ArgumentUtility.CheckNotNull(nameof(collector), collector);
+      ArgumentNullException.ThrowIfNull(collector);
 
       foreach (var collectorValidator in _collectorValidators)
         collectorValidator.CheckValid(collector);

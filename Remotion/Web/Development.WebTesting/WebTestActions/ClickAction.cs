@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     /// <inheritdoc/>
     protected override void ExecuteInteraction (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       if (scope.Browser.IsFirefox())
         scope.FocusClick(Logger);

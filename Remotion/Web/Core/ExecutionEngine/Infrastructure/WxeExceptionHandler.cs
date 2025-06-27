@@ -91,7 +91,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public bool Catch (Exception exception)
     {
-      ArgumentUtility.CheckNotNull(nameof(exception), exception);
+      ArgumentNullException.ThrowIfNull(exception);
 
       bool match = false;
       if (_catchExceptions && _catchExceptionTypes != null)

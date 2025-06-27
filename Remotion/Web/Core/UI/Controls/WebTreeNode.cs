@@ -399,8 +399,8 @@ namespace Remotion.Web.UI.Controls
 
     public virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
-      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       string? key = ResourceManagerUtility.GetGlobalResourceKey(Text.GetValue());
       if (! string.IsNullOrEmpty(key))

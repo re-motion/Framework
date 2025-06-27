@@ -34,8 +34,8 @@ namespace Remotion.ObjectBinding.Sample
         IHttpContextProvider httpContextProvider,
         IReflectionBusinessObjectStorageProviderFactory reflectionBusinessObjectStorageProviderFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(httpContextProvider), httpContextProvider);
-      ArgumentUtility.CheckNotNull(nameof(reflectionBusinessObjectStorageProviderFactory), reflectionBusinessObjectStorageProviderFactory);
+      ArgumentNullException.ThrowIfNull(httpContextProvider);
+      ArgumentNullException.ThrowIfNull(reflectionBusinessObjectStorageProviderFactory);
 
       _httpContextProvider = httpContextProvider;
       _reflectionBusinessObjectStorageProviderFactory = reflectionBusinessObjectStorageProviderFactory;
@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public IReadOnlyCollection<Guid> GetObjectIDsForType (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       var reflectionBusinessObjectStorageProvider = GetReflectionBusinessObjectStorageProviderForCurrentSession();
       return reflectionBusinessObjectStorageProvider.GetObjectIDsForType(type);
@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public Stream GetReadObjectStream (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       var reflectionBusinessObjectStorageProvider = GetReflectionBusinessObjectStorageProviderForCurrentSession();
       return reflectionBusinessObjectStorageProvider.GetReadObjectStream(type, id);
@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public Stream GetWriteObjectStream (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       var reflectionBusinessObjectStorageProvider = GetReflectionBusinessObjectStorageProviderForCurrentSession();
       return reflectionBusinessObjectStorageProvider.GetWriteObjectStream(type, id);

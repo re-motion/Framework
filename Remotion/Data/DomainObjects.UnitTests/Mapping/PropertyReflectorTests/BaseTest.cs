@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
         IPropertyDefaultValueProvider propertyDefaultValueProvider)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(property), property);
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       Type type = typeof(T);
       var propertyInfo = PropertyInfoAdapter.Create(

@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public IEnumerable<IClientTransactionExtension> CreateClientTransactionExtensions (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
       return _clientTransactionExtensionFactories.SelectMany(f => f.CreateClientTransactionExtensions(clientTransaction));
     }
   }

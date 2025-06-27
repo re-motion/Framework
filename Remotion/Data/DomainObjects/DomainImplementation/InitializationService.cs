@@ -53,8 +53,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </remarks>
     public static IReadOnlyCollection<DomainObject> TryToApplyCurrentStateAsInitialValue (ClientTransaction clientTransaction, IEnumerable<ObjectID> objectIDs)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(objectIDs);
 
       // - Exclude any object that has a state other than "new" from the set.
       // - Exclude any object from the set that contains changed relation endpoints where the referenced object is not part of the set.

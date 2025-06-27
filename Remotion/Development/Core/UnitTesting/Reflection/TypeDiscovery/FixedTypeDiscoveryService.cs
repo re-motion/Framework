@@ -29,7 +29,7 @@ namespace Remotion.Development.UnitTesting.Reflection.TypeDiscovery
 
     public FixedTypeDiscoveryService (params Type[] types)
     {
-      ArgumentUtility.CheckNotNull(nameof(types), types);
+      ArgumentNullException.ThrowIfNull(types);
       _types = types;
     }
 

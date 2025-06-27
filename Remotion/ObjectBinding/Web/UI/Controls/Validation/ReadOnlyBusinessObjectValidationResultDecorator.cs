@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
+using System;
 using System.Collections.Generic;
 using Remotion.ObjectBinding.Validation;
 using Remotion.Utilities;
@@ -29,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     public ReadOnlyBusinessObjectValidationResultDecorator (IBusinessObjectValidationResult innerValidationResult)
     {
-      ArgumentUtility.CheckNotNull(nameof(innerValidationResult), innerValidationResult);
+      ArgumentNullException.ThrowIfNull(innerValidationResult);
 
       _innerValidationResult = innerValidationResult;
     }
@@ -37,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
     /// <inheritdoc />
     public IReadOnlyCollection<BusinessObjectValidationFailure> GetValidationFailures (IBusinessObject businessObject, IBusinessObjectProperty businessObjectProperty, bool markAsHandled)
     {
-      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
+      ArgumentNullException.ThrowIfNull(businessObject);
 
       return _innerValidationResult.GetValidationFailures(businessObject, businessObjectProperty, markAsHandled: false);
     }
@@ -45,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
     /// <inheritdoc />
     public IReadOnlyCollection<BusinessObjectValidationFailure> GetUnhandledValidationFailures (IBusinessObject businessObject, bool includePartiallyHandledFailures = false, bool markAsHandled = false)
     {
-      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
+      ArgumentNullException.ThrowIfNull(businessObject);
 
       return _innerValidationResult.GetUnhandledValidationFailures(businessObject, includePartiallyHandledFailures, markAsHandled: false);
     }

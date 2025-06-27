@@ -27,7 +27,7 @@ namespace Remotion.Collections
   {
     public static ReadOnlyCollectionDecorator<T> AsReadOnly<T> (this ICollection<T> collection)
     {
-      ArgumentUtility.CheckNotNull(nameof(collection), collection);
+      ArgumentNullException.ThrowIfNull(collection);
 
       return new ReadOnlyCollectionDecorator<T>(collection);
     }

@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
+using System;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
@@ -29,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
 
     public AllowPartialVisibilityFluentScreenshotElementDecorator (IFluentScreenshotElement<T> inner)
     {
-      ArgumentUtility.CheckNotNull(nameof(inner), inner);
+      ArgumentNullException.ThrowIfNull(inner);
 
       _inner = inner;
     }

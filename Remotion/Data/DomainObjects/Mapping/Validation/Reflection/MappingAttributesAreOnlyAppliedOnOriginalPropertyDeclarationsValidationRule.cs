@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(nameResolver), nameResolver);
-      ArgumentUtility.CheckNotNull(nameof(propertyMetadataProvider), propertyMetadataProvider);
+      ArgumentNullException.ThrowIfNull(nameResolver);
+      ArgumentNullException.ThrowIfNull(propertyMetadataProvider);
 
       _nameResolver = nameResolver;
       _propertyMetadataProvider = propertyMetadataProvider;
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       if (!classDefinition.IsClassTypeResolved)
         throw new InvalidOperationException("Class type of '" + classDefinition.ID + "' is not resolved.");
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     private MappingValidationResult Validate (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
 
       if (! propertyInfo.IsOriginalDeclaration())
       {

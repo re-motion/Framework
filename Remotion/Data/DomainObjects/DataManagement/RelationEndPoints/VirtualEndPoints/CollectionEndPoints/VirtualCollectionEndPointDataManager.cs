@@ -37,8 +37,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         RelationEndPointID endPointID,
         IDataContainerMapReadOnlyView dataContainerMap)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
-      ArgumentUtility.CheckNotNull(nameof(dataContainerMap), dataContainerMap);
+      ArgumentNullException.ThrowIfNull(endPointID);
+      ArgumentNullException.ThrowIfNull(dataContainerMap);
 
       EndPointID = endPointID;
 
@@ -57,22 +57,22 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void SynchronizeOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       _virtualCollectionData.ResetCachedDomainObjects();
     }
 
     public void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       _virtualCollectionData.ResetCachedDomainObjects();
     }
 
     public void SetDataFromSubTransaction (IVirtualCollectionEndPointDataManager sourceDataManager, IRelationEndPointProvider endPointProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(sourceDataManager), sourceDataManager);
-      ArgumentUtility.CheckNotNull(nameof(endPointProvider), endPointProvider);
+      ArgumentNullException.ThrowIfNull(sourceDataManager);
+      ArgumentNullException.ThrowIfNull(endPointProvider);
 
       _virtualCollectionData.ResetCachedDomainObjects();
     }

@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     public TransportTransactionListener (DomainObjectTransporter transporter)
     {
-      ArgumentUtility.CheckNotNull(nameof(transporter), transporter);
+      ArgumentNullException.ThrowIfNull(transporter);
       _transporter = transporter;
     }
 

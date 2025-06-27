@@ -30,14 +30,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
 
     public InvalidDomainObjectManager (IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull(nameof(transactionEventSink), transactionEventSink);
+      ArgumentNullException.ThrowIfNull(transactionEventSink);
       _transactionEventSink = transactionEventSink;
     }
 
     public InvalidDomainObjectManager (IClientTransactionEventSink transactionEventSink, IEnumerable<DomainObject> invalidObjects)
         : this(transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull(nameof(invalidObjects), invalidObjects);
+      ArgumentNullException.ThrowIfNull(invalidObjects);
 
       foreach (var domainObject in invalidObjects)
       {
@@ -69,13 +69,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
 
     public bool IsInvalid (ObjectID id)
     {
-      ArgumentUtility.CheckNotNull(nameof(id), id);
+      ArgumentNullException.ThrowIfNull(id);
       return _invalidObjects.ContainsKey(id);
     }
 
     public DomainObject GetInvalidObjectReference (ObjectID id)
     {
-      ArgumentUtility.CheckNotNull(nameof(id), id);
+      ArgumentNullException.ThrowIfNull(id);
 
       if (!_invalidObjects.TryGetValue(id, out var invalidDomainObject))
         throw new ArgumentException(String.Format("The object '{0}' has not been marked invalid.", id), nameof(id));
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
 
     public bool MarkInvalid (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
 
       if (IsInvalid(domainObject.ID))
       {
@@ -105,7 +105,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
 
     public bool MarkNotInvalid (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       if (!_invalidObjects.TryGetValue(objectID, out var domainObject))
         return false;

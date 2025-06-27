@@ -37,8 +37,8 @@ namespace Remotion.Security.Metadata
 
     public IReadOnlyList<Enum> GetRequiredMethodPermissions (Type type, IMethodInformation methodInformation)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
-      ArgumentUtility.CheckNotNull(nameof(methodInformation), methodInformation);
+      ArgumentNullException.ThrowIfNull(type);
+      ArgumentNullException.ThrowIfNull(methodInformation);
 
       if (methodInformation.IsNull)
         return s_emptyPermissions;

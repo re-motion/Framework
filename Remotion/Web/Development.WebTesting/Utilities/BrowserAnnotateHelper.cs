@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     public BrowserAnnotateHelper (IBrowserConfiguration configuration)
     {
-      ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
+      ArgumentNullException.ThrowIfNull(configuration);
 
       BrowserConfiguration = configuration;
     }
@@ -57,9 +57,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         bool? wrapLines = null,
         Size? maximumSize = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(builder), builder);
-      ArgumentUtility.CheckNotNull(nameof(browserSession), browserSession);
-      ArgumentUtility.CheckNotNull(nameof(content), content);
+      ArgumentNullException.ThrowIfNull(builder);
+      ArgumentNullException.ThrowIfNull(browserSession);
+      ArgumentNullException.ThrowIfNull(content);
 
       throw new NotSupportedException("Cursor Funktionalität im WebTesting wird nicht mehr unterstützt. See RM-9457.");
     }
@@ -76,8 +76,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         bool? wrapLines = null,
         Size? maximumSize = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(builder), builder);
-      ArgumentUtility.CheckNotNull(nameof(controlObject), controlObject);
+      ArgumentNullException.ThrowIfNull(builder);
+      ArgumentNullException.ThrowIfNull(controlObject);
 
       return DrawTooltip(builder, (IWebElement)controlObject.Scope.Native, style, padding, positioning, wrapLines, maximumSize);
     }
@@ -94,8 +94,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         bool? wrapLines = null,
         Size? maximumSize = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(builder), builder);
-      ArgumentUtility.CheckNotNull(nameof(element), element);
+      ArgumentNullException.ThrowIfNull(builder);
+      ArgumentNullException.ThrowIfNull(element);
 
       return DrawTooltip(builder, (IWebElement)element.Native, style, padding, positioning, wrapLines, maximumSize);
     }
@@ -112,8 +112,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         bool? wrapLines = null,
         Size? maximumSize = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(builder), builder);
-      ArgumentUtility.CheckNotNull(nameof(webElement), webElement);
+      ArgumentNullException.ThrowIfNull(builder);
+      ArgumentNullException.ThrowIfNull(webElement);
 
       var title = webElement.GetAttribute("title");
       if (title == null)

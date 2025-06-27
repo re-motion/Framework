@@ -28,14 +28,14 @@ public class SimpleTypeQueryParameterRecordDefinitionFinder : IQueryParameterRec
 
   public SimpleTypeQueryParameterRecordDefinitionFinder (IRdbmsStructuredTypeDefinitionFinder structuredTypeDefinitionFinder)
   {
-    ArgumentUtility.CheckNotNull(nameof(structuredTypeDefinitionFinder), structuredTypeDefinitionFinder);
+    ArgumentNullException.ThrowIfNull(structuredTypeDefinitionFinder);
     StructuredTypeDefinitionFinder = structuredTypeDefinitionFinder;
   }
 
   public RecordDefinition? GetRecordDefinition (QueryParameter queryParameter, IQuery query)
   {
-    ArgumentUtility.CheckNotNull(nameof(queryParameter), queryParameter);
-    ArgumentUtility.CheckNotNull(nameof(query), query);
+    ArgumentNullException.ThrowIfNull(queryParameter);
+    ArgumentNullException.ThrowIfNull(query);
 
     IRdbmsStructuredTypeDefinition? structuredTypeDefinition;
     try

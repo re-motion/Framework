@@ -36,7 +36,7 @@ namespace Remotion.Mixins.Context
   {
     public static ClassContext Deserialize (IClassContextDeserializer deserializer)
     {
-      ArgumentUtility.CheckNotNull(nameof(deserializer), deserializer);
+      ArgumentNullException.ThrowIfNull(deserializer);
       return new ClassContext(
           deserializer.GetClassType(),
           deserializer.GetMixins(),
@@ -209,7 +209,7 @@ namespace Remotion.Mixins.Context
     /// <exception cref="InvalidOperationException"><see cref="Type"/> is not a generic type definition.</exception>
     public ClassContext SpecializeWithTypeArguments (Type[] genericArguments)
     {
-      ArgumentUtility.CheckNotNull(nameof(genericArguments), genericArguments);
+      ArgumentNullException.ThrowIfNull(genericArguments);
 
       if (!Type.IsGenericTypeDefinition)
         throw new InvalidOperationException("This method is only allowed on generic type definitions.");
@@ -229,7 +229,7 @@ namespace Remotion.Mixins.Context
     /// </exception>
     public ClassContext InheritFrom (IEnumerable<ClassContext> baseContexts)
     {
-      ArgumentUtility.CheckNotNull(nameof(baseContexts), baseContexts);
+      ArgumentNullException.ThrowIfNull(baseContexts);
       return ClassContextDeriver.Instance.DeriveContext(this, baseContexts);
     }
 
@@ -264,7 +264,7 @@ namespace Remotion.Mixins.Context
     /// </exception>
     public ClassContext ApplyMixinDependencies (IEnumerable<MixinDependencySpecification> dependencySpecifications)
     {
-      ArgumentUtility.CheckNotNull(nameof(dependencySpecifications), dependencySpecifications);
+      ArgumentNullException.ThrowIfNull(dependencySpecifications);
 
       var newMixinContexts = _mixins.ToDictionary(mc => mc.MixinType);
       foreach (var dependencySpecification in dependencySpecifications)
@@ -281,7 +281,7 @@ namespace Remotion.Mixins.Context
 
     public void Serialize (IClassContextSerializer serializer)
     {
-      ArgumentUtility.CheckNotNull(nameof(serializer), serializer);
+      ArgumentNullException.ThrowIfNull(serializer);
 
       serializer.AddClassType(Type);
       serializer.AddMixins(Mixins);

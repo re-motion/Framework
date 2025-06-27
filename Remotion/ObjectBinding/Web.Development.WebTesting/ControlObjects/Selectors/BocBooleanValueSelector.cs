@@ -36,8 +36,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlSelectionContext), controlSelectionContext);
-      ArgumentUtility.CheckNotNull(nameof(newControlObjectContext), newControlObjectContext);
+      ArgumentNullException.ThrowIfNull(controlSelectionContext);
+      ArgumentNullException.ThrowIfNull(newControlObjectContext);
 
       return new BocBooleanValueControlObject(newControlObjectContext);
     }

@@ -32,8 +32,8 @@ namespace Remotion.Web.Development.WebTesting
 
     public DefaultStyleInformation ([NotNull] ControlObject controlObject, [NotNull] ElementScope styledScope)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlObject), controlObject);
-      ArgumentUtility.CheckNotNull(nameof(styledScope), styledScope);
+      ArgumentNullException.ThrowIfNull(controlObject);
+      ArgumentNullException.ThrowIfNull(styledScope);
 
       _controlObject = controlObject;
       _styledScope = styledScope;

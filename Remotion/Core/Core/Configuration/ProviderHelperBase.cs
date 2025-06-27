@@ -56,7 +56,7 @@ namespace Remotion.Configuration
     /// </param>
     protected ProviderHelperBase (ExtendedConfigurationSection configurationSection)
     {
-      ArgumentUtility.CheckNotNull(nameof(configurationSection), configurationSection);
+      ArgumentNullException.ThrowIfNull(configurationSection);
 
       _configurationSection = configurationSection;
       _provider = new DoubleCheckedLockingContainer<TProvider?>(GetProviderFromConfiguration);
@@ -71,7 +71,7 @@ namespace Remotion.Configuration
     public override void InitializeProperties (ConfigurationPropertyCollection properties)
     {
       //TODO RM-7434: Mark with MemberNotNull once supported by msbuild
-      ArgumentUtility.CheckNotNull(nameof(properties), properties);
+      ArgumentNullException.ThrowIfNull(properties);
 
       _providerSettingsProperty = CreateProviderSettingsProperty();
       _defaultProviderNameProperty = CreateDefaultProviderNameProperty();
@@ -151,7 +151,7 @@ namespace Remotion.Configuration
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(assemblyName), assemblyName);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(typeName), typeName);
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(property);
 
       AssemblyName frameworkAssemblyName = GetType().Assembly.GetName();
       AssemblyName realAssemblyName = new AssemblyName(frameworkAssemblyName.FullName);
@@ -162,8 +162,8 @@ namespace Remotion.Configuration
 
     protected Type GetType (ConfigurationProperty property, AssemblyName assemblyName, string typeName)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
-      ArgumentUtility.CheckNotNull(nameof(assemblyName), assemblyName);
+      ArgumentNullException.ThrowIfNull(property);
+      ArgumentNullException.ThrowIfNull(assemblyName);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(typeName), typeName);
 
       try
@@ -199,9 +199,9 @@ namespace Remotion.Configuration
         Type providerType,
         params Type[] providerInterfaces)
     {
-      ArgumentUtility.CheckNotNull(nameof(providerSettingsCollection), providerSettingsCollection);
-      ArgumentUtility.CheckNotNull(nameof(providerCollection), providerCollection);
-      ArgumentUtility.CheckNotNull(nameof(providerType), providerType);
+      ArgumentNullException.ThrowIfNull(providerSettingsCollection);
+      ArgumentNullException.ThrowIfNull(providerCollection);
+      ArgumentNullException.ThrowIfNull(providerType);
 
       foreach (ProviderSettings providerSettings in providerSettingsCollection)
         providerCollection.Add(InstantiateProvider(providerSettings, providerType, providerInterfaces));
@@ -222,7 +222,7 @@ namespace Remotion.Configuration
     /// </exception>    
     protected ExtendedProviderBase InstantiateProvider (ProviderSettings providerSettings, Type providerType, params Type[] providerInterfaces)
     {
-      ArgumentUtility.CheckNotNull(nameof(providerSettings), providerSettings);
+      ArgumentNullException.ThrowIfNull(providerSettings);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(providerType), providerType, typeof(ExtendedProviderBase));
       ArgumentUtility.CheckNotNullOrItemsNull(nameof(providerInterfaces), providerInterfaces);
 

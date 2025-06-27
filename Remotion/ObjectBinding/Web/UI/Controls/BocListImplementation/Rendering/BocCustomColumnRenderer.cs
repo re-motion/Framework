@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(resourceUrlFactory, renderingFeatures, cssClasses, fallbackNavigationUrlProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingFeatures), renderingFeatures);
+      ArgumentNullException.ThrowIfNull(renderingFeatures);
 
       _renderingFeatures = renderingFeatures;
     }
@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </remarks>
     protected override void RenderCellContents (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       int originalRowIndex = arguments.ListIndex;
       IBusinessObject businessObject = arguments.BusinessObject;

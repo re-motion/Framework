@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public TControlObject SelectPerHtmlID (ControlSelectionContext context, string htmlID)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(htmlID), htmlID);
 
       var scope = FindPerHtmlID(context, htmlID);
@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public TControlObject? SelectOptionalPerHtmlID (ControlSelectionContext context, string htmlID)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(htmlID), htmlID);
 
       var scope = FindPerHtmlID(context, htmlID);
@@ -56,7 +56,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerHtmlID (ControlSelectionContext context, string htmlID)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(htmlID), htmlID);
 
       var scope = FindPerHtmlID(context, htmlID);
@@ -67,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public TControlObject SelectPerLocalID (ControlSelectionContext context, string localID)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(localID), localID);
 
       var scope = FindPerLocalID(context, localID);
@@ -80,7 +80,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public TControlObject? SelectOptionalPerLocalID (ControlSelectionContext context, string localID)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(localID), localID);
 
       var scope = FindPerLocalID(context, localID);
@@ -97,7 +97,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerLocalID (ControlSelectionContext context, string localID)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(localID), localID);
 
       var scope = FindPerLocalID(context, localID);
@@ -114,8 +114,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// </summary>
     protected TControlObject CreateControlObject ([NotNull] ControlSelectionContext context, [NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(scope);
 
       var newControlObjectContext = context.CloneForControl(context.PageObject, scope);
       return CreateControlObject(newControlObjectContext, context);

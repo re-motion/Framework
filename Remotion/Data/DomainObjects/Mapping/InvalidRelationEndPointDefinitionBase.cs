@@ -33,9 +33,9 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     protected InvalidRelationEndPointDefinitionBase (ClassDefinition classDefinition, string propertyName, Type propertyType)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
-      ArgumentUtility.CheckNotNull(nameof(propertyName), propertyName);
-      ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
+      ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentNullException.ThrowIfNull(propertyName);
+      ArgumentNullException.ThrowIfNull(propertyType);
 
       _classDefinition = classDefinition;
       _propertyName = propertyName;
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void SetRelationDefinition (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(relationDefinition), relationDefinition);
+      ArgumentNullException.ThrowIfNull(relationDefinition);
 
       _relationDefinition = relationDefinition;
     }

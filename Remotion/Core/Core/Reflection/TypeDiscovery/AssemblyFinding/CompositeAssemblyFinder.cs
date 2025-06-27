@@ -1,5 +1,6 @@
 ﻿// SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
 // SPDX-License-Identifier: LGPL-2.1-or-later
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -16,7 +17,7 @@ public class CompositeAssemblyFinder : IAssemblyFinder
 
   public CompositeAssemblyFinder (IEnumerable<IAssemblyFinder> assemblyFinders)
   {
-    ArgumentUtility.CheckNotNull(nameof(assemblyFinders), assemblyFinders);
+    ArgumentNullException.ThrowIfNull(assemblyFinders);
 
     _assemblyFinders = assemblyFinders.ToList().AsReadOnly();
   }

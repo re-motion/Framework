@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     public bool AreOptionalValidatorsEnabled (IBusinessObjectBoundEditableWebControl control)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentNullException.ThrowIfNull(control);
 
       if (control.DataSource == null)
         return true;

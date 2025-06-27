@@ -48,11 +48,11 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
       IRdbmsProviderCommandFactory rdbmsProviderCommandFactory,
       Func<IDbConnection> connectionFactory)
   {
-    ArgumentUtility.CheckNotNull(nameof(definition), definition);
+    ArgumentNullException.ThrowIfNull(definition);
     ArgumentUtility.CheckNotNullOrEmpty(nameof(connectionString), connectionString);
-    ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
-    ArgumentUtility.CheckNotNull(nameof(rdbmsProviderCommandFactory), rdbmsProviderCommandFactory);
-    ArgumentUtility.CheckNotNull(nameof(connectionFactory), connectionFactory);
+    ArgumentNullException.ThrowIfNull(persistenceExtension);
+    ArgumentNullException.ThrowIfNull(rdbmsProviderCommandFactory);
+    ArgumentNullException.ThrowIfNull(connectionFactory);
 
     if (connectionString != definition.ConnectionString && connectionString != definition.ReadOnlyConnectionString)
     {
@@ -227,7 +227,7 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
   public virtual IEnumerable<DataContainer?> ExecuteCollectionQuery (IQuery query)
   {
     CheckDisposed();
-    ArgumentUtility.CheckNotNull(nameof(query), query);
+    ArgumentNullException.ThrowIfNull(query);
     CheckQuery("query", query, QueryType.CollectionReadOnly, QueryType.CollectionReadWrite);
 
     Connect();
@@ -242,7 +242,7 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
   public virtual IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
   {
     CheckDisposed();
-    ArgumentUtility.CheckNotNull(nameof(query), query);
+    ArgumentNullException.ThrowIfNull(query);
     CheckQuery("query", query, QueryType.CustomReadOnly, QueryType.CustomReadWrite);
 
     Connect();
@@ -254,7 +254,7 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
   public virtual object? ExecuteScalarQuery (IQuery query)
   {
     CheckDisposed();
-    ArgumentUtility.CheckNotNull(nameof(query), query);
+    ArgumentNullException.ThrowIfNull(query);
     CheckQuery("query", query, QueryType.ScalarReadOnly, QueryType.ScalarReadWrite);
 
     Connect();
@@ -266,7 +266,7 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
   public virtual ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
   {
     CheckDisposed();
-    ArgumentUtility.CheckNotNull(nameof(id), id);
+    ArgumentNullException.ThrowIfNull(id);
     CheckStorageProvider(id, "id");
 
     Connect();
@@ -278,7 +278,7 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
   public virtual IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
   {
     CheckDisposed();
-    ArgumentUtility.CheckNotNull(nameof(ids), ids);
+    ArgumentNullException.ThrowIfNull(ids);
 
     Connect();
 
@@ -293,8 +293,8 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
       ObjectID relatedID)
   {
     CheckDisposed();
-    ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
-    ArgumentUtility.CheckNotNull(nameof(relatedID), relatedID);
+    ArgumentNullException.ThrowIfNull(relationEndPointDefinition);
+    ArgumentNullException.ThrowIfNull(relatedID);
     CheckClassDefinition(relationEndPointDefinition.ClassDefinition, "classDefinition");
 
     Connect();
@@ -315,7 +315,7 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
   public virtual void Save (IReadOnlyCollection<DataContainer> dataContainers)
   {
     CheckDisposed();
-    ArgumentUtility.CheckNotNull(nameof(dataContainers), dataContainers);
+    ArgumentNullException.ThrowIfNull(dataContainers);
 
     Connect();
 
@@ -326,7 +326,7 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
   public virtual void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers)
   {
     CheckDisposed();
-    ArgumentUtility.CheckNotNull(nameof(dataContainers), dataContainers);
+    ArgumentNullException.ThrowIfNull(dataContainers);
 
     Connect();
 
@@ -348,7 +348,7 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
   public virtual ObjectID CreateNewObjectID (ClassDefinition classDefinition)
   {
     CheckDisposed();
-    ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+    ArgumentNullException.ThrowIfNull(classDefinition);
     CheckClassDefinition(classDefinition, "classDefinition");
 
     return new ObjectID(classDefinition.ID, Guid.NewGuid());
@@ -385,7 +385,7 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
   public virtual IDataReader ExecuteReader (IDbCommand command, CommandBehavior behavior)
   {
     CheckDisposed();
-    ArgumentUtility.CheckNotNull(nameof(command), command);
+    ArgumentNullException.ThrowIfNull(command);
     ArgumentUtility.CheckValidEnumValue(nameof(behavior), behavior);
 
     try
@@ -401,7 +401,7 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
   public virtual object? ExecuteScalar (IDbCommand command)
   {
     CheckDisposed();
-    ArgumentUtility.CheckNotNull(nameof(command), command);
+    ArgumentNullException.ThrowIfNull(command);
 
     try
     {
@@ -416,7 +416,7 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
   public virtual int ExecuteNonQuery (IDbCommand command)
   {
     CheckDisposed();
-    ArgumentUtility.CheckNotNull(nameof(command), command);
+    ArgumentNullException.ThrowIfNull(command);
 
     try
     {

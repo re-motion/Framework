@@ -120,7 +120,7 @@ namespace Remotion.Utilities
         string whitespaceCharacters,
         bool interpretSpecialCharacters)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
 
       string specialCharacters = "rnt";
       string specialCharacterResults = "\r\n\t";
@@ -219,7 +219,7 @@ namespace Remotion.Utilities
     [JetBrains.Annotations.NotNull]
     public static IEnumerable<string> ParseNewLineSeparatedString ([JetBrains.Annotations.NotNull] string value)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
 
       return value.Split(new[] { '\n' }).Select(s=>s.TrimEnd('\r'));
     }
@@ -384,7 +384,7 @@ namespace Remotion.Utilities
     {
       // TODO RM-7778: The behavior of null values for different types should be tested.
       // TODO RM-7432: ParseArrayValue will throw NRE if type is an arrayType and value is null.
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       Type underlyingType = Nullable.GetUnderlyingType(type) ?? type;
       bool isNullableType = underlyingType != type;
@@ -462,7 +462,7 @@ namespace Remotion.Utilities
 
     public static bool CanParse (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       type = Nullable.GetUnderlyingType(type) ?? type;
 
@@ -497,7 +497,7 @@ namespace Remotion.Utilities
 
     private static MethodInfo? GetParseMethodWithFormatProviderFromType (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
       MethodInfo parseMethod = type.GetMethod(
           "Parse",
           BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy,
@@ -513,7 +513,7 @@ namespace Remotion.Utilities
 
     private static MethodInfo? GetParseMethodFromType (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
       MethodInfo parseMethod = type.GetMethod(
           "Parse",
           BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy,

@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Mapping
                     new PersistentMixinFinder(classType),
                     new ThrowingDomainObjectCreator())
     {
-        ArgumentUtility.CheckNotNull(nameof(relationProperty), relationProperty);
+        ArgumentNullException.ThrowIfNull(relationProperty);
 
         _relationProperty = relationProperty;
     }

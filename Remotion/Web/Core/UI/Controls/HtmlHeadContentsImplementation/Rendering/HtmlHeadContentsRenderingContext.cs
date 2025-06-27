@@ -36,7 +36,7 @@ namespace Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering
         IReadOnlyCollection<HtmlHeadElement> htmlHeadElements)
         : base(httpContext, writer, control)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlHeadElements), htmlHeadElements);
+      ArgumentNullException.ThrowIfNull(htmlHeadElements);
 
       _htmlHeadElements = htmlHeadElements;
     }

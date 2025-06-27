@@ -26,7 +26,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     [CanBeNull]
     public static Exception? GetUnwrappedException ([NotNull] Exception exception)
     {
-      ArgumentUtility.CheckNotNull(nameof(exception), exception);
+      ArgumentNullException.ThrowIfNull(exception);
 
       var unwrappedException = exception;
       while (unwrappedException is HttpException || unwrappedException is WxeHttpExceptionPreservingException)

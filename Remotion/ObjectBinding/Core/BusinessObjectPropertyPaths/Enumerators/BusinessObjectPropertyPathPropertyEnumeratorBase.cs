@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
 
     public bool MoveNext (IBusinessObjectClass currentClass)
     {
-      ArgumentUtility.CheckNotNull(nameof(currentClass), currentClass);
+      ArgumentNullException.ThrowIfNull(currentClass);
 
       _isEnumerationStarted = true;
       _currentProperty = null;

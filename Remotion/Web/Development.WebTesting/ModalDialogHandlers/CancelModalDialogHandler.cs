@@ -27,7 +27,7 @@ namespace Remotion.Web.Development.WebTesting.ModalDialogHandlers
     /// <inheritdoc/>
     public void HandleModalDialog (PageObjectContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       context.Window.CancelModalDialog();
     }

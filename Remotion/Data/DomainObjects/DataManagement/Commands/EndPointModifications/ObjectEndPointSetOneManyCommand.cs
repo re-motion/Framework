@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
             oppositeObjectSetter,
             transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointProvider), endPointProvider);
+      ArgumentNullException.ThrowIfNull(endPointProvider);
 
       if (modifiedEndPoint.Definition.GetOppositeEndPointDefinition().IsAnonymous)
       {

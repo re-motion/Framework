@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
@@ -29,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
   {
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       return from PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions
           select Validate(propertyDefinition);
@@ -37,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
 
     private MappingValidationResult Validate (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
 
       if (propertyDefinition.StorageClass == StorageClass.Persistent && propertyDefinition.ClassDefinition.HasStorageEntityDefinitionBeenSet)
       {

@@ -45,7 +45,7 @@ namespace Remotion.Validation.Providers
 
     public IEnumerable<IEnumerable<ValidationRuleCollectorInfo>> GetValidationRuleCollectors (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull(nameof(types), types);
+      ArgumentNullException.ThrowIfNull(types);
 
       var reflectorLookUp = CreatePropertyRuleReflectors(types);
       return reflectorLookUp.Select(g => GetValidationCollector(g.Key, g))

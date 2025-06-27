@@ -90,7 +90,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithItemID (string value, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithItemID");
@@ -112,7 +112,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNull(nameof(displayText), displayText);
+      ArgumentNullException.ThrowIfNull(displayText);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithDisplayText");
@@ -129,7 +129,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
 
     private UnspecifiedPageObject SelectOption ([NotNull] Action<ElementScope> selectAction, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(selectAction), selectAction);
+      ArgumentNullException.ThrowIfNull(selectAction);
 
       var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
       ExecuteAction(new CustomAction(this, Scope, "Select", selectAction, Logger), actualActionOptions);

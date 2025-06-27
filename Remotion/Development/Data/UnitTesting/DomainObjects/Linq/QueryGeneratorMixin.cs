@@ -46,7 +46,7 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Linq
 
     private void QueryConstructed (IQuery query)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
 
       Console.WriteLine(query.Statement);
       foreach (QueryParameter parameter in query.Parameters)

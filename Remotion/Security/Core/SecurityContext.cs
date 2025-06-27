@@ -73,8 +73,8 @@ namespace Remotion.Security
         Type type, string? owner, string? ownerGroup, string? ownerTenant, IDictionary<string, Enum> states, ICollection<Enum> abstractRoles)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(ISecurableObject));
-      ArgumentUtility.CheckNotNull(nameof(states), states);
-      ArgumentUtility.CheckNotNull(nameof(abstractRoles), abstractRoles);
+      ArgumentNullException.ThrowIfNull(states);
+      ArgumentNullException.ThrowIfNull(abstractRoles);
 
       return new SecurityContext(type, owner, ownerGroup, ownerTenant, false, InitializeStates(states), InitializeAbstractRoles(abstractRoles));
     }
@@ -109,8 +109,8 @@ namespace Remotion.Security
         ICollection<EnumWrapper> abstractRoles)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(ISecurableObject));
-      ArgumentUtility.CheckNotNull(nameof(states), states);
-      ArgumentUtility.CheckNotNull(nameof(abstractRoles), abstractRoles);
+      ArgumentNullException.ThrowIfNull(states);
+      ArgumentNullException.ThrowIfNull(abstractRoles);
 
       return new SecurityContext(type, owner, ownerGroup, ownerTenant, false, new Dictionary<string, EnumWrapper>(states), abstractRoles.ToArray());
     }

@@ -49,7 +49,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStr
         TenantConstraint? tenantConstraint,
         DisplayNameConstraint? displayNameConstraint)
     {
-      ArgumentUtility.CheckNotNull(nameof(substitution), substitution);
+      ArgumentNullException.ThrowIfNull(substitution);
 
       if (substitution.SubstitutedUser == null)
         return Enumerable.Empty<IBusinessObject>().AsQueryable();

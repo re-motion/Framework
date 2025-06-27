@@ -40,7 +40,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// <paramref name="matchExpression"/>.</param>
     public RegexAssemblyLoaderFilter (Regex matchExpression, MatchTargetKind matchTarget)
     {
-      ArgumentUtility.CheckNotNull(nameof(matchExpression), matchExpression);
+      ArgumentNullException.ThrowIfNull(matchExpression);
       ArgumentUtility.CheckValidEnumValue(nameof(matchTarget), matchTarget);
 
       _matchExpression = matchExpression;

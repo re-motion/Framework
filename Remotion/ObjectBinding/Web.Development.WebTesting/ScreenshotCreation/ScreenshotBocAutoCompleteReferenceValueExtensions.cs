@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> GetSelectList (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentAutoComplete), fluentAutoComplete);
+      ArgumentNullException.ThrowIfNull(fluentAutoComplete);
 
       if (fluentAutoComplete.IsReadOnly())
         throw new InvalidOperationException("Can not get the auto-complete as the AutoCompleteReferenceValue is read-only.");
@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetDropDownButton (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentAutoComplete), fluentAutoComplete);
+      ArgumentNullException.ThrowIfNull(fluentAutoComplete);
 
       var target = fluentAutoComplete.Target.Scope.FindChild("DropDownButton", Options.NoWait);
       target.EnsureExistence();
@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<DropDownMenuControlObject> GetOptionsMenu (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentAutoComplete), fluentAutoComplete);
+      ArgumentNullException.ThrowIfNull(fluentAutoComplete);
 
       var target = fluentAutoComplete.Target.Scope.FindChild("Boc_OptionsMenu", Options.NoWait);
       target.EnsureExistence();
@@ -83,7 +83,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueInformationPopup> GetInformationPopup (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentAutoComplete), fluentAutoComplete);
+      ArgumentNullException.ThrowIfNull(fluentAutoComplete);
 
       if (fluentAutoComplete.Target.IsReadOnly())
         throw new InvalidOperationException("Can not get the popup as the AutoCompleteReferenceValue is read-only.");
@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetValue (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentAutoComplete), fluentAutoComplete);
+      ArgumentNullException.ThrowIfNull(fluentAutoComplete);
 
       ElementScope target;
       if (fluentAutoComplete.IsReadOnly())
@@ -115,7 +115,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     public static bool IsReadOnly ([NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentAutoComplete), fluentAutoComplete);
+      ArgumentNullException.ThrowIfNull(fluentAutoComplete);
 
       return fluentAutoComplete.Target.IsReadOnly();
     }
@@ -127,8 +127,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete,
         [NotNull] string value)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentAutoComplete), fluentAutoComplete);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(fluentAutoComplete);
+      ArgumentNullException.ThrowIfNull(value);
 
       if (fluentAutoComplete.IsReadOnly())
         throw new InvalidOperationException("Can not set as the control is read-only.");

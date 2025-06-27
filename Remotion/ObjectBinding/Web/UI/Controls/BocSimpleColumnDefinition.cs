@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns> A <see cref="string"/> representing the contents of <paramref name="obj"/>. </returns>
     public override string GetStringValue (IBusinessObject obj)
     {
-      ArgumentUtility.CheckNotNull(nameof(obj), obj);
+      ArgumentNullException.ThrowIfNull(obj);
 
       var propertyPath = _propertyPathBinding.GetPropertyPath();
 
@@ -184,7 +184,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IBocColumnRenderer GetRendererInternal (IServiceLocator serviceLocator)
     {
-      ArgumentUtility.CheckNotNull(nameof(serviceLocator), serviceLocator);
+      ArgumentNullException.ThrowIfNull(serviceLocator);
 
       return serviceLocator.GetInstance<IBocSimpleColumnRenderer>();
     }

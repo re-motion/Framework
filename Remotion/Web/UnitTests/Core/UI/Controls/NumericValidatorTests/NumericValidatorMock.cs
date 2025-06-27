@@ -27,7 +27,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.NumericValidatorTests
 
     public NumericValidatorMock (Control namingContainer)
     {
-      ArgumentUtility.CheckNotNull(nameof(namingContainer), namingContainer);
+      ArgumentNullException.ThrowIfNull(namingContainer);
       _namingContainer = namingContainer;
     }
 

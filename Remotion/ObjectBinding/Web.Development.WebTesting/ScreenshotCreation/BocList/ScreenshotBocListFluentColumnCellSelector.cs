@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         [NotNull] IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
         int columnIndex)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentList), fluentList);
+      ArgumentNullException.ThrowIfNull(fluentList);
 
       _fluentList = fluentList;
       _columnIndex = columnIndex;
@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public FluentScreenshotElement<ScreenshotBocListCell<TList, TRow, TCell>> WithItemID (string itemID)
     {
-      ArgumentUtility.CheckNotNull(nameof(itemID), itemID);
+      ArgumentNullException.ThrowIfNull(itemID);
 
       return
           SelfResolvableFluentScreenshot.Create(

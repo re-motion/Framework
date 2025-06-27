@@ -42,7 +42,7 @@ public abstract class WebTestAttribute : Attribute
   /// <remarks>The resulting <see cref="IReadOnlyDictionary{TKey,TValue}"/> is used for the <see cref="ITestContext"/>'s <see cref="ITestContext.Properties"/>.</remarks>
   public static IReadOnlyDictionary<string, object> CreatePropertiesFromAttributes ([NotNull] MethodInfo testMethod)
   {
-    ArgumentUtility.CheckNotNull(nameof(testMethod), testMethod);
+    ArgumentNullException.ThrowIfNull(testMethod);
 
     var testAttributes = testMethod.GetCustomAttributes<WebTestAttribute>(true);
     var classAttributes = testMethod.DeclaringType?.GetCustomAttributes<WebTestAttribute>(true) ?? Array.Empty<WebTestAttribute>();

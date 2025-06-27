@@ -65,7 +65,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public static string CreateHasAttributeCheckForXPath (string attributeName, string attributeValue)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(attributeName), attributeName);
-      ArgumentUtility.CheckNotNull(nameof(attributeValue), attributeValue);
+      ArgumentNullException.ThrowIfNull(attributeValue);
 
       return string.Format("[@{0}='{1}']", attributeName, attributeValue);
     }

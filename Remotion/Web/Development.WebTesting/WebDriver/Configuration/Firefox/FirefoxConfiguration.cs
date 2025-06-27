@@ -62,7 +62,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
         [NotNull] FirefoxExecutable firefoxExecutable)
         : base(webTestSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(firefoxExecutable), firefoxExecutable);
+      ArgumentNullException.ThrowIfNull(firefoxExecutable);
 
       BrowserBinaryPath = firefoxExecutable.BrowserBinaryPath;
       DriverBinaryPath = firefoxExecutable.DriverBinaryPath;

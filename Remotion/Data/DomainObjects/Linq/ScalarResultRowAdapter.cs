@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public ScalarResultRowAdapter (object? scalarValue, IStorageTypeInformationProvider storageTypeInformationProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageTypeInformationProvider), storageTypeInformationProvider);
+      ArgumentNullException.ThrowIfNull(storageTypeInformationProvider);
 
       _scalarValue = scalarValue;
       _storageTypeInformationProvider = storageTypeInformationProvider;

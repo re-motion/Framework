@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public IReadOnlyCollection<Guid> GetObjectIDsForType (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       var typeDirectory = GetDirectoryForType(type);
 
@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public Stream GetReadObjectStream (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       try
       {
@@ -78,7 +78,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public Stream GetWriteObjectStream (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       Directory.CreateDirectory(GetDirectoryForType(type));
 

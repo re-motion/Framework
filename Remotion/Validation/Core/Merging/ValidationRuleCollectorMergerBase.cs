@@ -42,7 +42,7 @@ namespace Remotion.Validation.Merging
 
     public ValidationCollectorMergeResult Merge (IEnumerable<IEnumerable<ValidationRuleCollectorInfo>> validationCollectorInfos)
     {
-      ArgumentUtility.CheckNotNull(nameof(validationCollectorInfos), validationCollectorInfos);
+      ArgumentNullException.ThrowIfNull(validationCollectorInfos);
 
       var logContext = CreateNewLogContext();
       var collectedPropertyValidationRules = new List<IAddingPropertyValidationRuleCollector>();

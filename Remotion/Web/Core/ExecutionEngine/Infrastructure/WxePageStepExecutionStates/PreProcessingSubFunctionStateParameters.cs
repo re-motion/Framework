@@ -30,9 +30,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
 
     public PreProcessingSubFunctionStateParameters (IWxePage page, WxeFunction subFunction, WxePermaUrlOptions permaUrlOptions)
     {
-      ArgumentUtility.CheckNotNull(nameof(page), page);
-      ArgumentUtility.CheckNotNull(nameof(subFunction), subFunction);
-      ArgumentUtility.CheckNotNull(nameof(permaUrlOptions), permaUrlOptions);
+      ArgumentNullException.ThrowIfNull(page);
+      ArgumentNullException.ThrowIfNull(subFunction);
+      ArgumentNullException.ThrowIfNull(permaUrlOptions);
 
       _page = page;
       _subFunction = subFunction;

@@ -60,8 +60,8 @@ namespace Remotion.Validation.RuleCollectors
        [NotNull]Func<object, object> propertyFunc,
        [NotNull]Type collectorType)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
-      ArgumentUtility.CheckNotNull(nameof(propertyFunc), propertyFunc);
+      ArgumentNullException.ThrowIfNull(property);
+      ArgumentNullException.ThrowIfNull(propertyFunc);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(collectorType), collectorType, typeof(IValidationRuleCollector));
 
       CollectorType = collectorType;
@@ -73,7 +73,7 @@ namespace Remotion.Validation.RuleCollectors
 
     IValidationRule IAddingPropertyValidationRuleCollector.CreateValidationRule (IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(validationMessageFactory), validationMessageFactory);
+      ArgumentNullException.ThrowIfNull(validationMessageFactory);
 
       foreach (var tuple in _uninitializedValidationMessages)
       {
@@ -103,7 +103,7 @@ namespace Remotion.Validation.RuleCollectors
 
     public void SetCondition<TValidatedTypeForCondition> (Func<TValidatedTypeForCondition, bool> predicate)
     {
-      ArgumentUtility.CheckNotNull(nameof(predicate), predicate);
+      ArgumentNullException.ThrowIfNull(predicate);
 
       if (typeof(TValidatedTypeForCondition) != typeof(TValidatedType))
       {
@@ -122,7 +122,7 @@ namespace Remotion.Validation.RuleCollectors
 
     public void RegisterValidator (Func<PropertyValidationRuleInitializationParameters, IPropertyValidator> validatorFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(validatorFactory), validatorFactory);
+      ArgumentNullException.ThrowIfNull(validatorFactory);
 
       var deferredInitializationValidationMessage = new DeferredInitializationValidationMessage();
       var initializationParameters = new PropertyValidationRuleInitializationParameters(deferredInitializationValidationMessage);
@@ -136,7 +136,7 @@ namespace Remotion.Validation.RuleCollectors
 
     public void ApplyRemoveValidatorRegistrations (IPropertyValidatorExtractor propertyValidatorExtractor)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyValidatorExtractor), propertyValidatorExtractor);
+      ArgumentNullException.ThrowIfNull(propertyValidatorExtractor);
 
       var validatorsToRemove = propertyValidatorExtractor.ExtractPropertyValidatorsToRemove(this).ToArray();
       CheckForNonRemovablePropertyValidatorViolation(validatorsToRemove);

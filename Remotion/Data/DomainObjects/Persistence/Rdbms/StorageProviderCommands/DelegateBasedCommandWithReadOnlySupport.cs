@@ -14,8 +14,8 @@ public class DelegateBasedCommandWithReadOnlySupport<TIn, TOut> : IRdbmsProvider
 
   public DelegateBasedCommandWithReadOnlySupport (IRdbmsProviderCommandWithReadOnlySupport<TIn> command, Func<TIn, TOut> operation)
   {
-    ArgumentUtility.CheckNotNull(nameof(command), command);
-    ArgumentUtility.CheckNotNull(nameof(operation), operation);
+    ArgumentNullException.ThrowIfNull(command);
+    ArgumentNullException.ThrowIfNull(operation);
 
     _command = command;
     _operation = operation;
@@ -33,7 +33,7 @@ public class DelegateBasedCommandWithReadOnlySupport<TIn, TOut> : IRdbmsProvider
 
   public TOut Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
   {
-    ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
+    ArgumentNullException.ThrowIfNull(executionContext);
 
     var executionResult = _command.Execute(executionContext);
     return _operation(executionResult);
@@ -41,7 +41,7 @@ public class DelegateBasedCommandWithReadOnlySupport<TIn, TOut> : IRdbmsProvider
 
   public TOut Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
   {
-    ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
+    ArgumentNullException.ThrowIfNull(executionContext);
 
     var executionResult = _command.Execute(executionContext);
     return _operation(executionResult);

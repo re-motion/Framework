@@ -28,8 +28,8 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
     /// <inheritdoc/>
     public object? PrepareWaitForCompletion (PageObjectContext context, ILogger logger)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(logger);
 
       return null;
     }
@@ -37,8 +37,8 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
     /// <inheritdoc/>
     public void WaitForCompletion (PageObjectContext context, object? state, ILogger logger)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(logger);
     }
   }
 }

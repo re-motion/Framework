@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 
     protected OrderItem (Order order)
     {
-      ArgumentUtility.CheckNotNull(nameof(order), order);
+      ArgumentNullException.ThrowIfNull(order);
       Order = order;
     }
 

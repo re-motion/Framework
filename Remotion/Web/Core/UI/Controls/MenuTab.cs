@@ -132,8 +132,8 @@ namespace Remotion.Web.UI.Controls
 
     public override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
-      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       base.LoadResources(resourceManager, globalizationService);
       if (Command != null)

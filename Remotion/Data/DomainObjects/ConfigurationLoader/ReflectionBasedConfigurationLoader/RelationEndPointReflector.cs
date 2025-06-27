@@ -65,8 +65,8 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider)
         : base(classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainModelConstraintProvider), domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull(nameof(sortExpressionDefinitionProvider), sortExpressionDefinitionProvider);
+      ArgumentNullException.ThrowIfNull(domainModelConstraintProvider);
+      ArgumentNullException.ThrowIfNull(sortExpressionDefinitionProvider);
 
       _domainModelConstraintProvider = domainModelConstraintProvider;
       _sortExpressionDefinitionProvider = sortExpressionDefinitionProvider;

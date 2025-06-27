@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     public ConcurrencyViolationException (string message, IEnumerable<ObjectID> ids, Exception? inner)
         : base(message, inner)
     {
-      ArgumentUtility.CheckNotNull(nameof(ids), ids);
+      ArgumentNullException.ThrowIfNull(ids);
       _ids = ids.ToArray();
     }
 

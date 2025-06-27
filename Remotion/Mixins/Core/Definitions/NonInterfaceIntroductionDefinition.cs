@@ -25,8 +25,8 @@ namespace Remotion.Mixins.Definitions
   {
     public NonInterfaceIntroductionDefinition (Type type, MixinDefinition implementer, bool explicitSuppression)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
-      ArgumentUtility.CheckNotNull(nameof(implementer), implementer);
+      ArgumentNullException.ThrowIfNull(type);
+      ArgumentNullException.ThrowIfNull(implementer);
 
       InterfaceType = type;
       Implementer = implementer;
@@ -44,7 +44,7 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       visitor.Visit(this);
     }
 

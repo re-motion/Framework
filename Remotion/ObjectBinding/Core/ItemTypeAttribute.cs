@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding
     /// <exception cref="System.ArgumentNullException"><paramref name="itemType"/> is <see langword="null"/>.</exception>
     public ItemTypeAttribute (Type itemType)
     {
-      ArgumentUtility.CheckNotNull(nameof(itemType), itemType);
+      ArgumentNullException.ThrowIfNull(itemType);
 
       _itemType = itemType;
     }

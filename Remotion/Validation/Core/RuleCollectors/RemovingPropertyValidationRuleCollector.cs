@@ -44,8 +44,8 @@ namespace Remotion.Validation.RuleCollectors
 
     public RemovingPropertyValidationRuleCollector (IPropertyInformation property, Type collectorType)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
-      ArgumentUtility.CheckNotNull(nameof(collectorType), collectorType); // TODO RM-5906: Add type check for IComponentValidationCollector
+      ArgumentNullException.ThrowIfNull(property);
+      ArgumentNullException.ThrowIfNull(collectorType); // TODO RM-5906: Add type check for IComponentValidationCollector
 
       Property = property;
       CollectorType = collectorType;

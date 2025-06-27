@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting
 
     protected WebTestObject ([NotNull] TWebTestObjectContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       _logger = context.LoggerFactory.CreateLogger(GetType());
       _context = context;

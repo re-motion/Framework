@@ -46,11 +46,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         IRdbmsPersistenceModelProvider persistenceModelProvider,
         IDataContainerValidator dataContainerValidator)
     {
-      ArgumentUtility.CheckNotNull(nameof(idProperty), idProperty);
-      ArgumentUtility.CheckNotNull(nameof(timestampProperty), timestampProperty);
-      ArgumentUtility.CheckNotNull(nameof(ordinalProvider), ordinalProvider);
-      ArgumentUtility.CheckNotNull(nameof(persistenceModelProvider), persistenceModelProvider);
-      ArgumentUtility.CheckNotNull(nameof(dataContainerValidator), dataContainerValidator);
+      ArgumentNullException.ThrowIfNull(idProperty);
+      ArgumentNullException.ThrowIfNull(timestampProperty);
+      ArgumentNullException.ThrowIfNull(ordinalProvider);
+      ArgumentNullException.ThrowIfNull(persistenceModelProvider);
+      ArgumentNullException.ThrowIfNull(dataContainerValidator);
 
       _idProperty = idProperty;
       _timestampProperty = timestampProperty;
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public virtual DataContainer? Read (IDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataReader), dataReader);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
       if (dataReader.Read())
         return CreateDataContainerFromReader(dataReader, new ColumnValueReader(dataReader, _ordinalProvider));
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public virtual IEnumerable<DataContainer?> ReadSequence (IDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataReader), dataReader);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
       var columnValueReader = new ColumnValueReader(dataReader, _ordinalProvider);
       while (dataReader.Read())
@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     protected virtual DataContainer? CreateDataContainerFromReader (IDataReader dataReader, ColumnValueReader columnValueReader)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataReader), dataReader);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
       var id = (ObjectID?)_idProperty.CombineValue(columnValueReader);
       if (id == null)

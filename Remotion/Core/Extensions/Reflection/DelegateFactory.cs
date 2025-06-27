@@ -49,7 +49,7 @@ namespace Remotion.Reflection
 
     public Delegate CreateConstructorCall (ConstructorInfo constructor, Type delegateType)
     {
-      ArgumentUtility.CheckNotNull(nameof(constructor), constructor);
+      ArgumentNullException.ThrowIfNull(constructor);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(delegateType), delegateType, typeof(Delegate));
 
       var parameters = constructor.GetParameters().Select(p => Expression.Parameter(p.ParameterType, p.Name)).ToArray();
@@ -59,7 +59,7 @@ namespace Remotion.Reflection
 
     public Delegate CreateDefaultConstructorCall (Type constructedType, Type delegateType)
     {
-      ArgumentUtility.CheckNotNull(nameof(constructedType), constructedType);
+      ArgumentNullException.ThrowIfNull(constructedType);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(delegateType), delegateType, typeof(Delegate));
 
       var constructorCall = Expression.New(constructedType);

@@ -30,7 +30,7 @@ namespace Remotion.Validation.Implementation
 
     public RemovingValidatorRegistration ([NotNull] Type validatorType, [CanBeNull] Type? collectorTypeToRemoveFrom)
     {
-      ArgumentUtility.CheckNotNull(nameof(validatorType), validatorType);
+      ArgumentNullException.ThrowIfNull(validatorType);
 
       _validatorType = validatorType;
       _collectorTypeToRemoveFrom = collectorTypeToRemoveFrom;

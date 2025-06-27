@@ -34,8 +34,8 @@ namespace Remotion.Development.UnitTesting.IsolatedCodeRunner
     public IsolatedCodeException (string exceptionTypeName, string exceptionMessage, string? exceptionStackTrace)
         : base($"Isolated code threw exception of type '{exceptionTypeName}' with message '{exceptionMessage}'")
     {
-      ArgumentUtility.CheckNotNull(nameof(exceptionTypeName), exceptionTypeName);
-      ArgumentUtility.CheckNotNull(nameof(exceptionMessage), exceptionMessage);
+      ArgumentNullException.ThrowIfNull(exceptionTypeName);
+      ArgumentNullException.ThrowIfNull(exceptionMessage);
 
       ExceptionTypeName = exceptionTypeName;
       ExceptionMessage = exceptionMessage;

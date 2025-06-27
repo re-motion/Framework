@@ -35,8 +35,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
         [NotNull] IFluentScreenshotElementWithCovariance<WebTreeViewNodeControlObject> fluentWebTreeViewNode,
         [NotNull] IFluentScreenshotElement<ElementScope> fluentElement)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentWebTreeViewNode), fluentWebTreeViewNode);
-      ArgumentUtility.CheckNotNull(nameof(fluentElement), fluentElement);
+      ArgumentNullException.ThrowIfNull(fluentWebTreeViewNode);
+      ArgumentNullException.ThrowIfNull(fluentElement);
 
       _fluentWebTreeViewNode = fluentWebTreeViewNode;
       _fluentElement = fluentElement;
@@ -66,7 +66,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull(nameof(locator), locator);
+      ArgumentNullException.ThrowIfNull(locator);
 
       return _fluentElement.ResolveDesktopCoordinates(locator);
     }

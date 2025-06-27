@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public BocListRowWithValidationFailureComparer (IBocListValidationFailureRepository validationFailureRepository)
     {
-      ArgumentUtility.CheckNotNull(nameof(validationFailureRepository), validationFailureRepository);
+      ArgumentNullException.ThrowIfNull(validationFailureRepository);
 
       ValidationFailureRepository = validationFailureRepository;
     }

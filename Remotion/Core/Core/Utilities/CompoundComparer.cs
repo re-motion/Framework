@@ -38,7 +38,7 @@ namespace Remotion.Utilities
 
     public CompoundComparer (IEnumerable<IComparer<T>> comparers)
     {
-      ArgumentUtility.CheckNotNull(nameof(comparers), comparers);
+      ArgumentNullException.ThrowIfNull(comparers);
 
       _comparers = comparers.ToArray();
     }

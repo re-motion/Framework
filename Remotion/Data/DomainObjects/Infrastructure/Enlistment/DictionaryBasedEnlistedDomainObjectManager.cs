@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
 
     public DomainObject? GetEnlistedDomainObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       int index;
       if (_enlistedObjects.TryGetValue(objectID, out index))
@@ -55,14 +55,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
 
     public bool IsEnlisted (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
 
       return GetEnlistedDomainObject(domainObject.ID) == domainObject;
     }
 
     public void EnlistDomainObject (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
 
       DomainObject? alreadyEnlistedObject = GetEnlistedDomainObject(domainObject.ID);
       if (alreadyEnlistedObject != null && alreadyEnlistedObject != domainObject)
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
 
     public void DisenlistDomainObject (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
 
       int index;
       if (!_enlistedObjects.TryGetValue(domainObject.ID, out index))

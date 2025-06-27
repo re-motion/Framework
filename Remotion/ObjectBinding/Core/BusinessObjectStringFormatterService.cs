@@ -102,8 +102,8 @@ namespace Remotion.ObjectBinding
     /// </exception>
     public string GetPropertyString (IBusinessObject businessObject, IBusinessObjectProperty property, string? format)
     {
-      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(businessObject);
+      ArgumentNullException.ThrowIfNull(property);
 
       if (property.IsList)
       {

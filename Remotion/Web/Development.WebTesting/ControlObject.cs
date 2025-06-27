@@ -69,7 +69,7 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] ElementScope scope,
         [CanBeNull] IWebTestActionOptions? userDefinedWebTestActionOptions)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       if (userDefinedWebTestActionOptions == null) // prevent complicated null handling
         userDefinedWebTestActionOptions = new WebTestActionOptions();
@@ -96,8 +96,8 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     protected void ExecuteAction ([NotNull] WebTestAction action, [NotNull] IWebTestActionOptions actionOptions)
     {
-      ArgumentUtility.CheckNotNull(nameof(action), action);
-      ArgumentUtility.CheckNotNull(nameof(actionOptions), actionOptions);
+      ArgumentNullException.ThrowIfNull(action);
+      ArgumentNullException.ThrowIfNull(actionOptions);
 
       OnActionExecute(action, actionOptions);
 
@@ -109,8 +109,8 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     protected void OnActionExecute ([NotNull] WebTestAction action, [NotNull] IWebTestActionOptions actionOptions)
     {
-      ArgumentUtility.CheckNotNull(nameof(action), action);
-      ArgumentUtility.CheckNotNull(nameof(actionOptions), actionOptions);
+      ArgumentNullException.ThrowIfNull(action);
+      ArgumentNullException.ThrowIfNull(actionOptions);
 
       _actionExecuteEvent?.Invoke(action, actionOptions);
     }

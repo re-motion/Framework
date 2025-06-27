@@ -47,7 +47,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
 
     private static string MakeMatchExpression (IEnumerable<string> assemblyMatchStrings)
     {
-      ArgumentUtility.CheckNotNull(nameof(assemblyMatchStrings), assemblyMatchStrings);
+      ArgumentNullException.ThrowIfNull(assemblyMatchStrings);
 
       return "^((" + string.Join(")|(", assemblyMatchStrings) + "))$";
     }
@@ -128,7 +128,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// <see cref="ShouldIncludeAssembly"/>.</remarks>
     public bool ShouldConsiderAssembly (AssemblyName assemblyName)
     {
-      ArgumentUtility.CheckNotNull(nameof(assemblyName), assemblyName);
+      ArgumentNullException.ThrowIfNull(assemblyName);
       return !GetAssemblyNameFilter().ShouldConsiderAssembly(assemblyName);
     }
 
@@ -144,7 +144,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// passed on to this step.</remarks>
     public bool ShouldIncludeAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
+      ArgumentNullException.ThrowIfNull(assembly);
       return !assembly.IsDefined(typeof(NonApplicationAssemblyAttribute), false);
     }
 

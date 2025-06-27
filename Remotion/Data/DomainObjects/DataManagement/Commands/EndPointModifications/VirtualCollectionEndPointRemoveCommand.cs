@@ -44,8 +44,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
             null,
             transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull(nameof(collectionData), collectionData);
-      ArgumentUtility.CheckNotNull(nameof(endPointProvider), endPointProvider);
+      ArgumentNullException.ThrowIfNull(collectionData);
+      ArgumentNullException.ThrowIfNull(endPointProvider);
 
       _index = collectionData.IsDataComplete ? collectionData.IndexOf(removedObject.ID) : 0;
       _modifiedCollectionData = collectionData;

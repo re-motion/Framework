@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public override WebMenuItem[] InitalizeMenuItems (WebTreeNode node)
     {
-      ArgumentUtility.CheckNotNull(nameof(node), node);
+      ArgumentNullException.ThrowIfNull(node);
 
       WebMenuItem eventMenuItem = new WebMenuItem();
       eventMenuItem.Text = WebString.CreateFromText("Event");

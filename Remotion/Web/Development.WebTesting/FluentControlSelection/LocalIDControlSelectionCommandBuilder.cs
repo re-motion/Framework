@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     public IControlSelectionCommand<TControlObject> Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
 
       return new LocalIDControlSelectionCommand<TControlObject>(controlSelector, _localID);
     }
@@ -53,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlOptionalSelectionCommand<TControlObject> IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
 
       return new LocalIDControlSelectionCommand<TControlObject>(controlSelector, _localID);
     }
@@ -61,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlExistsCommand IControlExistsCommandBuilder<TControlSelector>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
 
       return new LocalIDControlSelectionCommand<TControlObject>(controlSelector, _localID);
     }

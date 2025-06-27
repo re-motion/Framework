@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public static ElementScope GetRootScope ([NotNull] this BrowserWindow window)
     {
-      ArgumentUtility.CheckNotNull(nameof(window), window);
+      ArgumentNullException.ThrowIfNull(window);
 
       return window.FindCss("html");
     }
@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public static void CloseWindow ([NotNull] this PageObjectContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       context.Window.ExecuteScript(CommonJavaScripts.SelfClose);
       EnsureParentWindowIsActive(context);
@@ -63,7 +63,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public static IWebDriver GetWebDriver ([NotNull] this BrowserWindow window)
     {
-      ArgumentUtility.CheckNotNull(nameof(window), window);
+      ArgumentNullException.ThrowIfNull(window);
 
       var driverFieldInfo = typeof(BrowserWindow).GetField("_driver", BindingFlags.NonPublic | BindingFlags.Instance);
       Assertion.IsNotNull(driverFieldInfo, "Coypu has changed, please update CoypuBrowserWindowExtensions.GetWebDriver() method.");
@@ -78,7 +78,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     private static void EnsureParentWindowIsActive ([NotNull] this PageObjectContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
       Assertion.IsNotNull(context.ParentContext);
 
       context.ParentContext.Window.EnsureWindowIsActive();

@@ -58,8 +58,8 @@ public class SqlQueryDbCommandBuilder : QueryDbCommandBuilder
       : base(statement, parameters, sqlDialect)
   {
     ArgumentUtility.CheckNotNullOrEmpty(nameof(statement), statement);
-    ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
-    ArgumentUtility.CheckNotNull(nameof(sqlDialect), sqlDialect);
+    ArgumentNullException.ThrowIfNull(parameters);
+    ArgumentNullException.ThrowIfNull(sqlDialect);
 
     var tvp = parameters.Where(p => p.DataParameterDefinition is SqlTableValuedDataParameterDefinition);
     _tvpToTempTable = tvp.ToDictionary(
@@ -102,7 +102,7 @@ public class SqlQueryDbCommandBuilder : QueryDbCommandBuilder
 
   public override IDbCommand Create (IDbCommandFactory dbCommandFactory)
   {
-    ArgumentUtility.CheckNotNull(nameof(dbCommandFactory), dbCommandFactory);
+    ArgumentNullException.ThrowIfNull(dbCommandFactory);
 
     var command = base.Create(dbCommandFactory);
     if (_tvpToTempTable.Count == 0)

@@ -36,7 +36,7 @@ namespace Remotion.Tools.Console
 
       public ColorScope (IConsoleManager consoleManager, ConsoleColor? foregroundColor, ConsoleColor? backgroundColor)
       {
-        ArgumentUtility.CheckNotNull(nameof(consoleManager), consoleManager);
+        ArgumentNullException.ThrowIfNull(consoleManager);
 
         _consoleManager = consoleManager;
         if (foregroundColor != null)

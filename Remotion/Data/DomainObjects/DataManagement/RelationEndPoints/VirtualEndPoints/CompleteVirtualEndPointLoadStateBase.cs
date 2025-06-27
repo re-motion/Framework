@@ -48,9 +48,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataManager), dataManager);
-      ArgumentUtility.CheckNotNull(nameof(endPointProvider), endPointProvider);
-      ArgumentUtility.CheckNotNull(nameof(transactionEventSink), transactionEventSink);
+      ArgumentNullException.ThrowIfNull(dataManager);
+      ArgumentNullException.ThrowIfNull(endPointProvider);
+      ArgumentNullException.ThrowIfNull(transactionEventSink);
 
       _dataManager = dataManager;
       _endPointProvider = endPointProvider;
@@ -98,20 +98,20 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void EnsureDataComplete (TEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
+      ArgumentNullException.ThrowIfNull(endPoint);
       // Data is already complete
     }
 
     public bool CanDataBeMarkedIncomplete (TEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
+      ArgumentNullException.ThrowIfNull(endPoint);
       return !HasChanged();
     }
 
     public virtual void MarkDataIncomplete (TEndPoint endPoint, Action stateSetter)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
-      ArgumentUtility.CheckNotNull(nameof(stateSetter), stateSetter);
+      ArgumentNullException.ThrowIfNull(endPoint);
+      ArgumentNullException.ThrowIfNull(stateSetter);
 
       if (HasChanged())
       {
@@ -135,8 +135,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void RegisterOriginalOppositeEndPoint (TEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
-      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(endPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
       if (oppositeEndPoint.IsNull)
         throw new ArgumentException("End point must not be a null object.", nameof(oppositeEndPoint));
 
@@ -162,8 +162,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void UnregisterOriginalOppositeEndPoint (TEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
-      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(endPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
       if (oppositeEndPoint.IsNull)
         throw new ArgumentException("End point must not be a null object.", nameof(oppositeEndPoint));
 
@@ -198,23 +198,23 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void RegisterCurrentOppositeEndPoint (TEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
-      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(endPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       _dataManager.RegisterCurrentOppositeEndPoint(oppositeEndPoint);
     }
 
     public void UnregisterCurrentOppositeEndPoint (TEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
-      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(endPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       _dataManager.UnregisterCurrentOppositeEndPoint(oppositeEndPoint);
     }
 
     public bool IsSynchronized (TEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
+      ArgumentNullException.ThrowIfNull(endPoint);
 
       return !GetOriginalItemsWithoutEndPoints().Any();
     }
@@ -226,7 +226,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public virtual void Synchronize (TEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
+      ArgumentNullException.ThrowIfNull(endPoint);
 
       if (Logger.IsEnabled(LogLevel.Debug))
         Logger.LogDebug("End-point '{0}' is being synchronized.", endPoint.ID);
@@ -237,7 +237,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public virtual void SynchronizeOppositeEndPoint (TEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
       if (oppositeEndPoint.IsNull)
         throw new ArgumentException("End point must not be a null object.", nameof(oppositeEndPoint));
 
@@ -275,9 +275,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     protected void MarkDataComplete (TEndPoint endPoint, IEnumerable<DomainObject> data, Action<TDataManager> stateSetter)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
-      ArgumentUtility.CheckNotNull(nameof(data), data);
-      ArgumentUtility.CheckNotNull(nameof(stateSetter), stateSetter);
+      ArgumentNullException.ThrowIfNull(endPoint);
+      ArgumentNullException.ThrowIfNull(data);
+      ArgumentNullException.ThrowIfNull(stateSetter);
 
       throw new InvalidOperationException("The data is already complete.");
     }

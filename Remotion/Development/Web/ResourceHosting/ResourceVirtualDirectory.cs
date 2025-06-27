@@ -36,7 +36,7 @@ namespace Remotion.Development.Web.ResourceHosting
         : base(virtualPath)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(virtualPath), virtualPath);
-      ArgumentUtility.CheckNotNull(nameof(physicalDirectory), physicalDirectory);
+      ArgumentNullException.ThrowIfNull(physicalDirectory);
 
       _virtualPath = VirtualPathUtility.AppendTrailingSlash(virtualPath);
       _physicalDirectory = physicalDirectory;

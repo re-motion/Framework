@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     protected internal ClientTransactionWrapper (ClientTransaction wrappedInstance)
     {
-      ArgumentUtility.CheckNotNull(nameof(wrappedInstance), wrappedInstance);
+      ArgumentNullException.ThrowIfNull(wrappedInstance);
       _wrappedInstance = wrappedInstance;
     }
 
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <remarks>If the type of of of the objects is not supported by the transaction, the object must be ignored.</remarks>
     public virtual void EnsureCompatibility (IEnumerable objects)
     {
-      ArgumentUtility.CheckNotNull(nameof(objects), objects);
+      ArgumentNullException.ThrowIfNull(objects);
 
       var domainObjects = objects.OfType<DomainObject>().Distinct();
       var incompatibleObjects = domainObjects.Where(obj => _wrappedInstance.RootTransaction != obj.RootTransaction).ToArray();

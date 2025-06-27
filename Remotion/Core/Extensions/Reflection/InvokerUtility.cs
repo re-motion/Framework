@@ -23,8 +23,8 @@ namespace Remotion.Reflection
   {
     public static void CheckInvokeArguments (Type[] valueTypes, object?[] values)
     {
-      ArgumentUtility.CheckNotNull(nameof(valueTypes), valueTypes);
-      ArgumentUtility.CheckNotNull(nameof(values), values);
+      ArgumentNullException.ThrowIfNull(valueTypes);
+      ArgumentNullException.ThrowIfNull(values);
       if (valueTypes.Length != values.Length)
         throw new InvalidOperationException("Arguments must be of same size.");
 
@@ -39,7 +39,7 @@ namespace Remotion.Reflection
 
     public static Type[] GetValueTypes (object?[] values)
     {
-      ArgumentUtility.CheckNotNull(nameof(values), values);
+      ArgumentNullException.ThrowIfNull(values);
 
       Type[] valueTypes = new Type[values.Length];
       for (int i = 0; i < values.Length; ++i)

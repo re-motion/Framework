@@ -40,10 +40,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
         IRdbmsStructuredTypeDefinitionProvider structuredTypeDefinitionProvider,
         IScriptToStringConverter scriptToStringConverter)
     {
-      ArgumentUtility.CheckNotNull(nameof(scriptBuilderFactory), scriptBuilderFactory);
-      ArgumentUtility.CheckNotNull(nameof(entityDefinitionProvider), entityDefinitionProvider);
-      ArgumentUtility.CheckNotNull(nameof(structuredTypeDefinitionProvider), structuredTypeDefinitionProvider);
-      ArgumentUtility.CheckNotNull(nameof(scriptToStringConverter), scriptToStringConverter);
+      ArgumentNullException.ThrowIfNull(scriptBuilderFactory);
+      ArgumentNullException.ThrowIfNull(entityDefinitionProvider);
+      ArgumentNullException.ThrowIfNull(structuredTypeDefinitionProvider);
+      ArgumentNullException.ThrowIfNull(scriptToStringConverter);
 
       _scriptBuilderFactory = scriptBuilderFactory;
       _entityDefinitionProvider = entityDefinitionProvider;
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public IEnumerable<Script> GetScripts (IEnumerable<ClassDefinition> classDefinitions)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinitions), classDefinitions);
+      ArgumentNullException.ThrowIfNull(classDefinitions);
 
       var classDefinitionsByStorageProvider =
           from cd in classDefinitions

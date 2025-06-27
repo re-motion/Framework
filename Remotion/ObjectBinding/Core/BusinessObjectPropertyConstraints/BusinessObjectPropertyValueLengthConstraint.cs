@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyConstraints
 
     public void Accept (IBusinessObjectConstraintVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
 
       (visitor as IBusinessObjectConstraintVisitor<BusinessObjectPropertyValueLengthConstraint>)?.Visit(this);
     }

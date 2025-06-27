@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentDropDown), fluentDropDown);
+      ArgumentNullException.ThrowIfNull(fluentDropDown);
 
       fluentDropDown.Target.Element.Click(Options.NoWait);
     }

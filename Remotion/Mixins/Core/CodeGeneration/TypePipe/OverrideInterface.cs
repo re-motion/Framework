@@ -28,8 +28,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public OverrideInterface (Type type, Dictionary<MethodInfo, MethodInfo> interfaceMethodsByOverriddenMethods)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
-      ArgumentUtility.CheckNotNull(nameof(interfaceMethodsByOverriddenMethods), interfaceMethodsByOverriddenMethods);
+      ArgumentNullException.ThrowIfNull(type);
+      ArgumentNullException.ThrowIfNull(interfaceMethodsByOverriddenMethods);
 
       _type = type;
       _interfaceMethodsByOverriddenMethods = interfaceMethodsByOverriddenMethods;

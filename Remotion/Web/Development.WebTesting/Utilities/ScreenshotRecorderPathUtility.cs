@@ -37,10 +37,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </exception>
     public static string GetFullScreenshotFilePath ([NotNull] string screenshotDirectory, [NotNull] string baseFileName, [NotNull] string suffix, [NotNull] string extension)
     {
-      ArgumentUtility.CheckNotNull(nameof(screenshotDirectory), screenshotDirectory);
-      ArgumentUtility.CheckNotNull(nameof(baseFileName), baseFileName);
-      ArgumentUtility.CheckNotNull(nameof(suffix), suffix);
-      ArgumentUtility.CheckNotNull(nameof(extension), extension);
+      ArgumentNullException.ThrowIfNull(screenshotDirectory);
+      ArgumentNullException.ThrowIfNull(baseFileName);
+      ArgumentNullException.ThrowIfNull(suffix);
+      ArgumentNullException.ThrowIfNull(extension);
 
       var sanitizedBaseFileName = SanitizeFileName(baseFileName);
       var filePath = GetFullScreenshotFilePathInternal(screenshotDirectory, sanitizedBaseFileName, suffix, extension);

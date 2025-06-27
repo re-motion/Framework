@@ -62,7 +62,7 @@ namespace Remotion.Security.Metadata
 
     public void AddLocalization (CultureInfo cultureInfo)
     {
-      ArgumentUtility.CheckNotNull(nameof(cultureInfo), cultureInfo);
+      ArgumentNullException.ThrowIfNull(cultureInfo);
 
       _cultures.Add(cultureInfo);
     }
