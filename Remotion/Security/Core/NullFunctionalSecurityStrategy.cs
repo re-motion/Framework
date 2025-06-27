@@ -28,9 +28,9 @@ namespace Remotion.Security
   {
     public bool HasAccess (Type type, ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes)
     {
-      ArgumentUtility.DebugCheckNotNull("type", type);
-      ArgumentUtility.DebugCheckNotNull("securityProvider", securityProvider);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(type), type);
+      ArgumentUtility.DebugCheckNotNull(nameof(securityProvider), securityProvider);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
       ArgumentUtility.DebugCheckNotNullOrEmpty("requiredAccessTypes", requiredAccessTypes);
 
       return true;

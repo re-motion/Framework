@@ -38,8 +38,8 @@ namespace Remotion.Security.Metadata
 
       public CacheKey (Type type, IMethodInformation methodInformation)
       {
-        ArgumentUtility.DebugCheckNotNull("type", type);
-        ArgumentUtility.DebugCheckNotNull("methodInformation", methodInformation);
+        ArgumentUtility.DebugCheckNotNull(nameof(type), type);
+        ArgumentUtility.DebugCheckNotNull(nameof(methodInformation), methodInformation);
 
         Type = type;
         MethodInformation = methodInformation;

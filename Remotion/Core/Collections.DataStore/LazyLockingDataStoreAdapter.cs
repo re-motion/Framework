@@ -64,19 +64,19 @@ namespace Remotion.Collections.DataStore
 
     public bool ContainsKey (TKey key)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
       return _innerDataStore.ContainsKey(key);
     }
 
     public void Add (TKey key, TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
       _innerDataStore.Add(key, new Lazy<Wrapper>(() => new Wrapper(value), LazyThreadSafetyMode.PublicationOnly));
     }
 
     public bool Remove (TKey key)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
       return _innerDataStore.Remove(key);
     }
 
@@ -89,12 +89,12 @@ namespace Remotion.Collections.DataStore
     {
       get
       {
-        ArgumentUtility.DebugCheckNotNull("key", key);
+        ArgumentUtility.DebugCheckNotNull(nameof(key), key);
         return _innerDataStore[key].Value.Value;
       }
       set
       {
-        ArgumentUtility.DebugCheckNotNull("key", key);
+        ArgumentUtility.DebugCheckNotNull(nameof(key), key);
         _innerDataStore[key] = new Lazy<Wrapper>(() => new Wrapper(value), LazyThreadSafetyMode.PublicationOnly);
       }
     }
@@ -102,7 +102,7 @@ namespace Remotion.Collections.DataStore
     [return: MaybeNull]
     public TValue GetValueOrDefault (TKey key)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
       var result = _innerDataStore.GetValueOrDefault(key);
       return result != null ? result.Value.Value : null!;
@@ -110,7 +110,7 @@ namespace Remotion.Collections.DataStore
 
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
 
       if (_innerDataStore.TryGetValue(key, out var result))
@@ -124,8 +124,8 @@ namespace Remotion.Collections.DataStore
 
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
-      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
+      ArgumentUtility.DebugCheckNotNull(nameof(valueFactory), valueFactory);
 
       Wrapper wrapper;
       if (_innerDataStore.TryGetValue(key, out var value))

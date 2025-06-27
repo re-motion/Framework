@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     public bool CanWrite (IBusinessObject? businessObject, PropertyBase bindableProperty)
     {
       // businessObject can be null
-      ArgumentUtility.DebugCheckNotNull("bindableProperty", bindableProperty);
+      ArgumentUtility.DebugCheckNotNull(nameof(bindableProperty), bindableProperty);
 
       var domainObject = businessObject as DomainObject;
       if (domainObject == null)
@@ -132,9 +132,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
         Exception exception,
         [MaybeNullWhen(false)] out BusinessObjectPropertyAccessException propertyAccessException)
     {
-      ArgumentUtility.DebugCheckNotNull("businessObject", businessObject);
-      ArgumentUtility.DebugCheckNotNull("bindableProperty", bindableProperty);
-      ArgumentUtility.DebugCheckNotNull("exception", exception);
+      ArgumentUtility.DebugCheckNotNull(nameof(businessObject), businessObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(bindableProperty), bindableProperty);
+      ArgumentUtility.DebugCheckNotNull(nameof(exception), exception);
 
       var isPropertyAccessException = exception is ObjectInvalidException
                                       || exception is ObjectDeletedException

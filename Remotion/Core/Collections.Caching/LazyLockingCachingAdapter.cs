@@ -68,8 +68,8 @@ namespace Remotion.Collections.Caching
 
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
-      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
+      ArgumentUtility.DebugCheckNotNull(nameof(valueFactory), valueFactory);
 
       Wrapper wrapper;
       if (_innerCache.TryGetValue(key, out var value))
@@ -91,7 +91,7 @@ namespace Remotion.Collections.Caching
 
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
       if (_innerCache.TryGetValue(key, out var result))
       {

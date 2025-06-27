@@ -64,8 +64,8 @@ namespace Remotion.Security
 
     private ObjectSecurityStrategy (ISecurityContextFactory securityContextFactory, ICache<ISecurityPrincipal, AccessType[]> cache)
     {
-      ArgumentUtility.DebugCheckNotNull("securityContextFactory", securityContextFactory);
-      ArgumentUtility.DebugCheckNotNull("cache", cache);
+      ArgumentUtility.DebugCheckNotNull(nameof(securityContextFactory), securityContextFactory);
+      ArgumentUtility.DebugCheckNotNull(nameof(cache), cache);
 
       _securityContextFactory = securityContextFactory;
       _cache = cache;
@@ -73,8 +73,8 @@ namespace Remotion.Security
 
     public bool HasAccess (ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes)
     {
-      ArgumentUtility.DebugCheckNotNull("securityProvider", securityProvider);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(securityProvider), securityProvider);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
       ArgumentUtility.CheckNotNull(nameof(requiredAccessTypes), requiredAccessTypes);
       // Performance critical argument check. Can be refactored to ArgumentUtility.CheckNotNullOrEmpty once typed collection checks are supported.
       if (requiredAccessTypes.Count == 0)

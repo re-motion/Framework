@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       get
       {
         // Overloaded member checks the arguments
-        ArgumentUtility.DebugCheckNotNull("domainObjectType", domainObjectType);
+        ArgumentUtility.DebugCheckNotNull(nameof(domainObjectType), domainObjectType);
         ArgumentUtility.DebugCheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
 
         return this[domainObjectType, shortPropertyName, ClientTransaction];
@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         // PropertyAccessorDataCache checks the argument
         ArgumentUtility.DebugCheckNotNullOrEmpty("propertyName", propertyName);
         // GetPropertyAccessor checks the argument
-        ArgumentUtility.DebugCheckNotNull("transaction", transaction);
+        ArgumentUtility.DebugCheckNotNull(nameof(transaction), transaction);
 
         var data = PropertyAccessorDataCache.GetMandatoryPropertyAccessorData(propertyName);
         return GetPropertyAccessor(transaction, data);
@@ -135,11 +135,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       get
       {
         // PropertyAccessorDataCache checks the argument
-        ArgumentUtility.DebugCheckNotNull("domainObjectType", domainObjectType);
+        ArgumentUtility.DebugCheckNotNull(nameof(domainObjectType), domainObjectType);
         // PropertyAccessorDataCache checks the argument
         ArgumentUtility.DebugCheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
         // GetPropertyAccessor checks the argument
-        ArgumentUtility.DebugCheckNotNull("transaction", transaction);
+        ArgumentUtility.DebugCheckNotNull(nameof(transaction), transaction);
 
         var data = PropertyAccessorDataCache.GetMandatoryPropertyAccessorData(domainObjectType, shortPropertyName);
         return GetPropertyAccessor(transaction, data);

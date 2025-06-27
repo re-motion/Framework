@@ -114,15 +114,15 @@ namespace Remotion.Collections.Caching
 
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
       return TryGetValueInternal(key, out value);
     }
 
     public TValue GetOrCreateValue (TKey key, Func<TKey,TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
-      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
+      ArgumentUtility.DebugCheckNotNull(nameof(valueFactory), valueFactory);
 
       if (!TryGetValueInternal(key, out var value))
       {

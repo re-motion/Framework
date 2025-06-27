@@ -64,7 +64,7 @@ namespace Remotion.Collections.DataStore
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
     public bool ContainsKey (TKey key)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
       lock (_lock)
       {
@@ -81,7 +81,7 @@ namespace Remotion.Collections.DataStore
     /// <exception cref="ArgumentException">An item with an equal key already exists in the store.</exception>
     public void Add (TKey key, TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
       // value can be null
 
       lock (_lock)
@@ -100,7 +100,7 @@ namespace Remotion.Collections.DataStore
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
     public bool Remove (TKey key)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
       lock (_lock)
       {
@@ -127,7 +127,7 @@ namespace Remotion.Collections.DataStore
     {
       get
       {
-        ArgumentUtility.DebugCheckNotNull("key", key);
+        ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
         lock (_lock)
         {
@@ -136,7 +136,7 @@ namespace Remotion.Collections.DataStore
       }
       set
       {
-        ArgumentUtility.DebugCheckNotNull("key", key);
+        ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
         lock (_lock)
         {
@@ -155,7 +155,7 @@ namespace Remotion.Collections.DataStore
     [return: MaybeNull]
     public TValue GetValueOrDefault (TKey key)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
       lock (_lock)
       {
@@ -174,7 +174,7 @@ namespace Remotion.Collections.DataStore
     /// </returns>
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
       lock (_lock)
       {
@@ -192,8 +192,8 @@ namespace Remotion.Collections.DataStore
     /// </returns>
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
-      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
+      ArgumentUtility.DebugCheckNotNull(nameof(valueFactory), valueFactory);
 
       lock (_lock)
       {

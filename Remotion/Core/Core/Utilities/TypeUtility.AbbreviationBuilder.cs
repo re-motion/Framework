@@ -26,7 +26,7 @@ namespace Remotion.Utilities
     {
       public string BuildAbbreviatedTypeName (Type type, bool includeVersionAndCulture)
       {
-        ArgumentUtility.DebugCheckNotNull("type", type);
+        ArgumentUtility.DebugCheckNotNull(nameof(type), type);
 
         // TODO RM-7763: properties should be checked for null. Consider passing the properties instead of the type/assembly into the next method to use only the null-checked values.
         var typeNameBuilder = new StringBuilder(type.GetFullNameChecked().Length + 20 + (includeVersionAndCulture ? type.Assembly!.GetFullNameChecked().Length : 0));

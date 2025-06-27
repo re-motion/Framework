@@ -155,9 +155,9 @@ namespace Remotion.Security
 
     public void CheckAccess (ISecurableObject securableObject, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes)
     {
-      ArgumentUtility.DebugCheckNotNull("securableObject", securableObject);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
-      ArgumentUtility.DebugCheckNotNull("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.DebugCheckNotNull(nameof(securableObject), securableObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(requiredAccessTypes), requiredAccessTypes);
 
       if (!HasAccess(securableObject, principal, requiredAccessTypes))
         throw CreatePermissionDeniedException("Access has been denied.");
@@ -208,9 +208,9 @@ namespace Remotion.Security
 
     public void CheckStatelessAccess (Type securableClass, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes)
     {
-      ArgumentUtility.DebugCheckNotNull("securableClass", securableClass);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
-      ArgumentUtility.DebugCheckNotNull("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.DebugCheckNotNull(nameof(securableClass), securableClass);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(requiredAccessTypes), requiredAccessTypes);
 
       if (!HasStatelessAccess(securableClass, principal, requiredAccessTypes))
         throw CreatePermissionDeniedException("Access has been denied.");
@@ -226,7 +226,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableObject.GetSecurableType(), methodName, MemberAffiliation.Instance);
       return HasMethodAccess(securableObject, methodInformation, principal);
@@ -241,7 +241,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
       ArgumentUtility.CheckNotNull(nameof(methodInfo), methodInfo);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableObject.GetSecurableType(), methodInfo, MemberAffiliation.Instance);
       return HasMethodAccess(securableObject, methodInformation, principal);
@@ -256,7 +256,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
       ArgumentUtility.CheckNotNull(nameof(methodInformation), methodInformation);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions(securableObject.GetSecurableType(), methodInformation);
       Assertion.DebugIsNotNull(requiredAccessTypeEnums, "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.");
@@ -271,9 +271,9 @@ namespace Remotion.Security
 
     public void CheckMethodAccess (ISecurableObject securableObject, string methodName, ISecurityPrincipal principal)
     {
-      ArgumentUtility.DebugCheckNotNull("securableObject", securableObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(securableObject), securableObject);
       ArgumentUtility.DebugCheckNotNullOrEmpty("methodName", methodName);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       if (!HasMethodAccess(securableObject, methodName, principal))
       {
@@ -291,9 +291,9 @@ namespace Remotion.Security
 
     public void CheckMethodAccess (ISecurableObject securableObject, MethodInfo methodInfo, ISecurityPrincipal principal)
     {
-      ArgumentUtility.DebugCheckNotNull("securableObject", securableObject);
-      ArgumentUtility.DebugCheckNotNull("methodInfo", methodInfo);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(securableObject), securableObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(methodInfo), methodInfo);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       if (!HasMethodAccess(securableObject, methodInfo, principal))
       {
@@ -312,9 +312,9 @@ namespace Remotion.Security
 
     public void CheckMethodAccess (ISecurableObject securableObject, IMethodInformation methodInformation, ISecurityPrincipal principal)
     {
-      ArgumentUtility.DebugCheckNotNull("securableObject", securableObject);
-      ArgumentUtility.DebugCheckNotNull("methodInformation", methodInformation);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(securableObject), securableObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(methodInformation), methodInformation);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       if (!HasMethodAccess(securableObject, methodInformation, principal))
       {
@@ -338,7 +338,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableObject.GetSecurableType(), "get_" + propertyName, MemberAffiliation.Instance);
       return HasPropertyReadAccess(securableObject, methodInformation, principal);
@@ -353,7 +353,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
       ArgumentUtility.DebugCheckNotNull("methodInfo", methodInfo );
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableObject.GetSecurableType(), methodInfo, MemberAffiliation.Instance);
       return HasPropertyReadAccess(securableObject, methodInformation, principal);
@@ -386,9 +386,9 @@ namespace Remotion.Security
 
     public void CheckPropertyReadAccess (ISecurableObject securableObject, string propertyName, ISecurityPrincipal principal)
     {
-      ArgumentUtility.DebugCheckNotNull("securableObject", securableObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(securableObject), securableObject);
       ArgumentUtility.DebugCheckNotNullOrEmpty("propertyName", propertyName);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       if (!HasPropertyReadAccess(securableObject, propertyName, principal))
       {
@@ -409,9 +409,9 @@ namespace Remotion.Security
 
     public void CheckPropertyReadAccess (ISecurableObject securableObject, MethodInfo methodInfo, ISecurityPrincipal principal)
     {
-      ArgumentUtility.DebugCheckNotNull("securableObject", securableObject);
-      ArgumentUtility.DebugCheckNotNull("methodInfo", methodInfo);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(securableObject), securableObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(methodInfo), methodInfo);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       if (!HasPropertyReadAccess(securableObject, methodInfo, principal))
       {
@@ -432,9 +432,9 @@ namespace Remotion.Security
 
     public void CheckPropertyReadAccess (ISecurableObject securableObject, IMethodInformation methodInformation, ISecurityPrincipal principal)
     {
-      ArgumentUtility.DebugCheckNotNull("securableObject", securableObject);
-      ArgumentUtility.DebugCheckNotNull("methodInformation", methodInformation);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(securableObject), securableObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(methodInformation), methodInformation);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       if (!HasPropertyReadAccess(securableObject, methodInformation, principal))
       {
@@ -458,7 +458,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableObject.GetSecurableType(), "set_" + propertyName, MemberAffiliation.Instance);
       return HasPropertyWriteAccess(securableObject, methodInformation, principal);
@@ -473,7 +473,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
       ArgumentUtility.CheckNotNull(nameof(methodInfo), methodInfo);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableObject.GetSecurableType(), methodInfo, MemberAffiliation.Instance);
       return HasPropertyWriteAccess(securableObject, methodInformation, principal);
@@ -488,7 +488,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
       ArgumentUtility.CheckNotNull(nameof(methodInformation), methodInformation);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions(securableObject.GetSecurableType(), methodInformation);
       Assertion.DebugIsNotNull(requiredAccessTypeEnums, "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.");
@@ -506,9 +506,9 @@ namespace Remotion.Security
 
     public void CheckPropertyWriteAccess (ISecurableObject securableObject, string propertyName, ISecurityPrincipal principal)
     {
-      ArgumentUtility.DebugCheckNotNull("securableObject", securableObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(securableObject), securableObject);
       ArgumentUtility.DebugCheckNotNullOrEmpty("propertyName", propertyName);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       if (!HasPropertyWriteAccess(securableObject, propertyName, principal))
       {
@@ -529,9 +529,9 @@ namespace Remotion.Security
 
     public void CheckPropertyWriteAccess (ISecurableObject securableObject, MethodInfo methodInfo, ISecurityPrincipal principal)
     {
-      ArgumentUtility.DebugCheckNotNull("securableObject", securableObject);
-      ArgumentUtility.DebugCheckNotNull("methodInfo", methodInfo);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(securableObject), securableObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(methodInfo), methodInfo);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       if (!HasPropertyWriteAccess(securableObject, methodInfo, principal))
       {
@@ -552,9 +552,9 @@ namespace Remotion.Security
 
     public void CheckPropertyWriteAccess (ISecurableObject securableObject, IMethodInformation methodInformation, ISecurityPrincipal principal)
     {
-      ArgumentUtility.DebugCheckNotNull("securableObject", securableObject);
-      ArgumentUtility.DebugCheckNotNull("methodInformation", methodInformation);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(securableObject), securableObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(methodInformation), methodInformation);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       if (!HasPropertyWriteAccess(securableObject, methodInformation, principal))
       {
@@ -576,8 +576,8 @@ namespace Remotion.Security
 
     public virtual bool HasConstructorAccess (Type securableClass, ISecurityPrincipal principal)
     {
-      ArgumentUtility.DebugCheckNotNull("securableClass", securableClass);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(securableClass), securableClass);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       return HasStatelessAccess(securableClass, principal, s_createAccessTypeAsList);
     }
@@ -589,8 +589,8 @@ namespace Remotion.Security
 
     public void CheckConstructorAccess (Type securableClass, ISecurityPrincipal principal)
     {
-      ArgumentUtility.DebugCheckNotNull("securableClass", securableClass);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(securableClass), securableClass);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       if (!HasConstructorAccess(securableClass, principal))
       {
@@ -610,7 +610,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.CheckNotNull(nameof(securableClass), securableClass);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableClass, methodName, MemberAffiliation.Static);
       return HasStaticMethodAccess(securableClass, methodInformation, principal);
@@ -625,7 +625,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.CheckNotNull(nameof(securableClass), securableClass);
       ArgumentUtility.CheckNotNull(nameof(methodInfo), methodInfo);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableClass, methodInfo, MemberAffiliation.Static);
       return HasStaticMethodAccess(securableClass, methodInformation, principal);
@@ -640,7 +640,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.CheckNotNull(nameof(securableClass), securableClass);
       ArgumentUtility.CheckNotNull(nameof(methodInformation), methodInformation);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions(securableClass, methodInformation);
       Assertion.DebugIsNotNull(requiredAccessTypeEnums, "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.");
@@ -655,9 +655,9 @@ namespace Remotion.Security
 
     public void CheckStaticMethodAccess (Type securableClass, string methodName, ISecurityPrincipal principal)
     {
-      ArgumentUtility.DebugCheckNotNull("securableClass", securableClass);
+      ArgumentUtility.DebugCheckNotNull(nameof(securableClass), securableClass);
       ArgumentUtility.DebugCheckNotNullOrEmpty("methodName", methodName);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       if (!HasStaticMethodAccess(securableClass, methodName, principal))
       {
@@ -675,9 +675,9 @@ namespace Remotion.Security
 
     public void CheckStaticMethodAccess (Type securableClass, MethodInfo methodInfo, ISecurityPrincipal principal)
     {
-      ArgumentUtility.DebugCheckNotNull("securableClass", securableClass);
-      ArgumentUtility.DebugCheckNotNull("methodInfo", methodInfo);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(securableClass), securableClass);
+      ArgumentUtility.DebugCheckNotNull(nameof(methodInfo), methodInfo);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       if (!HasStaticMethodAccess(securableClass, methodInfo, principal))
       {
@@ -698,9 +698,9 @@ namespace Remotion.Security
 
     public void CheckStaticMethodAccess (Type securableClass, IMethodInformation methodInformation, ISecurityPrincipal principal)
     {
-      ArgumentUtility.DebugCheckNotNull("securableClass", securableClass);
-      ArgumentUtility.DebugCheckNotNull("methodInformation", methodInformation);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(securableClass), securableClass);
+      ArgumentUtility.DebugCheckNotNull(nameof(methodInformation), methodInformation);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       if (!HasStaticMethodAccess(securableClass, methodInformation, principal))
       {
@@ -726,7 +726,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.CheckNotNull(nameof(securableClass), securableClass);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableClass, methodName, MemberAffiliation.Instance);
       return HasStatelessMethodAccess(securableClass, methodInformation, principal);
@@ -760,7 +760,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.CheckNotNull(nameof(securableClass), securableClass);
       ArgumentUtility.CheckNotNull(nameof(methodInformation), methodInformation);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions(securableClass, methodInformation);
       Assertion.DebugIsNotNull(requiredAccessTypeEnums, "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.");

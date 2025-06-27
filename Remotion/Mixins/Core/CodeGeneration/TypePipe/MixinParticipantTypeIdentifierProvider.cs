@@ -29,7 +29,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     public object? GetID (Type requestedType)
     {
-      ArgumentUtility.DebugCheckNotNull("requestedType", requestedType);
+      ArgumentUtility.DebugCheckNotNull(nameof(requestedType), requestedType);
 
       return MixinConfiguration.ActiveConfiguration.GetContext(requestedType);
     }

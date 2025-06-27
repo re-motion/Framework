@@ -46,8 +46,8 @@ namespace Remotion.Security
         ISecurityPrincipal principal,
         IReadOnlyList<AccessType> requiredAccessTypes)
     {
-      ArgumentUtility.DebugCheckNotNull("securityProvider", securityProvider);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNull(nameof(securityProvider), securityProvider);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
       ArgumentUtility.DebugCheckNotNullOrEmpty("requiredAccessTypes", requiredAccessTypes);
 
       if (_isEvaluatingAccess)

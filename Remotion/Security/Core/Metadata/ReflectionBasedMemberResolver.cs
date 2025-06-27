@@ -35,7 +35,7 @@ namespace Remotion.Security.Metadata
 
       public CacheKey (Type type, string methodName, BindingFlags bindingFlags)
       {
-        ArgumentUtility.DebugCheckNotNull("type", type);
+        ArgumentUtility.DebugCheckNotNull(nameof(type), type);
         ArgumentUtility.DebugCheckNotNullOrEmpty("methodName", methodName);
 
         _type = type;

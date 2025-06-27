@@ -177,7 +177,7 @@ namespace Remotion.Collections.DataStore
     [return: MaybeNull]
     public TValue GetValueOrDefault (TKey key)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
       TryGetValueInternal(key, out var value);
       return value;
@@ -186,7 +186,7 @@ namespace Remotion.Collections.DataStore
     /// <inheritdoc />
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
       return TryGetValueInternal(key, out value);
     }
@@ -194,8 +194,8 @@ namespace Remotion.Collections.DataStore
     /// <inheritdoc />
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
-      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
+      ArgumentUtility.DebugCheckNotNull(nameof(valueFactory), valueFactory);
 
       if (!TryGetValueInternal(key, out var value))
       {

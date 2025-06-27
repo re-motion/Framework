@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Security.BindableObject
     public bool CanRead (IBusinessObject? businessObject, PropertyBase bindableProperty)
     {
       // businessObject can be null
-      ArgumentUtility.DebugCheckNotNull("bindableProperty", bindableProperty);
+      ArgumentUtility.DebugCheckNotNull(nameof(bindableProperty), bindableProperty);
 
       var securableObject = businessObject as ISecurableObject;
       if (securableObject == null)
@@ -65,9 +65,9 @@ namespace Remotion.ObjectBinding.Security.BindableObject
         Exception exception,
         [MaybeNullWhen(false)] out BusinessObjectPropertyAccessException propertyAccessException)
     {
-      ArgumentUtility.DebugCheckNotNull("businessObject", businessObject);
-      ArgumentUtility.DebugCheckNotNull("bindableProperty", bindableProperty);
-      ArgumentUtility.DebugCheckNotNull("exception", exception);
+      ArgumentUtility.DebugCheckNotNull(nameof(businessObject), businessObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(bindableProperty), bindableProperty);
+      ArgumentUtility.DebugCheckNotNull(nameof(exception), exception);
 
       if (exception is PermissionDeniedException)
       {

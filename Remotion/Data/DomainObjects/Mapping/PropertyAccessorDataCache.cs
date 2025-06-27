@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         where TDomainObject : IDomainObject
     {
       //ResolvePropertyAccessorData already performs the null check
-      ArgumentUtility.DebugCheckNotNull("propertyAccessExpression", propertyAccessExpression);
+      ArgumentUtility.DebugCheckNotNull(nameof(propertyAccessExpression), propertyAccessExpression);
 
       var data = ResolvePropertyAccessorData(propertyAccessExpression);
       if (data == null)
