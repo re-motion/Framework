@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void SetDataFromSubTransaction (IRelationEndPoint source)
     {
-      var sourceCollectionEndPoint = ArgumentUtility.CheckNotNullAndType<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>("source", source);
+      var sourceCollectionEndPoint = ArgumentUtility.CheckNotNullAndType<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>(nameof(source), source);
       var hasChangedFastBefore = _innerEndPoint.HasChangedFast;
       try
       {

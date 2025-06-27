@@ -114,7 +114,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       BocTreeNodeClickEventHandler? handler = (BocTreeNodeClickEventHandler?)Events[s_clickEvent];
       if (handler != null)
       {
-        ArgumentUtility.CheckNotNullAndType<BocTreeNode>("node", node!);
+        ArgumentUtility.CheckNotNullAndType<BocTreeNode>(nameof(node), node!);
         BusinessObjectTreeNode? businessObjectNode = node as BusinessObjectTreeNode;
         BusinessObjectPropertyTreeNode? propertyNode = node as BusinessObjectPropertyTreeNode;
 
@@ -140,7 +140,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       BocTreeNodeEventHandler? handler = (BocTreeNodeEventHandler?)Events[s_selectionChangedEvent];
       if (handler != null)
       {
-        ArgumentUtility.CheckNotNullAndType<BocTreeNode>("node", node!);
+        ArgumentUtility.CheckNotNullAndType<BocTreeNode>(nameof(node), node!);
         BusinessObjectTreeNode? businessObjectNode = node as BusinessObjectTreeNode;
         BusinessObjectPropertyTreeNode? propertyNode = node as BusinessObjectPropertyTreeNode;
 
@@ -369,7 +369,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void EvaluateTreeNode (WebTreeNode node)
     {
-      ArgumentUtility.CheckNotNullAndType<BocTreeNode>("node", node);
+      ArgumentUtility.CheckNotNullAndType<BocTreeNode>(nameof(node), node);
 
       if (node.IsEvaluated)
         return;

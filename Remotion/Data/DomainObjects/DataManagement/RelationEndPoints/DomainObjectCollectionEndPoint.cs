@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       public IDomainObjectCollectionEndPointLoadState LoadEndPointAndGetNewState (IDomainObjectCollectionEndPoint endPoint)
       {
-        var collectionEndPoint = ArgumentUtility.CheckNotNullAndType<DomainObjectCollectionEndPoint>("endPoint", endPoint);
+        var collectionEndPoint = ArgumentUtility.CheckNotNullAndType<DomainObjectCollectionEndPoint>(nameof(endPoint), endPoint);
         _lazyLoader.LoadLazyCollectionEndPoint(endPoint.ID);
         return collectionEndPoint._loadState;
       }
@@ -356,7 +356,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override void SetDataFromSubTransaction (IRelationEndPoint source)
     {
-      var sourceCollectionEndPoint = ArgumentUtility.CheckNotNullAndType<DomainObjectCollectionEndPoint>("source", source);
+      var sourceCollectionEndPoint = ArgumentUtility.CheckNotNullAndType<DomainObjectCollectionEndPoint>(nameof(source), source);
       if (Definition != sourceCollectionEndPoint.Definition)
       {
         var message = string.Format(

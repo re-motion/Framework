@@ -211,7 +211,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       ArgumentUtility.CheckNotNull(nameof(constructedTransaction), constructedTransaction);
       ArgumentUtility.CheckNotNull(nameof(eventSink), eventSink);
       var fetchEnabledPersistenceStrategy =
-          ArgumentUtility.CheckNotNullAndType<IFetchEnabledPersistenceStrategy>("persistenceStrategy", persistenceStrategy);
+          ArgumentUtility.CheckNotNullAndType<IFetchEnabledPersistenceStrategy>(nameof(persistenceStrategy), persistenceStrategy);
       ArgumentUtility.CheckNotNull(nameof(invalidDomainObjectManager), invalidDomainObjectManager);
       ArgumentUtility.CheckNotNull(nameof(dataManager), dataManager);
       ArgumentUtility.CheckNotNull(nameof(hierarchyManager), hierarchyManager);

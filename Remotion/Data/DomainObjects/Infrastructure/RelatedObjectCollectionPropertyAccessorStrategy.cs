@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull(nameof(propertyAccessor), propertyAccessor);
       ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
-      var newCollection = ArgumentUtility.CheckNotNullAndType<DomainObjectCollection>("value", value!);
+      var newCollection = ArgumentUtility.CheckNotNullAndType<DomainObjectCollection>(nameof(value), value!);
 
       DomainObjectCheckUtility.EnsureNotDeleted(propertyAccessor.DomainObject, transaction);
 

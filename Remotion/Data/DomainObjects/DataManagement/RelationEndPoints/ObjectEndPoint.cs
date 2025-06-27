@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override sealed void SetDataFromSubTransaction (IRelationEndPoint source)
     {
-      var sourceObjectEndPoint = ArgumentUtility.CheckNotNullAndType<ObjectEndPoint>("source", source);
+      var sourceObjectEndPoint = ArgumentUtility.CheckNotNullAndType<ObjectEndPoint>(nameof(source), source);
 
       if (Definition != sourceObjectEndPoint.Definition)
       {

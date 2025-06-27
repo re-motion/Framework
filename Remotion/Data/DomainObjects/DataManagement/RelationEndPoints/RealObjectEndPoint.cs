@@ -193,7 +193,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     protected override void SetOppositeObjectDataFromSubTransaction (IObjectEndPoint sourceObjectEndPoint)
     {
-      var sourceAsRealObjectEndPoint = ArgumentUtility.CheckNotNullAndType<RealObjectEndPoint>("sourceObjectEndPoint", sourceObjectEndPoint);
+      var sourceAsRealObjectEndPoint = ArgumentUtility.CheckNotNullAndType<RealObjectEndPoint>(nameof(sourceObjectEndPoint), sourceObjectEndPoint);
       ForeignKeyDataContainer.SetPropertyValueFromSubTransaction(PropertyDefinition, sourceAsRealObjectEndPoint.ForeignKeyDataContainer);
     }
 

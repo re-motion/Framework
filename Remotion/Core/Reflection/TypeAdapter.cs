@@ -317,7 +317,7 @@ namespace Remotion.Reflection
 
     public ITypeInformation[] GetAscribedGenericArgumentsFor (ITypeInformation c)
     {
-      var otherTypeAsTypeAdapter = ArgumentUtility.CheckNotNullAndType<TypeAdapter>("c", c);
+      var otherTypeAsTypeAdapter = ArgumentUtility.CheckNotNullAndType<TypeAdapter>(nameof(c), c);
 
       return ConvertToTypeAdapters(_type.GetAscribedGenericArguments(otherTypeAsTypeAdapter.Type));
     }

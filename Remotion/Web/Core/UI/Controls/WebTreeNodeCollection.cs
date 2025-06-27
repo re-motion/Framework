@@ -61,7 +61,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void ValidateNewValue ([NotNull]object? value)
     {
-      WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode>("value", value!);
+      WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode>(nameof(value), value!);
 
       if (string.IsNullOrEmpty(node.ItemID))
         throw new ArgumentException("The node does not contain an 'ItemID' and can therfor not be inserted into the collection.", "value");
@@ -71,7 +71,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnInsertComplete (int index, object? value)
     {
-      WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode>("value", value!);
+      WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode>(nameof(value), value!);
 
       base.OnInsertComplete(index, value);
       node.SetParent(_treeView, _parentNode);
@@ -79,7 +79,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnSetComplete (int index, object? oldValue, object? newValue)
     {
-      WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode>("newValue", newValue!);
+      WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode>(nameof(newValue), newValue!);
 
       base.OnSetComplete(index, oldValue, newValue);
       node.SetParent(_treeView, _parentNode);

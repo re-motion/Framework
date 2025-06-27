@@ -406,7 +406,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override void SetDataFromSubTransaction (IRelationEndPoint source)
     {
-      var sourceCollectionEndPoint = ArgumentUtility.CheckNotNullAndType<VirtualCollectionEndPoint>("source", source);
+      var sourceCollectionEndPoint = ArgumentUtility.CheckNotNullAndType<VirtualCollectionEndPoint>(nameof(source), source);
       if (Definition != sourceCollectionEndPoint.Definition)
       {
         var message = string.Format(

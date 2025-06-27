@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
     {
       ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
       var rdbmsProviderDefinition =
-          ArgumentUtility.CheckNotNullAndType<RdbmsProviderDefinition>("storageProviderDefinition", storageProviderDefinition);
+          ArgumentUtility.CheckNotNullAndType<RdbmsProviderDefinition>(nameof(storageProviderDefinition), storageProviderDefinition);
 
       var commandFactory = CreateStorageProviderCommandFactory(rdbmsProviderDefinition);
       return CreateStorageProvider(persistenceExtension, rdbmsProviderDefinition, commandFactory);
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
     {
       ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
       var rdbmsProviderDefinition =
-          ArgumentUtility.CheckNotNullAndType<RdbmsProviderDefinition>("storageProviderDefinition", storageProviderDefinition);
+          ArgumentUtility.CheckNotNullAndType<RdbmsProviderDefinition>(nameof(storageProviderDefinition), storageProviderDefinition);
 
       var commandFactory = CreateStorageProviderCommandFactory(rdbmsProviderDefinition);
       return new ReadOnlyStorageProviderDecorator(CreateReadOnlyStorageProvider(persistenceExtension, rdbmsProviderDefinition, commandFactory));
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
         StorageProviderDefinition storageProviderDefinition)
     {
       var rdmsStorageProviderDefinition =
-          ArgumentUtility.CheckNotNullAndType<RdbmsProviderDefinition>("storageProviderDefinition", storageProviderDefinition);
+          ArgumentUtility.CheckNotNullAndType<RdbmsProviderDefinition>(nameof(storageProviderDefinition), storageProviderDefinition);
 
       var storageTypeInformationProvider = CreateStorageTypeInformationProvider(rdmsStorageProviderDefinition);
       var storageNameProvider = CreateStorageNameProvider(rdmsStorageProviderDefinition);
@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
         IMappingConfiguration mappingConfiguration)
     {
       var rdmsStorageProviderDefinition =
-          ArgumentUtility.CheckNotNullAndType<RdbmsProviderDefinition>("storageProviderDefinition", storageProviderDefinition);
+          ArgumentUtility.CheckNotNullAndType<RdbmsProviderDefinition>(nameof(storageProviderDefinition), storageProviderDefinition);
       ArgumentUtility.CheckNotNull(nameof(methodCallTransformerProvider), methodCallTransformerProvider);
       ArgumentUtility.CheckNotNull(nameof(resultOperatorHandlerRegistry), resultOperatorHandlerRegistry);
       ArgumentUtility.CheckNotNull(nameof(mappingConfiguration), mappingConfiguration);

@@ -191,7 +191,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     void EditStateCombinationControl_Delete (object? sender, EventArgs e)
     {
-      EditStateCombinationControl editStateCombinationControl = ArgumentUtility.CheckNotNullAndType<EditStateCombinationControl>("sender", sender!);
+      EditStateCombinationControl editStateCombinationControl = ArgumentUtility.CheckNotNullAndType<EditStateCombinationControl>(nameof(sender), sender!);
       Assertion.IsNotNull(Page, "Page != null when processing page life cycle events.");
 
       Page.PrepareValidation();

@@ -42,7 +42,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public WxeTemplateControlInfo (IWxeTemplateControl control)
     {
-      ArgumentUtility.CheckNotNullAndType<TemplateControl>("control", control);
+      ArgumentUtility.CheckNotNullAndType<TemplateControl>(nameof(control), control);
 
       _control = control;
     }

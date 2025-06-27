@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Sample.ReferenceDataSourceTestDomain
     public bool IsDefaultValue (IBusinessObject referencingObject, IBusinessObjectReferenceProperty property, IBusinessObject value, IBusinessObjectProperty[] emptyProperties)
     {
       ArgumentUtility.CheckNotNull(nameof(property), property);
-      ArgumentUtility.CheckNotNullAndType<ReferenceDataSourceTestDomainBase>("value", value);
+      ArgumentUtility.CheckNotNullAndType<ReferenceDataSourceTestDomainBase>(nameof(value), value);
       ArgumentUtility.CheckNotNull(nameof(emptyProperties), emptyProperties);
 
       // NOP

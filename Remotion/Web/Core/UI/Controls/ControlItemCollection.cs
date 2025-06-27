@@ -103,7 +103,7 @@ namespace Remotion.Web.UI.Controls
 
     protected virtual void ValidateNewValue ([NotNull]object? value)
     {
-      IControlItem controlItem = ArgumentUtility.CheckNotNullAndType<IControlItem>("value", value!);
+      IControlItem controlItem = ArgumentUtility.CheckNotNullAndType<IControlItem>(nameof(value), value!);
 
       if (! IsSupportedType(controlItem))
         throw ArgumentUtility.CreateArgumentTypeException("value", controlItem.GetType(), null);

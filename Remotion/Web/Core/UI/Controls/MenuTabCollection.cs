@@ -75,7 +75,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnInsertComplete (int index, object? value)
     {
-      SubMenuTab tab = ArgumentUtility.CheckNotNullAndType<SubMenuTab>("value", value!);
+      SubMenuTab tab = ArgumentUtility.CheckNotNullAndType<SubMenuTab>(nameof(value), value!);
 
       base.OnInsertComplete(index, value);
       tab.SetParent(_parent!); // TODO RM-8118: not null assertion
@@ -83,7 +83,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnSetComplete (int index, object? oldValue, object? newValue)
     {
-      SubMenuTab tab = ArgumentUtility.CheckNotNullAndType<SubMenuTab>("newValue", newValue!);
+      SubMenuTab tab = ArgumentUtility.CheckNotNullAndType<SubMenuTab>(nameof(newValue), newValue!);
 
       base.OnSetComplete(index, oldValue, newValue);
       tab.SetParent(_parent!); // TODO RM-8118: not null assertion

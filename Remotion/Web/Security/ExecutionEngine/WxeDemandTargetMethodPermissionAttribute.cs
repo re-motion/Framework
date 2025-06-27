@@ -33,7 +33,7 @@ namespace Remotion.Web.Security.ExecutionEngine
     public WxeDemandTargetMethodPermissionAttribute (object methodNameEnum)
       : base(MethodType.Instance)
     {
-      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>("methodNameEnum", methodNameEnum);
+      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>(nameof(methodNameEnum), methodNameEnum);
       Type enumType = enumValue.GetType();
 
       CheckDeclaringTypeOfMethodNameEnum(enumValue);
@@ -45,7 +45,7 @@ namespace Remotion.Web.Security.ExecutionEngine
     public WxeDemandTargetMethodPermissionAttribute (object methodNameEnum, Type securableClass)
       : base(MethodType.Instance)
     {
-      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>("methodNameEnum", methodNameEnum);
+      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>(nameof(methodNameEnum), methodNameEnum);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(securableClass), securableClass, typeof(ISecurableObject));
 
       CheckDeclaringTypeOfMethodNameEnum(enumValue, securableClass);

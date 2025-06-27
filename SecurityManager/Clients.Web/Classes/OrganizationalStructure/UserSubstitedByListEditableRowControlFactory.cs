@@ -67,7 +67,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     private void HandleSubstitutedRolePreRender (object? sender, EventArgs e)
     {
-      var substitutedRoleReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue>("sender", sender!);
+      var substitutedRoleReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue>(nameof(sender), sender!);
 
       Assertion.IsNotNull(substitutedRoleReferenceValue.DataSource, "BocReferenceValue{{{0}}}.DataSource != null", substitutedRoleReferenceValue.ID);
       Assertion.IsNotNull(substitutedRoleReferenceValue.DataSource.BusinessObject, "BocReferenceValue{{{0}}}.DataSource.BusinessObject != null", substitutedRoleReferenceValue.ID);

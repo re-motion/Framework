@@ -54,7 +54,7 @@ namespace Remotion.Web.Security.UI
 
     protected DemandTargetPermissionAttribute (object methodEnum)
     {
-      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>("methodEnum", methodEnum);
+      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>(nameof(methodEnum), methodEnum);
       CheckDeclaringTypeOfMethodNameEnum(enumValue);
 
       _permissionSource = PermissionSource.SecurableObject;
@@ -64,7 +64,7 @@ namespace Remotion.Web.Security.UI
 
     protected DemandTargetPermissionAttribute (object methodEnum, Type securableClass)
     {
-      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>("methodEnum", methodEnum);
+      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>(nameof(methodEnum), methodEnum);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(securableClass), securableClass, typeof(ISecurableObject));
 
       CheckDeclaringTypeOfMethodNameEnum(enumValue, securableClass);

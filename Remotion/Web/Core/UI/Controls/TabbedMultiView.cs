@@ -53,7 +53,7 @@ namespace Remotion.Web.UI.Controls
 
       protected override void AddedControl (Control control, int index)
       {
-        TabView tabView = ArgumentUtility.CheckNotNullAndType<TabView>("control", control);
+        TabView tabView = ArgumentUtility.CheckNotNullAndType<TabView>(nameof(control), control);
 
         tabView.IsLazyLoadingEnabled = Parent.EnableLazyLoading;
         if (!Parent.EnableLazyLoading)

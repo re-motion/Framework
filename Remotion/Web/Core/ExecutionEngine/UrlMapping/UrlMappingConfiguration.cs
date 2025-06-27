@@ -240,7 +240,7 @@ public class UrlMappingCollection: CollectionBase
 
   protected virtual void ValidateNewValue (object? value)
   {
-    UrlMappingEntry entry = ArgumentUtility.CheckNotNullAndType<UrlMappingEntry>("value", value!);
+    UrlMappingEntry entry = ArgumentUtility.CheckNotNullAndType<UrlMappingEntry>(nameof(value), value!);
     base.OnValidate(entry);
     if (Find(entry.Resource) != null)
       throw new ArgumentException(string.Format("The mapping already contains an entry for the following resource: '{0}'.", entry.Resource), "value");

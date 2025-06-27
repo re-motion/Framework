@@ -178,7 +178,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     protected void CheckValues (IBusinessObject value, string stringValue, int int32Value)
     {
-      TypeWithAllDataTypes typeWithAllDataTypes = ArgumentUtility.CheckNotNullAndType<TypeWithAllDataTypes>("value", value);
+      TypeWithAllDataTypes typeWithAllDataTypes = ArgumentUtility.CheckNotNullAndType<TypeWithAllDataTypes>(nameof(value), value);
 
       Assert.That(typeWithAllDataTypes.String, Is.EqualTo(stringValue));
       Assert.That(typeWithAllDataTypes.Int32, Is.EqualTo(int32Value));

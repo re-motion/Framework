@@ -65,7 +65,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void ValidateNewValue ([NotNull]object? value)
     {
-      WebTab tab = ArgumentUtility.CheckNotNullAndType<WebTab>("value", value!);
+      WebTab tab = ArgumentUtility.CheckNotNullAndType<WebTab>(nameof(value), value!);
       if (string.IsNullOrEmpty(tab.ItemID))
         throw new ArgumentException("The tab does not have an 'ItemID'. It can therfor not be inserted into the collection.", "value");
       base.ValidateNewValue(value);
@@ -73,7 +73,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnInsertComplete (int index, object? value)
     {
-      WebTab tab = ArgumentUtility.CheckNotNullAndType<WebTab>("value", value!);
+      WebTab tab = ArgumentUtility.CheckNotNullAndType<WebTab>(nameof(value), value!);
       base.OnInsertComplete(index, value);
       tab.SetTabStrip(_tabStrip);
       InitalizeSelectedTab();
@@ -81,8 +81,8 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnSetComplete (int index, object? oldValue, object? newValue)
     {
-      WebTab oldTab = ArgumentUtility.CheckNotNullAndType<WebTab>("oldValue", oldValue!);
-      WebTab newTab = ArgumentUtility.CheckNotNullAndType<WebTab>("newValue", newValue!);
+      WebTab oldTab = ArgumentUtility.CheckNotNullAndType<WebTab>(nameof(oldValue), oldValue!);
+      WebTab newTab = ArgumentUtility.CheckNotNullAndType<WebTab>(nameof(newValue), newValue!);
 
       base.OnSetComplete(index, oldValue, newValue);
 
@@ -94,7 +94,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnRemoveComplete (int index, object? value)
     {
-      WebTab tab = ArgumentUtility.CheckNotNullAndType<WebTab>("value", value!);
+      WebTab tab = ArgumentUtility.CheckNotNullAndType<WebTab>(nameof(value), value!);
 
       base.OnRemoveComplete(index, value);
 

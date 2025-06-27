@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.Sample.ReferenceDataSourceTestDomain
     public void Delete (IBusinessObject referencingObject, IBusinessObjectReferenceProperty property, IBusinessObject value)
     {
       ArgumentUtility.CheckNotNull(nameof(property), property);
-      ArgumentUtility.CheckNotNullAndType<ReferenceDataSourceTestDomainBase>("value", value);
+      ArgumentUtility.CheckNotNullAndType<ReferenceDataSourceTestDomainBase>(nameof(value), value);
 
       // NOP
     }

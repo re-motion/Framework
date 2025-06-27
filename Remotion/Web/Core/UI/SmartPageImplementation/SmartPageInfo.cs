@@ -89,7 +89,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     public SmartPageInfo (ISmartPage page)
     {
-      ArgumentUtility.CheckNotNullAndType<Page>("page", page);
+      ArgumentUtility.CheckNotNullAndType<Page>(nameof(page), page);
       _page = page;
       _page.Init += Page_Init;
       // PreRenderComplete-handler must be registered before ScriptManager registers its own PreRenderComplete-handler during OnInit.
@@ -141,7 +141,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     private void UnregisterControlForDirtyStateTracking (object? sender, EventArgs args)
     {
-      var control = ArgumentUtility.CheckNotNullAndType<IEditableControl>("sender", sender!);
+      var control = ArgumentUtility.CheckNotNullAndType<IEditableControl>(nameof(sender), sender!);
 
       if (_isPreRenderComplete)
       {
@@ -621,7 +621,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     private void UnregisterNavigationControl (object? sender, EventArgs args)
     {
-      var control = ArgumentUtility.CheckNotNullAndType<INavigationControl>("sender", sender!);
+      var control = ArgumentUtility.CheckNotNullAndType<INavigationControl>(nameof(sender), sender!);
       _navigationControls.Remove(control);
       control.Unload -= UnregisterNavigationControl;
     }

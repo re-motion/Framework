@@ -151,7 +151,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void HandleRowMenuItemClick (object sender, WebMenuItemClickEventArgs e, Action<WebMenuItem, IBusinessObject, int> handler)
     {
-      var rowMenu = ArgumentUtility.CheckNotNullAndType<BocListRowMenu>("sender", sender);
+      var rowMenu = ArgumentUtility.CheckNotNullAndType<BocListRowMenu>(nameof(sender), sender);
 
       int listIndex;
       if (!HasValue)

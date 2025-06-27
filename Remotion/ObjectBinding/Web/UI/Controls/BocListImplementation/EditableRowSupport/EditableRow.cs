@@ -192,7 +192,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     protected void SetEditControl (int index, IBusinessObjectBoundEditableWebControl control)
     {
-      Control webControl = ArgumentUtility.CheckNotNullAndType<Control>("control", control);
+      Control webControl = ArgumentUtility.CheckNotNullAndType<Control>(nameof(control), control);
 
       ControlCollection cellControls = GetEditControls(index);
       cellControls.Clear();

@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       public IVirtualObjectEndPointLoadState LoadEndPointAndGetNewState (IVirtualObjectEndPoint endPoint)
       {
-        var virtualObjectEndPoint = ArgumentUtility.CheckNotNullAndType<VirtualObjectEndPoint>("endPoint", endPoint);
+        var virtualObjectEndPoint = ArgumentUtility.CheckNotNullAndType<VirtualObjectEndPoint>(nameof(endPoint), endPoint);
         _lazyLoader.LoadLazyVirtualObjectEndPoint(virtualObjectEndPoint.ID);
         return virtualObjectEndPoint._loadState;
       }
@@ -260,7 +260,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     protected override void SetOppositeObjectDataFromSubTransaction (IObjectEndPoint sourceObjectEndPoint)
     {
-      var sourceVirtualObjectEndPoint = ArgumentUtility.CheckNotNullAndType<VirtualObjectEndPoint>("sourceObjectEndPoint", sourceObjectEndPoint);
+      var sourceVirtualObjectEndPoint = ArgumentUtility.CheckNotNullAndType<VirtualObjectEndPoint>(nameof(sourceObjectEndPoint), sourceObjectEndPoint);
       _loadState.SetDataFromSubTransaction(this, sourceVirtualObjectEndPoint._loadState);
     }
 

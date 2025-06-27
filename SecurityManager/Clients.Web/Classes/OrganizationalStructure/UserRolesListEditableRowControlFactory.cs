@@ -95,7 +95,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     private void HandlePositionPreRender (object? sender, EventArgs e)
     {
-      var positionReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue>("sender", sender!);
+      var positionReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue>(nameof(sender), sender!);
 
       Assertion.IsNotNull(positionReferenceValue.DataSource, "BocReferenceValue{{{0}}}.DataSource != null", positionReferenceValue.ID);
       Assertion.IsNotNull(positionReferenceValue.DataSource.BusinessObject, "BocReferenceValue{{{0}}}.DataSource.BusinessObject != null", positionReferenceValue.ID);

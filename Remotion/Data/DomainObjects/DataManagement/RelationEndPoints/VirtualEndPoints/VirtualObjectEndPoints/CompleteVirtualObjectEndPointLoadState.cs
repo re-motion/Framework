@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         IVirtualEndPointLoadState<IVirtualObjectEndPoint, DomainObject?, IVirtualObjectEndPointDataManager> sourceLoadState)
     {
       ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
-      var sourceCompleteLoadState = ArgumentUtility.CheckNotNullAndType<CompleteVirtualObjectEndPointLoadState>("sourceLoadState", sourceLoadState);
+      var sourceCompleteLoadState = ArgumentUtility.CheckNotNullAndType<CompleteVirtualObjectEndPointLoadState>(nameof(sourceLoadState), sourceLoadState);
 
       DataManager.SetDataFromSubTransaction(sourceCompleteLoadState.DataManager, EndPointProvider);
     }
