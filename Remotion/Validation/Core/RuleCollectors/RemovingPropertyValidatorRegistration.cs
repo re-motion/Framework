@@ -46,7 +46,7 @@ namespace Remotion.Validation.RuleCollectors
         [NotNull] IRemovingPropertyValidationRuleCollector removingPropertyValidationRuleCollector)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(validatorType), validatorType, typeof(IPropertyValidator));
-      ArgumentUtility.CheckTypeIsAssignableFrom("collectorTypeToRemoveFrom", collectorTypeToRemoveFrom, typeof(IValidationRuleCollector));
+      ArgumentUtility.CheckTypeIsAssignableFrom(nameof(collectorTypeToRemoveFrom), collectorTypeToRemoveFrom, typeof(IValidationRuleCollector));
       ArgumentUtility.CheckNotNull(nameof(removingPropertyValidationRuleCollector), removingPropertyValidationRuleCollector);
 
       ValidatorType = validatorType;

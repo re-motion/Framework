@@ -60,7 +60,7 @@ namespace Remotion.Validation.RuleCollectors
     public void RegisterValidator (Type validatorType, Type? collectorTypeToRemoveFrom, Func<IPropertyValidator, bool>? validatorPredicate)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(validatorType), validatorType, typeof(IPropertyValidator));
-      ArgumentUtility.CheckTypeIsAssignableFrom("collectorTypeToRemoveFrom", collectorTypeToRemoveFrom, typeof(IValidationRuleCollector));
+      ArgumentUtility.CheckTypeIsAssignableFrom(nameof(collectorTypeToRemoveFrom), collectorTypeToRemoveFrom, typeof(IValidationRuleCollector));
 
       _registeredValidators.Add(new RemovingPropertyValidatorRegistration(validatorType, collectorTypeToRemoveFrom, validatorPredicate, this));
     }
