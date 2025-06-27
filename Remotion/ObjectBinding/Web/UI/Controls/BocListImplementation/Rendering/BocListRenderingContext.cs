@@ -39,8 +39,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         BocColumnRenderer[] columnRenderers)
         : base(httpContext, writer, control)
     {
-      ArgumentUtility.CheckNotNull("businessObjectWebServiceContext", businessObjectWebServiceContext);
-      ArgumentUtility.CheckNotNull("columnRenderers", columnRenderers);
+      ArgumentUtility.CheckNotNull(nameof(businessObjectWebServiceContext), businessObjectWebServiceContext);
+      ArgumentUtility.CheckNotNull(nameof(columnRenderers), columnRenderers);
 
       _businessObjectWebServiceContext = businessObjectWebServiceContext;
       _columnRenderers = columnRenderers;

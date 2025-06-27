@@ -37,10 +37,10 @@ namespace Remotion.Web.Compilation
         CodeMemberMethod buildMethod,
         CodeMemberMethod dataBindingMethod)
     {
-      ArgumentUtility.CheckNotNull("codeCompileUnit", codeCompileUnit);
-      ArgumentUtility.CheckNotNull("baseType", baseType);
-      ArgumentUtility.CheckNotNull("derivedType", derivedType);
-      ArgumentUtility.CheckNotNull("buildMethod", buildMethod);
+      ArgumentUtility.CheckNotNull(nameof(codeCompileUnit), codeCompileUnit);
+      ArgumentUtility.CheckNotNull(nameof(baseType), baseType);
+      ArgumentUtility.CheckNotNull(nameof(derivedType), derivedType);
+      ArgumentUtility.CheckNotNull(nameof(buildMethod), buildMethod);
 
       var processor = SafeServiceLocator.Current.GetInstance<IControlBuilderCodeProcessor>();
       processor.ProcessGeneratedCode(

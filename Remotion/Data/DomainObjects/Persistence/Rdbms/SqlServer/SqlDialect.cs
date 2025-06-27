@@ -55,8 +55,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer
 
     public IDbDataParameter CreateDataParameter (IDbCommand command, IStorageTypeInformation storageTypeInformation, string parameterName, object? value)
     {
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckNotNull("storageTypeInformation", storageTypeInformation);
+      ArgumentUtility.CheckNotNull(nameof(command), command);
+      ArgumentUtility.CheckNotNull(nameof(storageTypeInformation), storageTypeInformation);
       ArgumentUtility.CheckNotNullOrEmpty("parameterName", parameterName);
 
       var convertedValue = storageTypeInformation.ConvertToStorageType(value);

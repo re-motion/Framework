@@ -36,14 +36,14 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
 
     public NonPersistentPersistenceModelLoader (StorageProviderDefinition storageProviderDefinition)
     {
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
 
       StorageProviderDefinition = storageProviderDefinition;
     }
 
     public IPersistenceMappingValidator CreatePersistenceMappingValidator (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
       return new PersistenceMappingValidator(
           new PropertyStorageClassIsSupportedByStorageProviderValidationRule(),
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
 
     public void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
 
       ClassDefinition[] derivedClasses = classDefinition.GetAllDerivedClasses();

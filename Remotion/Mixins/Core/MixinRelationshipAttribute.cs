@@ -43,7 +43,7 @@ namespace Remotion.Mixins
       get { return _additionalDependencies; }
       set
       {
-        _additionalDependencies = ArgumentUtility.CheckNotNull("value", value);
+        _additionalDependencies = ArgumentUtility.CheckNotNull(nameof(value), value);
       }
     }
 
@@ -59,7 +59,7 @@ namespace Remotion.Mixins
       get { return _suppressedMixins; }
       set
       {
-        _suppressedMixins = ArgumentUtility.CheckNotNull("value", value);
+        _suppressedMixins = ArgumentUtility.CheckNotNull(nameof(value), value);
       }
     }
 
@@ -97,9 +97,9 @@ namespace Remotion.Mixins
         Type mixinType,
         MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull("targetType", targetType);
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull("origin", origin);
+      ArgumentUtility.CheckNotNull(nameof(targetType), targetType);
+      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
+      ArgumentUtility.CheckNotNull(nameof(origin), origin);
 
       try
       {

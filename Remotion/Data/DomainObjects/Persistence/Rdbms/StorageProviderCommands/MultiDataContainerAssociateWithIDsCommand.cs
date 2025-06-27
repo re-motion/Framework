@@ -37,8 +37,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
         IEnumerable<ObjectID> objectIDs,
         IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer?>> command)
     {
-      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
-      ArgumentUtility.CheckNotNull("command", command);
+      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
+      ArgumentUtility.CheckNotNull(nameof(command), command);
 
       _objectIDs = objectIDs.Select(
           (objectID, index) =>
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
 
       var dataContainers = _command.Execute(executionContext);
       return ProcessDataContainers(dataContainers);
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
 
       var dataContainers = _command.Execute(executionContext);
       return ProcessDataContainers(dataContainers);

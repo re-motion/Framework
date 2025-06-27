@@ -34,7 +34,7 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
 
     public ControlReplacer (IInternalControlMemberCaller memberCaller)
     {
-      ArgumentUtility.CheckNotNull("memberCaller", memberCaller);
+      ArgumentUtility.CheckNotNull(nameof(memberCaller), memberCaller);
 
       _memberCaller = memberCaller;
     }
@@ -42,7 +42,7 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
     public IStateModificationStrategy StateModificationStrategy
     {
       get { return _stateModificationStrategy!; } // TODO RM-8118: inline assertion
-      set { _stateModificationStrategy = ArgumentUtility.CheckNotNull("value", value!); }
+      set { _stateModificationStrategy = ArgumentUtility.CheckNotNull(nameof(value), value!); }
     }
 
     public Control? WrappedControl
@@ -129,9 +129,9 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
     public void ReplaceAndWrap<T> (T controlToReplace, T controlToWrap, IStateModificationStrategy stateModificationStrategy)
         where T : Control, IReplaceableControl
     {
-      ArgumentUtility.CheckNotNull("controlToReplace", controlToReplace);
-      ArgumentUtility.CheckNotNull("controlToWrap", controlToWrap);
-      ArgumentUtility.CheckNotNull("stateModificationStrategy", stateModificationStrategy);
+      ArgumentUtility.CheckNotNull(nameof(controlToReplace), controlToReplace);
+      ArgumentUtility.CheckNotNull(nameof(controlToWrap), controlToWrap);
+      ArgumentUtility.CheckNotNull(nameof(stateModificationStrategy), stateModificationStrategy);
 
       if (_memberCaller.GetControlState(controlToReplace) != ControlState.ChildrenInitialized)
         throw new InvalidOperationException("Controls can only be wrapped during OnInit phase.");

@@ -34,7 +34,7 @@ namespace Remotion.Mixins.Validation
 
     public ValidationResult (IVisitableDefinition validatedDefinition)
     {
-      ArgumentUtility.CheckNotNull("validatedDefinition", validatedDefinition);
+      ArgumentUtility.CheckNotNull(nameof(validatedDefinition), validatedDefinition);
 
       _validatedDefinition = validatedDefinition;
 

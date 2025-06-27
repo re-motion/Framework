@@ -43,8 +43,8 @@ namespace Remotion.Mixins.Definitions
 
     protected override void CustomizedAdd (TKey key, TValue value)
     {
-      ArgumentUtility.CheckNotNull("key", key);
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
 
       if (ContainsKey(key))
       {
@@ -61,7 +61,7 @@ namespace Remotion.Mixins.Definitions
 
     public TValue this[TKey key]
     {
-      get { return ContainsKey(ArgumentUtility.CheckNotNull("key", key)) ? _items[key] : default(TValue)!; }
+      get { return ContainsKey(ArgumentUtility.CheckNotNull(nameof(key), key)) ? _items[key] : default(TValue)!; }
     }
   }
 }

@@ -42,8 +42,8 @@ namespace Remotion.Security.Metadata
 
     public ClassReflector (IStatePropertyReflector statePropertyReflector, IAccessTypeReflector accessTypeReflector)
     {
-      ArgumentUtility.CheckNotNull("statePropertyReflector", statePropertyReflector);
-      ArgumentUtility.CheckNotNull("accessTypeReflector", accessTypeReflector);
+      ArgumentUtility.CheckNotNull(nameof(statePropertyReflector), statePropertyReflector);
+      ArgumentUtility.CheckNotNull(nameof(accessTypeReflector), accessTypeReflector);
 
       _statePropertyReflector = statePropertyReflector;
       _accessTypeReflector = accessTypeReflector;
@@ -66,7 +66,7 @@ namespace Remotion.Security.Metadata
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(ISecurableObject));
       if (type.IsValueType)
         throw new ArgumentException("Value types are not supported.", "type");
-      ArgumentUtility.CheckNotNull("cache", cache);
+      ArgumentUtility.CheckNotNull(nameof(cache), cache);
 
       SecurableClassInfo? info = cache.GetSecurableClassInfo(type);
       if (info == null)
@@ -94,7 +94,7 @@ namespace Remotion.Security.Metadata
     protected virtual List<StatePropertyInfo> GetProperties (Type type, MetadataCache cache)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(ISecurableObject));
-      ArgumentUtility.CheckNotNull("cache", cache);
+      ArgumentUtility.CheckNotNull(nameof(cache), cache);
 
       MemberInfo[] propertyInfos = type.FindMembers(
           MemberTypes.Property,

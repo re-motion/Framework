@@ -36,8 +36,8 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
     public TestControlGenerator (Page page, PostBackEventHandler postBackEventHandler)
     {
-      ArgumentUtility.CheckNotNull("page", page);
-      ArgumentUtility.CheckNotNull("postBackEventHandler", postBackEventHandler);
+      ArgumentUtility.CheckNotNull(nameof(page), page);
+      ArgumentUtility.CheckNotNull(nameof(postBackEventHandler), postBackEventHandler);
 
       _page = page;
       _postBackEventHandler = postBackEventHandler;

@@ -31,7 +31,7 @@ namespace Remotion.Security.Metadata
 
     public LocalizingMetadataConverter (IMetadataLocalizationConverter localizationConverter, CultureInfo[] cultures)
     {
-      ArgumentUtility.CheckNotNull("localizationConverter", localizationConverter);
+      ArgumentUtility.CheckNotNull(nameof(localizationConverter), localizationConverter);
       ArgumentUtility.CheckNotNullOrItemsNull("cultures", cultures);
 
       _localizationConverter = localizationConverter;

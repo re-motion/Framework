@@ -27,7 +27,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public RecursiveExceptionReportGenerator (Exception exception)
     {
-      ArgumentUtility.CheckNotNull("exception", exception);
+      ArgumentUtility.CheckNotNull(nameof(exception), exception);
 
       _exception = exception;
     }

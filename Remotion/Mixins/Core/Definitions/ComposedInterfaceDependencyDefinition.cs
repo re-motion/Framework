@@ -29,7 +29,7 @@ namespace Remotion.Mixins.Definitions
     public ComposedInterfaceDependencyDefinition (RequiredTargetCallTypeDefinition requirement, Type composedInterface, DependencyDefinitionBase? aggregator)
         : base(requirement, aggregator)
     {
-      ArgumentUtility.CheckNotNull("composedInterface", composedInterface);
+      ArgumentUtility.CheckNotNull(nameof(composedInterface), composedInterface);
       _composedInterface = composedInterface;
     }
 
@@ -55,7 +55,7 @@ namespace Remotion.Mixins.Definitions
 
     public override void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
       visitor.Visit(this);
     }
   }

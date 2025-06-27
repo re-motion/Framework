@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public CommittingEventRegistrar (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
       _clientTransaction = clientTransaction;
     }
 
@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void RegisterForAdditionalCommittingEvents (params DomainObject[] domainObjects)
     {
-      ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
+      ArgumentUtility.CheckNotNull(nameof(domainObjects), domainObjects);
 
       foreach (var domainObject in domainObjects)
       {

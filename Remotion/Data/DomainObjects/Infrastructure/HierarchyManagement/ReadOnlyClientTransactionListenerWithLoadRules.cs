@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public virtual void AddCurrentlyLoadingObjectIDs (IEnumerable<ObjectID> objectIds)
     {
-      ArgumentUtility.CheckNotNull("objectIds", objectIds);
+      ArgumentUtility.CheckNotNull(nameof(objectIds), objectIds);
 
       Assertion.DebugAssert(!objectIds.Any(id => _currentlyLoadingObjectIDs.Contains(id)));
       _currentlyLoadingObjectIDs.UnionWith(objectIds);
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public virtual void RemoveCurrentlyLoadingObjectIDs (IEnumerable<ObjectID> objectIds)
     {
-      ArgumentUtility.CheckNotNull("objectIds", objectIds);
+      ArgumentUtility.CheckNotNull(nameof(objectIds), objectIds);
 
       Assertion.DebugAssert(objectIds.All(id => _currentlyLoadingObjectIDs.Contains(id)));
       _currentlyLoadingObjectIDs.ExceptWith(objectIds);
@@ -62,8 +62,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public override void NewObjectCreating (ClientTransaction clientTransaction, Type type)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       if (IsInLoadMode)
       {
@@ -75,8 +75,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public override void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       if (IsInLoadMode)
       {
@@ -89,9 +89,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     public override void PropertyValueChanging (
         ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
 
       if (IsInLoadMode)
       {
@@ -116,9 +116,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         DomainObject? oldRelatedObject,
         DomainObject? newRelatedObject)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
 
       if (IsInLoadMode)
       {

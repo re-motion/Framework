@@ -29,7 +29,7 @@ namespace Remotion.Security.Metadata
     {
       ArgumentUtility.CheckNotNullOrEmpty("referencedObjectID", referencedObjectID);
       ArgumentUtility.CheckNotNullOrEmpty("comment", comment);
-      ArgumentUtility.CheckNotNull("text", text);
+      ArgumentUtility.CheckNotNull(nameof(text), text);
 
       _referencedObjectID = referencedObjectID;
       _comment = comment;

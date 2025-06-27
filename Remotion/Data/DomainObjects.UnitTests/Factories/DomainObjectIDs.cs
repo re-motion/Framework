@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
     public DomainObjectIDs (IMappingConfiguration mappingConfiguration)
     {
-      ArgumentUtility.CheckNotNull("mappingConfiguration", mappingConfiguration);
+      ArgumentUtility.CheckNotNull(nameof(mappingConfiguration), mappingConfiguration);
 
       _mappingConfiguration = mappingConfiguration;
     }

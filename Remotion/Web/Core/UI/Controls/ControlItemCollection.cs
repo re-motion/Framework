@@ -122,7 +122,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnInsertComplete (int index, object? value)
     {
-      ArgumentUtility.CheckNotNull("value", value!);
+      ArgumentUtility.CheckNotNull(nameof(value), value!);
 
       base.OnInsertComplete(index, value);
       _isChanged |= _isEditing;
@@ -140,8 +140,8 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnSetComplete (int index, object? oldValue, object? newValue)
     {
-      ArgumentUtility.CheckNotNull("oldValue", oldValue!);
-      ArgumentUtility.CheckNotNull("newValue", newValue!);
+      ArgumentUtility.CheckNotNull(nameof(oldValue), oldValue!);
+      ArgumentUtility.CheckNotNull(nameof(newValue), newValue!);
 
       base.OnSetComplete(index, oldValue, newValue);
       _isChanged |= _isEditing;
@@ -151,7 +151,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnRemoveComplete (int index, object? value)
     {
-      ArgumentUtility.CheckNotNull("value", value!);
+      ArgumentUtility.CheckNotNull(nameof(value), value!);
 
       base.OnRemoveComplete(index, value);
       _isChanged |= _isEditing;
@@ -171,7 +171,7 @@ namespace Remotion.Web.UI.Controls
 
     protected void AddRange (IList values)
     {
-      ArgumentUtility.CheckNotNull("values", values);
+      ArgumentUtility.CheckNotNull(nameof(values), values);
       ArgumentUtility.CheckItemsNotNullAndType("values", values, typeof(IControlItem));
 
       BeginEdit();
@@ -318,8 +318,8 @@ namespace Remotion.Web.UI.Controls
 
     public void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
 
       for (int i = 0; i < InnerList.Count; i++)
       {

@@ -19,7 +19,7 @@ public static partial class LoggerExtensions
   [StringFormatMethod("format")]
   public static void LogFormat (this ILogger logger, LogLevel logLevel, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull("logger", logger);
+    ArgumentUtility.CheckNotNull(nameof(logger), logger);
     if (logger.IsEnabled(logLevel))
       Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, logLevel, string.Format(format, args));
   }
@@ -35,7 +35,7 @@ public static partial class LoggerExtensions
   [StringFormatMethod("format")]
   public static void LogFormat (this ILogger logger, LogLevel logLevel, Exception? exceptionObject, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull("logger", logger);
+    ArgumentUtility.CheckNotNull(nameof(logger), logger);
     if (logger.IsEnabled(logLevel))
       Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, logLevel, exceptionObject, string.Format(format, args));
   }
@@ -49,7 +49,7 @@ public static partial class LoggerExtensions
   [StringFormatMethod("format")]
   public static void LogTraceFormat (this ILogger logger, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull("logger", logger);
+    ArgumentUtility.CheckNotNull(nameof(logger), logger);
     if (logger.IsEnabled(LogLevel.Trace))
       Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, LogLevel.Trace, string.Format(format, args));
   }
@@ -65,7 +65,7 @@ public static partial class LoggerExtensions
   [StringFormatMethod("format")]
   public static void LogTraceFormat (this ILogger logger, Exception? exceptionObject, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull("logger", logger);
+    ArgumentUtility.CheckNotNull(nameof(logger), logger);
     if (logger.IsEnabled(LogLevel.Trace))
       Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, LogLevel.Trace, exceptionObject, string.Format(format, args));
   }
@@ -79,7 +79,7 @@ public static partial class LoggerExtensions
   [StringFormatMethod("format")]
   public static void LogDebugFormat (this ILogger logger, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull("logger", logger);
+    ArgumentUtility.CheckNotNull(nameof(logger), logger);
     if (logger.IsEnabled(LogLevel.Debug))
       Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, LogLevel.Debug, string.Format(format, args));
   }
@@ -95,7 +95,7 @@ public static partial class LoggerExtensions
   [StringFormatMethod("format")]
   public static void LogDebugFormat (this ILogger logger, Exception? exceptionObject, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull("logger", logger);
+    ArgumentUtility.CheckNotNull(nameof(logger), logger);
     if (logger.IsEnabled(LogLevel.Debug))
       Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, LogLevel.Debug, exceptionObject, string.Format(format, args));
   }
@@ -109,7 +109,7 @@ public static partial class LoggerExtensions
   [StringFormatMethod("format")]
   public static void LogInformationFormat (this ILogger logger, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull("logger", logger);
+    ArgumentUtility.CheckNotNull(nameof(logger), logger);
     if (logger.IsEnabled(LogLevel.Information))
       Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, LogLevel.Information, string.Format(format, args));
   }
@@ -125,7 +125,7 @@ public static partial class LoggerExtensions
   [StringFormatMethod("format")]
   public static void LogInformationFormat (this ILogger logger, Exception? exceptionObject, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull("logger", logger);
+    ArgumentUtility.CheckNotNull(nameof(logger), logger);
     if (logger.IsEnabled(LogLevel.Information))
       Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, LogLevel.Information, exceptionObject, string.Format(format, args));
   }
@@ -139,7 +139,7 @@ public static partial class LoggerExtensions
   [StringFormatMethod("format")]
   public static void LogWarningFormat (this ILogger logger, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull("logger", logger);
+    ArgumentUtility.CheckNotNull(nameof(logger), logger);
     if (logger.IsEnabled(LogLevel.Warning))
       Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, LogLevel.Warning, string.Format(format, args));
   }
@@ -155,7 +155,7 @@ public static partial class LoggerExtensions
   [StringFormatMethod("format")]
   public static void LogWarningFormat (this ILogger logger, Exception? exceptionObject, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull("logger", logger);
+    ArgumentUtility.CheckNotNull(nameof(logger), logger);
     if (logger.IsEnabled(LogLevel.Warning))
       Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, LogLevel.Warning, exceptionObject, string.Format(format, args));
   }
@@ -169,7 +169,7 @@ public static partial class LoggerExtensions
   [StringFormatMethod("format")]
   public static void LogErrorFormat (this ILogger logger, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull("logger", logger);
+    ArgumentUtility.CheckNotNull(nameof(logger), logger);
     if (logger.IsEnabled(LogLevel.Error))
       Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, LogLevel.Error, string.Format(format, args));
   }
@@ -185,7 +185,7 @@ public static partial class LoggerExtensions
   [StringFormatMethod("format")]
   public static void LogErrorFormat (this ILogger logger, Exception? exceptionObject, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull("logger", logger);
+    ArgumentUtility.CheckNotNull(nameof(logger), logger);
     if (logger.IsEnabled(LogLevel.Error))
       Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, LogLevel.Error, exceptionObject, string.Format(format, args));
   }
@@ -199,7 +199,7 @@ public static partial class LoggerExtensions
   [StringFormatMethod("format")]
   public static void LogCriticalFormat (this ILogger logger, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull("logger", logger);
+    ArgumentUtility.CheckNotNull(nameof(logger), logger);
     if (logger.IsEnabled(LogLevel.Critical))
       Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, LogLevel.Critical, string.Format(format, args));
   }
@@ -215,7 +215,7 @@ public static partial class LoggerExtensions
   [StringFormatMethod("format")]
   public static void LogCriticalFormat (this ILogger logger, Exception? exceptionObject, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull("logger", logger);
+    ArgumentUtility.CheckNotNull(nameof(logger), logger);
     if (logger.IsEnabled(LogLevel.Critical))
       Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, LogLevel.Critical, exceptionObject, string.Format(format, args));
   }

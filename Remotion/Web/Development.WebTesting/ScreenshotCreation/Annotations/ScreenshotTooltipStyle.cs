@@ -83,9 +83,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         Size minimumSize,
         Size maximumSize)
     {
-      ArgumentUtility.CheckNotNull("font", font);
-      ArgumentUtility.CheckNotNull("foregroundBrush", foregroundBrush);
-      ArgumentUtility.CheckNotNull("border", border);
+      ArgumentUtility.CheckNotNull(nameof(font), font);
+      ArgumentUtility.CheckNotNull(nameof(foregroundBrush), foregroundBrush);
+      ArgumentUtility.CheckNotNull(nameof(border), border);
 
       _font = font;
       _foregroundBrush = foregroundBrush;

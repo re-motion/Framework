@@ -42,7 +42,7 @@ namespace Remotion.Web.Services
 
     public WebServiceFactory (IBuildManager buildManager)
     {
-      ArgumentUtility.CheckNotNull("buildManager", buildManager);
+      ArgumentUtility.CheckNotNull(nameof(buildManager), buildManager);
       _buildManager = buildManager;
     }
 

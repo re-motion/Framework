@@ -30,7 +30,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
     public CompositeRootAssemblyFinder (IEnumerable<IRootAssemblyFinder> finders)
     {
-      ArgumentUtility.CheckNotNull("finders", finders);
+      ArgumentUtility.CheckNotNull(nameof(finders), finders);
       _innerFinders = finders.ToList().AsReadOnly();
     }
 

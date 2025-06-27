@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public void AddDuplicateStateCombination (StateCombination duplicateStateCombination)
     {
-      ArgumentUtility.CheckNotNull("duplicateStateCombination", duplicateStateCombination);
+      ArgumentUtility.CheckNotNull(nameof(duplicateStateCombination), duplicateStateCombination);
 
       _isValid = false;
       _duplicateStateCombinations.Add(duplicateStateCombination);
@@ -53,7 +53,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public void AddInvalidStateCombination (StateCombination invalidStateCombination)
     {
-      ArgumentUtility.CheckNotNull("invalidStateCombination", invalidStateCombination);
+      ArgumentUtility.CheckNotNull(nameof(invalidStateCombination), invalidStateCombination);
 
       _isValid = false;
       _invalidStateCombinations.Add(invalidStateCombination);

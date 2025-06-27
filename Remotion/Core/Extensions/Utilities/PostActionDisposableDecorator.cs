@@ -33,7 +33,7 @@ namespace Remotion.Utilities
 
     public PostActionDisposableDecorator (IDisposable inner, Action postDisposeAction)
     {
-      ArgumentUtility.CheckNotNull("inner", inner);
+      ArgumentUtility.CheckNotNull(nameof(inner), inner);
 
       _inner = inner;
       _postDisposeAction = postDisposeAction;

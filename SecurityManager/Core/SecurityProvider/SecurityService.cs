@@ -43,9 +43,9 @@ namespace Remotion.SecurityManager
         ISecurityTokenBuilder securityTokenBuilder,
         IAccessResolver accessResolver)
     {
-      ArgumentUtility.CheckNotNull("accessControlListFinder", accessControlListFinder);
-      ArgumentUtility.CheckNotNull("securityTokenBuilder", securityTokenBuilder);
-      ArgumentUtility.CheckNotNull("accessResolver", accessResolver);
+      ArgumentUtility.CheckNotNull(nameof(accessControlListFinder), accessControlListFinder);
+      ArgumentUtility.CheckNotNull(nameof(securityTokenBuilder), securityTokenBuilder);
+      ArgumentUtility.CheckNotNull(nameof(accessResolver), accessResolver);
 
       _accessControlListFinder = accessControlListFinder;
       _securityTokenBuilder = securityTokenBuilder;
@@ -54,8 +54,8 @@ namespace Remotion.SecurityManager
 
     public AccessType[] GetAccess (ISecurityContext context, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("principal", principal);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentUtility.CheckNotNull(nameof(principal), principal);
 
       using (SecurityFreeSection.Activate())
       {

@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
         Func<RdbmsProviderDefinition, IEnumSerializer> enumSerializerFactory,
         Func<RdbmsProviderDefinition, IEnumSerializer, IStorageProviderSerializer> storageProviderSerializerFactory)
     {
-      ArgumentUtility.CheckNotNull("enumSerializerFactory", enumSerializerFactory);
-      ArgumentUtility.CheckNotNull("storageProviderSerializerFactory", storageProviderSerializerFactory);
+      ArgumentUtility.CheckNotNull(nameof(enumSerializerFactory), enumSerializerFactory);
+      ArgumentUtility.CheckNotNull(nameof(storageProviderSerializerFactory), storageProviderSerializerFactory);
 
       _enumSerializerFactory = enumSerializerFactory;
       _storageProviderSerializerFactory = storageProviderSerializerFactory;
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public XDocument Serialize (IEnumerable<ClassDefinition> classDefinitions)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull(nameof(classDefinitions), classDefinitions);
 
       var classDefinitionsByStorageProvider = classDefinitions
           .Where(cd => cd.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition)

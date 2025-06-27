@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
 
     public DeferredQueryDefinitionRepository (IQueryDefinitionLoader queryDefinitionLoader)
     {
-      ArgumentUtility.CheckNotNull("queryDefinitionLoader", queryDefinitionLoader);
+      ArgumentUtility.CheckNotNull(nameof(queryDefinitionLoader), queryDefinitionLoader);
 
       _queryDefinitionLoader = queryDefinitionLoader;
       _lazyRepository = new Lazy<IQueryDefinitionRepository>(

@@ -43,7 +43,7 @@ namespace Remotion.Development.UnitTesting.IO
 
     public void WriteStream (Stream stream)
     {
-      ArgumentUtility.CheckNotNull("stream", stream);
+      ArgumentUtility.CheckNotNull(nameof(stream), stream);
 
       using (StreamReader streamReader = new StreamReader(stream))
       {
@@ -60,14 +60,14 @@ namespace Remotion.Development.UnitTesting.IO
 
     public void WriteAllBytes (byte[] bytes)
     {
-      ArgumentUtility.CheckNotNull("bytes", bytes);
+      ArgumentUtility.CheckNotNull(nameof(bytes), bytes);
 
       File.WriteAllBytes(_fileName!, bytes);
     }
 
     public void WriteAllText (string text)
     {
-      ArgumentUtility.CheckNotNull("text", text);
+      ArgumentUtility.CheckNotNull(nameof(text), text);
 
       File.WriteAllText(_fileName!, text);
     }

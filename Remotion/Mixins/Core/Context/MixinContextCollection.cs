@@ -55,7 +55,7 @@ namespace Remotion.Mixins.Context
     /// <exception cref="ArgumentNullException">The <paramref name="baseMixinType"/> parameter is <see langword="null"/>.</exception>
     public bool ContainsAssignableMixin (Type baseMixinType)
     {
-      ArgumentUtility.CheckNotNull("baseMixinType", baseMixinType);
+      ArgumentUtility.CheckNotNull(nameof(baseMixinType), baseMixinType);
       foreach (MixinContext mixin in this)
       {
         if (baseMixinType.IsAssignableFrom(mixin.MixinType))
@@ -73,7 +73,7 @@ namespace Remotion.Mixins.Context
     /// </returns>
     public bool ContainsOverrideForMixin (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
       return ContainsOverrideForMixin(this, mixinType);
     }
   }

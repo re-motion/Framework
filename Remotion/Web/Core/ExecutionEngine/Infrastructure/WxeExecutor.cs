@@ -39,9 +39,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public WxeExecutor (HttpContext context, IWxePage page, WxePageInfo wxePageInfo)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("page", page);
-      ArgumentUtility.CheckNotNull("wxePageInfo", wxePageInfo);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentUtility.CheckNotNull(nameof(page), page);
+      ArgumentUtility.CheckNotNull(nameof(wxePageInfo), wxePageInfo);
 
       _wxePageInfo = wxePageInfo;
       _page = page;
@@ -64,9 +64,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public void ExecuteFunction (WxeFunction function, Control? sender, WxeCallOptions options)
     {
-      ArgumentUtility.CheckNotNull("function", function);
+      ArgumentUtility.CheckNotNull(nameof(function), function);
       // sender can be null
-      ArgumentUtility.CheckNotNull("options", options);
+      ArgumentUtility.CheckNotNull(nameof(options), options);
 
       WxePermaUrlOptions permaUrlOptions = options.PermaUrlOptions;
       WxeRepostOptions repostOptions = WxeRepostOptions.DoRepost(sender);
@@ -75,9 +75,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, WxeCallOptionsNoRepost options)
     {
-      ArgumentUtility.CheckNotNull("function", function);
-      ArgumentUtility.CheckNotNull("sender", sender);
-      ArgumentUtility.CheckNotNull("options", options);
+      ArgumentUtility.CheckNotNull(nameof(function), function);
+      ArgumentUtility.CheckNotNull(nameof(sender), sender);
+      ArgumentUtility.CheckNotNull(nameof(options), options);
 
       bool usesEventTarget = options.UsesEventTarget ?? UsesEventTarget;
       WxePermaUrlOptions permaUrlOptions = options.PermaUrlOptions;
@@ -87,9 +87,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public void ExecuteFunctionExternalByRedirect (WxeFunction function, Control sender, WxeCallOptionsExternalByRedirect options)
     {
-      ArgumentUtility.CheckNotNull("function", function);
-      ArgumentUtility.CheckNotNull("sender", sender);
-      ArgumentUtility.CheckNotNull("options", options);
+      ArgumentUtility.CheckNotNull(nameof(function), function);
+      ArgumentUtility.CheckNotNull(nameof(sender), sender);
+      ArgumentUtility.CheckNotNull(nameof(options), options);
 
       WxeReturnOptions returnOptions;
       if (options.ReturnToCaller)
@@ -103,9 +103,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public void ExecuteFunctionExternal (WxeFunction function, Control sender, WxeCallOptionsExternal options)
     {
-      ArgumentUtility.CheckNotNull("function", function);
-      ArgumentUtility.CheckNotNull("sender", sender);
-      ArgumentUtility.CheckNotNull("options", options);
+      ArgumentUtility.CheckNotNull(nameof(function), function);
+      ArgumentUtility.CheckNotNull(nameof(sender), sender);
+      ArgumentUtility.CheckNotNull(nameof(options), options);
 
       string functionToken = WxeContext.Current!.GetFunctionTokenForExternalFunction(function, options.ReturningPostback); // TODO RM-8118: not null assertion
 
@@ -153,7 +153,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       if (!returningPostback)
         return "window.close();";
 
-      ArgumentUtility.CheckNotNull("sender", sender);
+      ArgumentUtility.CheckNotNull(nameof(sender), sender);
 
       if (UsesEventTarget)
       {

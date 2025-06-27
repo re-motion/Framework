@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public FormGridControlObject SelectPerTitle (ControlSelectionContext context, string title)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
       ArgumentUtility.CheckNotNullOrEmpty("title", title);
 
       var scope = FindScopePerTitle(context, title);
@@ -47,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public FormGridControlObject? SelectOptionalPerTitle (ControlSelectionContext context, string title)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
       ArgumentUtility.CheckNotNullOrEmpty("title", title);
 
       var scope = FindScopePerTitle(context, title);
@@ -61,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerTitle (ControlSelectionContext context, string title)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
       ArgumentUtility.CheckNotNullOrEmpty("title", title);
 
       var scope = FindScopePerTitle(context, title);
@@ -74,8 +74,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull(nameof(controlSelectionContext), controlSelectionContext);
+      ArgumentUtility.CheckNotNull(nameof(newControlObjectContext), newControlObjectContext);
 
       return new FormGridControlObject(newControlObjectContext);
     }

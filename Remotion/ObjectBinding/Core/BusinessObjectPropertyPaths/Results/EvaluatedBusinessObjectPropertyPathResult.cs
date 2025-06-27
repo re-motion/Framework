@@ -33,8 +33,8 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results
 
     public EvaluatedBusinessObjectPropertyPathResult (IBusinessObject resultObject, IBusinessObjectProperty resultProperty)
     {
-      ArgumentUtility.CheckNotNull("resultObject", resultObject);
-      ArgumentUtility.CheckNotNull("resultProperty", resultProperty);
+      ArgumentUtility.CheckNotNull(nameof(resultObject), resultObject);
+      ArgumentUtility.CheckNotNull(nameof(resultProperty), resultProperty);
 
       _resultObject = resultObject;
       _resultProperty = resultProperty;

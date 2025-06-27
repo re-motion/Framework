@@ -39,9 +39,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         HashSet<ObjectID> addedDomainObjects,
         HashSet<ObjectID> removedDomainObjects)
     {
-      ArgumentUtility.CheckNotNull("innerVirtualCollectionData", innerVirtualCollectionData);
-      ArgumentUtility.CheckNotNull("addedDomainObjects", addedDomainObjects);
-      ArgumentUtility.CheckNotNull("removedDomainObjects", removedDomainObjects);
+      ArgumentUtility.CheckNotNull(nameof(innerVirtualCollectionData), innerVirtualCollectionData);
+      ArgumentUtility.CheckNotNull(nameof(addedDomainObjects), addedDomainObjects);
+      ArgumentUtility.CheckNotNull(nameof(removedDomainObjects), removedDomainObjects);
 
       _innerVirtualCollectionData = innerVirtualCollectionData;
       _addedDomainObjects = addedDomainObjects;
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void Add (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       _innerVirtualCollectionData.Add(domainObject);
 
@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public bool Remove (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       var result = _innerVirtualCollectionData.Remove(domainObject);
 

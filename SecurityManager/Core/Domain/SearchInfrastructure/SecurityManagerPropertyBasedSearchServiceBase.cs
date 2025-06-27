@@ -40,14 +40,14 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
     protected void RegisterQueryFactory (string propertyName, QueryFactory queryFactory)
     {
       ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
-      ArgumentUtility.CheckNotNull("queryFactory", queryFactory);
+      ArgumentUtility.CheckNotNull(nameof(queryFactory), queryFactory);
 
       _queryFactories.Add(propertyName, queryFactory);
     }
 
     public override sealed bool SupportsProperty (IBusinessObjectReferenceProperty property)
     {
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNull(nameof(property), property);
 
       return _queryFactories.ContainsKey(property.Identifier);
     }

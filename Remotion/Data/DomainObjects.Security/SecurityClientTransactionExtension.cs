@@ -60,8 +60,8 @@ namespace Remotion.Data.DomainObjects.Security
 
     public override QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("queryResult", queryResult);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(queryResult), queryResult);
 
       if (clientTransaction.ParentTransaction != null)
         return queryResult; // filtering already done in parent transaction
@@ -94,8 +94,8 @@ namespace Remotion.Data.DomainObjects.Security
 
     public override void NewObjectCreating (ClientTransaction clientTransaction, Type type)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       if (!(typeof(ISecurableObject).IsAssignableFrom(type)))
         return;
@@ -112,8 +112,8 @@ namespace Remotion.Data.DomainObjects.Security
 
     public override void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       if (SecurityFreeSection.IsActive)
         return;
@@ -134,9 +134,9 @@ namespace Remotion.Data.DomainObjects.Security
 
     public override void PropertyValueReading (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
 
       PropertyReading(clientTransaction, domainObject, propertyDefinition.PropertyInfo);
     }
@@ -147,9 +147,9 @@ namespace Remotion.Data.DomainObjects.Security
         IRelationEndPointDefinition relationEndPointDefinition,
         ValueAccess valueAccess)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
 
       if (relationEndPointDefinition.IsAnonymous)
         return;
@@ -181,9 +181,9 @@ namespace Remotion.Data.DomainObjects.Security
         object? oldValue,
         object? newValue)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
 
       PropertyChanging(clientTransaction, domainObject, propertyDefinition.PropertyInfo);
     }
@@ -195,9 +195,9 @@ namespace Remotion.Data.DomainObjects.Security
         DomainObject? oldRelatedObject,
         DomainObject? newRelatedObject)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
 
       if (relationEndPointDefinition.IsAnonymous)
         return;
@@ -207,8 +207,8 @@ namespace Remotion.Data.DomainObjects.Security
 
     public override void SubTransactionInitialize (ClientTransaction parentClientTransaction, ClientTransaction subTransaction)
     {
-      ArgumentUtility.CheckNotNull("parentClientTransaction", parentClientTransaction);
-      ArgumentUtility.CheckNotNull("subTransaction", subTransaction);
+      ArgumentUtility.CheckNotNull(nameof(parentClientTransaction), parentClientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(subTransaction), subTransaction);
 
       TryInstall(subTransaction);
     }

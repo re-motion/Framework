@@ -48,8 +48,8 @@ namespace Remotion.Web.ExecutionEngine
 
     public WxeCallArguments ([NotNull] Control sender, [NotNull] IWxeCallOptions options)
     {
-      ArgumentUtility.CheckNotNull("sender", sender);
-      ArgumentUtility.CheckNotNull("options", options);
+      ArgumentUtility.CheckNotNull(nameof(sender), sender);
+      ArgumentUtility.CheckNotNull(nameof(options), options);
 
       _sender = sender;
       _options = options;
@@ -69,8 +69,8 @@ namespace Remotion.Web.ExecutionEngine
 
     void IWxeCallArguments.Dispatch (IWxeExecutor executor, WxeFunction function)
     {
-      ArgumentUtility.CheckNotNull("executor", executor);
-      ArgumentUtility.CheckNotNull("function", function);
+      ArgumentUtility.CheckNotNull(nameof(executor), executor);
+      ArgumentUtility.CheckNotNull(nameof(function), function);
 
       _options.Dispatch(executor, function, _sender);
     }

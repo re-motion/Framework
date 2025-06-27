@@ -59,7 +59,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="labels">The labels containing the control's headings.</param>
     public ValidationError (Control? validatedControl, IValidator validator, ControlCollection? labels)
     {
-      ArgumentUtility.CheckNotNull("validator", validator);
+      ArgumentUtility.CheckNotNull(nameof(validator), validator);
 
       _validatedControl = validatedControl;
       _validationMessage = PlainTextString.Empty;

@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
   {
     public static Mock<IClientTransactionMockEventReceiver> CreateMock (MockBehavior mockBehavior, ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
 
       var mock = new Mock<IClientTransactionMockEventReceiver>(mockBehavior);
 

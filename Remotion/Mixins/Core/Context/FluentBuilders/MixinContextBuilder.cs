@@ -40,9 +40,9 @@ namespace Remotion.Mixins.Context.FluentBuilders
 
     public MixinContextBuilder (ClassContextBuilder parent, Type mixinType, MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull("parent", parent);
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull("origin", origin);
+      ArgumentUtility.CheckNotNull(nameof(parent), parent);
+      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
+      ArgumentUtility.CheckNotNull(nameof(origin), origin);
 
       _parent = parent;
       _mixinType = mixinType;
@@ -127,7 +127,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public virtual MixinContextBuilder WithDependency (Type requiredMixin)
     {
-      ArgumentUtility.CheckNotNull("requiredMixin", requiredMixin);
+      ArgumentUtility.CheckNotNull(nameof(requiredMixin), requiredMixin);
       if (_dependencies.Contains(requiredMixin))
       {
         string message = string.Format("The mixin {0} already has a dependency on type {1}.", MixinType.GetFullNameSafe(), requiredMixin.GetFullNameSafe());
@@ -159,7 +159,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public virtual MixinContextBuilder WithDependencies (params Type[] requiredMixins)
     {
-      ArgumentUtility.CheckNotNull("requiredMixins", requiredMixins);
+      ArgumentUtility.CheckNotNull(nameof(requiredMixins), requiredMixins);
       foreach (Type requiredMixin in requiredMixins)
         WithDependency(requiredMixin);
       return this;
@@ -213,7 +213,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public virtual MixinContextBuilder ReplaceMixin (Type replacedMixinType)
     {
-      ArgumentUtility.CheckNotNull("replacedMixinType", replacedMixinType);
+      ArgumentUtility.CheckNotNull(nameof(replacedMixinType), replacedMixinType);
       Assertion.IsNotNull(_mixinType);
 
       if (replacedMixinType == _mixinType || (_mixinType.IsGenericType && replacedMixinType == _mixinType.GetGenericTypeDefinition()))
@@ -245,7 +245,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public virtual MixinContextBuilder ReplaceMixins (params Type[] replacedMixinTypes)
     {
-      ArgumentUtility.CheckNotNull("replacedMixinTypes", replacedMixinTypes);
+      ArgumentUtility.CheckNotNull(nameof(replacedMixinTypes), replacedMixinTypes);
       foreach (var replacedMixinType in replacedMixinTypes)
       {
         ReplaceMixin(replacedMixinType);
@@ -332,7 +332,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>A <see cref="MixinContextBuilder"/> object for further configuration of the mixin.</returns>
     public virtual MixinContextBuilder AddMixin<TMixin> (MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull("origin", origin);
+      ArgumentUtility.CheckNotNull(nameof(origin), origin);
       return _parent.AddMixin<TMixin>(origin);
     }
 

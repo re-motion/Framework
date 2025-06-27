@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public SerializedObjectIDStoragePropertyDefinition (IRdbmsStoragePropertyDefinition serializedIDProperty)
     {
-      ArgumentUtility.CheckNotNull("serializedIDProperty", serializedIDProperty);
+      ArgumentUtility.CheckNotNull(nameof(serializedIDProperty), serializedIDProperty);
 
       _serializedIDProperty = serializedIDProperty;
     }
@@ -76,14 +76,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public ColumnValueTable SplitValuesForComparison (IEnumerable<object?> values)
     {
-      ArgumentUtility.CheckNotNull("values", values);
+      ArgumentUtility.CheckNotNull(nameof(values), values);
 
       return _serializedIDProperty.SplitValuesForComparison(values.Select(v => (object?)GetStringOrNull((ObjectID?)v)));
     }
 
     public object? CombineValue (IColumnValueProvider columnValueProvider)
     {
-      ArgumentUtility.CheckNotNull("columnValueProvider", columnValueProvider);
+      ArgumentUtility.CheckNotNull(nameof(columnValueProvider), columnValueProvider);
 
       var value = _serializedIDProperty.CombineValue(columnValueProvider);
       if (value == null)
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IRdbmsStoragePropertyDefinition UnifyWithEquivalentProperties (IEnumerable<IRdbmsStoragePropertyDefinition> equivalentProperties)
     {
-      ArgumentUtility.CheckNotNull("equivalentProperties", equivalentProperties);
+      ArgumentUtility.CheckNotNull(nameof(equivalentProperties), equivalentProperties);
       var checkedProperties = equivalentProperties.Select(property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
           this,
           property,
@@ -110,9 +110,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         EntityNameDefinition referencedTableName,
         ObjectIDStoragePropertyDefinition referencedObjectIDProperty)
     {
-      ArgumentUtility.CheckNotNull("nameProvider", nameProvider);
-      ArgumentUtility.CheckNotNull("referencedTableName", referencedTableName);
-      ArgumentUtility.CheckNotNull("referencedObjectIDProperty", referencedObjectIDProperty);
+      ArgumentUtility.CheckNotNull(nameof(nameProvider), nameProvider);
+      ArgumentUtility.CheckNotNull(nameof(referencedTableName), referencedTableName);
+      ArgumentUtility.CheckNotNull(nameof(referencedObjectIDProperty), referencedObjectIDProperty);
 
       throw new NotSupportedException("String-serialized ObjectID values cannot be used as foreign keys.");
     }

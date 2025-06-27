@@ -76,7 +76,7 @@ namespace Remotion.Globalization.Implementation
         [NotNull] TReflectionObject reflectionObject,
         [CanBeNull][MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull("reflectionObject", reflectionObject);
+      ArgumentUtility.CheckNotNull(nameof(reflectionObject), reflectionObject);
 
       var localizedNames = GetLocalizedNamesFromCache(reflectionObject);
       if (!localizedNames.Any())
@@ -98,7 +98,7 @@ namespace Remotion.Globalization.Implementation
 
     public IReadOnlyDictionary<CultureInfo, string> GetLocalizedNames (TReflectionObject reflectionObject)
     {
-      ArgumentUtility.CheckNotNull("reflectionObject", reflectionObject);
+      ArgumentUtility.CheckNotNull(nameof(reflectionObject), reflectionObject);
 
       return GetLocalizedNamesFromCache(reflectionObject);
     }

@@ -75,8 +75,8 @@ namespace Remotion.Validation.Results
         [NotNull] string errorMessage,
         [NotNull] string localizedValidationMessage)
     {
-      ArgumentUtility.CheckNotNull("validatedObject", validatedObject);
-      ArgumentUtility.CheckNotNull("validatedProperties", validatedProperties);
+      ArgumentUtility.CheckNotNull(nameof(validatedObject), validatedObject);
+      ArgumentUtility.CheckNotNull(nameof(validatedProperties), validatedProperties);
       ArgumentUtility.CheckNotNullOrEmpty("errorMessage", errorMessage);
       ArgumentUtility.CheckNotNullOrEmpty("localizedValidationMessage", localizedValidationMessage);
 

@@ -35,14 +35,14 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public CompoundPersistableDataValidator (IEnumerable<IPersistableDataValidator> validators)
     {
-      ArgumentUtility.CheckNotNull("validators", validators);
+      ArgumentUtility.CheckNotNull(nameof(validators), validators);
       _validators = validators.ToList().AsReadOnly();
     }
 
     public void Validate (ClientTransaction clientTransaction, PersistableData persistableData)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("persistableData", persistableData);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(persistableData), persistableData);
 
       foreach (var validator in _validators)
         validator.Validate(clientTransaction, persistableData);

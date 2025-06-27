@@ -66,7 +66,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
   protected BocDropDownMenu ([NotNull] IWebServiceFactory webServiceFactory)
   {
-    ArgumentUtility.CheckNotNull("webServiceFactory", webServiceFactory);
+    ArgumentUtility.CheckNotNull(nameof(webServiceFactory), webServiceFactory);
 
     _dropDownMenu = new DropDownMenu(this);
     WebServiceFactory = webServiceFactory;
@@ -122,8 +122,8 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
   public static void HideMenuItems (WebMenuItemCollection menuItems, string[] hiddenItems)
   {
-    ArgumentUtility.CheckNotNull("menuItems", menuItems);
-    ArgumentUtility.CheckNotNull("hiddenItems", hiddenItems);
+    ArgumentUtility.CheckNotNull(nameof(menuItems), menuItems);
+    ArgumentUtility.CheckNotNull(nameof(hiddenItems), hiddenItems);
 
     for (int idxHiddenItems = 0; idxHiddenItems < hiddenItems.Length; idxHiddenItems++)
     {
@@ -195,7 +195,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
   protected virtual WebString GetTitleText (IBusinessObject businessObject)
   {
-    ArgumentUtility.CheckNotNull("businessObject", businessObject);
+    ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
 
     var titleText = businessObject is IBusinessObjectWithIdentity businessObjectWithIdentity
         ? businessObjectWithIdentity.GetAccessibleDisplayName()

@@ -32,7 +32,7 @@ namespace Remotion.Validation.MetaValidation
 
     public DelegatePropertyMetaValidationRule (Func<IEnumerable<TValidator>, MetaValidationRuleValidationResult> metaValidationRule)
     {
-      ArgumentUtility.CheckNotNull("metaValidationRule", metaValidationRule);
+      ArgumentUtility.CheckNotNull(nameof(metaValidationRule), metaValidationRule);
 
       _metaValidationRule = metaValidationRule;
     }

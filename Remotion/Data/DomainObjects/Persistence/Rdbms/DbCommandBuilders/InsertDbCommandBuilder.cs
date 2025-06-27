@@ -38,8 +38,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         ISqlDialect sqlDialect)
         : base(sqlDialect)
     {
-      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
-      ArgumentUtility.CheckNotNull("insertedColumnsSpecification", insertedColumnsSpecification);
+      ArgumentUtility.CheckNotNull(nameof(tableDefinition), tableDefinition);
+      ArgumentUtility.CheckNotNull(nameof(insertedColumnsSpecification), insertedColumnsSpecification);
 
       _tableDefinition = tableDefinition;
       _insertedColumnsSpecification = insertedColumnsSpecification;
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     public override IDbCommand Create (IDbCommandFactory dbCommandFactory)
     {
-      ArgumentUtility.CheckNotNull("dbCommandFactory", dbCommandFactory);
+      ArgumentUtility.CheckNotNull(nameof(dbCommandFactory), dbCommandFactory);
 
       var command = dbCommandFactory.CreateDbCommand();
       var statement = new StringBuilder();

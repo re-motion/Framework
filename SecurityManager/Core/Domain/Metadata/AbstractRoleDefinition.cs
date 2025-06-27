@@ -41,7 +41,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public static ObjectList<AbstractRoleDefinition> Find (IEnumerable<EnumWrapper> abstractRoles)
     {
-      ArgumentUtility.CheckNotNull("abstractRoles", abstractRoles);
+      ArgumentUtility.CheckNotNull(nameof(abstractRoles), abstractRoles);
 
       var abstractRoleNames = (from abstractRole in abstractRoles select abstractRole.Name).ToArray();
 

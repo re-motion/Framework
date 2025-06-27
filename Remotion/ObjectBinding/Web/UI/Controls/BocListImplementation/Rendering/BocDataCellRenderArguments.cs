@@ -59,10 +59,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IReadOnlyCollection<string> headerIDs,
         IReadOnlyList<bool> columnsWithValidationFailures)
     {
-      ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
+      ArgumentUtility.CheckNotNull(nameof(dataRowRenderEventArgs), dataRowRenderEventArgs);
       ArgumentUtility.CheckNotEmpty("cellID", cellID);
-      ArgumentUtility.CheckNotNull("headerIDs", headerIDs);
-      ArgumentUtility.CheckNotNull("columnsWithValidationFailures", columnsWithValidationFailures);
+      ArgumentUtility.CheckNotNull(nameof(headerIDs), headerIDs);
+      ArgumentUtility.CheckNotNull(nameof(columnsWithValidationFailures), columnsWithValidationFailures);
 
       _dataRowRenderEventArgs = dataRowRenderEventArgs;
       RowIndex = rowIndex;

@@ -45,7 +45,7 @@ namespace Remotion.Collections.DataStore
     /// <param name="innerStore">The inner store which is wrapped.</param>
     public LockingDataStoreDecorator (IDataStore<TKey, TValue> innerStore)
     {
-      ArgumentUtility.CheckNotNull("innerStore", innerStore);
+      ArgumentUtility.CheckNotNull(nameof(innerStore), innerStore);
       _innerStore = innerStore;
     }
 

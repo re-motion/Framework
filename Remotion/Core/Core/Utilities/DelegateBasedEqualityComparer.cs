@@ -31,8 +31,8 @@ namespace Remotion.Utilities
 
     public DelegateBasedEqualityComparer (Func<T?, T?, bool> comparison, Func<T, int> hash)
     {
-      ArgumentUtility.CheckNotNull("comparison", comparison);
-      ArgumentUtility.CheckNotNull("hash", hash);
+      ArgumentUtility.CheckNotNull(nameof(comparison), comparison);
+      ArgumentUtility.CheckNotNull(nameof(hash), hash);
 
       _comparison = comparison;
       _hash = hash;

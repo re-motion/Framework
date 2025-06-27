@@ -12,7 +12,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
   {
     public static void DispatchValidationResultForBoundControls (IBusinessObjectDataSourceControl dataSource, IBusinessObjectValidationResult validationResult)
     {
-      ArgumentUtility.CheckNotNull("validationResult", validationResult);
+      ArgumentUtility.CheckNotNull(nameof(validationResult), validationResult);
 
       var allControlsInsideNamingContainer = EnumerableUtility.SelectRecursiveDepthFirst(
           dataSource.NamingContainer,

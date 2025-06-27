@@ -35,19 +35,19 @@ namespace Remotion.Mixins.Context.Serialization
 
     public void AddClassType (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
       SetValue(0, type);
     }
 
     public void AddMixins (IEnumerable<MixinContext> mixinContexts)
     {
-      ArgumentUtility.CheckNotNull("mixinContexts", mixinContexts);
+      ArgumentUtility.CheckNotNull(nameof(mixinContexts), mixinContexts);
       SetValue(1, mixinContexts.Select(mc => (object)SerializeMixinContext(mc)).ToArray());
     }
 
     public void AddComposedInterfaces (IEnumerable<Type> composedInterfaces)
     {
-      ArgumentUtility.CheckNotNull("composedInterfaces", composedInterfaces);
+      ArgumentUtility.CheckNotNull(nameof(composedInterfaces), composedInterfaces);
       SetValue(2, composedInterfaces.ToArray());
     }
 

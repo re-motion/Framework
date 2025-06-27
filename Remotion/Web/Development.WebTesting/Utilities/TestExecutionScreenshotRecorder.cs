@@ -51,8 +51,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public TestExecutionScreenshotRecorder ([NotNull] string outputDirectory, [NotNull] ILoggerFactory loggerFactory, ICursorInformationProvider cursorInformationProvider)
     {
       ArgumentUtility.CheckNotNullOrEmpty("outputDirectory", outputDirectory);
-      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
-      ArgumentUtility.CheckNotNull("cursorInformationProvider", cursorInformationProvider);
+      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
+      ArgumentUtility.CheckNotNull(nameof(cursorInformationProvider), cursorInformationProvider);
 
       _logger = loggerFactory.CreateLogger<TestExecutionScreenshotRecorder>();
       _cursorInformationProvider = cursorInformationProvider;
@@ -117,7 +117,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNullOrEmpty("testName", testName);
       ArgumentUtility.CheckNotNullOrItemsNull("browserSessions", browserSessions);
-      ArgumentUtility.CheckNotNull("locator", locator);
+      ArgumentUtility.CheckNotNull(nameof(locator), locator);
       if (browserSessions.Length == 0)
         throw new ArgumentException("At least one browser session must be specified.", "browserSessions");
 

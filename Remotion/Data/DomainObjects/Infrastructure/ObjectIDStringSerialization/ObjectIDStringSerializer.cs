@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     /// </summary>
     public string Serialize (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
 #if DEBUG
       if (objectID.ClassID.IndexOf(Delimiter) != -1)
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     /// </summary>
     public ObjectID Parse (string objectIDString)
     {
-      ArgumentUtility.CheckNotNull("objectIDString", objectIDString);
+      ArgumentUtility.CheckNotNull(nameof(objectIDString), objectIDString);
       return ParseWithCustomErrorHandler(objectIDString, msg => throw new FormatException(msg));
     }
 
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
 
     public bool TryParse (string objectIDString, [MaybeNullWhen(false)] out ObjectID result)
     {
-      ArgumentUtility.CheckNotNull("objectIDString", objectIDString);
+      ArgumentUtility.CheckNotNull(nameof(objectIDString), objectIDString);
 
       result = ParseWithCustomErrorHandler(objectIDString, msg => null!);
       // ReSharper disable once ConditionIsAlwaysTrueOrFalse
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
 
     private ObjectID ParseWithCustomErrorHandler (string objectIDString, Func<string, ObjectID> errorHandler)
     {
-      ArgumentUtility.CheckNotNull("objectIDString", objectIDString);
+      ArgumentUtility.CheckNotNull(nameof(objectIDString), objectIDString);
 
       var indexOfClassIDDelimiter = objectIDString.IndexOf(Delimiter);
       var indexOfValuePart = indexOfClassIDDelimiter + 1;

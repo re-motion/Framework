@@ -142,7 +142,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
       if (isPropertyAccessException && businessObject is DomainObject)
       {
-        ArgumentUtility.CheckNotNull("bindableProperty", bindableProperty);
+        ArgumentUtility.CheckNotNull(nameof(bindableProperty), bindableProperty);
 
         var message = string.Format(
             "An {0} occured while setting the value of property '{1}' for business object with ID '{2}'.",

@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     public LoadedObjectDataRegistrationListener (
         IClientTransactionEventSink eventSink, ITransactionHierarchyManager hierarchyManager)
     {
-      ArgumentUtility.CheckNotNull("eventSink", eventSink);
-      ArgumentUtility.CheckNotNull("hierarchyManager", hierarchyManager);
+      ArgumentUtility.CheckNotNull(nameof(eventSink), eventSink);
+      ArgumentUtility.CheckNotNull(nameof(hierarchyManager), hierarchyManager);
 
       _eventSink = eventSink;
       _hierarchyManager = hierarchyManager;
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void OnBeforeObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs)
     {
-      ArgumentUtility.CheckNotNull("loadedObjectIDs", loadedObjectIDs);
+      ArgumentUtility.CheckNotNull(nameof(loadedObjectIDs), loadedObjectIDs);
 
       // The ObjectsLoadingEvent is allowed to cancel; therefore, we execute it before indicating that we're starting to register objects.
       // _eventSink.RaiseObjectsLoadingEvent (loadedObjectIDs);
@@ -71,8 +71,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void OnAfterObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs, IReadOnlyList<DomainObject> actuallyLoadedDomainObjects)
     {
-      ArgumentUtility.CheckNotNull("loadedObjectIDs", loadedObjectIDs);
-      ArgumentUtility.CheckNotNull("actuallyLoadedDomainObjects", actuallyLoadedDomainObjects);
+      ArgumentUtility.CheckNotNull(nameof(loadedObjectIDs), loadedObjectIDs);
+      ArgumentUtility.CheckNotNull(nameof(actuallyLoadedDomainObjects), actuallyLoadedDomainObjects);
 
       try
       {
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void OnObjectsNotFound (IReadOnlyList<ObjectID> notFoundObjectIDs)
     {
-      ArgumentUtility.CheckNotNull("notFoundObjectIDs", notFoundObjectIDs);
+      ArgumentUtility.CheckNotNull(nameof(notFoundObjectIDs), notFoundObjectIDs);
 
       _eventSink.RaiseObjectsNotFoundEvent(notFoundObjectIDs);
     }

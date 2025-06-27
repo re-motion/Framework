@@ -65,7 +65,7 @@ namespace Remotion.Security
     /// <param name="enumValue">The enum value.</param>
     public static EnumWrapper Get (Enum enumValue)
     {
-      ArgumentUtility.CheckNotNull("enumValue", enumValue);
+      ArgumentUtility.CheckNotNull(nameof(enumValue), enumValue);
 
       return s_enumWrapperCache.GetOrAdd(enumValue, s_createEnumWrapperFromEnumValueFunc);
     }

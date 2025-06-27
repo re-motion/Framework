@@ -26,7 +26,7 @@ public class ResourceIdentifiersAttribute: Attribute
 {
   public static string GetResourceIdentifier (Enum enumValue)
   {
-    ArgumentUtility.CheckNotNull("enumValue", enumValue);
+    ArgumentUtility.CheckNotNull(nameof(enumValue), enumValue);
     Type type = enumValue.GetType();
     if (type.DeclaringType != null && IsEnumTypeNameSuppressed(type)) // if the enum is a nested type, suppress enum name
       type = type.DeclaringType;

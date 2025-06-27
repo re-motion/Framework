@@ -38,9 +38,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         IDomainObjectCollectionEndPointCollectionProvider domainObjectCollectionProvider,
         IAssociatedDomainObjectCollectionDataStrategyFactory dataStrategyFactory)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
-      ArgumentUtility.CheckNotNull("domainObjectCollectionProvider", domainObjectCollectionProvider);
-      ArgumentUtility.CheckNotNull("dataStrategyFactory", dataStrategyFactory);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
+      ArgumentUtility.CheckNotNull(nameof(domainObjectCollectionProvider), domainObjectCollectionProvider);
+      ArgumentUtility.CheckNotNull(nameof(dataStrategyFactory), dataStrategyFactory);
 
       _endPointID = endPointID;
       _domainObjectCollectionProvider = domainObjectCollectionProvider;

@@ -76,12 +76,12 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='../Doc/include/ExecutionEngine/WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="httpContext" or @name="functionType" or @name="urlParameters" or @name="fallbackOnCurrentUrl" or @name="wxeUrlSettings"]' />
     protected static string GetPermanentUrl (HttpContextBase httpContext, Type functionType, NameValueCollection urlParameters, bool fallbackOnCurrentUrl, WxeUrlSettings wxeUrlSettings)
     {
-      ArgumentUtility.CheckNotNull("httpContext", httpContext);
-      ArgumentUtility.CheckNotNull("functionType", functionType);
+      ArgumentUtility.CheckNotNull(nameof(httpContext), httpContext);
+      ArgumentUtility.CheckNotNull(nameof(functionType), functionType);
       if (!typeof(WxeFunction).IsAssignableFrom(functionType))
         throw new ArgumentException(string.Format("The functionType '{0}' must be derived from WxeFunction.", functionType), "functionType");
-      ArgumentUtility.CheckNotNull("urlParameters", urlParameters);
-      ArgumentUtility.CheckNotNull("wxeUrlSettings", wxeUrlSettings);
+      ArgumentUtility.CheckNotNull(nameof(urlParameters), urlParameters);
+      ArgumentUtility.CheckNotNull(nameof(wxeUrlSettings), wxeUrlSettings);
 
       NameValueCollection internalUrlParameters = NameValueCollectionUtility.Clone(urlParameters);
       UrlMapping.UrlMappingEntry? mappingEntry = UrlMapping.UrlMappingConfiguration.Current.Mappings[functionType];
@@ -148,8 +148,8 @@ namespace Remotion.Web.ExecutionEngine
     public static void ExecuteFunctionExternal (
         Page page, WxeFunction function, bool createPermaUrl, NameValueCollection urlParameters, bool returnToCaller)
     {
-      ArgumentUtility.CheckNotNull("page", page);
-      ArgumentUtility.CheckNotNull("function", function);
+      ArgumentUtility.CheckNotNull(nameof(page), page);
+      ArgumentUtility.CheckNotNull(nameof(function), function);
 
       string href = GetExternalFunctionUrl(function, createPermaUrl, urlParameters);
       if (returnToCaller)
@@ -175,8 +175,8 @@ namespace Remotion.Web.ExecutionEngine
     public static void ExecuteFunctionExternal (
         Page page, WxeFunction function, string target, string features, bool createPermaUrl, NameValueCollection urlParameters)
     {
-      ArgumentUtility.CheckNotNull("page", page);
-      ArgumentUtility.CheckNotNull("function", function);
+      ArgumentUtility.CheckNotNull(nameof(page), page);
+      ArgumentUtility.CheckNotNull(nameof(function), function);
       ArgumentUtility.CheckNotNullOrEmpty("target", target);
 
       string href = GetExternalFunctionUrl(function, createPermaUrl, urlParameters);
@@ -228,11 +228,11 @@ namespace Remotion.Web.ExecutionEngine
         WxeUrlSettings wxeUrlSettings,
         IWxeLifetimeManagementSettings wxeLifetimeManagementSettings)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("functionStateManager", functionStateManager);
-      ArgumentUtility.CheckNotNull("functionState", functionState);
-      ArgumentUtility.CheckNotNull("wxeUrlSettings", wxeUrlSettings);
-      ArgumentUtility.CheckNotNull("wxeLifetimeManagementSettings", wxeLifetimeManagementSettings);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentUtility.CheckNotNull(nameof(functionStateManager), functionStateManager);
+      ArgumentUtility.CheckNotNull(nameof(functionState), functionState);
+      ArgumentUtility.CheckNotNull(nameof(wxeUrlSettings), wxeUrlSettings);
+      ArgumentUtility.CheckNotNull(nameof(wxeLifetimeManagementSettings), wxeLifetimeManagementSettings);
 
       _httpContext = context;
       _functionStateManager = functionStateManager;
@@ -370,7 +370,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='../Doc/include/ExecutionEngine/WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="functionType" or @name="urlParameters" or @name="useParentPermanentUrl"]' />
     public string GetPermanentUrl (Type functionType, NameValueCollection urlParameters, bool useParentPermanentUrl)
     {
-      ArgumentUtility.CheckNotNull("urlParameters", urlParameters);
+      ArgumentUtility.CheckNotNull(nameof(urlParameters), urlParameters);
 
       string permanentUrl = GetPermanentUrl(_httpContext, functionType, urlParameters, true, _wxeUrlSettings);
 

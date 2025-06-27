@@ -38,7 +38,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
 
     public override void ExecuteSubFunction (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       string destinationUrl = GetDestinationPermanentUrl(context);
       string resumeUrl = context.GetResumeUrl(false);

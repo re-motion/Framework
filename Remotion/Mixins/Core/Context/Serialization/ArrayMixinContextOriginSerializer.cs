@@ -38,7 +38,7 @@ namespace Remotion.Mixins.Context.Serialization
 
     public void AddAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
       SetValue(1, assembly);
     }
 

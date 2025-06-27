@@ -46,7 +46,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
   {
     public static void BindServiceToControl (BocAutoCompleteReferenceValue control)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
 
       var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
       control.ControlServicePath = resourceUrlFactory.CreateResourceUrl(

@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     public IEnumerable<IClientTransactionExtension> CreateClientTransactionExtensions (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
 
       if (clientTransaction.ParentTransaction == null)
         yield return new LinqToSqlExtension(clientTransaction.ID, LinqToSqlAppenderProxy.Instance);

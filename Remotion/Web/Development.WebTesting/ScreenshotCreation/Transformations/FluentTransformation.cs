@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations
     public ScreenshotTransformationContext<IFluentScreenshotElement<T>> BeginApply (
         ScreenshotTransformationContext<IFluentScreenshotElement<T>> context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       return ConvertContextBack(_transformations.BeginApply(ConvertContext(context)), context.Target);
     }
@@ -52,7 +52,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations
     /// <inheritdoc />
     public void EndApply (ScreenshotTransformationContext<IFluentScreenshotElement<T>> context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       _transformations.EndApply(ConvertContext(context));
     }

@@ -36,7 +36,7 @@ namespace Remotion.Validation.Mixins.Implementation
 
     public void CheckValid (IValidationRuleCollector collector)
     {
-      ArgumentUtility.CheckNotNull("collector", collector);
+      ArgumentUtility.CheckNotNull(nameof(collector), collector);
 
       if (Remotion.Mixins.Utilities.ReflectionUtility.IsMixinType(collector.ValidatedType))
       {

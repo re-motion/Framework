@@ -40,7 +40,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// <paramref name="matchExpression"/>.</param>
     public RegexAssemblyLoaderFilter (Regex matchExpression, MatchTargetKind matchTarget)
     {
-      ArgumentUtility.CheckNotNull("matchExpression", matchExpression);
+      ArgumentUtility.CheckNotNull(nameof(matchExpression), matchExpression);
       ArgumentUtility.CheckValidEnumValue("matchTarget", matchTarget);
 
       _matchExpression = matchExpression;
@@ -56,7 +56,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// <paramref name="matchExpression"/>.</param>
     public RegexAssemblyLoaderFilter (string matchExpression, MatchTargetKind matchTarget)
         : this(new Regex(
-            ArgumentUtility.CheckNotNull("matchExpression", matchExpression),
+            ArgumentUtility.CheckNotNull(nameof(matchExpression), matchExpression),
             // Do not use RegexOptions.Compiled because it takes several 100ms to compile long RegEx which is not offset by the calls made after cache lookups.
             // This is an issue in .NET up to at least version 4.5.1 in x64 mode.
             RegexOptions.CultureInvariant | RegexOptions.Singleline),

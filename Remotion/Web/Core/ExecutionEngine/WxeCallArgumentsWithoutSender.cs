@@ -26,15 +26,15 @@ namespace Remotion.Web.ExecutionEngine
 
     public WxeCallArgumentsWithoutSender (WxePermaUrlOptions permaUrlOptions)
     {
-      ArgumentUtility.CheckNotNull("permaUrlOptions", permaUrlOptions);
+      ArgumentUtility.CheckNotNull(nameof(permaUrlOptions), permaUrlOptions);
 
       _permaUrlOptions = permaUrlOptions;
     }
 
     void IWxeCallArguments.Dispatch (IWxeExecutor executor, WxeFunction function)
     {
-      ArgumentUtility.CheckNotNull("executor", executor);
-      ArgumentUtility.CheckNotNull("function", function);
+      ArgumentUtility.CheckNotNull(nameof(executor), executor);
+      ArgumentUtility.CheckNotNull(nameof(function), function);
 
       executor.ExecuteFunction(function, null, new WxeCallOptions(_permaUrlOptions));
     }

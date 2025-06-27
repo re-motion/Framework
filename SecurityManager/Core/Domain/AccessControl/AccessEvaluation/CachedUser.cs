@@ -59,7 +59,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     public CachedUser (IRevisionProvider<UserRevisionKey, GuidRevisionValue> revisionProvider, string userName)
         : base(revisionProvider)
     {
-      ArgumentUtility.CheckNotNull("userName", userName);
+      ArgumentUtility.CheckNotNull(nameof(userName), userName);
 
       _userName = userName;
     }

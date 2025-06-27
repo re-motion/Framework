@@ -39,7 +39,7 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
 
     protected override Command RenderBeginTagForCommand (WebTabStripRenderingContext renderingContext, IWebTab tab, bool isEnabled, WebTabStyle style)
     {
-      ArgumentUtility.CheckNotNull("style", style);
+      ArgumentUtility.CheckNotNull(nameof(style), style);
 
       var menuTab = ((IMenuTab)tab).GetActiveTab();
       var command = GetRenderingCommand(isEnabled, menuTab);

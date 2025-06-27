@@ -32,13 +32,13 @@ namespace Remotion.Utilities
     private readonly IComparer<T>[] _comparers;
 
     public CompoundComparer (params IComparer<T>[] comparers)
-        : this((IEnumerable<IComparer<T>>)ArgumentUtility.CheckNotNull("comparers", comparers))
+        : this((IEnumerable<IComparer<T>>)ArgumentUtility.CheckNotNull(nameof(comparers), comparers))
     {
     }
 
     public CompoundComparer (IEnumerable<IComparer<T>> comparers)
     {
-      ArgumentUtility.CheckNotNull("comparers", comparers);
+      ArgumentUtility.CheckNotNull(nameof(comparers), comparers);
 
       _comparers = comparers.ToArray();
     }

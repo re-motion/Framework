@@ -40,8 +40,8 @@ namespace Remotion.Validation.Utilities
 
       public Node (T content, Func<T, IEnumerable<T>> getDependencies, bool included)
       {
-        ArgumentUtility.CheckNotNull("content", content);
-        ArgumentUtility.CheckNotNull("getDependencies", getDependencies);
+        ArgumentUtility.CheckNotNull(nameof(content), content);
+        ArgumentUtility.CheckNotNull(nameof(getDependencies), getDependencies);
         Content = content;
         _getDependencies = getDependencies;
         Included = included;
@@ -221,8 +221,8 @@ namespace Remotion.Validation.Utilities
         )
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull("source", source);
-      ArgumentUtility.CheckNotNull("getDependencies", getDependencies);
+      ArgumentUtility.CheckNotNull(nameof(source), source);
+      ArgumentUtility.CheckNotNull(nameof(getDependencies), getDependencies);
 
       var unsorted = source.Select(content => new Node<T>(content, getDependencies, true)).ToList();
       Dictionary<object, Node<T>> nodes;

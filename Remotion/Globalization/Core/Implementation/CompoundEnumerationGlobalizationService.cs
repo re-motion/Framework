@@ -40,7 +40,7 @@ namespace Remotion.Globalization.Implementation
     /// <param name="enumerationGlobalizationServices"> The <see cref="IEnumerationGlobalizationService"/>s, starting with the least specific.</param>
     public CompoundEnumerationGlobalizationService (IEnumerable<IEnumerationGlobalizationService> enumerationGlobalizationServices)
     {
-      ArgumentUtility.CheckNotNull("enumerationGlobalizationServices", enumerationGlobalizationServices);
+      ArgumentUtility.CheckNotNull(nameof(enumerationGlobalizationServices), enumerationGlobalizationServices);
 
       _enumerationGlobalizationServices = enumerationGlobalizationServices.ToArray();
     }
@@ -52,7 +52,7 @@ namespace Remotion.Globalization.Implementation
 
     public bool TryGetEnumerationValueDisplayName (Enum value, [MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
 
       foreach (var service in _enumerationGlobalizationServices)
       {
@@ -66,7 +66,7 @@ namespace Remotion.Globalization.Implementation
 
     public IReadOnlyDictionary<CultureInfo, string> GetAvailableEnumDisplayNames (Enum value)
     {
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
 
       Dictionary<CultureInfo,string> result = new Dictionary<CultureInfo, string>();
       foreach (var service in _enumerationGlobalizationServices)

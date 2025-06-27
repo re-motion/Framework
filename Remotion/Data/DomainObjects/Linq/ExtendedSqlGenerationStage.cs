@@ -31,8 +31,8 @@ namespace Remotion.Data.DomainObjects.Linq
         Expression expression,
         SetOperationsMode setOperationsMode)
     {
-      ArgumentUtility.CheckNotNull("commandBuilder", commandBuilder);
-      ArgumentUtility.CheckNotNull("expression", expression);
+      ArgumentUtility.CheckNotNull(nameof(commandBuilder), commandBuilder);
+      ArgumentUtility.CheckNotNull(nameof(expression), expression);
 
       ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql(expression, commandBuilder, this, setOperationsMode);
     }

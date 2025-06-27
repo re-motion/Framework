@@ -48,7 +48,7 @@ namespace Remotion.Globalization.Mixins
 
     public MixinGlobalizationService (IResourceManagerResolver resourceManagerResolver)
     {
-      ArgumentUtility.CheckNotNull("resourceManagerResolver", resourceManagerResolver);
+      ArgumentUtility.CheckNotNull(nameof(resourceManagerResolver), resourceManagerResolver);
 
       _resourceManagerResolver = resourceManagerResolver;
 
@@ -58,7 +58,7 @@ namespace Remotion.Globalization.Mixins
 
     public IResourceManager GetResourceManager (ITypeInformation typeInformation)
     {
-      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull(nameof(typeInformation), typeInformation);
 
       var masterConfiguration = MixinConfiguration.GetMasterConfiguration();
 

@@ -27,9 +27,9 @@ namespace Remotion.Mixins.CodeGeneration
   {
     public IntroducedMemberAttribute (Type mixin, string mixinMemberName, Type introducedInterface, string interfaceMemberName)
     {
-      ArgumentUtility.CheckNotNull("mixin", mixin);
+      ArgumentUtility.CheckNotNull(nameof(mixin), mixin);
       ArgumentUtility.CheckNotNullOrEmpty("mixinMemberName", mixinMemberName);
-      ArgumentUtility.CheckNotNull("introducedInterface", introducedInterface);
+      ArgumentUtility.CheckNotNull(nameof(introducedInterface), introducedInterface);
       ArgumentUtility.CheckNotNullOrEmpty("interfaceMemberName", interfaceMemberName);
 
       Mixin = mixin;

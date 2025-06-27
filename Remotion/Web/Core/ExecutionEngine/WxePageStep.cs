@@ -47,7 +47,7 @@ namespace Remotion.Web.ExecutionEngine
 
     internal static bool EvaluateDirtyStateOfPage (IWxePage wxePage)
     {
-      ArgumentUtility.CheckNotNull("wxePage", wxePage);
+      ArgumentUtility.CheckNotNull(nameof(wxePage), wxePage);
 
       return wxePage.GetDirtyStates(PageDirtyStates).Intersect(PageDirtyStates, StringComparer.InvariantCultureIgnoreCase).Any();
     }
@@ -86,7 +86,7 @@ namespace Remotion.Web.ExecutionEngine
 
     protected WxePageStep (ResourceObjectBase page)
     {
-      ArgumentUtility.CheckNotNull("page", page);
+      ArgumentUtility.CheckNotNull(nameof(page), page);
 
       _page = page;
       _pageToken = Guid.NewGuid().ToString();
@@ -118,7 +118,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='../Doc/include/ExecutionEngine/WxePageStep.xml' path='WxePageStep/Execute/*' />
     public override void Execute (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       if (_wxeHandler != null)
       {
@@ -161,8 +161,8 @@ namespace Remotion.Web.ExecutionEngine
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void ExecuteFunction (PreProcessingSubFunctionStateParameters parameters, WxeRepostOptions repostOptions)
     {
-      ArgumentUtility.CheckNotNull("parameters", parameters);
-      ArgumentUtility.CheckNotNull("repostOptions", repostOptions);
+      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
+      ArgumentUtility.CheckNotNull(nameof(repostOptions), repostOptions);
 
       if (_executionState.IsExecuting)
         throw new InvalidOperationException("Cannot execute function while another function executes.");
@@ -177,8 +177,8 @@ namespace Remotion.Web.ExecutionEngine
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void ExecuteFunctionExternalByRedirect (PreProcessingSubFunctionStateParameters parameters, WxeReturnOptions returnOptions)
     {
-      ArgumentUtility.CheckNotNull("parameters", parameters);
-      ArgumentUtility.CheckNotNull("returnOptions", returnOptions);
+      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
+      ArgumentUtility.CheckNotNull(nameof(returnOptions), returnOptions);
 
       if (_executionState.IsExecuting)
         throw new InvalidOperationException("Cannot execute function while another function executes.");
@@ -193,9 +193,9 @@ namespace Remotion.Web.ExecutionEngine
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void ExecuteFunction (WxeUserControl userControl, WxeFunction subFunction, Control sender, bool usesEventTarget)
     {
-      ArgumentUtility.CheckNotNull("userControl", userControl);
-      ArgumentUtility.CheckNotNull("subFunction", subFunction);
-      ArgumentUtility.CheckNotNull("sender", sender);
+      ArgumentUtility.CheckNotNull(nameof(userControl), userControl);
+      ArgumentUtility.CheckNotNull(nameof(subFunction), subFunction);
+      ArgumentUtility.CheckNotNull(nameof(sender), sender);
 
       IWxePage wxePage = userControl.WxePage!;
       _wxeHandler = wxePage.WxeHandler;
@@ -278,7 +278,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public void SetReturnState (WxeFunction returningFunction, bool isReturningPostBack, NameValueCollection? previousPostBackCollection)
     {
-      ArgumentUtility.CheckNotNull("returningFunction", returningFunction);
+      ArgumentUtility.CheckNotNull(nameof(returningFunction), returningFunction);
 
       _returningFunction = returningFunction;
       _isReturningPostBack = isReturningPostBack;
@@ -381,14 +381,14 @@ namespace Remotion.Web.ExecutionEngine
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void SetPageExecutor (IWxePageExecutor pageExecutor)
     {
-      ArgumentUtility.CheckNotNull("pageExecutor", pageExecutor);
+      ArgumentUtility.CheckNotNull(nameof(pageExecutor), pageExecutor);
       _pageExecutor = pageExecutor;
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void SetUserControlExecutor (IUserControlExecutor userControlExecutor)
     {
-      ArgumentUtility.CheckNotNull("userControlExecutor", userControlExecutor);
+      ArgumentUtility.CheckNotNull(nameof(userControlExecutor), userControlExecutor);
       _userControlExecutor = userControlExecutor;
     }
 
@@ -409,7 +409,7 @@ namespace Remotion.Web.ExecutionEngine
 
     void IExecutionStateContext.SetExecutionState (IExecutionState executionState)
     {
-      ArgumentUtility.CheckNotNull("executionState", executionState);
+      ArgumentUtility.CheckNotNull(nameof(executionState), executionState);
 
       _executionState = executionState;
     }

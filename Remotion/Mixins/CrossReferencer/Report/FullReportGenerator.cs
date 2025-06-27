@@ -39,10 +39,10 @@ namespace Remotion.Mixins.CrossReferencer.Report
         ErrorAggregator<ValidationException> validationErrors,
         IOutputFormatter outputFormatter)
     {
-      ArgumentUtility.CheckNotNull("involvedTypes", involvedTypes);
-      ArgumentUtility.CheckNotNull("configurationErrors", configurationErrors);
-      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
-      ArgumentUtility.CheckNotNull("outputFormatter", outputFormatter);
+      ArgumentUtility.CheckNotNull(nameof(involvedTypes), involvedTypes);
+      ArgumentUtility.CheckNotNull(nameof(configurationErrors), configurationErrors);
+      ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
+      ArgumentUtility.CheckNotNull(nameof(outputFormatter), outputFormatter);
 
       _involvedTypes = involvedTypes;
       _configurationErrors = configurationErrors;

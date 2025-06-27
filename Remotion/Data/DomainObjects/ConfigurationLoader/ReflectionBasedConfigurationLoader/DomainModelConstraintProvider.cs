@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public bool IsNullable (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
 
       var attribute = propertyInfo.GetCustomAttribute<INullablePropertyAttribute>(true);
       return attribute == null || attribute.IsNullable;
@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public int? GetMaxLength (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
 
       var attribute = propertyInfo.GetCustomAttribute<ILengthConstrainedPropertyAttribute>(true);
       return attribute != null ? attribute.MaximumLength : null;

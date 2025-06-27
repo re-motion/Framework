@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validatio
 
     public ValidationFailureHandlingContext (IBocList bocList)
     {
-      ArgumentUtility.CheckNotNull("bocList", bocList);
+      ArgumentUtility.CheckNotNull(nameof(bocList), bocList);
 
       BocList = bocList;
 
@@ -79,7 +79,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validatio
     /// </summary>
     public void AppendErrorMessages (StringBuilder stringBuilder)
     {
-      ArgumentUtility.CheckNotNull("stringBuilder", stringBuilder);
+      ArgumentUtility.CheckNotNull(nameof(stringBuilder), stringBuilder);
 
       if (stringBuilder.Length > 0 && !stringBuilder.ToString().EndsWith("\n"))
         stringBuilder.AppendLine();

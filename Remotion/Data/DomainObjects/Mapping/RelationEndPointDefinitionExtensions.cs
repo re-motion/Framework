@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     [JetBrains.Annotations.NotNull]
     public static IRelationEndPointDefinition GetOppositeEndPointDefinition (this IRelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
 
       var oppositeEndPointDefinition = relationEndPointDefinition.RelationDefinition.GetOppositeEndPointDefinition(relationEndPointDefinition);
       Assertion.IsNotNull(oppositeEndPointDefinition, "Inconsistent mapping data structures!");
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     [JetBrains.Annotations.NotNull]
     public static ClassDefinition GetOppositeClassDefinition (this IRelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
       return relationEndPointDefinition.GetOppositeEndPointDefinition().ClassDefinition;
     }
   }

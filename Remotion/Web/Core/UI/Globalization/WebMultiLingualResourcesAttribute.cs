@@ -140,7 +140,7 @@ namespace Remotion.Web.UI.Globalization
     public WebMultiLingualResourcesAttribute (Type resourceType)
         : base(resourceType.GetFullNameChecked())
     {
-      ArgumentUtility.CheckNotNull("resourceType", resourceType);
+      ArgumentUtility.CheckNotNull(nameof(resourceType), resourceType);
       SetResourceAssembly(resourceType.Assembly);
     }
 

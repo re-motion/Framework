@@ -30,7 +30,7 @@ namespace Remotion.Utilities
 
     public InvertedComparerDecorator (IComparer<T> comparer)
     {
-      ArgumentUtility.CheckNotNull("comparer", comparer);
+      ArgumentUtility.CheckNotNull(nameof(comparer), comparer);
       _comparer = comparer;
     }
 

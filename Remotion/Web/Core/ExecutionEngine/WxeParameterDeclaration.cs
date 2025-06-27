@@ -116,7 +116,7 @@ public class WxeParameterDeclaration
   /// <param name="variables">The variable list to get the parameter value from.</param>
   public object? GetValue (NameObjectCollection variables)
   {
-    ArgumentUtility.CheckNotNull("variables", variables);
+    ArgumentUtility.CheckNotNull(nameof(variables), variables);
     return variables[_name];
   }
 

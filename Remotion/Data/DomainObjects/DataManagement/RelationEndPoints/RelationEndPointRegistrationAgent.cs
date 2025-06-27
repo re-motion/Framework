@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public RelationEndPointRegistrationAgent (IVirtualEndPointProvider virtualEndPointProvider)
     {
-      ArgumentUtility.CheckNotNull("virtualEndPointProvider", virtualEndPointProvider);
+      ArgumentUtility.CheckNotNull(nameof(virtualEndPointProvider), virtualEndPointProvider);
       _virtualEndPointProvider = virtualEndPointProvider;
     }
 
@@ -39,8 +39,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void RegisterEndPoint (IRelationEndPoint endPoint, RelationEndPointMap map)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("map", map);
+      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
+      ArgumentUtility.CheckNotNull(nameof(map), map);
 
       if (map[endPoint.ID] != null)
       {
@@ -57,8 +57,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void UnregisterEndPoint (IRelationEndPoint endPoint, RelationEndPointMap map)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("map", map);
+      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
+      ArgumentUtility.CheckNotNull(nameof(map), map);
 
       if (map[endPoint.ID] != endPoint)
       {
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     protected virtual IVirtualEndPoint? RegisterOppositeForRealObjectEndPoint (IRealObjectEndPoint realObjectEndPoint)
     {
-      ArgumentUtility.CheckNotNull("realObjectEndPoint", realObjectEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(realObjectEndPoint), realObjectEndPoint);
 
       var oppositeVirtualEndPointID = RelationEndPointID.CreateOpposite(realObjectEndPoint.Definition, realObjectEndPoint.OriginalOppositeObjectID);
       if (oppositeVirtualEndPointID.Definition.IsAnonymous)
@@ -91,8 +91,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     protected virtual void UnregisterOppositeForRealObjectEndPoint (IRealObjectEndPoint realObjectEndPoint, RelationEndPointMap map)
     {
-      ArgumentUtility.CheckNotNull("realObjectEndPoint", realObjectEndPoint);
-      ArgumentUtility.CheckNotNull("map", map);
+      ArgumentUtility.CheckNotNull(nameof(realObjectEndPoint), realObjectEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(map), map);
 
       var oppositeEndPointID = RelationEndPointID.CreateOpposite(realObjectEndPoint.Definition, realObjectEndPoint.OriginalOppositeObjectID);
       if (oppositeEndPointID.Definition.IsAnonymous)

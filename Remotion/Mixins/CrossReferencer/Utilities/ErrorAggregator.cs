@@ -27,7 +27,7 @@ namespace Remotion.Mixins.CrossReferencer.Utilities
 
     public void AddException (TException exception)
     {
-      ArgumentUtility.CheckNotNull("exception", exception);
+      ArgumentUtility.CheckNotNull(nameof(exception), exception);
 
       _exceptionList.Add(exception);
     }

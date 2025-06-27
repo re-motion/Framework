@@ -38,7 +38,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe
 
     public RemotionModuleBuilderFactoryDecorator (IModuleBuilderFactory moduleBuilderFactory)
     {
-      ArgumentUtility.CheckNotNull("moduleBuilderFactory", moduleBuilderFactory);
+      ArgumentUtility.CheckNotNull(nameof(moduleBuilderFactory), moduleBuilderFactory);
 
       _moduleBuilderFactory = moduleBuilderFactory;
     }

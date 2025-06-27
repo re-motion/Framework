@@ -127,7 +127,7 @@ namespace Remotion.Web.Development.WebTesting
     [PublicAPI]
     protected WebTestHelper ([NotNull] WebTestConfigurationFactory webTestConfigurationFactory)
     {
-      ArgumentUtility.CheckNotNull("webTestConfigurationFactory", webTestConfigurationFactory);
+      ArgumentUtility.CheckNotNull(nameof(webTestConfigurationFactory), webTestConfigurationFactory);
 
       _loggerFactory = webTestConfigurationFactory.LoggerFactory;
       _logger = _loggerFactory.CreateLogger<WebTestHelper>();
@@ -202,7 +202,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="testContext">An <see cref="ITestContext"/> object for the test being performed.</param>
     public void OnSetUp ([NotNull] ITestContext testContext)
     {
-      ArgumentUtility.CheckNotNull("testContext", testContext);
+      ArgumentUtility.CheckNotNull(nameof(testContext), testContext);
 
       _testContext = testContext;
       _logger.LogInformation("Executing test: {0}.", _testContext.TestName);
@@ -246,7 +246,7 @@ namespace Remotion.Web.Development.WebTesting
     public TPageObject CreateInitialPageObject<TPageObject> ([NotNull] IBrowserSession browser)
         where TPageObject : PageObject
     {
-      ArgumentUtility.CheckNotNull("browser", browser);
+      ArgumentUtility.CheckNotNull(nameof(browser), browser);
 
       return CreateInitialPageObject<TPageObject>(browser, _testInfrastructureConfiguration.RequestErrorDetectionStrategy);
     }
@@ -257,7 +257,7 @@ namespace Remotion.Web.Development.WebTesting
     public TPageObject CreateInitialPageObjectWithoutRequestErrorDetection<TPageObject> ([NotNull] IBrowserSession browser)
         where TPageObject : PageObject
     {
-      ArgumentUtility.CheckNotNull("browser", browser);
+      ArgumentUtility.CheckNotNull(nameof(browser), browser);
 
       return CreateInitialPageObject<TPageObject>(browser, new NullRequestErrorDetectionStrategy());
     }
@@ -355,7 +355,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public void CheckPageForError ([NotNull] PageObjectContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       context.RequestErrorDetectionStrategy.CheckPageForError(context.Scope);
     }
@@ -392,7 +392,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>Initialized instance of AccessibilityAnalyzer</returns>
     public AccessibilityAnalyzer CreateAccessibilityAnalyzer ([NotNull] IBrowserSession browserSession)
     {
-      ArgumentUtility.CheckNotNull("browserSession", browserSession);
+      ArgumentUtility.CheckNotNull(nameof(browserSession), browserSession);
 
       return AccessibilityAnalyzer.CreateForWebDriver(
           (IWebDriver)browserSession.Driver.Native,

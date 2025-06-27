@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentRow", fluentRow);
+      ArgumentUtility.CheckNotNull(nameof(fluentRow), fluentRow);
 
       var result = fluentRow.Target.Row.Scope.FindCss("td.bocListDataCellValidationFailureIndicator .validationErrorMarker > img", Options.NoWait);
       if (!result.Exists(Options.NoWait))
@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentRow", fluentRow);
+      ArgumentUtility.CheckNotNull(nameof(fluentRow), fluentRow);
 
       var hasValidationRow = fluentRow.Target.Row.Scope.GetAttribute("class", fluentRow.Target.Row.Logger).Split(' ').Contains("hasValidationRow");
       if (!hasValidationRow)

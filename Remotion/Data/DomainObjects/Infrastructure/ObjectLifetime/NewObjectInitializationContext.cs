@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
         IDataManager dataManager)
       : base(objectID, rootTransaction, enlistedDomainObjectManager)
     {
-      ArgumentUtility.CheckNotNull("dataManager", dataManager);
+      ArgumentUtility.CheckNotNull(nameof(dataManager), dataManager);
 
       _dataManager = dataManager;
     }
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
 
     public override void RegisterObject (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       base.RegisterObject(domainObject);
 

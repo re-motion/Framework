@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
         string message)
       : base(sender, message)
     {
-      ArgumentUtility.CheckNotNull("propertyName", propertyName);
+      ArgumentUtility.CheckNotNull(nameof(propertyName), propertyName);
 
       _propertyName = propertyName;
       _oldDomainObject = oldDomainObject;

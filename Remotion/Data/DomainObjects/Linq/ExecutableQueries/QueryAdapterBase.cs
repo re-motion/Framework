@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
 
     protected QueryAdapterBase (IQuery query)
     {
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
 
       _query = query;
     }

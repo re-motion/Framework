@@ -17,7 +17,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
 
     public NonPersistentProvider (StorageProviderDefinition storageProviderDefinition)
     {
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
 
       _storageProviderDefinition = storageProviderDefinition;
     }
@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     public ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNull(nameof(id), id);
       CheckStorageProvider(id, "id");
 
       return new ObjectLookupResult<DataContainer>(id, null);
@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     public IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull("ids", ids);
+      ArgumentUtility.CheckNotNull(nameof(ids), ids);
 
       var checkedIDs = ids.Select(id => CheckStorageProvider(id, "ids"));
       return checkedIDs.Select(id => new ObjectLookupResult<DataContainer>(id, null)).ToArray();
@@ -55,8 +55,8 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
         ObjectID relatedID)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull("relatedID", relatedID);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull(nameof(relatedID), relatedID);
       CheckClassDefinition(relationEndPointDefinition.ClassDefinition, "classDefinition");
 
       return new DataContainerCollection();
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     public void Save (IReadOnlyCollection<DataContainer> dataContainers)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
+      ArgumentUtility.CheckNotNull(nameof(dataContainers), dataContainers);
 
       // NOP
     }
@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     public void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
+      ArgumentUtility.CheckNotNull(nameof(dataContainers), dataContainers);
 
       foreach (var dataContainer in dataContainers)
         dataContainer.SetTimestamp(Guid.NewGuid().ToByteArray());
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     public ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
       CheckClassDefinition(classDefinition, "classDefinition");
 
       return new ObjectID(classDefinition, Guid.NewGuid());
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     public IEnumerable<DataContainer> ExecuteCollectionQuery (IQuery query)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
 
       return Enumerable.Empty<DataContainer>();
     }
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     public IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
 
       return Enumerable.Empty<IQueryResultRow>();
     }
@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     public object? ExecuteScalarQuery (IQuery query)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
 
       return null;
     }

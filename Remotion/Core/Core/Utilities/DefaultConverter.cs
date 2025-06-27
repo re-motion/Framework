@@ -34,7 +34,7 @@ namespace Remotion.Utilities
 
     public DefaultConverter (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       _type = type;
       _isNullableType = NullableTypeUtility.IsNullableType(type);
@@ -53,7 +53,7 @@ namespace Remotion.Utilities
 
     public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
-      ArgumentUtility.CheckNotNull("sourceType", sourceType);
+      ArgumentUtility.CheckNotNull(nameof(sourceType), sourceType);
 
       return _type == sourceType || _underlyingType == sourceType;
     }
@@ -91,7 +91,7 @@ namespace Remotion.Utilities
     [return: NotNullIfNotNull("value")]
     public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull(nameof(destinationType), destinationType);
 
       if (!CanConvertTo(destinationType))
         throw new NotSupportedException(string.Format("This TypeConverter cannot convert to type '{0}'.", destinationType));

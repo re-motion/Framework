@@ -32,7 +32,7 @@ namespace Remotion.Mixins.CodeGeneration.Serialization
 
     public AttributeConcreteMixinTypeIdentifierDeserializer (object[] values)
     {
-      ArgumentUtility.CheckNotNull("values", values);
+      ArgumentUtility.CheckNotNull(nameof(values), values);
       _values = values;
     }
 

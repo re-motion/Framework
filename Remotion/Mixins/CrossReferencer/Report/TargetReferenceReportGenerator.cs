@@ -29,8 +29,8 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public TargetReferenceReportGenerator (InvolvedType mixinType, IIdentifierGenerator<Type> involvedTypeIdentifierGenerator)
     {
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
+      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
+      ArgumentUtility.CheckNotNull(nameof(involvedTypeIdentifierGenerator), involvedTypeIdentifierGenerator);
 
       _mixinType = mixinType;
       _involvedTypeIdentifierGenerator = involvedTypeIdentifierGenerator;

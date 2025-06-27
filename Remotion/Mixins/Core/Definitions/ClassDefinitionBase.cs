@@ -38,7 +38,7 @@ namespace Remotion.Mixins.Definitions
 
     protected ClassDefinitionBase (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
       if (type.ContainsGenericParameters)
         throw new ArgumentException(string.Format("The type {0} contains generic parameters, which is not allowed.", type), "type");
       _type = type;
@@ -158,7 +158,7 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
 
       ChildSpecificAccept(visitor);
 

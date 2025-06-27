@@ -36,7 +36,7 @@ namespace Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering
 
     public void Render (HtmlHeadContentsRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       var titleTags = new List<TitleTag>();
       var javascriptIncludes = new List<JavaScriptInclude>();
@@ -64,16 +64,16 @@ namespace Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering
 
     protected virtual void RenderTitleTag (HtmlTextWriter writer, TitleTag titleTag)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
-      ArgumentUtility.CheckNotNull("titleTag", titleTag);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentUtility.CheckNotNull(nameof(titleTag), titleTag);
 
       titleTag.Render(writer);
     }
 
     protected virtual void RenderJavascriptIncludes (HtmlTextWriter writer, IReadOnlyCollection<JavaScriptInclude> javascriptIncludes)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
-      ArgumentUtility.CheckNotNull("javascriptIncludes", javascriptIncludes);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentUtility.CheckNotNull(nameof(javascriptIncludes), javascriptIncludes);
 
       foreach (var javascriptInclude in javascriptIncludes)
         javascriptInclude.Render(writer);
@@ -81,8 +81,8 @@ namespace Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering
 
     protected virtual void RenderStylesheetElements (HtmlTextWriter writer, IReadOnlyCollection<StyleSheetElement> stylesheetElements)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
-      ArgumentUtility.CheckNotNull("stylesheetElements", stylesheetElements);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentUtility.CheckNotNull(nameof(stylesheetElements), stylesheetElements);
 
       foreach (var styleSheetElement in stylesheetElements)
         styleSheetElement.Render(writer);
@@ -90,8 +90,8 @@ namespace Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering
 
     protected virtual void RenderUncategorizedHtmlHeadElements (HtmlTextWriter writer, IReadOnlyCollection<HtmlHeadElement> htmlHeadElements)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
-      ArgumentUtility.CheckNotNull("htmlHeadElements", htmlHeadElements);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentUtility.CheckNotNull(nameof(htmlHeadElements), htmlHeadElements);
 
       foreach (var htmlHeadElement in htmlHeadElements)
         htmlHeadElement.Render(writer);

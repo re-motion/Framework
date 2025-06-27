@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public CompositeScriptBuilder (RdbmsProviderDefinition rdbmsProviderDefinition, IEnumerable<IScriptBuilder> scriptBuilders)
     {
-      ArgumentUtility.CheckNotNull("rdbmsProviderDefinition", rdbmsProviderDefinition);
-      ArgumentUtility.CheckNotNull("scriptBuilders", scriptBuilders);
+      ArgumentUtility.CheckNotNull(nameof(rdbmsProviderDefinition), rdbmsProviderDefinition);
+      ArgumentUtility.CheckNotNull(nameof(scriptBuilders), scriptBuilders);
 
       _rdbmsProviderDefinition = rdbmsProviderDefinition;
 
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public void AddEntityDefinition (IRdbmsStorageEntityDefinition entityDefinition)
     {
-      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
+      ArgumentUtility.CheckNotNull(nameof(entityDefinition), entityDefinition);
 
       foreach (var scriptBuilder in _scriptBuilders)
         scriptBuilder.AddEntityDefinition(entityDefinition);

@@ -182,7 +182,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void ExecuteWxeFunction (IWxePage wxePage, IBusinessObject? businessObject)
     {
-      ArgumentUtility.CheckNotNull("wxePage", wxePage);
+      ArgumentUtility.CheckNotNull(nameof(wxePage), wxePage);
       if (! wxePage.IsReturningPostBack)
       {
         NameObjectCollection parameters = PrepareWxeFunctionParameters(businessObject);

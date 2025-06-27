@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects
     public static T GetObject<T> ([NotNull] this IDomainObjectHandle<T> handle, ClientTransaction? clientTransaction = null, bool includeDeleted = false)
         where T : DomainObject, ISupportsGetObject
     {
-      ArgumentUtility.CheckNotNull("handle", handle);
+      ArgumentUtility.CheckNotNull(nameof(handle), handle);
       return (T)LifetimeService.GetObject(GetMandatoryClientTransaction(clientTransaction), handle.ObjectID, includeDeleted);
     }
 
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects
     public static T? TryGetObject<T> ([NotNull] this IDomainObjectHandle<T> handle, ClientTransaction? clientTransaction = null)
         where T : DomainObject, ISupportsGetObject
     {
-      ArgumentUtility.CheckNotNull("handle", handle);
+      ArgumentUtility.CheckNotNull(nameof(handle), handle);
       return (T?)LifetimeService.TryGetObject(GetMandatoryClientTransaction(clientTransaction), handle.ObjectID);
     }
 
@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects
     public static T GetObjectReference<T> ([NotNull] this IDomainObjectHandle<T> handle, ClientTransaction? clientTransaction = null)
         where T : DomainObject, ISupportsGetObject
     {
-      ArgumentUtility.CheckNotNull("handle", handle);
+      ArgumentUtility.CheckNotNull(nameof(handle), handle);
       return (T)LifetimeService.GetObjectReference(GetMandatoryClientTransaction(clientTransaction), handle.ObjectID);
     }
 
@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects
     public static T[] GetObjects<T> ([NotNull] this IEnumerable<IDomainObjectHandle<T>> handles, ClientTransaction? clientTransaction = null)
         where T : DomainObject, ISupportsGetObject
     {
-      ArgumentUtility.CheckNotNull("handles", handles);
+      ArgumentUtility.CheckNotNull(nameof(handles), handles);
       return LifetimeService.GetObjects<T>(GetMandatoryClientTransaction(clientTransaction), handles.Select(h => h.ObjectID));
     }
 
@@ -162,7 +162,7 @@ namespace Remotion.Data.DomainObjects
     public static T?[] TryGetObjects<T> ([NotNull] this IEnumerable<IDomainObjectHandle<T>> handles, ClientTransaction? clientTransaction = null)
         where T : DomainObject, ISupportsGetObject
     {
-      ArgumentUtility.CheckNotNull("handles", handles);
+      ArgumentUtility.CheckNotNull(nameof(handles), handles);
       return LifetimeService.TryGetObjects<T>(GetMandatoryClientTransaction(clientTransaction), handles.Select(h => h.ObjectID));
     }
 

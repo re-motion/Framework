@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects
     internal ClientTransactionScope (ClientTransaction? scopedCurrentTransaction, AutoRollbackBehavior autoRollbackBehavior, IDisposable? attachedScope)
     {
       if (autoRollbackBehavior != AutoRollbackBehavior.None)
-        ArgumentUtility.CheckNotNull("scopedCurrentTransaction", scopedCurrentTransaction!);
+        ArgumentUtility.CheckNotNull(nameof(scopedCurrentTransaction), scopedCurrentTransaction!);
 
       _autoRollbackBehavior = autoRollbackBehavior;
 

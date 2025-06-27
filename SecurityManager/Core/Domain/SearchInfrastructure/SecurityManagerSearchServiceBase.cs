@@ -47,7 +47,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
         ISearchAvailableObjectsArguments? searchArguments)
     {
       var referencingSecurityManagerObject = ArgumentUtility.CheckType<TReferencingObject>("referencingObject", referencingObject);
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNull(nameof(property), property);
 
       var queryFactory = GetQueryFactory(property);
 

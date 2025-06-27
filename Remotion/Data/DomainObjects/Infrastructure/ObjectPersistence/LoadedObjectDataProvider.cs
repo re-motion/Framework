@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public LoadedObjectDataProvider (ILoadedDataContainerProvider loadedDataContainerProvider, IInvalidDomainObjectManager invalidDomainObjectManager)
     {
-      ArgumentUtility.CheckNotNull("loadedDataContainerProvider", loadedDataContainerProvider);
-      ArgumentUtility.CheckNotNull("invalidDomainObjectManager", invalidDomainObjectManager);
+      ArgumentUtility.CheckNotNull(nameof(loadedDataContainerProvider), loadedDataContainerProvider);
+      ArgumentUtility.CheckNotNull(nameof(invalidDomainObjectManager), invalidDomainObjectManager);
 
       _loadedDataContainerProvider = loadedDataContainerProvider;
       _invalidDomainObjectManager = invalidDomainObjectManager;
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public ILoadedObjectData? GetLoadedObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
       if (_invalidDomainObjectManager.IsInvalid(objectID))
         return new InvalidLoadedObjectData(_invalidDomainObjectManager.GetInvalidObjectReference(objectID));

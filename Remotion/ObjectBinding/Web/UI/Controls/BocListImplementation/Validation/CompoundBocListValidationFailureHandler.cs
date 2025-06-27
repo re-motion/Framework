@@ -33,14 +33,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validatio
 
     public CompoundBocListValidationFailureHandler (IEnumerable<IBocListValidationFailureHandler> validationFailureHandlers)
     {
-      ArgumentUtility.CheckNotNull("validationFailureHandlers", validationFailureHandlers);
+      ArgumentUtility.CheckNotNull(nameof(validationFailureHandlers), validationFailureHandlers);
 
       ValidationFailureHandlers = validationFailureHandlers.ToArray();
     }
 
     public void HandleValidationFailures (ValidationFailureHandlingContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       foreach (var validationFailureHandler in ValidationFailureHandlers)
       {

@@ -80,7 +80,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
 
     public static IWebTestSettings CreateAppConfigBasedWebTestSettings (ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
 
       var settings = (WebTestConfigurationSection)ConfigurationManager.GetSection("remotion.webTesting");
       Assertion.IsNotNull(settings, "Configuration section 'remotion.webTesting' missing.");
@@ -123,7 +123,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </remarks>
     public static IWebTestSettings CreateAppSettingsJsonBasedWebTestSettings (ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
 
       var hostApplicationBuilder = Host.CreateApplicationBuilder();
       hostApplicationBuilder.Services

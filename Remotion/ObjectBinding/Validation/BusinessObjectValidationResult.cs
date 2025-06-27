@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Validation
   {
     public static BusinessObjectValidationResult Create ([NotNull] ValidationResult validationResult)
     {
-      ArgumentUtility.CheckNotNull("validationResult", validationResult);
+      ArgumentUtility.CheckNotNull(nameof(validationResult), validationResult);
 
       return new BusinessObjectValidationResult(
           validationResult.Errors
@@ -103,7 +103,7 @@ namespace Remotion.ObjectBinding.Validation
     private BusinessObjectValidationResult (
         IEnumerable<(BusinessObjectValidationFailure BusinessObjectValidationFailure, ValidationFailure ValidationFailure)> businessObjectValidationFailures)
     {
-      ArgumentUtility.CheckNotNull("businessObjectValidationFailures", businessObjectValidationFailures);
+      ArgumentUtility.CheckNotNull(nameof(businessObjectValidationFailures), businessObjectValidationFailures);
 
       _validationFailures = businessObjectValidationFailures.ToArray();
       _unhandledValidationFailures = new HashSet<(BusinessObjectValidationFailure BusinessObjectValidationFailure, ValidationFailure ValidationFailure)>(_validationFailures);
@@ -115,8 +115,8 @@ namespace Remotion.ObjectBinding.Validation
         IBusinessObjectProperty businessObjectProperty,
         bool markAsHandled)
     {
-      ArgumentUtility.CheckNotNull("businessObject", businessObject);
-      ArgumentUtility.CheckNotNull("businessObjectProperty", businessObjectProperty);
+      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
+      ArgumentUtility.CheckNotNull(nameof(businessObjectProperty), businessObjectProperty);
 
       var validationFailures = _validationFailures
           .Where(f => Equals(f.BusinessObjectValidationFailure.ValidatedObject, businessObject))

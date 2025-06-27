@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   {
     public ClassDefinition? GetTypeDefinition (Type domainObjectType)
     {
-      ArgumentUtility.CheckNotNull("domainObjectType", domainObjectType);
+      ArgumentUtility.CheckNotNull(nameof(domainObjectType), domainObjectType);
 
       var mappingConfiguration = MappingConfiguration.Current;
       if (!mappingConfiguration.ContainsTypeDefinition(domainObjectType))

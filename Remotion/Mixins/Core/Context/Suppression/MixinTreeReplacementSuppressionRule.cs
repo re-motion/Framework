@@ -29,8 +29,8 @@ namespace Remotion.Mixins.Context.Suppression
   {
     public MixinTreeReplacementSuppressionRule (Type replacingMixinType, Type mixinBaseTypeToSuppress)
     {
-      ArgumentUtility.CheckNotNull("replacingMixinType", replacingMixinType);
-      ArgumentUtility.CheckNotNull("mixinBaseTypeToSuppress", mixinBaseTypeToSuppress);
+      ArgumentUtility.CheckNotNull(nameof(replacingMixinType), replacingMixinType);
+      ArgumentUtility.CheckNotNull(nameof(mixinBaseTypeToSuppress), mixinBaseTypeToSuppress);
 
       ReplacingMixinType = replacingMixinType;
       MixinBaseTypeToSuppress = mixinBaseTypeToSuppress;
@@ -41,7 +41,7 @@ namespace Remotion.Mixins.Context.Suppression
 
     public void RemoveAffectedMixins (Dictionary<Type, MixinContext> configuredMixinTypes)
     {
-      ArgumentUtility.CheckNotNull("configuredMixinTypes", configuredMixinTypes);
+      ArgumentUtility.CheckNotNull(nameof(configuredMixinTypes), configuredMixinTypes);
 
       foreach (var configuredMixinType in configuredMixinTypes.Keys.ToList()) // need to clone collection, otherwise we can't remove
       {

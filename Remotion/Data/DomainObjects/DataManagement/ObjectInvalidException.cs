@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     public ObjectInvalidException (string message, ObjectID id)
         : base(message)
     {
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNull(nameof(id), id);
 
       _id = id;
     }

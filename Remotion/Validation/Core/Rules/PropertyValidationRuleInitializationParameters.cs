@@ -28,7 +28,7 @@ namespace Remotion.Validation.Rules
 
     public PropertyValidationRuleInitializationParameters ([NotNull] ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
 
       ValidationMessage = validationMessage;
     }

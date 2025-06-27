@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     public LinqToSqlExtension (Guid clientTransactionID, LinqToSqlAppenderProxy appenderProxy)
     {
-      ArgumentUtility.CheckNotNull("appenderProxy", appenderProxy);
+      ArgumentUtility.CheckNotNull(nameof(appenderProxy), appenderProxy);
 
       _clientTransactionID = clientTransactionID;
       _appenderProxy = appenderProxy;
@@ -231,7 +231,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
         IDictionary<string, object?> parameters)
     {
       ArgumentUtility.CheckNotNullOrEmpty("commandText", commandText);
-      ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
 
       _appenderProxy.StatementExecuted(_clientTransactionID, queryID, AppendParametersToCommandText(commandText, parameters));
     }

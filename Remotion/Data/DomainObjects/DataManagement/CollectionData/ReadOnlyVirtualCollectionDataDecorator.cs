@@ -18,7 +18,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public ReadOnlyVirtualCollectionDataDecorator (IVirtualCollectionData collectionData)
     {
-      ArgumentUtility.CheckNotNull("collectionData", collectionData);
+      ArgumentUtility.CheckNotNull(nameof(collectionData), collectionData);
 
       _collectionData = collectionData;
     }

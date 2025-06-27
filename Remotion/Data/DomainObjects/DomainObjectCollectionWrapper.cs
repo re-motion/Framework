@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects
 
     public DomainObjectCollectionWrapper (DomainObjectCollection wrappedCollection)
     {
-      ArgumentUtility.CheckNotNull("wrappedCollection", wrappedCollection);
+      ArgumentUtility.CheckNotNull(nameof(wrappedCollection), wrappedCollection);
 
       var requiredItemType = wrappedCollection.RequiredItemType ?? typeof(DomainObject);
       if (!typeof(T).IsAssignableFrom(requiredItemType))

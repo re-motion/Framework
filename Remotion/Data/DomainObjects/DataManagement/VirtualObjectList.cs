@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public VirtualObjectList (IVirtualCollectionData dataStrategy)
     {
-      ArgumentUtility.CheckNotNull("dataStrategy", dataStrategy);
+      ArgumentUtility.CheckNotNull(nameof(dataStrategy), dataStrategy);
 
       _dataStrategy = dataStrategy;
     }
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     void ICollection.CopyTo (Array array, int index)
     {
-      ArgumentUtility.CheckNotNull("array", array);
+      ArgumentUtility.CheckNotNull(nameof(array), array);
 
       _dataStrategy.ToArray().CopyTo(array, index);
     }

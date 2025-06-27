@@ -44,7 +44,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddMixinType (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
 
       _constructorArguments[1] = Expression.Constant(mixinType);
     }
@@ -61,14 +61,14 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddExplicitDependencies (IEnumerable<Type> explicitDependencies)
     {
-      ArgumentUtility.CheckNotNull("explicitDependencies", explicitDependencies);
+      ArgumentUtility.CheckNotNull(nameof(explicitDependencies), explicitDependencies);
 
       _constructorArguments[3] = Expression.NewArrayInit(typeof(Type), explicitDependencies.Select(d => (Expression)Expression.Constant(d)));
     }
 
     public void AddOrigin (MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull("origin", origin);
+      ArgumentUtility.CheckNotNull(nameof(origin), origin);
       var originSerializer = new CodeGenerationMixinContextOriginSerializer();
       origin.Serialize(originSerializer);
       _constructorArguments[4] = originSerializer.GetConstructorInvocationExpression();

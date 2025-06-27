@@ -37,8 +37,8 @@ namespace Remotion.Validation.Providers
         IInvolvedTypeProvider involvedTypeProvider,
         IEnumerable<IValidationRuleCollectorProvider> validationCollectorProviders)
     {
-      ArgumentUtility.CheckNotNull("involvedTypeProvider", involvedTypeProvider);
-      ArgumentUtility.CheckNotNull("validationCollectorProviders", validationCollectorProviders);
+      ArgumentUtility.CheckNotNull(nameof(involvedTypeProvider), involvedTypeProvider);
+      ArgumentUtility.CheckNotNull(nameof(validationCollectorProviders), validationCollectorProviders);
 
       _involvedTypeProvider = involvedTypeProvider;
       _validationCollectorProviders = validationCollectorProviders.ToList();
@@ -56,7 +56,7 @@ namespace Remotion.Validation.Providers
 
     public IEnumerable<IEnumerable<ValidationRuleCollectorInfo>> GetValidationRuleCollectors (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull("types", types);
+      ArgumentUtility.CheckNotNull(nameof(types), types);
 
       return GetTypeGroups(types)
           .Aggregate(

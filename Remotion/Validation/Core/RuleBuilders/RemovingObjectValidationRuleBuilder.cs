@@ -31,7 +31,7 @@ namespace Remotion.Validation.RuleBuilders
 
     public RemovingObjectValidationRuleBuilder (IRemovingObjectValidationRuleCollector removingObjectValidationRuleCollector)
     {
-      ArgumentUtility.CheckNotNull("removingObjectValidationRuleCollector", removingObjectValidationRuleCollector);
+      ArgumentUtility.CheckNotNull(nameof(removingObjectValidationRuleCollector), removingObjectValidationRuleCollector);
 
       _removingObjectValidationRuleCollector = removingObjectValidationRuleCollector;
     }
@@ -64,7 +64,7 @@ namespace Remotion.Validation.RuleBuilders
         Type? collectorTypeToRemoveFrom,
         Func<IObjectValidator, bool>? validatorPredicate)
     {
-      ArgumentUtility.CheckNotNull("validatorType", validatorType);
+      ArgumentUtility.CheckNotNull(nameof(validatorType), validatorType);
 
       _removingObjectValidationRuleCollector.RegisterValidator(validatorType, collectorTypeToRemoveFrom, validatorPredicate);
       return this;

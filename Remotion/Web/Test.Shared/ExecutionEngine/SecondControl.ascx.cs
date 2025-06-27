@@ -25,9 +25,9 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
   {
     public static void Call (IWxePage page, WxeUserControl userControl, Control sender)
     {
-      ArgumentUtility.CheckNotNull("page", page);
-      ArgumentUtility.CheckNotNull("userControl", userControl);
-      ArgumentUtility.CheckNotNull("sender", sender);
+      ArgumentUtility.CheckNotNull(nameof(page), page);
+      ArgumentUtility.CheckNotNull(nameof(userControl), userControl);
+      ArgumentUtility.CheckNotNull(nameof(sender), sender);
 
       ShowSecondUserControlFormFunction function;
       if ((page.IsReturningPostBack == false))

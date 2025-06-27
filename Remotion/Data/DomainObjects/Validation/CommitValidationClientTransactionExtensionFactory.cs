@@ -33,14 +33,14 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public CommitValidationClientTransactionExtensionFactory (IPersistableDataValidator persistableDataValidator)
     {
-      ArgumentUtility.CheckNotNull("persistableDataValidator", persistableDataValidator);
+      ArgumentUtility.CheckNotNull(nameof(persistableDataValidator), persistableDataValidator);
 
       _persistableDataValidator = persistableDataValidator;
     }
 
     public IEnumerable<IClientTransactionExtension> CreateClientTransactionExtensions (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
 
       if (clientTransaction.RootTransaction == clientTransaction)
         yield return new CommitValidationClientTransactionExtension(_persistableDataValidator);

@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
 
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
       return from IRelationEndPointDefinition endPointDefinition in classDefinition.MyRelationEndPointDefinitions
           select Validate(endPointDefinition);

@@ -26,8 +26,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public RootTransactionExecutionListener (RootTransactionStrategy transactionStrategy, IWxeFunctionExecutionListener innerListener)
     {
-      ArgumentUtility.CheckNotNull("transactionStrategy", transactionStrategy);
-      ArgumentUtility.CheckNotNull("innerListener", innerListener);
+      ArgumentUtility.CheckNotNull(nameof(transactionStrategy), transactionStrategy);
+      ArgumentUtility.CheckNotNull(nameof(innerListener), innerListener);
 
       _transactionStrategy = transactionStrategy;
       _innerListener = innerListener;
@@ -50,25 +50,25 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public void OnExecutionPlay (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
       _transactionStrategy.OnExecutionPlay(context, _innerListener);
     }
 
     public void OnExecutionStop (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
       _transactionStrategy.OnExecutionStop(context, _innerListener);
     }
 
     public void OnExecutionPause (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
       _transactionStrategy.OnExecutionPause(context, _innerListener);
     }
 
     public void OnExecutionFail (WxeContext context, Exception exception)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
       _transactionStrategy.OnExecutionFail(context, _innerListener, exception);
     }
   }

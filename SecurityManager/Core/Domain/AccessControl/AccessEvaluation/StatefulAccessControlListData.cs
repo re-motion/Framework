@@ -30,8 +30,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public StatefulAccessControlListData ([NotNull] IDomainObjectHandle<StatefulAccessControlList> handle, [NotNull] IEnumerable<State> states)
     {
-      ArgumentUtility.CheckNotNull("handle", handle);
-      ArgumentUtility.CheckNotNull("states", states);
+      ArgumentUtility.CheckNotNull(nameof(handle), handle);
+      ArgumentUtility.CheckNotNull(nameof(states), states);
 
       var stateArray = Array.AsReadOnly(states.ToArray());
 

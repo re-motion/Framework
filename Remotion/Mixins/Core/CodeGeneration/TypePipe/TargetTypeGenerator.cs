@@ -78,10 +78,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         IAttributeGenerator attributeGenerator,
         INextCallProxyGenerator nextCallProxyGenerator)
     {
-      ArgumentUtility.CheckNotNull("concreteTarget", concreteTarget);
-      ArgumentUtility.CheckNotNull("expressionBuilder", expressionBuilder);
-      ArgumentUtility.CheckNotNull("attributeGenerator", attributeGenerator);
-      ArgumentUtility.CheckNotNull("nextCallProxyGenerator", nextCallProxyGenerator);
+      ArgumentUtility.CheckNotNull(nameof(concreteTarget), concreteTarget);
+      ArgumentUtility.CheckNotNull(nameof(expressionBuilder), expressionBuilder);
+      ArgumentUtility.CheckNotNull(nameof(attributeGenerator), attributeGenerator);
+      ArgumentUtility.CheckNotNull(nameof(nextCallProxyGenerator), nextCallProxyGenerator);
 
       _concreteTarget = concreteTarget;
       _expressionBuilder = expressionBuilder;
@@ -91,7 +91,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddInterfaces (IEnumerable<Type> interfacesToImplement)
     {
-      ArgumentUtility.CheckNotNull("interfacesToImplement", interfacesToImplement);
+      ArgumentUtility.CheckNotNull(nameof(interfacesToImplement), interfacesToImplement);
 
       foreach (var ifc in interfacesToImplement)
         _concreteTarget.AddInterface(ifc);
@@ -110,8 +110,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_nextCallProxy))]
     public void AddNextCallProxy (TargetClassDefinition targetClassDefinition, IList<IMixinInfo> mixinInfos)
     {
-      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
-      ArgumentUtility.CheckNotNull("mixinInfos", mixinInfos);
+      ArgumentUtility.CheckNotNull(nameof(targetClassDefinition), targetClassDefinition);
+      ArgumentUtility.CheckNotNull(nameof(mixinInfos), mixinInfos);
 
       Assertion.IsNotNull(_extensionsFieldInfo, "AddExtensionsField must be called first.");
 
@@ -137,8 +137,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddTypeInitializations (ClassContext classContext, IEnumerable<Type> mixinTypes)
     {
-      ArgumentUtility.CheckNotNull("classContext", classContext);
-      ArgumentUtility.CheckNotNull("mixinTypes", mixinTypes);
+      ArgumentUtility.CheckNotNull(nameof(classContext), classContext);
+      ArgumentUtility.CheckNotNull(nameof(mixinTypes), mixinTypes);
       Assertion.IsNotNull(_classContextField, "AddFields must be called first.");
       Assertion.IsNotNull(_mixinArrayInitializerField, "AddFields must be called first.");
 
@@ -152,7 +152,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_initializationMethod))]
     public void AddInitializations (List<Type> mixinTypes)
     {
-      ArgumentUtility.CheckNotNull("mixinTypes", mixinTypes);
+      ArgumentUtility.CheckNotNull(nameof(mixinTypes), mixinTypes);
       Assertion.IsNotNull(_extensionsField, "AddExtensionsField must be called first.");
       Assertion.IsNotNull(_extensionsInitializedField, "AddFields must be called first.");
       Assertion.IsNotNull(_firstField, "AddFields must be called first.");
@@ -193,7 +193,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void ImplementIntroducedInterfaces (IEnumerable<InterfaceIntroductionDefinition> introducedInterfaces)
     {
-      ArgumentUtility.CheckNotNull("introducedInterfaces", introducedInterfaces);
+      ArgumentUtility.CheckNotNull(nameof(introducedInterfaces), introducedInterfaces);
       Assertion.IsNotNull(_extensionsField, "AddExtensionsField must be called first.");
       Assertion.IsNotNull(_extensionsInitializedField, "AddFields must be called first.");
       Assertion.IsNotNull(_initializationMethod, "AddInitializations must be called first.");
@@ -213,7 +213,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void ImplementRequiredDuckMethods (TargetClassDefinition targetClassDefinition)
     {
-      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
+      ArgumentUtility.CheckNotNull(nameof(targetClassDefinition), targetClassDefinition);
 
       foreach (var faceRequirement in targetClassDefinition.RequiredTargetCallTypes)
       {
@@ -234,14 +234,14 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void ImplementAttributes (TargetClassDefinition targetClassDefinition)
     {
-      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
+      ArgumentUtility.CheckNotNull(nameof(targetClassDefinition), targetClassDefinition);
 
       ImplementAttributes(_concreteTarget, targetClassDefinition, targetClassDefinition);
     }
 
     public void AddMixedTypeAttribute (TargetClassDefinition targetClassDefinition)
     {
-      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
+      ArgumentUtility.CheckNotNull(nameof(targetClassDefinition), targetClassDefinition);
 
       var classContext = targetClassDefinition.ConfigurationContext;
       var orderedMixinTypes = targetClassDefinition.Mixins.Select(m => m.Type);
@@ -251,7 +251,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddDebuggerDisplayAttribute (TargetClassDefinition targetClassDefinition)
     {
-      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
+      ArgumentUtility.CheckNotNull(nameof(targetClassDefinition), targetClassDefinition);
 
       if (!targetClassDefinition.ReceivedAttributes.ContainsKey(typeof(DebuggerDisplayAttribute))
           && !targetClassDefinition.CustomAttributes.ContainsKey(typeof(DebuggerDisplayAttribute)))
@@ -263,7 +263,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void ImplementOverrides (TargetClassDefinition targetClassDefinition)
     {
-      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
+      ArgumentUtility.CheckNotNull(nameof(targetClassDefinition), targetClassDefinition);
       Assertion.IsNotNull(_extensionsField, "AddExtensionsField must be called first.");
       Assertion.IsNotNull(_firstField, "AddFields must be called first.");
       Assertion.IsNotNull(_nextCallProxy, "AddNextCallProxy must be called first.");
@@ -282,7 +282,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void ImplementOverridingMethods (TargetClassDefinition targetClassDefinition, IList<IMixinInfo> mixinInfos)
     {
-      ArgumentUtility.CheckNotNull("mixinInfos", mixinInfos);
+      ArgumentUtility.CheckNotNull(nameof(mixinInfos), mixinInfos);
 
       var overriders = targetClassDefinition.GetAllMethods().Where(methodDefinition => methodDefinition.Base != null);
       foreach (var overrider in overriders)

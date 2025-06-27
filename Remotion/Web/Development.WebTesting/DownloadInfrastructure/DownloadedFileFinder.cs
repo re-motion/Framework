@@ -85,8 +85,8 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     {
       ArgumentUtility.CheckNotNullOrEmpty("downloadDirectory", downloadDirectory);
       ArgumentUtility.CheckNotNullOrEmpty("partialFileExtension", partialFileExtension);
-      ArgumentUtility.CheckNotNull("downloadFileFinderStrategy", downloadFileFinderStrategy);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentUtility.CheckNotNull(nameof(downloadFileFinderStrategy), downloadFileFinderStrategy);
+      ArgumentUtility.CheckNotNull(nameof(logger), logger);
 
       _downloadDirectory = downloadDirectory;
       _partialFileExtension = partialFileExtension;
@@ -100,7 +100,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
         TimeSpan downloadUpdatedTimeout,
         [JetBrains.Annotations.NotNull] IReadOnlyCollection<string> filesInDownloadDirectoryBeforeDownload)
     {
-      ArgumentUtility.CheckNotNull("filesInDownloadDirectoryBeforeDownload", filesInDownloadDirectoryBeforeDownload);
+      ArgumentUtility.CheckNotNull(nameof(filesInDownloadDirectoryBeforeDownload), filesInDownloadDirectoryBeforeDownload);
 
       if (downloadUpdatedTimeout < s_minimalDownloadTimeout)
         throw new ArgumentException(string.Format("DownloadTimeout must not be less than '{0}'.", s_minimalDownloadTimeout));

@@ -141,7 +141,7 @@ public class FormGridLabel: Label, ISmartControl
 
   protected virtual void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+    ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
 
     string? key = ResourceManagerUtility.GetGlobalResourceKey(Text.GetValue());
     if (!string.IsNullOrEmpty(key))

@@ -59,10 +59,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         ITargetTypeModifier targetTypeModifier,
         IConcreteTypeMetadataImporter concreteTypeMetadataImporter)
     {
-      ArgumentUtility.CheckNotNull("configurationProvider", configurationProvider);
-      ArgumentUtility.CheckNotNull("mixinTypeProvider", mixinTypeProvider);
-      ArgumentUtility.CheckNotNull("targetTypeModifier", targetTypeModifier);
-      ArgumentUtility.CheckNotNull("concreteTypeMetadataImporter", concreteTypeMetadataImporter);
+      ArgumentUtility.CheckNotNull(nameof(configurationProvider), configurationProvider);
+      ArgumentUtility.CheckNotNull(nameof(mixinTypeProvider), mixinTypeProvider);
+      ArgumentUtility.CheckNotNull(nameof(targetTypeModifier), targetTypeModifier);
+      ArgumentUtility.CheckNotNull(nameof(concreteTypeMetadataImporter), concreteTypeMetadataImporter);
 
       _configurationProvider = configurationProvider;
       _mixinTypeProvider = mixinTypeProvider;
@@ -77,7 +77,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void Participate (object id, IProxyTypeAssemblyContext proxyTypeAssemblyContext)
     {
-      ArgumentUtility.CheckNotNull("proxyTypeAssemblyContext", proxyTypeAssemblyContext);
+      ArgumentUtility.CheckNotNull(nameof(proxyTypeAssemblyContext), proxyTypeAssemblyContext);
 
       var targetClassDefinition = _configurationProvider.GetTargetClassDefinition((ClassContext)id);
       if (targetClassDefinition == null)
@@ -92,7 +92,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public object? GetAdditionalTypeID (Type additionalType)
     {
-      ArgumentUtility.CheckNotNull("additionalType", additionalType);
+      ArgumentUtility.CheckNotNull(nameof(additionalType), additionalType);
 
       var conreteMixinType = _concreteTypeMetadataImporter.GetMetadataForMixinType(additionalType);
       if (conreteMixinType == null)
@@ -102,8 +102,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public Type? GetOrCreateAdditionalType (object additionalTypeID, IAdditionalTypeAssemblyContext additionalTypeAssemblyContext)
     {
-      ArgumentUtility.CheckNotNull("additionalTypeID", additionalTypeID);
-      ArgumentUtility.CheckNotNull("additionalTypeAssemblyContext", additionalTypeAssemblyContext);
+      ArgumentUtility.CheckNotNull(nameof(additionalTypeID), additionalTypeID);
+      ArgumentUtility.CheckNotNull(nameof(additionalTypeAssemblyContext), additionalTypeAssemblyContext);
 
       var concreteMixinTypeIdentifier = additionalTypeID as ConcreteMixinTypeIdentifier;
       if (concreteMixinTypeIdentifier == null)
@@ -114,7 +114,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void HandleNonSubclassableType (Type nonSubclassableRequestedType)
     {
-      ArgumentUtility.CheckNotNull("nonSubclassableRequestedType", nonSubclassableRequestedType);
+      ArgumentUtility.CheckNotNull(nameof(nonSubclassableRequestedType), nonSubclassableRequestedType);
 
       var targetClassDefinition = _configurationProvider.GetTargetClassDefinition(nonSubclassableRequestedType);
       Assertion.IsNull(

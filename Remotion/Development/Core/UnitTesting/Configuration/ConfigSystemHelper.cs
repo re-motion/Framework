@@ -65,7 +65,7 @@ namespace Remotion.Development.UnitTesting.Configuration
     public void SetUpAppSetting (string name, string key)
     {
       ArgumentUtility.CheckNotNullOrEmpty("key", key);
-      ArgumentUtility.CheckNotNull("name", name);
+      ArgumentUtility.CheckNotNull(nameof(name), name);
 
       _appSettings.Add(name, key);
     }

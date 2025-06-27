@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     /// </summary>
     public static IList AddRange (IList? list, IList objects, IBusinessObjectReferenceProperty? property, bool mustCreateCopy, bool createIfNull)
     {
-      ArgumentUtility.CheckNotNull("objects", objects);
+      ArgumentUtility.CheckNotNull(nameof(objects), objects);
 
       CreateListMethod? createListMethod = GetCreateListMethod(property);
       if (list == null)
@@ -72,7 +72,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     /// </summary>
     public static IList? Remove (IList list, IList objects, IBusinessObjectReferenceProperty? property, bool mustCreateCopy)
     {
-      ArgumentUtility.CheckNotNull("objects", objects);
+      ArgumentUtility.CheckNotNull(nameof(objects), objects);
 
       if (list == null)
         return null;
@@ -101,8 +101,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     public static IEnumerable<BocListRow> IndicesOf (IEnumerable<IBusinessObject> list, IEnumerable<IBusinessObject> values)
     {
-      ArgumentUtility.CheckNotNull("list", list);
-      ArgumentUtility.CheckNotNull("values", values);
+      ArgumentUtility.CheckNotNull(nameof(list), list);
+      ArgumentUtility.CheckNotNull(nameof(values), values);
 
       var indicesMap = new Dictionary<IBusinessObject, BocListRow>();
       var listEnumerator = list.Select((o, i) => new BocListRow(i, o)).GetEnumerator();

@@ -47,7 +47,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected override Badge? GetBadge (IBusinessObjectWithIdentity businessObject)
     {
-      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
 
       var classDefinition = businessObject as SecurableClassDefinition;
       if (classDefinition == null)

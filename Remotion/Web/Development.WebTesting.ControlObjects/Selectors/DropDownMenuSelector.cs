@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public DropDownMenuControlObject SelectPerTextContent (ControlSelectionContext context, string textContent)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
       ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
 
       var scope = FindScopePerTextContent(context, textContent);
@@ -47,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public DropDownMenuControlObject? SelectOptionalPerTextContent (ControlSelectionContext context, string textContent)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
       ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
 
       var scope = FindScopePerTextContent(context, textContent);
@@ -61,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerTextContent (ControlSelectionContext context, string textContent)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
       ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
 
       var scope = FindScopePerTextContent(context, textContent);
@@ -74,8 +74,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull(nameof(controlSelectionContext), controlSelectionContext);
+      ArgumentUtility.CheckNotNull(nameof(newControlObjectContext), newControlObjectContext);
 
       return new DropDownMenuControlObject(newControlObjectContext);
     }

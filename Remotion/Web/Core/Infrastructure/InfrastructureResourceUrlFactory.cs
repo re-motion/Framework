@@ -31,14 +31,14 @@ namespace Remotion.Web.Infrastructure
 
     public InfrastructureResourceUrlFactory (IResourceUrlFactory resourceUrlFactory)
     {
-      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
+      ArgumentUtility.CheckNotNull(nameof(resourceUrlFactory), resourceUrlFactory);
 
       _resourceUrlFactory = resourceUrlFactory;
     }
 
     public IResourceUrl CreateThemedResourceUrl (ResourceType resourceType, string relativeUrl)
     {
-      ArgumentUtility.CheckNotNull("resourceType", resourceType);
+      ArgumentUtility.CheckNotNull(nameof(resourceType), resourceType);
       ArgumentUtility.CheckNotNullOrEmpty("relativeUrl", relativeUrl);
 
       return _resourceUrlFactory.CreateThemedResourceUrl(typeof(InfrastructureResourceUrlFactory), resourceType, relativeUrl);

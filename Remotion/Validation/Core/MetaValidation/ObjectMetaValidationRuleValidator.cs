@@ -32,14 +32,14 @@ namespace Remotion.Validation.MetaValidation
 
     public ObjectMetaValidationRuleValidator (IObjectMetaValidationRuleCollector[] objectMetaValidationRuleCollectors)
     {
-      ArgumentUtility.CheckNotNull("objectMetaValidationRuleCollectors", objectMetaValidationRuleCollectors);
+      ArgumentUtility.CheckNotNull(nameof(objectMetaValidationRuleCollectors), objectMetaValidationRuleCollectors);
 
       _addedObjectMetaValidationRuleCollectors = objectMetaValidationRuleCollectors;
     }
 
     public IEnumerable<MetaValidationRuleValidationResult> Validate (IAddingObjectValidationRuleCollector[] addingObjectValidationRulesCollectors)
     {
-      ArgumentUtility.CheckNotNull("addingObjectValidationRulesCollectors", addingObjectValidationRulesCollectors);
+      ArgumentUtility.CheckNotNull(nameof(addingObjectValidationRulesCollectors), addingObjectValidationRulesCollectors);
 
       var objectValidatorsByValidatedType = addingObjectValidationRulesCollectors.ToLookup(c => c.ValidatedType, c => c.Validators);
 

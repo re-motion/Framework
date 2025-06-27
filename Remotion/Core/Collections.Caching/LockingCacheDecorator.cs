@@ -44,7 +44,7 @@ namespace Remotion.Collections.Caching
 
     public LockingCacheDecorator (ICache<TKey, TValue> innerCache)
     {
-      ArgumentUtility.CheckNotNull("innerCache", innerCache);
+      ArgumentUtility.CheckNotNull(nameof(innerCache), innerCache);
 
       _innerCache = innerCache;
     }

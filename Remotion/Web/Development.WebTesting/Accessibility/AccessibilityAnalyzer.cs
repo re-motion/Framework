@@ -48,12 +48,12 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] IAccessibilityResultMapper mapper,
         [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("webDriver", webDriver);
-      ArgumentUtility.CheckNotNull("axeResultParser", axeResultParser);
-      ArgumentUtility.CheckNotNull("configuration", configuration);
-      ArgumentUtility.CheckNotNull("sourceProvider", sourceProvider);
-      ArgumentUtility.CheckNotNull("mapper", mapper);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentUtility.CheckNotNull(nameof(webDriver), webDriver);
+      ArgumentUtility.CheckNotNull(nameof(axeResultParser), axeResultParser);
+      ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
+      ArgumentUtility.CheckNotNull(nameof(sourceProvider), sourceProvider);
+      ArgumentUtility.CheckNotNull(nameof(mapper), mapper);
+      ArgumentUtility.CheckNotNull(nameof(logger), logger);
 
       return new AccessibilityAnalyzer(webDriver, (IJavaScriptExecutor)webDriver, axeResultParser, configuration, sourceProvider, mapper, logger);
     }
@@ -74,12 +74,12 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] IAccessibilityResultMapper mapper,
         [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("remoteWebDriver", remoteWebDriver);
-      ArgumentUtility.CheckNotNull("axeResultParser", axeResultParser);
-      ArgumentUtility.CheckNotNull("configuration", configuration);
-      ArgumentUtility.CheckNotNull("sourceProvider", sourceProvider);
-      ArgumentUtility.CheckNotNull("mapper", mapper);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentUtility.CheckNotNull(nameof(remoteWebDriver), remoteWebDriver);
+      ArgumentUtility.CheckNotNull(nameof(axeResultParser), axeResultParser);
+      ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
+      ArgumentUtility.CheckNotNull(nameof(sourceProvider), sourceProvider);
+      ArgumentUtility.CheckNotNull(nameof(mapper), mapper);
+      ArgumentUtility.CheckNotNull(nameof(logger), logger);
 
       return new AccessibilityAnalyzer(remoteWebDriver, remoteWebDriver, axeResultParser, configuration, sourceProvider, mapper, logger);
     }
@@ -113,12 +113,12 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] IAccessibilityResultMapper mapper,
         [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("webDriver", webDriver);
-      ArgumentUtility.CheckNotNull("axeResultParser", axeResultParser);
-      ArgumentUtility.CheckNotNull("configuration", configuration);
-      ArgumentUtility.CheckNotNull("axeSourceProvider", axeSourceProvider);
-      ArgumentUtility.CheckNotNull("mapper", mapper);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentUtility.CheckNotNull(nameof(webDriver), webDriver);
+      ArgumentUtility.CheckNotNull(nameof(axeResultParser), axeResultParser);
+      ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
+      ArgumentUtility.CheckNotNull(nameof(axeSourceProvider), axeSourceProvider);
+      ArgumentUtility.CheckNotNull(nameof(mapper), mapper);
+      ArgumentUtility.CheckNotNull(nameof(logger), logger);
 
       WebDriver = webDriver;
       JsExecutor = jsExecutor;
@@ -137,7 +137,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <param name="element"><see cref="ControlObject"/> to ignore.</param>
     public void IgnoreControlObject ([NotNull] ControlObject element)
     {
-      ArgumentUtility.CheckNotNull("element", element);
+      ArgumentUtility.CheckNotNull(nameof(element), element);
 
       IgnoreCssSelector($"#{element.GetHtmlID()}");
     }
@@ -174,7 +174,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     [NotNull]
     public AccessibilityResult Analyze ([NotNull] ControlObject controlObject, [CanBeNull] TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNull("controlObject", controlObject);
+      ArgumentUtility.CheckNotNull(nameof(controlObject), controlObject);
 
       return Analyze($"#{controlObject.GetHtmlID()}", timeout);
     }

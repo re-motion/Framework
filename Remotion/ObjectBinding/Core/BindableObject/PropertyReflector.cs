@@ -89,13 +89,13 @@ namespace Remotion.ObjectBinding.BindableObject
         BindableObjectGlobalizationService bindableObjectGlobalizationService,
         IBusinessObjectPropertyConstraintProvider businessObjectPropertyConstraintProvider)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
-      ArgumentUtility.CheckNotNull("defaultValueStrategy", defaultValueStrategy);
-      ArgumentUtility.CheckNotNull("bindablePropertyReadAccessStrategy", bindablePropertyReadAccessStrategy);
-      ArgumentUtility.CheckNotNull("bindablePropertyWriteAccessStrategy", bindablePropertyWriteAccessStrategy);
-      ArgumentUtility.CheckNotNull("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
-      ArgumentUtility.CheckNotNull("businessObjectPropertyConstraintProvider", businessObjectPropertyConstraintProvider);
+      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
+      ArgumentUtility.CheckNotNull(nameof(businessObjectProvider), businessObjectProvider);
+      ArgumentUtility.CheckNotNull(nameof(defaultValueStrategy), defaultValueStrategy);
+      ArgumentUtility.CheckNotNull(nameof(bindablePropertyReadAccessStrategy), bindablePropertyReadAccessStrategy);
+      ArgumentUtility.CheckNotNull(nameof(bindablePropertyWriteAccessStrategy), bindablePropertyWriteAccessStrategy);
+      ArgumentUtility.CheckNotNull(nameof(bindableObjectGlobalizationService), bindableObjectGlobalizationService);
+      ArgumentUtility.CheckNotNull(nameof(businessObjectPropertyConstraintProvider), businessObjectPropertyConstraintProvider);
 
       _propertyInfo = propertyInfo;
       _businessObjectProvider = businessObjectProvider;
@@ -166,14 +166,14 @@ namespace Remotion.ObjectBinding.BindableObject
 
     protected virtual PropertyBase GetMetadata (PropertyBase.Parameters parameters)
     {
-      ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
 
       return new NotSupportedProperty(parameters);
     }
 
     private Lazy<Type> GetConcreteType (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       return new Lazy<Type>(() => BindableObjectProvider.GetConcreteTypeForBindableObjectImplementation(type));
     }

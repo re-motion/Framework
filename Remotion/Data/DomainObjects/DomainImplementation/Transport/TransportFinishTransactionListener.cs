@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     public TransportFinishTransactionListener (Func<DomainObject, bool> filter)
     {
-      ArgumentUtility.CheckNotNull("filter", filter);
+      ArgumentUtility.CheckNotNull(nameof(filter), filter);
 
       _filter = filter;
     }

@@ -28,41 +28,41 @@ namespace Remotion.Mixins.Definitions.Building
 
     public MixinDependencyDefinitionBuilder (MixinDefinition mixin)
     {
-      ArgumentUtility.CheckNotNull("mixin", mixin);
+      ArgumentUtility.CheckNotNull(nameof(mixin), mixin);
       _mixin = mixin;
     }
 
     protected override RequirementDefinitionBase GetRequirement (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       return _mixin.TargetClass.RequiredMixinTypes[type];
     }
 
     protected override RequirementDefinitionBase CreateRequirement (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       return new RequiredMixinTypeDefinition(_mixin.TargetClass, type);
     }
 
     protected override void AddRequirement (RequirementDefinitionBase requirement)
     {
-      ArgumentUtility.CheckNotNull("requirement", requirement);
+      ArgumentUtility.CheckNotNull(nameof(requirement), requirement);
 
       _mixin.TargetClass.RequiredMixinTypes.Add((RequiredMixinTypeDefinition)requirement);
     }
 
     protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase? aggregator)
     {
-      ArgumentUtility.CheckNotNull("requirement", requirement);
+      ArgumentUtility.CheckNotNull(nameof(requirement), requirement);
 
       return new MixinDependencyDefinition((RequiredMixinTypeDefinition)requirement, _mixin, (MixinDependencyDefinition?)aggregator);
     }
 
     protected override void AddDependency (DependencyDefinitionBase dependency)
     {
-      ArgumentUtility.CheckNotNull("dependency", dependency);
+      ArgumentUtility.CheckNotNull(nameof(dependency), dependency);
 
       if (!_mixin.MixinDependencies.ContainsKey(dependency.RequiredType.Type))
         _mixin.MixinDependencies.Add((MixinDependencyDefinition)dependency);

@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.BindableObject
   {
     public static BindableObjectBaseImplementation Create (BindableObjectBase wrapper)
     {
-      ArgumentUtility.CheckNotNull("wrapper", wrapper);
+      ArgumentUtility.CheckNotNull(nameof(wrapper), wrapper);
       Assertion.DebugAssert(!TypeExtensions.CanAscribeTo(typeof(BindableObjectBaseImplementation), typeof(Mixin<,>)),
           "we assume the mixin does not have a base object");
       var impl = new BindableObjectBaseImplementation(wrapper);
@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     protected BindableObjectBaseImplementation (BindableObjectBase wrapper)
     {
-      ArgumentUtility.CheckNotNull("wrapper", wrapper);
+      ArgumentUtility.CheckNotNull(nameof(wrapper), wrapper);
       _wrapper = wrapper;
     }
   }

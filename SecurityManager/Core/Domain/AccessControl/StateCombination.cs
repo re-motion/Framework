@@ -66,7 +66,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public void AttachState (StateDefinition state)
     {
-      ArgumentUtility.CheckNotNull("state", state);
+      ArgumentUtility.CheckNotNull(nameof(state), state);
       StateUsage stateUsage = StateUsage.NewObject(state);
       StateUsages.Add(stateUsage);
     }

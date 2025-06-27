@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     protected override IBusinessObjectBoundEditableWebControl? CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull(nameof(propertyPath), propertyPath);
 
       if (propertyPath.Identifier == "SubstitutedRole")
         return CreateControlForSubstitutedRole(propertyPath);
@@ -50,14 +50,14 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     protected virtual BocReferenceValue CreateBocReferenceValue (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull(nameof(propertyPath), propertyPath);
 
       return new BocReferenceValue();
     }
 
     private IBusinessObjectBoundEditableWebControl CreateControlForSubstitutedRole (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull(nameof(propertyPath), propertyPath);
 
       var control = CreateBocReferenceValue(propertyPath);
       control.PreRender += HandleSubstitutedRolePreRender;

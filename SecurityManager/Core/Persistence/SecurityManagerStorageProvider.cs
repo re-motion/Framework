@@ -52,7 +52,7 @@ namespace Remotion.SecurityManager.Persistence
 
     public override void Save (IReadOnlyCollection<DataContainer> dataContainers)
     {
-      ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
+      ArgumentUtility.CheckNotNull(nameof(dataContainers), dataContainers);
 
       var dataContainersList = dataContainers;
       base.Save(dataContainersList);

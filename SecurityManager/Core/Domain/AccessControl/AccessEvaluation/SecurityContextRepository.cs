@@ -40,8 +40,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public SecurityContextRepository (IDomainRevisionProvider revisionProvider, IUserNamesRevisionProvider userRevisionProvider)
     {
-      ArgumentUtility.CheckNotNull("revisionProvider", revisionProvider);
-      ArgumentUtility.CheckNotNull("userRevisionProvider", userRevisionProvider);
+      ArgumentUtility.CheckNotNull(nameof(revisionProvider), revisionProvider);
+      ArgumentUtility.CheckNotNull(nameof(userRevisionProvider), userRevisionProvider);
 
       _cache = new SecurityContextRevisionBasedCache(revisionProvider);
       _userNamesCache = new SecurityContextUserNamesRevisionBasedCache(userRevisionProvider);
@@ -113,7 +113,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public IDomainObjectHandle<AbstractRoleDefinition> GetAbstractRole (EnumWrapper name)
     {
-      ArgumentUtility.CheckNotNull("name", name);
+      ArgumentUtility.CheckNotNull(nameof(name), name);
 
       var cachedData = _cache.GetData();
       var abstractRole = cachedData.AbstractRoles.GetValueOrDefault(name);
@@ -145,7 +145,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public IReadOnlyCollection<string> GetStatePropertyValues (IDomainObjectHandle<StatePropertyDefinition> stateProperty)
     {
-      ArgumentUtility.CheckNotNull("stateProperty", stateProperty);
+      ArgumentUtility.CheckNotNull(nameof(stateProperty), stateProperty);
 
       var cachedData = _cache.GetData();
       var values = cachedData.StatePropertyValues.GetValueOrDefault(stateProperty);

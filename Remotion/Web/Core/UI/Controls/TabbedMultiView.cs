@@ -229,7 +229,7 @@ namespace Remotion.Web.UI.Controls
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
 
       var renderer = CreateRenderer();
       renderer.RegisterHtmlHeadContents(htmlHeadAppender, this);
@@ -242,7 +242,7 @@ namespace Remotion.Web.UI.Controls
 
     protected virtual TabbedMultiViewRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       return new TabbedMultiViewRenderingContext(Page!.Context!, writer, this); // TODO RM-8118: not null assertion
     }
@@ -318,7 +318,7 @@ namespace Remotion.Web.UI.Controls
 
     public void SetActiveView (TabView view)
     {
-      ArgumentUtility.CheckNotNull("view", view);
+      ArgumentUtility.CheckNotNull(nameof(view), view);
       MultiViewInternal.SetActiveView(view);
       TabView activeView = GetActiveView()!; // TODO RM-8118: not null assertion
       WebTab nextActiveTab = _tabStrip.Tabs.Find(activeView.ID + c_itemIDSuffix)!; // TODO RM-8118: not null assertion
@@ -363,7 +363,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       EnsureChildControls();
 

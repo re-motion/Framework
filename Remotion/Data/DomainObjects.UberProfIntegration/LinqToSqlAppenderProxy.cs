@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     private LinqToSqlAppenderProxy (string name, Type linqToSqlProfilerType, Type linqToSqlAppenderType)
     {
-      ArgumentUtility.CheckNotNull("name", name);
+      ArgumentUtility.CheckNotNull(nameof(name), name);
 
       var initialize = LateBoundDelegateFactory.CreateDelegate<Action>(linqToSqlProfilerType, "Initialize");
       initialize();

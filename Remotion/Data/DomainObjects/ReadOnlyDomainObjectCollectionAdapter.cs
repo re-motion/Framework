@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects
 
     public ReadOnlyDomainObjectCollectionAdapter (DomainObjectCollection wrappedData)
     {
-      ArgumentUtility.CheckNotNull("wrappedData", wrappedData);
+      ArgumentUtility.CheckNotNull(nameof(wrappedData), wrappedData);
       _wrappedData = wrappedData;
     }
 
@@ -69,13 +69,13 @@ namespace Remotion.Data.DomainObjects
 
     public bool Contains (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
       return _wrappedData.Contains(objectID);
     }
 
     public bool ContainsObject (T domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
       return _wrappedData.ContainsObject(domainObject);
     }
 
@@ -88,20 +88,20 @@ namespace Remotion.Data.DomainObjects
     {
       get
       {
-        ArgumentUtility.CheckNotNull("objectID", objectID);
+        ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
         return GetObject(objectID);
       }
     }
 
     public T? GetObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
       return (T?)_wrappedData[objectID];
     }
 
     public int IndexOf (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
       return _wrappedData.IndexOf(objectID);
     }
 
@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects
 
     public int IndexOf (T item)
     {
-      ArgumentUtility.CheckNotNull("item", item);
+      ArgumentUtility.CheckNotNull(nameof(item), item);
       return _wrappedData.IndexOf(item);
     }
 

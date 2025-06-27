@@ -25,7 +25,7 @@ namespace Remotion.Development.UnitTesting.Resources
   {
     public static Stream GetResourceStream (Assembly assembly, string resourceID)
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
       ArgumentUtility.CheckNotNullOrEmpty("resourceID", resourceID);
 
       var resourceStream = assembly.GetManifestResourceStream(resourceID);
@@ -48,7 +48,7 @@ namespace Remotion.Development.UnitTesting.Resources
 
     public static byte[] GetResource (Assembly assembly, string resourceID)
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
       ArgumentUtility.CheckNotNullOrEmpty("resourceID", resourceID);
 
       using (var resourceStream = GetResourceStream(assembly, resourceID))
@@ -59,7 +59,7 @@ namespace Remotion.Development.UnitTesting.Resources
 
     public static byte[] GetResource (Type namespaceProvider, string shortResourceName)
     {
-      ArgumentUtility.CheckNotNull("namespaceProvider", namespaceProvider);
+      ArgumentUtility.CheckNotNull(nameof(namespaceProvider), namespaceProvider);
       ArgumentUtility.CheckNotNullOrEmpty("shortResourceName", shortResourceName);
 
 
@@ -71,7 +71,7 @@ namespace Remotion.Development.UnitTesting.Resources
 
     public static string GetResourceString (Assembly assembly, string resourceID)
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
       ArgumentUtility.CheckNotNullOrEmpty("resourceID", resourceID);
 
       using (var resourceStream = GetResourceStream(assembly, resourceID))
@@ -85,7 +85,7 @@ namespace Remotion.Development.UnitTesting.Resources
 
     public static string GetResourceString (Type namespaceProvider, string shortResourceName)
     {
-      ArgumentUtility.CheckNotNull("namespaceProvider", namespaceProvider);
+      ArgumentUtility.CheckNotNull(nameof(namespaceProvider), namespaceProvider);
       ArgumentUtility.CheckNotNullOrEmpty("shortResourceName", shortResourceName);
 
       using (var resourceStream = GetResourceStream(namespaceProvider, shortResourceName))

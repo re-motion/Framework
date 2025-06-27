@@ -64,7 +64,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
     public int ExecuteBatchFile (string sqlFileName, bool useTransaction, IDictionary<string, string> replacementDictionary)
     {
       ArgumentUtility.CheckNotNullOrEmpty("sqlFileName", sqlFileName);
-      ArgumentUtility.CheckNotNull("replacementDictionary", replacementDictionary);
+      ArgumentUtility.CheckNotNull(nameof(replacementDictionary), replacementDictionary);
 
       _fileName = sqlFileName;
       if (!Path.IsPathRooted(sqlFileName))
@@ -86,8 +86,8 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
 
     public int ExecuteBatchString (string commandBatch, bool useTransaction, IDictionary<string, string> replacementDictionary)
     {
-      ArgumentUtility.CheckNotNull("commandBatch", commandBatch);
-      ArgumentUtility.CheckNotNull("replacementDictionary", replacementDictionary);
+      ArgumentUtility.CheckNotNull(nameof(commandBatch), commandBatch);
+      ArgumentUtility.CheckNotNull(nameof(replacementDictionary), replacementDictionary);
 
       foreach (var replacement in replacementDictionary)
         commandBatch = commandBatch.Replace(replacement.Key, replacement.Value);
@@ -157,7 +157,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
 
     protected virtual int ExecuteBatchString (IDbConnection connection, string commandBatch, IDbTransaction? transaction)
     {
-      ArgumentUtility.CheckNotNull("connection", connection);
+      ArgumentUtility.CheckNotNull(nameof(connection), connection);
       ArgumentUtility.CheckNotNullOrEmpty("commandBatch", commandBatch);
 
       var count = 0;

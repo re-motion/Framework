@@ -71,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
         PlainTextString defaultFalseDescription,
         PlainTextString defaultNullDescription)
     {
-      ArgumentUtility.CheckNotNull("resourceKey", resourceKey);
+      ArgumentUtility.CheckNotNull(nameof(resourceKey), resourceKey);
       ArgumentUtility.CheckNotNullOrEmpty("trueIconUrl", trueIconUrl);
       ArgumentUtility.CheckNotNullOrEmpty("falseIconUrl", falseIconUrl);
       ArgumentUtility.CheckNotNullOrEmpty("nullIconUrl", nullIconUrl);

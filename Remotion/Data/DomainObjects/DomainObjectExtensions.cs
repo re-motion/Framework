@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects
     [JetBrains.Annotations.NotNull]
     public static IDomainObjectHandle<T> GetHandle<T> ([JetBrains.Annotations.NotNull] this T domainObject) where T : IDomainObject
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       var objectID = domainObject.ID;
       Assertion.DebugIsNotNull(objectID, "domainObject.ID must not be null.");

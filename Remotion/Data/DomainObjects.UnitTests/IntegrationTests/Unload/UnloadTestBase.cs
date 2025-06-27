@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
   {
     protected void CheckDataContainerExists (DomainObject domainObject, bool dataContainerShouldExist)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       var dataContainer = DataManagementService.GetDataManager(ClientTransaction.Current).DataContainers[domainObject.ID];
       if (dataContainerShouldExist)
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
     protected void CheckEndPointExists (DomainObject owningObject, string shortPropertyName, bool endPointShouldExist)
     {
-      ArgumentUtility.CheckNotNull("owningObject", owningObject);
+      ArgumentUtility.CheckNotNull(nameof(owningObject), owningObject);
       ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
 
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(owningObject.ID, shortPropertyName);
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
     protected void CheckEndPointExists (RelationEndPointID endPointID, bool shouldEndPointExist)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
 
       var endPoint = DataManagementService.GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(endPointID);
       if (shouldEndPointExist)
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
     protected void CheckVirtualEndPointExistsAndComplete (DomainObject owningObject, string shortPropertyName, bool shouldEndPointExist, bool shouldDataBeComplete)
     {
-      ArgumentUtility.CheckNotNull("owningObject", owningObject);
+      ArgumentUtility.CheckNotNull(nameof(owningObject), owningObject);
       ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
 
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(owningObject.ID, shortPropertyName);
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
     protected void CheckVirtualEndPointExistsAndComplete (RelationEndPointID endPointID, bool shouldEndPointExist, bool shouldDataBeComplete)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
       CheckEndPointExists(endPointID, shouldEndPointExist);
 
       if (shouldEndPointExist)
@@ -93,8 +93,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
     protected void AssertObjectWasLoaded (Mock<IClientTransactionListener> listenerMock, DomainObject loadedObject)
     {
-      ArgumentUtility.CheckNotNull("listenerMock", listenerMock);
-      ArgumentUtility.CheckNotNull("loadedObject", loadedObject);
+      ArgumentUtility.CheckNotNull(nameof(listenerMock), listenerMock);
+      ArgumentUtility.CheckNotNull(nameof(loadedObject), loadedObject);
 
       listenerMock.Verify(
           mock => mock.ObjectsLoaded(ClientTransaction.Current, new[] { loadedObject }),
@@ -103,8 +103,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
     protected void AssertObjectWasLoadedAmongOthers (Mock<IClientTransactionListener> listenerMock, DomainObject loadedObject)
     {
-      ArgumentUtility.CheckNotNull("listenerMock", listenerMock);
-      ArgumentUtility.CheckNotNull("loadedObject", loadedObject);
+      ArgumentUtility.CheckNotNull(nameof(listenerMock), listenerMock);
+      ArgumentUtility.CheckNotNull(nameof(loadedObject), loadedObject);
 
       listenerMock.Verify(
           mock => mock.ObjectsLoaded(ClientTransaction.Current, It.Is<ReadOnlyCollection<DomainObject>>(_ => _.Contains(loadedObject))),

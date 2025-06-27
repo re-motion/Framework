@@ -34,9 +34,9 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public TypedMethodInvocationExpression (TypeReference callTarget, MethodInfo method, params Expression[] arguments)
     {
-      ArgumentUtility.CheckNotNull("callTarget", callTarget);
-      ArgumentUtility.CheckNotNull("method", method);
-      ArgumentUtility.CheckNotNull("arguments", arguments);
+      ArgumentUtility.CheckNotNull(nameof(callTarget), callTarget);
+      ArgumentUtility.CheckNotNull(nameof(method), method);
+      ArgumentUtility.CheckNotNull(nameof(arguments), arguments);
 
       _callTarget = callTarget;
       _method = method;

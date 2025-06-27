@@ -103,8 +103,8 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public TracingDbCommand (IDbCommand command, IPersistenceExtension persistenceExtension, Guid connectionID)
     {
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull(nameof(command), command);
+      ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
 
       _command = command;
       _persistenceExtension = persistenceExtension;

@@ -34,29 +34,29 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     public IndexBasedRowIDProvider (IEnumerable<IBusinessObject> businessObjects)
     {
-      ArgumentUtility.CheckNotNull("businessObjects", businessObjects);
+      ArgumentUtility.CheckNotNull(nameof(businessObjects), businessObjects);
 
       _rowIDs = businessObjects.Select(obj => GetNextID()).ToList();
     }
 
     public string GetControlRowID (BocListRow row)
     {
-      ArgumentUtility.CheckNotNull("row", row);
+      ArgumentUtility.CheckNotNull(nameof(row), row);
 
       return GetRowID(row);
     }
 
     public string GetItemRowID (BocListRow row)
     {
-      ArgumentUtility.CheckNotNull("row", row);
+      ArgumentUtility.CheckNotNull(nameof(row), row);
 
       return GetRowID(row);
     }
 
     public BocListRow? GetRowFromItemRowID (IReadOnlyList<IBusinessObject> values, string rowID)
     {
-      ArgumentUtility.CheckNotNull("values", values);
-      ArgumentUtility.CheckNotNull("rowID", rowID);
+      ArgumentUtility.CheckNotNull(nameof(values), values);
+      ArgumentUtility.CheckNotNull(nameof(rowID), rowID);
 
       var rowIndex = ParseRowID(rowID);
 
@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     public void AddRow (BocListRow row)
     {
-      ArgumentUtility.CheckNotNull("row", row);
+      ArgumentUtility.CheckNotNull(nameof(row), row);
       if (row.Index > _rowIDs.Count)
       {
         throw new InvalidOperationException(
@@ -84,7 +84,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     public void RemoveRow (BocListRow row)
     {
-      ArgumentUtility.CheckNotNull("row", row);
+      ArgumentUtility.CheckNotNull(nameof(row), row);
       if (row.Index > _rowIDs.Count)
       {
         throw new InvalidOperationException(

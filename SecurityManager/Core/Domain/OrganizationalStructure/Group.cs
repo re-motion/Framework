@@ -55,7 +55,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     public static IQueryable<Group> FindByTenant (IDomainObjectHandle<Tenant> tenantHandle)
     {
-      ArgumentUtility.CheckNotNull("tenantHandle", tenantHandle);
+      ArgumentUtility.CheckNotNull(nameof(tenantHandle), tenantHandle);
 
       return from g in QueryFactory.CreateLinqQuery<Group>()
                    where g.Tenant!.ID == tenantHandle.ObjectID

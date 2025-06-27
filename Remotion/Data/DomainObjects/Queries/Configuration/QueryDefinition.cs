@@ -95,7 +95,7 @@ public class QueryDefinition
       IReadOnlyDictionary<string, object>? metaData = null)
   {
     ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
-    ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+    ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
     ArgumentUtility.CheckNotNullOrEmpty("statement", statement);
     ArgumentUtility.CheckValidEnumValue("queryType", queryType);
 

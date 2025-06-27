@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       public EndPointLoader (ILazyLoader lazyLoader)
       {
-        ArgumentUtility.CheckNotNull("lazyLoader", lazyLoader);
+        ArgumentUtility.CheckNotNull(nameof(lazyLoader), lazyLoader);
         _lazyLoader = lazyLoader;
       }
 
@@ -69,13 +69,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         IClientTransactionEventSink transactionEventSink,
         IVirtualObjectEndPointDataManagerFactory dataManagerFactory)
         : base(
-            ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction),
-            ArgumentUtility.CheckNotNull("id", id))
+            ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction),
+            ArgumentUtility.CheckNotNull(nameof(id), id))
     {
-      ArgumentUtility.CheckNotNull("lazyLoader", lazyLoader);
-      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
-      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
-      ArgumentUtility.CheckNotNull("dataManagerFactory", dataManagerFactory);
+      ArgumentUtility.CheckNotNull(nameof(lazyLoader), lazyLoader);
+      ArgumentUtility.CheckNotNull(nameof(endPointProvider), endPointProvider);
+      ArgumentUtility.CheckNotNull(nameof(transactionEventSink), transactionEventSink);
+      ArgumentUtility.CheckNotNull(nameof(dataManagerFactory), dataManagerFactory);
 
       if (!ID.Definition.IsVirtual)
         throw new ArgumentException("End point ID must refer to a virtual end point.", "id");
@@ -172,7 +172,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void SynchronizeOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
 
       _loadState.SynchronizeOppositeEndPoint(this, oppositeEndPoint);
     }
@@ -199,25 +199,25 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
       _loadState.RegisterOriginalOppositeEndPoint(this, oppositeEndPoint);
     }
 
     public void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
       _loadState.UnregisterOriginalOppositeEndPoint(this, oppositeEndPoint);
     }
 
     public void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
       _loadState.RegisterCurrentOppositeEndPoint(this, oppositeEndPoint);
     }
 
     public void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
       _loadState.UnregisterCurrentOppositeEndPoint(this, oppositeEndPoint);
     }
 

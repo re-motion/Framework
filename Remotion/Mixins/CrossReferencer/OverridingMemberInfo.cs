@@ -41,7 +41,7 @@ namespace Remotion.Mixins.CrossReferencer
 
     public OverridingMemberInfo (MemberInfo memberInfo)
     {
-      ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
+      ArgumentUtility.CheckNotNull(nameof(memberInfo), memberInfo);
       _memberInfo = memberInfo;
     }
 

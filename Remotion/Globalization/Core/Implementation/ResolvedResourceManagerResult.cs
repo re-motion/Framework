@@ -36,8 +36,8 @@ namespace Remotion.Globalization.Implementation
         [NotNull] IResourceManager definedResourceManager,
         [NotNull] IResourceManager inheritedResourceManger)
     {
-      ArgumentUtility.CheckNotNull("definedResourceManager", definedResourceManager);
-      ArgumentUtility.CheckNotNull("inheritedResourceManger", inheritedResourceManger);
+      ArgumentUtility.CheckNotNull(nameof(definedResourceManager), definedResourceManager);
+      ArgumentUtility.CheckNotNull(nameof(inheritedResourceManger), inheritedResourceManger);
 
       var combinedResourceManager = CombineResourceManagers(definedResourceManager, inheritedResourceManger);
       if (combinedResourceManager.IsNull)

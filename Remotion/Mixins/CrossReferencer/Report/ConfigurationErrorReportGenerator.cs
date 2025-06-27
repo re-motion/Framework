@@ -28,7 +28,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public ConfigurationErrorReportGenerator (ErrorAggregator<ConfigurationException> errorAggregator)
     {
-      ArgumentUtility.CheckNotNull("errorAggregator", errorAggregator);
+      ArgumentUtility.CheckNotNull(nameof(errorAggregator), errorAggregator);
 
       _errorAggregator = errorAggregator;
     }

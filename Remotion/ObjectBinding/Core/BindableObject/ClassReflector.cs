@@ -39,10 +39,10 @@ namespace Remotion.ObjectBinding.BindableObject
         IMetadataFactory metadataFactory,
         BindableObjectGlobalizationService bindableObjectGlobalizationService)
     {
-      ArgumentUtility.CheckNotNull("targetType", targetType);
-      ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
-      ArgumentUtility.CheckNotNull("metadataFactory", metadataFactory);
-      ArgumentUtility.CheckNotNull("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
+      ArgumentUtility.CheckNotNull(nameof(targetType), targetType);
+      ArgumentUtility.CheckNotNull(nameof(businessObjectProvider), businessObjectProvider);
+      ArgumentUtility.CheckNotNull(nameof(metadataFactory), metadataFactory);
+      ArgumentUtility.CheckNotNull(nameof(bindableObjectGlobalizationService), bindableObjectGlobalizationService);
 
       _targetType = targetType;
       _concreteType = BindableObjectProvider.GetConcreteTypeForBindableObjectImplementation(_targetType);

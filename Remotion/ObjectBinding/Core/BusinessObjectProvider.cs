@@ -138,7 +138,7 @@ namespace Remotion.ObjectBinding
 
     protected BusinessObjectProvider (IBusinessObjectServiceFactory serviceFactory)
     {
-      ArgumentUtility.CheckNotNull("serviceFactory", serviceFactory);
+      ArgumentUtility.CheckNotNull(nameof(serviceFactory), serviceFactory);
 
       _serviceFactory = serviceFactory;
     }
@@ -192,7 +192,7 @@ namespace Remotion.ObjectBinding
     public void AddService (Type serviceType, IBusinessObjectService service)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("serviceType", serviceType, typeof(IBusinessObjectService));
-      ArgumentUtility.CheckNotNull("service", service);
+      ArgumentUtility.CheckNotNull(nameof(service), service);
 
       IDataStore<Type, IBusinessObjectService?> serviceStore = ServiceStore;
       Assertion.IsNotNull(serviceStore, "The ServiceStore evaluated and returned null. It should return a non-null object instead.");
@@ -205,7 +205,7 @@ namespace Remotion.ObjectBinding
     /// <typeparam name="T">The <see cref="Type"/> of the <paramref name="service"/> to be registered.</typeparam>
     public void AddService<T> (T service) where T : IBusinessObjectService
     {
-      ArgumentUtility.CheckNotNull("service", service);
+      ArgumentUtility.CheckNotNull(nameof(service), service);
 
       AddService(typeof(T), service);
     }

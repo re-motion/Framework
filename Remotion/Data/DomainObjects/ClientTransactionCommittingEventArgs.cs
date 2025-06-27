@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects
     public ClientTransactionCommittingEventArgs (IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
         : base(domainObjects)
     {
-      ArgumentUtility.CheckNotNull("eventRegistrar", eventRegistrar);
+      ArgumentUtility.CheckNotNull(nameof(eventRegistrar), eventRegistrar);
       _eventRegistrar = eventRegistrar;
     }
 

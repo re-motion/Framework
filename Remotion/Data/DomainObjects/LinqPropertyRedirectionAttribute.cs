@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects
 
       public MethodCallTransformer (PropertyInfo mappedProperty)
       {
-        ArgumentUtility.CheckNotNull("mappedProperty", mappedProperty);
+        ArgumentUtility.CheckNotNull(nameof(mappedProperty), mappedProperty);
         _mappedProperty = mappedProperty;
       }
 
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects
 
       public Expression Transform (MethodCallExpression methodCallExpression)
       {
-        ArgumentUtility.CheckNotNull("methodCallExpression", methodCallExpression);
+        ArgumentUtility.CheckNotNull(nameof(methodCallExpression), methodCallExpression);
 
         var isInstanceMethod = !methodCallExpression.Method.IsStatic;
         var isExtensionMethod = !isInstanceMethod && AttributeUtility.IsDefined<ExtensionAttribute>(methodCallExpression.Method, false);
@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects
     /// <param name="mappedPropertyName">The name of the property to which the attribute's target is redirected.</param>
     public LinqPropertyRedirectionAttribute (Type declaringType, string mappedPropertyName)
     {
-      ArgumentUtility.CheckNotNull("declaringType", declaringType);
+      ArgumentUtility.CheckNotNull(nameof(declaringType), declaringType);
       ArgumentUtility.CheckNotNullOrEmpty("mappedPropertyName", mappedPropertyName);
 
       _declaringType = declaringType;

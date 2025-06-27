@@ -38,9 +38,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         IInvalidDomainObjectManager parentInvalidDomainObjectManager,
         IDisposable scope)
     {
-      ArgumentUtility.CheckNotNull("parentTransaction", parentTransaction);
-      ArgumentUtility.CheckNotNull("parentInvalidDomainObjectManager", parentInvalidDomainObjectManager);
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull(nameof(parentTransaction), parentTransaction);
+      ArgumentUtility.CheckNotNull(nameof(parentInvalidDomainObjectManager), parentInvalidDomainObjectManager);
+      ArgumentUtility.CheckNotNull(nameof(scope), scope);
 
       _parentTransaction = parentTransaction;
       _parentInvalidDomainObjectManager = parentInvalidDomainObjectManager;
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void MarkNotInvalid (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
       CheckDisposed();
 
       _parentInvalidDomainObjectManager.MarkNotInvalid(objectID);
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void RegisterDataContainer (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull(nameof(dataContainer), dataContainer);
       CheckDisposed();
 
       _parentTransaction.DataManager.RegisterDataContainer(dataContainer);
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void Discard (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull(nameof(dataContainer), dataContainer);
       CheckDisposed();
 
       _parentTransaction.DataManager.Discard(dataContainer);

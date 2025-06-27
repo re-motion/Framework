@@ -14,7 +14,7 @@ namespace Remotion.Collections
   {
     public static ReadOnlyCollectionWrapper<T> AsReadOnly<T> (this IReadOnlyCollection<T> collection)
     {
-      ArgumentUtility.CheckNotNull("collection", collection);
+      ArgumentUtility.CheckNotNull(nameof(collection), collection);
 
       return new ReadOnlyCollectionWrapper<T>(collection);
     }

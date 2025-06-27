@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     protected StorageProviderManagerBase (IPersistenceExtension persistenceExtension, IStorageSettings storageSettings)
     {
-      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
-      ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
+      ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
+      ArgumentUtility.CheckNotNull(nameof(storageSettings), storageSettings);
 
       _storageProviders = new Dictionary<string, TStorageProvider>();
       PersistenceExtension = persistenceExtension;
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     public TStorageProvider GetMandatory (StorageProviderDefinition providerDefinition)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull("providerDefinition", providerDefinition);
+      ArgumentUtility.CheckNotNull(nameof(providerDefinition), providerDefinition);
 
 #if DEBUG
       if (providerDefinition != StorageSettings.GetStorageProviderDefinition(providerDefinition.Name))

@@ -86,7 +86,7 @@ namespace Remotion.Utilities
 
     public static object? GetFieldOrPropertyValue (object obj, string fieldOrPropertyName, BindingFlags bindingFlags)
     {
-      ArgumentUtility.CheckNotNull("obj", obj);
+      ArgumentUtility.CheckNotNull(nameof(obj), obj);
       MemberInfo fieldOrProperty = GetFieldOrProperty(obj.GetType(), fieldOrPropertyName, bindingFlags, true)!;
       return GetFieldOrPropertyValue(obj, fieldOrProperty);
     }
@@ -114,7 +114,7 @@ namespace Remotion.Utilities
 
     public static void SetFieldOrPropertyValue (object obj, string fieldOrPropertyName, BindingFlags bindingFlags, object? value)
     {
-      ArgumentUtility.CheckNotNull("obj", obj);
+      ArgumentUtility.CheckNotNull(nameof(obj), obj);
       MemberInfo fieldOrProperty = GetFieldOrProperty(obj.GetType(), fieldOrPropertyName, bindingFlags, true)!;
       SetFieldOrPropertyValue(obj, fieldOrProperty, value);
     }

@@ -39,9 +39,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         IEnumerable<ColumnDefinition> referencedColumns)
     {
       ArgumentUtility.CheckNotNullOrEmpty("constraintName", constraintName);
-      ArgumentUtility.CheckNotNull("referencedTableName", referencedTableName);
-      ArgumentUtility.CheckNotNull("referencingColumns", referencingColumns);
-      ArgumentUtility.CheckNotNull("referencedColumns", referencedColumns);
+      ArgumentUtility.CheckNotNull(nameof(referencedTableName), referencedTableName);
+      ArgumentUtility.CheckNotNull(nameof(referencingColumns), referencingColumns);
+      ArgumentUtility.CheckNotNull(nameof(referencedColumns), referencedColumns);
 
       _constraintName = constraintName;
       _referencedTableName = referencedTableName;
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public void Accept (ITableConstraintDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
 
       visitor.VisitForeignKeyConstraintDefinition(this);
     }

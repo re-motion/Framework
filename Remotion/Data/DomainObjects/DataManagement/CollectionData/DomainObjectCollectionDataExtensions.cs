@@ -27,16 +27,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   {
     public static void Add (this IDomainObjectCollectionData data, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("data", data);
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(data), data);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       data.Insert(data.Count, domainObject);
     }
 
     public static void AddRange (this IDomainObjectCollectionData data, IEnumerable<DomainObject> domainObjects)
     {
-      ArgumentUtility.CheckNotNull("data", data);
-      ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
+      ArgumentUtility.CheckNotNull(nameof(data), data);
+      ArgumentUtility.CheckNotNull(nameof(domainObjects), domainObjects);
 
       foreach (var domainObject in domainObjects)
         Add(data, domainObject);
@@ -44,8 +44,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public static void AddRangeAndCheckItems (this IDomainObjectCollectionData data, IEnumerable<DomainObject> domainObjects, Type? requiredItemType)
     {
-      ArgumentUtility.CheckNotNull("data", data);
-      ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
+      ArgumentUtility.CheckNotNull(nameof(data), data);
+      ArgumentUtility.CheckNotNull(nameof(domainObjects), domainObjects);
 
       var index = 0;
       foreach (var domainObject in domainObjects)
@@ -69,8 +69,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public static void ReplaceContents (this IDomainObjectCollectionData data, IEnumerable<DomainObject> domainObjects)
     {
-      ArgumentUtility.CheckNotNull("data", data);
-      ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
+      ArgumentUtility.CheckNotNull(nameof(data), data);
+      ArgumentUtility.CheckNotNull(nameof(domainObjects), domainObjects);
 
       data.Clear();
       data.AddRange(domainObjects);
@@ -78,8 +78,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public static bool SetEquals (this IDomainObjectCollectionData collection, IEnumerable<DomainObject> comparedSet)
     {
-      ArgumentUtility.CheckNotNull("collection", collection);
-      ArgumentUtility.CheckNotNull("comparedSet", comparedSet);
+      ArgumentUtility.CheckNotNull(nameof(collection), collection);
+      ArgumentUtility.CheckNotNull(nameof(comparedSet), comparedSet);
 
       var setOfComparedObjects = new HashSet<DomainObject>(); // this is used to get rid of all duplicates to get a correct result
       foreach (var domainObject in comparedSet)

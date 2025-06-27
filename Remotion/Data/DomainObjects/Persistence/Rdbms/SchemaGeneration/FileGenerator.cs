@@ -30,14 +30,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public FileGenerator (string outputPath)
     {
-      ArgumentUtility.CheckNotNull("outputPath", outputPath);
+      ArgumentUtility.CheckNotNull(nameof(outputPath), outputPath);
 
       _outputPath = outputPath;
     }
 
     public void WriteScriptsToDisk (Script script, bool includeStorageProviderName)
     {
-      ArgumentUtility.CheckNotNull("script", script);
+      ArgumentUtility.CheckNotNull(nameof(script), script);
 
       CreateOutputPath();
 

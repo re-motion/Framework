@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public LoadedObjectDataWithDataSourceData (ILoadedObjectData loadedObjectData, DataContainer? dataSourceData)
     {
-      ArgumentUtility.CheckNotNull("loadedObjectData", loadedObjectData);
+      ArgumentUtility.CheckNotNull(nameof(loadedObjectData), loadedObjectData);
 
       if (!loadedObjectData.IsNull && dataSourceData == null)
         throw new ArgumentException("The dataSourceData parameter must not be null when loadedObjectData.IsNull is false.", "dataSourceData");

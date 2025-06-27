@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     public AclExpanderApplication (ITextWriterFactory textWriterFactory)
     {
-      ArgumentUtility.CheckNotNull("textWriterFactory", textWriterFactory);
+      ArgumentUtility.CheckNotNull(nameof(textWriterFactory), textWriterFactory);
       _textWriterFactory = textWriterFactory;
     }
 
@@ -59,9 +59,9 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     public virtual void Run (AclExpanderApplicationSettings settings, TextWriter errorWriter, TextWriter logWriter)
     {
-      ArgumentUtility.CheckNotNull("settings", settings);
-      ArgumentUtility.CheckNotNull("errorWriter", errorWriter);
-      ArgumentUtility.CheckNotNull("logWriter", logWriter);
+      ArgumentUtility.CheckNotNull(nameof(settings), settings);
+      ArgumentUtility.CheckNotNull(nameof(errorWriter), errorWriter);
+      ArgumentUtility.CheckNotNull(nameof(logWriter), logWriter);
 
       Init(settings);
 
@@ -107,13 +107,13 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     public void Init (AclExpanderApplicationSettings settings)
     {
-      ArgumentUtility.CheckNotNull("settings", settings);
+      ArgumentUtility.CheckNotNull(nameof(settings), settings);
       _settings = settings;
     }
 
     public virtual void WriteAclExpansionAsHtmlToStreamWriter (List<AclExpansionEntry> aclExpansion)
     {
-      ArgumentUtility.CheckNotNull("aclExpansion", aclExpansion);
+      ArgumentUtility.CheckNotNull(nameof(aclExpansion), aclExpansion);
       if (Settings.UseMultipleFileOutput)
       {
         WriteAclExpansionAsMultiFileHtml(aclExpansion);

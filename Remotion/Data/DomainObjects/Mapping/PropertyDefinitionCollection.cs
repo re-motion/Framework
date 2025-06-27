@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   {
     public static PropertyDefinitionCollection CreateForAllProperties (ClassDefinition classDefinition, bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
       return new PropertyDefinitionCollection(
           classDefinition.CreateSequence(cd => cd.BaseClass).SelectMany(cd => cd.MyPropertyDefinitions), makeCollectionReadOnly);
     }
@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public PropertyDefinitionCollection (IEnumerable<PropertyDefinition> collection, bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull("collection", collection);
+      ArgumentUtility.CheckNotNull(nameof(collection), collection);
 
       foreach (var propertyDefinition in collection)
         Add(propertyDefinition);
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public bool Contains (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
 
       return BaseContains(propertyDefinition.PropertyName, propertyDefinition);
     }
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public int Add (PropertyDefinition value)
     {
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
 
       int position = BaseAdd(value.PropertyName, value);
 

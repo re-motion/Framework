@@ -60,7 +60,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
       ArgumentUtility.CheckNotNullOrItemsNull("all", all);
       ArgumentUtility.CheckNotNullOrItemsNull("any", any);
       ArgumentUtility.CheckNotNullOrItemsNull("none", none);
-      ArgumentUtility.CheckNotNull("rule", rule);
+      ArgumentUtility.CheckNotNull(nameof(rule), rule);
       ArgumentUtility.CheckNotNullOrEmpty("html", html);
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("targetPath", targetPath);
 

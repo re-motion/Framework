@@ -40,8 +40,8 @@ namespace Remotion.Validation.RuleCollectors
 
     public RemovingObjectValidationRuleCollector (ITypeInformation validatedType, Type collectorType)
     {
-      ArgumentUtility.CheckNotNull("validatedType", validatedType);
-      ArgumentUtility.CheckNotNull("collectorType", collectorType); // TODO RM-5906: Add type check for IValidationRuleCollector
+      ArgumentUtility.CheckNotNull(nameof(validatedType), validatedType);
+      ArgumentUtility.CheckNotNull(nameof(collectorType), collectorType); // TODO RM-5906: Add type check for IValidationRuleCollector
 
       ValidatedType = validatedType;
       CollectorType = collectorType;

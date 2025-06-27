@@ -42,10 +42,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] T target,
         [NotNull] ResolvedScreenshotElement resolvedElement)
     {
-      ArgumentUtility.CheckNotNull("canvas", canvas);
-      ArgumentUtility.CheckNotNull("resolver", resolver);
-      ArgumentUtility.CheckNotNull("target", target);
-      ArgumentUtility.CheckNotNull("resolvedElement", resolvedElement);
+      ArgumentUtility.CheckNotNull(nameof(canvas), canvas);
+      ArgumentUtility.CheckNotNull(nameof(resolver), resolver);
+      ArgumentUtility.CheckNotNull(nameof(target), target);
+      ArgumentUtility.CheckNotNull(nameof(resolvedElement), resolvedElement);
 
       _manipulation = manipulation;
       _canvas = canvas;

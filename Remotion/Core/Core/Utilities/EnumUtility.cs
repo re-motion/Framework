@@ -82,7 +82,7 @@ namespace Remotion.Utilities
     /// </summary>
     public static bool IsValidEnumValue (object enumValue)
     {
-      ArgumentUtility.CheckNotNull("enumValue", enumValue);
+      ArgumentUtility.CheckNotNull(nameof(enumValue), enumValue);
 
       var enumType = enumValue.GetType();
       if (!enumType.IsEnum)
@@ -112,7 +112,7 @@ namespace Remotion.Utilities
     /// </exception>
     public static bool IsValidEnumValue (Type enumType, object value)
     {
-      ArgumentUtility.CheckNotNull("enumType", enumType);
+      ArgumentUtility.CheckNotNull(nameof(enumType), enumType);
       if (!enumType.IsEnum)
       {
         throw new ArgumentException(
@@ -152,14 +152,14 @@ namespace Remotion.Utilities
 
     public static bool IsFlagsEnumValue (object enumValue)
     {
-      ArgumentUtility.CheckNotNull("enumValue", enumValue);
+      ArgumentUtility.CheckNotNull(nameof(enumValue), enumValue);
 
       return IsFlagsEnumType(enumValue.GetType());
     }
 
     public static bool IsFlagsEnumType (Type enumType)
     {
-      ArgumentUtility.CheckNotNull("enumType", enumType);
+      ArgumentUtility.CheckNotNull(nameof(enumType), enumType);
       if (!enumType.IsEnum)
       {
         throw new ArgumentException(

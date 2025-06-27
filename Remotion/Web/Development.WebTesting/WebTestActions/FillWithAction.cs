@@ -38,8 +38,8 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
         [NotNull] ILogger logger)
         : base(control, scope, logger)
     {
-      ArgumentUtility.CheckNotNull("value", value);
-      ArgumentUtility.CheckNotNull("finishInputWithAction", finishInputWithAction);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentUtility.CheckNotNull(nameof(finishInputWithAction), finishInputWithAction);
 
       _value = value;
       _finishInputWithAction = finishInputWithAction;
@@ -54,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     /// <inheritdoc/>
     protected override void ExecuteInteraction (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull(nameof(scope), scope);
 
       OutputDebugMessage(string.Format("New value: '{0}'", _value));
       scope.FillInWithFixed(_value, _finishInputWithAction, Logger);

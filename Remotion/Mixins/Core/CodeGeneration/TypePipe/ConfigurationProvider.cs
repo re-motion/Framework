@@ -41,7 +41,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public TargetClassDefinition? GetTargetClassDefinition (Type requestedType)
     {
-      ArgumentUtility.CheckNotNull("requestedType", requestedType);
+      ArgumentUtility.CheckNotNull(nameof(requestedType), requestedType);
 
       var classContext = MixinConfiguration.ActiveConfiguration.GetContext(requestedType);
       return GetTargetClassDefinition(classContext);
@@ -49,8 +49,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public IEnumerable<Type> GetInterfacesToImplement (TargetClassDefinition targetClassDefinition, IEnumerable<IMixinInfo> mixinInfos)
     {
-      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
-      ArgumentUtility.CheckNotNull("mixinInfos", mixinInfos);
+      ArgumentUtility.CheckNotNull(nameof(targetClassDefinition), targetClassDefinition);
+      ArgumentUtility.CheckNotNull(nameof(mixinInfos), mixinInfos);
 
       var implementedInterfaceFinder = new ImplementedInterfaceFinder(
           targetClassDefinition.ImplementedInterfaces,

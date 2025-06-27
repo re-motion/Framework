@@ -40,8 +40,8 @@ namespace Remotion.Security
         [NotNull] ISecurityContextFactory securityContextFactory,
         [NotNull] InvalidationToken invalidationToken)
     {
-      ArgumentUtility.CheckNotNull("securityContextFactory", securityContextFactory);
-      ArgumentUtility.CheckNotNull("invalidationToken", invalidationToken);
+      ArgumentUtility.CheckNotNull(nameof(securityContextFactory), securityContextFactory);
+      ArgumentUtility.CheckNotNull(nameof(invalidationToken), invalidationToken);
 
       return new ObjectSecurityStrategy(securityContextFactory, CacheFactory.Create<ISecurityPrincipal, AccessType[]>(invalidationToken));
     }
@@ -53,8 +53,8 @@ namespace Remotion.Security
         [NotNull] ISecurityContextFactory securityContextFactory,
         [NotNull] ICache<ISecurityPrincipal, AccessType[]> cache)
     {
-      ArgumentUtility.CheckNotNull("securityContextFactory", securityContextFactory);
-      ArgumentUtility.CheckNotNull("cache", cache);
+      ArgumentUtility.CheckNotNull(nameof(securityContextFactory), securityContextFactory);
+      ArgumentUtility.CheckNotNull(nameof(cache), cache);
 
       return new ObjectSecurityStrategy(securityContextFactory, cache);
     }
@@ -75,7 +75,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.DebugCheckNotNull("securityProvider", securityProvider);
       ArgumentUtility.DebugCheckNotNull("principal", principal);
-      ArgumentUtility.CheckNotNull("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.CheckNotNull(nameof(requiredAccessTypes), requiredAccessTypes);
       // Performance critical argument check. Can be refactored to ArgumentUtility.CheckNotNullOrEmpty once typed collection checks are supported.
       if (requiredAccessTypes.Count == 0)
         throw ArgumentUtility.CreateArgumentEmptyException("requiredAccessTypes");
@@ -101,7 +101,7 @@ namespace Remotion.Security
     private AccessType[] GetAccessTypes (ISecurityProvider securityProvider, ISecurityPrincipal principal)
     {
       // Explicit null-check since the public method does not perform this check in release-code
-      ArgumentUtility.CheckNotNull("securityProvider", securityProvider);
+      ArgumentUtility.CheckNotNull(nameof(securityProvider), securityProvider);
 
       var context = CreateSecurityContext();
 

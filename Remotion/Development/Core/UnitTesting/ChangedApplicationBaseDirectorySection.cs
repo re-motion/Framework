@@ -30,7 +30,7 @@ namespace Remotion.Development.UnitTesting
 
     public ChangedApplicationBaseDirectorySection (string baseDirectory)
     {
-      ArgumentUtility.CheckNotNull("baseDirectory", baseDirectory);
+      ArgumentUtility.CheckNotNull(nameof(baseDirectory), baseDirectory);
 
       _previousValue = AppDomain.CurrentDomain.GetData(c_appContextBaseDirectorySwitchName);
       AppDomain.CurrentDomain.SetData(c_appContextBaseDirectorySwitchName, baseDirectory);

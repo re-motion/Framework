@@ -95,7 +95,7 @@ namespace Remotion.Web.UI.Controls.Hotkey
 
     public void WriteTo (HtmlTextWriter writer, WebString value)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       if (value.Type == WebStringType.Encoded)
       {

@@ -45,9 +45,9 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     protected RendererBase (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService, IRenderingFeatures renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
-      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
+      ArgumentUtility.CheckNotNull(nameof(resourceUrlFactory), resourceUrlFactory);
+      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
+      ArgumentUtility.CheckNotNull(nameof(renderingFeatures), renderingFeatures);
 
       _resourceUrlFactory = resourceUrlFactory;
       _globalizationService = globalizationService;
@@ -81,7 +81,7 @@ namespace Remotion.Web.UI.Controls
 
     protected void AddStandardAttributesToRender (RenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID);
 
@@ -131,9 +131,9 @@ namespace Remotion.Web.UI.Controls
 
     protected void CheckScriptManager (IControl control, string errorMessageFormat, params object?[] args)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
       ArgumentUtility.CheckNotNullOrEmpty("errorMessageFormat", errorMessageFormat);
-      ArgumentUtility.CheckNotNull("args", args);
+      ArgumentUtility.CheckNotNull(nameof(args), args);
 
       var page = control.Page?.WrappedInstance;
       if (page != null && ScriptManager.GetCurrent(page) == null)
@@ -148,8 +148,8 @@ namespace Remotion.Web.UI.Controls
     /// <returns>An <see cref="IResourceManager"/> from which all resources for this renderer can be obtained.</returns>
     protected IResourceManager GetResourceManager (Type localResourcesType, IResourceManager controlResourceManager)
     {
-      ArgumentUtility.CheckNotNull("localResourcesType", localResourcesType);
-      ArgumentUtility.CheckNotNull("controlResourceManager", controlResourceManager);
+      ArgumentUtility.CheckNotNull(nameof(localResourcesType), localResourcesType);
+      ArgumentUtility.CheckNotNull(nameof(controlResourceManager), controlResourceManager);
 
       var table = _resourceManagerCache
           .GetOrAdd(

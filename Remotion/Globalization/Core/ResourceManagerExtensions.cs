@@ -36,7 +36,7 @@ namespace Remotion.Globalization
     [NotNull]
     public static IReadOnlyDictionary<string, string> GetAllStrings ([NotNull] this IResourceManager resourceManager)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
       return resourceManager.GetAllStrings(null);
     }
 
@@ -52,8 +52,8 @@ namespace Remotion.Globalization
     [NotNull]
     public static string GetString ([NotNull] this IResourceManager resourceManager, [NotNull] string id)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(id), id);
 
       if (resourceManager.TryGetString(id, out var value))
         return value;
@@ -73,8 +73,8 @@ namespace Remotion.Globalization
     [CanBeNull]
     public static string? GetStringOrDefault ([NotNull] this IResourceManager resourceManager, [NotNull] string id)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(id), id);
 
       if (resourceManager.TryGetString(id, out var value))
         return value;
@@ -93,8 +93,8 @@ namespace Remotion.Globalization
     [NotNull]
     public static string GetString ([NotNull] this IResourceManager resourceManager, [NotNull] Enum enumValue)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("enumValue", enumValue);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(enumValue), enumValue);
 
       return resourceManager.GetString(ResourceIdentifiersAttribute.GetResourceIdentifier(enumValue));
     }
@@ -110,8 +110,8 @@ namespace Remotion.Globalization
     [CanBeNull]
     public static string? GetStringOrDefault ([NotNull] this IResourceManager resourceManager, [NotNull] Enum enumValue)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("enumValue", enumValue);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(enumValue), enumValue);
 
       return resourceManager.GetStringOrDefault(ResourceIdentifiersAttribute.GetResourceIdentifier(enumValue));
     }
@@ -122,8 +122,8 @@ namespace Remotion.Globalization
     /// <returns><see langword="true"/> if the <see cref="IResourceManager"/> contains the specified resource.</returns>
     public static bool ContainsString ([NotNull] this IResourceManager resourceManager, [NotNull] Enum enumValue)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("enumValue", enumValue);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(enumValue), enumValue);
 
       return resourceManager.ContainsString(ResourceIdentifiersAttribute.GetResourceIdentifier(enumValue));
     }
@@ -134,8 +134,8 @@ namespace Remotion.Globalization
     /// <returns><see langword="true"/> if the <see cref="IResourceManager"/> contains the specified resource.</returns>
     public static bool ContainsString ([NotNull] this IResourceManager resourceManager, [NotNull] string id)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(id), id);
 
       return resourceManager.TryGetString(id, out _);
     }

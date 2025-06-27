@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
         where TControlSelector : IDisplayNameControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty("displayName", displayName);
 
       return fluentControlSelector.GetControl(new DisplayNameControlSelectionCommandBuilder<TControlSelector, TControlObject>(displayName));
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
         where TControlSelector : IDisplayNameControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty("displayName", displayName);
 
       return fluentControlSelector.GetControlOrNull(new DisplayNameControlSelectionCommandBuilder<TControlSelector, TControlObject>(displayName));
@@ -83,7 +83,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
         where TControlSelector : IDisplayNameControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty("displayName", displayName);
 
       return fluentControlSelector.HasControl(new DisplayNameControlSelectionCommandBuilder<TControlSelector, TControlObject>(displayName));
@@ -105,7 +105,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
         where TControlSelector : IDomainPropertyControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty("domainProperty", domainProperty);
       ArgumentUtility.CheckNotEmpty("domainClass", domainClass);
 
@@ -128,7 +128,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
         where TControlSelector : IDomainPropertyControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty("domainProperty", domainProperty);
       ArgumentUtility.CheckNotEmpty("domainClass", domainClass);
 
@@ -150,7 +150,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
         where TControlSelector : IDomainPropertyControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
       ArgumentUtility.CheckNotNullOrEmpty("domainProperty", domainProperty);
       ArgumentUtility.CheckNotEmpty("domainClass", domainClass);
 

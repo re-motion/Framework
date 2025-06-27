@@ -281,7 +281,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </returns>
     public bool SupportsProperty (IBusinessObjectProperty property)
     {
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNull(nameof(property), property);
 
       if (_control.SupportedPropertyInterfaces == null)
         return true;
@@ -306,7 +306,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </returns>
     public bool IsPropertyInterfaceSupported (IBusinessObjectProperty property, Type[] supportedPropertyInterfaces)
     {
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNull(nameof(property), property);
       if (supportedPropertyInterfaces == null)
         return true;
       ArgumentUtility.CheckNotNullOrItemsNull("supportedPropertyInterfaces", supportedPropertyInterfaces);

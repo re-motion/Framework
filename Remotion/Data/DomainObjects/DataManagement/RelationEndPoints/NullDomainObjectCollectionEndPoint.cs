@@ -37,8 +37,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public NullDomainObjectCollectionEndPoint (ClientTransaction clientTransaction, IRelationEndPointDefinition definition)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(definition), definition);
 
       _clientTransaction = clientTransaction;
       _definition = definition;

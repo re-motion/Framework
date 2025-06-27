@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
     public static StaticBusinessObjectPropertyPath Parse (string propertyPathIdentifier, IBusinessObjectClass root)
     {
       ArgumentUtility.CheckNotNullOrEmpty("propertyPathIdentifier", propertyPathIdentifier);
-      ArgumentUtility.CheckNotNull("root", root);
+      ArgumentUtility.CheckNotNull(nameof(root), root);
 
       var properties = new List<IBusinessObjectProperty>();
       var currentClass = root;

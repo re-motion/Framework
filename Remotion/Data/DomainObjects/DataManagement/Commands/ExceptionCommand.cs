@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public ExceptionCommand (Exception exception)
     {
-      ArgumentUtility.CheckNotNull("exception", exception);
+      ArgumentUtility.CheckNotNull(nameof(exception), exception);
       _exception = exception;
     }
 

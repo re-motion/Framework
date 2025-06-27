@@ -33,7 +33,7 @@ namespace Remotion.Web.Infrastructure
 
     public ControlWrapper (Control control)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
 
       _control = control;
     }

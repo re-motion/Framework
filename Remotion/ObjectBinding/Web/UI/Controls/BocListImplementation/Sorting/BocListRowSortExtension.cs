@@ -25,8 +25,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
   {
     public static IEnumerable<BocListRow> OrderBy (this IEnumerable<BocListRow> rows, BocListSortingOrderEntry[] sortingOrder)
     {
-      ArgumentUtility.CheckNotNull("rows", rows);
-      ArgumentUtility.CheckNotNull("sortingOrder", sortingOrder);
+      ArgumentUtility.CheckNotNull(nameof(rows), rows);
+      ArgumentUtility.CheckNotNull(nameof(sortingOrder), sortingOrder);
 
       return rows.OrderBy(r => r, new CompoundComparer<BocListRow>(sortingOrder.GetComparers()));
     }

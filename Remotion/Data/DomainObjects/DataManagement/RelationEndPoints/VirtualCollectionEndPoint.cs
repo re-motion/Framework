@@ -58,13 +58,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink,
         IVirtualCollectionEndPointDataManagerFactory dataManagerFactory)
-        : base(ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction), ArgumentUtility.CheckNotNull("id", id))
+        : base(ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction), ArgumentUtility.CheckNotNull(nameof(id), id))
     {
-      ArgumentUtility.CheckNotNull("collectionManager", collectionManager);
-      ArgumentUtility.CheckNotNull("lazyLoader", lazyLoader);
-      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
-      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
-      ArgumentUtility.CheckNotNull("dataManagerFactory", dataManagerFactory);
+      ArgumentUtility.CheckNotNull(nameof(collectionManager), collectionManager);
+      ArgumentUtility.CheckNotNull(nameof(lazyLoader), lazyLoader);
+      ArgumentUtility.CheckNotNull(nameof(endPointProvider), endPointProvider);
+      ArgumentUtility.CheckNotNull(nameof(transactionEventSink), transactionEventSink);
+      ArgumentUtility.CheckNotNull(nameof(dataManagerFactory), dataManagerFactory);
 
       if (id.Definition.Cardinality != CardinalityType.Many)
         throw new ArgumentException("End point ID must refer to an end point with cardinality 'Many'.", "id");
@@ -176,7 +176,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void MarkDataComplete (DomainObject[] items)
     {
-      ArgumentUtility.CheckNotNull("items", items);
+      ArgumentUtility.CheckNotNull(nameof(items), items);
 
       if (_dataManager != null)
         throw new InvalidOperationException("The data is already complete.");
@@ -250,7 +250,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
 
       if (_dataManager != null)
       {
@@ -262,7 +262,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
 
       if (s_logger.IsEnabled(LogLevel.Information))
       {
@@ -276,12 +276,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
     }
 
     public void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
     }
 
     public override bool? IsSynchronized
@@ -308,7 +308,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void SynchronizeOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
 
       Assertion.IsNotNull(_dataManager, "Cannot synchronize an opposite end-point with a virtual end-point in incomplete state.");
 
@@ -321,7 +321,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
     {
-      ArgumentUtility.CheckNotNull("removedRelatedObject", removedRelatedObject);
+      ArgumentUtility.CheckNotNull(nameof(removedRelatedObject), removedRelatedObject);
 
       IVirtualCollectionData virtualCollectionData;
       if (_dataManager == null)
@@ -365,7 +365,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public virtual IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject)
     {
-      ArgumentUtility.CheckNotNull("addedRelatedObject", addedRelatedObject);
+      ArgumentUtility.CheckNotNull(nameof(addedRelatedObject), addedRelatedObject);
 
       IVirtualCollectionData virtualCollectionData;
       if (_dataManager == null)

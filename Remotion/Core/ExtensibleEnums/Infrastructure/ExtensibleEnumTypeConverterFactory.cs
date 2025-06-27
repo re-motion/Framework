@@ -35,7 +35,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
 
     public TypeConverter? CreateTypeConverterOrDefault (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       if (ExtensibleEnumUtility.IsExtensibleEnumType(type))
         return new ExtensibleEnumConverter(type);

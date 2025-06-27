@@ -86,8 +86,8 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     public static void SetQueryString (HttpContext context, NameValueCollection queryString)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("queryString", queryString);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentUtility.CheckNotNull(nameof(queryString), queryString);
 
       PrivateInvoke.InvokeNonPublicMethod(context.Request.QueryString, "MakeReadWrite", new object[0]);
       context.Request.QueryString.Clear();
@@ -100,8 +100,8 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     public static void SetForm (HttpContext context, NameValueCollection form)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("form", form);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentUtility.CheckNotNull(nameof(form), form);
 
       PrivateInvoke.InvokeNonPublicMethod(context.Request.Form, "MakeReadWrite", new object[0]);
       context.Request.Form.Clear();

@@ -32,8 +32,8 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     public EnumValueFilterProvider (IPropertyInformation propertyInformation, Func<Type, T[]> typeAttributeProvider)
     {
-      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
-      ArgumentUtility.CheckNotNull("typeAttributeProvider", typeAttributeProvider);
+      ArgumentUtility.CheckNotNull(nameof(propertyInformation), propertyInformation);
+      ArgumentUtility.CheckNotNull(nameof(typeAttributeProvider), typeAttributeProvider);
 
       _propertyInformation = propertyInformation;
       _typeAttributeProvider = typeAttributeProvider;

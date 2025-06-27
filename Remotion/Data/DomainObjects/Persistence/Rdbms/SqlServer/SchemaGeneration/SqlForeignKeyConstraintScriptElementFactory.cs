@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     public IScriptElement GetCreateElement (ForeignKeyConstraintDefinition constraintDefinition, EntityNameDefinition tableName)
     {
-      ArgumentUtility.CheckNotNull("constraintDefinition", constraintDefinition);
-      ArgumentUtility.CheckNotNull("tableName", tableName);
+      ArgumentUtility.CheckNotNull(nameof(constraintDefinition), constraintDefinition);
+      ArgumentUtility.CheckNotNull(nameof(tableName), tableName);
 
       return new ScriptStatement(
         string.Format(
@@ -46,8 +46,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     public IScriptElement GetDropElement (ForeignKeyConstraintDefinition constraintDefinition, EntityNameDefinition tableName)
     {
-      ArgumentUtility.CheckNotNull("constraintDefinition", constraintDefinition);
-      ArgumentUtility.CheckNotNull("tableName", tableName);
+      ArgumentUtility.CheckNotNull(nameof(constraintDefinition), constraintDefinition);
+      ArgumentUtility.CheckNotNull(nameof(tableName), tableName);
 
       return new ScriptStatement(
           string.Format(

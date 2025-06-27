@@ -30,8 +30,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public UnregisterDataContainerCommand (ObjectID objectID, DataContainerMap map)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
-      ArgumentUtility.CheckNotNull("map", map);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentUtility.CheckNotNull(nameof(map), map);
 
       _objectID = objectID;
       _map = map;

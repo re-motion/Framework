@@ -44,7 +44,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     private WxeRepostOptions (Control sender, bool usesEventTarget)
     {
-      ArgumentUtility.CheckNotNull("sender", sender);
+      ArgumentUtility.CheckNotNull(nameof(sender), sender);
 
       if (!usesEventTarget && !(sender is IPostBackEventHandler || sender is IPostBackDataHandler))
       {

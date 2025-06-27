@@ -35,9 +35,9 @@ namespace Remotion.Web.Resources
 
     public ResourceUrlFactory (IResourcePathBuilder resourcePathBuilder, ICacheableResourcePathBuilder cacheableResourcePathBuilder, ResourceTheme resourceTheme)
     {
-      ArgumentUtility.CheckNotNull("resourcePathBuilder", resourcePathBuilder);
-      ArgumentUtility.CheckNotNull("cacheableResourcePathBuilder", cacheableResourcePathBuilder);
-      ArgumentUtility.CheckNotNull("resourceTheme", resourceTheme);
+      ArgumentUtility.CheckNotNull(nameof(resourcePathBuilder), resourcePathBuilder);
+      ArgumentUtility.CheckNotNull(nameof(cacheableResourcePathBuilder), cacheableResourcePathBuilder);
+      ArgumentUtility.CheckNotNull(nameof(resourceTheme), resourceTheme);
 
       _resourcePathBuilder = resourcePathBuilder;
       _cacheableResourcePathBuilder = cacheableResourcePathBuilder;
@@ -46,8 +46,8 @@ namespace Remotion.Web.Resources
 
     public IResourceUrl CreateResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
     {
-      ArgumentUtility.CheckNotNull("definingType", definingType);
-      ArgumentUtility.CheckNotNull("resourceType", resourceType);
+      ArgumentUtility.CheckNotNull(nameof(definingType), definingType);
+      ArgumentUtility.CheckNotNull(nameof(resourceType), resourceType);
       ArgumentUtility.CheckNotNullOrEmpty("relativeUrl", relativeUrl);
 
       return new ResourceUrl(
@@ -59,8 +59,8 @@ namespace Remotion.Web.Resources
 
     public IResourceUrl CreateThemedResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
     {
-      ArgumentUtility.CheckNotNull("definingType", definingType);
-      ArgumentUtility.CheckNotNull("resourceType", resourceType);
+      ArgumentUtility.CheckNotNull(nameof(definingType), definingType);
+      ArgumentUtility.CheckNotNull(nameof(resourceType), resourceType);
       ArgumentUtility.CheckNotNullOrEmpty("relativeUrl", relativeUrl);
 
       return new ThemedResourceUrl(

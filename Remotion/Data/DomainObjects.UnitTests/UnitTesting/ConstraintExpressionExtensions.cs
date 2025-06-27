@@ -25,8 +25,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.UnitTesting
   {
     public static ResolvableConstraintExpression Property<T> (this ConstraintExpression constraintExpression, Expression<Func<T, object>> propertyExpression)
     {
-      ArgumentUtility.CheckNotNull("constraintExpression", constraintExpression);
-      ArgumentUtility.CheckNotNull("propertyExpression", propertyExpression);
+      ArgumentUtility.CheckNotNull(nameof(constraintExpression), constraintExpression);
+      ArgumentUtility.CheckNotNull(nameof(propertyExpression), propertyExpression);
 
       var memberExpression = propertyExpression.Body as MemberExpression;
       if (memberExpression == null)

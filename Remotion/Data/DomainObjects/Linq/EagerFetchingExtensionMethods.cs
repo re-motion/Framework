@@ -38,8 +38,8 @@ namespace Remotion.Data.DomainObjects.Linq
     public static FluentFetchRequest<TOriginating, TRelated> FetchMany<TOriginating, TRelated> (
         this IQueryable<TOriginating> query, Expression<Func<TOriginating, IEnumerable<TRelated>>> relatedObjectSelector)
     {
-      ArgumentUtility.CheckNotNull("query", query);
-      ArgumentUtility.CheckNotNull("relatedObjectSelector", relatedObjectSelector);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentUtility.CheckNotNull(nameof(relatedObjectSelector), relatedObjectSelector);
 
       var methodInfo = ((MethodInfo)MethodBase.GetCurrentMethod()!).MakeGenericMethod(typeof(TOriginating), typeof(TRelated));
       return CreateFluentFetchRequest<TOriginating, TRelated>(methodInfo, query, relatedObjectSelector);
@@ -58,8 +58,8 @@ namespace Remotion.Data.DomainObjects.Linq
     public static FluentFetchRequest<TOriginating, TRelated> FetchOne<TOriginating, TRelated> (
         this IQueryable<TOriginating> query, Expression<Func<TOriginating, TRelated>> relatedObjectSelector)
     {
-      ArgumentUtility.CheckNotNull("query", query);
-      ArgumentUtility.CheckNotNull("relatedObjectSelector", relatedObjectSelector);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentUtility.CheckNotNull(nameof(relatedObjectSelector), relatedObjectSelector);
 
       var methodInfo = ((MethodInfo)MethodBase.GetCurrentMethod()!).MakeGenericMethod(typeof(TOriginating), typeof(TRelated));
       return CreateFluentFetchRequest<TOriginating, TRelated>(methodInfo, query, relatedObjectSelector);
@@ -80,8 +80,8 @@ namespace Remotion.Data.DomainObjects.Linq
         this FluentFetchRequest<TQueried, TFetch> query,
         Expression<Func<TFetch, IEnumerable<TRelated>>> relatedObjectSelector)
     {
-      ArgumentUtility.CheckNotNull("query", query);
-      ArgumentUtility.CheckNotNull("relatedObjectSelector", relatedObjectSelector);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentUtility.CheckNotNull(nameof(relatedObjectSelector), relatedObjectSelector);
 
       var methodInfo = ((MethodInfo)MethodBase.GetCurrentMethod()!).MakeGenericMethod(typeof(TQueried), typeof(TFetch), typeof(TRelated));
       return CreateFluentFetchRequest<TQueried, TRelated>(methodInfo, query, relatedObjectSelector);
@@ -102,8 +102,8 @@ namespace Remotion.Data.DomainObjects.Linq
         this FluentFetchRequest<TQueried, TFetch> query,
         Expression<Func<TFetch, TRelated>> relatedObjectSelector)
     {
-      ArgumentUtility.CheckNotNull("query", query);
-      ArgumentUtility.CheckNotNull("relatedObjectSelector", relatedObjectSelector);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentUtility.CheckNotNull(nameof(relatedObjectSelector), relatedObjectSelector);
 
       var methodInfo = ((MethodInfo)MethodBase.GetCurrentMethod()!).MakeGenericMethod(typeof(TQueried), typeof(TFetch), typeof(TRelated));
       return CreateFluentFetchRequest<TQueried, TRelated>(methodInfo, query, relatedObjectSelector);

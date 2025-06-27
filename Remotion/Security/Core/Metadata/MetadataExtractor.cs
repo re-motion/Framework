@@ -28,7 +28,7 @@ namespace Remotion.Security.Metadata
 
     public MetadataExtractor (IMetadataConverter converter)
     {
-      ArgumentUtility.CheckNotNull("converter", converter);
+      ArgumentUtility.CheckNotNull(nameof(converter), converter);
 
       _assemblies = new List<Assembly>();
       _converter = converter;

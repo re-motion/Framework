@@ -49,8 +49,8 @@ namespace Remotion.Globalization.Implementation
         IGlobalizationService globalizationService,
         IMemberInformationNameResolver memberInformationNameResolver)
     {
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
-      ArgumentUtility.CheckNotNull("memberInformationNameResolver", memberInformationNameResolver);
+      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
+      ArgumentUtility.CheckNotNull(nameof(memberInformationNameResolver), memberInformationNameResolver);
 
       _globalizationService = globalizationService;
       _memberInformationNameResolver = memberInformationNameResolver;
@@ -61,8 +61,8 @@ namespace Remotion.Globalization.Implementation
         ITypeInformation typeInformationForResourceResolution,
         [MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
-      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull(nameof(typeInformation), typeInformation);
+      ArgumentUtility.CheckNotNull(nameof(typeInformationForResourceResolution), typeInformationForResourceResolution);
 
       result = GetStringOrDefault(
           typeInformationForResourceResolution,
@@ -78,8 +78,8 @@ namespace Remotion.Globalization.Implementation
         ITypeInformation typeInformationForResourceResolution,
         [MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
-      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull(nameof(propertyInformation), propertyInformation);
+      ArgumentUtility.CheckNotNull(nameof(typeInformationForResourceResolution), typeInformationForResourceResolution);
 
       result = GetStringOrDefault(
           typeInformationForResourceResolution,
@@ -94,8 +94,8 @@ namespace Remotion.Globalization.Implementation
         IPropertyInformation propertyInformation,
         ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
-      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull(nameof(propertyInformation), propertyInformation);
+      ArgumentUtility.CheckNotNull(nameof(typeInformationForResourceResolution), typeInformationForResourceResolution);
 
       var prefix = "property:";
       var shortName = prefix + propertyInformation.Name;
@@ -111,8 +111,8 @@ namespace Remotion.Globalization.Implementation
 
     public IReadOnlyDictionary<CultureInfo, string> GetAvailableTypeDisplayNames (ITypeInformation typeInformation, ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
-      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull(nameof(typeInformation), typeInformation);
+      ArgumentUtility.CheckNotNull(nameof(typeInformationForResourceResolution), typeInformationForResourceResolution);
 
       var prefix = "type:";
       var shortName = prefix + typeInformation.Name;

@@ -38,8 +38,8 @@ namespace Remotion.Data.DomainObjects.Mapping
         IMappingValidatorFactory mappingValidatorFactory,
         IPersistenceModelValidatorFactory persistenceModelValidatorFactory)
     {
-      ArgumentUtility.CheckNotNull("mappingValidatorFactory", mappingValidatorFactory);
-      ArgumentUtility.CheckNotNull("persistenceModelValidatorFactory", persistenceModelValidatorFactory);
+      ArgumentUtility.CheckNotNull(nameof(mappingValidatorFactory), mappingValidatorFactory);
+      ArgumentUtility.CheckNotNull(nameof(persistenceModelValidatorFactory), persistenceModelValidatorFactory);
 
       _mappingValidatorFactory = mappingValidatorFactory;
       _persistenceModelValidatorFactory = persistenceModelValidatorFactory;
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void VerifyPersistenceModelApplied (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
       if (!classDefinition.HasStorageEntityDefinitionBeenSet)
       {
@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void ValidateClassDefinitions (IEnumerable<ClassDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
+      ArgumentUtility.CheckNotNull(nameof(typeDefinitions), typeDefinitions);
 
       var typeDefinitionValidator = _mappingValidatorFactory.CreateClassDefinitionValidator();
       AnalyzeMappingValidationResults(typeDefinitionValidator.Validate(typeDefinitions));
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void ValidatePropertyDefinitions (IEnumerable<ClassDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
+      ArgumentUtility.CheckNotNull(nameof(typeDefinitions), typeDefinitions);
 
       var propertyDefinitionValidator = _mappingValidatorFactory.CreatePropertyDefinitionValidator();
       AnalyzeMappingValidationResults(propertyDefinitionValidator.Validate(typeDefinitions));
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void ValidateRelationDefinitions (IEnumerable<RelationDefinition> relationDefinitions)
     {
-      ArgumentUtility.CheckNotNull("relationDefinitions", relationDefinitions);
+      ArgumentUtility.CheckNotNull(nameof(relationDefinitions), relationDefinitions);
 
       var relationDefinitionValidator = _mappingValidatorFactory.CreateRelationDefinitionValidator();
       AnalyzeMappingValidationResults(relationDefinitionValidator.Validate(relationDefinitions));
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void ValidateSortExpression (IEnumerable<RelationDefinition> relationDefinitions)
     {
-      ArgumentUtility.CheckNotNull("relationDefinitions", relationDefinitions);
+      ArgumentUtility.CheckNotNull(nameof(relationDefinitions), relationDefinitions);
 
       var sortExpressionValidator = _mappingValidatorFactory.CreateSortExpressionValidator();
       AnalyzeMappingValidationResults(sortExpressionValidator.Validate(relationDefinitions));
@@ -105,7 +105,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void ValidatePersistenceMapping (ClassDefinition rootClass)
     {
-      ArgumentUtility.CheckNotNull("rootClass", rootClass);
+      ArgumentUtility.CheckNotNull(nameof(rootClass), rootClass);
 
       var validator = _persistenceModelValidatorFactory.CreatePersistenceMappingValidator(rootClass);
       var classDefinitionsToValidate = new[] { rootClass }.Concat(rootClass.GetAllDerivedClasses());
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void AnalyzeMappingValidationResults (IEnumerable<MappingValidationResult> mappingValidationResults)
     {
-      ArgumentUtility.CheckNotNull("mappingValidationResults", mappingValidationResults);
+      ArgumentUtility.CheckNotNull(nameof(mappingValidationResults), mappingValidationResults);
 
       var mappingValidationResultsArray = mappingValidationResults.ToArray();
       if (mappingValidationResultsArray.Any())
@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void ValidateDuplicateClassIDs (IEnumerable<ClassDefinition> classDefinitions)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull(nameof(classDefinitions), classDefinitions);
 
       var duplicateGroups = from cd in classDefinitions
                             group cd by cd.ID

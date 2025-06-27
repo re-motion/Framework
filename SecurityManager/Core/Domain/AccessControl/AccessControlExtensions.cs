@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     [LinqPropertyRedirection(typeof(StatefulAccessControlList), "MyClass")]
     public static SecurableClassDefinition GetClassForQuery (this StatefulAccessControlList acl)
     {
-      ArgumentUtility.CheckNotNull("acl", acl);
+      ArgumentUtility.CheckNotNull(nameof(acl), acl);
 
       Assertion.IsNotNull(acl.Class, "AccessControlList{{{0}}}.Class must not be null when used in a query.", acl.ID);
       return acl.Class;
@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     [LinqPropertyRedirection(typeof(StatelessAccessControlList), "MyClass")]
     public static SecurableClassDefinition GetClassForQuery (this StatelessAccessControlList acl)
     {
-      ArgumentUtility.CheckNotNull("acl", acl);
+      ArgumentUtility.CheckNotNull(nameof(acl), acl);
 
       Assertion.IsNotNull(acl.Class, "AccessControlList{{{0}}}.Class must not be null when used in a query.", acl.ID);
       return acl.Class;
@@ -47,7 +47,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     [LinqPropertyRedirection(typeof(StatefulAccessControlList), "StateCombinationsInternal")]
     public static ObjectList<StateCombination> GetStateCombinationsForQuery (this StatefulAccessControlList acl)
     {
-      ArgumentUtility.CheckNotNull("acl", acl);
+      ArgumentUtility.CheckNotNull(nameof(acl), acl);
 
       return new ObjectList<StateCombination>(acl.StateCombinations);
     }
@@ -61,7 +61,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     [LinqPropertyRedirection(typeof(AccessControlEntry), "PermissionsInternal")]
     public static ObjectList<Permission> GetPermissionsForQuery (this AccessControlEntry ace)
     {
-      ArgumentUtility.CheckNotNull("ace", ace);
+      ArgumentUtility.CheckNotNull(nameof(ace), ace);
 
       return new ObjectList<Permission>(ace.GetPermissions());
     }

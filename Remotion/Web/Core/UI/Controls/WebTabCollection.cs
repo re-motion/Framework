@@ -134,7 +134,7 @@ namespace Remotion.Web.UI.Controls
 
     internal void DeselectTabInternal (WebTab tab)
     {
-      ArgumentUtility.CheckNotNull("tab", tab);
+      ArgumentUtility.CheckNotNull(nameof(tab), tab);
       if (tab.TabStrip != null && tab.TabStrip != _tabStrip)
         throw new ArgumentException("The tab is not part of this collection's Tabstrip", "tab");
 
@@ -144,7 +144,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Deselects a <see cref="WebTab"/> whose position in the list is still occupied. </summary>
     protected void DeselectTab (WebTab tab, int index)
     {
-      ArgumentUtility.CheckNotNull("tab", tab);
+      ArgumentUtility.CheckNotNull(nameof(tab), tab);
 
       if (_tabStrip != null && tab.IsSelected)
       {
@@ -165,7 +165,7 @@ namespace Remotion.Web.UI.Controls
 
     protected internal void SetTabStrip (WebTabStrip tabStrip)
     {
-      ArgumentUtility.CheckNotNull("tabStrip", tabStrip);
+      ArgumentUtility.CheckNotNull(nameof(tabStrip), tabStrip);
 
       _tabStrip = tabStrip;
       for (int i = 0; i < InnerList.Count; i++)

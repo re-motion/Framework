@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// </summary>
     public static ScreenshotTabbedMenuSelector SelectItem ([NotNull] this IFluentScreenshotElementWithCovariance<TabbedMenuControlObject> fluentTabbedMenu)
     {
-      ArgumentUtility.CheckNotNull("fluentTabbedMenu", fluentTabbedMenu);
+      ArgumentUtility.CheckNotNull(nameof(fluentTabbedMenu), fluentTabbedMenu);
 
       return new ScreenshotTabbedMenuSelector(fluentTabbedMenu.Target.Scope.FindCss("td.tabbedMainMenuCell"));
     }
@@ -41,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// </summary>
     public static FluentScreenshotElement<ScreenshotTabbedSubMenu> GetSubMenu ([NotNull] this IFluentScreenshotElementWithCovariance<TabbedMenuControlObject> fluentTabbedMenu)
     {
-      ArgumentUtility.CheckNotNull("fluentTabbedMenu", fluentTabbedMenu);
+      ArgumentUtility.CheckNotNull(nameof(fluentTabbedMenu), fluentTabbedMenu);
 
       var target = fluentTabbedMenu.Target.Scope.FindCss("td.tabbedSubMenuCell");
 
@@ -53,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// </summary>
     public static ScreenshotTabbedMenuSelector SelectItem ([NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotTabbedSubMenu> fluentTabbedSubMenu)
     {
-      ArgumentUtility.CheckNotNull("fluentTabbedSubMenu", fluentTabbedSubMenu);
+      ArgumentUtility.CheckNotNull(nameof(fluentTabbedSubMenu), fluentTabbedSubMenu);
 
       return new ScreenshotTabbedMenuSelector(fluentTabbedSubMenu.Target.Element);
     }

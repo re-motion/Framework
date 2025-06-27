@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public ExtensibleEnumSerializerDecorator (IEnumSerializer enumSerializer)
     {
-      ArgumentUtility.CheckNotNull("enumSerializer", enumSerializer);
+      ArgumentUtility.CheckNotNull(nameof(enumSerializer), enumSerializer);
       _enumSerializer = enumSerializer;
     }
 
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public void CollectPropertyType (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
 
       var propertyType = propertyDefinition.PropertyType;
       if (ExtensibleEnumUtility.IsExtensibleEnumType(propertyType))

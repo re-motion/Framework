@@ -117,7 +117,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
     /// </summary>
     public void SetLoggerFactory (ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
 
       _loggerFactory = loggerFactory;
     }

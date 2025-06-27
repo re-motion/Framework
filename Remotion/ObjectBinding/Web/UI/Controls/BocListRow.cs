@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (index < 0)
         throw new ArgumentOutOfRangeException("index", index, "Negative indices are not allowed.");
-      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
 
       _index = index;
       _businessObject = businessObject;

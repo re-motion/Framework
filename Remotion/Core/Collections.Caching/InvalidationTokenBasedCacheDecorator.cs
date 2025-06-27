@@ -33,8 +33,8 @@ namespace Remotion.Collections.Caching
 
     public InvalidationTokenBasedCacheDecorator (ICache<TKey, TValue> innerCache, InvalidationToken invalidationToken)
     {
-      ArgumentUtility.CheckNotNull("innerCache", innerCache);
-      ArgumentUtility.CheckNotNull("invalidationToken", invalidationToken);
+      ArgumentUtility.CheckNotNull(nameof(innerCache), innerCache);
+      ArgumentUtility.CheckNotNull(nameof(invalidationToken), invalidationToken);
 
       _innerCache = innerCache;
       _invalidationToken = invalidationToken;

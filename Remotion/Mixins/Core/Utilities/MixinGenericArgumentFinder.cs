@@ -33,7 +33,7 @@ namespace Remotion.Mixins.Utilities
 
     public Type? FindGenericArgument (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
 
       var mixinBase = MixinReflector.GetMixinBaseType(mixinType);
       if (mixinBase == null)

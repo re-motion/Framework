@@ -37,8 +37,8 @@ namespace Remotion.Validation.Validators
 
     public PredicateValidator ([NotNull] Predicate predicate, [NotNull] ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNull("predicate", predicate);
-      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNull(nameof(predicate), predicate);
+      ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
 
       _predicate = predicate;
       ErrorMessage = "The value must meet the specified condition.";
@@ -47,7 +47,7 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       if (IsValid(context))
         return Enumerable.Empty<ValidationFailure>();

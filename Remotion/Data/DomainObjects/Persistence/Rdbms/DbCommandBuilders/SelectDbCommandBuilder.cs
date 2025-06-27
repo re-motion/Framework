@@ -42,10 +42,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         ISqlDialect sqlDialect)
         : base(sqlDialect)
     {
-      ArgumentUtility.CheckNotNull("table", table);
-      ArgumentUtility.CheckNotNull("selectedColumns", selectedColumns);
-      ArgumentUtility.CheckNotNull("comparedColumns", comparedColumns);
-      ArgumentUtility.CheckNotNull("orderedColumns", orderedColumns);
+      ArgumentUtility.CheckNotNull(nameof(table), table);
+      ArgumentUtility.CheckNotNull(nameof(selectedColumns), selectedColumns);
+      ArgumentUtility.CheckNotNull(nameof(comparedColumns), comparedColumns);
+      ArgumentUtility.CheckNotNull(nameof(orderedColumns), orderedColumns);
 
       _table = table;
       _selectedColumns = selectedColumns;
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     public override IDbCommand Create (IDbCommandFactory dbCommandFactory)
     {
-      ArgumentUtility.CheckNotNull("dbCommandFactory", dbCommandFactory);
+      ArgumentUtility.CheckNotNull(nameof(dbCommandFactory), dbCommandFactory);
 
       var command = dbCommandFactory.CreateDbCommand();
 

@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     public EntityFrameworkExtension (Guid clientTransactionID, EntityFrameworkAppenderProxy appenderProxy)
     {
-      ArgumentUtility.CheckNotNull("appenderProxy", appenderProxy);
+      ArgumentUtility.CheckNotNull(nameof(appenderProxy), appenderProxy);
 
       _clientTransactionID = clientTransactionID;
       _appenderProxy = appenderProxy;
@@ -227,7 +227,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     public void QueryExecuting (Guid connectionID, Guid queryID, string commandText, IDictionary<string, object?> parameters)
     {
       ArgumentUtility.CheckNotNullOrEmpty("commandText", commandText);
-      ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
 
       _appenderProxy.StatementExecuted(_clientTransactionID, queryID, AppendParametersToCommandText(commandText, parameters));
     }

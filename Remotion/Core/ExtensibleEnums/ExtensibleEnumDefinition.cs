@@ -79,7 +79,7 @@ namespace Remotion.ExtensibleEnums
     /// for this <see cref="ExtensibleEnumDefinition{T}"/>.</param>
     public ExtensibleEnumDefinition (IExtensibleEnumValueDiscoveryService valueDiscoveryService)
     {
-      ArgumentUtility.CheckNotNull("valueDiscoveryService", valueDiscoveryService);
+      ArgumentUtility.CheckNotNull(nameof(valueDiscoveryService), valueDiscoveryService);
 
       _valueDiscoveryService = valueDiscoveryService;
       _cache = new DoubleCheckedLockingContainer<CacheItem>(RetrieveValues);
@@ -101,7 +101,7 @@ namespace Remotion.ExtensibleEnums
     /// <inheritdoc />
     public bool IsDefined (IExtensibleEnum value)
     {
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
       return value.GetEnumType() == GetEnumType() && IsDefined(value.ID);
     }
 
@@ -158,7 +158,7 @@ namespace Remotion.ExtensibleEnums
     /// <inheritdoc />
     public object[] GetCustomAttributes (Type attributeType)
     {
-      ArgumentUtility.CheckNotNull("attributeType", attributeType);
+      ArgumentUtility.CheckNotNull(nameof(attributeType), attributeType);
 
       var extensionTypes = (from info in GetValueInfos()
                            select info.DefiningMethod.DeclaringType).Distinct();

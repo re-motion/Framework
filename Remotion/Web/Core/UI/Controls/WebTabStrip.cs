@@ -72,7 +72,7 @@ namespace Remotion.Web.UI.Controls
 
     public WebTabStrip (WebTabCollection tabCollection)
     {
-      ArgumentUtility.CheckNotNull("tabCollection", tabCollection);
+      ArgumentUtility.CheckNotNull(nameof(tabCollection), tabCollection);
       _tabs = tabCollection;
       _tabs.SetTabStrip(this);
       _tabStyle = new WebTabStyle();
@@ -161,7 +161,7 @@ namespace Remotion.Web.UI.Controls
 
     protected virtual void OnClick (WebTab tab)
     {
-      ArgumentUtility.CheckNotNull("tab", tab);
+      ArgumentUtility.CheckNotNull(nameof(tab), tab);
       tab.OnClick();
       WebTabClickEventHandler? handler = (WebTabClickEventHandler?)Events[s_clickEvent];
       if (handler != null)
@@ -232,7 +232,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));
@@ -245,7 +245,7 @@ namespace Remotion.Web.UI.Controls
 
     protected virtual WebTabStripRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       var builder = new WebTabRendererAdapterArrayBuilder(GetVisibleTabs().ToArray(), TabStyle, SelectedTabStyle);
       builder.EnableSelectedTab = EnableSelectedTab;
@@ -278,7 +278,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
     void IResourceDispatchTarget.Dispatch (IDictionary<string, WebString> values)
     {
-      ArgumentUtility.CheckNotNull("values", values);
+      ArgumentUtility.CheckNotNull(nameof(values), values);
       Dispatch(values);
     }
 
@@ -365,8 +365,8 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Loads the resources into the control's properties. </summary>
     protected virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
 
       Tabs.LoadResources(resourceManager, globalizationService);
     }

@@ -36,8 +36,8 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     protected void CheckOriginatingObjects (IRelationEndPointDefinition relationEndPointDefinition, IEnumerable<ILoadedObjectData> originatingObjects)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull("originatingObjects", originatingObjects);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull(nameof(originatingObjects), originatingObjects);
 
       foreach (var originatingObject in originatingObjects)
       {
@@ -48,8 +48,8 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     protected void CheckRelatedObjects (IRelationEndPointDefinition relationEndPointDefinition, IEnumerable<LoadedObjectDataWithDataSourceData> relatedObjects)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull("relatedObjects", relatedObjects);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull(nameof(relatedObjects), relatedObjects);
 
       var oppositeEndPointDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition();
 
@@ -66,8 +66,8 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     private void CheckClassDefinitionOfOriginatingObject (IRelationEndPointDefinition relationEndPointDefinition, ILoadedObjectData originatingObject)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull("originatingObject", originatingObject);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull(nameof(originatingObject), originatingObject);
       Assertion.DebugAssert(originatingObject.IsNull == false, "originatingObject.IsNull == false");
       Assertion.DebugIsNotNull(originatingObject.ObjectID, "originatingObject.ObjectID != null");
 
@@ -93,9 +93,9 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
         IRelationEndPointDefinition oppositeEndPointDefinition,
         ObjectID relatedObjectID)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull("oppositeEndPointDefinition", oppositeEndPointDefinition);
-      ArgumentUtility.CheckNotNull("relatedObjectID", relatedObjectID);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull(nameof(oppositeEndPointDefinition), oppositeEndPointDefinition);
+      ArgumentUtility.CheckNotNull(nameof(relatedObjectID), relatedObjectID);
 
 
       if (!oppositeEndPointDefinition.ClassDefinition.IsSameOrBaseClassOf(relatedObjectID.ClassDefinition))
@@ -114,8 +114,8 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
         IEnumerable<LoadedObjectDataWithDataSourceData> loadedObjectData,
         IRelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull("loadedObjectData", loadedObjectData);
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull(nameof(loadedObjectData), loadedObjectData);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
       if (!relationEndPointDefinition.IsVirtual)
       {
         throw new ArgumentException(

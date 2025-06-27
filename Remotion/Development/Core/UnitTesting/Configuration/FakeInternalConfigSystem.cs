@@ -43,7 +43,7 @@ namespace Remotion.Development.UnitTesting.Configuration
     public void AddSection (string configKey, object section)
     {
       ArgumentUtility.CheckNotNullOrEmpty("configKey", configKey);
-      ArgumentUtility.CheckNotNull("section", section);
+      ArgumentUtility.CheckNotNull(nameof(section), section);
 
       _sections.Add(configKey, section);
     }

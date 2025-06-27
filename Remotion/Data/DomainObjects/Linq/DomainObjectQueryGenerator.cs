@@ -99,10 +99,10 @@ namespace Remotion.Data.DomainObjects.Linq
         IStorageTypeInformationProvider storageTypeInformationProvider,
         IMappingConfiguration mappingConfiguration)
     {
-      ArgumentUtility.CheckNotNull("sqlQueryGenerator", sqlQueryGenerator);
-      ArgumentUtility.CheckNotNull("typeConversionProvider", typeConversionProvider);
-      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
-      ArgumentUtility.CheckNotNull("mappingConfiguration", mappingConfiguration);
+      ArgumentUtility.CheckNotNull(nameof(sqlQueryGenerator), sqlQueryGenerator);
+      ArgumentUtility.CheckNotNull(nameof(typeConversionProvider), typeConversionProvider);
+      ArgumentUtility.CheckNotNull(nameof(storageTypeInformationProvider), storageTypeInformationProvider);
+      ArgumentUtility.CheckNotNull(nameof(mappingConfiguration), mappingConfiguration);
 
       _sqlQueryGenerator = sqlQueryGenerator;
       _typeConversionProvider = typeConversionProvider;
@@ -137,9 +137,9 @@ namespace Remotion.Data.DomainObjects.Linq
         IReadOnlyDictionary<string, object> metadata)
     {
       ArgumentUtility.CheckNotNullOrEmpty("id", id);
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull("queryModel", queryModel);
-      ArgumentUtility.CheckNotNull("metadata", metadata);
+      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
+      ArgumentUtility.CheckNotNull(nameof(queryModel), queryModel);
+      ArgumentUtility.CheckNotNull(nameof(metadata), metadata);
 
       var sqlQuery = _sqlQueryGenerator.CreateSqlQuery(queryModel);
       var sqlCommand = sqlQuery.SqlCommand;
@@ -158,10 +158,10 @@ namespace Remotion.Data.DomainObjects.Linq
         IReadOnlyDictionary<string, object> metadata)
     {
       ArgumentUtility.CheckNotNullOrEmpty("id", id);
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull("queryModel", queryModel);
-      ArgumentUtility.CheckNotNull("fetchQueryModelBuilders", fetchQueryModelBuilders);
-      ArgumentUtility.CheckNotNull("metadata", metadata);
+      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
+      ArgumentUtility.CheckNotNull(nameof(queryModel), queryModel);
+      ArgumentUtility.CheckNotNull(nameof(fetchQueryModelBuilders), fetchQueryModelBuilders);
+      ArgumentUtility.CheckNotNull(nameof(metadata), metadata);
 
       var sqlQuery = _sqlQueryGenerator.CreateSqlQuery(queryModel);
       var command = sqlQuery.SqlCommand;
@@ -201,10 +201,10 @@ namespace Remotion.Data.DomainObjects.Linq
         IReadOnlyDictionary<string, object> metadata)
     {
       ArgumentUtility.CheckNotNullOrEmpty("id", id);
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("commandParameters", commandParameters);
-      ArgumentUtility.CheckNotNull("metadata", metadata);
+      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
+      ArgumentUtility.CheckNotNull(nameof(statement), statement);
+      ArgumentUtility.CheckNotNull(nameof(commandParameters), commandParameters);
+      ArgumentUtility.CheckNotNull(nameof(metadata), metadata);
 
       var queryParameters = new QueryParameterCollection();
       foreach (var commandParameter in commandParameters)

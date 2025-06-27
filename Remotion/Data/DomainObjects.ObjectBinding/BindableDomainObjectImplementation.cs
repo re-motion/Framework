@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   {
     public static BindableDomainObjectImplementation Create (BindableDomainObject wrapper)
     {
-      ArgumentUtility.CheckNotNull("wrapper", wrapper);
+      ArgumentUtility.CheckNotNull(nameof(wrapper), wrapper);
       var impl = new BindableDomainObjectImplementation(wrapper);
       ((IInitializableMixin)impl).Initialize(wrapper, null);
       return impl;
@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
     protected BindableDomainObjectImplementation (BindableDomainObject wrapper)
     {
-      ArgumentUtility.CheckNotNull("wrapper", wrapper);
+      ArgumentUtility.CheckNotNull(nameof(wrapper), wrapper);
       _wrapper = wrapper;
     }
 

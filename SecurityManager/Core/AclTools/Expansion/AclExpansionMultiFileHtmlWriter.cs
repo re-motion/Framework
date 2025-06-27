@@ -55,7 +55,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     public void WriteAclExpansion (List<AclExpansionEntry> aclExpansion)
     {
-      ArgumentUtility.CheckNotNull("aclExpansion", aclExpansion);
+      ArgumentUtility.CheckNotNull(nameof(aclExpansion), aclExpansion);
       using (var textWriter = _textWriterFactory.CreateTextWriter(MasterFileName))
       {
         var writerImplementation = new AclExpansionHtmlWriterImplementationBase(textWriter, _indentXml);

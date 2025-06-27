@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNullOrEmpty("message", message);
       ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
-      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
 
       _propertyName = propertyName;
       _underlyingPropertyType = propertyType;

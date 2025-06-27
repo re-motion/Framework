@@ -44,9 +44,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public MixinTypeGenerator (ConcreteMixinTypeIdentifier identifier, MutableType type, IAttributeGenerator attributeGenerator, string pipelineIdentifier)
     {
-      ArgumentUtility.CheckNotNull("identifier", identifier);
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("attributeGenerator", attributeGenerator);
+      ArgumentUtility.CheckNotNull(nameof(identifier), identifier);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentUtility.CheckNotNull(nameof(attributeGenerator), attributeGenerator);
       ArgumentUtility.CheckNotNullOrEmpty("pipelineIdentifier", pipelineIdentifier);
 
       _identifier = identifier;
@@ -132,7 +132,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private MethodInfo GetPublicMethodWrapper (MethodInfo methodToBeWrapped)
     {
-      ArgumentUtility.CheckNotNull("methodToBeWrapped", methodToBeWrapped);
+      ArgumentUtility.CheckNotNull(nameof(methodToBeWrapped), methodToBeWrapped);
 
       // C# compiler 7.2 does not provide caching for delegate but during type generation there is already a significant amount of GC pressure so the delegate creation does not matter
       return _publicMethodWrappers.GetOrCreateValue(methodToBeWrapped, CreatePublicMethodWrapper);

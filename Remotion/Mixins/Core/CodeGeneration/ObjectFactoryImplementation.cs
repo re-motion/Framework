@@ -30,7 +30,7 @@ namespace Remotion.Mixins.CodeGeneration
 
     public ObjectFactoryImplementation (IPipelineRegistry pipelineRegistry)
     {
-      ArgumentUtility.CheckNotNull("pipelineRegistry", pipelineRegistry);
+      ArgumentUtility.CheckNotNull(nameof(pipelineRegistry), pipelineRegistry);
       _pipelineRegistry = pipelineRegistry;
     }
 
@@ -40,9 +40,9 @@ namespace Remotion.Mixins.CodeGeneration
         ParamList constructorParameters,
         params object[] preparedMixins)
     {
-      ArgumentUtility.CheckNotNull("targetOrConcreteType", targetOrConcreteType);
-      ArgumentUtility.CheckNotNull("constructorParameters", constructorParameters);
-      ArgumentUtility.CheckNotNull("preparedMixins", preparedMixins);
+      ArgumentUtility.CheckNotNull(nameof(targetOrConcreteType), targetOrConcreteType);
+      ArgumentUtility.CheckNotNull(nameof(constructorParameters), constructorParameters);
+      ArgumentUtility.CheckNotNull(nameof(preparedMixins), preparedMixins);
 
       if (targetOrConcreteType.IsInterface)
       {

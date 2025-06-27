@@ -70,8 +70,8 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
     /// </summary>
     protected void Register ([NotNull] string key, [NotNull] IGenericTestPage<TOptions> testPage)
     {
-      ArgumentUtility.CheckNotNull("key", key);
-      ArgumentUtility.CheckNotNull("testPage", testPage);
+      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentUtility.CheckNotNull(nameof(testPage), testPage);
 
       if (_pages.ContainsKey(key))
         throw new InvalidOperationException("A generic test page with that name is already registered.");

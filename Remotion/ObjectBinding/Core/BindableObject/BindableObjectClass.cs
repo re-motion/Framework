@@ -50,11 +50,11 @@ namespace Remotion.ObjectBinding.BindableObject
         BindableObjectGlobalizationService bindableObjectGlobalizationService,
         IEnumerable<PropertyBase> properties)
     {
-      ArgumentUtility.CheckNotNull("concreteType", concreteType);
+      ArgumentUtility.CheckNotNull(nameof(concreteType), concreteType);
       Assertion.IsFalse(concreteType.IsValueType, "mixed types cannot be value types");
-      ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
-      ArgumentUtility.CheckNotNull("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
-      ArgumentUtility.CheckNotNull("properties", properties);
+      ArgumentUtility.CheckNotNull(nameof(businessObjectProvider), businessObjectProvider);
+      ArgumentUtility.CheckNotNull(nameof(bindableObjectGlobalizationService), bindableObjectGlobalizationService);
+      ArgumentUtility.CheckNotNull(nameof(properties), properties);
 
       _targetType = MixinTypeUtility.GetUnderlyingTargetType(concreteType);
       _concreteType = concreteType;

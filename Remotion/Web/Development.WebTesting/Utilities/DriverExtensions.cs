@@ -40,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </returns>
     public static string GetBrowserName ([NotNull] this IDriver driver)
     {
-      ArgumentUtility.CheckNotNull("driver", driver);
+      ArgumentUtility.CheckNotNull(nameof(driver), driver);
 
       return driver.Native switch
       {
@@ -59,7 +59,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </returns>
     public static string GetBrowserVersion ([NotNull] this IDriver driver)
     {
-      ArgumentUtility.CheckNotNull("driver", driver);
+      ArgumentUtility.CheckNotNull(nameof(driver), driver);
 
       if (!(driver.Native is IHasCapabilities driverWithCapabilities))
         return c_unknown;
@@ -81,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </returns>
     public static string GetWebDriverVersion ([NotNull] this IDriver driver)
     {
-      ArgumentUtility.CheckNotNull("driver", driver);
+      ArgumentUtility.CheckNotNull(nameof(driver), driver);
 
       if (!(driver.Native is IHasCapabilities driverWithCapabilities))
         return c_unknown;

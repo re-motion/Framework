@@ -38,8 +38,8 @@ namespace Remotion.Collections.DataStore
         [JetBrains.Annotations.NotNull] IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> expirationPolicy,
         [JetBrains.Annotations.NotNull] IEqualityComparer<TKey> equalityComparer)
     {
-      ArgumentUtility.CheckNotNull("expirationPolicy", expirationPolicy);
-      ArgumentUtility.CheckNotNull("equalityComparer", equalityComparer);
+      ArgumentUtility.CheckNotNull(nameof(expirationPolicy), expirationPolicy);
+      ArgumentUtility.CheckNotNull(nameof(equalityComparer), equalityComparer);
 
       _innerDataStore = new SimpleDataStore<TKey, Tuple<TValue, TExpirationInfo>>(equalityComparer);
       _expirationPolicy = expirationPolicy;
@@ -58,15 +58,15 @@ namespace Remotion.Collections.DataStore
 
     public bool ContainsKey (TKey key)
     {
-      ArgumentUtility.CheckNotNull("key", key);
+      ArgumentUtility.CheckNotNull(nameof(key), key);
 
       return TryGetValue(key, out var dummy);
     }
 
     public void Add (TKey key, TValue value)
     {
-      ArgumentUtility.CheckNotNull("key", key);
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
 
       RemoveExpiredItems();
       AddWithoutScanning(key, value);
@@ -74,7 +74,7 @@ namespace Remotion.Collections.DataStore
 
     public bool Remove (TKey key)
     {
-      ArgumentUtility.CheckNotNull("key", key);
+      ArgumentUtility.CheckNotNull(nameof(key), key);
       RemoveExpiredItems();
       return RemoveWithoutScanning(key);
     }
@@ -102,7 +102,7 @@ namespace Remotion.Collections.DataStore
     [return: MaybeNull]
     public TValue GetValueOrDefault (TKey key)
     {
-      ArgumentUtility.CheckNotNull("key", key);
+      ArgumentUtility.CheckNotNull(nameof(key), key);
 
       TryGetValue(key, out var value);
       return value;
@@ -110,7 +110,7 @@ namespace Remotion.Collections.DataStore
 
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
-      ArgumentUtility.CheckNotNull("key", key);
+      ArgumentUtility.CheckNotNull(nameof(key), key);
 
       RemoveExpiredItems();
 
@@ -131,8 +131,8 @@ namespace Remotion.Collections.DataStore
 
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.CheckNotNull("key", key);
-      ArgumentUtility.CheckNotNull("valueFactory", valueFactory);
+      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentUtility.CheckNotNull(nameof(valueFactory), valueFactory);
 
       if (!TryGetValue(key, out var value))
       {

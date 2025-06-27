@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public ReadOnlyStorageProviderDecorator (IReadOnlyStorageProvider innerStorageProvider)
     {
-      ArgumentUtility.CheckNotNull("innerStorageProvider", innerStorageProvider);
+      ArgumentUtility.CheckNotNull(nameof(innerStorageProvider), innerStorageProvider);
 
       InnerStorageProvider = innerStorageProvider;
     }
@@ -47,14 +47,14 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
     {
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNull(nameof(id), id);
 
       return InnerStorageProvider.LoadDataContainer(id);
     }
 
     public IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
     {
-      ArgumentUtility.CheckNotNull("ids", ids);
+      ArgumentUtility.CheckNotNull(nameof(ids), ids);
 
       return InnerStorageProvider.LoadDataContainers(ids);
     }
@@ -64,15 +64,15 @@ namespace Remotion.Data.DomainObjects.Persistence
         SortExpressionDefinition? sortExpressionDefinition,
         ObjectID relatedID)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull("relatedID", relatedID);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull(nameof(relatedID), relatedID);
 
       return InnerStorageProvider.LoadDataContainersByRelatedID(relationEndPointDefinition, sortExpressionDefinition, relatedID);
     }
 
     public IEnumerable<DataContainer?> ExecuteCollectionQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
 
       CheckQueryType(query);
 
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
 
       CheckQueryType(query);
 
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public object? ExecuteScalarQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
 
       CheckQueryType(query);
 

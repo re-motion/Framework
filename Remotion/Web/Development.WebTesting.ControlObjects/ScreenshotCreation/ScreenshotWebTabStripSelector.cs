@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
 
     public ScreenshotWebTabStripSelector ([NotNull] WebTabStripControlObject webTabStrip)
     {
-      ArgumentUtility.CheckNotNull("webTabStrip", webTabStrip);
+      ArgumentUtility.CheckNotNull(nameof(webTabStrip), webTabStrip);
 
       _webTabStrip = webTabStrip.Scope;
     }
@@ -47,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithHtmlID (string htmlID)
     {
-      ArgumentUtility.CheckNotNull("htmlID", htmlID);
+      ArgumentUtility.CheckNotNull(nameof(htmlID), htmlID);
 
       var item = _webTabStrip.FindId(htmlID);
 
@@ -57,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithItemID (string itemID)
     {
-      ArgumentUtility.CheckNotNull("itemID", itemID);
+      ArgumentUtility.CheckNotNull(nameof(itemID), itemID);
 
       var item =
           _webTabStrip.FindCss(
@@ -84,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayText (string displayText)
     {
-      ArgumentUtility.CheckNotNull("displayText", displayText);
+      ArgumentUtility.CheckNotNull(nameof(displayText), displayText);
 
       var item =
           _webTabStrip.FindCss(
@@ -99,7 +99,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayTextContains (string displayText)
     {
-      ArgumentUtility.CheckNotNull("displayText", displayText);
+      ArgumentUtility.CheckNotNull(nameof(displayText), displayText);
 
       var item =
           _webTabStrip.FindCss(

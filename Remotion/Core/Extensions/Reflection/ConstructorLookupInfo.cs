@@ -42,7 +42,7 @@ namespace Remotion.Reflection
         Type definingType, BindingFlags bindingFlags, Binder? binder, CallingConventions callingConvention, ParameterModifier[]? parameterModifiers)
         : base(".ctor", bindingFlags, binder, callingConvention, parameterModifiers)
     {
-      ArgumentUtility.CheckNotNull("definingType", definingType);
+      ArgumentUtility.CheckNotNull(nameof(definingType), definingType);
 
       _definingType = definingType;
     }
@@ -75,8 +75,8 @@ namespace Remotion.Reflection
 
     public object? DynamicInvoke (Type[] parameterTypes, object[] parameterValues)
     {
-      ArgumentUtility.CheckNotNull("parameterTypes", parameterTypes);
-      ArgumentUtility.CheckNotNull("parameterValues", parameterValues);
+      ArgumentUtility.CheckNotNull(nameof(parameterTypes), parameterTypes);
+      ArgumentUtility.CheckNotNull(nameof(parameterValues), parameterValues);
 
       CheckNotAbstract();
 

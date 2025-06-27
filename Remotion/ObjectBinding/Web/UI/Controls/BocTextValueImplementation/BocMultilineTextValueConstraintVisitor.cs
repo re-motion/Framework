@@ -28,21 +28,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
 
     public BocMultilineTextValueConstraintVisitor (BocMultilineTextValue control)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
 
       Control = control;
     }
 
     public void Visit (BusinessObjectPropertyValueRequiredConstraint constraint)
     {
-      ArgumentUtility.CheckNotNull("constraint", constraint);
+      ArgumentUtility.CheckNotNull(nameof(constraint), constraint);
 
       ((IBusinessObjectBoundEditableWebControl)Control).RequiredByPropertyConstraint = constraint.IsRequired;
     }
 
     public void Visit (BusinessObjectPropertyValueLengthConstraint constraint)
     {
-      ArgumentUtility.CheckNotNull("constraint", constraint);
+      ArgumentUtility.CheckNotNull(nameof(constraint), constraint);
 
       Control.TextBoxStyle.MaxLengthByPropertyConstraint = constraint.MaxLength;
     }

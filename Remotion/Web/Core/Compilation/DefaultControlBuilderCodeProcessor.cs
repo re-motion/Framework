@@ -36,7 +36,7 @@ namespace Remotion.Web.Compilation
         CodeMemberMethod dataBindingMethod,
         Action<CodeCompileUnit, CodeTypeDeclaration, CodeTypeDeclaration, CodeMemberMethod, CodeMemberMethod> baseCall)
     {
-      ArgumentUtility.CheckNotNull("baseCall", baseCall);
+      ArgumentUtility.CheckNotNull(nameof(baseCall), baseCall);
       baseCall(codeCompileUnit, baseType, derivedType, buildMethod, dataBindingMethod);
     }
   }

@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
       public Row (IEnumerable<object?> values)
       {
-        ArgumentUtility.CheckNotNull("values", values);
+        ArgumentUtility.CheckNotNull(nameof(values), values);
 
         _values = values;
       }
@@ -72,8 +72,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public ColumnValueTable (IEnumerable<ColumnDefinition> columns, IEnumerable<Row> rows)
     {
-      ArgumentUtility.CheckNotNull("columns", columns);
-      ArgumentUtility.CheckNotNull("rows", rows);
+      ArgumentUtility.CheckNotNull(nameof(columns), columns);
+      ArgumentUtility.CheckNotNull(nameof(rows), rows);
 
       _columns = columns;
       _rows = rows;

@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     public bool IsDefaultValue (IBusinessObject obj, PropertyBase property)
     {
       var domainObject = ArgumentUtility.CheckNotNullAndType<IDomainObject>("obj", obj);
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNull(nameof(property), property);
 
       if (!domainObject.GetState().IsNew)
         return false;

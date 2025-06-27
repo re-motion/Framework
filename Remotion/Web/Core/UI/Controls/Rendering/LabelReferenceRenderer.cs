@@ -36,7 +36,7 @@ namespace Remotion.Web.UI.Controls.Rendering
 
     public LabelReferenceRenderer ([NotNull] IRenderingFeatures renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
+      ArgumentUtility.CheckNotNull(nameof(renderingFeatures), renderingFeatures);
 
       _renderingFeatures = renderingFeatures;
     }
@@ -46,9 +46,9 @@ namespace Remotion.Web.UI.Controls.Rendering
         IReadOnlyCollection<string> labelIDs,
         IReadOnlyCollection<string> accessibilityAnnotationIDs)
     {
-      ArgumentUtility.CheckNotNull("attributeAccessor", attributeAccessor);
-      ArgumentUtility.CheckNotNull("labelIDs", labelIDs);
-      ArgumentUtility.CheckNotNull("accessibilityAnnotationIDs", accessibilityAnnotationIDs);
+      ArgumentUtility.CheckNotNull(nameof(attributeAccessor), attributeAccessor);
+      ArgumentUtility.CheckNotNull(nameof(labelIDs), labelIDs);
+      ArgumentUtility.CheckNotNull(nameof(accessibilityAnnotationIDs), accessibilityAnnotationIDs);
 
       if (!labelIDs.Any() && !accessibilityAnnotationIDs.Any())
         return;
@@ -68,8 +68,8 @@ namespace Remotion.Web.UI.Controls.Rendering
         IReadOnlyCollection<string> labelIDs,
         IReadOnlyCollection<string> accessibilityAnnotationIDs)
     {
-      ArgumentUtility.CheckNotNull("htmlTextWriter", htmlTextWriter);
-      ArgumentUtility.CheckNotNull("labelIDs", labelIDs);
+      ArgumentUtility.CheckNotNull(nameof(htmlTextWriter), htmlTextWriter);
+      ArgumentUtility.CheckNotNull(nameof(labelIDs), labelIDs);
 
 
       if (!labelIDs.Any() && !accessibilityAnnotationIDs.Any())

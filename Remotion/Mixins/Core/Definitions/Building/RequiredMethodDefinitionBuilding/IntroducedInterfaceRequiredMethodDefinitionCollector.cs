@@ -24,7 +24,7 @@ namespace Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding
   {
     public IEnumerable<RequiredMethodDefinition> CreateRequiredMethodDefinitions (RequirementDefinitionBase requirement)
     {
-      ArgumentUtility.CheckNotNull("requirement", requirement);
+      ArgumentUtility.CheckNotNull(nameof(requirement), requirement);
 
       Assertion.IsTrue(requirement.Type.IsInterface);
 

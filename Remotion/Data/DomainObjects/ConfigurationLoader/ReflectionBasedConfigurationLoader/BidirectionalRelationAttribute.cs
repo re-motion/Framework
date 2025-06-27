@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       get { return _sortExpression; }
       set
       {
-        ArgumentUtility.CheckNotNull("value", value);
+        ArgumentUtility.CheckNotNull(nameof(value), value);
         value = value.Trim();
         ArgumentUtility.CheckNotNullOrEmpty("value", value);
         _sortExpression = StringUtility.EmptyToNull(value);

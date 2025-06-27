@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentHeaderRow", fluentHeaderRow);
+      ArgumentUtility.CheckNotNull(nameof(fluentHeaderRow), fluentHeaderRow);
 
       return fluentHeaderRow.Target.GetCellSelector();
     }
@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentHeaderRow", fluentHeaderRow);
+      ArgumentUtility.CheckNotNull(nameof(fluentHeaderRow), fluentHeaderRow);
       ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
       return fluentHeaderRow.Target.GetCellSelector().WithItemID(itemID);
@@ -71,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentHeaderRow", fluentHeaderRow);
+      ArgumentUtility.CheckNotNull(nameof(fluentHeaderRow), fluentHeaderRow);
 
       return fluentHeaderRow.Target.GetCellSelector().WithIndex(oneBasedIndex);
     }
@@ -86,7 +86,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentRow", fluentRow);
+      ArgumentUtility.CheckNotNull(nameof(fluentRow), fluentRow);
 
       var result = fluentRow.Target.Element.FindCss("th.bocListTitleCellValidationFailureIndicator img", Options.NoWait);
       if (!result.Exists(Options.NoWait))

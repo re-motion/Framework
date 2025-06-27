@@ -46,10 +46,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         Size translation,
         bool forceCircle)
     {
-      ArgumentUtility.CheckNotNull("content", content);
-      ArgumentUtility.CheckNotNull("font", font);
-      ArgumentUtility.CheckNotNull("contentBrush", contentBrush);
-      ArgumentUtility.CheckNotNull("borderPen", borderPen);
+      ArgumentUtility.CheckNotNull(nameof(content), content);
+      ArgumentUtility.CheckNotNull(nameof(font), font);
+      ArgumentUtility.CheckNotNull(nameof(contentBrush), contentBrush);
+      ArgumentUtility.CheckNotNull(nameof(borderPen), borderPen);
 
       _content = content;
       _contentPadding = contentPadding;
@@ -134,8 +134,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// <inheritdoc />
     public void Draw (Canvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull("canvas", canvas);
-      ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
+      ArgumentUtility.CheckNotNull(nameof(canvas), canvas);
+      ArgumentUtility.CheckNotNull(nameof(resolvedScreenshotElement), resolvedScreenshotElement);
 
       var elementBounds = resolvedScreenshotElement.ElementBounds;
       var centerPoint = new Point(

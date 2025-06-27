@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
 
     public bool TryParse (string stringValue, [MaybeNullWhen(false)] out object resultValue)
     {
-      ArgumentUtility.CheckNotNull("stringValue", stringValue);
+      ArgumentUtility.CheckNotNull(nameof(stringValue), stringValue);
 
       int intValue;
       if (Int32.TryParse(stringValue, out intValue))

@@ -63,7 +63,7 @@ namespace Remotion.Configuration.TypeResolution
 
     public TypeResolutionConfiguration (ITypeResolutionService typeResolutionService)
     {
-      ArgumentUtility.CheckNotNull("typeResolutionService", typeResolutionService);
+      ArgumentUtility.CheckNotNull(nameof(typeResolutionService), typeResolutionService);
 
       _typeResolutionService = typeResolutionService;
     }

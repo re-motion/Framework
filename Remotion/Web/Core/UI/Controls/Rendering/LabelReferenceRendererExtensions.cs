@@ -32,9 +32,9 @@ namespace Remotion.Web.UI.Controls.Rendering
         [NotNull] IReadOnlyCollection<string> labelIDs
         )
     {
-      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull("attributeAccessor", attributeAccessor);
-      ArgumentUtility.CheckNotNull("labelIDs", labelIDs);
+      ArgumentUtility.CheckNotNull(nameof(labelReferenceRenderer), labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull(nameof(attributeAccessor), attributeAccessor);
+      ArgumentUtility.CheckNotNull(nameof(labelIDs), labelIDs);
 
       labelReferenceRenderer.SetLabelsReferenceOnControl(attributeAccessor, labelIDs, s_emptyAccessibilityAnnotationIDs);
     }
@@ -45,9 +45,9 @@ namespace Remotion.Web.UI.Controls.Rendering
         [NotNull] IReadOnlyCollection<string> labelIDs
         )
     {
-      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull("htmlTextWriter", htmlTextWriter);
-      ArgumentUtility.CheckNotNull("labelIDs", labelIDs);
+      ArgumentUtility.CheckNotNull(nameof(labelReferenceRenderer), labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull(nameof(htmlTextWriter), htmlTextWriter);
+      ArgumentUtility.CheckNotNull(nameof(labelIDs), labelIDs);
 
       labelReferenceRenderer.AddLabelsReference(htmlTextWriter, labelIDs, s_emptyAccessibilityAnnotationIDs);
     }

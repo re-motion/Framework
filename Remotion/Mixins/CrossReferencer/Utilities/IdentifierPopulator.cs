@@ -28,7 +28,7 @@ namespace Remotion.Mixins.CrossReferencer.Utilities
 
     public IdentifierPopulator (IEnumerable<T> items)
     {
-      ArgumentUtility.CheckNotNull("items", items);
+      ArgumentUtility.CheckNotNull(nameof(items), items);
 
       foreach (var item in items)
         _identifierGenerator.GetIdentifier(item);

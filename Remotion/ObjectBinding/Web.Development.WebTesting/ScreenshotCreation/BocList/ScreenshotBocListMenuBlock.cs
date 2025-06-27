@@ -41,8 +41,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         [NotNull] IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
         [NotNull] IFluentScreenshotElement<ElementScope> fluentElement)
     {
-      ArgumentUtility.CheckNotNull("fluentList", fluentList);
-      ArgumentUtility.CheckNotNull("fluentElement", fluentElement);
+      ArgumentUtility.CheckNotNull(nameof(fluentList), fluentList);
+      ArgumentUtility.CheckNotNull(nameof(fluentElement), fluentElement);
 
       _fluentList = fluentList;
       _fluentElement = fluentElement;
@@ -77,7 +77,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull("locator", locator);
+      ArgumentUtility.CheckNotNull(nameof(locator), locator);
 
       return _fluentElement.ResolveDesktopCoordinates(locator);
     }

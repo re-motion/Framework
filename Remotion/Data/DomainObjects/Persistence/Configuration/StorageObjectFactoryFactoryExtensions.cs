@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     public static T Create<T> (this IStorageObjectFactoryFactory storageObjectFactoryFactory)
         where T : IStorageObjectFactory
     {
-      ArgumentUtility.CheckNotNull("storageObjectFactoryFactory", storageObjectFactoryFactory);
+      ArgumentUtility.CheckNotNull(nameof(storageObjectFactoryFactory), storageObjectFactoryFactory);
 
       return (T)storageObjectFactoryFactory.Create(typeof(T));
     }

@@ -24,8 +24,8 @@ namespace Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory
   {
     public override TextWriter CreateTextWriter (string directory, string name, string? extension)
     {
-      ArgumentUtility.CheckNotNull("directory", directory);
-      ArgumentUtility.CheckNotNull("name", name);
+      ArgumentUtility.CheckNotNull(nameof(directory), directory);
+      ArgumentUtility.CheckNotNull(nameof(name), name);
 
       if (!System.IO.Directory.Exists(directory))
       {
@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory
 
     public override TextWriter CreateTextWriter (string name)
     {
-      ArgumentUtility.CheckNotNull("name", name);
+      ArgumentUtility.CheckNotNull(nameof(name), name);
       if (Directory == null)
         throw new InvalidOperationException("Directory must not be null. Set using \"Directory\"-property before calling \"CreateTextWriter\"");
 

@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public AccessControlListFinder (ISecurityContextRepository securityContextRepository)
     {
-      ArgumentUtility.CheckNotNull("securityContextRepository", securityContextRepository);
+      ArgumentUtility.CheckNotNull(nameof(securityContextRepository), securityContextRepository);
 
       _securityContextRepository = securityContextRepository;
     }
@@ -45,7 +45,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     /// </exception>
     public IDomainObjectHandle<AccessControlList>? Find (ISecurityContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       // Status quo:
       // Don't match ACL if Context contains more properties then the Class

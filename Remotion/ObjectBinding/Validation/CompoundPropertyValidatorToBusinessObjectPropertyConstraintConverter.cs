@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.Validation
     public CompoundPropertyValidatorToBusinessObjectPropertyConstraintConverter (
         IEnumerable<IPropertyValidatorToBusinessObjectPropertyConstraintConverter> converters)
     {
-      ArgumentUtility.CheckNotNull("converters", converters);
+      ArgumentUtility.CheckNotNull(nameof(converters), converters);
 
       Converters = converters.ToList().AsReadOnly();
     }
@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Validation
 
     public IEnumerable<IBusinessObjectPropertyConstraint> Convert (IReadOnlyCollection<IPropertyValidator> propertyValidators)
     {
-      ArgumentUtility.CheckNotNull("propertyValidators", propertyValidators);
+      ArgumentUtility.CheckNotNull(nameof(propertyValidators), propertyValidators);
 
       return Converters.SelectMany(c => c.Convert(propertyValidators));
     }

@@ -43,8 +43,8 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, IControl control)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
 
       htmlHeadAppender.RegisterWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();
@@ -58,7 +58,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
     public void Render (WebTabStripRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock(
           renderingContext.Control,
@@ -83,7 +83,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
     protected void AddAttributesToRender (WebTabStripRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       AddStandardAttributesToRender(renderingContext);
 

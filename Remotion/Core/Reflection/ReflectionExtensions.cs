@@ -37,7 +37,7 @@ namespace Remotion.Reflection
     /// </returns>
     public static bool IsOriginalDeclaration (this IMemberInformation memberInfo)
     {
-      ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
+      ArgumentUtility.CheckNotNull(nameof(memberInfo), memberInfo);
 
       var declaringType = memberInfo.DeclaringType;
       var originalDeclaringType = memberInfo.GetOriginalDeclaringType();
@@ -53,7 +53,7 @@ namespace Remotion.Reflection
     [NotNull]
     public static Type ConvertToRuntimeType (this ITypeInformation typeInformation)
     {
-      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull(nameof(typeInformation), typeInformation);
 
       if (!s_typeConversionProvider.CanConvert(typeInformation.GetType(), typeof(Type)))
       {
@@ -70,7 +70,7 @@ namespace Remotion.Reflection
     [CanBeNull]
     public static Type? AsRuntimeType (this ITypeInformation typeInformation)
     {
-      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull(nameof(typeInformation), typeInformation);
 
       if (!s_typeConversionProvider.CanConvert(typeInformation.GetType(), typeof(Type)))
         return null;
@@ -81,7 +81,7 @@ namespace Remotion.Reflection
     [NotNull]
     public static PropertyInfo ConvertToRuntimePropertyInfo (this IPropertyInformation propertyInformation)
     {
-      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull(nameof(propertyInformation), propertyInformation);
 
       var propertyInfo = AsRuntimePropertyInfo(propertyInformation);
       if (propertyInfo == null)
@@ -99,7 +99,7 @@ namespace Remotion.Reflection
     [CanBeNull]
     public static PropertyInfo? AsRuntimePropertyInfo (this IPropertyInformation propertyInformation)
     {
-      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull(nameof(propertyInformation), propertyInformation);
 
       var propertyInfoAdapter = propertyInformation as PropertyInfoAdapter;
       if (propertyInfoAdapter != null)

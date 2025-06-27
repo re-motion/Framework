@@ -37,14 +37,14 @@ namespace Remotion.Mixins.Definitions
 
     public override bool ContainsKey (TKey key)
     {
-      ArgumentUtility.CheckNotNull("key", key);
+      ArgumentUtility.CheckNotNull(nameof(key), key);
       return _items.ContainsKey(key);
     }
 
     protected override void CustomizedAdd (TKey key, TValue value)
     {
-      ArgumentUtility.CheckNotNull("key", key);
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
 
       _items.Add(key, value);
     }
@@ -58,20 +58,20 @@ namespace Remotion.Mixins.Definitions
     {
       get
       {
-        ArgumentUtility.CheckNotNull("key", key);
+        ArgumentUtility.CheckNotNull(nameof(key), key);
         return _items[key];
       }
     }
 
     public int GetItemCount (TKey key)
     {
-      ArgumentUtility.CheckNotNull("key", key);
+      ArgumentUtility.CheckNotNull(nameof(key), key);
       return _items[key].Count;
     }
 
     public TValue GetFirstItem (TKey key)
     {
-      ArgumentUtility.CheckNotNull("key", key);
+      ArgumentUtility.CheckNotNull(nameof(key), key);
       if (GetItemCount(key) == 0)
         throw new ArgumentException("There is no item with the given key.", "key");
       else

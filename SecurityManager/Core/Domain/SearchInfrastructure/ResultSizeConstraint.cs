@@ -39,7 +39,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     public IQueryable<T> ApplyTo<T> (IQueryable<T> query)
     {
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
 
       return query.Take(Value);
     }

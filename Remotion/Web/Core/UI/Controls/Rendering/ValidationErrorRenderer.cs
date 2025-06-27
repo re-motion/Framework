@@ -42,7 +42,7 @@ namespace Remotion.Web.UI.Controls.Rendering
 
     public ValidationErrorRenderer ([NotNull] IRenderingFeatures renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
+      ArgumentUtility.CheckNotNull(nameof(renderingFeatures), renderingFeatures);
 
       _renderingFeatures = renderingFeatures;
     }
@@ -52,9 +52,9 @@ namespace Remotion.Web.UI.Controls.Rendering
         string validationErrorID,
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
-      ArgumentUtility.CheckNotNull("attributeAccessor", attributeAccessor);
+      ArgumentUtility.CheckNotNull(nameof(attributeAccessor), attributeAccessor);
       ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
-      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
+      ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
 
       if (!validationErrors.Any())
         return;
@@ -76,9 +76,9 @@ namespace Remotion.Web.UI.Controls.Rendering
         string validationErrorID,
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
-      ArgumentUtility.CheckNotNull("attributeCollection", attributeCollection);
+      ArgumentUtility.CheckNotNull(nameof(attributeCollection), attributeCollection);
       ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
-      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
+      ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
 
       if (!validationErrors.Any())
         return;
@@ -99,9 +99,9 @@ namespace Remotion.Web.UI.Controls.Rendering
         string validationErrorID,
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
-      ArgumentUtility.CheckNotNull("htmlTextWriter", htmlTextWriter);
+      ArgumentUtility.CheckNotNull(nameof(htmlTextWriter), htmlTextWriter);
       ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
-      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
+      ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
 
       if (!validationErrors.Any())
         return;

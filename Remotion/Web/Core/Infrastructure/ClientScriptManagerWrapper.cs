@@ -30,7 +30,7 @@ namespace Remotion.Web.Infrastructure
 
     public ClientScriptManagerWrapper (ClientScriptManager clientScriptManager)
     {
-      ArgumentUtility.CheckNotNull("clientScriptManager", clientScriptManager);
+      ArgumentUtility.CheckNotNull(nameof(clientScriptManager), clientScriptManager);
 
       _clientScriptManager = clientScriptManager;
     }
@@ -560,7 +560,7 @@ namespace Remotion.Web.Infrastructure
     public void RegisterClientScriptBlock (IControl control, Type type, string key, string script)
     {
       ArgumentUtility.CheckNotNullAndType<Control>("control", control);
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
       ArgumentUtility.CheckNotNullOrEmpty("key", key);
       ArgumentUtility.CheckNotNullOrEmpty("script", script);
 
@@ -684,7 +684,7 @@ namespace Remotion.Web.Infrastructure
     public void RegisterStartupScriptBlock (IControl control, Type type, string key, string script)
     {
       ArgumentUtility.CheckNotNullAndType<Control>("control", control);
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
       ArgumentUtility.CheckNotNullOrEmpty("key", key);
       ArgumentUtility.CheckNotNullOrEmpty("script", script);
 

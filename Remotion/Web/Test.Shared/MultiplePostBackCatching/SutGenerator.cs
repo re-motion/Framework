@@ -30,7 +30,7 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
     public static int GetServerDelayUrlParameter (Page page)
     {
-      ArgumentUtility.CheckNotNull("page", page);
+      ArgumentUtility.CheckNotNull(nameof(page), page);
 
       string serverDelayString = page.Request.QueryString[SutGenerator.ServerDelayParameter];
       if (serverDelayString != null)
@@ -53,7 +53,7 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
     public SutGenerator (Page sutPage, int serverDelay)
     {
-      ArgumentUtility.CheckNotNull("sutPage", sutPage);
+      ArgumentUtility.CheckNotNull(nameof(sutPage), sutPage);
       _sutPage = sutPage;
       _serverDelay = serverDelay;
     }

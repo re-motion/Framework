@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 
     public string FindDownloadedFile (IReadOnlyCollection<string> newFiles)
     {
-      ArgumentUtility.CheckNotNull("newFiles", newFiles);
+      ArgumentUtility.CheckNotNull(nameof(newFiles), newFiles);
 
       if (newFiles.Count == 0)
         throw new DownloadResultNotFoundException("Did not find any new files in the download directory.", newFiles);
@@ -63,7 +63,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 
     public bool ContainsPreDownloadFiles (IReadOnlyCollection<string> newFiles)
     {
-      ArgumentUtility.CheckNotNull("newFiles", newFiles);
+      ArgumentUtility.CheckNotNull(nameof(newFiles), newFiles);
 
       return newFiles.Any(x => x.EndsWith(".tmp"));
     }

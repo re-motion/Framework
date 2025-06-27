@@ -49,9 +49,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
           null,
           transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull("newCollection", newCollection);
-      ArgumentUtility.CheckNotNull("modifiedCollectionData", modifiedCollectionData);
-      ArgumentUtility.CheckNotNull("collectionEndPointCollectionManager", collectionEndPointCollectionManager);
+      ArgumentUtility.CheckNotNull(nameof(newCollection), newCollection);
+      ArgumentUtility.CheckNotNull(nameof(modifiedCollectionData), modifiedCollectionData);
+      ArgumentUtility.CheckNotNull(nameof(collectionEndPointCollectionManager), collectionEndPointCollectionManager);
 
       _newCollection = newCollection;
       _modifiedCollectionData = modifiedCollectionData;

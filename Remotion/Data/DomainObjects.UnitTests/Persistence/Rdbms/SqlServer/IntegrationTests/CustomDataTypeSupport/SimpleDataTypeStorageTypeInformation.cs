@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public IDbDataParameter CreateDataParameter (IDbCommand command, object value)
     {
-      ArgumentUtility.CheckNotNull("command", command);
+      ArgumentUtility.CheckNotNull(nameof(command), command);
 
       var convertedValue = ConvertToStorageType(value);
 
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public object Read (IDataReader dataReader, int ordinal)
     {
-      ArgumentUtility.CheckNotNull("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull(nameof(dataReader), dataReader);
 
       var value = dataReader[ordinal];
       return ConvertFromStorageType(value);
@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public IStorageTypeInformation UnifyForEquivalentProperties (IEnumerable<IStorageTypeInformation> equivalentStorageTypes)
     {
-      ArgumentUtility.CheckNotNull("equivalentStorageTypes", equivalentStorageTypes);
+      ArgumentUtility.CheckNotNull(nameof(equivalentStorageTypes), equivalentStorageTypes);
       var castStorageTypes =
           equivalentStorageTypes.Select(
               equivalentInfo =>

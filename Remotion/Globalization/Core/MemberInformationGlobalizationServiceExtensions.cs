@@ -51,9 +51,9 @@ namespace Remotion.Globalization
         [NotNull] ITypeInformation typeInformation,
         [NotNull] ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull("memberInformationGlobalizationService", memberInformationGlobalizationService);
-      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
-      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull(nameof(memberInformationGlobalizationService), memberInformationGlobalizationService);
+      ArgumentUtility.CheckNotNull(nameof(typeInformation), typeInformation);
+      ArgumentUtility.CheckNotNull(nameof(typeInformationForResourceResolution), typeInformationForResourceResolution);
 
       if (memberInformationGlobalizationService.TryGetTypeDisplayName(typeInformation, typeInformationForResourceResolution, out var resourceValue))
         return resourceValue;
@@ -88,9 +88,9 @@ namespace Remotion.Globalization
         [NotNull] ITypeInformation typeInformation,
         [NotNull] ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull("memberInformationGlobalizationService", memberInformationGlobalizationService);
-      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
-      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull(nameof(memberInformationGlobalizationService), memberInformationGlobalizationService);
+      ArgumentUtility.CheckNotNull(nameof(typeInformation), typeInformation);
+      ArgumentUtility.CheckNotNull(nameof(typeInformationForResourceResolution), typeInformationForResourceResolution);
 
       string? resourceValue;
       if (memberInformationGlobalizationService.TryGetTypeDisplayName(typeInformation, typeInformationForResourceResolution, out resourceValue))
@@ -117,9 +117,9 @@ namespace Remotion.Globalization
         [NotNull] ITypeInformation typeInformation,
         [NotNull] ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull("memberInformationGlobalizationService", memberInformationGlobalizationService);
-      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
-      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull(nameof(memberInformationGlobalizationService), memberInformationGlobalizationService);
+      ArgumentUtility.CheckNotNull(nameof(typeInformation), typeInformation);
+      ArgumentUtility.CheckNotNull(nameof(typeInformationForResourceResolution), typeInformationForResourceResolution);
 
       string? resourceValue;
       return memberInformationGlobalizationService.TryGetTypeDisplayName(typeInformation, typeInformationForResourceResolution, out resourceValue);
@@ -148,9 +148,9 @@ namespace Remotion.Globalization
         [NotNull] IPropertyInformation propertyInformation,
         [NotNull] ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull("memberInformationGlobalizationService", memberInformationGlobalizationService);
-      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
-      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull(nameof(memberInformationGlobalizationService), memberInformationGlobalizationService);
+      ArgumentUtility.CheckNotNull(nameof(propertyInformation), propertyInformation);
+      ArgumentUtility.CheckNotNull(nameof(typeInformationForResourceResolution), typeInformationForResourceResolution);
 
       string? resourceValue;
       if (memberInformationGlobalizationService.TryGetPropertyDisplayName(
@@ -192,9 +192,9 @@ namespace Remotion.Globalization
         IPropertyInformation propertyInformation,
         ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull("memberInformationGlobalizationService", memberInformationGlobalizationService);
-      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
-      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull(nameof(memberInformationGlobalizationService), memberInformationGlobalizationService);
+      ArgumentUtility.CheckNotNull(nameof(propertyInformation), propertyInformation);
+      ArgumentUtility.CheckNotNull(nameof(typeInformationForResourceResolution), typeInformationForResourceResolution);
 
       string? resourceValue;
       if (memberInformationGlobalizationService.TryGetPropertyDisplayName(
@@ -224,9 +224,9 @@ namespace Remotion.Globalization
         [NotNull] IPropertyInformation propertyInformation,
         [NotNull] ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull("memberInformationGlobalizationService", memberInformationGlobalizationService);
-      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
-      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull(nameof(memberInformationGlobalizationService), memberInformationGlobalizationService);
+      ArgumentUtility.CheckNotNull(nameof(propertyInformation), propertyInformation);
+      ArgumentUtility.CheckNotNull(nameof(typeInformationForResourceResolution), typeInformationForResourceResolution);
 
       string? resourceValue;
       return memberInformationGlobalizationService.TryGetPropertyDisplayName(

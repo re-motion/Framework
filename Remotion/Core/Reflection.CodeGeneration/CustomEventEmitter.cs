@@ -41,9 +41,9 @@ namespace Remotion.Reflection.CodeGeneration
 
     public CustomEventEmitter (CustomClassEmitter declaringType, string name, EventKind eventKind, Type eventType, EventAttributes attributes)
     {
-      ArgumentUtility.CheckNotNull("declaringType", declaringType);
+      ArgumentUtility.CheckNotNull(nameof(declaringType), declaringType);
       ArgumentUtility.CheckNotNullOrEmpty("name", name);
-      ArgumentUtility.CheckNotNull("eventType", eventType);
+      ArgumentUtility.CheckNotNull(nameof(eventType), eventType);
 
       _declaringType = declaringType;
       _eventBuilder = declaringType.TypeBuilder.DefineEvent(name, attributes, eventType);

@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public BusinessObjectListAdapter (IList list)
     {
-      ArgumentUtility.CheckNotNull("list", list);
+      ArgumentUtility.CheckNotNull(nameof(list), list);
 
       _list = list;
     }

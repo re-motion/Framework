@@ -33,9 +33,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
     public ItemDefinition ([NotNull] string itemID, int oneBasedIndex, [NotNull] string text, bool isDisabled, [NotNull] string accessKey)
     {
-      ArgumentUtility.CheckNotNull("itemID", itemID);
-      ArgumentUtility.CheckNotNull("text", text);
-      ArgumentUtility.CheckNotNull("text", text);
+      ArgumentUtility.CheckNotNull(nameof(itemID), itemID);
+      ArgumentUtility.CheckNotNull(nameof(text), text);
+      ArgumentUtility.CheckNotNull(nameof(text), text);
 
       _itemID = itemID;
       _oneBasedIndex = oneBasedIndex;

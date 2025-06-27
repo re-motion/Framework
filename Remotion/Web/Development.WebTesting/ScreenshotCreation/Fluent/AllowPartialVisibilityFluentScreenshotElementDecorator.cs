@@ -29,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
 
     public AllowPartialVisibilityFluentScreenshotElementDecorator (IFluentScreenshotElement<T> inner)
     {
-      ArgumentUtility.CheckNotNull("inner", inner);
+      ArgumentUtility.CheckNotNull(nameof(inner), inner);
 
       _inner = inner;
     }

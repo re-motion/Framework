@@ -138,7 +138,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void AddAccessType (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull("accessType", accessType);
+      ArgumentUtility.CheckNotNull(nameof(accessType), accessType);
 
       InsertAccessType(AccessTypeReferences.Count, accessType);
     }
@@ -161,7 +161,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void InsertAccessType (int index, AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull("accessType", accessType);
+      ArgumentUtility.CheckNotNull(nameof(accessType), accessType);
       if (index < 0 || index > AccessTypeReferences.Count)
       {
         throw CreateArgumentOutOfRangeException(
@@ -198,7 +198,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void RemoveAccessType (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull("accessType", accessType);
+      ArgumentUtility.CheckNotNull(nameof(accessType), accessType);
 
       var accessTypeReference = AccessTypeReferences.SingleOrDefault(r => r.AccessType == accessType);
       if (accessTypeReference == null)
@@ -235,7 +235,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void MoveAccessType (int index, AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull("accessType", accessType);
+      ArgumentUtility.CheckNotNull(nameof(accessType), accessType);
       if (index < 0 || index >= AccessTypeReferences.Count)
       {
         throw CreateArgumentOutOfRangeException(
@@ -266,7 +266,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void AddStateProperty (StatePropertyDefinition stateProperty)
     {
-      ArgumentUtility.CheckNotNull("stateProperty", stateProperty);
+      ArgumentUtility.CheckNotNull(nameof(stateProperty), stateProperty);
 
       if (StatePropertyReferences.Where(r => r.StateProperty == stateProperty).Any())
       {
@@ -295,7 +295,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void RemoveStateProperty (StatePropertyDefinition stateProperty)
     {
-      ArgumentUtility.CheckNotNull("stateProperty", stateProperty);
+      ArgumentUtility.CheckNotNull(nameof(stateProperty), stateProperty);
 
       var statePropertyReference = StatePropertyReferences.SingleOrDefault(r => r.StateProperty == stateProperty);
       if (statePropertyReference == null)

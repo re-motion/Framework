@@ -91,7 +91,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override FormFunction<Group> CreateEditFunction (ITransactionMode transactionMode, IDomainObjectHandle<Group>? editedObject)
     {
-      ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
+      ArgumentUtility.CheckNotNull(nameof(transactionMode), transactionMode);
 
       return new EditGroupFormFunction(transactionMode, editedObject);
     }

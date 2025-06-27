@@ -66,8 +66,8 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
         IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull("fallbackNavigationUrlProvider", fallbackNavigationUrlProvider);
+      ArgumentUtility.CheckNotNull(nameof(labelReferenceRenderer), labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull(nameof(fallbackNavigationUrlProvider), fallbackNavigationUrlProvider);
 
       _labelReferenceRenderer = labelReferenceRenderer;
       _fallbackNavigationUrlProvider = fallbackNavigationUrlProvider;
@@ -75,7 +75,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
 
       htmlHeadAppender.RegisterWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();
@@ -87,7 +87,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
     public void Render (DropDownMenuRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       RegisterMenuItems(renderingContext);
 
@@ -103,7 +103,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
     public void RenderAsContextMenu (DropDownMenuRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       RegisterMenuItems(renderingContext);
 
@@ -234,7 +234,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
     private void AddAttributesToRender (DropDownMenuRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       OverrideCssClass(renderingContext, out var backUpCssClass, out var backUpAttributeCssClass);
 

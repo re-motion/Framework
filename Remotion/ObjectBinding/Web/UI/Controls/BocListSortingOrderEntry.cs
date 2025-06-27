@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public BocListSortingOrderEntry (IBocSortableColumnDefinition column, SortingDirection direction)
     {
-      ArgumentUtility.CheckNotNull("column", column);
+      ArgumentUtility.CheckNotNull(nameof(column), column);
       if (!column.IsSortable)
         throw new ArgumentException("BocListSortingOrderEntry can only use columns with IBocSortableColumnDefinition.IsSortable set true.", "column");
 

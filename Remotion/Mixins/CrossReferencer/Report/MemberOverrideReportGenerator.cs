@@ -30,7 +30,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public MemberOverrideReportGenerator (IEnumerable<MemberDefinitionBase> memberDefinitions)
     {
-      ArgumentUtility.CheckNotNull("memberDefinitions", memberDefinitions);
+      ArgumentUtility.CheckNotNull(nameof(memberDefinitions), memberDefinitions);
 
       _memberDefinitions = memberDefinitions;
     }

@@ -45,14 +45,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     public BocListValidationResultDispatchingValidator (IBocListValidationFailureHandler validationFailureHandler)
     {
-      ArgumentUtility.CheckNotNull("validationFailureHandler", validationFailureHandler);
+      ArgumentUtility.CheckNotNull(nameof(validationFailureHandler), validationFailureHandler);
 
       _validationFailureHandler = validationFailureHandler;
     }
 
     public void DispatchValidationFailures (IBusinessObjectValidationResult validationResult)
     {
-      ArgumentUtility.CheckNotNull("validationResult", validationResult);
+      ArgumentUtility.CheckNotNull(nameof(validationResult), validationResult);
 
       var bocListControl = GetControlToValidate();
       if (!bocListControl.Visible)

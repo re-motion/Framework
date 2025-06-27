@@ -75,8 +75,8 @@ namespace Remotion.Globalization.Implementation
     /// </param>
     public ResourceManagerWrapper (ResourceManager resourceManager, IReadOnlyList<CultureInfo> availableCultures)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("availableCultures", availableCultures);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(availableCultures), availableCultures);
 
       _resourceManager = resourceManager;
       _availableCultures = availableCultures.SelectMany(GetCultureHierarchy).Distinct().ToArray();

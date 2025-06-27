@@ -39,9 +39,9 @@ namespace Remotion.Collections
 
     public ListAdapter (IList<TSource> adaptedList, Func<TSource, TDest> sourceToDest, Func<TDest, TSource> destToSource)
     {
-      ArgumentUtility.CheckNotNull("adaptedList", adaptedList);
-      ArgumentUtility.CheckNotNull("sourceToDest", sourceToDest);
-      ArgumentUtility.CheckNotNull("destToSource", destToSource);
+      ArgumentUtility.CheckNotNull(nameof(adaptedList), adaptedList);
+      ArgumentUtility.CheckNotNull(nameof(sourceToDest), sourceToDest);
+      ArgumentUtility.CheckNotNull(nameof(destToSource), destToSource);
 
       _adaptedList = adaptedList;
       _sourceToDest = sourceToDest;

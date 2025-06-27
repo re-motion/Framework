@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.Security
         IDomainObjectSecurityContextFactory securityContextFactory,
         RequiredSecurityForStates requiredSecurityForStates)
     {
-      ArgumentUtility.CheckNotNull("innerStrategy", innerStrategy);
-      ArgumentUtility.CheckNotNull("securityContextFactory", securityContextFactory);
+      ArgumentUtility.CheckNotNull(nameof(innerStrategy), innerStrategy);
+      ArgumentUtility.CheckNotNull(nameof(securityContextFactory), securityContextFactory);
 
       _innerStrategy = innerStrategy;
       _securityContextFactory = securityContextFactory;

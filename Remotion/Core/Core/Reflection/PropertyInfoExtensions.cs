@@ -33,7 +33,7 @@ namespace Remotion.Reflection
     /// <returns>A <see cref="PropertyInfo"/> object for the first implementation of this method.</returns>
     public static PropertyInfo GetBaseDefinition (this PropertyInfo propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
 
       var declaringType = propertyInfo.DeclaringType;
       if (declaringType == null)
@@ -89,7 +89,7 @@ namespace Remotion.Reflection
     /// <returns>The <see cref="Type"/> where the property was declared for the first time.</returns>
     public static Type GetOriginalDeclaringType (this PropertyInfo propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
 
       MethodInfo[] accessors = propertyInfo.GetAccessors(true);
       if (accessors.Length == 0)
@@ -112,7 +112,7 @@ namespace Remotion.Reflection
     /// </returns>
     public static bool IsOriginalDeclaration (this PropertyInfo propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
 
       Type originalDeclaringType = GetOriginalDeclaringType(propertyInfo);
       return propertyInfo.DeclaringType == originalDeclaringType;
@@ -127,7 +127,7 @@ namespace Remotion.Reflection
     /// <returns>True, if the property is very likely an explicit interface implementation (at least in C# and VB.NET code); otherwise, false.</returns>
     public static bool GuessIsExplicitInterfaceProperty (this PropertyInfo info)
     {
-      ArgumentUtility.CheckNotNull("info", info);
+      ArgumentUtility.CheckNotNull(nameof(info), info);
 
       return info.GetAccessors(true).Any(accessor => accessor.IsPrivate && accessor.IsVirtual && accessor.IsFinal);
     }

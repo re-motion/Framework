@@ -31,14 +31,14 @@ namespace Remotion.Reflection
 
     public static bool IsGacAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
 
       return s_typeCache.GetOrAdd(assembly, GetTypeCacheValue).IsGacAssembly;
     }
 
     public static IReadOnlyCollection<Type> GetTypes (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
 
       return s_typeCache.GetOrAdd(assembly, GetTypeCacheValue).Types;
     }

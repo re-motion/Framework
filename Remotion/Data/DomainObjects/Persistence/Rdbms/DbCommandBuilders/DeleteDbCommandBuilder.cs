@@ -38,8 +38,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         ISqlDialect sqlDialect)
         : base(sqlDialect)
     {
-      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
-      ArgumentUtility.CheckNotNull("comparedColumnsSpecification", comparedColumnsSpecification);
+      ArgumentUtility.CheckNotNull(nameof(tableDefinition), tableDefinition);
+      ArgumentUtility.CheckNotNull(nameof(comparedColumnsSpecification), comparedColumnsSpecification);
 
       _tableDefinition = tableDefinition;
       _comparedColumnsSpecification = comparedColumnsSpecification;
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     public override IDbCommand Create (IDbCommandFactory dbCommandFactory)
     {
-      ArgumentUtility.CheckNotNull("dbCommandFactory", dbCommandFactory);
+      ArgumentUtility.CheckNotNull(nameof(dbCommandFactory), dbCommandFactory);
 
       var command = dbCommandFactory.CreateDbCommand();
       var statement = new StringBuilder();

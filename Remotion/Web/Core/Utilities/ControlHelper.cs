@@ -59,7 +59,7 @@ namespace Remotion.Web.Utilities
 
     public static bool IsNestedInUpdatePanel (Control child)
     {
-      ArgumentUtility.CheckNotNull("child", child);
+      ArgumentUtility.CheckNotNull(nameof(child), child);
 
       var scriptManager = ScriptManager.GetCurrent(child.Page!);
       if (scriptManager == null)
@@ -201,7 +201,7 @@ namespace Remotion.Web.Utilities
 
     public static Control? FindControl (Control namingContainer, string? controlID)
     {
-      ArgumentUtility.CheckNotNull("namingContainer", namingContainer);
+      ArgumentUtility.CheckNotNull(nameof(namingContainer), namingContainer);
       if (string.IsNullOrEmpty(controlID))
         return null;
 
@@ -226,19 +226,19 @@ namespace Remotion.Web.Utilities
 
     public static bool IsResponseTextXml (HttpContextBase context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
       return context.Response.ContentType.Equals("TEXT/XML", StringComparison.OrdinalIgnoreCase);
     }
 
     public static bool IsResponseTextXHtml (HttpContextBase context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
       return context.Response.ContentType.Equals("TEXT/XHTML", StringComparison.OrdinalIgnoreCase);
     }
 
     public static bool IsXmlConformResponseTextRequired (HttpContextBase context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       XhtmlConformanceSection xhtmlConformanceSection = (XhtmlConformanceSection)WebConfigurationManager.GetSection("system.web/xhtmlConformance");
       Assertion.IsNotNull(xhtmlConformanceSection, "Config section 'system.web/xhtmlConformance' was not found.");

@@ -61,7 +61,7 @@ namespace Remotion.Validation.RuleCollectors
 
     IValidationRule IAddingObjectValidationRuleCollector.CreateValidationRule (IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
+      ArgumentUtility.CheckNotNull(nameof(validationMessageFactory), validationMessageFactory);
 
       foreach (var tuple in _uninitializedValidationMessages)
       {
@@ -89,7 +89,7 @@ namespace Remotion.Validation.RuleCollectors
 
     public void SetCondition<TValidatedTypeForCondition> (Func<TValidatedTypeForCondition, bool> predicate)
     {
-      ArgumentUtility.CheckNotNull("predicate", predicate);
+      ArgumentUtility.CheckNotNull(nameof(predicate), predicate);
 
       if (typeof(TValidatedTypeForCondition) != typeof(TValidatedType))
       {
@@ -108,7 +108,7 @@ namespace Remotion.Validation.RuleCollectors
 
     public void RegisterValidator (Func<ObjectValidationRuleInitializationParameters, IObjectValidator> validatorFactory)
     {
-      ArgumentUtility.CheckNotNull("validatorFactory", validatorFactory);
+      ArgumentUtility.CheckNotNull(nameof(validatorFactory), validatorFactory);
 
       var deferredInitializationValidationMessage = new DeferredInitializationValidationMessage();
       var initializationParameters = new ObjectValidationRuleInitializationParameters(deferredInitializationValidationMessage);
@@ -122,7 +122,7 @@ namespace Remotion.Validation.RuleCollectors
 
     public void ApplyRemoveValidatorRegistrations (IObjectValidatorExtractor objectValidatorExtractor)
     {
-      ArgumentUtility.CheckNotNull("objectValidatorExtractor", objectValidatorExtractor);
+      ArgumentUtility.CheckNotNull(nameof(objectValidatorExtractor), objectValidatorExtractor);
 
       var validatorsToRemove = objectValidatorExtractor.ExtractObjectValidatorsToRemove(this).ToArray();
       CheckForNonRemovableObjectValidatorViolation(validatorsToRemove);

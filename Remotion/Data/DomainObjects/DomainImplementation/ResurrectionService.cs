@@ -72,8 +72,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
 
       public MarkNotInvalidCommand (IDataManager dataManager, ObjectID objectID)
       {
-        ArgumentUtility.CheckNotNull("dataManager", dataManager);
-        ArgumentUtility.CheckNotNull("objectID", objectID);
+        ArgumentUtility.CheckNotNull(nameof(dataManager), dataManager);
+        ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
         _dataManager = dataManager;
         _objectID = objectID;
@@ -116,8 +116,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// least one <see cref="ClientTransaction"/> of the transaction hierarchy identified by <paramref name="clientTransaction"/>.</exception>
     public static void ResurrectInvalidObject (ClientTransaction clientTransaction, ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
       var executor = new TransactionHierarchyCommandExecutor(tx => CreateMarkNotInvalidCommand(tx, objectID));
       executor.ExecuteCommandForTransactionHierarchy(clientTransaction);
@@ -136,8 +136,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </returns>
     public static bool TryResurrectInvalidObject (ClientTransaction clientTransaction, ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
       var executor = new TransactionHierarchyCommandExecutor(tx => CreateMarkNotInvalidCommand(tx, objectID));
       return executor.TryExecuteCommandForTransactionHierarchy(clientTransaction);

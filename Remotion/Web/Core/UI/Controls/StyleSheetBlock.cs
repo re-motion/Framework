@@ -36,7 +36,7 @@ namespace Remotion.Web.UI.Controls
 
     public StyleSheetBlock (IEnumerable<StyleSheetElement> styleSheetElements)
     {
-      ArgumentUtility.CheckNotNull("styleSheetElements", styleSheetElements);
+      ArgumentUtility.CheckNotNull(nameof(styleSheetElements), styleSheetElements);
       _styleSheetElements = styleSheetElements.ToArray();
     }
 
@@ -47,7 +47,7 @@ namespace Remotion.Web.UI.Controls
 
     public override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       writer.WriteBeginTag(s_tagName);
       writer.WriteAttribute(s_typeAttribute, "text/css");

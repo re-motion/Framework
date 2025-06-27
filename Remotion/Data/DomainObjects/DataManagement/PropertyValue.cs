@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
   {
     public static bool IsTypeSupported (Type propertyType)
     {
-      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
 
       return propertyType.IsValueType
           || ReflectionUtility.IsStringPropertyValueType(propertyType)
@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// </exception>
     public PropertyValue (PropertyDefinition definition, object? value)
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentUtility.CheckNotNull(nameof(definition), definition);
 
       if (!IsTypeSupported(definition.PropertyType))
       {
@@ -167,7 +167,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void SetDataFromSubTransaction (PropertyValue source)
     {
-      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentUtility.CheckNotNull(nameof(source), source);
 
       if (source._definition != _definition)
       {

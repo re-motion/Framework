@@ -82,7 +82,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
     private void CheckPropertyBase (IBusinessObjectProperty expectedProperty, IBusinessObjectProperty actualProperty)
     {
-      ArgumentUtility.CheckNotNull("expectedProperty", expectedProperty);
+      ArgumentUtility.CheckNotNull(nameof(expectedProperty), expectedProperty);
 
       Assert.That(actualProperty, Is.Not.Null);
       Assert.That(actualProperty.GetType(), Is.SameAs(expectedProperty.GetType()), "BusinessObjectPropertyType");

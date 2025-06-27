@@ -31,7 +31,7 @@ namespace Remotion.SecurityManager.Domain
   {
     public static IQuery GetGetRevisionQuery (IRevisionKey revisionKey)
     {
-      ArgumentUtility.CheckNotNull("revisionKey", revisionKey);
+      ArgumentUtility.CheckNotNull(nameof(revisionKey), revisionKey);
 
       var storageProviderDefinition = GetStorageProviderDefinition();
       var sqlDialect = storageProviderDefinition.Factory.CreateSqlDialect(storageProviderDefinition);
@@ -59,7 +59,7 @@ namespace Remotion.SecurityManager.Domain
 
     public static IQuery GetIncrementRevisionQuery (IRevisionKey revisionKey)
     {
-      ArgumentUtility.CheckNotNull("revisionKey", revisionKey);
+      ArgumentUtility.CheckNotNull(nameof(revisionKey), revisionKey);
 
       var storageProviderDefinition = GetStorageProviderDefinition();
       var sqlDialect = storageProviderDefinition.Factory.CreateSqlDialect(storageProviderDefinition);

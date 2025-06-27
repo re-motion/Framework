@@ -64,7 +64,7 @@ namespace Remotion.Utilities
 
     public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull(nameof(destinationType), destinationType);
 
       if (value == null)
         return string.Empty;

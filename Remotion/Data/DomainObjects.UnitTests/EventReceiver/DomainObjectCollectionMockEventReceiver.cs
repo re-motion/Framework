@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
   {
     public static Mock<IDomainObjectCollectionMockEventReceiver> CreateMock (MockBehavior mockBehavior, DomainObjectCollection domainObjectCollection)
     {
-      ArgumentUtility.CheckNotNull("domainObjectCollection", domainObjectCollection);
+      ArgumentUtility.CheckNotNull(nameof(domainObjectCollection), domainObjectCollection);
 
       var mock = new Mock<IDomainObjectCollectionMockEventReceiver>(mockBehavior);
       domainObjectCollection.Added += mock.Object.Added;

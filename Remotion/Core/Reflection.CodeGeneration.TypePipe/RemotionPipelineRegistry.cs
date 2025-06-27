@@ -42,7 +42,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe
     }
 
     public RemotionPipelineRegistry (IEnumerable<IParticipant> defaultPipelineParticipants)
-        : base(CreateDefaultPipeline(ArgumentUtility.CheckNotNull("defaultPipelineParticipants", defaultPipelineParticipants)))
+        : base(CreateDefaultPipeline(ArgumentUtility.CheckNotNull(nameof(defaultPipelineParticipants), defaultPipelineParticipants)))
     {
     }
   }

@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public FreshlyLoadedObjectData (DataContainer freshlyLoadedDataContainer)
     {
-      ArgumentUtility.CheckNotNull("freshlyLoadedDataContainer", freshlyLoadedDataContainer);
+      ArgumentUtility.CheckNotNull(nameof(freshlyLoadedDataContainer), freshlyLoadedDataContainer);
 
       if (freshlyLoadedDataContainer.IsRegistered)
         throw new ArgumentException("The DataContainer must not have been registered with a ClientTransaction.", "freshlyLoadedDataContainer");
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void Accept (ILoadedObjectVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
       visitor.VisitFreshlyLoadedObject(this);
     }
 

@@ -38,8 +38,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public EndPointDelegatingDomainObjectCollectionData (RelationEndPointID endPointID, IVirtualEndPointProvider virtualEndPointProvider)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
-      ArgumentUtility.CheckNotNull("virtualEndPointProvider", virtualEndPointProvider);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
+      ArgumentUtility.CheckNotNull(nameof(virtualEndPointProvider), virtualEndPointProvider);
 
       if (endPointID.Definition.Cardinality != CardinalityType.Many)
         throw new ArgumentException("Associated end-point must be a CollectionEndPoint.", "endPointID");
@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public bool ContainsObjectID (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
       var data = GetAssociatedEndPoint().GetData();
       return data.ContainsObjectID(objectID);
@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public DomainObject? GetObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
       var data = GetAssociatedEndPoint().GetData();
       return data.GetObject(objectID);
@@ -129,7 +129,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public int IndexOf (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
       var data = GetAssociatedEndPoint().GetData();
       return data.IndexOf(objectID);
@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void Insert (int index, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       CheckClientTransaction(domainObject, "Cannot insert DomainObject '{0}' into collection of property '{1}' of DomainObject '{2}'.");
       var associatedEndPoint = GetAssociatedEndPoint();
@@ -179,7 +179,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public bool Remove (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       CheckClientTransaction(domainObject, "Cannot remove DomainObject '{0}' from collection of property '{1}' of DomainObject '{2}'.");
       var associatedEndPoint = GetAssociatedEndPoint();
@@ -199,7 +199,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public bool Remove (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
       var associatedEndPoint = GetAssociatedEndPoint();
       var associatedDomainObjectReference = associatedEndPoint.GetDomainObjectReference();
@@ -222,7 +222,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void Replace (int index, DomainObject value)
     {
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
 
       CheckClientTransaction(value, "Cannot put DomainObject '{0}' into the collection of property '{1}' of DomainObject '{2}'.");
       var associatedEndPoint = GetAssociatedEndPoint();
@@ -241,7 +241,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void Sort (Comparison<DomainObject> comparison)
     {
-      ArgumentUtility.CheckNotNull("comparison", comparison);
+      ArgumentUtility.CheckNotNull(nameof(comparison), comparison);
 
       GetAssociatedEndPoint().SortCurrentData(comparison);
     }

@@ -34,7 +34,7 @@ namespace Remotion.Mixins.MixerTools
 
     public MixedTypeFinder (ITypeDiscoveryService typeDiscoveryService)
     {
-      ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
+      ArgumentUtility.CheckNotNull(nameof(typeDiscoveryService), typeDiscoveryService);
 
       _typeDiscoveryService = typeDiscoveryService;
     }
@@ -46,7 +46,7 @@ namespace Remotion.Mixins.MixerTools
 
     public IEnumerable<Type> FindMixedTypes (MixinConfiguration configuration)
     {
-      ArgumentUtility.CheckNotNull("configuration", configuration);
+      ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
 
       var types = _typeDiscoveryService.GetTypes(null, false);
       s_logger.LogInformation(

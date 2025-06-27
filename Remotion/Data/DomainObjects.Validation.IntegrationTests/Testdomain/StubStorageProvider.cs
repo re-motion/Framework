@@ -46,14 +46,14 @@ public class StubStorageProvider : IStorageProvider
 
   public IEnumerable<DataContainer> ExecuteCollectionQuery (IQuery query)
   {
-    ArgumentUtility.CheckNotNull("query", query);
+    ArgumentUtility.CheckNotNull(nameof(query), query);
 
     return Array.Empty<DataContainer>();
   }
 
   public IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
   {
-    ArgumentUtility.CheckNotNull("query", query);
+    ArgumentUtility.CheckNotNull(nameof(query), query);
 
     return new QueryResultRow[0];
   }
@@ -93,7 +93,7 @@ public class StubStorageProvider : IStorageProvider
 
   public ObjectID CreateNewObjectID (ClassDefinition classDefinition)
   {
-    ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+    ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
     return new ObjectID(classDefinition.ID, Guid.NewGuid());
   }

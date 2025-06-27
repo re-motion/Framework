@@ -80,8 +80,8 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public TracingDbConnection (IDbConnection connection, IPersistenceExtension persistenceExtension)
     {
-      ArgumentUtility.CheckNotNull("connection", connection);
-      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull(nameof(connection), connection);
+      ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
 
       _connection = connection;
       _persistenceExtension = persistenceExtension;

@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     protected IncompleteVirtualEndPointLoadStateBase (IEndPointLoader endPointLoader)
     {
-      ArgumentUtility.CheckNotNull("endPointLoader", endPointLoader);
+      ArgumentUtility.CheckNotNull(nameof(endPointLoader), endPointLoader);
 
       _endPointLoader = endPointLoader;
       _originalOppositeEndPoints = new Dictionary<ObjectID, IRealObjectEndPoint>();
@@ -87,15 +87,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void MarkDataIncomplete (TEndPoint endPoint, Action stateSetter)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("stateSetter", stateSetter);
+      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
+      ArgumentUtility.CheckNotNull(nameof(stateSetter), stateSetter);
 
       // Do nothing - data is already incomplete
     }
 
     public virtual TData GetData (TEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
 
       var completeState = _endPointLoader.LoadEndPointAndGetNewState(endPoint);
       return completeState.GetData(endPoint);
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public virtual TData GetOriginalData (TEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
 
       var completeState = _endPointLoader.LoadEndPointAndGetNewState(endPoint);
       return completeState.GetOriginalData(endPoint);
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public virtual void RegisterOriginalOppositeEndPoint (TEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
       if (oppositeEndPoint.IsNull)
         throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
 
@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public virtual void UnregisterOriginalOppositeEndPoint (TEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
       if (oppositeEndPoint.IsNull)
         throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
 
@@ -137,8 +137,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void RegisterCurrentOppositeEndPoint (TEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
+      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
 
       var completeState = _endPointLoader.LoadEndPointAndGetNewState(endPoint);
       completeState.RegisterCurrentOppositeEndPoint(endPoint, oppositeEndPoint);
@@ -146,8 +146,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void UnregisterCurrentOppositeEndPoint (TEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
+      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
 
       var completeState = _endPointLoader.LoadEndPointAndGetNewState(endPoint);
       completeState.UnregisterCurrentOppositeEndPoint(endPoint, oppositeEndPoint);
@@ -155,14 +155,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public bool? IsSynchronized (TEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
 
       return null;
     }
 
     public void Synchronize (TEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
 
       var completeState = _endPointLoader.LoadEndPointAndGetNewState(endPoint);
       completeState.Synchronize(endPoint);
@@ -170,15 +170,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void SynchronizeOppositeEndPoint (TEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
 
       throw new InvalidOperationException("Cannot synchronize an opposite end-point with a virtual end-point in incomplete state.");
     }
 
     public void SetDataFromSubTransaction (TEndPoint endPoint, IVirtualEndPointLoadState<TEndPoint, TData, TDataManager> sourceLoadState)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("sourceLoadState", sourceLoadState);
+      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
+      ArgumentUtility.CheckNotNull(nameof(sourceLoadState), sourceLoadState);
 
       throw new InvalidOperationException("Cannot comit data from a sub-transaction into a virtual end-point in incomplete state.");
     }
@@ -200,9 +200,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     protected void MarkDataComplete (TEndPoint endPoint, IEnumerable<DomainObject> items, Action<TDataManager> stateSetter)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("items", items);
-      ArgumentUtility.CheckNotNull("stateSetter", stateSetter);
+      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
+      ArgumentUtility.CheckNotNull(nameof(items), items);
+      ArgumentUtility.CheckNotNull(nameof(stateSetter), stateSetter);
 
       if (s_logger.IsEnabled(LogLevel.Information))
         s_logger.LogInformation("Virtual end-point '{0}' is transitioned to complete state.", endPoint.ID);

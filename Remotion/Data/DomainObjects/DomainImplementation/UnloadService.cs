@@ -52,8 +52,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </remarks>
     public static void UnloadVirtualEndPoint (ClientTransaction clientTransaction, RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
 
       CheckVirtualEndPointID(endPointID);
 
@@ -89,8 +89,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </remarks>
     public static bool TryUnloadVirtualEndPoint (ClientTransaction clientTransaction, RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
 
       CheckVirtualEndPointID(endPointID);
 
@@ -125,8 +125,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </remarks>
     public static void UnloadData (ClientTransaction clientTransaction, ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
       Func<ClientTransaction, IDataManagementCommand> commandFactory = tx => tx.DataManager.CreateUnloadCommand(objectID);
       var executor = new TransactionHierarchyCommandExecutor(commandFactory);
@@ -163,8 +163,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </remarks>
     public static bool TryUnloadData (ClientTransaction clientTransaction, ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
       Func<ClientTransaction, IDataManagementCommand> commandFactory = tx => tx.DataManager.CreateUnloadCommand(objectID);
       var executor = new TransactionHierarchyCommandExecutor(commandFactory);
@@ -192,8 +192,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </remarks>
     public static void UnloadVirtualEndPointAndItemData (ClientTransaction clientTransaction, RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
 
       CheckVirtualEndPointID(endPointID);
 
@@ -230,8 +230,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </remarks>
     public static bool TryUnloadVirtualEndPointAndItemData (ClientTransaction clientTransaction, RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
 
       CheckVirtualEndPointID(endPointID);
 
@@ -274,7 +274,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </remarks>
     public static void UnloadAll (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
 
       Func<ClientTransaction, IDataManagementCommand> commandFactory = tx => tx.DataManager.CreateUnloadAllCommand();
       var executor = new TransactionHierarchyCommandExecutor(commandFactory);

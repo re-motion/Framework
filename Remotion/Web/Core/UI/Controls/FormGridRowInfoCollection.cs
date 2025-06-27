@@ -34,7 +34,7 @@ public sealed class FormGridRowInfoCollection : CollectionBase
   /// </param>
   public FormGridRowInfoCollection (FormGridRowInfo[] values)
   {
-    ArgumentUtility.CheckNotNull("values", values);
+    ArgumentUtility.CheckNotNull(nameof(values), values);
 
     for (int index = 0; index < values.Length; index++)
     {

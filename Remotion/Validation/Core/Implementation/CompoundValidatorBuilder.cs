@@ -33,7 +33,7 @@ namespace Remotion.Validation.Implementation
 
     public CompoundValidatorBuilder (IEnumerable<IValidatorBuilder> builders)
     {
-      ArgumentUtility.CheckNotNull("builders", builders);
+      ArgumentUtility.CheckNotNull(nameof(builders), builders);
 
       _builders = builders.ToList().AsReadOnly();
     }
@@ -45,7 +45,7 @@ namespace Remotion.Validation.Implementation
 
     public IValidator BuildValidator (Type validatedType)
     {
-      ArgumentUtility.CheckNotNull("validatedType", validatedType);
+      ArgumentUtility.CheckNotNull(nameof(validatedType), validatedType);
 
       var validators = _builders.Select(b => b.BuildValidator(validatedType));
       return new CompoundValidator(validators, validatedType);

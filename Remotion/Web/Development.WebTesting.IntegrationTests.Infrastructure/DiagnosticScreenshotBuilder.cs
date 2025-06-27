@@ -34,8 +34,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     [Obsolete("Taking desktop screenshots is no longer supported. See RM-9455. (Version 8.0.0)", error: true)]
     public static DiagnosticScreenshotBuilder CreateDesktopScreenshot ([NotNull] IBrowserContentLocator contentLocator, [NotNull] ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull("contentLocator", contentLocator);
-      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+      ArgumentUtility.CheckNotNull(nameof(contentLocator), contentLocator);
+      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
 
       throw new NotSupportedException("Taking desktop screenshots is no longer supported. See RM-9455.");
     }
@@ -46,9 +46,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
         [NotNull] IBrowserSession browserSession,
         [NotNull] ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull("contentLocator", contentLocator);
-      ArgumentUtility.CheckNotNull("browserSession", browserSession);
-      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+      ArgumentUtility.CheckNotNull(nameof(contentLocator), contentLocator);
+      ArgumentUtility.CheckNotNull(nameof(browserSession), browserSession);
+      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
 
       return new DiagnosticScreenshotBuilder(
           Screenshot.TakeBrowserScreenshot(browserSession, contentLocator),

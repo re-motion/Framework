@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override sealed IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
     {
-      ArgumentUtility.CheckNotNull("removedRelatedObject", removedRelatedObject);
+      ArgumentUtility.CheckNotNull(nameof(removedRelatedObject), removedRelatedObject);
 
       if (removedRelatedObject.ID != OppositeObjectID)
       {

@@ -49,8 +49,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
         [CanBeNull] IDomainObjectHandle<User>? user,
         [NotNull] IEnumerable<PrincipalRole> roles)
     {
-      ArgumentUtility.CheckNotNull("tenant", tenant);
-      ArgumentUtility.CheckNotNull("roles", roles);
+      ArgumentUtility.CheckNotNull(nameof(tenant), tenant);
+      ArgumentUtility.CheckNotNull(nameof(roles), roles);
 
       _isNull = false;
       _tenant = tenant;

@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   {
     public static RoleProxy Create (Role role)
     {
-      ArgumentUtility.CheckNotNull("role", role);
+      ArgumentUtility.CheckNotNull(nameof(role), role);
 
       return new RoleProxy(
           role.GetHandle(),

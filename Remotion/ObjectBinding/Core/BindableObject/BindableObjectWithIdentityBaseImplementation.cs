@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.BindableObject
   {
     public static BindableObjectWithIdentityBaseImplementation Create (BindableObjectWithIdentityBase wrapper)
     {
-      ArgumentUtility.CheckNotNull("wrapper", wrapper);
+      ArgumentUtility.CheckNotNull(nameof(wrapper), wrapper);
       var impl = new BindableObjectWithIdentityBaseImplementation(wrapper);
       ((IInitializableMixin)impl).Initialize(wrapper, null);
       return impl;
@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     protected BindableObjectWithIdentityBaseImplementation (BindableObjectWithIdentityBase wrapper)
     {
-      ArgumentUtility.CheckNotNull("wrapper", wrapper);
+      ArgumentUtility.CheckNotNull(nameof(wrapper), wrapper);
       _wrapper = wrapper;
     }
 

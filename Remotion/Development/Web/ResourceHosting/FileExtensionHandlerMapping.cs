@@ -49,8 +49,8 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public FileExtensionHandlerMapping (string extension, IHttpHandler handler)
     {
-      ArgumentUtility.CheckNotNull("extension", extension);
-      ArgumentUtility.CheckNotNull("handler", handler);
+      ArgumentUtility.CheckNotNull(nameof(extension), extension);
+      ArgumentUtility.CheckNotNull(nameof(handler), handler);
 
       _extension = extension;
       _handler = handler;

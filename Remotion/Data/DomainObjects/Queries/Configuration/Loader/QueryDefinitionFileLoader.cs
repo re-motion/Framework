@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
 
     public QueryDefinitionFileLoader (IStorageSettings storageSettings)
     {
-      ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
+      ArgumentUtility.CheckNotNull(nameof(storageSettings), storageSettings);
 
       _storageSettings = storageSettings;
     }

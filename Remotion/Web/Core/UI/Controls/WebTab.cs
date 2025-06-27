@@ -50,7 +50,7 @@ public class WebTab: IWebTab, IControlStateManager
   /// <summary> Initalizes a new instance. </summary>
   public WebTab (string itemID, WebString text, IconInfo? icon)
   {
-    ArgumentUtility.CheckNotNull("itemID", itemID);
+    ArgumentUtility.CheckNotNull(nameof(itemID), itemID);
 
     _itemID = itemID;
     _text = text;
@@ -358,8 +358,8 @@ public class WebTab: IWebTab, IControlStateManager
 
   public virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
   {
-    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-    ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+    ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+    ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
 
     var key = ResourceManagerUtility.GetGlobalResourceKey(Text.GetValue());
     if (! string.IsNullOrEmpty(key))
@@ -414,7 +414,7 @@ public class WebTabClickEventArgs: EventArgs
   /// <summary> Initializes an instance. </summary>
   public WebTabClickEventArgs (WebTab tab)
   {
-    ArgumentUtility.CheckNotNull("tab", tab);
+    ArgumentUtility.CheckNotNull(nameof(tab), tab);
     _tab = tab;
   }
 

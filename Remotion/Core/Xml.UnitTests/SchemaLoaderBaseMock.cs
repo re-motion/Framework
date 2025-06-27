@@ -34,7 +34,7 @@ namespace Remotion.Xml.UnitTests
 
     public SchemaLoaderBaseMock (string schemaUri)
     {
-      ArgumentUtility.CheckNotNull("schemaUri", schemaUri);
+      ArgumentUtility.CheckNotNull(nameof(schemaUri), schemaUri);
 
       _schemaUri = schemaUri;
     }

@@ -50,8 +50,8 @@ public class InvalidTypeException : DomainObjectException
       : base(message, innerException)
   {
     ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
-    ArgumentUtility.CheckNotNull("expectedType", expectedType);
-    ArgumentUtility.CheckNotNull("actualType", actualType);
+    ArgumentUtility.CheckNotNull(nameof(expectedType), expectedType);
+    ArgumentUtility.CheckNotNull(nameof(actualType), actualType);
 
     _propertyName = propertyName;
     _expectedType = expectedType;

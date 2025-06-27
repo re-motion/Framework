@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptE
 
     public void AppendToScript (List<ScriptStatement> script)
     {
-      ArgumentUtility.CheckNotNull("script", script);
+      ArgumentUtility.CheckNotNull(nameof(script), script);
 
       script.Add(this);
     }

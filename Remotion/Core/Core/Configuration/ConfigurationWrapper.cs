@@ -33,7 +33,7 @@ namespace Remotion.Configuration
 
     public static ConfigurationWrapper CreateFromConfigurationObject (System.Configuration.Configuration configuration)
     {
-      ArgumentUtility.CheckNotNull("configuration", configuration);
+      ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
       return new ConfigurationWrapperFromConfigurationObject(configuration);
     }
 

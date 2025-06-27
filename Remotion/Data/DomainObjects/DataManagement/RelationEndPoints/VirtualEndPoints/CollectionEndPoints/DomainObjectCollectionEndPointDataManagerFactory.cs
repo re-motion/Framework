@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public DomainObjectCollectionEndPointDataManagerFactory (
         IDomainObjectCollectionEndPointChangeDetectionStrategy changeDetectionStrategy)
     {
-      ArgumentUtility.CheckNotNull("changeDetectionStrategy", changeDetectionStrategy);
+      ArgumentUtility.CheckNotNull(nameof(changeDetectionStrategy), changeDetectionStrategy);
 
       _changeDetectionStrategy = changeDetectionStrategy;
     }
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public IDomainObjectCollectionEndPointDataManager CreateEndPointDataManager (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
 
       return new DomainObjectCollectionEndPointDataManager(endPointID, _changeDetectionStrategy);
     }

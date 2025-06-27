@@ -42,12 +42,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
       : base(
-          ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction),
-          ArgumentUtility.CheckNotNull("id", id))
+          ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction),
+          ArgumentUtility.CheckNotNull(nameof(id), id))
     {
-      ArgumentUtility.CheckNotNull("foreignKeyDataContainer", foreignKeyDataContainer);
-      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
-      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
+      ArgumentUtility.CheckNotNull(nameof(foreignKeyDataContainer), foreignKeyDataContainer);
+      ArgumentUtility.CheckNotNull(nameof(endPointProvider), endPointProvider);
+      ArgumentUtility.CheckNotNull(nameof(transactionEventSink), transactionEventSink);
 
       if (id.ObjectID == null)
         throw new ArgumentException("End point ID must have a non-null ObjectID.", "id");

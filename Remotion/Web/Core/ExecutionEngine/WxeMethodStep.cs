@@ -72,8 +72,8 @@ public class WxeMethodStep: WxeStep
   /// <include file='../Doc/include/ExecutionEngine/WxeMethodStep.xml' path='WxeMethodStep/Ctor/*' />
   public WxeMethodStep (WxeStepList target, MethodInfo method)
   {
-    ArgumentUtility.CheckNotNull("target", target);
-    ArgumentUtility.CheckNotNull("method", method);
+    ArgumentUtility.CheckNotNull(nameof(target), target);
+    ArgumentUtility.CheckNotNull(nameof(method), method);
 
     Type targetType = target.GetType();
     Type declaringType = method.DeclaringType!; // TODO RM-8118: not null assertion
@@ -95,15 +95,15 @@ public class WxeMethodStep: WxeStep
 
   public WxeMethodStep (Action method)
       : this(
-          GetTargetFromDelegate(ArgumentUtility.CheckNotNull("method", method)),
-          GetMethodFromDelegate(ArgumentUtility.CheckNotNull("method", method)))
+          GetTargetFromDelegate(ArgumentUtility.CheckNotNull(nameof(method), method)),
+          GetMethodFromDelegate(ArgumentUtility.CheckNotNull(nameof(method), method)))
   {
   }
 
   public WxeMethodStep (Action<WxeContext> method)
       : this(
-          GetTargetFromDelegate(ArgumentUtility.CheckNotNull("method", method)),
-          GetMethodFromDelegate(ArgumentUtility.CheckNotNull("method", method)))
+          GetTargetFromDelegate(ArgumentUtility.CheckNotNull(nameof(method), method)),
+          GetMethodFromDelegate(ArgumentUtility.CheckNotNull(nameof(method), method)))
   {
   }
 

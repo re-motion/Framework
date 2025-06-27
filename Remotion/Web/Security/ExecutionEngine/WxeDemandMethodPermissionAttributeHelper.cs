@@ -40,8 +40,8 @@ namespace Remotion.Web.Security.ExecutionEngine
 
     public WxeDemandMethodPermissionAttributeHelper (Type functionType, WxeDemandTargetPermissionAttribute attribute)
     {
-      ArgumentUtility.CheckNotNull("functionType", functionType);
-      ArgumentUtility.CheckNotNull("attribute", attribute);
+      ArgumentUtility.CheckNotNull(nameof(functionType), functionType);
+      ArgumentUtility.CheckNotNull(nameof(attribute), attribute);
 
       switch (attribute.MethodType)
       {

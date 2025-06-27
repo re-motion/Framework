@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
             null,
             transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull("collectionData", collectionData);
+      ArgumentUtility.CheckNotNull(nameof(collectionData), collectionData);
 
       _modifiedCollectionData = collectionData;
     }

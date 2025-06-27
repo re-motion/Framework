@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public override void Insert (int index, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       if (index < 0 || index > Count)
       {
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public override bool Remove (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       var existingObject = GetObject(domainObject.ID);
       if (existingObject != null && existingObject != domainObject)
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public override void Replace (int index, DomainObject value)
     {
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
 
       if (index < 0 || index >= Count)
       {

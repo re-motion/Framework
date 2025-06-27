@@ -49,7 +49,7 @@ namespace Remotion.Mixins
     /// </returns>
     public static bool IsGeneratedConcreteMixedType (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
       return typeof(IMixinTarget).IsAssignableFrom(type) && !type.IsInterface;
     }
 
@@ -63,7 +63,7 @@ namespace Remotion.Mixins
     /// </returns>
     public static bool IsGeneratedByMixinEngine (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
       return IsGeneratedConcreteMixedType(type)
           || typeof(IGeneratedMixinType).IsAssignableFrom(type)
           || typeof(IGeneratedNextCallProxyType).IsAssignableFrom(type)
@@ -80,7 +80,7 @@ namespace Remotion.Mixins
     /// </returns>
     public static Type GetConcreteMixedType (Type targetOrConcreteType)
     {
-      ArgumentUtility.CheckNotNull("targetOrConcreteType", targetOrConcreteType);
+      ArgumentUtility.CheckNotNull(nameof(targetOrConcreteType), targetOrConcreteType);
 
       // Check if type is concrete type for performance reasons (this is faster than just going to the TypeFactory)
       if (IsGeneratedConcreteMixedType(targetOrConcreteType))
@@ -97,7 +97,7 @@ namespace Remotion.Mixins
     /// given <paramref name="targetOrConcreteType"/> was generated.</returns>
     public static Type GetUnderlyingTargetType (Type targetOrConcreteType)
     {
-      ArgumentUtility.CheckNotNull("targetOrConcreteType", targetOrConcreteType);
+      ArgumentUtility.CheckNotNull(nameof(targetOrConcreteType), targetOrConcreteType);
       var classContextFromConcreteType = GetClassContextForConcreteType(targetOrConcreteType);
       if (classContextFromConcreteType == null)
         return targetOrConcreteType;
@@ -124,8 +124,8 @@ namespace Remotion.Mixins
     /// </remarks>
     public static bool IsAssignableFrom (Type baseOrInterface, Type targetOrConcreteType)
     {
-      ArgumentUtility.CheckNotNull("baseOrInterface", baseOrInterface);
-      ArgumentUtility.CheckNotNull("targetOrConcreteType", targetOrConcreteType);
+      ArgumentUtility.CheckNotNull(nameof(baseOrInterface), baseOrInterface);
+      ArgumentUtility.CheckNotNull(nameof(targetOrConcreteType), targetOrConcreteType);
 
       return baseOrInterface.IsAssignableFrom(GetConcreteMixedType(targetOrConcreteType));
     }
@@ -140,7 +140,7 @@ namespace Remotion.Mixins
     /// </returns>
     public static bool HasMixins (Type targetOrConcreteType)
     {
-      ArgumentUtility.CheckNotNull("targetOrConcreteType", targetOrConcreteType);
+      ArgumentUtility.CheckNotNull(nameof(targetOrConcreteType), targetOrConcreteType);
 
       var classContext = MixinConfiguration.ActiveConfiguration.GetContext(targetOrConcreteType);
       return classContext != null && classContext.Mixins.Count > 0;
@@ -161,8 +161,8 @@ namespace Remotion.Mixins
     /// </remarks>
     public static bool HasMixin (Type targetOrConcreteType, Type mixinType)
     {
-      ArgumentUtility.CheckNotNull("targetOrConcreteType", targetOrConcreteType);
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull(nameof(targetOrConcreteType), targetOrConcreteType);
+      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
 
       ClassContext? classContext = MixinConfiguration.ActiveConfiguration.GetContext(targetOrConcreteType);
       return classContext != null && classContext.Mixins.ContainsKey(mixinType);
@@ -186,8 +186,8 @@ namespace Remotion.Mixins
     /// </remarks>
     public static Type? GetAscribableMixinType (Type targetOrConcreteType, Type mixinType)
     {
-      ArgumentUtility.CheckNotNull("targetOrConcreteType", targetOrConcreteType);
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull(nameof(targetOrConcreteType), targetOrConcreteType);
+      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
 
       return GetMixinTypes(targetOrConcreteType)
           .FirstOrDefault(
@@ -224,7 +224,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static IEnumerable<Type> GetMixinTypes (Type targetOrConcreteType)
     {
-      ArgumentUtility.CheckNotNull("targetOrConcreteType", targetOrConcreteType);
+      ArgumentUtility.CheckNotNull(nameof(targetOrConcreteType), targetOrConcreteType);
 
       var classContext = MixinConfiguration.ActiveConfiguration.GetContext(targetOrConcreteType);
       if (classContext == null)
@@ -260,7 +260,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static ReadOnlyCollection<Type> GetMixinTypesExact (Type targetOrConcreteType)
     {
-      ArgumentUtility.CheckNotNull("targetOrConcreteType", targetOrConcreteType);
+      ArgumentUtility.CheckNotNull(nameof(targetOrConcreteType), targetOrConcreteType);
 
       var concreteType = GetConcreteMixedType(targetOrConcreteType);
       return s_exactMixinTypesCache.GetOrAdd(
@@ -286,8 +286,8 @@ namespace Remotion.Mixins
     /// </remarks>
     public static object CreateInstance (Type type, params object[] args)
     {
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("args", args);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentUtility.CheckNotNull(nameof(args), args);
 
       return ObjectFactory.Create(false, type, ParamList.CreateDynamic(args));
     }
@@ -306,7 +306,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static ClassContext? GetClassContextForConcreteType (Type concreteMixedType)
     {
-      ArgumentUtility.CheckNotNull("concreteMixedType", concreteMixedType);
+      ArgumentUtility.CheckNotNull(nameof(concreteMixedType), concreteMixedType);
 
       // C# compiler 7.2 already provides caching for anonymous method.
       return s_classContextForConcreteTypesCache.GetOrAdd(

@@ -30,7 +30,7 @@ namespace Remotion.Validation.RuleCollectors
   {
     public static ObjectMetaValidationRuleCollector Create<TValidatedType> (Type collectorType)
     {
-      ArgumentUtility.CheckNotNull("collectorType", collectorType);
+      ArgumentUtility.CheckNotNull(nameof(collectorType), collectorType);
 
       return new ObjectMetaValidationRuleCollector(TypeAdapter.Create(typeof(TValidatedType)), collectorType);
     }
@@ -41,8 +41,8 @@ namespace Remotion.Validation.RuleCollectors
 
     public ObjectMetaValidationRuleCollector (ITypeInformation validatedType, Type collectorType)
     {
-      ArgumentUtility.CheckNotNull("validatedType", validatedType);
-      ArgumentUtility.CheckNotNull("collectorType", collectorType); // TODO RM-5906: Add type check for IComponentValidationCollector
+      ArgumentUtility.CheckNotNull(nameof(validatedType), validatedType);
+      ArgumentUtility.CheckNotNull(nameof(collectorType), collectorType); // TODO RM-5906: Add type check for IComponentValidationCollector
 
       ValidatedType = validatedType;
       CollectorType = collectorType;
@@ -56,7 +56,7 @@ namespace Remotion.Validation.RuleCollectors
 
     public void RegisterMetaValidationRule (IObjectMetaValidationRule metaValidationRule)
     {
-      ArgumentUtility.CheckNotNull("metaValidationRule", metaValidationRule);
+      ArgumentUtility.CheckNotNull(nameof(metaValidationRule), metaValidationRule);
 
       _metaValidationRules.Add(metaValidationRule);
     }

@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public ColumnValueReader (IDataReader dataReader, IColumnOrdinalProvider columnOrdinalProvider)
     {
-      ArgumentUtility.CheckNotNull("dataReader", dataReader);
-      ArgumentUtility.CheckNotNull("columnOrdinalProvider", columnOrdinalProvider);
+      ArgumentUtility.CheckNotNull(nameof(dataReader), dataReader);
+      ArgumentUtility.CheckNotNull(nameof(columnOrdinalProvider), columnOrdinalProvider);
 
       _dataReader = dataReader;
       _columnOrdinalProvider = columnOrdinalProvider;

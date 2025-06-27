@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
         BusinessObjectPropertyPath.UnreachableValueBehavior unreachableValueBehavior,
         BusinessObjectPropertyPath.ListValueBehavior listValueBehavior)
     {
-      ArgumentUtility.CheckNotNull("root", root);
+      ArgumentUtility.CheckNotNull(nameof(root), root);
 
       var propertyEnumerator = GetResultPropertyEnumerator();
       var currentObject = root;

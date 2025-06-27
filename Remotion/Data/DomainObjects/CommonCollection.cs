@@ -37,7 +37,7 @@ public class CommonCollection : ICollection
 
     public CollectionEnumerator (CommonCollection collection)
     {
-      ArgumentUtility.CheckNotNull("collection", collection);
+      ArgumentUtility.CheckNotNull(nameof(collection), collection);
       _collection = collection;
       _collectionVersion = _collection._version;
       _index = -1;
@@ -159,7 +159,7 @@ public class CommonCollection : ICollection
   /// </exception>
   public virtual void CopyTo (Array array, int index)
   {
-    ArgumentUtility.CheckNotNull("array", array);
+    ArgumentUtility.CheckNotNull(nameof(array), array);
     if (index < 0) throw new ArgumentOutOfRangeException("index", index, "Index must be greater than or equal to zero.");
     if (array.Rank != 1) throw new ArgumentException("CopyTo can only operate on one-dimensional arrays.", "array");
     if (Count > 0 && index >= array.Length)
@@ -208,7 +208,7 @@ public class CommonCollection : ICollection
   /// <exception cref="System.ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
   protected object? BaseGetObject (object key)
   {
-    ArgumentUtility.CheckNotNull("key", key);
+    ArgumentUtility.CheckNotNull(nameof(key), key);
 
     return _collectionData[key];
   }
@@ -221,7 +221,7 @@ public class CommonCollection : ICollection
   /// <exception cref="System.ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
   protected bool BaseContainsKey (object key)
   {
-    ArgumentUtility.CheckNotNull("key", key);
+    ArgumentUtility.CheckNotNull(nameof(key), key);
 
     return _collectionData.ContainsKey(key);
   }
@@ -237,7 +237,7 @@ public class CommonCollection : ICollection
   /// <see cref="object.Equals(object,object)"/> is used for the comparison.</remarks>
   protected bool BaseContains (object key, object value)
   {
-    ArgumentUtility.CheckNotNull("key", key);
+    ArgumentUtility.CheckNotNull(nameof(key), key);
 
     if (!BaseContainsKey(key))
       return false;
@@ -259,8 +259,8 @@ public class CommonCollection : ICollection
   /// </exception>
   protected int BaseAdd (object key, object value)
   {
-    ArgumentUtility.CheckNotNull("key", key);
-    ArgumentUtility.CheckNotNull("value", value);
+    ArgumentUtility.CheckNotNull(nameof(key), key);
+    ArgumentUtility.CheckNotNull(nameof(value), value);
     if (_isReadOnly) throw new NotSupportedException("Cannot add an item to a read-only collection.");
 
     _collectionData.Add(key, value);
@@ -278,7 +278,7 @@ public class CommonCollection : ICollection
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   protected void BaseRemove (object key)
   {
-    ArgumentUtility.CheckNotNull("key", key);
+    ArgumentUtility.CheckNotNull(nameof(key), key);
     if (_isReadOnly) throw new NotSupportedException("Cannot remove an item from a read-only collection.");
 
     _collectionData.Remove(key);

@@ -40,8 +40,8 @@ namespace Remotion.Validation.Implementation
 
     public static IValidationRuleCollectorReflector Create (ITypeDiscoveryService typeDiscoveryService, IValidatedTypeResolver validatedTypeResolver)
     {
-      ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
-      ArgumentUtility.CheckNotNull("validatedTypeResolver", validatedTypeResolver);
+      ArgumentUtility.CheckNotNull(nameof(typeDiscoveryService), typeDiscoveryService);
+      ArgumentUtility.CheckNotNull(nameof(validatedTypeResolver), validatedTypeResolver);
 
       return new DiscoveryServiceBasedValidationRuleCollectorReflector(typeDiscoveryService, validatedTypeResolver);
     }
@@ -60,8 +60,8 @@ namespace Remotion.Validation.Implementation
         ITypeDiscoveryService typeDiscoveryService,
         IValidatedTypeResolver validatedTypeResolver)
     {
-      ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
-      ArgumentUtility.CheckNotNull("validatedTypeResolver", validatedTypeResolver);
+      ArgumentUtility.CheckNotNull(nameof(typeDiscoveryService), typeDiscoveryService);
+      ArgumentUtility.CheckNotNull(nameof(validatedTypeResolver), validatedTypeResolver);
 
       _typeDiscoveryService = typeDiscoveryService;
       _validatedTypeResolver = validatedTypeResolver;
@@ -70,7 +70,7 @@ namespace Remotion.Validation.Implementation
 
     public IEnumerable<Type> GetCollectorsForType (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       return _validationCollectors.Value[type];
     }

@@ -58,8 +58,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public StateUpdateRaisingVirtualObjectEndPointDecorator (IVirtualObjectEndPoint innerEndPoint, IVirtualEndPointStateUpdateListener listener)
     {
-      ArgumentUtility.CheckNotNull("innerEndPoint", innerEndPoint);
-      ArgumentUtility.CheckNotNull("listener", listener);
+      ArgumentUtility.CheckNotNull(nameof(innerEndPoint), innerEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(listener), listener);
 
       _innerEndPoint = innerEndPoint;
       _listener = listener;

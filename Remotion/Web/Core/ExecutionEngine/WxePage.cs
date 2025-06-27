@@ -48,8 +48,8 @@ namespace Remotion.Web.ExecutionEngine
     /// <param name="callArguments">The <see cref="IWxeCallArguments"/> used to control the function invocation. Must not be <see langword="null" />.</param>
     public void ExecuteFunction (WxeFunction function, IWxeCallArguments callArguments)
     {
-      ArgumentUtility.CheckNotNull("function", function);
-      ArgumentUtility.CheckNotNull("callArguments", callArguments);
+      ArgumentUtility.CheckNotNull(nameof(function), function);
+      ArgumentUtility.CheckNotNull(nameof(callArguments), callArguments);
 
       callArguments.Dispatch(_wxePageInfo.Executor, function);
     }

@@ -45,8 +45,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         IDictionary<string, RelationDefinition> actualDefinitions,
         bool ignoreUnknown)
     {
-      ArgumentUtility.CheckNotNull("expectedDefinitions", expectedDefinitions);
-      ArgumentUtility.CheckNotNull("actualDefinitions", actualDefinitions);
+      ArgumentUtility.CheckNotNull(nameof(expectedDefinitions), expectedDefinitions);
+      ArgumentUtility.CheckNotNull(nameof(actualDefinitions), actualDefinitions);
 
       if (!ignoreUnknown)
         Assert.That(actualDefinitions.Count, Is.EqualTo(expectedDefinitions.Count()), "Number of relation definitions does not match.");
@@ -61,8 +61,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public void Check (RelationDefinition expectedDefinition, RelationDefinition actualDefinition)
     {
-      ArgumentUtility.CheckNotNull("expectedDefinition", expectedDefinition);
-      ArgumentUtility.CheckNotNull("actualDefinition", actualDefinition);
+      ArgumentUtility.CheckNotNull(nameof(expectedDefinition), expectedDefinition);
+      ArgumentUtility.CheckNotNull(nameof(actualDefinition), actualDefinition);
 
       Assert.That(actualDefinition.ID, Is.EqualTo(expectedDefinition.ID), "IDs of relation definitions do not match.");
 

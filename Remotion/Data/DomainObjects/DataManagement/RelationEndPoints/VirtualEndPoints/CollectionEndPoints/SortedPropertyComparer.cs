@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         IDataContainerMapReadOnlyView dataManager,
         ValueAccess valueAccess)
     {
-      ArgumentUtility.CheckNotNull("sortedPropertySpecifications", sortedPropertySpecifications);
-      ArgumentUtility.CheckNotNull("dataManager", dataManager);
+      ArgumentUtility.CheckNotNull(nameof(sortedPropertySpecifications), sortedPropertySpecifications);
+      ArgumentUtility.CheckNotNull(nameof(dataManager), dataManager);
 
       var comparers = sortedPropertySpecifications.Select(sp => (IComparer<DomainObject>)new SortedPropertyComparer(sp, dataManager, valueAccess));
       return new CompoundComparer<DomainObject>(comparers);
@@ -50,8 +50,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         IDataContainerMapReadOnlyView dataContainerMap,
         ValueAccess valueAccess)
     {
-      ArgumentUtility.CheckNotNull("sortedPropertySpecification", sortedPropertySpecification);
-      ArgumentUtility.CheckNotNull("dataContainerMap", dataContainerMap);
+      ArgumentUtility.CheckNotNull(nameof(sortedPropertySpecification), sortedPropertySpecification);
+      ArgumentUtility.CheckNotNull(nameof(dataContainerMap), dataContainerMap);
 
       SortedPropertySpecification = sortedPropertySpecification;
       DataContainerMap = dataContainerMap;

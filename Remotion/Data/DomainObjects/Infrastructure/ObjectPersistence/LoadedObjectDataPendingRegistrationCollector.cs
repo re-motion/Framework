@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public FreshlyLoadedObjectData Add (FreshlyLoadedObjectData pendingData)
     {
-      ArgumentUtility.CheckNotNull("pendingData", pendingData);
+      ArgumentUtility.CheckNotNull(nameof(pendingData), pendingData);
 
       if (_dataPendingRegistration.TryGetValue(pendingData.ObjectID, out var existingData))
         return existingData;

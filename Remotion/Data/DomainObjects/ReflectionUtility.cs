@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="InvalidOperationException">The assembly's code base is not a local path.</exception>
     public static string GetAssemblyDirectory (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
 
       var assemblyLocation = assembly.Location;
       if (string.IsNullOrEmpty(assemblyLocation))
@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="System.ArgumentException">Type <paramref name="type"/> has no suitable constructor for the given <paramref name="constructorParameters"/>.</exception>
     public static object CreateObject (Type type, params object[] constructorParameters)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       Type[] constructorParameterTypes = new Type[constructorParameters.Length];
       for (int i = 0; i < constructorParameterTypes.Length; i++)
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects
 
     internal static string GetTypeListAsString (Type?[] types)
     {
-      ArgumentUtility.CheckNotNull("types", types);
+      ArgumentUtility.CheckNotNull(nameof(types), types);
       string result = String.Empty;
       foreach (Type? type in types)
       {
@@ -199,7 +199,7 @@ namespace Remotion.Data.DomainObjects
     /// </returns>
     public static bool IsObjectList (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       return s_objectListTypeCache.GetOrAdd(type, s_objectListTypeCacheValueFactory).CanAscribeTo;
     }
@@ -213,7 +213,7 @@ namespace Remotion.Data.DomainObjects
     /// </returns>
     public static bool IsIObjectList (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       return s_iObjectListTypeCache.GetOrAdd(type, s_iObjectListTypeCacheValueFactory).IsMatchingType;
     }
@@ -225,7 +225,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns><see langword="true" /> if the given type is a domain object.</returns>
     public static bool IsDomainObject (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       return (typeof(DomainObject).IsAssignableFrom(type));
     }
@@ -237,7 +237,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns><see langword="true" /> if the given type is a relation property.</returns>
     public static bool IsRelationType (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       return IsDomainObject(type) || IsObjectList(type) || IsIObjectList(type);
     }
@@ -245,42 +245,42 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>Only temporary solution until type resulition is refactored.</remarks>
     internal static bool IsBinaryPropertyValueType (Type propertyType)
     {
-      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
       return s_binaryPropertyValueType.Equals(propertyType);
     }
 
     /// <remarks>Only temporary solution until type resulition is refactored.</remarks>
     internal static bool IsStringPropertyValueType (Type propertyType)
     {
-      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
       return s_stringPropertyValueType.Equals(propertyType);
     }
 
     /// <remarks>Only temporary solution until type resulition is refactored.</remarks>
     internal static bool IsExtensibleEnumPropertyValueType (Type propertyType)
     {
-      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
       return ExtensibleEnumUtility.IsExtensibleEnumType(propertyType);
     }
 
     /// <remarks>Only temporary solution until type resulition is refactored.</remarks>
     internal static bool IsStructuralEquatablePropertyValueType (Type propertyType)
     {
-      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
       return typeof(IStructuralEquatable).IsAssignableFrom(propertyType);
     }
 
     /// <remarks>Only temporary solution until type resulition is refactored.</remarks>
     internal static bool IsObjectIDPropertyValueType (Type propertyType)
     {
-      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
       return s_objectIDPropertyValueType.Equals(propertyType);
     }
 
     /// <remarks>Only temporary solution until type resulition is refactored.</remarks>
     internal static bool IsTypePropertyValueType (Type propertyType)
     {
-      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
       return s_typePropertyValueType.Equals(propertyType);
     }
 
@@ -297,7 +297,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     public static Type? GetObjectListTypeParameter (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       var typeParameter = s_objectListTypeCache.GetOrAdd(type, s_objectListTypeCacheValueFactory).ItemType;
 
@@ -323,7 +323,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     public static Type? GetIObjectListTypeParameter (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       var typeParameter = s_iObjectListTypeCache.GetOrAdd(type, s_iObjectListTypeCacheValueFactory).ItemType;
 
@@ -343,7 +343,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns>the domain object type of the given property.</returns>
     public static Type? GetRelatedObjectTypeFromRelationProperty (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
 
       if (IsObjectList(propertyInfo.PropertyType))
         return GetObjectListTypeParameter(propertyInfo.PropertyType);
@@ -363,8 +363,8 @@ namespace Remotion.Data.DomainObjects
     /// <returns>the declaring domain object type for the given property.</returns>
     public static Type GetDeclaringDomainObjectTypeForProperty (IPropertyInformation propertyInfo, ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
       var persistentMixin = GetPersistentMixinTypeForProperty(propertyInfo, classDefinition);
       if (persistentMixin != null)
@@ -388,8 +388,8 @@ namespace Remotion.Data.DomainObjects
     /// <returns><see langword="true" /> if the given <see cref="PropertyInfo"/> is a mixed property.</returns>
     public static bool IsMixedProperty (IPropertyInformation propertyInfo, ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
       return GetPersistentMixinTypeForProperty(propertyInfo, classDefinition) != null;
     }

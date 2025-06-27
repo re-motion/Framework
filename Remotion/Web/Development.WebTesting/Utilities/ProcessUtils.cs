@@ -71,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <returns>The process id of the parent process, or <c>-1</c> if no parent process could be found.</returns>
     public static int GetParentProcessID ([NotNull] Process target)
     {
-      ArgumentUtility.CheckNotNull("target", target);
+      ArgumentUtility.CheckNotNull(nameof(target), target);
 
       // Query the process information
       var info = new ParentInfo();
@@ -118,7 +118,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </remarks>
     public static void GracefulProcessShutdown ([NotNull] Process process, TimeSpan timeout)
     {
-      ArgumentUtility.CheckNotNull("process", process);
+      ArgumentUtility.CheckNotNull(nameof(process), process);
 
       GracefulProcessShutdown(new[] { process }, timeout);
     }
@@ -253,7 +253,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public static void KillAllProcessesWithName ([NotNull] string processName, [NotNull] ILogger logger)
     {
       ArgumentUtility.CheckNotNullOrEmpty("processName", processName);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentUtility.CheckNotNull(nameof(logger), logger);
 
       logger.LogDebug("Process killing has been called for '{0}'...", processName);
 

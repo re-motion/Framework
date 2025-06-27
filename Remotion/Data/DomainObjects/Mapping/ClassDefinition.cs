@@ -61,8 +61,8 @@ namespace Remotion.Data.DomainObjects.Mapping
         IDomainObjectCreator instanceCreator)
     {
       ArgumentUtility.CheckNotNullOrEmpty("id", id);
-      ArgumentUtility.CheckNotNull("classType", classType);
-      ArgumentUtility.CheckNotNull("persistentMixinFinder", persistentMixinFinder);
+      ArgumentUtility.CheckNotNull(nameof(classType), classType);
+      ArgumentUtility.CheckNotNull(nameof(persistentMixinFinder), persistentMixinFinder);
 
       _id = id;
       _storageGroupType = storageGroupType;
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public bool IsSameOrBaseClassOf (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
       if (ReferenceEquals(this, classDefinition))
         return true;
@@ -174,14 +174,14 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public bool IsMyRelationEndPoint (IRelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
 
       return (relationEndPointDefinition.ClassDefinition == this && !relationEndPointDefinition.IsAnonymous);
     }
 
     public bool IsRelationEndPoint (IRelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
 
       if (IsMyRelationEndPoint(relationEndPointDefinition))
         return true;
@@ -206,7 +206,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void SetStorageEntity (IStorageEntityDefinition storageEntityDefinition)
     {
-      ArgumentUtility.CheckNotNull("storageEntityDefinition", storageEntityDefinition);
+      ArgumentUtility.CheckNotNull(nameof(storageEntityDefinition), storageEntityDefinition);
 
       if (_isReadOnly)
         throw new NotSupportedException(String.Format("Class '{0}' is read-only.", ID));
@@ -216,7 +216,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void SetPropertyDefinitions (PropertyDefinitionCollection propertyDefinitions)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinitions", propertyDefinitions);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinitions), propertyDefinitions);
 
       if (_propertyDefinitions != null)
         throw new InvalidOperationException(String.Format("The property-definitions for class '{0}' have already been set.", ID));
@@ -232,7 +232,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void SetRelationEndPointDefinitions (RelationEndPointDefinitionCollection relationEndPoints)
     {
-      ArgumentUtility.CheckNotNull("relationEndPoints", relationEndPoints);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPoints), relationEndPoints);
 
       if (_relationEndPoints != null)
         throw new InvalidOperationException(String.Format("The relation end point definitions for class '{0}' have already been set.", ID));
@@ -248,7 +248,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void SetDerivedClasses (IEnumerable<ClassDefinition> derivedClasses)
     {
-      ArgumentUtility.CheckNotNull("derivedClasses", derivedClasses);
+      ArgumentUtility.CheckNotNull(nameof(derivedClasses), derivedClasses);
 
       if (_derivedClasses != null)
         throw new InvalidOperationException(String.Format("The derived-classes for class '{0}' have already been set.", ID));
@@ -327,7 +327,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public PropertyDefinition? ResolveProperty (IPropertyInformation propertyInformation)
     {
-      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull(nameof(propertyInformation), propertyInformation);
 
       var propertyAccessorData = PropertyAccessorDataCache.ResolvePropertyAccessorData(propertyInformation);
       return propertyAccessorData == null ? null : propertyAccessorData.PropertyDefinition;
@@ -335,7 +335,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public IRelationEndPointDefinition? ResolveRelationEndPoint (IPropertyInformation propertyInformation)
     {
-      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull(nameof(propertyInformation), propertyInformation);
 
       var propertyAccessorData = PropertyAccessorDataCache.ResolvePropertyAccessorData(propertyInformation);
       return propertyAccessorData == null ? null : propertyAccessorData.RelationEndPointDefinition;
@@ -406,7 +406,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public Type? GetPersistentMixin (Type mixinToSearch)
     {
-      ArgumentUtility.CheckNotNull("mixinToSearch", mixinToSearch);
+      ArgumentUtility.CheckNotNull(nameof(mixinToSearch), mixinToSearch);
       if (PersistentMixins.Contains(mixinToSearch))
         return mixinToSearch;
       else

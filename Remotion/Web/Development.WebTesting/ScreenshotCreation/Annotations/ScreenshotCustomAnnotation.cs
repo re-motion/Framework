@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 
     public ScreenshotCustomAnnotation ([NotNull] Action<Canvas, ResolvedScreenshotElement> elementDrawAction)
     {
-      ArgumentUtility.CheckNotNull("elementDrawAction", elementDrawAction);
+      ArgumentUtility.CheckNotNull(nameof(elementDrawAction), elementDrawAction);
 
       _elementDrawAction = elementDrawAction;
     }
@@ -38,8 +38,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// <inheritdoc />
     public void Draw (Canvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull("canvas", canvas);
-      ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
+      ArgumentUtility.CheckNotNull(nameof(canvas), canvas);
+      ArgumentUtility.CheckNotNull(nameof(resolvedScreenshotElement), resolvedScreenshotElement);
 
       _elementDrawAction(canvas, resolvedScreenshotElement);
     }

@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     /// <returns>A new <see cref="StorageSettings"/> object with a single default <see cref="StorageProviderDefinition" /> and no storage groups.</returns>
     public IStorageSettings Create (IStorageObjectFactoryFactory storageObjectFactoryFactory)
     {
-      ArgumentUtility.CheckNotNull("storageObjectFactoryFactory", storageObjectFactoryFactory);
+      ArgumentUtility.CheckNotNull(nameof(storageObjectFactoryFactory), storageObjectFactoryFactory);
 
       var storageObjectFactory = storageObjectFactoryFactory.Create(StorageObjectFactoryType);
       Assertion.IsTrue(

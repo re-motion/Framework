@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public CompundBindablePropertyWriteAccessStrategy (IEnumerable<IBindablePropertyWriteAccessStrategy> bindablePropertyWriteAccessStrategies)
     {
-      ArgumentUtility.CheckNotNull("bindablePropertyWriteAccessStrategies", bindablePropertyWriteAccessStrategies);
+      ArgumentUtility.CheckNotNull(nameof(bindablePropertyWriteAccessStrategies), bindablePropertyWriteAccessStrategies);
 
       _bindablePropertyWriteAccessStrategies = bindablePropertyWriteAccessStrategies.ToArray();
     }

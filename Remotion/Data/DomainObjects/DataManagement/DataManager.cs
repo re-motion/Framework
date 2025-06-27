@@ -51,12 +51,12 @@ namespace Remotion.Data.DomainObjects.DataManagement
         IObjectLoader objectLoader,
         IRelationEndPointManager relationEndPointManager)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
-      ArgumentUtility.CheckNotNull("dataContainerEventListener", dataContainerEventListener);
-      ArgumentUtility.CheckNotNull("invalidDomainObjectManager", invalidDomainObjectManager);
-      ArgumentUtility.CheckNotNull("objectLoader", objectLoader);
-      ArgumentUtility.CheckNotNull("relationEndPointManager", relationEndPointManager);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(transactionEventSink), transactionEventSink);
+      ArgumentUtility.CheckNotNull(nameof(dataContainerEventListener), dataContainerEventListener);
+      ArgumentUtility.CheckNotNull(nameof(invalidDomainObjectManager), invalidDomainObjectManager);
+      ArgumentUtility.CheckNotNull(nameof(objectLoader), objectLoader);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointManager), relationEndPointManager);
 
       _clientTransaction = clientTransaction;
       _transactionEventSink = transactionEventSink;
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public IEnumerable<PersistableData> GetLoadedDataByObjectState (Predicate<DomainObjectState> predicate)
     {
-      ArgumentUtility.CheckNotNull("predicate", predicate);
+      ArgumentUtility.CheckNotNull(nameof(predicate), predicate);
 
       var matchingObjects = from dataContainer in DataContainers
           let domainObject = dataContainer.DomainObject
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void RegisterDataContainer (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull(nameof(dataContainer), dataContainer);
 
       if (!dataContainer.HasDomainObject)
         throw new InvalidOperationException("The DomainObject of a DataContainer must be set before it can be registered with a transaction.");
@@ -127,7 +127,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void Discard (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull(nameof(dataContainer), dataContainer);
 
       var unregisterEndPointsCommand = _relationEndPointManager.CreateUnregisterCommandForDataContainer(dataContainer);
       var unregisterDataContainerCommand = CreateUnregisterDataContainerCommand(dataContainer.ID);
@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void MarkInvalid (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       // This uses IsEnlisted rather than a RootTransaction check because the DomainObject reference is used inside the ClientTransaction, and we
       // explicitly want to allow only objects enlisted in the transaction.
@@ -173,7 +173,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void MarkNotInvalid (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
       if (!_invalidDomainObjectManager.MarkNotInvalid(objectID))
       {
@@ -210,7 +210,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public DataContainer? GetDataContainerWithoutLoading (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
       if (_invalidDomainObjectManager.IsInvalid(objectID))
         throw new ObjectInvalidException(objectID);
@@ -220,14 +220,14 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public DomainObjectState GetState (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
       return _domainObjectStateCache.GetState(objectID);
     }
 
     public DataContainer? GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
       // GetDataContainerWithoutLoading guards against invalid IDs.
       var dataContainer = GetDataContainerWithoutLoading(objectID);
@@ -242,7 +242,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public IEnumerable<DataContainer?> GetDataContainersWithLazyLoad (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound)
     {
-      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
 
       // GetDataContainerWithoutLoading below guards against invalid IDs.
 
@@ -259,7 +259,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void LoadLazyCollectionEndPoint (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
 
       var collectionEndPoint = GetRelationEndPointWithoutLoading(endPointID) as ICollectionEndPoint<ICollectionEndPointData>;
 
@@ -285,7 +285,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void LoadLazyVirtualObjectEndPoint (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
 
       var virtualObjectEndPoint = GetRelationEndPointWithoutLoading(endPointID) as IVirtualObjectEndPoint;
 
@@ -306,7 +306,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public DataContainer LoadLazyDataContainer (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
       if (_dataContainerMap[objectID] != null)
         throw new InvalidOperationException("The given DataContainer cannot be loaded, its data is already available.");
@@ -316,25 +316,25 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public IRelationEndPoint GetRelationEndPointWithLazyLoad (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
       return _relationEndPointManager.GetRelationEndPointWithLazyLoad(endPointID);
     }
 
     public IRelationEndPoint? GetRelationEndPointWithoutLoading (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
       return _relationEndPointManager.GetRelationEndPointWithoutLoading(endPointID);
     }
 
     public IVirtualEndPoint GetOrCreateVirtualEndPoint (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
       return _relationEndPointManager.GetOrCreateVirtualEndPoint(endPointID);
     }
 
     public IDataManagementCommand CreateDeleteCommand (DomainObject deletedObject)
     {
-      ArgumentUtility.CheckNotNull("deletedObject", deletedObject);
+      ArgumentUtility.CheckNotNull(nameof(deletedObject), deletedObject);
 
       // This uses IsEnlisted rather than a RootTransaction check because the DomainObject reference is used inside the ClientTransaction, and we
       // explicitly want to allow only objects enlisted in the transaction.
@@ -355,7 +355,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public IDataManagementCommand CreateUnloadCommand (params ObjectID[] objectIDs)
     {
-      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
 
       var domainObjects = new List<DomainObject>();
       var problematicDataContainers = new List<KeyValuePair<ObjectID, DataContainerState>>();
@@ -411,7 +411,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public IDataManagementCommand CreateUnloadVirtualEndPointsCommand (params RelationEndPointID[] endPointIDs)
     {
-      ArgumentUtility.CheckNotNull("endPointIDs", endPointIDs);
+      ArgumentUtility.CheckNotNull(nameof(endPointIDs), endPointIDs);
 
       var endPointsOfNewOrDeletedObjects = endPointIDs
           .Where(endPointID => endPointID.ObjectID != null)

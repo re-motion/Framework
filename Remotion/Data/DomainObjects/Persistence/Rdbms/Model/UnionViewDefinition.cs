@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
             indexes,
             synonyms)
     {
-      ArgumentUtility.CheckNotNull("unionedEntities", unionedEntities);
+      ArgumentUtility.CheckNotNull(nameof(unionedEntities), unionedEntities);
 
       var unionedEntitiesList = unionedEntities.ToList().AsReadOnly();
       ArgumentUtility.CheckNotEmpty("unionedEntities", unionedEntitiesList);
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public ColumnDefinition?[] CalculateFullColumnList (IEnumerable<ColumnDefinition> availableColumns)
     {
-      ArgumentUtility.CheckNotNull("availableColumns", availableColumns);
+      ArgumentUtility.CheckNotNull(nameof(availableColumns), availableColumns);
 
       // Since validation hasn't run yet, we can't be sure that all column names are unique. Therefore, choose the first column with matching name.
       var availableColumnsAsDictionary = availableColumns.ToLookup(c => c.Name);
@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public override void Accept (IRdbmsStorageEntityDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
 
       visitor.VisitUnionViewDefinition(this);
     }

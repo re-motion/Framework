@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     public IEnumerable<TransportItem> Import (Stream inputStream)
     {
-      ArgumentUtility.CheckNotNull("inputStream", inputStream);
+      ArgumentUtility.CheckNotNull(nameof(inputStream), inputStream);
 
       try
       {
@@ -46,8 +46,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     protected virtual XmlTransportItem[] PerformDeserialization (Stream dataStream, XmlSerializer formatter)
     {
-      ArgumentUtility.CheckNotNull("dataStream", dataStream);
-      ArgumentUtility.CheckNotNull("formatter", formatter);
+      ArgumentUtility.CheckNotNull(nameof(dataStream), dataStream);
+      ArgumentUtility.CheckNotNull(nameof(formatter), formatter);
 
       var result = (XmlTransportItem[]?)formatter.Deserialize(dataStream);
       Assertion.IsNotNull(result, "Deserialized data stream returned null.");

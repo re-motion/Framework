@@ -34,7 +34,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
 
     public ExtensibleEnumDefinitionCache (IExtensibleEnumValueDiscoveryService valueDiscoveryService)
     {
-      ArgumentUtility.CheckNotNull("valueDiscoveryService", valueDiscoveryService);
+      ArgumentUtility.CheckNotNull(nameof(valueDiscoveryService), valueDiscoveryService);
 
       _valueDiscoveryService = valueDiscoveryService;
 
@@ -63,7 +63,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
     /// <see cref="ExtensibleEnumInfo{T}"/>.</exception>
     public IExtensibleEnumDefinition GetDefinition (Type extensibleEnumType)
     {
-      ArgumentUtility.CheckNotNull("extensibleEnumType", extensibleEnumType);
+      ArgumentUtility.CheckNotNull(nameof(extensibleEnumType), extensibleEnumType);
 
       return _cache.GetOrAdd(extensibleEnumType, _createDefinitionFunc);
     }

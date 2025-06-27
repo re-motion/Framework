@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public IncompleteEndPointModificationVirtualCollectionData (RelationEndPointID associatedEndPointID)
     {
-      ArgumentUtility.CheckNotNull("associatedEndPointID", associatedEndPointID);
+      ArgumentUtility.CheckNotNull(nameof(associatedEndPointID), associatedEndPointID);
 
       _associatedEndPointID = associatedEndPointID;
     }

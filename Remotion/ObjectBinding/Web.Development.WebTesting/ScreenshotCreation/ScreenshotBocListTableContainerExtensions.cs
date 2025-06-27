@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentColumn", fluentColumn);
+      ArgumentUtility.CheckNotNull(nameof(fluentColumn), fluentColumn);
 
       return fluentColumn.Target.GetCellSelector();
     }
@@ -56,8 +56,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentColumn", fluentColumn);
-      ArgumentUtility.CheckNotNull("rowItemID", rowItemID);
+      ArgumentUtility.CheckNotNull(nameof(fluentColumn), fluentColumn);
+      ArgumentUtility.CheckNotNull(nameof(rowItemID), rowItemID);
 
       return
           new FluentControlHostScreenshotElement<ScreenshotBocListCell<TList, TRow, TCell>>(
@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentColumn", fluentColumn);
+      ArgumentUtility.CheckNotNull(nameof(fluentColumn), fluentColumn);
 
       return
           new FluentControlHostScreenshotElement<ScreenshotBocListCell<TList, TRow, TCell>>(
@@ -90,7 +90,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentRow", fluentRow);
+      ArgumentUtility.CheckNotNull(nameof(fluentRow), fluentRow);
 
       return fluentRow.Target.GetCellSelector();
     }
@@ -105,8 +105,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentRow", fluentRow);
-      ArgumentUtility.CheckNotNull("columnItemID", columnItemID);
+      ArgumentUtility.CheckNotNull(nameof(fluentRow), fluentRow);
+      ArgumentUtility.CheckNotNull(nameof(columnItemID), columnItemID);
 
       return
           new FluentControlHostScreenshotElement<ScreenshotBocListCell<TList, TRow, TCell>>(
@@ -123,7 +123,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentRow", fluentRow);
+      ArgumentUtility.CheckNotNull(nameof(fluentRow), fluentRow);
 
       return
           new FluentControlHostScreenshotElement<ScreenshotBocListCell<TList, TRow, TCell>>(
@@ -140,7 +140,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentTableContainer", fluentTableContainer);
+      ArgumentUtility.CheckNotNull(nameof(fluentTableContainer), fluentTableContainer);
 
       return new ScreenshotBocListFluentColumnSelector<TList, TRow, TCell>(fluentTableContainer.Target.FluentList, includeHeader);
     }
@@ -156,8 +156,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentTableContainer", fluentTableContainer);
-      ArgumentUtility.CheckNotNull("columnItemID", columnItemID);
+      ArgumentUtility.CheckNotNull(nameof(fluentTableContainer), fluentTableContainer);
+      ArgumentUtility.CheckNotNull(nameof(columnItemID), columnItemID);
 
       return fluentTableContainer.GetColumn(includeHeader).WithItemID(columnItemID);
     }
@@ -173,7 +173,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentTableContainer", fluentTableContainer);
+      ArgumentUtility.CheckNotNull(nameof(fluentTableContainer), fluentTableContainer);
 
       return fluentTableContainer.GetColumn(includeHeader).WithIndex(oneBasedColumnIndex);
     }
@@ -187,7 +187,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentTableContainer", fluentTableContainer);
+      ArgumentUtility.CheckNotNull(nameof(fluentTableContainer), fluentTableContainer);
 
       var element = fluentTableContainer.Target.Element.FindCss(".bocListTable .bocListTableHead", Options.NoWait);
       if (!element.Exists(Options.NoWait))
@@ -207,7 +207,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentTableContainer", fluentTableContainer);
+      ArgumentUtility.CheckNotNull(nameof(fluentTableContainer), fluentTableContainer);
 
       return new ScreenshotBocListFluentRowSelector<TList, TRow, TCell>(fluentTableContainer.Target.FluentList);
     }
@@ -222,8 +222,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentTableContainer", fluentTableContainer);
-      ArgumentUtility.CheckNotNull("rowItemID", rowItemID);
+      ArgumentUtility.CheckNotNull(nameof(fluentTableContainer), fluentTableContainer);
+      ArgumentUtility.CheckNotNull(nameof(rowItemID), rowItemID);
 
       return fluentTableContainer.GetRow().WithItemID(rowItemID);
     }
@@ -238,7 +238,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentTableContainer", fluentTableContainer);
+      ArgumentUtility.CheckNotNull(nameof(fluentTableContainer), fluentTableContainer);
 
       return fluentTableContainer.GetRow().WithIndex(oneBasedRowIndex);
     }

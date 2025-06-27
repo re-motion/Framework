@@ -46,10 +46,10 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     protected UserControlExecutor (WxeStep parentStep, WxeUserControl userControl, WxeFunction subFunction, Control sender, bool usesEventTarget)
     {
-      ArgumentUtility.CheckNotNull("parentStep", parentStep);
-      ArgumentUtility.CheckNotNull("userControl", userControl);
-      ArgumentUtility.CheckNotNull("subFunction", subFunction);
-      ArgumentUtility.CheckNotNull("sender", sender);
+      ArgumentUtility.CheckNotNull(nameof(parentStep), parentStep);
+      ArgumentUtility.CheckNotNull(nameof(userControl), userControl);
+      ArgumentUtility.CheckNotNull(nameof(subFunction), subFunction);
+      ArgumentUtility.CheckNotNull(nameof(sender), sender);
       if (userControl.WxePage == null)
         throw new ArgumentException("Execution of user controls that are no longer part of the control hierarchy is not supported.", "userControl");
 
@@ -110,7 +110,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public void Execute (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       _pageStep.SetPostBackCollection(_postBackCollection);
       _postBackCollection = null;
@@ -121,7 +121,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     private void Return (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       NameValueCollection postBackCollection;
       if (StringUtility.AreEqual(context.HttpContext.Request.HttpMethod, "POST", false))

@@ -37,23 +37,23 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
 
     public IStorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
     {
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
+      ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
 
       return new NonPersistentProvider(storageProviderDefinition);
     }
 
     public IReadOnlyStorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
     {
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
+      ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
 
       return new NonPersistentProvider(storageProviderDefinition);
     }
 
     public IPersistenceModelLoader CreatePersistenceModelLoader (StorageProviderDefinition storageProviderDefinition)
     {
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
 
       return new NonPersistentPersistenceModelLoader(storageProviderDefinition);
     }
@@ -64,10 +64,10 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
         ResultOperatorHandlerRegistry resultOperatorHandlerRegistry,
         IMappingConfiguration mappingConfiguration)
     {
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull("resultOperatorHandlerRegistry", resultOperatorHandlerRegistry);
-      ArgumentUtility.CheckNotNull("methodCallTransformerProvider", methodCallTransformerProvider);
-      ArgumentUtility.CheckNotNull("mappingConfiguration", mappingConfiguration);
+      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
+      ArgumentUtility.CheckNotNull(nameof(resultOperatorHandlerRegistry), resultOperatorHandlerRegistry);
+      ArgumentUtility.CheckNotNull(nameof(methodCallTransformerProvider), methodCallTransformerProvider);
+      ArgumentUtility.CheckNotNull(nameof(mappingConfiguration), mappingConfiguration);
 
       throw new NotSupportedException("Non-persistent DomainObjects do not support querying.");
     }

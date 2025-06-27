@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>The order of the extensions in the collection is the order in which they are notified.</remarks>
     public void Add (IClientTransactionExtension clientTransactionExtension)
     {
-      ArgumentUtility.CheckNotNull("clientTransactionExtension", clientTransactionExtension);
+      ArgumentUtility.CheckNotNull(nameof(clientTransactionExtension), clientTransactionExtension);
 
       var key = clientTransactionExtension.Key;
       Assertion.IsNotNull(key, "IClientTransactionExtension.Key must not return null");
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>The order of the extensions in the collection is the order in which they are notified.</remarks>
     public void Insert (int index, IClientTransactionExtension clientTransactionExtension)
     {
-      ArgumentUtility.CheckNotNull("clientTransactionExtension", clientTransactionExtension);
+      ArgumentUtility.CheckNotNull(nameof(clientTransactionExtension), clientTransactionExtension);
 
       var key = clientTransactionExtension.Key;
       Assertion.IsNotNull(key, "IClientTransactionExtension.Key must not return null");
@@ -359,7 +359,7 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult) where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull("queryResult", queryResult);
+      ArgumentUtility.CheckNotNull(nameof(queryResult), queryResult);
 
       return this
           .Cast<IClientTransactionExtension>()

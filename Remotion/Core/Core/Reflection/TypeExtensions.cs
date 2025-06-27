@@ -34,8 +34,8 @@ namespace Remotion.Reflection
     /// </returns>
     public static bool CanAscribeTo (this Type type, Type ascribeeType)
     {
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("ascribeeType", ascribeeType);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentUtility.CheckNotNull(nameof(ascribeeType), ascribeeType);
 
       if (!ascribeeType.IsInterface)
         return CanAscribeInternal(type, ascribeeType);
@@ -63,8 +63,8 @@ namespace Remotion.Reflection
     /// </exception>
     public static IReadOnlyList<Type> GetAscribedGenericArguments (this Type type, Type ascribeeType)
     {
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("ascribeeType", ascribeeType);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentUtility.CheckNotNull(nameof(ascribeeType), ascribeeType);
 
       if (!ascribeeType.IsGenericType)
       {

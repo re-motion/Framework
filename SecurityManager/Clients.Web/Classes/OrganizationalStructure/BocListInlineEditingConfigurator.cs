@@ -43,8 +43,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     public BocListInlineEditingConfigurator (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull(nameof(resourceUrlFactory), resourceUrlFactory);
+      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
 
       _resourceUrlFactory = resourceUrlFactory;
       _globalizationService = globalizationService;
@@ -53,8 +53,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
     public virtual void Configure<TBusinessObject> (BocList bocList, Func<TBusinessObject> newObjectFactory)
         where TBusinessObject: BaseSecurityManagerObject
     {
-      ArgumentUtility.CheckNotNull("bocList", bocList);
-      ArgumentUtility.CheckNotNull("newObjectFactory", newObjectFactory);
+      ArgumentUtility.CheckNotNull(nameof(bocList), bocList);
+      ArgumentUtility.CheckNotNull(nameof(newObjectFactory), newObjectFactory);
 
       bocList.FixedColumns.Insert(
           0,
@@ -87,8 +87,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     private void HandleEditableRowChangesCanceled (object sender, BocListItemEventArgs e)
     {
-      ArgumentUtility.CheckNotNull("sender", sender);
-      ArgumentUtility.CheckNotNull("e", e);
+      ArgumentUtility.CheckNotNull(nameof(sender), sender);
+      ArgumentUtility.CheckNotNull(nameof(e), e);
 
       var businessObject = (BaseSecurityManagerObject)e.BusinessObject;
       if (businessObject.State.IsNew)

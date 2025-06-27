@@ -40,7 +40,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static Type ForceTypeGeneration (Type targetType)
     {
-      ArgumentUtility.CheckNotNull("targetType", targetType);
+      ArgumentUtility.CheckNotNull(nameof(targetType), targetType);
 
       var classContext = MixinConfiguration.ActiveConfiguration.GetContext(targetType)
                          ?? new ClassContext(targetType, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>());
@@ -51,7 +51,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static object ForceTypeGenerationAndCreateInstance (Type targetType)
     {
-      ArgumentUtility.CheckNotNull("targetType", targetType);
+      ArgumentUtility.CheckNotNull(nameof(targetType), targetType);
 
       return Activator.CreateInstance(ForceTypeGeneration(targetType));
     }

@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static DateTime GetDateTime (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
-      ArgumentUtility.CheckNotNull("fluentDateTimeValue", fluentDateTimeValue);
+      ArgumentUtility.CheckNotNull(nameof(fluentDateTimeValue), fluentDateTimeValue);
 
       return fluentDateTimeValue.Target.GetDateTime();
     }
@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static string GetDateTimeAsString (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
-      ArgumentUtility.CheckNotNull("fluentDateTimeValue", fluentDateTimeValue);
+      ArgumentUtility.CheckNotNull(nameof(fluentDateTimeValue), fluentDateTimeValue);
 
       return fluentDateTimeValue.Target.GetDateTimeAsString();
     }
@@ -57,7 +57,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetDateField (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
-      ArgumentUtility.CheckNotNull("fluentDateTimeValue", fluentDateTimeValue);
+      ArgumentUtility.CheckNotNull(nameof(fluentDateTimeValue), fluentDateTimeValue);
 
       ElementScope target;
       if (fluentDateTimeValue.IsReadOnly())
@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetDatePickerIcon (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
-      ArgumentUtility.CheckNotNull("fluentDateTimeValue", fluentDateTimeValue);
+      ArgumentUtility.CheckNotNull(nameof(fluentDateTimeValue), fluentDateTimeValue);
 
       var target = fluentDateTimeValue.Target.Scope.FindChild("Boc_DatePicker", Options.NoWait);
       target.EnsureExistence();
@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ScreenshotBocDateTimeValuePicker> GetDatePicker (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
-      ArgumentUtility.CheckNotNull("fluentDateTimeValue", fluentDateTimeValue);
+      ArgumentUtility.CheckNotNull(nameof(fluentDateTimeValue), fluentDateTimeValue);
 
       return SelfResolvableFluentScreenshot.Create(new ScreenshotBocDateTimeValuePicker(fluentDateTimeValue));
     }
@@ -100,7 +100,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetTimeField (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
-      ArgumentUtility.CheckNotNull("fluentDateTimeValue", fluentDateTimeValue);
+      ArgumentUtility.CheckNotNull(nameof(fluentDateTimeValue), fluentDateTimeValue);
 
       ElementScope target;
       if (fluentDateTimeValue.IsReadOnly())
@@ -119,7 +119,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <returns></returns>
     public static bool HasTimeField ([NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
-      ArgumentUtility.CheckNotNull("fluentDateTimeValue", fluentDateTimeValue);
+      ArgumentUtility.CheckNotNull(nameof(fluentDateTimeValue), fluentDateTimeValue);
 
       return fluentDateTimeValue.Target.HasTimeField();
     }
@@ -129,7 +129,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     public static bool IsReadOnly ([NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
-      ArgumentUtility.CheckNotNull("fluentDateTimeValue", fluentDateTimeValue);
+      ArgumentUtility.CheckNotNull(nameof(fluentDateTimeValue), fluentDateTimeValue);
 
       return fluentDateTimeValue.Target.IsReadOnly();
     }

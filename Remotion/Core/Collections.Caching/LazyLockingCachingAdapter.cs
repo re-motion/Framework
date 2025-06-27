@@ -56,7 +56,7 @@ namespace Remotion.Collections.Caching
 
     public LazyLockingCachingAdapter (ICache<TKey, Lazy<Wrapper>> innerCache)
     {
-      ArgumentUtility.CheckNotNull("innerCache", innerCache);
+      ArgumentUtility.CheckNotNull(nameof(innerCache), innerCache);
 
       _innerCache = new LockingCacheDecorator<TKey, Lazy<Wrapper>>(innerCache);
     }
@@ -82,7 +82,7 @@ namespace Remotion.Collections.Caching
 
     private Wrapper GetOrCreateValueWithClosure (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.CheckNotNull("valueFactory", valueFactory);
+      ArgumentUtility.CheckNotNull(nameof(valueFactory), valueFactory);
       var result = _innerCache.GetOrCreateValue(
           key,
           k => new Lazy<Wrapper>(() => new Wrapper(valueFactory(k)), LazyThreadSafetyMode.ExecutionAndPublication));

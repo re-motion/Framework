@@ -31,8 +31,8 @@ namespace Remotion.Validation.Implementation
 
     public ObjectValidatorLogContextInfo (IObjectValidator removedValidator, RemovingObjectValidatorRegistration[] removingObjectValidatorRegistrations)
     {
-      ArgumentUtility.CheckNotNull("removedValidator", removedValidator);
-      ArgumentUtility.CheckNotNull("removingObjectValidatorRegistrations", removingObjectValidatorRegistrations);
+      ArgumentUtility.CheckNotNull(nameof(removedValidator), removedValidator);
+      ArgumentUtility.CheckNotNull(nameof(removingObjectValidatorRegistrations), removingObjectValidatorRegistrations);
 
       _removedValidator = removedValidator;
       _removingObjectValidatorRegistrations = removingObjectValidatorRegistrations;

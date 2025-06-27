@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     /// <inheritdoc />
     public StorageProviderDefinition GetStorageProviderDefinition (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
       var storageGroupTypeOrNull = classDefinition.StorageGroupType;
 

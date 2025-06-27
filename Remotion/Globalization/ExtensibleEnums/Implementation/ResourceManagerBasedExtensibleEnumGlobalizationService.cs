@@ -39,14 +39,14 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
 
     public ResourceManagerBasedExtensibleEnumGlobalizationService (IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
 
       _globalizationService = globalizationService;
     }
 
     public bool TryGetExtensibleEnumValueDisplayName (IExtensibleEnum value, [MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
 
       var resourceType = value.GetValueInfo().DefiningMethod.DeclaringType!;
       var resourceManager = _globalizationService.GetResourceManager(TypeAdapter.Create(resourceType));
@@ -56,7 +56,7 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
 
     public IReadOnlyDictionary<CultureInfo, string> GetAvailableEnumDisplayNames (IExtensibleEnum value)
     {
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
 
       var resourceType = value.GetValueInfo().DefiningMethod.DeclaringType!;
       var resourceManager = _globalizationService.GetResourceManager(TypeAdapter.Create(resourceType));

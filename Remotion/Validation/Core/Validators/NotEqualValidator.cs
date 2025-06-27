@@ -39,8 +39,8 @@ namespace Remotion.Validation.Validators
         [NotNull] ValidationMessage validationMessage,
         [CanBeNull] IEqualityComparer? comparer = null)
     {
-      ArgumentUtility.CheckNotNull("comparisonValue", comparisonValue);
-      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNull(nameof(comparisonValue), comparisonValue);
+      ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
 
       ComparisonValue = comparisonValue;
       Comparer = comparer;
@@ -52,7 +52,7 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       if (IsValid(context))
         return Enumerable.Empty<ValidationFailure>();

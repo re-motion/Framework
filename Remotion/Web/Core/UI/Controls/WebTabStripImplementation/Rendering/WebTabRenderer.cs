@@ -43,8 +43,8 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
     public WebTabRenderer (IHotkeyFormatter hotkeyFormatter, IRenderingFeatures renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull("hotkeyFormatter", hotkeyFormatter);
-      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
+      ArgumentUtility.CheckNotNull(nameof(hotkeyFormatter), hotkeyFormatter);
+      ArgumentUtility.CheckNotNull(nameof(renderingFeatures), renderingFeatures);
 
       HotkeyFormatter = hotkeyFormatter;
       RenderingFeatures = renderingFeatures;
@@ -52,8 +52,8 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
     public void Render (WebTabStripRenderingContext renderingContext, IWebTab tab, bool isEnabled, bool isLast, WebTabStyle style)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("style", style);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(style), style);
 
       RenderTabBegin(renderingContext);
       RenderSeperator(renderingContext);
@@ -135,8 +135,8 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
     protected virtual Command RenderBeginTagForCommand (WebTabStripRenderingContext renderingContext, IWebTab tab, bool isEnabled, WebTabStyle style)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("style", style);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(style), style);
 
       var attributes = new NameValueCollection();
       attributes.Add(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Tab);
@@ -207,15 +207,15 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
     protected virtual void RenderEndTagForCommand (WebTabStripRenderingContext renderingContext, Command command)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("command", command);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(command), command);
 
       command.RenderEnd(renderingContext.Writer);
     }
 
     protected virtual void RenderContents (WebTabStripRenderingContext renderingContext, IWebTab tab)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTabAnchorBody);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span); // Begin anchor body span

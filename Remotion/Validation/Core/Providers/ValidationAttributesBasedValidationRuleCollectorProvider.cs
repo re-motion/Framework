@@ -37,14 +37,14 @@ namespace Remotion.Validation.Providers
 
     public ValidationAttributesBasedValidationRuleCollectorProvider (IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
+      ArgumentUtility.CheckNotNull(nameof(validationMessageFactory), validationMessageFactory);
 
       ValidationMessageFactory = validationMessageFactory;
     }
 
     protected override ILookup<Type, IAttributesBasedValidationPropertyRuleReflector> CreatePropertyRuleReflectors (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull("types", types);
+      ArgumentUtility.CheckNotNull(nameof(types), types);
 
       return types.SelectMany(
           t => t.GetProperties(PropertyBindingFlags | BindingFlags.DeclaredOnly)

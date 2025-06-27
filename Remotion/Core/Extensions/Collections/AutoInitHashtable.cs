@@ -39,14 +39,14 @@ namespace Remotion.Collections
     public AutoInitHashtable (Type valueType)
     {
       // TODO RM-7789: valueType should be guarded against nullable value types.
-      ArgumentUtility.CheckNotNull("valueType", valueType);
+      ArgumentUtility.CheckNotNull(nameof(valueType), valueType);
       _valueType = valueType;
       _createMethod = null;
     }
 
     public AutoInitHashtable (CreateMethod createMethod)
     {
-      ArgumentUtility.CheckNotNull("createMethod", createMethod);
+      ArgumentUtility.CheckNotNull(nameof(createMethod), createMethod);
       _createMethod = createMethod;
       _valueType = null;
     }

@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     protected override string GetSelectStatements (FilterViewDefinition filterViewDefinition)
     {
-      ArgumentUtility.CheckNotNull("filterViewDefinition", filterViewDefinition);
+      ArgumentUtility.CheckNotNull(nameof(filterViewDefinition), filterViewDefinition);
 
       var tableDefinition = filterViewDefinition.GetBaseTable();
 
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected override bool UseCheckOption (FilterViewDefinition filterViewDefinition)
     {
-      ArgumentUtility.CheckNotNull("filterViewDefinition", filterViewDefinition);
+      ArgumentUtility.CheckNotNull(nameof(filterViewDefinition), filterViewDefinition);
 
       return true;
     }

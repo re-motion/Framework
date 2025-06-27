@@ -34,7 +34,7 @@ namespace Remotion.Mixins.Definitions.Building
   {
     public T[] RemoveOverriddenMembers<T> (IEnumerable<T> members) where T : MemberInfo
     {
-      ArgumentUtility.CheckNotNull("members", members);
+      ArgumentUtility.CheckNotNull(nameof(members), members);
 
       // maps the associated methods' base definitions to the most derived member in the list; we adjust this dictionary as we walk the members
       var baseDefinitionsToMostDerivedMembers = new Dictionary<MethodInfo, T>();

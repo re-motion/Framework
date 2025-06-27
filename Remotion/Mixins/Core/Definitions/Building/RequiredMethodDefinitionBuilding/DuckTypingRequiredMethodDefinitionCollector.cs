@@ -32,14 +32,14 @@ namespace Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding
 
     public DuckTypingRequiredMethodDefinitionCollector (TargetClassDefinition targetClassDefinition)
     {
-      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
+      ArgumentUtility.CheckNotNull(nameof(targetClassDefinition), targetClassDefinition);
       _targetClassDefinition = targetClassDefinition;
       _allTargetMethodsByName = targetClassDefinition.GetAllMethods().ToLookup(method => method.Name);
     }
 
     public IEnumerable<RequiredMethodDefinition> CreateRequiredMethodDefinitions (RequirementDefinitionBase requirement)
     {
-      ArgumentUtility.CheckNotNull("requirement", requirement);
+      ArgumentUtility.CheckNotNull(nameof(requirement), requirement);
 
       Assertion.IsTrue(requirement.Type.IsInterface);
 

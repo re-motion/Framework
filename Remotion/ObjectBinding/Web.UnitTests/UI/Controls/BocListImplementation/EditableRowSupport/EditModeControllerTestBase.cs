@@ -167,7 +167,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     protected void SetValues (EditableRow row, string stringValue, string int32Value)
     {
-      ArgumentUtility.CheckNotNull("row", row);
+      ArgumentUtility.CheckNotNull(nameof(row), row);
 
       BocTextValue stringValueField = (BocTextValue)row.GetEditControl(0);
       stringValueField.Text = stringValue;

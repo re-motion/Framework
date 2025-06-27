@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
     public virtual T CreateValueClone<T> (T source)
         where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentUtility.CheckNotNull(nameof(source), source);
 
       T clone = CreateCloneHull(source);
       CopyProperties(source, clone, null, null);
@@ -108,8 +108,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
     public T CreateClone<T> (T source, ICloneStrategy strategy)
     where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull("source", source);
-      ArgumentUtility.CheckNotNull("strategy", strategy);
+      ArgumentUtility.CheckNotNull(nameof(source), source);
+      ArgumentUtility.CheckNotNull(nameof(strategy), strategy);
 
       return CreateClone(source, strategy, new CloneContext(this));
     }
@@ -131,9 +131,9 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
     public T CreateClone<T> (T source, ICloneStrategy strategy, CloneContext context)
         where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull("source", source);
-      ArgumentUtility.CheckNotNull("strategy", strategy);
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(source), source);
+      ArgumentUtility.CheckNotNull(nameof(strategy), strategy);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       if (context.Cloner != this)
         throw new ArgumentException("The given CloneContext must have been created for this DomainObjectCloner.", "context");

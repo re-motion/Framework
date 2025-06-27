@@ -35,7 +35,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls
 
     public ControlInvoker (Control control)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
       _control = control;
     }
 

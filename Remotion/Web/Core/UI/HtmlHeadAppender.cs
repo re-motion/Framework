@@ -170,7 +170,7 @@ namespace Remotion.Web.UI
     public void RegisterStylesheetLink (string key, IResourceUrl url, Priority priority)
     {
       ArgumentUtility.CheckNotNullOrEmpty("key", key);
-      ArgumentUtility.CheckNotNull("url", url);
+      ArgumentUtility.CheckNotNull(nameof(url), url);
 
       RegisterHeadElement(key, new StyleSheetImportRule(url), priority);
     }
@@ -224,7 +224,7 @@ namespace Remotion.Web.UI
     public void RegisterStylesheetLink (string key, IResourceUrl url)
     {
       ArgumentUtility.CheckNotNullOrEmpty("key", key);
-      ArgumentUtility.CheckNotNull("url", url);
+      ArgumentUtility.CheckNotNull(nameof(url), url);
 
       RegisterStylesheetLink(key, url, Priority.Page);
     }
@@ -277,7 +277,7 @@ namespace Remotion.Web.UI
     public void RegisterJavaScriptInclude (string key, IResourceUrl url)
     {
       ArgumentUtility.CheckNotNullOrEmpty("key", key);
-      ArgumentUtility.CheckNotNull("url", url);
+      ArgumentUtility.CheckNotNull(nameof(url), url);
 
       RegisterHeadElement(key, new JavaScriptInclude(url), Priority.Script);
     }
@@ -330,7 +330,7 @@ namespace Remotion.Web.UI
     public void RegisterHeadElement (string key, HtmlHeadElement headElement, Priority priority)
     {
       ArgumentUtility.CheckNotNullOrEmpty("key", key);
-      ArgumentUtility.CheckNotNull("headElement", headElement);
+      ArgumentUtility.CheckNotNull(nameof(headElement), headElement);
 
       EnsureStateIsClearedAfterServerTransfer();
 

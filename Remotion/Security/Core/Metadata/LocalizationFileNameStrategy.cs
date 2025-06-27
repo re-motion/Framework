@@ -27,7 +27,7 @@ namespace Remotion.Security.Metadata
     public string GetLocalizationFileName (string metadataFilename, CultureInfo culture)
     {
       ArgumentUtility.CheckNotNullOrEmpty("metadataFilename", metadataFilename);
-      ArgumentUtility.CheckNotNull("culture", culture);
+      ArgumentUtility.CheckNotNull(nameof(culture), culture);
 
       string baseFilename = Path.GetFileNameWithoutExtension(metadataFilename);
 

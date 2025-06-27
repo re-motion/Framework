@@ -51,8 +51,8 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </exception>
     public Query (QueryDefinition definition, QueryParameterCollection parameters)
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
-      ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull(nameof(definition), definition);
+      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
 
       _definition = definition;
       _parameters = parameters;

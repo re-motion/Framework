@@ -30,8 +30,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   {
     public static BocListValidationError Parse (ElementScope elementScope, ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("elementScope", elementScope);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentUtility.CheckNotNull(nameof(elementScope), elementScope);
+      ArgumentUtility.CheckNotNull(nameof(logger), logger);
 
       var errorMessage = elementScope.FindCss("span, a").InnerHTML ?? string.Empty; // .InnerHTML is used instead of .Text as it would return an empty string instead
       var rowItemID = elementScope.GetAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListValidationFailureSourceRow, logger);

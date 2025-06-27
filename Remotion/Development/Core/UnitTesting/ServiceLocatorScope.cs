@@ -29,7 +29,7 @@ namespace Remotion.Development.UnitTesting
   {
     private static DefaultServiceLocator CreateServiceLocator (IEnumerable<ServiceConfigurationEntry> configuration)
     {
-      ArgumentUtility.CheckNotNull("configuration", configuration);
+      ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
 
       var defaultServiceLocator = DefaultServiceLocator.Create();
       foreach (var stubbedRegistration in configuration)

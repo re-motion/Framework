@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public MultiObjectIDLoadCommand (IEnumerable<IDbCommandBuilder> dbCommandBuilders, IObjectReader<ObjectID?> objectIDReader)
     {
-      ArgumentUtility.CheckNotNull("dbCommandBuilders", dbCommandBuilders);
-      ArgumentUtility.CheckNotNull("objectIDReader", objectIDReader);
+      ArgumentUtility.CheckNotNull(nameof(dbCommandBuilders), dbCommandBuilders);
+      ArgumentUtility.CheckNotNull(nameof(objectIDReader), objectIDReader);
 
       _dbCommandBuilders = dbCommandBuilders;
       _objectIDReader = objectIDReader;
@@ -54,13 +54,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public IEnumerable<ObjectID?> Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
       return Execute<IRdbmsProviderReadWriteCommandExecutionContext>(executionContext);
     }
 
     public IEnumerable<ObjectID?> Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
       return Execute<IRdbmsProviderReadOnlyCommandExecutionContext>(executionContext);
     }
 
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
         IDbCommandBuilder commandBuilder, TExecutionContext executionContext)
         where TExecutionContext : IDbCommandFactory, IDataReaderCommandExecutionContext
     {
-      ArgumentUtility.CheckNotNull("commandBuilder", commandBuilder);
+      ArgumentUtility.CheckNotNull(nameof(commandBuilder), commandBuilder);
 
       using (var command = commandBuilder.Create(executionContext))
       {
